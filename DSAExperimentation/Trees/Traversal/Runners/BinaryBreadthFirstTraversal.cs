@@ -8,13 +8,11 @@ public static class BinaryBreadthFirstTraversal
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
         where TAction : struct, INodeAction<TNode>
-    {
-        TraverseWithHooks<
+        => TraverseWithHooks<
             TNode,
             TTopology,
             TSchedule,
             BreadthFirstNodeVisitHooks<TNode, TAction>>(root);
-    }
 
     public static void TraverseWithDepth<TNode, TTopology, TSchedule, TAction>(
         TNode? root)
@@ -22,13 +20,11 @@ public static class BinaryBreadthFirstTraversal
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
         where TAction : struct, IDepthAwareNodeAction<TNode>
-    {
-        TraverseWithHooks<
+        => TraverseWithHooks<
             TNode,
             TTopology,
             TSchedule,
             BreadthFirstDepthAwareNodeVisitHooks<TNode, TAction>>(root);
-    }
 
     public static void TraverseByLevel<TNode, TTopology, TSchedule, TAction>(
         TNode? root)
@@ -38,7 +34,9 @@ public static class BinaryBreadthFirstTraversal
         where TAction : struct, ILevelVisitAction<TNode>
     {
         if (root is null)
+        {
             return;
+        }
 
         var queue = new Queue<TNode>();
         queue.Enqueue(root);
@@ -69,7 +67,9 @@ public static class BinaryBreadthFirstTraversal
         where THooks : struct, IBreadthFirstHooks<TNode>
     {
         if (root is null)
+        {
             return;
+        }
 
         var queue = new Queue<(TNode Node, int Depth)>();
         THooks.Discover(root, 0);
@@ -135,7 +135,9 @@ public static class BinaryBreadthFirstTraversal
         where TSchedule : struct, IBinaryChildSchedule
     {
         if (node is null)
+        {
             return;
+        }
 
         queue.Enqueue(node);
     }
@@ -150,7 +152,9 @@ public static class BinaryBreadthFirstTraversal
         where THooks : struct, IBreadthFirstHooks<TNode>
     {
         if (node is null)
+        {
             return;
+        }
 
         THooks.Discover(node, depth);
         queue.Enqueue((node, depth));

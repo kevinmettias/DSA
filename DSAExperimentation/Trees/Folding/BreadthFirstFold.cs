@@ -12,7 +12,11 @@ public static class BreadthFirstFold
         var state = TAlgebra.Seed;
 
         if (root is null)
+
+        {
             return state;
+
+        }
 
         var queue = new Queue<(TNode Node, int Depth)>();
         queue.Enqueue((root, 0));

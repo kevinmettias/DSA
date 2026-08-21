@@ -9,7 +9,9 @@ public static class DepthFirstTraversal
         where THooks : struct, IDepthFirstHooks<TNode>
     {
         if (root is null)
+        {
             return;
+        }
 
         THooks.Enter(root);
 

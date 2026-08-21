@@ -10,7 +10,9 @@ public static class BinaryDepthFirstFold
         where TAlgebra : struct, IBinaryDepthFirstFoldAlgebra<TNode, TResult>
     {
         if (root is null)
+        {
             return TAlgebra.Empty;
+        }
 
         var first = Fold<TNode, TTopology, TSchedule, TAlgebra, TResult>(
             TSchedule.GetFirst<TNode, TTopology>(root));

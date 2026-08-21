@@ -12,7 +12,11 @@ public static class BinaryBreadthFirstFold
         var state = TAlgebra.Seed;
 
         if (root is null)
+
+        {
             return state;
+
+        }
 
         var queue = new Queue<(TNode Node, int Depth)>();
         queue.Enqueue((root, 0));
@@ -56,7 +60,9 @@ public static class BinaryBreadthFirstFold
         where TSchedule : struct, IBinaryChildSchedule
     {
         if (node is null)
+        {
             return;
+        }
 
         queue.Enqueue((node, depth));
     }
