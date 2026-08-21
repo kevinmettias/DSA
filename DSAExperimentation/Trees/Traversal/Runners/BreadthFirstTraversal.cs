@@ -7,13 +7,11 @@ public static class BreadthFirstTraversal
         where TTopology : struct, ITreeTopology<TNode>
         where TOrder : struct, IChildOrder<TNode>
         where TAction : struct, INodeAction<TNode>
-    {
-        TraverseWithHooks<
+        => TraverseWithHooks<
             TNode,
             TTopology,
             TOrder,
             BreadthFirstNodeVisitHooks<TNode, TAction>>(root);
-    }
 
     public static void TraverseWithDepth<TNode, TTopology, TOrder, TAction>(
         TNode? root)
@@ -21,13 +19,11 @@ public static class BreadthFirstTraversal
         where TTopology : struct, ITreeTopology<TNode>
         where TOrder : struct, IChildOrder<TNode>
         where TAction : struct, IDepthAwareNodeAction<TNode>
-    {
-        TraverseWithHooks<
+        => TraverseWithHooks<
             TNode,
             TTopology,
             TOrder,
             BreadthFirstDepthAwareNodeVisitHooks<TNode, TAction>>(root);
-    }
 
     public static void TraverseByLevel<TNode, TTopology, TOrder, TAction>(
         TNode? root)
@@ -37,7 +33,9 @@ public static class BreadthFirstTraversal
         where TAction : struct, ILevelVisitAction<TNode>
     {
         if (root is null)
+        {
             return;
+        }
 
         var queue = new Queue<TNode>();
         queue.Enqueue(root);
@@ -68,7 +66,9 @@ public static class BreadthFirstTraversal
         where THooks : struct, IBreadthFirstHooks<TNode>
     {
         if (root is null)
+        {
             return;
+        }
 
         var queue = new Queue<(TNode Node, int Depth)>();
         THooks.Discover(root, 0);

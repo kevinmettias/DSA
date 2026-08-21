@@ -10,7 +10,9 @@ public static class DepthFirstFold
         where TAlgebra : struct, IDepthFirstFoldAlgebra<TNode, TResult>
     {
         if (root is null)
+        {
             return TAlgebra.Empty;
+        }
 
         var childResults = new List<TResult>();
 

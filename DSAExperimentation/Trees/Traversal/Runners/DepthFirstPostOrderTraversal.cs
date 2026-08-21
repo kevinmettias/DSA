@@ -7,13 +7,11 @@ public static class DepthFirstPostOrderTraversal
         where TTopology : struct, ITreeTopology<TNode>
         where TOrder : struct, IChildOrder<TNode>
         where TAction : struct, INodeAction<TNode>
-    {
-        DepthFirstTraversal.Traverse<
+        => DepthFirstTraversal.Traverse<
             TNode,
             TTopology,
             TOrder,
             DepthFirstPostOrderHooks<TNode, TAction>>(root);
-    }
 }
 
 
