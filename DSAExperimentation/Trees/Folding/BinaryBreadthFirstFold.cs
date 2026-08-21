@@ -22,18 +22,29 @@ public static class BinaryBreadthFirstFold
             var (node, depth) = queue.Dequeue();
             state = TAlgebra.Accumulate(state, node, depth);
 
-            EnqueueIfPresent<TNode, TTopology, TSchedule>(
-                queue,
-                TSchedule.GetFirst<TNode, TTopology>(node),
-                depth + 1);
-
-            EnqueueIfPresent<TNode, TTopology, TSchedule>(
-                queue,
-                TSchedule.GetSecond<TNode, TTopology>(node),
-                depth + 1);
+            EnqueueChildren<TNode, TTopology, TSchedule>(queue, node, depth);
         }
 
         return state;
+    }
+
+    private static void EnqueueChildren<TNode, TTopology, TSchedule>(
+        Queue<(TNode Node, int Depth)> queue,
+        TNode node,
+        int depth)
+        where TNode : class
+        where TTopology : struct, IBinaryTreeTopology<TNode>
+        where TSchedule : struct, IBinaryChildSchedule
+    {
+        EnqueueIfPresent<TNode, TTopology, TSchedule>(
+            queue,
+            TSchedule.GetFirst<TNode, TTopology>(node),
+            depth + 1);
+
+        EnqueueIfPresent<TNode, TTopology, TSchedule>(
+            queue,
+            TSchedule.GetSecond<TNode, TTopology>(node),
+            depth + 1);
     }
 
     private static void EnqueueIfPresent<TNode, TTopology, TSchedule>(
