@@ -1,21 +1,21 @@
 namespace DSAExperimentation.Trees;
 
-public readonly struct ZipBinaryAlgebra<
+public readonly struct ZipBinaryDepthFirstAlgebra<
     TNode,
     TFirstResult,
     TSecondResult,
     TFirstAlgebra,
     TSecondAlgebra>
-    : IBinaryTreeFoldAlgebra<TNode, FoldPair<TFirstResult, TSecondResult>>
-    where TFirstAlgebra : struct, IBinaryTreeFoldAlgebra<TNode, TFirstResult>
-    where TSecondAlgebra : struct, IBinaryTreeFoldAlgebra<TNode, TSecondResult>
+    : IBinaryDepthFirstFoldAlgebra<TNode, FoldResultPair<TFirstResult, TSecondResult>>
+    where TFirstAlgebra : struct, IBinaryDepthFirstFoldAlgebra<TNode, TFirstResult>
+    where TSecondAlgebra : struct, IBinaryDepthFirstFoldAlgebra<TNode, TSecondResult>
 {
-    public static FoldPair<TFirstResult, TSecondResult> Empty
+    public static FoldResultPair<TFirstResult, TSecondResult> Empty
         => new(TFirstAlgebra.Empty, TSecondAlgebra.Empty);
 
-    public static FoldPair<TFirstResult, TSecondResult> Combine(
+    public static FoldResultPair<TFirstResult, TSecondResult> Combine(
         TNode node,
-        BinaryChildren<FoldPair<TFirstResult, TSecondResult>> children)
+        BinaryChildren<FoldResultPair<TFirstResult, TSecondResult>> children)
     {
         var first = TFirstAlgebra.Combine(
             node,
@@ -32,3 +32,7 @@ public readonly struct ZipBinaryAlgebra<
         return new(first, second);
     }
 }
+
+
+
+

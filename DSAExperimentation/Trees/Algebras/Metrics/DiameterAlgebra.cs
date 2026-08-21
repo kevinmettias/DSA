@@ -1,7 +1,7 @@
 namespace DSAExperimentation.Trees;
 
 public readonly struct DiameterAlgebra<TNode>
-    : IBinaryTreeFoldAlgebra<TNode, HeightDiameterState>
+    : IBinaryDepthFirstFoldAlgebra<TNode, HeightDiameterState>
 {
     public static HeightDiameterState Empty
         => new(Height: 0, Diameter: 0);
@@ -27,3 +27,7 @@ public readonly struct DiameterAlgebra<TNode>
         return new(height, diameter);
     }
 }
+
+
+
+

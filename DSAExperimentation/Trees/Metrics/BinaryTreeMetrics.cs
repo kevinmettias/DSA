@@ -6,7 +6,7 @@ public static class BinaryTreeMetrics
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
-        => BinaryTreeFold.Fold<
+        => BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
             TSchedule,
@@ -17,7 +17,7 @@ public static class BinaryTreeMetrics
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
-        => BinaryTreeFold.Fold<
+        => BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
             TSchedule,
@@ -29,7 +29,7 @@ public static class BinaryTreeMetrics
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
     {
-        var state = BinaryTreeFold.Fold<
+        var state = BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
             TSchedule,
@@ -39,20 +39,24 @@ public static class BinaryTreeMetrics
         return state.Diameter;
     }
 
-    public static FoldPair<int, int> HeightAndSize<TNode, TTopology, TSchedule>(
+    public static FoldResultPair<int, int> HeightAndSize<TNode, TTopology, TSchedule>(
         TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
-        => BinaryTreeFold.Fold<
+        => BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
             TSchedule,
-            ZipBinaryAlgebra<
+            ZipBinaryDepthFirstAlgebra<
                 TNode,
                 int,
                 int,
                 HeightAlgebra<TNode>,
                 SizeAlgebra<TNode>>,
-            FoldPair<int, int>>(root);
+            FoldResultPair<int, int>>(root);
 }
+
+
+
+

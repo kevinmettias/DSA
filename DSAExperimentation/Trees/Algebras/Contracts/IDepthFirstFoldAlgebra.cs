@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public interface ITreeFoldAlgebra<TNode, TResult>
+public interface IDepthFirstFoldAlgebra<TNode, TResult>
 {
     static abstract TResult Empty { get; }
 
@@ -8,3 +8,7 @@ public interface ITreeFoldAlgebra<TNode, TResult>
         TNode node,
         IReadOnlyList<TResult> children);
 }
+
+
+
+

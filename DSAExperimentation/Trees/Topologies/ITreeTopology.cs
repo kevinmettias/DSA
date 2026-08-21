@@ -5,3 +5,7 @@ public interface ITreeTopology<TNode>
 {
     static abstract IEnumerable<TNode> GetChildren(TNode node);
 }
+
+
+
+

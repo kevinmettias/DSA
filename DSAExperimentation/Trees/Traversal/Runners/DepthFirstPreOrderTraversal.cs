@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public static class PostOrderTraversal
+public static class DepthFirstPreOrderTraversal
 {
     public static void Traverse<TNode, TTopology, TOrder, TAction>(TNode? root)
         where TNode : class
@@ -12,6 +12,10 @@ public static class PostOrderTraversal
             TNode,
             TTopology,
             TOrder,
-            PostOrderHooks<TNode, TAction>>(root);
+            DepthFirstPreOrderHooks<TNode, TAction>>(root);
     }
 }
+
+
+
+

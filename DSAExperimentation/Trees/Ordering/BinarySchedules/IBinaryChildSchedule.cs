@@ -14,3 +14,7 @@ public interface IBinaryChildSchedule
         TResult first,
         TResult second);
 }
+
+
+
+
