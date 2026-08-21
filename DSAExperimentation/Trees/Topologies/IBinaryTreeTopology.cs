@@ -7,3 +7,7 @@ public interface IBinaryTreeTopology<TNode> : ITreeTopology<TNode>
 
     static abstract TNode? GetRight(TNode node);
 }
+
+
+
+

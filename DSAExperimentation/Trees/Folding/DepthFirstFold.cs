@@ -1,13 +1,13 @@
 namespace DSAExperimentation.Trees;
 
-public static class TreeFold
+public static class DepthFirstFold
 {
     public static TResult Fold<TNode, TTopology, TOrder, TAlgebra, TResult>(
         TNode? root)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode>
         where TOrder : struct, IChildOrder<TNode>
-        where TAlgebra : struct, ITreeFoldAlgebra<TNode, TResult>
+        where TAlgebra : struct, IDepthFirstFoldAlgebra<TNode, TResult>
     {
         if (root is null)
             return TAlgebra.Empty;
@@ -23,3 +23,7 @@ public static class TreeFold
         return TAlgebra.Combine(root, childResults);
     }
 }
+
+
+
+

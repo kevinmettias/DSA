@@ -1,7 +1,7 @@
 namespace DSAExperimentation.Trees;
 
 public readonly struct HeightAlgebra<TNode>
-    : IBinaryTreeFoldAlgebra<TNode, int>
+    : IBinaryDepthFirstFoldAlgebra<TNode, int>
 {
     public static int Empty
         => 0;
@@ -11,3 +11,7 @@ public readonly struct HeightAlgebra<TNode>
         BinaryChildren<int> children)
         => 1 + Math.Max(children.Left, children.Right);
 }
+
+
+
+

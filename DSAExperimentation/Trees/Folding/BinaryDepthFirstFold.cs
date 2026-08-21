@@ -1,13 +1,13 @@
 namespace DSAExperimentation.Trees;
 
-public static class BinaryTreeFold
+public static class BinaryDepthFirstFold
 {
     public static TResult Fold<TNode, TTopology, TSchedule, TAlgebra, TResult>(
         TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TSchedule : struct, IBinaryChildSchedule
-        where TAlgebra : struct, IBinaryTreeFoldAlgebra<TNode, TResult>
+        where TAlgebra : struct, IBinaryDepthFirstFoldAlgebra<TNode, TResult>
     {
         if (root is null)
             return TAlgebra.Empty;
@@ -23,3 +23,7 @@ public static class BinaryTreeFold
             TSchedule.RestoreSemanticOrder(first, second));
     }
 }
+
+
+
+

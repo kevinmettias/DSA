@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public readonly struct RightFirst : IBinaryChildSchedule
+public readonly struct RightFirstBinarySchedule : IBinaryChildSchedule
 {
     public static TNode? GetFirst<TNode, TTopology>(TNode node)
         where TNode : class
@@ -17,3 +17,7 @@ public readonly struct RightFirst : IBinaryChildSchedule
         TResult second)
         => new(second, first);
 }
+
+
+
+

@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public interface IBinaryTreeFoldAlgebra<TNode, TResult>
+public interface IBinaryDepthFirstFoldAlgebra<TNode, TResult>
 {
     static abstract TResult Empty { get; }
 
@@ -8,3 +8,7 @@ public interface IBinaryTreeFoldAlgebra<TNode, TResult>
         TNode node,
         BinaryChildren<TResult> children);
 }
+
+
+
+

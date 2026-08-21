@@ -6,3 +6,7 @@ public interface IDepthFirstHooks<TNode>
 
     static abstract void Exit(TNode node);
 }
+
+
+
+
