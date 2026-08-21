@@ -50,13 +50,9 @@ public static class BreadthFirstTraversal
 
             for (var index = 0; index < width; index++)
             {
-                var node = queue.Dequeue();
-                level.Add(node);
-
-                foreach (var child in TOrder.Apply(TTopology.GetChildren(node)))
-                {
-                    queue.Enqueue(child);
-                }
+                AddNextLevelNode<TNode, TTopology, TOrder>(
+                    queue,
+                    level);
             }
 
             TAction.Invoke(level, depth);
@@ -91,8 +87,20 @@ public static class BreadthFirstTraversal
             }
         }
     }
+
+    private static void AddNextLevelNode<TNode, TTopology, TOrder>(
+        Queue<TNode> queue,
+        List<TNode> level)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode>
+        where TOrder : struct, IChildOrder<TNode>
+    {
+        var node = queue.Dequeue();
+        level.Add(node);
+
+        foreach (var child in TOrder.Apply(TTopology.GetChildren(node)))
+        {
+            queue.Enqueue(child);
+        }
+    }
 }
-
-
-
-

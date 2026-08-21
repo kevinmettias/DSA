@@ -51,16 +51,9 @@ public static class BinaryBreadthFirstTraversal
 
             for (var index = 0; index < width; index++)
             {
-                var node = queue.Dequeue();
-                level.Add(node);
-
-                EnqueueIfPresent<TNode, TTopology, TSchedule>(
+                AddNextLevelNode<TNode, TTopology, TSchedule>(
                     queue,
-                    TSchedule.GetFirst<TNode, TTopology>(node));
-
-                EnqueueIfPresent<TNode, TTopology, TSchedule>(
-                    queue,
-                    TSchedule.GetSecond<TNode, TTopology>(node));
+                    level);
             }
 
             TAction.Invoke(level, depth);
@@ -88,16 +81,50 @@ public static class BinaryBreadthFirstTraversal
 
             THooks.Visit(node, depth);
 
-            EnqueueIfPresent<TNode, TTopology, TSchedule, THooks>(
+            DiscoverChildren<TNode, TTopology, TSchedule, THooks>(
                 queue,
-                TSchedule.GetFirst<TNode, TTopology>(node),
-                depth + 1);
-
-            EnqueueIfPresent<TNode, TTopology, TSchedule, THooks>(
-                queue,
-                TSchedule.GetSecond<TNode, TTopology>(node),
-                depth + 1);
+                node,
+                depth);
         }
+    }
+
+    private static void AddNextLevelNode<TNode, TTopology, TSchedule>(
+        Queue<TNode> queue,
+        List<TNode> level)
+        where TNode : class
+        where TTopology : struct, IBinaryTreeTopology<TNode>
+        where TSchedule : struct, IBinaryChildSchedule
+    {
+        var node = queue.Dequeue();
+        level.Add(node);
+
+        EnqueueIfPresent<TNode, TTopology, TSchedule>(
+            queue,
+            TSchedule.GetFirst<TNode, TTopology>(node));
+
+        EnqueueIfPresent<TNode, TTopology, TSchedule>(
+            queue,
+            TSchedule.GetSecond<TNode, TTopology>(node));
+    }
+
+    private static void DiscoverChildren<TNode, TTopology, TSchedule, THooks>(
+        Queue<(TNode Node, int Depth)> queue,
+        TNode node,
+        int depth)
+        where TNode : class
+        where TTopology : struct, IBinaryTreeTopology<TNode>
+        where TSchedule : struct, IBinaryChildSchedule
+        where THooks : struct, IBreadthFirstHooks<TNode>
+    {
+        EnqueueIfPresent<TNode, TTopology, TSchedule, THooks>(
+            queue,
+            TSchedule.GetFirst<TNode, TTopology>(node),
+            depth + 1);
+
+        EnqueueIfPresent<TNode, TTopology, TSchedule, THooks>(
+            queue,
+            TSchedule.GetSecond<TNode, TTopology>(node),
+            depth + 1);
     }
 
     private static void EnqueueIfPresent<TNode, TTopology, TSchedule>(

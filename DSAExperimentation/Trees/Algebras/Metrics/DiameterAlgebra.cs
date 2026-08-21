@@ -18,11 +18,13 @@ public readonly struct DiameterAlgebra<TNode>
             children.Left.Height +
             children.Right.Height;
 
+        var largestChildDiameter = Math.Max(
+            children.Left.Diameter,
+            children.Right.Diameter);
+
         var diameter = Math.Max(
             diameterThroughNode,
-            Math.Max(
-                children.Left.Diameter,
-                children.Right.Diameter));
+            largestChildDiameter);
 
         return new(height, diameter);
     }

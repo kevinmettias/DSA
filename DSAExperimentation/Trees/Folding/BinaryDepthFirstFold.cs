@@ -18,9 +18,11 @@ public static class BinaryDepthFirstFold
         var second = Fold<TNode, TTopology, TSchedule, TAlgebra, TResult>(
             TSchedule.GetSecond<TNode, TTopology>(root));
 
+        var children = TSchedule.RestoreSemanticOrder(first, second);
+
         return TAlgebra.Combine(
             root,
-            TSchedule.RestoreSemanticOrder(first, second));
+            children);
     }
 }
 
