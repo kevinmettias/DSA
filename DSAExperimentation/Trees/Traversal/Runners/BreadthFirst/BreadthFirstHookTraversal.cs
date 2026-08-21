@@ -14,9 +14,9 @@ public static class BreadthFirstHookTraversal
             return;
         }
 
-        var queue = new Queue<(TNode Node, int Depth)>();
+        var queue = new Queue<TraversalFrame<TNode>>();
         THooks.Discover(root, 0);
-        queue.Enqueue((root, 0));
+        queue.Enqueue(new(root, 0));
 
         while (queue.Count > 0)
         {
@@ -34,7 +34,7 @@ public static class BreadthFirstHookTraversal
     }
 
     private static void DiscoverChildren<TNode, TTopology, TOrder, THooks>(
-        Queue<(TNode Node, int Depth)> queue,
+        Queue<TraversalFrame<TNode>> queue,
         TNode node,
         int depth)
         where TNode : class
@@ -45,7 +45,7 @@ public static class BreadthFirstHookTraversal
         foreach (var child in TOrder.Apply(TTopology.GetChildren(node)))
         {
             THooks.Discover(child, depth + 1);
-            queue.Enqueue((child, depth + 1));
+            queue.Enqueue(new(child, depth + 1));
         }
     }
 }
