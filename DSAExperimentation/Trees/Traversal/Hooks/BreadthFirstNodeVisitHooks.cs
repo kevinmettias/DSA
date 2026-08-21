@@ -10,6 +10,10 @@ public readonly struct BreadthFirstNodeVisitHooks<TNode, TAction>
 
     public static void Visit(TNode node, int depth)
         => TAction.Invoke(node);
+
+    public static void Finish()
+    {
+    }
 }
 
 

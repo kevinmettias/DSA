@@ -12,7 +12,6 @@ public static class BinaryBreadthFirstFold
         var state = TAlgebra.Seed;
 
         if (root is null)
-
         {
             return state;
 
