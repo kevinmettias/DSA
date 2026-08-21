@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public static class DepthFirstTraversal
+public static class DepthFirstHookTraversal
 {
     public static void Traverse<TNode, TTopology, TOrder, THooks>(TNode? root)
         where TNode : class
@@ -23,7 +23,3 @@ public static class DepthFirstTraversal
         THooks.Exit(root);
     }
 }
-
-
-
-
