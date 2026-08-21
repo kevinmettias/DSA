@@ -37,7 +37,7 @@ public readonly struct BreadthFirstLevelVisitHooks<TNode, TAction>
             return;
         }
 
-        TAction.Invoke(CurrentLevel.ToArray(), currentDepth);
+        TAction.Invoke([.. CurrentLevel], currentDepth);
         CurrentLevel.Clear();
     }
 
