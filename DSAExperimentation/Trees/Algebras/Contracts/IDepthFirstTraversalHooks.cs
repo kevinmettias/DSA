@@ -1,23 +1,26 @@
 namespace DSAExperimentation.Trees;
 
 public interface IDepthFirstTraversalHooks<TNode, TSelf>
-    : IDepthFirstFoldAlgebra<TNode, Unit>
+    : IFoldAlgebra<TNode, Unit>
     where TSelf : IDepthFirstTraversalHooks<TNode, TSelf>
 {
-    static Unit IDepthFirstFoldAlgebra<TNode, Unit>.Empty
+    static Unit IFoldAlgebra<TNode, Unit>.Empty
         => default;
 
-    static bool IDepthFirstFoldAlgebra<TNode, Unit>.CollectsChildResults
+    static bool IFoldAlgebra<TNode, Unit>.CollectsChildResults
         => false;
 
-    static void IDepthFirstFoldAlgebra<TNode, Unit>.Enter(TNode node)
-        => TSelf.OnEnter(node);
+    static void IFoldAlgebra<TNode, Unit>.Enter(TNode node, int depth)
+        => TSelf.OnEnter(node, depth);
 
-    static Unit IDepthFirstFoldAlgebra<TNode, Unit>.Combine(TNode node, IReadOnlyList<Unit> children)
+    static Unit IFoldAlgebra<TNode, Unit>.Combine(TNode node, IReadOnlyList<Unit> children)
     {
         TSelf.OnExit(node);
         return default;
     }
+
+    static virtual void OnEnter(TNode node, int depth)
+        => TSelf.OnEnter(node);
 
     static virtual void OnEnter(TNode node)
     {

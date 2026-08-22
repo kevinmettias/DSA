@@ -12,5 +12,5 @@ public readonly struct NodeVisitBreadthFirstTraversal<TNode, TTopology, TOrder, 
             TNode,
             TTopology,
             TOrder,
-            NodeVisitHooks<TNode, TAction>>.Traverse(root);
+            NodeVisitBreadthFirstHooks<TNode, TAction>>.Traverse(root);
 }

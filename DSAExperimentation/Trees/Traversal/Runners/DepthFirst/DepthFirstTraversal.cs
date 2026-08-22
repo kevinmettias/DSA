@@ -5,12 +5,8 @@ public readonly struct DepthFirstTraversal<TNode, TTopology, TOrder, THooks>
     where TNode : class
     where TTopology : struct, ITreeTopology<TNode>
     where TOrder : struct, IChildOrder<TNode>
-    where THooks : struct, IDepthFirstFoldAlgebra<TNode, Unit>
+    where THooks : struct, IFoldAlgebra<TNode, Unit>
 {
     public static void Traverse(TNode? root)
-        => DepthFirstWalk.Walk<
-            TNode,
-            ChildOrderStrategy<TNode, TTopology, TOrder>,
-            THooks,
-            Unit>(root);
+        => TreeFold.Fold<TNode, TTopology, TOrder, THooks, Unit>(root);
 }

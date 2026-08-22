@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public interface IBreadthFirstFoldAlgebra<TNode, TState>
+public interface IBreadthFirstReduceAlgebra<TNode, TState>
 {
     static abstract TState Seed { get; }
 

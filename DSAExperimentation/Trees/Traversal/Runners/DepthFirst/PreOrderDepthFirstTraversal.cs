@@ -12,5 +12,5 @@ public readonly struct PreOrderDepthFirstTraversal<TNode, TTopology, TOrder, TAc
             TNode,
             TTopology,
             TOrder,
-            NodeVisitHooks<TNode, TAction>>.Traverse(root);
+            PreOrderDepthFirstHooks<TNode, TAction>>.Traverse(root);
 }

@@ -1,14 +1,14 @@
 namespace DSAExperimentation.Trees;
 
-public readonly struct ZipBreadthFirstAlgebra<
+public readonly struct ZipBreadthFirstReduceAlgebra<
     TNode,
     TFirstState,
     TSecondState,
     TFirstAlgebra,
     TSecondAlgebra>
-    : IBreadthFirstFoldAlgebra<TNode, FoldResultPair<TFirstState, TSecondState>>
-    where TFirstAlgebra : struct, IBreadthFirstFoldAlgebra<TNode, TFirstState>
-    where TSecondAlgebra : struct, IBreadthFirstFoldAlgebra<TNode, TSecondState>
+    : IBreadthFirstReduceAlgebra<TNode, FoldResultPair<TFirstState, TSecondState>>
+    where TFirstAlgebra : struct, IBreadthFirstReduceAlgebra<TNode, TFirstState>
+    where TSecondAlgebra : struct, IBreadthFirstReduceAlgebra<TNode, TSecondState>
 {
     public static FoldResultPair<TFirstState, TSecondState> Seed
         => new(TFirstAlgebra.Seed, TSecondAlgebra.Seed);

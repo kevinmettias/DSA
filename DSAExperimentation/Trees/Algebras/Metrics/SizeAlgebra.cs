@@ -1,7 +1,7 @@
 namespace DSAExperimentation.Trees;
 
 public readonly struct SizeAlgebra<TNode>
-    : IBinaryDepthFirstFoldAlgebra<TNode, int>
+    : IBinaryFoldAlgebra<TNode, int>
 {
     public static int Empty
         => 0;

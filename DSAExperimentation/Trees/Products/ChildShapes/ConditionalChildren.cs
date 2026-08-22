@@ -1,9 +1,9 @@
 namespace DSAExperimentation.Trees;
 
-public readonly record struct ConditionalChildren<T>(
-    T Condition,
-    T Then,
-    T Else);
+public readonly record struct ConditionalChildren<TChild>(
+    TChild Condition,
+    TChild Then,
+    TChild Else);
 
 
 

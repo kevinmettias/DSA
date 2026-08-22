@@ -6,32 +6,59 @@ internal static class DepthFirstWalk
         TNode? root)
         where TNode : class
         where TChildren : struct, IChildEnumerationStrategy<TNode>
-        where TStep : struct, IDepthFirstFoldAlgebra<TNode, TResult>
+        where TStep : struct, IFoldAlgebra<TNode, TResult>
     {
         if (root is null)
         {
             return TStep.Empty;
         }
 
-        TStep.Enter(root);
+        return WalkNode<TNode, TChildren, TStep, TResult>(root, 0);
+    }
 
-        if (TStep.CollectsChildResults)
+    private static TResult WalkNode<TNode, TChildren, TStep, TResult>(
+        TNode node,
+        int depth)
+        where TNode : class
+        where TChildren : struct, IChildEnumerationStrategy<TNode>
+        where TStep : struct, IFoldAlgebra<TNode, TResult>
+    {
+        TStep.Enter(node, depth);
+
+        return TStep.CollectsChildResults
+            ? WalkCollectingChildResults<TNode, TChildren, TStep, TResult>(node, depth)
+            : WalkVisitingChildren<TNode, TChildren, TStep, TResult>(node, depth);
+    }
+
+    private static TResult WalkCollectingChildResults<TNode, TChildren, TStep, TResult>(
+        TNode node,
+        int depth)
+        where TNode : class
+        where TChildren : struct, IChildEnumerationStrategy<TNode>
+        where TStep : struct, IFoldAlgebra<TNode, TResult>
+    {
+        var childResults = new List<TResult>();
+
+        foreach (var child in TChildren.GetChildren(node))
         {
-            var childResults = new List<TResult>();
-
-            foreach (var child in TChildren.GetChildren(root))
-            {
-                childResults.Add(Walk<TNode, TChildren, TStep, TResult>(child));
-            }
-
-            return TStep.Combine(root, childResults);
+            childResults.Add(WalkNode<TNode, TChildren, TStep, TResult>(child, depth + 1));
         }
 
-        foreach (var child in TChildren.GetChildren(root))
+        return TStep.Combine(node, childResults);
+    }
+
+    private static TResult WalkVisitingChildren<TNode, TChildren, TStep, TResult>(
+        TNode node,
+        int depth)
+        where TNode : class
+        where TChildren : struct, IChildEnumerationStrategy<TNode>
+        where TStep : struct, IFoldAlgebra<TNode, TResult>
+    {
+        foreach (var child in TChildren.GetChildren(node))
         {
-            Walk<TNode, TChildren, TStep, TResult>(child);
+            WalkNode<TNode, TChildren, TStep, TResult>(child, depth + 1);
         }
 
-        return TStep.Combine(root, []);
+        return TStep.Combine(node, []);
     }
 }
