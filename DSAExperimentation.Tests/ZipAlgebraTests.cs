@@ -2,7 +2,7 @@ using DSAExperimentation.Trees;
 
 namespace DSAExperimentation.Tests;
 
-public readonly struct HeightDepthFirstAlgebra : IDepthFirstFoldAlgebra<TestNode, int>
+public readonly struct HeightFoldAlgebra : IFoldAlgebra<TestNode, int>
 {
     public static int Empty => 0;
 
@@ -22,7 +22,7 @@ public readonly struct HeightDepthFirstAlgebra : IDepthFirstFoldAlgebra<TestNode
     }
 }
 
-public readonly struct MaxDepthBreadthFirstAlgebra : IBreadthFirstFoldAlgebra<TestNode, int>
+public readonly struct MaxDepthBreadthFirstAlgebra : IBreadthFirstReduceAlgebra<TestNode, int>
 {
     public static int Seed => 0;
 
@@ -30,7 +30,7 @@ public readonly struct MaxDepthBreadthFirstAlgebra : IBreadthFirstFoldAlgebra<Te
         => depth > state ? depth : state;
 }
 
-public class ZipAlgebraTests
+public sealed class ZipAlgebraTests
 {
     private struct DfsZipCollectingMarker;
     private struct DfsZipMixedMarker;
@@ -42,11 +42,11 @@ public class ZipAlgebraTests
     {
         var root = TestTrees.NArySample();
 
-        var result = BreadthFirstFold.Fold<
+        var result = BreadthFirstReduce.Reduce<
             TestNode,
             TestTopology,
             NaturalChildOrder<TestNode>,
-            ZipBreadthFirstAlgebra<
+            ZipBreadthFirstReduceAlgebra<
                 TestNode,
                 int,
                 int,
@@ -63,16 +63,16 @@ public class ZipAlgebraTests
     {
         var root = TestTrees.NArySample();
 
-        var result = DepthFirstFold.Fold<
+        var result = TreeFold.Fold<
             TestNode,
             TestTopology,
             NaturalChildOrder<TestNode>,
-            ZipDepthFirstAlgebra<
+            ZipFoldAlgebra<
                 TestNode,
                 int,
                 int,
-                CountNodesDepthFirstAlgebra,
-                HeightDepthFirstAlgebra>,
+                CountNodesFoldAlgebra,
+                HeightFoldAlgebra>,
             FoldResultPair<int, int>>(root);
 
         Assert.Equal(7, result.First);
@@ -84,16 +84,16 @@ public class ZipAlgebraTests
     {
         var root = TestTrees.NArySample();
 
-        var result = DepthFirstFold.Fold<
+        var result = TreeFold.Fold<
             TestNode,
             TestTopology,
             NaturalChildOrder<TestNode>,
-            ZipDepthFirstAlgebra<
+            ZipFoldAlgebra<
                 TestNode,
                 int,
                 Unit,
-                CountNodesDepthFirstAlgebra,
-                NodeVisitHooks<TestNode, RecordingNodeAction<DfsZipMixedMarker>>>,
+                CountNodesFoldAlgebra,
+                PreOrderDepthFirstHooks<TestNode, RecordingNodeAction<DfsZipMixedMarker>>>,
             FoldResultPair<int, Unit>>(root);
 
         Assert.Equal(7, result.First);
@@ -107,16 +107,16 @@ public class ZipAlgebraTests
     {
         var root = TestTrees.NArySample();
 
-        DepthFirstFold.Fold<
+        TreeFold.Fold<
             TestNode,
             TestTopology,
             NaturalChildOrder<TestNode>,
-            ZipDepthFirstAlgebra<
+            ZipFoldAlgebra<
                 TestNode,
                 Unit,
                 Unit,
-                NodeVisitHooks<TestNode, RecordingNodeAction<DfsZipBothUnitFirstMarker>>,
-                NodeVisitHooks<TestNode, RecordingNodeAction<DfsZipBothUnitSecondMarker>>>,
+                PreOrderDepthFirstHooks<TestNode, RecordingNodeAction<DfsZipBothUnitFirstMarker>>,
+                PreOrderDepthFirstHooks<TestNode, RecordingNodeAction<DfsZipBothUnitSecondMarker>>>,
             FoldResultPair<Unit, Unit>>(root);
 
         Assert.Equal(

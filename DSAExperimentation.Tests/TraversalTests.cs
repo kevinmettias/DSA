@@ -2,7 +2,7 @@ using DSAExperimentation.Trees;
 
 namespace DSAExperimentation.Tests;
 
-public class TraversalTests
+public sealed class TraversalTests
 {
     private struct BfsOrderMarker;
     private struct BfsNullMarker;

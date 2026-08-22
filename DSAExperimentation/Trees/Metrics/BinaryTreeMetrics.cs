@@ -6,7 +6,7 @@ public static class BinaryTreeMetrics
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TOrder : struct, IBinaryChildOrder
-        => BinaryDepthFirstFold.Fold<
+        => BinaryTreeFold.Fold<
             TNode,
             TTopology,
             TOrder,
@@ -17,7 +17,7 @@ public static class BinaryTreeMetrics
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TOrder : struct, IBinaryChildOrder
-        => BinaryDepthFirstFold.Fold<
+        => BinaryTreeFold.Fold<
             TNode,
             TTopology,
             TOrder,
@@ -29,7 +29,7 @@ public static class BinaryTreeMetrics
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TOrder : struct, IBinaryChildOrder
     {
-        var state = BinaryDepthFirstFold.Fold<
+        var state = BinaryTreeFold.Fold<
             TNode,
             TTopology,
             TOrder,
@@ -44,11 +44,11 @@ public static class BinaryTreeMetrics
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
         where TOrder : struct, IBinaryChildOrder
-        => BinaryDepthFirstFold.Fold<
+        => BinaryTreeFold.Fold<
             TNode,
             TTopology,
             TOrder,
-            ZipBinaryDepthFirstAlgebra<
+            ZipBinaryFoldAlgebra<
                 TNode,
                 int,
                 int,

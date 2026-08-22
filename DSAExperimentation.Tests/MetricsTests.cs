@@ -2,7 +2,7 @@ using DSAExperimentation.Trees;
 
 namespace DSAExperimentation.Tests;
 
-public class MetricsTests
+public sealed class MetricsTests
 {
     [Fact]
     public void Height_ComputesCorrectHeight()

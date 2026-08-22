@@ -1,26 +1,26 @@
 namespace DSAExperimentation.Trees;
 
-public readonly struct ZipDepthFirstAlgebra<
+public readonly struct ZipFoldAlgebra<
     TNode,
     TFirstResult,
     TSecondResult,
     TFirstAlgebra,
     TSecondAlgebra>
-    : IDepthFirstFoldAlgebra<TNode, FoldResultPair<TFirstResult, TSecondResult>>
-    where TFirstAlgebra : struct, IDepthFirstFoldAlgebra<TNode, TFirstResult>
-    where TSecondAlgebra : struct, IDepthFirstFoldAlgebra<TNode, TSecondResult>
+    : IFoldAlgebra<TNode, FoldResultPair<TFirstResult, TSecondResult>>
+    where TFirstAlgebra : struct, IFoldAlgebra<TNode, TFirstResult>
+    where TSecondAlgebra : struct, IFoldAlgebra<TNode, TSecondResult>
 {
     public static FoldResultPair<TFirstResult, TSecondResult> Empty
         => new(TFirstAlgebra.Empty, TSecondAlgebra.Empty);
 
-    public static void Enter(TNode node)
-    {
-        TFirstAlgebra.Enter(node);
-        TSecondAlgebra.Enter(node);
-    }
-
     public static bool CollectsChildResults
         => TFirstAlgebra.CollectsChildResults || TSecondAlgebra.CollectsChildResults;
+
+    public static void Enter(TNode node, int depth)
+    {
+        TFirstAlgebra.Enter(node, depth);
+        TSecondAlgebra.Enter(node, depth);
+    }
 
     public static FoldResultPair<TFirstResult, TSecondResult> Combine(
         TNode node,

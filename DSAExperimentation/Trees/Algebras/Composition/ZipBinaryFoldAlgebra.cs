@@ -1,14 +1,14 @@
 namespace DSAExperimentation.Trees;
 
-public readonly struct ZipBinaryDepthFirstAlgebra<
+public readonly struct ZipBinaryFoldAlgebra<
     TNode,
     TFirstResult,
     TSecondResult,
     TFirstAlgebra,
     TSecondAlgebra>
-    : IBinaryDepthFirstFoldAlgebra<TNode, FoldResultPair<TFirstResult, TSecondResult>>
-    where TFirstAlgebra : struct, IBinaryDepthFirstFoldAlgebra<TNode, TFirstResult>
-    where TSecondAlgebra : struct, IBinaryDepthFirstFoldAlgebra<TNode, TSecondResult>
+    : IBinaryFoldAlgebra<TNode, FoldResultPair<TFirstResult, TSecondResult>>
+    where TFirstAlgebra : struct, IBinaryFoldAlgebra<TNode, TFirstResult>
+    where TSecondAlgebra : struct, IBinaryFoldAlgebra<TNode, TSecondResult>
 {
     public static FoldResultPair<TFirstResult, TSecondResult> Empty
         => new(TFirstAlgebra.Empty, TSecondAlgebra.Empty);

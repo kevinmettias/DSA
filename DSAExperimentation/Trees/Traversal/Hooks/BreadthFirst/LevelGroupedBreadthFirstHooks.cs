@@ -6,7 +6,7 @@ public readonly struct LevelGroupedBreadthFirstHooks<TNode, TAction>
 {
     private static readonly ContiguousGroupBuffer<TNode, int> Buffer = new();
 
-    public static void OnDiscover(TNode node, int depth)
+    public static void NodeDiscovered(TNode node, int depth)
     {
         if (depth == 0)
         {
@@ -14,9 +14,9 @@ public readonly struct LevelGroupedBreadthFirstHooks<TNode, TAction>
         }
     }
 
-    public static void OnVisit(TNode node, int depth)
+    public static void Visit(TNode node, int depth)
         => Buffer.Add(node, depth, TAction.Invoke);
 
-    public static void OnFinish()
+    public static void TraversalFinished()
         => Buffer.Flush(TAction.Invoke);
 }

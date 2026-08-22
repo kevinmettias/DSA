@@ -38,7 +38,7 @@ public readonly struct RecordingLevelAction<TMarker> : ILevelVisitAction<TestNod
         => levels.Add((depth, level.Select(n => n.Name).ToList()));
 }
 
-public readonly struct CountNodesDepthFirstAlgebra : IDepthFirstFoldAlgebra<TestNode, int>
+public readonly struct CountNodesFoldAlgebra : IFoldAlgebra<TestNode, int>
 {
     public static int Empty => 0;
 
@@ -46,7 +46,7 @@ public readonly struct CountNodesDepthFirstAlgebra : IDepthFirstFoldAlgebra<Test
         => 1 + children.Sum();
 }
 
-public readonly struct CountNodesBreadthFirstAlgebra : IBreadthFirstFoldAlgebra<TestNode, int>
+public readonly struct CountNodesBreadthFirstAlgebra : IBreadthFirstReduceAlgebra<TestNode, int>
 {
     public static int Seed => 0;
 

@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Trees;
 
-public interface IBinaryDepthFirstFoldAlgebra<TNode, TResult>
+public interface IBinaryFoldAlgebra<TNode, TResult>
 {
     static abstract TResult Empty { get; }
 

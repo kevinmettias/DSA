@@ -5,12 +5,8 @@ public readonly struct BreadthFirstTraversal<TNode, TTopology, TOrder, THooks>
     where TNode : class
     where TTopology : struct, ITreeTopology<TNode>
     where TOrder : struct, IChildOrder<TNode>
-    where THooks : struct, IBreadthFirstFoldAlgebra<TNode, Unit>
+    where THooks : struct, IBreadthFirstReduceAlgebra<TNode, Unit>
 {
     public static void Traverse(TNode? root)
-        => BreadthFirstWalk.Walk<
-            TNode,
-            ChildOrderStrategy<TNode, TTopology, TOrder>,
-            THooks,
-            Unit>(root);
+        => BreadthFirstReduce.Reduce<TNode, TTopology, TOrder, THooks, Unit>(root);
 }

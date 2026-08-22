@@ -1,33 +1,33 @@
 namespace DSAExperimentation.Trees;
 
 public interface IBreadthFirstTraversalHooks<TNode, TSelf>
-    : IBreadthFirstFoldAlgebra<TNode, Unit>
+    : IBreadthFirstReduceAlgebra<TNode, Unit>
     where TSelf : IBreadthFirstTraversalHooks<TNode, TSelf>
 {
-    static Unit IBreadthFirstFoldAlgebra<TNode, Unit>.Seed
+    static Unit IBreadthFirstReduceAlgebra<TNode, Unit>.Seed
         => default;
 
-    static void IBreadthFirstFoldAlgebra<TNode, Unit>.Discover(TNode node, int depth)
-        => TSelf.OnDiscover(node, depth);
+    static void IBreadthFirstReduceAlgebra<TNode, Unit>.Discover(TNode node, int depth)
+        => TSelf.NodeDiscovered(node, depth);
 
-    static Unit IBreadthFirstFoldAlgebra<TNode, Unit>.Accumulate(Unit state, TNode node, int depth)
+    static Unit IBreadthFirstReduceAlgebra<TNode, Unit>.Accumulate(Unit state, TNode node, int depth)
     {
-        TSelf.OnVisit(node, depth);
+        TSelf.Visit(node, depth);
         return default;
     }
 
-    static void IBreadthFirstFoldAlgebra<TNode, Unit>.Finish()
-        => TSelf.OnFinish();
+    static void IBreadthFirstReduceAlgebra<TNode, Unit>.Finish()
+        => TSelf.TraversalFinished();
 
-    static virtual void OnDiscover(TNode node, int depth)
+    static virtual void NodeDiscovered(TNode node, int depth)
     {
     }
 
-    static virtual void OnVisit(TNode node, int depth)
+    static virtual void Visit(TNode node, int depth)
     {
     }
 
-    static virtual void OnFinish()
+    static virtual void TraversalFinished()
     {
     }
 }
