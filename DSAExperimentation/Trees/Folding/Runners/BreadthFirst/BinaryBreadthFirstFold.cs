@@ -2,15 +2,15 @@ namespace DSAExperimentation.Trees;
 
 public static class BinaryBreadthFirstFold
 {
-    public static TState Fold<TNode, TTopology, TSchedule, TAlgebra, TState>(
+    public static TState Fold<TNode, TTopology, TOrder, TAlgebra, TState>(
         TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
-        where TSchedule : struct, IBinaryChildSchedule
+        where TOrder : struct, IBinaryChildOrder
         where TAlgebra : struct, IBreadthFirstFoldAlgebra<TNode, TState>
-        => BreadthFirstFold.Fold<
+        => BreadthFirstWalk.Walk<
             TNode,
-            BinaryChildScheduleEnqueueStrategy<TNode, TTopology, TSchedule>,
+            BinaryChildOrderStrategy<TNode, TTopology, TOrder>,
             TAlgebra,
             TState>(root);
 }
