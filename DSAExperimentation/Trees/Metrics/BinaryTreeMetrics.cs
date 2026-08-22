@@ -2,52 +2,52 @@ namespace DSAExperimentation.Trees;
 
 public static class BinaryTreeMetrics
 {
-    public static int Height<TNode, TTopology, TSchedule>(TNode? root)
+    public static int Height<TNode, TTopology, TOrder>(TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
-        where TSchedule : struct, IBinaryChildSchedule
+        where TOrder : struct, IBinaryChildOrder
         => BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
-            TSchedule,
+            TOrder,
             HeightAlgebra<TNode>,
             int>(root);
 
-    public static int Size<TNode, TTopology, TSchedule>(TNode? root)
+    public static int Size<TNode, TTopology, TOrder>(TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
-        where TSchedule : struct, IBinaryChildSchedule
+        where TOrder : struct, IBinaryChildOrder
         => BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
-            TSchedule,
+            TOrder,
             SizeAlgebra<TNode>,
             int>(root);
 
-    public static int Diameter<TNode, TTopology, TSchedule>(TNode? root)
+    public static int Diameter<TNode, TTopology, TOrder>(TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
-        where TSchedule : struct, IBinaryChildSchedule
+        where TOrder : struct, IBinaryChildOrder
     {
         var state = BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
-            TSchedule,
+            TOrder,
             DiameterAlgebra<TNode>,
             HeightDiameterState>(root);
 
         return state.Diameter;
     }
 
-    public static FoldResultPair<int, int> HeightAndSize<TNode, TTopology, TSchedule>(
+    public static FoldResultPair<int, int> HeightAndSize<TNode, TTopology, TOrder>(
         TNode? root)
         where TNode : class
         where TTopology : struct, IBinaryTreeTopology<TNode>
-        where TSchedule : struct, IBinaryChildSchedule
+        where TOrder : struct, IBinaryChildOrder
         => BinaryDepthFirstFold.Fold<
             TNode,
             TTopology,
-            TSchedule,
+            TOrder,
             ZipBinaryDepthFirstAlgebra<
                 TNode,
                 int,

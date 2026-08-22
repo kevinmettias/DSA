@@ -8,6 +8,14 @@ public interface IBreadthFirstFoldAlgebra<TNode, TState>
         TState state,
         TNode node,
         int depth);
+
+    static virtual void Discover(TNode node, int depth)
+    {
+    }
+
+    static virtual void Finish()
+    {
+    }
 }
 
 
