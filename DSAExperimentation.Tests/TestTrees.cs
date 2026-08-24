@@ -1,20 +1,4 @@
-using DSAExperimentation.Graph;
-
 namespace DSAExperimentation.Tests;
-
-public sealed class TestNode(string name)
-{
-    public string Name { get; } = name;
-
-    public List<TestNode> Children { get; } = [];
-
-    public override string ToString() => Name;
-}
-
-public readonly struct TestTopology : ITreeTopology<TestNode, ListChildren<TestNode>>
-{
-    public static ListChildren<TestNode> GetChildren(TestNode node) => new(node.Children);
-}
 
 public static class TestTrees
 {

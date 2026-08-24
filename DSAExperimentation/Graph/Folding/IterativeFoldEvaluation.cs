@@ -17,62 +17,64 @@ public readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrategy<
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
-        var discoveryOrder = new List<TNode>();
-        var childrenByNode = new Dictionary<TNode, List<TNode>>();
+        var state = new DiscoveryState();
 
-        DiscoverNodes<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
-            root, discoveryOrder, childrenByNode);
+        DiscoverNodes<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, state);
 
-        return CombineBottomUp<TAlgebra, TResult>(root, discoveryOrder, childrenByNode);
+        return CombineBottomUp<TAlgebra, TResult>(root, state);
     }
 
     private static void DiscoverNodes<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
-        TNode root,
-        List<TNode> discoveryOrder,
-        Dictionary<TNode, List<TNode>> childrenByNode)
+        TNode root, DiscoveryState state)
         where TTopology : struct, ITreeTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
-        var queue = new Queue<(TNode Node, int Depth)>();
-
         TAlgebra.Enter(root, 0);
-        discoveryOrder.Add(root);
-        queue.Enqueue((root, 0));
+        state.Order.Add(root);
+        state.Pending.Enqueue((root, 0));
 
-        while (queue.Count > 0)
+        while (state.Pending.Count > 0)
         {
-            var (node, depth) = queue.Dequeue();
-            var orderedChildren = TOrder.Apply(TTopology.GetChildren(node));
-            var children = new List<TNode>(orderedChildren.Count);
-
-            for (var i = 0; i < orderedChildren.Count; i++)
-            {
-                var child = orderedChildren[i];
-                TAlgebra.Enter(child, depth + 1);
-                discoveryOrder.Add(child);
-                children.Add(child);
-                queue.Enqueue((child, depth + 1));
-            }
-
-            childrenByNode[node] = children;
+            var (node, depth) = state.Pending.Dequeue();
+            DiscoverChildren<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(node, depth, state);
         }
     }
 
-    private static TResult CombineBottomUp<TAlgebra, TResult>(
-        TNode root,
-        List<TNode> discoveryOrder,
-        Dictionary<TNode, List<TNode>> childrenByNode)
+    private static void DiscoverChildren<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode node, int depth, DiscoveryState state)
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+    {
+        var orderedChildren = TOrder.Apply(TTopology.GetChildren(node));
+        var children = new List<TNode>(orderedChildren.Count);
+
+        for (var i = 0; i < orderedChildren.Count; i++)
+        {
+            var child = orderedChildren[i];
+            TAlgebra.Enter(child, depth + 1);
+            state.Order.Add(child);
+            children.Add(child);
+            state.Pending.Enqueue((child, depth + 1));
+        }
+
+        state.ChildrenByNode[node] = children;
+    }
+
+    private static TResult CombineBottomUp<TAlgebra, TResult>(TNode root, DiscoveryState state)
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
         var results = new Dictionary<TNode, TResult>();
 
-        for (var i = discoveryOrder.Count - 1; i >= 0; i--)
+        for (var i = state.Order.Count - 1; i >= 0; i--)
         {
-            var node = discoveryOrder[i];
-            var children = childrenByNode[node];
+            var node = state.Order[i];
+            var children = state.ChildrenByNode[node];
             var childResults = new TResult[children.Count];
 
             for (var j = 0; j < children.Count; j++)
@@ -84,5 +86,14 @@ public readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrategy<
         }
 
         return results[root];
+    }
+
+    // Bundles the three collections one breadth-first evaluation thread through, so a
+    // traversal step names one state parameter instead of the three collections that make it up.
+    private sealed record DiscoveryState
+    {
+        public Queue<(TNode Node, int Depth)> Pending { get; } = new();
+        public List<TNode> Order { get; } = new();
+        public Dictionary<TNode, List<TNode>> ChildrenByNode { get; } = new();
     }
 }

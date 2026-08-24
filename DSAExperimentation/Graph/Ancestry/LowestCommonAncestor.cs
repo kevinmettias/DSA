@@ -22,6 +22,11 @@ public static class LowestCommonAncestor
         where TOrderedChildren : struct, IChildren<TNode>
         => Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(root, p, q);
 
+    // p and q turning up in two different children means this node is where their paths
+    // from the root diverge - the LCA. Generalizes past binary trees for free: it's "two
+    // different subtrees", not "left and right".
+    private const int DivergingSubtreeThreshold = 2;
+
     private static TNode? Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode node, TNode p, TNode q)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>
@@ -34,6 +39,16 @@ public static class LowestCommonAncestor
             return node;
         }
 
+        return FindDivergencePoint<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(node, p, q);
+    }
+
+    private static TNode? FindDivergencePoint<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode node, TNode p, TNode q)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+    {
         var children = TOrder.Apply(TTopology.GetChildren(node));
         TNode? foundInOneChild = null;
         var subtreesWithAMatch = 0;
@@ -49,9 +64,6 @@ public static class LowestCommonAncestor
             }
         }
 
-        // p and q turning up in two different children means this node is where
-        // their paths from the root diverge - the LCA. Generalizes past binary
-        // trees for free: it's "two different subtrees", not "left and right".
-        return subtreesWithAMatch >= 2 ? node : foundInOneChild;
+        return subtreesWithAMatch >= DivergingSubtreeThreshold ? node : foundInOneChild;
     }
 }

@@ -46,17 +46,29 @@ public static class ShortestPath
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
         where THeuristic : struct, IPathHeuristic<TNode, TWeight>
     {
-        var distances = new Dictionary<TNode, TWeight> { [source] = TWeight.Zero };
-        var settled = new HashSet<TNode>();
-        var queue = new PriorityQueue<TNode, TWeight>();
-        queue.Enqueue(source, THeuristic.Estimate(source, target));
+        var state = new SearchState<TNode, TWeight>();
+        state.Distances[source] = TWeight.Zero;
+        var initialPriority = THeuristic.Estimate(source, target);
+        state.Queue.Enqueue(source, initialPriority);
+        Traverse<TNode, TTopology, TEdges, TWeight, THeuristic>(state, target);
 
-        while (queue.TryDequeue(out var node, out _))
+        return state.Distances;
+    }
+
+    private static void Traverse<TNode, TTopology, TEdges, TWeight, THeuristic>(
+        SearchState<TNode, TWeight> state, TNode? target)
+        where TNode : class
+        where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
+        where TEdges : struct, IEdges<TNode, TWeight>
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+        where THeuristic : struct, IPathHeuristic<TNode, TWeight>
+    {
+        while (state.Queue.TryDequeue(out var node, out _))
         {
             // A node can be enqueued more than once (once per relaxation, since
             // PriorityQueue has no decrease-key); the first dequeue is always the
             // true shortest distance, so later stale entries just get skipped.
-            if (!settled.Add(node))
+            if (!state.Settled.Add(node))
             {
                 continue;
             }
@@ -66,22 +78,41 @@ public static class ShortestPath
                 break;
             }
 
-            var distance = distances[node];
-            var edges = TTopology.GetEdges(node);
+            RelaxNeighbors<TNode, TTopology, TEdges, TWeight, THeuristic>(node, state.Distances[node], target, state);
+        }
+    }
 
-            for (var i = 0; i < edges.Count; i++)
+    private static void RelaxNeighbors<TNode, TTopology, TEdges, TWeight, THeuristic>(
+        TNode node, TWeight distance, TNode? target, SearchState<TNode, TWeight> state)
+        where TNode : class
+        where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
+        where TEdges : struct, IEdges<TNode, TWeight>
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+        where THeuristic : struct, IPathHeuristic<TNode, TWeight>
+    {
+        var edges = TTopology.GetEdges(node);
+
+        for (var i = 0; i < edges.Count; i++)
+        {
+            var (weight, neighbor) = edges[i];
+            var candidate = distance + weight;
+
+            if (!state.Distances.TryGetValue(neighbor, out var known) || candidate < known)
             {
-                var (weight, neighbor) = edges[i];
-                var candidate = distance + weight;
-
-                if (!distances.TryGetValue(neighbor, out var known) || candidate < known)
-                {
-                    distances[neighbor] = candidate;
-                    queue.Enqueue(neighbor, candidate + THeuristic.Estimate(neighbor, target));
-                }
+                state.Distances[neighbor] = candidate;
+                var priority = candidate + THeuristic.Estimate(neighbor, target);
+                state.Queue.Enqueue(neighbor, priority);
             }
         }
+    }
 
-        return distances;
+    // Bundles the search's mutable collections so a relaxation step names one state
+    // parameter instead of the distance map, the settled set and the frontier queue.
+    private sealed record SearchState<TNode, TWeight>
+        where TNode : class
+    {
+        public Dictionary<TNode, TWeight> Distances { get; } = new();
+        public HashSet<TNode> Settled { get; } = new();
+        public PriorityQueue<TNode, TWeight> Queue { get; } = new();
     }
 }

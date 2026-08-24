@@ -31,9 +31,9 @@ public static class AllRootToLeafPaths
     private readonly struct CollectPathsHooks<TNode> : ITopDownHooks<TNode, (TNode[] Path, List<TNode[]> Output)>
         where TNode : class
     {
-        public static void Visit(TNode node, (TNode[] Path, List<TNode[]> Output) state, int depth, bool isLeaf)
+        public static void Visit(TNode node, (TNode[] Path, List<TNode[]> Output) state, int depth, NodePosition position)
         {
-            if (isLeaf)
+            if (position == NodePosition.Leaf)
             {
                 state.Output.Add(state.Path);
             }

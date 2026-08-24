@@ -7,7 +7,7 @@ public sealed class ShortestPathTests
     [Fact]
     public void Dijkstra_ComputesCorrectDistancesFromSource()
     {
-        var a = WeightedGraphs.SampleGraph(out _, out var b, out var c, out var d);
+        var (a, b, c, d) = WeightedGraphs.SampleGraph();
 
         var distances = ShortestPath.Dijkstra<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(a);
 
@@ -20,7 +20,7 @@ public sealed class ShortestPathTests
     [Fact]
     public void Dijkstra_UnreachableNode_IsAbsentFromResult()
     {
-        var a = WeightedGraphs.SampleGraph(out _, out _, out _, out _);
+        var (a, _, _, _) = WeightedGraphs.SampleGraph();
         var unreachable = new WeightedNode("Z");
 
         var distances = ShortestPath.Dijkstra<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(a);
@@ -34,7 +34,7 @@ public sealed class ShortestPathTests
         // ZeroHeuristic makes every candidate's priority equal its real accumulated
         // distance, same as Dijkstra's - proof AStar isn't a parallel
         // implementation, it's the same Explore core under a different THeuristic.
-        var a = WeightedGraphs.SampleGraph(out _, out _, out _, out var d);
+        var (a, _, _, d) = WeightedGraphs.SampleGraph();
 
         var distance = ShortestPath.AStar<
             WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int, ZeroHeuristic<WeightedNode, int>>(
@@ -85,7 +85,7 @@ public sealed class ShortestPathTests
         // hand-written wrapper, and proves it genuinely composes with the
         // pre-existing, weight-agnostic algorithms rather than needing its own
         // parallel implementation.
-        var a = WeightedGraphs.SampleGraph(out _, out _, out _, out _);
+        var (a, _, _, _) = WeightedGraphs.SampleGraph();
 
         var count = Reduce.Graph<
             WeightedNode,

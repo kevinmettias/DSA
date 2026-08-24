@@ -10,14 +10,21 @@ public readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiamet
 
     public static HeightDiameterState Combine(TNode node, IReadOnlyList<HeightDiameterState> children)
     {
-        // Single linear scan for the top two child heights (needed for the path
-        // that passes through this node) and the largest child diameter (needed
-        // for the path that doesn't) - avoids sorting all of children just to read
-        // off the top two.
+        var scan = ScanChildren(children);
+        var height = 1 + scan.LargestHeight;
+        var diameterThroughNode = scan.LargestHeight + scan.SecondLargestHeight;
+
+        return new(height, Math.Max(diameterThroughNode, scan.LargestChildDiameter));
+    }
+
+    // Single linear scan for the top two child heights (needed for the path that passes
+    // through this node) and the largest child diameter (needed for the path that
+    // doesn't) - avoids sorting all of children just to read off the top two.
+    private static ChildScanResult ScanChildren(IReadOnlyList<HeightDiameterState> children)
+    {
         var largestHeight = 0;
         var secondLargestHeight = 0;
         var largestChildDiameter = 0;
-
         for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
@@ -37,10 +44,8 @@ public readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiamet
                 largestChildDiameter = child.Diameter;
             }
         }
-
-        var height = 1 + largestHeight;
-        var diameterThroughNode = largestHeight + secondLargestHeight;
-
-        return new(height, Math.Max(diameterThroughNode, largestChildDiameter));
+        return new ChildScanResult(largestHeight, secondLargestHeight, largestChildDiameter);
     }
+
+    private readonly record struct ChildScanResult(int LargestHeight, int SecondLargestHeight, int LargestChildDiameter);
 }

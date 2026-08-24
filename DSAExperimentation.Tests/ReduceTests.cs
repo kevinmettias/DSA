@@ -65,31 +65,25 @@ public sealed class ReduceTests
         // of the tree, so a non-commutative accumulate (string concatenation) gives
         // a genuinely different answer for a different traversal order.
         var root = TestTrees.NArySample();
-
-        var preOrderPath = Reduce.Tree<
-            TestNode,
-            TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
-            DepthFirstReduceOrder<TestNode>,
-            PathReduceAlgebra,
-            string>(root);
-
-        var breadthFirstPath = Reduce.Tree<
-            TestNode,
-            TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
-            BreadthFirstReduceOrder<TestNode>,
-            PathReduceAlgebra,
-            string>(root);
+        var preOrderPath = PathVia<DepthFirstReduceOrder<TestNode>>(root);
+        var breadthFirstPath = PathVia<BreadthFirstReduceOrder<TestNode>>(root);
 
         Assert.Equal("ABEFCDG", preOrderPath);
         Assert.Equal("ABCDEFG", breadthFirstPath);
         Assert.NotEqual(preOrderPath, breadthFirstPath);
     }
+
+    private static string PathVia<TOrderStrategy>(TestNode root)
+        where TOrderStrategy : struct, IReduceOrderStrategy<TestNode>
+        => Reduce.Tree<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            TOrderStrategy,
+            PathReduceAlgebra,
+            string>(root);
 
     [Fact]
     public void Reduce_EnterAndExit_CanExpressCrossSubtreeSequentialState()
