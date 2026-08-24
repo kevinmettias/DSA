@@ -7,14 +7,15 @@ namespace DSAExperimentation.Graph.Engines.Walking;
 // it has to be a value threaded through the walk, not a witness selected purely by
 // type.
 //
-// Public, not internal: IReduceOrderStrategy.Evaluate is generic over TGuard, so
-// this has to be at least as visible as that public interface member for the
-// constraint to be legal. This does not reopen "pick any guard for any topology" -
-// DepthFirstWalk/BreadthFirstWalk, the only things that actually execute a walk
-// against a topology, stay internal, so nothing outside this assembly can reach one
-// no matter which guard it names; and TrackedVisitGuard's constructor stays
-// internal too, so outside code cannot even construct a valid one. Reduce.Tree/
-// Reduce.Graph remain the only way in, and they still choose the guard themselves.
+// Internal, like everything else in this chain: IReduceOrderStrategy.Evaluate is
+// generic over TGuard, and that interface is internal too, so there's no
+// accessibility mismatch to resolve. This does not open up "pick any guard for any
+// topology" - DepthFirstWalk/BreadthFirstWalk, the only things that actually
+// execute a walk against a topology, stay internal, so nothing outside this
+// assembly can reach one no matter which guard it names; and TrackedVisitGuard's
+// constructor stays internal too, so outside code cannot even construct a valid
+// one. Reduce.Tree/Reduce.Graph remain the only way in, and they still choose the
+// guard themselves.
 internal interface IVisitGuard<TNode>
     where TNode : class
 {
