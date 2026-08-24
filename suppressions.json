@@ -3,169 +3,505 @@
   "waivers": [
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/AllRootToLeafPathsTests.cs",
+      "path": "DSAExperimentation.Tests/Buffers/ContiguousGroupBufferTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture item/key label or an expected group count that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/CountCombineCallsFoldAlgebra.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingEnterExitHooks.cs",
+      "reason": "the static fields' owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingEnterHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingExitHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingLevelHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingVisitHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Buffers/ContiguousGroupBufferTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape (build a buffer/groups list, drive it, assert on groups) - check-function-cohesion's own doc calls this exact split ('two clusters over different locals may still be one idea') a judgment call and sanctions a recorded decision over extraction, which here would just fragment two five-line tests into disconnected helper functions",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Paths/AllRootToLeafPathsTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an empty join separator that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/ConnectedComponentsTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/ConnectedComponentsTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/FoldTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Folding/FoldTests.cs",
       "reason": "every check-literals finding here is an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/GraphTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/GraphTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/GridConnectedComponentsTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/GridConnectedComponentsTests.cs",
       "reason": "the sole finding here is the expected island count for a fixture grid, worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/GridTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Grids/GridTests.cs",
       "reason": "every check-literals finding here is a grid coordinate or an expected test-fixture distance that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/LowestCommonAncestorTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
       "reason": "the sole finding here is an index into a fixed fixture tree, not a magic count",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/MetricsTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Metrics/MetricsTests.cs",
       "reason": "every check-literals finding here is an expected height/size/diameter for a fixture tree, worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/ReduceTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Reducing/ReduceTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label, an expected node-name concatenation, or an expected test-fixture count that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/ShortestPathTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/ShortestPathTests.cs",
       "reason": "every check-literals finding here is an arbitrary node label, a grid coordinate, or an expected test-fixture distance that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/SharedDescendantFoldTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Folding/SharedDescendantFoldTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected fold-result count worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/TestTrees.cs",
+      "path": "DSAExperimentation.Tests/Fixtures/TestTrees.cs",
       "reason": "every check-literals finding here is an arbitrary node label for the shared test fixture tree that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/TraversalTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Traversal/TraversalTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected traversal-order sequence for a fixture tree that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/TrieTests.cs",
+      "path": "DSAExperimentation.Tests/Contracts/Ordering/TrieTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture word or an expected word count that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/WeightedGraphs.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/Fixtures/WeightedGraphs.cs",
       "reason": "every check-literals finding here is a graph node label or an edge weight worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/ZipTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/ZipTests.cs",
       "reason": "every check-literals finding here is an expected test-fixture count or node-name concatenation that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/AllRootToLeafPathsTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Paths/AllRootToLeafPathsTests.cs",
       "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover AllRootToLeafPaths.Find and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/FoldTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Folding/FoldTests.cs",
       "reason": "the shared `Fold_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all four tests cover Fold and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/GraphTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/GraphTests.cs",
       "reason": "the shared `GraphReduce_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - both tests cover Reduce.Graph and belong in this graph-safety test class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/GridTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Grids/GridTests.cs",
       "reason": "the shared `Distance_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover GridShortestPath.Distance and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/LowestCommonAncestorTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
       "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover LowestCommonAncestor.Find and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/ReduceTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Reducing/ReduceTests.cs",
       "reason": "the shared `Reduce_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all five tests cover Reduce and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/ShortestPathTests.cs",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/ShortestPathTests.cs",
       "reason": "the shared `AStar_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover ShortestPath.AStar and belong beside the Dijkstra tests in this one shortest-path test class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/TraversalTests.cs",
+      "path": "DSAExperimentation.Tests/Engines/Traversal/TraversalTests.cs",
       "reason": "the shared `Dfs_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module; the file's 9-declaration surface is one cohesive subject (DFS/BFS/level-grouped traversal hooks) worth reading together, not a grab-bag to split",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Connectivity/ConnectedComponents.cs",
+      "reason": "the flagged member (NoOpReduceAlgebra.Seed) implements IReduceAlgebra<TNode,Unit>.Seed; check-test-coverage's own docs list contract-bound interface implementations as exempt ('the contract that named the method is what tests it') and it is exercised through ConnectedComponentsTests/GridConnectedComponentsTests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Grids/Grid.cs",
+      "reason": "Rows/Cols/IsPassable are exercised by GridTests/GridConnectedComponentsTests but the test names don't literally repeat these accessor names; check-test-coverage's own 'Open question' section names this exact name-match-attribution gap as unresolved and directs downstream projects to allow-untested rather than write throwaway tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Grids/GridChildren.cs",
+      "reason": "Count/Get are the IChildren<GridNode> contract, exercised transitively by every grid traversal/reduce test; check-test-coverage's own docs list contract-bound interface implementations as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Grids/GridShortestPath.cs",
+      "reason": "Distance is exercised by GridTests' Distance_* tests, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this one doesn't win it; the check's 'Open question' section names this gap as unresolved and sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Grids/GridTopology.cs",
+      "reason": "GetChildren implements IGraphTopology<GridNode,GridChildren>.GetChildren; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through every Grid-based test",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Metrics/DiameterAlgebra.cs",
+      "reason": "Empty/Combine implement IFoldAlgebra<TNode,HeightDiameterState>; check-test-coverage's own docs list contract-bound interface implementations as exempt, and both are exercised through MetricsTests' Diameter_* tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Metrics/HeightAlgebra.cs",
+      "reason": "Empty/Combine implement IFoldAlgebra<TNode,int>; check-test-coverage's own docs list contract-bound interface implementations as exempt, and both are exercised through MetricsTests' Height_* tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Metrics/SizeAlgebra.cs",
+      "reason": "Empty/Combine implement IFoldAlgebra<TNode,int>; check-test-coverage's own docs list contract-bound interface implementations as exempt, and both are exercised through MetricsTests' Size_* tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/Paths/AllRootToLeafPaths.cs",
+      "reason": "Visit/Descend implement ITopDownHooks<TNode,TState> on the private CollectPathsHooks struct; check-test-coverage's own docs list contract-bound interface implementations as exempt, and both are exercised through AllRootToLeafPathsTests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/ShortestPaths/ZeroHeuristic.cs",
+      "reason": "Estimate implements IPathHeuristic<TNode,TWeight>.Estimate; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through ShortestPathTests' Dijkstra_* and AStar_WithZeroHeuristic_* tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/EdgeTargets.cs",
+      "reason": "Count/Get are the IChildren<TNode> contract, exercised transitively by every weighted-graph algorithm test that projects edges to children; check-test-coverage's own docs list contract-bound interface implementations as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/ListChildren.cs",
+      "reason": "Count/Get are the IChildren<TNode> contract, exercised transitively by nearly every tree/graph test in the suite; check-test-coverage's own docs list contract-bound interface implementations as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/ListEdges.cs",
+      "reason": "Count/Get are the IEdges<TNode,TEdgeData> contract, exercised transitively by every weighted-graph/shortest-path test; check-test-coverage's own docs list contract-bound interface implementations as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/NaturalChildOrder.cs",
+      "reason": "Apply implements IChildOrder<...>.Apply; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through nearly every test in the suite (the default child order)",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/ReverseChildOrder.cs",
+      "reason": "Apply implements IChildOrder<...>.Apply; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through TraversalTests' ChildOrder_IsOrthogonalToVisitTiming",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/ReversedChildren.cs",
+      "reason": "Count/Get are the IChildren<TNode> contract, exercised through TraversalTests' ChildOrder_IsOrthogonalToVisitTiming; check-test-coverage's own docs list contract-bound interface implementations as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Ordering/SparseArrayChildren.cs",
+      "reason": "Count/Get are the IChildren<TNode> contract, exercised transitively by every TrieTests case; check-test-coverage's own docs list contract-bound interface implementations as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Contracts/Topologies/EdgeTopologyAsGraphTopology.cs",
+      "reason": "GetChildren implements IGraphTopology<...>.GetChildren; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through ShortestPathTests' EdgeTopologyAsGraphTopology_LetsWeightedTopologyBeUsedByPlainGraphReduce",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Dags/DagFold.cs",
+      "reason": "Fold is exercised by SharedDescendantFoldTests' DagFold_SharedDescendant_IsCombinedOnce, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this one doesn't win it; the check's own 'Open question' section names this gap as unresolved and sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Dags/Trees/TreeFold.cs",
+      "reason": "both Fold overloads are exercised throughout FoldTests/ZipTests/TrieTests, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section names this gap as unresolved and sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Dags/Trees/TreeMetrics.cs",
+      "reason": "Size/Height/Diameter/HeightAndSize are exercised by MetricsTests' Size_ComputesCorrectSize/Height_ComputesCorrectHeight/Diameter_ComputesCorrectDiameter/HeightAndSize_ComputesBothInOnePass, which do name them; this is the same attribution-gap tension check-test-coverage's own 'Open question' section flags as unresolved",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Folding/CheckedFold.cs",
+      "reason": "Fold is exercised by GraphTests' CheckedFold_TrueCycle_ThrowsInsteadOfHanging and SharedDescendantFoldTests' CheckedFold_SharedDescendant_IsCombinedOnce, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Folding/IterativeFoldEvaluation.cs",
+      "reason": "Evaluate implements IFoldEvaluationStrategy<TNode>.Evaluate; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through FoldTests' Fold_IterativeEvaluation_* tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Folding/RecursiveFoldEvaluation.cs",
+      "reason": "Evaluate implements IFoldEvaluationStrategy<TNode>.Evaluate; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is TreeFold's default evaluation strategy exercised by nearly every fold test in the suite",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Folding/ZipFoldAlgebra.cs",
+      "reason": "Empty/Enter/Combine implement IFoldAlgebra<TNode,(TResultA,TResultB)>; check-test-coverage's own docs list contract-bound interface implementations as exempt, and all are exercised through ZipTests' Fold_Zip_ComputesBothAlgebrasInOnePass",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Reducing/BreadthFirstReduceOrder.cs",
+      "reason": "Evaluate implements IReduceOrderStrategy<TNode>.Evaluate; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through ReduceTests/GraphTests/ConnectedComponentsTests' BreadthFirst-order cases",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Reducing/DepthFirstReduceOrder.cs",
+      "reason": "Evaluate implements IReduceOrderStrategy<TNode>.Evaluate; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through ReduceTests' DepthFirst-order cases and ZipTests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Reducing/DistanceMapReduceAlgebra.cs",
+      "reason": "Seed/Enter implement IReduceAlgebra<TNode,Dictionary<TNode,int>>; check-test-coverage's own docs list contract-bound interface implementations as exempt, and both are exercised through ShortestPathTests and GridShortestPath's tests",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Reducing/Reduce.cs",
+      "reason": "Tree/Graph are exercised throughout ReduceTests/GraphTests/ConnectedComponentsTests/ZipTests/GridShortestPath, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and these generic names don't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Reducing/ZipReduceAlgebra.cs",
+      "reason": "Seed/Enter/Exit implement IReduceAlgebra<TNode,(TStateA,TStateB)>; check-test-coverage's own docs list contract-bound interface implementations as exempt, and all are exercised through ZipTests' Reduce_Zip_ComputesBothAlgebrasInOnePass",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Traversal/BreadthFirst/BreadthFirstTraversal.cs",
+      "reason": "Walk/WalkGraph are exercised throughout TraversalTests/GraphTests, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Traversal/BreadthFirst/LevelGroupedBreadthFirstTraversal.cs",
+      "reason": "Walk is exercised by TraversalTests' LevelGrouped_GroupsNodesByLevel, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Traversal/DepthFirst/DepthFirstTraversal.cs",
+      "reason": "Walk/WalkGraph are exercised throughout TraversalTests/GraphTests, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Traversal/TopDown/TopDownTraversal.cs",
+      "reason": "Walk/WalkGraph are exercised through AllRootToLeafPathsTests, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Walking/BreadthFirstWalk.cs",
+      "reason": "Walk/NextLevel are the shared BFS engine exercised transitively through every BreadthFirstTraversal/LevelGroupedBreadthFirstTraversal/Reduce test; the nested HooksStep.Seed/.Enter implement IReduceAlgebra, a contract-bound member check-test-coverage's own docs list as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Walking/DepthFirstWalk.cs",
+      "reason": "Walk is the shared DFS engine exercised transitively through every DepthFirstTraversal/DepthFirstReduceOrder test; the nested HooksStep.Seed/.Enter/.Exit implement IReduceAlgebra, a contract-bound member check-test-coverage's own docs list as exempt",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Walking/TopDownWalk.cs",
+      "reason": "Walk is the shared top-down engine exercised transitively through every AllRootToLeafPathsTests case, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Walking/TrackedVisitGuard.cs",
+      "reason": "ShouldVisit implements IVisitGuard<TNode>.ShouldVisit; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through every WalkGraph/Reduce.Graph test that proves cycle/shared-descendant safety",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Engines/Walking/UnguardedVisit.cs",
+      "reason": "ShouldVisit implements IVisitGuard<TNode>.ShouldVisit; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through every tree-only Walk/Fold/Reduce test in the suite",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }

@@ -1,6 +1,6 @@
-namespace DSAExperimentation;
+namespace DSAExperimentation.Buffers;
 
-public sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> keyComparer)
+internal sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> keyComparer)
     where TKey : notnull
 {
     private const string MissingCurrentKeyMessage = "No current group key is available.";
@@ -51,6 +51,9 @@ public sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> ke
 
     private TKey GetCurrentKey()
         => _currentKey is null
-            ? throw new InvalidOperationException(MissingCurrentKeyMessage)
+            ? ThrowMissingCurrentKey()
             : _currentKey;
+
+    private static TKey ThrowMissingCurrentKey()
+        => throw new InvalidOperationException(MissingCurrentKeyMessage);
 }
