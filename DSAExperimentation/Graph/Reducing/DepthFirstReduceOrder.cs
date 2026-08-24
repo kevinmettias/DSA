@@ -9,7 +9,7 @@ public readonly struct DepthFirstReduceOrder<TNode> : IReduceOrderStrategy<TNode
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
+        where TGuard : IVisitGuard<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => DepthFirstWalk.Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
             root, 0, TAlgebra.Seed, guard);

@@ -22,6 +22,6 @@ public interface IReduceOrderStrategy<TNode>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
+        where TGuard : IVisitGuard<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>;
 }

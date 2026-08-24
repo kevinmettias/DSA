@@ -20,12 +20,12 @@ internal static class TopDownWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
+        where TGuard : IVisitGuard<TNode>
         where THooks : struct, ITopDownHooks<TNode, TState>
     {
         var children = TOrder.Apply(TTopology.GetChildren(node));
 
-        THooks.Visit(node, state, depth, isLeaf: children.Count == 0);
+        THooks.Visit(node, state, depth, children.Count == 0 ? NodePosition.Leaf : NodePosition.Interior);
 
         for (var i = 0; i < children.Count; i++)
         {

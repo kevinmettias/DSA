@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "waivers": [
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/AllRootToLeafPathsTests.cs",
+      "reason": "every check-literals finding here is a graph/tree node label or an empty join separator that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/ConnectedComponentsTests.cs",
+      "reason": "every check-literals finding here is a graph/tree node label or an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/FoldTests.cs",
+      "reason": "every check-literals finding here is an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/GraphTests.cs",
+      "reason": "every check-literals finding here is a graph/tree node label or an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/GridConnectedComponentsTests.cs",
+      "reason": "the sole finding here is the expected island count for a fixture grid, worked out in a comment, that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/GridTests.cs",
+      "reason": "every check-literals finding here is a grid coordinate or an expected test-fixture distance that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/LowestCommonAncestorTests.cs",
+      "reason": "the sole finding here is an index into a fixed fixture tree, not a magic count",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/MetricsTests.cs",
+      "reason": "every check-literals finding here is an expected height/size/diameter for a fixture tree, worked out in a comment, that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/ReduceTests.cs",
+      "reason": "every check-literals finding here is a graph/tree node label, an expected node-name concatenation, or an expected test-fixture count that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/ShortestPathTests.cs",
+      "reason": "every check-literals finding here is an arbitrary node label, a grid coordinate, or an expected test-fixture distance that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/SharedDescendantFoldTests.cs",
+      "reason": "every check-literals finding here is a graph/tree node label or an expected fold-result count worked out in a comment, that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/TestTrees.cs",
+      "reason": "every check-literals finding here is an arbitrary node label for the shared test fixture tree that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/TraversalTests.cs",
+      "reason": "every check-literals finding here is a graph/tree node label or an expected traversal-order sequence for a fixture tree that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/TrieTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture word or an expected word count that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/WeightedGraphs.cs",
+      "reason": "every check-literals finding here is a graph node label or an edge weight worked out in a comment, that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/ZipTests.cs",
+      "reason": "every check-literals finding here is an expected test-fixture count or node-name concatenation that genuinely means only itself",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/AllRootToLeafPathsTests.cs",
+      "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover AllRootToLeafPaths.Find and belong in one class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/FoldTests.cs",
+      "reason": "the shared `Fold_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all four tests cover Fold and belong in one class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/GraphTests.cs",
+      "reason": "the shared `GraphReduce_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - both tests cover Reduce.Graph and belong in this graph-safety test class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/GridTests.cs",
+      "reason": "the shared `Distance_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover GridShortestPath.Distance and belong in one class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/LowestCommonAncestorTests.cs",
+      "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover LowestCommonAncestor.Find and belong in one class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/ReduceTests.cs",
+      "reason": "the shared `Reduce_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all five tests cover Reduce and belong in one class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/ShortestPathTests.cs",
+      "reason": "the shared `AStar_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover ShortestPath.AStar and belong beside the Dijkstra tests in this one shortest-path test class",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/TraversalTests.cs",
+      "reason": "the shared `Dfs_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module; the file's 9-declaration surface is one cohesive subject (DFS/BFS/level-grouped traversal hooks) worth reading together, not a grab-bag to split",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    }
+  ]
+}

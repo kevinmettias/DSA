@@ -23,7 +23,7 @@ internal static class BreadthFirstWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
+        where TGuard : IVisitGuard<TNode>
         where TStep : struct, IReduceAlgebra<TNode, TState>
     {
         var currentLevel = new List<TNode> { root };
@@ -54,7 +54,7 @@ internal static class BreadthFirstWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
+        where TGuard : IVisitGuard<TNode>
         where THooks : struct, IBreadthFirstHooks<TNode>
         => Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, HooksStep<TNode, THooks>, Unit>(
             root, default, guard);
@@ -71,7 +71,7 @@ internal static class BreadthFirstWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
+        where TGuard : IVisitGuard<TNode>
     {
         var nextLevel = new List<TNode>();
 

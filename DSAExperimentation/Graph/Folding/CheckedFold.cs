@@ -36,6 +36,9 @@ public static class CheckedFold
             root, 0, completed, inProgress);
     }
 
+    private const string CyclicStructureMessage =
+        "CheckedFold requires an acyclic structure - reached a node that is still being folded.";
+
     private static TResult Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode node, int depth, Dictionary<TNode, TResult> completed, HashSet<TNode> inProgress)
         where TNode : class
@@ -50,14 +53,37 @@ public static class CheckedFold
             return cached;
         }
 
-        if (!inProgress.Add(node))
-        {
-            throw new InvalidOperationException(
-                "CheckedFold requires an acyclic structure - reached a node that is still being folded.");
-        }
-
+        EnterNode(node, inProgress);
         TAlgebra.Enter(node, depth);
 
+        var childResults = CollectChildResults<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+            node, depth, completed, inProgress);
+        var result = TAlgebra.Combine(node, childResults);
+
+        inProgress.Remove(node);
+        completed[node] = result;
+
+        return result;
+    }
+
+    private static void EnterNode<TNode>(TNode node, HashSet<TNode> inProgress)
+        where TNode : class
+    {
+        if (!inProgress.Add(node))
+        {
+            throw new InvalidOperationException(CyclicStructureMessage);
+        }
+    }
+
+    private static TResult[] CollectChildResults<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode node, int depth, Dictionary<TNode, TResult> completed, HashSet<TNode> inProgress)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+    {
         var orderedChildren = TOrder.Apply(TTopology.GetChildren(node));
         var childResults = new TResult[orderedChildren.Count];
 
@@ -67,11 +93,6 @@ public static class CheckedFold
                 orderedChildren[i], depth + 1, completed, inProgress);
         }
 
-        var result = TAlgebra.Combine(node, childResults);
-
-        inProgress.Remove(node);
-        completed[node] = result;
-
-        return result;
+        return childResults;
     }
 }

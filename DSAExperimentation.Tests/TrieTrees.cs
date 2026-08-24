@@ -1,18 +1,4 @@
-using DSAExperimentation.Graph;
-
 namespace DSAExperimentation.Tests;
-
-public sealed class TrieNode
-{
-    public TrieNode?[] Children { get; } = new TrieNode?[26];
-
-    public bool IsWord { get; set; }
-}
-
-public readonly struct TrieTopology : ITreeTopology<TrieNode, SparseArrayChildren<TrieNode>>
-{
-    public static SparseArrayChildren<TrieNode> GetChildren(TrieNode node) => new(node.Children);
-}
 
 public static class TrieTrees
 {

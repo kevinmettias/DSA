@@ -18,7 +18,7 @@ namespace DSAExperimentation.Graph;
 public interface ITopDownHooks<TNode, TState>
     where TNode : class
 {
-    static abstract void Visit(TNode node, TState state, int depth, bool isLeaf);
+    static abstract void Visit(TNode node, TState state, int depth, NodePosition position);
 
     static abstract TState Descend(TNode parent, TState parentState, TNode child);
 }

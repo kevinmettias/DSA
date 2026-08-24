@@ -42,30 +42,24 @@ public sealed class FoldTests
         // A pure algebra's result must not depend on evaluation strategy - only the
         // Combine calls' timing differs, not the value they build.
         var root = TestTrees.NArySample();
-
-        var recursiveHeight = TreeFold.Fold<
-            TestNode,
-            TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
-            RecursiveFoldEvaluation<TestNode>,
-            HeightAlgebra<TestNode>,
-            int>(root);
-
-        var iterativeHeight = TreeFold.Fold<
-            TestNode,
-            TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
-            IterativeFoldEvaluation<TestNode>,
-            HeightAlgebra<TestNode>,
-            int>(root);
+        var recursiveHeight = HeightViaEvaluation<RecursiveFoldEvaluation<TestNode>>(root);
+        var iterativeHeight = HeightViaEvaluation<IterativeFoldEvaluation<TestNode>>(root);
 
         Assert.Equal(3, recursiveHeight);
         Assert.Equal(recursiveHeight, iterativeHeight);
     }
+
+    private static int HeightViaEvaluation<TStrategy>(TestNode root)
+        where TStrategy : struct, IFoldEvaluationStrategy<TestNode>
+        => TreeFold.Fold<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            TStrategy,
+            HeightAlgebra<TestNode>,
+            int>(root);
 
     [Fact]
     public void Fold_IterativeEvaluation_NullRoot_ReturnsEmpty()
