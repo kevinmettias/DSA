@@ -1,5 +1,6 @@
 using System.Numerics;
 
+using DSAExperimentation.Collections.Heap;
 using DSAExperimentation.Graph.Contracts.Ordering;
 using DSAExperimentation.Graph.Contracts.Topologies;
 
@@ -15,7 +16,8 @@ namespace DSAExperimentation.Graph.Algorithms.ShortestPaths;
 //
 // TWeight uses .NET's generic math (INumber/IMinMaxValue) for +, <, Zero - the same
 // static-abstract-member dispatch used everywhere else in this library, just from
-// the BCL instead of a hand-rolled interface.
+// the BCL instead of a hand-rolled interface. The frontier is Collections.Heap's
+// Heap<T,TOrder>, ordered by ByPriorityOrder so only .Priority is ever compared.
 internal static class ShortestPath
 {
     public static Dictionary<TNode, TWeight> Dijkstra<TNode, TTopology, TEdges, TWeight>(TNode source)
@@ -52,7 +54,7 @@ internal static class ShortestPath
         var state = new SearchState<TNode, TWeight>();
         state.Distances[source] = TWeight.Zero;
         var initialPriority = THeuristic.Estimate(source, target);
-        state.Queue.Enqueue(source, initialPriority);
+        state.Queue.Push((source, initialPriority));
         Traverse<TNode, TTopology, TEdges, TWeight, THeuristic>(state, target);
 
         return state.Distances;
@@ -66,11 +68,13 @@ internal static class ShortestPath
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
         where THeuristic : struct, IPathHeuristic<TNode, TWeight>
     {
-        while (state.Queue.TryDequeue(out var node, out _))
+        while (state.Queue.TryPop(out var entry))
         {
-            // A node can be enqueued more than once (once per relaxation, since
-            // PriorityQueue has no decrease-key); the first dequeue is always the
-            // true shortest distance, so later stale entries just get skipped.
+            var node = entry.Node;
+
+            // A node can be pushed more than once (once per relaxation, since Heap has
+            // no decrease-key); the first pop is always the true shortest distance, so
+            // later stale entries just get skipped.
             if (!state.Settled.Add(node))
             {
                 continue;
@@ -104,7 +108,7 @@ internal static class ShortestPath
             {
                 state.Distances[neighbor] = candidate;
                 var priority = candidate + THeuristic.Estimate(neighbor, target);
-                state.Queue.Enqueue(neighbor, priority);
+                state.Queue.Push((neighbor, priority));
             }
         }
     }
@@ -113,9 +117,10 @@ internal static class ShortestPath
     // parameter instead of the distance map, the settled set and the frontier queue.
     private sealed record SearchState<TNode, TWeight>
         where TNode : class
+        where TWeight : IComparable<TWeight>
     {
         public Dictionary<TNode, TWeight> Distances { get; } = new();
         public HashSet<TNode> Settled { get; } = new();
-        public PriorityQueue<TNode, TWeight> Queue { get; } = new();
+        public Heap<(TNode Node, TWeight Priority), ByPriorityOrder<TNode, TWeight>> Queue { get; } = new();
     }
 }
