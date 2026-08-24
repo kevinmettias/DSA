@@ -1,1 +1,14 @@
-{}
+{
+  "telemetry": {
+    "none": "DSAExperimentation is a self-contained algorithms/data-structures practice library with no I/O, no services, and no consumers outside its own test project - there is nothing here for a logger, tracer, or metric to observe."
+  },
+  "words": {
+    "approved_abbreviations": [
+      "dfs",
+      "bfs"
+    ]
+  },
+  "naming": {
+    "method": "upper-snake"
+  }
+}
