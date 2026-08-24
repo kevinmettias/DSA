@@ -1,18 +1,20 @@
-using DSAExperimentation.Trees;
+using DSAExperimentation.Graph;
 
 namespace DSAExperimentation.Tests;
 
 public sealed class FoldTests
 {
     [Fact]
-    public void DepthFirstFold_CountsNodes()
+    public void Fold_CountsNodes()
     {
         var root = TestTrees.NArySample();
 
         var count = TreeFold.Fold<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
             CountNodesFoldAlgebra,
             int>(root);
 
@@ -20,12 +22,14 @@ public sealed class FoldTests
     }
 
     [Fact]
-    public void DepthFirstFold_NullRoot_ReturnsEmpty()
+    public void Fold_NullRoot_ReturnsEmpty()
     {
         var count = TreeFold.Fold<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
             CountNodesFoldAlgebra,
             int>(null);
 
@@ -33,28 +37,47 @@ public sealed class FoldTests
     }
 
     [Fact]
-    public void BreadthFirstReduce_CountsNodes()
+    public void Fold_IterativeEvaluation_MatchesRecursiveEvaluation()
     {
+        // A pure algebra's result must not depend on evaluation strategy - only the
+        // Combine calls' timing differs, not the value they build.
         var root = TestTrees.NArySample();
 
-        var count = BreadthFirstReduce.Reduce<
+        var recursiveHeight = TreeFold.Fold<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
-            CountNodesBreadthFirstAlgebra,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecursiveFoldEvaluation<TestNode>,
+            HeightAlgebra<TestNode>,
             int>(root);
 
-        Assert.Equal(7, count);
+        var iterativeHeight = TreeFold.Fold<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            IterativeFoldEvaluation<TestNode>,
+            HeightAlgebra<TestNode>,
+            int>(root);
+
+        Assert.Equal(3, recursiveHeight);
+        Assert.Equal(recursiveHeight, iterativeHeight);
     }
 
     [Fact]
-    public void BreadthFirstReduce_NullRoot_ReturnsSeed()
+    public void Fold_IterativeEvaluation_NullRoot_ReturnsEmpty()
     {
-        var count = BreadthFirstReduce.Reduce<
+        var count = TreeFold.Fold<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
-            CountNodesBreadthFirstAlgebra,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            IterativeFoldEvaluation<TestNode>,
+            CountNodesFoldAlgebra,
             int>(null);
 
         Assert.Equal(0, count);
