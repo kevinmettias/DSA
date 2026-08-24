@@ -10,49 +10,49 @@
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/CountCombineCallsFoldAlgebra.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/CountCombineCallsFoldAlgebra.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingEnterExitHooks.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/RecordingEnterExitHooks.cs",
       "reason": "the static fields' owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingEnterHooks.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/RecordingEnterHooks.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingExitHooks.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/RecordingExitHooks.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingLevelHooks.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/RecordingLevelHooks.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Engines/Fixtures/RecordingVisitHooks.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Fixtures/RecordingVisitHooks.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot (documented in the file's own header comment) so parallel tests never share state; it is not global in the sense this check warns about",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -66,168 +66,168 @@
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/Paths/AllRootToLeafPathsTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Paths/AllRootToLeafPathsTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an empty join separator that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/ConnectedComponentsTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Connectivity/ConnectedComponentsTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Engines/Folding/FoldTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Folding/FoldTests.cs",
       "reason": "every check-literals finding here is an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Engines/GraphTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/GraphTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected test-fixture count that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/GridConnectedComponentsTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Connectivity/GridConnectedComponentsTests.cs",
       "reason": "the sole finding here is the expected island count for a fixture grid, worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/Grids/GridTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Grids/GridTests.cs",
       "reason": "every check-literals finding here is a grid coordinate or an expected test-fixture distance that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
       "reason": "the sole finding here is an index into a fixed fixture tree, not a magic count",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/Metrics/MetricsTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Metrics/MetricsTests.cs",
       "reason": "every check-literals finding here is an expected height/size/diameter for a fixture tree, worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Engines/Reducing/ReduceTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Reducing/ReduceTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label, an expected node-name concatenation, or an expected test-fixture count that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/ShortestPathTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/ShortestPaths/ShortestPathTests.cs",
       "reason": "every check-literals finding here is an arbitrary node label, a grid coordinate, or an expected test-fixture distance that genuinely means only itself, not a magic constant to be named",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Engines/Folding/SharedDescendantFoldTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Folding/SharedDescendantFoldTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected fold-result count worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Fixtures/TestTrees.cs",
+      "path": "DSAExperimentation.Tests/Graph/Fixtures/TestTrees.cs",
       "reason": "every check-literals finding here is an arbitrary node label for the shared test fixture tree that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Engines/Traversal/TraversalTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Traversal/TraversalTests.cs",
       "reason": "every check-literals finding here is a graph/tree node label or an expected traversal-order sequence for a fixture tree that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Contracts/Ordering/TrieTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Contracts/Ordering/TrieTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture word or an expected word count that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/Fixtures/WeightedGraphs.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/ShortestPaths/Fixtures/WeightedGraphs.cs",
       "reason": "every check-literals finding here is a graph node label or an edge weight worked out in a comment, that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/Engines/ZipTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/ZipTests.cs",
       "reason": "every check-literals finding here is an expected test-fixture count or node-name concatenation that genuinely means only itself",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Algorithms/Paths/AllRootToLeafPathsTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Paths/AllRootToLeafPathsTests.cs",
       "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover AllRootToLeafPaths.Find and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Engines/Folding/FoldTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Folding/FoldTests.cs",
       "reason": "the shared `Fold_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all four tests cover Fold and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Engines/GraphTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/GraphTests.cs",
       "reason": "the shared `GraphReduce_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - both tests cover Reduce.Graph and belong in this graph-safety test class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Algorithms/Grids/GridTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Grids/GridTests.cs",
       "reason": "the shared `Distance_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover GridShortestPath.Distance and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
       "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover LowestCommonAncestor.Find and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Engines/Reducing/ReduceTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Reducing/ReduceTests.cs",
       "reason": "the shared `Reduce_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all five tests cover Reduce and belong in one class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/ShortestPathTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Algorithms/ShortestPaths/ShortestPathTests.cs",
       "reason": "the shared `AStar_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all three tests cover ShortestPath.AStar and belong beside the Dijkstra tests in this one shortest-path test class",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/Engines/Traversal/TraversalTests.cs",
+      "path": "DSAExperimentation.Tests/Graph/Engines/Traversal/TraversalTests.cs",
       "reason": "the shared `Dfs_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module; the file's 9-declaration surface is one cohesive subject (DFS/BFS/level-grouped traversal hooks) worth reading together, not a grab-bag to split",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -502,6 +502,265 @@
       "check": "check-test-coverage",
       "path": "DSAExperimentation/Graph/Engines/Walking/UnguardedVisit.cs",
       "reason": "ShouldVisit implements IVisitGuard<TNode>.ShouldVisit; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through every tree-only Walk/Fold/Reduce test in the suite",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/Collections/Heap/Heap.cs",
+      "reason": "the two call-graph clusters are Push's insertion path (Push/SiftUp) and the read/removal path (Peek/TryPeek/Pop/TryPop/SiftDown/HighestPriorityChild/ThrowEmptyHeap); they never call each other because insertion doesn't need removal's guard/rebalance logic or vice versa, not because they're a hidden second responsibility - both operate on the same _store and splitting Push away from Pop would fragment one small ADT into two types with no independent purpose",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/Collections/DynamicArray/DynamicArray.cs",
+      "reason": "the two call-graph clusters are the growth path (Add/Insert/EnsureCapacity) and the index-validated path (Get/Set/RemoveAt/ValidateIndex); same shape and same reasoning as Heap.cs's waiver - one small array ADT, not two hidden responsibilities",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/Collections/Deque/CircularBuffer.cs",
+      "reason": "the two call-graph clusters are the growth path (AddFront/AddBack/EnsureCapacity) and the back-index path (GetBack/RemoveBack/BackIndex), with GetFront/RemoveFront as singleton nodes; same shape and reasoning as Heap.cs's waiver",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/Collections/Stack/Stack.cs",
+      "reason": "the two call-graph clusters are Peek/ThrowEmptyStack/Pop (Pop calls Peek for its guard) and TryPeek/TryPop, with Push as a singleton node; same shape and reasoning as Heap.cs's waiver",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-error-values",
+      "path": "DSAExperimentation/Collections/HashMap/HashMap.cs",
+      "reason": "Get is a convenience throwing form beside TryGetValue's recoverable one - the same throwing/Try pairing Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek already use for their own empty-precondition, none of which this check flags",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation/Collections/Heap/Heap.cs",
+      "reason": "the flagged split in Pop is a one-line precondition guard (empty-check) followed by the actual pop pipeline; the guard doesn't need to share locals with logic it prevents from running, and extracting a single `if (Count == 0) return ThrowEmptyHeap();` line into its own method would relocate it without any cohesion benefit",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Collections/Deque/Deque.cs",
+      "reason": "the shared `Try` prefix and the file's 10-declaration surface are one cohesive symmetric front/back ADT (PushFront/PushBack/PeekFront/PeekBack/PopFront/PopBack/TryPeekFront/TryPeekBack/TryPopFront/TryPopBack/Count) - splitting front-half from back-half would fragment one double-ended structure into two types with no independent purpose",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Heap/HeapArrayTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (element or expected count) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Heap/HeapTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (pushed element or expected popped value) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/Heap/HeapArrayTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/Heap/HeapTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Collections/Heap/HeapTests.cs",
+      "reason": "the shared `Push_`/`Try` prefixes are xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all cover Heap's push/pop/peek surface and belong in one class; the file's 11-declaration surface is one cohesive subject (a small multi-operation ADT), the same judgment call already recorded for TraversalTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Heap/MinHeapOrderTests.cs",
+      "reason": "every check-literals finding here is an arbitrary comparison value that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Heap/MaxHeapOrderTests.cs",
+      "reason": "every check-literals finding here is an arbitrary comparison value that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/DynamicArray/DynamicArrayTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (element, index, or expected count) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/DynamicArray/DynamicArrayTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Collections/DynamicArray/DynamicArrayTests.cs",
+      "reason": "the shared `Insert_`/whole-file prefixes are xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all cover DynamicArray's insert/remove/get/set surface and belong in one class, the same judgment call already recorded for TraversalTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Stack/StackTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (pushed element or expected count) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/Stack/StackTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Deque/CircularBufferTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (element or expected count) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/Deque/CircularBufferTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Collections/Deque/CircularBufferTests.cs",
+      "reason": "the shared `Add`-prefixed tests are xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all cover CircularBuffer's add/remove surface and belong in one class, the same judgment call already recorded for TraversalTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Deque/DequeTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (pushed element or expected count) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/Deque/DequeTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Collections/Deque/DequeTests.cs",
+      "reason": "the shared `Peek`/whole-file prefixes are xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all cover Deque's symmetric front/back surface and belong in one class, the same judgment call already recorded for TraversalTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Queue/QueueTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (enqueued element or expected count) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/Queue/QueueTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/HashMap/HashMapTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture key/value/count that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Collections/HashMap/HashMapTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Collections/HashMap/HashMapTests.cs",
+      "reason": "the shared `Remove_`/whole-file prefixes are xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all cover HashMap's get/set/remove/resize surface and belong in one class, the same judgment call already recorded for TraversalTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Collections/Set/SetTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture item that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Collections/Deque/CircularBuffer.cs",
+      "reason": "GetFront/GetBack are exercised throughout CircularBufferTests, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and these don't win it (e.g. AddBack_ThenGetFront_ReturnsFirstAddedValue); the check's own 'Open question' section names this gap as unresolved and sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Collections/Deque/Deque.cs",
+      "reason": "PopFront/PopBack are exercised by DequeTests' PushBack_PopFront_ReturnsValuesInFifoOrder and PushFront_PopBack_ReturnsValuesInLifoOrderFromTheOppositeEnd, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and neither name leads with Pop*; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Collections/HashMap/HashMap.cs",
+      "reason": "Count is exercised transitively by nearly every HashMapTests case, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Collections/Heap/HeapArray.cs",
+      "reason": "Get is exercised by HeapArrayTests' Add_IncreasesCountAndStoresValueAtEnd (which asserts via Get) and transitively by every Heap test, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Collections/Set/Set.cs",
+      "reason": "Count is exercised transitively by every SetTests case, but check-test-coverage's own attribution logic credits a test to only the single best name match within its unit and this generic name doesn't win it; the check's own 'Open question' section sanctions allow-untested here",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Graph/Algorithms/ShortestPaths/ByPriorityOrder.cs",
+      "reason": "HasPriority implements IHeapOrder<T>.HasPriority; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through every ShortestPathTests Dijkstra_*/AStar_* case now that ShortestPath's frontier is Heap<T,TOrder>",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }
