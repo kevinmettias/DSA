@@ -1,0 +1,8 @@
+namespace DSAExperimentation.Graph;
+
+public interface IEdgeTopology<TNode, TEdges, TEdgeData>
+    where TNode : class
+    where TEdges : struct, IEdges<TNode, TEdgeData>
+{
+    static abstract TEdges GetEdges(TNode node);
+}

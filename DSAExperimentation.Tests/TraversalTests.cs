@@ -1,61 +1,139 @@
-using DSAExperimentation.Trees;
+using DSAExperimentation.Graph;
 
 namespace DSAExperimentation.Tests;
 
 public sealed class TraversalTests
 {
-    private struct BfsOrderMarker;
-    private struct BfsNullMarker;
-    private struct BfsPlainVisitMarker;
-    private struct LevelGroupMarker;
     private struct PreOrderMarker;
     private struct PostOrderMarker;
+    private struct EnterExitMarker;
     private struct DfsNullMarker;
-    private struct PreAndPostOrderEnterMarker;
-    private struct PreAndPostOrderExitMarker;
+    private struct ReverseOrderMarker;
+    private struct BfsMarker;
+    private struct BfsNullMarker;
+    private struct LevelGroupMarker;
+
+    [Fact]
+    public void Dfs_Enter_FiresInPreOrder()
+    {
+        var root = TestTrees.NArySample();
+
+        DepthFirstTraversal.Walk<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingEnterHooks<PreOrderMarker>>(root);
+
+        Assert.Equal(
+            new[] { "A", "B", "E", "F", "C", "D", "G" },
+            RecordingEnterHooks<PreOrderMarker>.Entered.Select(v => v.Name));
+    }
+
+    [Fact]
+    public void Dfs_Exit_FiresInPostOrder()
+    {
+        var root = TestTrees.NArySample();
+
+        DepthFirstTraversal.Walk<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingExitHooks<PostOrderMarker>>(root);
+
+        Assert.Equal(
+            new[] { "E", "F", "B", "C", "G", "D", "A" },
+            RecordingExitHooks<PostOrderMarker>.Exited.Select(v => v.Name));
+    }
+
+    [Fact]
+    public void Dfs_EnterAndExit_BothFireInOnePassAtCorrectOrders()
+    {
+        var root = TestTrees.NArySample();
+
+        DepthFirstTraversal.Walk<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingEnterExitHooks<EnterExitMarker>>(root);
+
+        Assert.Equal(
+            new[] { "A", "B", "E", "F", "C", "D", "G" },
+            RecordingEnterExitHooks<EnterExitMarker>.Entered.Select(v => v.Name));
+        Assert.Equal(
+            new[] { "E", "F", "B", "C", "G", "D", "A" },
+            RecordingEnterExitHooks<EnterExitMarker>.Exited.Select(v => v.Name));
+    }
+
+    [Fact]
+    public void Dfs_NullRoot_NoVisits()
+    {
+        DepthFirstTraversal.Walk<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingEnterHooks<DfsNullMarker>>(null);
+
+        Assert.Empty(RecordingEnterHooks<DfsNullMarker>.Entered);
+    }
+
+    [Fact]
+    public void ChildOrder_IsOrthogonalToVisitTiming()
+    {
+        // Same pre-order timing, but every sibling group is walked back-to-front -
+        // child order and visit-timing are independent knobs.
+        var root = TestTrees.NArySample();
+
+        DepthFirstTraversal.Walk<
+            TestNode,
+            TestTopology,
+            ListChildren<TestNode>,
+            ReverseChildOrder<TestNode, ListChildren<TestNode>>,
+            ReversedChildren<TestNode, ListChildren<TestNode>>,
+            RecordingEnterHooks<ReverseOrderMarker>>(root);
+
+        Assert.Equal(
+            new[] { "A", "D", "G", "C", "B", "F", "E" },
+            RecordingEnterHooks<ReverseOrderMarker>.Entered.Select(v => v.Name));
+    }
 
     [Fact]
     public void Bfs_VisitsInBreadthFirstOrderWithDepth()
     {
         var root = TestTrees.NArySample();
 
-        DepthAwareBreadthFirstTraversal<
+        BreadthFirstTraversal.Walk<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingDepthAwareAction<BfsOrderMarker>>.Traverse(root);
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingVisitHooks<BfsMarker>>(root);
 
         Assert.Equal(
             new[] { ("A", 0), ("B", 1), ("C", 1), ("D", 1), ("E", 2), ("F", 2), ("G", 2) },
-            RecordingDepthAwareAction<BfsOrderMarker>.Visited);
-    }
-
-    [Fact]
-    public void Bfs_PlainVisit_VisitsInBreadthFirstOrder()
-    {
-        var root = TestTrees.NArySample();
-
-        NodeVisitBreadthFirstTraversal<
-            TestNode,
-            TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingNodeAction<BfsPlainVisitMarker>>.Traverse(root);
-
-        Assert.Equal(
-            new[] { "A", "B", "C", "D", "E", "F", "G" },
-            RecordingNodeAction<BfsPlainVisitMarker>.Visited);
+            RecordingVisitHooks<BfsMarker>.Visited);
     }
 
     [Fact]
     public void Bfs_NullRoot_NoVisits()
     {
-        DepthAwareBreadthFirstTraversal<
+        BreadthFirstTraversal.Walk<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingDepthAwareAction<BfsNullMarker>>.Traverse(null);
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingVisitHooks<BfsNullMarker>>(null);
 
-        Assert.Empty(RecordingDepthAwareAction<BfsNullMarker>.Visited);
+        Assert.Empty(RecordingVisitHooks<BfsNullMarker>.Visited);
     }
 
     [Fact]
@@ -63,13 +141,15 @@ public sealed class TraversalTests
     {
         var root = TestTrees.NArySample();
 
-        LevelGroupedBreadthFirstTraversal<
+        LevelGroupedBreadthFirstTraversal.Walk<
             TestNode,
             TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingLevelAction<LevelGroupMarker>>.Traverse(root);
+            ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
+            ListChildren<TestNode>,
+            RecordingLevelHooks<LevelGroupMarker>>(root);
 
-        var levels = RecordingLevelAction<LevelGroupMarker>.Levels;
+        var levels = RecordingLevelHooks<LevelGroupMarker>.Levels;
 
         Assert.Equal(3, levels.Count);
 
@@ -81,69 +161,5 @@ public sealed class TraversalTests
 
         Assert.Equal(2, levels[2].Depth);
         Assert.Equal(new[] { "E", "F", "G" }, levels[2].Names);
-    }
-
-    [Fact]
-    public void Dfs_PreOrder_VisitsParentBeforeChildren()
-    {
-        var root = TestTrees.NArySample();
-
-        PreOrderDepthFirstTraversal<
-            TestNode,
-            TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingNodeAction<PreOrderMarker>>.Traverse(root);
-
-        Assert.Equal(
-            new[] { "A", "B", "E", "F", "C", "D", "G" },
-            RecordingNodeAction<PreOrderMarker>.Visited);
-    }
-
-    [Fact]
-    public void Dfs_PostOrder_VisitsChildrenBeforeParent()
-    {
-        var root = TestTrees.NArySample();
-
-        PostOrderDepthFirstTraversal<
-            TestNode,
-            TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingNodeAction<PostOrderMarker>>.Traverse(root);
-
-        Assert.Equal(
-            new[] { "E", "F", "B", "C", "G", "D", "A" },
-            RecordingNodeAction<PostOrderMarker>.Visited);
-    }
-
-    [Fact]
-    public void Dfs_PreAndPostOrder_BothFireInOnePassAtCorrectOrders()
-    {
-        var root = TestTrees.NArySample();
-
-        PreAndPostOrderDepthFirstTraversal<
-            TestNode,
-            TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingNodeAction<PreAndPostOrderEnterMarker>,
-            RecordingNodeAction<PreAndPostOrderExitMarker>>.Traverse(root);
-
-        Assert.Equal(
-            new[] { "A", "B", "E", "F", "C", "D", "G" },
-            RecordingNodeAction<PreAndPostOrderEnterMarker>.Visited);
-        Assert.Equal(
-            new[] { "E", "F", "B", "C", "G", "D", "A" },
-            RecordingNodeAction<PreAndPostOrderExitMarker>.Visited);
-    }
-
-    [Fact]
-    public void Dfs_NullRoot_NoVisits()
-    {
-        PreOrderDepthFirstTraversal<
-            TestNode,
-            TestTopology,
-            NaturalChildOrder<TestNode>,
-            RecordingNodeAction<DfsNullMarker>>.Traverse(null);
-
-        Assert.Empty(RecordingNodeAction<DfsNullMarker>.Visited);
     }
 }
