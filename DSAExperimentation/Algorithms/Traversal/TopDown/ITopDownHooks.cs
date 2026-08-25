@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.TopDown;
+namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 
 // The inherited-attribute counterpart to IReduceAlgebra's synthesized one:
 // IReduceAlgebra threads a single accumulator sequentially across the WHOLE walk

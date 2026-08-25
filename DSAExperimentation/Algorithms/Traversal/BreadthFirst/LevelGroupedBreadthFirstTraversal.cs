@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Algorithms.Walking;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
+namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 
 // Genuinely distinct from BreadthFirstTraversal<..., NodeVisit<...>>, not just a
 // convenience wrapper over it: this buffers an entire depth before firing, since a

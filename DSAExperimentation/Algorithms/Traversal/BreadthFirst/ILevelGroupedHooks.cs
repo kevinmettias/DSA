@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
+namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 
 // Distinct from IBreadthFirstHooks.Visit, not a convenience wrapper over it: a level
 // isn't known to be complete until every node at that depth has been discovered, so

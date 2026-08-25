@@ -1,7 +1,7 @@
-using DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
+using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Traversal.BreadthFirst.Fixtures;
 
 // TMarker isolates static storage per test (a fresh nested marker type gives each
 // test its own backing list even though the hook type is otherwise identical), so

@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Algorithms.Walking;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.TopDown;
+namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 
 // One entry point per topology tier - see DepthFirstTraversal for the reasoning.
 // Depth-first only: there's no BreadthFirst counterpart yet, since every problem
