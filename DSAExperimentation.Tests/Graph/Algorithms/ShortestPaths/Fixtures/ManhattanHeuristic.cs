@@ -2,10 +2,12 @@ using DSAExperimentation.Graph.Algorithms.ShortestPaths;
 
 namespace DSAExperimentation.Tests.Graph.Algorithms.ShortestPaths.Fixtures;
 
-// Straight-line (Manhattan) distance on a unit-weight 4-directional grid: never
-// overestimates the true remaining distance, even once a wall forces a detour, since
-// removing cells can only make the true shortest path longer than the unobstructed
-// straight line - which is exactly what "admissible" requires.
+// Straight-line (Manhattan) distance on a unit-weight 4-directional grid: consistent,
+// not merely admissible - moving to an adjacent cell changes the Manhattan distance to
+// target by at most 1, which equals that edge's own weight, so h(u) <= cost(u,v) + h(v)
+// holds on every edge (the triangle inequality IPathHeuristic requires). It's also
+// never an overestimate: walls only remove cells, which can make the true shortest
+// path longer than the unobstructed straight line, never shorter.
 internal readonly struct ManhattanHeuristic : IPathHeuristic<WeightedGridNode, int>
 {
     public static int Estimate(WeightedGridNode node, WeightedGridNode? target)

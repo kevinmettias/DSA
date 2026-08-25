@@ -14,6 +14,10 @@ namespace DSAExperimentation.Graph.Algorithms.ShortestPaths;
 // implementations - see IPathHeuristic for why that's sound (ZeroHeuristic
 // degenerates to exactly Dijkstra's behavior).
 //
+// Requires every edge weight to be non-negative. Neither Dijkstra nor AStar is correct
+// otherwise - a settled node could still have a cheaper path through an edge this
+// hasn't relaxed yet - and nothing here checks it; it's on the caller's TEdges.
+//
 // TWeight uses .NET's generic math (INumber/IMinMaxValue) for +, <, Zero - the same
 // static-abstract-member dispatch used everywhere else in this library, just from
 // the BCL instead of a hand-rolled interface. The frontier is Collections.Heap's
@@ -27,10 +31,10 @@ internal static class ShortestPath
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
         => Explore<TNode, TTopology, TEdges, TWeight, ZeroHeuristic<TNode, TWeight>>(source, target: null);
 
-    // Only sound when THeuristic never overestimates the true remaining distance to
-    // target ("admissible") - that admissibility is exactly what lets Explore stop
-    // as soon as target is settled, instead of exhausting the whole graph the way
-    // Dijkstra does.
+    // Only sound when THeuristic is consistent (see IPathHeuristic) - that's exactly
+    // what guarantees a node's first pop already carries its true shortest distance,
+    // which is what lets Explore stop as soon as target is settled, instead of
+    // exhausting the whole graph the way Dijkstra does.
     public static TWeight? AStar<TNode, TTopology, TEdges, TWeight, THeuristic>(TNode source, TNode target)
         where TNode : class
         where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
