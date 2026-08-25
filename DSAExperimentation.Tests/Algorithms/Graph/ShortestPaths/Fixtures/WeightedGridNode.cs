@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Tests.Graph.Algorithms.ShortestPaths.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
 
 // A weighted, coordinate-carrying node - distinct from WeightedNode because
 // ShortestPath.AStar needs geometry to compute an admissible heuristic against,
