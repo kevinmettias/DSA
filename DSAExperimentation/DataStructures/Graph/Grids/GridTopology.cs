@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Graph.Algorithms.Grids;
+namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // Proof that "adjacency computed from runtime, per-instance context" needs no new
 // abstraction: GetChildren stays a pure, static function of the node, exactly like

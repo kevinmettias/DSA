@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Algorithms.Grids;
+namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // A reference type, not a value type - every topology/walk/reduce contract in this
 // library constrains TNode : class (identity-based, matching TrackedVisitGuard's
