@@ -208,11 +208,16 @@ algorithm, a new structure, or both, run this in order:
    *representation* (as `DynamicArraySequence` does with `Collections.DynamicArray`, §9.4) is a
    different thing and is fine — what's prohibited is forcing that domain's type to implement
    *your* interface.
-6. **Place the file by axis, not by domain.** Representation and Topology go under
-   `DataStructures/<Domain>/`; Operations goes under `Algorithms/<Domain>/` — even when that splits
-   a domain that used to live in one folder into two (§13). This is the one place this reorg
-   changes future behavior: it decides where a *new* file gets created, not just where old ones
-   were moved.
+6. **Place the file by axis first, then by the right second-class label for that axis** (§13). On
+   the `DataStructures/` side that second label is the data structure's own name — a data
+   structure's identity *is* its representation/topology, so `DataStructures/<Structure>/` is
+   already correct. On the `Algorithms/` side, the top-level folder is **what the algorithm does**
+   (`Algorithms/ShortestPaths/`, `Algorithms/Folding/`), never what data structure or topology tier
+   it happens to need — that's real, but subordinate, information, expressed only as a nested
+   subfolder, and only once a second tier of the same utility actually exists to justify one (§13.1
+   restates this "don't build structure before it's earned" rule for topology tiers specifically).
+   This is the one place this reorg changes future behavior: it decides where a *new* file gets
+   created, not just where old ones were moved.
 
 This is what already happened, in order, for `Searching/BinarySearch` (§9); `Collections/Heap` (§4)
 and `Graph/**` (§3) arrived at the same shape but retrofitted, with the Topology witness pulled out
@@ -586,67 +591,107 @@ Every worked example above (§3–§12) was written against a domain-first tree 
 `Collections/Heap/**`, `Searching/**`, `Sorting/**`, `Traversal/**` — where a domain's
 Representation, Topology, and Operations files all lived in one folder together, and the
 three-axis classification was a *convention* the file tree didn't enforce. This section documents
-the reorg that made the axis split physical: every file in both `DSAExperimentation/` and
-`DSAExperimentation.Tests/` now lives under exactly one of two top-level folders, `DataStructures/`
-or `Algorithms/`, chosen by axis rather than by domain — Representation and Topology under
-`DataStructures/<Domain>/`, Operations under `Algorithms/<Domain>/` (§5 step 6).
+two successive reorgs that made that classification physical.
 
-### 13.1 Namespace mapping rule
+**First reorg — split by axis.** Every file in both `DSAExperimentation/` and
+`DSAExperimentation.Tests/` moved under exactly one of two top-level folders, `DataStructures/` or
+`Algorithms/` — Representation and Topology under `DataStructures/`, Operations under
+`Algorithms/`. Both sides initially kept the same domain-name subfolder underneath
+(`DataStructures/Graph/Engines/Reducing/`, `Algorithms/Graph/Engines/Reducing/`, and so on).
 
-Every namespace and `using` directive was rewritten to match: insert `DataStructures.` or
-`Algorithms.` immediately after `DSAExperimentation.`, keeping the rest of the namespace and
-physical subpath identical to what §3–§12 describe. One deliberate deviation: `Graph/Algorithms/**`'s
-redundant inner `Algorithms` segment was collapsed rather than preserved —
-`Graph/Algorithms/ShortestPaths/ShortestPath.cs` became `Algorithms/Graph/ShortestPaths/ShortestPath.cs`,
-not `Algorithms/Graph/Algorithms/ShortestPaths/...` — since namespaces were being rewritten anyway,
-there was no reason to keep an awkward legacy artifact.
+**Second reorg — organize `Algorithms/` by utility, not by domain.** Keeping a domain-name
+subfolder under `Algorithms/` was itself still domain-first, just one level down — it filed
+`ShortestPath`/`ConnectedComponents`/`Reduce`/the `Fold` family under a top-level `Graph/` folder,
+as if they belonged to "Graph" the data structure, when what actually distinguishes them is what
+each one *does*. `DataStructures/` needed no equivalent second pass: a data structure's identity
+*is* its representation/topology, so organizing it by domain name (`DataStructures/Graph/**`,
+`DataStructures/Heap/**`) was already correct (§5 step 6). §13.3 below describes the tree as it
+stands after both reorgs.
+
+### 13.1 Namespace mapping rule and the tiering rule
+
+Namespaces mirror the physical path throughout: insert `DataStructures.` or `Algorithms.`
+immediately after `DSAExperimentation.`, then follow the rest of the path exactly.
+
+Within `Algorithms/`, a second rule governs how deep a topology/strategy tier gets to nest:
+**when two or more tiered implementations of the same utility exist, nest them under folders that
+mirror the actual refinement relationship** (`Folding/Dags/Trees/TreeFold.cs` nests under `Dags/`
+because `ITreeTopology` refines `IDagTopology`, per §3.2's chain; `ShortestPaths/Grids/
+GridShortestPath.cs` nests as a second, Grid-specific tier beside the general edge-weighted one).
+**When only one implementation exists today, the file stays flat** — the same "don't build
+structure before a second case earns it" spirit §5 step 3 already applies to Representation. This
+is why `Metrics/TreeMetrics.cs`, `Ancestry/LowestCommonAncestor.cs`,
+`Connectivity/ConnectedComponents.cs`, and `Paths/AllRootToLeafPaths.cs` stay flat even though each
+is constrained to a specific topology tier — that constraint lives in the file's own doc
+comment/generic bound, not a folder, until a second tier actually shows up.
 
 ### 13.2 Two axis-classification judgment calls
 
 - **`ByPriorityOrder`** implements `Heap`'s `IHeapOrder<T>` (§4) — the same contract
   `MinHeapOrder`/`MaxHeapOrder` implement, classified as Topology. For consistency with its own
-  contract's classification, it moved to `DataStructures/Graph/ShortestPaths/`, not alongside
-  `ShortestPath.cs` in `Algorithms` — even though `ShortestPath.cs` is its only consumer. Locality
+  contract's classification, it lives at `DataStructures/Graph/ShortestPaths/`, not alongside
+  `ShortestPath.cs` in `Algorithms/` — even though `ShortestPath.cs` is its only consumer. Locality
   is real but secondary to axis-purity here, since axis-purity is the entire point of this reorg.
 - **`IVisitGuard`/`UnguardedVisit`/`TrackedVisitGuard`** superficially resemble a closed-set
   Topology witness — the same `static abstract`, two-variant shape as `IHeapOrder` — but the actual
   discriminator is *what the closed choice is about*, not its shape (§9.1, §12.1): `IHeapOrder`
   decides a relation on stored data, while `IVisitGuard` decides how the *algorithm executes*
   (whether to track revisits) — the same execution-strategy axis as `IFoldEvaluationStrategy`/
-  `IReduceOrderStrategy`, uncontroversially Operations. So this tier moved to
-  `Algorithms/Graph/Engines/Walking/`, alongside `BreadthFirstWalk`/`DepthFirstWalk`/`TopDownWalk`.
+  `IReduceOrderStrategy`, uncontroversially Operations. This tier lives at `Algorithms/Walking/`,
+  alongside `BreadthFirstWalk`/`DepthFirstWalk`/`TopDownWalk` — a utility folder, not a topology or
+  domain one, exactly where the second reorg's own rule says it belongs.
 
 ### 13.3 Where everything lives now
 
-| Domain | `DataStructures/` | `Algorithms/` |
-| --- | --- | --- |
-| Buffers | `Buffers/ContiguousGroupBufferStorage.cs` | `Buffers/ContiguousGroupBuffer.cs` |
-| Traversal | — (no Representation axis, §12.2) | `Traversal/DepthFirstSearch.cs` |
-| Collections/DisjointSet | `Collections/DisjointSet/DisjointSetForest.cs` | `Collections/DisjointSet/DisjointSet.cs` |
-| Searching | `Searching/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,SearchRange}.cs` | `Searching/BinarySearch.cs` |
-| Sorting | `Sorting/{IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence,SortBounds}.cs` | `Sorting/MergeSort.cs` |
-| Collections/Set | — (composes `HashMap<T,bool>`) | `Collections/Set/Set.cs` |
-| Collections/Queue | — (composes `Deque<T>`) | `Collections/Queue/Queue.cs` |
-| Collections/Stack | — (composes `DynamicArray<T>`) | `Collections/Stack/Stack.cs` |
-| HashMap | `HashMap/{HashMapStorage,HashMapEntry}.cs`, `ArrayGrowth.cs` | `HashMap/HashMap.cs` |
-| Deque | `Deque/CircularBuffer.cs` | `Deque/Deque.cs` |
-| DynamicArray | `DynamicArray/DynamicArrayStorage.cs` | `DynamicArray/DynamicArray.cs` |
-| Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray}.cs` | `Heap/Heap.cs` |
-| Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` | — |
-| Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` | — |
-| Graph — Walking guard tier | — | `Graph/Engines/Walking/{IVisitGuard,UnguardedVisit,TrackedVisitGuard}.cs` |
-| Graph — Operations engines | — | `Graph/Engines/{Walking,Traversal,Reducing,Folding,Dags}/**` |
-| Graph — facades | — | `Graph/{Ancestry,Connectivity,Metrics,Paths}/**` |
-| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` | `Graph/Grids/GridShortestPath.cs` |
-| Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` | `Graph/ShortestPaths/{IPathHeuristic,ZeroHeuristic,ShortestPath}.cs` |
+**`DataStructures/`** stays organized by domain, since a data structure's identity is its
+representation/topology:
 
-`DSAExperimentation.Tests/` mirrors this one level deeper (`Tests/DataStructures/**`,
-`Tests/Algorithms/**`). Two Graph test-fixture groups needed a placement call rather than a
-mechanical rule: the Trie fixtures (`TrieNode`/`TrieTopology`/`TrieTrees`/`WordCountFoldAlgebra`/
-`TrieTests`) travel together to `Tests/DataStructures/Graph/Contracts/Ordering/`, since their star
-subject (`SparseArrayChildren`) is Representation; `TestNode`/`TestTopology`/`TestTrees` anchor at
+| Domain | Files |
+| --- | --- |
+| Buffers | `Buffers/ContiguousGroupBufferStorage.cs` |
+| Collections/DisjointSet | `Collections/DisjointSet/DisjointSetForest.cs` |
+| Deque | `Deque/CircularBuffer.cs` |
+| DynamicArray | `DynamicArray/DynamicArrayStorage.cs` |
+| HashMap | `HashMap/{HashMapStorage,HashMapEntry}.cs`, `ArrayGrowth.cs` |
+| Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray}.cs` |
+| Searching | `Searching/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,SearchRange}.cs` |
+| Sorting | `Sorting/{IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence,SortBounds}.cs` |
+| Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
+| Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
+| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` |
+| Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
+
+**`Algorithms/`** is organized by utility instead — the second reorg's whole point. Folders with no
+row below (`Deque`, `DynamicArray`, `HashMap`, `Heap`, `Stack`, `Queue`, `Set`, `DisjointSet`,
+`Buffers`, `Searching`, `Sorting`) have no topology axis at all (§4.1/§10.2), so their folder name
+already *is* the utility name and needed no reorganizing:
+
+| Utility | Files | Topology/strategy tier |
+| --- | --- | --- |
+| `Ancestry/` | `LowestCommonAncestor.cs` | flat — only one tier exists today |
+| `Connectivity/` | `ConnectedComponents.cs` | flat — only one tier exists today |
+| `Paths/` | `AllRootToLeafPaths.cs` | flat — only one tier exists today |
+| `Metrics/` | `{DiameterAlgebra,HeightAlgebra,HeightDiameterState,SizeAlgebra,TreeMetrics}.cs` | flat — Tree is the only tier that exists today |
+| `Folding/` | `{CheckedFold,IFoldAlgebra,IFoldEvaluationStrategy,IterativeFoldEvaluation,RecursiveFoldEvaluation,ZipFoldAlgebra}.cs` (general tier) + `Dags/DagFold.cs` (DAG tier) + `Dags/Trees/TreeFold.cs` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
+| `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
+| `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
+| `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
+| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second |
+
+`DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
+utility folder matching the interface they implement, not a shared grab-bag — e.g. the
+`Recording*Hooks` fixtures split across `Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/`
+by which hook interface each implements. Two Graph test-fixture groups from the first reorg still
+needed a placement call rather than a mechanical rule: the Trie fixtures
+(`TrieNode`/`TrieTopology`/`TrieTrees`/`WordCountFoldAlgebra`/`TrieTests`) travel together to
+`Tests/DataStructures/Graph/Contracts/Ordering/`, since their star subject (`SparseArrayChildren`)
+is Representation; `TestNode`/`TestTopology`/`TestTrees` anchor at
 `Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
-referenced cross-tree by Algorithms-side test classes — harmless for test-only code.
+referenced cross-tree by `Algorithms/`-side test classes — harmless for test-only code. A handful
+of cross-cutting tests that exercise more than one utility together (`GraphTests.cs`, `ZipTests.cs`
+— Fold+Reduce+Traversal in one file; `SharedDescendantFoldTests.cs` — comparing fold tiers) sit
+unfoldered at `Tests/Algorithms/` root or their utility's own root, rather than being forced into
+one utility's subfolder.
 
 ### 13.4 `suppressions.json`
 
