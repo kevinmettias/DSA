@@ -1,6 +1,5 @@
-using DSAExperimentation.DataStructures.Deque;
 
-namespace DSAExperimentation.Algorithms.Deque;
+namespace DSAExperimentation.DataStructures.Deque;
 
 internal sealed class Deque<T>
 {

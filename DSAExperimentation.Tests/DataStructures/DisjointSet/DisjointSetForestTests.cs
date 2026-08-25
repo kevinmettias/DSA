@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.Collections.DisjointSet;
+using DSAExperimentation.DataStructures.DisjointSet;
 
-namespace DSAExperimentation.Tests.DataStructures.Collections.DisjointSet;
+namespace DSAExperimentation.Tests.DataStructures.DisjointSet;
 
 public sealed partial class DisjointSetForestTests
 {

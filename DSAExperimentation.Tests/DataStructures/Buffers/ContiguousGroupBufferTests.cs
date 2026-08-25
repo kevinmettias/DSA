@@ -1,6 +1,6 @@
-using DSAExperimentation.Algorithms.Buffers;
+using DSAExperimentation.DataStructures.Buffers;
 
-namespace DSAExperimentation.Tests.Algorithms.Buffers;
+namespace DSAExperimentation.Tests.DataStructures.Buffers;
 
 public sealed partial class ContiguousGroupBufferTests
 {
