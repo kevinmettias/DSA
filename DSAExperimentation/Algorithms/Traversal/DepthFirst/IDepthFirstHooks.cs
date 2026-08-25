@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.DepthFirst;
+namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 
 // Enter fires before a node's children are walked, Exit after. Both are optional
 // and default to no-ops, so pre-order is "override Enter only", post-order is

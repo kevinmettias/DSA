@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Traversal;
+namespace DSAExperimentation.Algorithms.Traversal.DepthFirst;
 
 // Successors is a plain runtime object, not a Topology witness, despite superficially
 // resembling Graph's IGraphTopology<TNode,TChildren>.GetChildren: the discriminator isn't how

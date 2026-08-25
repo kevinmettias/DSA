@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
+namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 
 // One event per node - not "not yet implemented", but structural: breadth-first has
 // no equivalent to DFS's Exit. Exit means "every descendant of this node is done",

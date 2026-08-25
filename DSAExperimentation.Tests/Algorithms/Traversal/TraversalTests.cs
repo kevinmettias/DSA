@@ -1,10 +1,11 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
-using DSAExperimentation.Algorithms.Graph.Engines.Traversal.DepthFirst;
-using DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
+using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.Tests.Algorithms.Traversal.BreadthFirst.Fixtures;
+using DSAExperimentation.Tests.Algorithms.Traversal.DepthFirst.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Traversal;
+namespace DSAExperimentation.Tests.Algorithms.Traversal;
 
 public sealed partial class TraversalTests
 {
