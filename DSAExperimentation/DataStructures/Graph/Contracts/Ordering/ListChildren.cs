@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 internal readonly struct ListChildren<TNode>(List<TNode> items) : IChildren<TNode>
 {

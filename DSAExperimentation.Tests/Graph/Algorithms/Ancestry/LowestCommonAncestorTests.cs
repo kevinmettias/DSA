@@ -1,5 +1,5 @@
 using DSAExperimentation.Graph.Algorithms.Ancestry;
-using DSAExperimentation.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Tests.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Graph.Algorithms.Ancestry;

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 // Orthogonal to visit-timing: this only decides the sequence a node's own children
 // are walked in. A node's *structural* order comes from the topology itself

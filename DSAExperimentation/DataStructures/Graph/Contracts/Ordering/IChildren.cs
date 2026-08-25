@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 // An indexable view over a node's children. Implementations are thin structs
 // wrapping a concretely-typed backing collection (see ListChildren) - once

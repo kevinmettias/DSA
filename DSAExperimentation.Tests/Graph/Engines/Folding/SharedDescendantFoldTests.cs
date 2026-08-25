@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Graph.Engines.Dags;
 using DSAExperimentation.Graph.Engines.Folding;
 using DSAExperimentation.Tests.Graph.Engines.Fixtures;
