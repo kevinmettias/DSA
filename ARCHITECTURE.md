@@ -600,7 +600,7 @@ Every worked example above (§3–§12) was written against a domain-first tree 
 `Collections/Heap/**`, `Searching/**`, `Sorting/**`, `Traversal/**` — where a domain's
 Representation, Topology, and Operations files all lived in one folder together, and the
 three-axis classification was a *convention* the file tree didn't enforce. This section documents
-three successive reorgs that made that classification physical.
+four successive reorgs that made that classification physical.
 
 **First reorg — split by axis.** Every file in both `DSAExperimentation/` and
 `DSAExperimentation.Tests/` moved under exactly one of two top-level folders, `DataStructures/` or
@@ -668,8 +668,7 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Stack | `Stack/Stack.cs` (composes `DynamicArray`) |
 | Queue | `Queue/Queue.cs` (composes `Deque`) |
 | Set | `Set/Set.cs` (composes `HashMap<T,bool>`) |
-| Searching | `Searching/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,SearchRange}.cs` |
-| Sorting | `Sorting/{IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence,SortBounds}.cs` |
+| Sequence | `Sequence/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence}.cs` (§13.6) |
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
 | Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
 | Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` |
@@ -692,6 +691,8 @@ the distinguishing question is interface substitutability, not the topology axis
 | `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
 | `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
 | `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second |
+| `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
+| `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
 
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the
@@ -742,6 +743,26 @@ substitutability — nothing more, nothing less. `Searching`/`Sorting` are the o
 similar but isn't: they have no *topology* axis either, but `IRandomAccessSequence`/
 `IIndexedSequence` each have two real implementations, so `BinarySearch`/`MergeSort` stay in
 `Algorithms/`, decoupled from either one.
+
+### 13.6 Fourth reorg — `Searching`/`Sorting` rename to `Sequence`, and a misclassification fix
+
+`DataStructures/Searching/` and `DataStructures/Sorting/` were named after the algorithms that
+consume them, not what they are — the same mistake the second reorg fixed on the `Algorithms/`
+side, made in the opposite direction: a `DataStructures/` folder is supposed to be named for
+identity (§5 step 6), and `IRandomAccessSequence`/`ArraySequence`/`DynamicArraySequence` and
+`IIndexedSequence`/`ArrayIndexedSequence`/`DynamicArrayIndexedSequence` are identically "sequence
+access contracts," just at two different read/write capability levels — not "a searching thing" or
+"a sorting thing." Both sets now co-locate under one identity folder, `DataStructures/Sequence/`,
+the same way `MinHeapOrder`/`MaxHeapOrder` already sit as sibling witnesses under `Heap/` — still
+two separate, non-reused domains per §5.5 (`Sorting` never reuses `Searching`'s contract, per §11.1),
+just grouped by theme rather than split across two algorithm-named folders.
+
+Checking this surfaced an unrelated, pre-existing misclassification: `SearchRange.cs` and
+`SortBounds.cs` had been sitting in these same folders, but neither is a Representation of the
+sequence being searched/sorted — both are the algorithm's own internal cursor/range-grouping state
+(their own doc comments say so directly), the same bucket §12.2 already puts `TrackedVisitGuard` in.
+They moved to `Algorithms/Searching/` and `Algorithms/Sorting/`, alongside `BinarySearch.cs`/
+`MergeSort.cs`, correcting a classification gap that predates every reorg in this section.
 
 ## 14. Worked example: the three Storage/Operations decompositions
 
@@ -794,8 +815,8 @@ catch a regression here.
 | `DataStructures/DynamicArray/DynamicArrayStorage.cs` | Representation | `_items: T[]`; own `Count`; unchecked `Get`/`Set`/`Add`/`InsertAt`/`RemoveAt` (assume the caller already validated the index); private `EnsureCapacity` |
 | `DataStructures/DynamicArray/DynamicArray.cs` | Operations | `ValidateIndex`, the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` delegate to Storage after validation — identical exception type and message text to before the split |
 
-The highest fan-out of the three: `Stack`, `Searching/DynamicArraySequence`, and
-`Sorting/DynamicArrayIndexedSequence` all compose it, but none call anything beyond
+The highest fan-out of the three: `Stack`, `Sequence.DynamicArraySequence`, and
+`Sequence.DynamicArrayIndexedSequence` all compose it, but none call anything beyond
 `Add`/`Get`/`Set`/`RemoveAt`/`Count` — all of which keep identical signatures — so none needed a
 logic change, only a `using`-line repoint. Decomposed last of the three, once the Storage/Operations
 pattern had already been proven twice.
