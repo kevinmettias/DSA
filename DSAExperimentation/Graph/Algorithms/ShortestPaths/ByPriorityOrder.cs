@@ -1,4 +1,4 @@
-using DSAExperimentation.Collections.Heap;
+using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.Graph.Algorithms.ShortestPaths;
 

@@ -1,6 +1,6 @@
-using DSAExperimentation.Collections.Heap;
+using DSAExperimentation.DataStructures.Heap;
 
-namespace DSAExperimentation.Tests.Collections.Heap;
+namespace DSAExperimentation.Tests.DataStructures.Heap;
 
 public sealed partial class HeapArrayTests
 {

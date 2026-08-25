@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Collections.Heap;
+namespace DSAExperimentation.DataStructures.Heap;
 
 // Concrete, not behind an interface - there is exactly one heap representation today. See
 // ARCHITECTURE.md §5: an interface here would be the same speculative abstraction IChildren's
