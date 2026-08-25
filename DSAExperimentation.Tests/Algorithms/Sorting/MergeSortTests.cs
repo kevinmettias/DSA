@@ -1,7 +1,8 @@
+using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.Collections.DynamicArray;
-using DSAExperimentation.Sorting;
+using DSAExperimentation.DataStructures.Sorting;
 
-namespace DSAExperimentation.Tests.Sorting;
+namespace DSAExperimentation.Tests.Algorithms.Sorting;
 
 public sealed partial class MergeSortTests
 {

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Sorting;
+namespace DSAExperimentation.DataStructures.Sorting;
 
 // Groups the [Low, High] range MergeSort's recursion narrows - the same "group related
 // parameters into a type" recipe ARCHITECTURE.md §6 already applies elsewhere in this repo.

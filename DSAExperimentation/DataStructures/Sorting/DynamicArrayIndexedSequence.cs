@@ -1,6 +1,6 @@
 using DSAExperimentation.Collections.DynamicArray;
 
-namespace DSAExperimentation.Sorting;
+namespace DSAExperimentation.DataStructures.Sorting;
 
 // Satisfies IIndexedSequence's obligation for a different reason than ArrayIndexedSequence:
 // DynamicArray<T>.Get/Set are both already array-indexer-backed after one bounds check, and

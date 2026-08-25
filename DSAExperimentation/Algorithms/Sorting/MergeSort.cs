@@ -1,4 +1,6 @@
-namespace DSAExperimentation.Sorting;
+using DSAExperimentation.DataStructures.Sorting;
+
+namespace DSAExperimentation.Algorithms.Sorting;
 
 // Sort is O(n log n) - a claim that depends on TSequence's Get and Set both being O(1) (see
 // IIndexedSequence.cs) and on the scratch buffer being allocated exactly once per Sort call and
