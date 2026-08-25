@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Engines.Traversal.DepthFirst;
+using DSAExperimentation.Algorithms.Graph.Engines.Traversal.DepthFirst;
 using DSAExperimentation.Tests.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Graph.Engines.Fixtures;

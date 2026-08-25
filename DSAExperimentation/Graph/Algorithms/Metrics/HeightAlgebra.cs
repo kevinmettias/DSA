@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Graph.Engines.Folding;
 
 namespace DSAExperimentation.Graph.Algorithms.Metrics;
 

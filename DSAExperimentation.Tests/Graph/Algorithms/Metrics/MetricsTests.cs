@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Tests.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Graph.Algorithms.Metrics;

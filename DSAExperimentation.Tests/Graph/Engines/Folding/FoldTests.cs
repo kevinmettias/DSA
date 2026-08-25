@@ -1,7 +1,7 @@
 using DSAExperimentation.Graph.Algorithms.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Algorithms.Graph.Engines.Folding;
 using DSAExperimentation.Tests.Graph.Engines.Fixtures;
 using DSAExperimentation.Tests.Graph.Fixtures;
 

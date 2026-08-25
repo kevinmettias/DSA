@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Graph.Engines.Folding;
 using DSAExperimentation.Tests.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Graph.Engines.Fixtures;
