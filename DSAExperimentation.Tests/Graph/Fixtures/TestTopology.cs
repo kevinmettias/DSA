@@ -1,9 +1,0 @@
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-
-namespace DSAExperimentation.Tests.Graph.Fixtures;
-
-internal readonly struct TestTopology : ITreeTopology<TestNode, ListChildren<TestNode>>
-{
-    public static ListChildren<TestNode> GetChildren(TestNode node) => new(node.Children);
-}
