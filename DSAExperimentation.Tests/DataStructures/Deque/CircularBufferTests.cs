@@ -1,6 +1,6 @@
-using DSAExperimentation.Collections.Deque;
+using DSAExperimentation.DataStructures.Deque;
 
-namespace DSAExperimentation.Tests.Collections.Deque;
+namespace DSAExperimentation.Tests.DataStructures.Deque;
 
 public sealed partial class CircularBufferTests
 {

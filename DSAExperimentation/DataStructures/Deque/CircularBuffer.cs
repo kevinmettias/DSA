@@ -1,6 +1,4 @@
-using DSAExperimentation.DataStructures;
-
-namespace DSAExperimentation.Collections.Deque;
+namespace DSAExperimentation.DataStructures.Deque;
 
 // A wraparound array: elements occupy [_head, _head+Count) modulo the buffer's
 // length, so both ends can grow without shifting the other end's elements. Growing
