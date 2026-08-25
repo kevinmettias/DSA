@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Searching;
+using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.Algorithms.Searching;
 

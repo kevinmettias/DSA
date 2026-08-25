@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.Sorting;
+namespace DSAExperimentation.DataStructures.Sequence;
 
 // Satisfies IIndexedSequence's doubled O(1) obligation via a raw array's own bounds-checked
 // indexer for both directions - the simplest possible proof the contract is satisfiable at all -

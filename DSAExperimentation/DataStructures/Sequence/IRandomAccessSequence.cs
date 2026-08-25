@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.Searching;
+namespace DSAExperimentation.DataStructures.Sequence;
 
 // Parallels IChildren<TNode>: Get is a named method, not an indexer, so
 // implementations stay thin structs the JIT specializes to direct, non-virtual,

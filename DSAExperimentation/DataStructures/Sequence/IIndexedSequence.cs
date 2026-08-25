@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.Sorting;
+namespace DSAExperimentation.DataStructures.Sequence;
 
 // Sorting is a distinct domain from Searching, so per ARCHITECTURE.md §5.5 it defines its own
 // Representation contract rather than reusing Searching.IRandomAccessSequence<T> - domain

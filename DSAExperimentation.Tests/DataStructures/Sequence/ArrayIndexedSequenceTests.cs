@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.Sorting;
+using DSAExperimentation.DataStructures.Sequence;
 
-namespace DSAExperimentation.Tests.DataStructures.Sorting;
+namespace DSAExperimentation.Tests.DataStructures.Sequence;
 
 public sealed partial class ArrayIndexedSequenceTests
 {

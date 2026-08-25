@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 
-namespace DSAExperimentation.DataStructures.Searching;
+namespace DSAExperimentation.DataStructures.Sequence;
 
 // Satisfies IRandomAccessSequence's O(1) obligation for a different reason than
 // ArraySequence: DynamicArray<T>.Get is itself array-indexer-backed after one bounds

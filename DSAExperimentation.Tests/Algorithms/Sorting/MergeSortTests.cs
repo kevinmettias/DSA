@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sorting;
+using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.Tests.Algorithms.Sorting;
 
