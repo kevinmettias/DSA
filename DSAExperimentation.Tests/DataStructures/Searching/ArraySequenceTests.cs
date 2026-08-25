@@ -1,6 +1,6 @@
-using DSAExperimentation.Searching;
+using DSAExperimentation.DataStructures.Searching;
 
-namespace DSAExperimentation.Tests.Searching;
+namespace DSAExperimentation.Tests.DataStructures.Searching;
 
 public sealed partial class ArraySequenceTests
 {
