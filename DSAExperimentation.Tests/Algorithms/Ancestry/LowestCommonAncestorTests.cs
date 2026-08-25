@@ -1,8 +1,8 @@
-using DSAExperimentation.Algorithms.Graph.Ancestry;
+using DSAExperimentation.Algorithms.Ancestry;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Ancestry;
+namespace DSAExperimentation.Tests.Algorithms.Ancestry;
 
 public sealed partial class LowestCommonAncestorTests
 {

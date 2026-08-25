@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Algorithms.Walking;
 
-namespace DSAExperimentation.Algorithms.Graph.Connectivity;
+namespace DSAExperimentation.Algorithms.Connectivity;
 
 // Proof of the multi-root Reduce.Graph overload: counting components needs one
 // visited-set carried across several separate top-level walks - a node reached from
