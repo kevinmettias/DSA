@@ -1,6 +1,6 @@
-using DSAExperimentation.Collections.HashMap;
+using DSAExperimentation.Algorithms.HashMap;
 
-namespace DSAExperimentation.Tests.Collections.HashMap;
+namespace DSAExperimentation.Tests.Algorithms.HashMap;
 
 public sealed partial class HashMapTests
 {

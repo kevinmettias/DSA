@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Collections;
+namespace DSAExperimentation.DataStructures;
 
 // Shared tuning knobs for every array-backed Collections/* structure's growth
 // strategy (DynamicArray, CircularBuffer, HashMap's entries/buckets) - not a shared

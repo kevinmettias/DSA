@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Collections.HashMap;
+namespace DSAExperimentation.DataStructures.HashMap;
 
 // Mutable by design, not a data-bag class: instances live inside HashMap's entries
 // array and are updated in place through the array indexer (T[] indexing yields a
