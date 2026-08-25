@@ -1,3 +1,3 @@
-namespace DSAExperimentation.Tests.Graph.Algorithms.ShortestPaths.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
 
 internal sealed record SampleGraphNodes(WeightedNode A, WeightedNode B, WeightedNode C, WeightedNode D);

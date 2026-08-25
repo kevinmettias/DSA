@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Heap;
 
-namespace DSAExperimentation.Graph.Algorithms.ShortestPaths;
+namespace DSAExperimentation.DataStructures.Graph.ShortestPaths;
 
 // Projects Heap's ordering axis down to "compare by priority only, ignore which node it's
 // attached to" - the same move EdgeTopologyAsGraphTopology makes for Graph's IGraphTopology,

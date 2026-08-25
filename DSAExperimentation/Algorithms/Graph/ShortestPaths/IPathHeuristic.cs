@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DSAExperimentation.Graph.Algorithms.ShortestPaths;
+namespace DSAExperimentation.Algorithms.Graph.ShortestPaths;
 
 // The single axis ShortestPath.AStar generalizes Dijkstra on: what a candidate's
 // queue priority is, beyond its real accumulated distance. ZeroHeuristic makes
