@@ -145,7 +145,7 @@ independently-pluggable Topology witness, because none needed one:
 
 | Structure | Representation | Operations | Notes |
 | --- | --- | --- | --- |
-| `Collections/DynamicArray/DynamicArray.cs` | itself (a manually-doubled `T[]`) | `Add`/`Insert`/`RemoveAt`/`Get`/`Set` | No Topology axis at all — the only invariant is "how it's stored," which §5 step 1 says belongs to Representation, not Topology |
+| `Collections/DynamicArray/DynamicArray.cs` | itself (a manually-doubled `T[]`) | `Add`/`Insert`/`RemoveAt`/`Get`/`Set` | No Topology axis at all — the only invariant is "how it's stored," which §5 step 2 classifies as Representation, not Topology |
 | `Collections/Stack/Stack.cs` | `DynamicArray<T>` (composed, not duplicated) | `Push`/`Pop`/`Peek` | A stack is a sequence plus a LIFO *access constraint* — an Operations-level restriction over an existing Representation, not a new physical layout |
 | `Collections/Deque/CircularBuffer.cs` + `Deque.cs` | a wraparound array (`_head`/`Count` modulo length) | `Push`/`Pop`/`Peek` at both ends | A second, distinct Representation (wraparound, not flat) — earned by needing O(1) at *both* ends, which `DynamicArray`'s flat layout can't give the front |
 | `Collections/Queue/Queue.cs` | `Deque<T>` (composed) | `Enqueue`/`Dequeue`/`Peek` | FIFO is Deque restricted to one end each — the same "sequence + constraint" relationship Stack has with `DynamicArray`, just against the wraparound Representation |
@@ -157,23 +157,51 @@ the philosophical point from earlier in this conversation made concrete: *"a sta
 physical structure — it's a sequence plus a LIFO access constraint."* Representation is shared
 because the constraint, not the storage, is what varies.
 
-## 5. Recipe for adding a new `Collections/*` structure
+## 5. How to add anything here — a capability-first checklist
 
-1. **Does it have a real invariant worth a Topology witness?** (ordering, uniqueness, balance).
-   If yes, model it as a closed set of `struct`-constrained static-abstract witnesses, generic
-   over the element/key type only — not over storage. If the only "invariant" is "how it's stored,"
-   that's a Representation concern, not a Topology one.
-2. **Is there currently exactly one physical layout?** If yes, make Representation a concrete
-   class, not an interface. Don't introduce the interface until a second implementation exists to
-   justify it — the same way `SparseArrayChildren` earned `IChildren`'s existence by being a second
-   consumer, not the first. An interface with one implementation is speculative cost (virtual
-   dispatch, boxing) with no present benefit.
-3. **Operations** is the mutable instance type (or a static engine, for algorithms that walk an
-   externally-owned structure) that composes Representation and Topology via generic constraints.
-4. **Never reuse another domain's Representation or Topology contracts.** Replicate the *pattern*,
-   not the *type* — a fold's node-list and a heap's backing array are different enough shapes that
-   forcing a shared interface between them tends to produce a leaky common surface instead of a
-   useful one.
+The lever for decoupling an algorithm from a data structure isn't more abstraction, it's naming
+what's essential *before* anything concrete exists to tempt you into skipping the naming.
+Retrofitted decoupling — writing the concrete representation first, extracting a capability
+interface afterward — is exactly where representation assumptions leak into an algorithm's body
+unnoticed, because nothing forced you to state them first. So whether the next thing is a new
+algorithm, a new structure, or both, run this in order:
+
+1. **Name the operations (`O`)** the algorithm actually calls — the minimal method surface, not
+   the concrete type you'd reach for by habit. `BinarySearch` needs `Length`/`Get(i)`; it doesn't
+   need `Array<T>`. `DFS` needs "enumerable successors"; it doesn't need `TreeNode`.
+2. **Name the laws (`L`)** — everything the algorithm assumes but can't check — and classify each
+   one before deciding how to encode it:
+
+   | Question | Classification | Example |
+   | --- | --- | --- |
+   | Does the algorithm *actively re-derive* it every step, and does the result change control flow? | **Topology witness** — a closed set of `struct`-constrained, `static abstract` interfaces, generic over the element/key type only, never over storage | `IHeapOrder.HasPriority`, checked on every sift comparison |
+   | Is the space of valid choices open-ended (any caller-supplied rule, not a set this library enumerates itself)? | A plain runtime object, not a witness | `IComparer<T>`, `IEqualityComparer<TKey>` |
+   | Is it established once before the call and never re-touched — including "how it's stored"? | **Representation**, or an unenforced **precondition law** stated in a doc comment | Sortedness (`BinarySearch`), non-negative edge weights (`ShortestPath`), "how it's stored" generally |
+   | Does violating it change correctness, or only performance, silently? | **Complexity law** — state the *obligation* on the contract, the *consequence* on the algorithm | `Get` assumed O(1); a slower representation degrades big-O with no compiler error |
+
+3. **Only then write the Representation.** If exactly one physical layout exists today, make it a
+   concrete class, not an interface — don't introduce the interface until a second implementation
+   exists to justify it. `SparseArrayChildren` earned `IChildren`'s existence by being a second
+   consumer, not the first; an interface with one implementation is speculative cost (virtual
+   dispatch, boxing) with no present benefit. `IRandomAccessSequence` (§9) is the exception that
+   proves the rule — it launched with two witnesses (`ArraySequence`, `DynamicArraySequence`) from
+   day one, so it earned the interface immediately instead of waiting.
+4. **Operations** is the mutable instance type (or a static engine, for algorithms that walk an
+   externally-owned structure) that composes Representation and Topology via generic constraints —
+   never the reverse; a representation should never be built *around* one algorithm.
+5. **Never reuse another domain's Representation or Topology contracts as your own.** Replicate
+   the *pattern*, not the *type* — a fold's node-list and a heap's backing array are different
+   enough shapes that forcing a shared interface between them tends to produce a leaky common
+   surface instead of a useful one. Composing another domain's already-public concrete
+   *representation* (as `DynamicArraySequence` does with `Collections.DynamicArray`, §9.4) is a
+   different thing and is fine — what's prohibited is forcing that domain's type to implement
+   *your* interface.
+
+This is what already happened, in order, for `Searching/BinarySearch` (§9); `Collections/Heap` (§4)
+and `Graph/**` (§3) arrived at the same shape but retrofitted, with the Topology witness pulled out
+after the fact rather than named first. Both routes land in the same place here because the
+domains are small enough to fix in hindsight — but running the checklist forward is what keeps
+that true as things grow.
 
 ## 6. Gate-compliance notes
 
