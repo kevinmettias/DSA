@@ -1,6 +1,6 @@
-using DsaDeque = DSAExperimentation.Algorithms.Deque.Deque<int>;
+using DsaDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
-namespace DSAExperimentation.Tests.Algorithms.Deque;
+namespace DSAExperimentation.Tests.DataStructures.Deque;
 
 public sealed partial class DequeTests
 {

@@ -1,6 +1,6 @@
-using DSAExperimentation.Algorithms.DynamicArray;
+using DSAExperimentation.DataStructures.DynamicArray;
 
-namespace DSAExperimentation.Tests.Algorithms.DynamicArray;
+namespace DSAExperimentation.Tests.DataStructures.DynamicArray;
 
 public sealed partial class DynamicArrayTests
 {

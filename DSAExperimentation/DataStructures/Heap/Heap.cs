@@ -1,6 +1,5 @@
-using DSAExperimentation.DataStructures.Heap;
 
-namespace DSAExperimentation.Algorithms.Heap;
+namespace DSAExperimentation.DataStructures.Heap;
 
 // Push/Pop are O(log n) - a claim that assumes HeapArray<T>.Get/Set/Swap are O(1). See
 // ARCHITECTURE.md §8 and HeapArray.cs: that assumption holds today but is a Representation-layer

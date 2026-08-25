@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.Collections.DisjointSet;
+namespace DSAExperimentation.DataStructures.DisjointSet;
 
 // Concrete, not behind an interface - there is exactly one disjoint-set representation
 // today. See ARCHITECTURE.md §5: an interface here would be the same speculative

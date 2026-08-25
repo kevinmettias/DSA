@@ -1,6 +1,5 @@
-using DSAExperimentation.DataStructures.HashMap;
 
-namespace DSAExperimentation.Algorithms.HashMap;
+namespace DSAExperimentation.DataStructures.HashMap;
 
 internal sealed class HashMap<TKey, TValue>
 {

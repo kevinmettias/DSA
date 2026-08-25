@@ -1,6 +1,6 @@
 using System.Numerics;
 
-using DSAExperimentation.Algorithms.Heap;
+using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;

@@ -1,6 +1,5 @@
-using DSAExperimentation.DataStructures.Buffers;
 
-namespace DSAExperimentation.Algorithms.Buffers;
+namespace DSAExperimentation.DataStructures.Buffers;
 
 internal sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> keyComparer)
     where TKey : notnull

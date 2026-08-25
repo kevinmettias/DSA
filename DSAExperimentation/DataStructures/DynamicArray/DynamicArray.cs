@@ -1,6 +1,5 @@
-using DSAExperimentation.DataStructures.DynamicArray;
 
-namespace DSAExperimentation.Algorithms.DynamicArray;
+namespace DSAExperimentation.DataStructures.DynamicArray;
 
 internal sealed class DynamicArray<T>
 {

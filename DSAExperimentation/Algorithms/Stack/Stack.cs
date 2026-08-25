@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.DynamicArray;
+using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.Algorithms.Stack;
 
