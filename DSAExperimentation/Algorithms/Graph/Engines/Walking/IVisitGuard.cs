@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
 
 // The one axis that actually differs between a tree-only walk and a graph-safe
 // walk: whether a child needs to be checked against a visited-set before being
