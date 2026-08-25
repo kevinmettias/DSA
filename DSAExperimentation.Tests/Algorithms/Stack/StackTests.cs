@@ -1,6 +1,6 @@
-using DsaStack = DSAExperimentation.Algorithms.Collections.Stack.Stack<int>;
+using DsaStack = DSAExperimentation.Algorithms.Stack.Stack<int>;
 
-namespace DSAExperimentation.Tests.Algorithms.Collections.Stack;
+namespace DSAExperimentation.Tests.Algorithms.Stack;
 
 public sealed partial class StackTests
 {

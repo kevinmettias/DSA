@@ -41,7 +41,7 @@ internal static class DepthFirstSearch
     {
         var visited = new HashSet<TNode>(comparer);
         var order = new List<TNode>();
-        var pending = new DSAExperimentation.Algorithms.Collections.Stack.Stack<TNode>();
+        var pending = new DSAExperimentation.Algorithms.Stack.Stack<TNode>();
 
         pending.Push(start);
 
@@ -62,7 +62,7 @@ internal static class DepthFirstSearch
     // Pushed in reverse so popping matches recursive DFS's visit order: the first-listed
     // successor is explored (and fully backtracked) before the second-listed one.
     private static void PushUnvisitedSuccessors<TNode>(
-        DSAExperimentation.Algorithms.Collections.Stack.Stack<TNode> pending, HashSet<TNode> visited, IEnumerable<TNode> successors)
+        DSAExperimentation.Algorithms.Stack.Stack<TNode> pending, HashSet<TNode> visited, IEnumerable<TNode> successors)
         where TNode : notnull
     {
         foreach (var successor in successors.Reverse())

@@ -5,9 +5,9 @@
 // here finds this file's own namespace (`...Collections.DisjointSet`) as a nested member of
 // `...Collections` before using-directives are ever consulted, so even a same-named `using` alias
 // doesn't help - only a differently-named alias does.
-using DisjointSetOperations = DSAExperimentation.Algorithms.Collections.DisjointSet.DisjointSet;
+using DisjointSetOperations = DSAExperimentation.Algorithms.DisjointSet.DisjointSet;
 
-namespace DSAExperimentation.Tests.Algorithms.Collections.DisjointSet;
+namespace DSAExperimentation.Tests.Algorithms.DisjointSet;
 
 public sealed partial class DisjointSetTests
 {
