@@ -1,6 +1,6 @@
-using DSAExperimentation.Collections.Set;
+using DSAExperimentation.Algorithms.Collections.Set;
 
-namespace DSAExperimentation.Tests.Collections.Set;
+namespace DSAExperimentation.Tests.Algorithms.Collections.Set;
 
 public sealed partial class SetTests
 {
