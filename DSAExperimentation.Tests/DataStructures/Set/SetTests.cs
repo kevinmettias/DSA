@@ -1,6 +1,6 @@
-using DSAExperimentation.Algorithms.Set;
+using DSAExperimentation.DataStructures.Set;
 
-namespace DSAExperimentation.Tests.Algorithms.Set;
+namespace DSAExperimentation.Tests.DataStructures.Set;
 
 public sealed partial class SetTests
 {
