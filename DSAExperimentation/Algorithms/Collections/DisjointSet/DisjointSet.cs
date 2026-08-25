@@ -1,4 +1,6 @@
-namespace DSAExperimentation.Collections.DisjointSet;
+using DSAExperimentation.DataStructures.Collections.DisjointSet;
+
+namespace DSAExperimentation.Algorithms.Collections.DisjointSet;
 
 // Find/Union run in O(a(n)) amortized time (inverse Ackermann, effectively constant for
 // any n representable here) because path compression and union-by-rank are both applied
