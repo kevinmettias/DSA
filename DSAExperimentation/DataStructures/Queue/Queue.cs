@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Deque;
 
-namespace DSAExperimentation.Algorithms.Queue;
+namespace DSAExperimentation.DataStructures.Queue;
 
 // FIFO is Deque restricted to one end each: Enqueue only ever pushes the back,
 // Dequeue only ever pops the front - the same "sequence + access constraint"

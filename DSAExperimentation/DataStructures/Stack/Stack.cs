@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 
-namespace DSAExperimentation.Algorithms.Stack;
+namespace DSAExperimentation.DataStructures.Stack;
 
 // A stack isn't a distinct physical structure - it's a sequence plus a LIFO access
 // constraint, so it composes DynamicArray directly rather than managing its own
