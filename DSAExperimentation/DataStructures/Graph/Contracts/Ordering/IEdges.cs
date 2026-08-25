@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 // The edge-aware counterpart to IChildren: each entry carries a destination *and*
 // data about the connection itself (a weight, a label, a capacity - whatever the

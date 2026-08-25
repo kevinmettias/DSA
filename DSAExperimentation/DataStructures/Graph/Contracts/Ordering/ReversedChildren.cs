@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 // A reversed view computed by index arithmetic over an existing IChildren, rather
 // than by copying - this is what lets ReverseChildOrder be allocation-free.

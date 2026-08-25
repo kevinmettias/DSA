@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 // A view over a fixed-size slot array where most slots are typically empty (null) -
 // e.g. a trie node's per-character children. Count and indexing scan the slots,

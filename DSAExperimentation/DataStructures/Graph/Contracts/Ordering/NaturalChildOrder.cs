@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 internal readonly struct NaturalChildOrder<TNode, TChildren> : IChildOrder<TNode, TChildren, TChildren>
     where TChildren : struct, IChildren<TNode>

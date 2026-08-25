@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Contracts.Ordering;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 // Forgets the edge data, keeping only the destinations - lets anything with edges
 // be handed to every existing IChildren-based algorithm (GraphReduce, TreeFold,
