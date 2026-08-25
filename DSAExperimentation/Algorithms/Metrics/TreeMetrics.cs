@@ -1,10 +1,9 @@
-using DSAExperimentation.Algorithms.Graph.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
+namespace DSAExperimentation.Algorithms.Metrics;
 
 internal static class TreeMetrics
 {
