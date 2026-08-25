@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
-namespace DSAExperimentation.Graph.Contracts.Topologies;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
 // The general contract every walker, fold, and reduce strategy actually needs:
 // given a node, what's adjacent to it. Nothing here requires acyclicity or unique

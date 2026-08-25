@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Graph.Contracts.Topologies;
+using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Graph.Engines.Dags;
+namespace DSAExperimentation.DataStructures.Graph.Engines.Dags;
 
 // A refinement of IGraphTopology, weaker than ITreeTopology: promises acyclicity
 // but not unique ancestry - shared descendants are expected and fine, cycles are

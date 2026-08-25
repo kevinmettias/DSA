@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
-namespace DSAExperimentation.Graph.Contracts.Topologies;
+namespace DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
 // Generic projection from any IEdgeTopology to plain IGraphTopology, via
 // EdgeTargets - lets an edge-aware topology be handed to every existing
