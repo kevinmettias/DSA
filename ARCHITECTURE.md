@@ -26,6 +26,14 @@ Every data structure in this repo is designed along three independent axes:
 - **Operations** — the algorithm/API surface built on top of a Representation constrained by a
   Topology.
 
+As of the reorg documented in §13, this classification is also the repo's primary *physical* axis:
+every file lives under a top-level `DataStructures/` or `Algorithms/` folder according to which of
+these three it is (Representation and Topology under `DataStructures/`, Operations under
+`Algorithms/`), not under a domain-first folder with the axes mixed together inside it. §3–§12
+below describe each domain's *reasoning* — why a given capability is Representation vs. Topology
+vs. Operations — using the paths and folder names as they stood when each section was written,
+before that physical reorg happened; §13 is where to look for where things live today.
+
 A fourth axis, "Invariants," was considered and folded into Topology: a topology's
 admissible-relation-set already *is* its invariants (acyclicity, unique ancestry, heap order,
 BST order are all statements about which relations are legal), so tracking it separately would
@@ -39,6 +47,8 @@ Topology have to be tracked as separate axes rather than conflated — and it st
 hypothetical in §4 below, where it becomes `Collections/Heap`.
 
 ## 3. Worked example: `Graph/**`
+
+> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
 
 ### 3.1 Representation
 
@@ -103,6 +113,8 @@ is the template for "one algorithm, one injected axis, not two parallel implemen
 `IHeapOrder` reuses this exact idiom in §4.
 
 ## 4. Worked example: `Collections/Heap`
+
+> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
 
 `Collections/Heap` is the first non-Graph instance of this framework, and it doesn't transplant
 1:1 — the mismatch is worth stating plainly. In Graph, Topology is generic over an
@@ -196,6 +208,11 @@ algorithm, a new structure, or both, run this in order:
    *representation* (as `DynamicArraySequence` does with `Collections.DynamicArray`, §9.4) is a
    different thing and is fine — what's prohibited is forcing that domain's type to implement
    *your* interface.
+6. **Place the file by axis, not by domain.** Representation and Topology go under
+   `DataStructures/<Domain>/`; Operations goes under `Algorithms/<Domain>/` — even when that splits
+   a domain that used to live in one folder into two (§13). This is the one place this reorg
+   changes future behavior: it decides where a *new* file gets created, not just where old ones
+   were moved.
 
 This is what already happened, in order, for `Searching/BinarySearch` (§9); `Collections/Heap` (§4)
 and `Graph/**` (§3) arrived at the same shape but retrofitted, with the Topology witness pulled out
@@ -288,6 +305,8 @@ as the worked example.
 
 ## 9. Worked example: `Searching/BinarySearch`
 
+> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
+
 `Searching/BinarySearch` is this repo's first non-Graph, non-Collections domain, and its first
 algorithm bound to a Representation contract it defines for itself rather than one it's handed.
 Where `Collections/Heap` needed one new Topology witness (`IHeapOrder`) over an already-obvious
@@ -374,6 +393,8 @@ contrived second example.
 
 ## 10. Worked example: `Collections/DisjointSet`
 
+> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
+
 `Collections/DisjointSet` is this repo's first equivalence-class structure, and its first
 demonstration that a choice which *looks* exactly like Heap's Min-vs-Max axis can still fail to
 earn a Topology witness. Where `Collections/Heap` needed a Topology witness over an obvious
@@ -452,6 +473,8 @@ same relationship `Stack`/`Queue` already have with `DynamicArray`/`Deque` (§4.
 
 ## 11. Worked example: `Sorting/MergeSort`
 
+> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
+
 `Sorting/MergeSort` is this repo's second checklist-first algorithm after `Searching/BinarySearch`,
 and the first built specifically to show that "the same capability shape" is not grounds to reuse
 another domain's Representation contract. Both algorithms need indexed access to a sequence; only
@@ -504,6 +527,8 @@ is `MergeSort`'s postcondition, not an assumed input.
 
 ## 12. Worked example: `Traversal/DepthFirstSearch`
 
+> Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
+
 `Traversal/DepthFirstSearch` is this repo's first algorithm with no Representation axis at all,
 and its first demonstration that a capability which looks exactly like a Graph `Topology` contract
 can still resolve to a plain runtime object once it leaves Graph's domain. It is built entirely
@@ -554,3 +579,135 @@ reachable set from `start`. An infinite one — with no cycle for the visited se
 `Traverse` run forever, with no compiler or runtime error to catch it, the same unchecked-but-real
 shape as `BinarySearch`'s sortedness (§9.1) or `ShortestPath`'s non-negative-edge-weight assumption
 (§7).
+
+## 13. Physical layout: the reorg
+
+Every worked example above (§3–§12) was written against a domain-first tree — `Graph/**`,
+`Collections/Heap/**`, `Searching/**`, `Sorting/**`, `Traversal/**` — where a domain's
+Representation, Topology, and Operations files all lived in one folder together, and the
+three-axis classification was a *convention* the file tree didn't enforce. This section documents
+the reorg that made the axis split physical: every file in both `DSAExperimentation/` and
+`DSAExperimentation.Tests/` now lives under exactly one of two top-level folders, `DataStructures/`
+or `Algorithms/`, chosen by axis rather than by domain — Representation and Topology under
+`DataStructures/<Domain>/`, Operations under `Algorithms/<Domain>/` (§5 step 6).
+
+### 13.1 Namespace mapping rule
+
+Every namespace and `using` directive was rewritten to match: insert `DataStructures.` or
+`Algorithms.` immediately after `DSAExperimentation.`, keeping the rest of the namespace and
+physical subpath identical to what §3–§12 describe. One deliberate deviation: `Graph/Algorithms/**`'s
+redundant inner `Algorithms` segment was collapsed rather than preserved —
+`Graph/Algorithms/ShortestPaths/ShortestPath.cs` became `Algorithms/Graph/ShortestPaths/ShortestPath.cs`,
+not `Algorithms/Graph/Algorithms/ShortestPaths/...` — since namespaces were being rewritten anyway,
+there was no reason to keep an awkward legacy artifact.
+
+### 13.2 Two axis-classification judgment calls
+
+- **`ByPriorityOrder`** implements `Heap`'s `IHeapOrder<T>` (§4) — the same contract
+  `MinHeapOrder`/`MaxHeapOrder` implement, classified as Topology. For consistency with its own
+  contract's classification, it moved to `DataStructures/Graph/ShortestPaths/`, not alongside
+  `ShortestPath.cs` in `Algorithms` — even though `ShortestPath.cs` is its only consumer. Locality
+  is real but secondary to axis-purity here, since axis-purity is the entire point of this reorg.
+- **`IVisitGuard`/`UnguardedVisit`/`TrackedVisitGuard`** superficially resemble a closed-set
+  Topology witness — the same `static abstract`, two-variant shape as `IHeapOrder` — but the actual
+  discriminator is *what the closed choice is about*, not its shape (§9.1, §12.1): `IHeapOrder`
+  decides a relation on stored data, while `IVisitGuard` decides how the *algorithm executes*
+  (whether to track revisits) — the same execution-strategy axis as `IFoldEvaluationStrategy`/
+  `IReduceOrderStrategy`, uncontroversially Operations. So this tier moved to
+  `Algorithms/Graph/Engines/Walking/`, alongside `BreadthFirstWalk`/`DepthFirstWalk`/`TopDownWalk`.
+
+### 13.3 Where everything lives now
+
+| Domain | `DataStructures/` | `Algorithms/` |
+| --- | --- | --- |
+| Buffers | `Buffers/ContiguousGroupBufferStorage.cs` | `Buffers/ContiguousGroupBuffer.cs` |
+| Traversal | — (no Representation axis, §12.2) | `Traversal/DepthFirstSearch.cs` |
+| Collections/DisjointSet | `Collections/DisjointSet/DisjointSetForest.cs` | `Collections/DisjointSet/DisjointSet.cs` |
+| Searching | `Searching/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,SearchRange}.cs` | `Searching/BinarySearch.cs` |
+| Sorting | `Sorting/{IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence,SortBounds}.cs` | `Sorting/MergeSort.cs` |
+| Collections/Set | — (composes `HashMap<T,bool>`) | `Collections/Set/Set.cs` |
+| Collections/Queue | — (composes `Deque<T>`) | `Collections/Queue/Queue.cs` |
+| Collections/Stack | — (composes `DynamicArray<T>`) | `Collections/Stack/Stack.cs` |
+| HashMap | `HashMap/{HashMapStorage,HashMapEntry}.cs`, `ArrayGrowth.cs` | `HashMap/HashMap.cs` |
+| Deque | `Deque/CircularBuffer.cs` | `Deque/Deque.cs` |
+| DynamicArray | `DynamicArray/DynamicArrayStorage.cs` | `DynamicArray/DynamicArray.cs` |
+| Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray}.cs` | `Heap/Heap.cs` |
+| Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` | — |
+| Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` | — |
+| Graph — Walking guard tier | — | `Graph/Engines/Walking/{IVisitGuard,UnguardedVisit,TrackedVisitGuard}.cs` |
+| Graph — Operations engines | — | `Graph/Engines/{Walking,Traversal,Reducing,Folding,Dags}/**` |
+| Graph — facades | — | `Graph/{Ancestry,Connectivity,Metrics,Paths}/**` |
+| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` | `Graph/Grids/GridShortestPath.cs` |
+| Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` | `Graph/ShortestPaths/{IPathHeuristic,ZeroHeuristic,ShortestPath}.cs` |
+
+`DSAExperimentation.Tests/` mirrors this one level deeper (`Tests/DataStructures/**`,
+`Tests/Algorithms/**`). Two Graph test-fixture groups needed a placement call rather than a
+mechanical rule: the Trie fixtures (`TrieNode`/`TrieTopology`/`TrieTrees`/`WordCountFoldAlgebra`/
+`TrieTests`) travel together to `Tests/DataStructures/Graph/Contracts/Ordering/`, since their star
+subject (`SparseArrayChildren`) is Representation; `TestNode`/`TestTopology`/`TestTrees` anchor at
+`Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
+referenced cross-tree by Algorithms-side test classes — harmless for test-only code.
+
+### 13.4 `suppressions.json`
+
+Deliberately deleted before this reorg began and left deleted throughout it — no suppression
+ledger was maintained or restored per migration step. Every judgment call `suppressions.json` used
+to waive (the `check-class-size` "two clusters" pattern, several test-file literal findings, a
+`check-test-coverage` attribution gap) resurfaces as a raw Nomos gate finding rather than a
+suppressed one until that ledger is rebuilt — expected, not a regression from this reorg.
+
+## 14. Worked example: the three Storage/Operations decompositions
+
+Three bundled classes — `ContiguousGroupBuffer`, `HashMap`, `DynamicArray` — used to fuse storage
+fields and public operations into one type, unlike `Heap`/`HeapArray` (§4), which was already
+split. This is the part of §13's reorg that is genuine decoupling rather than file-shuffling, and
+the one part with real behavior-preservation risk: a mechanical move can't change behavior, but a
+decomposition can. All three follow the same shape: **Storage owns raw, unchecked, non-throwing
+access; Operations owns bounds/precondition checks, throwing, and the one composed Storage field.**
+Each was attempted only after the pattern had been rehearsed on a cheaper case first — `Buffers`
+(zero consumers anywhere) first, `HashMap` second, `DynamicArray` (the highest fan-out) last — and
+each was checked against the full test suite, not just its own domain's tests, before being
+trusted.
+
+### 14.1 `ContiguousGroupBuffer`
+
+| File | Axis | Why |
+| --- | --- | --- |
+| `DataStructures/Buffers/ContiguousGroupBufferStorage.cs` | Representation | `_currentGroup`/`_currentKey`/`_hasCurrentKey` fields; unchecked `HasCurrentKey`/`CurrentKey`/`CurrentGroupCount`/`AppendToCurrentGroup`/`SnapshotCurrentGroup`/`SetCurrentKey`/`MarkCurrentKeyConsumed`/`ResetAll` |
+| `Algorithms/Buffers/ContiguousGroupBuffer.cs` | Operations | `keyComparer`, `GetCurrentKey`/`ThrowMissingCurrentKey`, composes Storage |
+
+The cheapest possible rehearsal of the pattern — zero existing consumers anywhere in the repo at
+the time. `MarkCurrentKeyConsumed` deliberately clears only `_hasCurrentKey`, leaving the stale
+`_currentKey` value in place (only `Reset` fully clears it) — preserving `Flush`'s exact
+pre-decomposition behavior, which nothing tested before this reorg added a test for it specifically.
+
+### 14.2 `HashMap`
+
+| File | Axis | Why |
+| --- | --- | --- |
+| `DataStructures/HashMap/HashMapStorage.cs` | Representation | bucket array + separate-chaining entries array + free list; owns `Grow`/`RehashEntryInto`/`CreateEmptyBuckets`/`AllocateEntrySlot` (none touch the comparer) and `Insert(hashCode,key,value)` |
+| `DataStructures/HashMap/HashMapEntry.cs` | Representation | unchanged, moved alongside Storage |
+| `Algorithms/HashMap/HashMap.cs` | Operations | `_comparer`; `TryUpdateExisting`/`FindEntryIndex`/`Remove`'s chain-walk loops, reading each step via raw Storage accessors (`BucketHead`/`EntryNext`/`EntryHashCode`/`EntryKey`/`EntryValue`) |
+
+The split point here isn't read/write the way `DynamicArray`'s is (§14.3) — it's "needs the
+comparer" vs. "doesn't." `Storage.Insert` absorbs the whole grow-if-needed → recompute-bucket →
+allocate-slot → write → link pipeline, since "should this insert grow first" isn't a
+comparer-dependent decision, and it always recomputes its own fresh bucket index internally after
+any grow rather than accepting one as a parameter — structurally ruling out a stale post-grow
+bucket index, the same kind of silent-misrouting risk §8's "performance independence" section warns
+about, except here it's a correctness risk, not a Big-O one. A test forcing a `Grow()` mid-sequence
+and then a `TryGetValue` on a key inserted immediately before the resize exists specifically to
+catch a regression here.
+
+### 14.3 `DynamicArray`
+
+| File | Axis | Why |
+| --- | --- | --- |
+| `DataStructures/DynamicArray/DynamicArrayStorage.cs` | Representation | `_items: T[]`; own `Count`; unchecked `Get`/`Set`/`Add`/`InsertAt`/`RemoveAt` (assume the caller already validated the index); private `EnsureCapacity` |
+| `Algorithms/DynamicArray/DynamicArray.cs` | Operations | `ValidateIndex`, the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` delegate to Storage after validation — identical exception type and message text to before the split |
+
+The highest fan-out of the three: `Collections/Stack`, `Searching/DynamicArraySequence`, and
+`Sorting/DynamicArrayIndexedSequence` all compose it, but none call anything beyond
+`Add`/`Get`/`Set`/`RemoveAt`/`Count` — all of which keep identical signatures — so none needed a
+logic change, only a `using`-line repoint. Decomposed last of the three, once the Storage/Operations
+pattern had already been proven twice.
