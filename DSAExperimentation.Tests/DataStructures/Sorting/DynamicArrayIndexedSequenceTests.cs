@@ -1,4 +1,4 @@
-using DSAExperimentation.Collections.DynamicArray;
+using DSAExperimentation.Algorithms.DynamicArray;
 using DSAExperimentation.DataStructures.Sorting;
 
 namespace DSAExperimentation.Tests.DataStructures.Sorting;

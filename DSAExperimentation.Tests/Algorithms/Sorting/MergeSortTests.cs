@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.Collections.DynamicArray;
+using DSAExperimentation.Algorithms.DynamicArray;
 using DSAExperimentation.DataStructures.Sorting;
 
 namespace DSAExperimentation.Tests.Algorithms.Sorting;
