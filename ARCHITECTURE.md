@@ -220,7 +220,12 @@ responsibility; `check-literals`/`check-function-cohesion`/`check-responsibility
 files follow the exact reasoning already recorded for `ContiguousGroupBufferTests.cs`/
 `TraversalTests.cs`; and `check-test-coverage`'s attribution-by-best-name-match gap (already waived
 throughout `Graph/**`) recurs for a handful of generically-named members (`Count`, `Get`) exercised
-only transitively.
+only transitively. `Collections/DisjointSet/DisjointSetForest.cs` (§10) joins the same
+`check-class-size` precedent for the same reason (its parent-path and rank-path methods never call
+each other); `Sorting/MergeSort.cs` (§11) hit two genuinely real findings instead — a five-parameter
+`SortRange` and a six-parameter `Merge`, both fixed by grouping the range into `SortBounds` (§11.3)
+rather than waived, and a five-section `Merge` shortened to a single counted loop (§11's
+`MergeRunsIntoBuffer`) instead of three separate merge/drain loops.
 
 ## 7. Resolved asymmetries
 
@@ -366,3 +371,186 @@ wrote itself. `DynamicArray.cs` stays completely unaware `IRandomAccessSequence<
 zero changes to `DynamicArray.cs` — exactly the demonstration §8's "implementation independence"
 argument calls for, using a structure this repo already had for an unrelated reason instead of a
 contrived second example.
+
+## 10. Worked example: `Collections/DisjointSet`
+
+`Collections/DisjointSet` is this repo's first equivalence-class structure, and its first
+demonstration that a choice which *looks* exactly like Heap's Min-vs-Max axis can still fail to
+earn a Topology witness. Where `Collections/Heap` needed a Topology witness over an obvious
+Representation, and `Searching/BinarySearch` needed a new Representation over an already-settled
+Topology, Union-Find needs neither: the representation is a concrete two-array forest, and the
+one axis that looks variable turns out to be a Complexity law instead.
+
+| File | Axis | Why |
+| --- | --- | --- |
+| [`Collections/DisjointSet/DisjointSetForest.cs`](DSAExperimentation/Collections/DisjointSet/DisjointSetForest.cs) | Representation | Parallel `parent`/`rank` `int[]` fields, fixed-size at construction — concrete, not an interface, since exactly one physical layout exists today (§5 step 3) |
+| [`Collections/DisjointSet/DisjointSet.cs`](DSAExperimentation/Collections/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`Connected` — path compression and union-by-rank, both hardcoded, not swappable |
+
+### 10.1 Why the linking policy is a Complexity law, not a Topology witness
+
+Union-by-rank vs. union-by-size vs. naive/arbitrary linking looks, on the surface, exactly like
+Heap's Min-vs-Max choice: a decision re-made on every call (`Union`, here; `HasPriority`'s
+comparison, there) that branches control flow. §9.1 already warns that call-frequency isn't the
+discriminator — but the sharper test this example adds is: **does the choice change the
+observable output, or only the cost of producing it?** `MinHeapOrder` vs. `MaxHeapOrder` changes
+*which value `Pop()` returns* — a real, caller-visible semantic difference. No linking policy ever
+changes *which partition `Find`/`Connected` report* for a given sequence of calls — every policy,
+including a deliberately bad one, computes the identical equivalence classes. Only tree height,
+and therefore amortized cost, differs: O(n) worst case with neither optimization, O(log n)
+amortized with only one, O(α(n)) — effectively constant — with both path compression and
+rank-guided linking applied together. That is §5's Complexity-law row verbatim ("`Get` assumed
+O(1); a slower representation degrades big-O with no compiler error"), so the policy is hardcoded,
+unconditionally, inside `Union` rather than exposed as a generic witness. Path compression itself
+isn't even a law in this sense — no external caller could violate it, since nothing outside
+`Find`'s own walk ever touches `SetParent` — it's pure Operations-internal mechanics, the same
+status `Heap`'s `SiftUp`/`SiftDown` already have.
+
+### 10.2 Why the partition itself needs no Topology witness at all
+
+Separately from the linking policy, the equivalence-class invariant that `Find`/`Union` maintain —
+reflexive, symmetric, transitive by construction — needs no witness either, for the same reason
+`HashMap`'s "at most one value per key" doesn't (§4.1): there is no `MinDisjointSet` vs.
+`MaxDisjointSet`, no second variant this library could enumerate. A correct `Find`/`Union`
+implementation *cannot* produce a non-equivalence-relation result, and no caller input can make it
+try — a stronger guarantee than `BinarySearch`'s sortedness precondition (§9.1), which a caller
+*can* violate by passing an unsorted sequence. `DisjointSet` therefore has an Operations layer and
+a Representation layer, but no Topology axis of its own at all — the same shape `HashMap`/`Set`
+already have in §4.1's table.
+
+### 10.3 A first non-generic multi-file structure, and the C# wrinkle that comes with it
+
+Every other multi-file `Collections/**` structure (`Heap<T,TOrder>`, `Stack<T>`, `Deque<T>`,
+`HashMap<TKey,TValue>`) is generic, so a bare reference to its own name is never ambiguous: a
+type-argument list (`Heap<int, MinHeapOrder<int>>`) is something no namespace can have, so the
+compiler always resolves it as the type. `DisjointSet` is dense-int-indexed by design (§10.4), not
+generic over an element type, so a bare `new DisjointSet(3)` reference from
+`DSAExperimentation.Tests.Collections.DisjointSet` has no such disambiguator — namespace-member
+lookup finds the test file's own enclosing namespace (a nested member of
+`DSAExperimentation.Tests.Collections`) before any `using` directive is ever consulted, and fails
+with "`DisjointSet` is a namespace but is used like a type." A same-named `using` alias doesn't
+help, since that lookup order is unaffected by which names a `using` brings in; only a
+*differently*-named alias (`DisjointSetOperations` in `DisjointSetTests.cs`) resolves it. This is
+a real, repo-first consequence of keeping the Representation dense-int-indexed rather than generic
+— not a naming mistake to fix, just the first time this shape has come up.
+
+### 10.4 Dense-int-indexed today, not generic over `T`
+
+`DisjointSetForest` is fixed-size at construction with no growth path — a real departure from
+every other `Collections/**` Representation (`HeapArray`/`DynamicArray`/`HashMap` all start empty
+and grow), because a disjoint-set forest's universe of ids is conventionally known upfront, the
+same way CLRS's own "disjoint-set forest" is presented. It is not generic over an element type `T`
+either: ids are plain `int`s in `[0, Count)`, assigned by the caller before any `Find`/`Union`
+call — an unchecked precondition the same shape as `BinarySearch`'s sortedness (§9.1). This is a
+deliberate minimal-generality choice, not an oversight: nothing in this repo yet needs a
+`Dictionary<T,int>` id-assignment layer, and every other first-cut Representation here
+(`HeapArray<T>`, `ArraySequence<T>`) started at the minimal generality its one known consumer
+needed rather than the most general shape imaginable. If a generic-`T` consumer appears later (a
+Kruskal's-MST algorithm under `Graph/Algorithms` would be the natural first one, mirroring
+`ShortestPath` becoming `Heap`'s first real consumer per §4), the right shape is a `DisjointSet<T>`
+*wrapper* composing this concrete type plus a `Dictionary<T,int>` — composition over redesign, the
+same relationship `Stack`/`Queue` already have with `DynamicArray`/`Deque` (§4.1).
+
+## 11. Worked example: `Sorting/MergeSort`
+
+`Sorting/MergeSort` is this repo's second checklist-first algorithm after `Searching/BinarySearch`,
+and the first built specifically to show that "the same capability shape" is not grounds to reuse
+another domain's Representation contract. Both algorithms need indexed access to a sequence; only
+one of them needs to write it back.
+
+| File | Axis | Why |
+| --- | --- | --- |
+| [`Sorting/IIndexedSequence.cs`](DSAExperimentation/Sorting/IIndexedSequence.cs) | Representation | Indexed get/set view, generic over the element type alone — earns the interface on day one via two witnesses, same §5-step-3 exception `IRandomAccessSequence<T>` used |
+| [`Sorting/ArrayIndexedSequence.cs`](DSAExperimentation/Sorting/ArrayIndexedSequence.cs), [`Sorting/DynamicArrayIndexedSequence.cs`](DSAExperimentation/Sorting/DynamicArrayIndexedSequence.cs) | Representation | Two witnesses satisfying the doubled O(1) obligation, for the same two physical reasons `ArraySequence`/`DynamicArraySequence` already do |
+| [`Sorting/SortBounds.cs`](DSAExperimentation/Sorting/SortBounds.cs) | Representation | Groups the `[Low, High]` range being sorted — an immutable value bundle, not a mutable shared cursor |
+| [`Sorting/MergeSort.cs`](DSAExperimentation/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; owns neither witness |
+
+### 11.1 Domain separation is the reason for a new contract, not read/write alone
+
+`IIndexedSequence<T>` exists because `Sorting` is a distinct domain from `Searching`, per §5.5 —
+that is the primary reason, and it holds regardless of operation-set overlap. Stating "it needs
+`Set` and `IRandomAccessSequence<T>` doesn't have one" as the *sole* justification would wrongly
+imply that a future `Sorting` algorithm needing only `Get` could then reuse `Searching`'s
+interface; §5.5's rule fires on domain ownership, not on whether the method lists happen to
+differ. The read/write mismatch here is real and reinforcing — `IRandomAccessSequence<T>` could
+not satisfy `Set` even if reuse were otherwise permitted — but it is secondary to the domain
+argument, not a replacement for it.
+
+### 11.2 A law a read-only contract never had to state
+
+`IRandomAccessSequence<T>`'s only obligation is that `Get` be O(1) (§9.3). `IIndexedSequence<T>`
+doubles that (`Get` *and* `Set`), and adds one `Get`-only contracts never needed: because a
+`TSequence` witness is a `struct` passed **by value** into every recursive call `MergeSort` makes,
+`Set`'s mutation is only visible across those copies if the copied struct still aliases the same
+backing store — true for both witnesses here (`T[]` and `DynamicArray<T>` are reference types),
+but not guaranteed by the contract itself. A hypothetical future witness wrapping a value-type
+field directly would compile fine and silently drop every `Set` made through a copy — a
+correctness law, not a performance one, and one only a read/write contract can even have.
+
+### 11.3 No `SearchRange`-style mutable cursor, and no witness for the comparer
+
+`SortBounds` is an immutable `readonly record struct`, not a mutable struct narrowed in place by
+`ref` the way `BinarySearch`'s `SearchRange` is. The difference is structural, not stylistic:
+`BinarySearch` narrows *one shared* range across loop iterations; `MergeSort`'s recursion splits
+into *two independent, non-shared* sub-ranges per call, so there is nothing for a shared,
+in-place-mutated cursor to buy — inventing one anyway would be pattern-mimicry without the
+underlying need. `SortBounds` exists purely as this repo's standard "group related parameters
+into a type" recipe (§6), reducing `SortRange`/`Merge`/`MergeRunsIntoBuffer`/
+`CopyBufferIntoSequence` back under the parameter-count gate's limit.
+
+The comparer stays a plain `IComparer<T>` parameter, same §9.2 reasoning as `BinarySearch`'s: any
+`T`, any total order, is a valid comparer, an open-ended space no witness could usefully close
+over. There is no precondition law analogous to `BinarySearch`'s sortedness, either — sortedness
+is `MergeSort`'s postcondition, not an assumed input.
+
+## 12. Worked example: `Traversal/DepthFirstSearch`
+
+`Traversal/DepthFirstSearch` is this repo's first algorithm with no Representation axis at all,
+and its first demonstration that a capability which looks exactly like a Graph `Topology` contract
+can still resolve to a plain runtime object once it leaves Graph's domain. It is built entirely
+outside `Graph/**`, generic over nothing but a bare successor function.
+
+| File | Axis | Why |
+| --- | --- | --- |
+| [`Traversal/DepthFirstSearch.cs`](DSAExperimentation/Traversal/DepthFirstSearch.cs) | Operations | `Traverse` — the only file this domain needs; there is no Representation to write |
+
+### 12.1 Why the successor relation is a runtime object, not a witness
+
+`successors: Func<TNode, IEnumerable<TNode>>` is called on every visit and its result drives what
+gets pushed next — superficially an exact match for §5's table row 1 ("actively re-derived every
+step, changes control flow"), the same shape `IGraphTopology<TNode,TChildren>.GetChildren` has
+inside Graph. Reading the table that naively would be a mistake. The actual discriminator, per
+§9.2, is not call frequency but **whether the space of valid choices is closed**:
+`IGraphTopology`/`IDagTopology`/`ITreeTopology` is closed because Graph itself chose to formalize
+exactly three adjacency tiers, each with a differentiated algorithm (`CheckedFold`/`DagFold`/
+`TreeFold`, `TrackedVisitGuard`/`UnguardedVisit`). A standalone successor relation has no such
+enumerable set of "kinds" to close over — a chess-move generator, an infinite lattice, a cyclic
+closure are arbitrary caller logic, not named library variants — so it lands in the same open
+bucket as `IComparer<T>`, row 2, not row 1. There is also nothing to close a witness over even if
+one were wanted: the only tiered hierarchy for "successor relation kinds" anywhere in this
+codebase is Graph's own, and reusing it is exactly what §5.5 forbids.
+
+### 12.2 No Representation axis at all — the mirror image of `DynamicArray`
+
+A `Func<TNode, IEnumerable<TNode>>` has no alternate physical layout to abstract over the way a
+sequence does — it is already the atomic, opaque capability, with nothing for a second
+implementation to vary. The explicit stack and visited set `Traverse` allocates are
+Operations-internal scratch state, the same bucket as Graph's `TrackedVisitGuard` or
+`BinarySearch`'s `SearchRange`, not a Representation of the input. `DynamicArray` is Representation
+with no Topology axis (§4.1); `DepthFirstSearch` is the mirror image — Operations plus an
+open-runtime-object law, with no Representation axis at all. Because it never gets a promise
+stronger than "arbitrary function," it also never earns Graph's `UnguardedVisit`/
+`TrackedVisitGuard` tiering — the visited-set guard here is unconditional, permanently, with no
+faster tier possible.
+
+### 12.3 `notnull`, deliberately not `class` — and the precondition this algorithm can't check
+
+`Traverse<TNode>` constrains `TNode : notnull` and nothing more. Graph's own node-generic code
+constrains `TNode : class`, but that is a Graph-domain assumption about reference identity flowing
+through `IChildren` — not an inherent property of "successor-shaped" algorithms. The essay's own
+implicit-graph illustration (a chess position, generated on demand) is naturally value-typed, and
+this repo's test suite proves it directly with a `readonly record struct Position`. `Traverse` also
+carries a precondition law this repo hasn't needed before: `successors` must produce a *finite*
+reachable set from `start`. An infinite one — with no cycle for the visited set to catch — makes
+`Traverse` run forever, with no compiler or runtime error to catch it, the same unchecked-but-real
+shape as `BinarySearch`'s sortedness (§9.1) or `ShortestPath`'s non-negative-edge-weight assumption
+(§7).

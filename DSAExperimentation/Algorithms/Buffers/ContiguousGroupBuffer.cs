@@ -1,14 +1,13 @@
-namespace DSAExperimentation.Buffers;
+using DSAExperimentation.DataStructures.Buffers;
+
+namespace DSAExperimentation.Algorithms.Buffers;
 
 internal sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> keyComparer)
     where TKey : notnull
 {
     private const string MissingCurrentKeyMessage = "No current group key is available.";
 
-    private readonly List<TItem> _currentGroup = [];
-
-    private TKey? _currentKey;
-    private bool _hasCurrentKey;
+    private readonly ContiguousGroupBufferStorage<TItem, TKey> _storage = new();
 
     public ContiguousGroupBuffer()
         : this(EqualityComparer<TKey>.Default)
@@ -20,39 +19,33 @@ internal sealed class ContiguousGroupBuffer<TItem, TKey>(EqualityComparer<TKey> 
         TKey key,
         Action<IReadOnlyList<TItem>, TKey> visitGroup)
     {
-        if (_hasCurrentKey && !keyComparer.Equals(GetCurrentKey(), key))
+        if (_storage.HasCurrentKey && !keyComparer.Equals(GetCurrentKey(), key))
         {
             Flush(visitGroup);
         }
 
-        _currentKey = key;
-        _hasCurrentKey = true;
-        _currentGroup.Add(item);
+        _storage.SetCurrentKey(key);
+        _storage.AppendToCurrentGroup(item);
     }
 
     public void Flush(Action<IReadOnlyList<TItem>, TKey> visitGroup)
     {
-        if (!_hasCurrentKey || _currentGroup.Count == 0)
+        if (!_storage.HasCurrentKey || _storage.CurrentGroupCount == 0)
         {
             return;
         }
 
-        visitGroup([.. _currentGroup], GetCurrentKey());
-        _currentGroup.Clear();
-        _hasCurrentKey = false;
+        visitGroup(_storage.SnapshotCurrentGroup(), GetCurrentKey());
+        _storage.ClearCurrentGroup();
+        _storage.MarkCurrentKeyConsumed();
     }
 
-    public void Reset()
-    {
-        _currentGroup.Clear();
-        _currentKey = default;
-        _hasCurrentKey = false;
-    }
+    public void Reset() => _storage.ResetAll();
 
     private TKey GetCurrentKey()
-        => _currentKey is null
+        => _storage.CurrentKey is null
             ? ThrowMissingCurrentKey()
-            : _currentKey;
+            : _storage.CurrentKey;
 
     private static TKey ThrowMissingCurrentKey()
         => throw new InvalidOperationException(MissingCurrentKeyMessage);
