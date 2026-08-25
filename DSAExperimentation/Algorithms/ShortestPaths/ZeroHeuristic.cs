@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DSAExperimentation.Algorithms.Graph.ShortestPaths;
+namespace DSAExperimentation.Algorithms.ShortestPaths;
 
 // The default IPathHeuristic - every candidate's priority equals its real
 // accumulated distance, so ShortestPath.Explore under this heuristic *is* Dijkstra,

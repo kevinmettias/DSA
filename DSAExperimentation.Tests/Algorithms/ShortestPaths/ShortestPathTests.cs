@@ -1,10 +1,10 @@
-using DSAExperimentation.Algorithms.Graph.ShortestPaths;
+using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
+using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths;
+namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
 public sealed partial class ShortestPathTests
 {

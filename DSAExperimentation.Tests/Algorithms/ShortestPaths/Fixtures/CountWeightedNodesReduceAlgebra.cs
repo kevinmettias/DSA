@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Reducing;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 internal readonly struct CountWeightedNodesReduceAlgebra : IReduceAlgebra<WeightedNode, int>
 {
