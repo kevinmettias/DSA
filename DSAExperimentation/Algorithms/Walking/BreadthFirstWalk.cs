@@ -1,10 +1,9 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using DSAExperimentation.Algorithms.Graph.Engines.Walking;
 using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
 using DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Walking;
 
 // The single breadth-first engine behind every BFS-shaped consumer - see
 // DepthFirstWalk for the reasoning behind sharing one engine across the tree-only

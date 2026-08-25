@@ -1,9 +1,8 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using DSAExperimentation.Algorithms.Graph.Engines.Walking;
 using DSAExperimentation.Algorithms.Graph.Engines.Traversal.TopDown;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Walking;
 
 // The engine behind ITopDownHooks - see DepthFirstWalk for the shared-engine
 // reasoning (topology-agnostic, TGuard as the one tree-vs-graph axis). Structurally

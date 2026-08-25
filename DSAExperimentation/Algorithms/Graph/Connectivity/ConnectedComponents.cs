@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
-using DSAExperimentation.Algorithms.Graph.Engines.Walking;
+using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Graph.Connectivity;
 

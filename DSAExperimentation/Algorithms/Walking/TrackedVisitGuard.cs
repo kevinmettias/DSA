@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Walking;
 
 // The graph-safe guard: IGraphTopology promises nothing about cycles or unique
 // ancestry, so each child is checked against (and added to) a visited-set before
