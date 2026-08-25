@@ -1,5 +1,6 @@
 using DSAExperimentation.Graph.Algorithms.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Graph.Engines.Folding;
 
 namespace DSAExperimentation.Graph.Engines.Dags.Trees;

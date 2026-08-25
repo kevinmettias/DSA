@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Contracts.Topologies;
+using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
 namespace DSAExperimentation.Graph.Algorithms.Grids;
 

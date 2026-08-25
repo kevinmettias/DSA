@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Graph.Engines.Dags;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags;
 
-namespace DSAExperimentation.Graph.Engines.Dags.Trees;
+namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 // A refinement of IDagTopology, not a restatement: implementing this additionally
 // promises unique ancestry (no sharing) on top of the acyclicity IDagTopology

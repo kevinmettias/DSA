@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Graph.Contracts.Topologies;
-using DSAExperimentation.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Graph.Engines.Walking;
 
 namespace DSAExperimentation.Graph.Engines.Traversal.TopDown;

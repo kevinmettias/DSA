@@ -2,7 +2,7 @@ using System.Numerics;
 
 using DSAExperimentation.Algorithms.Heap;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Graph.Contracts.Topologies;
+using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
 namespace DSAExperimentation.Graph.Algorithms.ShortestPaths;
 
