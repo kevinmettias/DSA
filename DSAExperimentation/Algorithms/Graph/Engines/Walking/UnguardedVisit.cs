@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
 
 // The tree-only guard: ITreeTopology already promises unique ancestry, so every
 // child is visited unconditionally. Stateless, so the constrained call through this

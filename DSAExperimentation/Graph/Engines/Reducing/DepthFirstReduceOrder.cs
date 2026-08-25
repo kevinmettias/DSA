@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.Algorithms.Graph.Engines.Walking;
 using DSAExperimentation.Graph.Engines.Walking;
 
 namespace DSAExperimentation.Graph.Engines.Reducing;
