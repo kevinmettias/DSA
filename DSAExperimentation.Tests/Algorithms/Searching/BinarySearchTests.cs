@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Collections.DynamicArray;
+using DSAExperimentation.Algorithms.DynamicArray;
 using DSAExperimentation.DataStructures.Searching;
 
 namespace DSAExperimentation.Tests.Algorithms.Searching;
