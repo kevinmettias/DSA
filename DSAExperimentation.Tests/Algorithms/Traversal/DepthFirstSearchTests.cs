@@ -1,6 +1,6 @@
-using DSAExperimentation.Traversal;
+using DSAExperimentation.Algorithms.Traversal;
 
-namespace DSAExperimentation.Tests.Traversal;
+namespace DSAExperimentation.Tests.Algorithms.Traversal;
 
 public sealed partial class DepthFirstSearchTests
 {
