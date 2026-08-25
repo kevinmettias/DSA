@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Collections.Heap;
+namespace DSAExperimentation.DataStructures.Heap;
 
 // The single axis Heap<T,TOrder> varies on: whether a candidate outranks the value it would
 // replace at the root. Unlike IGraphTopology<TNode,TChildren>, this carries no representation

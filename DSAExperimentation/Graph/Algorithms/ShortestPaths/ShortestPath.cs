@@ -1,6 +1,6 @@
 using System.Numerics;
 
-using DSAExperimentation.Collections.Heap;
+using DSAExperimentation.Algorithms.Heap;
 using DSAExperimentation.Graph.Contracts.Ordering;
 using DSAExperimentation.Graph.Contracts.Topologies;
 

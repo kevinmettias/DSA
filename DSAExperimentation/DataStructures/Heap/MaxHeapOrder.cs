@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Collections.Heap;
+namespace DSAExperimentation.DataStructures.Heap;
 
 internal readonly struct MaxHeapOrder<T> : IHeapOrder<T>
     where T : IComparable<T>
