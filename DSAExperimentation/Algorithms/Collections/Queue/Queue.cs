@@ -1,6 +1,6 @@
 using DSAExperimentation.Collections.Deque;
 
-namespace DSAExperimentation.Collections.Queue;
+namespace DSAExperimentation.Algorithms.Collections.Queue;
 
 // FIFO is Deque restricted to one end each: Enqueue only ever pushes the back,
 // Dequeue only ever pops the front - the same "sequence + access constraint"

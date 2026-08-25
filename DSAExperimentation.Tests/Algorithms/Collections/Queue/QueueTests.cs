@@ -1,6 +1,6 @@
-using DsaQueue = DSAExperimentation.Collections.Queue.Queue<int>;
+using DsaQueue = DSAExperimentation.Algorithms.Collections.Queue.Queue<int>;
 
-namespace DSAExperimentation.Tests.Collections.Queue;
+namespace DSAExperimentation.Tests.Algorithms.Collections.Queue;
 
 public sealed partial class QueueTests
 {
