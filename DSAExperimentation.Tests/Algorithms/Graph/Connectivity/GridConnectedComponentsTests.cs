@@ -1,5 +1,5 @@
 using DSAExperimentation.Algorithms.Graph.Connectivity;
-using DSAExperimentation.Graph.Algorithms.Grids;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
 

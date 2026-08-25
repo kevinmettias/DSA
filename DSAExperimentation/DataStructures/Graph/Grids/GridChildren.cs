@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
-namespace DSAExperimentation.Graph.Algorithms.Grids;
+namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // Computed on demand from geometry, the same way SparseArrayChildren scans slots
 // instead of storing a materialized list - up to 4 orthogonal neighbors, filtered to

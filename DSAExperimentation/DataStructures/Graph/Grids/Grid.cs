@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Algorithms.Grids;
+namespace DSAExperimentation.DataStructures.Graph.Grids;
 
 // The shared, read-only context a GridNode carries a reference to - the same
 // pattern every other topology relies on (a node knows how to find its own

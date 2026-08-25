@@ -1,6 +1,7 @@
-using DSAExperimentation.Graph.Algorithms.Grids;
+using DSAExperimentation.Algorithms.Graph.Grids;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
-namespace DSAExperimentation.Tests.Graph.Algorithms.Grids;
+namespace DSAExperimentation.Tests.Algorithms.Graph.Grids;
 
 public sealed partial class GridTests
 {

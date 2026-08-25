@@ -1,7 +1,8 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
 
-namespace DSAExperimentation.Graph.Algorithms.Grids;
+namespace DSAExperimentation.Algorithms.Graph.Grids;
 
 // Reuses Reduce.Graph directly, unlike LowestCommonAncestor - see
 // DistanceMapReduceAlgebra for why this particular runtime-parameterized query
