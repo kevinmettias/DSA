@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Algorithms.Graph.Engines.Traversal.TopDown;
 
-namespace DSAExperimentation.Graph.Algorithms.Paths;
+namespace DSAExperimentation.Algorithms.Graph.Paths;
 
 // A canonical proof for ITopDownHooks: every root-to-leaf path is naturally
 // top-down (a path is exactly "the state a node inherited from its parent, plus

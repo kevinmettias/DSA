@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Graph.Engines.Folding;
 
-namespace DSAExperimentation.Graph.Algorithms.Metrics;
+namespace DSAExperimentation.Algorithms.Graph.Metrics;
 
 // The binary-tree diameter algorithm generalized to arbitrary arity: a path through
 // a node can only descend into at most two distinct children, so "diameter through

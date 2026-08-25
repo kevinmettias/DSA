@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
-namespace DSAExperimentation.Graph.Algorithms.Ancestry;
+namespace DSAExperimentation.Algorithms.Graph.Ancestry;
 
 // Bespoke, like Dijkstra: reuses the topology/children/order contracts for
 // adjacency-shape genericity, but is NOT expressed as an IFoldAlgebra. Every member
