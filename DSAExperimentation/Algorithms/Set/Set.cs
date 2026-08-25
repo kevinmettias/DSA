@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.HashMap;
 
-namespace DSAExperimentation.Algorithms.Collections.Set;
+namespace DSAExperimentation.Algorithms.Set;
 
 // Backed by HashMap<T,bool> the same way java.util.HashSet is backed by
 // HashMap<E,Object> - membership is exactly "is this key present," so the value is
