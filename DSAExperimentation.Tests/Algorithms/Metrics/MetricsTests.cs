@@ -1,8 +1,8 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Algorithms.Metrics;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Metrics;
+namespace DSAExperimentation.Tests.Algorithms.Metrics;
 
 public sealed partial class MetricsTests
 {

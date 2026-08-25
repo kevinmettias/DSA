@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Folding;
 
-namespace DSAExperimentation.Algorithms.Graph.Metrics;
+namespace DSAExperimentation.Algorithms.Metrics;
 
 internal readonly struct SizeAlgebra<TNode> : IFoldAlgebra<TNode, int>
 {
