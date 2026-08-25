@@ -1,4 +1,4 @@
-using DSAExperimentation.Collections.Deque;
+using DSAExperimentation.Algorithms.Deque;
 
 namespace DSAExperimentation.Algorithms.Collections.Queue;
 
