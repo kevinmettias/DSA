@@ -5,7 +5,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 
-namespace DSAExperimentation.Algorithms.Graph.ShortestPaths;
+namespace DSAExperimentation.Algorithms.ShortestPaths;
 
 // Dijkstra and A* are the same priority-queue relaxation loop; the only things that
 // vary between them are what a candidate's queue priority is (real distance alone,

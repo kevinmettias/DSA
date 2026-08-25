@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 internal static class WeightedGraphs
 {

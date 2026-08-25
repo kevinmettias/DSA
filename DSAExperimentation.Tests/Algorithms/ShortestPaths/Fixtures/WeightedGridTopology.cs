@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 internal readonly struct WeightedGridTopology : IEdgeTopology<WeightedGridNode, ListEdges<WeightedGridNode, int>, int>
 {

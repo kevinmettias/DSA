@@ -1,6 +1,6 @@
-using DSAExperimentation.Algorithms.Graph.ShortestPaths;
+using DSAExperimentation.Algorithms.ShortestPaths;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 // Straight-line (Manhattan) distance on a unit-weight 4-directional grid: consistent,
 // not merely admissible - moving to an adjacent cell changes the Manhattan distance to
