@@ -207,6 +207,14 @@ only transitively.
   `Collections/Heap`'s `Heap<T,TOrder>` instead of the BCL `PriorityQueue<TNode,TWeight>`, via a
   `(TNode Node, TWeight Priority)` element ordered by a priority-only `IHeapOrder` witness — no
   change to `Heap`/`HeapArray` themselves was needed.
+- **Fixed**: `IPathHeuristic.cs`'s contract used to require only that a heuristic be *admissible*
+  (never overestimates). That's weaker than what `ShortestPath.Traverse`'s settle-once design
+  actually needs — *consistent* (`h(u) <= cost(u,v) + h(v)` on every edge), which is what guarantees
+  a node's first pop already carries its true shortest distance. An admissible-but-inconsistent
+  heuristic can still bias the search, but on some graph shapes can make `Traverse` settle a node at
+  a non-optimal distance with nothing here to catch it. The contract now says "consistent" and
+  explains why; `ShortestPath.cs` also now documents its non-negative-edge-weight precondition,
+  which neither `Dijkstra` nor `AStar` checks or ever did.
 
 ## 8. Capability contracts: binding algorithms to what they need, not what they're given
 
@@ -221,8 +229,9 @@ There are three kinds of independence here, in decreasing order of how safely th
 - **Semantic independence** — already how this repo works, and the safest kind.
   `IGraphTopology<TNode,TChildren>.GetChildren` doesn't care whether children come from
   `ListChildren`, `SparseArrayChildren`, or `GridChildren`; `IPathHeuristic.cs`'s own doc comment
-  ("admissible — never overestimates") is this repo's existing example of a stated semantic *law* —
-  `L` already has precedent here, even though its complexity half doesn't yet.
+  (requiring a *consistent* heuristic, not merely an admissible one — see §7's entry on why) is this
+  repo's existing example of a stated semantic *law* — `L` already has precedent here, even though
+  its complexity half doesn't yet.
 - **Implementation independence** — often true, not universally guaranteed. The same `Reduce`/
   `Fold`/`Walk` code already runs unchanged over every `IChildren` implementation in this repo. It's
   not a law, though — a future structure could need a genuinely different optimal algorithm per
@@ -243,3 +252,89 @@ representation swap from silently regressing performance instead of failing loud
 [`Heap.cs`](DSAExperimentation/Collections/Heap/Heap.cs) and
 [`HeapArray.cs`](DSAExperimentation/Collections/Heap/HeapArray.cs) carry exactly this cross-reference
 as the worked example.
+
+## 9. Worked example: `Searching/BinarySearch`
+
+`Searching/BinarySearch` is this repo's first non-Graph, non-Collections domain, and its first
+algorithm bound to a Representation contract it defines for itself rather than one it's handed.
+Where `Collections/Heap` needed one new Topology witness (`IHeapOrder`) over an already-obvious
+Representation (a flat array), binary search needs the opposite: no Topology witness at all
+(sortedness isn't a variant to choose between — see §9.1), but a brand-new Representation contract,
+because "the sequence being searched" is the one part of this problem genuinely open to more than
+one physical layout.
+
+| File | Axis | Why |
+| --- | --- | --- |
+| [`Searching/IRandomAccessSequence.cs`](DSAExperimentation/Searching/IRandomAccessSequence.cs) | Representation | An indexable view over an already-sorted sequence, generic over the element type alone — `Find`'s only physical-layout requirement |
+| [`ArraySequence.cs`](DSAExperimentation/Searching/ArraySequence.cs), [`DynamicArraySequence.cs`](DSAExperimentation/Searching/DynamicArraySequence.cs) | Representation | Two witnesses satisfying the O(1)-`Get` obligation above, for two different physical reasons |
+| [`BinarySearch.cs`](DSAExperimentation/Searching/BinarySearch.cs) | Operations | `Find` — the bisection loop; owns neither Representation witness |
+
+### 9.1 Why sortedness is a law, not a Topology witness
+
+Sortedness is modeled as a class-doc-comment precondition, the same shape as `ShortestPath.cs`'s
+non-negative-edge-weight law (§3.3, §8) — established once by the caller before `Find` is ever
+called, never rechecked. The test for which shape a given requirement earns isn't "is it used more
+than once," it's *does the algorithm actively re-derive it at every step, or does it lean on it once
+and trust it from then on*. `IHeapOrder<T>.HasPriority` is re-derived: `Heap<T,TOrder>`'s sift walk
+calls it on every comparison, and the result of that call decides what happens next — the witness
+*is* the algorithm's control flow. `Find`'s comparisons never do anything analogous for sortedness:
+`comparer.Compare` decides which half to search *assuming* the sequence is already ordered by that
+same comparer, but nothing about that comparison verifies, re-derives, or depends differently on
+whether the assumption holds anywhere upstream. Get it wrong and `Find` still runs to completion and
+returns an answer — just a silently wrong one, with no failing build, exactly the failure mode
+`ShortestPath.cs`'s own comment already names for a negative edge weight.
+
+### 9.2 Why the comparer stays a runtime object, not a witness
+
+`Find`'s comparer is a plain `IComparer<T>` method parameter — `HashMap<TKey,TValue>`/
+`ContiguousGroupBuffer<TItem,TKey>`'s precedent (§4.1) — not a `static abstract` witness like
+`IHeapOrder<T>`. The discriminator is not how often the comparer gets called: `HashMap.Get`'s
+`_comparer.Equals` already runs on every probe of a bucket's chain, exactly as often as `Find`'s
+`comparer.Compare` runs on every bisection step, and `HashMap` is still correctly modeled as an open
+runtime object. The discriminator is whether the space of valid choices is closed. `IHeapOrder<T>` is
+closed to exactly two shapes this library enumerates itself (`MinHeapOrder`, `MaxHeapOrder`), with
+`ByPriorityOrder` only ever a *projection* of that same binary choice onto a different field, never a
+third fundamentally different ordering. `IComparer<T>` is not closed at all — any `T`, any total
+order a caller wants, is a valid comparer, the same openness that already justifies `HashMap`'s and
+`ContiguousGroupBuffer`'s choice for equality. `Find`'s default overload additionally constrains
+`T : IComparable<T>` before delegating to `Comparer<T>.Default` — the same
+compile-time-safe-default-over-runtime-only-default shape `HashMap`'s parameterless constructor
+already uses for `EqualityComparer<TKey>.Default`.
+
+### 9.3 Stating the O(1) assumption three times, not once
+
+`HeapArray.cs`/`Heap.cs` (§8) state the O(1) assumption twice, because there's one concrete
+Representation class making the claim true and one Operations class whose complexity depends on it.
+`IRandomAccessSequence<T>` splits Representation into two implementations from day one (see §9.4),
+so the assumption is stated three times instead, each from a different angle so none of them repeat:
+`IRandomAccessSequence<T>`'s own doc comment states the *obligation* every implementation is expected
+to satisfy — new relative to `IChildren<TNode>`, whose doc comment never had to say this, since
+nothing in `Graph/**` depends on `Get`'s cost (§2). `ArraySequence<T>`/`DynamicArraySequence<T>`'s
+doc comments each state *why their own backing store actually satisfies it*, for two different
+physical reasons. `BinarySearch.cs`'s doc comment states the *consequence* for its own complexity
+claim if some future implementation doesn't.
+
+### 9.4 A second Representation, earned on day one
+
+Unlike `HeapArray<T>` (§4 — one implementation, so no interface, per §5's recipe),
+`IRandomAccessSequence<T>` launches with two implementations already, `ArraySequence<T>` and
+`DynamicArraySequence<T>` — the interface's existence is earned from day one rather than deferred
+the way `IChildren` waited for `SparseArrayChildren` to justify it.
+
+`DynamicArraySequence<T>` composes `Collections.DynamicArray.DynamicArray<T>` directly, unmodified.
+This is a new variant of cross-domain reuse, not a repeat of an existing one. It isn't
+`ByPriorityOrder` implementing `Collections.Heap`'s public `IHeapOrder<T>` as a client (§4's
+precedent — one domain implementing another's interface without ever touching its Representation).
+It isn't `Stack`/`Queue` composing `DynamicArray<T>`/`Deque<T>` either (§4.1's precedent —
+composition *within* `Collections/**`, the same domain both sides belong to). It's `Searching`, a
+domain outside `Collections/**` altogether, adapting `Collections/DynamicArray`'s own Representation
+*type* — not an interface belonging to it — into a Representation contract `Searching` defines for
+itself. That's still consistent with §5's "never reuse another domain's Representation… contracts"
+line: what's prohibited is reusing another domain's *contract* (forcing `DynamicArray<T>` itself to
+implement `IRandomAccessSequence<T>`, coupling it to a domain it doesn't belong to), not consuming
+its already-public concrete type as one of several witnesses for a contract the consuming domain
+wrote itself. `DynamicArray.cs` stays completely unaware `IRandomAccessSequence<T>` exists;
+`DynamicArraySequence<T>` absorbs all of the coupling on `Searching`'s side, one-directionally, with
+zero changes to `DynamicArray.cs` — exactly the demonstration §8's "implementation independence"
+argument calls for, using a structure this repo already had for an unrelated reason instead of a
+contrived second example.
