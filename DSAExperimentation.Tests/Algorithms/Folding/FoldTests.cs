@@ -1,11 +1,11 @@
 using DSAExperimentation.Algorithms.Graph.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Algorithms.Graph.Engines.Folding;
-using DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+using DSAExperimentation.Algorithms.Folding;
+using DSAExperimentation.Algorithms.Folding.Dags.Trees;
+using DSAExperimentation.Tests.Algorithms.Folding.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Folding;
+namespace DSAExperimentation.Tests.Algorithms.Folding;
 
 public sealed partial class FoldTests
 {

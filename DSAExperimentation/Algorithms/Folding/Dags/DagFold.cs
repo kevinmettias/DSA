@@ -1,8 +1,8 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags;
-using DSAExperimentation.Algorithms.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Folding;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Dags;
+namespace DSAExperimentation.Algorithms.Folding.Dags;
 
 // The trusted counterpart to CheckedFold: IDagTopology already promises acyclicity,
 // so there's nothing to defend against - no inProgress tracking, no cycle-detection

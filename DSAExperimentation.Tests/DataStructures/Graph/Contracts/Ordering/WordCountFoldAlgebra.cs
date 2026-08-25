@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Folding;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 

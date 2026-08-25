@@ -1,7 +1,7 @@
-using DSAExperimentation.Algorithms.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Folding.Fixtures;
 
 // Counts how many times Combine actually fires - used to prove DagFold memoizes a
 // shared descendant instead of recomputing it once per incoming path.
