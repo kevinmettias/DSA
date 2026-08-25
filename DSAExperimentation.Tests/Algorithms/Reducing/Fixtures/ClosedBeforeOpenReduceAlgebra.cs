@@ -1,7 +1,7 @@
-using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Reducing.Fixtures;
 
 // Records, for every node, how many OTHER nodes had already fully finished (Exit'd)
 // by the moment this one started (Enter'd). That's a global sequential fact about

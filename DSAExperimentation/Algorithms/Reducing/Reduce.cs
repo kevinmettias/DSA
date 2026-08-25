@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Algorithms.Walking;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+namespace DSAExperimentation.Algorithms.Reducing;
 
 // One entry point per topology tier - mirroring DepthFirstTraversal/
 // BreadthFirstTraversal's Walk/WalkGraph split: which guard gets wired in is chosen
