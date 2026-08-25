@@ -1,8 +1,8 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Algorithms.Graph.Engines.Folding;
+using DSAExperimentation.Algorithms.Folding;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
+namespace DSAExperimentation.Algorithms.Folding.Dags.Trees;
 
 internal static class TreeFold
 {

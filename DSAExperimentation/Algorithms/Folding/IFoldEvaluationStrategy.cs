@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Folding;
+namespace DSAExperimentation.Algorithms.Folding;
 
 // How to *compute* a fold, not what it means - see the purity caveat on
 // IFoldAlgebra. Interchangeable strategies for pure algebras; NOT interchangeable

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Folding;
+namespace DSAExperimentation.Algorithms.Folding;
 
 // The catamorphism: Combine only ever sees a node together with its already-folded
 // children, never anything about visit order or timing. That's what makes a fold's

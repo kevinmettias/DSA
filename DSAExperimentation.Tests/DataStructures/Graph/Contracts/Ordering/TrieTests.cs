@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 

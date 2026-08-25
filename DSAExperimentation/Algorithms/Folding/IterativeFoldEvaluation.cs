@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Folding;
+namespace DSAExperimentation.Algorithms.Folding;
 
 // Discovers every node breadth-first (an explicit queue, not the call stack), then
 // combines bottom-up in reverse discovery order. The breadth-first discovery is

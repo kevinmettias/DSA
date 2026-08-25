@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Folding;
+namespace DSAExperimentation.Algorithms.Folding;
 
 // Fold generalized to an untrusted IGraphTopology: memoizes each node's result (so a
 // shared descendant is combined once, not once per incoming path) and detects true

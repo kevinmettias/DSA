@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Folding;
+namespace DSAExperimentation.Algorithms.Folding;
 
 // Runs two fold algebras together in a single traversal instead of two separate
 // ones. This works with zero changes to TreeFold/RecursiveFoldEvaluation/
