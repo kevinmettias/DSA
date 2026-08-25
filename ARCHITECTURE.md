@@ -218,6 +218,15 @@ algorithm, a new structure, or both, run this in order:
    restates this "don't build structure before it's earned" rule for topology tiers specifically).
    This is the one place this reorg changes future behavior: it decides where a *new* file gets
    created, not just where old ones were moved.
+7. **Not everything that composes a Representation and adds checks belongs in `Algorithms/`.**
+   When an Operations type is hardwired to exactly one concrete Representation — no interface, no
+   second implementation possible — it isn't decoupled from a data structure the way
+   `ShortestPath`/`MergeSort`/`Reduce`/`Fold` are (each generic over an interface with genuine
+   multiple implementations); it *is* the data structure, with its bounds-checking layer split out
+   for the reasons in step 4. That pairing co-locates under `DataStructures/<Structure>/`
+   (`Heap.cs` beside `HeapArray.cs`, `Stack.cs` beside the `DynamicArray.cs` it hardcodes) — never
+   under `Algorithms/`. Reserve `Algorithms/<Utility>/` for the type that's actually generic over a
+   capability interface with real substitutability (§13.5).
 
 This is what already happened, in order, for `Searching/BinarySearch` (§9); `Collections/Heap` (§4)
 and `Graph/**` (§3) arrived at the same shape but retrofitted, with the Topology witness pulled out
@@ -591,7 +600,7 @@ Every worked example above (§3–§12) was written against a domain-first tree 
 `Collections/Heap/**`, `Searching/**`, `Sorting/**`, `Traversal/**` — where a domain's
 Representation, Topology, and Operations files all lived in one folder together, and the
 three-axis classification was a *convention* the file tree didn't enforce. This section documents
-two successive reorgs that made that classification physical.
+three successive reorgs that made that classification physical.
 
 **First reorg — split by axis.** Every file in both `DSAExperimentation/` and
 `DSAExperimentation.Tests/` moved under exactly one of two top-level folders, `DataStructures/` or
@@ -644,16 +653,21 @@ comment/generic bound, not a folder, until a second tier actually shows up.
 ### 13.3 Where everything lives now
 
 **`DataStructures/`** stays organized by domain, since a data structure's identity is its
-representation/topology:
+representation/topology. This includes every Operations type with no capability interface to be
+generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArray`, `DisjointSet`,
+`Deque`, `Stack`, `Queue`, `Set` all co-locate Representation and Operations in the same folder:
 
 | Domain | Files |
 | --- | --- |
-| Buffers | `Buffers/ContiguousGroupBufferStorage.cs` |
-| Collections/DisjointSet | `Collections/DisjointSet/DisjointSetForest.cs` |
-| Deque | `Deque/CircularBuffer.cs` |
-| DynamicArray | `DynamicArray/DynamicArrayStorage.cs` |
-| HashMap | `HashMap/{HashMapStorage,HashMapEntry}.cs`, `ArrayGrowth.cs` |
-| Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray}.cs` |
+| Buffers | `Buffers/{ContiguousGroupBufferStorage,ContiguousGroupBuffer}.cs` |
+| DisjointSet | `DisjointSet/{DisjointSetForest,DisjointSet}.cs` |
+| Deque | `Deque/{CircularBuffer,Deque}.cs` |
+| DynamicArray | `DynamicArray/{DynamicArrayStorage,DynamicArray}.cs` |
+| HashMap | `HashMap/{HashMapStorage,HashMapEntry,HashMap}.cs`, `ArrayGrowth.cs` |
+| Heap | `Heap/{IHeapOrder,MinHeapOrder,MaxHeapOrder,HeapArrayIndex,HeapArray,Heap}.cs` |
+| Stack | `Stack/Stack.cs` (composes `DynamicArray`) |
+| Queue | `Queue/Queue.cs` (composes `Deque`) |
+| Set | `Set/Set.cs` (composes `HashMap<T,bool>`) |
 | Searching | `Searching/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,SearchRange}.cs` |
 | Sorting | `Sorting/{IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence,SortBounds}.cs` |
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
@@ -661,10 +675,11 @@ representation/topology:
 | Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` |
 | Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
 
-**`Algorithms/`** is organized by utility instead — the second reorg's whole point. Folders with no
-row below (`Deque`, `DynamicArray`, `HashMap`, `Heap`, `Stack`, `Queue`, `Set`, `DisjointSet`,
-`Buffers`, `Searching`, `Sorting`) have no topology axis at all (§4.1/§10.2), so their folder name
-already *is* the utility name and needed no reorganizing:
+**`Algorithms/`** is organized by utility instead — the second reorg's whole point, and after
+§13.5's third reorg it holds *only* things generic over a capability interface with real
+substitutability. `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but still stay under
+`Algorithms/`, since `IRandomAccessSequence`/`IIndexedSequence` each have two real implementations —
+the distinguishing question is interface substitutability, not the topology axis specifically:
 
 | Utility | Files | Topology/strategy tier |
 | --- | --- | --- |
@@ -701,6 +716,33 @@ to waive (the `check-class-size` "two clusters" pattern, several test-file liter
 `check-test-coverage` attribution gap) resurfaces as a raw Nomos gate finding rather than a
 suppressed one until that ledger is rebuilt — expected, not a regression from this reorg.
 
+### 13.5 Third reorg — Operations rejoins Representation when there's no capability interface
+
+The second reorg's utility-first rule still left nine Operations types under `Algorithms/`, each
+named after the single data structure it belongs to: `Buffers`, `Heap`, `HashMap`, `DynamicArray`,
+`DisjointSet`, `Deque`, and — one level removed, each hardcoding one of the previous six rather than
+a dedicated Storage class — `Stack`, `Queue`, `Set`. §2's literal definition of Operations
+("the algorithm/API surface built on top of a Representation constrained by a Topology") covers
+them, but that's not the discriminator that actually matters: `ShortestPath`/`MergeSort`/
+`BinarySearch`/`Reduce`/`Fold` are generic over an *interface* with genuine multiple implementations
+(`IEdgeTopology`, `IRandomAccessSequence`, `IIndexedSequence`,
+`ITreeTopology`/`IDagTopology`/`IGraphTopology`) — decoupled from any one representation, and free
+to run over a different one tomorrow. These nine are hardwired 1:1 to exactly one concrete type,
+with no interface and no second implementation possible — `Heap.cs` only ever composes `HeapArray`,
+`Stack.cs` only ever composes `DynamicArray`. They aren't algorithms decoupled from a data
+structure; they *are* the data structure, with the bounds-checking layer split out (§5 step 7).
+
+So they moved back into `DataStructures/`, alongside their existing Storage (or, for
+`Stack`/`Queue`/`Set`, into a new sibling folder next to the type each one composes) —
+`DataStructures/Heap/Heap.cs` beside `HeapArray.cs`, `DataStructures/Stack/Stack.cs` beside the
+`DynamicArray.cs` it hardcodes. `DisjointSet` also dropped its `Collections/` wrapper in the same
+step, for the same consistency reason the second reorg dropped it from the `Algorithms/` side.
+`Algorithms/` now holds exactly the set of things generic over a capability interface with real
+substitutability — nothing more, nothing less. `Searching`/`Sorting` are the one case that looks
+similar but isn't: they have no *topology* axis either, but `IRandomAccessSequence`/
+`IIndexedSequence` each have two real implementations, so `BinarySearch`/`MergeSort` stay in
+`Algorithms/`, decoupled from either one.
+
 ## 14. Worked example: the three Storage/Operations decompositions
 
 Three bundled classes — `ContiguousGroupBuffer`, `HashMap`, `DynamicArray` — used to fuse storage
@@ -712,14 +754,15 @@ access; Operations owns bounds/precondition checks, throwing, and the one compos
 Each was attempted only after the pattern had been rehearsed on a cheaper case first — `Buffers`
 (zero consumers anywhere) first, `HashMap` second, `DynamicArray` (the highest fan-out) last — and
 each was checked against the full test suite, not just its own domain's tests, before being
-trusted.
+trusted. (Both halves of all three now live under `DataStructures/` per §13.5 — none of these three
+had a capability interface to be generic over, so their Operations half rejoined Storage there.)
 
 ### 14.1 `ContiguousGroupBuffer`
 
 | File | Axis | Why |
 | --- | --- | --- |
 | `DataStructures/Buffers/ContiguousGroupBufferStorage.cs` | Representation | `_currentGroup`/`_currentKey`/`_hasCurrentKey` fields; unchecked `HasCurrentKey`/`CurrentKey`/`CurrentGroupCount`/`AppendToCurrentGroup`/`SnapshotCurrentGroup`/`SetCurrentKey`/`MarkCurrentKeyConsumed`/`ResetAll` |
-| `Algorithms/Buffers/ContiguousGroupBuffer.cs` | Operations | `keyComparer`, `GetCurrentKey`/`ThrowMissingCurrentKey`, composes Storage |
+| `DataStructures/Buffers/ContiguousGroupBuffer.cs` | Operations | `keyComparer`, `GetCurrentKey`/`ThrowMissingCurrentKey`, composes Storage |
 
 The cheapest possible rehearsal of the pattern — zero existing consumers anywhere in the repo at
 the time. `MarkCurrentKeyConsumed` deliberately clears only `_hasCurrentKey`, leaving the stale
@@ -732,7 +775,7 @@ pre-decomposition behavior, which nothing tested before this reorg added a test 
 | --- | --- | --- |
 | `DataStructures/HashMap/HashMapStorage.cs` | Representation | bucket array + separate-chaining entries array + free list; owns `Grow`/`RehashEntryInto`/`CreateEmptyBuckets`/`AllocateEntrySlot` (none touch the comparer) and `Insert(hashCode,key,value)` |
 | `DataStructures/HashMap/HashMapEntry.cs` | Representation | unchanged, moved alongside Storage |
-| `Algorithms/HashMap/HashMap.cs` | Operations | `_comparer`; `TryUpdateExisting`/`FindEntryIndex`/`Remove`'s chain-walk loops, reading each step via raw Storage accessors (`BucketHead`/`EntryNext`/`EntryHashCode`/`EntryKey`/`EntryValue`) |
+| `DataStructures/HashMap/HashMap.cs` | Operations | `_comparer`; `TryUpdateExisting`/`FindEntryIndex`/`Remove`'s chain-walk loops, reading each step via raw Storage accessors (`BucketHead`/`EntryNext`/`EntryHashCode`/`EntryKey`/`EntryValue`) |
 
 The split point here isn't read/write the way `DynamicArray`'s is (§14.3) — it's "needs the
 comparer" vs. "doesn't." `Storage.Insert` absorbs the whole grow-if-needed → recompute-bucket →
@@ -749,9 +792,9 @@ catch a regression here.
 | File | Axis | Why |
 | --- | --- | --- |
 | `DataStructures/DynamicArray/DynamicArrayStorage.cs` | Representation | `_items: T[]`; own `Count`; unchecked `Get`/`Set`/`Add`/`InsertAt`/`RemoveAt` (assume the caller already validated the index); private `EnsureCapacity` |
-| `Algorithms/DynamicArray/DynamicArray.cs` | Operations | `ValidateIndex`, the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` delegate to Storage after validation — identical exception type and message text to before the split |
+| `DataStructures/DynamicArray/DynamicArray.cs` | Operations | `ValidateIndex`, the `IndexOutOfRangeMessage` constant; bounds-checked `Get`/`Set`/`RemoveAt`/`Insert` delegate to Storage after validation — identical exception type and message text to before the split |
 
-The highest fan-out of the three: `Collections/Stack`, `Searching/DynamicArraySequence`, and
+The highest fan-out of the three: `Stack`, `Searching/DynamicArraySequence`, and
 `Sorting/DynamicArrayIndexedSequence` all compose it, but none call anything beyond
 `Add`/`Get`/`Set`/`RemoveAt`/`Count` — all of which keep identical signatures — so none needed a
 logic change, only a `using`-line repoint. Decomposed last of the three, once the Storage/Operations
