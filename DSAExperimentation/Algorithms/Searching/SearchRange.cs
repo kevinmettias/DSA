@@ -1,4 +1,4 @@
-namespace DSAExperimentation.DataStructures.Searching;
+namespace DSAExperimentation.Algorithms.Searching;
 
 // Mutable by design, not a data-bag: BinarySearch.ProbeMidpoint takes this by ref and
 // narrows Low/High in place as it eliminates one half of the range each step - the
