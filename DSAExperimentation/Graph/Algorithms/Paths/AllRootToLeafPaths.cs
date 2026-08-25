@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Graph.Engines.Traversal.TopDown;
+using DSAExperimentation.Algorithms.Graph.Engines.Traversal.TopDown;
 
 namespace DSAExperimentation.Graph.Algorithms.Paths;
 

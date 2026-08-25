@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Engines.Reducing;
+using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
 
 namespace DSAExperimentation.Tests.Graph.Algorithms.ShortestPaths.Fixtures;
 
