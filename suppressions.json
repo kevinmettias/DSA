@@ -763,6 +763,41 @@
       "reason": "HasPriority implements IHeapOrder<T>.HasPriority; check-test-coverage's own docs list contract-bound interface implementations as exempt, and it is exercised through every ShortestPathTests Dijkstra_*/AStar_* case now that ShortestPath's frontier is Heap<T,TOrder>",
       "owner": "@kmettias",
       "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Searching/ArraySequenceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (array element or expected length/index) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Searching/DynamicArraySequenceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (array element or expected length/index) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Searching/DynamicArraySequenceTests.cs",
+      "reason": "the flagged tests are the standard Arrange-Act-Assert shape, the same judgment call already recorded for ContiguousGroupBufferTests.cs",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Searching/BinarySearchTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value (a sorted-sequence element, search target, or expected index) that genuinely means only itself, not a magic constant to be named",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Searching/BinarySearchTests.cs",
+      "reason": "the shared `Find_` prefix is xUnit's MethodUnderTest_Scenario_Expected naming convention, not a hidden module - all ten tests cover BinarySearch.Find and belong in one class, the same judgment call already recorded for AllRootToLeafPathsTests.cs/LowestCommonAncestorTests.cs (both also testing a method literally named Find)",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
     }
   ]
 }
