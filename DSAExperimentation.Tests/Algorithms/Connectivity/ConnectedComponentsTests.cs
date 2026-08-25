@@ -1,9 +1,9 @@
-using DSAExperimentation.Algorithms.Graph.Connectivity;
+using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Connectivity;
+namespace DSAExperimentation.Tests.Algorithms.Connectivity;
 
 public sealed partial class ConnectedComponentsTests
 {

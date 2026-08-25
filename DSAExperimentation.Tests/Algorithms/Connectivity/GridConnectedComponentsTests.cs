@@ -1,9 +1,9 @@
-using DSAExperimentation.Algorithms.Graph.Connectivity;
+using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Algorithms.Reducing;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Connectivity;
+namespace DSAExperimentation.Tests.Algorithms.Connectivity;
 
 public sealed partial class GridConnectedComponentsTests
 {

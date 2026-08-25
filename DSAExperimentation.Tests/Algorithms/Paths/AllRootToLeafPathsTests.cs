@@ -1,8 +1,8 @@
-using DSAExperimentation.Algorithms.Graph.Paths;
+using DSAExperimentation.Algorithms.Paths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Paths;
+namespace DSAExperimentation.Tests.Algorithms.Paths;
 
 public sealed partial class AllRootToLeafPathsTests
 {
