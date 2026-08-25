@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Graph.Connectivity;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
-using DSAExperimentation.Tests.Graph.Fixtures;
+using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Graph.Connectivity;
 

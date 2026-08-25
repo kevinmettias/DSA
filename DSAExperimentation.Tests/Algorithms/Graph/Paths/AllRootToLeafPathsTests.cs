@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Graph.Paths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.Graph.Fixtures;
+using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Graph.Paths;
 
