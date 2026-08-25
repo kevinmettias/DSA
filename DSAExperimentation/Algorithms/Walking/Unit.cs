@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Walking;
 
 // Purely an implementation detail of the shared walk engines below - the result
 // type for a step that only runs for its side effects. Never appears in any public

@@ -1,10 +1,9 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using DSAExperimentation.Algorithms.Graph.Engines.Walking;
 using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
 using DSAExperimentation.Algorithms.Graph.Engines.Traversal.DepthFirst;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Walking;
+namespace DSAExperimentation.Algorithms.Walking;
 
 // The single depth-first engine behind every DFS-shaped consumer: DepthFirstReduceOrder
 // (via the state-threading overload - IReduceAlgebra already has exactly this shape,

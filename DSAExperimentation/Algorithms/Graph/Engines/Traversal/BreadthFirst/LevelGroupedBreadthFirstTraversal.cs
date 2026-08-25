@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.Algorithms.Graph.Engines.Walking;
+using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Graph.Engines.Traversal.BreadthFirst;
 
