@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Graph.Algorithms.Metrics;
+namespace DSAExperimentation.Algorithms.Graph.Metrics;
 
 internal readonly record struct HeightDiameterState(
     int Height,

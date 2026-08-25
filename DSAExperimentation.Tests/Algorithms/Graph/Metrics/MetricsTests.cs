@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Tests.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Graph.Algorithms.Metrics;
+namespace DSAExperimentation.Tests.Algorithms.Graph.Metrics;
 
 public sealed partial class MetricsTests
 {

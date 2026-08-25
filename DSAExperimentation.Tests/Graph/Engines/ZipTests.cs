@@ -1,4 +1,4 @@
-using DSAExperimentation.Graph.Algorithms.Metrics;
+using DSAExperimentation.Algorithms.Graph.Metrics;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.Algorithms.Graph.Engines.Dags.Trees;
 using DSAExperimentation.Algorithms.Graph.Engines.Folding;

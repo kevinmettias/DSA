@@ -1,6 +1,6 @@
 using DSAExperimentation.Algorithms.Graph.Engines.Folding;
 
-namespace DSAExperimentation.Graph.Algorithms.Metrics;
+namespace DSAExperimentation.Algorithms.Graph.Metrics;
 
 internal readonly struct HeightAlgebra<TNode> : IFoldAlgebra<TNode, int>
 {
