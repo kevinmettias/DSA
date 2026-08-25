@@ -1,7 +1,8 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Collections.DynamicArray;
-using DSAExperimentation.Searching;
+using DSAExperimentation.DataStructures.Searching;
 
-namespace DSAExperimentation.Tests.Searching;
+namespace DSAExperimentation.Tests.Algorithms.Searching;
 
 public sealed partial class BinarySearchTests
 {

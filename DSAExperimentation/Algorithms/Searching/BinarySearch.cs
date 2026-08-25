@@ -1,4 +1,6 @@
-namespace DSAExperimentation.Searching;
+using DSAExperimentation.DataStructures.Searching;
+
+namespace DSAExperimentation.Algorithms.Searching;
 
 // Requires a finite IRandomAccessSequence<T> that is already sorted per the supplied
 // comparer (i < j => comparer.Compare(sequence.Get(i), sequence.Get(j)) <= 0) - an

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Searching;
+namespace DSAExperimentation.DataStructures.Searching;
 
 // Satisfies IRandomAccessSequence's O(1) obligation via a raw array's own
 // bounds-checked indexer - the simplest possible proof the contract is satisfiable
