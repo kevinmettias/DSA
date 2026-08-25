@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+namespace DSAExperimentation.Algorithms.Reducing;
 
 // Mirrors IDepthFirstHooks.Enter/Exit exactly, but state-threading instead of void:
 // a running accumulator passes through Enter and/or Exit rather than a node being

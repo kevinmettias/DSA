@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Graph.ShortestPaths;

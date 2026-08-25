@@ -1,7 +1,7 @@
-using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Reducing.Fixtures;
 
 internal readonly struct CountNodesReduceAlgebra : IReduceAlgebra<TestNode, int>
 {

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+namespace DSAExperimentation.Algorithms.Reducing;
 
 // Proof that a runtime-parameterized query doesn't always need a bespoke facade
 // (contrast LowestCommonAncestor): "distance to some specific target" only needs to

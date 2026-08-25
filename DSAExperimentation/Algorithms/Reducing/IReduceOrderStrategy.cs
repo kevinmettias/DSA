@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.Algorithms.Walking;
 
-namespace DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+namespace DSAExperimentation.Algorithms.Reducing;
 
 // The traversal-order axis of a reduce, injected as a strategy the same way
 // IFoldEvaluationStrategy is for fold - but unlike that one, this is a genuinely

@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+using DSAExperimentation.Algorithms.Reducing;
 
 namespace DSAExperimentation.Algorithms.Graph.Grids;
 

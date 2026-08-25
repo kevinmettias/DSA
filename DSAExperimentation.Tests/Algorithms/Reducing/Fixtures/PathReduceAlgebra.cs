@@ -1,7 +1,7 @@
-using DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines.Fixtures;
+namespace DSAExperimentation.Tests.Algorithms.Reducing.Fixtures;
 
 // Concatenates node names in visit order - deliberately non-commutative, so it can
 // demonstrate that reduce (unlike fold) actually depends on traversal order.

@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Algorithms.Graph.Engines.Reducing;
+namespace DSAExperimentation.Algorithms.Reducing;
 
 // The IReduceAlgebra counterpart to ZipFoldAlgebra: runs two reduce algebras
 // together in one traversal by threading a paired state through both, made possible
