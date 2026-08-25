@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.Collections.DynamicArray;
 
 // A manually-doubled T[] buffer, not a List<T> wrapper - this is the array

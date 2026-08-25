@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.Collections.Deque;
 
 // A wraparound array: elements occupy [_head, _head+Count) modulo the buffer's

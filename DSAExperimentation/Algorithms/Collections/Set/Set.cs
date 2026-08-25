@@ -1,4 +1,4 @@
-using DSAExperimentation.Collections.HashMap;
+using DSAExperimentation.Algorithms.HashMap;
 
 namespace DSAExperimentation.Algorithms.Collections.Set;
 
