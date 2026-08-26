@@ -9,7 +9,8 @@ namespace DSAExperimentation.DataStructures.DisjointSet;
 // (HeapArray/DynamicArray/HashMap all start empty and grow): a disjoint-set forest's
 // universe of ids is conventionally known upfront, so there is no Add/growth path here
 // by design, not oversight. Ids are dense integers in [0, Count) - out-of-range ids
-// throw, but nothing here verifies a caller assigned ids consistently.
+// throw via the Get*/Set*/IncrementRank convenience methods, or return false via their
+// TryX siblings, but nothing here verifies a caller assigned ids consistently.
 //
 // GetParent/SetParent/GetRank/IncrementRank are O(1) by construction (raw int[]
 // indexers) - DisjointSet's O(a(n)) amortized Find/Union claim depends on this. See
@@ -41,35 +42,81 @@ internal sealed class DisjointSetForest
         }
     }
 
+    // Throwing convenience beside each TryX's recoverable form, the same pairing
+    // Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek/HashMap.Get already use.
     public int GetParent(int id)
-    {
-        ValidateId(id);
-        return _parent[id];
-    }
+        => TryGetParent(id, out var parent) ? parent : ThrowInvalidId(id);
 
     public void SetParent(int id, int parent)
     {
-        ValidateId(id);
-        _parent[id] = parent;
+        if (!TrySetParent(id, parent))
+        {
+            ThrowInvalidId(id);
+        }
     }
 
     public int GetRank(int id)
-    {
-        ValidateId(id);
-        return _rank[id];
-    }
+        => TryGetRank(id, out var rank) ? rank : ThrowInvalidId(id);
 
     public void IncrementRank(int id)
     {
-        ValidateId(id);
-        _rank[id]++;
-    }
-
-    private void ValidateId(int id)
-    {
-        if (id < 0 || id >= Count)
+        if (!TryIncrementRank(id))
         {
-            throw new ArgumentOutOfRangeException(nameof(id), InvalidIdMessage);
+            ThrowInvalidId(id);
         }
     }
+
+    public bool TryGetParent(int id, out int parent)
+    {
+        if (!IsValidId(id))
+        {
+            // presumption: allow -- parent is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
+            parent = default;
+            return false;
+        }
+
+        parent = _parent[id];
+        return true;
+    }
+
+    public bool TrySetParent(int id, int parent)
+    {
+        if (!IsValidId(id))
+        {
+            return false;
+        }
+
+        _parent[id] = parent;
+        return true;
+    }
+
+    public bool TryGetRank(int id, out int rank)
+    {
+        if (!IsValidId(id))
+        {
+            // presumption: allow -- rank is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
+            rank = default;
+            return false;
+        }
+
+        rank = _rank[id];
+        return true;
+    }
+
+    public bool TryIncrementRank(int id)
+    {
+        if (!IsValidId(id))
+        {
+            return false;
+        }
+
+        _rank[id]++;
+        return true;
+    }
+
+    private bool IsValidId(int id) => id >= 0 && id < Count;
+
+    private static int ThrowInvalidId(int id) => throw new ArgumentOutOfRangeException(nameof(id), InvalidIdMessage);
 }

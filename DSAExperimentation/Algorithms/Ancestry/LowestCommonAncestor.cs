@@ -36,14 +36,9 @@ internal static class LowestCommonAncestor
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-    {
-        if (node.Equals(first) || node.Equals(second))
-        {
-            return node;
-        }
-
-        return FindDivergencePoint<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(node, first, second);
-    }
+        => node.Equals(first) || node.Equals(second)
+            ? node
+            : FindDivergencePoint<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(node, first, second);
 
     private static TNode? FindDivergencePoint<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode node, TNode first, TNode second)
         where TNode : class

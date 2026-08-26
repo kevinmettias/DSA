@@ -149,6 +149,20 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArray.cs",
+      "reason": "TryGet's default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/Algorithms/Folding/CheckedFold.cs",
+      "reason": "VisitOutcome<TValue>.Failure's default! is the standard TryGetValue/TryParse out-parameter contract extended to a private recursion-internal result type - Result is only meaningful when Success is true; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
       "check": "check-naming-clarity",
       "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
       "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
@@ -339,8 +353,22 @@
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation/DataStructures/HashMap/HashMapStorage.cs",
-      "reason": "check-responsibility-extraction's own doc calls a shared-prefix cluster a review, not an automatic defect - EntryHashCode/EntryKey/EntryNext/EntryValue read one entry's fields at a caller-supplied index, which is this file's own declared job ('raw bucket/entry mechanics only', per its header comment); extracting 'Entry' into its own type would not shrink HashMapStorage's real complexity, since Insert/Unlink already have to manage buckets and entries together for one hash lookup. The paired >8-public-members finding is the same fact: this is the whole bucket+entry Representation layer HashMap composes, not a facade.",
+      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArray.cs",
+      "reason": "same precedent as Deque.cs's own check-responsibility-extraction waiver: 'Try' is the standard attempt-returns-success prefix, not a hidden module - TryGet/TrySet/TryInsert/TryRemoveAt are the non-throwing siblings of Get/Set/Insert/RemoveAt, and splitting them out would separate each throwing convenience method from the TryX it directly delegates to, breaking this repo's established Heap.Peek/TryPeek-style locality for that exact pairing. The paired >8-public-members finding is the same fact: minimal indexed-access API is inherently throw/Try x get/set/insert/remove, landing at 9 members without accidental sprawl.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs",
+      "reason": "same precedent as Deque.cs's own check-responsibility-extraction waiver: 'Try' is the standard attempt-returns-success prefix, not a hidden module - TryGetParent/TrySetParent/TryGetRank/TryIncrementRank are the non-throwing siblings of GetParent/SetParent/GetRank/IncrementRank, and splitting them out would separate each throwing convenience method from the TryX it directly delegates to, breaking this repo's established Heap.Peek/TryPeek-style locality for that exact pairing. The paired >8-public-members finding is the same fact: minimal id-indexed access API is inherently throw/Try x parent/rank, landing at 9 members without accidental sprawl.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetForestTests.cs",
+      "reason": "check-responsibility-extraction's own doc names Test_/New_-style prefixes as the case that should NOT be extracted, same as this repo's other MethodUnderTest_Scenario_Expected test files - here MethodUnderTest happens to be TryGetParent/TrySetParent/TryGetRank/TryIncrementRank, so the shared 'Try' prefix and the >8-public-declarations count are both the xUnit naming convention (every [Fact] is public by requirement) reflecting the production type's own sanctioned Try* API (see DisjointSetForest.cs's own waiver for this check), not a designed API surface to split.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -418,13 +446,6 @@
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-function-cohesion",
-      "path": "DSAExperimentation/DataStructures/Heap/Heap.cs",
-      "reason": "check-function-cohesion's own doc calls this rule advisory. Pop's leading `if (Count == 0) return ThrowEmptyHeap();` is a guard clause - it shares no local with the swap/remove/sift-down steps that follow only because a guard clause never does, the same shape every early-return precondition check has. The steps after the guard are one cohesive algorithm (save root, move last to root, shrink, sift down, return root), each depending on the previous; splitting the guard into its own function would not name a real second computation.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

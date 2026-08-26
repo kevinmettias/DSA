@@ -9,41 +9,88 @@ internal sealed class DynamicArray<Element>
 
     public int Count => _storage.Count;
 
+    // Throwing convenience beside each TryX's recoverable form, the same pairing
+    // Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek/HashMap.Get already use.
     public Element Get(int index)
-    {
-        ValidateIndex(index);
-        return _storage.Get(index);
-    }
+        => TryGet(index, out var value) ? value : ThrowIndexOutOfRange(index);
 
     public void Set(int index, Element value)
     {
-        ValidateIndex(index);
-        _storage.Set(index, value);
+        if (!TrySet(index, value))
+        {
+            ThrowIndexOutOfRange(index);
+        }
     }
 
     public void Add(Element value) => _storage.Add(value);
 
     public void Insert(int index, Element value)
     {
-        if (index < 0 || index > Count)
+        if (!TryInsert(index, value))
         {
-            throw new ArgumentOutOfRangeException(nameof(index), IndexOutOfRangeMessage);
+            ThrowIndexOutOfRange(index);
         }
-
-        _storage.InsertAt(index, value);
     }
 
     public void RemoveAt(int index)
     {
-        ValidateIndex(index);
-        _storage.RemoveAt(index);
-    }
-
-    private void ValidateIndex(int index)
-    {
-        if (index < 0 || index >= Count)
+        if (!TryRemoveAt(index))
         {
-            throw new ArgumentOutOfRangeException(nameof(index), IndexOutOfRangeMessage);
+            ThrowIndexOutOfRange(index);
         }
     }
+
+    public bool TryGet(int index, out Element value)
+    {
+        if (!IsValidIndex(index))
+        {
+            // presumption: allow -- value is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
+            value = default!;
+            return false;
+        }
+
+        value = _storage.Get(index);
+        return true;
+    }
+
+    public bool TrySet(int index, Element value)
+    {
+        if (!IsValidIndex(index))
+        {
+            return false;
+        }
+
+        _storage.Set(index, value);
+        return true;
+    }
+
+    public bool TryInsert(int index, Element value)
+    {
+        if (!IsValidInsertIndex(index))
+        {
+            return false;
+        }
+
+        _storage.InsertAt(index, value);
+        return true;
+    }
+
+    private bool IsValidInsertIndex(int index) => index >= 0 && index <= Count;
+
+    public bool TryRemoveAt(int index)
+    {
+        if (!IsValidIndex(index))
+        {
+            return false;
+        }
+
+        _storage.RemoveAt(index);
+        return true;
+    }
+
+    private bool IsValidIndex(int index) => index >= 0 && index < Count;
+
+    private static Element ThrowIndexOutOfRange(int index)
+        => throw new ArgumentOutOfRangeException(nameof(index), IndexOutOfRangeMessage);
 }

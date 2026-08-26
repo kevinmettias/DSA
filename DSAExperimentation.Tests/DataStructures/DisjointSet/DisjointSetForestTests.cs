@@ -59,4 +59,89 @@ public sealed partial class DisjointSetForestTests
 
         Assert.Throws<ArgumentOutOfRangeException>(() => forest.GetParent(-1));
     }
+
+    [Fact]
+    public void TryGetParent_ValidId_ReturnsTrueAndParent()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var found = forest.TryGetParent(1, out var parent);
+
+        Assert.True(found);
+        Assert.Equal(1, parent);
+    }
+
+    [Fact]
+    public void TryGetParent_IdOutOfRange_ReturnsFalse()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var found = forest.TryGetParent(3, out _);
+
+        Assert.False(found);
+    }
+
+    [Fact]
+    public void TrySetParent_ValidId_ReturnsTrueAndOverwritesParent()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var succeeded = forest.TrySetParent(0, 1);
+
+        Assert.True(succeeded);
+        Assert.Equal(1, forest.GetParent(0));
+    }
+
+    [Fact]
+    public void TrySetParent_IdOutOfRange_ReturnsFalse()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var succeeded = forest.TrySetParent(3, 1);
+
+        Assert.False(succeeded);
+    }
+
+    [Fact]
+    public void TryGetRank_ValidId_ReturnsTrueAndRank()
+    {
+        var forest = new DisjointSetForest(3);
+        forest.IncrementRank(0);
+
+        var found = forest.TryGetRank(0, out var rank);
+
+        Assert.True(found);
+        Assert.Equal(1, rank);
+    }
+
+    [Fact]
+    public void TryGetRank_IdOutOfRange_ReturnsFalse()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var found = forest.TryGetRank(3, out _);
+
+        Assert.False(found);
+    }
+
+    [Fact]
+    public void TryIncrementRank_ValidId_ReturnsTrueAndIncreasesRank()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var succeeded = forest.TryIncrementRank(0);
+
+        Assert.True(succeeded);
+        Assert.Equal(1, forest.GetRank(0));
+    }
+
+    [Fact]
+    public void TryIncrementRank_IdOutOfRange_ReturnsFalse()
+    {
+        var forest = new DisjointSetForest(3);
+
+        var succeeded = forest.TryIncrementRank(3);
+
+        Assert.False(succeeded);
+    }
 }

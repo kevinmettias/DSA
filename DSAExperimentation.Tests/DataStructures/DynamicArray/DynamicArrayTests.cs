@@ -104,4 +104,85 @@ public sealed partial class DynamicArrayTests
 
         Assert.Throws<ArgumentOutOfRangeException>(() => array.Insert(1, 0));
     }
+
+    [Fact]
+    public void TryGet_ValidIndex_ReturnsTrueAndValue()
+    {
+        var array = new DynamicArray<int>();
+        array.Add(1);
+
+        var found = array.TryGet(0, out var value);
+
+        Assert.True(found);
+        Assert.Equal(1, value);
+    }
+
+    [Fact]
+    public void TryGet_IndexOutOfRange_ReturnsFalse()
+    {
+        var array = new DynamicArray<int>();
+        array.Add(1);
+
+        var found = array.TryGet(1, out _);
+
+        Assert.False(found);
+    }
+
+    [Fact]
+    public void TrySet_ValidIndex_ReturnsTrueAndOverwritesValue()
+    {
+        var array = new DynamicArray<int>();
+        array.Add(1);
+
+        var succeeded = array.TrySet(0, 42);
+
+        Assert.True(succeeded);
+        Assert.Equal(42, array.Get(0));
+    }
+
+    [Fact]
+    public void TrySet_IndexOutOfRange_ReturnsFalse()
+    {
+        var array = new DynamicArray<int>();
+        array.Add(1);
+
+        var succeeded = array.TrySet(1, 42);
+
+        Assert.False(succeeded);
+    }
+
+    [Fact]
+    public void TryInsert_IndexBeyondCount_ReturnsFalse()
+    {
+        var array = new DynamicArray<int>();
+
+        var succeeded = array.TryInsert(1, 0);
+
+        Assert.False(succeeded);
+    }
+
+    [Fact]
+    public void TryRemoveAt_ValidIndex_ReturnsTrueAndRemovesValue()
+    {
+        var array = new DynamicArray<int>();
+        array.Add(1);
+        array.Add(2);
+
+        var succeeded = array.TryRemoveAt(0);
+
+        Assert.True(succeeded);
+        Assert.Equal(1, array.Count);
+        Assert.Equal(2, array.Get(0));
+    }
+
+    [Fact]
+    public void TryRemoveAt_IndexOutOfRange_ReturnsFalse()
+    {
+        var array = new DynamicArray<int>();
+        array.Add(1);
+
+        var succeeded = array.TryRemoveAt(1);
+
+        Assert.False(succeeded);
+    }
 }

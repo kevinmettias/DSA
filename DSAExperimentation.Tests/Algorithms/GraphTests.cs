@@ -82,4 +82,17 @@ public sealed partial class GraphTests
                 NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountNodesFoldAlgebra, int>(root));
     }
+
+    [Fact]
+    public void CheckedFold_TrueCycle_TryFoldReturnsFalseInsteadOfThrowing()
+    {
+        var root = CyclicSample();
+
+        var succeeded = CheckedFold.TryFold<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+            CountNodesFoldAlgebra, int>(root, out _);
+
+        Assert.False(succeeded);
+    }
 }

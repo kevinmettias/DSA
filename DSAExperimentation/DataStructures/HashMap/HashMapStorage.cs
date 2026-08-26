@@ -25,13 +25,7 @@ internal sealed class HashMapStorage<TKey, TValue>
 
     public int BucketHead(int bucketIndex) => _buckets[bucketIndex];
 
-    public int EntryNext(int index) => _entries[index].Next;
-
-    public int EntryHashCode(int index) => _entries[index].HashCode;
-
-    public TKey EntryKey(int index) => _entries[index].Key;
-
-    public TValue EntryValue(int index) => _entries[index].Value;
+    public HashMapEntry<TKey, TValue> Entry(int index) => _entries[index];
 
     public void SetEntryValue(int index, TValue value) => _entries[index] = _entries[index] with { Value = value };
 

@@ -59,6 +59,12 @@ internal sealed class Heap<Element, TOrder>
         }
 
         var root = _store.Get(0);
+        RemoveRootAndRestoreHeapProperty();
+        return root;
+    }
+
+    private void RemoveRootAndRestoreHeapProperty()
+    {
         var lastIndex = _store.Count - 1;
 
         _store.Swap(0, lastIndex);
@@ -68,8 +74,6 @@ internal sealed class Heap<Element, TOrder>
         {
             SiftDown(0);
         }
-
-        return root;
     }
 
     private void SiftDown(int index)

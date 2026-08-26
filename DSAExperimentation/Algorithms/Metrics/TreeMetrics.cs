@@ -42,8 +42,7 @@ internal static class TreeMetrics
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-    {
-        var (height, size) = TreeFold.Fold<
+        => TreeFold.Fold<
             TNode,
             TTopology,
             TChildren,
@@ -51,7 +50,4 @@ internal static class TreeMetrics
             TOrderedChildren,
             ZipFoldAlgebra<TNode, int, int, HeightAlgebra<TNode>, SizeAlgebra<TNode>>,
             (int, int)>(root);
-
-        return (height, size);
-    }
 }
