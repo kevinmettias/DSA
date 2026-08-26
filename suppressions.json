@@ -1078,6 +1078,27 @@
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph node label - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/KeyedDisjointSet/KeyedDisjointSetTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter key label (\"a\"/\"b\"/\"c\"/\"d\"/\"z\"), a comparer-case-folding fixture (\"Key\"/\"KEY\"), or a small count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/KeyedDisjointSet/KeyedDisjointSetTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (TryFind_*/TryUnion_* both sharing the BCL Try-idiom prefix, the same idiom Deque's own suppression already covers) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/KeyedDisjointSet/KeyedDisjointSetTests.cs",
+      "reason": "Union_ChainOfUnions_AllMembersReportConnected's three sequential TryUnion calls share no local between them (each discards its own bool result), so the metric sees them as disconnected statements rather than the one cohesive chain-building step they actually are - the same shape DisjointSetTests.cs's own Union_ChainOfPairs_MergesAllIntoOneSet already has. Splitting the chain construction across three test methods would fragment one scenario into unrelated-looking fragments, not clarify it.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
     }
   ]
 }

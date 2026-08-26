@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.DataStructures.KeyedDisjointSet;
 
-namespace DSAExperimentation.Tests.DataStructures.DisjointSet;
+namespace DSAExperimentation.Tests.DataStructures.KeyedDisjointSet;
 
 public sealed partial class KeyedDisjointSetTests
 {
@@ -32,11 +32,20 @@ public sealed partial class KeyedDisjointSetTests
 
         var unioned = set.TryUnion("a", "b");
         var connected = set.IsConnected("a", "b");
-        set.TryFind("a", out var aRoot);
-        set.TryFind("b", out var bRoot);
 
         Assert.True(unioned);
         Assert.True(connected);
+    }
+
+    [Fact]
+    public void TryFind_AfterUnion_ReturnsSameRepresentativeForBothKeys()
+    {
+        var set = new KeyedDisjointSet<string>(["a", "b", "c"]);
+        set.TryUnion("a", "b");
+
+        set.TryFind("a", out var aRoot);
+        set.TryFind("b", out var bRoot);
+
         Assert.Equal(aRoot, bRoot);
     }
 

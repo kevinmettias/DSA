@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.DataStructures.KeyedDisjointSet;
 
 namespace DSAExperimentation.Algorithms.MinimumSpanningTrees;
 
