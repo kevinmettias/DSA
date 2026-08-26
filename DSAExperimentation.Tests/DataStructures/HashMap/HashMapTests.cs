@@ -5,13 +5,15 @@ namespace DSAExperimentation.Tests.DataStructures.HashMap;
 public sealed partial class HashMapTests
 {
     [Fact]
-    public void Set_ThenGet_ReturnsStoredValue()
+    public void Set_ThenTryGetValue_ReturnsTrueAndStoredValue()
     {
         var map = new HashMap<string, int>();
 
         map.Set("a", 1);
+        var found = map.TryGetValue("a", out var value);
 
-        Assert.Equal(1, map.Get("a"));
+        Assert.True(found);
+        Assert.Equal(1, value);
     }
 
     [Fact]
@@ -21,8 +23,9 @@ public sealed partial class HashMapTests
         map.Set("a", 1);
 
         map.Set("a", 2);
+        map.TryGetValue("a", out var value);
 
-        Assert.Equal(2, map.Get("a"));
+        Assert.Equal(2, value);
         Assert.Equal(1, map.Count);
     }
 
@@ -34,14 +37,6 @@ public sealed partial class HashMapTests
         var found = map.TryGetValue("missing", out _);
 
         Assert.False(found);
-    }
-
-    [Fact]
-    public void Get_MissingKey_ThrowsInvalidOperationException()
-    {
-        var map = new HashMap<string, int>();
-
-        Assert.Throws<InvalidOperationException>(() => map.Get("missing"));
     }
 
     [Fact]
@@ -82,10 +77,12 @@ public sealed partial class HashMapTests
 
         map.TryRemove("a");
         map.Set("c", 3);
+        map.TryGetValue("b", out var valueAtB);
+        map.TryGetValue("c", out var valueAtC);
 
         Assert.False(map.HasKey("a"));
-        Assert.Equal(2, map.Get("b"));
-        Assert.Equal(3, map.Get("c"));
+        Assert.Equal(2, valueAtB);
+        Assert.Equal(3, valueAtC);
         Assert.Equal(2, map.Count);
     }
 
@@ -103,7 +100,9 @@ public sealed partial class HashMapTests
 
         for (var i = 0; i < 100; i++)
         {
-            Assert.Equal(i * 2, map.Get(i));
+            map.TryGetValue(i, out var value);
+
+            Assert.Equal(i * 2, value);
         }
     }
 
@@ -113,8 +112,62 @@ public sealed partial class HashMapTests
         var map = new HashMap<string, int>(StringComparer.OrdinalIgnoreCase);
 
         map.Set("Key", 1);
+        map.TryGetValue("KEY", out var value);
 
         Assert.True(map.HasKey("key"));
-        Assert.Equal(1, map.Get("KEY"));
+        Assert.Equal(1, value);
+    }
+
+    [Fact]
+    public void Keys_AfterSet_ReturnsAllKeys()
+    {
+        var map = new HashMap<string, int>();
+        map.Set("a", 1);
+        map.Set("b", 2);
+
+        var keys = map.Keys;
+
+        Assert.Equal(["a", "b"], keys.OrderBy(key => key));
+    }
+
+    [Fact]
+    public void Values_AfterSet_ReturnsAllValues()
+    {
+        var map = new HashMap<string, int>();
+        map.Set("a", 1);
+        map.Set("b", 2);
+
+        var values = map.Values;
+
+        Assert.Equal([1, 2], values.OrderBy(value => value));
+    }
+
+    [Fact]
+    public void Keys_AfterGrow_RetainsAllKeys()
+    {
+        var map = new HashMap<int, int>();
+
+        for (var i = 0; i < 100; i++)
+        {
+            map.Set(i, i * 2);
+        }
+
+        var keys = map.Keys;
+        var expectedKeys = Enumerable.Range(0, 100);
+
+        Assert.Equal(expectedKeys, keys.OrderBy(key => key));
+    }
+
+    [Fact]
+    public void Keys_AfterTryRemove_ExcludesRemovedKey()
+    {
+        var map = new HashMap<string, int>();
+        map.Set("a", 1);
+        map.Set("b", 2);
+
+        map.TryRemove("a");
+        var keys = map.Keys;
+
+        Assert.Equal(["b"], keys);
     }
 }

@@ -1,14 +1,51 @@
 
 namespace DSAExperimentation.DataStructures.HashMap;
 
+// No throwing Get convenience: whether a key is present is state an external caller
+// can't always know in advance, so TryGetValue is the only public surface for
+// reading a value, forcing callers onto the return-value form instead of a
+// try/catch.
 internal sealed class HashMap<TKey, TValue>
 {
-    private const string KeyNotPresentMessage = "The given key was not present in the map.";
-
     private readonly IEqualityComparer<TKey> _comparer;
     private readonly HashMapStorage<TKey, TValue> _storage = new();
 
     public int Count => _storage.Count;
+
+    // Eager snapshots (via HashMapStorage.SnapshotEntries), not a live view - mutating
+    // the map after reading Keys/Values, or mid-foreach, has no effect on the already
+    // -copied result. Only Keys/Values are exposed, not a KeyValuePair/GetEnumerator
+    // pairing - that's the named gap this addition closes; a Pairs-shaped property
+    // would be a one-line projection over the same snapshot if a caller ever needs it.
+    public IEnumerable<TKey> Keys
+    {
+        get
+        {
+            var keys = new List<TKey>(_storage.Count);
+
+            foreach (var entry in _storage.SnapshotEntries())
+            {
+                keys.Add(entry.Key);
+            }
+
+            return keys;
+        }
+    }
+
+    public IEnumerable<TValue> Values
+    {
+        get
+        {
+            var values = new List<TValue>(_storage.Count);
+
+            foreach (var entry in _storage.SnapshotEntries())
+            {
+                values.Add(entry.Value);
+            }
+
+            return values;
+        }
+    }
 
     public HashMap()
         : this(EqualityComparer<TKey>.Default)
@@ -34,16 +71,6 @@ internal sealed class HashMap<TKey, TValue>
         value = _storage.Entry(index).Value;
         return true;
     }
-
-    // A convenience throwing form beside TryGetValue's recoverable one, the same
-    // pairing Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek already use for their
-    // own "empty" precondition.
-    public TValue Get(TKey key)
-        => TryGetValue(key, out var value)
-            ? value
-            : ThrowKeyNotPresent();
-
-    private static TValue ThrowKeyNotPresent() => throw new InvalidOperationException(KeyNotPresentMessage);
 
     public void Set(TKey key, TValue value)
     {

@@ -29,6 +29,30 @@ internal sealed class HashMapStorage<TKey, TValue>
 
     public void SetEntryValue(int index, TValue value) => _entries[index] = _entries[index] with { Value = value };
 
+    // Eager, not a yield-based iterator: a lazy walk over _buckets/_entries would
+    // silently desync if Grow() reassigns those arrays mid-enumeration, and this type
+    // has no version counter to catch that the way Dictionary<TKey,TValue> does. Walks
+    // bucket chains, not entry indices in order - the same shape Grow() already uses -
+    // because a freed slot is only reachable through the free list, never through a
+    // bucket chain, so an index-order scan would wrongly include stale slots. Needs no
+    // comparer at any step, unlike HashMap's own chain walks (TryUpdateExisting/
+    // FindEntryIndex), whose termination condition is fused to _comparer.Equals - the
+    // discriminator §14.2 states for the Storage/Operations split.
+    public IReadOnlyList<HashMapEntry<TKey, TValue>> SnapshotEntries()
+    {
+        var result = new List<HashMapEntry<TKey, TValue>>(Count);
+
+        foreach (var bucketHead in _buckets)
+        {
+            for (var i = bucketHead; i >= 0; i = _entries[i].Next)
+            {
+                result.Add(_entries[i]);
+            }
+        }
+
+        return result;
+    }
+
     // Absorbs the whole grow-if-needed -> allocate -> link pipeline: "should this
     // insert grow first" isn't a comparer-dependent decision, so it belongs here in
     // full. Recomputes the bucket index itself, after any grow, rather than accepting
