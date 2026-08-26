@@ -10,7 +10,7 @@ namespace DSAExperimentation.DataStructures.DisjointSet;
 //
 // Unlike Heap<T,TOrder>'s IHeapOrder, there is no injected linking-policy witness here:
 // union-by-rank vs. union-by-size vs. naive linking never changes which partition
-// Find/Connected report for a given sequence of calls - only tree height, and therefore
+// Find/IsConnected report for a given sequence of calls - only tree height, and therefore
 // amortized cost, degrades silently with no compiler error and no failing correctness
 // test to catch a worse policy. Rank-guided linking is hardcoded as the standard
 // combination rather than a swappable strategy for that reason.
@@ -23,9 +23,9 @@ internal sealed class DisjointSet
 {
     private readonly DisjointSetForest _forest;
 
-    public DisjointSet(int count) => _forest = new DisjointSetForest(count);
-
     public int Count => _forest.Count;
+
+    public DisjointSet(int count) => _forest = new DisjointSetForest(count);
 
     public int Find(int id)
     {
@@ -40,6 +40,16 @@ internal sealed class DisjointSet
         return root;
     }
 
+    private void CompressPath(int id, int root)
+    {
+        while (_forest.GetParent(id) != root)
+        {
+            var next = _forest.GetParent(id);
+            _forest.SetParent(id, root);
+            id = next;
+        }
+    }
+
     public void Union(int first, int second)
     {
         var firstRoot = Find(first);
@@ -48,18 +58,6 @@ internal sealed class DisjointSet
         if (firstRoot != secondRoot)
         {
             LinkByRank(firstRoot, secondRoot);
-        }
-    }
-
-    public bool Connected(int first, int second) => Find(first) == Find(second);
-
-    private void CompressPath(int id, int root)
-    {
-        while (_forest.GetParent(id) != root)
-        {
-            var next = _forest.GetParent(id);
-            _forest.SetParent(id, root);
-            id = next;
         }
     }
 
@@ -82,4 +80,6 @@ internal sealed class DisjointSet
             _forest.IncrementRank(firstRoot);
         }
     }
+
+    public bool IsConnected(int first, int second) => Find(first) == Find(second);
 }

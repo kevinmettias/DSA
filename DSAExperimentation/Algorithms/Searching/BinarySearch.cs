@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.Algorithms.Searching;
 
-// Requires a finite IRandomAccessSequence<T> that is already sorted per the supplied
+// Requires a finite IRandomAccessSequence<Element> that is already sorted per the supplied
 // comparer (i < j => comparer.Compare(sequence.Get(i), sequence.Get(j)) <= 0) - an
 // unchecked precondition this algorithm leans on but never verifies, the same way
 // ShortestPath leans on non-negative edge weights without checking them. Also
@@ -12,26 +12,26 @@ namespace DSAExperimentation.Algorithms.Searching;
 // index, not necessarily the leftmost one - a real subtlety of plain binary search.
 internal static class BinarySearch
 {
-    private const int HalvingFactor = 2;
+    public static int? Find<Element, TSequence>(TSequence sequence, Element target)
+        where TSequence : struct, IRandomAccessSequence<Element>
+        where Element : IComparable<Element>
+        => Find<Element, TSequence>(sequence, target, Comparer<Element>.Default);
 
-    public static int? Find<T, TSequence>(TSequence sequence, T target)
-        where TSequence : struct, IRandomAccessSequence<T>
-        where T : IComparable<T>
-        => Find<T, TSequence>(sequence, target, Comparer<T>.Default);
-
-    public static int? Find<T, TSequence>(TSequence sequence, T target, IComparer<T> comparer)
-        where TSequence : struct, IRandomAccessSequence<T>
+    public static int? Find<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
+        where TSequence : struct, IRandomAccessSequence<Element>
     {
         var range = new SearchRange(0, sequence.Length - 1);
 
         while (range.Low <= range.High)
         {
-            var found = ProbeMidpoint(sequence, target, comparer, ref range);
+            var step = ProbeMidpoint(sequence, target, comparer, range);
 
-            if (found is not null)
+            if (step.Found is not null)
             {
-                return found;
+                return step.Found;
             }
+
+            range = step.NextRange;
         }
 
         return null;
@@ -40,28 +40,23 @@ internal static class BinarySearch
     // Evaluates one bisection step: compares the midpoint to target, and either
     // returns it (found) or narrows range toward whichever half target must be in if
     // the sortedness precondition holds.
-    private static int? ProbeMidpoint<T, TSequence>(
-        TSequence sequence, T target, IComparer<T> comparer, ref SearchRange range)
-        where TSequence : struct, IRandomAccessSequence<T>
+    private static BisectionStep ProbeMidpoint<Element, TSequence>(
+        TSequence sequence, Element target, IComparer<Element> comparer, SearchRange range)
+        where TSequence : struct, IRandomAccessSequence<Element>
     {
         // low + (high-low)/2, not (low+high)/2, so this never overflows.
-        var mid = range.Low + ((range.High - range.Low) / HalvingFactor);
+        var mid = range.Low + ((range.High - range.Low) / AlgorithmConstants.HalvingFactor);
         var comparison = comparer.Compare(sequence.Get(mid), target);
 
         if (comparison == 0)
         {
-            return mid;
+            return new BisectionStep(mid, range);
         }
 
-        if (comparison < 0)
-        {
-            range.Low = mid + 1;
-        }
-        else
-        {
-            range.High = mid - 1;
-        }
-
-        return null;
+        return comparison < 0
+            ? new BisectionStep(null, range with { Low = mid + 1 })
+            : new BisectionStep(null, range with { High = mid - 1 });
     }
+
+    private readonly record struct BisectionStep(int? Found, SearchRange NextRange);
 }

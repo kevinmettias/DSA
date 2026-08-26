@@ -1,32 +1,34 @@
 
 namespace DSAExperimentation.DataStructures.Deque;
 
-internal sealed class Deque<T>
+internal sealed class Deque<Element>
 {
     private const string EmptyDequeMessage = "The deque contains no elements.";
 
-    private readonly CircularBuffer<T> _items = new();
+    private readonly CircularBuffer<Element> _items = new();
 
     public int Count => _items.Count;
 
-    public void PushFront(T item) => _items.AddFront(item);
+    public void PushFront(Element item) => _items.AddFront(item);
 
-    public void PushBack(T item) => _items.AddBack(item);
+    public void PushBack(Element item) => _items.AddBack(item);
 
-    public T PeekFront()
+    public Element PeekFront()
         => Count == 0
             ? ThrowEmptyDeque()
             : _items.GetFront();
 
-    public T PeekBack()
+    public Element PeekBack()
         => Count == 0
             ? ThrowEmptyDeque()
             : _items.GetBack();
 
-    public bool TryPeekFront(out T item)
+    public bool TryPeekFront(out Element item)
     {
         if (Count == 0)
         {
+            // presumption: allow -- item is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
             item = default!;
             return false;
         }
@@ -35,10 +37,12 @@ internal sealed class Deque<T>
         return true;
     }
 
-    public bool TryPeekBack(out T item)
+    public bool TryPeekBack(out Element item)
     {
         if (Count == 0)
         {
+            // presumption: allow -- item is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
             item = default!;
             return false;
         }
@@ -47,21 +51,21 @@ internal sealed class Deque<T>
         return true;
     }
 
-    public T PopFront()
+    public Element PopFront()
     {
         var item = PeekFront();
         _items.RemoveFront();
         return item;
     }
 
-    public T PopBack()
+    public Element PopBack()
     {
         var item = PeekBack();
         _items.RemoveBack();
         return item;
     }
 
-    public bool TryPopFront(out T item)
+    public bool TryPopFront(out Element item)
     {
         if (!TryPeekFront(out item))
         {
@@ -72,7 +76,7 @@ internal sealed class Deque<T>
         return true;
     }
 
-    public bool TryPopBack(out T item)
+    public bool TryPopBack(out Element item)
     {
         if (!TryPeekBack(out item))
         {
@@ -83,5 +87,5 @@ internal sealed class Deque<T>
         return true;
     }
 
-    private static T ThrowEmptyDeque() => throw new InvalidOperationException(EmptyDequeMessage);
+    private static Element ThrowEmptyDeque() => throw new InvalidOperationException(EmptyDequeMessage);
 }

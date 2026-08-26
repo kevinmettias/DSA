@@ -37,53 +37,53 @@ public sealed partial class HashMapTests
     }
 
     [Fact]
-    public void Get_MissingKey_ThrowsKeyNotFoundException()
+    public void Get_MissingKey_ThrowsInvalidOperationException()
     {
         var map = new HashMap<string, int>();
 
-        Assert.Throws<KeyNotFoundException>(() => map.Get("missing"));
+        Assert.Throws<InvalidOperationException>(() => map.Get("missing"));
     }
 
     [Fact]
-    public void ContainsKey_ReflectsPresenceOfKey()
+    public void HasKey_ReflectsPresenceOfKey()
     {
         var map = new HashMap<string, int>();
         map.Set("a", 1);
 
-        Assert.True(map.ContainsKey("a"));
-        Assert.False(map.ContainsKey("b"));
+        Assert.True(map.HasKey("a"));
+        Assert.False(map.HasKey("b"));
     }
 
     [Fact]
-    public void Remove_ExistingKey_RemovesItAndReturnsTrue()
+    public void TryRemove_ExistingKey_RemovesItAndReturnsTrue()
     {
         var map = new HashMap<string, int>();
         map.Set("a", 1);
 
-        Assert.True(map.Remove("a"));
-        Assert.False(map.ContainsKey("a"));
+        Assert.True(map.TryRemove("a"));
+        Assert.False(map.HasKey("a"));
         Assert.Equal(0, map.Count);
     }
 
     [Fact]
-    public void Remove_MissingKey_ReturnsFalse()
+    public void TryRemove_MissingKey_ReturnsFalse()
     {
         var map = new HashMap<string, int>();
 
-        Assert.False(map.Remove("missing"));
+        Assert.False(map.TryRemove("missing"));
     }
 
     [Fact]
-    public void Remove_ThenSetNewKey_ReusesFreedSlotAndStaysCorrect()
+    public void TryRemove_ThenSetNewKey_ReusesFreedSlotAndStaysCorrect()
     {
         var map = new HashMap<string, int>();
         map.Set("a", 1);
         map.Set("b", 2);
 
-        map.Remove("a");
+        map.TryRemove("a");
         map.Set("c", 3);
 
-        Assert.False(map.ContainsKey("a"));
+        Assert.False(map.HasKey("a"));
         Assert.Equal(2, map.Get("b"));
         Assert.Equal(3, map.Get("c"));
         Assert.Equal(2, map.Count);
@@ -114,7 +114,7 @@ public sealed partial class HashMapTests
 
         map.Set("Key", 1);
 
-        Assert.True(map.ContainsKey("key"));
+        Assert.True(map.HasKey("key"));
         Assert.Equal(1, map.Get("KEY"));
     }
 }

@@ -1,33 +1,48 @@
 
 namespace DSAExperimentation.DataStructures.Heap;
 
-// Push/Pop are O(log n) - a claim that assumes HeapArray<T>.Get/Set/Swap are O(1). See
+// Push/Pop are O(log n) - a claim that assumes HeapArray<Element>.Get/Set/Swap are O(1). See
 // ARCHITECTURE.md §8 and HeapArray.cs: that assumption holds today but is a Representation-layer
 // property this type depends on, not something the type system enforces.
-internal sealed class Heap<T, TOrder>
-    where TOrder : struct, IHeapOrder<T>
+internal sealed class Heap<Element, TOrder>
+    where TOrder : struct, IHeapOrder<Element>
 {
     private const string EmptyHeapMessage = "The heap contains no elements.";
 
-    private readonly HeapArray<T> _store = new();
+    private readonly HeapArray<Element> _store = new();
 
     public int Count => _store.Count;
 
-    public void Push(T item)
+    public void Push(Element item)
     {
         _store.Add(item);
         SiftUp(_store.Count - 1);
     }
 
-    public T Peek()
-        => Count == 0
-            ? ThrowEmptyHeap()
-            : _store.Get(0);
+    private void SiftUp(int index)
+    {
+        while (index > 0)
+        {
+            var parent = HeapArrayIndex.Parent(index);
 
-    public bool TryPeek(out T item)
+            if (!TOrder.HasPriority(_store.Get(index), _store.Get(parent)))
+            {
+                return;
+            }
+
+            _store.Swap(index, parent);
+            index = parent;
+        }
+    }
+
+    public Element Peek() => TryPeek(out var item) ? item : ThrowEmptyHeap();
+
+    public bool TryPeek(out Element item)
     {
         if (Count == 0)
         {
+            // presumption: allow -- item is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
             item = default!;
             return false;
         }
@@ -36,7 +51,7 @@ internal sealed class Heap<T, TOrder>
         return true;
     }
 
-    public T Pop()
+    public Element Pop()
     {
         if (Count == 0)
         {
@@ -57,36 +72,10 @@ internal sealed class Heap<T, TOrder>
         return root;
     }
 
-    public bool TryPop(out T item)
-    {
-        if (Count == 0)
-        {
-            item = default!;
-            return false;
-        }
-
-        item = Pop();
-        return true;
-    }
-
-    private void SiftUp(int index)
-    {
-        while (index > 0)
-        {
-            var parent = HeapArrayIndex.Parent(index);
-
-            if (!TOrder.HasPriority(_store.Get(index), _store.Get(parent)))
-            {
-                return;
-            }
-
-            _store.Swap(index, parent);
-            index = parent;
-        }
-    }
-
     private void SiftDown(int index)
     {
+        // Stops when HighestPriorityChild reports index itself: no child outranks
+        // the current node, so the heap property already holds below it.
         while (true)
         {
             var highestPriority = HighestPriorityChild(index);
@@ -120,5 +109,19 @@ internal sealed class Heap<T, TOrder>
         return highestPriority;
     }
 
-    private static T ThrowEmptyHeap() => throw new InvalidOperationException(EmptyHeapMessage);
+    public bool TryPop(out Element item)
+    {
+        if (Count == 0)
+        {
+            // presumption: allow -- item is only meaningful when this returns true,
+            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
+            item = default!;
+            return false;
+        }
+
+        item = Pop();
+        return true;
+    }
+
+    private static Element ThrowEmptyHeap() => throw new InvalidOperationException(EmptyHeapMessage);
 }

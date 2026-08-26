@@ -5,18 +5,18 @@ namespace DSAExperimentation.DataStructures.Deque;
 // re-linearizes into a fresh array starting at index 0. Callers (Deque) are trusted
 // to check Count before calling GetFront/GetBack/RemoveFront/RemoveBack, the same
 // split of responsibility Heap has with HeapArray.
-internal sealed class CircularBuffer<T>
+internal sealed class CircularBuffer<Element>
 {
-    private T[] _items = new T[ArrayGrowth.InitialCapacity];
+    private Element[] _items = new Element[ArrayGrowth.InitialCapacity];
     private int _head;
 
     public int Count { get; private set; }
 
-    public T GetFront() => _items[_head];
+    public Element GetFront() => _items[_head];
 
-    public T GetBack() => _items[BackIndex()];
+    public Element GetBack() => _items[BackIndex()];
 
-    public void AddFront(T value)
+    public void AddFront(Element value)
     {
         EnsureCapacity(Count + 1);
         _head = (_head - 1 + _items.Length) % _items.Length;
@@ -24,7 +24,7 @@ internal sealed class CircularBuffer<T>
         Count++;
     }
 
-    public void AddBack(T value)
+    public void AddBack(Element value)
     {
         EnsureCapacity(Count + 1);
         _items[(_head + Count) % _items.Length] = value;
@@ -33,6 +33,8 @@ internal sealed class CircularBuffer<T>
 
     public void RemoveFront()
     {
+        // presumption: allow -- the vacated slot is unreachable once _head moves past
+        // it; this only drops a stale reference for the GC, not a correctness need.
         _items[_head] = default!;
         _head = (_head + 1) % _items.Length;
         Count--;
@@ -40,6 +42,8 @@ internal sealed class CircularBuffer<T>
 
     public void RemoveBack()
     {
+        // presumption: allow -- the vacated slot is unreachable once Count shrinks
+        // past it; this only drops a stale reference for the GC, not a correctness need.
         _items[BackIndex()] = default!;
         Count--;
     }
@@ -60,7 +64,7 @@ internal sealed class CircularBuffer<T>
             newCapacity = required;
         }
 
-        var resized = new T[newCapacity];
+        var resized = new Element[newCapacity];
 
         for (var i = 0; i < Count; i++)
         {

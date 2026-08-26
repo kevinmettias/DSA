@@ -33,7 +33,7 @@ internal sealed class HashMapStorage<TKey, TValue>
 
     public TValue EntryValue(int index) => _entries[index].Value;
 
-    public void SetEntryValue(int index, TValue value) => _entries[index].Value = value;
+    public void SetEntryValue(int index, TValue value) => _entries[index] = _entries[index] with { Value = value };
 
     // Absorbs the whole grow-if-needed -> allocate -> link pipeline: "should this
     // insert grow first" isn't a comparer-dependent decision, so it belongs here in
@@ -49,44 +49,8 @@ internal sealed class HashMapStorage<TKey, TValue>
         var bucketIndex = BucketIndexFor(hashCode);
         var entryIndex = AllocateEntrySlot();
 
-        _entries[entryIndex].HashCode = hashCode;
-        _entries[entryIndex].Key = key;
-        _entries[entryIndex].Value = value;
-        _entries[entryIndex].Next = _buckets[bucketIndex];
+        _entries[entryIndex] = new HashMapEntry<TKey, TValue>(hashCode, _buckets[bucketIndex], key, value);
         _buckets[bucketIndex] = entryIndex;
-    }
-
-    public void Unlink(int bucketIndex, int previous, int index)
-    {
-        if (previous < 0)
-        {
-            _buckets[bucketIndex] = _entries[index].Next;
-        }
-        else
-        {
-            _entries[previous].Next = _entries[index].Next;
-        }
-
-        _entries[index].Key = default!;
-        _entries[index].Value = default!;
-        _entries[index].Next = _freeListHead;
-        _freeListHead = index;
-        _freeCount++;
-    }
-
-    private int AllocateEntrySlot()
-    {
-        if (_freeCount > 0)
-        {
-            var reused = _freeListHead;
-            _freeListHead = _entries[reused].Next;
-            _freeCount--;
-            return reused;
-        }
-
-        var appended = _entryCount;
-        _entryCount++;
-        return appended;
     }
 
     private void Grow()
@@ -113,23 +77,54 @@ internal sealed class HashMapStorage<TKey, TValue>
         _freeCount = 0;
     }
 
-    private static void RehashEntryInto(
-        int[] newBuckets, HashMapEntry<TKey, TValue>[] newEntries, ref int newEntryCount, HashMapEntry<TKey, TValue> entry)
-    {
-        var bucketIndex = entry.HashCode % newBuckets.Length;
-
-        newEntries[newEntryCount].HashCode = entry.HashCode;
-        newEntries[newEntryCount].Key = entry.Key;
-        newEntries[newEntryCount].Value = entry.Value;
-        newEntries[newEntryCount].Next = newBuckets[bucketIndex];
-        newBuckets[bucketIndex] = newEntryCount;
-        newEntryCount++;
-    }
-
     private static int[] CreateEmptyBuckets(int capacity)
     {
         var buckets = new int[capacity];
         Array.Fill(buckets, -1);
         return buckets;
+    }
+
+    private static void RehashEntryInto(
+        int[] newBuckets, HashMapEntry<TKey, TValue>[] newEntries, ref int newEntryCount, HashMapEntry<TKey, TValue> entry)
+    {
+        var bucketIndex = entry.HashCode % newBuckets.Length;
+
+        newEntries[newEntryCount] = entry with { Next = newBuckets[bucketIndex] };
+        newBuckets[bucketIndex] = newEntryCount;
+        newEntryCount++;
+    }
+
+    private int AllocateEntrySlot()
+    {
+        if (_freeCount > 0)
+        {
+            var reused = _freeListHead;
+            _freeListHead = _entries[reused].Next;
+            _freeCount--;
+            return reused;
+        }
+
+        var appended = _entryCount;
+        _entryCount++;
+        return appended;
+    }
+
+    public void Unlink(int bucketIndex, int previous, int index)
+    {
+        if (previous < 0)
+        {
+            _buckets[bucketIndex] = _entries[index].Next;
+        }
+        else
+        {
+            _entries[previous] = _entries[previous] with { Next = _entries[index].Next };
+        }
+
+        // presumption: allow -- a freed slot is only reachable through the free list,
+        // which never yields it as a live entry; this only drops stale references for
+        // the GC, not a correctness need.
+        _entries[index] = _entries[index] with { Key = default!, Value = default!, Next = _freeListHead };
+        _freeListHead = index;
+        _freeCount++;
     }
 }

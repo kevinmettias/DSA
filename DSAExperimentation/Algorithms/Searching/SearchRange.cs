@@ -1,10 +1,6 @@
 namespace DSAExperimentation.Algorithms.Searching;
 
-// Mutable by design, not a data-bag: BinarySearch.ProbeMidpoint takes this by ref and
-// narrows Low/High in place as it eliminates one half of the range each step - the
-// same in-place-mutation justification HashMapEntry uses for its own mutable fields.
-internal struct SearchRange(int low, int high)
-{
-    public int Low = low;
-    public int High = high;
-}
+// Immutable by design: BinarySearch narrows toward the target with `range with { Low
+// = ... }`/`range with { High = ... }` rather than assigning a field in place, so
+// there is never a copy silently holding a stale bound.
+internal readonly record struct SearchRange(int Low, int High);

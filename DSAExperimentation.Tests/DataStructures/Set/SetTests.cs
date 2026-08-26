@@ -5,50 +5,50 @@ namespace DSAExperimentation.Tests.DataStructures.Set;
 public sealed partial class SetTests
 {
     [Fact]
-    public void Add_NewItem_ReturnsTrueAndIncreasesCount()
+    public void TryAdd_NewItem_ReturnsTrueAndIncreasesCount()
     {
         var set = new Set<string>();
 
-        Assert.True(set.Add("a"));
+        Assert.True(set.TryAdd("a"));
         Assert.Equal(1, set.Count);
     }
 
     [Fact]
-    public void Add_DuplicateItem_ReturnsFalseAndDoesNotIncreaseCount()
+    public void TryAdd_DuplicateItem_ReturnsFalseAndDoesNotIncreaseCount()
     {
         var set = new Set<string>();
-        set.Add("a");
+        set.TryAdd("a");
 
-        Assert.False(set.Add("a"));
+        Assert.False(set.TryAdd("a"));
         Assert.Equal(1, set.Count);
     }
 
     [Fact]
-    public void Contains_ReflectsMembership()
+    public void Has_ReflectsMembership()
     {
         var set = new Set<string>();
-        set.Add("a");
+        set.TryAdd("a");
 
-        Assert.True(set.Contains("a"));
-        Assert.False(set.Contains("b"));
+        Assert.True(set.Has("a"));
+        Assert.False(set.Has("b"));
     }
 
     [Fact]
-    public void Remove_ExistingItem_RemovesItAndReturnsTrue()
+    public void TryRemove_ExistingItem_RemovesItAndReturnsTrue()
     {
         var set = new Set<string>();
-        set.Add("a");
+        set.TryAdd("a");
 
-        Assert.True(set.Remove("a"));
-        Assert.False(set.Contains("a"));
+        Assert.True(set.TryRemove("a"));
+        Assert.False(set.Has("a"));
         Assert.Equal(0, set.Count);
     }
 
     [Fact]
-    public void Remove_MissingItem_ReturnsFalse()
+    public void TryRemove_MissingItem_ReturnsFalse()
     {
         var set = new Set<string>();
 
-        Assert.False(set.Remove("missing"));
+        Assert.False(set.TryRemove("missing"));
     }
 }

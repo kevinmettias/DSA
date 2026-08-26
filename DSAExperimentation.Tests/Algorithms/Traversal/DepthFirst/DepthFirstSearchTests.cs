@@ -29,26 +29,29 @@ public sealed partial class DepthFirstSearchTests
     {
         // Two distinct move sequences ((0,0)->(1,0) and (0,0)->(0,1)->(1,0)) converge on the same
         // position - a transposition, the DAG-with-sharing shape the essay's chess example names.
-        IEnumerable<Position> Moves(Position from) => from switch
+        IEnumerable<Position> MovesFrom(Position from) => from switch
         {
             { File: 0, Rank: 0 } => [new Position(1, 0), new Position(0, 1)],
             { File: 0, Rank: 1 } => [new Position(1, 0)],
             _ => [],
         };
 
-        var visited = DepthFirstSearch.Traverse(new Position(0, 0), Moves);
+        var visited = DepthFirstSearch.Traverse(new Position(0, 0), MovesFrom);
 
         Assert.Equal([new Position(0, 0), new Position(1, 0), new Position(0, 1)], visited);
     }
 
+    private const int Cutoff = 5;
+
     [Fact]
     public void Traverse_InfiniteSuccessorSpaceBoundedByCaller_StopsAtCallerImposedCutoff()
     {
-        const int Cutoff = 5;
+        IEnumerable<int> NextAfter(int current) => current < Cutoff ? NextValue(current) : NoMoreValues();
 
-        IEnumerable<int> Increment(int n) => n < Cutoff ? [n + 1] : [];
+        static IEnumerable<int> NextValue(int current) => [current + 1];
+        static IEnumerable<int> NoMoreValues() => [];
 
-        var visited = DepthFirstSearch.Traverse(0, Increment);
+        var visited = DepthFirstSearch.Traverse(0, NextAfter);
 
         Assert.Equal([0, 1, 2, 3, 4, 5], visited);
     }
@@ -80,14 +83,14 @@ public sealed partial class DepthFirstSearchTests
     [Fact]
     public void Traverse_WithCustomComparer_TreatsComparerEqualNodesAsAlreadyVisited()
     {
-        IEnumerable<string> Successors(string node) => node switch
+        IEnumerable<string> SuccessorsOf(string node) => node switch
         {
             "a" => ["B"],
             "B" => ["A"],
             _ => [],
         };
 
-        var visited = DepthFirstSearch.Traverse("a", Successors, StringComparer.OrdinalIgnoreCase);
+        var visited = DepthFirstSearch.Traverse("a", SuccessorsOf, StringComparer.OrdinalIgnoreCase);
 
         Assert.Equal(["a", "B"], visited);
     }

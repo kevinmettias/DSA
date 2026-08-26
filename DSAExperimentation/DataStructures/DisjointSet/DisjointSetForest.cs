@@ -28,6 +28,8 @@ internal sealed class DisjointSetForest
     private readonly int[] _parent;
     private readonly int[] _rank;
 
+    public int Count => _parent.Length;
+
     public DisjointSetForest(int count)
     {
         _parent = new int[count];
@@ -38,8 +40,6 @@ internal sealed class DisjointSetForest
             _parent[id] = id;
         }
     }
-
-    public int Count => _parent.Length;
 
     public int GetParent(int id)
     {

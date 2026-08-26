@@ -6,24 +6,24 @@ namespace DSAExperimentation.DataStructures.Queue;
 // Dequeue only ever pops the front - the same "sequence + access constraint"
 // relationship Stack has with DynamicArray, just composing Deque's wraparound
 // representation instead of DynamicArray's flat one.
-internal sealed class Queue<T>
+internal sealed class Queue<Element>
 {
     private const string EmptyQueueMessage = "The queue contains no elements.";
 
-    private readonly Deque<T> _items = new();
+    private readonly Deque<Element> _items = new();
 
     public int Count => _items.Count;
 
-    public void Enqueue(T item) => _items.PushBack(item);
+    public void Enqueue(Element item) => _items.PushBack(item);
 
-    public T Peek()
+    public Element Peek()
         => Count == 0
             ? ThrowEmptyQueue()
             : _items.PeekFront();
 
-    public bool TryPeek(out T item) => _items.TryPeekFront(out item);
+    public bool TryPeek(out Element item) => _items.TryPeekFront(out item);
 
-    public T Dequeue()
+    public Element Dequeue()
     {
         if (Count == 0)
         {
@@ -33,7 +33,7 @@ internal sealed class Queue<T>
         return _items.PopFront();
     }
 
-    public bool TryDequeue(out T item) => _items.TryPopFront(out item);
+    public bool TryDequeue(out Element item) => _items.TryPopFront(out item);
 
-    private static T ThrowEmptyQueue() => throw new InvalidOperationException(EmptyQueueMessage);
+    private static Element ThrowEmptyQueue() => throw new InvalidOperationException(EmptyQueueMessage);
 }

@@ -137,10 +137,10 @@ public sealed partial class HeapTests
         Assert.Equal(new[] { 1, 5, 8, 9 }, popped);
     }
 
-    private static List<T> PopAll<T, TOrder>(Heap<T, TOrder> heap)
-        where TOrder : struct, IHeapOrder<T>
+    private static List<Element> PopAll<Element, TOrder>(Heap<Element, TOrder> heap)
+        where TOrder : struct, IHeapOrder<Element>
     {
-        var popped = new List<T>();
+        var popped = new List<Element>();
 
         while (heap.Count > 0)
         {

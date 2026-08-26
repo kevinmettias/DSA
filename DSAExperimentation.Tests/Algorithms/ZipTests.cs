@@ -7,7 +7,7 @@ using DSAExperimentation.Tests.Algorithms.Folding.Fixtures;
 using DSAExperimentation.Tests.Algorithms.Reducing.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Graph.Engines;
+namespace DSAExperimentation.Tests.Algorithms;
 
 public sealed partial class ZipTests
 {
