@@ -373,6 +373,13 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/TopologicalSort/TopologicalSortTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Deque/CircularBufferTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
@@ -446,6 +453,13 @@
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Algorithms/TopologicalSort/TopologicalSortTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' TrySort_OmittedDescendant_ReturnsFalse and TrySort_OmittedAncestor_ReturnsTrueButOmitsIt each build one small graph, then deliberately withhold one of its nodes from the `nodes` argument passed to TrySort - withholding that node is the entire point of the test (ARCHITECTURE.md §15.1's precondition-asymmetry example), so the setup local the tool treats as a second, unlinked cluster is the omitted vertex itself, not a second unrelated responsibility. Extracting it into a helper would hide the one fact the test exists to demonstrate.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1055,6 +1069,13 @@
       "check": "check-literals",
       "path": "DSAExperimentation.Tests/Algorithms/Connectivity/GridConnectedComponentsTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/TopologicalSort/TopologicalSortTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph node label - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }

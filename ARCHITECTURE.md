@@ -694,6 +694,7 @@ the distinguishing question is interface substitutability, not the topology axis
 | `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second |
 | `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
 | `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
+| `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
 
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the
@@ -821,3 +822,74 @@ The highest fan-out of the three: `Stack`, `Sequence.DynamicArraySequence`, and
 `Add`/`Get`/`Set`/`RemoveAt`/`Count` — all of which keep identical signatures — so none needed a
 logic change, only a `using`-line repoint. Decomposed last of the three, once the Storage/Operations
 pattern had already been proven twice.
+
+## 15. Worked example: `Algorithms/TopologicalSort`
+
+`Algorithms/TopologicalSort` fills a gap `Folding/CheckedFold.cs` names explicitly in its own
+doc comment: "an iterative, stack-safe DAG fold needs a real topological sort... that's a genuine
+follow-up, not something to fold in here." It sits at the same untrusted tier `CheckedFold`
+already occupies — generic over `IGraphTopology<TNode,TChildren>`, not `IDagTopology`, because
+Kahn's algorithm's own leftover-in-degree check *is* the cycle check, the same law `CheckedFold`
+already resolved this way. But that tier choice alone doesn't earn this section a place beside
+§9–§12/§14 — `Connectivity/ConnectedComponents.cs` already sits at the same bare `IGraphTopology`
+tier with nothing more than a §13.3 table row. What actually earns it is new material: a
+precondition shape this repo hasn't needed before, and a second occurrence of §10.3's namespace
+collision.
+
+| File | Axis | Why |
+| --- | --- | --- |
+| [`TopologicalSort/TopologicalSort.cs`](DSAExperimentation/Algorithms/TopologicalSort/TopologicalSort.cs) | Operations | `TrySort` — Kahn's algorithm; composes `IGraphTopology`/`IChildren`/`IChildOrder` from `Graph/Contracts/**`, owns none of them, needs no new Representation or Topology contract |
+
+### 15.1 A precondition shape this repo hasn't needed before, and its asymmetric failure
+
+Every prior unenforced precondition in this repo constrains a *property* of the input —
+`BinarySearch`'s sortedness (§9.1), `ShortestPath`'s non-negative edge weights (§7). `TrySort`'s
+precondition is different in kind: `nodes` must enumerate the *complete vertex set* of the graph,
+not merely its sources. A root-seeded walk (`Reduce.Graph`, `ConnectedComponents.Count`) only
+needs one representative per component, because it discovers descendants transitively through
+`GetChildren`. Kahn's algorithm can't work that way — it needs every vertex's true in-degree
+before the first node is ever dequeued, and there is no reverse-adjacency contract anywhere in
+`Graph/Contracts/**` (no way to ask a node for its parents), so nothing here could discover a
+missing vertex even if it wanted to.
+
+The two ways to violate this precondition fail differently, which is the genuinely new part.
+Omitting a *descendant* self-detects: it's still discovered via its parent's edge during the
+walk, which inflates the produced ordering past `vertices.Count`, so `TrySort` correctly returns
+`false`. Omitting an *ancestor* does not: nothing forward-reachable from the supplied set points
+back to it, so `TrySort` returns `true` with an ordering that silently omits it — a caller cannot
+tell this happened from the return value alone. A consequence worth stating plainly: a `false`
+result therefore doesn't distinguish a true cycle from a caller-omitted descendant either — both
+present identically as leftover in-degree.
+
+### 15.2 Free cycle detection, unlike `CheckedFold`'s recursion-path set
+
+`CheckedFold.TryFold` needs an explicit `HashSet<TNode> inProgress` tracking the current
+recursion path, because a cycle only reveals itself as "a node still on the path being reached
+again" mid-descent. Kahn's algorithm needs no equivalent structure: a cycle *is* the set of nodes
+whose in-degree never reaches zero, which the algorithm was already computing for an unrelated
+reason (deciding what to dequeue next). This is a case where the untrusted tier's defense comes
+free of charge rather than as an added cost over the trusted tier — there is no `DagFold`-style
+faster sibling for this utility to skip down to, because there's nothing left to skip.
+
+### 15.3 A second `Algorithms/`-side folder/class name collision
+
+`Algorithms/TopologicalSort/TopologicalSort.cs` names its folder and its class identically — the
+same shape §10.3 already documents for `DataStructures/DisjointSet/DisjointSet.cs`, and the same
+C# wrinkle results: `TopologicalSortTests.cs` living at namespace
+`DSAExperimentation.Tests.Algorithms.TopologicalSort` can't reference a bare `TopologicalSort`
+without it resolving to the enclosing namespace segment instead of the type, since namespace-
+member lookup wins over `using` directives. Fixed the same way §10.3 fixed it — a differently-
+named alias, `using TopologicalSortOperations = DSAExperimentation.Algorithms.TopologicalSort.TopologicalSort;`
+
+This is worth calling out as a new occurrence, not a mechanical reuse: every `Algorithms/` utility
+folder before this one deliberately used a *different* word than its primary class
+(`Connectivity`/`ConnectedComponents`, `Ancestry`/`LowestCommonAncestor`, `Paths`/
+`AllRootToLeafPaths`, `Searching`/`BinarySearch`, `Sorting`/`MergeSort`), because §5 step 6 names
+`Algorithms/` folders for *what the algorithm does*, which up to now always read as a broader
+category than any one technique's own name. `TopologicalSort` is the first case on the
+`Algorithms/` side where the category and the sole technique's name coincide exactly — renaming
+the class to something eponymous (`KahnsAlgorithm`) would dodge the collision but breaks this
+repo's preference for descriptive over eponymous names for a sole/primary technique (`MergeSort`,
+`BinarySearch`); `ShortestPath.Dijkstra`/`.AStar` are the one eponymous precedent here, but as
+*methods* distinguishing multiple techniques inside one shared category class, which doesn't
+apply when only one technique exists. §10.3's alias fix generalizes cleanly to this case instead.
