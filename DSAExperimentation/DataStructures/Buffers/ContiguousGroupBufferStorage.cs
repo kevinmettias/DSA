@@ -7,11 +7,9 @@ internal sealed class ContiguousGroupBufferStorage<TItem, TKey>
 {
     private readonly List<TItem> _currentGroup = [];
 
-    private TKey? _currentKey;
-
     public bool HasCurrentKey { get; private set; }
 
-    public TKey? CurrentKey => _currentKey;
+    public TKey? CurrentKey { get; private set; }
 
     public int CurrentGroupCount => _currentGroup.Count;
 
@@ -23,7 +21,7 @@ internal sealed class ContiguousGroupBufferStorage<TItem, TKey>
 
     public void SetCurrentKey(TKey key)
     {
-        _currentKey = key;
+        CurrentKey = key;
         HasCurrentKey = true;
     }
 
@@ -36,7 +34,7 @@ internal sealed class ContiguousGroupBufferStorage<TItem, TKey>
     public void ResetAll()
     {
         _currentGroup.Clear();
-        _currentKey = default;
+        CurrentKey = default;
         HasCurrentKey = false;
     }
 }

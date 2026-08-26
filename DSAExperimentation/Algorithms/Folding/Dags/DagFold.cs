@@ -20,17 +20,10 @@ internal static class DagFold
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
-    {
-        if (root is null)
-        {
-            return TAlgebra.Empty;
-        }
-
-        var completed = new Dictionary<TNode, TResult>();
-
-        return Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
-            root, 0, completed);
-    }
+        => root is null
+            ? TAlgebra.Empty
+            : Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+                root, 0, new Dictionary<TNode, TResult>());
 
     private static TResult Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode node, int depth, Dictionary<TNode, TResult> completed)

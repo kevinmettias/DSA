@@ -24,14 +24,9 @@ internal sealed class Queue<Element>
     public bool TryPeek(out Element item) => _items.TryPeekFront(out item);
 
     public Element Dequeue()
-    {
-        if (Count == 0)
-        {
-            return ThrowEmptyQueue();
-        }
-
-        return _items.PopFront();
-    }
+        => Count == 0
+            ? ThrowEmptyQueue()
+            : _items.PopFront();
 
     public bool TryDequeue(out Element item) => _items.TryPopFront(out item);
 

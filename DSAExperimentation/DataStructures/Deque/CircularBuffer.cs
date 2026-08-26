@@ -57,12 +57,7 @@ internal sealed class CircularBuffer<Element>
             return;
         }
 
-        var newCapacity = _items.Length * ArrayGrowth.GrowthFactor;
-
-        if (newCapacity < required)
-        {
-            newCapacity = required;
-        }
+        var newCapacity = Math.Max(_items.Length * ArrayGrowth.GrowthFactor, required);
 
         var resized = new Element[newCapacity];
 

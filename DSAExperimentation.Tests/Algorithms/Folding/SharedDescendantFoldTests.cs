@@ -48,6 +48,20 @@ public sealed partial class SharedDescendantFoldTests
     }
 
     [Fact]
+    public void CheckedFold_SharedDescendant_TryFoldReturnsTrueWithCombinedResult()
+    {
+        var a = DiamondSample();
+
+        var succeeded = CheckedFold.TryFold<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+            CountNodesFoldAlgebra, int>(a, out var count);
+
+        Assert.True(succeeded);
+        Assert.Equal(5, count);
+    }
+
+    [Fact]
     public void DagFold_SharedDescendant_IsCombinedOnce()
     {
         // TestTopology promises ITreeTopology, which - now that ITreeTopology

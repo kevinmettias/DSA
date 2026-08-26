@@ -31,7 +31,7 @@ internal sealed class HashMap<TKey, TValue>
             return false;
         }
 
-        value = _storage.EntryValue(index);
+        value = _storage.Entry(index).Value;
         return true;
     }
 
@@ -60,13 +60,19 @@ internal sealed class HashMap<TKey, TValue>
 
     private bool TryUpdateExisting(int hashCode, int bucketIndex, TKey key, TValue value)
     {
-        for (var i = _storage.BucketHead(bucketIndex); i >= 0; i = _storage.EntryNext(i))
+        var i = _storage.BucketHead(bucketIndex);
+
+        while (i >= 0)
         {
-            if (_storage.EntryHashCode(i) == hashCode && _comparer.Equals(_storage.EntryKey(i), key))
+            var entry = _storage.Entry(i);
+
+            if (entry.HashCode == hashCode && _comparer.Equals(entry.Key, key))
             {
                 _storage.SetEntryValue(i, value);
                 return true;
             }
+
+            i = entry.Next;
         }
 
         return false;
@@ -77,16 +83,20 @@ internal sealed class HashMap<TKey, TValue>
         var hashCode = ComputeHashCode(key);
         var bucketIndex = _storage.BucketIndexFor(hashCode);
         var previous = -1;
+        var i = _storage.BucketHead(bucketIndex);
 
-        for (var i = _storage.BucketHead(bucketIndex); i >= 0; i = _storage.EntryNext(i))
+        while (i >= 0)
         {
-            if (_storage.EntryHashCode(i) == hashCode && _comparer.Equals(_storage.EntryKey(i), key))
+            var entry = _storage.Entry(i);
+
+            if (entry.HashCode == hashCode && _comparer.Equals(entry.Key, key))
             {
                 _storage.Unlink(bucketIndex, previous, i);
                 return true;
             }
 
             previous = i;
+            i = entry.Next;
         }
 
         return false;
@@ -102,13 +112,18 @@ internal sealed class HashMap<TKey, TValue>
     {
         var hashCode = ComputeHashCode(key);
         var bucketIndex = _storage.BucketIndexFor(hashCode);
+        var i = _storage.BucketHead(bucketIndex);
 
-        for (var i = _storage.BucketHead(bucketIndex); i >= 0; i = _storage.EntryNext(i))
+        while (i >= 0)
         {
-            if (_storage.EntryHashCode(i) == hashCode && _comparer.Equals(_storage.EntryKey(i), key))
+            var entry = _storage.Entry(i);
+
+            if (entry.HashCode == hashCode && _comparer.Equals(entry.Key, key))
             {
                 return i;
             }
+
+            i = entry.Next;
         }
 
         return -1;
