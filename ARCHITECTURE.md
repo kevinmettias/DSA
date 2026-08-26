@@ -354,7 +354,7 @@ returns an answer — just a silently wrong one, with no failing build, exactly 
 
 `Find`'s comparer is a plain `IComparer<T>` method parameter — `HashMap<TKey,TValue>`/
 `ContiguousGroupBuffer<TItem,TKey>`'s precedent (§4.1) — not a `static abstract` witness like
-`IHeapOrder<T>`. The discriminator is not how often the comparer gets called: `HashMap.Get`'s
+`IHeapOrder<T>`. The discriminator is not how often the comparer gets called: `HashMap.TryGetValue`'s
 `_comparer.Equals` already runs on every probe of a bucket's chain, exactly as often as `Find`'s
 `comparer.Compare` runs on every bisection step, and `HashMap` is still correctly modeled as an open
 runtime object. The discriminator is whether the space of valid choices is closed. `IHeapOrder<T>` is
@@ -691,7 +691,7 @@ the distinguishing question is interface substitutability, not the topology axis
 | `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
 | `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
-| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second |
+| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second (§16) |
 | `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
 | `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
 | `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
@@ -893,3 +893,94 @@ repo's preference for descriptive over eponymous names for a sole/primary techni
 `BinarySearch`); `ShortestPath.Dijkstra`/`.AStar` are the one eponymous precedent here, but as
 *methods* distinguishing multiple techniques inside one shared category class, which doesn't
 apply when only one technique exists. §10.3's alias fix generalizes cleanly to this case instead.
+
+## 16. Worked example: `BellmanFord` and `AllPairsShortestPaths`
+
+`ShortestPaths/` gains two more files — relaxing `ShortestPath.cs`'s own non-negative-edge-weight
+law (§7) rather than assuming it, and reporting a negative cycle rather than silently mis-answering
+when relaxed too far. Both reuse `ShortestPath.cs`'s existing `IEdgeTopology`/`IEdges` contracts
+unchanged, so neither earns a place here for its Representation/Topology choice — what's new is a
+second run at §15.3's naming question, this time landing on the opposite answer for each file, and
+a genuinely new failure-reporting distinction that neither `ShortestPath.cs` nor `TopologicalSort`
+needed on its own.
+
+| File | Axis | Why |
+| --- | --- | --- |
+| [`BellmanFord.cs`](DSAExperimentation/Algorithms/ShortestPaths/BellmanFord.cs) | Operations | Single-source, negative-weight-tolerant relaxation with cycle detection; composes `IEdgeTopology`/`IEdges`, owns neither |
+| [`AllPairsShortestPaths.cs`](DSAExperimentation/Algorithms/ShortestPaths/AllPairsShortestPaths.cs) | Operations | All-pairs refinement over a dense matrix seeded from the same contracts; owns neither |
+
+### 16.1 Same contracts, no shared engine — why `BellmanFord` isn't a third `ShortestPath` method
+
+§3.3's template for `Dijkstra`/`AStar` sharing one class is "one algorithm, one injected axis, not
+two parallel implementations" — they are literally the same `Explore`/`Traverse`/`RelaxNeighbors`
+engine closed over a different `THeuristic`. Bellman-Ford shares none of that mechanism: no
+priority queue, no settled set, a fundamentally different bounded-rounds-over-every-edge loop
+instead. Output shape (a `Dictionary<TNode,TWeight>` of distances from one source) is the same as
+`Dijkstra`'s, but §3.3's actual test is shared mechanism, not shared output — so this stays its own
+file, flat in `ShortestPaths/` rather than nested (§13.1's nesting rule mirrors topology/strategy-
+witness refinement chains like `Grids/`; non-negative-weight is an unenforced doc-comment law, not
+a witness, so there is no refinement chain here to mirror).
+
+### 16.2 `BellmanFord`: eponymous where §15.3's principle runs out of a better answer
+
+§15.3 states a preference for descriptive category names over eponyms, with `TopologicalSort`
+already the one case where "the category and the sole technique's name coincide" because no better
+descriptive name was available. `BellmanFord.cs` is a second such case, for the same underlying
+reason: the category this file's output belongs to — "single-source shortest paths" — is the name
+`ShortestPath.cs` already has. There is no second, equally-natural descriptive name to give a
+negative-weight-tolerant sibling that doesn't either collide or read as contrived
+(`NegativeWeightShortestPath` names the precondition it relaxes, not what it computes). Unlike
+`TopologicalSort`, this isn't the *only* naming option this section discusses — see §16.3 — it's
+specifically the *class* name that has no descriptive alternative here.
+
+### 16.3 `AllPairsShortestPaths.FloydWarshall`... except the method isn't eponymous either
+
+The original design for the all-pairs file leaned on `ShortestPath.Dijkstra`/`.AStar` and
+`MinimumSpanningTree.Kruskal` as precedent for an eponymous *method* name (`FloydWarshall`) on a
+descriptively-named class (`AllPairsShortestPaths` — a real, natural category name, unlike
+`BellmanFord`'s situation in §16.2). Looking at what actually licenses those three eponymous
+methods sharpens the picture: `Dijkstra`/`AStar`/`Kruskal` all have **uncheckable** preconditions —
+non-negative weights, a validly-disconnected input — so none of them can ever fail at runtime, and
+none of them are `TryX`-shaped. `TopologicalSort.TrySort` is the opposite case: Kahn's algorithm
+*can* fail (checkably, via leftover in-degree), and its method is a plain descriptive verb, not
+`TryKahn`. `BellmanFord`/`AllPairsShortestPaths` both belong to the checkable-failure bucket (a
+reachable negative cycle), so both take `TrySort`'s naming shape — `TryComputeDistances` — not
+`Dijkstra`'s. Each technique's proper name still appears prominently in its file's own leading doc
+comment, the same way "Kahn's algorithm" appears only in `TopologicalSort.cs`'s prose, never in an
+identifier.
+
+### 16.4 The dense matrix is Operations-internal scratch state, not a second Representation
+
+`AllPairsShortestPaths` builds a `TWeight[,]` matrix internally, seeded once from the same
+`IEdgeTopology`/`IEdges` contracts `ShortestPath.cs` and `MinimumSpanningTree.cs` already reuse (§5
+step 5's same-domain-reuse allowance, unaffected by what happens to the data afterward). The matrix
+itself never leaves the method and never competes for a place beside `IEdgeTopology`/`IEdges` as a
+second Representation — the same bucket `ShortestPath`'s own `Heap` frontier and `TopologicalSort`'s
+`inDegree` dictionary are already in (§12.2): Operations-internal working state, not a
+caller-visible contract.
+
+### 16.5 The index map stays a plain `Dictionary`, not `KeyedDisjointSet`'s `HashMap`
+
+`KeyedDisjointSet<TKey>` (§10.4) looks like the obvious precedent for translating between `TNode`
+and a dense int index — it composes this repo's own `HashMap<TKey,int>` rather than the BCL
+`Dictionary`, per §7's asymmetry (prefer an already-existing self-hosted structure once one exists).
+But that precedent is for a `DataStructures/`-tier *reusable wrapper type*, meant to be constructed,
+held, and queried repeatedly by a caller. `AllPairsShortestPaths`'s index map is `Algorithms/`-tier
+*local scratch state*, built and discarded inside one method call — the same bucket
+`ShortestPath.Distances` and `TopologicalSort.inDegree` already occupy, both of which use a plain
+BCL `Dictionary`. The distinction is lifetime and ownership, not "is this a `TKey`-to-`int` map" —
+two structurally identical maps land in different buckets because one is a public reusable type and
+the other is scratch state no caller ever sees.
+
+### 16.6 The `MaxValue`-overflow guard is mechanics, not a caller-facing law
+
+Every cell of the dense matrix must hold *some* `TWeight` value, so "not yet known" needs an actual
+sentinel (`TWeight.MaxValue`) the way `ShortestPath.Distances`'s lazy, absence-means-unreached
+dictionary never does (`BellmanFord` inherits that same absence convention for exactly this reason —
+see its own doc comment). Adding two `TWeight.MaxValue` sentinels together would silently overflow
+under generic math, wrapping to a small value that reads as a real, very-wrong distance instead of
+"still unreached." This is not a law in §5 step 2's sense — no caller action can violate or satisfy
+it, unlike `ShortestPath.cs`'s non-negative-edge-weight precondition — so it is documented as an
+inline comment beside the refinement loop rather than a class-level doc comment: it is forced
+entirely by the dense-matrix representation `AllPairsShortestPaths` chose for itself, not something
+a caller is trusted to uphold.
