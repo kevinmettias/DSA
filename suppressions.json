@@ -163,6 +163,69 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Trie/Trie.cs",
+      "reason": "TryGetValue's default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Trie/TrieNode.cs",
+      "reason": "Value's default! is only meaningful once HasValue is true (set by Trie<TValue>.Set); every reader checks HasValue first, the same out-parameter-shaped contract HashMap.TryGetValue uses. Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/DoublyLinkedList/DoublyLinkedList.cs",
+      "reason": "each ! promises a sentinel-adjacent Previous/Next is present - true by construction, since the permanent dummy head/tail nodes are never removed and every real node's Previous/Next is always set by AddFront before it can be reached by Remove/PopBack; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/DoublyLinkedList/DoublyLinkedListNode.cs",
+      "reason": "Value's default! is only ever a transient initializer - every node is fully populated via its object initializer immediately after construction (DoublyLinkedList.AddFront's only caller pattern), the same out-parameter-shaped contract HashMap.TryGetValue uses for 'not meaningful until set.' Named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/LruCache/LruCache.cs",
+      "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/LfuCache/LfuCache.cs",
+      "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/DoublyLinkedList/DoublyLinkedListTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (here MethodUnderTest is Remove) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/LruCache/LruCacheTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect - the '>8 public declarations' finding is this repo's MethodUnderTest_Scenario_Expected xUnit convention (every [Fact] is public by xUnit's own requirement, not a designed API surface); LruCache's own public contract (constructor, TryGetValue, Set, Count) is small, so the excess is test count, not production surface sprawl.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/LfuCache/LfuCacheTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect - the '>8 public declarations' finding is this repo's MethodUnderTest_Scenario_Expected xUnit convention (every [Fact] is public by xUnit's own requirement, not a designed API surface); LfuCache's own public contract (constructor, TryGetValue, Set, Count) is small, so the excess is test count, not production surface sprawl.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
       "check": "check-naming-clarity",
       "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
       "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
@@ -219,6 +282,13 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/Trie/TrieTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
@@ -263,6 +333,13 @@
     {
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation.Tests/Algorithms/Searching/BinarySearchTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/StringMatching/PrefixFunctionSearchTests.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -374,6 +451,27 @@
     },
     {
       "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
+      "reason": "check-responsibility-extraction's own doc names Test_/New_-style prefixes as the case that should NOT be extracted, same as this repo's other MethodUnderTest_Scenario_Expected test files - here MethodUnderTest happens to be TryPeek/TryPop, so the shared 'Try' prefix is the xUnit naming convention (every [Fact] is public by requirement) reflecting the production type's own sanctioned Try*-only API (Stack.cs has no throwing Peek/Pop convenience by design), not a designed API surface to split.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Queue/QueueTests.cs",
+      "reason": "check-responsibility-extraction's own doc names Test_/New_-style prefixes as the case that should NOT be extracted, same as this repo's other MethodUnderTest_Scenario_Expected test files - here MethodUnderTest happens to be TryPeek/TryDequeue, so the shared 'Try' prefix is the xUnit naming convention (every [Fact] is public by requirement) reflecting the production type's own sanctioned Try*-only API (Queue.cs has no throwing Peek/Dequeue convenience by design), not a designed API surface to split.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Trie/TrieTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
       "path": "DSAExperimentation.Tests/Algorithms/TopologicalSort/TopologicalSortTests.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
       "owner": "@kmettias",
@@ -416,6 +514,13 @@
     },
     {
       "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/Algorithms/Folding/SharedDescendantFoldTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' CheckedFold_SharedDescendant_IsCombinedOnce performs one action (TryFold over the diamond fixture) and then asserts two independent postconditions of it (the returned value, and the algebra fixture's own static CombineCalls count); they share no local because each reads a different facet of the same call, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapArrayTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
       "owner": "@kmettias",
@@ -425,6 +530,27 @@
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/DoublyLinkedList/DoublyLinkedListTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged Remove_* test performs one action (removing a specific node) and then asserts two independent postconditions of it (Count, and the remaining nodes' order via a PopBack drain); the assertions share no local with each other because each reads a different facet of the same splice, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/LruCache/LruCacheTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a set/evict/etc.) and then asserts several independent postconditions of it (which keys are still present, a promoted value, Count); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/LfuCache/LfuCacheTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a set/evict/repeated-access sequence) and then asserts several independent postconditions of it (which keys are still present, a promoted value, Count); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -453,6 +579,13 @@
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Trie/TrieTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Set_ExistingKey_OverwritesValue_CountUnchanged performs one action (an overwriting Set) and asserts two independent facets of it (the stored value, Count); SharedPrefixNode_TracksEachWordIndependently walks one shared-prefix scenario through several Set/assert steps that each read a different facet of the same trie, not unrelated responsibilities. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -836,6 +969,13 @@
     },
     {
       "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/StringMatching/PrefixFunctionSearchTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
       "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/DepthFirstSearchTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
@@ -845,6 +985,27 @@
       "check": "check-literals",
       "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/DoublyLinkedList/DoublyLinkedListTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a small sample element, an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/LruCache/LruCacheTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter cache key, a small sample value, a capacity/count the test expects back, or a lookup key like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/LfuCache/LfuCacheTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a small integer cache key, a small sample value, a capacity/count the test expects back, or a lookup key like 999 - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1074,6 +1235,13 @@
     },
     {
       "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Trie/TrieTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a short trie key/prefix (\"cat\"/\"car\"/\"card\"/\"dog\"/\"missing\"/\"\"), or an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
       "path": "DSAExperimentation.Tests/Algorithms/TopologicalSort/TopologicalSortTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph node label - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
@@ -1097,6 +1265,48 @@
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/KeyedDisjointSet/KeyedDisjointSetTests.cs",
       "reason": "Union_ChainOfUnions_AllMembersReportConnected's three sequential TryUnion calls share no local between them (each discards its own bool result), so the metric sees them as disconnected statements rather than the one cohesive chain-building step they actually are - the same shape DisjointSetTests.cs's own Union_ChainOfPairs_MergesAllIntoOneSet already has. Splitting the chain construction across three test methods would fragment one scenario into unrelated-looking fragments, not clarify it.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Bipartiteness/BipartiteCheckTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/StronglyConnectedComponentsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph node label - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/BridgesAndArticulationPointsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph node label, or a star-graph leaf label like \"L1\"/\"L2\"/\"L3\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/Algorithms/Bipartiteness/BipartiteCheckTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after the Is*-prefixed IsBipartite production method is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for DisjointSetTests.cs and check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/StronglyConnectedComponentsTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Tarjan prefix) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/BridgesAndArticulationPointsTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Find prefix, doubled by splitting each bridges+articulation-points scenario into two focused facts per check-function-cohesion) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }
