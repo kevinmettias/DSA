@@ -118,4 +118,137 @@ public sealed partial class BinarySearchTests
         Assert.Equal(3, arrayResult);
         Assert.Equal(arrayResult, dynamicArrayResult);
     }
+
+    [Fact]
+    public void LowerBound_DuplicateTargets_ReturnsFirstOccurrence()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 3, 3, 5]);
+
+        var index = BinarySearch.LowerBound(sequence, 3);
+
+        Assert.Equal(1, index);
+    }
+
+    [Fact]
+    public void LowerBound_TargetAbsentBetweenElements_ReturnsInsertionIndex()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var index = BinarySearch.LowerBound(sequence, 4);
+
+        Assert.Equal(2, index);
+    }
+
+    [Fact]
+    public void LowerBound_TargetAboveRange_ReturnsSequenceLength()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var index = BinarySearch.LowerBound(sequence, 10);
+
+        Assert.Equal(sequence.Length, index);
+    }
+
+    [Fact]
+    public void LowerBound_TargetBelowRange_ReturnsZero()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var index = BinarySearch.LowerBound(sequence, 0);
+
+        Assert.Equal(0, index);
+    }
+
+    [Fact]
+    public void LowerBound_EmptySequence_ReturnsZero()
+    {
+        var sequence = new ArraySequence<int>([]);
+
+        var index = BinarySearch.LowerBound(sequence, 5);
+
+        Assert.Equal(0, index);
+    }
+
+    [Fact]
+    public void LowerBound_WithCustomComparer_UsesComparerInsteadOfDefaultOrder()
+    {
+        var sequence = new ArraySequence<int>([9, 7, 5, 5, 3, 1]);
+        var descendingComparer = Comparer<int>.Create((left, right) => right.CompareTo(left));
+
+        var index = BinarySearch.LowerBound(sequence, 5, descendingComparer);
+
+        Assert.Equal(2, index);
+    }
+
+    [Fact]
+    public void UpperBound_DuplicateTargets_ReturnsIndexPastLastOccurrence()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 3, 3, 5]);
+
+        var index = BinarySearch.UpperBound(sequence, 3);
+
+        Assert.Equal(4, index);
+    }
+
+    [Fact]
+    public void UpperBound_TargetAbsentBetweenElements_ReturnsInsertionIndex()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var index = BinarySearch.UpperBound(sequence, 4);
+
+        Assert.Equal(2, index);
+    }
+
+    [Fact]
+    public void UpperBound_TargetAboveRange_ReturnsSequenceLength()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var index = BinarySearch.UpperBound(sequence, 10);
+
+        Assert.Equal(sequence.Length, index);
+    }
+
+    [Fact]
+    public void UpperBound_TargetBelowRange_ReturnsZero()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var index = BinarySearch.UpperBound(sequence, 0);
+
+        Assert.Equal(0, index);
+    }
+
+    [Fact]
+    public void UpperBound_EmptySequence_ReturnsZero()
+    {
+        var sequence = new ArraySequence<int>([]);
+
+        var index = BinarySearch.UpperBound(sequence, 5);
+
+        Assert.Equal(0, index);
+    }
+
+    [Fact]
+    public void UpperBound_WithCustomComparer_UsesComparerInsteadOfDefaultOrder()
+    {
+        var sequence = new ArraySequence<int>([9, 7, 5, 5, 3, 1]);
+        var descendingComparer = Comparer<int>.Create((left, right) => right.CompareTo(left));
+
+        var index = BinarySearch.UpperBound(sequence, 5, descendingComparer);
+
+        Assert.Equal(4, index);
+    }
+
+    [Fact]
+    public void LowerBoundAndUpperBound_TargetAbsent_ProduceEmptyRange()
+    {
+        var sequence = new ArraySequence<int>([1, 3, 5, 7, 9]);
+
+        var lower = BinarySearch.LowerBound(sequence, 4);
+        var upper = BinarySearch.UpperBound(sequence, 4);
+
+        Assert.Equal(lower, upper);
+    }
 }
