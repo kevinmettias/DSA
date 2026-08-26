@@ -4,11 +4,11 @@ namespace DSAExperimentation.DataStructures.Sequence;
 // indexer for both directions - the simplest possible proof the contract is satisfiable at all -
 // backed by a reference type, so Set's mutation is visible across every copy of this struct (see
 // IIndexedSequence.cs).
-internal readonly struct ArrayIndexedSequence<T>(T[] items) : IIndexedSequence<T>
+internal readonly struct ArrayIndexedSequence<Element>(Element[] items) : IIndexedSequence<Element>
 {
     public int Length => items.Length;
 
-    public T Get(int index) => items[index];
+    public Element Get(int index) => items[index];
 
-    public void Set(int index, T value) => items[index] = value;
+    public void Set(int index, Element value) => items[index] = value;
 }

@@ -4,21 +4,21 @@ namespace DSAExperimentation.DataStructures.Heap;
 // ARCHITECTURE.md §5: an interface here would be the same speculative abstraction IChildren's
 // own doc comment warns against, since no second implementation exists yet to justify one.
 //
-// Get/Set/Swap are O(1) by construction (List<T>'s indexer) - Heap<T,TOrder>'s O(log n) push/pop
+// Get/Set/Swap are O(1) by construction (List<Element>'s indexer) - Heap<Element,TOrder>'s O(log n) push/pop
 // claim depends on this. See ARCHITECTURE.md §8: swapping this backing store for anything with
 // O(n) indexed access would silently degrade that claim to O(n log n) with no compiler error and
 // no failing test to catch it.
-internal sealed class HeapArray<T>
+internal sealed class HeapArray<Element>
 {
-    private readonly List<T> _items = [];
+    private readonly List<Element> _items = [];
 
     public int Count => _items.Count;
 
-    public T Get(int index) => _items[index];
+    public Element Get(int index) => _items[index];
 
-    public void Set(int index, T value) => _items[index] = value;
+    public void Set(int index, Element value) => _items[index] = value;
 
-    public void Add(T value) => _items.Add(value);
+    public void Add(Element value) => _items.Add(value);
 
     public void RemoveLast() => _items.RemoveAt(_items.Count - 1);
 

@@ -2,30 +2,27 @@ using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.DataStructures.Set;
 
-// Backed by HashMap<T,bool> the same way java.util.HashSet is backed by
+// Backed by HashMap<Element,bool> the same way java.util.HashSet is backed by
 // HashMap<E,Object> - membership is exactly "is this key present," so the value is
 // an unused placeholder.
-internal sealed class Set<T>
+internal sealed class Set<Element>
 {
-    private readonly HashMap<T, bool> _items;
-
-    public Set()
-        : this(EqualityComparer<T>.Default)
-    {
-    }
-
-    public Set(IEqualityComparer<T> comparer)
-    {
-        _items = new HashMap<T, bool>(comparer);
-    }
+    private readonly HashMap<Element, bool> _items;
 
     public int Count => _items.Count;
 
-    public bool Contains(T item) => _items.ContainsKey(item);
-
-    public bool Add(T item)
+    public Set()
+        : this(EqualityComparer<Element>.Default)
     {
-        if (_items.ContainsKey(item))
+    }
+
+    public Set(IEqualityComparer<Element> comparer) => _items = new HashMap<Element, bool>(comparer);
+
+    public bool Has(Element item) => _items.HasKey(item);
+
+    public bool TryAdd(Element item)
+    {
+        if (_items.HasKey(item))
         {
             return false;
         }
@@ -34,5 +31,5 @@ internal sealed class Set<T>
         return true;
     }
 
-    public bool Remove(T item) => _items.Remove(item);
+    public bool TryRemove(Element item) => _items.TryRemove(item);
 }

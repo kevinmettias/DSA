@@ -1,7 +1,7 @@
 namespace DSAExperimentation.DataStructures.Heap;
 
-internal readonly struct MinHeapOrder<T> : IHeapOrder<T>
-    where T : IComparable<T>
+internal readonly struct MinHeapOrder<Element> : IHeapOrder<Element>
+    where Element : IComparable<Element>
 {
-    public static bool HasPriority(T candidate, T incumbent) => candidate.CompareTo(incumbent) < 0;
+    public static bool HasPriority(Element candidate, Element incumbent) => candidate.CompareTo(incumbent) < 0;
 }

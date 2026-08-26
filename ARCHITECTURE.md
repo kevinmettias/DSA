@@ -52,15 +52,15 @@ hypothetical in §4 below, where it becomes `Collections/Heap`.
 
 ### 3.1 Representation
 
-- [`Graph/Contracts/Ordering/IChildren.cs`](DSAExperimentation/Graph/Contracts/Ordering/IChildren.cs) —
+- [`Graph/Contracts/Ordering/IChildren.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Ordering/IChildren.cs) —
   an indexable view over a node's children. Deliberately *not* `IReadOnlyList<TNode>`: `Get` is a
   named method, not an indexer, specifically so implementations stay thin structs that JIT-specialize
   to direct, non-virtual calls with no boxing.
-- [`ListChildren.cs`](DSAExperimentation/Graph/Contracts/Ordering/ListChildren.cs) — pointer/`List`-backed.
-- [`SparseArrayChildren.cs`](DSAExperimentation/Graph/Contracts/Ordering/SparseArrayChildren.cs) —
+- [`ListChildren.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ListChildren.cs) — pointer/`List`-backed.
+- [`SparseArrayChildren.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Ordering/SparseArrayChildren.cs) —
   fixed slot-array backed (e.g. a trie's 26-letter alphabet), scans past nulls instead of storing a
   materialized list.
-- [`Graph/Algorithms/Grids/GridChildren.cs`](DSAExperimentation/Graph/Algorithms/Grids/GridChildren.cs) —
+- [`Graph/Algorithms/Grids/GridChildren.cs`](DSAExperimentation/DataStructures/Graph/Grids/GridChildren.cs) —
   a third representation: children aren't stored at all, they're computed on demand from geometry
   (row/col offsets filtered by what the grid says is in bounds and passable). This is the direct
   precedent reused by `Collections/Heap`'s index arithmetic in §4.
@@ -81,19 +81,19 @@ IDagTopology<TNode,TChildren>     + acyclicity (shared descendants OK, cycles ar
 ITreeTopology<TNode,TChildren>    + unique ancestry (no sharing at all)
 ```
 
-- [`IGraphTopology.cs`](DSAExperimentation/Graph/Contracts/Topologies/IGraphTopology.cs) — the
+- [`IGraphTopology.cs`](DSAExperimentation/DataStructures/Graph/Contracts/Topologies/IGraphTopology.cs) — the
   general contract every walker/fold/reduce actually needs: given a node, what's adjacent to it.
   Algorithms constrained on this bare interface can't assume acyclicity and must defend against
   cycles/sharing themselves.
-- [`IDagTopology.cs`](DSAExperimentation/Graph/Engines/Dags/IDagTopology.cs) — promises acyclicity.
+- [`IDagTopology.cs`](DSAExperimentation/DataStructures/Graph/Engines/Dags/IDagTopology.cs) — promises acyclicity.
   This is exactly what a fold needs and exactly what bare `IGraphTopology` doesn't promise, which is
   why `CheckedFold` has to accept any `IGraphTopology` and defend itself at runtime while `DagFold`,
   constrained on this tier, skips that defense entirely.
-- [`ITreeTopology.cs`](DSAExperimentation/Graph/Engines/Dags/Trees/ITreeTopology.cs) — additionally
+- [`ITreeTopology.cs`](DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/ITreeTopology.cs) — additionally
   promises unique ancestry, which is what lets the tree-only walkers skip visited-tracking/memoization
   and stay zero-cost.
 
-The payoff is concrete, not just documentation: [`UnguardedVisit.cs`](DSAExperimentation/Graph/Engines/Walking/UnguardedVisit.cs)
+The payoff is concrete, not just documentation: [`UnguardedVisit.cs`](DSAExperimentation/Algorithms/Walking/UnguardedVisit.cs)
 (stateless, tree tier) vs. `TrackedVisitGuard.cs` (`HashSet`-backed, graph tier); `TreeFold.cs` vs.
 `DagFold.cs` vs. `CheckedFold.cs` — three tiers of the same catamorphism, each paying only the
 defense its topology tier doesn't already rule out. `IEdgeTopology.cs`/`EdgeTopologyAsGraphTopology.cs`
@@ -107,7 +107,7 @@ Two layers: generic **engines** (`Graph/Engines/Reducing/Reduce.cs`'s `Tree`/`Gr
 user-facing **facades** built by closing those generics over concrete node/topology types
 (`Graph/Algorithms/{Ancestry,Connectivity,Grids,Metrics,Paths,ShortestPaths}/**`).
 
-[`IPathHeuristic.cs`](DSAExperimentation/Graph/Algorithms/ShortestPaths/IPathHeuristic.cs)/`ZeroHeuristic.cs`
+[`IPathHeuristic.cs`](DSAExperimentation/Algorithms/ShortestPaths/IPathHeuristic.cs)/`ZeroHeuristic.cs`
 is the template for "one algorithm, one injected axis, not two parallel implementations" —
 `ShortestPath.Dijkstra` is `ShortestPath.AStar` closed over `ZeroHeuristic`. `Collections/Heap`'s
 `IHeapOrder` reuses this exact idiom in §4.
@@ -143,7 +143,7 @@ needed two genuinely different shapes (`ListChildren`, `SparseArrayChildren`) fr
 
 `Graph/Algorithms/ShortestPaths/ShortestPath.cs` is `Heap`'s first real consumer: Dijkstra/A*'s
 frontier is `Heap<(TNode Node, TWeight Priority), ByPriorityOrder<TNode,TWeight>>`, where
-[`ByPriorityOrder.cs`](DSAExperimentation/Graph/Algorithms/ShortestPaths/ByPriorityOrder.cs) projects
+[`ByPriorityOrder.cs`](DSAExperimentation/DataStructures/Graph/ShortestPaths/ByPriorityOrder.cs) projects
 `IHeapOrder<T>` down to "compare `.Priority`, ignore `.Node`" — the same projection move
 `EdgeTopologyAsGraphTopology` makes for `IGraphTopology`, just for a different domain's Topology
 witness. Note this doesn't violate "domain-scoped contracts": `ByPriorityOrder` *implements*
@@ -303,7 +303,7 @@ There are three kinds of independence here, in decreasing order of how safely th
   independence is a frequent convenience, not something to assume by default.
 - **Performance independence** — the dangerous one, and the one this repo has a live example of.
   `Collections/Heap`'s `Heap<T,TOrder>` push/pop is O(log n) *only because*
-  [`HeapArray<T>`](DSAExperimentation/Collections/Heap/HeapArray.cs)'s `Get`/`Set`/`Swap` are O(1).
+  [`HeapArray<T>`](DSAExperimentation/DataStructures/Heap/HeapArray.cs)'s `Get`/`Set`/`Swap` are O(1).
   A syntactic contract like `Get(index)` says nothing about that cost. Swap `HeapArray<T>`'s backing
   store for something with O(n) indexed access and `Heap`'s complexity claim silently degrades to
   O(n log n) — no compiler error, no test failure, since correctness tests still pass regardless of
@@ -313,8 +313,8 @@ There are three kinds of independence here, in decreasing order of how safely th
 depends on a specific cost from its Representation layer, say so in that type's doc comment. The
 type system can't enforce Big-O, but a written dependency is what stops a well-intentioned
 representation swap from silently regressing performance instead of failing loudly.
-[`Heap.cs`](DSAExperimentation/Collections/Heap/Heap.cs) and
-[`HeapArray.cs`](DSAExperimentation/Collections/Heap/HeapArray.cs) carry exactly this cross-reference
+[`Heap.cs`](DSAExperimentation/DataStructures/Heap/Heap.cs) and
+[`HeapArray.cs`](DSAExperimentation/DataStructures/Heap/HeapArray.cs) carry exactly this cross-reference
 as the worked example.
 
 ## 9. Worked example: `Searching/BinarySearch`
@@ -331,9 +331,9 @@ one physical layout.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Searching/IRandomAccessSequence.cs`](DSAExperimentation/Searching/IRandomAccessSequence.cs) | Representation | An indexable view over an already-sorted sequence, generic over the element type alone — `Find`'s only physical-layout requirement |
-| [`ArraySequence.cs`](DSAExperimentation/Searching/ArraySequence.cs), [`DynamicArraySequence.cs`](DSAExperimentation/Searching/DynamicArraySequence.cs) | Representation | Two witnesses satisfying the O(1)-`Get` obligation above, for two different physical reasons |
-| [`BinarySearch.cs`](DSAExperimentation/Searching/BinarySearch.cs) | Operations | `Find` — the bisection loop; owns neither Representation witness |
+| [`Searching/IRandomAccessSequence.cs`](DSAExperimentation/DataStructures/Sequence/IRandomAccessSequence.cs) | Representation | An indexable view over an already-sorted sequence, generic over the element type alone — `Find`'s only physical-layout requirement |
+| [`ArraySequence.cs`](DSAExperimentation/DataStructures/Sequence/ArraySequence.cs), [`DynamicArraySequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArraySequence.cs) | Representation | Two witnesses satisfying the O(1)-`Get` obligation above, for two different physical reasons |
+| [`BinarySearch.cs`](DSAExperimentation/Algorithms/Searching/BinarySearch.cs) | Operations | `Find` — the bisection loop; owns neither Representation witness |
 
 ### 9.1 Why sortedness is a law, not a Topology witness
 
@@ -418,8 +418,8 @@ one axis that looks variable turns out to be a Complexity law instead.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Collections/DisjointSet/DisjointSetForest.cs`](DSAExperimentation/Collections/DisjointSet/DisjointSetForest.cs) | Representation | Parallel `parent`/`rank` `int[]` fields, fixed-size at construction — concrete, not an interface, since exactly one physical layout exists today (§5 step 3) |
-| [`Collections/DisjointSet/DisjointSet.cs`](DSAExperimentation/Collections/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`Connected` — path compression and union-by-rank, both hardcoded, not swappable |
+| [`Collections/DisjointSet/DisjointSetForest.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs) | Representation | Parallel `parent`/`rank` `int[]` fields, fixed-size at construction — concrete, not an interface, since exactly one physical layout exists today (§5 step 3) |
+| [`Collections/DisjointSet/DisjointSet.cs`](DSAExperimentation/DataStructures/DisjointSet/DisjointSet.cs) | Operations | `Find`/`Union`/`Connected` — path compression and union-by-rank, both hardcoded, not swappable |
 
 ### 10.1 Why the linking policy is a Complexity law, not a Topology witness
 
@@ -496,18 +496,19 @@ one of them needs to write it back.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Sorting/IIndexedSequence.cs`](DSAExperimentation/Sorting/IIndexedSequence.cs) | Representation | Indexed get/set view, generic over the element type alone — earns the interface on day one via two witnesses, same §5-step-3 exception `IRandomAccessSequence<T>` used |
-| [`Sorting/ArrayIndexedSequence.cs`](DSAExperimentation/Sorting/ArrayIndexedSequence.cs), [`Sorting/DynamicArrayIndexedSequence.cs`](DSAExperimentation/Sorting/DynamicArrayIndexedSequence.cs) | Representation | Two witnesses satisfying the doubled O(1) obligation, for the same two physical reasons `ArraySequence`/`DynamicArraySequence` already do |
-| [`Sorting/SortBounds.cs`](DSAExperimentation/Sorting/SortBounds.cs) | Representation | Groups the `[Low, High]` range being sorted — an immutable value bundle, not a mutable shared cursor |
-| [`Sorting/MergeSort.cs`](DSAExperimentation/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; owns neither witness |
+| [`Sorting/IIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/IIndexedSequence.cs) | Representation | Indexed get/set view, generic over the element type alone — earns the interface on day one via two witnesses, same §5-step-3 exception `IRandomAccessSequence<T>` used |
+| [`Sorting/ArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/ArrayIndexedSequence.cs), [`Sorting/DynamicArrayIndexedSequence.cs`](DSAExperimentation/DataStructures/Sequence/DynamicArrayIndexedSequence.cs) | Representation | Two witnesses satisfying the doubled O(1) obligation, for the same two physical reasons `ArraySequence`/`DynamicArraySequence` already do |
+| [`Sorting/SortBounds.cs`](DSAExperimentation/Algorithms/Sorting/SortBounds.cs) | Representation | Groups the `[Low, High]` range being sorted — an immutable value bundle, not a mutable shared cursor |
+| [`Sorting/MergeSort.cs`](DSAExperimentation/Algorithms/Sorting/MergeSort.cs) | Operations | `Sort` — top-down recursive split/merge; owns neither witness |
 
 ### 11.1 Domain separation is the reason for a new contract, not read/write alone
 
-`IIndexedSequence<T>` exists because `Sorting` is a distinct domain from `Searching`, per §5.5 —
+`IIndexedSequence<T>` exists because `Sorting` is a distinct domain from `Searching`, per §5's
+domain-reuse rule (never reuse another domain's Representation or Topology contracts as your own) —
 that is the primary reason, and it holds regardless of operation-set overlap. Stating "it needs
 `Set` and `IRandomAccessSequence<T>` doesn't have one" as the *sole* justification would wrongly
 imply that a future `Sorting` algorithm needing only `Get` could then reuse `Searching`'s
-interface; §5.5's rule fires on domain ownership, not on whether the method lists happen to
+interface; §5's domain-reuse rule fires on domain ownership, not on whether the method lists happen to
 differ. The read/write mismatch here is real and reinforcing — `IRandomAccessSequence<T>` could
 not satisfy `Set` even if reuse were otherwise permitted — but it is secondary to the domain
 argument, not a replacement for it.
@@ -550,7 +551,7 @@ outside `Graph/**`, generic over nothing but a bare successor function.
 
 | File | Axis | Why |
 | --- | --- | --- |
-| [`Traversal/DepthFirstSearch.cs`](DSAExperimentation/Traversal/DepthFirstSearch.cs) | Operations | `Traverse` — the only file this domain needs; there is no Representation to write |
+| [`Traversal/DepthFirstSearch.cs`](DSAExperimentation/Algorithms/Traversal/DepthFirst/DepthFirstSearch.cs) | Operations | `Traverse` — the only file this domain needs; there is no Representation to write |
 
 ### 12.1 Why the successor relation is a runtime object, not a witness
 
@@ -566,7 +567,7 @@ enumerable set of "kinds" to close over — a chess-move generator, an infinite 
 closure are arbitrary caller logic, not named library variants — so it lands in the same open
 bucket as `IComparer<T>`, row 2, not row 1. There is also nothing to close a witness over even if
 one were wanted: the only tiered hierarchy for "successor relation kinds" anywhere in this
-codebase is Graph's own, and reusing it is exactly what §5.5 forbids.
+codebase is Graph's own, and reusing it is exactly what §5's domain-reuse rule forbids.
 
 ### 12.2 No Representation axis at all — the mirror image of `DynamicArray`
 
@@ -754,7 +755,7 @@ identity (§5 step 6), and `IRandomAccessSequence`/`ArraySequence`/`DynamicArray
 access contracts," just at two different read/write capability levels — not "a searching thing" or
 "a sorting thing." Both sets now co-locate under one identity folder, `DataStructures/Sequence/`,
 the same way `MinHeapOrder`/`MaxHeapOrder` already sit as sibling witnesses under `Heap/` — still
-two separate, non-reused domains per §5.5 (`Sorting` never reuses `Searching`'s contract, per §11.1),
+two separate, non-reused domains per §5's domain-reuse rule (`Sorting` never reuses `Searching`'s contract, per §11.1),
 just grouped by theme rather than split across two algorithm-named folders.
 
 Checking this surfaced an unrelated, pre-existing misclassification: `SearchRange.cs` and

@@ -1,0 +1,1041 @@
+{
+  "schema": 1,
+  "waivers": [
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/DataStructures/Heap/Heap.cs",
+      "reason": "Push+SiftUp (the insert path) and Peek/Pop+SiftDown+HighestPriorityChild (the remove/inspect path) share only the backing HeapArray, which check-class-size's own majority-connector filter deliberately treats as plumbing rather than a distinguishing responsibility (see cluster_judgment.go's cross_Cutting_Connectors comment) - but for a heap, that shared backing store is the entire reason both paths belong to one type. Splitting insert from remove into separate classes over one array would fragment an inherently unified abstraction, not clarify it.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/DataStructures/Deque/CircularBuffer.cs",
+      "reason": "the metric's majority-connector filter excludes _items/_head/Count as plumbing (every method touches at least one), then clusters the survivors by which private helper they happen to call (BackIndex vs EnsureCapacity) - producing a 'front vs back' split that is not a real responsibility boundary for a single wraparound buffer. GetFront/RemoveFront read/write the same _head-relative slots AddFront/RemoveBack do; splitting front-end and back-end operations into separate types would duplicate the wraparound arithmetic, not separate concerns.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs",
+      "reason": "the parent-array accessors (GetParent/SetParent) and rank-array accessors (GetRank/IncrementRank) cluster separately because the metric excludes the ValidateId call they all share as a majority connector - but parent and rank are two facets of one disjoint-set forest's per-id state, not two responsibilities; DisjointSet.Union already needs both together for every link decision, so splitting them would just make the caller hold two collaborators instead of one.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Folding/Fixtures/CountCombineCallsFoldAlgebra.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Reducing/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/RecordingLevelHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/RecordingVisitHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingEnterExitHooks.cs",
+      "reason": "the static fields' owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingEnterHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingExitHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation/DataStructures",
+      "reason": "ARCHITECTURE.md \u00a713.3 documents this flat, one-folder-per-domain layout as the deliberate outcome of four successive reorgs (\u00a713) - a data structure's identity is its representation/topology, so grouping domains under an intermediate category folder would recreate the domain-first tree the reorg explicitly undid.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation/Algorithms",
+      "reason": "ARCHITECTURE.md \u00a713.3 documents this flat, one-folder-per-utility layout as the deliberate outcome of four successive reorgs (\u00a713.2's second reorg organizes Algorithms/ by utility, not by domain) - an intermediate category folder here would recreate exactly the domain-first grouping that reorg undid.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation.Tests/DataStructures",
+      "reason": "mirrors DSAExperimentation/DataStructures one level deeper per ARCHITECTURE.md \u00a713.3 ('DSAExperimentation.Tests/ mirrors both trees one level deeper') - same deliberate flat, one-folder-per-domain layout.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation.Tests/Algorithms",
+      "reason": "mirrors DSAExperimentation/Algorithms one level deeper per ARCHITECTURE.md \u00a713.3 ('DSAExperimentation.Tests/ mirrors both trees one level deeper') - same deliberate flat, one-folder-per-utility layout.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Deque/CircularBuffer.cs",
+      "reason": "each default! clears a slot that RemoveFront/RemoveBack has already made unreachable; the invariant is named inline as a `presumption: allow` comment, but this check's own default policy only honours that marker for safety-critical checks, so the exception is recorded here too.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Deque/Deque.cs",
+      "reason": "each default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArrayStorage.cs",
+      "reason": "default! clears a slot RemoveAt has already made unreachable past the shrunk Count; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/HashMap/HashMap.cs",
+      "reason": "TryGetValue's default! is the standard out-parameter contract, and ComputeHashCode's key! exists only because TKey is unconstrained (a literal null key's behavior is the comparer's own contract, not this map's); both are named inline as `presumption: allow` comments, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/HashMap/HashMapStorage.cs",
+      "reason": "Unlink's default!s clear a slot only reachable through the free list from here on; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Heap/Heap.cs",
+      "reason": "each default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Stack/Stack.cs",
+      "reason": "default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/DynamicArray/DynamicArrayTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetForestTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after an Is*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/ArraySequenceTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/ArrayIndexedSequenceTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/DynamicArraySequenceTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/DynamicArrayIndexedSequenceTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after a Get*-prefixed production member is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Deque/DequeTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/DynamicArray/DynamicArrayTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/TraversalTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Searching/BinarySearchTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Set/SetTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Deque/CircularBufferTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/DepthFirstSearchTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Sorting/MergeSortTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/ShortestPathTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/Grids/GridTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Reducing/ReduceTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Paths/AllRootToLeafPathsTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/GraphTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Folding/FoldTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact]/[Theory] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/Deque/Deque.cs",
+      "reason": "check-responsibility-extraction's own doc calls a shared-prefix cluster a review, not an automatic defect - 'Try' is the standard attempt-returns-success prefix (already accepted for check-boolean-predicate), not a hidden module; TryPeekFront/TryPeekBack/TryPopFront/TryPopBack are the non-throwing siblings of PeekFront/PeekBack/PopFront/PopBack, not a responsibility this small double-ended-queue type should shed. The paired >8-public-members finding is the same fact: a Deque's minimal API is inherently throw/Try x front/back x peek/pop, landing at 10 members without any accidental sprawl to split out.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/HashMap/HashMapStorage.cs",
+      "reason": "check-responsibility-extraction's own doc calls a shared-prefix cluster a review, not an automatic defect - EntryHashCode/EntryKey/EntryNext/EntryValue read one entry's fields at a caller-supplied index, which is this file's own declared job ('raw bucket/entry mechanics only', per its header comment); extracting 'Entry' into its own type would not shrink HashMapStorage's real complexity, since Insert/Unlink already have to manage buckets and entries together for one hash lookup. The paired >8-public-members finding is the same fact: this is the whole bucket+entry Representation layer HashMap composes, not a facade.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Deque/CircularBufferTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Deque/DequeTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/DynamicArray/DynamicArrayTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapArrayTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Queue/QueueTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/DynamicArrayIndexedSequenceTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/DynamicArraySequenceTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a push/add/union/etc.) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation/DataStructures/Heap/Heap.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory. Pop's leading `if (Count == 0) return ThrowEmptyHeap();` is a guard clause - it shares no local with the swap/remove/sift-down steps that follow only because a guard clause never does, the same shape every early-return precondition check has. The steps after the guard are one cohesive algorithm (save root, move last to root, shrink, sift down, return root), each depending on the previous; splitting the guard into its own function would not name a real second computation.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Connectivity/ConnectedComponents.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/IterativeFoldEvaluation.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/RecursiveFoldEvaluation.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Metrics/DiameterAlgebra.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Metrics/HeightAlgebra.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Metrics/SizeAlgebra.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/BreadthFirstReduceOrder.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/DepthFirstReduceOrder.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/DistanceMapReduceAlgebra.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/ZipReduceAlgebra.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/ShortestPaths/ZeroHeuristic.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/TrackedVisitGuard.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/UnguardedVisit.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/NaturalChildOrder.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ReverseChildOrder.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/EdgeTargets.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ListChildren.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ListEdges.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ReversedChildren.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/SparseArrayChildren.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Topologies/EdgeTopologyAsGraphTopology.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Grids/GridChildren.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Grids/GridTopology.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/ShortestPaths/ByPriorityOrder.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/CheckedFold.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/Dags/DagFold.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/Dags/Trees/TreeFold.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Metrics/TreeMetrics.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Paths/AllRootToLeafPaths.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/Reduce.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/ShortestPaths/Grids/GridShortestPath.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/BreadthFirst/BreadthFirstTraversal.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/BreadthFirst/LevelGroupedBreadthFirstTraversal.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/DepthFirst/DepthFirstTraversal.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/TopDown/TopDownTraversal.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/BreadthFirstWalk.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract. check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/DepthFirstWalk.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract. check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/TopDownWalk.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Grids/Grid.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArray.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/HashMap/HashMap.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Set/Set.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Buffers/ContiguousGroupBufferStorage.cs",
+      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Deque/CircularBuffer.cs",
+      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Deque/Deque.cs",
+      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArrayStorage.cs",
+      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/HashMap/HashMapStorage.cs",
+      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Heap/HeapArray.cs",
+      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/TraversalTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Searching/BinarySearchTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Sorting/MergeSortTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/DepthFirstSearchTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/HashMap/HashMapTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/DynamicArray/DynamicArrayTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Buffers/ContiguousGroupBufferTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Deque/DequeTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Reducing/ReduceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Deque/CircularBufferTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/DisjointSet/DisjointSetForestTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/ShortestPathTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/ArrayIndexedSequenceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Set/SetTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Stack/StackTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapArrayTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Folding/SharedDescendantFoldTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Fixtures/TestTrees.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Queue/QueueTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/ConnectedComponentsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/GraphTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Paths/AllRootToLeafPathsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/Fixtures/WeightedGraphs.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/DynamicArrayIndexedSequenceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/ArraySequenceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Metrics/MetricsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Contracts/Ordering/TrieTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/ShortestPaths/Grids/GridTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/ZipTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Sequence/DynamicArraySequenceTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Folding/FoldTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/MaxHeapOrderTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Heap/MinHeapOrderTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/LowestCommonAncestorTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Connectivity/GridConnectedComponentsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    }
+  ]
+}

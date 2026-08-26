@@ -31,7 +31,7 @@ public sealed partial class DequeTests
     }
 
     [Fact]
-    public void PeekFront_PeekBack_DoNotRemoveElements()
+    public void PeekFront_PeekBack_LeaveElementsInPlace()
     {
         var deque = new DsaDeque();
         deque.PushBack(1);
