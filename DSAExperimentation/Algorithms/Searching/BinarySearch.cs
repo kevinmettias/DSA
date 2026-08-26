@@ -8,8 +8,9 @@ namespace DSAExperimentation.Algorithms.Searching;
 // ShortestPath leans on non-negative edge weights without checking them. Also
 // depends on Get being O(1) (see IRandomAccessSequence): a representation with O(n)
 // Get would silently degrade this from O(log n) to O(n log n), with no compiler
-// error and no failing test to catch it. Duplicate targets resolve to some matching
-// index, not necessarily the leftmost one - a real subtlety of plain binary search.
+// error and no failing test to catch it. Find's duplicate targets resolve to some
+// matching index, not necessarily the leftmost one - use LowerBound/UpperBound below
+// when the leftmost/rightmost occurrence (or the whole run of equal elements) matters.
 internal static class BinarySearch
 {
     public static int? Find<Element, TSequence>(TSequence sequence, Element target)
@@ -35,6 +36,70 @@ internal static class BinarySearch
         }
 
         return null;
+    }
+
+    // The leftmost index at which target could be inserted without disturbing sort
+    // order - the first index whose element is not less than target. Unlike Find, this
+    // never returns null: an all-smaller sequence yields sequence.Length (append at the
+    // end), and a run of duplicates always resolves to its first occurrence.
+    public static int LowerBound<Element, TSequence>(TSequence sequence, Element target)
+        where TSequence : struct, IRandomAccessSequence<Element>
+        where Element : IComparable<Element>
+        => LowerBound<Element, TSequence>(sequence, target, Comparer<Element>.Default);
+
+    public static int LowerBound<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
+        where TSequence : struct, IRandomAccessSequence<Element>
+    {
+        var low = 0;
+        var high = sequence.Length;
+
+        while (low < high)
+        {
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+
+            if (comparer.Compare(sequence.Get(mid), target) < 0)
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
+            }
+        }
+
+        return low;
+    }
+
+    // The leftmost index whose element is strictly greater than target - the insertion
+    // point that lands after every existing occurrence of target. [LowerBound,
+    // UpperBound) is exactly the run of indices equal to target, empty when target is
+    // absent.
+    public static int UpperBound<Element, TSequence>(TSequence sequence, Element target)
+        where TSequence : struct, IRandomAccessSequence<Element>
+        where Element : IComparable<Element>
+        => UpperBound<Element, TSequence>(sequence, target, Comparer<Element>.Default);
+
+    public static int UpperBound<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
+        where TSequence : struct, IRandomAccessSequence<Element>
+    {
+        var low = 0;
+        var high = sequence.Length;
+
+        while (low < high)
+        {
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+
+            if (comparer.Compare(sequence.Get(mid), target) <= 0)
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
+            }
+        }
+
+        return low;
     }
 
     // Evaluates one bisection step: compares the midpoint to target, and either
