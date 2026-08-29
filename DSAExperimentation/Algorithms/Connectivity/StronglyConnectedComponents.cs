@@ -114,14 +114,14 @@ internal static class StronglyConnectedComponents
         {
             var child = children.Get(i);
 
-            if (!state.DiscoveryIndex.ContainsKey(child))
+            if (!state.DiscoveryIndex.TryGetValue(child, out var childDiscoveryIndex))
             {
                 StrongConnect<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(child, state);
                 state.LowLink[node] = Math.Min(state.LowLink[node], state.LowLink[child]);
             }
             else if (state.OnStack.Contains(child))
             {
-                state.LowLink[node] = Math.Min(state.LowLink[node], state.DiscoveryIndex[child]);
+                state.LowLink[node] = Math.Min(state.LowLink[node], childDiscoveryIndex);
             }
         }
     }

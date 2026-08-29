@@ -31,10 +31,10 @@ public sealed partial class SharedDescendantFoldTests
     {
         var a = DiamondSample();
 
-        var count = CheckedFold.Fold<
+        var succeeded = CheckedFold.TryFold<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            CountCombineCallsFoldAlgebra<DiamondMarker>, int>(a);
+            CountCombineCallsFoldAlgebra<DiamondMarker>, int>(a, out var count);
 
         // The *value* still double-counts D (5: A=1 + B's count-of-2 + C's
         // count-of-2, since D is genuinely reachable via both paths) -
@@ -43,22 +43,9 @@ public sealed partial class SharedDescendantFoldTests
         // What it guarantees is that Combine only ever *executes* once per
         // distinct node - D's second use reads the cached result instead of
         // recomputing, so the call count is 4, not 5.
-        Assert.Equal(5, count);
-        Assert.Equal(4, CountCombineCallsFoldAlgebra<DiamondMarker>.CombineCalls);
-    }
-
-    [Fact]
-    public void CheckedFold_SharedDescendant_TryFoldReturnsTrueWithCombinedResult()
-    {
-        var a = DiamondSample();
-
-        var succeeded = CheckedFold.TryFold<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            CountNodesFoldAlgebra, int>(a, out var count);
-
         Assert.True(succeeded);
         Assert.Equal(5, count);
+        Assert.Equal(4, CountCombineCallsFoldAlgebra<DiamondMarker>.CombineCalls);
     }
 
     [Fact]

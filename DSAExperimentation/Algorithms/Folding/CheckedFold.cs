@@ -9,12 +9,11 @@ namespace DSAExperimentation.Algorithms.Folding;
 // this fold's own reason to exist rather than a caller bug (see IFoldAlgebra's
 // purity/well-foundedness note) - the caller reached for IGraphTopology specifically
 // because it couldn't vouch for acyclicity itself, so TryFold reports a cycle as
-// Success: false rather than throwing. Fold is a throwing convenience beside it, the
-// same pairing Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek/HashMap.Get already
-// use, for callers who have an independent reason to trust the structure and would
-// rather treat a cycle as the bug it would be for them. See DagFold for the trusted
-// counterpart that skips the cycle defense entirely once IDagTopology promises it's
-// unnecessary.
+// Success: false rather than throwing. No throwing Fold convenience: whether the
+// structure is cyclic is exactly the thing an external caller reached for this type
+// to find out, so it can't be presumed away the way an empty-container check can -
+// TryFold is the only public surface for it. See DagFold for the trusted counterpart
+// that skips the cycle defense entirely once IDagTopology promises it's unnecessary.
 //
 // Deliberately recursive-only, no separate evaluation strategy the way TreeFold
 // has: an iterative, stack-safe DAG fold needs a real topological sort. Reverse
@@ -23,9 +22,6 @@ namespace DSAExperimentation.Algorithms.Folding;
 // genuine follow-up, not something to fold in here.
 internal static class CheckedFold
 {
-    private const string CyclicStructureMessage =
-        "CheckedFold requires an acyclic structure - reached a node that is still being folded.";
-
     public static bool TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, out TResult result)
         where TNode : class
@@ -47,18 +43,6 @@ internal static class CheckedFold
         result = outcome.Result;
         return outcome.Success;
     }
-
-    public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
-        TNode? root)
-        where TNode : class
-        where TTopology : struct, IGraphTopology<TNode, TChildren>
-        where TChildren : struct, IChildren<TNode>
-        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
-        where TOrderedChildren : struct, IChildren<TNode>
-        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
-        => TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, out var result)
-            ? result
-            : ThrowCyclicStructure<TResult>();
 
     private static VisitOutcome<TResult> Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode node, int depth, Dictionary<TNode, TResult> completed, HashSet<TNode> inProgress)
@@ -142,8 +126,6 @@ internal static class CheckedFold
 
         return new VisitOutcome<TResult[]>(true, childResults);
     }
-
-    private static TResult ThrowCyclicStructure<TResult>() => throw new InvalidOperationException(CyclicStructureMessage);
 
     // Success is false exactly when a cycle was found beneath this call; Result is
     // meaningful only when Success is true, the same convention TryX(out T) uses

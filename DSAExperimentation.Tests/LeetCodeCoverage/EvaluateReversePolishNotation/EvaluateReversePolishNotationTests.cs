@@ -1,0 +1,3 @@
+﻿using IntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.EvaluateReversePolishNotation;
+public sealed partial class EvaluateReversePolishNotationTests { [Fact] public void EvalRpn_ClassicExample_ReturnsValue()=>Assert.Equal(9,Eval(["2","1","+","3","*"])); private static int Eval(string[] tokens){var stack=new IntStack();foreach(var t in tokens){if(int.TryParse(t,out var n)){stack.Push(n);continue;}stack.TryPop(out var b);stack.TryPop(out var a);stack.Push(t switch{"+"=>a+b,"-"=>a-b,"*"=>a*b,_=>a/b});}stack.TryPop(out var result);return result;} }

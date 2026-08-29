@@ -5,44 +5,37 @@ namespace DSAExperimentation.Tests.DataStructures.Queue;
 public sealed partial class QueueTests
 {
     [Fact]
-    public void Enqueue_Dequeue_ReturnsValuesInFifoOrder()
+    public void Enqueue_TryDequeue_ReturnsValuesInFifoOrder()
     {
         var queue = new DsaQueue();
         queue.Enqueue(1);
         queue.Enqueue(2);
         queue.Enqueue(3);
 
-        Assert.Equal(1, queue.Dequeue());
-        Assert.Equal(2, queue.Dequeue());
-        Assert.Equal(3, queue.Dequeue());
+        queue.TryDequeue(out var first);
+        queue.TryDequeue(out var second);
+        queue.TryDequeue(out var third);
+
+        Assert.Equal(1, first);
+        Assert.Equal(2, second);
+        Assert.Equal(3, third);
     }
 
     [Fact]
-    public void Peek_DoesNotRemoveElement()
+    public void TryPeek_NonEmptyQueue_ReturnsTrueAndDoesNotRemoveElement()
     {
         var queue = new DsaQueue();
         queue.Enqueue(1);
         queue.Enqueue(2);
 
-        Assert.Equal(1, queue.Peek());
-        Assert.Equal(1, queue.Peek());
+        var first = queue.TryPeek(out var firstValue);
+        var second = queue.TryPeek(out var secondValue);
+
+        Assert.True(first);
+        Assert.True(second);
+        Assert.Equal(1, firstValue);
+        Assert.Equal(1, secondValue);
         Assert.Equal(2, queue.Count);
-    }
-
-    [Fact]
-    public void Peek_EmptyQueue_ThrowsInvalidOperationException()
-    {
-        var queue = new DsaQueue();
-
-        Assert.Throws<InvalidOperationException>(() => queue.Peek());
-    }
-
-    [Fact]
-    public void Dequeue_EmptyQueue_ThrowsInvalidOperationException()
-    {
-        var queue = new DsaQueue();
-
-        Assert.Throws<InvalidOperationException>(() => queue.Dequeue());
     }
 
     [Fact]
@@ -73,7 +66,7 @@ public sealed partial class QueueTests
 
         Assert.Equal(2, queue.Count);
 
-        queue.Dequeue();
+        queue.TryDequeue(out _);
 
         Assert.Equal(1, queue.Count);
     }

@@ -53,22 +53,6 @@ public sealed partial class HeapTests
     }
 
     [Fact]
-    public void Peek_EmptyHeap_ThrowsInvalidOperationException()
-    {
-        var heap = new Heap<int, MinHeapOrder<int>>();
-
-        Assert.Throws<InvalidOperationException>(() => heap.Peek());
-    }
-
-    [Fact]
-    public void Pop_EmptyHeap_ThrowsInvalidOperationException()
-    {
-        var heap = new Heap<int, MinHeapOrder<int>>();
-
-        Assert.Throws<InvalidOperationException>(() => heap.Pop());
-    }
-
-    [Fact]
     public void TryPeek_EmptyHeap_ReturnsFalse()
     {
         var heap = new Heap<int, MinHeapOrder<int>>();
@@ -113,7 +97,7 @@ public sealed partial class HeapTests
 
         Assert.Equal(2, heap.Count);
 
-        heap.Pop();
+        heap.TryPop(out _);
 
         Assert.Equal(1, heap.Count);
     }
@@ -127,7 +111,9 @@ public sealed partial class HeapTests
         heap.Push(3);
         heap.Push(8);
 
-        Assert.Equal(3, heap.Pop());
+        heap.TryPop(out var first);
+
+        Assert.Equal(3, first);
 
         heap.Push(1);
         heap.Push(9);
@@ -142,9 +128,9 @@ public sealed partial class HeapTests
     {
         var popped = new List<Element>();
 
-        while (heap.Count > 0)
+        while (heap.TryPop(out var item))
         {
-            popped.Add(heap.Pop());
+            popped.Add(item);
         }
 
         return popped;

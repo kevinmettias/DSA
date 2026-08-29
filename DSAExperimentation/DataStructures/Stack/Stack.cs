@@ -6,19 +6,17 @@ namespace DSAExperimentation.DataStructures.Stack;
 // constraint, so it composes DynamicArray directly rather than managing its own
 // buffer. RemoveAt(Count-1) is O(1): the shift loop inside it never executes when
 // the removed index is already the last one.
+//
+// No throwing Peek/Pop convenience: whether the stack is empty is state an external
+// caller can't always know in advance, so TryPeek/TryPop are the only public surface
+// for it, forcing callers onto the return-value form instead of a try/catch.
 internal sealed class Stack<Element>
 {
-    private const string EmptyStackMessage = "The stack contains no elements.";
-
     private readonly DynamicArray<Element> _items = new();
 
     public int Count => _items.Count;
 
     public void Push(Element item) => _items.Add(item);
-
-    public Element Peek() => TryPeek(out var item) ? item : ThrowEmptyStack();
-
-    private static Element ThrowEmptyStack() => throw new InvalidOperationException(EmptyStackMessage);
 
     public bool TryPeek(out Element item)
     {
@@ -32,13 +30,6 @@ internal sealed class Stack<Element>
 
         item = _items.Get(Count - 1);
         return true;
-    }
-
-    public Element Pop()
-    {
-        var item = Peek();
-        _items.RemoveAt(Count - 1);
-        return item;
     }
 
     public bool TryPop(out Element item)

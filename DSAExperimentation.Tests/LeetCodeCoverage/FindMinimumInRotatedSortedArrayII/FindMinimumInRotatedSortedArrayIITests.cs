@@ -1,0 +1,2 @@
+﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMinimumInRotatedSortedArrayII;
+public sealed partial class FindMinimumInRotatedSortedArrayIITests { [Theory] [InlineData(new[]{2,2,2,0,1},0)] [InlineData(new[]{1,3,5},1)] public void FindMin_WithDuplicates_ReturnsMinimum(int[] nums,int expected)=>Assert.Equal(expected,FindMin(nums)); private static int FindMin(int[] nums){var low=0;var high=nums.Length-1;while(low<high){var mid=low+((high-low)/2);if(nums[mid]>nums[high])low=mid+1;else if(nums[mid]<nums[high])high=mid;else high--;}return nums[low];} }

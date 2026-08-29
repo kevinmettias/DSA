@@ -5,57 +5,54 @@ namespace DSAExperimentation.Tests.DataStructures.Deque;
 public sealed partial class DequeTests
 {
     [Fact]
-    public void PushBack_PopFront_ReturnsValuesInFifoOrder()
+    public void TryPopFront_NonEmptyDeque_ReturnsValuesInFifoOrder()
     {
         var deque = new DsaDeque();
         deque.PushBack(1);
         deque.PushBack(2);
         deque.PushBack(3);
 
-        Assert.Equal(1, deque.PopFront());
-        Assert.Equal(2, deque.PopFront());
-        Assert.Equal(3, deque.PopFront());
+        deque.TryPopFront(out var first);
+        deque.TryPopFront(out var second);
+        deque.TryPopFront(out var third);
+
+        Assert.Equal(1, first);
+        Assert.Equal(2, second);
+        Assert.Equal(3, third);
     }
 
     [Fact]
-    public void PushFront_PopBack_ReturnsValuesInLifoOrderFromTheOppositeEnd()
+    public void TryPopBack_NonEmptyDeque_ReturnsValuesInLifoOrderFromTheOppositeEnd()
     {
         var deque = new DsaDeque();
         deque.PushFront(1);
         deque.PushFront(2);
         deque.PushFront(3);
 
-        Assert.Equal(1, deque.PopBack());
-        Assert.Equal(2, deque.PopBack());
-        Assert.Equal(3, deque.PopBack());
+        deque.TryPopBack(out var first);
+        deque.TryPopBack(out var second);
+        deque.TryPopBack(out var third);
+
+        Assert.Equal(1, first);
+        Assert.Equal(2, second);
+        Assert.Equal(3, third);
     }
 
     [Fact]
-    public void PeekFront_PeekBack_LeaveElementsInPlace()
+    public void TryPeekFront_TryPeekBack_NonEmptyDeque_LeaveElementsInPlace()
     {
         var deque = new DsaDeque();
         deque.PushBack(1);
         deque.PushBack(2);
 
-        Assert.Equal(1, deque.PeekFront());
-        Assert.Equal(2, deque.PeekBack());
+        var front = deque.TryPeekFront(out var frontValue);
+        var back = deque.TryPeekBack(out var backValue);
+
+        Assert.True(front);
+        Assert.True(back);
+        Assert.Equal(1, frontValue);
+        Assert.Equal(2, backValue);
         Assert.Equal(2, deque.Count);
-    }
-
-    [Fact]
-    public void PeekFront_EmptyDeque_ThrowsInvalidOperationException()
-    {
-        var deque = new DsaDeque();
-
-        Assert.Throws<InvalidOperationException>(() => deque.PeekFront());
-    }
-
-    [Fact]
-    public void PeekBack_EmptyDeque_ThrowsInvalidOperationException()
-    {
-        var deque = new DsaDeque();
-
-        Assert.Throws<InvalidOperationException>(() => deque.PeekBack());
     }
 
     [Fact]
@@ -101,7 +98,7 @@ public sealed partial class DequeTests
 
         Assert.Equal(3, deque.Count);
 
-        deque.PopFront();
+        deque.TryPopFront(out _);
 
         Assert.Equal(2, deque.Count);
     }

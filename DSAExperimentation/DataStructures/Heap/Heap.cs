@@ -4,11 +4,13 @@ namespace DSAExperimentation.DataStructures.Heap;
 // Push/Pop are O(log n) - a claim that assumes HeapArray<Element>.Get/Set/Swap are O(1). See
 // ARCHITECTURE.md §8 and HeapArray.cs: that assumption holds today but is a Representation-layer
 // property this type depends on, not something the type system enforces.
+//
+// No throwing Peek/Pop convenience: whether the heap is empty is state an external
+// caller can't always know in advance, so TryPeek/TryPop are the only public surface
+// for it, forcing callers onto the return-value form instead of a try/catch.
 internal sealed class Heap<Element, TOrder>
     where TOrder : struct, IHeapOrder<Element>
 {
-    private const string EmptyHeapMessage = "The heap contains no elements.";
-
     private readonly HeapArray<Element> _store = new();
 
     public int Count => _store.Count;
@@ -35,8 +37,6 @@ internal sealed class Heap<Element, TOrder>
         }
     }
 
-    public Element Peek() => TryPeek(out var item) ? item : ThrowEmptyHeap();
-
     public bool TryPeek(out Element item)
     {
         if (Count == 0)
@@ -51,16 +51,15 @@ internal sealed class Heap<Element, TOrder>
         return true;
     }
 
-    public Element Pop()
+    public bool TryPop(out Element item)
     {
-        if (Count == 0)
+        if (!TryPeek(out item))
         {
-            return ThrowEmptyHeap();
+            return false;
         }
 
-        var root = _store.Get(0);
         RemoveRootAndRestoreHeapProperty();
-        return root;
+        return true;
     }
 
     private void RemoveRootAndRestoreHeapProperty()
@@ -112,20 +111,4 @@ internal sealed class Heap<Element, TOrder>
 
         return highestPriority;
     }
-
-    public bool TryPop(out Element item)
-    {
-        if (Count == 0)
-        {
-            // presumption: allow -- item is only meaningful when this returns true,
-            // the standard TryGetValue/TryParse out-parameter contract this mirrors.
-            item = default!;
-            return false;
-        }
-
-        item = Pop();
-        return true;
-    }
-
-    private static Element ThrowEmptyHeap() => throw new InvalidOperationException(EmptyHeapMessage);
 }

@@ -5,44 +5,37 @@ namespace DSAExperimentation.Tests.DataStructures.Stack;
 public sealed partial class StackTests
 {
     [Fact]
-    public void Push_Pop_ReturnsValuesInLifoOrder()
+    public void Push_TryPop_ReturnsValuesInLifoOrder()
     {
         var stack = new DsaStack();
         stack.Push(1);
         stack.Push(2);
         stack.Push(3);
 
-        Assert.Equal(3, stack.Pop());
-        Assert.Equal(2, stack.Pop());
-        Assert.Equal(1, stack.Pop());
+        stack.TryPop(out var first);
+        stack.TryPop(out var second);
+        stack.TryPop(out var third);
+
+        Assert.Equal(3, first);
+        Assert.Equal(2, second);
+        Assert.Equal(1, third);
     }
 
     [Fact]
-    public void Peek_DoesNotRemoveElement()
+    public void TryPeek_NonEmptyStack_ReturnsTrueAndDoesNotRemoveElement()
     {
         var stack = new DsaStack();
         stack.Push(1);
         stack.Push(2);
 
-        Assert.Equal(2, stack.Peek());
-        Assert.Equal(2, stack.Peek());
+        var first = stack.TryPeek(out var firstValue);
+        var second = stack.TryPeek(out var secondValue);
+
+        Assert.True(first);
+        Assert.True(second);
+        Assert.Equal(2, firstValue);
+        Assert.Equal(2, secondValue);
         Assert.Equal(2, stack.Count);
-    }
-
-    [Fact]
-    public void Peek_EmptyStack_ThrowsInvalidOperationException()
-    {
-        var stack = new DsaStack();
-
-        Assert.Throws<InvalidOperationException>(() => stack.Peek());
-    }
-
-    [Fact]
-    public void Pop_EmptyStack_ThrowsInvalidOperationException()
-    {
-        var stack = new DsaStack();
-
-        Assert.Throws<InvalidOperationException>(() => stack.Pop());
     }
 
     [Fact]
@@ -73,7 +66,7 @@ public sealed partial class StackTests
 
         Assert.Equal(2, stack.Count);
 
-        stack.Pop();
+        stack.TryPop(out _);
 
         Assert.Equal(1, stack.Count);
     }

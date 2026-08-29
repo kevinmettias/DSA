@@ -1,0 +1,3 @@
+﻿using DSAExperimentation.DataStructures.HashMap;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.ContainsDuplicateII;
+public sealed partial class ContainsDuplicateIITests { [Theory] [InlineData(new[]{1,2,3,1},3,true)] [InlineData(new[]{1,0,1,1},1,true)] [InlineData(new[]{1,2,3,1,2,3},2,false)] public void ContainsNearbyDuplicate_Examples_ReturnsExpected(int[] nums,int k,bool expected)=>Assert.Equal(expected,Contains(nums,k)); private static bool Contains(int[] nums,int k){var last=new HashMap<int,int>();for(var i=0;i<nums.Length;i++){if(last.TryGetValue(nums[i],out var j)&&i-j<=k)return true;last.Set(nums[i],i);}return false;} }

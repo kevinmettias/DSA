@@ -9,8 +9,12 @@ internal sealed class DynamicArray<Element>
 
     public int Count => _storage.Count;
 
-    // Throwing convenience beside each TryX's recoverable form, the same pairing
-    // Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek/HashMap.Get already use.
+    // Throwing convenience beside each TryX's recoverable form. Unlike Heap/Stack/
+    // Deque/Queue/HashMap - whose Peek/Pop/Get once had a throwing form too, since
+    // removed - this one stays: an out-of-range index is Stack.cs's and Sequence's
+    // own internal-trusted callers' bug, not state an external caller can't already
+    // know (see ARCHITECTURE.md's Stack/Sequence sections), so throwing loudly here
+    // beats silently discarding a TryGet result at every internal call site.
     public Element Get(int index)
         => TryGet(index, out var value) ? value : ThrowIndexOutOfRange(index);
 

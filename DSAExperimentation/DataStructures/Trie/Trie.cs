@@ -5,18 +5,29 @@ namespace DSAExperimentation.DataStructures.Trie;
 // TrieNode.cs) - a slower Children representation would silently degrade this to
 // O(m * n) with no compiler error.
 //
-// There is no Topology witness here: every TrieNode<TValue> is created internally via
-// Children.Set(ch, new TrieNode<TValue>()), so no caller-supplied shape could ever
-// violate the prefix-tree invariant - stronger than DisjointSet's own "no topology axis"
-// case, which only avoids external violation by convention rather than by construction.
+// No ITreeTopology witness here - NOT because there's "nothing to parametrize"
+// (GridTopology/BinaryTreeTopology have nothing to parametrize either and still
+// implement the base interface fine; determinism was never the actual test). The real
+// reason is Representation: every generic Graph engine's IChildren.Get(int) is called
+// in a plain sequential 0..Count-1 sweep (DepthFirstWalk.cs/BreadthFirstWalk.cs/
+// TopDownWalk.cs), which the interface's own doc comment still states as an O(1)-per-
+// call obligation - and TrieNode<TValue>.Children is a HashMap<char,·>, which cannot
+// honestly promise indexed O(1) Get the way a fixed slot array can (see
+// SparseArrayChildren.cs, "e.g. a trie node's per-character children" - written for
+// exactly this case). Bound the alphabet to something a fixed slot array can size for
+// (26 lowercase letters) and that mismatch disappears: see
+// Graph/Engines/Dags/Trees/LowercaseTrie.cs, a real ITreeTopology witness that reuses
+// TreeMetrics/LowestCommonAncestor/every other generic Tree-tier engine for free. This
+// general, arbitrary-char-keyed Trie<TValue> stays witness-less because its whole
+// value is NOT being bounded to a small alphabet - narrowing it to gain a witness
+// would defeat the type's own purpose, not just cost something.
+//
 // A hypothetical compressed/radix trie would still only ever be a second
 // Representation (identical answers, different node layout/constants), never a second
 // Topology, the same way Min-heap vs. Max-heap is a real Topology choice (differing
 // observable output) but union-by-rank vs. union-by-size is not.
 internal sealed class Trie<TValue>
 {
-    private const string KeyNotPresentMessage = "The given key was not present in the trie.";
-
     private readonly TrieNode<TValue> _root = new();
 
     public int Count { get; private set; }
@@ -62,16 +73,6 @@ internal sealed class Trie<TValue>
         value = node.Value;
         return true;
     }
-
-    // A convenience throwing form beside TryGetValue's recoverable one, the same
-    // pairing Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek/HashMap.Get already use
-    // for their own "not present" precondition.
-    public TValue Get(string key)
-        => TryGetValue(key, out var value)
-            ? value
-            : ThrowKeyNotPresent();
-
-    private static TValue ThrowKeyNotPresent() => throw new InvalidOperationException(KeyNotPresentMessage);
 
     // The empty prefix is a special case: _root exists unconditionally from
     // construction (unlike every other node, which is only ever created while Set

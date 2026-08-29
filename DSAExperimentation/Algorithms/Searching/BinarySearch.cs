@@ -49,26 +49,7 @@ internal static class BinarySearch
 
     public static int LowerBound<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
         where TSequence : struct, IRandomAccessSequence<Element>
-    {
-        var low = 0;
-        var high = sequence.Length;
-
-        while (low < high)
-        {
-            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
-
-            if (comparer.Compare(sequence.Get(mid), target) < 0)
-            {
-                low = mid + 1;
-            }
-            else
-            {
-                high = mid;
-            }
-        }
-
-        return low;
-    }
+        => BoundSearch<Element, TSequence>(sequence, target, comparer, BoundKind.Lower);
 
     // The leftmost index whose element is strictly greater than target - the insertion
     // point that lands after every existing occurrence of target. [LowerBound,
@@ -81,6 +62,15 @@ internal static class BinarySearch
 
     public static int UpperBound<Element, TSequence>(TSequence sequence, Element target, IComparer<Element> comparer)
         where TSequence : struct, IRandomAccessSequence<Element>
+        => BoundSearch<Element, TSequence>(sequence, target, comparer, BoundKind.Upper);
+
+    // Lower and Upper differ only in whether an element equal to target counts as
+    // "before" it (Lower: no, so the run's first occurrence is kept; Upper: yes, so
+    // the search lands just past the run's last occurrence) - the one comparison the
+    // two previously-separate loops disagreed on.
+    private static int BoundSearch<Element, TSequence>(
+        TSequence sequence, Element target, IComparer<Element> comparer, BoundKind kind)
+        where TSequence : struct, IRandomAccessSequence<Element>
     {
         var low = 0;
         var high = sequence.Length;
@@ -88,8 +78,10 @@ internal static class BinarySearch
         while (low < high)
         {
             var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+            var comparison = comparer.Compare(sequence.Get(mid), target);
+            var isBeforeTarget = kind == BoundKind.Lower ? comparison < 0 : comparison <= 0;
 
-            if (comparer.Compare(sequence.Get(mid), target) <= 0)
+            if (isBeforeTarget)
             {
                 low = mid + 1;
             }
@@ -100,6 +92,12 @@ internal static class BinarySearch
         }
 
         return low;
+    }
+
+    private enum BoundKind
+    {
+        Lower,
+        Upper,
     }
 
     // Evaluates one bisection step: compares the midpoint to target, and either

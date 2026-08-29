@@ -24,6 +24,8 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // composes one for its comparable-looking dense-core-plus-id-map shape.
 internal static class AllPairsShortestPaths
 {
+    private const string ReservedEdgeWeightMessage = "An edge weight equal to TWeight.MaxValue is reserved to mean \"still unreached\" and cannot be a real edge weight.";
+
     public static bool TryComputeDistances<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices, out Dictionary<(TNode From, TNode To), TWeight> distances)
         where TNode : class
@@ -90,6 +92,16 @@ internal static class AllPairsShortestPaths
             {
                 var (weight, neighbor) = neighbors.Get(i);
 
+                // Unlike the caller-omitted-vertex case just below, a weight colliding with the
+                // "still unreached" sentinel isn't a wrong-but-plausible answer we can silently
+                // let ride - it would make a real edge indistinguishable from no edge at all in
+                // every later read of this cell, so this one precondition is validated rather
+                // than documented-and-trusted.
+                if (weight == TWeight.MaxValue)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(vertices), ReservedEdgeWeightMessage);
+                }
+
                 // An edge whose target lies outside `vertices` is silently skipped, not an
                 // exception - the same "wrong/incomplete answer, never a throw" convention
                 // TopologicalSort's GetValueOrDefault-guarded child lookup already uses for an
@@ -134,7 +146,23 @@ internal static class AllPairsShortestPaths
                         continue;
                     }
 
-                    var candidate = matrix[i, k] + matrix[k, j];
+                    // Two finite (non-sentinel) weights can still sum past TWeight's own
+                    // representable range - e.g. two large-magnitude negative edges, which
+                    // negative-cycle detection makes a legitimate input here - and silently
+                    // wrap into a value that reads as a real (very wrong) distance instead of
+                    // "still unreached." checked() only has an effect for TWeight instances
+                    // that supply a checked addition operator (int/long do); for others this
+                    // behaves exactly as before.
+                    TWeight candidate;
+
+                    try
+                    {
+                        candidate = checked(matrix[i, k] + matrix[k, j]);
+                    }
+                    catch (OverflowException)
+                    {
+                        continue;
+                    }
 
                     if (candidate < matrix[i, j])
                     {

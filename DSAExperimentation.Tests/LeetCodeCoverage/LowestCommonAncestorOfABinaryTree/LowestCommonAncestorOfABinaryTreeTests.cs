@@ -1,0 +1,3 @@
+﻿using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.LowestCommonAncestorOfABinaryTree;
+public sealed partial class LowestCommonAncestorOfABinaryTreeTests { [Fact] public void LowestCommonAncestor_Example_ReturnsRoot(){var p=new BinaryTreeNode<int>(5);var q=new BinaryTreeNode<int>(1);var root=new BinaryTreeNode<int>(3){Left=p,Right=q};Assert.Same(root,Lca(root,p,q));} private static BinaryTreeNode<int>? Lca(BinaryTreeNode<int>? root,BinaryTreeNode<int> p,BinaryTreeNode<int> q){if(root is null||ReferenceEquals(root,p)||ReferenceEquals(root,q))return root;var l=Lca(root.Left,p,q);var r=Lca(root.Right,p,q);return l is not null&&r is not null?root:l??r;} }

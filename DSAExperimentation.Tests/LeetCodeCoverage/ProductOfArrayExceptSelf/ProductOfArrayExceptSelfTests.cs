@@ -1,0 +1,2 @@
+﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.ProductOfArrayExceptSelf;
+public sealed partial class ProductOfArrayExceptSelfTests { [Fact] public void ProductExceptSelf_Example_ReturnsProducts()=>Assert.Equal([24,12,8,6],Product([1,2,3,4])); private static int[] Product(int[] nums){var result=new int[nums.Length];var prefix=1;for(var i=0;i<nums.Length;i++){result[i]=prefix;prefix*=nums[i];}var suffix=1;for(var i=nums.Length-1;i>=0;i--){result[i]*=suffix;suffix*=nums[i];}return result;} }

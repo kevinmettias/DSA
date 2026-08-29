@@ -33,6 +33,7 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
     where TOperation : struct, IRangeUpdateOperation<Element, TUpdate>
 {
     private const string RangeOutOfBoundsMessage = "Range was outside the bounds of the lazy segment tree, or left exceeded right.";
+    private const string NoUpdateSentinelMessage = "The update value equals TOperation.NoUpdate, which is reserved to mean \"nothing pending\" and cannot be applied as an explicit update - composing it into a node with an already-pending update would silently discard that update instead of preserving it.";
 
     private readonly SegmentTreeArray<Element> _values;
     private readonly SegmentTreeArray<TUpdate> _pending;
@@ -55,6 +56,7 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
     public void UpdateRange(int left, int right, TUpdate update)
     {
         ValidateRange(left, right);
+        ValidateUpdate(update);
         UpdateRange(new SegmentRange(0, 0, _leafCount - 1), left, right, update);
     }
 
@@ -162,13 +164,13 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
         _pending.Set(range.Node, composedUpdate);
     }
 
-    private void ValidateRange(int left, int right)
-    {
-        var isOutOfRange = left < 0 || right >= _leafCount || left > right;
+    private void ValidateRange(int left, int right) => RangeBounds.ValidateRange(left, right, _leafCount, RangeOutOfBoundsMessage);
 
-        if (isOutOfRange)
+    private static void ValidateUpdate(TUpdate update)
+    {
+        if (EqualityComparer<TUpdate>.Default.Equals(update, TOperation.NoUpdate))
         {
-            throw new ArgumentOutOfRangeException(nameof(left), RangeOutOfBoundsMessage);
+            throw new ArgumentException(NoUpdateSentinelMessage, nameof(update));
         }
     }
 }

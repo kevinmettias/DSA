@@ -118,9 +118,9 @@ internal static class BridgesAndArticulationPoints
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
     {
-        if (state.DiscoveryIndex.ContainsKey(child))
+        if (state.DiscoveryIndex.TryGetValue(child, out var childIndex))
         {
-            state.LowLink[node] = Math.Min(state.LowLink[node], state.DiscoveryIndex[child]);
+            state.LowLink[node] = Math.Min(state.LowLink[node], childIndex);
             return false;
         }
 

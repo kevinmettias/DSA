@@ -1,0 +1,36 @@
+{
+  "QuestionId": 56,
+  "FrontendId": 56,
+  "Title": "Merge Intervals",
+  "TitleSlug": "merge-intervals",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Sorting",
+    "Quicksort"
+  ],
+  "AcceptanceRatePercent": 52.7,
+  "TotalAccepted": 4288453,
+  "TotalSubmissions": 8143445,
+  "Likes": 25005,
+  "Dislikes": 917,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array\u0026nbsp;of \u003Ccode\u003Eintervals\u003C/code\u003E\u0026nbsp;where \u003Ccode\u003Eintervals[i] = [start\u003Csub\u003Ei\u003C/sub\u003E, end\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, merge all overlapping intervals, and return \u003Cem\u003Ean array of the non-overlapping intervals that cover all the intervals in the input\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E intervals = [[1,3],[2,6],[8,10],[15,18]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,6],[8,10],[15,18]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Since intervals [1,3] and [2,6] overlap, merge them into [1,6].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E intervals = [[1,4],[4,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,5]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Intervals [1,4] and [4,5] are considered overlapping.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E intervals = [[4,7],[1,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,7]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Intervals [1,4] and [4,7] are considered overlapping.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= intervals.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eintervals[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= start\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= end\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,3],[2,6],[8,10],[15,18]]",
+      "RawExpectedOutput": "[[1,6],[8,10],[15,18]]"
+    },
+    {
+      "RawInput": "[[1,4],[4,5]]",
+      "RawExpectedOutput": "[[1,5]]"
+    },
+    {
+      "RawInput": "[[4,7],[1,4]]",
+      "RawExpectedOutput": "[[1,7]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-08-27T02:25:21.1638901+00:00",
+  "Url": "https://leetcode.com/problems/merge-intervals/"
+}

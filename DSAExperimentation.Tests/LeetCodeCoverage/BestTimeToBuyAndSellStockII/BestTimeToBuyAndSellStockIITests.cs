@@ -1,0 +1,2 @@
+﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockII;
+public sealed partial class BestTimeToBuyAndSellStockIITests { [Theory] [InlineData(new[]{7,1,5,3,6,4},7)] [InlineData(new[]{1,2,3,4,5},4)] public void MaxProfit_Examples_ReturnsAllUpwardGains(int[] prices,int expected)=>Assert.Equal(expected,MaxProfit(prices)); private static int MaxProfit(int[] prices){var profit=0;for(var i=1;i<prices.Length;i++)if(prices[i]>prices[i-1])profit+=prices[i]-prices[i-1];return profit;} }

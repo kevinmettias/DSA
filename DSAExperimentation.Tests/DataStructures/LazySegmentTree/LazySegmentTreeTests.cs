@@ -103,4 +103,16 @@ public sealed partial class LazySegmentTreeTests
 
         Assert.Equal(42, tree.Query(0, 0));
     }
+
+    // RangeAssignMaxOperation<int>'s TUpdate is int? with NoUpdate = null; passing that
+    // sentinel straight through as an "update" would let ApplyToNode compose it away any
+    // update already pending on a node before it's pushed to that node's children - guarded
+    // at the public entry point rather than left as a silent-wrong-answer trap.
+    [Fact]
+    public void UpdateRange_RangeAssignMax_NoUpdateSentinel_ThrowsArgumentException()
+    {
+        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>([5, 3, 8, 1]);
+
+        Assert.Throws<ArgumentException>(() => tree.UpdateRange(0, 3, null));
+    }
 }

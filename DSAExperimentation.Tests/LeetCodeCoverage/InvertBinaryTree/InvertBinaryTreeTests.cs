@@ -1,0 +1,3 @@
+﻿using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.InvertBinaryTree;
+public sealed partial class InvertBinaryTreeTests { [Fact] public void InvertTree_Example_SwapsChildrenRecursively(){var root=new BinaryTreeNode<int>(4){Left=new(2){Left=new(1),Right=new(3)},Right=new(7){Left=new(6),Right=new(9)}};Invert(root);Assert.Equal(7,root.Left!.Value);Assert.Equal(2,root.Right!.Value);Assert.Equal(9,root.Left.Left!.Value);} private static BinaryTreeNode<int>? Invert(BinaryTreeNode<int>? n){if(n is null)return null;(n.Left,n.Right)=(Invert(n.Right),Invert(n.Left));return n;} }

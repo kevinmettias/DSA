@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="DSAExperimentation.Tests" />
+    <InternalsVisibleTo Include="DSAExperimentation.Benchmarks" />
   </ItemGroup>
 
 </Project>
