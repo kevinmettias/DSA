@@ -192,14 +192,14 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/LruCache/LruCache.cs",
+      "path": "DSAExperimentation/DataStructures/Cache/LruCache/LruCache.cs",
       "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation/DataStructures/LfuCache/LfuCache.cs",
+      "path": "DSAExperimentation/DataStructures/Cache/LfuCache/LfuCache.cs",
       "reason": "TryGetValue's default! is the standard out-parameter contract, the same as HashMap.TryGetValue's; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -213,14 +213,14 @@
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/DataStructures/LruCache/LruCacheTests.cs",
+      "path": "DSAExperimentation.Tests/DataStructures/Cache/LruCache/LruCacheTests.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect - the '>8 public declarations' finding is this repo's MethodUnderTest_Scenario_Expected xUnit convention (every [Fact] is public by xUnit's own requirement, not a designed API surface); LruCache's own public contract (constructor, TryGetValue, Set, Count) is small, so the excess is test count, not production surface sprawl.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-responsibility-extraction",
-      "path": "DSAExperimentation.Tests/DataStructures/LfuCache/LfuCacheTests.cs",
+      "path": "DSAExperimentation.Tests/DataStructures/Cache/LfuCache/LfuCacheTests.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect - the '>8 public declarations' finding is this repo's MethodUnderTest_Scenario_Expected xUnit convention (every [Fact] is public by xUnit's own requirement, not a designed API surface); LfuCache's own public contract (constructor, TryGetValue, Set, Count) is small, so the excess is test count, not production surface sprawl.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -542,14 +542,14 @@
     },
     {
       "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/DataStructures/LruCache/LruCacheTests.cs",
+      "path": "DSAExperimentation.Tests/DataStructures/Cache/LruCache/LruCacheTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a set/evict/etc.) and then asserts several independent postconditions of it (which keys are still present, a promoted value, Count); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/DataStructures/LfuCache/LfuCacheTests.cs",
+      "path": "DSAExperimentation.Tests/DataStructures/Cache/LfuCache/LfuCacheTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a set/evict/repeated-access sequence) and then asserts several independent postconditions of it (which keys are still present, a promoted value, Count); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -761,6 +761,20 @@
       "check": "check-test-coverage",
       "path": "DSAExperimentation/DataStructures/Graph/Grids/GridTopology.cs",
       "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BinaryTreeChildren.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Count/Get implement IChildren<BinaryTreeNode<TValue>>, the same capability interface GridChildren.cs already carries this exact waiver for, and are exercised the same way: through the algorithms generic over that interface (DepthFirstTraversal, LevelGroupedBreadthFirstTraversal, TreeMetrics, LowestCommonAncestor, AllRootToLeafPaths - see BinaryTreeTraversalTests.cs/BinaryTreeMetricsTests.cs/BinaryTreeLowestCommonAncestorTests.cs/BinaryTreeAllRootToLeafPathsTests.cs), which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BinaryTreeTopology.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' GetChildren implements ITreeTopology<BinaryTreeNode<TValue>,BinaryTreeChildren<TValue>>, the same capability interface GridTopology.cs already carries this exact waiver for, and is exercised the same way: through the algorithms generic over that interface, which is exactly the tested contract.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -997,14 +1011,14 @@
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/DataStructures/LruCache/LruCacheTests.cs",
+      "path": "DSAExperimentation.Tests/DataStructures/Cache/LruCache/LruCacheTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter cache key, a small sample value, a capacity/count the test expects back, or a lookup key like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-literals",
-      "path": "DSAExperimentation.Tests/DataStructures/LfuCache/LfuCacheTests.cs",
+      "path": "DSAExperimentation.Tests/DataStructures/Cache/LfuCache/LfuCacheTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a small integer cache key, a small sample value, a capacity/count the test expects back, or a lookup key like 999 - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -1307,6 +1321,587 @@
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation.Tests/Algorithms/Connectivity/BridgesAndArticulationPointsTests.cs",
       "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Find prefix, doubled by splitting each bridges+articulation-points scenario into two focused facts per check-function-cohesion) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Metrics/BinaryTreeMetricsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a node value, an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Paths/BinaryTreeAllRootToLeafPathsTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a node value, an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BinaryTreeTraversalTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a node value, an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/BinaryTreeTrees.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - the node values making up the sample tree shapes - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/InOrderTraversalTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a node value, an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/RecordingBinaryTreeLevelHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingBinaryTreeEnterHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingBinaryTreeExitHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-scope-discipline",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/RecordingInOrderHooks.cs",
+      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Ancestry/BinaryTreeLowestCommonAncestorTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Find prefix) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Paths/BinaryTreeAllRootToLeafPathsTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Find prefix) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/InOrderTraversalTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Walk prefix, since InOrderTraversal exposes a single Walk entry point) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/SinglyLinkedList/CycleDetection.cs",
+      "reason": "each ! is Floyd's tortoise-and-hare's own invariant, named inline as a `presumption: allow` comment beside each site and recorded here too since the default marker policy only honours safety-critical checks: head! in FindCycleStart is safe because FindMeetingPoint only returns non-null after its walk advanced at least once, which requires a non-null head; fromHead.Next!/fromMeetingPoint.Next! are safe because every node walked from head must reach the cycle FindMeetingPoint already proved exists (a singly linked node has exactly one successor, no branch off that path) and .Next never terminates once inside a cycle; slow! is safe because fast always leads slow by construction (two steps per iteration vs. one), so the loop condition proving fast/fast.Next non-null already proves slow reached that same position non-null on an earlier or equal iteration.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/SinglyLinkedList/Fixtures/SinglyLinkedLists.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - the node values making up the sample list shapes - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/SinglyLinkedList/CycleDetectionTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Find prefix from FindCycleStart) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/IntervalSet/IntervalSet.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' IntervalEndsView.Length/Get implement Searching's IRandomAccessSequence<TKey>, the same capability interface GridChildren.cs/BinaryTreeChildren.cs already carry this exact waiver for, and are exercised the same way: through BinarySearch.LowerBound, called from IntervalSet.Add/HasOverlap and covered by IntervalSetTests.cs, which is exactly the tested contract. IntervalSet's own Count/Get are covered directly by name (Count_ReflectsNumberOfDisjointIntervalsAfterMerging/Get_ReturnsIntervalAtGivenIndex in IntervalSetTests.cs), not waived.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - an interval endpoint or the count/index the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Add or HasOverlap prefix) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one or more Add calls against the same set (an action) and then asserts Count/Get against that same set (independent postconditions of the mutation); the two halves share no local because Add is void, not because the test does two unrelated things. Splitting setup from assertion into separate functions would fragment a single, small, readable test for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-binding-scope",
+      "path": "DSAExperimentation/Algorithms/DynamicProgramming/Memoizer.cs",
+      "reason": "named inline as a `binding-scope: allow` comment and recorded here too since the default marker policy only honours safety-critical checks: cache is declared one block out from ResultFor (its only direct reader/writer) because it must be the SAME dictionary shared across every recursive call - that sharing IS the memoization mechanism. Moving the declaration into ResultFor's own body, as the mechanical suggestion reads literally, would silently replace it with a fresh empty dictionary on every call, defeating memoization with no compiler error and no failing test to catch it.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/DynamicProgramming/MemoizerTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a fib index, a grid dimension, an expected count/call-count - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/DynamicProgramming/MemoizerTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Memoize prefix) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/Algorithms/DynamicProgramming/MemoizerTests.cs",
+      "reason": "each flagged local function is deliberately named `Recurrence`, matching Memoizer.Memoize's own `recurrence` parameter name verbatim so a reader can see the direct correspondence between the argument being passed and the API parameter it fills, the same test-naming-convention judgment call this repo already makes elsewhere (see check-naming-clarity's other precedents) rather than an oversight - a more 'descriptive' rename would only weaken that correspondence, not add real information.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/FindClosest.cs",
+      "reason": "each default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/BinarySearchTreeTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a node value, an index/count the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/FindClosestTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a search target or an expected closest value - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/BinarySearchTreeTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Insert, Has, or TryDelete prefix) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/FindClosestTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the TryFind prefix, since FindClosest exposes a single TryFind entry point) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-parameter-count",
+      "path": "DSAExperimentation/Algorithms/Backtracking/Backtrack.cs",
+      "reason": "the 6-parameter Search overload (state plus 5 delegates) is a deliberate ergonomic surface, not an accidental one - its own doc comment explains why: it exists specifically so exhaustive-enumeration callers (Subsets, Permutations, N-Queens counting) get a void onSolution and can't accidentally truncate their own search by returning the wrong bool, the exact footgun the canonical BacktrackingSteps<TState,TChoice>-based overload's bool-returning OnSolution invites. Collapsing this overload's parameters into a record struct, as the mechanical fix suggests, would just move that same footgun back onto every caller of this overload - the same 'this broad surface is the type's actual minimum complete API' shape Deque.cs's own check-responsibility-extraction waiver already establishes for a structurally-necessary parameter/member count.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/Backtracking/BacktrackTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a subset element, a board size, a branch label, a call count - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/Backtracking/BacktrackTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Search/TrySearch prefix) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Algorithms/StringMatching/Manacher.cs",
+      "reason": "the shared 'Compute' prefix across ComputeOddRadii/ComputeEvenRadii's 4 overload declarations is not a hidden module - it names the one algorithm's two inseparable halves. Manacher's algorithm computes odd- and even-centered palindrome radii by the same technique, and FindLongestPalindromicSubstring genuinely needs both results together to answer 'what is the single longest palindrome' (an odd-only or even-only palindrome could each independently be the answer). Splitting them into separate files would fragment one cohesive technique into two files that always get called together, the same 'this broad surface is the type's actual minimum complete API' shape Deque.cs's own check-responsibility-extraction waiver already establishes.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/StringMatching/Manacher.cs",
+      "reason": "RightmostPalindromeEdge.ExpandTo is a private nested record struct's member, un-fileworthy on its own - the same status PrefixFunctionSearch.cs's own doc comment already gives BinarySearch's BisectionStep and its own FailureFunctionMatcher (never crosses either public method's boundary). It is exercised on every call to ComputeOddRadii/ComputeEvenRadii, which ManacherTests.cs's brute-force cross-check tests (ComputeOddRadii_MatchesBruteForceExpansionAcrossVariedStrings / ComputeEvenRadii_MatchesBruteForceExpansionAcrossVariedStrings) already drive across 9 varied strings - exercised transitively through the algorithm that owns it, the same bucket check-test-coverage's own doc exempts for contract-bound/algorithm-internal names.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/StringMatching/ManacherTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a test string, an expected radius/start/length - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/StringMatching/ManacherTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Compute or Find prefix) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BitTrie.cs",
+      "reason": "DescendOneLevel's ! promises the same-bit child is present once the opposite child is absent - true because every node reached mid-walk already has >=1 non-null child by construction (every Insert walks all 32 levels before returning, and Walk is only ever called once Count > 0), so 'opposite absent' plus 'at least one child exists' forces 'same-bit present' by elimination between exactly two possible children; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage",
+      "reason": "deliberately flat, one-folder-per-LeetCode-problem layout - each problem is an independent coverage proof against a named, numbered external problem (not a shared subsystem this repo owns the shape of), so there is no real subsystem/contract-surface/role grouping to organize by that wouldn't be arbitrary; the flat list itself is the useful index (a reader scanning for 'is problem X covered' wants to see every problem name at one glance, not one level down inside a hand-picked category).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/KthLargestElement/**",
+      "reason": "'Kth' is the LeetCode problem's own canonical name (LeetCode 215, 'Kth Largest Element in an Array') and standard CS terminology for 'the element of a given rank' - spelling it out would produce a longer name a reader in this domain immediately re-abbreviates back mentally, the same 'means only itself in this domain' judgment call already applied to check-literals findings elsewhere in this ledger.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/LowestCommonAncestorOfBst/**",
+      "reason": "'Bst' is the standard, universal CS abbreviation for 'binary search tree' - used unabbreviated nowhere in this repo's own BinarySearchTree<T> naming either (that type spells it out; only the LeetCode-problem-shaped test name here abbreviates, matching LeetCode 235's own title 'Lowest Common Ancestor of a Binary Search Tree' abbreviated in exactly this way throughout the wider algorithms literature).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/CourseSchedule/CourseScheduleTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a call into the algorithm under test) and then asserts several independent postconditions of it (the boolean result, the resulting ordering); the assertions share no local with each other because each reads a different facet of the same call, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/ImplementTrie/ImplementTrieTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' This test exercises Insert-Search-StartsWith as LeetCode 208 itself specifies them - one coherent sequence of calls into the same Trie<TValue> instance, each assertion checking a different facet of its accumulated state, not two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/MergeIntervals/MergeIntervalsTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' The test performs one action (four Adds into the same IntervalSet) and then asserts several independent postconditions of it (Count, each merged interval's value); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/MinStack/MinStackTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' This test walks through LeetCode 155's own example call sequence (Push/Push/Push/GetMin/Pop/Top/GetMin) - one coherent scenario, each assertion checking a different facet of the same MinStackOperations instance's state, not two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/NetworkDelayTime/NetworkDelayTimeTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (wiring the graph, then one MinutesToReachAll call) and asserts one fact about the result; the wiring statements share no local with the final assertion because they mutate shared graph state rather than produce a value threaded forward, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-cohesion",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/TwoSum/TwoSumTests.cs",
+      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a call into TryFindTwoSumIndices) and then asserts several independent postconditions of it (the boolean result, each out-parameter); the assertions share no local with each other because each reads a different facet of the same call, not because the test does two unrelated things.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/ValidParentheses/ValidParenthesesTests.cs",
+      "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production-shaped helper it names - so every MethodUnderTest_Scenario_Expected test named after an Is*-prefixed helper is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned elsewhere in this ledger for check-naming-clarity/check-responsibility-extraction.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/MergeTwoSortedLists/MergeTwoSortedListsTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (both facts sharing the Merge prefix with the production-shaped MergeSortedLists helper they exercise).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/LowestCommonAncestorOfBst/LowestCommonAncestorOfBstTests.cs",
+      "reason": "lca! promises FindLca found an ancestor - true because both queried values come from FindNode walking the same tree FindLca's own root parameter roots, so LowestCommonAncestor.Find always has both nodes reachable from root and can only return null when neither is (impossible here). tree.Root! promises BuildClassicExampleTree's tree is non-empty - true because the method always inserts nine values before returning. LeftChild/RightChild's node.Left!/node.Right! promise the child FindNode's own comparison just selected is present - true because FindNode only ever descends toward a value BuildClassicExampleTree is known to have inserted, so BinarySearchTree.Insert already created every node this walk can reach.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/**",
+      "reason": "every check-literals finding under this tree is a value taken directly from the named LeetCode problem's own example - the input array, the target, the expected answer - genuinely meaning only itself (it IS the problem's example, not a magic constant standing in for something a name would explain better), the same 'arbitrary fixture value' judgment call already applied to check-literals findings throughout this ledger.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/RollingHash/RollingHashTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a test string, a hand-computed base/modulus/expected-hash constant, a window bound - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/Algorithms/StringMatching/RollingHashSearchTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - a test string, an expected match index - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/DataStructures/RollingHash/RollingHash.cs",
+      "reason": "flags RollingHash's 3 constructor overloads as 3 declarations sharing the 'Rolling' prefix - but a constructor is necessarily named identically to its enclosing type in C#, so there is no naming choice available and no hidden module to extract: 'RollingHash' is the language's own constructor-naming rule applied to a type with 3 real arities of construction (bare text; text+comparer; text+comparer+custom lanes - see this file's own doc comment for why each exists), not an accidental shared prefix. No earlier type in this repo had 3+ constructor overloads to cross this check's 3-item threshold before.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/DataStructures/RollingHash/RollingHashTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Hash prefix) for every test class with 3+ facts on one method, and the accompanying '>8 public declarations' finding is the same convention (every [Fact] is public by xUnit's own requirement, not a designed API surface).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/Algorithms/StringMatching/RollingHashSearchTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the FindAll prefix) for every test class with 3+ facts on one method.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/DataStructures/RollingHash/RollingHashLaneTests.cs",
+      "reason": "every check-literals finding here is an arbitrary fixture value - the documented base/modulus constants a hand-verified example asserts against - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlDataDto.cs",
+      "reason": "'GraphQL' is the actual, unabbreviated proper name of the query language/API style (leetcode.com/graphql is a real GraphQL endpoint) - it is not short for anything longer, so there is no fuller form to spell out; 'Ql' has no vowels only because the real name's own second word doesn't.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlRequestDto.cs",
+      "reason": "'GraphQL' is the actual, unabbreviated proper name of the query language/API style (leetcode.com/graphql is a real GraphQL endpoint) - it is not short for anything longer, so there is no fuller form to spell out; 'Ql' has no vowels only because the real name's own second word doesn't.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlResponseDto.cs",
+      "reason": "'GraphQL' is the actual, unabbreviated proper name of the query language/API style (leetcode.com/graphql is a real GraphQL endpoint) - it is not short for anything longer, so there is no fuller form to spell out; 'Ql' has no vowels only because the real name's own second word doesn't.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Fixtures/kth-largest-element-in-an-array.json",
+      "reason": "the filename is leetcode.com's own titleSlug for this exact question, unmodifiable without breaking LeetCodeQuestionCache's by-slug lookup - the same 'kth is standard CS/LeetCode terminology' judgment call already recorded for DSAExperimentation.Tests/LeetCodeCoverage/KthLargestElement.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/LeetCodeSolutionValidatorTests.cs",
+      "reason": "each [Fact] plus its own dedicated private Solve* helper is one independent, self-contained demonstration that LeetCodeSolutionValidator works against a differently-shaped problem (single value, tuple input, 2D array) - the clusters share no state because there is genuinely nothing to share between three unrelated worked examples of the same generic contract; splitting each into its own file would fragment one small, coherent 'prove the validator across shapes' story into three for no reader benefit.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-error-values",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/LeetCodeCatalog.cs",
+      "reason": "Load is the throwing convenience beside LeetCodeQuestionCache.TryLoad's own recoverable form, the same 'internal-trusted caller's own bug, not external-input uncertainty' shape DynamicArray.Get/TryGet and DisjointSetForest.GetParent/TryGetParent already use in this repo - a missing fixture means a test asked for a slug nobody synced via LeetCodeCatalogSyncTests, not state a caller couldn't have known about in advance.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Fixtures",
+      "reason": "deliberately flat, one-JSON-file-per-cached-LeetCode-question layout - each fixture is an independent, checked-in snapshot keyed by the question's own titleSlug (see LeetCodeQuestionCache.cs), not a shared subsystem with a subsystem/role grouping that would apply; the flat list is itself the useful 'what's cached' index.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/LeetCodeSolutionValidatorTests.cs",
+      "reason": "every finding here is either a LeetCode titleSlug selecting which cached fixture a demonstration loads, an explanatory exception message for an input LeetCode's own constraint guarantees is unreachable, or the '2' in a Fibonacci-shaped climb(step-1)+climb(step-2) recurrence - all genuinely mean only themselves, the same 'arbitrary fixture value' judgment call already applied throughout this ledger.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeApiClient.cs",
+      "reason": "'QuestionDataQuery' names the GraphQL query using leetcode.com's own operation name ('questionData', see the query text itself) - renaming away from the API's own vocabulary would make it HARDER to cross-reference against leetcode.com's own schema/docs, not clearer.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlDataDto.cs",
+      "reason": "'Data' mirrors the GraphQL specification's own response envelope ({\"data\": ..., \"errors\": ...}, see spec.graphql.org) - this is the precise term the wire format itself uses for this exact field, not a vague placeholder name.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeGraphQlResponseDto.cs",
+      "reason": "'Data' mirrors the GraphQL specification's own response envelope ({\"data\": ..., \"errors\": ...}, see spec.graphql.org) - this is the precise term the wire format itself uses for this exact field, not a vague placeholder name.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeMetaDataDto.cs",
+      "reason": "'MetaData' mirrors leetcode.com's own GraphQL field name (metaData, see LeetCodeQuestionDto.cs and LeetCodeApiClient.cs's query text) verbatim - matching the source API's own vocabulary makes this easier to cross-reference against leetcode.com's schema, not vaguer.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeQuestionDto.cs",
+      "reason": "'MetaData' mirrors leetcode.com's own GraphQL field name (metaData) verbatim - matching the source API's own vocabulary makes this easier to cross-reference against leetcode.com's schema, not vaguer.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Client/LeetCodeQuestionMapper.cs",
+      "reason": "each ! promises a JSON deserialization result is present - true because dto.Stats/dto.MetaData are always the nested JSON strings leetcode.com's own GraphQL response carries for a real question; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/LeetCodeQuestionCache.cs",
+      "reason": "each ! is one of: the standard TryGetValue/TryParse out-parameter contract (question in TryLoad), a JSON round-trip through this same class's own Save (DeserializeQuestion), a filename Directory.GetFiles itself just matched against *.json (FileNameWithoutExtension), or a [CallerFilePath]-supplied absolute path to this very file (ResolveFixturesDirectory) - each named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Validation/TwoSumAdapter.cs",
+      "reason": "each ! promises a JSON deserialization result is present - true because rawInput/rawExpectedOutput always come from a LeetCodeQuestion cached for 'two-sum' specifically, whose example lines are always valid JSON by LeetCodeQuestionMapper's own construction; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/Validation/MergeIntervalsAdapter.cs",
+      "reason": "each ! promises a JSON deserialization result is present - true because rawInput/rawExpectedOutput always come from a LeetCodeQuestion cached for 'merge-intervals' specifically, whose example lines are always a valid JSON 2D integer array by LeetCodeQuestionMapper's own construction; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/LeetCodeSolutionValidatorTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - this repo's MethodUnderTest_Scenario_Expected xUnit convention produces exactly that shared-prefix shape (every fact sharing the Validate prefix with the production LeetCodeSolutionValidator.Validate method they all exercise).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-flaky-tests",
+      "path": "DSAExperimentation.Tests/LeetCodeCatalog/LeetCodeCatalogSyncTests.cs",
+      "reason": "the Task.Delay is a deliberate rate limiter against leetcode.com's own public API, not a synchronization guess for anything this test could instead observe directly - check-flaky-tests' own doc names exactly this ('a timeout, a debounce, a rate limiter') as the sanctioned case for `flakiness: allow`. Also moot in practice: this Fact is permanently Skip-tagged and never runs as part of `dotnet test` (see the file's own doc comment) - only a developer manually running the live sync ever executes this delay.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/StringMatching/ZFunction.cs",
+      "reason": "MatchedWindow.ExpandTo is a private nested record struct's member, un-fileworthy on its own - the same status PrefixFunctionSearch.cs's own doc comment already gives BinarySearch's BisectionStep and its own FailureFunctionMatcher, and the same status Manacher.cs's RightmostPalindromeEdge.ExpandTo already carries under this exact check (never crosses either public method's boundary). It is exercised on every call to Compute/FindAll, which ZFunctionTests.cs's own brute-force cross-check (Compute_MatchesBruteForceLongestCommonPrefix) and varied FindAll facts already drive - exercised transitively through the algorithm that owns it, the same bucket check-test-coverage's own doc exempts for contract-bound/algorithm-internal names.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/SuffixTree/SuffixTreeNode.cs",
+      "reason": "IsSuffixEnd is a one-line computed property (SuffixStart >= 0) on an internal node type with no dedicated test file of its own - the same 'algorithm-internal member, exercised transitively' bucket check-test-coverage's own doc exempts. Every SuffixTreeTests.cs Contains/FindOccurrences fact walks AllSuffixStartsFrom, which reads IsSuffixEnd on every visited node; a dedicated SuffixTreeNodeTests.cs asserting on the property in isolation would just restate its own one-line body.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/AhoCorasick/AhoCorasick.cs",
+      "reason": "each ! (RequireChild's child!, LinkChildren's u.Fail!, GoTo's current.Fail!) is named inline as a `presumption: allow` comment stating the invariant that makes it true (key freshly enumerated from Children.Keys; u/current's Fail already assigned before being reachable here) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/SuffixTree/SuffixTree.cs",
+      "reason": "RequireChild's child! is named inline as a `presumption: allow` comment stating the invariant that makes it true (key freshly enumerated from Children.Keys immediately before the call) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BitTrieChildren.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Count/Get implement IChildren<BitTrieNode>, the same capability interface BinaryTreeChildren.cs/GridChildren.cs already carry this exact waiver for, and are exercised the same way: through the algorithm generic over that interface (TreeMetrics.Size, see BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain), which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BitTrieTopology.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' GetChildren implements ITreeTopology<BitTrieNode,BitTrieChildren>, the same capability interface BinaryTreeTopology.cs/GridTopology.cs already carry this exact waiver for, and is exercised the same way: through TreeMetrics.Size (see BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain), which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrieTopology.cs",
+      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' GetChildren implements ITreeTopology<LowercaseTrieNode<TValue>,SparseArrayChildren<LowercaseTrieNode<TValue>>>, the same capability interface BinaryTreeTopology.cs/GridTopology.cs already carry this exact waiver for, and is exercised the same way: through TreeMetrics.Size and LowestCommonAncestor.Find (see LowercaseTrieTests.cs), which is exactly the tested contract.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrie.cs",
+      "reason": "TryGetValue's value = default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (value is only meaningful when the method returns true, the standard TryGetValue/TryParse out-parameter contract Trie<TValue>.TryGetValue already uses) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-presumption",
+      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrieNode.cs",
+      "reason": "Value's default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (Value is only meaningful once HasValue is true, checked by every reader before use) - recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }

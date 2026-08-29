@@ -672,8 +672,120 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Sequence | `Sequence/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence}.cs` (§13.6) |
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
 | Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
+| Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie}.cs` (§13.7, §13.8, §13.9) |
 | Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` |
 | Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
+| Cache | `Cache/{ICache,CacheConstants}.cs`, `Cache/LruCache/LruCache.cs`, `Cache/LfuCache/LfuCache.cs` (§13.7) |
+
+### 13.7 Fifth reorg — BinaryTree rejoins Graph, ICache extracted
+
+`BinaryTree` used to sit as a sibling of `Graph/` even though `BinaryTreeTopology.cs` implements
+`ITreeTopology<BinaryTreeNode<TValue>,BinaryTreeChildren<TValue>>` — its own doc comment already
+said "mirrors GridTopology exactly," and `GridTopology` lives inside `Graph/`. It now co-locates
+with the interface it witnesses, at `Graph/Engines/Dags/Trees/`, the same relationship `Grids/`
+already has with `IGraphTopology`.
+
+This does not extend to every other "tree"-named structure. `SegmentTree`, `FenwickTree`,
+`LazySegmentTree`, `RangeFenwickTree`, and `Heap` (§4) are all array + index-arithmetic
+representations with no separate node identity for a `TChildren` parameter to vary over — the same
+reason §4 already gives for keeping `Heap` out of `IGraphTopology`. Promoting any of these to real
+`ITreeTopology`/`IDagTopology` witnesses — and re-deriving their hand-written recursion as instances
+of Graph's generic `Fold`/`Walk` engines — is a real per-structure algorithm redesign, not a file
+move, and stays a deliberate future exercise rather than something this reorg does wholesale.
+`SinglyLinkedList`/`DoublyLinkedList` stay out for the same reason: no `IChildren`, no
+`ITreeTopology`, and their O(1) pointer-splice operations (`AddFront`/`Remove`/`PopBack`, Floyd's
+cycle detection) don't route through Graph's generic traversal engines. `Trie`/`BitTrie`/`SuffixTree`
+are a more subtle case than this section originally said — see §13.8, §13.9.
+
+`LruCache`/`LfuCache` also moved, from top-level siblings into `Cache/LruCache/` and `Cache/LfuCache/`
+beside a new `Cache/ICache.cs`, which both now implement. The two were already documented as "peer
+implementations of an almost-identical public contract"; `ICache<TKey,TValue>` makes that contract
+real. An interface, not a shared base class, per §6's composition-over-inheritance precedent
+(`IHeapOrder`, `ICombineOperation`, `IGroupOperation` are all interfaces) — the two caches share no
+method bodies to inherit, only this public shape, and LRU-vs-LFU is a real, caller-visible axis (it
+changes which key an identical call sequence evicts) rather than a mechanics-only choice, the same
+§10.1 discriminator that already separates `MinHeapOrder`/`MaxHeapOrder` from `DisjointSet`'s linking
+policy.
+
+### 13.8 Sixth reorg — `LowercaseTrie`, and correcting why a Trie does or doesn't get a witness
+
+`Trie.cs`/`BitTrie.cs`/`SuffixTree.cs` all previously justified staying witness-less with some form
+of "no Topology witness here — nothing for a witness to parametrize." That reasoning answers the
+wrong question. `GridTopology`/`BinaryTreeTopology` also have nothing to parametrize (no
+Min-vs-Max-style variant choice) and still implement the base interface fine — determinism was never
+the actual test for *whether a type implements `ITreeTopology` at all*; it's only ever been the test
+for whether a type needs a *second*, injected witness axis on top of that (§5's own table, §9.1,
+§13.2). Conflating the two made `Trie`'s exclusion look more settled than its actual reason.
+
+The real reason is Representation, checked directly rather than assumed: every call site of
+`IChildren<TNode>.Get(int)` in this repo (`DepthFirstWalk.cs`, `BreadthFirstWalk.cs`,
+`TopDownWalk.cs`) drives it in a plain sequential `for i in 0..Count-1` sweep, never random access —
+but the interface's own doc comment still states an O(1)-*per-call* obligation, and
+`TrieNode<TValue>.Children`/`SuffixTreeNode.Children` are `HashMap<char,·>`, which cannot honestly
+promise indexed O(1) `Get` the way a fixed slot array can. This is a genuine §8 Representation/
+Complexity-law mismatch, not a "nothing to parametrize" one — and it is fixable, by bounding the
+alphabet: `Graph/Engines/Dags/Trees/{LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie}.cs` is
+the general `Trie<TValue>`'s bounded-alphabet sibling (26 lowercase English letters, `Set`/`HasKey`/
+`TryGetValue`/`HasPrefix`-compatible), backed by `SparseArrayChildren` — already in this repo,
+already doc-commented "e.g. a trie node's per-character children" (§3.1), and already rehearsed
+non-generically as a test-only fixture (`Tests/DataStructures/Graph/Contracts/Ordering/{TrieNode,
+TrieTopology,TrieTrees}.cs`, predating this promotion) before this reorg made it a real, `TValue`-
+generic, production Operations type. `LowercaseTrieTests.cs` proves the witness is real, not just a
+satisfied interface, with two facades reusing generic Tree-tier engines unmodified: `TreeMetrics.Size`
+counts every node across a shared-prefix chain, and `LowestCommonAncestor.Find` over a trie topology
+*is* longest-common-prefix — the node where two keys diverge is exactly the node reached by walking
+their shared prefix, with no trie-specific LCA code at all.
+
+The general, arbitrary-`char`-keyed `Trie<TValue>` still correctly stays witness-less — its whole
+value is *not* being bounded to a small alphabet, so narrowing it to gain a witness would defeat the
+type's own purpose rather than just cost something. `BitTrie` was promoted under this framing —
+see §13.9. `SuffixTree`/`SuffixAutomaton`/`AhoCorasick` remain unreviewed as of this reorg —
+`SuffixTree`'s edge-compression (substring-range labels, not one-char-per-edge) is a second,
+independent representation question on top of the alphabet one; `AhoCorasick`'s trie portion has
+the same bounded-alphabet shape `BitTrie`/`LowercaseTrie` do, but its runtime matching walks
+`Fail`/`OutputLink` edges that aren't tree edges at all, so at most its construction-time trie
+would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition graph is a DAG, not
+a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
+witness candidate in its own right. None of the three is done.
+
+### 13.9 Seventh reorg — `BitTrie` promoted to a real `ITreeTopology` witness
+
+`BitTrie.cs`'s own doc comment previously argued "no Topology witness here" on `BitTrieNode`
+being only ever created internally, so "no external shape could violate the invariant" — the same
+"nothing to parametrize" reasoning §13.8 already named as answering the wrong question, just not
+yet corrected for this specific file. Applying §13.8's two-part test: `BitTrieNode` has real
+identity (a `class`, not an index into shared storage, unlike `Heap`/`DisjointSet`), and its two
+named `Zero`/`One` slots already give `IChildren`'s O(1)-indexed-`Get` obligation honestly, with no
+alphabet-bounding work needed the way `LowercaseTrie` required — both true, so a witness is earned.
+
+Unlike `LowercaseTrieTopology`, which reuses `SparseArrayChildren` (an actual fixed-size array),
+`BitTrieChildren` follows `BinaryTreeChildren`'s shape instead — computed on demand from two named
+fields, no backing array at all. `BitTrieNode` already had exactly `BinaryTreeNode`'s "two named
+slots" shape (deliberately, per its own doc comment, to avoid a `HashMap`'s cost for a fixed 2-key
+alphabet); switching it to an actual 2-element array to reuse `SparseArrayChildren` verbatim would
+have been a real, unforced representation regression (an allocation per node) purely to match
+`LowercaseTrie`'s file shape rather than its reasoning. `BinaryTreeChildren`'s own "compaction loses
+positional identity" carve-out (why `InOrderTraversal` bypasses it) doesn't apply here either:
+`Insert`/`TryMaxXor` never go through `IChildren` at all, so nothing downstream needs "this was
+specifically the 0-branch vs. the 1-branch" preserved — only generic Tree-tier engines consume the
+witness, and they only ever ask "how many children, and give me each one."
+
+`Insert`/`TryMaxXor` themselves stay hand-written against `Zero`/`One` directly, unchanged — the
+witness doesn't replace them, it just opens the trie to generic Tree-tier engines for free.
+`BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain` proves the witness is
+real the same way `LowercaseTrieTests` did: `TreeMetrics.Size` (`Algorithms/Metrics`, generic over
+any `ITreeTopology`) counts every node of a two-value trie with no `BitTrie`-specific code at all.
+
+**This is the general methodology, not a one-off:** when a structure has a Topology-witness
+question, don't ask "is there a variant to inject" (§9.1's row-1/row-2 test still answers that, but
+answers a *different* question). Ask instead: (1) does the structure have a node identity distinct
+from its storage (§4's Heap test), and (2) does its actual Representation satisfy every law the base
+interface's consumers actually rely on (§8) — checked against real call sites, not assumed from the
+interface's stated contract alone. Both true → a real witness is earned, and the type's own
+distinguishing feature (bounded alphabet, edge compression, a balance invariant, ...) is what to name
+and isolate, the same "inject the one new axis" idiom `IPathHeuristic`/`IHeapOrder`/`TOperation`
+already use elsewhere in this repo. Either false → the structure stays domain-local, correctly, for
+a stated reason — not a default.
 
 **`Algorithms/`** is organized by utility instead — the second reorg's whole point, and after
 §13.5's third reorg it holds *only* things generic over a capability interface with real

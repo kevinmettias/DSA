@@ -99,4 +99,44 @@ public sealed class AllPairsShortestPathsTests
         Assert.Equal(1, distances[(a, b)]);
         Assert.DoesNotContain(distances.Keys, pair => pair.From == c || pair.To == c);
     }
+
+    // int.MaxValue is BuildInitialMatrix's own "still unreached" sentinel; an edge weighted
+    // exactly that would be indistinguishable from no edge in every later read of that cell,
+    // so it's validated rather than silently accepted.
+    [Fact]
+    public void TryComputeDistances_EdgeWeightEqualsReservedSentinel_Throws()
+    {
+        var a = new WeightedNode("A");
+        var b = new WeightedNode("B");
+        a.Edges.Add((int.MaxValue, b));
+
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            AllPairsShortestPaths.TryComputeDistances<
+                WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
+                [a, b], out _));
+    }
+
+    // A-B and B-C are each representable, but their sum during Refine's relaxation
+    // underflows int - without a checked-arithmetic guard, that would silently wrap to a
+    // large positive number that reads as a (very wrong) real distance. The correct
+    // behavior is to treat the overflowed candidate as unusable, leaving (A,C) absent
+    // rather than reporting a corrupted value.
+    [Fact]
+    public void TryComputeDistances_RelaxationOverflows_PairIsAbsentNotCorrupted()
+    {
+        var a = new WeightedNode("A");
+        var b = new WeightedNode("B");
+        var c = new WeightedNode("C");
+        a.Edges.Add((-1_500_000_000, b));
+        b.Edges.Add((-1_500_000_000, c));
+
+        var succeeded = AllPairsShortestPaths.TryComputeDistances<
+            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
+            [a, b, c], out var distances);
+
+        Assert.True(succeeded);
+        Assert.Equal(-1_500_000_000, distances[(a, b)]);
+        Assert.Equal(-1_500_000_000, distances[(b, c)]);
+        Assert.False(distances.ContainsKey((a, c)));
+    }
 }

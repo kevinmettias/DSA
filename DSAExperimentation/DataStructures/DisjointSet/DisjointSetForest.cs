@@ -42,8 +42,12 @@ internal sealed class DisjointSetForest
         }
     }
 
-    // Throwing convenience beside each TryX's recoverable form, the same pairing
-    // Heap.Peek/Stack.Peek/Deque.PeekFront/Queue.Peek/HashMap.Get already use.
+    // Throwing convenience beside each TryX's recoverable form. Unlike Heap/Stack/
+    // Deque/Queue/HashMap - whose Peek/Pop/Get once had a throwing form too, since
+    // removed - this one stays: an out-of-range id is DisjointSet.cs's own
+    // internal-trusted caller's bug, not state an external caller can't already know,
+    // so throwing loudly here beats silently discarding a TryGetParent/TryGetRank
+    // result at every internal call site.
     public int GetParent(int id)
         => TryGetParent(id, out var parent) ? parent : ThrowInvalidId(id);
 

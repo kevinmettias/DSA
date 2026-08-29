@@ -105,21 +105,7 @@ internal sealed class SegmentTree<Element, TOperation>
         return TOperation.Combine(leftResult, rightResult);
     }
 
-    private void ValidateIndex(int index)
-    {
-        if (index < 0 || index >= _leafCount)
-        {
-            throw new ArgumentOutOfRangeException(nameof(index), IndexOutOfBoundsMessage);
-        }
-    }
+    private void ValidateIndex(int index) => RangeBounds.ValidateIndex(index, _leafCount, IndexOutOfBoundsMessage);
 
-    private void ValidateRange(int left, int right)
-    {
-        var isOutOfRange = left < 0 || right >= _leafCount || left > right;
-
-        if (isOutOfRange)
-        {
-            throw new ArgumentOutOfRangeException(nameof(left), RangeOutOfBoundsMessage);
-        }
-    }
+    private void ValidateRange(int left, int right) => RangeBounds.ValidateRange(left, right, _leafCount, RangeOutOfBoundsMessage);
 }

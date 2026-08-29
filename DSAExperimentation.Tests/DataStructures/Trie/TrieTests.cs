@@ -51,14 +51,6 @@ public sealed partial class TrieTests
     }
 
     [Fact]
-    public void Get_UnknownKey_Throws()
-    {
-        var trie = new Trie<int>();
-
-        Assert.Throws<InvalidOperationException>(() => trie.Get("missing"));
-    }
-
-    [Fact]
     public void HasPrefix_KnownPrefix_ReturnsTrue()
     {
         var trie = new Trie<int>();

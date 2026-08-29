@@ -72,18 +72,6 @@ public sealed partial class GraphTests
     }
 
     [Fact]
-    public void CheckedFold_TrueCycle_ThrowsInsteadOfHanging()
-    {
-        var root = CyclicSample();
-
-        Assert.Throws<InvalidOperationException>(() =>
-            CheckedFold.Fold<
-                TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-                CountNodesFoldAlgebra, int>(root));
-    }
-
-    [Fact]
     public void CheckedFold_TrueCycle_TryFoldReturnsFalseInsteadOfThrowing()
     {
         var root = CyclicSample();

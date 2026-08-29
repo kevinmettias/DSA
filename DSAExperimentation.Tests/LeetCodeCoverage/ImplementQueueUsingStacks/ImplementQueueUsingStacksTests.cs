@@ -1,0 +1,3 @@
+﻿using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementQueueUsingStacks;
+public sealed partial class ImplementQueueUsingStacksTests { [Fact] public void MyQueue_Example_BehavesFifo(){var q=new MyQueue();q.Push(1);q.Push(2);Assert.Equal(1,q.Peek());Assert.Equal(1,q.Pop());Assert.False(q.Empty());} private sealed class MyQueue{private readonly RepoStack _in=new();private readonly RepoStack _out=new();public void Push(int x)=>_in.Push(x);public int Pop(){Move();_out.TryPop(out var x);return x;}public int Peek(){Move();_out.TryPeek(out var x);return x;}public bool Empty()=>_in.Count==0&&_out.Count==0;private void Move(){if(_out.Count>0)return;while(_in.TryPop(out var x))_out.Push(x);}} }

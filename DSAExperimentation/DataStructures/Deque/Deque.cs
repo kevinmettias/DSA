@@ -1,10 +1,12 @@
 
 namespace DSAExperimentation.DataStructures.Deque;
 
+// No throwing PeekFront/PeekBack/PopFront/PopBack convenience: whether the deque is
+// empty is state an external caller can't always know in advance, so the TryX forms
+// are the only public surface for it, forcing callers onto the return-value form
+// instead of a try/catch.
 internal sealed class Deque<Element>
 {
-    private const string EmptyDequeMessage = "The deque contains no elements.";
-
     private readonly CircularBuffer<Element> _items = new();
 
     public int Count => _items.Count;
@@ -12,16 +14,6 @@ internal sealed class Deque<Element>
     public void PushFront(Element item) => _items.AddFront(item);
 
     public void PushBack(Element item) => _items.AddBack(item);
-
-    public Element PeekFront()
-        => Count == 0
-            ? ThrowEmptyDeque()
-            : _items.GetFront();
-
-    public Element PeekBack()
-        => Count == 0
-            ? ThrowEmptyDeque()
-            : _items.GetBack();
 
     public bool TryPeekFront(out Element item)
     {
@@ -51,20 +43,6 @@ internal sealed class Deque<Element>
         return true;
     }
 
-    public Element PopFront()
-    {
-        var item = PeekFront();
-        _items.RemoveFront();
-        return item;
-    }
-
-    public Element PopBack()
-    {
-        var item = PeekBack();
-        _items.RemoveBack();
-        return item;
-    }
-
     public bool TryPopFront(out Element item)
     {
         if (!TryPeekFront(out item))
@@ -86,6 +64,4 @@ internal sealed class Deque<Element>
         _items.RemoveBack();
         return true;
     }
-
-    private static Element ThrowEmptyDeque() => throw new InvalidOperationException(EmptyDequeMessage);
 }

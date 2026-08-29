@@ -1,0 +1,39 @@
+{
+  "QuestionId": 235,
+  "FrontendId": 235,
+  "Title": "Lowest Common Ancestor of a Binary Search Tree",
+  "TitleSlug": "lowest-common-ancestor-of-a-binary-search-tree",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree",
+    "Binary Lifting",
+    "Lowest Common Ancestor"
+  ],
+  "AcceptanceRatePercent": 71.3,
+  "TotalAccepted": 2405726,
+  "TotalSubmissions": 3376039,
+  "Likes": 12455,
+  "Dislikes": 367,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.\u003C/p\u003E\n\n\u003Cp\u003EAccording to the \u003Ca href=\u0022https://en.wikipedia.org/wiki/Lowest_common_ancestor\u0022 target=\u0022_blank\u0022\u003Edefinition of LCA on Wikipedia\u003C/a\u003E: \u0026ldquo;The lowest common ancestor is defined between two nodes \u003Ccode\u003Ep\u003C/code\u003E and \u003Ccode\u003Eq\u003C/code\u003E as the lowest node in \u003Ccode\u003ET\u003C/code\u003E that has both \u003Ccode\u003Ep\u003C/code\u003E and \u003Ccode\u003Eq\u003C/code\u003E as descendants (where we allow \u003Cstrong\u003Ea node to be a descendant of itself\u003C/strong\u003E).\u0026rdquo;\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/14/binarysearchtree_improved.png\u0022 style=\u0022width: 200px; height: 190px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The LCA of nodes 2 and 8 is 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/14/binarysearchtree_improved.png\u0022 style=\u0022width: 200px; height: 190px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [2,1], p = 2, q = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[2, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003ENode.val\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ep != q\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ep\u003C/code\u003E and \u003Ccode\u003Eq\u003C/code\u003E will exist in the BST.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,2,8,0,4,7,9,null,null,3,5]\n2\n8",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[6,2,8,0,4,7,9,null,null,3,5]\n2\n4",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[2,1]\n2\n1",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-08-27T02:25:19.9951586+00:00",
+  "Url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"
+}

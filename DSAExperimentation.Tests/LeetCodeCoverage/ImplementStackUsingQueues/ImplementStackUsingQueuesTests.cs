@@ -1,0 +1,3 @@
+﻿using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementStackUsingQueues;
+public sealed partial class ImplementStackUsingQueuesTests { [Fact] public void MyStack_Example_BehavesLifo(){var s=new MyStack();s.Push(1);s.Push(2);Assert.Equal(2,s.Top());Assert.Equal(2,s.Pop());Assert.False(s.Empty());} private sealed class MyStack{private RepoQueue _items=new();public void Push(int x){var rotated=new RepoQueue();rotated.Enqueue(x);while(_items.TryDequeue(out var item))rotated.Enqueue(item);_items=rotated;}public int Pop(){_items.TryDequeue(out var x);return x;}public int Top(){_items.TryPeek(out var x);return x;}public bool Empty()=>_items.Count==0;} }

@@ -1,0 +1,3 @@
+﻿using DSAExperimentation.DataStructures.HashMap;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.MajorityElementII;
+public sealed partial class MajorityElementIITests { [Theory] [InlineData(new[]{3,2,3},new[]{3})] [InlineData(new[]{1},new[]{1})] public void MajorityElement_Examples_ReturnsElementsOverThird(int[] nums,int[] expected)=>Assert.Equal(expected.Order(),Majority(nums).Order()); private static List<int> Majority(int[] nums){var counts=new HashMap<int,int>();foreach(var n in nums){counts.TryGetValue(n,out var c);counts.Set(n,c+1);}return counts.Keys.Where(k=>{counts.TryGetValue(k,out var c);return c>nums.Length/3;}).ToList();} }
