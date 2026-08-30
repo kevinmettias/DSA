@@ -100,6 +100,12 @@ function buildImplementPrompt(cluster) {
     `Keep new code simple and idiomatic for this codebase (short, no unnecessary abstraction) - closely match ` +
     `the two reference files' style and structure; you do not need to run the full Nomos gate tool per problem ` +
     `at this scale, a separate periodic pass will handle gate compliance later.\n\n` +
+    `GIT SAFETY: this repo commonly has other uncommitted work in progress from concurrent sessions/agents. ` +
+    `Never run a git command that discards changes (git checkout -- <path>, git restore, git reset --hard, git ` +
+    `clean) on ANY file, manifest.json included - doing so silently destroys someone else's uncommitted work ` +
+    `with no error. If manifest.json or any other file looks unexpected mid-task, that is normal (another agent ` +
+    `is editing concurrently) - just re-read the current file and proceed; only git status/diff/log are safe to ` +
+    `run.\n\n` +
     `After writing all files for this cluster, return one result object per problem id: status "done" (with the ` +
     `real testPath/benchmarkPath - as REPO-ROOT-RELATIVE paths using forward slashes, e.g. ` +
     `"DSAExperimentation.Tests/LeetCodeCoverage/TwoSum/TwoSumTests.cs", matching the existing manifest entries' ` +

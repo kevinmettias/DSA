@@ -1,21 +1,51 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameII;
+using DSAExperimentation.Algorithms.ShortestPaths;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
-public sealed class JumpGameIITests
+namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameII;
+
+// LeetCode 45. Jump Game II: minimum jumps to reach the last index, modeled as an
+// implicit unweighted-hop graph (index i has an edge to every index reachable in one
+// jump) and answered with this repo's own ShortestPath.Dijkstra - not the textbook
+// O(n) greedy two-pointer scan.
+public sealed partial class JumpGameIITests
 {
     [Theory]
     [InlineData(new[] { 2, 3, 1, 1, 4 }, 2)]
     [InlineData(new[] { 2, 3, 0, 1, 4 }, 2)]
     [InlineData(new[] { 0 }, 0)]
-    public void Jump_GreedyLayerExpansion_ReturnsMinimumJumps(int[] nums, int expected) => Assert.Equal(expected, Jump(nums));
+    public void MinJumps_DijkstraOverImplicitHopGraph_ReturnsMinimumJumpCount(int[] nums, int expected)
+        => Assert.Equal(expected, MinJumps(nums));
 
-    private static int Jump(int[] nums)
+    private static int MinJumps(int[] nums)
     {
-        var jumps = 0; var currentEnd = 0; var farthest = 0;
-        for (var i = 0; i < nums.Length - 1; i++)
+        var nodes = BuildHopGraph(nums);
+
+        var distances = ShortestPath.Dijkstra<
+            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(nodes[0]);
+
+        return distances[nodes[^1]];
+    }
+
+    private static WeightedNode[] BuildHopGraph(int[] nums)
+    {
+        var nodes = new WeightedNode[nums.Length];
+
+        for (var i = 0; i < nums.Length; i++)
         {
-            farthest = Math.Max(farthest, i + nums[i]);
-            if (i == currentEnd) { jumps++; currentEnd = farthest; }
+            nodes[i] = new WeightedNode(i.ToString());
         }
-        return jumps;
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            var reach = Math.Min(i + nums[i], nums.Length - 1);
+
+            for (var j = i + 1; j <= reach; j++)
+            {
+                nodes[i].Edges.Add((1, nodes[j]));
+            }
+        }
+
+        return nodes;
     }
 }

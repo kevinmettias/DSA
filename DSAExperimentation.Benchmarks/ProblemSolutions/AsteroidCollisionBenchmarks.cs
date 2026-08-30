@@ -1,0 +1,117 @@
+using BenchmarkDotNet.Attributes;
+using RepoAsteroidStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+
+namespace DSAExperimentation.Benchmarks.ProblemSolutions;
+
+// Asteroid Collision (LC 735): a naive repeated-scan baseline that restarts
+// from the beginning of a plain List<int> after every single collision it
+// resolves (a fresh O(n) scan per collision, so O(n^2) overall once cascades
+// happen) vs. this repo's own Stack<int> doing the textbook single
+// left-to-right pass - the same "explicit repo Stack" move
+// AsteroidCollisionTests itself makes - resolving every collision, including
+// cascades, in one O(n) sweep.
+[MemoryDiagnoser]
+public class AsteroidCollisionBenchmarks
+{
+    [Params(200, 3_000)]
+    public int Length;
+
+    private int[] _asteroids = null!;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        var random = new Random(735);
+        _asteroids = Enumerable.Range(0, Length)
+            .Select(_ =>
+            {
+                var magnitude = random.Next(1, 1_000);
+                return random.Next(2) == 0 ? magnitude : -magnitude;
+            })
+            .ToArray();
+    }
+
+    [Benchmark(Baseline = true)]
+    public int[] RepeatedScan()
+    {
+        var current = new List<int>(_asteroids);
+        var collisionFound = true;
+
+        while (collisionFound)
+        {
+            collisionFound = false;
+
+            for (var i = 0; i < current.Count - 1; i++)
+            {
+                if (current[i] <= 0 || current[i + 1] >= 0)
+                {
+                    continue;
+                }
+
+                var left = current[i];
+                var right = current[i + 1];
+
+                if (left < -right)
+                {
+                    current.RemoveAt(i);
+                }
+                else if (left == -right)
+                {
+                    current.RemoveAt(i + 1);
+                    current.RemoveAt(i);
+                }
+                else
+                {
+                    current.RemoveAt(i + 1);
+                }
+
+                collisionFound = true;
+                break;
+            }
+        }
+
+        return [.. current];
+    }
+
+    [Benchmark]
+    public int[] StackSimulation()
+    {
+        var stack = new RepoAsteroidStack();
+
+        foreach (var asteroid in _asteroids)
+        {
+            var current = asteroid;
+            var alive = true;
+
+            while (alive && current < 0 && stack.TryPeek(out var top) && top > 0)
+            {
+                if (top < -current)
+                {
+                    stack.TryPop(out _);
+                    continue;
+                }
+
+                if (top == -current)
+                {
+                    stack.TryPop(out _);
+                }
+
+                alive = false;
+            }
+
+            if (alive)
+            {
+                stack.Push(current);
+            }
+        }
+
+        var result = new int[stack.Count];
+
+        for (var i = result.Length - 1; i >= 0; i--)
+        {
+            stack.TryPop(out result[i]);
+        }
+
+        return result;
+    }
+}
