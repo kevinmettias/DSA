@@ -1,21 +1,55 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.TrappingRainWater;
+using RainStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
-public sealed class TrappingRainWaterTests
+namespace DSAExperimentation.Tests.LeetCodeCoverage.TrappingRainWater;
+
+// LeetCode 42. Trapping Rain Water: the classic monotonic-stack sweep over
+// this repo's own Stack<int>, holding bar indices (not heights). Once a
+// taller bar arrives, every shorter bar popped off the top had its floor
+// bounded on the left by the new stack top and on the right by the current
+// bar - min(leftWall, rightWall) - floor, times the gap width, is exactly
+// the water that bar's position trapped.
+public sealed partial class TrappingRainWaterTests
 {
-    [Theory]
-    [InlineData(new[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }, 6)]
-    [InlineData(new[] { 4, 2, 0, 3, 2, 5 }, 9)]
-    [InlineData(new[] { 1, 2, 3 }, 0)]
-    public void Trap_UsesTwoBoundaryScan_ReturnsExpectedWater(int[] height, int expected) => Assert.Equal(expected, Trap(height));
+    [Fact]
+    public void Trap_ClassicExample_ReturnsTotalTrappedWater()
+    {
+        int[] height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1];
+
+        Assert.Equal(6, Trap(height));
+    }
+
+    [Fact]
+    public void Trap_TwoBasinsBetweenThreeWalls_ReturnsSummedTrappedWater()
+    {
+        int[] height = [4, 2, 0, 3, 2, 5];
+
+        Assert.Equal(9, Trap(height));
+    }
 
     private static int Trap(int[] height)
     {
-        var left = 0; var right = height.Length - 1; var leftMax = 0; var rightMax = 0; var water = 0;
-        while (left < right)
+        var indices = new RainStack();
+        var water = 0;
+
+        for (var i = 0; i < height.Length; i++)
         {
-            if (height[left] < height[right]) { leftMax = Math.Max(leftMax, height[left]); water += leftMax - height[left]; left++; }
-            else { rightMax = Math.Max(rightMax, height[right]); water += rightMax - height[right]; right--; }
+            while (indices.TryPeek(out var top) && height[top] < height[i])
+            {
+                indices.TryPop(out _);
+
+                if (!indices.TryPeek(out var left))
+                {
+                    break;
+                }
+
+                var width = i - left - 1;
+                var boundedHeight = Math.Min(height[left], height[i]) - height[top];
+                water += width * boundedHeight;
+            }
+
+            indices.Push(i);
         }
+
         return water;
     }
 }

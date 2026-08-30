@@ -1,38 +1,79 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximalRectangle;
+using HeightStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
-public sealed class MaximalRectangleTests
+namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximalRectangle;
+
+// LeetCode 85. Maximal Rectangle: reduces to LeetCode 84 (Largest Rectangle in
+// Histogram) applied once per row - each row's running height array (consecutive
+// '1's stacked on top of the row above) turns the 2D search into rowCount
+// independent histogram-max-rectangle sweeps, reusing the identical Stack<int>
+// monotonic-stack routine LargestRectangleInHistogramTests already proves out.
+public sealed partial class MaximalRectangleTests
 {
     [Fact]
-    public void MaximalRectangle_BuildsHistogramRows_ReturnsLargestOneRectangle()
+    public void MaximalRectangleArea_ClassicExample_ReturnsLargestAllOnesRectangle()
     {
-        char[][] matrix = [[ '1','0','1','0','0' ],[ '1','0','1','1','1' ],[ '1','1','1','1','1' ],[ '1','0','0','1','0' ]];
-        Assert.Equal(6, MaximalRectangle(matrix));
+        char[][] matrix =
+        [
+            ['1', '0', '1', '0', '0'],
+            ['1', '0', '1', '1', '1'],
+            ['1', '1', '1', '1', '1'],
+            ['1', '0', '0', '1', '0'],
+        ];
+
+        Assert.Equal(6, MaximalRectangleArea(matrix));
     }
 
-    private static int MaximalRectangle(char[][] matrix)
+    [Fact]
+    public void MaximalRectangleArea_AllZeros_ReturnsZero()
     {
-        var heights = new int[matrix[0].Length]; var best = 0;
+        char[][] matrix = [['0', '0'], ['0', '0']];
+
+        Assert.Equal(0, MaximalRectangleArea(matrix));
+    }
+
+    private static int MaximalRectangleArea(char[][] matrix)
+    {
+        if (matrix.Length == 0)
+        {
+            return 0;
+        }
+
+        var heights = new int[matrix[0].Length];
+        var maxArea = 0;
+
         foreach (var row in matrix)
         {
-            for (var c = 0; c < row.Length; c++) heights[c] = row[c] == '1' ? heights[c] + 1 : 0;
-            best = Math.Max(best, LargestRectangleArea(heights));
+            for (var col = 0; col < row.Length; col++)
+            {
+                heights[col] = row[col] == '1' ? heights[col] + 1 : 0;
+            }
+
+            maxArea = Math.Max(maxArea, LargestRectangleArea(heights));
         }
-        return best;
+
+        return maxArea;
     }
 
     private static int LargestRectangleArea(int[] heights)
     {
-        var stack = new Stack<int>(); var best = 0;
+        var indices = new HeightStack();
+        var maxArea = 0;
+
         for (var i = 0; i <= heights.Length; i++)
         {
-            var current = i == heights.Length ? 0 : heights[i];
-            while (stack.Count > 0 && current < heights[stack.Peek()])
+            var currentHeight = i == heights.Length ? 0 : heights[i];
+
+            while (indices.TryPeek(out var top) && heights[top] >= currentHeight)
             {
-                var height = heights[stack.Pop()]; var left = stack.Count == 0 ? -1 : stack.Peek();
-                best = Math.Max(best, height * (i - left - 1));
+                indices.TryPop(out _);
+                var height = heights[top];
+                var width = indices.TryPeek(out var left) ? i - left - 1 : i;
+                maxArea = Math.Max(maxArea, height * width);
             }
-            stack.Push(i);
+
+            indices.Push(i);
         }
-        return best;
+
+        return maxArea;
     }
 }

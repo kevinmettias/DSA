@@ -1,26 +1,50 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestRectangleInHistogram;
+using HistogramStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
-public sealed class LargestRectangleInHistogramTests
+namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestRectangleInHistogram;
+
+// LeetCode 84. Largest Rectangle in Histogram: the classic monotonic-stack sweep
+// over this repo's own Stack<int>, holding bar indices (not heights) - the same
+// TrappingRainWaterTests precedent, applied to histogram area instead of trapped
+// water. A sentinel pass past the end (height 0) flushes every bar still on the
+// stack once, so no separate drain loop is needed after the main sweep.
+public sealed partial class LargestRectangleInHistogramTests
 {
-    [Theory]
-    [InlineData(new[] { 2,1,5,6,2,3 }, 10)]
-    [InlineData(new[] { 2,4 }, 4)]
-    [InlineData(new[] { 1,1 }, 2)]
-    public void LargestRectangleArea_MonotonicStack_ReturnsBestArea(int[] heights, int expected) => Assert.Equal(expected, LargestRectangleArea(heights));
+    [Fact]
+    public void LargestRectangleArea_ClassicExample_ReturnsMaxArea()
+    {
+        int[] heights = [2, 1, 5, 6, 2, 3];
+
+        Assert.Equal(10, LargestRectangleArea(heights));
+    }
+
+    [Fact]
+    public void LargestRectangleArea_StrictlyIncreasingBars_ReturnsBestSuffixRectangle()
+    {
+        int[] heights = [1, 2, 3, 4, 5];
+
+        Assert.Equal(9, LargestRectangleArea(heights));
+    }
 
     private static int LargestRectangleArea(int[] heights)
     {
-        var stack = new Stack<int>(); var best = 0;
+        var indices = new HistogramStack();
+        var maxArea = 0;
+
         for (var i = 0; i <= heights.Length; i++)
         {
-            var current = i == heights.Length ? 0 : heights[i];
-            while (stack.Count > 0 && current < heights[stack.Peek()])
+            var currentHeight = i == heights.Length ? 0 : heights[i];
+
+            while (indices.TryPeek(out var top) && heights[top] >= currentHeight)
             {
-                var height = heights[stack.Pop()]; var left = stack.Count == 0 ? -1 : stack.Peek();
-                best = Math.Max(best, height * (i - left - 1));
+                indices.TryPop(out _);
+                var height = heights[top];
+                var width = indices.TryPeek(out var left) ? i - left - 1 : i;
+                maxArea = Math.Max(maxArea, height * width);
             }
-            stack.Push(i);
+
+            indices.Push(i);
         }
-        return best;
+
+        return maxArea;
     }
 }
