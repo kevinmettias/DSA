@@ -5,13 +5,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Find Critical and Pseudo-Critical Edges in MST (LC 1489): both benchmarks run the
 // identical per-edge Kruskal loop (baseline MST weight, then MST-excluding-edge, then
-// MST-forcing-edge, for every edge) - the only thing that differs is the union-find
-// underneath it. NaiveUnionFind is a hand-rolled Find/Union with no path compression
-// and no union-by-rank (Find can degrade toward O(n) as components chain together);
-// DisjointSetKruskal swaps in this repo's own DataStructures.DisjointSet.DisjointSet
-// - the same primitive Algorithms.MinimumSpanningTrees.MinimumSpanningTree.Kruskal
-// composes internally - whose path compression + union-by-rank keep Find/Union at
-// O(a(n)) amortized.
+// MST-forcing-edge, for every edge) - the only thing that differs is how "are these
+// two components already connected?" gets answered. NaiveBfsConnectivity is the
+// textbook approach with no union-find at all: it keeps the edges accepted so far as
+// an adjacency list and re-runs a fresh BFS from scratch for every connectivity
+// check, O(V+E) each time. DisjointSetKruskal swaps that for this repo's own
+// DataStructures.DisjointSet.DisjointSet - the same primitive
+// Algorithms.MinimumSpanningTrees.MinimumSpanningTree.Kruskal composes internally -
+// whose path compression + union-by-rank answer the same question in O(a(n))
+// amortized.
 [MemoryDiagnoser]
 public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 {
@@ -50,7 +52,7 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveUnionFind()
+    public int NaiveBfsConnectivity()
         => CountCriticalAndPseudoCritical(useDisjointSet: false);
 
     [Benchmark]
@@ -84,7 +86,7 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
     private int? MstWeight(bool useDisjointSet, int skipIndex, int forceIndex)
         => useDisjointSet
             ? DisjointSetMstWeight(skipIndex, forceIndex)
-            : NaiveUnionFindMstWeight(skipIndex, forceIndex);
+            : NaiveBfsMstWeight(skipIndex, forceIndex);
 
     private int? DisjointSetMstWeight(int skipIndex, int forceIndex)
     {
@@ -122,22 +124,12 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
         return edgesUsed == NodeCount - 1 ? totalWeight : null;
     }
 
-    private int? NaiveUnionFindMstWeight(int skipIndex, int forceIndex)
+    private int? NaiveBfsMstWeight(int skipIndex, int forceIndex)
     {
-        var parent = new int[NodeCount];
+        var adjacency = new List<int>[NodeCount];
         for (var i = 0; i < NodeCount; i++)
         {
-            parent[i] = i;
-        }
-
-        int Find(int x)
-        {
-            while (parent[x] != x)
-            {
-                x = parent[x];
-            }
-
-            return x;
+            adjacency[i] = [];
         }
 
         var totalWeight = 0;
@@ -145,16 +137,44 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 
         void UseEdge(int[] edge)
         {
-            var rootA = Find(edge[0]);
-            var rootB = Find(edge[1]);
-
-            if (rootA != rootB)
-            {
-                parent[rootA] = rootB;
-            }
-
+            adjacency[edge[0]].Add(edge[1]);
+            adjacency[edge[1]].Add(edge[0]);
             totalWeight += edge[2];
             edgesUsed++;
+        }
+
+        bool IsConnected(int start, int target)
+        {
+            if (start == target)
+            {
+                return true;
+            }
+
+            var visited = new bool[NodeCount];
+            var queue = new Queue<int>();
+            visited[start] = true;
+            queue.Enqueue(start);
+
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+
+                foreach (var neighbor in adjacency[current])
+                {
+                    if (neighbor == target)
+                    {
+                        return true;
+                    }
+
+                    if (!visited[neighbor])
+                    {
+                        visited[neighbor] = true;
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return false;
         }
 
         if (forceIndex >= 0)
@@ -171,7 +191,7 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 
             var edge = _edges[index];
 
-            if (Find(edge[0]) == Find(edge[1]))
+            if (IsConnected(edge[0], edge[1]))
             {
                 continue;
             }

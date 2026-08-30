@@ -18,7 +18,7 @@ public class TheKthFactorOfNBenchmarks
 {
     private const int UnreachableK = 40;
 
-    [Params(200, 5_000)]
+    [Params(1_000, 10_000)]
     public int Length;
 
     private int[] _values = null!;
