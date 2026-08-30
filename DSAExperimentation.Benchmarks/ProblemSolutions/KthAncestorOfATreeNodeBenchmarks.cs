@@ -9,15 +9,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // times" per query vs. this repo's own ITopDownHooks-driven precompute -
 // TopDownTraversal.Walk (the same inherited-attribute primitive
 // Algorithms.Paths.AllRootToLeafPaths uses to thread "the path so far" down a
-// root-to-node walk) fills in every node's full ancestor chain in one O(n) pass, so
-// each getKthAncestor call afterward is an O(1) array index instead of an O(k) walk.
-// The tree is a "broom" - a chain for most of its length, fanning out into leaves at
-// the end - so it stays deep enough that the naive walk's O(k) cost is genuinely
-// paid, not hidden by a shallow, wide tree.
+// root-to-node walk) fills in every node's full ancestor chain in one O(n log n)
+// pass, so each getKthAncestor call afterward is an O(1) array index instead of an
+// O(depth) walk. The tree is heap-shaped (parent(i) = (i-1)/2) rather than a chain: a
+// chain would make node i's ancestor array length i, so the precompute itself would
+// be O(n^2) and no repo-only technique could beat the O(1)-space naive walk on it. A
+// heap-shaped tree keeps every ancestor array at O(log n), which is also why the
+// query batch below is large - it's what makes paying that one-time O(n log n)
+// precompute worthwhile over paying O(log n) on every single query.
 [MemoryDiagnoser]
 public class KthAncestorOfATreeNodeBenchmarks
 {
-    [Params(500, 3_000)]
+    [Params(2_000, 20_000)]
     public int NodeCount;
 
     private int[] _parent = null!;
@@ -30,13 +33,12 @@ public class KthAncestorOfATreeNodeBenchmarks
         _parent = new int[NodeCount];
         _parent[0] = -1;
 
-        var chainEnd = Math.Max(1, NodeCount * 4 / 5);
         for (var i = 1; i < NodeCount; i++)
         {
-            _parent[i] = i < chainEnd ? i - 1 : chainEnd - 1;
+            _parent[i] = (i - 1) / 2;
         }
 
-        _queries = Enumerable.Range(0, 2_000)
+        _queries = Enumerable.Range(0, 1_000_000)
             .Select(_ => (Node: random.Next(NodeCount), K: random.Next(1, NodeCount)))
             .ToArray();
     }
