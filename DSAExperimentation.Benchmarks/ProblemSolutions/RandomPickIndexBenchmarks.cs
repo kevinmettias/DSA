@@ -1,15 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.RandomPickIndex.RandomPickIndexSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Random Pick Index (LC 398): reservoir sampling re-scans the whole array on every
-// single Pick call (the textbook no-extra-memory baseline) vs. this repo's
-// HashMap<int, DynamicArray<int>> - build the value -> indices grouping once, then
-// answer every Pick with one O(1)-expected lookup and a single uniform draw over that
-// value's own index list. Both strategies use the same seeded Random sequence so
-// neither benefits from a luckier draw order.
+// Harness only: both arms are RandomPickIndexSolution's, the same classes
+// RandomPickIndexTests proves correct. A Design problem's whole point is a
+// sequence of calls against one instance, so [GlobalSetup] only prepares the raw
+// workload array - not charging that generation to the measured method - and
+// each [Benchmark] arm builds its own fresh instance from it (mirroring how a
+// real caller constructs a Solution once) before replaying the same PickCalls
+// script, returning the running total so the JIT can't eliminate the replay as
+// dead code.
 [MemoryDiagnoser]
 public class RandomPickIndexBenchmarks
 {
@@ -30,76 +31,18 @@ public class RandomPickIndexBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ReservoirSamplingPerPick()
-    {
-        var random = new Random(1);
-        long total = 0;
-
-        for (var call = 0; call < PickCalls; call++)
-        {
-            total += ReservoirPick(random);
-        }
-
-        return total;
-    }
-
-    private long ReservoirPick(Random random)
-    {
-        var seenCount = 0;
-        var chosen = -1;
-
-        for (var i = 0; i < _nums.Length; i++)
-        {
-            if (_nums[i] != Target)
-            {
-                continue;
-            }
-
-            seenCount++;
-            if (random.Next(seenCount) == 0)
-            {
-                chosen = i;
-            }
-        }
-
-        return chosen;
-    }
+    public long ReservoirSampling() => Replay(new RandomPickIndexByReservoirSampling(_nums));
 
     [Benchmark]
-    public long HashMapDynamicArrayIndexed()
+    public long HashMapGrouping() => Replay(new RandomPickIndexByHashMapGrouping(_nums));
+
+    private static long Replay(IRandomPickIndex solution)
     {
-        var indicesByValue = BuildIndicesByValue();
-        indicesByValue.TryGetValue(Target, out var targetIndices);
-
-        return SumRandomPicks(targetIndices);
-    }
-
-    private HashMap<int, DynamicArray<int>> BuildIndicesByValue()
-    {
-        var indicesByValue = new HashMap<int, DynamicArray<int>>();
-
-        for (var i = 0; i < _nums.Length; i++)
-        {
-            if (!indicesByValue.TryGetValue(_nums[i], out var indices))
-            {
-                indices = new DynamicArray<int>();
-                indicesByValue.Set(_nums[i], indices);
-            }
-
-            indices.Add(i);
-        }
-
-        return indicesByValue;
-    }
-
-    private static long SumRandomPicks(DynamicArray<int> targetIndices)
-    {
-        var random = new Random(1);
         long total = 0;
 
         for (var call = 0; call < PickCalls; call++)
         {
-            total += targetIndices.Get(random.Next(targetIndices.Count));
+            total += solution.Pick(Target);
         }
 
         return total;

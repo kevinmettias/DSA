@@ -3471,8 +3471,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/LexicographicalNumbers/LexicographicalNumbersTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/LexicographicalNumbersBenchmarks.cs",
       "primitivesUsed": "Algorithms.Traversal.DepthFirst.DepthFirstSearch.Traverse (successor-function DFS engine) walking the implicit 10-ary 'next digit' tree, one root 1-9 at a time. Benchmark contrasts this against sorting 1..n by string representation; empirically crosses over to favor the DFS approach at N=500,000.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No fixtures to relocate - the successor function is problem-specific inline logic, not a Representation/Topology/Operations witness, so it stayed in the solution class rather than moving to DataStructures/ or Algorithms/. No overload hoisting needed: the only input is a bare int N, no domain object construction to charge to [GlobalSetup]. Both original arms already returned the real answer (the ordered List<int>), so no promotion of a weaker measurement was needed. Added one extra test example (n=1, single-root boundary) beyond the two the original test asserted.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/LexicographicalNumbers/LexicographicalNumbersSolution.cs",
+      "strategies": "LexicalOrderByStringSort (baseline, promoted from the benchmark's untested [Benchmark(Baseline = true)] SortByStringRepresentation arm; BCL-only internals per ARCHITECTURE.md 17.5), LexicalOrderByDepthFirstDigitTree (promoted from the test's private LexicalOrder helper, which was identical in substance to the benchmark's DepthFirstOverImplicitDigitTree arm - both used DepthFirstSearch.Traverse over the same implicit 10-ary successor tree and returned List<int>, so they collapsed to one strategy, not two)"
     },
     {
       "id": 387,
@@ -3484,8 +3486,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FirstUniqueCharacterInAString/FirstUniqueCharacterInAStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FirstUniqueCharacterInAStringBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<char,int> - two-pass frequency count (Set/TryGetValue), same character-bookkeeping shape LongestSubstringWithoutRepeatingCharacters already uses.",
-      "notes": "Benchmark: classic O(n^2) brute force (full rescan per index, no early break - the 26-letter alphabet's pigeonhole would otherwise hide the real gap) vs O(n) two-pass HashMap. BenchmarkDotNet dry run confirmed the gap: brute force 630us->16.6ms from Length=500->5000, HashMap flat ~2.0-2.2ms. Full test suite (1161 tests) passes with no regressions.",
-      "architectureTier": "pre-section-17"
+      "notes": "No fixtures to relocate - the [GlobalSetup] random-string construction stayed inline in the benchmark (matching the already-migrated LongestSubstringWithoutRepeatingCharactersBenchmarks precedent, which does the same for its own non-shared workload) rather than being promoted to a Fixtures/ file, since nothing else in the repo shares this exact alphabet-bounded random-string shape. Both arms already answered LeetCode's real question (the index, an int) on both sides - test and benchmark agreed on shape here (unlike the LC1/TwoSum drift the cluster brief describes), so no reconciliation was needed. Replaced the -1 'not found' literal in both strategies with LeetCodeAnswer.None (the existing root-of-tier constant for exactly this LeetCode reporting convention) instead of introducing a fresh magic literal.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/FirstUniqueCharacterInAString/FirstUniqueCharacterInAStringSolution.cs",
+      "strategies": "FirstUniqCharByBruteForce (baseline, promoted from the benchmark's untested [Benchmark(Baseline = true)] BruteForce arm; BCL-only internals per ARCHITECTURE.md 17.5), FirstUniqCharByHashMapTwoPass (the test's private FirstUniqChar helper and the benchmark's HashMapTwoPass arm were the same HashMap<char,int> two-pass algorithm returning the same int index, so they collapsed to one strategy)"
     },
     {
       "id": 390,
@@ -3497,8 +3501,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/EliminationGame/EliminationGameTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/EliminationGameBenchmarks.cs",
       "primitivesUsed": "None for the O(log n) closed-form head/step-tracking arithmetic itself - the same 'lighter repo-primitive fit' case already accepted in this repo for Pow(x, n)/Rectangle Area (pure scalar state, nothing for a container to hold). DSAExperimentation.DataStructures.DynamicArray.DynamicArray<int> stands in for the O(n) brute-force simulation's surviving-numbers list (the same role it already plays as Count Primes' sieve array) - used both as the benchmark baseline and, in the test, to independently cross-validate the arithmetic formula's correctness.",
-      "notes": "Test cross-validates the formula against a DynamicArray<int> simulation of the real left-to-right/right-to-left elimination passes for n in {1,2,3,9,17,64,100,257}, plus known-value cases. BenchmarkDotNet dry run confirmed O(n) vs O(log n): simulation 2.96ms->8.15ms from N=10,000->1,000,000, arithmetic flat ~225-227us. Full test suite passes with no regressions.",
-      "architectureTier": "pre-section-17"
+      "notes": "No LC1-style shape drift here (both arms already agreed on return type/semantics). One deliberate behavior-preserving change: the pre-migration test/benchmark used this repo's DynamicArray<int> as the simulation's working list, but per 17.5/the RectangleArea precedent (TotalAreaByUnitGridCoverageCount's doc comment: 'a baseline represents \"what you would write without this repo\", and there is no input container here for a repo type to occupy'), the naive-baseline strategy has no input container to hoist a repo type into (input is a bare int n), so its internals were rewritten to plain BCL List<int> instead of DynamicArray<int>. Verified via Python cross-check that both strategies still agree on n in {1,2,3,4,9,17,64,100,257} before/after the change; output values unchanged. DynamicArray<int> already has its own direct tests elsewhere in the repo, so this loses no coverage obligation under section 18. No fixtures to relocate; no new DataStructures/Algorithms/Domain types created.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/EliminationGame/EliminationGameSolution.cs",
+      "strategies": "LastRemainingByHeadStepArithmetic (closed-form O(log n) head/step tracking, no repo primitive - same 'lighter repo-primitive fit' precedent as PowXn/RectangleArea); LastRemainingByListSimulation (naive baseline, O(n) list-rebuild simulation)"
     },
     {
       "id": 391,
@@ -3510,8 +3516,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PerfectRectangle/PerfectRectangleTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PerfectRectangleBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Set.Set<(int X, int Y)> (composing HashMap<T,bool>) - TryAdd/TryRemove give the corner add-if-absent/remove-if-present toggle for free; only the outer bounding box's 4 corners survive an odd number of toggles across all rectangles.",
-      "notes": "Test includes LeetCode's own true/gap examples plus a deliberately constructed overlap-masked-by-equal-sized-gap case (total area still equals the bounding box's area) proving the corner-toggle check catches what the area check alone cannot. Benchmark: O(n^2) pairwise overlap checking vs O(n) Set-based corner toggling over a genuine GridSize x GridSize unit-square tiling (so neither short-circuits early). BenchmarkDotNet dry run confirmed the crossover: Set-based wins 12.8ms vs 191.8ms at GridSize=150 (22,500 rects), despite losing at GridSize=20 where constant overhead dominates. Full test suite passes with no regressions.",
-      "architectureTier": "pre-section-17"
+      "notes": "No LC1-style drift: the test's private helper and both benchmark arms already computed LeetCode's real bool answer, just structured differently (test used a class-based accumulator, benchmark used static methods + a separate accumulator class) - reconciled onto one PerfectRectangleSolution with the accumulator kept as a private nested class (no repo interface implemented, so it doesn't warrant its own file the way CountWaysToBuildRoomsInAnAntColony's IFoldAlgebra witnesses do). Benchmark's [GlobalSetup]-built int[][] is already LeetCode's own input shape, so no second hoisted overload was needed (unlike OpenTheLock, where the prepared input's type differs from the raw parameter type). Preserved the X2Index/Y2Index named-index constants from the pre-migration benchmark file. No fixtures to relocate; no new DataStructures/Algorithms/Domain types created.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PerfectRectangle/PerfectRectangleSolution.cs",
+      "strategies": "IsRectangleCoverByPairwiseOverlap (naive O(n^2) baseline: brute-force pairwise overlap check + area-vs-bounding-box gap check, pure BCL internals); IsRectangleCoverByCornerToggle (O(n) corner-toggle pass via this repo's Set<(int,int)> + area check, mirrored inside a private RectangleAccumulator helper class)"
     },
     {
       "id": 394,
@@ -3523,8 +3531,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DecodeString/DecodeStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DecodeStringBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<T> used twice (Stack<int> for pending repeat counts, Stack<StringBuilder> for each enclosing scope's partial result) as an explicit parser stack over '[' / ']' - same 'repo Stack as parser stack' composition BasicCalculatorTests/MinStackTests already use.",
-      "notes": "Benchmark compares a CLR-call-stack recursive-descent baseline (no repo primitive, same lighter-fit precedent as BasicCalculatorBenchmarks) against the Stack<T>-based scan on flat, non-nested '2[ab]' input at Params(200, 5000). Full test suite verified: 1160 passed, 1 skipped (pre-existing network-dependent LeetCodeCatalog test), 0 failed. Benchmarks project builds cleanly in Release.",
-      "architectureTier": "pre-section-17"
+      "notes": "No answer-shape disagreement between the test and benchmark arms - both already returned the decoded string, so no reconciliation was needed. The defect fixed here was that RecursiveDescent (the benchmark's [Benchmark(Baseline = true)] arm) was never asserted by anything; it is now a first-class DecodeStringSolution method covered by the same 4 LeetCode examples as StackScan. The benchmark's inline BuildEncoded workload builder was extracted verbatim into a new DSAExperimentation.Benchmarks/Fixtures/DecodeStringWorkloads.cs (tier 5 both before and after - it was already private to the benchmark file, not a relocated Representation/Topology/Domain type; mirrors the existing BasicCalculatorWorkloads.cs shape). No new DataStructures/Algorithms/Domain type was introduced, so no §18 obligation. Build (Tests + Benchmarks projects) succeeded; full DSAExperimentation.Tests suite (5654 passed, 1 unrelated pre-existing skip, including Tests/Architecture/LayeringTests.cs) passed.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DecodeString/DecodeStringSolution.cs",
+      "strategies": "DecodeByRecursiveDescent (was the benchmark's untested Baseline arm, using the CLR call stack, no repo primitive), DecodeByStackScan (was both the test's private DecoderState helper and the benchmark's StackScan arm - identical algorithm using this repo's Stack<int>/Stack<StringBuilder>, consolidated into one method)"
     },
     {
       "id": 395,
@@ -3536,8 +3546,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/LongestSubstringWithAtLeastKRepeatingCharacters/LongestSubstringWithAtLeastKRepeatingCharactersTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/LongestSubstringWithAtLeastKRepeatingCharactersBenchmarks.cs",
       "primitivesUsed": "DataStructures.HashMap.HashMap<char,int> for character-frequency counting inside a divide-and-conquer split (same frequency-count primitive MinimumWindowSubstringTests already uses, applied to 'split range at any char below k' instead of a sliding window).",
-      "notes": "Benchmark compares an O(n^2) brute-force substring scan (plain BCL Dictionary tracking a below-k count) against the HashMap-based divide-and-conquer at Params(200, 5000), K=3, 4-letter alphabet. Verified against both official LeetCode examples (aaabb/k=3->3, ababbc/k=2->5) plus an all-distinct-letters case (weitong/k=2->0). Full suite: 1160 passed, 1 skipped, 0 failed.",
-      "architectureTier": "pre-section-17"
+      "notes": "No answer-shape disagreement - both arms already returned the qualifying-length int. The defect fixed was the same untested-baseline pattern: BruteForce is now a first-class, tested strategy, and its previously benchmark-only hardcoded K=3 is now the real k parameter so it can be checked against all three LeetCode examples (k=3, k=2, k=2), not just one hardcoded value. The benchmark's inline random-string workload builder (4-letter alphabet, seeded) was extracted into a new DSAExperimentation.Benchmarks/Fixtures/LongestSubstringWithAtLeastKRepeatingCharactersWorkloads.cs (tier 5 both before and after); the seed was switched from the arbitrary literal 1 to the LC problem number 395, following the LockWorkloads/OpenTheLock precedent of seeding benchmarks with the problem number - a benchmark-only, non-correctness-affecting change. No new DataStructures/Algorithms/Domain type was introduced, so no §18 obligation. Build succeeded; full test suite passed (5654 passed, 1 unrelated skip, LayeringTests included).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/LongestSubstringWithAtLeastKRepeatingCharacters/LongestSubstringWithAtLeastKRepeatingCharactersSolution.cs",
+      "strategies": "LongestByBruteForce (was the benchmark's untested Baseline arm - O(n^2) scan with a BCL Dictionary; K was a private const on the benchmark class, now parameterized as k to match LeetCode's real signature), LongestByDivideAndConquer (was both the test's private LongestSubstringInRange helper and the benchmark's DivideAndConquerHashMap arm - identical algorithm over this repo's HashMap<char,int>, consolidated into one method)"
     },
     {
       "id": 397,
@@ -3549,8 +3561,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/IntegerReplacement/IntegerReplacementTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/IntegerReplacementBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer.Memoize<long,int> over the replace(n)=0|1+replace(n/2)|1+min(replace(n-1),replace(n+1)) recurrence - same DP composition CountingBitsTests/HouseRobberTests already use. TState is long (not int) so the n+1 branch at n=int.MaxValue can't silently overflow Int32; tested directly against that edge case (2147483647 -> 32).",
-      "notes": "Benchmark compares plain unmemoized recursion against the Memoizer version on the adversarial 0b0101...01 bit pattern at two bit-lengths (21845, 1431655765) - verified via a standalone simulation that this pattern drives the unmemoized tree to ~10.9M calls at 31 bits while memoization collapses it to ~90 unique states, so the comparison demonstrates the primitive's real effect rather than an artifact of a convenient input. Full suite: 1160 passed, 1 skipped, 0 failed.",
-      "architectureTier": "pre-section-17"
+      "notes": "Public entry signature changed from the pre-migration test's `long n` to `int n` (LeetCode's real int integerReplacement(int n) shape); the n+1-overflow-avoiding `long` stays internal to the recursion only. No hoisted overload needed (N is a scalar Params value, not a constructed structure). No fixtures existed for this problem.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/IntegerReplacement/IntegerReplacementSolution.cs",
+      "strategies": "MinStepsByUnmemoizedRecursion (baseline, promoted from the benchmark's private Replace helper), MinStepsByMemoizedRecurrence (test's private helper and benchmark's inline Memoizer arm were already identical, consolidated into one method)"
     },
     {
       "id": 398,
@@ -3562,8 +3576,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RandomPickIndex/RandomPickIndexTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RandomPickIndexBenchmarks.cs",
       "primitivesUsed": "HashMap<int, DynamicArray<int>> groups indices by value once at construction (InsertDeleteGetRandomO1/DuplicatesAllowed precedent); Pick(target) is a HashMap lookup + a seeded System.Random uniform draw over that value's DynamicArray<int>.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Dropped the pre-migration test's ad hoc `seed` constructor parameter - not part of LeetCode's real Solution(int[] nums) shape - in favor of an unseeded Random, matching InsertDeleteGetRandomO1's own convention. Test now asserts membership in each example's valid-index candidate set (and 'eventually sees every valid index' where the original test checked that) instead of one exact seeded value, mirroring InsertDeleteGetRandomO1Tests' handling of GetRandom's nondeterminism; all three original example scenarios (multi-occurrence, single-occurrence, eventually-all-seen) are preserved. No fixtures existed for this problem.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RandomPickIndex/RandomPickIndexSolution.cs",
+      "strategies": "Design-category problem (shared IRandomPickIndex interface, per the InsertDeleteGetRandomO1Solution precedent, not static <Op>By<Strategy> methods): RandomPickIndexByReservoirSampling (baseline, promoted from the benchmark's ReservoirSamplingPerPick), RandomPickIndexByHashMapGrouping (test's private Solution class / benchmark's HashMapDynamicArrayIndexed arm, already the same algorithm)"
     },
     {
       "id": 399,
@@ -3575,8 +3591,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/EvaluateDivision/EvaluateDivisionTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/EvaluateDivisionBenchmarks.cs",
       "primitivesUsed": "HashMap<string, HashMap<string,double>> as a weighted adjacency map (each equation wires forward value + inverse 1/value edges) + Stack<(string Node, double Product)> for an explicit-stack DFS that accumulates a running product along the frontier (extends the DepthFirstSearch.Traverse explicit-stack idiom to carry a value, not just visit order).",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No signature disagreement between the test and benchmark arms - both already returned a single double per query, so no reconciliation onto a different answer shape was needed. The defect here was purely 'algorithm duplicated across test/benchmark + untested baseline': the test's private Solution class and the benchmark's HashMapStackComposed arm were the same algorithm; the benchmark's DictionaryBased baseline was never asserted by anything. Both are now first-class methods on EvaluateDivisionSolution covered by one shared TheoryData.Examples (10 cases, the original 10 assertions across the two original test methods). GlobalSetup only prepares the plain equations array (already LeetCode's own input shape), so no hoisted-overload split was needed - same simplest shape as AddBinarySolution. No fixtures existed for this problem to relocate.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/EvaluateDivision/EvaluateDivisionSolution.cs",
+      "strategies": "EvaluateByDictionaryDfs (baseline, BCL-only internals, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), EvaluateByHashMapStackDfs (this repo's HashMap<string,HashMap<string,double>> + Stack<(string,double)> DFS, promoted from the test's private nested Solution class)"
     },
     {
       "id": 402,
@@ -3588,8 +3606,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RemoveKDigits/RemoveKDigitsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RemoveKDigitsBenchmarks.cs",
       "primitivesUsed": "Stack<char> monotonic-stack greedy (LargestRectangleInHistogram/RemoveDuplicateLetters precedent): push each digit after popping every still-removable strictly-greater top; reconstruct the result via backward pop-into-array.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No signature disagreement - both arms already returned the same string answer. The defect was the same algorithm existing once as the test's private helper and again (verbatim) as the benchmark's MonotonicStackSweep, while the benchmark's naive round-by-round baseline was never tested. Both promoted to first-class RemoveKDigitsSolution methods covered by the original 4 LeetCode examples via TheoryData. GlobalSetup only prepares the plain (string num, int k) input, so no hoisted-overload split was needed. No fixtures existed for this problem to relocate.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RemoveKDigits/RemoveKDigitsSolution.cs",
+      "strategies": "RemoveByRepeatedFirstDescentRemoval (baseline, BCL-only internals, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), RemoveByMonotonicStackSweep (this repo's Stack<char> monotonic-stack greedy, promoted from the test's private helper, identical to the benchmark's already-existing MonotonicStackSweep arm)"
     },
     {
       "id": 403,
