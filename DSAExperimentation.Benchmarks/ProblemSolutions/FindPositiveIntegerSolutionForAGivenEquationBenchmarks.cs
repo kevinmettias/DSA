@@ -18,6 +18,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
 {
+    // Doubling factor for the largest reachable sum (Bound + Bound).
+    private const int MaxSumFactor = 2;
+
     [Params(300, 1_000)]
     public int Bound;
 
@@ -30,7 +33,7 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
         // every strategy is forced through its full worst-case walk instead of an
         // early-exit on the first/last pair making brute force look artificially
         // competitive.
-        _z = (2 * Bound) - 1;
+        _z = (MaxSumFactor * Bound) - 1;
     }
 
     private static int Function(int x, int y) => x + y;
@@ -57,31 +60,44 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
     [Benchmark]
     public int TwoPointer()
     {
+        var (x, y) = InitializeTwoPointerBounds();
+        return CountSolutionsTwoPointer(x, y);
+    }
+
+    private (int X, int Y) InitializeTwoPointerBounds() => (1, Bound);
+
+    private int CountSolutionsTwoPointer(int x, int y)
+    {
         var count = 0;
-        var x = 1;
-        var y = Bound;
 
         while (x <= Bound && y >= 1)
         {
-            var value = Function(x, y);
-
-            if (value == _z)
-            {
-                count++;
-                x++;
-                y--;
-            }
-            else if (value < _z)
-            {
-                x++;
-            }
-            else
-            {
-                y--;
-            }
+            (x, y, count) = StepTwoPointer(x, y, count);
         }
 
         return count;
+    }
+
+    private (int X, int Y, int Count) StepTwoPointer(int x, int y, int count)
+    {
+        var value = Function(x, y);
+
+        if (value == _z)
+        {
+            count++;
+            x++;
+            y--;
+        }
+        else if (value < _z)
+        {
+            x++;
+        }
+        else
+        {
+            y--;
+        }
+
+        return (x, y, count);
     }
 
     [Benchmark]

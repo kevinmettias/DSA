@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class IPOBenchmarks
 {
     private const int K = 20;
+    private const int RandomSeed = 11;
+    private const int MaxProfit = 1_000;
+    private const int MaxCapital = 1_000;
 
     [Params(200, 5_000)]
     public int ProjectCount;
@@ -24,9 +27,24 @@ public class IPOBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(11);
-        _profits = Enumerable.Range(0, ProjectCount).Select(_ => random.Next(1, 1_000)).ToArray();
-        _capitals = Enumerable.Range(0, ProjectCount).Select(_ => random.Next(0, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _profits = Enumerable.Range(0, ProjectCount).Select(_ => random.Next(1, MaxProfit)).ToArray();
+        _capitals = Enumerable.Range(0, ProjectCount).Select(_ => random.Next(0, MaxCapital)).ToArray();
+    }
+
+    private int FindBestAffordableIndex(bool[] used, int capital)
+    {
+        var bestIndex = -1;
+
+        for (var i = 0; i < _profits.Length; i++)
+        {
+            if (!used[i] && _capitals[i] <= capital && (bestIndex == -1 || _profits[i] > _profits[bestIndex]))
+            {
+                bestIndex = i;
+            }
+        }
+
+        return bestIndex;
     }
 
     [Benchmark(Baseline = true)]
@@ -37,15 +55,7 @@ public class IPOBenchmarks
 
         for (var round = 0; round < K; round++)
         {
-            var bestIndex = -1;
-
-            for (var i = 0; i < _profits.Length; i++)
-            {
-                if (!used[i] && _capitals[i] <= w && (bestIndex == -1 || _profits[i] > _profits[bestIndex]))
-                {
-                    bestIndex = i;
-                }
-            }
+            var bestIndex = FindBestAffordableIndex(used, w);
 
             if (bestIndex == -1)
             {
@@ -59,8 +69,7 @@ public class IPOBenchmarks
         return w;
     }
 
-    [Benchmark]
-    public int TwoHeapGreedy()
+    private Heap<(int Node, int Priority), ByPriorityOrder<int, int>> BuildCapitalHeap()
     {
         var byCapital = new Heap<(int Node, int Priority), ByPriorityOrder<int, int>>();
 
@@ -69,16 +78,31 @@ public class IPOBenchmarks
             byCapital.Push((_profits[i], _capitals[i]));
         }
 
+        return byCapital;
+    }
+
+    private static void UnlockAffordableProjects(
+        Heap<(int Node, int Priority), ByPriorityOrder<int, int>> byCapital,
+        Heap<int, MaxHeapOrder<int>> byProfit,
+        int capital)
+    {
+        while (byCapital.TryPeek(out var cheapest) && cheapest.Priority <= capital)
+        {
+            byCapital.TryPop(out var popped);
+            byProfit.Push(popped.Node);
+        }
+    }
+
+    [Benchmark]
+    public int TwoHeapGreedy()
+    {
+        var byCapital = BuildCapitalHeap();
         var byProfit = new Heap<int, MaxHeapOrder<int>>();
         var w = 0;
 
         for (var round = 0; round < K; round++)
         {
-            while (byCapital.TryPeek(out var cheapest) && cheapest.Priority <= w)
-            {
-                byCapital.TryPop(out var popped);
-                byProfit.Push(popped.Node);
-            }
+            UnlockAffordableProjects(byCapital, byProfit, w);
 
             if (!byProfit.TryPop(out var bestProfit))
             {

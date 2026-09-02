@@ -19,32 +19,9 @@ public sealed class PrimePalindromeTests
 
     private static long SmallestPrimePalindrome(int n)
     {
-        if (n <= 2)
+        if (TrySmallCase(n, out var small))
         {
-            return 2;
-        }
-
-        if (n <= 3)
-        {
-            return 3;
-        }
-
-        if (n <= 5)
-        {
-            return 5;
-        }
-
-        if (n <= 7)
-        {
-            return 7;
-        }
-
-        // Every even-length palindrome is a multiple of 11, so 11 is the only
-        // even-length prime palindrome - every candidate the loop below builds is
-        // odd-length, which would otherwise skip straight over it.
-        if (n <= 11)
-        {
-            return 11;
+            return small;
         }
 
         var exponent = n.ToString().Length / 2;
@@ -61,6 +38,45 @@ public sealed class PrimePalindromeTests
 
             half++;
         }
+    }
+
+    private static bool TrySmallCase(int n, out long result)
+    {
+        if (n <= 2)
+        {
+            result = 2;
+            return true;
+        }
+
+        if (n <= 3)
+        {
+            result = 3;
+            return true;
+        }
+
+        if (n <= 5)
+        {
+            result = 5;
+            return true;
+        }
+
+        if (n <= 7)
+        {
+            result = 7;
+            return true;
+        }
+
+        // Every even-length palindrome is a multiple of 11, so 11 is the only
+        // even-length prime palindrome - every candidate the loop below builds is
+        // odd-length, which would otherwise skip straight over it.
+        if (n <= 11)
+        {
+            result = 11;
+            return true;
+        }
+
+        result = 0;
+        return false;
     }
 
     private static long BuildOddLengthPalindrome(int half)

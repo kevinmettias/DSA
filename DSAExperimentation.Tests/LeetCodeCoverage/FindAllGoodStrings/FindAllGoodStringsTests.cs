@@ -43,45 +43,74 @@ public sealed partial class FindAllGoodStringsTests
     private static int CountGoodStrings(int n, string s1, string s2, string evil)
     {
         var failure = PrefixFunctionSearch.ComputeFailureFunction(evil);
-
-        long CountFrom(
-            (int Position, int Matched, bool TightLow, bool TightHigh) state,
-            Func<(int Position, int Matched, bool TightLow, bool TightHigh), long> count)
-        {
-            if (state.Matched == evil.Length)
-            {
-                return 0;
-            }
-
-            if (state.Position == n)
-            {
-                return 1;
-            }
-
-            var low = state.TightLow ? s1[state.Position] : 'a';
-            var high = state.TightHigh ? s2[state.Position] : 'z';
-            var total = 0L;
-
-            for (var c = low; c <= high; c++)
-            {
-                var matched = AdvanceAutomaton(evil, failure, state.Matched, c);
-                if (matched == evil.Length)
-                {
-                    continue;
-                }
-
-                var next = (state.Position + 1, matched, state.TightLow && c == low, state.TightHigh && c == high);
-                total = (total + count(next)) % Modulus;
-            }
-
-            return total;
-        }
+        var bounds = new GoodStringBounds(n, s1, s2, evil, failure);
 
         var result = Memoizer.Memoize<(int Position, int Matched, bool TightLow, bool TightHigh), long>(
-            (0, 0, true, true), CountFrom);
+            (0, 0, true, true), (state, count) => CountFrom(bounds, state, count));
 
         return (int)result;
     }
+
+    private static long CountFrom(
+        GoodStringBounds bounds,
+        (int Position, int Matched, bool TightLow, bool TightHigh) state,
+        Func<(int Position, int Matched, bool TightLow, bool TightHigh), long> count)
+    {
+        if (state.Matched == bounds.Evil.Length)
+        {
+            return 0;
+        }
+
+        if (state.Position == bounds.N)
+        {
+            return 1;
+        }
+
+        var low = state.TightLow ? bounds.S1[state.Position] : 'a';
+        var high = state.TightHigh ? bounds.S2[state.Position] : 'z';
+        var walk = new GoodStringWalk(bounds.Evil, bounds.Failure, state, low, high, count);
+
+        return SumTransitions(walk, low, high);
+    }
+
+    private static long SumTransitions(GoodStringWalk walk, char low, char high)
+    {
+        var total = 0L;
+
+        for (var c = low; c <= high; c++)
+        {
+            var contribution = ComputeTransitionContribution(walk, c);
+
+            if (contribution is not null)
+            {
+                total = (total + contribution.Value) % Modulus;
+            }
+        }
+
+        return total;
+    }
+
+    private readonly record struct GoodStringBounds(int N, string S1, string S2, string Evil, int[] Failure);
+
+    private static long? ComputeTransitionContribution(GoodStringWalk walk, char c)
+    {
+        var matched = AdvanceAutomaton(walk.Evil, walk.Failure, walk.State.Matched, c);
+        if (matched == walk.Evil.Length)
+        {
+            return null;
+        }
+
+        var next = (walk.State.Position + 1, matched, walk.State.TightLow && c == walk.Low, walk.State.TightHigh && c == walk.High);
+        return walk.Count(next);
+    }
+
+    private readonly record struct GoodStringWalk(
+        string Evil,
+        int[] Failure,
+        (int Position, int Matched, bool TightLow, bool TightHigh) State,
+        char Low,
+        char High,
+        Func<(int Position, int Matched, bool TightLow, bool TightHigh), long> Count);
 
     // The KMP fallback walk PrefixFunctionSearch.ComputeFailureFunction's own
     // Advance performs internally, rebuilt here from its public failure array -

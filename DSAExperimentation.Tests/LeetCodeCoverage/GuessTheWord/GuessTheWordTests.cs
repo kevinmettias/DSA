@@ -53,22 +53,27 @@ public sealed partial class GuessTheWordTests
                 return guess;
             }
 
-            var next = new DynamicArray<string>();
-
-            for (var i = 0; i < candidates.Count; i++)
-            {
-                var candidate = candidates.Get(i);
-
-                if (MatchCount(candidate, guess) == matches)
-                {
-                    next.Add(candidate);
-                }
-            }
-
-            candidates = next;
+            candidates = FilterCandidates(candidates, guess, matches);
         }
 
         return string.Empty;
+    }
+
+    private static DynamicArray<string> FilterCandidates(DynamicArray<string> candidates, string guess, int matches)
+    {
+        var next = new DynamicArray<string>();
+
+        for (var i = 0; i < candidates.Count; i++)
+        {
+            var candidate = candidates.Get(i);
+
+            if (MatchCount(candidate, guess) == matches)
+            {
+                next.Add(candidate);
+            }
+        }
+
+        return next;
     }
 
     private static int MatchCount(string first, string second)

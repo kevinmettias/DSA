@@ -44,46 +44,70 @@ public sealed class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLi
 
     private static int LongestSubarray(int[] nums, int limit)
     {
-        var maxWindow = new RepoDeque();
-        var minWindow = new RepoDeque();
-        var left = 0;
+        var window = new MinMaxWindow();
         var best = 0;
 
         for (var right = 0; right < nums.Length; right++)
         {
-            while (maxWindow.TryPeekBack(out var maxBack) && nums[maxBack] <= nums[right])
-            {
-                maxWindow.TryPopBack(out _);
-            }
-
-            maxWindow.PushBack(right);
-
-            while (minWindow.TryPeekBack(out var minBack) && nums[minBack] >= nums[right])
-            {
-                minWindow.TryPopBack(out _);
-            }
-
-            minWindow.PushBack(right);
-
-            while (maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront)
-                && nums[maxFront] - nums[minFront] > limit)
-            {
-                left++;
-
-                if (maxWindow.TryPeekFront(out var frontIndex) && frontIndex < left)
-                {
-                    maxWindow.TryPopFront(out _);
-                }
-
-                if (minWindow.TryPeekFront(out var frontIndex2) && frontIndex2 < left)
-                {
-                    minWindow.TryPopFront(out _);
-                }
-            }
-
-            best = Math.Max(best, right - left + 1);
+            var length = window.Advance(right, nums, limit);
+            best = Math.Max(best, length);
         }
 
         return best;
+    }
+
+    private sealed class MinMaxWindow
+    {
+        private readonly RepoDeque _maxWindow = new();
+        private readonly RepoDeque _minWindow = new();
+        private int _left;
+
+        public int Advance(int right, int[] nums, int limit)
+        {
+            PushMax(right, nums);
+            PushMin(right, nums);
+            ShrinkToLimit(nums, limit);
+
+            return right - _left + 1;
+        }
+
+        private void PushMax(int right, int[] nums)
+        {
+            while (_maxWindow.TryPeekBack(out var maxBack) && nums[maxBack] <= nums[right])
+            {
+                _maxWindow.TryPopBack(out _);
+            }
+
+            _maxWindow.PushBack(right);
+        }
+
+        private void PushMin(int right, int[] nums)
+        {
+            while (_minWindow.TryPeekBack(out var minBack) && nums[minBack] >= nums[right])
+            {
+                _minWindow.TryPopBack(out _);
+            }
+
+            _minWindow.PushBack(right);
+        }
+
+        private void ShrinkToLimit(int[] nums, int limit)
+        {
+            while (_maxWindow.TryPeekFront(out var maxFront) && _minWindow.TryPeekFront(out var minFront)
+                && nums[maxFront] - nums[minFront] > limit)
+            {
+                _left++;
+
+                if (_maxWindow.TryPeekFront(out var frontIndex) && frontIndex < _left)
+                {
+                    _maxWindow.TryPopFront(out _);
+                }
+
+                if (_minWindow.TryPeekFront(out var frontIndex2) && frontIndex2 < _left)
+                {
+                    _minWindow.TryPopFront(out _);
+                }
+            }
+        }
     }
 }

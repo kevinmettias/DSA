@@ -16,6 +16,13 @@ public class ConstrainedSubsequenceSumBenchmarks
 {
     private const int K = 50;
 
+    // LC problem number, used as the deterministic benchmark input seed.
+    private const int RandomSeed = 1425;
+
+    // Symmetric bound for the random value range: values are drawn from
+    // [-ValueRange, ValueRange) so the window's running maximum keeps changing.
+    private const int ValueRange = 1_000;
+
     [Params(2_000, 20_000)]
     public int Length;
 
@@ -24,8 +31,8 @@ public class ConstrainedSubsequenceSumBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1425);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-1_000, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueRange, ValueRange)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -58,27 +65,34 @@ public class ConstrainedSubsequenceSumBenchmarks
 
         for (var i = 0; i < _nums.Length; i++)
         {
-            if (window.TryPeekFront(out var frontIndex) && frontIndex < i - K)
-            {
-                window.TryPopFront(out _);
-            }
-
-            var windowMax = 0;
-            if (window.TryPeekFront(out var maxIndex))
-            {
-                windowMax = Math.Max(0, dp[maxIndex]);
-            }
-
-            dp[i] = _nums[i] + windowMax;
-            best = Math.Max(best, dp[i]);
-
-            while (window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
+            best = AdvanceWindow(dp, window, i, best);
         }
+
+        return best;
+    }
+
+    private int AdvanceWindow(int[] dp, RepoDeque window, int i, int best)
+    {
+        if (window.TryPeekFront(out var frontIndex) && frontIndex < i - K)
+        {
+            window.TryPopFront(out _);
+        }
+
+        var windowMax = 0;
+        if (window.TryPeekFront(out var maxIndex))
+        {
+            windowMax = Math.Max(0, dp[maxIndex]);
+        }
+
+        dp[i] = _nums[i] + windowMax;
+        best = Math.Max(best, dp[i]);
+
+        while (window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
+        {
+            window.TryPopBack(out _);
+        }
+
+        window.PushBack(i);
 
         return best;
     }

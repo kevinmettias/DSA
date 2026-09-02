@@ -15,6 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MostStonesRemovedWithSameRowOrColumnBenchmarks
 {
+    private const int RandomSeed = 947; // LC problem number
+    private const int CoordinateRangeDivisor = 4;
+
     [Params(200, 2_000)]
     public int StoneCount;
 
@@ -23,8 +26,8 @@ public class MostStonesRemovedWithSameRowOrColumnBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(947);
-        var range = Math.Max(1, StoneCount / 4);
+        var random = new Random(RandomSeed);
+        var range = Math.Max(1, StoneCount / CoordinateRangeDivisor);
         var seen = new HashSet<(int Row, int Col)>();
         var stones = new List<int[]>();
 

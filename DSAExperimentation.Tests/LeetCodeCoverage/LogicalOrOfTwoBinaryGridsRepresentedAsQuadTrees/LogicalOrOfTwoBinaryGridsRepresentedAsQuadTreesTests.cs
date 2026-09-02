@@ -45,45 +45,52 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
     [Fact]
     public void Or_TwoMixedGrids_ReconstructsElementwiseOrOfBothGrids()
     {
-        int[][] grid1 =
-        [
-            [1, 1, 0, 0],
-            [1, 1, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-        ];
-        int[][] grid2 =
-        [
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1],
-        ];
+        var grid1 = TwoMixedGridsFirstInput();
+        var grid2 = TwoMixedGridsSecondInput();
 
-        var tree1 = Build(grid1);
-        var tree2 = Build(grid2);
+        var result = Or(Build(grid1), Build(grid2), size: 4);
+        var rebuilt = RebuildGrid(result, size: 4);
 
-        var result = Or(tree1, tree2, size: 4);
+        Assert.Equal(TwoMixedGridsExpected(), rebuilt);
+    }
 
-        var rebuilt = grid1.Select(row => new int[row.Length]).ToArray();
-        Fill(result, rebuilt, 0, 0, 4);
+    private static int[][] TwoMixedGridsFirstInput() =>
+    [
+        [1, 1, 0, 0],
+        [1, 1, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+    ];
 
-        int[][] expected =
-        [
-            [1, 1, 0, 0],
-            [1, 1, 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1],
-        ];
-        Assert.Equal(expected, rebuilt);
+    private static int[][] TwoMixedGridsSecondInput() =>
+    [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1],
+    ];
+
+    private static int[][] TwoMixedGridsExpected() =>
+    [
+        [1, 1, 0, 0],
+        [1, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1],
+    ];
+
+    private static int[][] RebuildGrid(QuadTreeNode node, int size)
+    {
+        var grid = NewGrid(size);
+        Fill(node, grid, new Region(0, 0, size));
+        return grid;
     }
 
     private static QuadTreeNode Or(QuadTreeNode tree1, QuadTreeNode tree2, int size)
     {
         var grid1 = NewGrid(size);
         var grid2 = NewGrid(size);
-        Fill(tree1, grid1, 0, 0, size);
-        Fill(tree2, grid2, 0, 0, size);
+        Fill(tree1, grid1, new Region(0, 0, size));
+        Fill(tree2, grid2, new Region(0, 0, size));
 
         var merged = NewGrid(size);
         for (var row = 0; row < size; row++)
@@ -108,14 +115,16 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
         return grid;
     }
 
-    private static void Fill(QuadTreeNode node, int[][] grid, int row, int col, int size)
+    private readonly record struct Region(int Row, int Col, int Size);
+
+    private static void Fill(QuadTreeNode node, int[][] grid, Region region)
     {
         if (node.IsLeaf)
         {
             var value = node.Val ? 1 : 0;
-            for (var r = row; r < row + size; r++)
+            for (var r = region.Row; r < region.Row + region.Size; r++)
             {
-                for (var c = col; c < col + size; c++)
+                for (var c = region.Col; c < region.Col + region.Size; c++)
                 {
                     grid[r][c] = value;
                 }
@@ -124,11 +133,11 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
             return;
         }
 
-        var half = size / 2;
-        Fill(node.TopLeft!, grid, row, col, half);
-        Fill(node.TopRight!, grid, row, col + half, half);
-        Fill(node.BottomLeft!, grid, row + half, col, half);
-        Fill(node.BottomRight!, grid, row + half, col + half, half);
+        var half = region.Size / 2;
+        Fill(node.TopLeft!, grid, new Region(region.Row, region.Col, half));
+        Fill(node.TopRight!, grid, new Region(region.Row, region.Col + half, half));
+        Fill(node.BottomLeft!, grid, new Region(region.Row + half, region.Col, half));
+        Fill(node.BottomRight!, grid, new Region(region.Row + half, region.Col + half, half));
     }
 
     private static QuadTreeNode Build(int[][] grid)

@@ -11,7 +11,16 @@ public sealed partial class HouseRobberIITests
         => Assert.Equal(expected, Rob(nums));
 
     private static int Rob(int[] nums)
-        => nums.Length == 1 ? nums[0] : Math.Max(RobRange(nums, 0, nums.Length - 2), RobRange(nums, 1, nums.Length - 1));
+    {
+        if (nums.Length == 1)
+        {
+            return nums[0];
+        }
+
+        var robExcludingLastHouse = RobRange(nums, 0, nums.Length - 2);
+        var robExcludingFirstHouse = RobRange(nums, 1, nums.Length - 1);
+        return Math.Max(robExcludingLastHouse, robExcludingFirstHouse);
+    }
 
     private static int RobRange(int[] nums, int start, int end)
         => Memoizer.Memoize<int, int>(start, (i, rob) => i > end ? 0 : Math.Max(rob(i + 1), nums[i] + rob(i + 2)));

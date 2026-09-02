@@ -47,20 +47,7 @@ public sealed partial class MaximumBinaryTreeTests
 
         foreach (var num in nums)
         {
-            var node = new BinaryTreeNode<int>(num);
-
-            while (stack.TryPeek(out var smaller) && smaller.Value < num)
-            {
-                stack.TryPop(out _);
-                node.Left = smaller;
-            }
-
-            if (stack.TryPeek(out var parent))
-            {
-                parent.Right = node;
-            }
-
-            stack.Push(node);
+            PushValue(stack, num);
         }
 
         BinaryTreeNode<int>? root = null;
@@ -71,5 +58,23 @@ public sealed partial class MaximumBinaryTreeTests
         }
 
         return root;
+    }
+
+    private static void PushValue(NodeStack stack, int num)
+    {
+        var node = new BinaryTreeNode<int>(num);
+
+        while (stack.TryPeek(out var smaller) && smaller.Value < num)
+        {
+            stack.TryPop(out _);
+            node.Left = smaller;
+        }
+
+        if (stack.TryPeek(out var parent))
+        {
+            parent.Right = node;
+        }
+
+        stack.Push(node);
     }
 }

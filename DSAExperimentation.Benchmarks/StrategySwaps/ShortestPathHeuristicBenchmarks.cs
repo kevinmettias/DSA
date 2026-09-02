@@ -2,6 +2,7 @@ using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Benchmarks.StrategySwaps;
 
@@ -24,7 +25,7 @@ public class ShortestPathHeuristicBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var (_, source, farCorner) = WeightedGrids.OpenGrid(GridSize);
+        var (source, farCorner) = WeightedGridWorkloads.OpenGrid(GridSize);
         _source = source;
         _target = farCorner;
     }

@@ -24,6 +24,9 @@ public class StreamOfCharactersBenchmarks
 
     private static readonly int MaxWordLength = Words.Max(w => w.Length);
 
+    private const int RandomSeed = 1032; // LC problem number
+    private const int AlphabetSize = 26;
+
     [Params(200, 3_000)]
     public int StreamLength;
 
@@ -32,8 +35,8 @@ public class StreamOfCharactersBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1032);
-        _stream = Enumerable.Range(0, StreamLength).Select(_ => (char)('a' + random.Next(0, 26))).ToArray();
+        var random = new Random(RandomSeed);
+        _stream = Enumerable.Range(0, StreamLength).Select(_ => (char)('a' + random.Next(0, AlphabetSize))).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -65,6 +68,13 @@ public class StreamOfCharactersBenchmarks
     [Benchmark]
     public int ReversedTrieBackwardWalk()
     {
+        var reversedWords = BuildReversedTrie();
+
+        return CountBackwardMatches(reversedWords);
+    }
+
+    private static LowercaseTrie<bool> BuildReversedTrie()
+    {
         var reversedWords = new LowercaseTrie<bool>();
 
         foreach (var word in Words)
@@ -72,6 +82,11 @@ public class StreamOfCharactersBenchmarks
             reversedWords.Set(new string(word.Reverse().ToArray()), true);
         }
 
+        return reversedWords;
+    }
+
+    private int CountBackwardMatches(LowercaseTrie<bool> reversedWords)
+    {
         var buffer = new DynamicArray<char>();
         var matches = 0;
 
@@ -79,20 +94,29 @@ public class StreamOfCharactersBenchmarks
         {
             buffer.Add(letter);
 
-            var node = reversedWords.Root;
-
-            for (var i = buffer.Count - 1; i >= 0 && node is not null; i--)
+            if (HasBackwardMatch(reversedWords, buffer))
             {
-                node = node.Children[buffer.Get(i) - 'a'];
-
-                if (node is not null && node.HasValue)
-                {
-                    matches++;
-                    break;
-                }
+                matches++;
             }
         }
 
         return matches;
+    }
+
+    private static bool HasBackwardMatch(LowercaseTrie<bool> reversedWords, DynamicArray<char> buffer)
+    {
+        var node = reversedWords.Root;
+
+        for (var i = buffer.Count - 1; i >= 0 && node is not null; i--)
+        {
+            node = node.Children[buffer.Get(i) - 'a'];
+
+            if (node is not null && node.HasValue)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

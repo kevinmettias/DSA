@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SerializeAndDeserializeBinaryTreeBenchmarks
 {
+    private const string EmptyAccumulator = "";
+    private const string NullMarker = "#";
+    private const string TokenSeparator = ",";
+
     [Params(2_000, 8_000)]
     public int NodeCount;
 
@@ -43,16 +47,16 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
 
     private static string ConcatSerialize(BinaryTreeNode<int>? root)
     {
-        var accumulated = "";
+        var accumulated = EmptyAccumulator;
         void Visit(BinaryTreeNode<int>? node)
         {
             if (node is null)
             {
-                accumulated += "#,";
+                accumulated += NullMarker + TokenSeparator;
                 return;
             }
 
-            accumulated += node.Value + ",";
+            accumulated += node.Value + TokenSeparator;
             Visit(node.Left);
             Visit(node.Right);
         }
@@ -68,7 +72,7 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
         BinaryTreeNode<int>? Build()
         {
             var token = tokens[index++];
-            return token == "#" ? null : new BinaryTreeNode<int>(int.Parse(token)) { Left = Build(), Right = Build() };
+            return token == NullMarker ? null : new BinaryTreeNode<int>(int.Parse(token)) { Left = Build(), Right = Build() };
         }
 
         return Build();
@@ -78,7 +82,7 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
     {
         if (node is null)
         {
-            tokens.Add("#");
+            tokens.Add(NullMarker);
             return;
         }
 
@@ -101,7 +105,7 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
 
     private static BinaryTreeNode<int>? ReadNode(RepoQueue tokens)
     {
-        if (!tokens.TryDequeue(out var token) || token == "#")
+        if (!tokens.TryDequeue(out var token) || token == NullMarker)
         {
             return null;
         }

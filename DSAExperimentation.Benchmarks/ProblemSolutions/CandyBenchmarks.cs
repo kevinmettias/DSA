@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CandyBenchmarks
 {
+    private const int SecondToLastIndexOffset = 2;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -30,36 +32,9 @@ public class CandyBenchmarks
         var candies = new int[_ratings.Length];
         Array.Fill(candies, 1);
 
-        bool changed;
+        RelaxUntilStable(candies);
 
-        do
-        {
-            changed = false;
-
-            for (var i = 0; i < _ratings.Length; i++)
-            {
-                if (i > 0 && _ratings[i] > _ratings[i - 1] && candies[i] <= candies[i - 1])
-                {
-                    candies[i] = candies[i - 1] + 1;
-                    changed = true;
-                }
-
-                if (i < _ratings.Length - 1 && _ratings[i] > _ratings[i + 1] && candies[i] <= candies[i + 1])
-                {
-                    candies[i] = candies[i + 1] + 1;
-                    changed = true;
-                }
-            }
-        } while (changed);
-
-        var total = 0;
-
-        for (var i = 0; i < candies.Length; i++)
-        {
-            total += candies[i];
-        }
-
-        return total;
+        return SumCandies(candies);
     }
 
     [Benchmark]
@@ -68,6 +43,48 @@ public class CandyBenchmarks
         var candies = new int[_ratings.Length];
         Array.Fill(candies, 1);
 
+        ApplyForwardSlopePass(candies);
+        ApplyBackwardSlopePass(candies);
+
+        return SumCandies(candies);
+    }
+
+    private void RelaxUntilStable(int[] candies)
+    {
+        bool changed;
+
+        do
+        {
+            changed = false;
+
+            for (var i = 0; i < _ratings.Length; i++)
+            {
+                changed |= RelaxNeighbors(candies, i);
+            }
+        } while (changed);
+    }
+
+    private bool RelaxNeighbors(int[] candies, int i)
+    {
+        var changed = false;
+
+        if (i > 0 && _ratings[i] > _ratings[i - 1] && candies[i] <= candies[i - 1])
+        {
+            candies[i] = candies[i - 1] + 1;
+            changed = true;
+        }
+
+        if (i < _ratings.Length - 1 && _ratings[i] > _ratings[i + 1] && candies[i] <= candies[i + 1])
+        {
+            candies[i] = candies[i + 1] + 1;
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private void ApplyForwardSlopePass(int[] candies)
+    {
         for (var i = 1; i < _ratings.Length; i++)
         {
             if (_ratings[i] > _ratings[i - 1])
@@ -75,15 +92,21 @@ public class CandyBenchmarks
                 candies[i] = candies[i - 1] + 1;
             }
         }
+    }
 
-        for (var i = _ratings.Length - 2; i >= 0; i--)
+    private void ApplyBackwardSlopePass(int[] candies)
+    {
+        for (var i = _ratings.Length - SecondToLastIndexOffset; i >= 0; i--)
         {
             if (_ratings[i] > _ratings[i + 1])
             {
                 candies[i] = Math.Max(candies[i], candies[i + 1] + 1);
             }
         }
+    }
 
+    private static int SumCandies(int[] candies)
+    {
         var total = 0;
 
         for (var i = 0; i < candies.Length; i++)

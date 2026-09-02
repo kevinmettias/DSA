@@ -59,41 +59,72 @@ public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesTests
         var start = LowestSetBitIndex(mask);
         var firstPass = BfsDistances(start, mask, n, adjacency);
 
-        var farthest = start;
-        var maxDistance = 0;
-
-        for (var node = 0; node < n; node++)
+        if (!TryFindFarthest(mask, start, firstPass, out var farthest))
         {
-            if ((mask & (1 << node)) == 0)
-            {
-                continue;
-            }
-
-            if (firstPass[node] == -1)
-            {
-                diameter = 0;
-                return false;
-            }
-
-            if (firstPass[node] > maxDistance)
-            {
-                maxDistance = firstPass[node];
-                farthest = node;
-            }
+            diameter = 0;
+            return false;
         }
 
         var secondPass = BfsDistances(farthest, mask, n, adjacency);
-        diameter = 0;
+        diameter = MaxDistanceInMask(mask, n, secondPass);
+        return true;
+    }
 
-        for (var node = 0; node < n; node++)
+    private static bool TryFindFarthest(int mask, int start, int[] distances, out int farthest)
+    {
+        if (!AllReachable(mask, distances))
         {
-            if ((mask & (1 << node)) != 0 && secondPass[node] > diameter)
+            farthest = start;
+            return false;
+        }
+
+        farthest = FindFarthestNode(mask, start, distances);
+        return true;
+    }
+
+    private static bool AllReachable(int mask, int[] distances)
+    {
+        for (var node = 0; node < distances.Length; node++)
+        {
+            if ((mask & (1 << node)) != 0 && distances[node] == -1)
             {
-                diameter = secondPass[node];
+                return false;
             }
         }
 
         return true;
+    }
+
+    private static int FindFarthestNode(int mask, int start, int[] distances)
+    {
+        var farthest = start;
+        var maxDistance = 0;
+
+        for (var node = 0; node < distances.Length; node++)
+        {
+            if ((mask & (1 << node)) != 0 && distances[node] > maxDistance)
+            {
+                maxDistance = distances[node];
+                farthest = node;
+            }
+        }
+
+        return farthest;
+    }
+
+    private static int MaxDistanceInMask(int mask, int n, int[] distances)
+    {
+        var diameter = 0;
+
+        for (var node = 0; node < n; node++)
+        {
+            if ((mask & (1 << node)) != 0 && distances[node] > diameter)
+            {
+                diameter = distances[node];
+            }
+        }
+
+        return diameter;
     }
 
     private static int[] BfsDistances(int start, int mask, int n, List<int>[] adjacency)

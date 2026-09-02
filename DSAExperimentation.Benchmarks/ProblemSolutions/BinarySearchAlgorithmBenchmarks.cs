@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BinarySearchAlgorithmBenchmarks
 {
+    // Spacing between consecutive generated values, so every value is even.
+    private const int ValueStride = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,8 +24,8 @@ public class BinarySearchAlgorithmBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _values = Enumerable.Range(0, Length).Select(i => i * 2).ToArray();
-        _target = (Length - 1) * 2;
+        _values = Enumerable.Range(0, Length).Select(i => i * ValueStride).ToArray();
+        _target = (Length - 1) * ValueStride;
     }
 
     [Benchmark(Baseline = true)]

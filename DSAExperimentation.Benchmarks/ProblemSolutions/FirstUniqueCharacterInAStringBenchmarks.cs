@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FirstUniqueCharacterInAStringBenchmarks
 {
+    private const int AlphabetSize = 26;
+
     [Params(500, 5_000)]
     public int Length;
 
@@ -27,7 +29,7 @@ public class FirstUniqueCharacterInAStringBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(0, 26));
+            chars[i] = (char)('a' + random.Next(0, AlphabetSize));
         }
 
         _value = new string(chars);

@@ -24,7 +24,9 @@ public sealed partial class CourseScheduleIVTests
         int[][] prerequisites = [[1, 0]];
         int[][] queries = [[0, 1], [1, 0]];
 
-        Assert.Equal([false, true], CheckIfPrerequisite(numCourses, prerequisites, queries));
+        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
+
+        Assert.Equal([false, true], answers);
     }
 
     [Fact]
@@ -34,7 +36,9 @@ public sealed partial class CourseScheduleIVTests
         int[][] prerequisites = [];
         int[][] queries = [[1, 0], [0, 1]];
 
-        Assert.Equal([false, false], CheckIfPrerequisite(numCourses, prerequisites, queries));
+        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
+
+        Assert.Equal([false, false], answers);
     }
 
     [Fact]
@@ -44,7 +48,9 @@ public sealed partial class CourseScheduleIVTests
         int[][] prerequisites = [[1, 2], [1, 0], [2, 0]];
         int[][] queries = [[1, 0], [1, 2]];
 
-        Assert.Equal([true, true], CheckIfPrerequisite(numCourses, prerequisites, queries));
+        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
+
+        Assert.Equal([true, true], answers);
     }
 
     [Fact]
@@ -54,7 +60,9 @@ public sealed partial class CourseScheduleIVTests
         int[][] prerequisites = [[0, 1], [1, 2], [2, 3], [3, 4]];
         int[][] queries = [[0, 4], [4, 0], [1, 3]];
 
-        Assert.Equal([true, false, true], CheckIfPrerequisite(numCourses, prerequisites, queries));
+        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
+
+        Assert.Equal([true, false, true], answers);
     }
 
     private static List<bool> CheckIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries)

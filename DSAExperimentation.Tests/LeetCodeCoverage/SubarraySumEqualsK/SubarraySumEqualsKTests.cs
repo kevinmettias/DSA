@@ -14,7 +14,9 @@ public sealed partial class SubarraySumEqualsKTests
     {
         int[] nums = [1, 1, 1];
 
-        Assert.Equal(2, CountSubarraysSummingToK(nums, k: 2));
+        var count = CountSubarraysSummingToK(nums, k: 2);
+
+        Assert.Equal(2, count);
     }
 
     [Fact]
@@ -22,7 +24,9 @@ public sealed partial class SubarraySumEqualsKTests
     {
         int[] nums = [1, 2, 1, 2, 1];
 
-        Assert.Equal(4, CountSubarraysSummingToK(nums, k: 3));
+        var count = CountSubarraysSummingToK(nums, k: 3);
+
+        Assert.Equal(4, count);
     }
 
     [Fact]
@@ -30,7 +34,9 @@ public sealed partial class SubarraySumEqualsKTests
     {
         int[] nums = [1, -1, 0];
 
-        Assert.Equal(3, CountSubarraysSummingToK(nums, k: 0));
+        var count = CountSubarraysSummingToK(nums, k: 0);
+
+        Assert.Equal(3, count);
     }
 
     private static int CountSubarraysSummingToK(int[] nums, int k)

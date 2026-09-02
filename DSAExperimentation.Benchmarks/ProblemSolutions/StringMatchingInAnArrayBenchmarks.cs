@@ -23,6 +23,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class StringMatchingInAnArrayBenchmarks
 {
     private const int MinLength = 6;
+    private const string TrailingLetter = "b";
 
     [Params(60, 150)]
     public int WordCount;
@@ -34,7 +35,7 @@ public class StringMatchingInAnArrayBenchmarks
         => _words = Enumerable.Range(0, WordCount).Select(AdversarialWord).ToArray();
 
     private static string AdversarialWord(int index)
-        => new string('a', MinLength + index - 1) + "b";
+        => new string('a', MinLength + index - 1) + TrailingLetter;
 
     [Benchmark(Baseline = true)]
     public int NaiveNestedLoop()

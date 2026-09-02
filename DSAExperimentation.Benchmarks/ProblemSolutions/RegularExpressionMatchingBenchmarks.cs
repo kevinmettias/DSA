@@ -1,13 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.RegularExpressionMatching;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Regular Expression Matching (LC 10): uncached recursive branching vs. the same
-// recurrence routed through this repo's Memoizer.
+// Harness only: both arms are RegularExpressionMatchingSolution's, the same
+// methods RegularExpressionMatchingTests proves correct. A repeated "a*" pattern
+// against a text with a mismatched trailing character forces both strategies to
+// explore the whole branching search space rather than short-circuiting early.
 [MemoryDiagnoser]
 public class RegularExpressionMatchingBenchmarks
 {
+    private const string RepeatedPatternUnit = "a*";
+    private const string TrailingChar = "b";
+
     private string _text = null!;
     private string _pattern = null!;
 
@@ -17,53 +22,14 @@ public class RegularExpressionMatchingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _text = new string('a', Repetitions) + "b";
-        _pattern = string.Concat(Enumerable.Repeat("a*", Repetitions)) + "b";
+        _text = new string('a', Repetitions) + TrailingChar;
+        var repeatedUnits = Enumerable.Repeat(RepeatedPatternUnit, Repetitions);
+        _pattern = string.Concat(repeatedUnits) + TrailingChar;
     }
 
     [Benchmark(Baseline = true)]
-    public bool Recursive() => MatchRecursive(0, 0);
+    public bool Recursive() => RegularExpressionMatchingSolution.IsMatchByRecursion(_text, _pattern);
 
     [Benchmark]
-    public bool Memoized()
-        => Memoizer.Memoize<(int Text, int Pattern), bool>((0, 0), MatchFrom);
-
-    private bool MatchFrom((int Text, int Pattern) state, Func<(int Text, int Pattern), bool> match)
-    {
-        var (textIndex, patternIndex) = state;
-        if (patternIndex == _pattern.Length)
-        {
-            return textIndex == _text.Length;
-        }
-
-        var firstMatches = textIndex < _text.Length
-            && (_pattern[patternIndex] == _text[textIndex] || _pattern[patternIndex] == '.');
-
-        if (patternIndex + 1 < _pattern.Length && _pattern[patternIndex + 1] == '*')
-        {
-            return match((textIndex, patternIndex + 2))
-                || (firstMatches && match((textIndex + 1, patternIndex)));
-        }
-
-        return firstMatches && match((textIndex + 1, patternIndex + 1));
-    }
-
-    private bool MatchRecursive(int textIndex, int patternIndex)
-    {
-        if (patternIndex == _pattern.Length)
-        {
-            return textIndex == _text.Length;
-        }
-
-        var firstMatches = textIndex < _text.Length
-            && (_pattern[patternIndex] == _text[textIndex] || _pattern[patternIndex] == '.');
-
-        if (patternIndex + 1 < _pattern.Length && _pattern[patternIndex + 1] == '*')
-        {
-            return MatchRecursive(textIndex, patternIndex + 2)
-                || (firstMatches && MatchRecursive(textIndex + 1, patternIndex));
-        }
-
-        return firstMatches && MatchRecursive(textIndex + 1, patternIndex + 1);
-    }
+    public bool Memoized() => RegularExpressionMatchingSolution.IsMatchByMemoization(_text, _pattern);
 }

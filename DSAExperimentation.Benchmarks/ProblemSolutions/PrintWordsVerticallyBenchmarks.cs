@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrintWordsVerticallyBenchmarks
 {
+    private const int RandomSeed = 1324; // LC problem number
+    private const int WordLengthUpperBound = 12; // exclusive upper bound passed to Random.Next
+    private const int AlphabetSize = 26;
+
     [Params(50, 500)]
     public int WordCount;
 
@@ -20,12 +24,15 @@ public class PrintWordsVerticallyBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1324);
+        var random = new Random(RandomSeed);
         _words = [.. Enumerable.Range(0, WordCount).Select(_ => RandomWord(random))];
     }
 
     private static string RandomWord(Random random)
-        => new([.. Enumerable.Range(0, random.Next(1, 12)).Select(_ => (char)('A' + random.Next(26)))]);
+    {
+        var wordLength = random.Next(1, WordLengthUpperBound);
+        return new([.. Enumerable.Range(0, wordLength).Select(_ => (char)('A' + random.Next(AlphabetSize)))]);
+    }
 
     [Benchmark(Baseline = true)]
     public int ListCharTrimEnd()

@@ -1,25 +1,29 @@
-using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.MergeIntervals;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeIntervals;
 
-// LeetCode 56. Merge Intervals: this repo's own IntervalSet<TKey> already maintains
-// a merged, sorted set of disjoint intervals as each one is added - the same
-// closed-interval semantics LC 56 asks for (see IntervalSet.cs's own doc comment).
-public sealed partial class MergeIntervalsTests
+// Harness only. Both strategies are MergeIntervalsSolution's; IntervalSet<TKey>'s
+// own merge invariant is covered directly by
+// DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs - this
+// file just pins the two strategies to LeetCode's published examples.
+public sealed class MergeIntervalsTests
 {
-    [Fact]
-    public void Add_OverlappingIntervals_MergesIntoDisjointRanges()
-    {
-        var intervals = new IntervalSet<int>();
+    public static TheoryData<(int Start, int End)[], (int Start, int End)[]> Examples =>
+        new()
+        {
+            { [(1, 3), (2, 6), (8, 10), (15, 18)], [(1, 6), (8, 10), (15, 18)] },
+            { [(1, 4), (4, 5)], [(1, 5)] },
+        };
 
-        intervals.Add(1, 3);
-        intervals.Add(2, 6);
-        intervals.Add(8, 10);
-        intervals.Add(15, 18);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeByBatchSortAndMerge_LeetCodeExamples_ReturnsMergedDisjointIntervals(
+        (int Start, int End)[] intervals, (int Start, int End)[] expected) =>
+        Assert.Equal(expected, MergeIntervalsSolution.MergeByBatchSortAndMerge(intervals));
 
-        Assert.Equal(3, intervals.Count);
-        Assert.Equal((1, 6), intervals.Get(0));
-        Assert.Equal((8, 10), intervals.Get(1));
-        Assert.Equal((15, 18), intervals.Get(2));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeByIntervalSet_LeetCodeExamples_ReturnsMergedDisjointIntervals(
+        (int Start, int End)[] intervals, (int Start, int End)[] expected) =>
+        Assert.Equal(expected, MergeIntervalsSolution.MergeByIntervalSet(intervals));
 }

@@ -18,7 +18,8 @@ public sealed class StoneGameVITests
         int[] aliceValues = [1, 3];
         int[] bobValues = [2, 1];
 
-        Assert.Equal("Alice", Winner(aliceValues, bobValues));
+        var winner = Winner(aliceValues, bobValues);
+        Assert.Equal("Alice", winner);
     }
 
     [Fact]
@@ -27,7 +28,8 @@ public sealed class StoneGameVITests
         int[] aliceValues = [1, 2];
         int[] bobValues = [3, 1];
 
-        Assert.Equal("Tie", Winner(aliceValues, bobValues));
+        var winner = Winner(aliceValues, bobValues);
+        Assert.Equal("Tie", winner);
     }
 
     [Fact]
@@ -36,18 +38,33 @@ public sealed class StoneGameVITests
         int[] aliceValues = [2, 4, 3];
         int[] bobValues = [1, 6, 7];
 
-        Assert.Equal("Bob", Winner(aliceValues, bobValues));
+        var winner = Winner(aliceValues, bobValues);
+        Assert.Equal("Bob", winner);
     }
 
     private static string Winner(int[] aliceValues, int[] bobValues)
     {
-        var stones = aliceValues.Select((a, i) => (Alice: a, Bob: bobValues[i])).ToArray();
+        var stones = BuildStonesBySwing(aliceValues, bobValues);
+        SortBySwingDescending(stones);
+        var (aliceScore, bobScore) = TallyAlternatingScores(stones);
+
+        return DetermineWinner(aliceScore, bobScore);
+    }
+
+    private static (int Alice, int Bob)[] BuildStonesBySwing(int[] aliceValues, int[] bobValues)
+        => aliceValues.Select((a, i) => (Alice: a, Bob: bobValues[i])).ToArray();
+
+    private static void SortBySwingDescending((int Alice, int Bob)[] stones)
+    {
         var bySwingDescending = Comparer<(int Alice, int Bob)>.Create(
             (x, y) => (y.Alice + y.Bob).CompareTo(x.Alice + x.Bob));
 
         MergeSort.Sort<(int Alice, int Bob), ArrayIndexedSequence<(int Alice, int Bob)>>(
             new ArrayIndexedSequence<(int Alice, int Bob)>(stones), bySwingDescending);
+    }
 
+    private static (int AliceScore, int BobScore) TallyAlternatingScores((int Alice, int Bob)[] stones)
+    {
         var aliceScore = 0;
         var bobScore = 0;
 
@@ -63,6 +80,9 @@ public sealed class StoneGameVITests
             }
         }
 
-        return aliceScore == bobScore ? "Tie" : aliceScore > bobScore ? "Alice" : "Bob";
+        return (aliceScore, bobScore);
     }
+
+    private static string DetermineWinner(int aliceScore, int bobScore)
+        => aliceScore == bobScore ? "Tie" : aliceScore > bobScore ? "Alice" : "Bob";
 }

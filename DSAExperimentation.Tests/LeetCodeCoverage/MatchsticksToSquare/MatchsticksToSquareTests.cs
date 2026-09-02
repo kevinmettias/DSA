@@ -24,6 +24,26 @@ public sealed partial class MatchsticksToSquareTests
 
     private static bool CanMakeSquare(int[] matchsticks)
     {
+        if (!TryComputeSide(matchsticks, out var side))
+        {
+            return false;
+        }
+
+        var sorted = SortedDescending(matchsticks);
+        var state = new State(sorted, side);
+
+        return Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
+            IsSolution: s => s.Index == sorted.Length,
+            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, 4).Where(s.CanPlace),
+            Choose: (s, bucket) => s.Place(bucket),
+            Unchoose: (s, bucket) => s.Remove(bucket),
+            OnSolution: _ => true));
+    }
+
+    private static bool TryComputeSide(int[] matchsticks, out int side)
+    {
+        side = 0;
+
         if (matchsticks.Length < 4)
         {
             return false;
@@ -36,25 +56,16 @@ public sealed partial class MatchsticksToSquareTests
             return false;
         }
 
-        var side = total / 4;
+        side = total / 4;
+        return matchsticks.Max() <= side;
+    }
 
-        if (matchsticks.Max() > side)
-        {
-            return false;
-        }
-
+    private static int[] SortedDescending(int[] matchsticks)
+    {
         var sorted = (int[])matchsticks.Clone();
         Array.Sort(sorted);
         Array.Reverse(sorted);
-
-        var state = new State(sorted, side);
-
-        return Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
-            IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, 4).Where(s.CanPlace),
-            Choose: (s, bucket) => s.Place(bucket),
-            Unchoose: (s, bucket) => s.Remove(bucket),
-            OnSolution: _ => true));
+        return sorted;
     }
 
     private sealed class State(int[] matchsticks, int side)

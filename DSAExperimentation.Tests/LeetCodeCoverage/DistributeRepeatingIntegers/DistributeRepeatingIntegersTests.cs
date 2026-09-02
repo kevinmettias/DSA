@@ -12,15 +12,27 @@ public sealed partial class DistributeRepeatingIntegersTests
 {
     [Fact]
     public void CanDistribute_SingleOrderFitsHighestStockValue_ReturnsTrue()
-        => Assert.True(CanDistribute([1, 2, 3, 3], [2]));
+    {
+        var canDistribute = CanDistribute([1, 2, 3, 3], [2]);
+
+        Assert.True(canDistribute);
+    }
 
     [Fact]
     public void CanDistribute_ExactStockSplitAcrossTwoOrders_ReturnsTrue()
-        => Assert.True(CanDistribute([1, 1, 2, 2], [2, 2]));
+    {
+        var canDistribute = CanDistribute([1, 1, 2, 2], [2, 2]);
+
+        Assert.True(canDistribute);
+    }
 
     [Fact]
     public void CanDistribute_NoSingleValueHasEnoughStockForLargestOrder_ReturnsFalse()
-        => Assert.False(CanDistribute([1, 1, 2, 2], [3, 1]));
+    {
+        var canDistribute = CanDistribute([1, 1, 2, 2], [3, 1]);
+
+        Assert.False(canDistribute);
+    }
 
     private static bool CanDistribute(int[] nums, int[] quantity)
     {

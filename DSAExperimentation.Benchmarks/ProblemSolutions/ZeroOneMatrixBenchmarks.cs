@@ -11,6 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ZeroOneMatrixBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+    private const int ZeroCellProbabilityDenominator = 5;
 
     [Params(10, 25)]
     public int Size;
@@ -22,7 +23,7 @@ public class ZeroOneMatrixBenchmarks
     {
         var random = new Random(1);
         _matrix = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, 5) == 0 ? 0 : 1).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, ZeroCellProbabilityDenominator) == 0 ? 0 : 1).ToArray())
             .ToArray();
         _matrix[0][0] = 0;
     }
@@ -52,76 +53,129 @@ public class ZeroOneMatrixBenchmarks
             return 0;
         }
 
+        var state = CreateSingleSourceBfsState(startRow, startCol);
+        return RunSingleSourceBfs(state);
+    }
+
+    private SingleSourceBfsState CreateSingleSourceBfsState(int startRow, int startCol)
+    {
         var visited = new bool[Size, Size];
         var queue = new System.Collections.Generic.Queue<(int Row, int Col, int Dist)>();
         visited[startRow, startCol] = true;
         queue.Enqueue((startRow, startCol, 0));
+        return new SingleSourceBfsState(visited, queue);
+    }
 
-        while (queue.Count > 0)
+    private int RunSingleSourceBfs(SingleSourceBfsState state)
+    {
+        while (state.Queue.Count > 0)
         {
-            var (row, col, dist) = queue.Dequeue();
+            var current = state.Queue.Dequeue();
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var direction in Directions)
             {
-                var nextRow = row + dRow;
-                var nextCol = col + dCol;
+                var foundDistance = TryVisitNeighbor(current, direction, state);
 
-                if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size || visited[nextRow, nextCol])
+                if (foundDistance is not null)
                 {
-                    continue;
+                    return foundDistance.Value;
                 }
-
-                if (_matrix[nextRow][nextCol] == 0)
-                {
-                    return dist + 1;
-                }
-
-                visited[nextRow, nextCol] = true;
-                queue.Enqueue((nextRow, nextCol, dist + 1));
             }
         }
 
         return -1;
     }
 
+    private int? TryVisitNeighbor(
+        (int Row, int Col, int Dist) current, (int DRow, int DCol) direction, SingleSourceBfsState state)
+    {
+        var nextRow = current.Row + direction.DRow;
+        var nextCol = current.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size || state.Visited[nextRow, nextCol])
+        {
+            return null;
+        }
+
+        if (_matrix[nextRow][nextCol] == 0)
+        {
+            return current.Dist + 1;
+        }
+
+        state.Visited[nextRow, nextCol] = true;
+        state.Queue.Enqueue((nextRow, nextCol, current.Dist + 1));
+        return null;
+    }
+
+    private readonly record struct SingleSourceBfsState(
+        bool[,] Visited, System.Collections.Generic.Queue<(int Row, int Col, int Dist)> Queue);
+
     [Benchmark]
     public int[][] MultiSourceBfs()
+    {
+        var (distances, frontier) = InitializeMultiSourceFrontier();
+        RunMultiSourceBfs(distances, frontier);
+        return distances;
+    }
+
+    private (int[][] Distances, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> Frontier)
+        InitializeMultiSourceFrontier()
     {
         var distances = new int[Size][];
         var frontier = new DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>();
 
         for (var r = 0; r < Size; r++)
         {
-            distances[r] = new int[Size];
+            distances[r] = SeedRow(r, frontier);
+        }
 
-            for (var c = 0; c < Size; c++)
+        return (distances, frontier);
+    }
+
+    private int[] SeedRow(int row, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
+        var distanceRow = new int[Size];
+
+        for (var c = 0; c < Size; c++)
+        {
+            distanceRow[c] = _matrix[row][c] == 0 ? 0 : -1;
+
+            if (_matrix[row][c] == 0)
             {
-                distances[r][c] = _matrix[r][c] == 0 ? 0 : -1;
-
-                if (_matrix[r][c] == 0)
-                {
-                    frontier.Enqueue((r, c));
-                }
+                frontier.Enqueue((row, c));
             }
         }
 
+        return distanceRow;
+    }
+
+    private void RunMultiSourceBfs(
+        int[][] distances, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
         while (frontier.TryDequeue(out var cell))
         {
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var direction in Directions)
             {
-                var nextRow = cell.Row + dRow;
-                var nextCol = cell.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size || distances[nextRow][nextCol] != -1)
-                {
-                    continue;
-                }
-
-                distances[nextRow][nextCol] = distances[cell.Row][cell.Col] + 1;
-                frontier.Enqueue((nextRow, nextCol));
+                RelaxNeighbor(cell, direction, distances, frontier);
             }
         }
+    }
 
-        return distances;
+    private void RelaxNeighbor(
+        (int Row, int Col) cell,
+        (int DRow, int DCol) direction,
+        int[][] distances,
+        DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
+        var nextRow = cell.Row + direction.DRow;
+        var nextCol = cell.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size || distances[nextRow][nextCol] != -1)
+        {
+            return;
+        }
+
+        distances[nextRow][nextCol] = distances[cell.Row][cell.Col] + 1;
+        frontier.Enqueue((nextRow, nextCol));
     }
 }

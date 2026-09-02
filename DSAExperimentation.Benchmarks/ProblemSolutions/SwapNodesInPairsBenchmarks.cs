@@ -1,17 +1,49 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.SwapNodesInPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are SwapNodesInPairsSolution's, the same methods
+// SwapNodesInPairsTests proves correct. SwapPairsByPointerRewiring relinks the
+// input nodes' own Next pointers in place, so - like MergeKSortedListsBenchmarks'
+// heap merge - the list cannot be hoisted into [GlobalSetup] and reused across
+// iterations: a swap from one iteration would leave the next iteration a
+// different (and differently rooted) structure than the one being measured.
+// [GlobalSetup] therefore only seeds the raw values, and each [Benchmark] call
+// rebuilds a fresh list from them.
+//
+// Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
+// a public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class SwapNodesInPairsBenchmarks
 {
-    [Params(200, 5_000)] public int Length;
+    [Params(200, 5_000)]
+    public int Length;
+
     private int[] _values = null!;
-    [GlobalSetup] public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
-    [Benchmark(Baseline = true)] public int ArrayPairSwap() { var copy = _values.ToArray(); for (var i = 0; i + 1 < copy.Length; i += 2) (copy[i], copy[i + 1]) = (copy[i + 1], copy[i]); return copy[0]; }
-    [Benchmark] public int LinkedListPairSwap() => Count(SwapPairs(BuildList(_values)));
-    private static SinglyLinkedListNode<int>? SwapPairs(SinglyLinkedListNode<int>? head) { var dummy = new SinglyLinkedListNode<int>(0) { Next = head }; var previous = dummy; while (previous.Next?.Next is not null) { var first = previous.Next; var second = first.Next!; first.Next = second.Next; second.Next = first; previous.Next = second; previous = first; } return dummy.Next; }
-    private static SinglyLinkedListNode<int>? BuildList(int[] values) { var dummy = new SinglyLinkedListNode<int>(0); var tail = dummy; foreach (var value in values) { tail.Next = new SinglyLinkedListNode<int>(value); tail = tail.Next; } return dummy.Next; }
-    private static int Count(SinglyLinkedListNode<int>? head) { var count = 0; for (var node = head; node is not null; node = node.Next) count++; return count; }
+
+    [GlobalSetup]
+    public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
+
+    [Benchmark(Baseline = true)]
+    public object? ArrayRoundTrip() =>
+        SwapNodesInPairsSolution.SwapPairsByArrayRoundTrip(BuildList(_values));
+
+    [Benchmark]
+    public object? PointerRewiring() =>
+        SwapNodesInPairsSolution.SwapPairsByPointerRewiring(BuildList(_values));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
 }

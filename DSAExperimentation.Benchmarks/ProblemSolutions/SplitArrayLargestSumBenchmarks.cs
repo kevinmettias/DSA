@@ -13,6 +13,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SplitArrayLargestSumBenchmarks
 {
+    private const int RandomSeed = 410; // LC problem number
+    private const int MaxElementValue = 1_000; // exclusive upper bound passed to Random.Next
+    private const int KDivisor = 20; // number of splits k derived as a fraction of Length
+    private const int MidpointDivisor = 2; // classic binary search midpoint
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -22,9 +27,9 @@ public class SplitArrayLargestSumBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(410);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
-        _k = Math.Max(1, Length / 20);
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
+        _k = Math.Max(1, Length / KDivisor);
     }
 
     [Benchmark(Baseline = true)]
@@ -35,7 +40,7 @@ public class SplitArrayLargestSumBenchmarks
 
         while (low < high)
         {
-            var mid = low + ((high - low) / 2);
+            var mid = low + ((high - low) / MidpointDivisor);
             if (CanSplitWithinLimit(_nums, _k, mid))
             {
                 high = mid;

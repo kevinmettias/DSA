@@ -17,6 +17,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TheKthFactorOfNBenchmarks
 {
     private const int UnreachableK = 40;
+    private const int RandomSeed = 1492; // LC problem number
+    private const int ValueUpperBoundExclusive = 1_000;
 
     [Params(1_000, 10_000)]
     public int Length;
@@ -26,8 +28,8 @@ public class TheKthFactorOfNBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1492);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBoundExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -77,16 +79,27 @@ public class TheKthFactorOfNBenchmarks
     {
         var sequence = new SquareExceedsSequence(n, n + 1);
         var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
-        var remaining = k;
 
+        var (found, remaining) = ScanSmallDivisors(n, anchor, k);
+
+        return found != -1 ? found : ScanPairedDivisors(n, anchor, remaining);
+    }
+
+    private static (int Found, int Remaining) ScanSmallDivisors(int n, int anchor, int remaining)
+    {
         for (var divisor = 1; divisor <= anchor; divisor++)
         {
             if (n % divisor == 0 && --remaining == 0)
             {
-                return divisor;
+                return (divisor, remaining);
             }
         }
 
+        return (-1, remaining);
+    }
+
+    private static int ScanPairedDivisors(int n, int anchor, int remaining)
+    {
         for (var divisor = anchor; divisor >= 1; divisor--)
         {
             if (divisor * divisor == n || n % divisor != 0)

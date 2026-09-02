@@ -53,25 +53,7 @@ public sealed partial class NumberOfClosedIslandsTests
         {
             for (var c = 0; c < cols; c++)
             {
-                if (grid[r][c] != 0)
-                {
-                    continue;
-                }
-
-                var island = DepthFirstSearch.Traverse((r, c), Neighbors);
-                var touchesBorder = false;
-
-                foreach (var (row, col) in island)
-                {
-                    if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1)
-                    {
-                        touchesBorder = true;
-                    }
-
-                    grid[row][col] = 1;
-                }
-
-                if (!touchesBorder)
+                if (IsClosedIslandStartingAt(grid, r, c))
                 {
                     count++;
                 }
@@ -79,18 +61,43 @@ public sealed partial class NumberOfClosedIslandsTests
         }
 
         return count;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private static bool IsClosedIslandStartingAt(int[][] grid, int r, int c)
+    {
+        if (grid[r][c] != 0)
         {
-            (int Row, int Col)[] next =
-                [(p.Row + 1, p.Col), (p.Row - 1, p.Col), (p.Row, p.Col + 1), (p.Row, p.Col - 1)];
+            return false;
+        }
 
-            foreach (var n in next)
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+        var island = DepthFirstSearch.Traverse((r, c), p => Neighbors(grid, rows, cols, p));
+        var touchesBorder = false;
+
+        foreach (var (row, col) in island)
+        {
+            if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1)
             {
-                if (n.Row >= 0 && n.Row < rows && n.Col >= 0 && n.Col < cols && grid[n.Row][n.Col] == 0)
-                {
-                    yield return n;
-                }
+                touchesBorder = true;
+            }
+
+            grid[row][col] = 1;
+        }
+
+        return !touchesBorder;
+    }
+
+    private static IEnumerable<(int Row, int Col)> Neighbors(int[][] grid, int rows, int cols, (int Row, int Col) p)
+    {
+        (int Row, int Col)[] next =
+            [(p.Row + 1, p.Col), (p.Row - 1, p.Col), (p.Row, p.Col + 1), (p.Row, p.Col - 1)];
+
+        foreach (var n in next)
+        {
+            if (n.Row >= 0 && n.Row < rows && n.Col >= 0 && n.Col < cols && grid[n.Row][n.Col] == 0)
+            {
+                yield return n;
             }
         }
     }

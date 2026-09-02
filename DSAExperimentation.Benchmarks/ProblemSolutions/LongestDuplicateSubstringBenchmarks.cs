@@ -16,6 +16,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LongestDuplicateSubstringBenchmarks
 {
     private const int AlphabetSize = 4;
+    private const int RandomSeed = 1044; // LC problem number
 
     [Params(200, 2_000)]
     public int Length;
@@ -25,7 +26,7 @@ public class LongestDuplicateSubstringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1044);
+        var random = new Random(RandomSeed);
         _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
     }
 
@@ -38,7 +39,8 @@ public class LongestDuplicateSubstringBenchmarks
         {
             for (var j = i + 1; j < _text.Length; j++)
             {
-                best = Math.Max(best, CommonPrefixLength(i, j));
+                var commonPrefixLength = CommonPrefixLength(i, j);
+                best = Math.Max(best, commonPrefixLength);
             }
         }
 

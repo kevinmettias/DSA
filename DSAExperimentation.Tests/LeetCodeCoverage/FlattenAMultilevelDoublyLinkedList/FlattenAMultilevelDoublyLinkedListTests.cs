@@ -99,27 +99,36 @@ public sealed partial class FlattenAMultilevelDoublyLinkedListTests
 
         while (current is not null)
         {
-            if (current.Child is not null)
-            {
-                if (current.Next is not null)
-                {
-                    pending.Push(current.Next);
-                }
-
-                current.Next = current.Child;
-                current.Child.Previous = current;
-                current.Child = null;
-            }
-
-            if (current.Next is null && pending.TryPop(out var resumed))
-            {
-                current.Next = resumed;
-                resumed.Previous = current;
-            }
-
+            AdvanceNode(current, pending);
             current = current.Next;
         }
 
         return head;
+    }
+
+    private static void AdvanceNode(Node current, PendingStack pending)
+    {
+        if (current.Child is not null)
+        {
+            DescendIntoChild(current, current.Child, pending);
+        }
+
+        if (current.Next is null && pending.TryPop(out var resumed))
+        {
+            current.Next = resumed;
+            resumed.Previous = current;
+        }
+    }
+
+    private static void DescendIntoChild(Node current, Node child, PendingStack pending)
+    {
+        if (current.Next is not null)
+        {
+            pending.Push(current.Next);
+        }
+
+        current.Next = child;
+        child.Previous = current;
+        current.Child = null;
     }
 }

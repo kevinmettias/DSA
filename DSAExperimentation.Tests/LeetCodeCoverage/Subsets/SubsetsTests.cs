@@ -1,49 +1,31 @@
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.Subsets;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.Subsets;
 
-// LeetCode 78. Subsets: every node in the choose/explore/unchoose recursion tree
-// (including the empty and full selections) IS a valid subset, so IsSolution is
-// unconditionally true and OnSolution just records a snapshot - the exhaustive-
-// enumeration shape Backtrack.Search's own doc comment names this for.
-public sealed partial class SubsetsTests
+// Harness only. The choose/explore/unchoose enumeration lives in SubsetsSolution -
+// this file just pins it to LeetCode's published examples. Subset order is not
+// part of LeetCode's contract, so each case is checked as a set of subsets rather
+// than an ordered sequence.
+public sealed class SubsetsTests
 {
-    [Fact]
-    public void FindAllSubsets_ThreeElements_ReturnsAllEightSubsets()
+    public static TheoryData<int[], int[][]> Examples =>
+        new()
+        {
+            { [1, 2, 3], [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]] },
+            { [0], [[], [0]] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindAllSubsetsByBacktrack_LeetCodeExamples_ReturnsEverySubsetExactlyOnce(
+        int[] nums, int[][] expectedSubsets)
     {
-        int[] nums = [1, 2, 3];
+        var actual = SubsetsSolution.FindAllSubsetsByBacktrack(nums);
 
-        var subsets = FindAllSubsets(nums);
+        Assert.Equal(expectedSubsets.Length, actual.Count);
 
-        Assert.Equal(8, subsets.Count);
-        Assert.Contains(subsets, subset => subset.Count == 0);
-        Assert.Contains(subsets, subset => subset.SequenceEqual(nums));
-    }
-
-    private static List<List<int>> FindAllSubsets(int[] nums)
-    {
-        var results = new List<List<int>>();
-        var state = new SubsetState();
-
-        Backtrack.Search<SubsetState, int>(
-            state,
-            isSolution: static _ => true,
-            candidates: s => Enumerable.Range(s.NextIndex, nums.Length - s.NextIndex),
-            choose: (s, index) =>
-            {
-                s.Chosen.Add(nums[index]);
-                s.NextIndex = index + 1;
-            },
-            unchoose: (s, _) => s.Chosen.RemoveAt(s.Chosen.Count - 1),
-            onSolution: s => results.Add(new List<int>(s.Chosen)));
-
-        return results;
-    }
-
-    private sealed class SubsetState
-    {
-        public List<int> Chosen { get; } = [];
-
-        public int NextIndex { get; set; }
+        var expectedSet = expectedSubsets.Select(subset => string.Join(",", subset)).ToHashSet();
+        var actualSet = actual.Select(subset => string.Join(",", subset)).ToHashSet();
+        Assert.Equal(expectedSet, actualSet);
     }
 }

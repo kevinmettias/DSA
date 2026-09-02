@@ -15,13 +15,21 @@ public sealed partial class ContinuousSubarraySumTests
     [InlineData(new[] { 23, 2, 6, 4, 7 }, 6, true)]
     [InlineData(new[] { 23, 2, 6, 4, 7 }, 13, false)]
     public void HasContinuousSubarraySum_LeetCodeExamples_ReturnsExpected(int[] nums, int k, bool expected)
-        => Assert.Equal(expected, HasSubarraySumMultipleOfK(nums, k));
+    {
+        var hasSubarraySum = HasSubarraySumMultipleOfK(nums, k);
+        Assert.Equal(expected, hasSubarraySum);
+    }
 
     private static bool HasSubarraySumMultipleOfK(int[] nums, int k)
     {
         var firstIndexByRemainder = new HashMap<int, int>();
         firstIndexByRemainder.Set(0, -1);
 
+        return HasQualifyingSubarray(nums, k, firstIndexByRemainder);
+    }
+
+    private static bool HasQualifyingSubarray(int[] nums, int k, HashMap<int, int> firstIndexByRemainder)
+    {
         var prefixSum = 0;
         for (var i = 0; i < nums.Length; i++)
         {

@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfProvincesBenchmarks
 {
+    private const int ConnectionOddsDenominator = 10;
+
     [Params(50, 300)]
     public int CityCount;
 
@@ -37,7 +39,7 @@ public class NumberOfProvincesBenchmarks
         {
             for (var j = i + 1; j < CityCount; j++)
             {
-                var connected = random.Next(0, 10) == 0 ? 1 : 0;
+                var connected = random.Next(0, ConnectionOddsDenominator) == 0 ? 1 : 0;
                 _isConnected[i][j] = connected;
                 _isConnected[j][i] = connected;
             }

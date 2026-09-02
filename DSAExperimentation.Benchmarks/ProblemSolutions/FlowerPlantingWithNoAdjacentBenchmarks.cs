@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FlowerPlantingWithNoAdjacentBenchmarks
 {
+    private const int FlowerTypeCount = 4;
+
     [Params(500, 5_000)]
     public int GardenCount;
 
@@ -40,31 +42,43 @@ public class FlowerPlantingWithNoAdjacentBenchmarks
 
         for (var garden = 0; garden < GardenCount; garden++)
         {
-            var used = 0;
-
-            foreach (var (first, second) in _paths)
-            {
-                if (first == garden && flowers[second] != 0)
-                {
-                    used |= 1 << flowers[second];
-                }
-                else if (second == garden && flowers[first] != 0)
-                {
-                    used |= 1 << flowers[first];
-                }
-            }
-
-            for (var candidate = 1; candidate <= 4; candidate++)
-            {
-                if ((used & (1 << candidate)) == 0)
-                {
-                    flowers[garden] = candidate;
-                    break;
-                }
-            }
+            var used = ComputeUsedFlowerMask(garden, flowers);
+            flowers[garden] = FirstAvailableFlower(used);
         }
 
         return flowers;
+    }
+
+    private int ComputeUsedFlowerMask(int garden, int[] flowers)
+    {
+        var used = 0;
+
+        foreach (var (first, second) in _paths)
+        {
+            if (first == garden && flowers[second] != 0)
+            {
+                used |= 1 << flowers[second];
+            }
+            else if (second == garden && flowers[first] != 0)
+            {
+                used |= 1 << flowers[first];
+            }
+        }
+
+        return used;
+    }
+
+    private static int FirstAvailableFlower(int used)
+    {
+        for (var candidate = 1; candidate <= FlowerTypeCount; candidate++)
+        {
+            if ((used & (1 << candidate)) == 0)
+            {
+                return candidate;
+            }
+        }
+
+        return 0;
     }
 
     [Benchmark]
@@ -74,29 +88,41 @@ public class FlowerPlantingWithNoAdjacentBenchmarks
 
         foreach (var garden in _gardens)
         {
-            var usedFlowers = new Set<int>();
-            var neighbors = GardenTopology.GetChildren(garden);
-
-            for (var i = 0; i < neighbors.Count; i++)
-            {
-                var neighborFlower = flowers[neighbors.Get(i).Id];
-                if (neighborFlower != 0)
-                {
-                    usedFlowers.TryAdd(neighborFlower);
-                }
-            }
-
-            for (var candidate = 1; candidate <= 4; candidate++)
-            {
-                if (!usedFlowers.Has(candidate))
-                {
-                    flowers[garden.Id] = candidate;
-                    break;
-                }
-            }
+            var usedFlowers = ComputeUsedFlowerSet(garden, flowers);
+            flowers[garden.Id] = FirstAvailableFlower(usedFlowers);
         }
 
         return flowers;
+    }
+
+    private static Set<int> ComputeUsedFlowerSet(GardenNode garden, int[] flowers)
+    {
+        var usedFlowers = new Set<int>();
+        var neighbors = GardenTopology.GetChildren(garden);
+
+        for (var i = 0; i < neighbors.Count; i++)
+        {
+            var neighborFlower = flowers[neighbors.Get(i).Id];
+            if (neighborFlower != 0)
+            {
+                usedFlowers.TryAdd(neighborFlower);
+            }
+        }
+
+        return usedFlowers;
+    }
+
+    private static int FirstAvailableFlower(Set<int> usedFlowers)
+    {
+        for (var candidate = 1; candidate <= FlowerTypeCount; candidate++)
+        {
+            if (!usedFlowers.Has(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return 0;
     }
 
     // See FlowerPlantingWithNoAdjacentTests.Fixtures for the full explanation -

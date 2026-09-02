@@ -15,6 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class TrappingRainWaterIIBenchmarks
 {
+    private const int RandomSeed = 407; // LC 407: Trapping Rain Water II
+    private const int MaxHeightMapValue = 50;
+
     [Params(15, 40)]
     public int Size;
 
@@ -23,9 +26,9 @@ public class TrappingRainWaterIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(407);
+        var random = new Random(RandomSeed);
         _heightMap = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, 50)).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, MaxHeightMapValue)).ToArray())
             .ToArray();
     }
 
@@ -34,16 +37,7 @@ public class TrappingRainWaterIIBenchmarks
     {
         var rows = _heightMap.Length;
         var cols = _heightMap[0].Length;
-        var water = new int[rows, cols];
-
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                water[r, c] = IsBoundary(r, c, rows, cols) ? _heightMap[r][c] : int.MaxValue;
-            }
-        }
-
+        var water = InitializeWaterLevels(rows, cols);
         var changed = true;
 
         while (changed)
@@ -54,23 +48,57 @@ public class TrappingRainWaterIIBenchmarks
             {
                 for (var c = 1; c < cols - 1; c++)
                 {
-                    var floor = _heightMap[r][c];
-                    var best = water[r, c];
-
-                    best = Math.Min(best, Math.Max(floor, water[r - 1, c]));
-                    best = Math.Min(best, Math.Max(floor, water[r + 1, c]));
-                    best = Math.Min(best, Math.Max(floor, water[r, c - 1]));
-                    best = Math.Min(best, Math.Max(floor, water[r, c + 1]));
-
-                    if (best < water[r, c])
-                    {
-                        water[r, c] = best;
-                        changed = true;
-                    }
+                    changed = RelaxCell(r, c, water) || changed;
                 }
             }
         }
 
+        return SumTrappedWater(water, rows, cols);
+    }
+
+    private int[,] InitializeWaterLevels(int rows, int cols)
+    {
+        var water = new int[rows, cols];
+
+        for (var r = 0; r < rows; r++)
+        {
+            for (var c = 0; c < cols; c++)
+            {
+                water[r, c] = IsBoundary(r, c, rows, cols) ? _heightMap[r][c] : int.MaxValue;
+            }
+        }
+
+        return water;
+    }
+
+    private bool RelaxCell(int r, int c, int[,] water)
+    {
+        var floor = _heightMap[r][c];
+        var best = water[r, c];
+
+        var north = Math.Max(floor, water[r - 1, c]);
+        best = Math.Min(best, north);
+
+        var south = Math.Max(floor, water[r + 1, c]);
+        best = Math.Min(best, south);
+
+        var west = Math.Max(floor, water[r, c - 1]);
+        best = Math.Min(best, west);
+
+        var east = Math.Max(floor, water[r, c + 1]);
+        best = Math.Min(best, east);
+
+        if (best >= water[r, c])
+        {
+            return false;
+        }
+
+        water[r, c] = best;
+        return true;
+    }
+
+    private int SumTrappedWater(int[,] water, int rows, int cols)
+    {
         var total = 0;
 
         for (var r = 0; r < rows; r++)
@@ -90,6 +118,13 @@ public class TrappingRainWaterIIBenchmarks
         var rows = _heightMap.Length;
         var cols = _heightMap[0].Length;
         var visited = new bool[rows, cols];
+        var boundary = SeedBoundary(rows, cols, visited);
+
+        return FloodFill(boundary, visited);
+    }
+
+    private Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> SeedBoundary(int rows, int cols, bool[,] visited)
+    {
         var boundary = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
 
         for (var r = 0; r < rows; r++)
@@ -104,6 +139,11 @@ public class TrappingRainWaterIIBenchmarks
             }
         }
 
+        return boundary;
+    }
+
+    private int FloodFill(Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> boundary, bool[,] visited)
+    {
         (int Row, int Col)[] directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
         var water = 0;
 
@@ -114,22 +154,29 @@ public class TrappingRainWaterIIBenchmarks
 
             foreach (var (dr, dc) in directions)
             {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || visited[nr, nc])
-                {
-                    continue;
-                }
-
-                visited[nr, nc] = true;
-                var neighborHeight = _heightMap[nr][nc];
-                water += Math.Max(0, height - neighborHeight);
-                boundary.Push(((nr, nc), Math.Max(height, neighborHeight)));
+                water += RelaxNeighbor((row + dr, col + dc), height, visited, boundary);
             }
         }
 
         return water;
+    }
+
+    private int RelaxNeighbor((int Row, int Col) neighbor, int height, bool[,] visited, Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> boundary)
+    {
+        var rows = _heightMap.Length;
+        var cols = _heightMap[0].Length;
+
+        if (neighbor.Row < 0 || neighbor.Row >= rows || neighbor.Col < 0 || neighbor.Col >= cols || visited[neighbor.Row, neighbor.Col])
+        {
+            return 0;
+        }
+
+        visited[neighbor.Row, neighbor.Col] = true;
+        var neighborHeight = _heightMap[neighbor.Row][neighbor.Col];
+        var contributed = Math.Max(0, height - neighborHeight);
+        boundary.Push((neighbor, Math.Max(height, neighborHeight)));
+
+        return contributed;
     }
 
     private static bool IsBoundary(int r, int c, int rows, int cols)

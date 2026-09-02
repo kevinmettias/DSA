@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SmallestStringWithSwapsBenchmarks
 {
+    // LC problem number, used as the RNG seed.
+    private const int RandomSeed = 1202;
+    private const int AlphabetSize = 26;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,11 +25,11 @@ public class SmallestStringWithSwapsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1202);
+        var random = new Random(RandomSeed);
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(26));
+            chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
         _s = new string(chars);
@@ -57,38 +61,7 @@ public class SmallestStringWithSwapsBenchmarks
 
         for (var start = 0; start < Length; start++)
         {
-            if (visited[start])
-            {
-                continue;
-            }
-
-            var queue = new Queue<int>();
-            queue.Enqueue(start);
-            visited[start] = true;
-
-            var component = new List<int> { start };
-            while (queue.Count > 0)
-            {
-                var current = queue.Dequeue();
-                foreach (var next in adjacency[current])
-                {
-                    if (visited[next])
-                    {
-                        continue;
-                    }
-
-                    visited[next] = true;
-                    component.Add(next);
-                    queue.Enqueue(next);
-                }
-            }
-
-            component.Sort();
-            var chars = component.Select(i => _s[i]).OrderBy(c => c).ToArray();
-            for (var j = 0; j < component.Count; j++)
-            {
-                result[component[j]] = chars[j];
-            }
+            AssignComponentFromStart(start, adjacency, visited, result);
         }
 
         return new string(result);
@@ -97,15 +70,76 @@ public class SmallestStringWithSwapsBenchmarks
     [Benchmark]
     public string DisjointSetUnionFind()
     {
-        var components = new DisjointSet(Length);
+        var components = BuildUnionFind(Length, _pairs);
+        var groups = GroupByRoot(components, Length);
 
-        foreach (var pair in _pairs)
+        var result = _s.ToCharArray();
+        foreach (var indices in groups.Values)
+        {
+            AssignSortedChars(_s, result, indices);
+        }
+
+        return new string(result);
+    }
+
+    // BFS's out from `start` (unless already visited), then writes the component's
+    // sorted characters back into `result` at the component's own sorted positions.
+    private void AssignComponentFromStart(int start, List<int>[] adjacency, bool[] visited, char[] result)
+    {
+        if (visited[start])
+        {
+            return;
+        }
+
+        var queue = new Queue<int>();
+        queue.Enqueue(start);
+        visited[start] = true;
+
+        var component = new List<int> { start };
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            foreach (var next in adjacency[current])
+            {
+                VisitNeighbor(next, visited, component, queue);
+            }
+        }
+
+        component.Sort();
+        AssignSortedChars(_s, result, component);
+    }
+
+    // Marks `next` visited and enqueues it for its own BFS expansion, unless it was
+    // already visited.
+    private static void VisitNeighbor(int next, bool[] visited, List<int> component, Queue<int> queue)
+    {
+        if (visited[next])
+        {
+            return;
+        }
+
+        visited[next] = true;
+        component.Add(next);
+        queue.Enqueue(next);
+    }
+
+    private static DisjointSet BuildUnionFind(int length, int[][] pairs)
+    {
+        var components = new DisjointSet(length);
+
+        foreach (var pair in pairs)
         {
             components.Union(pair[0], pair[1]);
         }
 
+        return components;
+    }
+
+    private static Dictionary<int, List<int>> GroupByRoot(DisjointSet components, int length)
+    {
         var groups = new Dictionary<int, List<int>>();
-        for (var i = 0; i < Length; i++)
+
+        for (var i = 0; i < length; i++)
         {
             var root = components.Find(i);
             if (!groups.TryGetValue(root, out var indices))
@@ -117,16 +151,18 @@ public class SmallestStringWithSwapsBenchmarks
             indices.Add(i);
         }
 
-        var result = _s.ToCharArray();
-        foreach (var indices in groups.Values)
-        {
-            var chars = indices.Select(i => _s[i]).OrderBy(c => c).ToArray();
-            for (var j = 0; j < indices.Count; j++)
-            {
-                result[indices[j]] = chars[j];
-            }
-        }
+        return groups;
+    }
 
-        return new string(result);
+    // Writes the lexicographically-sorted characters at `positions` (assumed ascending)
+    // back into `result` at those same positions.
+    private static void AssignSortedChars(string s, char[] result, List<int> positions)
+    {
+        var sortedChars = positions.Select(i => s[i]).OrderBy(c => c).ToArray();
+
+        for (var j = 0; j < positions.Count; j++)
+        {
+            result[positions[j]] = sortedChars[j];
+        }
     }
 }

@@ -13,6 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BackspaceStringCompareBenchmarks
 {
+    private const int RandomSeed = 844; // LC problem number
+    private const int BackspaceChanceDenominator = 5;
+    private const int AlphabetSize = 26;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -22,8 +26,8 @@ public class BackspaceStringCompareBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _s = BuildKeystrokes(Length, seed: 844);
-        _t = BuildKeystrokes(Length, seed: 844);
+        _s = BuildKeystrokes(Length, seed: RandomSeed);
+        _t = BuildKeystrokes(Length, seed: RandomSeed);
     }
 
     [Benchmark(Baseline = true)]
@@ -92,7 +96,7 @@ public class BackspaceStringCompareBenchmarks
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = random.Next(5) == 0 ? '#' : (char)('a' + random.Next(26));
+            chars[i] = random.Next(BackspaceChanceDenominator) == 0 ? '#' : (char)('a' + random.Next(AlphabetSize));
         }
 
         return new string(chars);

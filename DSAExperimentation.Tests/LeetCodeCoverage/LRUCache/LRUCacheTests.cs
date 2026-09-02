@@ -1,4 +1,4 @@
-﻿using DSAExperimentation.DataStructures.Cache.LruCache;
+using DSAExperimentation.DataStructures.Cache.LruCache;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LRUCache;
 
@@ -9,12 +9,17 @@ public sealed partial class LRUCacheTests
     {
         var cache = new LruCache<int, int>(2);
         cache.Set(1, 1); cache.Set(2, 2);
-        Assert.True(cache.TryGetValue(1, out var one)); Assert.Equal(1, one);
+        var containsOne = cache.TryGetValue(1, out var one);
+        Assert.True(containsOne); Assert.Equal(1, one);
         cache.Set(3, 3);
-        Assert.False(cache.TryGetValue(2, out _));
+        var containsTwo = cache.TryGetValue(2, out _);
+        Assert.False(containsTwo);
         cache.Set(4, 4);
-        Assert.False(cache.TryGetValue(1, out _));
-        Assert.True(cache.TryGetValue(3, out var three)); Assert.Equal(3, three);
-        Assert.True(cache.TryGetValue(4, out var four)); Assert.Equal(4, four);
+        var containsOneAfterEviction = cache.TryGetValue(1, out _);
+        Assert.False(containsOneAfterEviction);
+        var containsThree = cache.TryGetValue(3, out var three);
+        Assert.True(containsThree); Assert.Equal(3, three);
+        var containsFour = cache.TryGetValue(4, out var four);
+        Assert.True(containsFour); Assert.Equal(4, four);
     }
 }

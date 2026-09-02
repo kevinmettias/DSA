@@ -1,51 +1,46 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.TwoSum;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSum;
 
-// LeetCode 1. Two Sum: one O(n) pass over this repo's own HashMap<TValue,TIndex>,
-// not the textbook O(n^2) brute force.
-public sealed partial class TwoSumTests
+// Harness only: the algorithms live in TwoSumSolution. One test method per
+// strategy over one shared set of LeetCode's own examples, so a failure names the
+// strategy that broke.
+public sealed class TwoSumTests
 {
-    [Fact]
-    public void FindIndices_ClassicExample_ReturnsMatchingPairIndices()
-    {
-        int[] nums = [2, 7, 11, 15];
-
-        var found = TryFindTwoSumIndices(nums, target: 9, out var first, out var second);
-
-        Assert.True(found);
-        Assert.Equal(0, first);
-        Assert.Equal(1, second);
-    }
-
-    [Fact]
-    public void FindIndices_NoPairSumsToTarget_ReturnsFalse()
-    {
-        int[] nums = [1, 2, 3];
-
-        var found = TryFindTwoSumIndices(nums, target: 100, out _, out _);
-
-        Assert.False(found);
-    }
-
-    private static bool TryFindTwoSumIndices(int[] nums, int target, out int first, out int second)
-    {
-        var seen = new HashMap<int, int>();
-
-        for (var i = 0; i < nums.Length; i++)
+    public static TheoryData<int[], int, bool, int, int> Examples =>
+        new()
         {
-            if (seen.TryGetValue(target - nums[i], out var matchIndex))
-            {
-                first = matchIndex;
-                second = i;
-                return true;
-            }
+            { [2, 7, 11, 15], 9, true, 0, 1 },
+            { [3, 2, 4], 6, true, 1, 2 },
+            { [3, 3], 6, true, 0, 1 },
+            { [1, 2, 3], 100, false, 0, 0 },
+        };
 
-            seen.Set(nums[i], i);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TryFindIndicesByBruteForce_LeetCodeExamples_ReturnsMatchingPairIndices(
+        int[] nums, int target, bool expectedFound, int expectedFirst, int expectedSecond)
+    {
+        var found = TwoSumSolution.TryFindIndicesByBruteForce(nums, target, out var first, out var second);
 
-        first = 0;
-        second = 0;
-        return false;
+        AssertResult(expectedFound, expectedFirst, expectedSecond, found, first, second);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TryFindIndicesByHashMap_LeetCodeExamples_ReturnsMatchingPairIndices(
+        int[] nums, int target, bool expectedFound, int expectedFirst, int expectedSecond)
+    {
+        var found = TwoSumSolution.TryFindIndicesByHashMap(nums, target, out var first, out var second);
+
+        AssertResult(expectedFound, expectedFirst, expectedSecond, found, first, second);
+    }
+
+    private static void AssertResult(
+        bool expectedFound, int expectedFirst, int expectedSecond, bool found, int first, int second)
+    {
+        Assert.Equal(expectedFound, found);
+        Assert.Equal(expectedFirst, first);
+        Assert.Equal(expectedSecond, second);
     }
 }

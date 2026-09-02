@@ -1,55 +1,36 @@
-﻿using DSAExperimentation.DataStructures.Heap;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.MergeKSortedLists;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeKSortedLists;
 
-// LeetCode 23. Merge k Sorted Lists: use the repo's Heap<T,TOrder> as the
-// frontier over current list heads, splicing SinglyLinkedListNode<T> values.
-public sealed partial class MergeKSortedListsTests
+// Harness only. Both strategies are MergeKSortedListsSolution's - this file pins
+// them to LeetCode's published examples, stated once as the raw values of each
+// input list so a fresh SinglyLinkedListNode<int> chain is built per assertion:
+// MergeListsByHeap rewires the very nodes it is handed, so reusing one already-
+// merged instance across strategies (or across the two theories sharing this
+// data) would silently feed the second call an already-consumed structure.
+public sealed class MergeKSortedListsTests
 {
-    [Fact]
-    public void MergeKLists_ThreeSortedLists_ReturnsOneSortedList()
-    {
-        SinglyLinkedListNode<int>?[] lists = [BuildList([1, 4, 5]), BuildList([1, 3, 4]), BuildList([2, 6])];
-
-        var merged = MergeKLists(lists);
-
-        Assert.Equal([1, 1, 2, 3, 4, 4, 5, 6], ToArray(merged));
-    }
-
-    private static SinglyLinkedListNode<int>? MergeKLists(SinglyLinkedListNode<int>?[] lists)
-    {
-        var heap = new Heap<SinglyLinkedListNode<int>, NodeOrder>();
-        foreach (var list in lists)
+    public static TheoryData<int[][], int[]> Examples =>
+        new()
         {
-            if (list is not null)
-            {
-                heap.Push(list);
-            }
-        }
+            { [[1, 4, 5], [1, 3, 4], [2, 6]], [1, 1, 2, 3, 4, 4, 5, 6] },
+            { [], [] },
+            { [[]], [] },
+        };
 
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        while (heap.TryPop(out var node))
-        {
-            if (node.Next is not null)
-            {
-                heap.Push(node.Next);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeListsByHeap_LeetCodeExamples_ReturnsOneSortedList(int[][] lists, int[] expected) =>
+        Assert.Equal(expected, ToArray(MergeKSortedListsSolution.MergeListsByHeap(BuildLists(lists))));
 
-            tail.Next = node;
-            tail = node;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeListsByFlattenSort_LeetCodeExamples_ReturnsOneSortedList(int[][] lists, int[] expected) =>
+        Assert.Equal(expected, ToArray(MergeKSortedListsSolution.MergeListsByFlattenSort(BuildLists(lists))));
 
-        tail.Next = null;
-        return dummy.Next;
-    }
-
-    private readonly struct NodeOrder : IHeapOrder<SinglyLinkedListNode<int>>
-    {
-        public static bool HasPriority(SinglyLinkedListNode<int> candidate, SinglyLinkedListNode<int> incumbent)
-            => candidate.Value < incumbent.Value;
-    }
+    private static SinglyLinkedListNode<int>?[] BuildLists(int[][] lists) =>
+        lists.Select(BuildList).ToArray();
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

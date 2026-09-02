@@ -93,7 +93,8 @@ public sealed partial class DesignLinkedListTests
                 return;
             }
 
-            var previous = NodeBefore(Math.Max(index, 0));
+            var startIndex = Math.Max(index, 0);
+            var previous = NodeBefore(startIndex);
             var node = new SinglyLinkedListNode<int>(value) { Next = previous.Next };
             previous.Next = node;
             _count++;

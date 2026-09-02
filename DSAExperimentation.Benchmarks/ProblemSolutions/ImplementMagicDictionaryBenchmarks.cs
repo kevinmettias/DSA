@@ -19,6 +19,10 @@ public class ImplementMagicDictionaryBenchmarks
 {
     private const int WordLength = 8;
 
+    private const int RandomSeed = 676; // LeetCode problem number
+
+    private const int AlphabetSize = 26;
+
     [Params(10_000, 30_000)]
     public int DictionarySize;
 
@@ -28,7 +32,7 @@ public class ImplementMagicDictionaryBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(676);
+        var random = new Random(RandomSeed);
         _dictionary = Enumerable.Range(0, DictionarySize).Select(_ => RandomWord(random)).Distinct().ToArray();
         _searchWords = _dictionary.Select(word => OneCharacterAway(word, random)).ToArray();
     }
@@ -40,32 +44,33 @@ public class ImplementMagicDictionaryBenchmarks
 
         foreach (var searchWord in _searchWords)
         {
-            foreach (var word in _dictionary)
+            if (_dictionary.Any(word => IsOneCharacterAway(word, searchWord)))
             {
-                if (word.Length != searchWord.Length)
-                {
-                    continue;
-                }
-
-                var differences = 0;
-
-                for (var i = 0; i < word.Length && differences <= 1; i++)
-                {
-                    if (word[i] != searchWord[i])
-                    {
-                        differences++;
-                    }
-                }
-
-                if (differences == 1)
-                {
-                    matches++;
-                    break;
-                }
+                matches++;
             }
         }
 
         return matches;
+    }
+
+    private static bool IsOneCharacterAway(string word, string searchWord)
+    {
+        if (word.Length != searchWord.Length)
+        {
+            return false;
+        }
+
+        var differences = 0;
+
+        for (var i = 0; i < word.Length && differences <= 1; i++)
+        {
+            if (word[i] != searchWord[i])
+            {
+                differences++;
+            }
+        }
+
+        return differences == 1;
     }
 
     [Benchmark]
@@ -82,7 +87,7 @@ public class ImplementMagicDictionaryBenchmarks
 
         foreach (var searchWord in _searchWords)
         {
-            if (Search(trie.Root, searchWord, 0, usedSubstitution: false))
+            if (Search(trie.Root, new SearchState(searchWord, 0, UsedSubstitution: false)))
             {
                 matches++;
             }
@@ -91,32 +96,27 @@ public class ImplementMagicDictionaryBenchmarks
         return matches;
     }
 
-    private static bool Search(LowercaseTrieNode<bool> node, string searchWord, int index, bool usedSubstitution)
+    private readonly record struct SearchState(string SearchWord, int Index, bool UsedSubstitution);
+
+    private static bool Search(LowercaseTrieNode<bool> node, SearchState state)
     {
-        if (index == searchWord.Length)
+        if (state.Index == state.SearchWord.Length)
         {
-            return usedSubstitution && node.HasValue;
+            return state.UsedSubstitution && node.HasValue;
         }
 
-        var target = searchWord[index] - 'a';
+        return SearchChildren(node, state);
+    }
+
+    private static bool SearchChildren(LowercaseTrieNode<bool> node, SearchState state)
+    {
+        var target = state.SearchWord[state.Index] - 'a';
 
         for (var candidate = 0; candidate < LowercaseTrieNode<bool>.AlphabetSize; candidate++)
         {
             var next = node.Children[candidate];
 
-            if (next is null)
-            {
-                continue;
-            }
-
-            if (candidate == target)
-            {
-                if (Search(next, searchWord, index + 1, usedSubstitution))
-                {
-                    return true;
-                }
-            }
-            else if (!usedSubstitution && Search(next, searchWord, index + 1, usedSubstitution: true))
+            if (next is not null && TryMatchCandidate(next, state, isTargetCandidate: candidate == target))
             {
                 return true;
             }
@@ -125,14 +125,26 @@ public class ImplementMagicDictionaryBenchmarks
         return false;
     }
 
+    private static bool TryMatchCandidate(LowercaseTrieNode<bool> next, SearchState state, bool isTargetCandidate)
+    {
+        var nextState = state with { Index = state.Index + 1 };
+
+        if (isTargetCandidate)
+        {
+            return Search(next, nextState);
+        }
+
+        return !state.UsedSubstitution && Search(next, nextState with { UsedSubstitution = true });
+    }
+
     private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
 
     private static string OneCharacterAway(string word, Random random)
     {
         var characters = word.ToCharArray();
         var position = random.Next(word.Length);
-        characters[position] = (char)('a' + ((characters[position] - 'a' + 1) % 26));
+        characters[position] = (char)('a' + ((characters[position] - 'a' + 1) % AlphabetSize));
         return new string(characters);
     }
 }

@@ -57,6 +57,14 @@ public sealed partial class SmallestSubtreeWithAllTheDeepestNodesTests
                 return (0, node);
             }
 
+            var maxDepth = ComputeMaxDepth(children);
+            var (deepest, tieCount) = FindDeepestAtMaxDepth(children, maxDepth);
+
+            return (maxDepth + 1, tieCount == 1 ? deepest : node);
+        }
+
+        private static int ComputeMaxDepth(IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
+        {
             var maxDepth = 0;
             for (var i = 0; i < children.Count; i++)
             {
@@ -66,6 +74,12 @@ public sealed partial class SmallestSubtreeWithAllTheDeepestNodesTests
                 }
             }
 
+            return maxDepth;
+        }
+
+        private static (BinaryTreeNode<int>? Deepest, int TieCount) FindDeepestAtMaxDepth(
+            IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children, int maxDepth)
+        {
             BinaryTreeNode<int>? deepest = null;
             var tieCount = 0;
             for (var i = 0; i < children.Count; i++)
@@ -77,7 +91,7 @@ public sealed partial class SmallestSubtreeWithAllTheDeepestNodesTests
                 }
             }
 
-            return (maxDepth + 1, tieCount == 1 ? deepest : node);
+            return (deepest, tieCount);
         }
     }
 }

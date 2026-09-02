@@ -15,7 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConcatenatedWordsBenchmarks
 {
-    private static readonly string[] Dictionary = ["cat"];
+    private const string DictionaryWord = "cat";
+    private const int DictionaryWordLength = 3;
+
+    private static readonly string[] Dictionary = [DictionaryWord];
 
     [Params(600, 3000)]
     public int Length;
@@ -23,7 +26,11 @@ public class ConcatenatedWordsBenchmarks
     private string _word = null!;
 
     [GlobalSetup]
-    public void Setup() => _word = string.Concat(Enumerable.Repeat("cat", Length / 3));
+    public void Setup()
+    {
+        var tiles = Enumerable.Repeat(DictionaryWord, Length / DictionaryWordLength);
+        _word = string.Concat(tiles);
+    }
 
     [Benchmark(Baseline = true)]
     public bool HashSetUnboundedScan()
@@ -55,42 +62,69 @@ public class ConcatenatedWordsBenchmarks
     [Benchmark]
     public bool TriePrunedMemoized()
     {
+        var trie = BuildDictionaryTrie();
+        return Memoizer.Memoize<int, bool>(0, (start, can) => From(start, can, trie));
+    }
+
+    private static Trie<bool> BuildDictionaryTrie()
+    {
         var trie = new Trie<bool>();
         foreach (var word in Dictionary)
         {
             trie.Set(word, true);
         }
 
-        return Memoizer.Memoize<int, bool>(0, From);
+        return trie;
+    }
 
-        bool From(int start, Func<int, bool> can)
+    private bool From(int start, Func<int, bool> can, Trie<bool> trie)
+    {
+        if (start == _word.Length)
         {
-            if (start == _word.Length)
+            return true;
+        }
+
+        for (var end = start + 1; end <= _word.Length; end++)
+        {
+            var outcome = ProbePiece(trie, start, end, can);
+            if (outcome == PieceOutcome.NoDictionaryPrefix)
+            {
+                break;
+            }
+
+            if (outcome == PieceOutcome.RemainderDecomposes)
             {
                 return true;
             }
-
-            for (var end = start + 1; end <= _word.Length; end++)
-            {
-                if (start == 0 && end == _word.Length)
-                {
-                    continue;
-                }
-
-                var piece = _word[start..end];
-
-                if (!trie.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (trie.HasKey(piece) && can(end))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
+
+        return false;
+    }
+
+    // The per-candidate-end decision from TriePrunedMemoized's inner loop: whether to
+    // keep extending the current piece, give up on this start index entirely (no
+    // dictionary word begins with this prefix), or a valid split was just found.
+    private PieceOutcome ProbePiece(Trie<bool> trie, int start, int end, Func<int, bool> can)
+    {
+        if (start == 0 && end == _word.Length)
+        {
+            return PieceOutcome.SkipWholeWord;
+        }
+
+        var piece = _word[start..end];
+
+        if (!trie.HasPrefix(piece))
+        {
+            return PieceOutcome.NoDictionaryPrefix;
+        }
+
+        return trie.HasKey(piece) && can(end) ? PieceOutcome.RemainderDecomposes : PieceOutcome.SkipWholeWord;
+    }
+
+    private enum PieceOutcome
+    {
+        SkipWholeWord,
+        NoDictionaryPrefix,
+        RemainderDecomposes
     }
 }

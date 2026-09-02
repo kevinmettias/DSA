@@ -71,19 +71,24 @@ public sealed partial class RandomPickWithBlacklistTests
             var nextWhitelisted = _whitelistBound;
             foreach (var value in blacklist)
             {
-                if (value >= _whitelistBound)
-                {
-                    continue; // already outside the drawn range, needs no remap target
-                }
+                nextWhitelisted = MapIfNeeded(value, blacklistedSet, nextWhitelisted);
+            }
+        }
 
-                while (blacklistedSet.Has(nextWhitelisted))
-                {
-                    nextWhitelisted++;
-                }
+        private int MapIfNeeded(int value, Set<int> blacklistedSet, int nextWhitelisted)
+        {
+            if (value >= _whitelistBound)
+            {
+                return nextWhitelisted; // already outside the drawn range, needs no remap target
+            }
 
-                _remap.Set(value, nextWhitelisted);
+            while (blacklistedSet.Has(nextWhitelisted))
+            {
                 nextWhitelisted++;
             }
+
+            _remap.Set(value, nextWhitelisted);
+            return nextWhitelisted + 1;
         }
 
         public int Pick()

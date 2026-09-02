@@ -18,6 +18,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GreatestCommonDivisorOfStringsBenchmarks
 {
+    private const int LowercaseAlphabetSize = 26;
+    private const int Str1RepeatCount = 13;
+    private const int Str2RepeatCount = 7;
+
     [Params(20, 500)]
     public int UnitLength;
 
@@ -28,9 +32,11 @@ public class GreatestCommonDivisorOfStringsBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var unit = new string(Enumerable.Range(0, UnitLength).Select(_ => (char)('a' + random.Next(26))).ToArray());
-        _str1 = string.Concat(Enumerable.Repeat(unit, 13));
-        _str2 = string.Concat(Enumerable.Repeat(unit, 7));
+        var unit = new string(Enumerable.Range(0, UnitLength).Select(_ => (char)('a' + random.Next(LowercaseAlphabetSize))).ToArray());
+        var str1Units = Enumerable.Repeat(unit, Str1RepeatCount);
+        _str1 = string.Concat(str1Units);
+        var str2Units = Enumerable.Repeat(unit, Str2RepeatCount);
+        _str2 = string.Concat(str2Units);
     }
 
     [Benchmark(Baseline = true)]

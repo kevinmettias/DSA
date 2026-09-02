@@ -19,6 +19,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ErectTheFenceBenchmarks
 {
+    private const int RandomSeed = 587; // LC problem number
+    private const int CoordinateBound = 1_000;
+    private const int MinPointsForTurn = 2;
+
     [Params(50, 300)]
     public int Length;
 
@@ -27,9 +31,9 @@ public class ErectTheFenceBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(587);
+        var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, Length)
-            .Select(_ => (random.Next(0, 1_000), random.Next(0, 1_000)))
+            .Select(_ => (random.Next(0, CoordinateBound), random.Next(0, CoordinateBound)))
             .ToArray();
     }
 
@@ -42,30 +46,40 @@ public class ErectTheFenceBenchmarks
         {
             for (var j = 0; j < _points.Length; j++)
             {
-                if (i == j)
-                {
-                    continue;
-                }
-
-                var a = _points[i];
-                var b = _points[j];
-
-                if (!IsHullLine(a, b))
-                {
-                    continue;
-                }
-
-                foreach (var c in _points)
-                {
-                    if (IsOnSegment(a, b, c))
-                    {
-                        fence.Add(c);
-                    }
-                }
+                AddHullLinePoints(i, j, fence);
             }
         }
 
         return fence.Count;
+    }
+
+    private void AddHullLinePoints(int i, int j, HashSet<(int X, int Y)> fence)
+    {
+        if (i == j)
+        {
+            return;
+        }
+
+        var a = _points[i];
+        var b = _points[j];
+
+        if (!IsHullLine(a, b))
+        {
+            return;
+        }
+
+        AddSegmentPoints(fence, a, b);
+    }
+
+    private void AddSegmentPoints(HashSet<(int X, int Y)> fence, (int X, int Y) a, (int X, int Y) b)
+    {
+        foreach (var p in _points)
+        {
+            if (IsOnSegment(a, b, p))
+            {
+                fence.Add(p);
+            }
+        }
     }
 
     private bool IsHullLine((int X, int Y) a, (int X, int Y) b)
@@ -74,20 +88,7 @@ public class ErectTheFenceBenchmarks
 
         foreach (var c in _points)
         {
-            var cross = Cross(a, b, c);
-
-            if (cross == 0)
-            {
-                continue;
-            }
-
-            var thisSide = cross > 0 ? 1 : -1;
-
-            if (side == 0)
-            {
-                side = thisSide;
-            }
-            else if (side != thisSide)
+            if (!TryUpdateSide(a, b, c, ref side))
             {
                 return false;
             }
@@ -96,34 +97,70 @@ public class ErectTheFenceBenchmarks
         return true;
     }
 
+    private static bool TryUpdateSide((int X, int Y) a, (int X, int Y) b, (int X, int Y) c, ref int side)
+    {
+        var cross = Cross(a, b, c);
+
+        if (cross == 0)
+        {
+            return true;
+        }
+
+        var thisSide = cross > 0 ? 1 : -1;
+
+        if (side == 0)
+        {
+            side = thisSide;
+        }
+        else if (side != thisSide)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     [Benchmark]
     public int MonotoneChainThenEdgeScan()
     {
-        var sorted = _points.ToArray();
+        var sorted = SortByCoordinates(_points);
+        var corners = ComputeHullCorners(sorted);
+        var fence = ScanEdgesForFencePoints(corners);
+
+        return fence.Count;
+    }
+
+    private static (int X, int Y)[] SortByCoordinates((int X, int Y)[] points)
+    {
+        var sorted = points.ToArray();
         MergeSort.Sort<(int X, int Y), ArrayIndexedSequence<(int X, int Y)>>(
             new ArrayIndexedSequence<(int X, int Y)>(sorted),
             Comparer<(int X, int Y)>.Create((a, b) => a.X != b.X ? a.X.CompareTo(b.X) : a.Y.CompareTo(b.Y)));
 
+        return sorted;
+    }
+
+    private static List<(int X, int Y)> ComputeHullCorners((int X, int Y)[] sorted)
+    {
         var lower = StrictHalfHull(sorted);
         var upper = StrictHalfHull(sorted.Reverse().ToArray());
-        var corners = lower.Take(lower.Count - 1).Concat(upper.Take(upper.Count - 1)).ToList();
 
+        return lower.Take(lower.Count - 1).Concat(upper.Take(upper.Count - 1)).ToList();
+    }
+
+    private HashSet<(int X, int Y)> ScanEdgesForFencePoints(List<(int X, int Y)> corners)
+    {
         var fence = new HashSet<(int X, int Y)>();
+
         for (var i = 0; i < corners.Count; i++)
         {
             var a = corners[i];
             var b = corners[(i + 1) % corners.Count];
 
-            foreach (var p in _points)
-            {
-                if (IsOnSegment(a, b, p))
-                {
-                    fence.Add(p);
-                }
-            }
+            AddSegmentPoints(fence, a, b);
         }
 
-        return fence.Count;
+        return fence;
     }
 
     private static List<(int X, int Y)> StrictHalfHull((int X, int Y)[] points)
@@ -132,20 +169,7 @@ public class ErectTheFenceBenchmarks
 
         foreach (var p in points)
         {
-            while (stack.Count >= 2)
-            {
-                stack.TryPop(out var top);
-                stack.TryPeek(out var second);
-
-                if (Cross(second, top, p) <= 0)
-                {
-                    continue;
-                }
-
-                stack.Push(top);
-                break;
-            }
-
+            PopNonLeftTurns(stack, p);
             stack.Push(p);
         }
 
@@ -157,6 +181,23 @@ public class ErectTheFenceBenchmarks
 
         chain.Reverse();
         return chain;
+    }
+
+    private static void PopNonLeftTurns(HullStack stack, (int X, int Y) p)
+    {
+        while (stack.Count >= MinPointsForTurn)
+        {
+            stack.TryPop(out var top);
+            stack.TryPeek(out var second);
+
+            if (Cross(second, top, p) <= 0)
+            {
+                continue;
+            }
+
+            stack.Push(top);
+            break;
+        }
     }
 
     private static bool IsOnSegment((int X, int Y) a, (int X, int Y) b, (int X, int Y) p)

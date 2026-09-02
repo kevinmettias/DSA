@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LinkedListRandomNodeBenchmarks
 {
     private const int CallCount = 2_000;
+    private const int SecondToLastNodeOffset = 2; // value of the node built just before the already-created tail (Length - 1)
+    private const int ReservoirSamplingStartRank = 2; // classic reservoir sampling: result starts as the 1st element, so the next candidate considered is the 2nd
 
     [Params(200, 5_000)]
     public int Length;
@@ -26,7 +28,7 @@ public class LinkedListRandomNodeBenchmarks
     public void Setup()
     {
         var head = new SinglyLinkedListNode<int>(Length - 1);
-        for (var value = Length - 2; value >= 0; value--)
+        for (var value = Length - SecondToLastNodeOffset; value >= 0; value--)
         {
             head = new SinglyLinkedListNode<int>(value) { Next = head };
         }
@@ -43,7 +45,7 @@ public class LinkedListRandomNodeBenchmarks
         for (var call = 0; call < CallCount; call++)
         {
             var result = _head.Value;
-            var index = 2;
+            var index = ReservoirSamplingStartRank;
 
             for (var node = _head.Next; node is not null; node = node.Next)
             {

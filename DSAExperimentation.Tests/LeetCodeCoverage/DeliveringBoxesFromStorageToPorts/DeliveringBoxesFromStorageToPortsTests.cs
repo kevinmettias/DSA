@@ -70,39 +70,68 @@ public sealed class DeliveringBoxesFromStorageToPortsTests
         }
 
         var dp = new int[n + 1];
-        var window = new RepoDeque();
-        window.PushBack(0);
-        var left = 0;
+        var window = new TripWindow(switchPrefix, weightPrefix, maxBoxes, maxWeight);
 
         for (var i = 1; i <= n; i++)
         {
-            while (i - left > maxBoxes || weightPrefix[i] - weightPrefix[left] > maxWeight)
-            {
-                left++;
-            }
-
-            while (window.TryPeekFront(out var frontIndex) && frontIndex < left)
-            {
-                window.TryPopFront(out _);
-            }
-
-            window.TryPeekFront(out var bestIndex);
-            dp[i] = 2 + switchPrefix[i] + (dp[bestIndex] - switchPrefix[bestIndex + 1]);
-
-            if (i == n)
-            {
-                continue;
-            }
-
-            var candidate = dp[i] - switchPrefix[i + 1];
-            while (window.TryPeekBack(out var backIndex) && dp[backIndex] - switchPrefix[backIndex + 1] >= candidate)
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
+            window.AdvanceAndComputeTrip(i, dp);
         }
 
         return dp[n];
+    }
+
+    private sealed class TripWindow(int[] switchPrefix, long[] weightPrefix, int maxBoxes, int maxWeight)
+    {
+        private readonly RepoDeque _window = CreateSeededWindow();
+        private int _left;
+
+        private static RepoDeque CreateSeededWindow()
+        {
+            var window = new RepoDeque();
+            window.PushBack(0);
+            return window;
+        }
+
+        public void AdvanceAndComputeTrip(int i, int[] dp)
+        {
+            AdvanceLeftBound(i);
+            dp[i] = ComputeTripCost(i, dp);
+            MaintainBackWindow(i, dp);
+        }
+
+        private void AdvanceLeftBound(int i)
+        {
+            while (i - _left > maxBoxes || weightPrefix[i] - weightPrefix[_left] > maxWeight)
+            {
+                _left++;
+            }
+        }
+
+        private int ComputeTripCost(int i, int[] dp)
+        {
+            while (_window.TryPeekFront(out var frontIndex) && frontIndex < _left)
+            {
+                _window.TryPopFront(out _);
+            }
+
+            _window.TryPeekFront(out var bestIndex);
+            return 2 + switchPrefix[i] + (dp[bestIndex] - switchPrefix[bestIndex + 1]);
+        }
+
+        private void MaintainBackWindow(int i, int[] dp)
+        {
+            if (i == dp.Length - 1)
+            {
+                return;
+            }
+
+            var candidate = dp[i] - switchPrefix[i + 1];
+            while (_window.TryPeekBack(out var backIndex) && dp[backIndex] - switchPrefix[backIndex + 1] >= candidate)
+            {
+                _window.TryPopBack(out _);
+            }
+
+            _window.PushBack(i);
+        }
     }
 }

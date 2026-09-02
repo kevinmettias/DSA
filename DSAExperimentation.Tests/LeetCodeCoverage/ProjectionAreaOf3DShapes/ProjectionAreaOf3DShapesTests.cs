@@ -27,6 +27,14 @@ public sealed partial class ProjectionAreaOf3DShapesTests
 
     private static int ProjectionArea(int[][] grid)
     {
+        var (top, front) = ComputeTopAndFront(grid);
+        var side = ComputeSide(grid);
+
+        return top + front + side;
+    }
+
+    private static (int Top, int Front) ComputeTopAndFront(int[][] grid)
+    {
         var rows = grid.Length;
         var cols = grid[0].Length;
         var top = 0;
@@ -48,7 +56,15 @@ public sealed partial class ProjectionAreaOf3DShapesTests
             front += rowMax;
         }
 
+        return (top, front);
+    }
+
+    private static int ComputeSide(int[][] grid)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
         var side = 0;
+
         for (var c = 0; c < cols; c++)
         {
             var colMax = 0;
@@ -60,6 +76,6 @@ public sealed partial class ProjectionAreaOf3DShapesTests
             side += colMax;
         }
 
-        return top + front + side;
+        return side;
     }
 }

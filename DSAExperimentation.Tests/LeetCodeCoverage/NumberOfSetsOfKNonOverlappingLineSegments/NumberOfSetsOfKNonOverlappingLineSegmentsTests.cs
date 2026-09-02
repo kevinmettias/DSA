@@ -31,15 +31,27 @@ public sealed partial class NumberOfSetsOfKNonOverlappingLineSegmentsTests
     [InlineData(6, 3, 28)]
     [InlineData(1, 0, 1)]
     public void NumberOfSets_VerifiedAgainstBruteForceEnumeration_ReturnsExpectedCount(int n, int k, int expected)
-        => Assert.Equal(expected, NumberOfSets(n, k));
+    {
+        var sets = NumberOfSets(n, k);
+
+        Assert.Equal(expected, sets);
+    }
 
     [Fact]
     public void NumberOfSets_TouchingLetsKSegmentsFitInJustKPlusOnePoints_ReturnsOne()
-        => Assert.Equal(1, NumberOfSets(3, 2));
+    {
+        var sets = NumberOfSets(3, 2);
+
+        Assert.Equal(1, sets);
+    }
 
     [Fact]
     public void NumberOfSets_TooFewPointsForKSegmentsEvenWhileTouching_ReturnsZero()
-        => Assert.Equal(0, NumberOfSets(2, 2));
+    {
+        var sets = NumberOfSets(2, 2);
+
+        Assert.Equal(0, sets);
+    }
 
     private static int NumberOfSets(int n, int k) => (int)Choose(n + k - 1, 2 * k);
 

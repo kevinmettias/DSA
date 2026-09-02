@@ -48,39 +48,49 @@ public sealed partial class LongestIncreasingPathInAMatrixTests
         Assert.Equal(1, LongestIncreasingPath(matrix));
     }
 
+    private readonly record struct MatrixGrid(int[,] Matrix, int Rows, int Cols);
+
     private static int LongestIncreasingPath(int[,] matrix)
     {
-        var rows = matrix.GetLength(0);
-        var cols = matrix.GetLength(1);
+        var grid = new MatrixGrid(matrix, matrix.GetLength(0), matrix.GetLength(1));
+
+        return ComputeLongestPath(grid);
+    }
+
+    private static int ComputeLongestPath(MatrixGrid grid)
+    {
         var longest = 0;
 
-        for (var row = 0; row < rows; row++)
+        for (var row = 0; row < grid.Rows; row++)
         {
-            for (var col = 0; col < cols; col++)
+            for (var col = 0; col < grid.Cols; col++)
             {
-                longest = Math.Max(longest, Memoizer.Memoize<(int Row, int Col), int>((row, col), LengthFrom));
+                var pathLength = Memoizer.Memoize<(int Row, int Col), int>(
+                    (row, col), (state, lengthFrom) => LengthFrom(grid, state, lengthFrom));
+                longest = Math.Max(longest, pathLength);
             }
         }
 
         return longest;
+    }
 
-        int LengthFrom((int Row, int Col) state, Func<(int Row, int Col), int> lengthFrom)
+    private static int LengthFrom(
+        MatrixGrid grid, (int Row, int Col) state, Func<(int Row, int Col), int> lengthFrom)
+    {
+        var best = 1;
+
+        foreach (var (rowOffset, colOffset) in Directions)
         {
-            var best = 1;
+            var nextRow = state.Row + rowOffset;
+            var nextCol = state.Col + colOffset;
 
-            foreach (var (rowOffset, colOffset) in Directions)
+            if (nextRow >= 0 && nextRow < grid.Rows && nextCol >= 0 && nextCol < grid.Cols
+                && grid.Matrix[nextRow, nextCol] > grid.Matrix[state.Row, state.Col])
             {
-                var nextRow = state.Row + rowOffset;
-                var nextCol = state.Col + colOffset;
-
-                if (nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols
-                    && matrix[nextRow, nextCol] > matrix[state.Row, state.Col])
-                {
-                    best = Math.Max(best, 1 + lengthFrom((nextRow, nextCol)));
-                }
+                best = Math.Max(best, 1 + lengthFrom((nextRow, nextCol)));
             }
-
-            return best;
         }
+
+        return best;
     }
 }

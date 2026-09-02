@@ -59,25 +59,28 @@ public sealed partial class WordSearchIITests
         }
 
         var found = new HashSet<string>();
+        var context = new SearchContext(board, trie.Root, found);
 
         for (var row = 0; row < board.Length; row++)
         for (var col = 0; col < board[0].Length; col++)
         {
-            SearchFrom(board, trie.Root, row, col, found);
+            SearchFrom(context, row, col);
         }
 
         return found;
     }
 
-    private static void SearchFrom(char[][] board, LowercaseTrieNode<string> root, int row, int col, HashSet<string> found)
+    private readonly record struct SearchContext(char[][] Board, LowercaseTrieNode<string> Root, HashSet<string> Found);
+
+    private static void SearchFrom(SearchContext context, int row, int col)
     {
-        var state = new State(board, root, row, col);
+        var state = new State(context.Board, context.Root, row, col);
         Backtrack.Search(state,
             isSolution: s => s.AtWord,
             candidates: s => s.Candidates(),
             choose: (s, p) => s.Choose(p),
             unchoose: (s, p) => s.Unchoose(p),
-            onSolution: s => found.Add(s.Word));
+            onSolution: s => context.Found.Add(s.Word));
     }
 
     private sealed class State(char[][] board, LowercaseTrieNode<string> root, int startRow, int startCol)

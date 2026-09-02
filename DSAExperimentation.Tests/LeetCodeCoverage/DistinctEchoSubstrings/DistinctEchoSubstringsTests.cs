@@ -32,7 +32,8 @@ public sealed partial class DistinctEchoSubstringsTests
             {
                 if (IsEcho(text, hash, start, halfLength))
                 {
-                    echoes.TryAdd(text.Substring(start, halfLength * 2));
+                    var echoSubstring = text.Substring(start, halfLength * 2);
+                    echoes.TryAdd(echoSubstring);
                 }
             }
         }
@@ -47,6 +48,8 @@ public sealed partial class DistinctEchoSubstringsTests
             return false;
         }
 
-        return text.AsSpan(start, halfLength).SequenceEqual(text.AsSpan(start + halfLength, halfLength));
+        var firstHalf = text.AsSpan(start, halfLength);
+        var secondHalf = text.AsSpan(start + halfLength, halfLength);
+        return firstHalf.SequenceEqual(secondHalf);
     }
 }

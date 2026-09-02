@@ -1,14 +1,32 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.IntervalSet;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.InsertInterval;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are InsertIntervalSolution's, the same methods
+// InsertIntervalTests proves correct.
 [MemoryDiagnoser]
 public class InsertIntervalBenchmarks
 {
+    private const int IntervalSpacing = 3;
+    private const int NewIntervalEndMultiplier = 2;
+
+    [Params(200, 5_000)]
+    public int Length;
+
     private (int Start, int End)[] _intervals = null!;
-    [Params(200, 5_000)] public int Length;
-    [GlobalSetup] public void Setup() => _intervals = Enumerable.Range(0, Length).Select(i => (i * 3, (i * 3) + 1)).ToArray();
-    [Benchmark(Baseline = true)] public int ListInsertAndMerge() { var list = _intervals.ToList(); list.Add((Length, Length * 2)); list.Sort((a,b) => a.Start.CompareTo(b.Start)); var merged = new List<(int Start,int End)>(); foreach (var interval in list) { if (merged.Count == 0 || interval.Start > merged[^1].End) merged.Add(interval); else merged[^1] = (merged[^1].Start, Math.Max(merged[^1].End, interval.End)); } return merged.Count; }
-    [Benchmark] public int IntervalSetAdd() { var set = new IntervalSet<int>(); foreach (var (start,end) in _intervals) set.Add(start,end); set.Add(Length, Length * 2); return set.Count; }
+    private (int Start, int End) _newInterval;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        _intervals = Enumerable.Range(0, Length).Select(i => (i * IntervalSpacing, (i * IntervalSpacing) + 1)).ToArray();
+        _newInterval = (Length, Length * NewIntervalEndMultiplier);
+    }
+
+    [Benchmark(Baseline = true)]
+    public int ListInsertAndMerge() => InsertIntervalSolution.InsertByListSortAndMerge(_intervals, _newInterval).Count;
+
+    [Benchmark]
+    public int IntervalSetAdd() => InsertIntervalSolution.InsertByIntervalSet(_intervals, _newInterval).Count;
 }

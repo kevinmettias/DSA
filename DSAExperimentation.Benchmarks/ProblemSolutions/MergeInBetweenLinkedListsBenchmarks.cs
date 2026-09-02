@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MergeInBetweenLinkedListsBenchmarks
 {
     private const int SecondListLength = 5;
+    private const int SecondListValueOffset = 1_000_000;
+    private const int SpliceStartDivisor = 3;
+    private const int WindowBoundaryOffset = 2;
 
     [Params(200, 5_000)]
     public int Length;
@@ -25,8 +28,8 @@ public class MergeInBetweenLinkedListsBenchmarks
     public void Setup()
     {
         _list1Values = Enumerable.Range(0, Length).ToArray();
-        _list2Values = Enumerable.Range(1_000_000, SecondListLength).ToArray();
-        _a = Length / 3;
+        _list2Values = Enumerable.Range(SecondListValueOffset, SecondListLength).ToArray();
+        _a = Length / SpliceStartDivisor;
         _b = _a + SecondListLength - 1;
     }
 
@@ -56,7 +59,7 @@ public class MergeInBetweenLinkedListsBenchmarks
         for (var i = 0; i < a - 1; i++) before = before.Next!;
 
         var after = before;
-        for (var i = 0; i < b - a + 2; i++) after = after.Next!;
+        for (var i = 0; i < b - a + WindowBoundaryOffset; i++) after = after.Next!;
 
         before.Next = list2;
 

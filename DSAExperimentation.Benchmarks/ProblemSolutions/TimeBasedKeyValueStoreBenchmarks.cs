@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class TimeBasedKeyValueStoreBenchmarks
 {
+    private const int TimestampStep = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -31,11 +33,11 @@ public class TimeBasedKeyValueStoreBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            _timestamps.Add(i * 2);
+            _timestamps.Add(i * TimestampStep);
             _values.Add($"v{i}");
         }
 
-        _queryTimestamp = (Length * 2) + 1;
+        _queryTimestamp = (Length * TimestampStep) + 1;
     }
 
     [Benchmark(Baseline = true)]

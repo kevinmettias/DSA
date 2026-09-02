@@ -16,7 +16,10 @@ public sealed partial class SumOfTwoIntegersTests
     [InlineData(0, 0, 0)]
     [InlineData(int.MaxValue, 0, int.MaxValue)]
     public void GetSum_LeetCodeExamples_ReturnsArithmeticSum(int a, int b, int expected)
-        => Assert.Equal(expected, GetSum(a, b));
+    {
+        var actual = GetSum(a, b);
+        Assert.Equal(expected, actual);
+    }
 
     private static int GetSum(int a, int b)
     {

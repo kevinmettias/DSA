@@ -15,7 +15,9 @@ public sealed partial class RectangleOverlapTests
         int[] rec1 = [0, 0, 2, 2];
         int[] rec2 = [1, 1, 3, 3];
 
-        Assert.True(IsRectangleOverlap(rec1, rec2));
+        var overlaps = IsRectangleOverlap(rec1, rec2);
+
+        Assert.True(overlaps);
     }
 
     [Fact]
@@ -24,7 +26,9 @@ public sealed partial class RectangleOverlapTests
         int[] rec1 = [0, 0, 1, 1];
         int[] rec2 = [1, 0, 2, 1];
 
-        Assert.False(IsRectangleOverlap(rec1, rec2));
+        var overlaps = IsRectangleOverlap(rec1, rec2);
+
+        Assert.False(overlaps);
     }
 
     [Fact]
@@ -33,7 +37,9 @@ public sealed partial class RectangleOverlapTests
         int[] rec1 = [0, 0, 1, 1];
         int[] rec2 = [2, 2, 3, 3];
 
-        Assert.False(IsRectangleOverlap(rec1, rec2));
+        var overlaps = IsRectangleOverlap(rec1, rec2);
+
+        Assert.False(overlaps);
     }
 
     [Fact]
@@ -42,7 +48,9 @@ public sealed partial class RectangleOverlapTests
         int[] rec1 = [0, 0, 10, 10];
         int[] rec2 = [3, 3, 5, 5];
 
-        Assert.True(IsRectangleOverlap(rec1, rec2));
+        var overlaps = IsRectangleOverlap(rec1, rec2);
+
+        Assert.True(overlaps);
     }
 
     private static bool IsRectangleOverlap(int[] rec1, int[] rec2)

@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CircularArrayLoopBenchmarks
 {
+    private const int SignChoiceCount = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,7 +25,7 @@ public class CircularArrayLoopBenchmarks
     {
         var random = new Random(1);
         _values = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(1, Length) * (random.Next(2) == 0 ? 1 : -1))
+            .Select(_ => random.Next(1, Length) * (random.Next(SignChoiceCount) == 0 ? 1 : -1))
             .ToArray();
     }
 
@@ -66,6 +68,14 @@ public class CircularArrayLoopBenchmarks
     public bool LinkedListFloyd()
     {
         var n = _values.Length;
+        var nodes = CreateNodes(n);
+        LinkNodes(nodes, _values, n);
+
+        return AnyNodeHasCycle(nodes, n);
+    }
+
+    private static SinglyLinkedListNode<int>[] CreateNodes(int n)
+    {
         var nodes = new SinglyLinkedListNode<int>[n];
 
         for (var i = 0; i < n; i++)
@@ -73,18 +83,26 @@ public class CircularArrayLoopBenchmarks
             nodes[i] = new SinglyLinkedListNode<int>(i);
         }
 
+        return nodes;
+    }
+
+    private static void LinkNodes(SinglyLinkedListNode<int>[] nodes, int[] values, int n)
+    {
         for (var i = 0; i < n; i++)
         {
-            var nextIndex = (((i + _values[i]) % n) + n) % n;
+            var nextIndex = (((i + values[i]) % n) + n) % n;
 
-            if (nextIndex == i || Math.Sign(_values[nextIndex]) != Math.Sign(_values[i]))
+            if (nextIndex == i || Math.Sign(values[nextIndex]) != Math.Sign(values[i]))
             {
                 continue;
             }
 
             nodes[i].Next = nodes[nextIndex];
         }
+    }
 
+    private static bool AnyNodeHasCycle(SinglyLinkedListNode<int>[] nodes, int n)
+    {
         for (var i = 0; i < n; i++)
         {
             if (CycleDetection.HasCycle(nodes[i]))

@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DesignHashMapBenchmarks
 {
+    private const int AlternatingModulus = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -27,7 +29,7 @@ public class DesignHashMapBenchmarks
         // a miss forces both strategies through their full failed-lookup path (a whole
         // list scan, or a whole bucket-chain walk) instead of an early return.
         _probeKeys = Enumerable.Range(0, Length)
-            .Select(i => i % 2 == 0 ? _keys[i] : Length + i)
+            .Select(i => i % AlternatingModulus == 0 ? _keys[i] : Length + i)
             .ToArray();
     }
 

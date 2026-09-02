@@ -13,6 +13,11 @@ public class RangeSumQuery2DImmutableBenchmarks
 {
     private const int QueryCount = 200;
 
+    // LC problem number, reused as the Random seed for reproducible benchmark input.
+    private const int RandomSeed = 304;
+
+    private const int CellValueRange = 1_000;
+
     [Params(20, 200)]
     public int Size;
 
@@ -22,9 +27,9 @@ public class RangeSumQuery2DImmutableBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(304);
+        var random = new Random(RandomSeed);
         _matrix = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(-1_000, 1_000)).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(-CellValueRange, CellValueRange)).ToArray())
             .ToArray();
 
         _queries = new (int Row1, int Col1, int Row2, int Col2)[QueryCount];

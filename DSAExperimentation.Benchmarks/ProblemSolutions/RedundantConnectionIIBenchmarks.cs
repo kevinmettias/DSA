@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RedundantConnectionIIBenchmarks
 {
+    // The chain's extra cross edge targets node 2, which is what gives it two parents.
+    private const int DoublyParentedNode = 2;
+
     [Params(200, 5_000)]
     public int NodeCount;
 
@@ -29,10 +32,11 @@ public class RedundantConnectionIIBenchmarks
         var edges = new int[NodeCount][];
         for (var i = 0; i < NodeCount - 1; i++)
         {
-            edges[i] = [i + 1, i + 2];
+            var parent = i + 1;
+            edges[i] = [parent, parent + 1];
         }
 
-        edges[NodeCount - 1] = [NodeCount, 2];
+        edges[NodeCount - 1] = [NodeCount, DoublyParentedNode];
         _edges = edges;
     }
 
@@ -104,24 +108,33 @@ public class RedundantConnectionIIBenchmarks
 
         for (var i = 0; i < n; i++)
         {
-            if (i == skip)
-            {
-                continue;
-            }
-
-            var (u, v) = (edges[i][0], edges[i][1]);
-            var rootU = FindRootNoCompression(parent, u);
-            var rootV = FindRootNoCompression(parent, v);
-
-            if (rootU == rootV)
+            if (UnionEdgeDetectsCycle(edges, parent, skip, i))
             {
                 return false;
             }
-
-            parent[rootV] = rootU;
         }
 
         return true;
+    }
+
+    private static bool UnionEdgeDetectsCycle(int[][] edges, int[] parent, int skip, int i)
+    {
+        if (i == skip)
+        {
+            return false;
+        }
+
+        var (u, v) = (edges[i][0], edges[i][1]);
+        var rootU = FindRootNoCompression(parent, u);
+        var rootV = FindRootNoCompression(parent, v);
+
+        if (rootU == rootV)
+        {
+            return true;
+        }
+
+        parent[rootV] = rootU;
+        return false;
     }
 
     private static int FindRootNoCompression(int[] parent, int id)
@@ -137,6 +150,18 @@ public class RedundantConnectionIIBenchmarks
     private static int[] FindByDisjointSet(int[][] edges)
     {
         var n = edges.Length;
+        var (conflictEdge, priorEdge) = FindTwoParentConflict(edges, n);
+
+        if (conflictEdge == -1)
+        {
+            return FindCycleEdge(edges, n, skip: -1);
+        }
+
+        return ResolveConflict(edges, n, conflictEdge, priorEdge);
+    }
+
+    private static (int ConflictEdge, int PriorEdge) FindTwoParentConflict(int[][] edges, int n)
+    {
         var parentEdgeOf = new int[n + 1];
         Array.Fill(parentEdgeOf, -1);
 
@@ -156,11 +181,11 @@ public class RedundantConnectionIIBenchmarks
             parentEdgeOf[child] = i;
         }
 
-        if (conflictEdge == -1)
-        {
-            return FindCycleEdge(edges, n, skip: -1);
-        }
+        return (conflictEdge, priorEdge);
+    }
 
+    private static int[] ResolveConflict(int[][] edges, int n, int conflictEdge, int priorEdge)
+    {
         var cycleEdge = FindCycleEdge(edges, n, skip: conflictEdge);
         return cycleEdge.Length == 0 ? edges[conflictEdge] : edges[priorEdge];
     }

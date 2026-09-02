@@ -25,13 +25,20 @@ public sealed partial class PopulatingNextRightPointersInEachNodeTests
 
         var next = Connect(root);
 
-        Assert.Null(NextOf(next, root));
-        Assert.Equal(root.Right, NextOf(next, root.Left!));
-        Assert.Null(NextOf(next, root.Right!));
-        Assert.Equal(root.Left!.Right, NextOf(next, root.Left!.Left!));
-        Assert.Equal(root.Right!.Left, NextOf(next, root.Left!.Right!));
-        Assert.Equal(root.Right!.Right, NextOf(next, root.Right!.Left!));
-        Assert.Null(NextOf(next, root.Right!.Right!));
+        AssertNext(next, root, expected: null);
+        AssertNext(next, root.Left!, root.Right);
+        AssertNext(next, root.Right!, expected: null);
+        AssertNext(next, root.Left!.Left!, root.Left!.Right);
+        AssertNext(next, root.Left!.Right!, root.Right!.Left);
+        AssertNext(next, root.Right!.Left!, root.Right!.Right);
+        AssertNext(next, root.Right!.Right!, expected: null);
+    }
+
+    private static void AssertNext(
+        HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node, BinaryTreeNode<int>? expected)
+    {
+        var actual = NextOf(next, node);
+        Assert.Equal(expected, actual);
     }
 
     private static BinaryTreeNode<int>? NextOf(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node)

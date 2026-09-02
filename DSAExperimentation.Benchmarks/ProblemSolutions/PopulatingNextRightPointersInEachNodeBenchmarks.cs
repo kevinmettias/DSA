@@ -39,25 +39,7 @@ public class PopulatingNextRightPointersInEachNodeBenchmarks
 
             for (var i = 0; i < levelSize; i++)
             {
-                var node = queue.Dequeue();
-
-                if (previous is not null)
-                {
-                    next[previous] = node;
-                    linked++;
-                }
-
-                previous = node;
-
-                if (node.Left is not null)
-                {
-                    queue.Enqueue(node.Left);
-                }
-
-                if (node.Right is not null)
-                {
-                    queue.Enqueue(node.Right);
-                }
+                (previous, linked) = LinkNode(queue, next, previous, linked);
             }
 
             next[previous!] = null;
@@ -66,8 +48,41 @@ public class PopulatingNextRightPointersInEachNodeBenchmarks
         return linked;
     }
 
+    private static (BinaryTreeNode<int>? Previous, int Linked) LinkNode(
+        Queue<BinaryTreeNode<int>> queue,
+        Dictionary<BinaryTreeNode<int>, BinaryTreeNode<int>?> next,
+        BinaryTreeNode<int>? previous,
+        int linked)
+    {
+        var node = queue.Dequeue();
+
+        if (previous is not null)
+        {
+            next[previous] = node;
+            linked++;
+        }
+
+        if (node.Left is not null)
+        {
+            queue.Enqueue(node.Left);
+        }
+
+        if (node.Right is not null)
+        {
+            queue.Enqueue(node.Right);
+        }
+
+        return (node, linked);
+    }
+
     [Benchmark]
     public int LevelGroupedTraversal()
+    {
+        var levels = CollectLevels();
+        return CountLinks(levels);
+    }
+
+    private List<List<BinaryTreeNode<int>>> CollectLevels()
     {
         LevelHooks.Output.Value = [];
 
@@ -75,10 +90,15 @@ public class PopulatingNextRightPointersInEachNodeBenchmarks
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>, LevelHooks>(_root);
 
+        return LevelHooks.Output.Value!;
+    }
+
+    private static int CountLinks(List<List<BinaryTreeNode<int>>> levels)
+    {
         var next = new HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?>();
         var linked = 0;
 
-        foreach (var level in LevelHooks.Output.Value!)
+        foreach (var level in levels)
         {
             for (var i = 0; i < level.Count; i++)
             {

@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
 {
+    private const string GroupBody = "abcdef";
+
     [Params(500, 5_000)]
     public int GroupCount;
 
@@ -22,7 +24,7 @@ public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
         var builder = new System.Text.StringBuilder();
         for (var i = 0; i < GroupCount; i++)
         {
-            builder.Append('(').Append("abcdef").Append(')');
+            builder.Append('(').Append(GroupBody).Append(')');
         }
 
         _input = builder.ToString();
@@ -44,7 +46,9 @@ public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
             var openIndex = current.LastIndexOf('(', closeIndex);
             var inner = current.Substring(openIndex + 1, closeIndex - openIndex - 1);
             var reversedInner = new string(inner.Reverse().ToArray());
-            current = string.Concat(current.AsSpan(0, openIndex), reversedInner, current.AsSpan(closeIndex + 1));
+            var beforeGroup = current.AsSpan(0, openIndex);
+            var afterGroup = current.AsSpan(closeIndex + 1);
+            current = string.Concat(beforeGroup, reversedInner, afterGroup);
         }
 
         return current;
@@ -58,27 +62,31 @@ public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
 
         foreach (var ch in _input)
         {
-            switch (ch)
-            {
-                case '(':
-                    groups.Push(current);
-                    current = [];
-                    break;
-                case ')':
-                    current.Reverse();
-                    if (groups.TryPop(out var enclosing))
-                    {
-                        enclosing.AddRange(current);
-                        current = enclosing;
-                    }
-
-                    break;
-                default:
-                    current.Add(ch);
-                    break;
-            }
+            current = ProcessChar(ch, groups, current);
         }
 
         return new string(current.ToArray());
+    }
+
+    private static List<char> ProcessChar(char ch, RepoCharListStack groups, List<char> current)
+    {
+        switch (ch)
+        {
+            case '(':
+                groups.Push(current);
+                return [];
+            case ')':
+                current.Reverse();
+                if (groups.TryPop(out var enclosing))
+                {
+                    enclosing.AddRange(current);
+                    return enclosing;
+                }
+
+                return current;
+            default:
+                current.Add(ch);
+                return current;
+        }
     }
 }

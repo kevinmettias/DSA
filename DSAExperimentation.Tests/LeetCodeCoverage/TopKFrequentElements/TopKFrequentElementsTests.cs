@@ -35,6 +35,14 @@ public sealed partial class TopKFrequentElementsTests
 
     private static int[] TopKFrequent(int[] nums, int k)
     {
+        var counts = CountFrequencies(nums);
+        var heap = BuildTopKHeap(counts, k);
+
+        return ExtractOrderedResult(heap);
+    }
+
+    private static HashMap<int, int> CountFrequencies(int[] nums)
+    {
         var counts = new HashMap<int, int>();
 
         foreach (var value in nums)
@@ -43,6 +51,11 @@ public sealed partial class TopKFrequentElementsTests
             counts.Set(value, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<(int Node, int Priority), ByPriorityOrder<int, int>> BuildTopKHeap(HashMap<int, int> counts, int k)
+    {
         var heap = new Heap<(int Node, int Priority), ByPriorityOrder<int, int>>();
 
         foreach (var value in counts.Keys)
@@ -56,6 +69,11 @@ public sealed partial class TopKFrequentElementsTests
             }
         }
 
+        return heap;
+    }
+
+    private static int[] ExtractOrderedResult(Heap<(int Node, int Priority), ByPriorityOrder<int, int>> heap)
+    {
         var result = new int[heap.Count];
 
         for (var i = result.Length - 1; i >= 0; i--)

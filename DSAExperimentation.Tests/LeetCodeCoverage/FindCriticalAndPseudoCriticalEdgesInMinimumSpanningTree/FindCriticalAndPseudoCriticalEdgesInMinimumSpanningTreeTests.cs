@@ -41,16 +41,28 @@ public sealed partial class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningT
 
     private static (List<int> Critical, List<int> PseudoCritical) Classify(int n, int[][] edges)
     {
-        var edgesByWeight = Enumerable.Range(0, edges.Length).OrderBy(i => edges[i][2]).ToArray();
-        var baselineWeight = MstWeight(n, edges, edgesByWeight, skipIndex: -1, forceIndex: -1)
+        var mst = new MstInput(n, edges, SortEdgesByWeight(edges));
+
+        var baselineWeight = BaselineWeight(mst);
+
+        return ClassifyEdges(mst, baselineWeight);
+    }
+
+    private static int[] SortEdgesByWeight(int[][] edges)
+        => Enumerable.Range(0, edges.Length).OrderBy(i => edges[i][2]).ToArray();
+
+    private static int BaselineWeight(MstInput mst)
+        => MstWeight(mst, new EdgeOverride(SkipIndex: -1, ForceIndex: -1))
             ?? throw new InvalidOperationException("LeetCode 1489 guarantees a connected input graph.");
 
+    private static (List<int> Critical, List<int> PseudoCritical) ClassifyEdges(MstInput mst, int baselineWeight)
+    {
         var critical = new List<int>();
         var pseudoCritical = new List<int>();
 
-        for (var i = 0; i < edges.Length; i++)
+        for (var i = 0; i < mst.Edges.Length; i++)
         {
-            var withoutEdge = MstWeight(n, edges, edgesByWeight, skipIndex: i, forceIndex: -1);
+            var withoutEdge = MstWeight(mst, new EdgeOverride(SkipIndex: i, ForceIndex: -1));
 
             if (withoutEdge is null || withoutEdge > baselineWeight)
             {
@@ -58,7 +70,7 @@ public sealed partial class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningT
                 continue;
             }
 
-            if (MstWeight(n, edges, edgesByWeight, skipIndex: -1, forceIndex: i) == baselineWeight)
+            if (MstWeight(mst, new EdgeOverride(SkipIndex: -1, ForceIndex: i)) == baselineWeight)
             {
                 pseudoCritical.Add(i);
             }
@@ -67,39 +79,64 @@ public sealed partial class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningT
         return (critical, pseudoCritical);
     }
 
-    private static int? MstWeight(int n, int[][] edges, int[] edgesByWeight, int skipIndex, int forceIndex)
+    private static int? MstWeight(MstInput mst, EdgeOverride overrideEdge)
     {
-        var components = new DisjointSet(n);
+        var components = new DisjointSet(mst.N);
         var totalWeight = 0;
         var edgesUsed = 0;
 
-        if (forceIndex >= 0)
+        if (overrideEdge.ForceIndex >= 0)
         {
-            var forced = edges[forceIndex];
-            components.Union(forced[0], forced[1]);
-            totalWeight += forced[2];
-            edgesUsed++;
+            var forcedWeight = ForceEdge(mst, overrideEdge.ForceIndex, components);
+            Accumulate(forcedWeight, ref totalWeight, ref edgesUsed);
         }
 
-        foreach (var index in edgesByWeight)
+        foreach (var index in mst.EdgesByWeight)
         {
-            if (index == skipIndex || index == forceIndex)
-            {
-                continue;
-            }
-
-            var edge = edges[index];
-
-            if (components.IsConnected(edge[0], edge[1]))
-            {
-                continue;
-            }
-
-            components.Union(edge[0], edge[1]);
-            totalWeight += edge[2];
-            edgesUsed++;
+            var addedWeight = TryUnionEdge(mst, overrideEdge, components, index);
+            Accumulate(addedWeight, ref totalWeight, ref edgesUsed);
         }
 
-        return edgesUsed == n - 1 ? totalWeight : null;
+        return edgesUsed == mst.N - 1 ? totalWeight : null;
     }
+
+    private static void Accumulate(int? addedWeight, ref int totalWeight, ref int edgesUsed)
+    {
+        if (addedWeight is null)
+        {
+            return;
+        }
+
+        totalWeight += addedWeight.Value;
+        edgesUsed++;
+    }
+
+    private static int ForceEdge(MstInput mst, int forceIndex, DisjointSet components)
+    {
+        var forced = mst.Edges[forceIndex];
+        components.Union(forced[0], forced[1]);
+        return forced[2];
+    }
+
+    private static int? TryUnionEdge(MstInput mst, EdgeOverride overrideEdge, DisjointSet components, int index)
+    {
+        if (index == overrideEdge.SkipIndex || index == overrideEdge.ForceIndex)
+        {
+            return null;
+        }
+
+        var edge = mst.Edges[index];
+
+        if (components.IsConnected(edge[0], edge[1]))
+        {
+            return null;
+        }
+
+        components.Union(edge[0], edge[1]);
+        return edge[2];
+    }
+
+    private readonly record struct MstInput(int N, int[][] Edges, int[] EdgesByWeight);
+
+    private readonly record struct EdgeOverride(int SkipIndex, int ForceIndex);
 }

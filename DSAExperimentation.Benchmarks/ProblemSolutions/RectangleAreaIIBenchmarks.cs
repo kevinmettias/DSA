@@ -13,6 +13,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RectangleAreaIIBenchmarks
 {
+    private const int RandomSeed = 7;
+    private const int CoordinateRangeMultiplier = 2;
+    private const int MaxRectangleDimension = 10;
+    private const int X2Index = 2;
+    private const int Y2Index = 3;
+    private const int FarCoordinateOffset = 2;
+
     [Params(20, 300)]
     public int RectangleCount;
 
@@ -21,14 +28,14 @@ public class RectangleAreaIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
         _rectangles = new int[RectangleCount][];
 
         for (var i = 0; i < RectangleCount; i++)
         {
-            var x1 = random.Next(0, RectangleCount * 2);
-            var y1 = random.Next(0, RectangleCount * 2);
-            _rectangles[i] = [x1, y1, x1 + random.Next(1, 10), y1 + random.Next(1, 10)];
+            var x1 = random.Next(0, RectangleCount * CoordinateRangeMultiplier);
+            var y1 = random.Next(0, RectangleCount * CoordinateRangeMultiplier);
+            _rectangles[i] = [x1, y1, x1 + random.Next(1, MaxRectangleDimension), y1 + random.Next(1, MaxRectangleDimension)];
         }
     }
 
@@ -61,33 +68,40 @@ public class RectangleAreaIIBenchmarks
 
         for (var i = 0; i < xs.Length - 1; i++)
         {
-            var x1 = xs[i];
-            var x2 = xs[i + 1];
-            var yIntervals = new IntervalSet<int>();
-
-            foreach (var rectangle in _rectangles)
-            {
-                if (rectangle[0] <= x1 && rectangle[2] >= x2)
-                {
-                    yIntervals.Add(rectangle[1], rectangle[3]);
-                }
-            }
-
-            for (var j = 0; j < yIntervals.Count; j++)
-            {
-                var (start, end) = yIntervals.Get(j);
-                area += (long)(x2 - x1) * (end - start);
-            }
+            area += ComputeSlabArea(xs[i], xs[i + 1]);
         }
 
         return area;
+    }
+
+    private long ComputeSlabArea(int x1, int x2)
+    {
+        var yIntervals = new IntervalSet<int>();
+
+        foreach (var rectangle in _rectangles)
+        {
+            if (rectangle[0] <= x1 && rectangle[X2Index] >= x2)
+            {
+                yIntervals.Add(rectangle[1], rectangle[Y2Index]);
+            }
+        }
+
+        long slabArea = 0;
+
+        for (var j = 0; j < yIntervals.Count; j++)
+        {
+            var (start, end) = yIntervals.Get(j);
+            slabArea += (long)(x2 - x1) * (end - start);
+        }
+
+        return slabArea;
     }
 
     private bool IsCovered(int x1, int x2, int y1, int y2)
     {
         foreach (var rectangle in _rectangles)
         {
-            if (rectangle[0] <= x1 && rectangle[2] >= x2 && rectangle[1] <= y1 && rectangle[3] >= y2)
+            if (rectangle[0] <= x1 && rectangle[X2Index] >= x2 && rectangle[1] <= y1 && rectangle[Y2Index] >= y2)
             {
                 return true;
             }
@@ -97,5 +111,5 @@ public class RectangleAreaIIBenchmarks
     }
 
     private int[] DistinctSorted(int axis)
-        => _rectangles.SelectMany(r => new[] { r[axis], r[axis + 2] }).Distinct().OrderBy(x => x).ToArray();
+        => _rectangles.SelectMany(r => new[] { r[axis], r[axis + FarCoordinateOffset] }).Distinct().OrderBy(x => x).ToArray();
 }

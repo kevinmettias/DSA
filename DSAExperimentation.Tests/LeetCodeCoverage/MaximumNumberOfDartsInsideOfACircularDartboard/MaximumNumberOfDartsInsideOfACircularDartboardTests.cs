@@ -19,7 +19,8 @@ public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardTests
     {
         int[][] darts = [[-2, 0], [2, 0], [0, 1], [0, -1]];
 
-        Assert.Equal(4, MaxDarts(darts, radius: 2));
+        var actual = MaxDarts(darts, radius: 2);
+        Assert.Equal(4, actual);
     }
 
     [Fact]
@@ -27,7 +28,8 @@ public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardTests
     {
         int[][] darts = [[-3, 0], [3, 0], [2, 6], [5, 4], [0, 9], [7, 8]];
 
-        Assert.Equal(5, MaxDarts(darts, radius: 5));
+        var actual = MaxDarts(darts, radius: 5);
+        Assert.Equal(5, actual);
     }
 
     [Fact]
@@ -35,7 +37,8 @@ public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardTests
     {
         int[][] darts = [[3, 7]];
 
-        Assert.Equal(1, MaxDarts(darts, radius: 10));
+        var actual = MaxDarts(darts, radius: 10);
+        Assert.Equal(1, actual);
     }
 
     [Fact]
@@ -43,62 +46,90 @@ public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardTests
     {
         int[][] darts = [[0, 0], [100, 100], [-100, -100]];
 
-        Assert.Equal(1, MaxDarts(darts, radius: 1));
+        var actual = MaxDarts(darts, radius: 1);
+        Assert.Equal(1, actual);
     }
 
     private static int MaxDarts(int[][] darts, int radius)
+    {
+        var candidates = BuildCandidateCenters(darts, radius);
+
+        return FindBestCandidateCount(darts, candidates, radius);
+    }
+
+    private static DynamicArray<(double X, double Y)> BuildCandidateCenters(int[][] darts, int radius)
     {
         var candidates = new DynamicArray<(double X, double Y)>();
 
         for (var i = 0; i < darts.Length; i++)
         {
-            candidates.Add((darts[i][0], darts[i][1]));
+            var pointI = ((double)darts[i][0], (double)darts[i][1]);
+            candidates.Add(pointI);
 
             for (var j = i + 1; j < darts.Length; j++)
             {
-                var dx = (double)(darts[j][0] - darts[i][0]);
-                var dy = (double)(darts[j][1] - darts[i][1]);
-                var distanceSquared = (dx * dx) + (dy * dy);
-
-                if (distanceSquared > 4.0 * radius * radius)
-                {
-                    continue;
-                }
-
-                var midX = (darts[i][0] + darts[j][0]) / 2.0;
-                var midY = (darts[i][1] + darts[j][1]) / 2.0;
-                var distance = Math.Sqrt(distanceSquared);
-                var halfChord = distance / 2.0;
-                var height = Math.Sqrt(Math.Max(0.0, ((double)radius * radius) - (halfChord * halfChord)));
-                var offsetX = -dy / distance * height;
-                var offsetY = dx / distance * height;
-
-                candidates.Add((midX + offsetX, midY + offsetY));
-                candidates.Add((midX - offsetX, midY - offsetY));
+                var pointJ = ((double)darts[j][0], (double)darts[j][1]);
+                AddBoundaryCandidates(candidates, pointI, pointJ, radius);
             }
         }
 
+        return candidates;
+    }
+
+    private static int FindBestCandidateCount(int[][] darts, DynamicArray<(double X, double Y)> candidates, int radius)
+    {
         var best = 1;
 
         for (var c = 0; c < candidates.Count; c++)
         {
             var (centerX, centerY) = candidates.Get(c);
-            var count = 0;
-
-            foreach (var dart in darts)
-            {
-                var dx = dart[0] - centerX;
-                var dy = dart[1] - centerY;
-
-                if ((dx * dx) + (dy * dy) <= ((double)radius * radius) + 1e-6)
-                {
-                    count++;
-                }
-            }
+            var count = CountDartsNearCenter(darts, centerX, centerY, radius);
 
             best = Math.Max(best, count);
         }
 
         return best;
+    }
+
+    private static int CountDartsNearCenter(int[][] darts, double centerX, double centerY, int radius)
+    {
+        var count = 0;
+
+        foreach (var dart in darts)
+        {
+            var dx = dart[0] - centerX;
+            var dy = dart[1] - centerY;
+
+            if ((dx * dx) + (dy * dy) <= ((double)radius * radius) + 1e-6)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static void AddBoundaryCandidates(DynamicArray<(double X, double Y)> candidates, (double X, double Y) a, (double X, double Y) b, int radius)
+    {
+        var dx = b.X - a.X;
+        var dy = b.Y - a.Y;
+        var distanceSquared = (dx * dx) + (dy * dy);
+
+        if (distanceSquared > 4.0 * radius * radius)
+        {
+            return;
+        }
+
+        var midX = (a.X + b.X) / 2.0;
+        var midY = (a.Y + b.Y) / 2.0;
+        var distance = Math.Sqrt(distanceSquared);
+        var halfChord = distance / 2.0;
+        var heightSquared = Math.Max(0.0, ((double)radius * radius) - (halfChord * halfChord));
+        var height = Math.Sqrt(heightSquared);
+        var offsetX = -dy / distance * height;
+        var offsetY = dx / distance * height;
+
+        candidates.Add((midX + offsetX, midY + offsetY));
+        candidates.Add((midX - offsetX, midY - offsetY));
     }
 }

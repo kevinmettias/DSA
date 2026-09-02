@@ -20,6 +20,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LinkedListInBinaryTreeBenchmarks
 {
+    private const int MatchDepthDivisor = 2;
+
     [Params(200, 2_000)]
     public int NodeCount;
 
@@ -35,7 +37,7 @@ public class LinkedListInBinaryTreeBenchmarks
         // Matches the skewed chain's first NodeCount/2 values (0,1,2,...), then
         // deliberately breaks - forces genuine matching depth for the one real
         // candidate instead of failing at the first comparison everywhere.
-        var matchDepth = NodeCount / 2;
+        var matchDepth = NodeCount / MatchDepthDivisor;
         _headValues = [.. Enumerable.Range(0, matchDepth), -1];
         _head = BuildList(_headValues);
     }

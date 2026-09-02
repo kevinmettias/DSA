@@ -15,6 +15,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LongestRepeatingCharacterReplacementBenchmarks
 {
     private const int K = 2;
+    private const int AlphabetSize = 26;
 
     [Params(200, 5_000)]
     public int Length;
@@ -34,16 +35,15 @@ public class LongestRepeatingCharacterReplacementBenchmarks
 
         for (var start = 0; start < _text.Length; start++)
         {
-            var counts = new int[26];
+            var counts = new int[AlphabetSize];
             var mostFrequentCount = 0;
 
             for (var end = start; end < _text.Length; end++)
             {
-                var index = _text[end] - 'A';
-                counts[index]++;
-                mostFrequentCount = Math.Max(mostFrequentCount, counts[index]);
+                var (shouldBreak, updatedCount) = UpdateFrequencyWindow(start, end, counts, mostFrequentCount);
+                mostFrequentCount = updatedCount;
 
-                if (end - start + 1 - mostFrequentCount > K)
+                if (shouldBreak)
                 {
                     break;
                 }
@@ -65,22 +65,39 @@ public class LongestRepeatingCharacterReplacementBenchmarks
 
         for (var windowEnd = 0; windowEnd < _text.Length; windowEnd++)
         {
-            var incoming = _text[windowEnd];
-            counts.TryGetValue(incoming, out var incomingCount);
-            counts.Set(incoming, incomingCount + 1);
-            mostFrequentCount = Math.Max(mostFrequentCount, incomingCount + 1);
-
-            if (windowEnd - windowStart + 1 - mostFrequentCount > K)
-            {
-                var outgoing = _text[windowStart];
-                counts.TryGetValue(outgoing, out var outgoingCount);
-                counts.Set(outgoing, outgoingCount - 1);
-                windowStart++;
-            }
-
+            (windowStart, mostFrequentCount) = AdvanceWindow(windowEnd, windowStart, counts, mostFrequentCount);
             longest = Math.Max(longest, windowEnd - windowStart + 1);
         }
 
         return longest;
+    }
+
+    private (bool ShouldBreak, int MostFrequentCount) UpdateFrequencyWindow(
+        int start, int end, int[] counts, int mostFrequentCount)
+    {
+        var index = _text[end] - 'A';
+        counts[index]++;
+        var updatedCount = Math.Max(mostFrequentCount, counts[index]);
+        var shouldBreak = end - start + 1 - updatedCount > K;
+        return (shouldBreak, updatedCount);
+    }
+
+    private (int WindowStart, int MostFrequentCount) AdvanceWindow(
+        int windowEnd, int windowStart, HashMap<char, int> counts, int mostFrequentCount)
+    {
+        var incoming = _text[windowEnd];
+        counts.TryGetValue(incoming, out var incomingCount);
+        counts.Set(incoming, incomingCount + 1);
+        var updatedCount = Math.Max(mostFrequentCount, incomingCount + 1);
+
+        if (windowEnd - windowStart + 1 - updatedCount > K)
+        {
+            var outgoing = _text[windowStart];
+            counts.TryGetValue(outgoing, out var outgoingCount);
+            counts.Set(outgoing, outgoingCount - 1);
+            windowStart++;
+        }
+
+        return (windowStart, updatedCount);
     }
 }

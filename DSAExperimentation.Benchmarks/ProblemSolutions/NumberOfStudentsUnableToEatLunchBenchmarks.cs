@@ -15,6 +15,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfStudentsUnableToEatLunchBenchmarks
 {
+    // LC problem number, reused as the deterministic benchmark seed.
+    private const int RandomSeed = 1700;
+
+    private const int PreferenceUpperBound = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -24,9 +29,9 @@ public class NumberOfStudentsUnableToEatLunchBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1700);
-        _students = Enumerable.Range(0, Length).Select(_ => random.Next(2)).ToArray();
-        _sandwiches = Enumerable.Range(0, Length).Select(_ => random.Next(2)).ToArray();
+        var random = new Random(RandomSeed);
+        _students = Enumerable.Range(0, Length).Select(_ => random.Next(PreferenceUpperBound)).ToArray();
+        _sandwiches = Enumerable.Range(0, Length).Select(_ => random.Next(PreferenceUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -59,18 +64,38 @@ public class NumberOfStudentsUnableToEatLunchBenchmarks
     [Benchmark]
     public int QueueStackSimulation()
     {
+        var queue = BuildQueue(_students);
+        var stack = BuildStack(_sandwiches);
+
+        return SimulateLunchLine(queue, stack);
+    }
+
+    private static RepoQueue BuildQueue(int[] students)
+    {
         var queue = new RepoQueue();
-        foreach (var student in _students)
+
+        foreach (var student in students)
         {
             queue.Enqueue(student);
         }
 
+        return queue;
+    }
+
+    private static RepoStack BuildStack(int[] sandwiches)
+    {
         var stack = new RepoStack();
-        for (var i = _sandwiches.Length - 1; i >= 0; i--)
+
+        for (var i = sandwiches.Length - 1; i >= 0; i--)
         {
-            stack.Push(_sandwiches[i]);
+            stack.Push(sandwiches[i]);
         }
 
+        return stack;
+    }
+
+    private static int SimulateLunchLine(RepoQueue queue, RepoStack stack)
+    {
         var consecutiveSkips = 0;
 
         while (queue.Count > 0 && consecutiveSkips < queue.Count)

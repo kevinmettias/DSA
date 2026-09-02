@@ -62,35 +62,50 @@ public sealed class PerfectRectangleTests
 
     private static bool IsRectangleCover(int[][] rectangles)
     {
-        var minX = int.MaxValue;
-        var minY = int.MaxValue;
-        var maxX = int.MinValue;
-        var maxY = int.MinValue;
-        long totalArea = 0;
-        var corners = new Set<(int X, int Y)>();
+        var accumulator = new RectangleAccumulator();
 
         foreach (var rect in rectangles)
         {
-            var (x1, y1, x2, y2) = (rect[0], rect[1], rect[2], rect[3]);
-            minX = Math.Min(minX, x1);
-            minY = Math.Min(minY, y1);
-            maxX = Math.Max(maxX, x2);
-            maxY = Math.Max(maxY, y2);
-            totalArea += (long)(x2 - x1) * (y2 - y1);
-
-            ToggleCorner(corners, (x1, y1));
-            ToggleCorner(corners, (x1, y2));
-            ToggleCorner(corners, (x2, y1));
-            ToggleCorner(corners, (x2, y2));
+            accumulator.Add(rect);
         }
 
-        if (totalArea != (long)(maxX - minX) * (maxY - minY) || corners.Count != 4)
+        return accumulator.IsPerfectCover();
+    }
+
+    private sealed class RectangleAccumulator
+    {
+        private readonly Set<(int X, int Y)> _corners = new();
+        private int _minX = int.MaxValue;
+        private int _minY = int.MaxValue;
+        private int _maxX = int.MinValue;
+        private int _maxY = int.MinValue;
+        private long _totalArea;
+
+        public void Add(int[] rect)
         {
-            return false;
+            var (x1, y1, x2, y2) = (rect[0], rect[1], rect[2], rect[3]);
+            _minX = Math.Min(_minX, x1);
+            _minY = Math.Min(_minY, y1);
+            _maxX = Math.Max(_maxX, x2);
+            _maxY = Math.Max(_maxY, y2);
+            _totalArea += (long)(x2 - x1) * (y2 - y1);
+
+            ToggleCorner(_corners, (x1, y1));
+            ToggleCorner(_corners, (x1, y2));
+            ToggleCorner(_corners, (x2, y1));
+            ToggleCorner(_corners, (x2, y2));
         }
 
-        return corners.Has((minX, minY)) && corners.Has((minX, maxY))
-            && corners.Has((maxX, minY)) && corners.Has((maxX, maxY));
+        public bool IsPerfectCover()
+        {
+            if (_totalArea != (long)(_maxX - _minX) * (_maxY - _minY) || _corners.Count != 4)
+            {
+                return false;
+            }
+
+            return _corners.Has((_minX, _minY)) && _corners.Has((_minX, _maxY))
+                && _corners.Has((_maxX, _minY)) && _corners.Has((_maxX, _maxY));
+        }
     }
 
     private static void ToggleCorner(Set<(int X, int Y)> corners, (int X, int Y) point)

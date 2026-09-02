@@ -28,29 +28,37 @@ public sealed partial class StoneGameIITests
     private static int MaxAliceStones(int[] piles)
     {
         var n = piles.Length;
+        var suffixSum = ComputeSuffixSums(piles);
+
+        return Memoizer.Memoize<(int Index, int M), int>((0, 1), (state, best) => Best(n, suffixSum, state, best));
+    }
+
+    private static int[] ComputeSuffixSums(int[] piles)
+    {
+        var n = piles.Length;
         var suffixSum = new int[n + 1];
         for (var i = n - 1; i >= 0; i--)
         {
             suffixSum[i] = suffixSum[i + 1] + piles[i];
         }
 
-        return Memoizer.Memoize<(int Index, int M), int>((0, 1), Best);
+        return suffixSum;
+    }
 
-        int Best((int Index, int M) state, Func<(int Index, int M), int> best)
+    private static int Best(int n, int[] suffixSum, (int Index, int M) state, Func<(int Index, int M), int> best)
+    {
+        var (index, m) = state;
+        if (index + (2 * m) >= n)
         {
-            var (index, m) = state;
-            if (index + (2 * m) >= n)
-            {
-                return suffixSum[index];
-            }
-
-            var result = 0;
-            for (var x = 1; x <= 2 * m; x++)
-            {
-                result = Math.Max(result, suffixSum[index] - best((index + x, Math.Max(m, x))));
-            }
-
-            return result;
+            return suffixSum[index];
         }
+
+        var result = 0;
+        for (var x = 1; x <= 2 * m; x++)
+        {
+            result = Math.Max(result, suffixSum[index] - best((index + x, Math.Max(m, x))));
+        }
+
+        return result;
     }
 }

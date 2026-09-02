@@ -17,13 +17,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveInvalidParenthesesBenchmarks
 {
+    // Splits Length in half to build the generated input's opener/closer counts.
+    private const int HalfDivisor = 2;
+
     [Params(14, 20)]
     public int Length;
 
     private string _input = null!;
 
     [GlobalSetup]
-    public void Setup() => _input = new string('(', (Length / 2) + 1) + new string(')', (Length / 2) - 1);
+    public void Setup() => _input = new string('(', (Length / HalfDivisor) + 1) + new string(')', (Length / HalfDivisor) - 1);
 
     [Benchmark(Baseline = true)]
     public int BruteForceAllSubsets()
@@ -68,42 +71,54 @@ public class RemoveInvalidParenthesesBenchmarks
 
         while (queue.Count > 0)
         {
-            var levelSize = queue.Count;
-            var validAtThisLevel = new List<string>();
+            var validAtThisLevel = ProcessLevel(queue, visited);
 
-            for (var i = 0; i < levelSize; i++)
-            {
-                queue.TryDequeue(out var candidate);
-
-                if (IsValid(candidate))
-                {
-                    validAtThisLevel.Add(candidate);
-                    continue;
-                }
-
-                for (var j = 0; j < candidate.Length; j++)
-                {
-                    if (candidate[j] != '(' && candidate[j] != ')')
-                    {
-                        continue;
-                    }
-
-                    var next = candidate.Remove(j, 1);
-
-                    if (visited.TryAdd(next))
-                    {
-                        queue.Enqueue(next);
-                    }
-                }
-            }
-
-            if (validAtThisLevel.Count > 0)
+            if (validAtThisLevel is not null)
             {
                 return validAtThisLevel;
             }
         }
 
         return [];
+    }
+
+    private static List<string>? ProcessLevel(RepoQueue queue, Set<string> visited)
+    {
+        var levelSize = queue.Count;
+        var validAtThisLevel = new List<string>();
+
+        for (var i = 0; i < levelSize; i++)
+        {
+            queue.TryDequeue(out var candidate);
+
+            if (IsValid(candidate))
+            {
+                validAtThisLevel.Add(candidate);
+                continue;
+            }
+
+            EnqueueValidRemovals(candidate, queue, visited);
+        }
+
+        return validAtThisLevel.Count > 0 ? validAtThisLevel : null;
+    }
+
+    private static void EnqueueValidRemovals(string candidate, RepoQueue queue, Set<string> visited)
+    {
+        for (var j = 0; j < candidate.Length; j++)
+        {
+            if (candidate[j] != '(' && candidate[j] != ')')
+            {
+                continue;
+            }
+
+            var next = candidate.Remove(j, 1);
+
+            if (visited.TryAdd(next))
+            {
+                queue.Enqueue(next);
+            }
+        }
     }
 
     private static bool IsValid(string s)

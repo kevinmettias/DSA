@@ -15,6 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SpecialBinaryStringBenchmarks
 {
+    private const int RandomSeed = 761;
+    private const int MinimalSpecialStringLength = 2;
+    private const int CoinFlipOutcomes = 2;
+    private const string OneBit = "1";
+    private const string ZeroBit = "0";
+    private const string MinimalSpecialString = "10";
+
     [Params(50, 200)]
     public int PairCount;
 
@@ -23,7 +30,7 @@ public class SpecialBinaryStringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(761);
+        var random = new Random(RandomSeed);
         _input = GenerateSpecial(PairCount, random);
     }
 
@@ -43,12 +50,12 @@ public class SpecialBinaryStringBenchmarks
     {
         if (pairCount <= 1)
         {
-            return "10";
+            return MinimalSpecialString;
         }
 
-        if (random.Next(2) == 0)
+        if (random.Next(CoinFlipOutcomes) == 0)
         {
-            return "1" + GenerateSpecial(pairCount - 1, random) + "0";
+            return OneBit + GenerateSpecial(pairCount - 1, random) + ZeroBit;
         }
 
         var left = random.Next(1, pairCount);
@@ -57,7 +64,7 @@ public class SpecialBinaryStringBenchmarks
 
     private static string MakeLargestSpecialArraySort(string s)
     {
-        if (s.Length <= 2)
+        if (s.Length <= MinimalSpecialStringLength)
         {
             return s;
         }
@@ -70,7 +77,7 @@ public class SpecialBinaryStringBenchmarks
 
     private static string MakeLargestSpecialMergeSort(string s)
     {
-        if (s.Length <= 2)
+        if (s.Length <= MinimalSpecialStringLength)
         {
             return s;
         }
@@ -95,7 +102,8 @@ public class SpecialBinaryStringBenchmarks
 
             if (balance == 0)
             {
-                pieces.Add("1" + recurse(s.Substring(start + 1, i - start - 1)) + "0");
+                var pieceInterior = s.Substring(start + 1, i - start - 1);
+                pieces.Add(OneBit + recurse(pieceInterior) + ZeroBit);
                 start = i + 1;
             }
         }

@@ -42,32 +42,42 @@ public sealed partial class DiagonalTraverseTests
 
         for (var diagonal = 0; diagonal <= rows + cols - 2; diagonal++)
         {
-            var rowStart = Math.Max(0, diagonal - cols + 1);
-            var rowEnd = Math.Min(diagonal, rows - 1);
+            var range = new DiagonalRange(diagonal, Math.Max(0, diagonal - cols + 1), Math.Min(diagonal, rows - 1));
 
-            if (diagonal % 2 == 0)
-            {
-                var reversed = new DiagonalStack();
-
-                for (var r = rowStart; r <= rowEnd; r++)
-                {
-                    reversed.Push(matrix[r][diagonal - r]);
-                }
-
-                for (var r = rowStart; r <= rowEnd; r++)
-                {
-                    reversed.TryPop(out result[next++]);
-                }
-            }
-            else
-            {
-                for (var r = rowStart; r <= rowEnd; r++)
-                {
-                    result[next++] = matrix[r][diagonal - r];
-                }
-            }
+            next = diagonal % 2 == 0
+                ? WriteReversedDiagonal(matrix, range, result, next)
+                : WriteStraightDiagonal(matrix, range, result, next);
         }
 
         return result;
+    }
+
+    private readonly record struct DiagonalRange(int Diagonal, int RowStart, int RowEnd);
+
+    private static int WriteReversedDiagonal(int[][] matrix, DiagonalRange range, int[] result, int next)
+    {
+        var reversed = new DiagonalStack();
+
+        for (var r = range.RowStart; r <= range.RowEnd; r++)
+        {
+            reversed.Push(matrix[r][range.Diagonal - r]);
+        }
+
+        for (var r = range.RowStart; r <= range.RowEnd; r++)
+        {
+            reversed.TryPop(out result[next++]);
+        }
+
+        return next;
+    }
+
+    private static int WriteStraightDiagonal(int[][] matrix, DiagonalRange range, int[] result, int next)
+    {
+        for (var r = range.RowStart; r <= range.RowEnd; r++)
+        {
+            result[next++] = matrix[r][range.Diagonal - r];
+        }
+
+        return next;
     }
 }

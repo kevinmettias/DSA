@@ -15,6 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
 {
+    private const int RandomSeed = 1617; // LC problem number
+    private const int MinSubtreeCityCount = 2;
+
     [Params(10, 14)]
     public int N;
 
@@ -23,7 +26,7 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1617);
+        var random = new Random(RandomSeed);
         _edges = GenerateRandomTreeEdges(N, random);
     }
 
@@ -42,7 +45,7 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
 
         for (var mask = 1; mask < (1 << n); mask++)
         {
-            if (PopCount(mask) < 2)
+            if (PopCount(mask) < MinSubtreeCityCount)
             {
                 continue;
             }
@@ -58,8 +61,7 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
 
     private static bool TryComputeDiameterAllPairs(int mask, int n, List<int>[] adjacency, out int diameter)
     {
-        diameter = 0;
-        var connected = true;
+        var accumulation = new DiameterAccumulation { Diameter = 0, Connected = true };
 
         for (var start = 0; start < n; start++)
         {
@@ -69,36 +71,15 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
             }
 
             var distances = BfsDistances(start, mask, n, adjacency);
-
-            for (var node = 0; node < n; node++)
-            {
-                if ((mask & (1 << node)) == 0)
-                {
-                    continue;
-                }
-
-                if (distances[node] == -1)
-                {
-                    connected = false;
-                }
-                else if (distances[node] > diameter)
-                {
-                    diameter = distances[node];
-                }
-            }
+            AccumulateDiameter(mask, n, distances, ref accumulation);
         }
 
-        return connected;
+        diameter = accumulation.Diameter;
+        return accumulation.Connected;
     }
 
-    private static bool TryComputeDiameterDoubleBfs(int mask, int n, List<int>[] adjacency, out int diameter)
+    private static void AccumulateDiameter(int mask, int n, int[] distances, ref DiameterAccumulation accumulation)
     {
-        var start = LowestSetBitIndex(mask);
-        var firstPass = BfsDistances(start, mask, n, adjacency);
-
-        var farthest = start;
-        var maxDistance = 0;
-
         for (var node = 0; node < n; node++)
         {
             if ((mask & (1 << node)) == 0)
@@ -106,31 +87,91 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
                 continue;
             }
 
-            if (firstPass[node] == -1)
+            if (distances[node] == -1)
             {
-                diameter = 0;
-                return false;
+                accumulation.Connected = false;
             }
+            else if (distances[node] > accumulation.Diameter)
+            {
+                accumulation.Diameter = distances[node];
+            }
+        }
+    }
 
-            if (firstPass[node] > maxDistance)
-            {
-                maxDistance = firstPass[node];
-                farthest = node;
-            }
+    private struct DiameterAccumulation
+    {
+        public int Diameter;
+        public bool Connected;
+    }
+
+    private static bool TryComputeDiameterDoubleBfs(int mask, int n, List<int>[] adjacency, out int diameter)
+    {
+        var start = LowestSetBitIndex(mask);
+        var firstPass = BfsDistances(start, mask, n, adjacency);
+
+        if (!TryFindFarthestNode(mask, firstPass, start, out var farthest))
+        {
+            diameter = 0;
+            return false;
         }
 
         var secondPass = BfsDistances(farthest, mask, n, adjacency);
-        diameter = 0;
+        diameter = ComputeMaxDistance(mask, n, secondPass);
+        return true;
+    }
+
+    private static bool TryFindFarthestNode(int mask, int[] distances, int start, out int farthest)
+    {
+        var search = new FarthestNodeSearch { Farthest = start, MaxDistance = 0 };
+
+        for (var node = 0; node < distances.Length; node++)
+        {
+            if ((mask & (1 << node)) == 0)
+            {
+                continue;
+            }
+
+            if (distances[node] == -1)
+            {
+                farthest = start;
+                return false;
+            }
+
+            UpdateFarthest(node, distances[node], ref search);
+        }
+
+        farthest = search.Farthest;
+        return true;
+    }
+
+    private static void UpdateFarthest(int node, int distance, ref FarthestNodeSearch search)
+    {
+        if (distance > search.MaxDistance)
+        {
+            search.MaxDistance = distance;
+            search.Farthest = node;
+        }
+    }
+
+    private struct FarthestNodeSearch
+    {
+        public int Farthest;
+        public int MaxDistance;
+    }
+
+    private static int ComputeMaxDistance(int mask, int n, int[] distances)
+    {
+        var maxDistance = 0;
 
         for (var node = 0; node < n; node++)
         {
-            if ((mask & (1 << node)) != 0 && secondPass[node] > diameter)
+            if ((mask & (1 << node)) != 0 && distances[node] > maxDistance)
             {
-                diameter = secondPass[node];
+                maxDistance = distances[node];
             }
         }
 
-        return true;
+        return maxDistance;
     }
 
     private static int[] BfsDistances(int start, int mask, int n, List<int>[] adjacency)

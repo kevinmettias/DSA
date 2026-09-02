@@ -56,6 +56,16 @@ public sealed partial class RaceCarTests
         int target)
     {
         var positionBound = 4 * target + 2;
+        var maxSpeedMagnitude = ComputeMaxSpeedMagnitude(positionBound);
+        var speeds = BuildSpeeds(maxSpeedMagnitude);
+        var nodesByState = BuildNodes(positionBound, speeds);
+        WireEdges(nodesByState);
+
+        return (nodesByState, speeds);
+    }
+
+    private static int ComputeMaxSpeedMagnitude(int positionBound)
+    {
         var maxSpeedMagnitude = 1;
 
         while (maxSpeedMagnitude < positionBound)
@@ -63,6 +73,11 @@ public sealed partial class RaceCarTests
             maxSpeedMagnitude *= 2;
         }
 
+        return maxSpeedMagnitude;
+    }
+
+    private static List<int> BuildSpeeds(int maxSpeedMagnitude)
+    {
         var speeds = new List<int>();
 
         for (var magnitude = 1; magnitude <= maxSpeedMagnitude; magnitude *= 2)
@@ -71,6 +86,11 @@ public sealed partial class RaceCarTests
             speeds.Add(-magnitude);
         }
 
+        return speeds;
+    }
+
+    private static Dictionary<(int Position, int Speed), RaceCarNode> BuildNodes(int positionBound, List<int> speeds)
+    {
         var nodesByState = new Dictionary<(int, int), RaceCarNode>();
 
         for (var position = -positionBound; position <= positionBound; position++)
@@ -81,6 +101,11 @@ public sealed partial class RaceCarTests
             }
         }
 
+        return nodesByState;
+    }
+
+    private static void WireEdges(Dictionary<(int Position, int Speed), RaceCarNode> nodesByState)
+    {
         foreach (var ((position, speed), node) in nodesByState)
         {
             if (nodesByState.TryGetValue((position + speed, speed * 2), out var accelerateNode))
@@ -90,7 +115,5 @@ public sealed partial class RaceCarTests
 
             node.Neighbors.Add(nodesByState[(position, speed > 0 ? -1 : 1)]);
         }
-
-        return (nodesByState, speeds);
     }
 }

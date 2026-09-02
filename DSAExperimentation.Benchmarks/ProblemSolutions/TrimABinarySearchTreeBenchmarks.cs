@@ -66,7 +66,11 @@ public class TrimABinarySearchTreeBenchmarks
     }
 
     [Benchmark]
-    public int InPlaceTrim() => CountNodes(Trim(_root, 0, NodeCount - 1));
+    public int InPlaceTrim()
+    {
+        var trimmed = Trim(_root, 0, NodeCount - 1);
+        return CountNodes(trimmed);
+    }
 
     private static BinaryTreeNode<int>? Trim(BinaryTreeNode<int>? node, int low, int high)
     {

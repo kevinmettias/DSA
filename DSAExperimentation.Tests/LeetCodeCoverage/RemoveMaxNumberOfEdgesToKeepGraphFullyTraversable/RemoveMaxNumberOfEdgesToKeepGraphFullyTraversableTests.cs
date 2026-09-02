@@ -23,7 +23,8 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTes
             [3, 1, 2], [3, 2, 3], [1, 1, 3], [1, 2, 4], [1, 1, 2], [2, 3, 4],
         ];
 
-        Assert.Equal(2, MaxNumEdgesToRemove(4, edges));
+        var removedEdgeCount = MaxNumEdgesToRemove(4, edges);
+        Assert.Equal(2, removedEdgeCount);
     }
 
     [Fact]
@@ -31,7 +32,8 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTes
     {
         int[][] edges = [[3, 1, 2], [3, 2, 3], [1, 1, 4], [2, 1, 4]];
 
-        Assert.Equal(0, MaxNumEdgesToRemove(4, edges));
+        var removedEdgeCount = MaxNumEdgesToRemove(4, edges);
+        Assert.Equal(0, removedEdgeCount);
     }
 
     [Fact]
@@ -39,14 +41,29 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTes
     {
         int[][] edges = [[3, 2, 3], [1, 1, 2], [2, 3, 4]];
 
-        Assert.Equal(-1, MaxNumEdgesToRemove(4, edges));
+        var removedEdgeCount = MaxNumEdgesToRemove(4, edges);
+        Assert.Equal(-1, removedEdgeCount);
     }
 
     private static int MaxNumEdgesToRemove(int n, int[][] edges)
     {
         var alice = new DisjointSet(n);
         var bob = new DisjointSet(n);
-        var usedEdges = 0;
+        var usedEdges = UnionSharedEdges(alice, bob, edges);
+
+        usedEdges += UnionOwnEdges(alice, edges, ownerType: 1);
+        usedEdges += UnionOwnEdges(bob, edges, ownerType: 2);
+
+        return IsFullyConnected(alice, n) && IsFullyConnected(bob, n)
+            ? edges.Length - usedEdges
+            : -1;
+    }
+
+    // Type-3 (both) edges are unioned into both DSUs together first - greedily
+    // preferring shared edges is what a correct max-removal count requires.
+    private static int UnionSharedEdges(DisjointSet alice, DisjointSet bob, int[][] edges)
+    {
+        var used = 0;
 
         foreach (var edge in edges)
         {
@@ -63,15 +80,10 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTes
 
             alice.Union(u, v);
             bob.Union(u, v);
-            usedEdges++;
+            used++;
         }
 
-        usedEdges += UnionOwnEdges(alice, edges, ownerType: 1);
-        usedEdges += UnionOwnEdges(bob, edges, ownerType: 2);
-
-        return IsFullyConnected(alice, n) && IsFullyConnected(bob, n)
-            ? edges.Length - usedEdges
-            : -1;
+        return used;
     }
 
     private static int UnionOwnEdges(DisjointSet components, int[][] edges, int ownerType)

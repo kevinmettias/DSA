@@ -26,6 +26,7 @@ public class SearchSuggestionsSystemBenchmarks
 {
     private const int ProductCount = 2_000;
     private const int SuffixLength = 5;
+    private const int MaxSuggestions = 3;
     private static readonly char[] Alphabet = ['a', 'b', 'c', 'd'];
 
     [Params(50, 400)]
@@ -78,7 +79,7 @@ public class SearchSuggestionsSystemBenchmarks
 
     private string[] TopThreeMatches(string prefix)
     {
-        var top = new List<string>(3);
+        var top = new List<string>(MaxSuggestions);
 
         foreach (var product in _products)
         {
@@ -100,16 +101,16 @@ public class SearchSuggestionsSystemBenchmarks
             insertAt--;
         }
 
-        if (insertAt >= 3)
+        if (insertAt >= MaxSuggestions)
         {
             return;
         }
 
         top.Insert(insertAt, candidate);
 
-        if (top.Count > 3)
+        if (top.Count > MaxSuggestions)
         {
-            top.RemoveAt(3);
+            top.RemoveAt(MaxSuggestions);
         }
     }
 
@@ -126,7 +127,8 @@ public class SearchSuggestionsSystemBenchmarks
         foreach (var ch in _searchWord)
         {
             prefix += ch;
-            result.Add(MatchesForPrefix(sorted, sequence, prefix));
+            var matches = MatchesForPrefix(sorted, sequence, prefix);
+            result.Add(matches);
         }
 
         return result;
@@ -135,9 +137,9 @@ public class SearchSuggestionsSystemBenchmarks
     private static string[] MatchesForPrefix(string[] sorted, ArraySequence<string> sequence, string prefix)
     {
         var start = BinarySearch.LowerBound(sequence, prefix, StringComparer.Ordinal);
-        var matches = new List<string>(3);
+        var matches = new List<string>(MaxSuggestions);
 
-        for (var i = start; i < sorted.Length && matches.Count < 3; i++)
+        for (var i = start; i < sorted.Length && matches.Count < MaxSuggestions; i++)
         {
             if (!sorted[i].StartsWith(prefix, StringComparison.Ordinal))
             {

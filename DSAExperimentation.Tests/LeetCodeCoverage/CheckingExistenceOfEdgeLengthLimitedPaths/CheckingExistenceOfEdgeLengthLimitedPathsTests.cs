@@ -18,7 +18,8 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsTests
         int[][] edgeList = [[0, 1, 2], [1, 2, 4], [2, 0, 8], [1, 0, 16]];
         int[][] queries = [[0, 1, 2], [0, 2, 5]];
 
-        Assert.Equal([false, true], DistanceLimitedPathsExist(3, edgeList, queries));
+        var actual = DistanceLimitedPathsExist(3, edgeList, queries);
+        Assert.Equal([false, true], actual);
     }
 
     [Fact]
@@ -27,7 +28,8 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsTests
         int[][] edgeList = [[0, 1, 10], [1, 2, 5], [2, 3, 9], [3, 4, 13]];
         int[][] queries = [[0, 4, 14], [1, 4, 13]];
 
-        Assert.Equal([true, false], DistanceLimitedPathsExist(5, edgeList, queries));
+        var actual = DistanceLimitedPathsExist(5, edgeList, queries);
+        Assert.Equal([true, false], actual);
     }
 
     private static bool[] DistanceLimitedPathsExist(int n, int[][] edgeList, int[][] queries)

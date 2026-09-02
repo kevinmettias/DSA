@@ -17,6 +17,11 @@ public class SlidingWindowMedianBenchmarks
 {
     private const int WindowSize = 500;
 
+    private const int RandomValueUpperBound = 10_000;
+
+    // Index into the sorted window used by SortEachWindow's approximate median.
+    private const int MedianIndexDivisor = 2;
+
     [Params(2_000, 8_000)]
     public int Length;
 
@@ -26,7 +31,7 @@ public class SlidingWindowMedianBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 10_000)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, RandomValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -39,7 +44,7 @@ public class SlidingWindowMedianBenchmarks
         {
             Array.Copy(_values, start, window, 0, WindowSize);
             Array.Sort(window);
-            lastMedian = window[WindowSize / 2];
+            lastMedian = window[WindowSize / MedianIndexDivisor];
         }
 
         return lastMedian;
@@ -67,6 +72,9 @@ public class SlidingWindowMedianBenchmarks
 
     private sealed class SlidingWindowMedianOperations
     {
+        // Divisor for averaging the two heap tops when the window has an even count.
+        private const double TwoValueAverageDivisor = 2.0;
+
         private readonly Heap<int, MaxHeapOrder<int>> _lower = new();
         private readonly Heap<int, MinHeapOrder<int>> _upper = new();
         private readonly HashMap<int, int> _delayed = new();
@@ -117,7 +125,7 @@ public class SlidingWindowMedianBenchmarks
 
         public double Median()
             => _lowerSize == _upperSize
-                ? (PeekLower() + PeekUpper()) / 2.0
+                ? (PeekLower() + PeekUpper()) / TwoValueAverageDivisor
                 : PeekLower();
 
         private void Rebalance()

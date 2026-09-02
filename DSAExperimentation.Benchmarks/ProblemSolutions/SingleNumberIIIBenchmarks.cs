@@ -12,6 +12,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SingleNumberIIIBenchmarks
 {
+    // Each pair consists of two identical values contributed to _values.
+    private const int ElementsPerPair = 2;
+
+    // Exclusive upper bound for paired values.
+    private const int ValueUpperBound = 1_000_000;
+
+    // LC260 guarantees exactly two numbers appear exactly once.
+    private const int SingletonCount = 2;
+
+    // The second of the two singleton (appears-once) values seeded into the array.
+    private const int SecondSingletonValue = -2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,14 +33,14 @@ public class SingleNumberIIIBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var pairCount = Length / 2 - 1;
-        var pairs = Enumerable.Range(0, pairCount).Select(_ => random.Next(1, 1_000_000)).ToArray();
+        var pairCount = Length / ElementsPerPair - 1;
+        var pairs = Enumerable.Range(0, pairCount).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
 
-        var values = new List<int>(pairs.Length * 2 + 2);
+        var values = new List<int>(pairs.Length * ElementsPerPair + SingletonCount);
         values.AddRange(pairs);
         values.AddRange(pairs);
         values.Add(-1);
-        values.Add(-2);
+        values.Add(SecondSingletonValue);
 
         _values = values.OrderBy(_ => random.Next()).ToArray();
     }
@@ -36,7 +48,7 @@ public class SingleNumberIIIBenchmarks
     [Benchmark(Baseline = true)]
     public int[] BruteForce()
     {
-        var result = new List<int>(2);
+        var result = new List<int>(SingletonCount);
 
         for (var i = 0; i < _values.Length; i++)
         {
@@ -71,7 +83,7 @@ public class SingleNumberIIIBenchmarks
             counts.Set(n, existing + 1);
         }
 
-        var result = new List<int>(2);
+        var result = new List<int>(SingletonCount);
         foreach (var key in counts.Keys)
         {
             counts.TryGetValue(key, out var count);

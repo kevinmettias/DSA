@@ -185,4 +185,38 @@ public sealed partial class DynamicArrayTests
 
         Assert.False(succeeded);
     }
+
+    [Fact]
+    public void Count_NewArray_IsZero()
+    {
+        Assert.Equal(0, new DynamicArray<int>().Count);
+    }
+
+    [Fact]
+    public void Count_TracksAddsAndRemovals()
+    {
+        var array = new DynamicArray<int>();
+
+        array.Add(1);
+        array.Add(2);
+
+        Assert.Equal(2, array.Count);
+
+        array.RemoveAt(0);
+
+        Assert.Equal(1, array.Count);
+    }
+
+    [Fact]
+    public void Count_SurvivesGrowthPastTheInitialCapacity()
+    {
+        var array = new DynamicArray<int>();
+
+        for (var i = 0; i < 100; i++)
+        {
+            array.Add(i);
+        }
+
+        Assert.Equal(100, array.Count);
+    }
 }

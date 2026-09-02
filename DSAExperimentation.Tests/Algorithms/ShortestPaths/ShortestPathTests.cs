@@ -1,7 +1,8 @@
+using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using DSAExperimentation.Algorithms.Reducing;
+using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
@@ -73,7 +74,7 @@ public sealed partial class ShortestPathTests
     {
         var nodes = WeightedGrids.WithCenterWall();
         var start = nodes[(0, 0)];
-        var unreachable = new WeightedGridNode("unreachable", 99, 99);
+        var unreachable = new WeightedGridNode(99, 99);
 
         var distance = ShortestPath.AStar<
             WeightedGridNode, WeightedGridTopology, ListEdges<WeightedGridNode, int>, int, ManhattanHeuristic>(

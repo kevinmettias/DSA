@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AddTwoNumbersIIBenchmarks
 {
+    private const int RandomSeed = 445; // LC problem number
+    private const int DecimalBase = 10;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -26,7 +29,7 @@ public class AddTwoNumbersIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(445);
+        var random = new Random(RandomSeed);
         _first = BuildRandomDigitList(random, Length);
         _second = BuildRandomDigitList(random, Length);
     }
@@ -37,7 +40,7 @@ public class AddTwoNumbersIIBenchmarks
         var sum = ToBigInteger(_first) + ToBigInteger(_second);
         var digitCount = 0;
 
-        for (var remaining = sum; remaining > 0; remaining /= 10)
+        for (var remaining = sum; remaining > 0; remaining /= DecimalBase)
         {
             digitCount++;
         }
@@ -49,32 +52,20 @@ public class AddTwoNumbersIIBenchmarks
     public int TwoStacksDigitwiseAdd()
     {
         var firstDigits = new NumberStack();
-        for (SinglyLinkedListNode<int>? node = _first; node is not null; node = node.Next)
-        {
-            firstDigits.Push(node.Value);
-        }
+        PushDigits(firstDigits, _first);
 
         var secondDigits = new NumberStack();
-        for (SinglyLinkedListNode<int>? node = _second; node is not null; node = node.Next)
+        PushDigits(secondDigits, _second);
+
+        var state = new StackAddState(null, 0);
+
+        while (firstDigits.Count > 0 || secondDigits.Count > 0 || state.Carry != 0)
         {
-            secondDigits.Push(node.Value);
-        }
-
-        SinglyLinkedListNode<int>? head = null;
-        var carry = 0;
-
-        while (firstDigits.Count > 0 || secondDigits.Count > 0 || carry != 0)
-        {
-            var a = firstDigits.TryPop(out var firstDigit) ? firstDigit : 0;
-            var b = secondDigits.TryPop(out var secondDigit) ? secondDigit : 0;
-            var digitSum = carry + a + b;
-            carry = digitSum / 10;
-
-            head = new SinglyLinkedListNode<int>(digitSum % 10) { Next = head };
+            state = AdvanceStackAdd(firstDigits, secondDigits, state);
         }
 
         var length = 0;
-        for (var node = head; node is not null; node = node.Next)
+        for (var node = state.Head; node is not null; node = node.Next)
         {
             length++;
         }
@@ -82,12 +73,31 @@ public class AddTwoNumbersIIBenchmarks
         return length;
     }
 
+    private static void PushDigits(NumberStack stack, SinglyLinkedListNode<int>? node)
+    {
+        for (; node is not null; node = node.Next)
+        {
+            stack.Push(node.Value);
+        }
+    }
+
+    private static StackAddState AdvanceStackAdd(NumberStack firstDigits, NumberStack secondDigits, StackAddState state)
+    {
+        var a = firstDigits.TryPop(out var firstDigit) ? firstDigit : 0;
+        var b = secondDigits.TryPop(out var secondDigit) ? secondDigit : 0;
+        var digitSum = state.Carry + a + b;
+        var carry = digitSum / DecimalBase;
+        var head = new SinglyLinkedListNode<int>(digitSum % DecimalBase) { Next = state.Head };
+
+        return new StackAddState(head, carry);
+    }
+
     private static BigInteger ToBigInteger(SinglyLinkedListNode<int>? head)
     {
         BigInteger value = 0;
         for (var node = head; node is not null; node = node.Next)
         {
-            value = (value * 10) + node.Value;
+            value = (value * DecimalBase) + node.Value;
         }
 
         return value;
@@ -98,15 +108,17 @@ public class AddTwoNumbersIIBenchmarks
     // concern already covered by AddTwoNumbersIITests, not a perf-harness one.
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, 10));
+        var head = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, 10));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
             tail = tail.Next;
         }
 
         return head;
     }
+
+    private readonly record struct StackAddState(SinglyLinkedListNode<int>? Head, int Carry);
 }

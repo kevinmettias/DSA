@@ -17,6 +17,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenchmarks
 {
     private const int Limit = 100;
+    private const int ValueUpperBound = 2_000;
 
     [Params(500, 4_000)]
     public int Length;
@@ -27,7 +28,7 @@ public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenc
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 2_000)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -60,46 +61,70 @@ public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenc
     [Benchmark]
     public int DoubleMonotonicDeque()
     {
-        var maxWindow = new RepoDeque();
-        var minWindow = new RepoDeque();
+        var windows = new MonotonicWindows(new RepoDeque(), new RepoDeque());
         var left = 0;
         var best = 0;
 
         for (var right = 0; right < _values.Length; right++)
         {
-            while (maxWindow.TryPeekBack(out var maxBack) && _values[maxBack] <= _values[right])
-            {
-                maxWindow.TryPopBack(out _);
-            }
-
-            maxWindow.PushBack(right);
-
-            while (minWindow.TryPeekBack(out var minBack) && _values[minBack] >= _values[right])
-            {
-                minWindow.TryPopBack(out _);
-            }
-
-            minWindow.PushBack(right);
-
-            while (maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront)
-                && _values[maxFront] - _values[minFront] > Limit)
-            {
-                left++;
-
-                if (maxWindow.TryPeekFront(out var frontIndex) && frontIndex < left)
-                {
-                    maxWindow.TryPopFront(out _);
-                }
-
-                if (minWindow.TryPeekFront(out var frontIndex2) && frontIndex2 < left)
-                {
-                    minWindow.TryPopFront(out _);
-                }
-            }
-
-            best = Math.Max(best, right - left + 1);
+            (left, best) = AdvanceWindow(right, windows, left, best);
         }
 
         return best;
     }
+
+    private (int Left, int Best) AdvanceWindow(int right, MonotonicWindows windows, int left, int best)
+    {
+        PushMax(windows.Max, right);
+        PushMin(windows.Min, right);
+        left = ShrinkToLimit(windows, left);
+
+        return (left, Math.Max(best, right - left + 1));
+    }
+
+    private void PushMax(RepoDeque maxWindow, int right)
+    {
+        while (maxWindow.TryPeekBack(out var maxBack) && _values[maxBack] <= _values[right])
+        {
+            maxWindow.TryPopBack(out _);
+        }
+
+        maxWindow.PushBack(right);
+    }
+
+    private void PushMin(RepoDeque minWindow, int right)
+    {
+        while (minWindow.TryPeekBack(out var minBack) && _values[minBack] >= _values[right])
+        {
+            minWindow.TryPopBack(out _);
+        }
+
+        minWindow.PushBack(right);
+    }
+
+    private int ShrinkToLimit(MonotonicWindows windows, int left)
+    {
+        var maxWindow = windows.Max;
+        var minWindow = windows.Min;
+
+        while (maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront)
+            && _values[maxFront] - _values[minFront] > Limit)
+        {
+            left++;
+
+            if (maxWindow.TryPeekFront(out var frontIndex) && frontIndex < left)
+            {
+                maxWindow.TryPopFront(out _);
+            }
+
+            if (minWindow.TryPeekFront(out var frontIndex2) && frontIndex2 < left)
+            {
+                minWindow.TryPopFront(out _);
+            }
+        }
+
+        return left;
+    }
+
+    private readonly record struct MonotonicWindows(RepoDeque Max, RepoDeque Min);
 }

@@ -18,6 +18,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MatrixCellsInDistanceOrderBenchmarks
 {
+    private const int MidpointDivisor = 2;
+
     [Params(20, 80)]
     public int Size;
 
@@ -41,8 +43,8 @@ public class MatrixCellsInDistanceOrderBenchmarks
     [Benchmark(Baseline = true)]
     public int[][] ManhattanFormulaThenArraySort()
     {
-        var rCenter = Size / 2;
-        var cCenter = Size / 2;
+        var rCenter = Size / MidpointDivisor;
+        var cCenter = Size / MidpointDivisor;
         var cells = new (int Row, int Col, int Distance)[Size * Size];
         var i = 0;
 
@@ -63,7 +65,7 @@ public class MatrixCellsInDistanceOrderBenchmarks
     public int[][] GridBfsThenMergeSort()
     {
         var grid = new Grid(_passable);
-        var start = new GridNode(Size / 2, Size / 2, grid);
+        var start = new GridNode(Size / MidpointDivisor, Size / MidpointDivisor, grid);
 
         var distances = Reduce.Graph<
             GridNode, GridTopology, GridChildren,

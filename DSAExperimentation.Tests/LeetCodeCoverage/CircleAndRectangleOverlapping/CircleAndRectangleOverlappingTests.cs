@@ -13,24 +13,38 @@ public sealed partial class CircleAndRectangleOverlappingTests
 {
     [Fact]
     public void CheckOverlap_LeetCodeExampleOne_ReturnsTrue()
-        => Assert.True(CheckOverlap(radius: 1, xCenter: 0, yCenter: 0, x1: 1, y1: -1, x2: 3, y2: 1));
+    {
+        var overlaps = CheckOverlap(radius: 1, xCenter: 0, yCenter: 0, rectangle: new Rectangle(1, -1, 3, 1));
+        Assert.True(overlaps);
+    }
 
     [Fact]
     public void CheckOverlap_CenterFullyInsideRectangle_ReturnsTrue()
-        => Assert.True(CheckOverlap(radius: 1, xCenter: 1, yCenter: 1, x1: -3, y1: -3, x2: 3, y2: 3));
+    {
+        var overlaps = CheckOverlap(radius: 1, xCenter: 1, yCenter: 1, rectangle: new Rectangle(-3, -3, 3, 3));
+        Assert.True(overlaps);
+    }
 
     [Fact]
     public void CheckOverlap_NearestCornerFartherThanRadius_ReturnsFalse()
-        => Assert.False(CheckOverlap(radius: 1, xCenter: 1, yCenter: 1, x1: 1, y1: -3, x2: 2, y2: -1));
+    {
+        var overlaps = CheckOverlap(radius: 1, xCenter: 1, yCenter: 1, rectangle: new Rectangle(1, -3, 2, -1));
+        Assert.False(overlaps);
+    }
 
     [Fact]
     public void CheckOverlap_CircleTangentToRectangleEdge_ReturnsTrue()
-        => Assert.True(CheckOverlap(radius: 1, xCenter: 0, yCenter: 0, x1: 1, y1: -3, x2: 3, y2: 3));
-
-    private static bool CheckOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2)
     {
-        var closestX = Math.Clamp(xCenter, x1, x2);
-        var closestY = Math.Clamp(yCenter, y1, y2);
+        var overlaps = CheckOverlap(radius: 1, xCenter: 0, yCenter: 0, rectangle: new Rectangle(1, -3, 3, 3));
+        Assert.True(overlaps);
+    }
+
+    private readonly record struct Rectangle(int X1, int Y1, int X2, int Y2);
+
+    private static bool CheckOverlap(int radius, int xCenter, int yCenter, Rectangle rectangle)
+    {
+        var closestX = Math.Clamp(xCenter, rectangle.X1, rectangle.X2);
+        var closestY = Math.Clamp(yCenter, rectangle.Y1, rectangle.Y2);
         var dx = (long)(xCenter - closestX);
         var dy = (long)(yCenter - closestY);
         return (dx * dx) + (dy * dy) <= (long)radius * radius;

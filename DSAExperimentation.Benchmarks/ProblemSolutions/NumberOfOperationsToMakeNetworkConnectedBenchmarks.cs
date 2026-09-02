@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
 {
+    private const int RandomSeed = 1319;
+
     [Params(50, 300)]
     public int ComputerCount;
 
@@ -23,7 +25,7 @@ public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1319);
+        var random = new Random(RandomSeed);
         var connections = new List<int[]>();
 
         for (var i = 1; i < ComputerCount; i++)

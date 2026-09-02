@@ -21,7 +21,9 @@ public sealed class RangeSumOfBSTTests
             Right = new(15) { Right = new(18) },
         };
 
-        Assert.Equal(32, RangeSumBST(root, 7, 15));
+        var rangeSum = RangeSumBST(root, 7, 15);
+
+        Assert.Equal(32, rangeSum);
     }
 
     [Fact]
@@ -34,7 +36,9 @@ public sealed class RangeSumOfBSTTests
             Right = new(15) { Left = new(13), Right = new(18) },
         };
 
-        Assert.Equal(23, RangeSumBST(root, 6, 10));
+        var rangeSum = RangeSumBST(root, 6, 10);
+
+        Assert.Equal(23, rangeSum);
     }
 
     [Fact]
@@ -42,7 +46,9 @@ public sealed class RangeSumOfBSTTests
     {
         var root = new BinaryTreeNode<int>(10) { Left = new(5), Right = new(15) };
 
-        Assert.Equal(0, RangeSumBST(root, 100, 200));
+        var rangeSum = RangeSumBST(root, 100, 200);
+
+        Assert.Equal(0, rangeSum);
     }
 
     private static int RangeSumBST(BinaryTreeNode<int>? node, int low, int high)

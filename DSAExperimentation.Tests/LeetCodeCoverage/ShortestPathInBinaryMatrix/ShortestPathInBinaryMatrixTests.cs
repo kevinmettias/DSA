@@ -50,6 +50,18 @@ public sealed partial class ShortestPathInBinaryMatrixTests
             return -1;
         }
 
+        var distance = BuildDistanceGrid(n);
+        var frontier = new DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>();
+        distance[0][0] = 1;
+        frontier.Enqueue((0, 0));
+
+        var state = new PathBfsState(grid, distance, frontier);
+
+        return RunBfs(state);
+    }
+
+    private static int[][] BuildDistanceGrid(int n)
+    {
         var distance = new int[n][];
         for (var r = 0; r < n; r++)
         {
@@ -57,33 +69,54 @@ public sealed partial class ShortestPathInBinaryMatrixTests
             Array.Fill(distance[r], -1);
         }
 
-        var frontier = new DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>();
-        distance[0][0] = 1;
-        frontier.Enqueue((0, 0));
+        return distance;
+    }
 
-        while (frontier.TryDequeue(out var cell))
+    // Runs the BFS to completion, returning the distance to the bottom-right cell
+    // the moment it's dequeued, or -1 if the frontier empties out first.
+    private static int RunBfs(PathBfsState state)
+    {
+        while (state.Frontier.TryDequeue(out var cell))
         {
-            if (cell.Row == n - 1 && cell.Col == n - 1)
+            if (cell.Row == state.N - 1 && cell.Col == state.N - 1)
             {
-                return distance[cell.Row][cell.Col];
+                return state.Distance[cell.Row][cell.Col];
             }
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var direction in Directions)
             {
-                var nextRow = cell.Row + dRow;
-                var nextCol = cell.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n
-                    || grid[nextRow][nextCol] != 0 || distance[nextRow][nextCol] != -1)
-                {
-                    continue;
-                }
-
-                distance[nextRow][nextCol] = distance[cell.Row][cell.Col] + 1;
-                frontier.Enqueue((nextRow, nextCol));
+                EnqueueNeighborIfReachable(state, cell, direction);
             }
         }
 
         return -1;
+    }
+
+    // One BFS relaxation step: enqueues the neighbor across `direction` from `cell`
+    // if it's open ground and not already reached.
+    private static void EnqueueNeighborIfReachable(PathBfsState state, (int Row, int Col) cell, (int DRow, int DCol) direction)
+    {
+        var nextRow = cell.Row + direction.DRow;
+        var nextCol = cell.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= state.N || nextCol < 0 || nextCol >= state.N
+            || state.Grid[nextRow][nextCol] != 0 || state.Distance[nextRow][nextCol] != -1)
+        {
+            return;
+        }
+
+        state.Distance[nextRow][nextCol] = state.Distance[cell.Row][cell.Col] + 1;
+        state.Frontier.Enqueue((nextRow, nextCol));
+    }
+
+    // The grid/distance-map/frontier the BFS reads and writes, bundled together so
+    // EnqueueNeighborIfReachable doesn't need one parameter per collection.
+    private sealed class PathBfsState(
+        int[][] grid, int[][] distance, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
+        public readonly int[][] Grid = grid;
+        public readonly int[][] Distance = distance;
+        public readonly DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> Frontier = frontier;
+        public readonly int N = grid.Length;
     }
 }

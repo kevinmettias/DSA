@@ -14,6 +14,10 @@ public class NumberOfClosedIslandsBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
+    private const int RandomSeed = 7;
+
+    private const double LandDensity = 0.55;
+
     [Params(30, 120)]
     public int Side;
 
@@ -22,7 +26,7 @@ public class NumberOfClosedIslandsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
         _grid = new int[Side][];
 
         for (var r = 0; r < Side; r++)
@@ -31,32 +35,25 @@ public class NumberOfClosedIslandsBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < 0.55 ? 1 : 0;
+                _grid[r][c] = random.NextDouble() < LandDensity ? 1 : 0;
             }
         }
     }
 
+    private readonly record struct Grid(int[][] Cells, int Rows, int Cols);
+
     [Benchmark(Baseline = true)]
     public int NaiveRecursiveFloodFill()
     {
-        var grid = CloneGrid();
-        var rows = grid.Length;
-        var cols = grid[0].Length;
+        var cells = CloneGrid();
+        var grid = new Grid(cells, cells.Length, cells[0].Length);
         var count = 0;
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < grid.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < grid.Cols; c++)
             {
-                if (grid[r][c] != 0)
-                {
-                    continue;
-                }
-
-                var touchesBorder = false;
-                Flood(grid, r, c, rows, cols, ref touchesBorder);
-
-                if (!touchesBorder)
+                if (TryCountClosedIsland(grid, r, c))
                 {
                     count++;
                 }
@@ -66,57 +63,51 @@ public class NumberOfClosedIslandsBenchmarks
         return count;
     }
 
-    private static void Flood(int[][] grid, int row, int col, int rows, int cols, ref bool touchesBorder)
+    private static bool TryCountClosedIsland(Grid grid, int row, int col)
     {
-        if (row < 0 || row >= rows || col < 0 || col >= cols || grid[row][col] != 0)
+        if (grid.Cells[row][col] != 0)
+        {
+            return false;
+        }
+
+        var touchesBorder = false;
+        Flood(grid, row, col, ref touchesBorder);
+
+        return !touchesBorder;
+    }
+
+    private static void Flood(Grid grid, int row, int col, ref bool touchesBorder)
+    {
+        if (row < 0 || row >= grid.Rows || col < 0 || col >= grid.Cols || grid.Cells[row][col] != 0)
         {
             return;
         }
 
-        grid[row][col] = 1;
+        grid.Cells[row][col] = 1;
 
-        if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1)
+        if (row == 0 || row == grid.Rows - 1 || col == 0 || col == grid.Cols - 1)
         {
             touchesBorder = true;
         }
 
-        Flood(grid, row + 1, col, rows, cols, ref touchesBorder);
-        Flood(grid, row - 1, col, rows, cols, ref touchesBorder);
-        Flood(grid, row, col + 1, rows, cols, ref touchesBorder);
-        Flood(grid, row, col - 1, rows, cols, ref touchesBorder);
+        Flood(grid, row + 1, col, ref touchesBorder);
+        Flood(grid, row - 1, col, ref touchesBorder);
+        Flood(grid, row, col + 1, ref touchesBorder);
+        Flood(grid, row, col - 1, ref touchesBorder);
     }
 
     [Benchmark]
     public int DepthFirstSearchTraversal()
     {
-        var grid = CloneGrid();
-        var rows = grid.Length;
-        var cols = grid[0].Length;
+        var cells = CloneGrid();
+        var grid = new Grid(cells, cells.Length, cells[0].Length);
         var count = 0;
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < grid.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < grid.Cols; c++)
             {
-                if (grid[r][c] != 0)
-                {
-                    continue;
-                }
-
-                var island = DepthFirstSearch.Traverse((r, c), Neighbors);
-                var closed = true;
-
-                foreach (var (row, col) in island)
-                {
-                    if (row == 0 || row == rows - 1 || col == 0 || col == cols - 1)
-                    {
-                        closed = false;
-                    }
-
-                    grid[row][col] = 1;
-                }
-
-                if (closed)
+                if (TryCountClosedIslandViaTraversal(grid, r, c))
                 {
                     count++;
                 }
@@ -124,26 +115,49 @@ public class NumberOfClosedIslandsBenchmarks
         }
 
         return count;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private static bool TryCountClosedIslandViaTraversal(Grid grid, int row, int col)
+    {
+        if (grid.Cells[row][col] != 0)
         {
-            foreach (var (dRow, dCol) in Directions)
+            return false;
+        }
+
+        var island = DepthFirstSearch.Traverse((row, col), p => Neighbors(grid, p));
+        var closed = true;
+
+        foreach (var (r, c) in island)
+        {
+            if (r == 0 || r == grid.Rows - 1 || c == 0 || c == grid.Cols - 1)
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (grid[nextRow][nextCol] != 0)
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
+                closed = false;
             }
+
+            grid.Cells[r][c] = 1;
+        }
+
+        return closed;
+    }
+
+    private static IEnumerable<(int Row, int Col)> Neighbors(Grid grid, (int Row, int Col) p)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var nextRow = p.Row + dRow;
+            var nextCol = p.Col + dCol;
+
+            if (nextRow < 0 || nextRow >= grid.Rows || nextCol < 0 || nextCol >= grid.Cols)
+            {
+                continue;
+            }
+
+            if (grid.Cells[nextRow][nextCol] != 0)
+            {
+                continue;
+            }
+
+            yield return (nextRow, nextCol);
         }
     }
 

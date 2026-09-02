@@ -13,6 +13,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class EliminationGameBenchmarks
 {
+    // Each round eliminates every other remaining number - the same stride
+    // underlies the closed-form head/step arithmetic and the DynamicArray
+    // simulation's odd-position keep.
+    private const int EliminationStride = 2;
+
     [Params(10_000, 1_000_000)]
     public int N;
 
@@ -31,13 +36,13 @@ public class EliminationGameBenchmarks
 
         while (remaining > 1)
         {
-            if (leftToRight || remaining % 2 == 1)
+            if (leftToRight || remaining % EliminationStride == 1)
             {
                 head += step;
             }
 
-            remaining /= 2;
-            step *= 2;
+            remaining /= EliminationStride;
+            step *= EliminationStride;
             leftToRight = !leftToRight;
         }
 
@@ -57,29 +62,36 @@ public class EliminationGameBenchmarks
 
         while (current.Count > 1)
         {
-            if (!leftToRight)
-            {
-                current = Reverse(current);
-            }
-
-            current = KeepOddPositions(current);
-
-            if (!leftToRight)
-            {
-                current = Reverse(current);
-            }
-
-            leftToRight = !leftToRight;
+            (current, leftToRight) = EliminateRound(current, leftToRight);
         }
 
         return current.Get(0);
+    }
+
+    private static (DynamicArray<int> Current, bool LeftToRight) EliminateRound(
+        DynamicArray<int> current,
+        bool leftToRight)
+    {
+        if (!leftToRight)
+        {
+            current = Reverse(current);
+        }
+
+        current = KeepOddPositions(current);
+
+        if (!leftToRight)
+        {
+            current = Reverse(current);
+        }
+
+        return (current, !leftToRight);
     }
 
     private static DynamicArray<int> KeepOddPositions(DynamicArray<int> values)
     {
         var kept = new DynamicArray<int>();
 
-        for (var i = 1; i < values.Count; i += 2)
+        for (var i = 1; i < values.Count; i += EliminationStride)
         {
             kept.Add(values.Get(i));
         }

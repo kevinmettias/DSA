@@ -45,7 +45,17 @@ public class SmallestSufficientTeamBenchmarks
     [Benchmark(Baseline = true)]
     public int BruteForceRecursion() => PopCount(SmallestTeamBruteForce(_fullMask));
 
-    private long SmallestTeamBruteForce(int missing)
+    private long SmallestTeamBruteForce(int missing) => ComputeSmallestTeam(missing, SmallestTeamBruteForce);
+
+    [Benchmark]
+    public int MemoizedRecursion()
+    {
+        var teamMask = Memoizer.Memoize<int, long>(_fullMask, ComputeSmallestTeam);
+
+        return PopCount(teamMask);
+    }
+
+    private long ComputeSmallestTeam(int missing, Func<int, long> smallestTeamFor)
     {
         if (missing == 0)
         {
@@ -53,6 +63,12 @@ public class SmallestSufficientTeamBenchmarks
         }
 
         var targetBit = missing & -missing;
+
+        return BestTeamCoveringBit(missing, targetBit, smallestTeamFor);
+    }
+
+    private long BestTeamCoveringBit(int missing, int targetBit, Func<int, long> smallestTeamFor)
+    {
         var best = -1L;
 
         for (var p = 0; p < _personSkillMask.Length; p++)
@@ -62,7 +78,7 @@ public class SmallestSufficientTeamBenchmarks
                 continue;
             }
 
-            var candidate = SmallestTeamBruteForce(missing & ~_personSkillMask[p]) | (1L << p);
+            var candidate = smallestTeamFor(missing & ~_personSkillMask[p]) | (1L << p);
             if (best == -1 || PopCount(candidate) < PopCount(best))
             {
                 best = candidate;
@@ -70,39 +86,6 @@ public class SmallestSufficientTeamBenchmarks
         }
 
         return best;
-    }
-
-    [Benchmark]
-    public int MemoizedRecursion()
-    {
-        var teamMask = Memoizer.Memoize<int, long>(_fullMask, (missing, smallestTeamFor) =>
-        {
-            if (missing == 0)
-            {
-                return 0L;
-            }
-
-            var targetBit = missing & -missing;
-            var best = -1L;
-
-            for (var p = 0; p < _personSkillMask.Length; p++)
-            {
-                if ((_personSkillMask[p] & targetBit) == 0)
-                {
-                    continue;
-                }
-
-                var candidate = smallestTeamFor(missing & ~_personSkillMask[p]) | (1L << p);
-                if (best == -1 || PopCount(candidate) < PopCount(best))
-                {
-                    best = candidate;
-                }
-            }
-
-            return best;
-        });
-
-        return PopCount(teamMask);
     }
 
     private static int PopCount(long mask)

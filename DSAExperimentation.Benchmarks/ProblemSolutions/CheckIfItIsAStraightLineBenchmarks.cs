@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckIfItIsAStraightLineBenchmarks
 {
+    // Index of the third point onward, once the first two points have anchored the
+    // baseline direction vector.
+    private const int ThirdPointIndex = 2;
+
     [Params(20, 100)]
     public int Length;
 
@@ -30,22 +34,32 @@ public class CheckIfItIsAStraightLineBenchmarks
         {
             for (var j = i + 1; j < _coordinates.Length; j++)
             {
-                for (var k = j + 1; k < _coordinates.Length; k++)
+                if (HasNonCollinearThirdPoint(i, j))
                 {
-                    var dx1 = (long)(_coordinates[j][0] - _coordinates[i][0]);
-                    var dy1 = (long)(_coordinates[j][1] - _coordinates[i][1]);
-                    var dx2 = (long)(_coordinates[k][0] - _coordinates[i][0]);
-                    var dy2 = (long)(_coordinates[k][1] - _coordinates[i][1]);
-
-                    if (dx1 * dy2 != dy1 * dx2)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
 
         return true;
+    }
+
+    private bool HasNonCollinearThirdPoint(int i, int j)
+    {
+        for (var k = j + 1; k < _coordinates.Length; k++)
+        {
+            var dx1 = (long)(_coordinates[j][0] - _coordinates[i][0]);
+            var dy1 = (long)(_coordinates[j][1] - _coordinates[i][1]);
+            var dx2 = (long)(_coordinates[k][0] - _coordinates[i][0]);
+            var dy2 = (long)(_coordinates[k][1] - _coordinates[i][1]);
+
+            if (dx1 * dy2 != dy1 * dx2)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     [Benchmark]
@@ -56,7 +70,7 @@ public class CheckIfItIsAStraightLineBenchmarks
         var dx = (long)(_coordinates[1][0] - x0);
         var dy = (long)(_coordinates[1][1] - y0);
 
-        for (var i = 2; i < _coordinates.Length; i++)
+        for (var i = ThirdPointIndex; i < _coordinates.Length; i++)
         {
             var px = (long)(_coordinates[i][0] - x0);
             var py = (long)(_coordinates[i][1] - y0);

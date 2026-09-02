@@ -85,40 +85,62 @@ internal static class AllPairsShortestPaths
 
         foreach (var vertex in vertices)
         {
-            var from = index[vertex];
-            var neighbors = TTopology.GetEdges(vertex);
-
-            for (var i = 0; i < neighbors.Count; i++)
-            {
-                var (weight, neighbor) = neighbors.Get(i);
-
-                // Unlike the caller-omitted-vertex case just below, a weight colliding with the
-                // "still unreached" sentinel isn't a wrong-but-plausible answer we can silently
-                // let ride - it would make a real edge indistinguishable from no edge at all in
-                // every later read of this cell, so this one precondition is validated rather
-                // than documented-and-trusted.
-                if (weight == TWeight.MaxValue)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(vertices), ReservedEdgeWeightMessage);
-                }
-
-                // An edge whose target lies outside `vertices` is silently skipped, not an
-                // exception - the same "wrong/incomplete answer, never a throw" convention
-                // TopologicalSort's GetValueOrDefault-guarded child lookup already uses for an
-                // analogous caller-omitted-vertex precondition.
-                if (!index.TryGetValue(neighbor, out var to))
-                {
-                    continue;
-                }
-
-                if (weight < matrix[from, to])
-                {
-                    matrix[from, to] = weight;
-                }
-            }
+            SeedRow<TNode, TTopology, TEdges, TWeight>(vertex, matrix, index);
         }
 
         return matrix;
+    }
+
+    private static void SeedRow<TNode, TTopology, TEdges, TWeight>(
+        TNode vertex, TWeight[,] matrix, Dictionary<TNode, int> index)
+        where TNode : class
+        where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
+        where TEdges : struct, IEdges<TNode, TWeight>
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+    {
+        var from = index[vertex];
+        var neighbors = TTopology.GetEdges(vertex);
+
+        for (var i = 0; i < neighbors.Count; i++)
+        {
+            var (weight, neighbor) = neighbors.Get(i);
+
+            RelaxEdge(matrix, index, new PendingEdge<TNode, TWeight>(from, weight, neighbor));
+        }
+    }
+
+    private readonly record struct PendingEdge<TNode, TWeight>(int From, TWeight Weight, TNode Neighbor)
+        where TNode : class
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>;
+
+    private static void RelaxEdge<TNode, TWeight>(
+        TWeight[,] matrix, Dictionary<TNode, int> index, PendingEdge<TNode, TWeight> edge)
+        where TNode : class
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+    {
+        // Unlike the caller-omitted-vertex case just below, a weight colliding with the
+        // "still unreached" sentinel isn't a wrong-but-plausible answer we can silently
+        // let ride - it would make a real edge indistinguishable from no edge at all in
+        // every later read of this cell, so this one precondition is validated rather
+        // than documented-and-trusted.
+        if (edge.Weight == TWeight.MaxValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(edge), ReservedEdgeWeightMessage);
+        }
+
+        // An edge whose target lies outside `vertices` is silently skipped, not an
+        // exception - the same "wrong/incomplete answer, never a throw" convention
+        // TopologicalSort's GetValueOrDefault-guarded child lookup already uses for an
+        // analogous caller-omitted-vertex precondition.
+        if (!index.TryGetValue(edge.Neighbor, out var to))
+        {
+            return;
+        }
+
+        if (edge.Weight < matrix[edge.From, to])
+        {
+            matrix[edge.From, to] = edge.Weight;
+        }
     }
 
     private static void Refine<TWeight>(TWeight[,] matrix, int count)
@@ -128,48 +150,77 @@ internal static class AllPairsShortestPaths
         {
             for (var i = 0; i < count; i++)
             {
-                // Guards against TWeight.MaxValue + TWeight.MaxValue, which would otherwise
-                // silently overflow under generic math and corrupt the matrix with a
-                // wrapped-around value that reads as a real (very wrong) distance instead of
-                // "still unreached." Forced purely by the dense matrix needing every cell to
-                // hold some value - not a caller-facing precondition the way non-negative
-                // weights is for ShortestPath.cs.
-                if (matrix[i, k] == TWeight.MaxValue)
-                {
-                    continue;
-                }
-
-                for (var j = 0; j < count; j++)
-                {
-                    if (matrix[k, j] == TWeight.MaxValue)
-                    {
-                        continue;
-                    }
-
-                    // Two finite (non-sentinel) weights can still sum past TWeight's own
-                    // representable range - e.g. two large-magnitude negative edges, which
-                    // negative-cycle detection makes a legitimate input here - and silently
-                    // wrap into a value that reads as a real (very wrong) distance instead of
-                    // "still unreached." checked() only has an effect for TWeight instances
-                    // that supply a checked addition operator (int/long do); for others this
-                    // behaves exactly as before.
-                    TWeight candidate;
-
-                    try
-                    {
-                        candidate = checked(matrix[i, k] + matrix[k, j]);
-                    }
-                    catch (OverflowException)
-                    {
-                        continue;
-                    }
-
-                    if (candidate < matrix[i, j])
-                    {
-                        matrix[i, j] = candidate;
-                    }
-                }
+                RelaxRow(matrix, i, k, count);
             }
+        }
+    }
+
+    private static void RelaxRow<TWeight>(TWeight[,] matrix, int i, int k, int count)
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+    {
+        // Guards against TWeight.MaxValue + TWeight.MaxValue, which would otherwise
+        // silently overflow under generic math and corrupt the matrix with a
+        // wrapped-around value that reads as a real (very wrong) distance instead of
+        // "still unreached." Forced purely by the dense matrix needing every cell to
+        // hold some value - not a caller-facing precondition the way non-negative
+        // weights is for ShortestPath.cs.
+        if (matrix[i, k] == TWeight.MaxValue)
+        {
+            return;
+        }
+
+        for (var j = 0; j < count; j++)
+        {
+            RelaxCell(matrix, i, k, j);
+        }
+    }
+
+    private static void RelaxCell<TWeight>(TWeight[,] matrix, int i, int k, int j)
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+    {
+        if (matrix[k, j] == TWeight.MaxValue)
+        {
+            return;
+        }
+
+        if (!TryAddChecked(matrix[i, k], matrix[k, j], out var candidate))
+        {
+            return;
+        }
+
+        UpdateIfShorter(matrix, i, j, candidate);
+    }
+
+    private static bool TryAddChecked<TWeight>(TWeight first, TWeight second, out TWeight sum)
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+    {
+        // Two finite (non-sentinel) weights can still sum past TWeight's own
+        // representable range - e.g. two large-magnitude negative edges, which
+        // negative-cycle detection makes a legitimate input here - and silently
+        // wrap into a value that reads as a real (very wrong) distance instead of
+        // "still unreached." checked() only has an effect for TWeight instances
+        // that supply a checked addition operator (int/long do); for others this
+        // behaves exactly as before.
+        try
+        {
+            sum = checked(first + second);
+
+            return true;
+        }
+        catch (OverflowException)
+        {
+            sum = default!;
+
+            return false;
+        }
+    }
+
+    private static void UpdateIfShorter<TWeight>(TWeight[,] matrix, int i, int j, TWeight candidate)
+        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
+    {
+        if (candidate < matrix[i, j])
+        {
+            matrix[i, j] = candidate;
         }
     }
 

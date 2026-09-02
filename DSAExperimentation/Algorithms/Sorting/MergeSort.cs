@@ -1,5 +1,7 @@
 using DSAExperimentation.DataStructures.Sequence;
 
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.Algorithms.Sorting;
 
 // Sort is O(n log n) - a claim that depends on TSequence's Get and Set both being O(1) (see

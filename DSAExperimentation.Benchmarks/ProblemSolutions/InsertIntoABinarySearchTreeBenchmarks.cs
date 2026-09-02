@@ -15,6 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class InsertIntoABinarySearchTreeBenchmarks
 {
+    private const int ValueStride = 2;
+    private const int MidpointDivisor = 2;
+
     [Params(500, 20_000)]
     public int NodeCount;
 
@@ -24,7 +27,7 @@ public class InsertIntoABinarySearchTreeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var values = Enumerable.Range(0, NodeCount).Select(v => v * 2).ToArray();
+        var values = Enumerable.Range(0, NodeCount).Select(v => v * ValueStride).ToArray();
         var random = new Random(1);
 
         for (var i = values.Length - 1; i > 0; i--)
@@ -48,7 +51,8 @@ public class InsertIntoABinarySearchTreeBenchmarks
         var insertAt = sorted.BinarySearch(_newValue);
         sorted.Insert(insertAt < 0 ? ~insertAt : insertAt, _newValue);
 
-        return CountNodes(BuildBalanced(sorted, 0, sorted.Count - 1));
+        var balanced = BuildBalanced(sorted, 0, sorted.Count - 1);
+        return CountNodes(balanced);
     }
 
     [Benchmark]
@@ -125,7 +129,7 @@ public class InsertIntoABinarySearchTreeBenchmarks
             return null;
         }
 
-        var mid = low + ((high - low) / 2);
+        var mid = low + ((high - low) / MidpointDivisor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

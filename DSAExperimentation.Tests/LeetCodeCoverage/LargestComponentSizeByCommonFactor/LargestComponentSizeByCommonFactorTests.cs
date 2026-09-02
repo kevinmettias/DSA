@@ -33,6 +33,22 @@ public sealed partial class LargestComponentSizeByCommonFactorTests
     private static int LargestComponentSize(int[] nums)
     {
         var components = new DisjointSet(nums.Length);
+        UnionSharedFactors(nums, components);
+
+        var sizeByRoot = new HashMap<int, int>();
+        var largest = 1;
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            var count = TallyComponent(components, sizeByRoot, i);
+            largest = Math.Max(largest, count);
+        }
+
+        return largest;
+    }
+
+    private static void UnionSharedFactors(int[] nums, DisjointSet components)
+    {
         var firstIndexWithFactor = new HashMap<int, int>();
 
         for (var i = 0; i < nums.Length; i++)
@@ -49,20 +65,15 @@ public sealed partial class LargestComponentSizeByCommonFactorTests
                 }
             }
         }
+    }
 
-        var sizeByRoot = new HashMap<int, int>();
-        var largest = 1;
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            var root = components.Find(i);
-            sizeByRoot.TryGetValue(root, out var count);
-            count++;
-            sizeByRoot.Set(root, count);
-            largest = Math.Max(largest, count);
-        }
-
-        return largest;
+    private static int TallyComponent(DisjointSet components, HashMap<int, int> sizeByRoot, int i)
+    {
+        var root = components.Find(i);
+        sizeByRoot.TryGetValue(root, out var count);
+        count++;
+        sizeByRoot.Set(root, count);
+        return count;
     }
 
     private static IEnumerable<int> PrimeFactors(int value)

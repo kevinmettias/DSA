@@ -15,43 +15,35 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StoneGameIIIBenchmarks
 {
+    private const int RandomSeed = 1406; // LC 1406
+    private const int MinStoneValue = -50;
+    private const int StoneValueUpperBound = 100;
+    private const int MaxTakePerTurn = 3;
+
     [Params(20, 24)]
     public int PileCount;
 
     private int[] _stoneValue = null!;
+    private Func<int, int>? _best;
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1406);
-        _stoneValue = Enumerable.Range(0, PileCount).Select(_ => random.Next(-50, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _stoneValue = Enumerable.Range(0, PileCount).Select(_ => random.Next(MinStoneValue, StoneValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
     public int UnmemoizedRecursion() => Best(0);
 
-    private int Best(int index)
-    {
-        if (index >= PileCount)
-        {
-            return 0;
-        }
-
-        var result = int.MinValue;
-        var takenSum = 0;
-        for (var take = 1; take <= 3 && index + take <= PileCount; take++)
-        {
-            takenSum += _stoneValue[index + take - 1];
-            result = Math.Max(result, takenSum - Best(index + take));
-        }
-
-        return result;
-    }
+    private int Best(int index) => ComputeBest(index, _best ??= Best);
 
     [Benchmark]
     public int MemoizedRecursion() => Memoizer.Memoize<int, int>(0, BestMemoized);
 
-    private int BestMemoized(int index, Func<int, int> bestFrom)
+    private int BestMemoized(int index, Func<int, int> bestFrom) => ComputeBest(index, bestFrom);
+
+    private int ComputeBest(int index, Func<int, int> bestFrom)
     {
         if (index >= PileCount)
         {
@@ -60,7 +52,7 @@ public class StoneGameIIIBenchmarks
 
         var result = int.MinValue;
         var takenSum = 0;
-        for (var take = 1; take <= 3 && index + take <= PileCount; take++)
+        for (var take = 1; take <= MaxTakePerTurn && index + take <= PileCount; take++)
         {
             takenSum += _stoneValue[index + take - 1];
             result = Math.Max(result, takenSum - bestFrom(index + take));

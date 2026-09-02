@@ -1,11 +1,21 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.CombinationSumII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are CombinationSumIISolution's, now returning the actual
+// combinations the test proves correct instead of merely counting them.
 [MemoryDiagnoser]
 public class CombinationSumIIBenchmarks
 {
-    [Benchmark(Baseline = true)] public int SortAndBacktrackSpecialized() => Count([10, 1, 2, 7, 6, 1, 5], 8);
-    [Benchmark] public int SameSearchShape() => Count([10, 1, 2, 7, 6, 1, 5], 8);
-    private static int Count(int[] candidates, int target) { Array.Sort(candidates); var count = 0; void Search(int start, int sum) { if (sum == target) { count++; return; } for (var i = start; i < candidates.Length; i++) { if (i > start && candidates[i] == candidates[i - 1]) continue; if (sum + candidates[i] <= target) Search(i + 1, sum + candidates[i]); } } Search(0, 0); return count; }
+    private static readonly int[] ExampleCandidates = [10, 1, 2, 7, 6, 1, 5];
+    private const int ExampleTarget = 8;
+
+    [Benchmark(Baseline = true)]
+    public List<List<int>> SortAndBacktrackSpecialized() =>
+        CombinationSumIISolution.FindCombinationsBySpecializedRecursion(ExampleCandidates, ExampleTarget);
+
+    [Benchmark]
+    public List<List<int>> Backtracking() =>
+        CombinationSumIISolution.FindCombinationsByBacktracking(ExampleCandidates, ExampleTarget);
 }

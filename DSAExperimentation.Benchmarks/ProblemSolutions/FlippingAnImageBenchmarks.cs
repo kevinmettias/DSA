@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FlippingAnImageBenchmarks
 {
+    private const int RandomSeed = 4;
+    private const int PixelValueExclusiveBound = 2; // pixels are binary: 0 or 1
+
     [Params(50, 300)]
     public int Side;
 
@@ -19,7 +22,7 @@ public class FlippingAnImageBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(4);
+        var random = new Random(RandomSeed);
         _image = new int[Side][];
 
         for (var r = 0; r < Side; r++)
@@ -28,7 +31,7 @@ public class FlippingAnImageBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _image[r][c] = random.Next(0, 2);
+                _image[r][c] = random.Next(0, PixelValueExclusiveBound);
             }
         }
     }

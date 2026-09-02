@@ -15,6 +15,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumProductOfWordLengthsBenchmarks
 {
+    // LC problem number, reused as the fixed benchmark-data seed.
+    private const int RandomSeed = 318;
+
+    // Splits generated words between the 'a'-'m' and 'n'-'z' alphabet halves.
+    private const int AlphabetHalfDivisor = 2;
+
+    private const int MinWordLength = 4;
+    private const int MaxWordLengthExclusive = 11;
+
+    // 'a'-'m' and 'n'-'z' are each 13 letters wide (half of the 26-letter alphabet).
+    private const int AlphabetHalfSize = 13;
+
     [Params(100, 800)]
     public int WordCount;
 
@@ -23,10 +35,15 @@ public class MaximumProductOfWordLengthsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(318);
-        _words = Enumerable.Range(0, WordCount)
-            .Select(i => RandomWord(random, i % 2 == 0 ? 'a' : 'n', length: random.Next(4, 11)))
-            .ToArray();
+        var random = new Random(RandomSeed);
+        _words = Enumerable.Range(0, WordCount).Select(i => NextRandomWord(random, i)).ToArray();
+    }
+
+    private static string NextRandomWord(Random random, int index)
+    {
+        var alphabetStart = index % AlphabetHalfDivisor == 0 ? 'a' : 'n';
+        var length = random.Next(MinWordLength, MaxWordLengthExclusive);
+        return RandomWord(random, alphabetStart, length);
     }
 
     [Benchmark(Baseline = true)]
@@ -54,7 +71,7 @@ public class MaximumProductOfWordLengthsBenchmarks
     public int BitmaskHashMap() => MaxProduct(_words);
 
     private static string RandomWord(Random random, char alphabetStart, int length)
-        => new(Enumerable.Range(0, length).Select(_ => (char)(alphabetStart + random.Next(13))).ToArray());
+        => new(Enumerable.Range(0, length).Select(_ => (char)(alphabetStart + random.Next(AlphabetHalfSize))).ToArray());
 
     private static bool SharesLetter(string a, string b)
     {
@@ -78,18 +95,7 @@ public class MaximumProductOfWordLengthsBenchmarks
 
         foreach (var word in words)
         {
-            var mask = 0;
-            foreach (var c in word)
-            {
-                mask |= 1 << (c - 'a');
-            }
-
-            if (maskToMaxLength.TryGetValue(mask, out var existingLength) && existingLength >= word.Length)
-            {
-                continue;
-            }
-
-            maskToMaxLength.Set(mask, word.Length);
+            RecordLongestForMask(maskToMaxLength, word);
         }
 
         var masks = maskToMaxLength.Keys.ToArray();
@@ -99,6 +105,27 @@ public class MaximumProductOfWordLengthsBenchmarks
             maskToMaxLength.TryGetValue(masks[i], out lengths[i]);
         }
 
+        return BestDisjointPairProduct(masks, lengths);
+    }
+
+    private static void RecordLongestForMask(HashMap<int, int> maskToMaxLength, string word)
+    {
+        var mask = 0;
+        foreach (var c in word)
+        {
+            mask |= 1 << (c - 'a');
+        }
+
+        if (maskToMaxLength.TryGetValue(mask, out var existingLength) && existingLength >= word.Length)
+        {
+            return;
+        }
+
+        maskToMaxLength.Set(mask, word.Length);
+    }
+
+    private static int BestDisjointPairProduct(int[] masks, int[] lengths)
+    {
         var best = 0;
 
         for (var i = 0; i < masks.Length; i++)

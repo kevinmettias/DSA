@@ -43,10 +43,7 @@ public sealed class FindWinnerOnATicTacToeGameTests
 
     private static string FindWinner(int[][] moves)
     {
-        var rowCount = new int[3];
-        var colCount = new int[3];
-        var diag = 0;
-        var antiDiag = 0;
+        var board = new TicTacToeBoard();
 
         for (var i = 0; i < moves.Length; i++)
         {
@@ -54,18 +51,31 @@ public sealed class FindWinnerOnATicTacToeGameTests
             var col = moves[i][1];
             var delta = i % 2 == 0 ? 1 : -1;
 
-            rowCount[row] += delta;
-            colCount[col] += delta;
-            diag += row == col ? delta : 0;
-            antiDiag += row + col == 2 ? delta : 0;
-
-            if (Math.Abs(rowCount[row]) == 3 || Math.Abs(colCount[col]) == 3
-                || Math.Abs(diag) == 3 || Math.Abs(antiDiag) == 3)
+            if (board.ApplyMove(row, col, delta))
             {
                 return delta == 1 ? "A" : "B";
             }
         }
 
         return moves.Length == 9 ? "Draw" : "Pending";
+    }
+
+    private sealed class TicTacToeBoard
+    {
+        private readonly int[] _rowCount = new int[3];
+        private readonly int[] _colCount = new int[3];
+        private int _diag;
+        private int _antiDiag;
+
+        public bool ApplyMove(int row, int col, int delta)
+        {
+            _rowCount[row] += delta;
+            _colCount[col] += delta;
+            _diag += row == col ? delta : 0;
+            _antiDiag += row + col == 2 ? delta : 0;
+
+            return Math.Abs(_rowCount[row]) == 3 || Math.Abs(_colCount[col]) == 3
+                || Math.Abs(_diag) == 3 || Math.Abs(_antiDiag) == 3;
+        }
     }
 }

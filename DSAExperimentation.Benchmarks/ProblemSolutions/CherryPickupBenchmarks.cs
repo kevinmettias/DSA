@@ -37,28 +37,26 @@ public class CherryPickupBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => Math.Max(0, CherriesFrom(0, 0, 0));
+    public int UnmemoizedRecursion()
+    {
+        var cherries = CherriesFrom(0, 0, 0);
+        return Math.Max(0, cherries);
+    }
 
     private int CherriesFrom(int row1, int col1, int col2)
     {
-        var row2 = row1 + col1 - col2;
+        var (isTerminal, terminalValue, picked) = EvaluateCherryState(row1, col1, col2);
 
-        if (row1 >= Size || col1 >= Size || row2 < 0 || row2 >= Size || col2 < 0 || col2 >= Size
-            || _grid[row1, col1] == -1 || _grid[row2, col2] == -1)
+        if (isTerminal)
         {
-            return Blocked;
+            return terminalValue;
         }
 
-        if (row1 == Size - 1 && col1 == Size - 1)
-        {
-            return _grid[row1, col1];
-        }
-
-        var picked = _grid[row1, col1] + (col1 == col2 ? 0 : _grid[row2, col2]);
-
-        var bestNext = Math.Max(
-            Math.Max(CherriesFrom(row1 + 1, col1, col2 + 1), CherriesFrom(row1 + 1, col1, col2)),
-            Math.Max(CherriesFrom(row1, col1 + 1, col2 + 1), CherriesFrom(row1, col1 + 1, col2)));
+        var moveDownAddCol2 = CherriesFrom(row1 + 1, col1, col2 + 1);
+        var moveDownSameCol2 = CherriesFrom(row1 + 1, col1, col2);
+        var moveRightAddCol2 = CherriesFrom(row1, col1 + 1, col2 + 1);
+        var moveRightSameCol2 = CherriesFrom(row1, col1 + 1, col2);
+        var bestNext = BestOfFour(moveDownAddCol2, moveDownSameCol2, moveRightAddCol2, moveRightSameCol2);
 
         return bestNext == Blocked ? Blocked : picked + bestNext;
     }
@@ -74,26 +72,49 @@ public class CherryPickupBenchmarks
             Func<(int Row1, int Col1, int Col2), int> cherriesFrom)
         {
             var (row1, col1, col2) = state;
-            var row2 = row1 + col1 - col2;
+            var (isTerminal, terminalValue, picked) = EvaluateCherryState(row1, col1, col2);
 
-            if (row1 >= Size || col1 >= Size || row2 < 0 || row2 >= Size || col2 < 0 || col2 >= Size
-                || _grid[row1, col1] == -1 || _grid[row2, col2] == -1)
+            if (isTerminal)
             {
-                return Blocked;
+                return terminalValue;
             }
 
-            if (row1 == Size - 1 && col1 == Size - 1)
-            {
-                return _grid[row1, col1];
-            }
-
-            var picked = _grid[row1, col1] + (col1 == col2 ? 0 : _grid[row2, col2]);
-
-            var bestNext = Math.Max(
-                Math.Max(cherriesFrom((row1 + 1, col1, col2 + 1)), cherriesFrom((row1 + 1, col1, col2))),
-                Math.Max(cherriesFrom((row1, col1 + 1, col2 + 1)), cherriesFrom((row1, col1 + 1, col2))));
+            var moveDownAddCol2 = cherriesFrom((row1 + 1, col1, col2 + 1));
+            var moveDownSameCol2 = cherriesFrom((row1 + 1, col1, col2));
+            var moveRightAddCol2 = cherriesFrom((row1, col1 + 1, col2 + 1));
+            var moveRightSameCol2 = cherriesFrom((row1, col1 + 1, col2));
+            var bestNext = BestOfFour(moveDownAddCol2, moveDownSameCol2, moveRightAddCol2, moveRightSameCol2);
 
             return bestNext == Blocked ? Blocked : picked + bestNext;
         }
+    }
+
+    // Shared shape between the un-memoized and memoized walks: given a state, decide
+    // whether it's a terminal (blocked/goal) value, and if not, the cherries picked up
+    // by entering it. Neither branch here recurses - only the caller knows how.
+    private (bool IsTerminal, int TerminalValue, int Picked) EvaluateCherryState(int row1, int col1, int col2)
+    {
+        var row2 = row1 + col1 - col2;
+
+        if (row1 >= Size || col1 >= Size || row2 < 0 || row2 >= Size || col2 < 0 || col2 >= Size
+            || _grid[row1, col1] == -1 || _grid[row2, col2] == -1)
+        {
+            return (true, Blocked, 0);
+        }
+
+        if (row1 == Size - 1 && col1 == Size - 1)
+        {
+            return (true, _grid[row1, col1], 0);
+        }
+
+        var picked = _grid[row1, col1] + (col1 == col2 ? 0 : _grid[row2, col2]);
+        return (false, 0, picked);
+    }
+
+    private static int BestOfFour(int downAddCol2, int downSameCol2, int rightAddCol2, int rightSameCol2)
+    {
+        var downBest = Math.Max(downAddCol2, downSameCol2);
+        var rightBest = Math.Max(rightAddCol2, rightSameCol2);
+        return Math.Max(downBest, rightBest);
     }
 }

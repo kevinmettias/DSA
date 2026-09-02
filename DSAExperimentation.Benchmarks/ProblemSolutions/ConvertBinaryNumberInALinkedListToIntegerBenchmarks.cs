@@ -15,6 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
 {
+    private const int RandomSeed = 1290; // LeetCode problem number
+    private const int BitValueUpperBoundExclusive = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,7 +26,7 @@ public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1290);
+        var random = new Random(RandomSeed);
         _head = BuildRandomBitList(random, Length);
     }
 
@@ -64,12 +67,12 @@ public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
 
     private static SinglyLinkedListNode<int> BuildRandomBitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, 2));
+        var head = new SinglyLinkedListNode<int>(random.Next(0, BitValueUpperBoundExclusive));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, 2));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, BitValueUpperBoundExclusive));
             tail = tail.Next;
         }
 

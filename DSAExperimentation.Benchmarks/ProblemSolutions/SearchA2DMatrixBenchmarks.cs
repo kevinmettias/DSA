@@ -1,14 +1,33 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.SearchA2DMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are SearchA2DMatrixSolution's, the same methods
+// SearchA2DMatrixTests proves correct. The target is fixed to the workload's
+// largest value, so both arms search for a value guaranteed present.
 [MemoryDiagnoser]
 public class SearchA2DMatrixBenchmarks
 {
-    private int[][] _matrix = null!; [Params(40, 100)] public int Size; [GlobalSetup] public void Setup(){var value=0;_matrix=Enumerable.Range(0,Size).Select(_=>Enumerable.Range(0,Size).Select(_=>value++).ToArray()).ToArray();}
-    [Benchmark(Baseline = true)] public bool LinearScan()=>_matrix.Any(row=>Array.IndexOf(row, Size*Size-1)>=0);
-    [Benchmark] public bool BinarySearchMatrix()=>BinarySearch.Find<int,MatrixSequence>(new MatrixSequence(_matrix), Size*Size-1) is not null;
-    private readonly struct MatrixSequence(int[][] matrix):IRandomAccessSequence<int>{public int Length=>matrix.Length*matrix[0].Length;public int Get(int index)=>matrix[index/matrix[0].Length][index%matrix[0].Length];}
+    [Params(40, 100)]
+    public int Size;
+
+    private int[][] _matrix = null!;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        var value = 0;
+        _matrix = Enumerable.Range(0, Size)
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => value++).ToArray())
+            .ToArray();
+    }
+
+    [Benchmark(Baseline = true)]
+    public bool LinearScan() =>
+        SearchA2DMatrixSolution.SearchMatrixByLinearScan(_matrix, Size * Size - 1);
+
+    [Benchmark]
+    public bool BinarySearchMatrix() =>
+        SearchA2DMatrixSolution.SearchMatrixByBinarySearch(_matrix, Size * Size - 1);
 }

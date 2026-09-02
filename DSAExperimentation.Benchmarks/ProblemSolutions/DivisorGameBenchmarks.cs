@@ -10,6 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DivisorGameBenchmarks
 {
+    private const int ParityDivisor = 2;
+
     [Params(100, 1_000)]
     public int N;
 
@@ -29,5 +31,5 @@ public class DivisorGameBenchmarks
         });
 
     [Benchmark]
-    public bool ParityFormula() => N % 2 == 0;
+    public bool ParityFormula() => N % ParityDivisor == 0;
 }

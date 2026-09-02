@@ -42,28 +42,55 @@ public sealed partial class ConcatenatedWordsTests
                 return true;
             }
 
-            for (var end = start + 1; end <= word.Length; end++)
-            {
-                if (start == 0 && end == word.Length)
-                {
-                    // the whole word alone is one piece, not a concatenation of others
-                    continue;
-                }
-
-                var piece = word[start..end];
-
-                if (!trie.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (trie.HasKey(piece) && can(end))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            var lookup = new WordLookup(trie, word);
+            return TryFindPieceMatch(lookup, start, can);
         }
     }
+
+    private static bool TryFindPieceMatch(WordLookup lookup, int start, Func<int, bool> can)
+    {
+        for (var end = start + 1; end <= lookup.Word.Length; end++)
+        {
+            var outcome = EvaluatePiece(lookup, start, end, can);
+
+            if (outcome == PieceOutcome.StopSearching)
+            {
+                break;
+            }
+
+            if (outcome == PieceOutcome.Found)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static PieceOutcome EvaluatePiece(WordLookup lookup, int start, int end, Func<int, bool> can)
+    {
+        if (start == 0 && end == lookup.Word.Length)
+        {
+            // the whole word alone is one piece, not a concatenation of others
+            return PieceOutcome.Continue;
+        }
+
+        var piece = lookup.Word[start..end];
+
+        if (!lookup.Trie.HasPrefix(piece))
+        {
+            return PieceOutcome.StopSearching;
+        }
+
+        return lookup.Trie.HasKey(piece) && can(end) ? PieceOutcome.Found : PieceOutcome.Continue;
+    }
+
+    private enum PieceOutcome
+    {
+        Continue,
+        StopSearching,
+        Found,
+    }
+
+    private readonly record struct WordLookup(Trie<bool> Trie, string Word);
 }

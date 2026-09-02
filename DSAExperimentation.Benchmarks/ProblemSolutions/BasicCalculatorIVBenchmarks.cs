@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BasicCalculatorIVBenchmarks
 {
+    // Base-26 "spreadsheet column" alphabet size (a-z).
+    private const int AlphabetSize = 26;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -30,6 +33,28 @@ public class BasicCalculatorIVBenchmarks
     {
         var pos = 0;
         var polynomial = ParseExpressionDict(_expression, ref pos);
+        var terms = CollectNonZeroTermsDict(polynomial);
+
+        terms.Sort((a, b) => CompareByDegreeThenKey(a.Key, b.Key));
+
+        return terms.Count;
+    }
+
+    [Benchmark]
+    public int HashMapMergeSort()
+    {
+        var pos = 0;
+        var polynomial = ParseExpressionHashMap(_expression, ref pos);
+        var terms = CollectNonZeroTermsHashMap(polynomial);
+        var termsArray = terms.ToArray();
+
+        SortTerms(termsArray);
+
+        return termsArray.Length;
+    }
+
+    private static List<(string Key, long Coefficient)> CollectNonZeroTermsDict(Dictionary<string, long> polynomial)
+    {
         var terms = new List<(string Key, long Coefficient)>();
 
         foreach (var (key, coefficient) in polynomial)
@@ -40,21 +65,11 @@ public class BasicCalculatorIVBenchmarks
             }
         }
 
-        terms.Sort((a, b) =>
-        {
-            var degreeA = Degree(a.Key);
-            var degreeB = Degree(b.Key);
-            return degreeA != degreeB ? degreeB.CompareTo(degreeA) : string.CompareOrdinal(a.Key, b.Key);
-        });
-
-        return terms.Count;
+        return terms;
     }
 
-    [Benchmark]
-    public int HashMapMergeSort()
+    private static List<Term> CollectNonZeroTermsHashMap(HashMap<string, long> polynomial)
     {
-        var pos = 0;
-        var polynomial = ParseExpressionHashMap(_expression, ref pos);
         var terms = new List<Term>();
 
         foreach (var key in polynomial.Keys)
@@ -67,76 +82,108 @@ public class BasicCalculatorIVBenchmarks
             }
         }
 
-        var termsArray = terms.ToArray();
-        var comparer = Comparer<Term>.Create((a, b) =>
-        {
-            var degreeA = Degree(a.Key);
-            var degreeB = Degree(b.Key);
-            return degreeA != degreeB ? degreeB.CompareTo(degreeA) : string.CompareOrdinal(a.Key, b.Key);
-        });
+        return terms;
+    }
 
+    private static void SortTerms(Term[] termsArray)
+    {
+        var comparer = Comparer<Term>.Create((a, b) => CompareByDegreeThenKey(a.Key, b.Key));
         MergeSort.Sort<Term, ArrayIndexedSequence<Term>>(new ArrayIndexedSequence<Term>(termsArray), comparer);
+    }
 
-        return termsArray.Length;
+    private static int CompareByDegreeThenKey(string keyA, string keyB)
+    {
+        var degreeA = Degree(keyA);
+        var degreeB = Degree(keyB);
+        return degreeA != degreeB ? degreeB.CompareTo(degreeA) : string.CompareOrdinal(keyA, keyB);
     }
 
     private readonly record struct Term(string Key, long Coefficient);
 
     private static int Degree(string key) => key.Length == 0 ? 0 : key.Split('*').Length;
 
-    // ---- Dictionary-backed parse/eval (baseline) ----
+    // ---- Generic recursive-descent polynomial parser ----
+    //
+    // Both the Dictionary-backed and HashMap-backed evaluators walk the exact same
+    // grammar (expression := term (('+'|'-') term)*, term := factor ('*' factor)*,
+    // factor := '(' expression ')' | number | variable) and differ only in which
+    // collection type carries the running polynomial and how that collection
+    // implements add/negate/multiply/single-term construction. That single point of
+    // variation is bundled into PolynomialOps<T> and threaded through one shared
+    // parser core instead of keeping two structurally identical parsers in sync.
 
-    private static Dictionary<string, long> ParseExpressionDict(string expr, ref int pos)
+    private readonly record struct PolynomialOps<T>(
+        Func<T, T, T> Add,
+        Func<T, T> Negate,
+        Func<T, T, T> Multiply,
+        Func<string, long, T> FromKeyCoefficient);
+
+    private static T ParseExpressionCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
     {
-        var result = ParseTermDict(expr, ref pos);
+        var result = ParseTermCore(expr, ref pos, ops);
 
         while (pos < expr.Length && (expr[pos] == '+' || expr[pos] == '-'))
         {
             var op = expr[pos];
             pos++;
-            var rhs = ParseTermDict(expr, ref pos);
-            result = op == '+' ? AddDict(result, rhs) : AddDict(result, NegateDict(rhs));
+            var rhs = ParseTermCore(expr, ref pos, ops);
+            result = op == '+' ? ops.Add(result, rhs) : ops.Add(result, ops.Negate(rhs));
         }
 
         return result;
     }
 
-    private static Dictionary<string, long> ParseTermDict(string expr, ref int pos)
+    private static T ParseTermCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
     {
-        var result = ParseFactorDict(expr, ref pos);
+        var result = ParseFactorCore(expr, ref pos, ops);
 
         while (pos < expr.Length && expr[pos] == '*')
         {
             pos++;
-            var rhs = ParseFactorDict(expr, ref pos);
-            result = MultiplyDict(result, rhs);
+            var rhs = ParseFactorCore(expr, ref pos, ops);
+            result = ops.Multiply(result, rhs);
         }
 
         return result;
     }
 
-    private static Dictionary<string, long> ParseFactorDict(string expr, ref int pos)
+    private static T ParseFactorCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
     {
         if (expr[pos] == '(')
         {
-            pos++;
-            var inner = ParseExpressionDict(expr, ref pos);
-            pos++;
-            return inner;
+            return ParseParenthesized(expr, ref pos, ops);
         }
 
         if (char.IsDigit(expr[pos]))
         {
-            var start = pos;
-
-            while (pos < expr.Length && char.IsDigit(expr[pos]))
-            {
-                pos++;
-            }
-
-            return new Dictionary<string, long> { [string.Empty] = long.Parse(expr[start..pos]) };
+            return ParseNumber(expr, ref pos, ops);
         }
 
+        return ParseVariable(expr, ref pos, ops);
+    }
+
+    private static T ParseParenthesized<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    {
+        pos++;
+        var inner = ParseExpressionCore(expr, ref pos, ops);
+        pos++;
+        return inner;
+    }
+
+    private static T ParseNumber<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    {
+        var start = pos;
+
+        while (pos < expr.Length && char.IsDigit(expr[pos]))
+        {
+            pos++;
+        }
+
+        return ops.FromKeyCoefficient(string.Empty, long.Parse(expr[start..pos]));
+    }
+
+    private static T ParseVariable<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    {
         var startVar = pos;
 
         while (pos < expr.Length && char.IsLower(expr[pos]))
@@ -144,8 +191,19 @@ public class BasicCalculatorIVBenchmarks
             pos++;
         }
 
-        return new Dictionary<string, long> { [expr[startVar..pos]] = 1L };
+        return ops.FromKeyCoefficient(expr[startVar..pos], 1L);
     }
+
+    // ---- Dictionary-backed operations (baseline) ----
+
+    private static readonly PolynomialOps<Dictionary<string, long>> DictOps = new(
+        AddDict,
+        NegateDict,
+        MultiplyDict,
+        (key, coefficient) => new Dictionary<string, long> { [key] = coefficient });
+
+    private static Dictionary<string, long> ParseExpressionDict(string expr, ref int pos) =>
+        ParseExpressionCore(expr, ref pos, DictOps);
 
     private static Dictionary<string, long> AddDict(Dictionary<string, long> a, Dictionary<string, long> b)
     {
@@ -187,72 +245,21 @@ public class BasicCalculatorIVBenchmarks
         return result;
     }
 
-    // ---- HashMap-backed parse/eval (repo primitive) ----
+    // ---- HashMap-backed operations (repo primitive) ----
 
-    private static HashMap<string, long> ParseExpressionHashMap(string expr, ref int pos)
-    {
-        var result = ParseTermHashMap(expr, ref pos);
-
-        while (pos < expr.Length && (expr[pos] == '+' || expr[pos] == '-'))
+    private static readonly PolynomialOps<HashMap<string, long>> HashMapOps = new(
+        AddHashMap,
+        NegateHashMap,
+        MultiplyHashMap,
+        (key, coefficient) =>
         {
-            var op = expr[pos];
-            pos++;
-            var rhs = ParseTermHashMap(expr, ref pos);
-            result = op == '+' ? AddHashMap(result, rhs) : AddHashMap(result, NegateHashMap(rhs));
-        }
-
-        return result;
-    }
-
-    private static HashMap<string, long> ParseTermHashMap(string expr, ref int pos)
-    {
-        var result = ParseFactorHashMap(expr, ref pos);
-
-        while (pos < expr.Length && expr[pos] == '*')
-        {
-            pos++;
-            var rhs = ParseFactorHashMap(expr, ref pos);
-            result = MultiplyHashMap(result, rhs);
-        }
-
-        return result;
-    }
-
-    private static HashMap<string, long> ParseFactorHashMap(string expr, ref int pos)
-    {
-        if (expr[pos] == '(')
-        {
-            pos++;
-            var inner = ParseExpressionHashMap(expr, ref pos);
-            pos++;
-            return inner;
-        }
-
-        var single = new HashMap<string, long>();
-
-        if (char.IsDigit(expr[pos]))
-        {
-            var start = pos;
-
-            while (pos < expr.Length && char.IsDigit(expr[pos]))
-            {
-                pos++;
-            }
-
-            single.Set(string.Empty, long.Parse(expr[start..pos]));
+            var single = new HashMap<string, long>();
+            single.Set(key, coefficient);
             return single;
-        }
+        });
 
-        var startVar = pos;
-
-        while (pos < expr.Length && char.IsLower(expr[pos]))
-        {
-            pos++;
-        }
-
-        single.Set(expr[startVar..pos], 1L);
-        return single;
-    }
+    private static HashMap<string, long> ParseExpressionHashMap(string expr, ref int pos) =>
+        ParseExpressionCore(expr, ref pos, HashMapOps);
 
     private static HashMap<string, long> AddHashMap(HashMap<string, long> a, HashMap<string, long> b)
     {
@@ -352,8 +359,8 @@ public class BasicCalculatorIVBenchmarks
 
         do
         {
-            chars.Insert(0, (char)('a' + (n % 26)));
-            n = (n / 26) - 1;
+            chars.Insert(0, (char)('a' + (n % AlphabetSize)));
+            n = (n / AlphabetSize) - 1;
         } while (n >= 0);
 
         return new string(chars.ToArray());

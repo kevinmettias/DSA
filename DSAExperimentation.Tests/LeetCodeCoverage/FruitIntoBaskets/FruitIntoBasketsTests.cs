@@ -29,35 +29,51 @@ public sealed partial class FruitIntoBasketsTests
 
     private static int TotalFruit(int[] fruits)
     {
-        var basketCounts = new HashMap<int, int>();
-        var windowStart = 0;
+        var window = new FruitWindow();
         var longest = 0;
 
         for (var windowEnd = 0; windowEnd < fruits.Length; windowEnd++)
         {
-            basketCounts.TryGetValue(fruits[windowEnd], out var count);
-            basketCounts.Set(fruits[windowEnd], count + 1);
-
-            while (basketCounts.Count > 2)
-            {
-                var leaving = fruits[windowStart];
-                basketCounts.TryGetValue(leaving, out var leavingCount);
-
-                if (leavingCount == 1)
-                {
-                    basketCounts.TryRemove(leaving);
-                }
-                else
-                {
-                    basketCounts.Set(leaving, leavingCount - 1);
-                }
-
-                windowStart++;
-            }
-
-            longest = Math.Max(longest, windowEnd - windowStart + 1);
+            var extended = window.Extend(fruits, windowEnd);
+            longest = Math.Max(longest, extended);
         }
 
         return longest;
+    }
+
+    private sealed class FruitWindow
+    {
+        private readonly HashMap<int, int> _basketCounts = new();
+        private int _windowStart;
+
+        public int Extend(int[] fruits, int windowEnd)
+        {
+            _basketCounts.TryGetValue(fruits[windowEnd], out var count);
+            _basketCounts.Set(fruits[windowEnd], count + 1);
+
+            while (_basketCounts.Count > 2)
+            {
+                ShrinkFromLeft(fruits);
+            }
+
+            return windowEnd - _windowStart + 1;
+        }
+
+        private void ShrinkFromLeft(int[] fruits)
+        {
+            var leaving = fruits[_windowStart];
+            _basketCounts.TryGetValue(leaving, out var leavingCount);
+
+            if (leavingCount == 1)
+            {
+                _basketCounts.TryRemove(leaving);
+            }
+            else
+            {
+                _basketCounts.Set(leaving, leavingCount - 1);
+            }
+
+            _windowStart++;
+        }
     }
 }

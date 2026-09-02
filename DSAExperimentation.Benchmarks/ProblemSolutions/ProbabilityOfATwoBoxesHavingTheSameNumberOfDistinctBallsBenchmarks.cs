@@ -14,6 +14,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
 {
+    // LC problem number, used as the deterministic seed for ball-count generation.
+    private const int RandomSeed = 1467;
+
+    // Random.Next(1, BallCountUpperBound) yields each type's ball count in [1, BallCountUpperBound - 1].
+    private const int BallCountUpperBound = 7;
+
+    // The balls are split between exactly two boxes.
+    private const int BoxCount = 2;
+
     [Params(4, 6)]
     public int TypeCount;
 
@@ -22,10 +31,10 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1467);
-        _balls = [.. Enumerable.Range(0, TypeCount).Select(_ => random.Next(1, 7))];
+        var random = new Random(RandomSeed);
+        _balls = [.. Enumerable.Range(0, TypeCount).Select(_ => random.Next(1, BallCountUpperBound))];
 
-        if (_balls.Sum() % 2 != 0)
+        if (_balls.Sum() % BoxCount != 0)
         {
             _balls[^1]++;
         }
@@ -34,16 +43,19 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
     [Benchmark(Baseline = true)]
     public double HandRolledRecursion()
     {
-        var half = _balls.Sum() / 2;
-        var matchingWays = Recurse(typeIndex: 0, box1Total: 0, box1Distinct: 0, box2Distinct: 0, ways: 1.0, half);
+        var half = _balls.Sum() / BoxCount;
+        var matchingWays = Recurse(typeIndex: 0, new SplitCounts(0, 0, 0), ways: 1.0, half);
         return matchingWays / BinomialCoefficient(_balls.Sum(), half);
     }
 
-    private double Recurse(int typeIndex, int box1Total, int box1Distinct, int box2Distinct, double ways, int half)
+    // Bundles the recursion's per-branch running totals so Recurse stays at 4 parameters.
+    private readonly record struct SplitCounts(int Box1Total, int Box1Distinct, int Box2Distinct);
+
+    private double Recurse(int typeIndex, SplitCounts counts, double ways, int half)
     {
         if (typeIndex == _balls.Length)
         {
-            return box1Total == half && box1Distinct == box2Distinct ? ways : 0.0;
+            return counts.Box1Total == half && counts.Box1Distinct == counts.Box2Distinct ? ways : 0.0;
         }
 
         var typeCount = _balls[typeIndex];
@@ -52,9 +64,11 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
         for (var toBox1 = 0; toBox1 <= typeCount; toBox1++)
         {
             var nextWays = ways * BinomialCoefficient(typeCount, toBox1);
-            var nextBox1Distinct = box1Distinct + (toBox1 > 0 ? 1 : 0);
-            var nextBox2Distinct = box2Distinct + (typeCount - toBox1 > 0 ? 1 : 0);
-            matching += Recurse(typeIndex + 1, box1Total + toBox1, nextBox1Distinct, nextBox2Distinct, nextWays, half);
+            var nextCounts = new SplitCounts(
+                counts.Box1Total + toBox1,
+                counts.Box1Distinct + (toBox1 > 0 ? 1 : 0),
+                counts.Box2Distinct + (typeCount - toBox1 > 0 ? 1 : 0));
+            matching += Recurse(typeIndex + 1, nextCounts, nextWays, half);
         }
 
         return matching;
@@ -77,7 +91,7 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
     private static double GetProbability(int[] balls)
     {
         var total = balls.Sum();
-        var half = total / 2;
+        var half = total / BoxCount;
         var totalWays = BinomialCoefficient(total, half);
         var matchingWays = 0.0;
         var state = new SplitState();
@@ -90,52 +104,53 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
             // already true - Candidates must return empty there rather than
             // index balls out of bounds.
             candidates: s => s.TypeIndex == balls.Length ? [] : Enumerable.Range(0, balls[s.TypeIndex] + 1),
-            choose: (s, toBox1) =>
-            {
-                var typeCount = balls[s.TypeIndex];
-                s.Ways *= BinomialCoefficient(typeCount, toBox1);
-                s.Box1Total += toBox1;
-
-                if (toBox1 > 0)
-                {
-                    s.Box1DistinctCount++;
-                }
-
-                if (typeCount - toBox1 > 0)
-                {
-                    s.Box2DistinctCount++;
-                }
-
-                s.TypeIndex++;
-            },
-            unchoose: (s, toBox1) =>
-            {
-                s.TypeIndex--;
-                var typeCount = balls[s.TypeIndex];
-
-                if (typeCount - toBox1 > 0)
-                {
-                    s.Box2DistinctCount--;
-                }
-
-                if (toBox1 > 0)
-                {
-                    s.Box1DistinctCount--;
-                }
-
-                s.Box1Total -= toBox1;
-                s.Ways /= BinomialCoefficient(typeCount, toBox1);
-            },
-            onSolution: s =>
-            {
-                if (s.Box1Total == half && s.Box1DistinctCount == s.Box2DistinctCount)
-                {
-                    matchingWays += s.Ways;
-                }
-            });
+            choose: (s, toBox1) => ChooseSplit(s, balls, toBox1),
+            unchoose: (s, toBox1) => UnchooseSplit(s, balls, toBox1),
+            onSolution: s => matchingWays += SolutionWays(s, half));
 
         return matchingWays / totalWays;
     }
+
+    private static void ChooseSplit(SplitState state, int[] balls, int toBox1)
+    {
+        var typeCount = balls[state.TypeIndex];
+        state.Ways *= BinomialCoefficient(typeCount, toBox1);
+        state.Box1Total += toBox1;
+
+        if (toBox1 > 0)
+        {
+            state.Box1DistinctCount++;
+        }
+
+        if (typeCount - toBox1 > 0)
+        {
+            state.Box2DistinctCount++;
+        }
+
+        state.TypeIndex++;
+    }
+
+    private static void UnchooseSplit(SplitState state, int[] balls, int toBox1)
+    {
+        state.TypeIndex--;
+        var typeCount = balls[state.TypeIndex];
+
+        if (typeCount - toBox1 > 0)
+        {
+            state.Box2DistinctCount--;
+        }
+
+        if (toBox1 > 0)
+        {
+            state.Box1DistinctCount--;
+        }
+
+        state.Box1Total -= toBox1;
+        state.Ways /= BinomialCoefficient(typeCount, toBox1);
+    }
+
+    private static double SolutionWays(SplitState state, int half) =>
+        state.Box1Total == half && state.Box1DistinctCount == state.Box2DistinctCount ? state.Ways : 0.0;
 
     private static double BinomialCoefficient(int n, int r)
     {

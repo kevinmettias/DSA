@@ -1,34 +1,27 @@
-﻿using IndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.LongestValidParentheses;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestValidParentheses;
 
-public sealed partial class LongestValidParenthesesTests
+// Harness only: the algorithms live in LongestValidParenthesesSolution. One test
+// method per strategy over one shared set of LeetCode's own examples, so a
+// failure names the strategy that broke.
+public sealed class LongestValidParenthesesTests
 {
-    [Theory]
-    [InlineData("(()", 2)]
-    [InlineData(")()())", 4)]
-    [InlineData("", 0)]
-    public void LongestValidParentheses_LeetCodeExamples_ReturnsLongestValidSpan(string value, int expected)
-        => Assert.Equal(expected, LongestValidParentheses(value));
-
-    private static int LongestValidParentheses(string value)
-    {
-        var stack = new IndexStack();
-        stack.Push(-1);
-        var best = 0;
-        for (var i = 0; i < value.Length; i++)
+    public static TheoryData<string, int> Examples =>
+        new()
         {
-            if (value[i] == '(')
-            {
-                stack.Push(i);
-            }
-            else
-            {
-                stack.TryPop(out _);
-                if (stack.TryPeek(out var start)) best = Math.Max(best, i - start);
-                else stack.Push(i);
-            }
-        }
-        return best;
-    }
+            { "(()", 2 },
+            { ")()())", 4 },
+            { "", 0 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LengthByDynamicProgrammingArray_LeetCodeExamples_ReturnsLongestValidSpan(string value, int expected)
+        => Assert.Equal(expected, LongestValidParenthesesSolution.LengthByDynamicProgrammingArray(value));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LengthByStackScan_LeetCodeExamples_ReturnsLongestValidSpan(string value, int expected)
+        => Assert.Equal(expected, LongestValidParenthesesSolution.LengthByStackScan(value));
 }

@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveBoxesBenchmarks
 {
+    private const int MaxBoxColorValueExclusive = 4;
+
     [Params(16, 24)]
     public int BoxCount;
 
@@ -24,7 +26,7 @@ public class RemoveBoxesBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _boxes = Enumerable.Range(0, BoxCount).Select(_ => random.Next(1, 4)).ToArray();
+        _boxes = Enumerable.Range(0, BoxCount).Select(_ => random.Next(1, MaxBoxColorValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

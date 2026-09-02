@@ -16,6 +16,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FrogJumpBenchmarks
 {
+    // Offset from StoneCount back to the value of the last consecutively-filled
+    // stone (the loop fills indices [0, StoneCount - 2] with their own index).
+    private const int LastConsecutiveStoneOffset = 2;
+
+    // Pushed onto the last consecutive stone's value so the appended final stone
+    // sits far enough away that no jump size can ever reach it.
+    private const int UnreachableStoneGap = 1_000;
+
     [Params(10, 16)]
     public int StoneCount;
 
@@ -31,7 +39,7 @@ public class FrogJumpBenchmarks
             _stones[i] = i;
         }
 
-        _stones[StoneCount - 1] = StoneCount - 2 + 1_000;
+        _stones[StoneCount - 1] = StoneCount - LastConsecutiveStoneOffset + UnreachableStoneGap;
     }
 
     [Benchmark(Baseline = true)]
@@ -46,16 +54,7 @@ public class FrogJumpBenchmarks
 
         for (var delta = -1; delta <= 1; delta++)
         {
-            var jump = lastJump + delta;
-
-            if (jump <= 0)
-            {
-                continue;
-            }
-
-            var nextIndex = Array.BinarySearch(stones, index + 1, stones.Length - index - 1, stones[index] + jump);
-
-            if (nextIndex >= 0 && TryJump(stones, nextIndex, jump))
+            if (TryDelta(stones, index, lastJump, delta))
             {
                 return true;
             }
@@ -64,8 +63,32 @@ public class FrogJumpBenchmarks
         return false;
     }
 
+    private static bool TryDelta(int[] stones, int index, int lastJump, int delta)
+    {
+        var jump = lastJump + delta;
+
+        if (jump <= 0)
+        {
+            return false;
+        }
+
+        var nextIndex = Array.BinarySearch(stones, index + 1, stones.Length - index - 1, stones[index] + jump);
+
+        return nextIndex >= 0 && TryJump(stones, nextIndex, jump);
+    }
+
     [Benchmark]
     public bool HashMapDynamicProgramming()
+    {
+        var jumpsByStone = BuildJumpsByStone();
+        SeedStartJump(jumpsByStone);
+        PropagateJumps(jumpsByStone);
+
+        jumpsByStone.TryGetValue(_stones[^1], out var lastJumps);
+        return lastJumps.Count > 0;
+    }
+
+    private HashMap<int, HashMap<int, bool>> BuildJumpsByStone()
     {
         var jumpsByStone = new HashMap<int, HashMap<int, bool>>();
 
@@ -74,33 +97,43 @@ public class FrogJumpBenchmarks
             jumpsByStone.Set(stone, new HashMap<int, bool>());
         }
 
+        return jumpsByStone;
+    }
+
+    private void SeedStartJump(HashMap<int, HashMap<int, bool>> jumpsByStone)
+    {
         jumpsByStone.TryGetValue(_stones[0], out var startJumps);
         startJumps.Set(0, true);
+    }
 
+    private void PropagateJumps(HashMap<int, HashMap<int, bool>> jumpsByStone)
+    {
         foreach (var stone in _stones)
         {
             jumpsByStone.TryGetValue(stone, out var jumps);
 
             foreach (var jump in jumps.Keys)
             {
-                for (var delta = -1; delta <= 1; delta++)
-                {
-                    var nextJump = jump + delta;
-
-                    if (nextJump <= 0)
-                    {
-                        continue;
-                    }
-
-                    if (jumpsByStone.TryGetValue(stone + nextJump, out var nextJumps))
-                    {
-                        nextJumps.Set(nextJump, true);
-                    }
-                }
+                PropagateJumpsFromStone(jumpsByStone, stone, jump);
             }
         }
+    }
 
-        jumpsByStone.TryGetValue(_stones[^1], out var lastJumps);
-        return lastJumps.Count > 0;
+    private static void PropagateJumpsFromStone(HashMap<int, HashMap<int, bool>> jumpsByStone, int stone, int jump)
+    {
+        for (var delta = -1; delta <= 1; delta++)
+        {
+            var nextJump = jump + delta;
+
+            if (nextJump <= 0)
+            {
+                continue;
+            }
+
+            if (jumpsByStone.TryGetValue(stone + nextJump, out var nextJumps))
+            {
+                nextJumps.Set(nextJump, true);
+            }
+        }
     }
 }

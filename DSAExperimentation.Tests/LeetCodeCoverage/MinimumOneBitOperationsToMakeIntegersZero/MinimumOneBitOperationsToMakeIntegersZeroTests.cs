@@ -33,11 +33,21 @@ public sealed partial class MinimumOneBitOperationsToMakeIntegersZeroTests
             return 0;
         }
 
+        var (distances, frontier) = InitializeBfsState();
+        return RunBfs(frontier, distances, n);
+    }
+
+    private static (HashMap<int, int> Distances, RepoQueue Frontier) InitializeBfsState()
+    {
         var distances = new HashMap<int, int>();
         var frontier = new RepoQueue();
         distances.Set(0, 0);
         frontier.Enqueue(0);
+        return (distances, frontier);
+    }
 
+    private static int RunBfs(RepoQueue frontier, HashMap<int, int> distances, int n)
+    {
         while (frontier.TryDequeue(out var state))
         {
             distances.TryGetValue(state, out var distance);

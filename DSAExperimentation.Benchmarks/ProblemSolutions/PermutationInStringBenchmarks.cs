@@ -15,6 +15,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PermutationInStringBenchmarks
 {
     private const string Pattern = "aeiou";
+    private const int RandomSeed = 567; // LC problem number
 
     [Params(2_000, 20_000)]
     public int Length;
@@ -24,7 +25,7 @@ public class PermutationInStringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(567);
+        var random = new Random(RandomSeed);
         const string alphabet = "bcdfghjklmnpqrstvwxyz";
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
@@ -42,7 +43,8 @@ public class PermutationInStringBenchmarks
 
         for (var start = 0; start <= _s2.Length - Pattern.Length; start++)
         {
-            var window = BuildFrequencyMap(_s2.Substring(start, Pattern.Length));
+            var windowText = _s2.Substring(start, Pattern.Length);
+            var window = BuildFrequencyMap(windowText);
             if (FrequenciesEqual(window, target))
             {
                 return true;
@@ -57,44 +59,73 @@ public class PermutationInStringBenchmarks
     {
         var need = BuildFrequencyMap(Pattern);
         var window = new HashMap<char, int>();
+        var state = new FrequencyWindow(need, window);
         var matched = 0;
 
         for (var i = 0; i < _s2.Length; i++)
         {
-            if (need.TryGetValue(_s2[i], out var needed))
-            {
-                window.TryGetValue(_s2[i], out var count);
-                window.Set(_s2[i], count + 1);
-                if (count + 1 == needed)
-                {
-                    matched++;
-                }
-            }
-
-            if (i < Pattern.Length - 1)
-            {
-                continue;
-            }
-
-            if (matched == need.Count)
+            var (found, updatedMatched) = AdvanceWindow(_s2, i, state, matched);
+            matched = updatedMatched;
+            if (found)
             {
                 return true;
-            }
-
-            var leaving = _s2[i - Pattern.Length + 1];
-            if (need.TryGetValue(leaving, out var neededLeaving))
-            {
-                window.TryGetValue(leaving, out var leavingCount);
-                if (leavingCount == neededLeaving)
-                {
-                    matched--;
-                }
-
-                window.Set(leaving, leavingCount - 1);
             }
         }
 
         return false;
+    }
+
+    private static (bool Found, int MatchedCount) AdvanceWindow(string s2, int i, FrequencyWindow state, int matchedCount)
+    {
+        matchedCount = AddIncoming(s2[i], state, matchedCount);
+
+        if (i < Pattern.Length - 1)
+        {
+            return (false, matchedCount);
+        }
+
+        if (matchedCount == state.Need.Count)
+        {
+            return (true, matchedCount);
+        }
+
+        matchedCount = RemoveOutgoing(s2[i - Pattern.Length + 1], state, matchedCount);
+
+        return (false, matchedCount);
+    }
+
+    private static int AddIncoming(char c, FrequencyWindow state, int matchedCount)
+    {
+        if (!state.Need.TryGetValue(c, out var needed))
+        {
+            return matchedCount;
+        }
+
+        state.Window.TryGetValue(c, out var count);
+        state.Window.Set(c, count + 1);
+        if (count + 1 == needed)
+        {
+            matchedCount++;
+        }
+
+        return matchedCount;
+    }
+
+    private static int RemoveOutgoing(char c, FrequencyWindow state, int matchedCount)
+    {
+        if (!state.Need.TryGetValue(c, out var neededLeaving))
+        {
+            return matchedCount;
+        }
+
+        state.Window.TryGetValue(c, out var leavingCount);
+        if (leavingCount == neededLeaving)
+        {
+            matchedCount--;
+        }
+
+        state.Window.Set(c, leavingCount - 1);
+        return matchedCount;
     }
 
     private static HashMap<char, int> BuildFrequencyMap(string value)
@@ -127,4 +158,6 @@ public class PermutationInStringBenchmarks
 
         return true;
     }
+
+    private readonly record struct FrequencyWindow(HashMap<char, int> Need, HashMap<char, int> Window);
 }

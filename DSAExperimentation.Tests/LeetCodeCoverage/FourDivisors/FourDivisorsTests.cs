@@ -34,27 +34,38 @@ public sealed partial class FourDivisorsTests
         var sequence = new SquareExceedsSequence(num, Math.Min(num, 46_341) + 1);
         var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
 
-        var count = 0;
-        var sum = 0;
+        var tally = new DivisorTally();
 
         for (var divisor = anchor; divisor >= 1; divisor--)
         {
-            if (num % divisor != 0)
-            {
-                continue;
-            }
-
-            var paired = num / divisor;
-            count += divisor == paired ? 1 : 2;
-            sum += divisor == paired ? divisor : divisor + paired;
-
-            if (count > 4)
+            if (!tally.TryAccumulate(num, divisor))
             {
                 return 0;
             }
         }
 
-        return count == 4 ? sum : 0;
+        return tally.Count == 4 ? tally.Sum : 0;
+    }
+
+    private sealed class DivisorTally
+    {
+        public int Count { get; private set; }
+
+        public int Sum { get; private set; }
+
+        public bool TryAccumulate(int num, int divisor)
+        {
+            if (num % divisor != 0)
+            {
+                return true;
+            }
+
+            var paired = num / divisor;
+            Count += divisor == paired ? 1 : 2;
+            Sum += divisor == paired ? divisor : divisor + paired;
+
+            return Count <= 4;
+        }
     }
 
     private readonly struct SquareExceedsSequence(long x, int length) : IRandomAccessSequence<int>

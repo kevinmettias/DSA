@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SimplifiedFractionsBenchmarks
 {
+    private const int MinDenominator = 2;
+
     [Params(200, 2_000)]
     public int N;
 
@@ -21,7 +23,7 @@ public class SimplifiedFractionsBenchmarks
     {
         var count = 0;
 
-        for (var denominator = 2; denominator <= N; denominator++)
+        for (var denominator = MinDenominator; denominator <= N; denominator++)
         {
             for (var numerator = 1; numerator < denominator; numerator++)
             {
@@ -40,7 +42,7 @@ public class SimplifiedFractionsBenchmarks
     {
         var count = 0;
 
-        for (var denominator = 2; denominator <= N; denominator++)
+        for (var denominator = MinDenominator; denominator <= N; denominator++)
         {
             for (var numerator = 1; numerator < denominator; numerator++)
             {

@@ -20,6 +20,12 @@ public class PathWithMinimumEffortBenchmarks
 {
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
+    private const int RandomSeed = 1631; // LeetCode problem number
+
+    private const int HeightUpperBoundExclusive = 1_000_000;
+
+    private const int BinarySearchMidDivisor = 2;
+
     [Params(15, 40)]
     public int Size;
 
@@ -28,7 +34,7 @@ public class PathWithMinimumEffortBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1631);
+        var random = new Random(RandomSeed);
         _heights = new int[Size][];
 
         for (var r = 0; r < Size; r++)
@@ -37,7 +43,7 @@ public class PathWithMinimumEffortBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _heights[r][c] = random.Next(0, 1_000_000);
+                _heights[r][c] = random.Next(0, HeightUpperBoundExclusive);
             }
         }
     }
@@ -46,11 +52,11 @@ public class PathWithMinimumEffortBenchmarks
     public int BinarySearchFloodFill()
     {
         var lo = 0;
-        var hi = 1_000_000;
+        var hi = HeightUpperBoundExclusive;
 
         while (lo < hi)
         {
-            var mid = lo + ((hi - lo) / 2);
+            var mid = lo + ((hi - lo) / BinarySearchMidDivisor);
 
             if (CanReachWithEffort(mid))
             {
@@ -65,7 +71,15 @@ public class PathWithMinimumEffortBenchmarks
         return lo;
     }
 
+    private readonly record struct ReachabilitySearch(int N, int Effort, bool[,] Visited, Queue<(int Row, int Col)> Queue);
+
     private bool CanReachWithEffort(int effort)
+    {
+        var search = CreateSearch(effort);
+        return RunSearch(search);
+    }
+
+    private ReachabilitySearch CreateSearch(int effort)
     {
         var n = _heights.Length;
         var visited = new bool[n, n];
@@ -73,43 +87,76 @@ public class PathWithMinimumEffortBenchmarks
         queue.Enqueue((0, 0));
         visited[0, 0] = true;
 
-        while (queue.Count > 0)
-        {
-            var (row, col) = queue.Dequeue();
+        return new ReachabilitySearch(n, effort, visited, queue);
+    }
 
-            if (row == n - 1 && col == n - 1)
+    private bool RunSearch(ReachabilitySearch search)
+    {
+        while (search.Queue.Count > 0)
+        {
+            var current = search.Queue.Dequeue();
+
+            if (current.Row == search.N - 1 && current.Col == search.N - 1)
             {
                 return true;
             }
 
-            foreach (var (dr, dc) in Directions)
+            foreach (var direction in Directions)
             {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc])
-                {
-                    continue;
-                }
-
-                if (Math.Abs(_heights[nr][nc] - _heights[row][col]) > effort)
-                {
-                    continue;
-                }
-
-                visited[nr, nc] = true;
-                queue.Enqueue((nr, nc));
+                TryEnqueueNeighbor(current, direction, search);
             }
         }
 
         return false;
     }
 
+    private void TryEnqueueNeighbor((int Row, int Col) current, (int Row, int Col) direction, ReachabilitySearch search)
+    {
+        var nr = current.Row + direction.Row;
+        var nc = current.Col + direction.Col;
+
+        if (nr < 0 || nr >= search.N || nc < 0 || nc >= search.N || search.Visited[nr, nc])
+        {
+            return;
+        }
+
+        if (Math.Abs(_heights[nr][nc] - _heights[current.Row][current.Col]) > search.Effort)
+        {
+            return;
+        }
+
+        search.Visited[nr, nc] = true;
+        search.Queue.Enqueue((nr, nc));
+    }
+
+    private readonly record struct DijkstraState(
+        int N, bool[,] Settled, int[,] BestEffort, Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> Frontier);
+
     [Benchmark]
     public int HeapDijkstra()
     {
         var n = _heights.Length;
         var settled = new bool[n, n];
+        var bestEffort = InitializeBestEffort(n);
+        var frontier = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
+        frontier.Push(((0, 0), 0));
+        var state = new DijkstraState(n, settled, bestEffort, frontier);
+
+        while (frontier.TryPop(out var entry))
+        {
+            var result = ProcessDijkstraEntry(entry, state);
+
+            if (result is { } effort)
+            {
+                return effort;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int[,] InitializeBestEffort(int n)
+    {
         var bestEffort = new int[n, n];
 
         for (var r = 0; r < n; r++)
@@ -121,46 +168,51 @@ public class PathWithMinimumEffortBenchmarks
         }
 
         bestEffort[0, 0] = 0;
-        var frontier = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
-        frontier.Push(((0, 0), 0));
 
-        while (frontier.TryPop(out var entry))
+        return bestEffort;
+    }
+
+    private int? ProcessDijkstraEntry(((int Row, int Col) Node, int Priority) entry, DijkstraState state)
+    {
+        var (row, col) = entry.Node;
+
+        if (state.Settled[row, col])
         {
-            var (row, col) = entry.Node;
-
-            if (settled[row, col])
-            {
-                continue;
-            }
-
-            settled[row, col] = true;
-            var effort = entry.Priority;
-
-            if (row == n - 1 && col == n - 1)
-            {
-                return effort;
-            }
-
-            foreach (var (dr, dc) in Directions)
-            {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= n || nc < 0 || nc >= n || settled[nr, nc])
-                {
-                    continue;
-                }
-
-                var candidate = Math.Max(effort, Math.Abs(_heights[nr][nc] - _heights[row][col]));
-
-                if (candidate < bestEffort[nr, nc])
-                {
-                    bestEffort[nr, nc] = candidate;
-                    frontier.Push(((nr, nc), candidate));
-                }
-            }
+            return null;
         }
 
-        return -1;
+        state.Settled[row, col] = true;
+        var effort = entry.Priority;
+
+        if (row == state.N - 1 && col == state.N - 1)
+        {
+            return effort;
+        }
+
+        foreach (var direction in Directions)
+        {
+            TryRelaxNeighbor((row, col), direction, effort, state);
+        }
+
+        return null;
+    }
+
+    private void TryRelaxNeighbor((int Row, int Col) current, (int Row, int Col) direction, int effort, DijkstraState state)
+    {
+        var nr = current.Row + direction.Row;
+        var nc = current.Col + direction.Col;
+
+        if (nr < 0 || nr >= state.N || nc < 0 || nc >= state.N || state.Settled[nr, nc])
+        {
+            return;
+        }
+
+        var candidate = Math.Max(effort, Math.Abs(_heights[nr][nc] - _heights[current.Row][current.Col]));
+
+        if (candidate < state.BestEffort[nr, nc])
+        {
+            state.BestEffort[nr, nc] = candidate;
+            state.Frontier.Push(((nr, nc), candidate));
+        }
     }
 }

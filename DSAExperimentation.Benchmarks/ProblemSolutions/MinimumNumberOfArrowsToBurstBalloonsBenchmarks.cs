@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
 {
+    // LC 452.
+    private const int RandomSeed = 452;
+    private const int IntervalSpacing = 3;
+    private const int EndOffsetUpperBound = 2;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -25,9 +30,9 @@ public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(452);
+        var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, Length)
-            .Select(i => (Start: i * 3, End: i * 3 + random.Next(0, 2)))
+            .Select(i => (Start: i * IntervalSpacing, End: i * IntervalSpacing + random.Next(0, EndOffsetUpperBound)))
             .OrderBy(_ => random.Next())
             .ToArray();
     }
@@ -41,29 +46,35 @@ public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
 
         while (remaining > 0)
         {
-            var minEnd = int.MaxValue;
-
-            for (var i = 0; i < _points.Length; i++)
-            {
-                if (!burst[i] && _points[i].End < minEnd)
-                {
-                    minEnd = _points[i].End;
-                }
-            }
-
+            remaining = FireArrow(burst, remaining);
             arrows++;
-
-            for (var i = 0; i < _points.Length; i++)
-            {
-                if (!burst[i] && _points[i].Start <= minEnd && minEnd <= _points[i].End)
-                {
-                    burst[i] = true;
-                    remaining--;
-                }
-            }
         }
 
         return arrows;
+    }
+
+    private int FireArrow(bool[] burst, int remaining)
+    {
+        var minEnd = int.MaxValue;
+
+        for (var i = 0; i < _points.Length; i++)
+        {
+            if (!burst[i] && _points[i].End < minEnd)
+            {
+                minEnd = _points[i].End;
+            }
+        }
+
+        for (var i = 0; i < _points.Length; i++)
+        {
+            if (!burst[i] && _points[i].Start <= minEnd && minEnd <= _points[i].End)
+            {
+                burst[i] = true;
+                remaining--;
+            }
+        }
+
+        return remaining;
     }
 
     [Benchmark]

@@ -23,25 +23,27 @@ public sealed partial class LastStoneWeightIITests
         var total = stones.Sum();
         var half = total / 2;
 
-        var closestToHalf = Memoizer.Memoize<(int Index, int Capacity), int>((0, half), BestReachableSum);
+        var closestToHalf = Memoizer.Memoize<(int Index, int Capacity), int>(
+            (0, half), (state, bestReachableSum) => BestReachableSum(state, bestReachableSum, stones));
         return total - 2 * closestToHalf;
+    }
 
-        int BestReachableSum((int Index, int Capacity) state, Func<(int Index, int Capacity), int> bestReachableSum)
+    private static int BestReachableSum(
+        (int Index, int Capacity) state, Func<(int Index, int Capacity), int> bestReachableSum, int[] stones)
+    {
+        if (state.Index == stones.Length)
         {
-            if (state.Index == stones.Length)
-            {
-                return 0;
-            }
-
-            var skip = bestReachableSum((state.Index + 1, state.Capacity));
-
-            if (stones[state.Index] > state.Capacity)
-            {
-                return skip;
-            }
-
-            var take = stones[state.Index] + bestReachableSum((state.Index + 1, state.Capacity - stones[state.Index]));
-            return Math.Max(skip, take);
+            return 0;
         }
+
+        var skip = bestReachableSum((state.Index + 1, state.Capacity));
+
+        if (stones[state.Index] > state.Capacity)
+        {
+            return skip;
+        }
+
+        var take = stones[state.Index] + bestReachableSum((state.Index + 1, state.Capacity - stones[state.Index]));
+        return Math.Max(skip, take);
     }
 }

@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SerializeAndDeserializeBSTBenchmarks
 {
+    private const string NullMarker = "#";
+
     [Params(500, 20_000)]
     public int NodeCount;
 
@@ -104,7 +106,7 @@ public class SerializeAndDeserializeBSTBenchmarks
     {
         if (node is null)
         {
-            tokens.Add("#");
+            tokens.Add(NullMarker);
             return;
         }
 
@@ -127,7 +129,7 @@ public class SerializeAndDeserializeBSTBenchmarks
 
     private static BinaryTreeNode<int>? ReadNode(RepoQueue tokens)
     {
-        if (!tokens.TryDequeue(out var token) || token == "#")
+        if (!tokens.TryDequeue(out var token) || token == NullMarker)
         {
             return null;
         }

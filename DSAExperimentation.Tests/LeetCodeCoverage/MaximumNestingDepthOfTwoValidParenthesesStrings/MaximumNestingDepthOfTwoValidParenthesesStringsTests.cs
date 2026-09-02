@@ -16,11 +16,14 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsTests
         const string seq = "(((())))";
 
         var groups = MaxDepthAfterSplit(seq);
+        var group0 = SubsequenceOf(seq, groups, group: 0);
+        var group1 = SubsequenceOf(seq, groups, group: 1);
+        var group0Depth = MaxDepth(group0);
+        var group1Depth = MaxDepth(group1);
 
-        Assert.Equal(MaxDepth(seq), MaxDepth(SubsequenceOf(seq, groups, group: 0)) +
-                                     MaxDepth(SubsequenceOf(seq, groups, group: 1)));
-        Assert.True(MaxDepth(SubsequenceOf(seq, groups, group: 0)) <= 2);
-        Assert.True(MaxDepth(SubsequenceOf(seq, groups, group: 1)) <= 2);
+        Assert.Equal(MaxDepth(seq), group0Depth + group1Depth);
+        Assert.True(group0Depth <= 2);
+        Assert.True(group1Depth <= 2);
     }
 
     [Fact]

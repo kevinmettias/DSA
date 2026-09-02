@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LastSubstringInLexicographicalOrderBenchmarks
 {
+    private const int AlphabetSize = 4;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -26,7 +28,7 @@ public class LastSubstringInLexicographicalOrderBenchmarks
         {
             for (var i = 0; i < span.Length; i++)
             {
-                span[i] = (char)('a' + rng.Next(0, 4));
+                span[i] = (char)('a' + rng.Next(0, AlphabetSize));
             }
         });
     }

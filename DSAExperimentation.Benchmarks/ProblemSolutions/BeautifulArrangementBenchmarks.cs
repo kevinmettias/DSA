@@ -19,41 +19,53 @@ public class BeautifulArrangementBenchmarks
     public int GenerateThenFilter()
     {
         var n = N;
-        var used = new bool[n];
-        var values = new int[n];
+        var arrangement = new ArrangementState(n, new bool[n], new int[n]);
+
+        return Generate(arrangement, 0);
+    }
+
+    private static int Generate(ArrangementState arrangement, int depth)
+    {
+        if (depth == arrangement.N)
+        {
+            return IsBeautiful(arrangement) ? 1 : 0;
+        }
+
         var count = 0;
 
-        void Generate(int depth)
+        for (var v = 1; v <= arrangement.N; v++)
         {
-            if (depth == n)
+            if (!arrangement.Used[v - 1])
             {
-                for (var position = 1; position <= n; position++)
-                {
-                    var v = values[position - 1];
-                    if (v % position != 0 && position % v != 0)
-                    {
-                        return;
-                    }
-                }
-
-                count++;
-                return;
-            }
-
-            for (var v = 1; v <= n; v++)
-            {
-                if (!used[v - 1])
-                {
-                    used[v - 1] = true;
-                    values[depth] = v;
-                    Generate(depth + 1);
-                    used[v - 1] = false;
-                }
+                count += PlaceAndRecurse(arrangement, depth, v);
             }
         }
 
-        Generate(0);
         return count;
+    }
+
+    private static int PlaceAndRecurse(ArrangementState arrangement, int depth, int v)
+    {
+        arrangement.Used[v - 1] = true;
+        arrangement.Values[depth] = v;
+        var count = Generate(arrangement, depth + 1);
+        arrangement.Used[v - 1] = false;
+
+        return count;
+    }
+
+    private static bool IsBeautiful(ArrangementState arrangement)
+    {
+        for (var position = 1; position <= arrangement.N; position++)
+        {
+            var v = arrangement.Values[position - 1];
+            if (v % position != 0 && position % v != 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     [Benchmark]
@@ -84,4 +96,6 @@ public class BeautifulArrangementBenchmarks
     }
 
     private sealed class State(int length) { public bool[] Used { get; } = new bool[length]; public List<int> Values { get; } = []; }
+
+    private readonly record struct ArrangementState(int N, bool[] Used, int[] Values);
 }

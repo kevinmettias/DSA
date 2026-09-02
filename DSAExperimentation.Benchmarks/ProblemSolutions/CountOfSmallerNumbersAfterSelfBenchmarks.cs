@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountOfSmallerNumbersAfterSelfBenchmarks
 {
+    private const int RandomSeed = 315; // LeetCode problem number
+    private const int ValueBound = 10_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,8 +24,8 @@ public class CountOfSmallerNumbersAfterSelfBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(315);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-10_000, 10_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

@@ -36,15 +36,27 @@ public sealed partial class SmallestStringWithSwapsTests
 
     private static string SmallestString(string s, int[][] pairs)
     {
-        var components = new DisjointSet(s.Length);
+        var components = BuildComponents(s.Length, pairs);
+        var groups = GroupIndicesByRoot(components, s.Length);
+        return ApplySortedGroups(s, groups);
+    }
+
+    private static DisjointSet BuildComponents(int length, int[][] pairs)
+    {
+        var components = new DisjointSet(length);
 
         foreach (var pair in pairs)
         {
             components.Union(pair[0], pair[1]);
         }
 
+        return components;
+    }
+
+    private static Dictionary<int, List<int>> GroupIndicesByRoot(DisjointSet components, int length)
+    {
         var groups = new Dictionary<int, List<int>>();
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < length; i++)
         {
             var root = components.Find(i);
             if (!groups.TryGetValue(root, out var indices))
@@ -56,6 +68,11 @@ public sealed partial class SmallestStringWithSwapsTests
             indices.Add(i);
         }
 
+        return groups;
+    }
+
+    private static string ApplySortedGroups(string s, Dictionary<int, List<int>> groups)
+    {
         var result = s.ToCharArray();
         foreach (var indices in groups.Values)
         {

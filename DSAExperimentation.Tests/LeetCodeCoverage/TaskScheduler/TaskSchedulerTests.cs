@@ -17,7 +17,8 @@ public sealed partial class TaskSchedulerTests
     {
         char[] tasks = ['A', 'A', 'A', 'B', 'B', 'B'];
 
-        Assert.Equal(8, LeastInterval(tasks, n: 2));
+        var ticks = LeastInterval(tasks, n: 2);
+        Assert.Equal(8, ticks);
     }
 
     [Fact]
@@ -25,7 +26,8 @@ public sealed partial class TaskSchedulerTests
     {
         char[] tasks = ['A', 'A', 'A', 'B', 'B', 'B'];
 
-        Assert.Equal(6, LeastInterval(tasks, n: 0));
+        var ticks = LeastInterval(tasks, n: 0);
+        Assert.Equal(6, ticks);
     }
 
     [Fact]
@@ -33,10 +35,19 @@ public sealed partial class TaskSchedulerTests
     {
         char[] tasks = ['A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C', 'D', 'D', 'E'];
 
-        Assert.Equal(12, LeastInterval(tasks, n: 2));
+        var ticks = LeastInterval(tasks, n: 2);
+        Assert.Equal(12, ticks);
     }
 
     private static int LeastInterval(char[] tasks, int n)
+    {
+        var counts = BuildTaskCounts(tasks);
+        var heap = BuildFrequencyHeap(counts);
+
+        return RunSimulation(heap, n);
+    }
+
+    private static HashMap<char, int> BuildTaskCounts(char[] tasks)
     {
         var counts = new HashMap<char, int>();
 
@@ -46,6 +57,11 @@ public sealed partial class TaskSchedulerTests
             counts.Set(task, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<int, MaxHeapOrder<int>> BuildFrequencyHeap(HashMap<char, int> counts)
+    {
         var heap = new Heap<int, MaxHeapOrder<int>>();
 
         foreach (var task in counts.Keys)
@@ -54,29 +70,38 @@ public sealed partial class TaskSchedulerTests
             heap.Push(frequency);
         }
 
+        return heap;
+    }
+
+    private static int RunSimulation(Heap<int, MaxHeapOrder<int>> heap, int n)
+    {
         var cooldown = new RepoQueue();
         var time = 0;
 
         while (heap.Count > 0 || cooldown.Count > 0)
         {
             time++;
-
-            if (heap.TryPop(out var remaining))
-            {
-                remaining--;
-                if (remaining > 0)
-                {
-                    cooldown.Enqueue((remaining, time + n));
-                }
-            }
-
-            if (cooldown.TryPeek(out var next) && next.AvailableAt == time)
-            {
-                cooldown.TryDequeue(out var ready);
-                heap.Push(ready.Remaining);
-            }
+            AdvanceTick(heap, cooldown, time, n);
         }
 
         return time;
+    }
+
+    private static void AdvanceTick(Heap<int, MaxHeapOrder<int>> heap, RepoQueue cooldown, int time, int n)
+    {
+        if (heap.TryPop(out var remaining))
+        {
+            remaining--;
+            if (remaining > 0)
+            {
+                cooldown.Enqueue((remaining, time + n));
+            }
+        }
+
+        if (cooldown.TryPeek(out var next) && next.AvailableAt == time)
+        {
+            cooldown.TryDequeue(out var ready);
+            heap.Push(ready.Remaining);
+        }
     }
 }

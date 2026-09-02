@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortestUnsortedContinuousSubarrayBenchmarks
 {
+    private const int RandomSeed = 581; // LC problem number
+    private const int ValueUpperBoundExclusive = 1_000_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,8 +24,8 @@ public class ShortestUnsortedContinuousSubarrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(581);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1_000_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBoundExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

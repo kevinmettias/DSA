@@ -22,12 +22,12 @@ public sealed partial class MyCalendarIITests
     {
         var calendar = new MyCalendarII();
 
-        Assert.True(calendar.Book(10, 20));
-        Assert.True(calendar.Book(50, 60));
-        Assert.True(calendar.Book(10, 40));
-        Assert.False(calendar.Book(5, 15));
-        Assert.True(calendar.Book(5, 10));
-        Assert.True(calendar.Book(25, 55));
+        AssertBook(calendar, 10, 20, expectedAccepted: true);
+        AssertBook(calendar, 50, 60, expectedAccepted: true);
+        AssertBook(calendar, 10, 40, expectedAccepted: true);
+        AssertBook(calendar, 5, 15, expectedAccepted: false);
+        AssertBook(calendar, 5, 10, expectedAccepted: true);
+        AssertBook(calendar, 25, 55, expectedAccepted: true);
     }
 
     [Fact]
@@ -35,9 +35,15 @@ public sealed partial class MyCalendarIITests
     {
         var calendar = new MyCalendarII();
 
-        Assert.True(calendar.Book(5, 10));
-        Assert.True(calendar.Book(10, 15));
-        Assert.True(calendar.Book(0, 5));
+        AssertBook(calendar, 5, 10, expectedAccepted: true);
+        AssertBook(calendar, 10, 15, expectedAccepted: true);
+        AssertBook(calendar, 0, 5, expectedAccepted: true);
+    }
+
+    private static void AssertBook(MyCalendarII calendar, int start, int end, bool expectedAccepted)
+    {
+        var actual = calendar.Book(start, end);
+        Assert.Equal(expectedAccepted, actual);
     }
 
     private sealed class MyCalendarII

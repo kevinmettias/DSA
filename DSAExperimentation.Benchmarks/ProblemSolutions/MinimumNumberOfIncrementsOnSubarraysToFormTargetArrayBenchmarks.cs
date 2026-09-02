@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
 {
+    private const int RandomSeed = 1526; // LC 1526
+    private const int MaxTargetHeight = 50;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -19,8 +22,8 @@ public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1526);
-        _target = Enumerable.Range(0, Length).Select(_ => random.Next(0, 50)).ToArray();
+        var random = new Random(RandomSeed);
+        _target = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxTargetHeight)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -32,30 +35,46 @@ public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
 
         while (madeProgress)
         {
-            madeProgress = false;
-            var i = 0;
+            (madeProgress, operations) = RunSweep(current, _target, operations);
+        }
 
-            while (i < current.Length)
+        return operations;
+    }
+
+    private static (bool MadeProgress, int Operations) RunSweep(int[] current, int[] target, int operations)
+    {
+        var madeProgress = false;
+        var i = 0;
+
+        while (i < current.Length)
+        {
+            var (nextIndex, advancedStroke) = AdvanceFromIndex(current, target, i);
+            i = nextIndex;
+
+            if (advancedStroke)
             {
-                if (current[i] >= _target[i])
-                {
-                    i++;
-                    continue;
-                }
-
                 madeProgress = true;
-
-                while (i < current.Length && current[i] < _target[i])
-                {
-                    current[i]++;
-                    i++;
-                }
-
                 operations++;
             }
         }
 
-        return operations;
+        return (madeProgress, operations);
+    }
+
+    private static (int Index, bool AdvancedStroke) AdvanceFromIndex(int[] current, int[] target, int index)
+    {
+        if (current[index] >= target[index])
+        {
+            return (index + 1, false);
+        }
+
+        while (index < current.Length && current[index] < target[index])
+        {
+            current[index]++;
+            index++;
+        }
+
+        return (index, true);
     }
 
     [Benchmark]

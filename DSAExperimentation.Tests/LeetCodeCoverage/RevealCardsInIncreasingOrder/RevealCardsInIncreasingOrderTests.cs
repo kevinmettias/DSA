@@ -31,17 +31,36 @@ public sealed partial class RevealCardsInIncreasingOrderTests
 
     private static int[] DeckRevealedIncreasing(int[] deck)
     {
+        var sorted = SortedCopy(deck);
+        var indices = BuildIndexQueue(deck.Length);
+
+        return SimulateReveal(sorted, indices, deck.Length);
+    }
+
+    private static int[] SortedCopy(int[] deck)
+    {
         var sorted = (int[])deck.Clone();
         Array.Sort(sorted);
+        return sorted;
+    }
 
+    private static RepoQueue BuildIndexQueue(int count)
+    {
         var indices = new RepoQueue();
 
-        for (var i = 0; i < deck.Length; i++)
+        for (var i = 0; i < count; i++)
         {
             indices.Enqueue(i);
         }
 
-        var result = new int[deck.Length];
+        return indices;
+    }
+
+    // Replays the reveal-then-move-to-bottom process forwards over the original
+    // index positions, recovering which original slot each sorted value belongs in.
+    private static int[] SimulateReveal(int[] sorted, RepoQueue indices, int count)
+    {
+        var result = new int[count];
 
         foreach (var value in sorted)
         {

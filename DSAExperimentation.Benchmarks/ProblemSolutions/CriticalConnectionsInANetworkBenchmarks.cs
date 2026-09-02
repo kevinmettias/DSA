@@ -18,6 +18,10 @@ public class CriticalConnectionsInANetworkBenchmarks
 {
     private const int TriangleSize = 3;
 
+    // Offset of a triangle's third vertex from its first, within a group of
+    // TriangleSize nodes.
+    private const int ThirdVertexOffset = TriangleSize - 1;
+
     [Params(150, 3_000)]
     public int NodeCount;
 
@@ -33,8 +37,8 @@ public class CriticalConnectionsInANetworkBenchmarks
         {
             var first = g * TriangleSize;
             connections.Add((first, first + 1));
-            connections.Add((first + 1, first + 2));
-            connections.Add((first + 2, first));
+            connections.Add((first + 1, first + ThirdVertexOffset));
+            connections.Add((first + ThirdVertexOffset, first));
 
             if (g > 0)
             {
@@ -94,18 +98,23 @@ public class CriticalConnectionsInANetworkBenchmarks
             var current = queue.Dequeue();
             foreach (var neighbor in adjacency[current])
             {
-                if (visited[neighbor])
-                {
-                    continue;
-                }
-
-                visited[neighbor] = true;
-                visitedCount++;
-                queue.Enqueue(neighbor);
+                VisitNeighbor(neighbor, visited, queue, ref visitedCount);
             }
         }
 
         return visitedCount == NodeCount;
+    }
+
+    private static void VisitNeighbor(int neighbor, bool[] visited, Queue<int> queue, ref int visitedCount)
+    {
+        if (visited[neighbor])
+        {
+            return;
+        }
+
+        visited[neighbor] = true;
+        visitedCount++;
+        queue.Enqueue(neighbor);
     }
 
     private List<int>[] BuildAdjacencyWithoutEdge(int skipIndex)

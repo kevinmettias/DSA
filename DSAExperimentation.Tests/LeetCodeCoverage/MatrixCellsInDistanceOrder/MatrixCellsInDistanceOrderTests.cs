@@ -41,6 +41,21 @@ public sealed class MatrixCellsInDistanceOrderTests
 
     private static int[][] AllCellsDistOrder(int rows, int cols, int rCenter, int cCenter)
     {
+        var passable = BuildPassableGrid(rows, cols);
+        var grid = new Grid(passable);
+        var start = new GridNode(rCenter, cCenter, grid);
+
+        var distances = Reduce.Graph<
+            GridNode, GridTopology, GridChildren,
+            NaturalChildOrder<GridNode, GridChildren>, GridChildren,
+            BreadthFirstReduceOrder<GridNode>,
+            DistanceMapReduceAlgebra<GridNode>, Dictionary<GridNode, int>>(start);
+
+        return ToSortedCells(distances);
+    }
+
+    private static bool[,] BuildPassableGrid(int rows, int cols)
+    {
         var passable = new bool[rows, cols];
 
         for (var r = 0; r < rows; r++)
@@ -51,15 +66,11 @@ public sealed class MatrixCellsInDistanceOrderTests
             }
         }
 
-        var grid = new Grid(passable);
-        var start = new GridNode(rCenter, cCenter, grid);
+        return passable;
+    }
 
-        var distances = Reduce.Graph<
-            GridNode, GridTopology, GridChildren,
-            NaturalChildOrder<GridNode, GridChildren>, GridChildren,
-            BreadthFirstReduceOrder<GridNode>,
-            DistanceMapReduceAlgebra<GridNode>, Dictionary<GridNode, int>>(start);
-
+    private static int[][] ToSortedCells(Dictionary<GridNode, int> distances)
+    {
         var cells = distances.Select(kv => (kv.Key.Row, kv.Key.Col, Distance: kv.Value)).ToArray();
 
         MergeSort.Sort<(int Row, int Col, int Distance), ArrayIndexedSequence<(int Row, int Col, int Distance)>>(

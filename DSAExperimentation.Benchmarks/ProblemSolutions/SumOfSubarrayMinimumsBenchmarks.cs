@@ -15,6 +15,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SumOfSubarrayMinimumsBenchmarks
 {
     private const int Modulus = 1_000_000_007;
+    private const int RandomSeed = 907;
 
     [Params(200, 5_000)]
     public int Length;
@@ -24,7 +25,7 @@ public class SumOfSubarrayMinimumsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(907);
+        var random = new Random(RandomSeed);
         _arr = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
     }
 
@@ -50,14 +51,20 @@ public class SumOfSubarrayMinimumsBenchmarks
     [Benchmark]
     public int MonotonicStackContribution()
     {
-        var n = _arr.Length;
-        var left = new int[n];
-        var right = new int[n];
+        var left = ComputeDistanceToPreviousSmaller(_arr);
+        var right = ComputeDistanceToNextSmallerOrEqual(_arr);
 
+        return (int)SumMinimumContributions(_arr, left, right);
+    }
+
+    private static int[] ComputeDistanceToPreviousSmaller(int[] arr)
+    {
+        var left = new int[arr.Length];
         var stack = new RepoIntStack();
-        for (var i = 0; i < n; i++)
+
+        for (var i = 0; i < arr.Length; i++)
         {
-            while (stack.TryPeek(out var top) && _arr[top] >= _arr[i])
+            while (stack.TryPeek(out var top) && arr[top] >= arr[i])
             {
                 stack.TryPop(out _);
             }
@@ -66,24 +73,37 @@ public class SumOfSubarrayMinimumsBenchmarks
             stack.Push(i);
         }
 
-        stack = new RepoIntStack();
-        for (var i = n - 1; i >= 0; i--)
+        return left;
+    }
+
+    private static int[] ComputeDistanceToNextSmallerOrEqual(int[] arr)
+    {
+        var right = new int[arr.Length];
+        var stack = new RepoIntStack();
+
+        for (var i = arr.Length - 1; i >= 0; i--)
         {
-            while (stack.TryPeek(out var top) && _arr[top] > _arr[i])
+            while (stack.TryPeek(out var top) && arr[top] > arr[i])
             {
                 stack.TryPop(out _);
             }
 
-            right[i] = stack.TryPeek(out var next) ? next - i : n - i;
+            right[i] = stack.TryPeek(out var next) ? next - i : arr.Length - i;
             stack.Push(i);
         }
 
+        return right;
+    }
+
+    private static long SumMinimumContributions(int[] arr, int[] left, int[] right)
+    {
         long sum = 0;
-        for (var i = 0; i < n; i++)
+
+        for (var i = 0; i < arr.Length; i++)
         {
-            sum = (sum + ((long)_arr[i] * left[i] * right[i])) % Modulus;
+            sum = (sum + ((long)arr[i] * left[i] * right[i])) % Modulus;
         }
 
-        return (int)sum;
+        return sum;
     }
 }

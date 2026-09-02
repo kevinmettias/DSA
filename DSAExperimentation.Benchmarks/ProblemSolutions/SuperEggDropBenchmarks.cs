@@ -14,6 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SuperEggDropBenchmarks
 {
     private const int Eggs = 2;
+    private const int MidpointDivisor = 2;
 
     [Params(50, 400)]
     public int Floors;
@@ -64,27 +65,32 @@ public class SuperEggDropBenchmarks
             return floors;
         }
 
-        var low = 1;
-        var high = floors;
+        var range = new TrialRange(1, floors);
         var best = int.MaxValue;
 
-        while (low <= high)
+        while (range.Low <= range.High)
         {
-            var trial = (low + high) / 2;
-            var breaks = movesFor((eggs - 1, trial - 1));
-            var survives = movesFor((eggs, floors - trial));
-            best = Math.Min(best, 1 + Math.Max(breaks, survives));
-
-            if (breaks < survives)
-            {
-                low = trial + 1;
-            }
-            else
-            {
-                high = trial - 1;
-            }
+            (range, best) = NarrowTrialRange(range, best, state, movesFor);
         }
 
         return best;
     }
+
+    private static (TrialRange Range, int Best) NarrowTrialRange(
+        TrialRange range, int best, (int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
+    {
+        var (eggs, floors) = state;
+        var trial = (range.Low + range.High) / MidpointDivisor;
+        var breaks = movesFor((eggs - 1, trial - 1));
+        var survives = movesFor((eggs, floors - trial));
+        best = Math.Min(best, 1 + Math.Max(breaks, survives));
+
+        return breaks < survives
+            ? (range with { Low = trial + 1 }, best)
+            : (range with { High = trial - 1 }, best);
+    }
+
+    // The [low, high] search window BinarySearchMoves bisects each step - bundled
+    // so NarrowTrialRange stays within the 4 value-parameter limit.
+    private readonly record struct TrialRange(int Low, int High);
 }

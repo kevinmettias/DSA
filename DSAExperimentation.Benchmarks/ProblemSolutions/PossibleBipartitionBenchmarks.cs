@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PossibleBipartitionBenchmarks
 {
+    private const int HalfDivisor = 2;
+    private const int CrossPairsPerPerson = 2;
+
     [Params(200, 5_000)]
     public int PersonCount;
 
@@ -27,30 +30,39 @@ public class PossibleBipartitionBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var half = PersonCount / 2;
+        var half = PersonCount / HalfDivisor;
         var dislikes = new List<(int A, int B)>();
 
-        // Guarantee connectivity: every B-side person gets one cross pair
-        // back to a random A-side person.
+        AddConnectivityPairs(dislikes, random, half);
+        AddDensityPairs(dislikes, random, half);
+
+        _adjacency = BuildAdjacency(PersonCount, dislikes);
+        _people = BuildPeople(PersonCount, dislikes);
+    }
+
+    // Guarantee connectivity: every B-side person gets one cross pair back to
+    // a random A-side person.
+    private void AddConnectivityPairs(List<(int A, int B)> dislikes, Random random, int half)
+    {
         for (var i = half; i < PersonCount; i++)
         {
             dislikes.Add((random.Next(half), i));
         }
+    }
 
-        // Extra cross-only pairs for density - still strictly A-to-B, so the
-        // dislikes graph stays bipartite by construction.
+    // Extra cross-only pairs for density - still strictly A-to-B, so the
+    // dislikes graph stays bipartite by construction.
+    private void AddDensityPairs(List<(int A, int B)> dislikes, Random random, int half)
+    {
         for (var i = 0; i < PersonCount; i++)
         {
-            for (var e = 0; e < 2; e++)
+            for (var e = 0; e < CrossPairsPerPerson; e++)
             {
                 var inA = i < half;
                 var target = inA ? half + random.Next(PersonCount - half) : random.Next(half);
                 dislikes.Add((i, target));
             }
         }
-
-        _adjacency = BuildAdjacency(PersonCount, dislikes);
-        _people = BuildPeople(PersonCount, dislikes);
     }
 
     [Benchmark(Baseline = true)]

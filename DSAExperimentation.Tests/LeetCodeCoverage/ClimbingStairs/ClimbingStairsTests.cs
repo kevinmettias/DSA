@@ -1,21 +1,22 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.ClimbingStairs;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ClimbingStairs;
 
-// LeetCode 70. Climbing Stairs: ways(n) = ways(n-1) + ways(n-2), the same shape as
-// Fibonacci - natural-looking recursion via this repo's Memoizer, no hand-rolled
-// cache.
-public sealed partial class ClimbingStairsTests
+// Harness only. ClimbingStairsSolution owns the memoized recurrence; this file
+// pins it to LeetCode's published examples plus the original five-step case.
+public sealed class ClimbingStairsTests
 {
-    [Fact]
-    public void CountWays_FiveSteps_ReturnsEightDistinctClimbSequences()
-    {
-        var ways = Memoizer.Memoize<int, int>(
-            5, (stepCount, climb) => stepCount <= 1 ? 1 : WaysFromPreviousTwoSteps(stepCount, climb));
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 2, 2 },
+            { 3, 3 },
+            { 5, 8 },
+        };
 
-        Assert.Equal(8, ways);
-    }
-
-    private static int WaysFromPreviousTwoSteps(int stepCount, Func<int, int> climb)
-        => climb(stepCount - 1) + climb(stepCount - 2);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountWaysByMemoizedRecurrence_LeetCodeExamples_ReturnsDistinctClimbSequenceCount(
+        int stepCount, int expected) =>
+        Assert.Equal(expected, ClimbingStairsSolution.CountWaysByMemoizedRecurrence(stepCount));
 }

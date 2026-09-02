@@ -19,7 +19,9 @@ public sealed partial class ThreeSumWithMultiplicityTests
     {
         int[] arr = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5];
 
-        Assert.Equal(20, CountTriplets(arr, target: 8));
+        var actual = CountTriplets(arr, target: 8);
+
+        Assert.Equal(20, actual);
     }
 
     [Fact]
@@ -27,7 +29,9 @@ public sealed partial class ThreeSumWithMultiplicityTests
     {
         int[] arr = [1, 1, 2, 2, 2, 2];
 
-        Assert.Equal(12, CountTriplets(arr, target: 5));
+        var actual = CountTriplets(arr, target: 5);
+
+        Assert.Equal(12, actual);
     }
 
     [Fact]
@@ -35,7 +39,9 @@ public sealed partial class ThreeSumWithMultiplicityTests
     {
         int[] arr = [0, 0, 0];
 
-        Assert.Equal(0, CountTriplets(arr, target: 1));
+        var actual = CountTriplets(arr, target: 1);
+
+        Assert.Equal(0, actual);
     }
 
     private static int CountTriplets(int[] arr, int target)
@@ -47,51 +53,61 @@ public sealed partial class ThreeSumWithMultiplicityTests
 
         for (var i = 0; i < sorted.Length - 2; i++)
         {
-            var remaining = target - sorted[i];
-            var left = i + 1;
-            var right = sorted.Length - 1;
-
-            while (left < right)
-            {
-                var pairSum = sorted[left] + sorted[right];
-
-                if (pairSum < remaining)
-                {
-                    left++;
-                }
-                else if (pairSum > remaining)
-                {
-                    right--;
-                }
-                else if (sorted[left] != sorted[right])
-                {
-                    var leftCount = 1;
-                    while (left + 1 < right && sorted[left + 1] == sorted[left])
-                    {
-                        leftCount++;
-                        left++;
-                    }
-
-                    var rightCount = 1;
-                    while (right - 1 > left && sorted[right - 1] == sorted[right])
-                    {
-                        rightCount++;
-                        right--;
-                    }
-
-                    count = (count + ((long)leftCount * rightCount)) % Modulo;
-                    left++;
-                    right--;
-                }
-                else
-                {
-                    var span = right - left + 1;
-                    count = (count + ((long)span * (span - 1) / 2)) % Modulo;
-                    break;
-                }
-            }
+            AccumulateTripletsForAnchor(sorted, i, target, ref count);
         }
 
         return (int)count;
+    }
+
+    private static void AccumulateTripletsForAnchor(int[] sorted, int anchorIndex, int target, ref long count)
+    {
+        var remaining = target - sorted[anchorIndex];
+        var left = anchorIndex + 1;
+        var right = sorted.Length - 1;
+
+        while (left < right)
+        {
+            var pairSum = sorted[left] + sorted[right];
+
+            if (pairSum < remaining)
+            {
+                left++;
+            }
+            else if (pairSum > remaining)
+            {
+                right--;
+            }
+            else if (sorted[left] != sorted[right])
+            {
+                AccumulateDistinctSpanPairs(sorted, ref left, ref right, ref count);
+            }
+            else
+            {
+                var span = right - left + 1;
+                count = (count + ((long)span * (span - 1) / 2)) % Modulo;
+                break;
+            }
+        }
+    }
+
+    private static void AccumulateDistinctSpanPairs(int[] sorted, ref int left, ref int right, ref long count)
+    {
+        var leftCount = 1;
+        while (left + 1 < right && sorted[left + 1] == sorted[left])
+        {
+            leftCount++;
+            left++;
+        }
+
+        var rightCount = 1;
+        while (right - 1 > left && sorted[right - 1] == sorted[right])
+        {
+            rightCount++;
+            right--;
+        }
+
+        count = (count + ((long)leftCount * rightCount)) % Modulo;
+        left++;
+        right--;
     }
 }

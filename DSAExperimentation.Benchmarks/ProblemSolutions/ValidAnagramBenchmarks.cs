@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ValidAnagramBenchmarks
 {
+    private const int AlphabetSize = 26;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,7 +23,7 @@ public class ValidAnagramBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var letters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(26))).ToArray();
+        var letters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray();
         _s = new string(letters);
         _t = new string([.. letters[1..], letters[0]]);
     }
@@ -65,15 +67,27 @@ public class ValidAnagramBenchmarks
             return false;
         }
 
+        var counts = BuildFrequencyCounts(_s);
+
+        return ConsumesAllCounts(counts, _t);
+    }
+
+    private static HashMap<char, int> BuildFrequencyCounts(string s)
+    {
         var counts = new HashMap<char, int>();
 
-        foreach (var c in _s)
+        foreach (var c in s)
         {
             counts.TryGetValue(c, out var count);
             counts.Set(c, count + 1);
         }
 
-        foreach (var c in _t)
+        return counts;
+    }
+
+    private static bool ConsumesAllCounts(HashMap<char, int> counts, string t)
+    {
+        foreach (var c in t)
         {
             if (!counts.TryGetValue(c, out var count) || count == 0)
             {

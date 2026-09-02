@@ -44,13 +44,26 @@ public sealed partial class CircularArrayLoopTests
 
     private static bool HasValidCycle(int[] nums)
     {
-        var n = nums.Length;
+        var nodes = BuildNodes(nums.Length);
+        LinkEdges(nodes, nums);
+        return AnyCycle(nodes);
+    }
+
+    private static SinglyLinkedListNode<int>[] BuildNodes(int n)
+    {
         var nodes = new SinglyLinkedListNode<int>[n];
 
         for (var i = 0; i < n; i++)
         {
             nodes[i] = new SinglyLinkedListNode<int>(i);
         }
+
+        return nodes;
+    }
+
+    private static void LinkEdges(SinglyLinkedListNode<int>[] nodes, int[] nums)
+    {
+        var n = nums.Length;
 
         for (var i = 0; i < n; i++)
         {
@@ -63,10 +76,13 @@ public sealed partial class CircularArrayLoopTests
 
             nodes[i].Next = nodes[nextIndex];
         }
+    }
 
-        for (var i = 0; i < n; i++)
+    private static bool AnyCycle(SinglyLinkedListNode<int>[] nodes)
+    {
+        foreach (var node in nodes)
         {
-            if (CycleDetection.HasCycle(nodes[i]))
+            if (CycleDetection.HasCycle(node))
             {
                 return true;
             }

@@ -19,7 +19,8 @@ public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresh
     {
         int[][] edges = [[0, 1, 3], [1, 2, 1], [1, 3, 4], [2, 3, 1]];
 
-        Assert.Equal(3, FindCity(4, edges, distanceThreshold: 4));
+        var actual = FindCity(4, edges, distanceThreshold: 4);
+        Assert.Equal(3, actual);
     }
 
     [Fact]
@@ -27,43 +28,53 @@ public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresh
     {
         int[][] edges = [[0, 1, 2], [0, 4, 8], [1, 2, 3], [1, 4, 2], [2, 3, 1], [3, 4, 1]];
 
-        Assert.Equal(0, FindCity(5, edges, distanceThreshold: 2));
+        var actual = FindCity(5, edges, distanceThreshold: 2);
+        Assert.Equal(0, actual);
     }
 
     private static int FindCity(int n, int[][] edges, int distanceThreshold)
     {
+        var nodes = BuildNodes(n);
+        WireEdges(nodes, edges);
+
+        AllPairsShortestPaths.TryComputeDistances<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
+            nodes.Values, out var distances);
+
+        var graph = new CityGraph(n, nodes, distances, distanceThreshold);
+
+        return FindCityWithFewestNeighbors(graph);
+    }
+
+    private static Dictionary<int, WeightedNode> BuildNodes(int n)
+    {
         var nodes = new Dictionary<int, WeightedNode>();
+
         for (var i = 0; i < n; i++)
         {
             nodes[i] = new WeightedNode(i.ToString());
         }
 
+        return nodes;
+    }
+
+    private static void WireEdges(Dictionary<int, WeightedNode> nodes, int[][] edges)
+    {
         foreach (var edge in edges)
         {
             var (from, to, weight) = (edge[0], edge[1], edge[2]);
             nodes[from].Edges.Add((weight, nodes[to]));
             nodes[to].Edges.Add((weight, nodes[from]));
         }
+    }
 
-        AllPairsShortestPaths.TryComputeDistances<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            nodes.Values, out var distances);
-
+    private static int FindCityWithFewestNeighbors(CityGraph graph)
+    {
         var bestCity = -1;
         var bestCount = int.MaxValue;
 
-        for (var city = 0; city < n; city++)
+        for (var city = 0; city < graph.N; city++)
         {
-            var count = 0;
-
-            for (var other = 0; other < n; other++)
-            {
-                if (other != city
-                    && distances.TryGetValue((nodes[city], nodes[other]), out var distance)
-                    && distance <= distanceThreshold)
-                {
-                    count++;
-                }
-            }
+            var count = CountReachableNeighbors(graph, city);
 
             if (count <= bestCount)
             {
@@ -74,4 +85,27 @@ public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresh
 
         return bestCity;
     }
+
+    private static int CountReachableNeighbors(CityGraph graph, int city)
+    {
+        var count = 0;
+
+        for (var other = 0; other < graph.N; other++)
+        {
+            if (other != city
+                && graph.Distances.TryGetValue((graph.Nodes[city], graph.Nodes[other]), out var distance)
+                && distance <= graph.DistanceThreshold)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private readonly record struct CityGraph(
+        int N,
+        Dictionary<int, WeightedNode> Nodes,
+        Dictionary<(WeightedNode From, WeightedNode To), int> Distances,
+        int DistanceThreshold);
 }

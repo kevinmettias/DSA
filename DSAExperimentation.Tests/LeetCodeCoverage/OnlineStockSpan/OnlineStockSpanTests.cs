@@ -14,13 +14,13 @@ public sealed partial class OnlineStockSpanTests
     {
         var spanner = new StockSpannerOperations();
 
-        Assert.Equal(1, spanner.Next(100));
-        Assert.Equal(1, spanner.Next(80));
-        Assert.Equal(1, spanner.Next(60));
-        Assert.Equal(2, spanner.Next(70));
-        Assert.Equal(1, spanner.Next(60));
-        Assert.Equal(4, spanner.Next(75));
-        Assert.Equal(6, spanner.Next(85));
+        AssertNextSpan(spanner, 100, 1);
+        AssertNextSpan(spanner, 80, 1);
+        AssertNextSpan(spanner, 60, 1);
+        AssertNextSpan(spanner, 70, 2);
+        AssertNextSpan(spanner, 60, 1);
+        AssertNextSpan(spanner, 75, 4);
+        AssertNextSpan(spanner, 85, 6);
     }
 
     [Fact]
@@ -28,9 +28,15 @@ public sealed partial class OnlineStockSpanTests
     {
         var spanner = new StockSpannerOperations();
 
-        Assert.Equal(1, spanner.Next(10));
-        Assert.Equal(2, spanner.Next(20));
-        Assert.Equal(3, spanner.Next(30));
+        AssertNextSpan(spanner, 10, 1);
+        AssertNextSpan(spanner, 20, 2);
+        AssertNextSpan(spanner, 30, 3);
+    }
+
+    private static void AssertNextSpan(StockSpannerOperations spanner, int price, int expectedSpan)
+    {
+        var actual = spanner.Next(price);
+        Assert.Equal(expectedSpan, actual);
     }
 
     private sealed class StockSpannerOperations

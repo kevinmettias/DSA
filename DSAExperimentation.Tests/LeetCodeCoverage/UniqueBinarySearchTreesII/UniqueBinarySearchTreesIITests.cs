@@ -1,61 +1,53 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.UniqueBinarySearchTreesII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.UniqueBinarySearchTreesII;
 
-// LeetCode 95. Unique Binary Search Trees II: for each candidate root k in
-// [start,end], every combination of a left subtree generated from [start,k-1] and
-// a right subtree generated from [k+1,end] forms one distinct BST - built directly
-// out of this repo's own BinaryTreeNode<int>, the same "construct nodes ad hoc via
-// object initializers" style ConvertSortedArrayToBinarySearchTree already uses,
-// rather than UniqueBinarySearchTrees's Insert-based BinarySearchTree<TValue>
-// (insertion order only ever produces ONE shape per order, not every shape).
-public sealed partial class UniqueBinarySearchTreesIITests
+// Harness only. Both strategies are UniqueBinarySearchTreesIISolution's - this
+// file pins them to LeetCode's published example (n=3) and the n=1 edge case,
+// checking every returned tree is a structurally valid BST over [1..n] via
+// its in-order sequence, plus the n=1 case's exact single-leaf shape.
+public sealed class UniqueBinarySearchTreesIITests
 {
-    [Fact]
-    public void GenerateTrees_NThree_ReturnsAllFiveStructurallyValidBsts()
-    {
-        var trees = GenerateTrees(1, 3);
+    public static TheoryData<int, int, int[]> Examples =>
+        new()
+        {
+            { 3, 5, [1, 2, 3] },
+            { 1, 1, [1] },
+        };
 
-        Assert.Equal(5, trees.Count);
-        Assert.All(trees, tree => Assert.Equal([1, 2, 3], InOrder(tree)));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GenerateTreesByPlainRecursion_LeetCodeExamples_ReturnsAllStructurallyValidBsts(
+        int n, int expectedCount, int[] expectedInOrder) =>
+        AssertAllValidBsts(UniqueBinarySearchTreesIISolution.GenerateTreesByPlainRecursion(n), expectedCount, expectedInOrder);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GenerateTreesByMemoizedRange_LeetCodeExamples_ReturnsAllStructurallyValidBsts(
+        int n, int expectedCount, int[] expectedInOrder) =>
+        AssertAllValidBsts(UniqueBinarySearchTreesIISolution.GenerateTreesByMemoizedRange(n), expectedCount, expectedInOrder);
+
+    [Fact]
+    public void GenerateTreesByPlainRecursion_NOne_ReturnsSingleLeafTree() =>
+        AssertSingleLeafTree(UniqueBinarySearchTreesIISolution.GenerateTreesByPlainRecursion(1));
+
+    [Fact]
+    public void GenerateTreesByMemoizedRange_NOne_ReturnsSingleLeafTree() =>
+        AssertSingleLeafTree(UniqueBinarySearchTreesIISolution.GenerateTreesByMemoizedRange(1));
+
+    private static void AssertAllValidBsts(List<BinaryTreeNode<int>?> trees, int expectedCount, int[] expectedInOrder)
+    {
+        Assert.Equal(expectedCount, trees.Count);
+        Assert.All(trees, tree => Assert.Equal(expectedInOrder, InOrder(tree)));
     }
 
-    [Fact]
-    public void GenerateTrees_NOne_ReturnsSingleLeafTree()
+    private static void AssertSingleLeafTree(List<BinaryTreeNode<int>?> trees)
     {
-        var trees = GenerateTrees(1, 1);
-
         var tree = Assert.Single(trees);
         Assert.Equal(1, tree!.Value);
         Assert.Null(tree.Left);
         Assert.Null(tree.Right);
-    }
-
-    private static List<BinaryTreeNode<int>?> GenerateTrees(int start, int end)
-    {
-        var trees = new List<BinaryTreeNode<int>?>();
-
-        if (start > end)
-        {
-            trees.Add(null);
-            return trees;
-        }
-
-        for (var root = start; root <= end; root++)
-        {
-            var lefts = GenerateTrees(start, root - 1);
-            var rights = GenerateTrees(root + 1, end);
-
-            foreach (var left in lefts)
-            {
-                foreach (var right in rights)
-                {
-                    trees.Add(new BinaryTreeNode<int>(root) { Left = left, Right = right });
-                }
-            }
-        }
-
-        return trees;
     }
 
     private static int[] InOrder(BinaryTreeNode<int>? node) =>

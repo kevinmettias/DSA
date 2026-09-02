@@ -13,6 +13,9 @@ public class DesignSkiplistBenchmarks
 {
     private const int MaxValue = 20_000;
 
+    // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
+    private const int RandomSeed = 1206;
+
     [Params(200, 5_000)]
     public int OperationCount;
 
@@ -21,7 +24,7 @@ public class DesignSkiplistBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1206);
+        var random = new Random(RandomSeed);
         _values = Enumerable.Range(0, OperationCount).Select(_ => random.Next(0, MaxValue + 1)).ToArray();
     }
 
@@ -29,12 +32,33 @@ public class DesignSkiplistBenchmarks
     public int LinearScanList()
     {
         var list = new List<int>();
-        var trueCount = 0;
+        AddAllList(list);
+        var trueCount = CountContainsList(list);
+        trueCount += RemoveFoundList(list);
+        return trueCount;
+    }
 
+    [Benchmark]
+    public int FenwickTreeFrequencyMultiset()
+    {
+        var frequencies = new FenwickTree<int, SumOperation<int>>(MaxValue + 1);
+        AddAllFenwick(frequencies);
+        var trueCount = CountContainsFenwick(frequencies);
+        trueCount += RemoveFoundFenwick(frequencies);
+        return trueCount;
+    }
+
+    private void AddAllList(List<int> list)
+    {
         foreach (var value in _values)
         {
             list.Add(value);
         }
+    }
+
+    private int CountContainsList(List<int> list)
+    {
+        var trueCount = 0;
 
         foreach (var value in _values)
         {
@@ -43,6 +67,13 @@ public class DesignSkiplistBenchmarks
                 trueCount++;
             }
         }
+
+        return trueCount;
+    }
+
+    private int RemoveFoundList(List<int> list)
+    {
+        var trueCount = 0;
 
         foreach (var value in _values)
         {
@@ -57,16 +88,17 @@ public class DesignSkiplistBenchmarks
         return trueCount;
     }
 
-    [Benchmark]
-    public int FenwickTreeFrequencyMultiset()
+    private void AddAllFenwick(FenwickTree<int, SumOperation<int>> frequencies)
     {
-        var frequencies = new FenwickTree<int, SumOperation<int>>(MaxValue + 1);
-        var trueCount = 0;
-
         foreach (var value in _values)
         {
             frequencies.Add(value, 1);
         }
+    }
+
+    private int CountContainsFenwick(FenwickTree<int, SumOperation<int>> frequencies)
+    {
+        var trueCount = 0;
 
         foreach (var value in _values)
         {
@@ -75,6 +107,13 @@ public class DesignSkiplistBenchmarks
                 trueCount++;
             }
         }
+
+        return trueCount;
+    }
+
+    private int RemoveFoundFenwick(FenwickTree<int, SumOperation<int>> frequencies)
+    {
+        var trueCount = 0;
 
         foreach (var value in _values)
         {

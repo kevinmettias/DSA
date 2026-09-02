@@ -73,6 +73,18 @@ public sealed class MaximumStudentsTakingExamTests
         var rows = seats.Length;
         var cols = seats[0].Length;
 
+        var brokenMask = BuildBrokenMask(seats, rows, cols);
+        var fullMask = (1 << cols) - 1;
+        var context = new ExamContext(rows, fullMask, brokenMask);
+
+        return Memoizer.Memoize<(int Row, int PrevMask), int>(
+            (0, 0), (state, bestFrom) => BestFrom(state, bestFrom, context));
+    }
+
+    private readonly record struct ExamContext(int Rows, int FullMask, int[] BrokenMask);
+
+    private static int[] BuildBrokenMask(char[][] seats, int rows, int cols)
+    {
         var brokenMask = new int[rows];
         for (var row = 0; row < rows; row++)
         {
@@ -85,35 +97,37 @@ public sealed class MaximumStudentsTakingExamTests
             }
         }
 
-        var fullMask = (1 << cols) - 1;
-
-        return Memoizer.Memoize<(int Row, int PrevMask), int>((0, 0), BestFrom);
-
-        int BestFrom((int Row, int PrevMask) state, Func<(int Row, int PrevMask), int> bestFrom)
-        {
-            var (row, prevMask) = state;
-            if (row == rows)
-            {
-                return 0;
-            }
-
-            var best = 0;
-            for (var mask = 0; mask <= fullMask; mask++)
-            {
-                if ((mask & brokenMask[row]) != 0
-                    || (mask & (mask << 1)) != 0
-                    || (mask & (prevMask << 1)) != 0
-                    || (mask & (prevMask >> 1)) != 0)
-                {
-                    continue;
-                }
-
-                best = Math.Max(best, PopCount(mask) + bestFrom((row + 1, mask)));
-            }
-
-            return best;
-        }
+        return brokenMask;
     }
+
+    private static int BestFrom(
+        (int Row, int PrevMask) state, Func<(int Row, int PrevMask), int> bestFrom, ExamContext context)
+    {
+        var (row, prevMask) = state;
+        if (row == context.Rows)
+        {
+            return 0;
+        }
+
+        var best = 0;
+        for (var mask = 0; mask <= context.FullMask; mask++)
+        {
+            if (!IsValidRowMask(mask, prevMask, context.BrokenMask[row]))
+            {
+                continue;
+            }
+
+            best = Math.Max(best, PopCount(mask) + bestFrom((row + 1, mask)));
+        }
+
+        return best;
+    }
+
+    private static bool IsValidRowMask(int mask, int prevMask, int broken)
+        => (mask & broken) == 0
+            && (mask & (mask << 1)) == 0
+            && (mask & (prevMask << 1)) == 0
+            && (mask & (prevMask >> 1)) == 0;
 
     private static int PopCount(int mask)
     {

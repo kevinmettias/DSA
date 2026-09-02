@@ -10,6 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class HIndexBenchmarks
 {
+    private const int RandomSeed = 274; // LC problem number
+    private const int CitationCountExclusiveBound = 1_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -18,8 +21,8 @@ public class HIndexBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(274);
-        _citations = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _citations = Enumerable.Range(0, Length).Select(_ => random.Next(0, CitationCountExclusiveBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

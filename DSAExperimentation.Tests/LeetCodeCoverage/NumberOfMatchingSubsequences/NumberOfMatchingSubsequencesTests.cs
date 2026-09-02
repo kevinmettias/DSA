@@ -28,36 +28,46 @@ public sealed partial class NumberOfMatchingSubsequencesTests
     private static int NumMatchingSubseq(string s, string[] words)
     {
         var buckets = new HashMap<char, WaitingQueue>();
-
-        foreach (var word in words)
-        {
-            Enqueue(buckets, word, 0);
-        }
+        SeedBuckets(buckets, words);
 
         var matches = 0;
 
         foreach (var c in s)
         {
-            if (!buckets.TryGetValue(c, out var waiting))
+            if (buckets.TryGetValue(c, out var waiting))
             {
-                continue;
+                matches += AdvanceBucket(buckets, waiting);
             }
+        }
 
-            var pending = waiting.Count;
+        return matches;
+    }
 
-            for (var i = 0; i < pending; i++)
+    private static void SeedBuckets(HashMap<char, WaitingQueue> buckets, string[] words)
+    {
+        foreach (var word in words)
+        {
+            Enqueue(buckets, word, 0);
+        }
+    }
+
+    private static int AdvanceBucket(HashMap<char, WaitingQueue> buckets, WaitingQueue waiting)
+    {
+        var pending = waiting.Count;
+        var matches = 0;
+
+        for (var i = 0; i < pending; i++)
+        {
+            waiting.TryDequeue(out var entry);
+            var nextIndex = entry.Index + 1;
+
+            if (nextIndex == entry.Word.Length)
             {
-                waiting.TryDequeue(out var entry);
-                var nextIndex = entry.Index + 1;
-
-                if (nextIndex == entry.Word.Length)
-                {
-                    matches++;
-                }
-                else
-                {
-                    Enqueue(buckets, entry.Word, nextIndex);
-                }
+                matches++;
+            }
+            else
+            {
+                Enqueue(buckets, entry.Word, nextIndex);
             }
         }
 

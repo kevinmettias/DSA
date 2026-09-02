@@ -14,6 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KokoEatingBananasBenchmarks
 {
+    private const int RandomSeed = 875; // LC problem number
+    private const int MaxPileSizeExclusive = 1_000;
+    private const int HoursPerBanana = 5;
+    private const int MidpointDivisor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,9 +28,9 @@ public class KokoEatingBananasBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(875);
-        _piles = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
-        _h = Length * 5;
+        var random = new Random(RandomSeed);
+        _piles = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxPileSizeExclusive)).ToArray();
+        _h = Length * HoursPerBanana;
     }
 
     [Benchmark(Baseline = true)]
@@ -36,7 +41,7 @@ public class KokoEatingBananasBenchmarks
 
         while (low < high)
         {
-            var mid = low + ((high - low) / 2);
+            var mid = low + ((high - low) / MidpointDivisor);
             if (HoursNeeded(_piles, mid) <= _h)
             {
                 high = mid;

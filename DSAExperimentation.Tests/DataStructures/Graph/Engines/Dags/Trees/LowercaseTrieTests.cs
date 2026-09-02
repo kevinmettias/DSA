@@ -7,13 +7,32 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
 public sealed class LowercaseTrieTests
 {
+    private const string CatKey = "cat";
+    private const string DogKey = "dog";
+    private const string CarKey = "car";
+    private const string CardKey = "card";
+    private const string MissingKey = "missing";
+    private const string EmptyPrefix = "";
+    private const string UppercaseCatKey = "Cat";
+    private const string SharedPrefixOfCarAndCat = "ca";
+
+    private const int OverwrittenValue = 2;
+    private const int CarValue = 2;
+    private const int CardValue = 3;
+    private const int CarOverwrittenValue = 4;
+    private const int ExpectedDistinctKeyCount = 3;
+    private const int CardValueForSizeTest = 2;
+    private const int ExpectedTreeSize = 5;
+    private const int CatValueForLcaTest = 2;
+    private const int DogValueForLcaTest = 3;
+
     [Fact]
     public void Set_ThenTryGetValue_ReturnsTrueAndStoredValue()
     {
         var trie = new LowercaseTrie<int>();
 
-        trie.Set("cat", 1);
-        var found = trie.TryGetValue("cat", out var value);
+        trie.Set(CatKey, 1);
+        var found = trie.TryGetValue(CatKey, out var value);
 
         Assert.True(found);
         Assert.Equal(1, value);
@@ -23,12 +42,12 @@ public sealed class LowercaseTrieTests
     public void Set_ExistingKey_OverwritesValue_CountUnchanged()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("cat", 1);
+        trie.Set(CatKey, 1);
 
-        trie.Set("cat", 2);
-        trie.TryGetValue("cat", out var value);
+        trie.Set(CatKey, OverwrittenValue);
+        trie.TryGetValue(CatKey, out var value);
 
-        Assert.Equal(2, value);
+        Assert.Equal(OverwrittenValue, value);
         Assert.Equal(1, trie.Count);
     }
 
@@ -36,10 +55,10 @@ public sealed class LowercaseTrieTests
     public void HasKey_UnknownKey_ReturnsFalse()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("cat", 1);
+        trie.Set(CatKey, 1);
 
-        Assert.True(trie.HasKey("cat"));
-        Assert.False(trie.HasKey("dog"));
+        Assert.True(trie.HasKey(CatKey));
+        Assert.False(trie.HasKey(DogKey));
     }
 
     [Fact]
@@ -47,7 +66,7 @@ public sealed class LowercaseTrieTests
     {
         var trie = new LowercaseTrie<int>();
 
-        var found = trie.TryGetValue("missing", out var value);
+        var found = trie.TryGetValue(MissingKey, out var value);
 
         Assert.False(found);
         Assert.Equal(default, value);
@@ -57,28 +76,28 @@ public sealed class LowercaseTrieTests
     public void HasPrefix_KnownPrefix_ReturnsTrue()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("card", 1);
+        trie.Set(CardKey, 1);
 
-        Assert.True(trie.HasPrefix("car"));
-        Assert.True(trie.HasPrefix("card"));
+        Assert.True(trie.HasPrefix(CarKey));
+        Assert.True(trie.HasPrefix(CardKey));
     }
 
     [Fact]
     public void HasPrefix_UnknownPrefix_ReturnsFalse()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("card", 1);
+        trie.Set(CardKey, 1);
 
-        Assert.False(trie.HasPrefix("dog"));
+        Assert.False(trie.HasPrefix(DogKey));
     }
 
     [Fact]
     public void HasPrefix_EmptyPrefix_ReturnsTrueWhenAnyKeyExists()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("card", 1);
+        trie.Set(CardKey, 1);
 
-        Assert.True(trie.HasPrefix(""));
+        Assert.True(trie.HasPrefix(EmptyPrefix));
     }
 
     [Fact]
@@ -86,7 +105,7 @@ public sealed class LowercaseTrieTests
     {
         var trie = new LowercaseTrie<int>();
 
-        Assert.False(trie.HasPrefix(""));
+        Assert.False(trie.HasPrefix(EmptyPrefix));
     }
 
     [Fact]
@@ -94,12 +113,12 @@ public sealed class LowercaseTrieTests
     {
         var trie = new LowercaseTrie<int>();
 
-        trie.Set("cat", 1);
-        trie.Set("car", 2);
-        trie.Set("card", 3);
-        trie.Set("car", 4);
+        trie.Set(CatKey, 1);
+        trie.Set(CarKey, CarValue);
+        trie.Set(CardKey, CardValue);
+        trie.Set(CarKey, CarOverwrittenValue);
 
-        Assert.Equal(3, trie.Count);
+        Assert.Equal(ExpectedDistinctKeyCount, trie.Count);
     }
 
     [Fact]
@@ -107,7 +126,7 @@ public sealed class LowercaseTrieTests
     {
         var trie = new LowercaseTrie<int>();
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => trie.Set("Cat", 1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => trie.Set(UppercaseCatKey, 1));
     }
 
     [Fact]
@@ -128,15 +147,15 @@ public sealed class LowercaseTrieTests
     public void Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedPrefixChain()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("car", 1);
-        trie.Set("card", 2);
+        trie.Set(CarKey, 1);
+        trie.Set(CardKey, CardValueForSizeTest);
 
         var size = TreeMetrics.Size<
             LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
             NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
             SparseArrayChildren<LowercaseTrieNode<int>>>(trie.Root);
 
-        Assert.Equal(5, size);
+        Assert.Equal(ExpectedTreeSize, size);
     }
 
     // Proves the same witness generalizes to a SECOND generic engine, and that the
@@ -149,13 +168,13 @@ public sealed class LowercaseTrieTests
     public void LowestCommonAncestor_OfTwoKeys_IsTheNodeAtTheirLongestCommonPrefix()
     {
         var trie = new LowercaseTrie<int>();
-        trie.Set("car", 1);
-        trie.Set("cat", 2);
-        trie.Set("dog", 3);
+        trie.Set(CarKey, 1);
+        trie.Set(CatKey, CatValueForLcaTest);
+        trie.Set(DogKey, DogValueForLcaTest);
 
-        var carNode = WalkTo(trie.Root, "car");
-        var catNode = WalkTo(trie.Root, "cat");
-        var expectedLongestCommonPrefixNode = WalkTo(trie.Root, "ca");
+        var carNode = WalkTo(trie.Root, CarKey);
+        var catNode = WalkTo(trie.Root, CatKey);
+        var expectedLongestCommonPrefixNode = WalkTo(trie.Root, SharedPrefixOfCarAndCat);
 
         var lca = LowestCommonAncestor.Find<
             LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,

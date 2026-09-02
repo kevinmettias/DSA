@@ -64,58 +64,64 @@ public sealed partial class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctB
 
         Backtrack.Search<SplitState, int>(
             state,
-            isSolution: s => s.TypeIndex == balls.Length,
+            isSolution: s => IsSolution(s, balls),
             // Search's onSolution never signals "stop" (see Backtrack.cs), so
             // TryEachCandidate still runs even at a leaf where IsSolution was
             // already true - Candidates must return empty there rather than
             // index balls out of bounds.
-            candidates: s => s.TypeIndex == balls.Length ? [] : Enumerable.Range(0, balls[s.TypeIndex] + 1),
-            choose: (s, toBox1) =>
-            {
-                var typeCount = balls[s.TypeIndex];
-                s.Ways *= BinomialCoefficient(typeCount, toBox1);
-                s.Box1Total += toBox1;
-
-                if (toBox1 > 0)
-                {
-                    s.Box1DistinctCount++;
-                }
-
-                if (typeCount - toBox1 > 0)
-                {
-                    s.Box2DistinctCount++;
-                }
-
-                s.TypeIndex++;
-            },
-            unchoose: (s, toBox1) =>
-            {
-                s.TypeIndex--;
-                var typeCount = balls[s.TypeIndex];
-
-                if (typeCount - toBox1 > 0)
-                {
-                    s.Box2DistinctCount--;
-                }
-
-                if (toBox1 > 0)
-                {
-                    s.Box1DistinctCount--;
-                }
-
-                s.Box1Total -= toBox1;
-                s.Ways /= BinomialCoefficient(typeCount, toBox1);
-            },
-            onSolution: s =>
-            {
-                if (s.Box1Total == half && s.Box1DistinctCount == s.Box2DistinctCount)
-                {
-                    matchingWays += s.Ways;
-                }
-            });
+            candidates: s => Candidates(s, balls),
+            choose: (s, toBox1) => Choose(s, toBox1, balls),
+            unchoose: (s, toBox1) => Unchoose(s, toBox1, balls),
+            onSolution: s => matchingWays += OnSolutionWeight(s, half));
 
         return matchingWays / totalWays;
     }
+
+    private static bool IsSolution(SplitState s, int[] balls) => s.TypeIndex == balls.Length;
+
+    private static IEnumerable<int> Candidates(SplitState s, int[] balls)
+        => s.TypeIndex == balls.Length ? [] : Enumerable.Range(0, balls[s.TypeIndex] + 1);
+
+    private static void Choose(SplitState s, int toBox1, int[] balls)
+    {
+        var typeCount = balls[s.TypeIndex];
+        s.Ways *= BinomialCoefficient(typeCount, toBox1);
+        s.Box1Total += toBox1;
+
+        if (toBox1 > 0)
+        {
+            s.Box1DistinctCount++;
+        }
+
+        if (typeCount - toBox1 > 0)
+        {
+            s.Box2DistinctCount++;
+        }
+
+        s.TypeIndex++;
+    }
+
+    private static void Unchoose(SplitState s, int toBox1, int[] balls)
+    {
+        s.TypeIndex--;
+        var typeCount = balls[s.TypeIndex];
+
+        if (typeCount - toBox1 > 0)
+        {
+            s.Box2DistinctCount--;
+        }
+
+        if (toBox1 > 0)
+        {
+            s.Box1DistinctCount--;
+        }
+
+        s.Box1Total -= toBox1;
+        s.Ways /= BinomialCoefficient(typeCount, toBox1);
+    }
+
+    private static double OnSolutionWeight(SplitState s, int half)
+        => s.Box1Total == half && s.Box1DistinctCount == s.Box2DistinctCount ? s.Ways : 0.0;
 
     private static double BinomialCoefficient(int n, int r)
     {

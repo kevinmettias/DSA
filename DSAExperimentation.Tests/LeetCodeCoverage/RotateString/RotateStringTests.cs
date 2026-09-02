@@ -10,19 +10,25 @@ public sealed partial class RotateStringTests
     [Fact]
     public void CanRotate_GoalIsRotationOfS_ReturnsTrue()
     {
-        Assert.True(CanRotate("abcde", "cdeab"));
+        var canRotate = CanRotate("abcde", "cdeab");
+
+        Assert.True(canRotate);
     }
 
     [Fact]
     public void CanRotate_GoalIsNotRotationOfS_ReturnsFalse()
     {
-        Assert.False(CanRotate("abcde", "abced"));
+        var canRotate = CanRotate("abcde", "abced");
+
+        Assert.False(canRotate);
     }
 
     [Fact]
     public void CanRotate_DifferentLengths_ReturnsFalse()
     {
-        Assert.False(CanRotate("abc", "abcd"));
+        var canRotate = CanRotate("abc", "abcd");
+
+        Assert.False(canRotate);
     }
 
     private static bool CanRotate(string s, string goal)

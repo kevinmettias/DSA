@@ -75,26 +75,31 @@ public sealed partial class FlowerPlantingWithNoAdjacentTests
 
         foreach (var garden in gardens)
         {
-            var usedFlowers = new Set<int>();
-            var neighbors = GardenTopology.GetChildren(garden);
-
-            for (var i = 0; i < neighbors.Count; i++)
-            {
-                usedFlowers.TryAdd(neighbors.Get(i).Flower);
-            }
-
-            for (var candidate = 1; candidate <= 4; candidate++)
-            {
-                if (!usedFlowers.Has(candidate))
-                {
-                    garden.Flower = candidate;
-                    break;
-                }
-            }
-
-            flowers[garden.Id - 1] = garden.Flower;
+            AssignFlower(garden, flowers);
         }
 
         return flowers;
+    }
+
+    private static void AssignFlower(GardenNode garden, int[] flowers)
+    {
+        var usedFlowers = new Set<int>();
+        var neighbors = GardenTopology.GetChildren(garden);
+
+        for (var i = 0; i < neighbors.Count; i++)
+        {
+            usedFlowers.TryAdd(neighbors.Get(i).Flower);
+        }
+
+        for (var candidate = 1; candidate <= 4; candidate++)
+        {
+            if (!usedFlowers.Has(candidate))
+            {
+                garden.Flower = candidate;
+                break;
+            }
+        }
+
+        flowers[garden.Id - 1] = garden.Flower;
     }
 }

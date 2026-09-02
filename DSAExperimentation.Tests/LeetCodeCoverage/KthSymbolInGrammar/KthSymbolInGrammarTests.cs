@@ -18,7 +18,10 @@ public sealed partial class KthSymbolInGrammarTests
     [InlineData(3, 4, 0)]
     [InlineData(4, 5, 1)]
     public void KthGrammar_MatchesBruteForceRowExpansion_ReturnsExpectedSymbol(int n, int k, int expected)
-        => Assert.Equal(expected, KthGrammar(n, k));
+    {
+        var actual = KthGrammar(n, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static int KthGrammar(int n, int k)
     {

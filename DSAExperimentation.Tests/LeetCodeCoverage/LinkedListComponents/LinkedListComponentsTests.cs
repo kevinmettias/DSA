@@ -32,33 +32,50 @@ public sealed partial class LinkedListComponentsTests
 
     private static int NumComponents(SinglyLinkedListNode<int>? head, int[] nums)
     {
+        var present = BuildPresentSet(nums);
+        var counter = new ComponentCounter();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            counter.Advance(present.Has(node.Value));
+        }
+
+        return counter.Count;
+    }
+
+    private static Set<int> BuildPresentSet(int[] nums)
+    {
         var present = new Set<int>();
         foreach (var n in nums)
         {
             present.TryAdd(n);
         }
 
-        var count = 0;
-        var inComponent = false;
+        return present;
+    }
 
-        for (var node = head; node is not null; node = node.Next)
+    private sealed class ComponentCounter
+    {
+        private bool _inComponent;
+
+        public int Count { get; private set; }
+
+        public void Advance(bool present)
         {
-            if (present.Has(node.Value))
+            if (present)
             {
-                if (!inComponent)
+                if (!_inComponent)
                 {
-                    count++;
+                    Count++;
                 }
 
-                inComponent = true;
+                _inComponent = true;
             }
             else
             {
-                inComponent = false;
+                _inComponent = false;
             }
         }
-
-        return count;
     }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)

@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SnapshotArrayBenchmarks
 {
+    private const int ValueScaleFactor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -32,7 +34,7 @@ public class SnapshotArrayBenchmarks
         for (var i = 0; i < Length; i++)
         {
             _snapIds.Add(i);
-            _values.Add(i * 2);
+            _values.Add(i * ValueScaleFactor);
         }
 
         _querySnapId = Length + 1;

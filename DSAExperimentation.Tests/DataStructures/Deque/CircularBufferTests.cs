@@ -81,4 +81,48 @@ public sealed partial class CircularBufferTests
         Assert.Equal(1, buffer.Count);
         Assert.Equal(1, buffer.GetBack());
     }
+
+    [Fact]
+    public void GetFront_ReturnsTheItemAtTheHead()
+    {
+        var buffer = new CircularBuffer<int>();
+
+        buffer.AddBack(1);
+        buffer.AddBack(2);
+
+        Assert.Equal(1, buffer.GetFront());
+    }
+
+    [Fact]
+    public void GetBack_ReturnsTheItemAtTheTail()
+    {
+        var buffer = new CircularBuffer<int>();
+
+        buffer.AddBack(1);
+        buffer.AddBack(2);
+
+        Assert.Equal(2, buffer.GetBack());
+    }
+
+    [Fact]
+    public void GetFront_And_GetBack_AgreeOnASingleItem()
+    {
+        var buffer = new CircularBuffer<int>();
+
+        buffer.AddBack(42);
+
+        Assert.Equal(buffer.GetFront(), buffer.GetBack());
+    }
+
+    [Fact]
+    public void GetFront_AfterAddFront_ReturnsTheNewestItem()
+    {
+        var buffer = new CircularBuffer<int>();
+
+        buffer.AddBack(1);
+        buffer.AddFront(0);
+
+        Assert.Equal(0, buffer.GetFront());
+        Assert.Equal(1, buffer.GetBack());
+    }
 }

@@ -56,54 +56,80 @@ public sealed partial class ContainVirusTests
 
         while (true)
         {
-            var regions = FindRegions(grid, rows, cols);
-            var mostThreatening = regions.MaxBy(region => region.Threatened.Count);
+            var wallsThisRound = RunQuarantineRound(grid, rows, cols);
 
-            if (mostThreatening is null || mostThreatening.Threatened.Count == 0)
+            if (wallsThisRound is null)
             {
                 return totalWalls;
             }
 
-            totalWalls += mostThreatening.WallsNeeded;
-            Quarantine(grid, mostThreatening);
+            totalWalls += wallsThisRound.Value;
+        }
+    }
 
-            foreach (var region in regions)
+    private static int? RunQuarantineRound(int[][] grid, int rows, int cols)
+    {
+        var regions = FindRegions(grid, rows, cols);
+        var mostThreatening = regions.MaxBy(region => region.Threatened.Count);
+
+        if (mostThreatening is null || mostThreatening.Threatened.Count == 0)
+        {
+            return null;
+        }
+
+        Quarantine(grid, mostThreatening);
+
+        foreach (var region in regions)
+        {
+            if (region != mostThreatening)
             {
-                if (region != mostThreatening)
-                {
-                    Spread(grid, region);
-                }
+                Spread(grid, region);
             }
         }
+
+        return mostThreatening.WallsNeeded;
     }
 
     private static List<Region> FindRegions(int[][] grid, int rows, int cols)
     {
         var visited = new HashSet<(int Row, int Col)>();
         var regions = new List<Region>();
+        var dimensions = new GridDimensions(rows, cols);
 
         for (var r = 0; r < rows; r++)
         {
             for (var c = 0; c < cols; c++)
             {
-                if (grid[r][c] != 1 || !visited.Add((r, c)))
+                var region = TryBuildRegionAt(grid, dimensions, (r, c), visited);
+
+                if (region is not null)
                 {
-                    continue;
+                    regions.Add(region);
                 }
-
-                var cells = DepthFirstSearch.Traverse(
-                    (r, c), cell => InfectedNeighbors(grid, rows, cols, cell));
-
-                foreach (var cell in cells)
-                {
-                    visited.Add(cell);
-                }
-
-                regions.Add(BuildRegion(grid, rows, cols, cells));
             }
         }
 
         return regions;
+    }
+
+    private static Region? TryBuildRegionAt(
+        int[][] grid, GridDimensions dimensions, (int Row, int Col) start, HashSet<(int Row, int Col)> visited)
+    {
+        var (rows, cols) = dimensions;
+
+        if (grid[start.Row][start.Col] != 1 || !visited.Add(start))
+        {
+            return null;
+        }
+
+        var cells = DepthFirstSearch.Traverse(start, cell => InfectedNeighbors(grid, rows, cols, cell));
+
+        foreach (var cell in cells)
+        {
+            visited.Add(cell);
+        }
+
+        return BuildRegion(grid, rows, cols, cells);
     }
 
     private static IEnumerable<(int Row, int Col)> InfectedNeighbors(
@@ -170,6 +196,8 @@ public sealed partial class ContainVirusTests
             }
         }
     }
+
+    private readonly record struct GridDimensions(int Rows, int Cols);
 
     // A plain class, not a record: MaxBy/!= below rely on reference identity to
     // single out "the region just quarantined" among this round's regions, and a

@@ -16,6 +16,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximumScoreWordsFormedByLettersBenchmarks
 {
     private const string Alphabet = "abcdefghijklmnop";
+    private const int AlphabetSize = 26;
+    private const int RandomSeed = 4;
+    private const int MaxLetterScoreExclusive = 10;
+    private const int MinWordLength = 2;
+    private const int MaxWordLengthExclusive = 5;
+    private const int LetterBudgetDivisor = 2;
 
     [Params(8, 14)]
     public int WordCount;
@@ -27,42 +33,65 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(4);
-        _score = new int[26];
+        var random = new Random(RandomSeed);
+        _score = BuildScores(random);
+
+        var totalUsage = new int[AlphabetSize];
+        _words = BuildWords(random, totalUsage);
+        _letters = BuildLetterPool(totalUsage);
+    }
+
+    private static int[] BuildScores(Random random)
+    {
+        var score = new int[AlphabetSize];
 
         foreach (var letter in Alphabet)
         {
-            _score[letter - 'a'] = random.Next(1, 10);
+            score[letter - 'a'] = random.Next(1, MaxLetterScoreExclusive);
         }
 
-        _words = new string[WordCount];
-        var totalUsage = new int[26];
+        return score;
+    }
+
+    private string[] BuildWords(Random random, int[] totalUsage)
+    {
+        var words = new string[WordCount];
 
         for (var i = 0; i < WordCount; i++)
         {
-            var length = random.Next(2, 5);
-            var chars = new char[length];
-
-            for (var j = 0; j < length; j++)
-            {
-                chars[j] = Alphabet[random.Next(Alphabet.Length)];
-                totalUsage[chars[j] - 'a']++;
-            }
-
-            _words[i] = new string(chars);
+            words[i] = GenerateWord(random, totalUsage);
         }
 
+        return words;
+    }
+
+    private static char[] BuildLetterPool(int[] totalUsage)
+    {
         var letters = new List<char>();
 
-        for (var c = 0; c < 26; c++)
+        for (var c = 0; c < AlphabetSize; c++)
         {
-            for (var n = 0; n < (totalUsage[c] + 1) / 2; n++)
+            for (var n = 0; n < (totalUsage[c] + 1) / LetterBudgetDivisor; n++)
             {
                 letters.Add((char)('a' + c));
             }
         }
 
-        _letters = letters.ToArray();
+        return letters.ToArray();
+    }
+
+    private static string GenerateWord(Random random, int[] totalUsage)
+    {
+        var length = random.Next(MinWordLength, MaxWordLengthExclusive);
+        var chars = new char[length];
+
+        for (var j = 0; j < length; j++)
+        {
+            chars[j] = Alphabet[random.Next(Alphabet.Length)];
+            totalUsage[chars[j] - 'a']++;
+        }
+
+        return new string(chars);
     }
 
     [Benchmark(Baseline = true)]
@@ -72,42 +101,51 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
         var wordCounts = _words.Select(LetterCounts).ToArray();
         var wordScores = _words.Select(WordScore).ToArray();
 
-        return Search(0, available, 0);
+        return Search(0, available, 0, new WordData(wordCounts, wordScores));
+    }
 
-        int Search(int index, int[] remaining, int currentScore)
+    private int Search(int index, int[] remaining, int currentScore, WordData words)
+    {
+        if (index == _words.Length)
         {
-            if (index == _words.Length)
+            return currentScore;
+        }
+
+        var skipped = Search(index + 1, remaining, currentScore, words);
+        var counts = words.Counts[index];
+
+        if (!Fits(counts, remaining))
+        {
+            return skipped;
+        }
+
+        ApplyCounts(remaining, counts, subtract: true);
+        var included = Search(index + 1, remaining, currentScore + words.Scores[index], words);
+        ApplyCounts(remaining, counts, subtract: false);
+
+        return Math.Max(skipped, included);
+    }
+
+    private static bool Fits(int[] counts, int[] remaining)
+    {
+        for (var c = 0; c < AlphabetSize; c++)
+        {
+            if (counts[c] > remaining[c])
             {
-                return currentScore;
+                return false;
             }
+        }
 
-            var best = Search(index + 1, remaining, currentScore);
-            var counts = wordCounts[index];
-            var fits = true;
+        return true;
+    }
 
-            for (var c = 0; c < 26 && fits; c++)
-            {
-                fits = counts[c] <= remaining[c];
-            }
+    private static void ApplyCounts(int[] remaining, int[] counts, bool subtract)
+    {
+        var sign = subtract ? -1 : 1;
 
-            if (!fits)
-            {
-                return best;
-            }
-
-            for (var c = 0; c < 26; c++)
-            {
-                remaining[c] -= counts[c];
-            }
-
-            best = Math.Max(best, Search(index + 1, remaining, currentScore + wordScores[index]));
-
-            for (var c = 0; c < 26; c++)
-            {
-                remaining[c] += counts[c];
-            }
-
-            return best;
+        for (var c = 0; c < AlphabetSize; c++)
+        {
+            remaining[c] += sign * counts[c];
         }
     }
 
@@ -131,7 +169,7 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
 
     private static int[] LetterCounts(IEnumerable<char> chars)
     {
-        var counts = new int[26];
+        var counts = new int[AlphabetSize];
 
         foreach (var c in chars)
         {
@@ -153,6 +191,8 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
         return total;
     }
 
+    private readonly record struct WordData(int[][] Counts, int[] Scores);
+
     private sealed class State
     {
         private readonly int[][] _wordCounts;
@@ -167,7 +207,7 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
 
             for (var i = 0; i < words.Length; i++)
             {
-                var counts = new int[26];
+                var counts = new int[AlphabetSize];
                 var wordScore = 0;
 
                 foreach (var c in words[i])
@@ -191,7 +231,7 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
             {
                 var counts = _wordCounts[Index];
 
-                for (var c = 0; c < 26; c++)
+                for (var c = 0; c < AlphabetSize; c++)
                 {
                     if (counts[c] > _available[c])
                     {
@@ -209,7 +249,7 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
             {
                 var counts = _wordCounts[Index];
 
-                for (var c = 0; c < 26; c++)
+                for (var c = 0; c < AlphabetSize; c++)
                 {
                     _available[c] -= counts[c];
                 }
@@ -228,7 +268,7 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
             {
                 var counts = _wordCounts[Index];
 
-                for (var c = 0; c < 26; c++)
+                for (var c = 0; c < AlphabetSize; c++)
                 {
                     _available[c] += counts[c];
                 }

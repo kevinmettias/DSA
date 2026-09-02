@@ -23,7 +23,9 @@ public sealed partial class SnapshotArrayTests
         snapshotArray.Set(0, 6);
 
         Assert.Equal(0, snapId);
-        Assert.Equal(5, snapshotArray.Get(0, snapId));
+
+        var valueAtSnapshot = snapshotArray.Get(0, snapId);
+        Assert.Equal(5, valueAtSnapshot);
     }
 
     [Fact]
@@ -33,7 +35,8 @@ public sealed partial class SnapshotArrayTests
         var snapId = snapshotArray.Snap();
         snapshotArray.Set(1, 9);
 
-        Assert.Equal(0, snapshotArray.Get(1, snapId));
+        var valueBeforeAnySet = snapshotArray.Get(1, snapId);
+        Assert.Equal(0, valueBeforeAnySet);
     }
 
     [Fact]
@@ -48,9 +51,14 @@ public sealed partial class SnapshotArrayTests
         snapshotArray.Set(0, 3);
         var third = snapshotArray.Snap();
 
-        Assert.Equal(1, snapshotArray.Get(0, first));
-        Assert.Equal(2, snapshotArray.Get(0, second));
-        Assert.Equal(3, snapshotArray.Get(0, third));
+        var valueAtFirst = snapshotArray.Get(0, first);
+        Assert.Equal(1, valueAtFirst);
+
+        var valueAtSecond = snapshotArray.Get(0, second);
+        Assert.Equal(2, valueAtSecond);
+
+        var valueAtThird = snapshotArray.Get(0, third);
+        Assert.Equal(3, valueAtThird);
     }
 
     private sealed class SnapshotArray

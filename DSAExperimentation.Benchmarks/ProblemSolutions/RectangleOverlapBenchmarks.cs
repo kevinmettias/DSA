@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RectangleOverlapBenchmarks
 {
+    private const int OffsetDivisor = 2;
+
     [Params(60, 400)]
     public int Side;
 
@@ -25,8 +27,8 @@ public class RectangleOverlapBenchmarks
         _ax2 = Side;
         _ay2 = Side;
 
-        _bx1 = Side / 2;
-        _by1 = Side / 2;
+        _bx1 = Side / OffsetDivisor;
+        _by1 = Side / OffsetDivisor;
         _bx2 = _bx1 + Side;
         _by2 = _by1 + Side;
     }
@@ -34,26 +36,45 @@ public class RectangleOverlapBenchmarks
     [Benchmark(Baseline = true)]
     public bool UnitGridIntersectionScan()
     {
-        var minX = Math.Min(_ax1, _bx1);
-        var minY = Math.Min(_ay1, _by1);
-        var maxX = Math.Max(_ax2, _bx2);
-        var maxY = Math.Max(_ay2, _by2);
-        var width = maxX - minX;
-        var height = maxY - minY;
+        var rectA = new Rectangle(_ax1, _ay1, _ax2, _ay2);
+        var rectB = new Rectangle(_bx1, _by1, _bx2, _by2);
+        var frame = ComputeGridFrame(rectA, rectB);
+        var coveredByFirst = InitializeCoverageGrid(frame);
 
-        var coveredByFirst = new DynamicArray<bool>();
-        for (var i = 0; i < width * height; i++)
+        MarkRectangle(coveredByFirst, frame, rectA);
+
+        return IntersectsMarkedGrid(coveredByFirst, frame, rectB);
+    }
+
+    private static GridFrame ComputeGridFrame(Rectangle a, Rectangle b)
+    {
+        var minX = Math.Min(a.X1, b.X1);
+        var minY = Math.Min(a.Y1, b.Y1);
+        var maxX = Math.Max(a.X2, b.X2);
+        var maxY = Math.Max(a.Y2, b.Y2);
+
+        return new GridFrame(maxX - minX, maxY - minY, minX, minY);
+    }
+
+    private static DynamicArray<bool> InitializeCoverageGrid(GridFrame frame)
+    {
+        var covered = new DynamicArray<bool>();
+
+        for (var i = 0; i < frame.Width * frame.Height; i++)
         {
-            coveredByFirst.Add(false);
+            covered.Add(false);
         }
 
-        MarkRectangle(coveredByFirst, width, minX, minY, _ax1, _ay1, _ax2, _ay2);
+        return covered;
+    }
 
-        for (var y = _by1; y < _by2; y++)
+    private static bool IntersectsMarkedGrid(DynamicArray<bool> covered, GridFrame frame, Rectangle rect)
+    {
+        for (var y = rect.Y1; y < rect.Y2; y++)
         {
-            for (var x = _bx1; x < _bx2; x++)
+            for (var x = rect.X1; x < rect.X2; x++)
             {
-                if (coveredByFirst.Get((y - minY) * width + (x - minX)))
+                if (covered.Get((y - frame.MinY) * frame.Width + (x - frame.MinX)))
                 {
                     return true;
                 }
@@ -67,14 +88,18 @@ public class RectangleOverlapBenchmarks
     public bool ClosedFormAxisOverlap()
         => _ax1 < _bx2 && _bx1 < _ax2 && _ay1 < _by2 && _by1 < _ay2;
 
-    private static void MarkRectangle(DynamicArray<bool> covered, int width, int minX, int minY, int x1, int y1, int x2, int y2)
+    private static void MarkRectangle(DynamicArray<bool> covered, GridFrame frame, Rectangle rect)
     {
-        for (var y = y1; y < y2; y++)
+        for (var y = rect.Y1; y < rect.Y2; y++)
         {
-            for (var x = x1; x < x2; x++)
+            for (var x = rect.X1; x < rect.X2; x++)
             {
-                covered.Set((y - minY) * width + (x - minX), true);
+                covered.Set((y - frame.MinY) * frame.Width + (x - frame.MinX), true);
             }
         }
     }
+
+    private readonly record struct Rectangle(int X1, int Y1, int X2, int Y2);
+
+    private readonly record struct GridFrame(int Width, int Height, int MinX, int MinY);
 }

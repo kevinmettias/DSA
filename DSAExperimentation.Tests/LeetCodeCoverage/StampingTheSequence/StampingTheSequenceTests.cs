@@ -18,7 +18,8 @@ public sealed class StampingTheSequenceTests
         var moves = MovesToStamp("abc", "ababc");
 
         Assert.Equal(2, moves.Length);
-        Assert.True(ReplayReconstructsTarget("abc", "ababc", moves));
+        var reconstructsTarget = ReplayReconstructsTarget("abc", "ababc", moves);
+        Assert.True(reconstructsTarget);
     }
 
     [Fact]
@@ -27,7 +28,8 @@ public sealed class StampingTheSequenceTests
         var moves = MovesToStamp("abca", "aabcaca");
 
         Assert.Equal(3, moves.Length);
-        Assert.True(ReplayReconstructsTarget("abca", "aabcaca", moves));
+        var reconstructsTarget = ReplayReconstructsTarget("abca", "aabcaca", moves);
+        Assert.True(reconstructsTarget);
     }
 
     [Fact]
@@ -67,38 +69,35 @@ public sealed class StampingTheSequenceTests
             return [];
         }
 
+        return TryReverseStamp(stamp, target, windowCount, out var order) ? ExtractMovesInOrder(order) : [];
+    }
+
+    // Runs the reverse-simulation rounds until every character of target has been
+    // turned to '?' (success) or a round stamps nothing (stuck). The discovered
+    // stamp order comes back via `order` regardless of outcome.
+    private static bool TryReverseStamp(string stamp, string target, int windowCount, out RepoStampStack order)
+    {
         var chars = target.ToCharArray();
         var done = new bool[windowCount];
-        var order = new RepoStampStack();
+        order = new RepoStampStack();
         var turnedCount = 0;
+        var scanState = new StampScanState(chars, stamp, done, order);
 
         for (var round = 0; round < windowCount && turnedCount < target.Length; round++)
         {
-            var stampedThisRound = false;
-
-            for (var i = 0; i < windowCount; i++)
-            {
-                if (done[i] || !TryStampWindow(chars, stamp, i, ref turnedCount))
-                {
-                    continue;
-                }
-
-                done[i] = true;
-                stampedThisRound = true;
-                order.Push(i);
-            }
-
-            if (!stampedThisRound)
+            if (!StampAvailableWindows(scanState, ref turnedCount))
             {
                 break;
             }
         }
 
-        if (turnedCount != target.Length)
-        {
-            return [];
-        }
+        return turnedCount == target.Length;
+    }
 
+    // The stack pops in reverse discovery order, which is exactly forward
+    // chronological stamping order.
+    private static int[] ExtractMovesInOrder(RepoStampStack order)
+    {
         var result = new int[order.Count];
 
         for (var k = 0; k < result.Length; k++)
@@ -109,12 +108,60 @@ public sealed class StampingTheSequenceTests
         return result;
     }
 
+    // Bundles one round's scan inputs so StampAvailableWindows stays within the
+    // parameter-count limit: the char canvas/stamp being matched, plus the
+    // done-tracking array and discovered-order stack that round mutates.
+    private readonly record struct StampScanState(char[] Chars, string Stamp, bool[] Done, RepoStampStack Order);
+
+    // Tries every not-yet-done window once; returns whether any window stamped
+    // this round (a false result means the reverse simulation is stuck).
+    private static bool StampAvailableWindows(StampScanState state, ref int turnedCount)
+    {
+        var stampedThisRound = false;
+
+        for (var i = 0; i < state.Done.Length; i++)
+        {
+            if (state.Done[i] || !TryStampWindow(state.Chars, state.Stamp, i, ref turnedCount))
+            {
+                continue;
+            }
+
+            state.Done[i] = true;
+            stampedThisRound = true;
+            state.Order.Push(i);
+        }
+
+        return stampedThisRound;
+    }
+
     // A window is stampable only if every character still visible (not yet '?')
     // matches the stamp at that offset, and at least one character is still
     // visible (otherwise this window is a no-op re-stamp of already-done work).
     private static bool TryStampWindow(char[] chars, string stamp, int start, ref int turnedCount)
     {
-        var hasLiveCharacter = false;
+        if (!WindowMatchesStamp(chars, stamp, start, out var hasLiveCharacter) || !hasLiveCharacter)
+        {
+            return false;
+        }
+
+        for (var k = 0; k < stamp.Length; k++)
+        {
+            if (chars[start + k] != '?')
+            {
+                chars[start + k] = '?';
+                turnedCount++;
+            }
+        }
+
+        return true;
+    }
+
+    // A window "matches" if every already-visible character agrees with the
+    // stamp at that offset; hasLiveCharacter reports whether any character was
+    // still visible (a window with none left is a no-op re-stamp).
+    private static bool WindowMatchesStamp(char[] chars, string stamp, int start, out bool hasLiveCharacter)
+    {
+        hasLiveCharacter = false;
 
         for (var k = 0; k < stamp.Length; k++)
         {
@@ -131,20 +178,6 @@ public sealed class StampingTheSequenceTests
             }
 
             hasLiveCharacter = true;
-        }
-
-        if (!hasLiveCharacter)
-        {
-            return false;
-        }
-
-        for (var k = 0; k < stamp.Length; k++)
-        {
-            if (chars[start + k] != '?')
-            {
-                chars[start + k] = '?';
-                turnedCount++;
-            }
         }
 
         return true;

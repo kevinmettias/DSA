@@ -1,24 +1,32 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrix;
+using DSAExperimentation.LeetCode.SpiralMatrix;
 
+namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrix;
+
+// Harness only: both strategies live in SpiralMatrixSolution and are asserted
+// against the same examples - the four-boundary-pointer shrink this file's
+// original helper computed, and the visited-grid simulation that used to be
+// untested benchmark scaffolding.
 public sealed class SpiralMatrixTests
 {
-    [Fact]
-    public void SpiralOrder_WalksBoundsClockwise_ReturnsAllValues()
-    {
-        int[][] matrix = [[1,2,3],[4,5,6],[7,8,9]];
-        Assert.Equal([1,2,3,6,9,8,7,4,5], SpiralOrder(matrix));
-    }
-
-    private static IList<int> SpiralOrder(int[][] matrix)
-    {
-        var result = new List<int>(); var top = 0; var bottom = matrix.Length - 1; var left = 0; var right = matrix[0].Length - 1;
-        while (top <= bottom && left <= right)
+    public static TheoryData<int[][], int[]> Examples =>
+        new()
         {
-            for (var c = left; c <= right; c++) result.Add(matrix[top][c]); top++;
-            for (var r = top; r <= bottom; r++) result.Add(matrix[r][right]); right--;
-            if (top <= bottom) { for (var c = right; c >= left; c--) result.Add(matrix[bottom][c]); bottom--; }
-            if (left <= right) { for (var r = bottom; r >= top; r--) result.Add(matrix[r][left]); left++; }
-        }
-        return result;
-    }
+            { [[1, 2, 3], [4, 5, 6], [7, 8, 9]], [1, 2, 3, 6, 9, 8, 7, 4, 5] },
+            { [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7] },
+            { [[1]], [1] },
+            { [[1, 2, 3]], [1, 2, 3] },
+            { [[1], [2], [3]], [1, 2, 3] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SpiralOrderByBoundaryPointerShrink_LeetCodeExamples_ReturnsClockwiseOrder(
+        int[][] matrix, int[] expected) =>
+        Assert.Equal(expected, SpiralMatrixSolution.SpiralOrderByBoundaryPointerShrink(matrix));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SpiralOrderByVisitedGridWalk_LeetCodeExamples_ReturnsClockwiseOrder(
+        int[][] matrix, int[] expected) =>
+        Assert.Equal(expected, SpiralMatrixSolution.SpiralOrderByVisitedGridWalk(matrix));
 }

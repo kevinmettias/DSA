@@ -144,4 +144,32 @@ public sealed partial class DisjointSetForestTests
 
         Assert.False(succeeded);
     }
+
+    [Fact]
+    public void GetRank_FreshElement_StartsAtZero()
+    {
+        Assert.Equal(0, new DisjointSetForest(4).GetRank(0));
+    }
+
+    [Fact]
+    public void GetRank_ReflectsEveryIncrement()
+    {
+        var forest = new DisjointSetForest(4);
+
+        forest.IncrementRank(2);
+        forest.IncrementRank(2);
+
+        Assert.Equal(2, forest.GetRank(2));
+    }
+
+    [Fact]
+    public void GetRank_IsPerElement()
+    {
+        var forest = new DisjointSetForest(4);
+
+        forest.IncrementRank(1);
+
+        Assert.Equal(1, forest.GetRank(1));
+        Assert.Equal(0, forest.GetRank(0));
+    }
 }

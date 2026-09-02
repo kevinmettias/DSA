@@ -102,4 +102,47 @@ public sealed partial class KeyedDisjointSetTests
 
         Assert.True(connected);
     }
+
+    [Fact]
+    public void Count_ReportsTheNumberOfDistinctKeysSeeded()
+    {
+        Assert.Equal(4, new KeyedDisjointSet<string>(["a", "b", "c", "d"]).Count);
+    }
+
+    [Fact]
+    public void Count_IsUnchangedByUnions()
+    {
+        // Union merges components, it never removes a key from the index.
+        var set = new KeyedDisjointSet<string>(["a", "b", "c"]);
+
+        set.TryUnion("a", "b");
+
+        Assert.Equal(3, set.Count);
+    }
+
+    [Fact]
+    public void Count_NoKeys_IsZero()
+    {
+        Assert.Equal(0, new KeyedDisjointSet<string>([]).Count);
+    }
+
+    [Fact]
+    public void HasKey_SeededKey_ReturnsTrue()
+    {
+        Assert.True(new KeyedDisjointSet<string>(["a", "b"]).HasKey("a"));
+    }
+
+    [Fact]
+    public void HasKey_UnknownKey_ReturnsFalse()
+    {
+        Assert.False(new KeyedDisjointSet<string>(["a", "b"]).HasKey("z"));
+    }
+
+    [Fact]
+    public void HasKey_HonoursTheSuppliedComparer()
+    {
+        var set = new KeyedDisjointSet<string>(["Key"], StringComparer.OrdinalIgnoreCase);
+
+        Assert.True(set.HasKey("KEY"));
+    }
 }

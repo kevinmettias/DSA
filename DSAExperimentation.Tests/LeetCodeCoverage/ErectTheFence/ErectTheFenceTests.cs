@@ -50,17 +50,35 @@ public sealed partial class ErectTheFenceTests
             return points.ToList();
         }
 
+        var sorted = SortByCoordinates(points);
+        var corners = ComputeHullCorners(sorted);
+        var fence = BuildFence(corners, points);
+
+        return fence.ToList();
+    }
+
+    private static (int X, int Y)[] SortByCoordinates((int X, int Y)[] points)
+    {
         var sorted = points.ToArray();
         MergeSort.Sort<(int X, int Y), ArrayIndexedSequence<(int X, int Y)>>(
             new ArrayIndexedSequence<(int X, int Y)>(sorted),
             Comparer<(int X, int Y)>.Create((a, b) => a.X != b.X ? a.X.CompareTo(b.X) : a.Y.CompareTo(b.Y)));
 
+        return sorted;
+    }
+
+    private static List<(int X, int Y)> ComputeHullCorners((int X, int Y)[] sorted)
+    {
         var lower = StrictHalfHull(sorted);
         var upper = StrictHalfHull(sorted.Reverse().ToArray());
 
-        var corners = lower.Take(lower.Count - 1).Concat(upper.Take(upper.Count - 1)).ToList();
+        return lower.Take(lower.Count - 1).Concat(upper.Take(upper.Count - 1)).ToList();
+    }
 
+    private static HashSet<(int X, int Y)> BuildFence(List<(int X, int Y)> corners, (int X, int Y)[] points)
+    {
         var fence = new HashSet<(int X, int Y)>();
+
         for (var i = 0; i < corners.Count; i++)
         {
             var a = corners[i];
@@ -75,7 +93,7 @@ public sealed partial class ErectTheFenceTests
             }
         }
 
-        return fence.ToList();
+        return fence;
     }
 
     private static List<(int X, int Y)> StrictHalfHull((int X, int Y)[] points)
@@ -84,18 +102,8 @@ public sealed partial class ErectTheFenceTests
 
         foreach (var p in points)
         {
-            while (stack.Count >= 2)
+            while (stack.Count >= 2 && TryDiscardTrailingPoint(stack, p))
             {
-                stack.TryPop(out var top);
-                stack.TryPeek(out var second);
-
-                if (Cross(second, top, p) <= 0)
-                {
-                    continue;
-                }
-
-                stack.Push(top);
-                break;
             }
 
             stack.Push(p);
@@ -109,6 +117,20 @@ public sealed partial class ErectTheFenceTests
 
         chain.Reverse();
         return chain;
+    }
+
+    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) p)
+    {
+        stack.TryPop(out var top);
+        stack.TryPeek(out var second);
+
+        if (Cross(second, top, p) <= 0)
+        {
+            return true;
+        }
+
+        stack.Push(top);
+        return false;
     }
 
     private static bool IsOnSegment((int X, int Y) a, (int X, int Y) b, (int X, int Y) p)

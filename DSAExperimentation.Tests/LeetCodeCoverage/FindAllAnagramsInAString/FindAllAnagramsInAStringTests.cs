@@ -42,6 +42,22 @@ public sealed partial class FindAllAnagramsInAStringTests
             return result;
         }
 
+        var need = BuildFrequencyMap(p);
+        var state = new AnagramWindowState(need);
+
+        for (var i = 0; i < s.Length; i++)
+        {
+            if (state.Advance(i, s, p.Length))
+            {
+                result.Add(i - p.Length + 1);
+            }
+        }
+
+        return result;
+    }
+
+    private static HashMap<char, int> BuildFrequencyMap(string p)
+    {
         var need = new HashMap<char, int>();
         foreach (var c in p)
         {
@@ -49,44 +65,61 @@ public sealed partial class FindAllAnagramsInAStringTests
             need.Set(c, count + 1);
         }
 
-        var window = new HashMap<char, int>();
-        var matched = 0;
+        return need;
+    }
 
-        for (var i = 0; i < s.Length; i++)
+    private sealed class AnagramWindowState(HashMap<char, int> need)
+    {
+        private readonly HashMap<char, int> _window = new();
+        private int _matched;
+
+        public bool IsFullMatch => _matched == need.Count;
+
+        public bool Advance(int i, string s, int windowLength)
         {
-            if (need.TryGetValue(s[i], out var needed))
+            AbsorbEntering(s[i]);
+
+            if (i < windowLength - 1)
             {
-                window.TryGetValue(s[i], out var count);
-                window.Set(s[i], count + 1);
-                if (count + 1 == needed)
-                {
-                    matched++;
-                }
+                return false;
             }
 
-            if (i < p.Length - 1)
+            var isMatch = IsFullMatch;
+            ReleaseLeaving(s[i - windowLength + 1]);
+            return isMatch;
+        }
+
+        public void AbsorbEntering(char c)
+        {
+            if (!need.TryGetValue(c, out var needed))
             {
-                continue;
+                return;
             }
 
-            if (matched == need.Count)
-            {
-                result.Add(i - p.Length + 1);
-            }
+            _window.TryGetValue(c, out var count);
+            _window.Set(c, count + 1);
 
-            var leaving = s[i - p.Length + 1];
-            if (need.TryGetValue(leaving, out var neededLeaving))
+            if (count + 1 == needed)
             {
-                window.TryGetValue(leaving, out var leavingCount);
-                if (leavingCount == neededLeaving)
-                {
-                    matched--;
-                }
-
-                window.Set(leaving, leavingCount - 1);
+                _matched++;
             }
         }
 
-        return result;
+        public void ReleaseLeaving(char c)
+        {
+            if (!need.TryGetValue(c, out var needed))
+            {
+                return;
+            }
+
+            _window.TryGetValue(c, out var count);
+
+            if (count == needed)
+            {
+                _matched--;
+            }
+
+            _window.Set(c, count - 1);
+        }
     }
 }

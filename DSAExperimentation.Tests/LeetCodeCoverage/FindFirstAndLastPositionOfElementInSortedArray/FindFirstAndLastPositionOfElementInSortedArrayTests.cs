@@ -1,22 +1,33 @@
-﻿using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FindFirstAndLastPositionOfElementInSortedArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindFirstAndLastPositionOfElementInSortedArray;
 
-public sealed partial class FindFirstAndLastPositionOfElementInSortedArrayTests
+public sealed class FindFirstAndLastPositionOfElementInSortedArrayTests
 {
-    [Theory]
-    [InlineData(new[] { 5, 7, 7, 8, 8, 10 }, 8, new[] { 3, 4 })]
-    [InlineData(new[] { 5, 7, 7, 8, 8, 10 }, 6, new[] { -1, -1 })]
-    [InlineData(new int[] { }, 0, new[] { -1, -1 })]
-    public void SearchRange_LeetCodeExamples_ReturnsClosedRange(int[] nums, int target, int[] expected)
-        => Assert.Equal(expected, SearchRange(nums, target));
-
-    private static int[] SearchRange(int[] nums, int target)
+    public static TheoryData<int[], int, int[]> Examples => new()
     {
-        var sequence = new ArraySequence<int>(nums);
-        var lower = BinarySearch.LowerBound(sequence, target);
-        var upper = BinarySearch.UpperBound(sequence, target);
-        return lower == upper ? [-1, -1] : [lower, upper - 1];
+        { new[] { 5, 7, 7, 8, 8, 10 }, 8, new[] { 3, 4 } },
+        { new[] { 5, 7, 7, 8, 8, 10 }, 6, new[] { -1, -1 } },
+        { Array.Empty<int>(), 0, new[] { -1, -1 } },
+        { new[] { 1 }, 1, new[] { 0, 0 } },
+        { new[] { 2, 2 }, 2, new[] { 0, 1 } },
+    };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchRangeByLinearScan_LeetCodeExamples_ReturnsClosedRange(
+        int[] nums, int target, int[] expected)
+    {
+        var actual = FindFirstAndLastPositionOfElementInSortedArraySolution.SearchRangeByLinearScan(nums, target);
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchRangeByBinarySearchBounds_LeetCodeExamples_ReturnsClosedRange(
+        int[] nums, int target, int[] expected)
+    {
+        var actual = FindFirstAndLastPositionOfElementInSortedArraySolution.SearchRangeByBinarySearchBounds(nums, target);
+        Assert.Equal(expected, actual);
     }
 }

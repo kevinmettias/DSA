@@ -24,6 +24,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RelativeSortArrayBenchmarks
 {
     private const int ReferenceLength = 2_000;
+    private const int RandomSeed = 1122; // LC problem number
+    private const int Arr2ValueStep = 2; // _arr2 holds every other integer
+    private const int CoinFlipBound = 2; // random.Next(0, CoinFlipBound) == 0 is a 50/50 draw
+    private const int OutOfReferenceRangeMin = 100_000;
+    private const int OutOfReferenceRangeMax = 200_000;
 
     [Params(200, 5_000)]
     public int Length;
@@ -34,12 +39,12 @@ public class RelativeSortArrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1122);
-        _arr2 = Enumerable.Range(0, ReferenceLength).Select(i => i * 2).ToArray();
+        var random = new Random(RandomSeed);
+        _arr2 = Enumerable.Range(0, ReferenceLength).Select(i => i * Arr2ValueStep).ToArray();
         _arr1 = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(0, 2) == 0
+            .Select(_ => random.Next(0, CoinFlipBound) == 0
                 ? _arr2[random.Next(_arr2.Length)]
-                : random.Next(100_000, 200_000))
+                : random.Next(OutOfReferenceRangeMin, OutOfReferenceRangeMax))
             .ToArray();
     }
 

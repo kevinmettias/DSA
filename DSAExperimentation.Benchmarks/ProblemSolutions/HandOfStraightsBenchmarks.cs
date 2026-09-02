@@ -19,13 +19,16 @@ public class HandOfStraightsBenchmarks
 {
     private const int GroupSize = 5;
 
+    // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
+    private const int HandSeed = 846;
+
     [Params(500, 20_000)]
     public int HandCount;
 
     private int[] _hand = null!;
 
     [GlobalSetup]
-    public void Setup() => _hand = BuildStraightableHand(HandCount, GroupSize, seed: 846);
+    public void Setup() => _hand = BuildStraightableHand(HandCount, GroupSize, seed: HandSeed);
 
     [Benchmark(Baseline = true)]
     public bool DictionaryThenArraySort() => IsNStraightHandBcl(_hand, GroupSize);
@@ -35,15 +38,8 @@ public class HandOfStraightsBenchmarks
 
     private static bool IsNStraightHandBcl(int[] hand, int groupSize)
     {
-        var counts = new Dictionary<int, int>();
-
-        foreach (var card in hand)
-        {
-            counts[card] = counts.GetValueOrDefault(card) + 1;
-        }
-
-        var sortedHand = (int[])hand.Clone();
-        Array.Sort(sortedHand);
+        var counts = BuildCountsBcl(hand);
+        var sortedHand = SortedCopyBcl(hand);
 
         foreach (var card in sortedHand)
         {
@@ -52,15 +48,44 @@ public class HandOfStraightsBenchmarks
                 continue;
             }
 
-            for (var next = card; next < card + groupSize; next++)
+            if (!TryConsumeGroupBcl(counts, card, groupSize))
             {
-                if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
-                {
-                    return false;
-                }
-
-                counts[next] = nextCount - 1;
+                return false;
             }
+        }
+
+        return true;
+    }
+
+    private static Dictionary<int, int> BuildCountsBcl(int[] hand)
+    {
+        var counts = new Dictionary<int, int>();
+
+        foreach (var card in hand)
+        {
+            counts[card] = counts.GetValueOrDefault(card) + 1;
+        }
+
+        return counts;
+    }
+
+    private static int[] SortedCopyBcl(int[] hand)
+    {
+        var sortedHand = (int[])hand.Clone();
+        Array.Sort(sortedHand);
+        return sortedHand;
+    }
+
+    private static bool TryConsumeGroupBcl(Dictionary<int, int> counts, int card, int groupSize)
+    {
+        for (var next = card; next < card + groupSize; next++)
+        {
+            if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
+            {
+                return false;
+            }
+
+            counts[next] = nextCount - 1;
         }
 
         return true;
@@ -68,16 +93,8 @@ public class HandOfStraightsBenchmarks
 
     private static bool IsNStraightHandRepo(int[] hand, int groupSize)
     {
-        var counts = new HashMap<int, int>();
-
-        foreach (var card in hand)
-        {
-            counts.TryGetValue(card, out var count);
-            counts.Set(card, count + 1);
-        }
-
-        var sortedHand = (int[])hand.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
+        var counts = BuildCountsRepo(hand);
+        var sortedHand = SortedCopyRepo(hand);
 
         foreach (var card in sortedHand)
         {
@@ -88,15 +105,45 @@ public class HandOfStraightsBenchmarks
                 continue;
             }
 
-            for (var next = card; next < card + groupSize; next++)
+            if (!TryConsumeGroupRepo(counts, card, groupSize))
             {
-                if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
-                {
-                    return false;
-                }
-
-                counts.Set(next, nextCount - 1);
+                return false;
             }
+        }
+
+        return true;
+    }
+
+    private static HashMap<int, int> BuildCountsRepo(int[] hand)
+    {
+        var counts = new HashMap<int, int>();
+
+        foreach (var card in hand)
+        {
+            counts.TryGetValue(card, out var count);
+            counts.Set(card, count + 1);
+        }
+
+        return counts;
+    }
+
+    private static int[] SortedCopyRepo(int[] hand)
+    {
+        var sortedHand = (int[])hand.Clone();
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
+        return sortedHand;
+    }
+
+    private static bool TryConsumeGroupRepo(HashMap<int, int> counts, int card, int groupSize)
+    {
+        for (var next = card; next < card + groupSize; next++)
+        {
+            if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
+            {
+                return false;
+            }
+
+            counts.Set(next, nextCount - 1);
         }
 
         return true;

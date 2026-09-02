@@ -1,27 +1,31 @@
-﻿using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.DecodeWays;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DecodeWays;
 
-public sealed partial class DecodeWaysTests
+// Harness only. Both strategies live in DecodeWaysSolution and are asserted
+// against the same examples, including the leading- and embedded-zero cases that
+// end a decoding branch outright.
+public sealed class DecodeWaysTests
 {
-    [Theory]
-    [InlineData("12", 2)]
-    [InlineData("226", 3)]
-    [InlineData("06", 0)]
-    public void NumDecodings_LeetCodeExamples_ReturnsCount(string s, int expected)
-        => Assert.Equal(expected, Count(s));
-
-    private static int Count(string s)
-    {
-        return Memoizer.Memoize<int, int>(0, DecodeFrom);
-
-        int DecodeFrom(int index, Func<int, int> decode)
+    public static TheoryData<string, int> Examples =>
+        new()
         {
-            if (index == s.Length) return 1;
-            if (s[index] == '0') return 0;
-            var total = decode(index + 1);
-            if (index + 1 < s.Length && int.Parse(s.AsSpan(index, 2)) <= 26) total += decode(index + 2);
-            return total;
-        }
-    }
+            { "12", 2 },
+            { "226", 3 },
+            { "06", 0 },
+            { "0", 0 },
+            { "10", 1 },
+            { "100", 0 },
+            { "27", 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumDecodingsByTabulation_LeetCodeExamples_ReturnsDecodingCount(string s, int expected) =>
+        Assert.Equal(expected, DecodeWaysSolution.NumDecodingsByTabulation(s));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumDecodingsByMemoization_LeetCodeExamples_ReturnsDecodingCount(string s, int expected) =>
+        Assert.Equal(expected, DecodeWaysSolution.NumDecodingsByMemoization(s));
 }

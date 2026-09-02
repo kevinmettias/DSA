@@ -44,30 +44,31 @@ public class LongestIncreasingPathInAMatrixBenchmarks
         {
             for (var col = 0; col < Size; col++)
             {
-                best = Math.Max(best, LengthFrom(row, col));
+                var length = LengthFromNaive(row, col);
+                best = Math.Max(best, length);
             }
         }
 
         return best;
+    }
 
-        int LengthFrom(int row, int col)
+    private int LengthFromNaive(int row, int col)
+    {
+        var longest = 1;
+
+        foreach (var (rowOffset, colOffset) in Directions)
         {
-            var longest = 1;
+            var nextRow = row + rowOffset;
+            var nextCol = col + colOffset;
 
-            foreach (var (rowOffset, colOffset) in Directions)
+            if (nextRow >= 0 && nextRow < Size && nextCol >= 0 && nextCol < Size
+                && _matrix[nextRow, nextCol] > _matrix[row, col])
             {
-                var nextRow = row + rowOffset;
-                var nextCol = col + colOffset;
-
-                if (nextRow >= 0 && nextRow < Size && nextCol >= 0 && nextCol < Size
-                    && _matrix[nextRow, nextCol] > _matrix[row, col])
-                {
-                    longest = Math.Max(longest, 1 + LengthFrom(nextRow, nextCol));
-                }
+                longest = Math.Max(longest, 1 + LengthFromNaive(nextRow, nextCol));
             }
-
-            return longest;
         }
+
+        return longest;
     }
 
     [Benchmark]
@@ -79,29 +80,30 @@ public class LongestIncreasingPathInAMatrixBenchmarks
         {
             for (var col = 0; col < Size; col++)
             {
-                best = Math.Max(best, Memoizer.Memoize<(int Row, int Col), int>((row, col), LengthFrom));
+                var length = Memoizer.Memoize<(int Row, int Col), int>((row, col), LengthFromMemoized);
+                best = Math.Max(best, length);
             }
         }
 
         return best;
+    }
 
-        int LengthFrom((int Row, int Col) state, Func<(int Row, int Col), int> lengthFrom)
+    private int LengthFromMemoized((int Row, int Col) state, Func<(int Row, int Col), int> lengthFrom)
+    {
+        var longest = 1;
+
+        foreach (var (rowOffset, colOffset) in Directions)
         {
-            var longest = 1;
+            var nextRow = state.Row + rowOffset;
+            var nextCol = state.Col + colOffset;
 
-            foreach (var (rowOffset, colOffset) in Directions)
+            if (nextRow >= 0 && nextRow < Size && nextCol >= 0 && nextCol < Size
+                && _matrix[nextRow, nextCol] > _matrix[state.Row, state.Col])
             {
-                var nextRow = state.Row + rowOffset;
-                var nextCol = state.Col + colOffset;
-
-                if (nextRow >= 0 && nextRow < Size && nextCol >= 0 && nextCol < Size
-                    && _matrix[nextRow, nextCol] > _matrix[state.Row, state.Col])
-                {
-                    longest = Math.Max(longest, 1 + lengthFrom((nextRow, nextCol)));
-                }
+                longest = Math.Max(longest, 1 + lengthFrom((nextRow, nextCol)));
             }
-
-            return longest;
         }
+
+        return longest;
     }
 }

@@ -4,6 +4,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 
 internal static class BinaryTrees
 {
+    private const int BranchingFactor = 2;
+
     // A complete, perfectly balanced tree - the easy case for both fold strategies,
     // recursion depth stays O(log n).
     public static BinaryTreeNode<int> Balanced(int nodeCount)
@@ -17,8 +19,8 @@ internal static class BinaryTrees
 
         for (var i = 0; i < nodeCount; i++)
         {
-            var left = 2 * i + 1;
-            var right = 2 * i + 2;
+            var left = BranchingFactor * i + 1;
+            var right = left + 1;
             nodes[i].Left = left < nodeCount ? nodes[left] : null;
             nodes[i].Right = right < nodeCount ? nodes[right] : null;
         }

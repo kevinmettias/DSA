@@ -14,11 +14,17 @@ public sealed partial class BestTimeToBuyAndSellStockWithTransactionFeeTests
     [InlineData(new[] { 1, 3, 2, 8, 4, 9 }, 2, 8)]
     [InlineData(new[] { 1, 3, 7, 5, 10, 3 }, 3, 6)]
     public void MaxProfit_LeetCodeExamples_ReturnsBestProfitAfterFees(int[] prices, int fee, int expected)
-        => Assert.Equal(expected, MaxProfit(prices, fee));
+    {
+        var actual = MaxProfit(prices, fee);
+        Assert.Equal(expected, actual);
+    }
 
     [Fact]
     public void MaxProfit_FeeExceedsAnyGain_ReturnsZero()
-        => Assert.Equal(0, MaxProfit([1, 2], fee: 5));
+    {
+        var actual = MaxProfit([1, 2], fee: 5);
+        Assert.Equal(0, actual);
+    }
 
     private static int MaxProfit(int[] prices, int fee)
     {

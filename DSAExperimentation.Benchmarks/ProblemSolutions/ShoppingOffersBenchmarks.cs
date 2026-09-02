@@ -44,7 +44,8 @@ public class ShoppingOffersBenchmarks
                 continue;
             }
 
-            best = Math.Min(best, offer[^1] + BestPriceUnmemoized(Reduce(remaining, offer)));
+            var reduced = Reduce(remaining, offer);
+            best = Math.Min(best, offer[^1] + BestPriceUnmemoized(reduced));
         }
 
         return best;
@@ -67,7 +68,8 @@ public class ShoppingOffersBenchmarks
                     continue;
                 }
 
-                best = Math.Min(best, offer[^1] + bestPrice(Encode(Reduce(remaining, offer))));
+                var reduced = Reduce(remaining, offer);
+                best = Math.Min(best, offer[^1] + bestPrice(Encode(reduced)));
             }
 
             return best;

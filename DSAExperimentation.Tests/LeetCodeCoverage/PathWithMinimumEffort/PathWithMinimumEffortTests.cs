@@ -56,31 +56,60 @@ public sealed partial class PathWithMinimumEffortTests
     {
         var rows = heights.Length;
         var cols = heights[0].Length;
-        var settled = new bool[rows, cols];
-        var bestEffort = new int[rows, cols];
+        var search = new EffortSearch(heights, rows, cols);
 
-        for (var r = 0; r < rows; r++)
+        return search.Run();
+    }
+
+    private sealed class EffortSearch(int[][] heights, int rows, int cols)
+    {
+        private readonly bool[,] _settled = new bool[rows, cols];
+        private readonly int[,] _bestEffort = BuildBestEffort(rows, cols);
+        private readonly Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> _frontier = new();
+
+        private static int[,] BuildBestEffort(int rows, int cols)
         {
-            for (var c = 0; c < cols; c++)
+            var bestEffort = new int[rows, cols];
+
+            for (var r = 0; r < rows; r++)
             {
-                bestEffort[r, c] = int.MaxValue;
+                for (var c = 0; c < cols; c++)
+                {
+                    bestEffort[r, c] = int.MaxValue;
+                }
             }
+
+            return bestEffort;
         }
 
-        bestEffort[0, 0] = 0;
-        var frontier = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
-        frontier.Push(((0, 0), 0));
+        public int Run()
+        {
+            _bestEffort[0, 0] = 0;
+            _frontier.Push(((0, 0), 0));
 
-        while (frontier.TryPop(out var entry))
+            while (_frontier.TryPop(out var entry))
+            {
+                var result = ProcessEntry(entry);
+
+                if (result is not null)
+                {
+                    return result.Value;
+                }
+            }
+
+            return 0;
+        }
+
+        private int? ProcessEntry(((int Row, int Col) Node, int Priority) entry)
         {
             var (row, col) = entry.Node;
 
-            if (settled[row, col])
+            if (_settled[row, col])
             {
-                continue;
+                return null;
             }
 
-            settled[row, col] = true;
+            _settled[row, col] = true;
             var effort = entry.Priority;
 
             if (row == rows - 1 && col == cols - 1)
@@ -88,26 +117,35 @@ public sealed partial class PathWithMinimumEffortTests
                 return effort;
             }
 
-            foreach (var (dr, dc) in Directions)
+            RelaxNeighbors(row, col, effort);
+            return null;
+        }
+
+        private void RelaxNeighbors(int row, int col, int effort)
+        {
+            foreach (var direction in Directions)
             {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || settled[nr, nc])
-                {
-                    continue;
-                }
-
-                var candidate = Math.Max(effort, Math.Abs(heights[nr][nc] - heights[row][col]));
-
-                if (candidate < bestEffort[nr, nc])
-                {
-                    bestEffort[nr, nc] = candidate;
-                    frontier.Push(((nr, nc), candidate));
-                }
+                RelaxNeighbor(row, col, effort, direction);
             }
         }
 
-        return 0;
+        private void RelaxNeighbor(int row, int col, int effort, (int Row, int Col) direction)
+        {
+            var nr = row + direction.Row;
+            var nc = col + direction.Col;
+
+            if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || _settled[nr, nc])
+            {
+                return;
+            }
+
+            var candidate = Math.Max(effort, Math.Abs(heights[nr][nc] - heights[row][col]));
+
+            if (candidate < _bestEffort[nr, nc])
+            {
+                _bestEffort[nr, nc] = candidate;
+                _frontier.Push(((nr, nc), candidate));
+            }
+        }
     }
 }

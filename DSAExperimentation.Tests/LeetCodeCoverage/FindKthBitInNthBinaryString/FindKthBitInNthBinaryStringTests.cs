@@ -18,7 +18,10 @@ public sealed partial class FindKthBitInNthBinaryStringTests
     [InlineData(3, 1, '0')]
     [InlineData(4, 11, '1')]
     public void FindKthBit_LeetCodeExamples_ReturnsExpectedBit(int n, int k, char expected)
-        => Assert.Equal(expected, FindKthBit(n, k));
+    {
+        var actual = FindKthBit(n, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static char FindKthBit(int n, int k)
     {

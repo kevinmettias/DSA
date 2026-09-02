@@ -39,37 +39,59 @@ public class CompleteBinaryTreeInserterBenchmarks
         foreach (var value in _insertValues)
         {
             var node = new BinaryTreeNode<int>(value);
-            var queue = new Queue<BinaryTreeNode<int>>();
-            queue.Enqueue(root);
-
-            while (queue.Count > 0)
-            {
-                var current = queue.Dequeue();
-
-                if (current.Left is null)
-                {
-                    current.Left = node;
-                    break;
-                }
-
-                if (current.Right is null)
-                {
-                    current.Right = node;
-                    break;
-                }
-
-                queue.Enqueue(current.Left);
-                queue.Enqueue(current.Right);
-            }
+            InsertViaBfsRescan(root, node);
         }
 
         return root.Value;
+    }
+
+    // Re-walks the tree from the root via BFS on every call to find the first
+    // node with an open child slot - no incremental state is kept between calls.
+    private static void InsertViaBfsRescan(BinaryTreeNode<int> root, BinaryTreeNode<int> node)
+    {
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+
+            if (current.Left is null)
+            {
+                current.Left = node;
+                break;
+            }
+
+            if (current.Right is null)
+            {
+                current.Right = node;
+                break;
+            }
+
+            queue.Enqueue(current.Left);
+            queue.Enqueue(current.Right);
+        }
     }
 
     [Benchmark]
     public int QueueTrackedInserter()
     {
         var root = BinaryTrees.Balanced(NodeCount);
+        var incomplete = SeedIncompleteQueue(root);
+
+        foreach (var value in _insertValues)
+        {
+            InsertUsingIncompleteQueue(incomplete, value);
+        }
+
+        return root.Value;
+    }
+
+    // One BFS pass (via this repo's own LevelGroupedBreadthFirstTraversal) finds
+    // every node with an open child slot; InsertUsingIncompleteQueue then serves
+    // off this queue with no further re-walks.
+    private static RepoQueue SeedIncompleteQueue(BinaryTreeNode<int> root)
+    {
         var incomplete = new RepoQueue();
 
         LevelHooks.Output.Value = [];
@@ -88,25 +110,28 @@ public class CompleteBinaryTreeInserterBenchmarks
             }
         }
 
-        foreach (var value in _insertValues)
+        return incomplete;
+    }
+
+    // Serves an insert off the pre-seeded incomplete-node queue in amortized
+    // O(1), re-enqueuing the new node (it will have open slots of its own) and
+    // dequeuing the parent once both of its slots are filled.
+    private static void InsertUsingIncompleteQueue(RepoQueue incomplete, int value)
+    {
+        var node = new BinaryTreeNode<int>(value);
+        incomplete.TryPeek(out var parent);
+
+        if (parent.Left is null)
         {
-            var node = new BinaryTreeNode<int>(value);
-            incomplete.TryPeek(out var parent);
-
-            if (parent.Left is null)
-            {
-                parent.Left = node;
-            }
-            else
-            {
-                parent.Right = node;
-                incomplete.TryDequeue(out _);
-            }
-
-            incomplete.Enqueue(node);
+            parent.Left = node;
+        }
+        else
+        {
+            parent.Right = node;
+            incomplete.TryDequeue(out _);
         }
 
-        return root.Value;
+        incomplete.Enqueue(node);
     }
 
     private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>

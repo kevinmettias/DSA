@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PeakIndexInAMountainArrayBenchmarks
 {
+    private const int MidpointDivisor = 2;
+
     [Params(200, 100_000)]
     public int Length;
 
@@ -22,7 +24,7 @@ public class PeakIndexInAMountainArrayBenchmarks
     public void Setup()
     {
         _mountain = new int[Length];
-        var peak = Length / 2;
+        var peak = Length / MidpointDivisor;
 
         for (var i = 0; i < Length; i++)
         {

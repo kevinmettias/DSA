@@ -28,44 +28,71 @@ public sealed class WordBreakIITests
 
     private static IList<string> WordBreak(string s, IList<string> wordDict)
     {
+        var trie = BuildTrie(wordDict);
+        return Memoizer.Memoize<int, List<string>>(0, (start, from) => From(s, trie, start, from));
+    }
+
+    private static Trie<bool> BuildTrie(IList<string> wordDict)
+    {
         var trie = new Trie<bool>();
         foreach (var word in wordDict)
         {
             trie.Set(word, true);
         }
 
-        return Memoizer.Memoize<int, List<string>>(0, From);
+        return trie;
+    }
 
-        List<string> From(int start, Func<int, List<string>> from)
+    private static List<string> From(string s, Trie<bool> trie, int start, Func<int, List<string>> from)
+    {
+        if (start == s.Length)
         {
-            if (start == s.Length)
-            {
-                return [string.Empty];
-            }
-
-            var sentences = new List<string>();
-
-            for (var end = start + 1; end <= s.Length; end++)
-            {
-                var piece = s[start..end];
-
-                if (!trie.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (!trie.HasKey(piece))
-                {
-                    continue;
-                }
-
-                foreach (var suffix in from(end))
-                {
-                    sentences.Add(suffix.Length == 0 ? piece : piece + " " + suffix);
-                }
-            }
-
-            return sentences;
+            return [string.Empty];
         }
+
+        var sentences = new List<string>();
+
+        for (var end = start + 1; end <= s.Length; end++)
+        {
+            var piece = s[start..end];
+            var (shouldStop, pieceSentences) = SentencesForPiece(piece, end, trie, from);
+
+            if (shouldStop)
+            {
+                break;
+            }
+
+            sentences.AddRange(pieceSentences);
+        }
+
+        return sentences;
+    }
+
+    // Every sentence obtainable by taking `piece` as the next word and appending
+    // each suffix sentence for the remainder starting at `end` - the self-contained
+    // unit From's loop performs once per candidate piece. ShouldStop mirrors the
+    // original loop's `break`: no dictionary word extends `piece` any further, so
+    // no longer `end` can succeed either.
+    private static (bool ShouldStop, List<string> Sentences) SentencesForPiece(
+        string piece, int end, Trie<bool> trie, Func<int, List<string>> from)
+    {
+        if (!trie.HasPrefix(piece))
+        {
+            return (true, []);
+        }
+
+        if (!trie.HasKey(piece))
+        {
+            return (false, []);
+        }
+
+        var sentences = new List<string>();
+
+        foreach (var suffix in from(end))
+        {
+            sentences.Add(suffix.Length == 0 ? piece : piece + " " + suffix);
+        }
+
+        return (false, sentences);
     }
 }

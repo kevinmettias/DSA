@@ -12,6 +12,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
 {
+    // LC problem number, reused as the fixed benchmark-data seed.
+    private const int RandomSeed = 801;
+
+    // Each index's two candidate values are a {2i, 2i+1} pair.
+    private const int PairSpacing = 2;
+
+    // random.Next(CoinFlipBound) picks one of exactly two outcomes.
+    private const int CoinFlipBound = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,16 +30,16 @@ public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(801);
+        var random = new Random(RandomSeed);
         _nums1 = new int[Length];
         _nums2 = new int[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            var low = 2 * i;
-            var high = 2 * i + 1;
+            var low = PairSpacing * i;
+            var high = PairSpacing * i + 1;
 
-            if (random.Next(2) == 0)
+            if (random.Next(CoinFlipBound) == 0)
             {
                 _nums1[i] = low;
                 _nums2[i] = high;
@@ -53,23 +62,28 @@ public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
 
         for (var i = 1; i < n; i++)
         {
-            keep[i] = int.MaxValue;
-            swap[i] = int.MaxValue;
-
-            if (_nums1[i] > _nums1[i - 1] && _nums2[i] > _nums2[i - 1])
-            {
-                keep[i] = Math.Min(keep[i], keep[i - 1]);
-                swap[i] = Math.Min(swap[i], swap[i - 1] + 1);
-            }
-
-            if (_nums1[i] > _nums2[i - 1] && _nums2[i] > _nums1[i - 1])
-            {
-                keep[i] = Math.Min(keep[i], swap[i - 1]);
-                swap[i] = Math.Min(swap[i], keep[i - 1] + 1);
-            }
+            UpdateTabulationStep(keep, swap, i);
         }
 
         return Math.Min(keep[n - 1], swap[n - 1]);
+    }
+
+    private void UpdateTabulationStep(int[] keep, int[] swap, int i)
+    {
+        keep[i] = int.MaxValue;
+        swap[i] = int.MaxValue;
+
+        if (_nums1[i] > _nums1[i - 1] && _nums2[i] > _nums2[i - 1])
+        {
+            keep[i] = Math.Min(keep[i], keep[i - 1]);
+            swap[i] = Math.Min(swap[i], swap[i - 1] + 1);
+        }
+
+        if (_nums1[i] > _nums2[i - 1] && _nums2[i] > _nums1[i - 1])
+        {
+            keep[i] = Math.Min(keep[i], swap[i - 1]);
+            swap[i] = Math.Min(swap[i], keep[i - 1] + 1);
+        }
     }
 
     [Benchmark]
@@ -77,9 +91,10 @@ public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
     {
         var last = _nums1.Length - 1;
 
-        return Math.Min(
-            Memoizer.Memoize<(int Index, bool Swapped), int>((last, false), Cost),
-            Memoizer.Memoize<(int Index, bool Swapped), int>((last, true), Cost));
+        var costWithoutSwap = Memoizer.Memoize<(int Index, bool Swapped), int>((last, false), Cost);
+        var costWithSwap = Memoizer.Memoize<(int Index, bool Swapped), int>((last, true), Cost);
+
+        return Math.Min(costWithoutSwap, costWithSwap);
     }
 
     private int Cost((int Index, bool Swapped) state, Func<(int Index, bool Swapped), int> cost)

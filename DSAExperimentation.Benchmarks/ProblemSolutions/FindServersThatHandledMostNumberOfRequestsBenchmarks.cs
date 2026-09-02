@@ -18,6 +18,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindServersThatHandledMostNumberOfRequestsBenchmarks
 {
+    private const int RequestsPerServer = 20;
+    private const int MaxLoadMultiplier = 3;
+
     [Params(50, 400)]
     public int ServerCount;
 
@@ -28,14 +31,14 @@ public class FindServersThatHandledMostNumberOfRequestsBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var requestCount = ServerCount * 20;
+        var requestCount = ServerCount * RequestsPerServer;
         _arrival = new int[requestCount];
         _load = new int[requestCount];
 
         for (var i = 0; i < requestCount; i++)
         {
             _arrival[i] = i;
-            _load[i] = random.Next(1, (ServerCount * 3) + 1);
+            _load[i] = random.Next(1, (ServerCount * MaxLoadMultiplier) + 1);
         }
     }
 
@@ -48,61 +51,80 @@ public class FindServersThatHandledMostNumberOfRequestsBenchmarks
 
         for (var i = 0; i < _arrival.Length; i++)
         {
-            var start = i % k;
-            var found = -1;
-
-            for (var offset = 0; offset < k; offset++)
-            {
-                var candidate = (start + offset) % k;
-
-                if (freeAt[candidate] <= _arrival[i])
-                {
-                    found = candidate;
-                    break;
-                }
-            }
-
-            if (found == -1)
-            {
-                continue;
-            }
-
-            freeAt[found] = _arrival[i] + _load[i];
-            handled[found]++;
+            ProcessRequestLinear(i, k, freeAt, handled);
         }
 
         return handled.Max();
+    }
+
+    private void ProcessRequestLinear(int i, int k, int[] freeAt, int[] handled)
+    {
+        var start = i % k;
+        var found = -1;
+
+        for (var offset = 0; offset < k; offset++)
+        {
+            var candidate = (start + offset) % k;
+
+            if (freeAt[candidate] <= _arrival[i])
+            {
+                found = candidate;
+                break;
+            }
+        }
+
+        if (found == -1)
+        {
+            return;
+        }
+
+        freeAt[found] = _arrival[i] + _load[i];
+        handled[found]++;
     }
 
     [Benchmark]
     public int FenwickCeilingAndHeap()
     {
         var k = ServerCount;
-        var availability = new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, k).ToArray());
-        var busy = new Heap<(int End, int Server), MinHeapOrder<(int, int)>>();
+        var pool = new ServerPool(
+            new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, k).ToArray()),
+            new Heap<(int End, int Server), MinHeapOrder<(int, int)>>());
         var handled = new int[k];
 
         for (var i = 0; i < _arrival.Length; i++)
         {
-            var arrivalTime = _arrival[i];
-
-            while (busy.TryPeek(out var freed) && freed.End <= arrivalTime)
-            {
-                busy.TryPop(out freed);
-                availability.Add(freed.Server, 1);
-            }
-
-            if (!TryFindAvailableServer(availability, k, i % k, out var server))
-            {
-                continue;
-            }
-
-            availability.Add(server, -1);
-            busy.Push((arrivalTime + _load[i], server));
-            handled[server]++;
+            ProcessArrival(i, k, pool, handled);
         }
 
         return handled.Max();
+    }
+
+    private void ProcessArrival(int i, int k, ServerPool pool, int[] handled)
+    {
+        var arrivalTime = _arrival[i];
+
+        while (pool.Busy.TryPeek(out var freed) && freed.End <= arrivalTime)
+        {
+            pool.Busy.TryPop(out freed);
+            pool.Availability.Add(freed.Server, 1);
+        }
+
+        if (!TryFindAvailableServer(pool.Availability, k, i % k, out var server))
+        {
+            return;
+        }
+
+        pool.Availability.Add(server, -1);
+        pool.Busy.Push((arrivalTime + _load[i], server));
+        handled[server]++;
+    }
+
+    private sealed class ServerPool(
+        FenwickTree<int, SumOperation<int>> availability, Heap<(int End, int Server), MinHeapOrder<(int, int)>> busy)
+    {
+        public FenwickTree<int, SumOperation<int>> Availability { get; } = availability;
+
+        public Heap<(int End, int Server), MinHeapOrder<(int, int)>> Busy { get; } = busy;
     }
 
     private static bool TryFindAvailableServer(FenwickTree<int, SumOperation<int>> availability, int k, int start, out int server)

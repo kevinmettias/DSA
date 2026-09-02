@@ -13,6 +13,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AsteroidCollisionBenchmarks
 {
+    // LC problem number, used as the deterministic seed for asteroid generation.
+    private const int RandomSeed = 735;
+
+    // Exclusive upper bound for an asteroid's magnitude.
+    private const int MaxMagnitude = 1_000;
+
+    // Coin-flip range: half the asteroids move left (negative), half move right.
+    private const int SignCoinFlipRange = 2;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -21,12 +30,12 @@ public class AsteroidCollisionBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(735);
+        var random = new Random(RandomSeed);
         _asteroids = Enumerable.Range(0, Length)
             .Select(_ =>
             {
-                var magnitude = random.Next(1, 1_000);
-                return random.Next(2) == 0 ? magnitude : -magnitude;
+                var magnitude = random.Next(1, MaxMagnitude);
+                return random.Next(SignCoinFlipRange) == 0 ? magnitude : -magnitude;
             })
             .ToArray();
     }
@@ -43,34 +52,46 @@ public class AsteroidCollisionBenchmarks
 
             for (var i = 0; i < current.Count - 1; i++)
             {
-                if (current[i] <= 0 || current[i + 1] >= 0)
+                if (TryResolveCollisionAt(current, i))
                 {
-                    continue;
+                    collisionFound = true;
+                    break;
                 }
-
-                var left = current[i];
-                var right = current[i + 1];
-
-                if (left < -right)
-                {
-                    current.RemoveAt(i);
-                }
-                else if (left == -right)
-                {
-                    current.RemoveAt(i + 1);
-                    current.RemoveAt(i);
-                }
-                else
-                {
-                    current.RemoveAt(i + 1);
-                }
-
-                collisionFound = true;
-                break;
             }
         }
 
         return [.. current];
+    }
+
+    private static bool TryResolveCollisionAt(List<int> current, int i)
+    {
+        if (current[i] <= 0 || current[i + 1] >= 0)
+        {
+            return false;
+        }
+
+        RemoveCollidedAsteroids(current, i);
+        return true;
+    }
+
+    private static void RemoveCollidedAsteroids(List<int> current, int i)
+    {
+        var left = current[i];
+        var right = current[i + 1];
+
+        if (left < -right)
+        {
+            current.RemoveAt(i);
+        }
+        else if (left == -right)
+        {
+            current.RemoveAt(i + 1);
+            current.RemoveAt(i);
+        }
+        else
+        {
+            current.RemoveAt(i + 1);
+        }
     }
 
     [Benchmark]
@@ -80,29 +101,7 @@ public class AsteroidCollisionBenchmarks
 
         foreach (var asteroid in _asteroids)
         {
-            var current = asteroid;
-            var alive = true;
-
-            while (alive && current < 0 && stack.TryPeek(out var top) && top > 0)
-            {
-                if (top < -current)
-                {
-                    stack.TryPop(out _);
-                    continue;
-                }
-
-                if (top == -current)
-                {
-                    stack.TryPop(out _);
-                }
-
-                alive = false;
-            }
-
-            if (alive)
-            {
-                stack.Push(current);
-            }
+            ProcessAsteroid(stack, asteroid);
         }
 
         var result = new int[stack.Count];
@@ -113,5 +112,37 @@ public class AsteroidCollisionBenchmarks
         }
 
         return result;
+    }
+
+    private static void ProcessAsteroid(RepoAsteroidStack stack, int asteroid)
+    {
+        if (SurvivesCollisions(stack, asteroid))
+        {
+            stack.Push(asteroid);
+        }
+    }
+
+    private static bool SurvivesCollisions(RepoAsteroidStack stack, int asteroid)
+    {
+        var current = asteroid;
+        var alive = true;
+
+        while (alive && current < 0 && stack.TryPeek(out var top) && top > 0)
+        {
+            if (top < -current)
+            {
+                stack.TryPop(out _);
+                continue;
+            }
+
+            if (top == -current)
+            {
+                stack.TryPop(out _);
+            }
+
+            alive = false;
+        }
+
+        return alive;
     }
 }

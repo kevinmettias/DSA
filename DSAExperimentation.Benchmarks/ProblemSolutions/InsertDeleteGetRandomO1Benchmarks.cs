@@ -67,21 +67,26 @@ public class InsertDeleteGetRandomO1Benchmarks
 
         foreach (var value in _removalOrder)
         {
-            if (!indexByValue.TryGetValue(value, out var index))
-            {
-                continue;
-            }
-
-            var lastIndex = values.Count - 1;
-            var lastValue = values.Get(lastIndex);
-
-            values.Set(index, lastValue);
-            indexByValue.Set(lastValue, index);
-
-            values.RemoveAt(lastIndex);
-            indexByValue.TryRemove(value);
+            RemoveSwapBack(value, indexByValue, values);
         }
 
         return values.Count;
+    }
+
+    private static void RemoveSwapBack(int value, HashMap<int, int> indexByValue, DynamicArray<int> values)
+    {
+        if (!indexByValue.TryGetValue(value, out var index))
+        {
+            return;
+        }
+
+        var lastIndex = values.Count - 1;
+        var lastValue = values.Get(lastIndex);
+
+        values.Set(index, lastValue);
+        indexByValue.Set(lastValue, index);
+
+        values.RemoveAt(lastIndex);
+        indexByValue.TryRemove(value);
     }
 }

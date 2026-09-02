@@ -10,6 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumGapBenchmarks
 {
+    private const int RandomSeed = 164; // LC problem number
+    private const int ValueExclusiveBound = 1_000_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -18,8 +21,8 @@ public class MaximumGapBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(164);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1_000_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueExclusiveBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

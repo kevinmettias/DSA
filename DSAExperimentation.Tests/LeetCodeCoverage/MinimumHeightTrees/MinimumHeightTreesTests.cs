@@ -48,6 +48,16 @@ public sealed partial class MinimumHeightTreesTests
             return [0];
         }
 
+        var (adjacency, degree) = BuildGraph(n, edges);
+        var leaves = FindInitialLeaves(n, degree);
+
+        PeelUntilCentroids(leaves, adjacency, degree, n);
+
+        return DrainLeaves(leaves);
+    }
+
+    private static (List<int>[] Adjacency, int[] Degree) BuildGraph(int n, int[][] edges)
+    {
         var adjacency = new List<int>[n];
         var degree = new int[n];
         for (var i = 0; i < n; i++)
@@ -57,14 +67,16 @@ public sealed partial class MinimumHeightTreesTests
 
         foreach (var edge in edges)
         {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-            degree[edge[0]]++;
-            degree[edge[1]]++;
+            RecordEdge(adjacency, degree, edge);
         }
 
+        return (adjacency, degree);
+    }
+
+    private static RepoQueue FindInitialLeaves(int n, int[] degree)
+    {
         var leaves = new RepoQueue();
-        var remaining = n;
+
         for (var i = 0; i < n; i++)
         {
             if (degree[i] == 1)
@@ -73,31 +85,55 @@ public sealed partial class MinimumHeightTreesTests
             }
         }
 
+        return leaves;
+    }
+
+    private static void PeelUntilCentroids(RepoQueue leaves, List<int>[] adjacency, int[] degree, int n)
+    {
+        var remaining = n;
+
         while (remaining > 2)
         {
             var leafCount = leaves.Count;
             remaining -= leafCount;
 
-            for (var i = 0; i < leafCount; i++)
-            {
-                leaves.TryDequeue(out var leaf);
-
-                foreach (var neighbor in adjacency[leaf])
-                {
-                    if (--degree[neighbor] == 1)
-                    {
-                        leaves.Enqueue(neighbor);
-                    }
-                }
-            }
+            PeelLeafLayer(leaves, adjacency, degree, leafCount);
         }
+    }
 
+    private static List<int> DrainLeaves(RepoQueue leaves)
+    {
         var roots = new List<int>();
+
         while (leaves.TryDequeue(out var root))
         {
             roots.Add(root);
         }
 
         return roots;
+    }
+
+    private static void RecordEdge(List<int>[] adjacency, int[] degree, int[] edge)
+    {
+        adjacency[edge[0]].Add(edge[1]);
+        adjacency[edge[1]].Add(edge[0]);
+        degree[edge[0]]++;
+        degree[edge[1]]++;
+    }
+
+    private static void PeelLeafLayer(RepoQueue leaves, List<int>[] adjacency, int[] degree, int leafCount)
+    {
+        for (var i = 0; i < leafCount; i++)
+        {
+            leaves.TryDequeue(out var leaf);
+
+            foreach (var neighbor in adjacency[leaf])
+            {
+                if (--degree[neighbor] == 1)
+                {
+                    leaves.Enqueue(neighbor);
+                }
+            }
+        }
     }
 }

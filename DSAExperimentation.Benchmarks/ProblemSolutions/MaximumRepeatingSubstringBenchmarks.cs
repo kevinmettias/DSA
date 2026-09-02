@@ -13,6 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximumRepeatingSubstringBenchmarks
 {
     private const string Word = "ab";
+    private const string EmptyCandidate = "";
 
     [Params(200, 5_000)]
     public int Length;
@@ -20,7 +21,11 @@ public class MaximumRepeatingSubstringBenchmarks
     private string _sequence = null!;
 
     [GlobalSetup]
-    public void Setup() => _sequence = string.Concat(Enumerable.Repeat(Word, Length / Word.Length));
+    public void Setup()
+    {
+        var repeatedWords = Enumerable.Repeat(Word, Length / Word.Length);
+        _sequence = string.Concat(repeatedWords);
+    }
 
     [Benchmark(Baseline = true)]
     public int StringContains()
@@ -33,7 +38,7 @@ public class MaximumRepeatingSubstringBenchmarks
     private static int MaxRepeating(string sequence, string word, Func<string, string, bool> contains)
     {
         var repeats = 0;
-        var candidate = "";
+        var candidate = EmptyCandidate;
 
         while (true)
         {

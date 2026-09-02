@@ -23,9 +23,13 @@ public sealed class RangeSumQuery2DImmutableTests
     {
         var numMatrix = new NumMatrixOperations(ExampleMatrix);
 
-        Assert.Equal(8, numMatrix.SumRegion(2, 1, 4, 3));
-        Assert.Equal(11, numMatrix.SumRegion(1, 1, 2, 2));
-        Assert.Equal(12, numMatrix.SumRegion(1, 2, 2, 4));
+        var firstRegion = numMatrix.SumRegion(2, 1, 4, 3);
+        var secondRegion = numMatrix.SumRegion(1, 1, 2, 2);
+        var thirdRegion = numMatrix.SumRegion(1, 2, 2, 4);
+
+        Assert.Equal(8, firstRegion);
+        Assert.Equal(11, secondRegion);
+        Assert.Equal(12, thirdRegion);
     }
 
     [Fact]
@@ -33,7 +37,9 @@ public sealed class RangeSumQuery2DImmutableTests
     {
         var numMatrix = new NumMatrixOperations(ExampleMatrix);
 
-        Assert.Equal(6, numMatrix.SumRegion(1, 1, 1, 1));
+        var region = numMatrix.SumRegion(1, 1, 1, 1);
+
+        Assert.Equal(6, region);
     }
 
     private sealed class NumMatrixOperations

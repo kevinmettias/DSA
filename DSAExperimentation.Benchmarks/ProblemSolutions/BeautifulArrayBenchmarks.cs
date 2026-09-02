@@ -15,6 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BeautifulArrayBenchmarks
 {
+    private const int ArithmeticMeanMultiplier = 2;
+    private const int ProblemSizeDivisor = 2;
+    private const int RangeScaleFactor = 2;
+
     [Params(6, 8)]
     public int Length;
 
@@ -65,7 +69,7 @@ public class BeautifulArrayBenchmarks
         {
             for (var k = i + 1; k < lastIndex; k++)
             {
-                if ((2 * result[k]) == result[i] + result[lastIndex])
+                if ((ArithmeticMeanMultiplier * result[k]) == result[i] + result[lastIndex])
                 {
                     return false;
                 }
@@ -90,8 +94,8 @@ public class BeautifulArrayBenchmarks
             return cached;
         }
 
-        var odds = Build((n + 1) / 2, memo).Select(x => (2 * x) - 1);
-        var evens = Build(n / 2, memo).Select(x => 2 * x);
+        var odds = Build((n + 1) / ProblemSizeDivisor, memo).Select(x => (RangeScaleFactor * x) - 1);
+        var evens = Build(n / ProblemSizeDivisor, memo).Select(x => RangeScaleFactor * x);
         var result = odds.Concat(evens).ToArray();
 
         memo.Set(n, result);

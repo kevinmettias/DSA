@@ -21,9 +21,14 @@ public sealed partial class MyCalendarITests
     {
         var calendar = new MyCalendarI();
 
-        Assert.True(calendar.Book(10, 20));
-        Assert.False(calendar.Book(15, 25));
-        Assert.True(calendar.Book(20, 30));
+        var firstBooked = calendar.Book(10, 20);
+        Assert.True(firstBooked);
+
+        var overlappingBooked = calendar.Book(15, 25);
+        Assert.False(overlappingBooked);
+
+        var touchingBooked = calendar.Book(20, 30);
+        Assert.True(touchingBooked);
     }
 
     [Fact]
@@ -31,8 +36,11 @@ public sealed partial class MyCalendarITests
     {
         var calendar = new MyCalendarI();
 
-        Assert.True(calendar.Book(5, 10));
-        Assert.True(calendar.Book(10, 15));
+        var firstBooked = calendar.Book(5, 10);
+        Assert.True(firstBooked);
+
+        var secondBooked = calendar.Book(10, 15);
+        Assert.True(secondBooked);
     }
 
     private sealed class MyCalendarI

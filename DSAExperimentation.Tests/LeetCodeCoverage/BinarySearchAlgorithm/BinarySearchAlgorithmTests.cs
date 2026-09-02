@@ -17,7 +17,10 @@ public sealed partial class BinarySearchAlgorithmTests
     [InlineData(new[] { -1, 0, 3, 5, 9, 12 }, 9, 4)]
     [InlineData(new[] { -1, 0, 3, 5, 9, 12 }, 2, -1)]
     public void Search_LeetCodeExamples_ReturnsIndexOrNegativeOne(int[] nums, int target, int expected)
-        => Assert.Equal(expected, Search(nums, target));
+    {
+        var actual = Search(nums, target);
+        Assert.Equal(expected, actual);
+    }
 
     private static int Search(int[] nums, int target)
         => BinarySearch.Find(new ArraySequence<int>(nums), target) ?? -1;

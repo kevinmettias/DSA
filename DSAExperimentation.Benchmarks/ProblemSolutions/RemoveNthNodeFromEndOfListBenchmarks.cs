@@ -1,11 +1,24 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.RemoveNthNodeFromEndOfList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are RemoveNthNodeFromEndOfListSolution's, the same
+// methods RemoveNthNodeFromEndOfListTests proves correct. [GlobalSetup] hoists the
+// workload values, but the list itself is rebuilt fresh inside each benchmark
+// method rather than cached, because both strategies mutate/replace it - a cached
+// list would only be valid for the first measured iteration.
+//
+// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
+// public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class RemoveNthNodeFromEndOfListBenchmarks
 {
+    // Both benchmarks remove the node at roughly the middle position so they do
+    // equivalent work; this divisor picks that middle position from Length.
+    private const int MiddlePositionDivisor = 2;
+
     [Params(200, 5_000)] public int Length;
     private int[] _values = null!;
 
@@ -13,41 +26,25 @@ public class RemoveNthNodeFromEndOfListBenchmarks
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public int ArrayCopyRemove()
-    {
-        var index = _values.Length - (_values.Length / 2);
-        var copy = new int[_values.Length - 1];
-        Array.Copy(_values, 0, copy, 0, index);
-        Array.Copy(_values, index + 1, copy, index, _values.Length - index - 1);
-        return copy.Length;
-    }
+    public object? ArrayRebuild() =>
+        RemoveNthNodeFromEndOfListSolution.RemoveByArrayRebuild(
+            BuildList(_values), Length / MiddlePositionDivisor);
 
     [Benchmark]
-    public int LinkedListTwoRunner() => Count(RemoveNthFromEnd(BuildList(_values), Length / 2));
-
-    private static SinglyLinkedListNode<int>? RemoveNthFromEnd(SinglyLinkedListNode<int>? head, int n)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
-        var fast = dummy;
-        var slow = dummy;
-        for (var i = 0; i < n; i++) fast = fast.Next!;
-        while (fast.Next is not null) { fast = fast.Next; slow = slow.Next!; }
-        slow.Next = slow.Next?.Next;
-        return dummy.Next;
-    }
+    public object? TwoRunner() =>
+        RemoveNthNodeFromEndOfListSolution.RemoveByTwoRunner(
+            BuildList(_values), Length / MiddlePositionDivisor);
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
         var tail = dummy;
-        foreach (var value in values) { tail.Next = new SinglyLinkedListNode<int>(value); tail = tail.Next; }
-        return dummy.Next;
-    }
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
 
-    private static int Count(SinglyLinkedListNode<int>? head)
-    {
-        var count = 0;
-        for (var node = head; node is not null; node = node.Next) count++;
-        return count;
+        return dummy.Next;
     }
 }

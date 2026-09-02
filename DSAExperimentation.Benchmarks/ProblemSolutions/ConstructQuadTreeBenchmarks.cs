@@ -24,6 +24,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConstructQuadTreeBenchmarks
 {
+    private const int HalfDivisor = 2;
+
     [Params(16, 128)]
     public int Size;
 
@@ -37,7 +39,7 @@ public class ConstructQuadTreeBenchmarks
         for (var row = 0; row < Size; row++)
         {
             _grid[row] = new int[Size];
-            var value = row < Size / 2 ? 0 : 1;
+            var value = row < Size / HalfDivisor ? 0 : 1;
 
             for (var col = 0; col < Size; col++)
             {
@@ -58,31 +60,34 @@ public class ConstructQuadTreeBenchmarks
 
     private int CountLeaves(int row, int col, int size)
     {
-        var first = _grid[row][col];
-        var uniform = true;
+        if (IsUniformRegion(row, col, size))
+        {
+            return 1;
+        }
 
-        for (var r = row; r < row + size && uniform; r++)
+        var half = size / HalfDivisor;
+        return CountLeaves(row, col, half)
+             + CountLeaves(row, col + half, half)
+             + CountLeaves(row + half, col, half)
+             + CountLeaves(row + half, col + half, half);
+    }
+
+    private bool IsUniformRegion(int row, int col, int size)
+    {
+        var first = _grid[row][col];
+
+        for (var r = row; r < row + size; r++)
         {
             for (var c = col; c < col + size; c++)
             {
                 if (_grid[r][c] != first)
                 {
-                    uniform = false;
-                    break;
+                    return false;
                 }
             }
         }
 
-        if (uniform)
-        {
-            return 1;
-        }
-
-        var half = size / 2;
-        return CountLeaves(row, col, half)
-             + CountLeaves(row, col + half, half)
-             + CountLeaves(row + half, col, half)
-             + CountLeaves(row + half, col + half, half);
+        return true;
     }
 
     private static int CountLeaves(FenwickTree<int, SumOperation<int>>[] rows, int row, int col, int size)
@@ -98,7 +103,7 @@ public class ConstructQuadTreeBenchmarks
             return 1;
         }
 
-        var half = size / 2;
+        var half = size / HalfDivisor;
         return CountLeaves(rows, row, col, half)
              + CountLeaves(rows, row, col + half, half)
              + CountLeaves(rows, row + half, col, half)

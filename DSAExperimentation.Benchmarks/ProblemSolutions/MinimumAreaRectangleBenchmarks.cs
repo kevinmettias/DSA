@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumAreaRectangleBenchmarks
 {
+    private const int RandomSeed = 939; // LC 939
+    private const int GridPadding = 2;
+
     [Params(60, 400)]
     public int Length;
 
@@ -21,8 +24,8 @@ public class MinimumAreaRectangleBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(939);
-        var grid = (int)Math.Ceiling(Math.Sqrt(Length)) + 2;
+        var random = new Random(RandomSeed);
+        var grid = (int)Math.Ceiling(Math.Sqrt(Length)) + GridPadding;
 
         var coordinates = new HashSet<(int X, int Y)>();
 
@@ -77,22 +80,29 @@ public class MinimumAreaRectangleBenchmarks
         {
             for (var j = i + 1; j < _points.Length; j++)
             {
-                var (x1, y1) = (_points[i][0], _points[i][1]);
-                var (x2, y2) = (_points[j][0], _points[j][1]);
-
-                if (x1 == x2 || y1 == y2)
-                {
-                    continue;
-                }
-
-                if (seen.Has((x1, y2)) && seen.Has((x2, y1)))
-                {
-                    minArea = Math.Min(minArea, Math.Abs((x2 - x1) * (y2 - y1)));
-                }
+                minArea = EvaluateDiagonal(i, j, seen, minArea);
             }
         }
 
         return minArea == int.MaxValue ? 0 : minArea;
+    }
+
+    private int EvaluateDiagonal(int i, int j, Set<(int X, int Y)> seen, int minArea)
+    {
+        var (x1, y1) = (_points[i][0], _points[i][1]);
+        var (x2, y2) = (_points[j][0], _points[j][1]);
+
+        if (x1 == x2 || y1 == y2)
+        {
+            return minArea;
+        }
+
+        if (seen.Has((x1, y2)) && seen.Has((x2, y1)))
+        {
+            return Math.Min(minArea, Math.Abs((x2 - x1) * (y2 - y1)));
+        }
+
+        return minArea;
     }
 
     private bool ContainsPoint(int x, int y)

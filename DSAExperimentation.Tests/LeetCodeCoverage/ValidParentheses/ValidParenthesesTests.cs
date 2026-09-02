@@ -1,45 +1,27 @@
-using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.ValidParentheses;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidParentheses;
 
-// LeetCode 20. Valid Parentheses: this repo's Stack<char> tracking open brackets,
-// popped and matched against each closer in turn.
-public sealed partial class ValidParenthesesTests
+// Harness only. The bracket-matching walk is ValidParenthesesSolution's - this
+// file just pins it to LeetCode's published examples.
+public sealed class ValidParenthesesTests
 {
-    private static readonly Dictionary<char, char> ClosingToOpening = new()
-    {
-        [')'] = '(',
-        [']'] = '[',
-        ['}'] = '{',
-    };
-
-    [Fact]
-    public void IsValid_ProperlyNestedAndMatched_ReturnsTrue() => Assert.True(IsValid("([{}])"));
-
-    [Fact]
-    public void IsValid_MismatchedCloser_ReturnsFalse() => Assert.False(IsValid("(]"));
-
-    [Fact]
-    public void IsValid_UnclosedOpener_ReturnsFalse() => Assert.False(IsValid("(("));
-
-    private static bool IsValid(string brackets)
-    {
-        var openers = new RepoCharStack();
-
-        foreach (var ch in brackets)
+    public static TheoryData<string, bool> Examples =>
+        new()
         {
-            if (!ClosingToOpening.TryGetValue(ch, out var expectedOpener))
-            {
-                openers.Push(ch);
-                continue;
-            }
+            { "([{}])", true },
+            { "(]", false },
+            { "((", false },
+            { "()", true },
+            { "()[]{}", true },
+            { "([)]", false },
+            { "", true },
+            { ")", false },
+        };
 
-            if (!openers.TryPop(out var actualOpener) || actualOpener != expectedOpener)
-            {
-                return false;
-            }
-        }
-
-        return openers.Count == 0;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsValidByBracketStack_LeetCodeExamples_ReturnsWhetherProperlyNested(
+        string brackets, bool expected) =>
+        Assert.Equal(expected, ValidParenthesesSolution.IsValidByBracketStack(brackets));
 }

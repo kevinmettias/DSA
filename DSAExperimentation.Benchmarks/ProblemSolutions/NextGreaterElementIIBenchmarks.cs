@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NextGreaterElementIIBenchmarks
 {
+    private const int RandomSeed = 3;
+    private const int MaxElementValue = 1_000;
+    private const int CircularSweepPasses = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -19,8 +23,8 @@ public class NextGreaterElementIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(3);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -56,7 +60,7 @@ public class NextGreaterElementIIBenchmarks
         Array.Fill(result, -1);
         var pendingIndices = new NextGreaterStack();
 
-        for (var i = 0; i < 2 * n; i++)
+        for (var i = 0; i < CircularSweepPasses * n; i++)
         {
             var value = _values[i % n];
 

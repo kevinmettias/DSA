@@ -14,7 +14,10 @@ public sealed partial class LongestCommonSubsequenceTests
     [InlineData("abc", "abc", 3)]
     [InlineData("abc", "def", 0)]
     public void LongestCommonSubsequenceLength_LeetCodeExamples_ReturnsLcsLength(string text1, string text2, int expected)
-        => Assert.Equal(expected, LongestCommonSubsequenceLength(text1, text2));
+    {
+        var actual = LongestCommonSubsequenceLength(text1, text2);
+        Assert.Equal(expected, actual);
+    }
 
     private static int LongestCommonSubsequenceLength(string text1, string text2)
     {

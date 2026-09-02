@@ -24,6 +24,13 @@ public sealed partial class StoneGameVTests
 
     private static int MaxScore(int[] stoneValue)
     {
+        var prefix = BuildPrefixSums(stoneValue);
+        return Memoizer.Memoize<(int Left, int Right), int>(
+            (0, stoneValue.Length - 1), (range, best) => Best(range, prefix, best));
+    }
+
+    private static int[] BuildPrefixSums(int[] stoneValue)
+    {
         var n = stoneValue.Length;
         var prefix = new int[n + 1];
 
@@ -32,36 +39,50 @@ public sealed partial class StoneGameVTests
             prefix[i + 1] = prefix[i] + stoneValue[i];
         }
 
-        return Memoizer.Memoize<(int Left, int Right), int>((0, n - 1), Best);
+        return prefix;
+    }
 
-        int Best((int Left, int Right) range, Func<(int, int), int> best)
+    private static int Best((int Left, int Right) range, int[] prefix, Func<(int, int), int> best)
+    {
+        var (left, right) = range;
+
+        if (left == right)
         {
-            var (left, right) = range;
-
-            if (left == right)
-            {
-                return 0;
-            }
-
-            var result = 0;
-
-            for (var mid = left; mid < right; mid++)
-            {
-                var leftSum = prefix[mid + 1] - prefix[left];
-                var rightSum = prefix[right + 1] - prefix[mid + 1];
-
-                if (leftSum <= rightSum)
-                {
-                    result = Math.Max(result, leftSum + best((left, mid)));
-                }
-
-                if (rightSum <= leftSum)
-                {
-                    result = Math.Max(result, rightSum + best((mid + 1, right)));
-                }
-            }
-
-            return result;
+            return 0;
         }
+
+        var result = 0;
+
+        for (var mid = left; mid < right; mid++)
+        {
+            var score = ScoreForSplit(prefix, range, mid, best);
+            result = Math.Max(result, score);
+        }
+
+        return result;
+    }
+
+    // The score contributed by splitting `range` at `mid`: whichever side sums to no
+    // more than the other is the one scored (and recursed into) this round, per Stone
+    // Game V's rule that a tie lets either side be kept - the block `Best` repeats
+    // once per candidate `mid`.
+    private static int ScoreForSplit(int[] prefix, (int Left, int Right) range, int mid, Func<(int, int), int> best)
+    {
+        var (left, right) = range;
+        var leftSum = prefix[mid + 1] - prefix[left];
+        var rightSum = prefix[right + 1] - prefix[mid + 1];
+        var score = 0;
+
+        if (leftSum <= rightSum)
+        {
+            score = Math.Max(score, leftSum + best((left, mid)));
+        }
+
+        if (rightSum <= leftSum)
+        {
+            score = Math.Max(score, rightSum + best((mid + 1, right)));
+        }
+
+        return score;
     }
 }

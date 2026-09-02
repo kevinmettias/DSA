@@ -21,6 +21,10 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
 {
     private const int UnlimitedBudget = int.MaxValue / 2;
 
+    private const int RandomSeed = 1505; // LeetCode problem number
+
+    private const int DigitCount = 10;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -29,8 +33,8 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1505);
-        _digits = new string(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(10))).ToArray());
+        var random = new Random(RandomSeed);
+        _digits = new string(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DigitCount))).ToArray());
     }
 
     [Benchmark(Baseline = true)]
@@ -60,13 +64,28 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
         return new string(result);
     }
 
+    private readonly record struct GreedyPlacementContext(
+        RepoIntQueue[] PositionsByDigit, FenwickTree<int, SumOperation<int>> StillUnplaced, char[] Result);
+
     [Benchmark]
     public string FenwickTreeGreedy()
     {
         var n = _digits.Length;
-        var positionsByDigit = new RepoIntQueue[10];
+        var positionsByDigit = BuildPositionsByDigit(n);
+        var stillUnplaced = new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, n).ToArray());
+        var result = new char[n];
+        var context = new GreedyPlacementContext(positionsByDigit, stillUnplaced, result);
 
-        for (var digit = 0; digit < 10; digit++)
+        RunPlacement(n, context);
+
+        return new string(result);
+    }
+
+    private RepoIntQueue[] BuildPositionsByDigit(int n)
+    {
+        var positionsByDigit = new RepoIntQueue[DigitCount];
+
+        for (var digit = 0; digit < DigitCount; digit++)
         {
             positionsByDigit[digit] = new RepoIntQueue();
         }
@@ -76,34 +95,52 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
             positionsByDigit[_digits[i] - '0'].Enqueue(i);
         }
 
-        var stillUnplaced = new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, n).ToArray());
-        var result = new char[n];
+        return positionsByDigit;
+    }
+
+    private static void RunPlacement(int n, GreedyPlacementContext context)
+    {
         var remainingSwaps = UnlimitedBudget;
 
         for (var i = 0; i < n; i++)
         {
-            for (var digit = 0; digit < 10; digit++)
+            remainingSwaps = PlaceNextDigit(i, remainingSwaps, context);
+        }
+    }
+
+    private static int PlaceNextDigit(int i, int remainingSwaps, GreedyPlacementContext context)
+    {
+        for (var digit = 0; digit < DigitCount; digit++)
+        {
+            var placed = TryPlaceDigit(digit, i, remainingSwaps, context);
+
+            if (placed is { } updatedSwaps)
             {
-                if (!positionsByDigit[digit].TryPeek(out var position))
-                {
-                    continue;
-                }
-
-                var cost = position == 0 ? 0 : stillUnplaced.PrefixQuery(position - 1);
-
-                if (cost > remainingSwaps)
-                {
-                    continue;
-                }
-
-                remainingSwaps -= cost;
-                result[i] = (char)('0' + digit);
-                positionsByDigit[digit].TryDequeue(out _);
-                stillUnplaced.Add(position, -1);
-                break;
+                return updatedSwaps;
             }
         }
 
-        return new string(result);
+        return remainingSwaps;
+    }
+
+    private static int? TryPlaceDigit(int digit, int i, int remainingSwaps, GreedyPlacementContext context)
+    {
+        if (!context.PositionsByDigit[digit].TryPeek(out var position))
+        {
+            return null;
+        }
+
+        var cost = position == 0 ? 0 : context.StillUnplaced.PrefixQuery(position - 1);
+
+        if (cost > remainingSwaps)
+        {
+            return null;
+        }
+
+        context.Result[i] = (char)('0' + digit);
+        context.PositionsByDigit[digit].TryDequeue(out _);
+        context.StillUnplaced.Add(position, -1);
+
+        return remainingSwaps - cost;
     }
 }

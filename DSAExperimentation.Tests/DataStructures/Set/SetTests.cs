@@ -51,4 +51,39 @@ public sealed partial class SetTests
 
         Assert.False(set.TryRemove("missing"));
     }
+
+    [Fact]
+    public void Count_NewSet_IsZero()
+    {
+        Assert.Equal(0, new Set<int>().Count);
+    }
+
+    [Fact]
+    public void Count_RisesOnlyForItemsNotAlreadyPresent()
+    {
+        var set = new Set<int>();
+
+        set.TryAdd(1);
+        set.TryAdd(2);
+        set.TryAdd(1);
+
+        Assert.Equal(2, set.Count);
+    }
+
+    [Fact]
+    public void Count_FallsWhenAnItemIsRemoved()
+    {
+        var set = new Set<int>();
+        set.TryAdd(1);
+
+        set.TryRemove(1);
+
+        Assert.Equal(0, set.Count);
+    }
+
+    [Fact]
+    public void Count_BulkSeededSet_ReflectsTheDistinctItems()
+    {
+        Assert.Equal(3, new Set<int>([1, 2, 3, 2, 1]).Count);
+    }
 }

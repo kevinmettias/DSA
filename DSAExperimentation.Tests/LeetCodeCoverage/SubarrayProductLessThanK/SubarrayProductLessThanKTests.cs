@@ -19,15 +19,27 @@ public sealed partial class SubarrayProductLessThanKTests
 {
     [Fact]
     public void NumSubarrayProductLessThanK_LeetCodeExample_ReturnsEightValidSubarrays()
-        => Assert.Equal(8, NumSubarrayProductLessThanK([10, 5, 2, 6], k: 100));
+    {
+        var count = NumSubarrayProductLessThanK([10, 5, 2, 6], k: 100);
+
+        Assert.Equal(8, count);
+    }
 
     [Fact]
     public void NumSubarrayProductLessThanK_KAtMostOne_ReturnsZero()
-        => Assert.Equal(0, NumSubarrayProductLessThanK([1, 2, 3], k: 0));
+    {
+        var count = NumSubarrayProductLessThanK([1, 2, 3], k: 0);
+
+        Assert.Equal(0, count);
+    }
 
     [Fact]
     public void NumSubarrayProductLessThanK_SingleElementBelowK_CountsItself()
-        => Assert.Equal(1, NumSubarrayProductLessThanK([5], k: 10));
+    {
+        var count = NumSubarrayProductLessThanK([5], k: 10);
+
+        Assert.Equal(1, count);
+    }
 
     private static int NumSubarrayProductLessThanK(int[] nums, int k)
     {

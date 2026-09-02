@@ -18,12 +18,12 @@ public sealed partial class OnlineElectionTests
     {
         var election = new TopVotedCandidate([0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]);
 
-        Assert.Equal(0, election.Query(3));
-        Assert.Equal(1, election.Query(12));
-        Assert.Equal(1, election.Query(25));
-        Assert.Equal(0, election.Query(15));
-        Assert.Equal(0, election.Query(24));
-        Assert.Equal(1, election.Query(8));
+        AssertLeaderAt(election, 3, 0);
+        AssertLeaderAt(election, 12, 1);
+        AssertLeaderAt(election, 25, 1);
+        AssertLeaderAt(election, 15, 0);
+        AssertLeaderAt(election, 24, 0);
+        AssertLeaderAt(election, 8, 1);
     }
 
     [Fact]
@@ -31,7 +31,13 @@ public sealed partial class OnlineElectionTests
     {
         var election = new TopVotedCandidate([0, 1], [0, 1]);
 
-        Assert.Equal(1, election.Query(1));
+        AssertLeaderAt(election, 1, 1);
+    }
+
+    private static void AssertLeaderAt(TopVotedCandidate election, int time, int expectedLeader)
+    {
+        var actual = election.Query(time);
+        Assert.Equal(expectedLeader, actual);
     }
 
     private sealed class TopVotedCandidate

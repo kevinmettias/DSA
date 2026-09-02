@@ -13,6 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DesignParkingSystemBenchmarks
 {
+    private const int CarTypeUpperBoundExclusive = 4;
+    private const int MediumCarType = 2;
+    private const int SmallCarType = 3;
+
     [Params(1_000, 50_000)]
     public int Calls;
 
@@ -22,7 +26,7 @@ public class DesignParkingSystemBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _requestedTypes = Enumerable.Range(0, Calls).Select(_ => random.Next(1, 4)).ToArray();
+        _requestedTypes = Enumerable.Range(0, Calls).Select(_ => random.Next(1, CarTypeUpperBoundExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -35,34 +39,7 @@ public class DesignParkingSystemBenchmarks
 
         foreach (var carType in _requestedTypes)
         {
-            bool added;
-
-            if (carType == 1)
-            {
-                added = big > 0;
-                if (added)
-                {
-                    big--;
-                }
-            }
-            else if (carType == 2)
-            {
-                added = medium > 0;
-                if (added)
-                {
-                    medium--;
-                }
-            }
-            else
-            {
-                added = small > 0;
-                if (added)
-                {
-                    small--;
-                }
-            }
-
-            if (added)
+            if (TryAdmit(carType, ref big, ref medium, ref small))
             {
                 accepted++;
             }
@@ -71,13 +48,39 @@ public class DesignParkingSystemBenchmarks
         return accepted;
     }
 
+    private static bool TryAdmit(int carType, ref int big, ref int medium, ref int small)
+    {
+        if (carType == 1)
+        {
+            return TryTakeSlot(ref big);
+        }
+
+        if (carType == MediumCarType)
+        {
+            return TryTakeSlot(ref medium);
+        }
+
+        return TryTakeSlot(ref small);
+    }
+
+    private static bool TryTakeSlot(ref int remaining)
+    {
+        if (remaining <= 0)
+        {
+            return false;
+        }
+
+        remaining--;
+        return true;
+    }
+
     [Benchmark]
     public int HashMapDispatch()
     {
         var remaining = new HashMap<int, int>();
         remaining.Set(1, Calls);
-        remaining.Set(2, Calls);
-        remaining.Set(3, Calls);
+        remaining.Set(MediumCarType, Calls);
+        remaining.Set(SmallCarType, Calls);
         var accepted = 0;
 
         foreach (var carType in _requestedTypes)

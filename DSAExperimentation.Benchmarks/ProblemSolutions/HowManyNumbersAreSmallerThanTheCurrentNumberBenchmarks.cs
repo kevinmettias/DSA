@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
 {
+    private const int RandomSeed = 1365; // LC problem number
+    private const int ValueExclusiveBound = 100_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,8 +23,8 @@ public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1365);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 100_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueExclusiveBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

@@ -24,42 +24,64 @@ public sealed partial class DecodeStringTests
 
     private static string Decode(string s)
     {
-        var counts = new RepoCountStack();
-        var builders = new RepoBuilderStack();
-        var current = new StringBuilder();
-        var number = 0;
+        var state = new DecoderState();
 
         foreach (var c in s)
         {
+            state.ProcessChar(c);
+        }
+
+        return state.Result;
+    }
+
+    private sealed class DecoderState
+    {
+        private readonly RepoCountStack _counts = new();
+        private readonly RepoBuilderStack _builders = new();
+        private StringBuilder _current = new();
+        private int _number;
+
+        public string Result => _current.ToString();
+
+        public void ProcessChar(char c)
+        {
             if (char.IsDigit(c))
             {
-                number = (number * 10) + (c - '0');
+                _number = (_number * 10) + (c - '0');
             }
             else if (c == '[')
             {
-                counts.Push(number);
-                builders.Push(current);
-                current = new StringBuilder();
-                number = 0;
+                OpenGroup();
             }
             else if (c == ']')
             {
-                counts.TryPop(out var repeatCount);
-                builders.TryPop(out var outer);
-
-                for (var r = 0; r < repeatCount; r++)
-                {
-                    outer.Append(current);
-                }
-
-                current = outer;
+                CloseGroup();
             }
             else
             {
-                current.Append(c);
+                _current.Append(c);
             }
         }
 
-        return current.ToString();
+        private void OpenGroup()
+        {
+            _counts.Push(_number);
+            _builders.Push(_current);
+            _current = new StringBuilder();
+            _number = 0;
+        }
+
+        private void CloseGroup()
+        {
+            _counts.TryPop(out var repeatCount);
+            _builders.TryPop(out var outer);
+
+            for (var r = 0; r < repeatCount; r++)
+            {
+                outer.Append(_current);
+            }
+
+            _current = outer;
+        }
     }
 }

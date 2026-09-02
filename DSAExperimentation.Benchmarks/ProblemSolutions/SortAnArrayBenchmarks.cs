@@ -11,6 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SortAnArrayBenchmarks
 {
+    // LC problem number, reused as the Random seed for reproducible benchmark input.
+    private const int RandomSeed = 912;
+
+    private const int ValueRange = 50_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -19,8 +24,8 @@ public class SortAnArrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(912);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-50_000, 50_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueRange, ValueRange)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

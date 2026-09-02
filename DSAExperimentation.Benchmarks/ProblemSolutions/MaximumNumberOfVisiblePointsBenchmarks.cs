@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximumNumberOfVisiblePointsBenchmarks
 {
     private const int Angle = 30;
+    private const int CoordinateBound = 1_000;
+    private const double FullCircleDegrees = 360.0;
+    private const double AngleEpsilon = 1e-9;
+    private const int AngleDoublingFactor = 2;
+    private const double DegreesPerRadian = 180.0;
     private static readonly int[] Location = [0, 0];
 
     [Params(200, 2_000)]
@@ -36,8 +41,8 @@ public class MaximumNumberOfVisiblePointsBenchmarks
 
             do
             {
-                x = random.Next(-1_000, 1_000);
-                y = random.Next(-1_000, 1_000);
+                x = random.Next(-CoordinateBound, CoordinateBound);
+                y = random.Next(-CoordinateBound, CoordinateBound);
             } while (x == 0 && y == 0);
 
             _points[i] = [x, y];
@@ -57,9 +62,9 @@ public class MaximumNumberOfVisiblePointsBenchmarks
             for (var j = 0; j < angles.Length; j++)
             {
                 var diff = Math.Abs(angles[i] - angles[j]);
-                diff = Math.Min(diff, 360.0 - diff);
+                diff = Math.Min(diff, FullCircleDegrees - diff);
 
-                if (diff <= Angle + 1e-9)
+                if (diff <= Angle + AngleEpsilon)
                 {
                     count++;
                 }
@@ -76,21 +81,32 @@ public class MaximumNumberOfVisiblePointsBenchmarks
     {
         var angles = ToAngles();
         MergeSort.Sort<double, ArrayIndexedSequence<double>>(new ArrayIndexedSequence<double>(angles));
+        var doubled = DoubleAngles(angles);
 
-        var doubled = new double[angles.Length * 2];
+        return Math.Min(SlideWindow(doubled), angles.Length);
+    }
+
+    private static double[] DoubleAngles(double[] angles)
+    {
+        var doubled = new double[angles.Length * AngleDoublingFactor];
 
         for (var i = 0; i < angles.Length; i++)
         {
             doubled[i] = angles[i];
-            doubled[i + angles.Length] = angles[i] + 360.0;
+            doubled[i + angles.Length] = angles[i] + FullCircleDegrees;
         }
 
+        return doubled;
+    }
+
+    private static int SlideWindow(double[] doubled)
+    {
         var best = 0;
         var left = 0;
 
         for (var right = 0; right < doubled.Length; right++)
         {
-            while (doubled[right] - doubled[left] > Angle + 1e-9)
+            while (doubled[right] - doubled[left] > Angle + AngleEpsilon)
             {
                 left++;
             }
@@ -98,7 +114,7 @@ public class MaximumNumberOfVisiblePointsBenchmarks
             best = Math.Max(best, right - left + 1);
         }
 
-        return Math.Min(best, angles.Length);
+        return best;
     }
 
     private double[] ToAngles()
@@ -107,7 +123,7 @@ public class MaximumNumberOfVisiblePointsBenchmarks
 
         for (var i = 0; i < _points.Length; i++)
         {
-            angles[i] = Math.Atan2(_points[i][1] - Location[1], _points[i][0] - Location[0]) * 180.0 / Math.PI;
+            angles[i] = Math.Atan2(_points[i][1] - Location[1], _points[i][0] - Location[0]) * DegreesPerRadian / Math.PI;
         }
 
         return angles;

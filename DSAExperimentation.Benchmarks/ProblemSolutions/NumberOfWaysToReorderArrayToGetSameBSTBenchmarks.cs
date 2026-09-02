@@ -19,6 +19,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfWaysToReorderArrayToGetSameBSTBenchmarks
 {
     private const long Modulo = 1_000_000_007;
+    private const int RandomSeed = 1569; // LC problem number
+    private const int BinaryChildCount = 2;
 
     [Params(200, 1000)]
     public int Length;
@@ -28,7 +30,7 @@ public class NumberOfWaysToReorderArrayToGetSameBSTBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1569);
+        var random = new Random(RandomSeed);
         _nums = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
     }
 
@@ -100,7 +102,7 @@ public class NumberOfWaysToReorderArrayToGetSameBSTBenchmarks
                 ways = ways * child.Ways % Modulo;
             }
 
-            if (children.Count == 2)
+            if (children.Count == BinaryChildCount)
             {
                 ways = ways * Choose(totalSize, children[0].Size) % Modulo;
             }

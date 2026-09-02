@@ -19,6 +19,7 @@ public class NumberOfWaysToWearDifferentHatsToEachOtherBenchmarks
     private const int Modulo = 1_000_000_007;
     private const int MaxHat = 8;
     private const int LikedHatsPerPerson = 3;
+    private const int RandomSeed = 1434;
 
     [Params(5, 7)]
     public int PeopleCount;
@@ -29,7 +30,7 @@ public class NumberOfWaysToWearDifferentHatsToEachOtherBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1434);
+        var random = new Random(RandomSeed);
         _hatToPeople = new List<int>[MaxHat + 1];
         for (var hat = 1; hat <= MaxHat; hat++)
         {

@@ -1,3 +1,5 @@
+using ActiveFlipsQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfKConsecutiveBitFlips;
 
 // LeetCode 995. Minimum Number of K Consecutive Bit Flips: a greedy left-to-right
@@ -14,7 +16,8 @@ public sealed partial class MinimumNumberOfKConsecutiveBitFlipsTests
     {
         int[] nums = [0, 1, 0];
 
-        Assert.Equal(2, MinKBitFlips(nums, k: 1));
+        var actual = MinKBitFlips(nums, k: 1);
+        Assert.Equal(2, actual);
     }
 
     [Fact]
@@ -22,7 +25,8 @@ public sealed partial class MinimumNumberOfKConsecutiveBitFlipsTests
     {
         int[] nums = [1, 1, 0];
 
-        Assert.Equal(-1, MinKBitFlips(nums, k: 2));
+        var actual = MinKBitFlips(nums, k: 2);
+        Assert.Equal(-1, actual);
     }
 
     [Fact]
@@ -30,35 +34,54 @@ public sealed partial class MinimumNumberOfKConsecutiveBitFlipsTests
     {
         int[] nums = [0, 0, 0, 1, 0, 1, 1, 0];
 
-        Assert.Equal(3, MinKBitFlips(nums, k: 3));
+        var actual = MinKBitFlips(nums, k: 3);
+        Assert.Equal(3, actual);
     }
 
     private static int MinKBitFlips(int[] nums, int k)
     {
-        var activeFlips = new DSAExperimentation.DataStructures.Queue.Queue<int>();
+        var activeFlips = new ActiveFlipsQueue();
         var flipCount = 0;
 
         for (var i = 0; i < nums.Length; i++)
         {
-            if (activeFlips.TryPeek(out var earliestStart) && earliestStart + k == i)
+            ExpireFlip(activeFlips, k, i);
+
+            var flipped = TryApplyFlip(activeFlips, nums, k, i);
+            if (flipped is null)
             {
-                activeFlips.TryDequeue(out _);
+                return -1;
             }
 
-            var effectiveBit = nums[i] ^ (activeFlips.Count % 2);
-
-            if (effectiveBit == 0)
-            {
-                if (i + k > nums.Length)
-                {
-                    return -1;
-                }
-
-                activeFlips.Enqueue(i);
-                flipCount++;
-            }
+            flipCount += flipped.Value;
         }
 
         return flipCount;
+    }
+
+    private static void ExpireFlip(ActiveFlipsQueue activeFlips, int k, int i)
+    {
+        if (activeFlips.TryPeek(out var earliestStart) && earliestStart + k == i)
+        {
+            activeFlips.TryDequeue(out _);
+        }
+    }
+
+    private static int? TryApplyFlip(ActiveFlipsQueue activeFlips, int[] nums, int k, int i)
+    {
+        var effectiveBit = nums[i] ^ (activeFlips.Count % 2);
+
+        if (effectiveBit != 0)
+        {
+            return 0;
+        }
+
+        if (i + k > nums.Length)
+        {
+            return null;
+        }
+
+        activeFlips.Enqueue(i);
+        return 1;
     }
 }

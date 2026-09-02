@@ -17,16 +17,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumAreaRectangleIIBenchmarks
 {
+    private const int RandomSeed = 963;
+    private const int GridPadding = 3;
+
     [Params(12, 24)]
     public int Length;
 
     private int[][] _points = null!;
 
+    private readonly record struct DiagonalCandidate(int First, int Second, int Third, int Fourth);
+
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(963);
-        var grid = (int)Math.Ceiling(Math.Sqrt(Length)) + 3;
+        var random = new Random(RandomSeed);
+        var grid = (int)Math.Ceiling(Math.Sqrt(Length)) + GridPadding;
 
         var coordinates = new HashSet<(int X, int Y)>();
 
@@ -50,17 +55,27 @@ public class MinimumAreaRectangleIIBenchmarks
             {
                 for (var c = b + 1; c < n; c++)
                 {
-                    for (var d = c + 1; d < n; d++)
-                    {
-                        TryRectangle(a, c, b, d, ref minArea); // diagonals (a,b) and (c,d)
-                        TryRectangle(a, b, c, d, ref minArea); // diagonals (a,c) and (b,d)
-                        TryRectangle(a, b, d, c, ref minArea); // diagonals (a,d) and (b,c)
-                    }
+                    var tripleArea = BestAreaForTriple(a, b, c, n);
+                    minArea = Math.Min(minArea, tripleArea);
                 }
             }
         }
 
         return minArea == double.MaxValue ? 0.0 : minArea;
+    }
+
+    private double BestAreaForTriple(int a, int b, int c, int n)
+    {
+        var minArea = double.MaxValue;
+
+        for (var d = c + 1; d < n; d++)
+        {
+            TryRectangle(new DiagonalCandidate(a, c, b, d), ref minArea); // diagonals (a,b) and (c,d)
+            TryRectangle(new DiagonalCandidate(a, b, c, d), ref minArea); // diagonals (a,c) and (b,d)
+            TryRectangle(new DiagonalCandidate(a, b, d, c), ref minArea); // diagonals (a,d) and (b,c)
+        }
+
+        return minArea;
     }
 
     [Benchmark]
@@ -77,35 +92,45 @@ public class MinimumAreaRectangleIIBenchmarks
             for (var j = i + 1; j < _points.Length; j++)
             {
                 var pointJ = (X: _points[j][0], Y: _points[j][1]);
-                var dx = pointI.X - pointJ.X;
-                var dy = pointI.Y - pointJ.Y;
-                var key = (pointI.X + pointJ.X, pointI.Y + pointJ.Y, (dx * dx) + (dy * dy));
-
-                if (!diagonalsByKey.TryGetValue(key, out var matchingDiagonals))
-                {
-                    matchingDiagonals = [];
-                    diagonalsByKey.Set(key, matchingDiagonals);
-                }
-
-                foreach (var (first, second) in matchingDiagonals)
-                {
-                    var sideA = Distance(pointI, first);
-                    var sideB = Distance(pointI, second);
-                    minArea = Math.Min(minArea, sideA * sideB);
-                }
-
-                matchingDiagonals.Add((pointI, pointJ));
+                ProcessDiagonalCandidate(diagonalsByKey, pointI, pointJ, ref minArea);
             }
         }
 
         return minArea == double.MaxValue ? 0.0 : minArea;
     }
 
+    private void ProcessDiagonalCandidate(
+        HashMap<(int SumX, int SumY, int LengthSquared), List<((int X, int Y) First, (int X, int Y) Second)>> diagonalsByKey,
+        (int X, int Y) pointI,
+        (int X, int Y) pointJ,
+        ref double minArea)
+    {
+        var dx = pointI.X - pointJ.X;
+        var dy = pointI.Y - pointJ.Y;
+        var key = (pointI.X + pointJ.X, pointI.Y + pointJ.Y, (dx * dx) + (dy * dy));
+
+        if (!diagonalsByKey.TryGetValue(key, out var matchingDiagonals))
+        {
+            matchingDiagonals = [];
+            diagonalsByKey.Set(key, matchingDiagonals);
+        }
+
+        foreach (var (first, second) in matchingDiagonals)
+        {
+            var sideA = Distance(pointI, first);
+            var sideB = Distance(pointI, second);
+            minArea = Math.Min(minArea, sideA * sideB);
+        }
+
+        matchingDiagonals.Add((pointI, pointJ));
+    }
+
     // Diagonal candidates are (first, third) and (second, fourth) - a rectangle
     // iff they share a midpoint and length; area is the product of the two sides
     // meeting at the shared diagonal endpoint, per MinAreaFreeRect's own reasoning.
-    private void TryRectangle(int first, int second, int third, int fourth, ref double minArea)
+    private void TryRectangle(DiagonalCandidate candidate, ref double minArea)
     {
+        var (first, second, third, fourth) = candidate;
         var p1 = (X: _points[first][0], Y: _points[first][1]);
         var p2 = (X: _points[second][0], Y: _points[second][1]);
         var p3 = (X: _points[third][0], Y: _points[third][1]);

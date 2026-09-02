@@ -16,6 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindKthBitInNthBinaryStringBenchmarks
 {
+    private const string BaseCaseBit = "0"; // S(1)
+    private const string MiddleBitSeparator = "1"; // S(n) = S(n-1) + "1" + invert(reverse(S(n-1)))
+    private const int MidpointDivisor = 2;
+
     [Params(10, 20)]
     public int N;
 
@@ -26,7 +30,7 @@ public class FindKthBitInNthBinaryStringBenchmarks
     {
         if (n == 1)
         {
-            return "0";
+            return BaseCaseBit;
         }
 
         var previous = BuildNthString(n - 1);
@@ -37,7 +41,7 @@ public class FindKthBitInNthBinaryStringBenchmarks
             invertedReversed[previous.Length - 1 - i] = previous[i] == '0' ? '1' : '0';
         }
 
-        return previous + "1" + new string(invertedReversed);
+        return previous + MiddleBitSeparator + new string(invertedReversed);
     }
 
     [Benchmark]
@@ -51,7 +55,7 @@ public class FindKthBitInNthBinaryStringBenchmarks
         }
 
         var length = (1 << n) - 1;
-        var mid = (length / 2) + 1;
+        var mid = (length / MidpointDivisor) + 1;
 
         if (k == mid)
         {

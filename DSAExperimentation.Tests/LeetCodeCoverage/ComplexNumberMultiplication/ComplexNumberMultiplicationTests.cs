@@ -12,7 +12,10 @@ public sealed class ComplexNumberMultiplicationTests
     [InlineData("1+-1i", "1+-1i", "0+-2i")]
     [InlineData("3+2i", "1+-2i", "7+-4i")]
     public void Multiply_ClassicExamples_ReturnsExpectedProduct(string a, string b, string expected)
-        => Assert.Equal(expected, Multiply(a, b));
+    {
+        var actual = Multiply(a, b);
+        Assert.Equal(expected, actual);
+    }
 
     private static string Multiply(string a, string b)
     {

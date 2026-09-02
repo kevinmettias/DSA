@@ -18,6 +18,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LoudAndRichBenchmarks
 {
+    private const int RandomSeed = 5;
+    private const int MaxFanOut = 3;
+
     [Params(50, 1_000)]
     public int PersonCount;
 
@@ -27,13 +30,13 @@ public class LoudAndRichBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(5);
+        var random = new Random(RandomSeed);
         _quiet = Enumerable.Range(0, PersonCount).Select(_ => random.Next(0, PersonCount)).ToArray();
         _people = Enumerable.Range(0, PersonCount).Select(id => new PersonNode(id)).ToList();
 
         for (var i = 0; i < PersonCount; i++)
         {
-            var fanOut = Math.Min(3, PersonCount - 1 - i);
+            var fanOut = Math.Min(MaxFanOut, PersonCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
                 // person i is richer than person i + f.
@@ -85,11 +88,18 @@ public class LoudAndRichBenchmarks
         var visited = new HashSet<PersonNode> { start };
         var stack = new Stack<PersonNode>();
         stack.Push(start);
+
+        return TraverseRicherReachable(start, visited, stack);
+    }
+
+    private int TraverseRicherReachable(PersonNode start, HashSet<PersonNode> visited, Stack<PersonNode> stack)
+    {
         var quietest = start.Id;
 
         while (stack.Count > 0)
         {
             var node = stack.Pop();
+
             if (_quiet[node.Id] < _quiet[quietest])
             {
                 quietest = node.Id;

@@ -10,6 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumAbsoluteDifferenceInBSTBenchmarks
 {
+    private const int MidpointDivisor = 2;
+
     [Params(100, 5_000)]
     public int Size;
 
@@ -91,7 +93,7 @@ public class MinimumAbsoluteDifferenceInBSTBenchmarks
             return null;
         }
 
-        var mid = low + ((high - low) / 2);
+        var mid = low + ((high - low) / MidpointDivisor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

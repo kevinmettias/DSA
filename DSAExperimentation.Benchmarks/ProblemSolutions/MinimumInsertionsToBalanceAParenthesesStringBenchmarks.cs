@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
 {
+    private const int RandomSeed = 1541; // LC problem number
+    private const int BracketKindCount = 2;
+    private const int ClosersPerOpener = 2;
+
     [Params(1_000, 20_000)]
     public int Length;
 
@@ -19,12 +23,12 @@ public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1541);
+        var random = new Random(RandomSeed);
         var chars = new char[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = random.Next(0, 2) == 0 ? '(' : ')';
+            chars[i] = random.Next(0, BracketKindCount) == 0 ? '(' : ')';
         }
 
         _brackets = new string(chars);
@@ -38,27 +42,36 @@ public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
 
         foreach (var ch in _brackets)
         {
-            if (ch == '(')
-            {
-                needed += 2;
-                if (needed % 2 == 1)
-                {
-                    insertions++;
-                    needed--;
-                }
-            }
-            else
-            {
-                needed--;
-                if (needed == -1)
-                {
-                    insertions++;
-                    needed = 1;
-                }
-            }
+            needed = ch == '(' ? ProcessOpener(needed, ref insertions) : ProcessCloser(needed, ref insertions);
         }
 
         return insertions + needed;
+    }
+
+    private static int ProcessOpener(int needed, ref int insertions)
+    {
+        needed += ClosersPerOpener;
+
+        if (needed % ClosersPerOpener == 1)
+        {
+            insertions++;
+            needed--;
+        }
+
+        return needed;
+    }
+
+    private static int ProcessCloser(int needed, ref int insertions)
+    {
+        needed--;
+
+        if (needed == -1)
+        {
+            insertions++;
+            needed = 1;
+        }
+
+        return needed;
     }
 
     [Benchmark]
@@ -70,27 +83,32 @@ public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
 
         while (i < _brackets.Length)
         {
-            if (_brackets[i] == '(')
-            {
-                openers.Push(_brackets[i]);
-                i++;
-                continue;
-            }
-
-            var hasAdjacentCloser = i + 1 < _brackets.Length && _brackets[i + 1] == ')';
-            if (!hasAdjacentCloser)
-            {
-                insertions++;
-            }
-
-            if (!openers.TryPop(out _))
-            {
-                insertions++;
-            }
-
-            i += hasAdjacentCloser ? 2 : 1;
+            i = ProcessOpenerStackStep(openers, i, ref insertions);
         }
 
-        return insertions + (openers.Count * 2);
+        return insertions + (openers.Count * ClosersPerOpener);
+    }
+
+    private int ProcessOpenerStackStep(RepoCharStack openers, int i, ref int insertions)
+    {
+        if (_brackets[i] == '(')
+        {
+            openers.Push(_brackets[i]);
+            return i + 1;
+        }
+
+        var hasAdjacentCloser = i + 1 < _brackets.Length && _brackets[i + 1] == ')';
+
+        if (!hasAdjacentCloser)
+        {
+            insertions++;
+        }
+
+        if (!openers.TryPop(out _))
+        {
+            insertions++;
+        }
+
+        return i + (hasAdjacentCloser ? ClosersPerOpener : 1);
     }
 }

@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
 {
+    private const int ChildrenPerNode = 2;
+
     [Params(2_000, 20_000)]
     public int NodeCount;
 
@@ -47,8 +49,8 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
 
         for (var i = 0; i < count; i++)
         {
-            var leftIndex = 2 * i + 1;
-            var rightIndex = 2 * i + 2;
+            var leftIndex = (ChildrenPerNode * i) + 1;
+            var rightIndex = leftIndex + 1;
             if (leftIndex < count)
             {
                 nodes[i].Left = nodes[leftIndex];
@@ -99,7 +101,16 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
                 return (0, node);
             }
 
+            var maxDepth = MaxChildDepth(children);
+            var (deepest, tieCount) = DeepestTiedChild(children, maxDepth);
+
+            return (maxDepth + 1, tieCount == 1 ? deepest : node);
+        }
+
+        private static int MaxChildDepth(IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
+        {
             var maxDepth = 0;
+
             for (var i = 0; i < children.Count; i++)
             {
                 if (children[i].Depth > maxDepth)
@@ -108,8 +119,15 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
                 }
             }
 
+            return maxDepth;
+        }
+
+        private static (BinaryTreeNode<int>? Deepest, int TieCount) DeepestTiedChild(
+            IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children, int maxDepth)
+        {
             BinaryTreeNode<int>? deepest = null;
             var tieCount = 0;
+
             for (var i = 0; i < children.Count; i++)
             {
                 if (children[i].Depth == maxDepth)
@@ -119,7 +137,7 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
                 }
             }
 
-            return (maxDepth + 1, tieCount == 1 ? deepest : node);
+            return (deepest, tieCount);
         }
     }
 }

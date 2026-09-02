@@ -13,19 +13,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DesignBrowserHistoryBenchmarks
 {
+    private const string HomePageUrl = "home.com";
+    private const int BackSteps = 2;
+
     [Params(200, 5_000)]
     public int OperationCount;
 
     [Benchmark(Baseline = true)]
     public string ListBacked()
     {
-        var history = new ListBrowserHistory("home.com");
-        var last = "home.com";
+        var history = new ListBrowserHistory(HomePageUrl);
+        var last = HomePageUrl;
 
         for (var i = 0; i < OperationCount; i++)
         {
             history.Visit($"url{i}.com");
-            last = history.Back(2);
+            last = history.Back(BackSteps);
             history.Visit($"branch{i}.com");
         }
 
@@ -35,13 +38,13 @@ public class DesignBrowserHistoryBenchmarks
     [Benchmark]
     public string DynamicArrayBacked()
     {
-        var history = new DynamicArrayBrowserHistory("home.com");
-        var last = "home.com";
+        var history = new DynamicArrayBrowserHistory(HomePageUrl);
+        var last = HomePageUrl;
 
         for (var i = 0; i < OperationCount; i++)
         {
             history.Visit($"url{i}.com");
-            last = history.Back(2);
+            last = history.Back(BackSteps);
             history.Visit($"branch{i}.com");
         }
 

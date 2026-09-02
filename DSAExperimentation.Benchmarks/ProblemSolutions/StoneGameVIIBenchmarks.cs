@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StoneGameVIIBenchmarks
 {
+    private const int RandomSeed = 1690; // LC problem number
+    private const int StoneValueUpperBoundExclusive = 100;
+
     [Params(22, 26)]
     public int PileCount;
 
@@ -21,8 +24,8 @@ public class StoneGameVIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1690);
-        var stones = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        var stones = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, StoneValueUpperBoundExclusive)).ToArray();
         _prefix = new int[PileCount + 1];
 
         for (var i = 0; i < PileCount; i++)

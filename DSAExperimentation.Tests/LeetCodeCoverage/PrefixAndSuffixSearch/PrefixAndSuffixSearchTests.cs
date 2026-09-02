@@ -15,8 +15,11 @@ public sealed partial class PrefixAndSuffixSearchTests
     {
         var filter = new WordFilter(["apple"]);
 
-        Assert.Equal(0, filter.Search("a", "e"));
-        Assert.Equal(-1, filter.Search("b", "e"));
+        var matchingIndex = filter.Search("a", "e");
+        Assert.Equal(0, matchingIndex);
+
+        var nonMatchingIndex = filter.Search("b", "e");
+        Assert.Equal(-1, nonMatchingIndex);
     }
 
     [Fact]
@@ -24,9 +27,14 @@ public sealed partial class PrefixAndSuffixSearchTests
     {
         var filter = new WordFilter(["apple", "orange", "apricot"]);
 
-        Assert.Equal(2, filter.Search("ap", "t"));
-        Assert.Equal(0, filter.Search("app", "e"));
-        Assert.Equal(-1, filter.Search("or", "t"));
+        var largestSharedMatchIndex = filter.Search("ap", "t");
+        Assert.Equal(2, largestSharedMatchIndex);
+
+        var uniqueMatchIndex = filter.Search("app", "e");
+        Assert.Equal(0, uniqueMatchIndex);
+
+        var nonMatchingIndex = filter.Search("or", "t");
+        Assert.Equal(-1, nonMatchingIndex);
     }
 
     private sealed class WordFilter

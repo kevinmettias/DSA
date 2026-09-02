@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LargestPerimeterTriangleBenchmarks
 {
+    private const int RandomSeed = 976; // LC problem number
+    private const int SideValueUpperBound = 1_000; // exclusive upper bound for generated side lengths
+    private const int TripleWindowOffset = 2; // sorted[i-TripleWindowOffset..i] form the candidate triple
+
     [Params(80, 300)]
     public int Length;
 
@@ -19,8 +23,8 @@ public class LargestPerimeterTriangleBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(976);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, SideValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -32,15 +36,22 @@ public class LargestPerimeterTriangleBenchmarks
         {
             for (var j = i + 1; j < _values.Length; j++)
             {
-                for (var k = j + 1; k < _values.Length; k++)
-                {
-                    int a = _values[i], b = _values[j], c = _values[k];
+                best = BestPerimeterWithFixedPair(i, j, best);
+            }
+        }
 
-                    if (a + b > c && a + c > b && b + c > a)
-                    {
-                        best = Math.Max(best, a + b + c);
-                    }
-                }
+        return best;
+    }
+
+    private int BestPerimeterWithFixedPair(int i, int j, int best)
+    {
+        for (var k = j + 1; k < _values.Length; k++)
+        {
+            int a = _values[i], b = _values[j], c = _values[k];
+
+            if (a + b > c && a + c > b && b + c > a)
+            {
+                best = Math.Max(best, a + b + c);
             }
         }
 
@@ -53,11 +64,11 @@ public class LargestPerimeterTriangleBenchmarks
         var sorted = (int[])_values.Clone();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
 
-        for (var i = sorted.Length - 1; i >= 2; i--)
+        for (var i = sorted.Length - 1; i >= TripleWindowOffset; i--)
         {
-            if (sorted[i - 2] + sorted[i - 1] > sorted[i])
+            if (sorted[i - TripleWindowOffset] + sorted[i - 1] > sorted[i])
             {
-                return sorted[i - 2] + sorted[i - 1] + sorted[i];
+                return sorted[i - TripleWindowOffset] + sorted[i - 1] + sorted[i];
             }
         }
 

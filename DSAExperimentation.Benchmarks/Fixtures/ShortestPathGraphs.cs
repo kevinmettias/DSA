@@ -13,6 +13,16 @@ internal static class ShortestPathGraphs
     public static int[][] BuildRandomConnectedGraph(int nodeCount, int seed)
     {
         var random = new Random(seed);
+        var adjacency = CreateEmptyAdjacency(nodeCount);
+
+        AddSpanningTreeEdges(adjacency, nodeCount, random);
+        AddExtraRandomEdges(adjacency, nodeCount, random);
+
+        return ToJaggedArray(adjacency);
+    }
+
+    private static List<int>[] CreateEmptyAdjacency(int nodeCount)
+    {
         var adjacency = new List<int>[nodeCount];
 
         for (var i = 0; i < nodeCount; i++)
@@ -20,11 +30,19 @@ internal static class ShortestPathGraphs
             adjacency[i] = [];
         }
 
+        return adjacency;
+    }
+
+    private static void AddSpanningTreeEdges(List<int>[] adjacency, int nodeCount, Random random)
+    {
         for (var i = 1; i < nodeCount; i++)
         {
             AddEdge(adjacency, i, random.Next(i));
         }
+    }
 
+    private static void AddExtraRandomEdges(List<int>[] adjacency, int nodeCount, Random random)
+    {
         var extraEdgesPerNode = 1;
 
         for (var i = 0; i < nodeCount; i++)
@@ -39,12 +57,24 @@ internal static class ShortestPathGraphs
                 }
             }
         }
-
-        return adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
     }
+
+    private static int[][] ToJaggedArray(List<int>[] adjacency) =>
+        adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
 
     public static (Dictionary<(int Node, int Mask), VisitStateNode> NodesByState, VisitStateNode[] StartNodes)
         BuildStateGraph(int[][] graph)
+    {
+        var nodesByState = CreateStateNodes(graph);
+
+        WireNeighbors(graph, nodesByState);
+
+        var startNodes = CreateStartNodes(graph, nodesByState);
+
+        return (nodesByState, startNodes);
+    }
+
+    private static Dictionary<(int Node, int Mask), VisitStateNode> CreateStateNodes(int[][] graph)
     {
         var stateCount = 1 << graph.Length;
         var nodesByState = new Dictionary<(int Node, int Mask), VisitStateNode>();
@@ -57,6 +87,11 @@ internal static class ShortestPathGraphs
             }
         }
 
+        return nodesByState;
+    }
+
+    private static void WireNeighbors(int[][] graph, Dictionary<(int Node, int Mask), VisitStateNode> nodesByState)
+    {
         foreach (var state in nodesByState.Values)
         {
             foreach (var neighbor in graph[state.Node])
@@ -64,7 +99,10 @@ internal static class ShortestPathGraphs
                 state.Neighbors.Add(nodesByState[(neighbor, state.Mask | (1 << neighbor))]);
             }
         }
+    }
 
+    private static VisitStateNode[] CreateStartNodes(int[][] graph, Dictionary<(int Node, int Mask), VisitStateNode> nodesByState)
+    {
         var startNodes = new VisitStateNode[graph.Length];
 
         for (var start = 0; start < graph.Length; start++)
@@ -72,7 +110,7 @@ internal static class ShortestPathGraphs
             startNodes[start] = nodesByState[(start, 1 << start)];
         }
 
-        return (nodesByState, startNodes);
+        return startNodes;
     }
 
     private static void AddEdge(List<int>[] adjacency, int a, int b)

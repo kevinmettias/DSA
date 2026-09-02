@@ -73,23 +73,33 @@ public class ValidateBinaryTreeNodesBenchmarks
 
             foreach (var child in new[] { leftChild[node], rightChild[node] })
             {
-                if (child == -1)
-                {
-                    continue;
-                }
-
-                if (visited[child])
+                if (!TryVisitChild(child, visited, stack, ref visitedCount))
                 {
                     return false;
                 }
-
-                visited[child] = true;
-                visitedCount++;
-                stack.Push(child);
             }
         }
 
         return visitedCount == n;
+    }
+
+    private static bool TryVisitChild(int child, bool[] visited, Stack<int> stack, ref int visitedCount)
+    {
+        if (child == -1)
+        {
+            return true;
+        }
+
+        if (visited[child])
+        {
+            return false;
+        }
+
+        visited[child] = true;
+        visitedCount++;
+        stack.Push(child);
+
+        return true;
     }
 
     private static bool ValidateByDisjointSet(int n, int[] leftChild, int[] rightChild)
@@ -101,21 +111,31 @@ public class ValidateBinaryTreeNodesBenchmarks
         {
             foreach (var child in new[] { leftChild[node], rightChild[node] })
             {
-                if (child == -1)
-                {
-                    continue;
-                }
-
-                if (hasParent[child] || components.IsConnected(node, child))
+                if (!TryAttachChild(node, child, hasParent, components))
                 {
                     return false;
                 }
-
-                hasParent[child] = true;
-                components.Union(node, child);
             }
         }
 
         return hasParent.Count(parented => !parented) == 1;
+    }
+
+    private static bool TryAttachChild(int node, int child, bool[] hasParent, DisjointSet components)
+    {
+        if (child == -1)
+        {
+            return true;
+        }
+
+        if (hasParent[child] || components.IsConnected(node, child))
+        {
+            return false;
+        }
+
+        hasParent[child] = true;
+        components.Union(node, child);
+
+        return true;
     }
 }

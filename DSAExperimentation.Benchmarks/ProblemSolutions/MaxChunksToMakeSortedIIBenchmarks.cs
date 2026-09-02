@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaxChunksToMakeSortedIIBenchmarks
 {
+    private const int RandomSeed = 768; // LC problem number
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,7 +22,7 @@ public class MaxChunksToMakeSortedIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(768);
+        var random = new Random(RandomSeed);
         _values = Enumerable.Range(0, Length).OrderBy(_ => random.Next()).ToArray();
     }
 

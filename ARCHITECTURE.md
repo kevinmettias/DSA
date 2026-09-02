@@ -672,8 +672,9 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Sequence | `Sequence/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence}.cs` (§13.6) |
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
 | Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
-| Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie}.cs` (§13.7, §13.8, §13.9) |
-| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology}.cs` |
+| Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie,RootedTreeNode,RootedTreeTopology,ParentArrayTree}.cs` (§13.7, §13.8, §13.9, §17.6) |
+| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology,WeightedGridNode,WeightedGridTopology,WeightedGrid}.cs` (§17.6) |
+| Graph — Hamming | `Graph/Hamming/{HammingNode,HammingTopology,HammingGraph,HammingSearch,Alphabet,StandardAlphabets}.cs` (§17.6) |
 | Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
 | Cache | `Cache/{ICache,CacheConstants}.cs`, `Cache/LruCache/LruCache.cs`, `Cache/LfuCache/LfuCache.cs` (§13.7) |
 
@@ -1096,3 +1097,328 @@ it, unlike `ShortestPath.cs`'s non-negative-edge-weight precondition — so it i
 inline comment beside the refinement loop rather than a class-level doc comment: it is forced
 entirely by the dense-matrix representation `AllPairsShortestPaths` chose for itself, not something
 a caller is trusted to uphold.
+
+## 17. The fourth and fifth tiers: `Domain/` and `LeetCode/`
+
+§1–§16 describe two tiers, both inside `DSAExperimentation/`: `DataStructures/` (Representation +
+Topology) and `Algorithms/` (Operations). That was the whole production library. Everything built
+*on top* of it lived in the two consuming projects — `DSAExperimentation.Tests` and
+`DSAExperimentation.Benchmarks` — and that is where the classification broke down.
+
+### 17.1 The problem this section fixes
+
+A LeetCode coverage entry was a test *and* a benchmark, written independently. Concretely, before
+this reorg:
+
+- **The solution was written twice, and drifted.** `AddBinaryTests` carried a
+  `private static string Add(...)`; `AddBinaryBenchmarks` re-implemented the same carry walk as
+  `StackBits`. `TwoSumTests` solved for the pair of *indices*; `TwoSumBenchmarks`'s `HashMapOnePass`
+  returned a *bool*. The benchmark was not measuring the function the test proved correct — nothing
+  in the repo required it to.
+- **Every naive baseline was untested.** A benchmark's `[Benchmark(Baseline = true)]` arm — the
+  textbook brute force the composed solution is supposed to beat — was never asserted against
+  anything. A wrong baseline would have made the comparison meaningless, silently.
+- **Domain types were copy-pasted across projects.** `Fixtures/LockNode.cs` in the benchmarks
+  project opened with the comment *"Mirrors DSAExperimentation.Tests' OpenTheLock LockNode
+  fixture"*. `WordNode`/`WordTopology` existed in two test folders, again as
+  `WordLadderNode`/`WordLadderTopology` in the benchmarks project, and a fourth and fifth time as
+  `GeneNode`/`GeneMutationNode` for LC 433 — five copies of one Hamming-distance graph, with
+  `IsOneLetterApart`/`IsOneCharApart` written out four times.
+- **Test-project code reached across its own layers.** `MinimumTimeVisitingAllPointsTests`, a
+  LeetCode coverage test, imported `DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures` to
+  borrow `WeightedGridNode` and `ChebyshevHeuristic`.
+
+None of this is a naming problem. It is domain code living in harnesses, where the axis
+classification §2 defines does not reach.
+
+### 17.2 The five tiers
+
+Bottom to top, each tier depending only on those below it:
+
+| Tier | Location | Holds |
+| --- | --- | --- |
+| 1. Representation + Topology | `DSAExperimentation/DataStructures/**` | §2's first two axes |
+| 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
+| 3. Domain | `DSAExperimentation/Domain/**` | Models that fix *content* — a specific modulus, a specific vertex set, one problem family's semantics (§17.6). A deliberately thin tier |
+| 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem; every strategy for it |
+| 5. Harnesses | `DSAExperimentation.Tests/**`, `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
+
+Namespaces continue to mirror the physical path exactly (§13.1): insert `Domain.` or `LeetCode.`
+immediately after `DSAExperimentation.`, then follow the rest of the path.
+
+### 17.3 Tier 4: a solution class holds *every* strategy, not just the good one
+
+`DSAExperimentation.LeetCode/<Problem>/<Problem>Solution.cs` is a static class whose methods are
+the strategies, named `<Operation>By<Strategy>` — `AddByBitStack`, `TryFindIndicesByBruteForce`,
+`MinTurnsByReduceGraph`. The naive baseline is a first-class method there, not scaffolding hidden
+in a benchmark, because:
+
+- it is the thing the composed solution's whole justification is measured against, and
+- putting it in tier 4 is what gets it under test. The pilot migration alone took `TwoSum`,
+  `AddBinary` and `OpenTheLock` from 4 assertions to 28.
+
+The class name takes a `Solution` suffix rather than being bare `TwoSum`, which would collide with
+its own enclosing namespace segment — the §10.3/§15.3 wrinkle, avoided by construction here instead
+of aliased around 777 times.
+
+A problem folder may hold more than the solution file. A witness that answers *one* problem and
+nothing else belongs there too, not in `Domain/`: `LeetCode/CountWaysToBuildRoomsInAnAntColony/`
+holds `RoomWaysAlgebra.cs` and `RoomWaysPrecomputedFactorialAlgebra.cs`, two `IFoldAlgebra`
+witnesses that compute LC 1916's multinomial and are meaningless anywhere else.
+
+### 17.4 The hoisted-overload rule
+
+A benchmark must charge input construction to `[GlobalSetup]`, not to the measured method; a test
+wants to pass LeetCode's own input shape and nothing more. Both are served by giving a strategy two
+overloads:
+
+```csharp
+public static int MinTurnsByReduceGraph(IEnumerable<string> deadends, string target) =>
+    MinTurnsByReduceGraph(LockGraph.Build(deadends), target);   // LeetCode's shape
+
+public static int MinTurnsByReduceGraph(LockGraph graph, string target)                // pre-built
+```
+
+The prepared-input overload takes a domain object or one of this repo's own containers — never a
+BCL collection type that the LeetCode-shaped overload's parameter could also bind to. `Set<string>`
+is ideal precisely because it does not implement `IEnumerable<T>`, so the two overloads can never
+be ambiguous. This is why `Set<T>` gained a bulk-seeding `Set(IEnumerable<Element>)` constructor in
+this reorg.
+
+### 17.5 What a baseline arm may use
+
+A baseline exists to represent "what you would write without this repo." Its *internals* therefore
+stay BCL — `MinTurnsByMutationQueue` uses a BCL `Queue` and `HashSet` deliberately. Only the
+*input container* the harness hands it is a repo type, because that is the caller's choice, not
+part of the algorithm's textbook character.
+
+### 17.6 Tier 3: what earns a `Domain/` folder — and the criterion that first got this wrong
+
+**The rule: §2's three axes decide the tier, not how many problems share the type.**
+
+- If a type's identity is a **Representation** or a **Topology** witness — generic over its
+  contents, usable by anything with that shape — it is `DataStructures/`.
+- If it is an **Operations**/strategy witness, it is `Algorithms/`.
+- `Domain/` is only for what **fixes content**: a specific modulus, a specific vertex set, a
+  specific problem's semantics. Not "a shape that happens to have been introduced for one problem".
+
+The first draft of this section said instead that a type earns `Domain/` when it is "(a) too
+specific to be a data structure or algorithm, and (b) used by more than one problem." That is
+wrong, and worth recording why, because the failure is seductive: **(b) is a sharing test, not a
+classification test.** It tells you a type should not be duplicated; it says nothing about which
+tier it belongs to. The duplication was the visible, countable evidence — five copies of one
+Hamming graph — so it did all the work, (a) was never given teeth, and every shared-but-not-
+obviously-generic type got swept into `Domain/`.
+
+Three misclassifications followed, all caught on review:
+
+| Was | Is now | Why the original was wrong |
+| --- | --- | --- |
+| `Domain/Grids/WeightedGridNode`, `WeightedGridTopology`, `WeightedGrid` | `DataStructures/Graph/Grids/` | `DataStructures/Graph/Grids/` **already held** `Grid`/`GridNode`/`GridTopology`/`GridChildren` — the unweighted (`IGraphTopology`) sibling of the same thing. Splitting siblings across two tiers is indefensible. |
+| `Domain/Grids/ManhattanHeuristic`, `ChebyshevHeuristic` | `Algorithms/ShortestPaths/` | They implement `IPathHeuristic`, an `Algorithms/` contract, and belong beside `ZeroHeuristic`. `IPathHeuristic`'s own doc comment already read *"Every heuristic in this codebase (ZeroHeuristic, ManhattanHeuristic) is consistent"* — the source treated them as peers before this reorg moved one away. |
+| `Domain/RootedTrees/*`, `Domain/Hamming/*` | `DataStructures/Graph/Engines/Dags/Trees/`, `DataStructures/Graph/Hamming/` (+ `Algorithms/ShortestPaths/Hamming/HammingDistances.cs`) | Pure Representation + Topology. `RootedTreeNode` is the n-ary sibling of `BinaryTreeNode`, already in that folder. "Edge = differs in exactly one position" is a shape rule exactly like `GridTopology`'s "edge = 4 orthogonal neighbours", which was already tier 1. |
+
+`HammingDistances` is the one piece of that family that could not stay in `DataStructures/`: it
+composes `Algorithms/Reducing`'s engine, so it would invert the tiers. It nests as a
+structure-specific tier under `Algorithms/ShortestPaths/Hamming/`, mirroring
+`Algorithms/ShortestPaths/Grids/GridShortestPath.cs` exactly (§13.1's nesting rule, now with its
+second case). `HammingSearch` stays in `DataStructures/Graph/Hamming/` because it depends on
+nothing above tier 1 — the same "Operations rejoins Representation when there is no capability
+interface" precedent (§13.5) that keeps `InOrderTraversal` and `FindClosest` beside the trees they
+walk.
+
+**What is left in `Domain/` after applying the rule honestly:**
+
+| Folder | Holds | Why it fixes content |
+| --- | --- | --- |
+| `Domain/Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` | `LockWheels` pins `Count = 4`, `Modulus = 10`, `CombinationSpace = 10_000`. This is a concrete *instance*, not a shape — the general form would be "Cayley graph over Z_m^k with ±1 generators", and *that* would be a data structure. Still the thinnest of the judgment calls here. |
+| `Domain/Modular/` | `ModularArithmetic` | Modular exponentiation *is* a classic algorithm, but `1_000_000_007` is a **LeetCode reporting convention**, not a property of any algorithm. The problem domain fixes the modulus. |
+
+Two folders, not five. That is the honest size of this tier, and a thin `Domain/` is the correct
+outcome rather than a sign the tier is unnecessary: it is where a genuinely problem-pinned model
+goes, and it stays small precisely because the axes absorb almost everything else.
+
+`Domain/` is organized by domain name, for the same reason `DataStructures/` is (§13.3): a model's
+identity is what it models.
+
+### 17.6a How the tier order is enforced
+
+The tiers were a convention the file tree implied and nothing checked — and that showed: four
+files under `DataStructures/` were reaching up into `Algorithms/`, unnoticed. Three only wanted
+`AlgorithmConstants`' two integers, so that type moved down to `DataStructures/`, the lowest tier
+that needs it, despite its name.
+
+Enforcement now comes from two places, chosen deliberately over a project-per-tier split:
+
+- **`LeetCode` is its own project** (`DSAExperimentation.LeetCode`, referencing
+  `DSAExperimentation`). Nothing below it can depend on a solution, because it cannot see one.
+  This seam is worth a project because it is strictly one-way, costs three `InternalsVisibleTo`
+  lines, and keeps ~800 eventual problem classes out of the framework assembly.
+- **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures, Algorithms and
+  Domain stay in one assembly and one project.
+
+Splitting those three apart was considered and rejected for two reasons. First, every type in this
+repo is `internal`, and several designs depend on single-assembly encapsulation — `IVisitGuard`'s
+own doc comment argues that *"nothing outside this assembly can reach one… TrackedVisitGuard's
+constructor stays internal too, so outside code cannot even construct a valid one"*, which stops
+being true the moment its consumers are a different assembly. Splitting would force that surface
+public or thread a dozen `InternalsVisibleTo` attributes through the tree.
+
+Second, one upward edge is **intended**: `IntervalSet` (a Representation) composes
+`BinarySearch.LowerBound` through a private `IRandomAccessSequence` view rather than carrying a
+second bisection loop, and its doc comment defends that as sanctioned reuse. A `ProjectReference`
+cannot express "this one edge, for this reason"; the test's allow-list can, and a companion test
+fails if an allow-listed edge disappears so the entry cannot go stale.
+
+### 17.7 Tier 5: what stays in a harness
+
+Two things, and only two:
+
+- **Assertions.** A test file states LeetCode's published examples once as a
+  `public static TheoryData<...> Examples`, then carries one
+  `[Theory] [MemberData(nameof(Examples))]` method *per strategy*, so a failure names the strategy
+  that broke rather than reporting a disagreement between two anonymous arms.
+- **Workload sizing.** How *large* an input to measure is a measurement decision, so it stays in
+  `Benchmarks/Fixtures/`: `LockWorkloads.BuildDeadends(count, seed)`, `HammingWorkloads.BuildChain`,
+  `WeightedGridWorkloads.OpenGrid(size)`. What each of those builds *from* is domain code.
+
+The line is: deterministic construction of the problem's own structure is tier 3; choosing a random
+seed and an input size is tier 5.
+
+`Benchmarks/Fixtures/` therefore keeps its name but changes meaning — it is no longer where domain
+types hide, only where workload generators live. Migrated test folders lose their `Fixtures/`
+subfolder entirely.
+
+### 17.8 One measurement changed on purpose
+
+`WordLadderIIBenchmarks` previously had both arms *count* shortest sequences rather than build
+them, to avoid materializing a potentially exponential result set. Since both arms are now the same
+methods `WordLadderIITests` proves correct, they return LeetCode's actual answer and the harness
+takes `.Count`. On the chain-shaped workload the shortest-path DAG is narrow, so the comparison is
+still about search cost — but this is a deliberate change in what is measured, not an oversight.
+
+### 17.9 Gate-compliance notes for the new tiers
+
+§6 records the repo's standing gate notes; these are the ones §17's own conventions create.
+
+- **`check-responsibility-extraction` is waived tier-wide over `DSAExperimentation/LeetCode/**`.**
+  The check reads three or more public declarations sharing a name prefix as a hidden module
+  boundary. §17.3's `<Operation>By<Strategy>` naming guarantees that prefix on every migrated
+  problem — `MinTurnsByMutationQueue`/`MinTurnsByReduceGraph`, each with a LeetCode-shaped and a
+  hoisted overload, is four declarations sharing `Min` — so the check would fire once per problem,
+  777 times, on the convention working as designed. The boundary it infers is already the file: the
+  shared prefix is the one operation the problem asks for, and splitting the strategies apart is
+  exactly the drift §17.1 exists to undo. This is a waiver on the *convention*, not on any one
+  file's shortcomings.
+- **`check-constant-placement` is waived on the two types whose subject IS their constants** —
+  `Domain/Modular/ModularArithmetic.cs`, `Domain/Locks/LockWheels.cs` (both still in `Domain/`
+  after §17.6's reclassification). The check's own prescribed
+  remedy is "move them to a type of its own, in its own file whose subject IS these values";
+  `LockWheels` was created in this pass by doing precisely that, and still fires. Where the
+  criticism was fair it was acted on instead: `LockGraph`'s wheel geometry really did belong in its
+  own type.
+- **`HammingSearch` returns `int?`, not a shared `Unreachable = -1` constant.** The first draft
+  exported a sentinel; `check-constant-placement` was right that a public constant on a search type
+  is a smell. A nullable result is better anyway — each caller maps "no path" onto its own
+  problem's convention (LC 127 reports `0`, LC 433 reports `-1`) instead of agreeing on a magic
+  value in between.
+- **`LeetCode/LeetCodeAnswer.cs` exists because `check-duplicate-constant` was right.**
+  `Unreachable = -1` had been copied into two unrelated solution classes. `-1` is LeetCode's
+  reporting convention for "no valid answer", not either problem's own value, so it is declared
+  once at the root of the tier — the same argument that puts `1_000_000_007` in `Domain/Modular`.
+- **`check-test-coverage` was NOT the naming problem the first draft claimed.** That draft asserted
+  the check demands `Test_<Member>_Should_...` names in a file beside the source, that no test in
+  this repo uses either, and therefore that writing tests could not clear the finding — and waived
+  it on that basis. All three claims were wrong. `DataStructures/Heap/Heap.cs` passes today with
+  ordinary `Push_Pop_MinHeap_ReturnsElementsInAscendingOrder` / `TryPeek_EmptyHeap_ReturnsFalse`
+  names, and `Graph/Grids/Grid.cs` passes with its test file in an entirely different folder. What
+  the check actually wants is a test file whose **name corresponds to the source file** and whose
+  **method names mention the members**. The waivers were withdrawn and replaced with real tests:
+  15 new files covering all 23 flagged members across `DataStructures/Graph/{Hamming,Grids}`,
+  `DataStructures/Graph/Engines/Dags/Trees`, `Algorithms/ShortestPaths` and both `Domain/` folders,
+  clearing every finding with nothing waived. Two of those tests failed on first run — both were
+  bugs in the tests, not the code, which is the point of writing them.
+- **Tier 1 and tier 2 owe direct unit tests, and the LeetCode tier is a layer on top, not a
+  substitute.** A data structure or algorithm is not covered because some LeetCode solution happens
+  to compose it: a coverage tree shaped that way can only tell you a problem's answer changed, not
+  which primitive broke. `DSAExperimentation.Tests/` mirrors the source tree for exactly this
+  reason, and `Tests/Domain/**` was created in this pass to extend that mirror to tier 3.
+- **Two advisories are accepted rather than fixed.** `check-transposable-parameters` on signatures
+  like `LadderLengthByMutationQueue(string beginWord, string endWord, ...)` is reporting LeetCode's
+  own problem signature, which the solution tier deliberately mirrors; and `check-type-nature` on
+  `AddBinarySolution.DigitWalk`. Both are advisory and neither fails the gate.
+
+Two pre-existing `check-nested-call` findings families remain outside these tiers, in unmigrated
+benchmark files (`CountUnreachablePairsOfNodesInAnUndirectedGraph`, `DeleteGreatestValueInEachRow`,
+`LongestIncreasingSubsequenceII`, `SellingPiecesOfWood`). They are untouched by this reorg and will
+clear as those problems migrate.
+
+### 17.10 Migration status
+
+The tier structure and every rule above are established and enforced by the pilot; the bulk of the
+catalogue has not moved yet. Migrated so far: `TwoSum`, `AddBinary`, `OpenTheLock`, `WordLadder`,
+`WordLadderII`, `MinimumGeneticMutation`, `MinimumTimeVisitingAllPoints`,
+`CountWaysToBuildRoomsInAnAntColony`. Every other problem still carries its solution inline in both
+harnesses, in the pre-§17 shape. A test or benchmark that has not been migrated is not evidence
+about what the convention is — §17.3 and §17.7 are.
+
+## 18. Testing policy: every tier tests itself
+
+**Every data structure and every algorithm carries its own direct unit tests. The LeetCode tier
+(§17) is a layer *on top of* that requirement, never a substitute for it.**
+
+A primitive is not covered because some LeetCode solution happens to compose it. Coverage shaped
+that way can only tell you that a problem's answer changed — not which primitive broke, and not
+that the primitive is right at its own boundaries. `Reduce.Graph` being exercised by forty coverage
+problems says nothing about what it does with an empty frontier.
+
+### 18.1 What "direct unit test" means here
+
+- **One test file per source file**, at the mirrored path: `DataStructures/Heap/Heap.cs` is tested
+  by `DSAExperimentation.Tests/DataStructures/Heap/HeapTests.cs`. `Tests/Domain/**` was added in
+  this pass so tier 3 mirrors the same way.
+- **Test method names begin with the member under test**, in this repo's existing
+  `Member_Scenario_Expectation` form: `TryPeek_EmptyHeap_ReturnsFalse`,
+  `Count_ReflectsPushesAndPops`, `OneCharacterMutations_RestoresItsBufferBetweenPositions`.
+- **Witness types get tested too.** `NaturalChildOrder`, `ListChildren`, `BinaryTreeTopology`,
+  `SizeAlgebra`, `ByPriorityOrder` and friends are one-method structs, but they are the pieces every
+  algorithm is generic over, and their behaviour is exactly what a caller relies on. They are cheap
+  to test and were the largest single block of untested surface before this pass.
+
+### 18.2 Why the naming rule is load-bearing, not cosmetic
+
+The Nomos `check-test-coverage` gate reads both halves — file correspondence and member-naming —
+and reports anything else as uncovered. That is a real property, not a formality: a member with no
+test naming it is a member whose failure will surface under a test name that does not mention it.
+
+This repo previously had **59 `check-test-coverage` waivers** across `DataStructures/` and
+`Algorithms/`, most of them arguing that the members were exercised transitively and that the check
+was mis-attributing. A companion claim in §17.9's first draft went further and asserted the check
+demanded `Test_<Member>_Should_...` names that no test here uses, so writing tests could not clear
+it. **That was wrong**, and it is worth recording how the error compounded: one bad reading of the
+tool produced a waiver, and the waiver then stood in for the missing tests. `HeapTests.cs` had been
+passing the check all along with ordinary names. Writing real tests clears these findings.
+
+### 18.3 Where this stands
+
+Direct unit tests were written for **~50 source files** in this pass — the whole
+`Graph/Contracts/Ordering` witness family, the `Graph/Hamming` and weighted-`Grids` structures, the
+rooted-tree primitives, `Walking/**` (which had no tests at all), `TopDownTraversal`/`TopDownWalk`
+(likewise), the tree/trie/grid topology witnesses, the metric algebras, the three storage internals,
+and both `Domain/` folders — taking the suite from ~2,900 to ~3,550 tests and retiring 35 waivers
+outright.
+
+**24 source files (38 members) still owe direct tests.** They are listed individually in
+`suppressions.json`, each waiver naming the exact members and stating plainly that it records debt
+rather than an exemption — so the gate keeps reporting genuinely new regressions while the backlog
+stays visible and countable. The largest remaining clusters are the fold/reduce engines
+(`TreeFold`, `DagFold`, `CheckedFold`, `Reduce`), the three `Traversal` entry points, and
+`TreeMetrics`; all of these do have real tests today, in family-named files like `FoldTests.cs` and
+`MetricsTests.cs`, which is why they are last in the queue rather than first.
+
+### 18.4 The rule for new work
+
+A new type under `DataStructures/` or `Algorithms/` ships with its own `<Name>Tests.cs` at the
+mirrored path in the same change. A LeetCode coverage entry (§17) does not discharge that
+obligation for any primitive it composes — and if a problem needs a primitive that does not exist,
+§17's own rule still applies: mark it blocked, do not build one ad hoc and untested.

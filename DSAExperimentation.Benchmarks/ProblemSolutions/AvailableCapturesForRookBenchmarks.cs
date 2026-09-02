@@ -14,6 +14,9 @@ public class AvailableCapturesForRookBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
+    private const int CenterDivisor = 2;
+    private const int PawnSpawnProbabilityDenominator = 4;
+
     [Params(50, 500)]
     public int Size;
 
@@ -25,12 +28,12 @@ public class AvailableCapturesForRookBenchmarks
     {
         var random = new Random(1);
         _board = Enumerable.Range(0, Size).Select(_ => Enumerable.Repeat('.', Size).ToArray()).ToArray();
-        _rook = (Size / 2, Size / 2);
+        _rook = (Size / CenterDivisor, Size / CenterDivisor);
         _board[_rook.Row][_rook.Col] = 'R';
 
         for (var col = 0; col < Size; col++)
         {
-            if (col != _rook.Col && random.Next(4) == 0)
+            if (col != _rook.Col && random.Next(PawnSpawnProbabilityDenominator) == 0)
             {
                 _board[_rook.Row][col] = 'p';
             }
@@ -38,7 +41,7 @@ public class AvailableCapturesForRookBenchmarks
 
         for (var row = 0; row < Size; row++)
         {
-            if (row != _rook.Row && random.Next(4) == 0)
+            if (row != _rook.Row && random.Next(PawnSpawnProbabilityDenominator) == 0)
             {
                 _board[row][_rook.Col] = 'p';
             }
@@ -64,7 +67,7 @@ public class AvailableCapturesForRookBenchmarks
                     continue;
                 }
 
-                if (IsPathClear(board, rook.Row, rook.Col, row, col))
+                if (IsPathClear(board, new PathSegment(rook.Row, rook.Col, row, col)))
                 {
                     captures++;
                 }
@@ -74,14 +77,16 @@ public class AvailableCapturesForRookBenchmarks
         return captures;
     }
 
-    private static bool IsPathClear(char[][] board, int fromRow, int fromCol, int toRow, int toCol)
-    {
-        var dRow = Math.Sign(toRow - fromRow);
-        var dCol = Math.Sign(toCol - fromCol);
-        var row = fromRow + dRow;
-        var col = fromCol + dCol;
+    private readonly record struct PathSegment(int FromRow, int FromCol, int ToRow, int ToCol);
 
-        while (row != toRow || col != toCol)
+    private static bool IsPathClear(char[][] board, PathSegment segment)
+    {
+        var dRow = Math.Sign(segment.ToRow - segment.FromRow);
+        var dCol = Math.Sign(segment.ToCol - segment.FromCol);
+        var row = segment.FromRow + dRow;
+        var col = segment.FromCol + dCol;
+
+        while (row != segment.ToRow || col != segment.ToCol)
         {
             if (board[row][col] != '.')
             {

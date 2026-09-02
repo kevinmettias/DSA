@@ -25,28 +25,47 @@ public sealed partial class ShortestSubarrayToBeRemovedToMakeArraySortedTests
 
     private static int FindLengthOfShortestSubarray(int[] arr)
     {
-        var n = arr.Length;
+        var left = FindSortedPrefixEnd(arr);
 
-        var left = 0;
-        while (left + 1 < n && arr[left] <= arr[left + 1])
-        {
-            left++;
-        }
-
-        if (left == n - 1)
+        if (left == arr.Length - 1)
         {
             return 0;
         }
 
-        var right = n - 1;
+        var right = FindSortedSuffixStart(arr);
+
+        return StitchShortestRemoval(arr, left, right);
+    }
+
+    private static int FindSortedPrefixEnd(int[] arr)
+    {
+        var left = 0;
+        while (left + 1 < arr.Length && arr[left] <= arr[left + 1])
+        {
+            left++;
+        }
+
+        return left;
+    }
+
+    private static int FindSortedSuffixStart(int[] arr)
+    {
+        var right = arr.Length - 1;
         while (right > 0 && arr[right - 1] <= arr[right])
         {
             right--;
         }
 
-        // Removing everything after the sorted prefix, or everything before the
-        // sorted suffix, are always valid - the floor every stitched candidate below
-        // has to beat.
+        return right;
+    }
+
+    // Removing everything after the sorted prefix, or everything before the
+    // sorted suffix, are always valid - the floor every stitched candidate below
+    // has to beat. Then binary-searches, for every prefix index, the smallest
+    // suffix value >= arr[i] to find a shorter stitched removal.
+    private static int StitchShortestRemoval(int[] arr, int left, int right)
+    {
+        var n = arr.Length;
         var best = Math.Min(n - left - 1, right);
 
         var suffix = new ArraySequence<int>(arr[right..]);

@@ -18,6 +18,19 @@ public class MaximizeGridHappinessBenchmarks
     private const int IntrovertsCount = 3;
     private const int ExtrovertsCount = 2;
 
+    // Ternary occupancy code per cell (empty/introvert/extrovert) baked into `mask`.
+    private const int MaskBase = 3;
+    private const int ExtrovertTypeCode = 2;
+
+    private const int IntrovertBaseGain = 120;
+    private const int ExtrovertBaseGain = 40;
+    private const int IntrovertAdjacencyDelta = -30;
+    private const int ExtrovertAdjacencyDelta = 20;
+
+    // The recursion's own state: which cell to fill next, the trailing ternary
+    // occupancy mask, and how many of each person type remain to place.
+    private readonly record struct GridState(int Pos, int Mask, int Introverts, int Extroverts);
+
     [Params(3, 4)]
     public int Rows;
 
@@ -30,82 +43,144 @@ public class MaximizeGridHappinessBenchmarks
         _oldestDigitScale = 1;
         for (var i = 0; i < Columns - 1; i++)
         {
-            _oldestDigitScale *= 3;
+            _oldestDigitScale *= MaskBase;
         }
 
         _totalCells = Rows * Columns;
     }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => BestFrom(0, 0, IntrovertsCount, ExtrovertsCount);
+    public int UnmemoizedRecursion() => BestFrom(new GridState(0, 0, IntrovertsCount, ExtrovertsCount));
 
-    private int BestFrom(int pos, int mask, int introverts, int extroverts)
+    private int BestFrom(GridState state)
     {
-        if (pos == _totalCells || (introverts == 0 && extroverts == 0))
+        if (IsTerminalState(state))
         {
             return 0;
         }
 
-        var row = pos / Columns;
-        var col = pos % Columns;
-        var up = row > 0 ? mask / _oldestDigitScale : 0;
-        var left = col > 0 ? mask % 3 : 0;
+        var neighbors = ComputeNeighbors(state);
+        var best = SkipCell(state);
 
-        var best = BestFrom(pos + 1, ShiftIn(mask, 0), introverts, extroverts);
-
-        if (introverts > 0)
+        if (state.Introverts > 0)
         {
-            var gain = 120 + NeighborDelta(1, up) + NeighborDelta(1, left);
-            best = Math.Max(best, gain + BestFrom(pos + 1, ShiftIn(mask, 1), introverts - 1, extroverts));
+            var placeIntrovert = PlaceIntrovert(state, neighbors);
+            best = Math.Max(best, placeIntrovert);
         }
 
-        if (extroverts > 0)
+        if (state.Extroverts > 0)
         {
-            var gain = 40 + NeighborDelta(2, up) + NeighborDelta(2, left);
-            best = Math.Max(best, gain + BestFrom(pos + 1, ShiftIn(mask, 2), introverts, extroverts - 1));
+            var placeExtrovert = PlaceExtrovert(state, neighbors);
+            best = Math.Max(best, placeExtrovert);
         }
 
         return best;
+    }
+
+    private int SkipCell(GridState state)
+    {
+        var nextState = SkipState(state);
+        return BestFrom(nextState);
+    }
+
+    private int PlaceIntrovert(GridState state, (int Up, int Left) neighbors)
+    {
+        var nextState = IntrovertState(state);
+        return IntrovertGain(neighbors.Up, neighbors.Left) + BestFrom(nextState);
+    }
+
+    private int PlaceExtrovert(GridState state, (int Up, int Left) neighbors)
+    {
+        var nextState = ExtrovertState(state);
+        return ExtrovertGain(neighbors.Up, neighbors.Left) + BestFrom(nextState);
     }
 
     [Benchmark]
     public int MemoizedRecursion()
-        => Memoizer.Memoize<(int Pos, int Mask, int Introverts, int Extroverts), int>(
-            (0, 0, IntrovertsCount, ExtrovertsCount), BestFromMemoized);
+        => Memoizer.Memoize<GridState, int>(
+            new GridState(0, 0, IntrovertsCount, ExtrovertsCount), BestFromMemoized);
 
-    private int BestFromMemoized(
-        (int Pos, int Mask, int Introverts, int Extroverts) state,
-        Func<(int Pos, int Mask, int Introverts, int Extroverts), int> bestFrom)
+    private int BestFromMemoized(GridState state, Func<GridState, int> bestFrom)
     {
-        var (pos, mask, introverts, extroverts) = state;
-        if (pos == _totalCells || (introverts == 0 && extroverts == 0))
+        if (IsTerminalState(state))
         {
             return 0;
         }
 
-        var row = pos / Columns;
-        var col = pos % Columns;
-        var up = row > 0 ? mask / _oldestDigitScale : 0;
-        var left = col > 0 ? mask % 3 : 0;
+        var neighbors = ComputeNeighbors(state);
+        var best = SkipCellMemoized(state, bestFrom);
 
-        var best = bestFrom((pos + 1, ShiftIn(mask, 0), introverts, extroverts));
-
-        if (introverts > 0)
+        if (state.Introverts > 0)
         {
-            var gain = 120 + NeighborDelta(1, up) + NeighborDelta(1, left);
-            best = Math.Max(best, gain + bestFrom((pos + 1, ShiftIn(mask, 1), introverts - 1, extroverts)));
+            var placeIntrovert = PlaceIntrovertMemoized(state, neighbors, bestFrom);
+            best = Math.Max(best, placeIntrovert);
         }
 
-        if (extroverts > 0)
+        if (state.Extroverts > 0)
         {
-            var gain = 40 + NeighborDelta(2, up) + NeighborDelta(2, left);
-            best = Math.Max(best, gain + bestFrom((pos + 1, ShiftIn(mask, 2), introverts, extroverts - 1)));
+            var placeExtrovert = PlaceExtrovertMemoized(state, neighbors, bestFrom);
+            best = Math.Max(best, placeExtrovert);
         }
 
         return best;
     }
 
-    private int ShiftIn(int mask, int newType) => (mask % _oldestDigitScale) * 3 + newType;
+    private int SkipCellMemoized(GridState state, Func<GridState, int> bestFrom)
+    {
+        var nextState = SkipState(state);
+        return bestFrom(nextState);
+    }
+
+    private int PlaceIntrovertMemoized(GridState state, (int Up, int Left) neighbors, Func<GridState, int> bestFrom)
+    {
+        var nextState = IntrovertState(state);
+        return IntrovertGain(neighbors.Up, neighbors.Left) + bestFrom(nextState);
+    }
+
+    private int PlaceExtrovertMemoized(GridState state, (int Up, int Left) neighbors, Func<GridState, int> bestFrom)
+    {
+        var nextState = ExtrovertState(state);
+        return ExtrovertGain(neighbors.Up, neighbors.Left) + bestFrom(nextState);
+    }
+
+    private GridState SkipState(GridState state)
+        => state with { Pos = state.Pos + 1, Mask = ShiftIn(state.Mask, 0) };
+
+    private GridState IntrovertState(GridState state)
+        => state with
+        {
+            Pos = state.Pos + 1,
+            Mask = ShiftIn(state.Mask, 1),
+            Introverts = state.Introverts - 1,
+        };
+
+    private GridState ExtrovertState(GridState state)
+        => state with
+        {
+            Pos = state.Pos + 1,
+            Mask = ShiftIn(state.Mask, ExtrovertTypeCode),
+            Extroverts = state.Extroverts - 1,
+        };
+
+    private bool IsTerminalState(GridState state)
+        => state.Pos == _totalCells || (state.Introverts == 0 && state.Extroverts == 0);
+
+    private (int Up, int Left) ComputeNeighbors(GridState state)
+    {
+        var row = state.Pos / Columns;
+        var col = state.Pos % Columns;
+        var up = row > 0 ? state.Mask / _oldestDigitScale : 0;
+        var left = col > 0 ? state.Mask % MaskBase : 0;
+        return (up, left);
+    }
+
+    private static int IntrovertGain(int up, int left)
+        => IntrovertBaseGain + NeighborDelta(1, up) + NeighborDelta(1, left);
+
+    private static int ExtrovertGain(int up, int left)
+        => ExtrovertBaseGain + NeighborDelta(ExtrovertTypeCode, up) + NeighborDelta(ExtrovertTypeCode, left);
+
+    private int ShiftIn(int mask, int newType) => (mask % _oldestDigitScale) * MaskBase + newType;
 
     private static int NeighborDelta(int personType, int neighbor)
     {
@@ -114,8 +189,8 @@ public class MaximizeGridHappinessBenchmarks
             return 0;
         }
 
-        var selfDelta = personType == 1 ? -30 : 20;
-        var neighborDelta = neighbor == 1 ? -30 : 20;
+        var selfDelta = personType == 1 ? IntrovertAdjacencyDelta : ExtrovertAdjacencyDelta;
+        var neighborDelta = neighbor == 1 ? IntrovertAdjacencyDelta : ExtrovertAdjacencyDelta;
         return selfDelta + neighborDelta;
     }
 }

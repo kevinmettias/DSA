@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountNumberOfTeamsBenchmarks
 {
+    private const int RandomSeed = 1395; // LC problem number
+    private const int MaxRatingExclusive = 100_000;
+    private const int TrailingElementsNeededForTeam = 2;
+
     [Params(80, 200)]
     public int Length;
 
@@ -22,8 +26,8 @@ public class CountNumberOfTeamsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1395);
-        _rating = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _rating = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxRatingExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -32,18 +36,27 @@ public class CountNumberOfTeamsBenchmarks
         var rating = _rating;
         var teams = 0;
 
-        for (var i = 0; i < rating.Length - 2; i++)
+        for (var i = 0; i < rating.Length - TrailingElementsNeededForTeam; i++)
         {
             for (var j = i + 1; j < rating.Length - 1; j++)
             {
-                for (var k = j + 1; k < rating.Length; k++)
-                {
-                    if ((rating[i] < rating[j] && rating[j] < rating[k]) ||
-                        (rating[i] > rating[j] && rating[j] > rating[k]))
-                    {
-                        teams++;
-                    }
-                }
+                teams += CountTeamsWithMiddle(rating, i, j);
+            }
+        }
+
+        return teams;
+    }
+
+    private static int CountTeamsWithMiddle(int[] rating, int i, int j)
+    {
+        var teams = 0;
+
+        for (var k = j + 1; k < rating.Length; k++)
+        {
+            if ((rating[i] < rating[j] && rating[j] < rating[k]) ||
+                (rating[i] > rating[j] && rating[j] > rating[k]))
+            {
+                teams++;
             }
         }
 

@@ -10,13 +10,16 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReachingPoints;
 public sealed partial class ReachingPointsTests
 {
     [Theory]
-    [InlineData(1, 1, 3, 5, true)]
-    [InlineData(1, 1, 2, 2, false)]
-    [InlineData(1, 1, 1, 1, true)]
-    [InlineData(3, 5, 13, 5, true)]
+    [InlineData(new[] { 1, 1 }, new[] { 3, 5 }, true)]
+    [InlineData(new[] { 1, 1 }, new[] { 2, 2 }, false)]
+    [InlineData(new[] { 1, 1 }, new[] { 1, 1 }, true)]
+    [InlineData(new[] { 3, 5 }, new[] { 13, 5 }, true)]
     public void ReachingPoints_ClassicExamples_MatchesExpectedReachability(
-        int sx, int sy, int tx, int ty, bool expected)
-        => Assert.Equal(expected, IsReachable(sx, sy, tx, ty));
+        int[] source, int[] target, bool expected)
+    {
+        var reachable = IsReachable(source[0], source[1], target[0], target[1]);
+        Assert.Equal(expected, reachable);
+    }
 
     private static bool IsReachable(int sx, int sy, int tx, int ty)
     {

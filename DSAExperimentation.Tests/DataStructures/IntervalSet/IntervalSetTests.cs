@@ -104,7 +104,11 @@ public sealed partial class IntervalSetTests
 
     [Fact]
     public void HasOverlap_NoExistingIntervals_ReturnsFalse()
-        => Assert.False(new IntervalSet<int>().HasOverlap(1, 2));
+    {
+        var hasOverlap = new IntervalSet<int>().HasOverlap(1, 2);
+
+        Assert.False(hasOverlap);
+    }
 
     [Fact]
     public void HasOverlap_NonOverlappingQuery_ReturnsFalse()
@@ -113,7 +117,9 @@ public sealed partial class IntervalSetTests
         set.Add(1, 2);
         set.Add(8, 9);
 
-        Assert.False(set.HasOverlap(4, 6));
+        var hasOverlap = set.HasOverlap(4, 6);
+
+        Assert.False(hasOverlap);
     }
 
     [Fact]
@@ -122,7 +128,9 @@ public sealed partial class IntervalSetTests
         var set = new IntervalSet<int>();
         set.Add(1, 5);
 
-        Assert.True(set.HasOverlap(3, 7));
+        var hasOverlap = set.HasOverlap(3, 7);
+
+        Assert.True(hasOverlap);
     }
 
     [Fact]
@@ -131,7 +139,9 @@ public sealed partial class IntervalSetTests
         var set = new IntervalSet<int>();
         set.Add(1, 2);
 
-        Assert.True(set.HasOverlap(2, 3));
+        var hasOverlap = set.HasOverlap(2, 3);
+
+        Assert.True(hasOverlap);
     }
 
     [Fact]

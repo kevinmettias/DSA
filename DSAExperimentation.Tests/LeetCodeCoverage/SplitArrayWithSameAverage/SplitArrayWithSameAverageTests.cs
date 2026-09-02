@@ -33,28 +33,30 @@ public sealed partial class SplitArrayWithSameAverageTests
             }
 
             var targetSum = total * k / n;
-            if (Memoizer.Memoize<(int Index, int Count, int Sum), bool>((0, k, targetSum), CanReach))
+            if (Memoizer.Memoize<(int Index, int Count, int Sum), bool>(
+                    (0, k, targetSum), (state, canReach) => CanReach(nums, state, canReach)))
             {
                 return true;
             }
         }
 
         return false;
+    }
 
-        bool CanReach((int Index, int Count, int Sum) state, Func<(int Index, int Count, int Sum), bool> canReach)
+    private static bool CanReach(
+        int[] nums, (int Index, int Count, int Sum) state, Func<(int Index, int Count, int Sum), bool> canReach)
+    {
+        if (state.Count == 0)
         {
-            if (state.Count == 0)
-            {
-                return state.Sum == 0;
-            }
-
-            if (state.Index == nums.Length || state.Sum < 0)
-            {
-                return false;
-            }
-
-            return canReach((state.Index + 1, state.Count, state.Sum))
-                || canReach((state.Index + 1, state.Count - 1, state.Sum - nums[state.Index]));
+            return state.Sum == 0;
         }
+
+        if (state.Index == nums.Length || state.Sum < 0)
+        {
+            return false;
+        }
+
+        return canReach((state.Index + 1, state.Count, state.Sum))
+            || canReach((state.Index + 1, state.Count - 1, state.Sum - nums[state.Index]));
     }
 }

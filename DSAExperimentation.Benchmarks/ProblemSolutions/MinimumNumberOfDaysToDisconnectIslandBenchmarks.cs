@@ -17,6 +17,10 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
+    // LC 1568: a rectangular all-land grid has no articulation cell, so MinDays
+    // always bottoms out at "already disconnected in 2 or fewer removals".
+    private const int NoArticulationCellFound = 2;
+
     [Params(10, 20)]
     public int Side;
 
@@ -38,8 +42,16 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
     {
         var rows = _grid.Length;
         var cols = _grid[0].Length;
+        return MinDaysUsing(CountIslandsNaive, rows, cols);
+    }
 
-        if (CountIslandsNaive(-1, -1, rows, cols) != 1)
+    // Shared by both benchmarks: try removing no cell, then every single land
+    // cell in turn, and report how many removals (if any) it takes to break
+    // the grid into more than one island. `countIslands` supplies the two
+    // competing ways to count connected components while skipping one cell.
+    private int MinDaysUsing(Func<int, int, int, int, int> countIslands, int rows, int cols)
+    {
+        if (countIslands(-1, -1, rows, cols) != 1)
         {
             return 0;
         }
@@ -48,14 +60,14 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
         {
             for (var c = 0; c < cols; c++)
             {
-                if (_grid[r][c] == 1 && CountIslandsNaive(r, c, rows, cols) != 1)
+                if (_grid[r][c] == 1 && countIslands(r, c, rows, cols) != 1)
                 {
                     return 1;
                 }
             }
         }
 
-        return 2;
+        return NoArticulationCellFound;
     }
 
     private int CountIslandsNaive(int skipRow, int skipCol, int rows, int cols)
@@ -73,30 +85,34 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
                 }
 
                 count++;
-                FloodFill(r, c, visited, skipRow, skipCol, rows, cols);
+                FloodFill(new GridPosition(r, c), visited, new GridPosition(skipRow, skipCol), new GridBounds(rows, cols));
             }
         }
 
         return count;
     }
 
-    private void FloodFill(int row, int col, bool[,] visited, int skipRow, int skipCol, int rows, int cols)
+    private readonly record struct GridPosition(int Row, int Col);
+
+    private readonly record struct GridBounds(int Rows, int Cols);
+
+    private void FloodFill(GridPosition position, bool[,] visited, GridPosition skip, GridBounds bounds)
     {
-        if (row < 0 || row >= rows || col < 0 || col >= cols)
+        if (position.Row < 0 || position.Row >= bounds.Rows || position.Col < 0 || position.Col >= bounds.Cols)
         {
             return;
         }
 
-        if (visited[row, col] || _grid[row][col] != 1 || (row == skipRow && col == skipCol))
+        if (visited[position.Row, position.Col] || _grid[position.Row][position.Col] != 1 || position == skip)
         {
             return;
         }
 
-        visited[row, col] = true;
+        visited[position.Row, position.Col] = true;
 
         foreach (var (dRow, dCol) in Directions)
         {
-            FloodFill(row + dRow, col + dCol, visited, skipRow, skipCol, rows, cols);
+            FloodFill(new GridPosition(position.Row + dRow, position.Col + dCol), visited, skip, bounds);
         }
     }
 
@@ -105,70 +121,67 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
     {
         var rows = _grid.Length;
         var cols = _grid[0].Length;
-
-        if (CountIslandsExcluding(-1, -1, rows, cols) != 1)
-        {
-            return 0;
-        }
-
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                if (_grid[r][c] == 1 && CountIslandsExcluding(r, c, rows, cols) != 1)
-                {
-                    return 1;
-                }
-            }
-        }
-
-        return 2;
+        return MinDaysUsing(CountIslandsExcluding, rows, cols);
     }
 
     private int CountIslandsExcluding(int skipRow, int skipCol, int rows, int cols)
     {
         var visited = new bool[rows, cols];
         var count = 0;
+        var bounds = new GridBounds(rows, cols);
+        var skip = new GridPosition(skipRow, skipCol);
 
         for (var r = 0; r < rows; r++)
         {
             for (var c = 0; c < cols; c++)
             {
-                if (_grid[r][c] != 1 || visited[r, c] || (r == skipRow && c == skipCol))
+                if (VisitIslandAt(new GridPosition(r, c), visited, bounds, skip))
                 {
-                    continue;
-                }
-
-                count++;
-
-                foreach (var (row, col) in DepthFirstSearch.Traverse((r, c), Neighbors))
-                {
-                    visited[row, col] = true;
+                    count++;
                 }
             }
         }
 
         return count;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private bool VisitIslandAt(GridPosition cell, bool[,] visited, GridBounds bounds, GridPosition skip)
+    {
+        if (_grid[cell.Row][cell.Col] != 1 || visited[cell.Row, cell.Col] || cell == skip)
         {
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (_grid[nextRow][nextCol] != 1 || (nextRow == skipRow && nextCol == skipCol))
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
-            }
+            return false;
         }
+
+        foreach (var (row, col) in DepthFirstSearch.Traverse((cell.Row, cell.Col), p => Neighbors(p, bounds, skip)))
+        {
+            visited[row, col] = true;
+        }
+
+        return true;
+    }
+
+    private IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p, GridBounds bounds, GridPosition skip)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var next = new GridPosition(p.Row + dRow, p.Col + dCol);
+
+            if (!IsVisitableNeighbor(next, bounds, skip))
+            {
+                continue;
+            }
+
+            yield return (next.Row, next.Col);
+        }
+    }
+
+    private bool IsVisitableNeighbor(GridPosition next, GridBounds bounds, GridPosition skip)
+    {
+        if (next.Row < 0 || next.Row >= bounds.Rows || next.Col < 0 || next.Col >= bounds.Cols)
+        {
+            return false;
+        }
+
+        return _grid[next.Row][next.Col] == 1 && next != skip;
     }
 }

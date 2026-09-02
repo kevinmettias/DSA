@@ -8,18 +8,35 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // exact same graph instance.
 internal static class RandomWeightedGraphs
 {
+    // Exclusive upper bound passed to Random.Next(1, _): edge weights land in [1, 49].
+    private const int EdgeWeightUpperBound = 50;
+
     public static (List<WeightedGraphNode> Vertices, WeightedGraphNode Source) Build(
         int nodeCount, int extraEdgesPerNode, int seed)
     {
         var random = new Random(seed);
-        var nodes = Enumerable.Range(0, nodeCount).Select(id => new WeightedGraphNode(id)).ToList();
+        var nodes = CreateNodes(nodeCount);
 
+        AddBackEdges(nodes, nodeCount, random);
+        AddExtraEdges(nodes, nodeCount, extraEdgesPerNode, random);
+
+        return (nodes, nodes[0]);
+    }
+
+    private static List<WeightedGraphNode> CreateNodes(int nodeCount)
+        => Enumerable.Range(0, nodeCount).Select(id => new WeightedGraphNode(id)).ToList();
+
+    private static void AddBackEdges(List<WeightedGraphNode> nodes, int nodeCount, Random random)
+    {
         for (var i = 1; i < nodeCount; i++)
         {
             var j = random.Next(i);
             AddEdge(nodes[j], nodes[i], random);
         }
+    }
 
+    private static void AddExtraEdges(List<WeightedGraphNode> nodes, int nodeCount, int extraEdgesPerNode, Random random)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < extraEdgesPerNode; e++)
@@ -32,10 +49,8 @@ internal static class RandomWeightedGraphs
                 }
             }
         }
-
-        return (nodes, nodes[0]);
     }
 
     private static void AddEdge(WeightedGraphNode from, WeightedGraphNode to, Random random)
-        => from.Edges.Add((random.Next(1, 50), to));
+        => from.Edges.Add((random.Next(1, EdgeWeightUpperBound), to));
 }

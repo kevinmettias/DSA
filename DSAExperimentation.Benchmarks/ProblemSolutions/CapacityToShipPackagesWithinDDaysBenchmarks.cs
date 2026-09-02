@@ -14,6 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CapacityToShipPackagesWithinDDaysBenchmarks
 {
+    private const int RandomSeed = 1011; // LC problem number
+    private const int MaxWeightExclusive = 1_000;
+    private const int DaysDivisor = 20;
+    private const int MidpointDivisor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,9 +28,9 @@ public class CapacityToShipPackagesWithinDDaysBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1011);
-        _weights = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
-        _days = Math.Max(1, Length / 20);
+        var random = new Random(RandomSeed);
+        _weights = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxWeightExclusive)).ToArray();
+        _days = Math.Max(1, Length / DaysDivisor);
     }
 
     [Benchmark(Baseline = true)]
@@ -36,7 +41,7 @@ public class CapacityToShipPackagesWithinDDaysBenchmarks
 
         while (low < high)
         {
-            var mid = low + ((high - low) / 2);
+            var mid = low + ((high - low) / MidpointDivisor);
             if (CanShipWithinDays(_weights, _days, mid))
             {
                 high = mid;

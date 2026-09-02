@@ -19,6 +19,9 @@ public class JumpGameVBenchmarks
 {
     private const int MaxJumpDistance = 5;
 
+    // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
+    private const int RandomSeed = 1340;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -27,7 +30,7 @@ public class JumpGameVBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1340);
+        var random = new Random(RandomSeed);
         _arr = Enumerable.Range(0, Length).ToArray();
 
         for (var i = _arr.Length - 1; i > 0; i--)
@@ -45,7 +48,8 @@ public class JumpGameVBenchmarks
 
         for (var start = 0; start < _arr.Length; start++)
         {
-            best = Math.Max(best, LongestPathFrom(start, memo));
+            var longestFromStart = LongestPathFrom(start, memo);
+            best = Math.Max(best, longestFromStart);
         }
 
         return best;
@@ -77,12 +81,31 @@ public class JumpGameVBenchmarks
     [Benchmark]
     public int TopologicalSortLongestPath()
     {
+        var nodes = BuildJumpNodes();
+        ConnectReachableEdges(nodes);
+
+        TopologicalSort.TrySort<
+            JumpNode, JumpTopology, ListChildren<JumpNode>,
+            NaturalChildOrder<JumpNode, ListChildren<JumpNode>>, ListChildren<JumpNode>>(
+            nodes, out var ordering);
+
+        var longestPath = ComputeLongestPaths(ordering);
+        return longestPath.Values.Max();
+    }
+
+    private JumpNode[] BuildJumpNodes()
+    {
         var nodes = new JumpNode[_arr.Length];
         for (var i = 0; i < _arr.Length; i++)
         {
             nodes[i] = new JumpNode(i);
         }
 
+        return nodes;
+    }
+
+    private void ConnectReachableEdges(JumpNode[] nodes)
+    {
         for (var i = 0; i < _arr.Length; i++)
         {
             for (var j = i + 1; j <= Math.Min(_arr.Length - 1, i + MaxJumpDistance) && _arr[j] < _arr[i]; j++)
@@ -95,12 +118,10 @@ public class JumpGameVBenchmarks
                 nodes[i].ReachableIndices.Add(nodes[j]);
             }
         }
+    }
 
-        TopologicalSort.TrySort<
-            JumpNode, JumpTopology, ListChildren<JumpNode>,
-            NaturalChildOrder<JumpNode, ListChildren<JumpNode>>, ListChildren<JumpNode>>(
-            nodes, out var ordering);
-
+    private static Dictionary<JumpNode, int> ComputeLongestPaths(IEnumerable<JumpNode> ordering)
+    {
         var longestPath = new Dictionary<JumpNode, int>();
         foreach (var node in ordering)
         {
@@ -116,7 +137,7 @@ public class JumpGameVBenchmarks
             }
         }
 
-        return longestPath.Values.Max();
+        return longestPath;
     }
 
     // See JumpGameVTests.Fixtures for the full explanation - repeated here rather

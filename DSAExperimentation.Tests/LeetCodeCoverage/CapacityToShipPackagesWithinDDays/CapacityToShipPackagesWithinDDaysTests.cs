@@ -18,7 +18,10 @@ public sealed partial class CapacityToShipPackagesWithinDDaysTests
     [InlineData(new[] { 3, 2, 2, 4, 1, 4 }, 3, 6)]
     [InlineData(new[] { 1, 2, 3, 1, 1 }, 4, 3)]
     public void ShipWithinDays_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(int[] weights, int days, int expected)
-        => Assert.Equal(expected, ShipWithinDays(weights, days));
+    {
+        var actual = ShipWithinDays(weights, days);
+        Assert.Equal(expected, actual);
+    }
 
     private static int ShipWithinDays(int[] weights, int days)
     {

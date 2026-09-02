@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PalindromePartitioningIIIBenchmarks
 {
     private const int Unreachable = int.MaxValue / 2;
+    private const int RandomSeed = 1278; // LC problem number
+    private const int AlphabetSize = 4;
+    private const int PartitionDivisor = 2;
 
     [Params(12, 18)]
     public int Length;
@@ -24,9 +27,9 @@ public class PalindromePartitioningIIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1278);
-        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(4))).ToArray());
-        _k = Length / 2;
+        var random = new Random(RandomSeed);
+        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _k = Length / PartitionDivisor;
     }
 
     [Benchmark(Baseline = true)]

@@ -17,6 +17,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ValidBoomerangBenchmarks
 {
     private const double Epsilon = 1e-9;
+    private const int RandomSeed = 1037; // LC problem number
+    private const int CoordinateBound = 1_000;
+    private const int OffsetBound = 10;
+    private const int AlternationModulus = 2;
+    private const int Point3DisplacementMultiplier = 2;
+    private const int ThirdPointIndex = 2;
+    private const double SemiPerimeterDivisor = 2.0;
 
     [Params(200, 5_000)]
     public int Length;
@@ -26,24 +33,24 @@ public class ValidBoomerangBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1037);
+        var random = new Random(RandomSeed);
         _triples = new int[Length][][];
 
         for (var i = 0; i < Length; i++)
         {
-            var x1 = random.Next(-1_000, 1_000);
-            var y1 = random.Next(-1_000, 1_000);
-            var dx = random.Next(-10, 11);
-            var dy = random.Next(-10, 11);
+            var x1 = random.Next(-CoordinateBound, CoordinateBound);
+            var y1 = random.Next(-CoordinateBound, CoordinateBound);
+            var dx = random.Next(-OffsetBound, OffsetBound + 1);
+            var dy = random.Next(-OffsetBound, OffsetBound + 1);
 
             // Point 3 sits near the line through points 1 and 2 (one unit off,
             // half the time exactly on it), so the naive epsilon check and the
             // exact cross product both have a genuinely close call to resolve.
             var x2 = x1 + dx;
             var y2 = y1 + dy;
-            var offset = i % 2 == 0 ? 0 : 1;
-            var x3 = x1 + (2 * dx) + offset;
-            var y3 = y1 + (2 * dy);
+            var offset = i % AlternationModulus == 0 ? 0 : 1;
+            var x3 = x1 + (Point3DisplacementMultiplier * dx) + offset;
+            var y3 = y1 + (Point3DisplacementMultiplier * dy);
 
             _triples[i] = [[x1, y1], [x2, y2], [x3, y3]];
         }
@@ -84,10 +91,10 @@ public class ValidBoomerangBenchmarks
     private static bool IsBoomerangByArea(int[][] points)
     {
         var a = Distance(points[0], points[1]);
-        var b = Distance(points[1], points[2]);
-        var c = Distance(points[2], points[0]);
+        var b = Distance(points[1], points[ThirdPointIndex]);
+        var c = Distance(points[ThirdPointIndex], points[0]);
 
-        var s = (a + b + c) / 2.0;
+        var s = (a + b + c) / SemiPerimeterDivisor;
         var areaSquared = s * (s - a) * (s - b) * (s - c);
 
         return areaSquared > Epsilon;
@@ -104,7 +111,7 @@ public class ValidBoomerangBenchmarks
     {
         var (x1, y1) = (points[0][0], points[0][1]);
         var (x2, y2) = (points[1][0], points[1][1]);
-        var (x3, y3) = (points[2][0], points[2][1]);
+        var (x3, y3) = (points[ThirdPointIndex][0], points[ThirdPointIndex][1]);
 
         var cross = ((long)(x2 - x1) * (y3 - y1)) - ((long)(x3 - x1) * (y2 - y1));
         return cross != 0;

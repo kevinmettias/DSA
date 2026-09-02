@@ -18,7 +18,10 @@ public sealed partial class CombinationSumIVTests
     [InlineData(new[] { 9 }, 3, 0)]
     [InlineData(new[] { 1 }, 0, 1)]
     public void CountCombinations_LeetCodeExamples_ReturnsOrderSensitiveCount(int[] nums, int target, int expected)
-        => Assert.Equal(expected, CountCombinations(nums, target));
+    {
+        var actual = CountCombinations(nums, target);
+        Assert.Equal(expected, actual);
+    }
 
     private static int CountCombinations(int[] nums, int target)
     {

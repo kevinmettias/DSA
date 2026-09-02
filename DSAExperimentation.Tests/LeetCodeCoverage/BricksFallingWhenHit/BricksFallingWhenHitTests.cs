@@ -39,6 +39,24 @@ public sealed partial class BricksFallingWhenHitTests
         var rows = grid.Length;
         var cols = grid[0].Length;
         var roof = rows * cols;
+
+        var present = BuildPresentGridAfterHits(grid, hits);
+        var (components, size) = InitializeComponents(present, rows, cols, roof);
+        var gridState = new GridState(components, size, present, rows, cols, roof);
+
+        ConnectAllStandingBricks(gridState);
+
+        var fallenReversed = new int[hits.Length];
+        var hitContext = new HitProcessingContext(hits, grid, fallenReversed);
+        ProcessHitsInReverse(gridState, hitContext);
+
+        return fallenReversed;
+    }
+
+    private static bool[,] BuildPresentGridAfterHits(int[][] grid, int[][] hits)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
         var present = new bool[rows, cols];
 
         for (var r = 0; r < rows; r++)
@@ -54,6 +72,11 @@ public sealed partial class BricksFallingWhenHitTests
             present[hit[0], hit[1]] = false;
         }
 
+        return present;
+    }
+
+    private static (DisjointSet Components, int[] Size) InitializeComponents(bool[,] present, int rows, int cols, int roof)
+    {
         var components = new DisjointSet(roof + 1);
         var size = new int[roof + 1];
 
@@ -68,62 +91,75 @@ public sealed partial class BricksFallingWhenHitTests
             }
         }
 
-        for (var r = 0; r < rows; r++)
+        return (components, size);
+    }
+
+    private static void ConnectAllStandingBricks(GridState state)
+    {
+        for (var r = 0; r < state.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < state.Cols; c++)
             {
-                if (present[r, c])
+                if (state.Present[r, c])
                 {
-                    ConnectToStandingNeighbors(components, size, present, rows, cols, r, c, roof);
+                    ConnectToStandingNeighbors(state, r, c);
                 }
             }
         }
-
-        var fallenReversed = new int[hits.Length];
-
-        for (var i = hits.Length - 1; i >= 0; i--)
-        {
-            var row = hits[i][0];
-            var col = hits[i][1];
-
-            if (grid[row][col] == 0)
-            {
-                continue;
-            }
-
-            var beforeSize = size[components.Find(roof)];
-            present[row, col] = true;
-            size[(row * cols) + col] = 1;
-            ConnectToStandingNeighbors(components, size, present, rows, cols, row, col, roof);
-            var afterSize = size[components.Find(roof)];
-
-            fallenReversed[i] = afterSize > beforeSize ? afterSize - beforeSize - 1 : 0;
-        }
-
-        return fallenReversed;
     }
 
-    private static void ConnectToStandingNeighbors(
-        DisjointSet components, int[] size, bool[,] present, int rows, int cols, int row, int col, int roof)
+    private static void ProcessHitsInReverse(GridState state, HitProcessingContext context)
     {
-        var cellId = (row * cols) + col;
+        for (var i = context.Hits.Length - 1; i >= 0; i--)
+        {
+            ProcessReverseHit(state, context, i);
+        }
+    }
+
+    private static void ProcessReverseHit(GridState state, HitProcessingContext context, int i)
+    {
+        var row = context.Hits[i][0];
+        var col = context.Hits[i][1];
+
+        if (context.Grid[row][col] == 0)
+        {
+            return;
+        }
+
+        var beforeSize = state.Size[state.Components.Find(state.Roof)];
+        state.Present[row, col] = true;
+        state.Size[(row * state.Cols) + col] = 1;
+        ConnectToStandingNeighbors(state, row, col);
+        var afterSize = state.Size[state.Components.Find(state.Roof)];
+
+        context.FallenReversed[i] = afterSize > beforeSize ? afterSize - beforeSize - 1 : 0;
+    }
+
+    private static void ConnectToStandingNeighbors(GridState state, int row, int col)
+    {
+        var cellId = (row * state.Cols) + col;
 
         if (row == 0)
         {
-            Union(components, size, cellId, roof);
+            Union(state.Components, state.Size, cellId, state.Roof);
         }
 
         (int Row, int Col)[] neighbors = [(row - 1, col), (row + 1, col), (row, col - 1), (row, col + 1)];
 
         foreach (var (neighborRow, neighborCol) in neighbors)
         {
-            if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols
-                && present[neighborRow, neighborCol])
+            if (neighborRow >= 0 && neighborRow < state.Rows && neighborCol >= 0 && neighborCol < state.Cols
+                && state.Present[neighborRow, neighborCol])
             {
-                Union(components, size, cellId, (neighborRow * cols) + neighborCol);
+                Union(state.Components, state.Size, cellId, (neighborRow * state.Cols) + neighborCol);
             }
         }
     }
+
+    private readonly record struct GridState(
+        DisjointSet Components, int[] Size, bool[,] Present, int Rows, int Cols, int Roof);
+
+    private readonly record struct HitProcessingContext(int[][] Hits, int[][] Grid, int[] FallenReversed);
 
     private static void Union(DisjointSet components, int[] size, int first, int second)
     {

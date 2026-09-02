@@ -19,6 +19,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SortItemsByGroupsRespectingDependenciesBenchmarks
 {
     private const int GroupCount = 5;
+    private const int MaxFanOut = 3;
 
     [Params(50, 1_000)]
     public int ItemCount;
@@ -36,7 +37,7 @@ public class SortItemsByGroupsRespectingDependenciesBenchmarks
 
         for (var i = 0; i < ItemCount; i++)
         {
-            var fanOut = Math.Min(3, ItemCount - 1 - i);
+            var fanOut = Math.Min(MaxFanOut, ItemCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
                 var next = i + f;
@@ -115,23 +116,30 @@ public class SortItemsByGroupsRespectingDependenciesBenchmarks
         var remaining = new List<T>(nodes);
         var order = new List<T>(nodes.Count);
 
-        while (remaining.Count > 0)
+        while (remaining.Count > 0 && TryTakeNextReadyNode(remaining, order, inDegree, children))
         {
-            var next = remaining.FirstOrDefault(node => inDegree[node] == 0);
-            if (next is null)
-            {
-                break;
-            }
-
-            order.Add(next);
-            remaining.Remove(next);
-            foreach (var dependent in children(next))
-            {
-                inDegree[dependent]--;
-            }
         }
 
         return order;
+    }
+
+    private static bool TryTakeNextReadyNode<T>(
+        List<T> remaining, List<T> order, Dictionary<T, int> inDegree, Func<T, List<T>> children) where T : class
+    {
+        var next = remaining.FirstOrDefault(node => inDegree[node] == 0);
+        if (next is null)
+        {
+            return false;
+        }
+
+        order.Add(next);
+        remaining.Remove(next);
+        foreach (var dependent in children(next))
+        {
+            inDegree[dependent]--;
+        }
+
+        return true;
     }
 
     // See SortItemsByGroupsRespectingDependenciesTests.Fixtures for the full

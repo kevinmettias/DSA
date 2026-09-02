@@ -17,19 +17,25 @@ public sealed partial class OrderlyQueueTests
     [Fact]
     public void OrderlyQueue_KEqualsOne_ReturnsSmallestRotation()
     {
-        Assert.Equal("acb", OrderlyQueue("cba", 1));
+        var smallest = OrderlyQueue("cba", 1);
+
+        Assert.Equal("acb", smallest);
     }
 
     [Fact]
     public void OrderlyQueue_KGreaterThanOne_ReturnsSortedString()
     {
-        Assert.Equal("aaabc", OrderlyQueue("baaca", 3));
+        var smallest = OrderlyQueue("baaca", 3);
+
+        Assert.Equal("aaabc", smallest);
     }
 
     [Fact]
     public void OrderlyQueue_SingleCharacter_ReturnsSameString()
     {
-        Assert.Equal("z", OrderlyQueue("z", 1));
+        var smallest = OrderlyQueue("z", 1);
+
+        Assert.Equal("z", smallest);
     }
 
     private static string OrderlyQueue(string s, int k)

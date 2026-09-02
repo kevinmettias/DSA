@@ -16,15 +16,20 @@ public sealed partial class SubrectangleQueriesTests
         int[][] rectangle = [[1, 2, 1], [4, 3, 4], [3, 2, 1], [1, 1, 1]];
         var queries = new SubrectangleQueries(rectangle);
 
-        Assert.Equal(1, queries.GetValue(0, 2));
+        var beforeAnyUpdate = queries.GetValue(0, 2);
+        Assert.Equal(1, beforeAnyUpdate);
 
-        queries.UpdateSubrectangle(0, 0, 3, 2, 5);
-        Assert.Equal(5, queries.GetValue(0, 2));
-        Assert.Equal(5, queries.GetValue(3, 1));
+        queries.UpdateSubrectangle(new SubrectangleBounds(0, 0, 3, 2), 5);
+        var row0Col2AfterFirstUpdate = queries.GetValue(0, 2);
+        Assert.Equal(5, row0Col2AfterFirstUpdate);
+        var row3Col1AfterFirstUpdate = queries.GetValue(3, 1);
+        Assert.Equal(5, row3Col1AfterFirstUpdate);
 
-        queries.UpdateSubrectangle(3, 0, 3, 2, 10);
-        Assert.Equal(10, queries.GetValue(3, 1));
-        Assert.Equal(5, queries.GetValue(0, 2));
+        queries.UpdateSubrectangle(new SubrectangleBounds(3, 0, 3, 2), 10);
+        var row3Col1AfterSecondUpdate = queries.GetValue(3, 1);
+        Assert.Equal(10, row3Col1AfterSecondUpdate);
+        var row0Col2AfterSecondUpdate = queries.GetValue(0, 2);
+        Assert.Equal(5, row0Col2AfterSecondUpdate);
     }
 
     [Fact]
@@ -33,12 +38,16 @@ public sealed partial class SubrectangleQueriesTests
         int[][] rectangle = [[1, 1, 1], [2, 2, 2], [3, 3, 3]];
         var queries = new SubrectangleQueries(rectangle);
 
-        Assert.Equal(1, queries.GetValue(0, 0));
+        var beforeUpdate = queries.GetValue(0, 0);
+        Assert.Equal(1, beforeUpdate);
 
-        queries.UpdateSubrectangle(0, 0, 2, 2, 100);
+        queries.UpdateSubrectangle(new SubrectangleBounds(0, 0, 2, 2), 100);
 
-        Assert.Equal(100, queries.GetValue(2, 2));
+        var afterFullGridUpdate = queries.GetValue(2, 2);
+        Assert.Equal(100, afterFullGridUpdate);
     }
+
+    private readonly record struct SubrectangleBounds(int Row1, int Col1, int Row2, int Col2);
 
     private sealed class SubrectangleQueries
     {
@@ -59,13 +68,13 @@ public sealed partial class SubrectangleQueriesTests
             }
         }
 
-        public void UpdateSubrectangle(int row1, int col1, int row2, int col2, int newValue)
+        public void UpdateSubrectangle(SubrectangleBounds bounds, int newValue)
         {
-            for (var r = row1; r <= row2; r++)
+            for (var r = bounds.Row1; r <= bounds.Row2; r++)
             {
                 var row = _rectangle.Get(r);
 
-                for (var c = col1; c <= col2; c++)
+                for (var c = bounds.Col1; c <= bounds.Col2; c++)
                 {
                     row.Set(c, newValue);
                 }

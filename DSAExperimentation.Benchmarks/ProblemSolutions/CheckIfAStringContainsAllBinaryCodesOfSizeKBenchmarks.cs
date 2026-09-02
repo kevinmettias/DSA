@@ -32,7 +32,8 @@ public class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks
 
         for (var code = 0; code < total; code++)
         {
-            if (!_text.Contains(ToBinaryString(code, K), StringComparison.Ordinal))
+            var binaryCode = ToBinaryString(code, K);
+            if (!_text.Contains(binaryCode, StringComparison.Ordinal))
             {
                 return false;
             }
@@ -69,7 +70,8 @@ public class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks
 
         for (var code = 0; code < total; code++)
         {
-            builder.Append(ToBinaryString(code, k));
+            var binaryCode = ToBinaryString(code, k);
+            builder.Append(binaryCode);
         }
 
         return builder.ToString();

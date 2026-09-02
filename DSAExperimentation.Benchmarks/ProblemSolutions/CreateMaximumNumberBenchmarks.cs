@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CreateMaximumNumberBenchmarks
 {
+    private const int RandomSeed = 321; // LeetCode problem number
+
+    private const int DigitUpperBoundExclusive = 10;
+
     [Params(20, 100)]
     public int Length;
 
@@ -22,9 +26,9 @@ public class CreateMaximumNumberBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(321);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(0, 10)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(0, 10)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(0, DigitUpperBoundExclusive)).ToArray();
+        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(0, DigitUpperBoundExclusive)).ToArray();
         _k = Length;
     }
 
@@ -43,7 +47,9 @@ public class CreateMaximumNumberBenchmarks
 
         for (var i = lowI; i <= highI; i++)
         {
-            var candidate = MergePreferringLarger(maxSubsequence(nums1, i), maxSubsequence(nums2, k - i));
+            var subsequence1 = maxSubsequence(nums1, i);
+            var subsequence2 = maxSubsequence(nums2, k - i);
+            var candidate = MergePreferringLarger(subsequence1, subsequence2);
             if (IsGreaterOrEqual(candidate, 0, best, 0))
             {
                 best = candidate;
@@ -82,8 +88,13 @@ public class CreateMaximumNumberBenchmarks
 
     private static int[] StackMaxSubsequence(int[] nums, int length)
     {
+        var stack = BuildMonotonicStack(nums, nums.Length - length);
+        return ExtractSubsequence(stack, length);
+    }
+
+    private static MaxDigitsStack BuildMonotonicStack(int[] nums, int drop)
+    {
         var stack = new MaxDigitsStack();
-        var drop = nums.Length - length;
 
         foreach (var num in nums)
         {
@@ -96,6 +107,11 @@ public class CreateMaximumNumberBenchmarks
             stack.Push(num);
         }
 
+        return stack;
+    }
+
+    private static int[] ExtractSubsequence(MaxDigitsStack stack, int length)
+    {
         while (stack.Count > length)
         {
             stack.TryPop(out _);

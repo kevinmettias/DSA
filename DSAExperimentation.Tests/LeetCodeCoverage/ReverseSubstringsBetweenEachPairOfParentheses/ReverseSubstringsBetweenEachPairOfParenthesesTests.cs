@@ -28,27 +28,34 @@ public sealed partial class ReverseSubstringsBetweenEachPairOfParenthesesTests
 
         foreach (var ch in s)
         {
-            switch (ch)
-            {
-                case '(':
-                    groups.Push(current);
-                    current = [];
-                    break;
-                case ')':
-                    current.Reverse();
-                    if (groups.TryPop(out var enclosing))
-                    {
-                        enclosing.AddRange(current);
-                        current = enclosing;
-                    }
-
-                    break;
-                default:
-                    current.Add(ch);
-                    break;
-            }
+            current = ProcessChar(groups, current, ch);
         }
 
         return new string(current.ToArray());
+    }
+
+    // One nesting level reversed inside-out per call: '(' opens a fresh buffer
+    // beneath the current one, ')' reverses the current buffer and folds it into
+    // the one it closes back into, anything else just appends.
+    private static List<char> ProcessChar(RepoCharListStack groups, List<char> current, char ch)
+    {
+        switch (ch)
+        {
+            case '(':
+                groups.Push(current);
+                return [];
+            case ')':
+                current.Reverse();
+                if (groups.TryPop(out var enclosing))
+                {
+                    enclosing.AddRange(current);
+                    return enclosing;
+                }
+
+                return current;
+            default:
+                current.Add(ch);
+                return current;
+        }
     }
 }

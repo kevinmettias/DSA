@@ -102,4 +102,44 @@ public sealed partial class DequeTests
 
         Assert.Equal(2, deque.Count);
     }
+
+    [Fact]
+    public void PushFront_MakesTheItemTheNewFront()
+    {
+        var deque = new DsaDeque();
+
+        deque.PushFront(1);
+        deque.PushFront(2);
+
+        Assert.True(deque.TryPeekFront(out var front));
+        Assert.Equal(2, front);
+    }
+
+    [Fact]
+    public void PushBack_MakesTheItemTheNewBack()
+    {
+        var deque = new DsaDeque();
+
+        deque.PushBack(1);
+        deque.PushBack(2);
+
+        Assert.True(deque.TryPeekBack(out var back));
+        Assert.Equal(2, back);
+    }
+
+    [Fact]
+    public void PushFront_And_PushBack_GrowFromOppositeEndsOfTheSameSequence()
+    {
+        var deque = new DsaDeque();
+
+        deque.PushBack(2);
+        deque.PushFront(1);
+        deque.PushBack(3);
+
+        Assert.True(deque.TryPeekFront(out var front));
+        Assert.True(deque.TryPeekBack(out var back));
+        Assert.Equal(1, front);
+        Assert.Equal(3, back);
+        Assert.Equal(3, deque.Count);
+    }
 }

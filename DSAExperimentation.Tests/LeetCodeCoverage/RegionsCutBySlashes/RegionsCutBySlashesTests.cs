@@ -50,18 +50,7 @@ public sealed partial class RegionsCutBySlashesTests
         {
             for (var c = 0; c < size; c++)
             {
-                var baseId = 4 * (r * size + c);
-                UnionWithinCell(triangles, baseId, grid[r][c]);
-
-                if (c + 1 < size)
-                {
-                    triangles.Union(baseId + East, 4 * (r * size + c + 1) + West);
-                }
-
-                if (r + 1 < size)
-                {
-                    triangles.Union(baseId + South, 4 * ((r + 1) * size + c) + North);
-                }
+                UnionCellWithNeighbors(triangles, grid, r, c);
             }
         }
 
@@ -72,6 +61,26 @@ public sealed partial class RegionsCutBySlashesTests
         }
 
         return roots.Count;
+    }
+
+    // Unions the current cell's own triangles per its slash character, then unions
+    // its East/South triangles with the West/North triangles of its right/below
+    // neighbors across the shared edge.
+    private static void UnionCellWithNeighbors(DisjointSet triangles, string[] grid, int r, int c)
+    {
+        var size = grid.Length;
+        var baseId = 4 * (r * size + c);
+        UnionWithinCell(triangles, baseId, grid[r][c]);
+
+        if (c + 1 < size)
+        {
+            triangles.Union(baseId + East, 4 * (r * size + c + 1) + West);
+        }
+
+        if (r + 1 < size)
+        {
+            triangles.Union(baseId + South, 4 * ((r + 1) * size + c) + North);
+        }
     }
 
     private static void UnionWithinCell(DisjointSet triangles, int baseId, char cell)

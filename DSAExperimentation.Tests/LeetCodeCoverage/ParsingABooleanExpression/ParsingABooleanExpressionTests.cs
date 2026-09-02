@@ -52,6 +52,18 @@ public sealed partial class ParsingABooleanExpressionTests
     // it, tallies how many were 't' vs. 'f', and returns the group's collapsed value.
     private static char EvaluateGroup(RepoCharStack stack)
     {
+        var (trueCount, falseCount) = TallyOperands(stack);
+
+        stack.TryPop(out _); // the matching '('
+        stack.TryPop(out var op);
+
+        var value = Evaluate(op, trueCount, falseCount);
+
+        return value ? 't' : 'f';
+    }
+
+    private static (int TrueCount, int FalseCount) TallyOperands(RepoCharStack stack)
+    {
         var trueCount = 0;
         var falseCount = 0;
 
@@ -68,16 +80,14 @@ public sealed partial class ParsingABooleanExpressionTests
             }
         }
 
-        stack.TryPop(out _); // the matching '('
-        stack.TryPop(out var op);
+        return (trueCount, falseCount);
+    }
 
-        var value = op switch
+    private static bool Evaluate(char op, int trueCount, int falseCount)
+        => op switch
         {
             '!' => trueCount == 0,
             '&' => falseCount == 0,
             _ => trueCount > 0, // '|'
         };
-
-        return value ? 't' : 'f';
-    }
 }

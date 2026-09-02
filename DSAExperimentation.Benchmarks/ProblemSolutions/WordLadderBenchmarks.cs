@@ -1,98 +1,46 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Hamming;
+using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.WordLadder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Word Ladder (LC 127): the textbook mutate-every-position BFS (Queue<string> plus
-// a HashSet<string> dictionary, generating each candidate word on the fly) vs. this
-// repo's own BFS - Reduce.Graph + DistanceMapReduceAlgebra over a precomputed
-// WordLadderNode graph, the same "distance to some specific target" composition
-// GridShortestPath.Distance already uses. _words is a connected mutation chain
-// (WordLadderGraphs.BuildChain), so endWord is always genuinely reachable and both
-// strategies do a real full BFS instead of failing fast.
+// Harness only: both arms are WordLadderSolution's, the same methods
+// WordLadderTests proves correct. The word set is a connected mutation chain, so
+// endWord is always genuinely reachable and both strategies run a full BFS instead
+// of failing fast. Each arm gets the prepared input its hoisted overload takes, so
+// dictionary/graph construction is charged to [GlobalSetup].
 [MemoryDiagnoser]
 public class WordLadderBenchmarks
 {
     private const int WordLength = 6;
-    private const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
+    private const int RandomSeed = 127; // LC problem number
 
     [Params(200, 2_000)]
     public int WordCount;
 
-    private HashSet<string> _wordSet = null!;
+    private Set<string> _wordSet = null!;
+    private HammingGraph _graph = null!;
     private string _beginWord = null!;
     private string _endWord = null!;
-    private Dictionary<string, WordLadderNode> _nodesByWord = null!;
-    private WordLadderNode _beginNode = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var (words, beginWord, endWord) = WordLadderGraphs.BuildChain(WordCount, WordLength, seed: 127);
-        _wordSet = [.. words];
+        var (words, beginWord, endWord) =
+            HammingWorkloads.BuildChain(WordCount, WordLength, StandardAlphabets.LowercaseLatin, seed: RandomSeed);
+
         _beginWord = beginWord;
         _endWord = endWord;
-
-        (_nodesByWord, _beginNode) = WordLadderGraphs.BuildGraph(words, beginWord);
+        _wordSet = new Set<string>(words);
+        _graph = HammingGraph.Build(beginWord, words);
     }
 
     [Benchmark(Baseline = true)]
-    public int MutationQueueBfs()
-    {
-        var visited = new HashSet<string> { _beginWord };
-        var queue = new Queue<(string Word, int Distance)>();
-        queue.Enqueue((_beginWord, 0));
-        var buffer = new char[WordLength];
-
-        while (queue.Count > 0)
-        {
-            var (word, distance) = queue.Dequeue();
-
-            if (word == _endWord)
-            {
-                return distance;
-            }
-
-            word.CopyTo(buffer);
-
-            for (var i = 0; i < WordLength; i++)
-            {
-                var original = buffer[i];
-
-                foreach (var letter in Alphabet)
-                {
-                    if (letter == original)
-                    {
-                        continue;
-                    }
-
-                    buffer[i] = letter;
-                    var candidate = new string(buffer);
-
-                    if (_wordSet.Contains(candidate) && visited.Add(candidate))
-                    {
-                        queue.Enqueue((candidate, distance + 1));
-                    }
-                }
-
-                buffer[i] = original;
-            }
-        }
-
-        return -1;
-    }
+    public int MutationQueueBfs() =>
+        WordLadderSolution.LadderLengthByMutationQueue(_beginWord, _endWord, _wordSet);
 
     [Benchmark]
-    public int ReduceGraphBfs()
-    {
-        var distances = Reduce.Graph<
-            WordLadderNode, WordLadderTopology, ListChildren<WordLadderNode>,
-            NaturalChildOrder<WordLadderNode, ListChildren<WordLadderNode>>, ListChildren<WordLadderNode>,
-            BreadthFirstReduceOrder<WordLadderNode>,
-            DistanceMapReduceAlgebra<WordLadderNode>, Dictionary<WordLadderNode, int>>(_beginNode);
-
-        return distances.TryGetValue(_nodesByWord[_endWord], out var distance) ? distance : -1;
-    }
+    public int ReduceGraphBfs() => WordLadderSolution.LadderLengthByReduceGraph(_graph, _endWord);
 }

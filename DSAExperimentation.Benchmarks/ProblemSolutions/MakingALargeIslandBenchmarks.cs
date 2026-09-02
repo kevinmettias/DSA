@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MakingALargeIslandBenchmarks
 {
+    private const int RandomSeed = 7; // LC problem number
+    private const double LandProbability = 0.6;
+    private const int FirstIslandId = 2;
+
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     [Params(20, 60)]
@@ -24,7 +28,7 @@ public class MakingALargeIslandBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
         _grid = new int[Side][];
 
         for (var r = 0; r < Side; r++)
@@ -33,7 +37,7 @@ public class MakingALargeIslandBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < 0.6 ? 1 : 0;
+                _grid[r][c] = random.NextDouble() < LandProbability ? 1 : 0;
             }
         }
     }
@@ -55,30 +59,39 @@ public class MakingALargeIslandBenchmarks
                     continue;
                 }
 
-                grid[r][c] = 1;
-                var visited = new bool[rows, cols];
-                best = Math.Max(best, FloodCount(grid, visited, r, c, rows, cols));
-                grid[r][c] = 0;
+                var floodedArea = FloodedAreaIfLand(grid, r, c);
+                best = Math.Max(best, floodedArea);
             }
         }
 
         return best;
     }
 
-    private static int FloodCount(int[][] grid, bool[,] visited, int row, int col, int rows, int cols)
+    private static int FloodedAreaIfLand(int[][] grid, int row, int col)
     {
-        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row, col] || grid[row][col] != 1)
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+        grid[row][col] = 1;
+        var visited = new bool[rows, cols];
+        var floodedArea = FloodCount(new FloodFillGrid(grid, visited, rows, cols), row, col);
+        grid[row][col] = 0;
+        return floodedArea;
+    }
+
+    private static int FloodCount(FloodFillGrid state, int row, int col)
+    {
+        if (row < 0 || row >= state.Rows || col < 0 || col >= state.Cols || state.Visited[row, col] || state.Grid[row][col] != 1)
         {
             return 0;
         }
 
-        visited[row, col] = true;
+        state.Visited[row, col] = true;
 
         return 1
-            + FloodCount(grid, visited, row + 1, col, rows, cols)
-            + FloodCount(grid, visited, row - 1, col, rows, cols)
-            + FloodCount(grid, visited, row, col + 1, rows, cols)
-            + FloodCount(grid, visited, row, col - 1, rows, cols);
+            + FloodCount(state, row + 1, col)
+            + FloodCount(state, row - 1, col)
+            + FloodCount(state, row, col + 1)
+            + FloodCount(state, row, col - 1);
     }
 
     [Benchmark]
@@ -88,29 +101,29 @@ public class MakingALargeIslandBenchmarks
         var rows = grid.Length;
         var cols = grid[0].Length;
         var areaById = new HashMap<int, int>();
-        var nextId = 2;
+        var context = new IslandGridContext(grid, areaById, rows, cols);
 
-        for (var r = 0; r < rows; r++)
+        LabelAllIslands(context);
+        var best = MaxLabeledArea(areaById);
+
+        return MaxMergedWaterArea(context, best);
+    }
+
+    private static void LabelAllIslands(IslandGridContext context)
+    {
+        var nextId = FirstIslandId;
+
+        for (var r = 0; r < context.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < context.Cols; c++)
             {
-                if (grid[r][c] != 1)
-                {
-                    continue;
-                }
-
-                var island = DepthFirstSearch.Traverse((r, c), Neighbors);
-                areaById.Set(nextId, island.Count);
-
-                foreach (var (row, col) in island)
-                {
-                    grid[row][col] = nextId;
-                }
-
-                nextId++;
+                nextId = LabelIslandIfLand(context, (r, c), nextId);
             }
         }
+    }
 
+    private static int MaxLabeledArea(HashMap<int, int> areaById)
+    {
         var best = 0;
 
         foreach (var area in areaById.Values)
@@ -118,67 +131,105 @@ public class MakingALargeIslandBenchmarks
             best = Math.Max(best, area);
         }
 
-        for (var r = 0; r < rows; r++)
+        return best;
+    }
+
+    private static int MaxMergedWaterArea(IslandGridContext context, int currentBest)
+    {
+        var best = currentBest;
+
+        for (var r = 0; r < context.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < context.Cols; c++)
             {
-                if (grid[r][c] != 0)
-                {
-                    continue;
-                }
-
-                var seenIslandIds = new Set<int>();
-                var merged = 1;
-
-                foreach (var (dRow, dCol) in Directions)
-                {
-                    var nextRow = r + dRow;
-                    var nextCol = c + dCol;
-
-                    if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                    {
-                        continue;
-                    }
-
-                    var neighborId = grid[nextRow][nextCol];
-
-                    if (neighborId < 2 || !seenIslandIds.TryAdd(neighborId))
-                    {
-                        continue;
-                    }
-
-                    if (areaById.TryGetValue(neighborId, out var area))
-                    {
-                        merged += area;
-                    }
-                }
-
+                var merged = MergedAreaForWaterCell(context, (r, c));
                 best = Math.Max(best, merged);
             }
         }
 
         return best;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private static IEnumerable<(int Row, int Col)> Neighbors(IslandGridContext context, (int Row, int Col) cell)
+    {
+        foreach (var (dRow, dCol) in Directions)
         {
-            foreach (var (dRow, dCol) in Directions)
+            if (TryGetLandNeighbor(context, cell, (dRow, dCol), out var neighbor))
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (grid[nextRow][nextCol] != 1)
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
+                yield return neighbor;
             }
         }
+    }
+
+    private static bool TryGetLandNeighbor(IslandGridContext context, (int Row, int Col) cell, (int DRow, int DCol) direction, out (int Row, int Col) neighbor)
+    {
+        var nextRow = cell.Row + direction.DRow;
+        var nextCol = cell.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= context.Rows || nextCol < 0 || nextCol >= context.Cols || context.Grid[nextRow][nextCol] != 1)
+        {
+            neighbor = default;
+            return false;
+        }
+
+        neighbor = (nextRow, nextCol);
+        return true;
+    }
+
+    private static int LabelIslandIfLand(IslandGridContext context, (int Row, int Col) cell, int nextId)
+    {
+        if (context.Grid[cell.Row][cell.Col] != 1)
+        {
+            return nextId;
+        }
+
+        var island = DepthFirstSearch.Traverse(cell, p => Neighbors(context, p));
+        context.AreaById.Set(nextId, island.Count);
+
+        foreach (var (row, col) in island)
+        {
+            context.Grid[row][col] = nextId;
+        }
+
+        return nextId + 1;
+    }
+
+    private static int MergedAreaForWaterCell(IslandGridContext context, (int Row, int Col) cell)
+    {
+        if (context.Grid[cell.Row][cell.Col] != 0)
+        {
+            return 0;
+        }
+
+        var seenIslandIds = new Set<int>();
+        var merged = 1;
+
+        foreach (var (dRow, dCol) in Directions)
+        {
+            merged += NeighborIslandArea(context, cell, (dRow, dCol), seenIslandIds);
+        }
+
+        return merged;
+    }
+
+    private static int NeighborIslandArea(IslandGridContext context, (int Row, int Col) cell, (int DRow, int DCol) direction, Set<int> seenIslandIds)
+    {
+        var nextRow = cell.Row + direction.DRow;
+        var nextCol = cell.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= context.Rows || nextCol < 0 || nextCol >= context.Cols)
+        {
+            return 0;
+        }
+
+        var neighborId = context.Grid[nextRow][nextCol];
+
+        if (neighborId < FirstIslandId || !seenIslandIds.TryAdd(neighborId))
+        {
+            return 0;
+        }
+
+        return context.AreaById.TryGetValue(neighborId, out var area) ? area : 0;
     }
 
     private int[][] CloneGrid()
@@ -192,4 +243,8 @@ public class MakingALargeIslandBenchmarks
 
         return clone;
     }
+
+    private readonly record struct FloodFillGrid(int[][] Grid, bool[,] Visited, int Rows, int Cols);
+
+    private readonly record struct IslandGridContext(int[][] Grid, HashMap<int, int> AreaById, int Rows, int Cols);
 }

@@ -31,48 +31,81 @@ public sealed partial class SpiralMatrixIIITests
     }
 
     private static int[][] SpiralWalk(int rows, int cols, int rStart, int cStart)
-    {
-        var total = rows * cols;
-        var result = new List<int[]>();
-        result.Add([rStart, cStart]);
+        => new SpiralWalker(rows, cols, rStart, cStart).Run();
 
-        if (total == 1)
+    // Walk state for SpiralWalk, extracted so the growing-stride clockwise walk
+    // (while total not reached -> two turns per stride length -> step cells per
+    // turn -> in-bounds check) reads as one level of nesting per method instead
+    // of one combined function nesting four loops deep.
+    private sealed class SpiralWalker(int rows, int cols, int rStart, int cStart)
+    {
+        private static readonly int[] DeltaRow = [0, 1, 0, -1];
+        private static readonly int[] DeltaCol = [1, 0, -1, 0];
+
+        private readonly int _total = rows * cols;
+        private readonly List<int[]> _result = [[rStart, cStart]];
+        private int _row = rStart;
+        private int _col = cStart;
+        private int _direction;
+        private int _step = 1;
+
+        public int[][] Run()
         {
-            return result.ToArray();
+            if (_total == 1)
+            {
+                return _result.ToArray();
+            }
+
+            while (_result.Count < _total)
+            {
+                if (RunTurns())
+                {
+                    return _result.ToArray();
+                }
+
+                _step++;
+            }
+
+            return _result.ToArray();
         }
 
-        int[] deltaRow = [0, 1, 0, -1];
-        int[] deltaCol = [1, 0, -1, 0];
-        var row = rStart;
-        var col = cStart;
-        var step = 1;
-        var direction = 0;
-
-        while (result.Count < total)
+        private bool RunTurns()
         {
             for (var turn = 0; turn < 2; turn++)
             {
-                for (var i = 0; i < step; i++)
+                if (AdvanceRun())
                 {
-                    row += deltaRow[direction];
-                    col += deltaCol[direction];
-
-                    if (row >= 0 && row < rows && col >= 0 && col < cols)
-                    {
-                        result.Add([row, col]);
-                        if (result.Count == total)
-                        {
-                            return result.ToArray();
-                        }
-                    }
+                    return true;
                 }
 
-                direction = (direction + 1) % 4;
+                _direction = (_direction + 1) % 4;
             }
 
-            step++;
+            return false;
         }
 
-        return result.ToArray();
+        private bool AdvanceRun()
+        {
+            for (var i = 0; i < _step; i++)
+            {
+                _row += DeltaRow[_direction];
+                _col += DeltaCol[_direction];
+
+                if (!IsInBounds())
+                {
+                    continue;
+                }
+
+                _result.Add([_row, _col]);
+                if (_result.Count == _total)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsInBounds() => _row >= 0 && _row < rows && _col >= 0 && _col < cols;
     }
 }

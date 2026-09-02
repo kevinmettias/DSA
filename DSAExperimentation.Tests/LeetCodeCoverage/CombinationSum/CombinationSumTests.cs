@@ -1,31 +1,39 @@
-﻿using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.CombinationSum;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CombinationSum;
 
-public sealed partial class CombinationSumTests
+// Harness only: both strategies live in CombinationSumSolution and are asserted
+// against the same examples, so a failure names the strategy that broke.
+public sealed class CombinationSumTests
 {
-    [Fact]
-    public void CombinationSum_ClassicExample_ReturnsExpectedCombinations()
-    {
-        var results = Find([2, 3, 6, 7], 7).Select(x => x.ToArray()).ToArray();
-        Assert.Contains(results, x => x.SequenceEqual([2, 2, 3]));
-        Assert.Contains(results, x => x.SequenceEqual([7]));
-    }
+    public static TheoryData<int[], int, int[][]> Examples =>
+        new()
+        {
+            { [2, 3, 6, 7], 7, [[2, 2, 3], [7]] },
+            { [2, 3, 5], 8, [[2, 2, 2, 2], [2, 3, 3], [3, 5]] },
+            { [2], 1, [] },
+        };
 
-    private static List<List<int>> Find(int[] candidates, int target)
-    {
-        Array.Sort(candidates);
-        var results = new List<List<int>>();
-        var state = new State();
-        Backtrack.Search<State, int>(state, s => s.Sum == target, s => s.Sum == target ? [] : Enumerable.Range(s.Start, candidates.Length - s.Start).Where(i => s.Sum + candidates[i] <= target), (s, i) => { s.Values.Add(candidates[i]); s.Sum += candidates[i]; s.Start = i; }, (s, i) => { s.Sum -= candidates[i]; s.Values.RemoveAt(s.Values.Count - 1); s.Start = s.Values.Count == 0 ? 0 : Array.IndexOf(candidates, s.Values[^1]); }, s => results.Add([.. s.Values]));
-        return results;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindCombinationsBySpecializedRecursion_LeetCodeExamples_ReturnsExpectedCombinations(
+        int[] candidates, int target, int[][] expected) =>
+        AssertSameCombinations(expected, CombinationSumSolution.FindCombinationsBySpecializedRecursion(candidates, target));
 
-    private sealed class State
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindCombinationsByBacktracking_LeetCodeExamples_ReturnsExpectedCombinations(
+        int[] candidates, int target, int[][] expected) =>
+        AssertSameCombinations(expected, CombinationSumSolution.FindCombinationsByBacktracking(candidates, target));
+
+    private static void AssertSameCombinations(int[][] expected, List<List<int>> actual)
     {
-        public List<int> Values { get; } = [];
-        public int Sum { get; set; }
-        public int Start { get; set; }
+        var actualArrays = actual.Select(x => x.ToArray()).ToArray();
+        Assert.Equal(expected.Length, actualArrays.Length);
+
+        foreach (var combination in expected)
+        {
+            Assert.Contains(actualArrays, x => x.SequenceEqual(combination));
+        }
     }
 }
-

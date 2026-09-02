@@ -8,7 +8,10 @@ public sealed partial class PathSumTests
 {
     [Fact]
     public void HasPathSum_ClassicExample_ReturnsTrue()
-        => Assert.True(HasPathSum(Tree(), 22));
+    {
+        var hasPathSum = HasPathSum(Tree(), 22);
+        Assert.True(hasPathSum);
+    }
 
     private static bool HasPathSum(BinaryTreeNode<int>? root, int target)
         => AllRootToLeafPaths.Find<BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>, NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root)

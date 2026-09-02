@@ -41,40 +41,54 @@ public sealed partial class StatisticsFromALargeSampleTests
 
     private static double[] ComputeStatistics(long[] count)
     {
-        var min = -1;
-        var max = -1;
-        long total = 0;
-        long weightedSum = 0;
-        var modeValue = 0;
-        long modeCount = 0;
+        var accumulator = new SampleAccumulator();
 
         for (var value = 0; value < count.Length; value++)
         {
-            if (count[value] == 0)
-            {
-                continue;
-            }
-
-            if (min == -1)
-            {
-                min = value;
-            }
-
-            max = value;
-            total += count[value];
-            weightedSum += (long)value * count[value];
-
-            if (count[value] > modeCount)
-            {
-                modeCount = count[value];
-                modeValue = value;
-            }
+            accumulator.Accumulate(value, count[value]);
         }
 
-        var mean = (double)weightedSum / total;
-        var median = ComputeMedian(count, total);
+        var mean = (double)accumulator.WeightedSum / accumulator.Total;
+        var median = ComputeMedian(count, accumulator.Total);
 
-        return [min, max, mean, median, modeValue];
+        return [accumulator.Min, accumulator.Max, mean, median, accumulator.ModeValue];
+    }
+
+    private struct SampleAccumulator
+    {
+        public int Min = -1;
+        public int Max = -1;
+        public long Total;
+        public long WeightedSum;
+        public int ModeValue;
+        public long ModeCount;
+
+        public SampleAccumulator()
+        {
+        }
+
+        public void Accumulate(int value, long occurrences)
+        {
+            if (occurrences == 0)
+            {
+                return;
+            }
+
+            if (Min == -1)
+            {
+                Min = value;
+            }
+
+            Max = value;
+            Total += occurrences;
+            WeightedSum += (long)value * occurrences;
+
+            if (occurrences > ModeCount)
+            {
+                ModeCount = occurrences;
+                ModeValue = value;
+            }
+        }
     }
 
     private static double ComputeMedian(long[] count, long total)

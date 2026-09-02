@@ -19,7 +19,9 @@ public sealed partial class AllElementsInTwoBinarySearchTreesTests
         var root1 = new BinaryTreeNode<int>(2) { Left = new(1), Right = new(4) };
         var root2 = new BinaryTreeNode<int>(1) { Left = new(0), Right = new(3) };
 
-        Assert.Equal([0, 1, 1, 2, 3, 4], GetAllElements(root1, root2));
+        var actual = GetAllElements(root1, root2);
+
+        Assert.Equal([0, 1, 1, 2, 3, 4], actual);
     }
 
     [Fact]
@@ -29,7 +31,9 @@ public sealed partial class AllElementsInTwoBinarySearchTreesTests
         var root1 = new BinaryTreeNode<int>(1) { Right = new(8) };
         var root2 = new BinaryTreeNode<int>(8) { Left = new(1) };
 
-        Assert.Equal([1, 1, 8, 8], GetAllElements(root1, root2));
+        var actual = GetAllElements(root1, root2);
+
+        Assert.Equal([1, 1, 8, 8], actual);
     }
 
     [Fact]
@@ -37,7 +41,9 @@ public sealed partial class AllElementsInTwoBinarySearchTreesTests
     {
         var root2 = new BinaryTreeNode<int>(5) { Left = new(2), Right = new(9) };
 
-        Assert.Equal([2, 5, 9], GetAllElements(null, root2));
+        var actual = GetAllElements(null, root2);
+
+        Assert.Equal([2, 5, 9], actual);
     }
 
     private static int[] GetAllElements(BinaryTreeNode<int>? root1, BinaryTreeNode<int>? root2)

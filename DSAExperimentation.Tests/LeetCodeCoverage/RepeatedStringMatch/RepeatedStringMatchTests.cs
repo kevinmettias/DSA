@@ -14,7 +14,10 @@ public sealed partial class RepeatedStringMatchTests
     [InlineData("a", "aa", 2)]
     [InlineData("abc", "wxyz", -1)]
     public void MinRepeats_LeetCodeExamples_ReturnsMinimumRepeatCount(string a, string b, int expected)
-        => Assert.Equal(expected, MinRepeats(a, b));
+    {
+        var actual = MinRepeats(a, b);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MinRepeats(string a, string b)
     {
@@ -22,7 +25,8 @@ public sealed partial class RepeatedStringMatchTests
 
         for (var repeats = minRepeats; repeats <= minRepeats + 1; repeats++)
         {
-            var candidate = string.Concat(Enumerable.Repeat(a, repeats));
+            var repeatedSegments = Enumerable.Repeat(a, repeats);
+            var candidate = string.Concat(repeatedSegments);
             if (PrefixFunctionSearch.FindAll(candidate, b).Count > 0)
             {
                 return repeats;

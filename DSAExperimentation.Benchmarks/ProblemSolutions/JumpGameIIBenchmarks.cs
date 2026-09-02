@@ -1,7 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.JumpGameII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -11,13 +9,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // distances are capped at 10 so the implicit graph stays sparse (O(n) edges, not
 // O(n^2)) - the point of the comparison is the primitive composition, not stress
 // testing Dijkstra on a dense graph.
+//
+// Harness only: both arms are JumpGameIISolution's, the same methods
+// JumpGameIITests proves correct. The hop graph is built once in [GlobalSetup] so
+// its construction isn't charged to the search being measured.
 [MemoryDiagnoser]
 public class JumpGameIIBenchmarks
 {
+    private const int MaxJumpDistanceExclusive = 11;
+
     [Params(200, 2_000)]
     public int Length;
 
     private int[] _jumps = null!;
+    private HopNode[] _hopGraph = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -27,54 +32,15 @@ public class JumpGameIIBenchmarks
 
         for (var i = 0; i < Length - 1; i++)
         {
-            _jumps[i] = random.Next(1, 11);
+            _jumps[i] = random.Next(1, MaxJumpDistanceExclusive);
         }
+
+        _hopGraph = JumpGameIISolution.BuildHopGraph(_jumps);
     }
 
     [Benchmark(Baseline = true)]
-    public int GreedyTwoPointer()
-    {
-        var jumps = 0;
-        var currentEnd = 0;
-        var farthest = 0;
-
-        for (var i = 0; i < _jumps.Length - 1; i++)
-        {
-            farthest = Math.Max(farthest, i + _jumps[i]);
-
-            if (i == currentEnd)
-            {
-                jumps++;
-                currentEnd = farthest;
-            }
-        }
-
-        return jumps;
-    }
+    public int GreedyTwoPointer() => JumpGameIISolution.MinJumpsByGreedyTwoPointer(_jumps);
 
     [Benchmark]
-    public int DijkstraOverHopGraph()
-    {
-        var nodes = new WeightedGraphNode[_jumps.Length];
-
-        for (var i = 0; i < _jumps.Length; i++)
-        {
-            nodes[i] = new WeightedGraphNode(i);
-        }
-
-        for (var i = 0; i < _jumps.Length; i++)
-        {
-            var reach = Math.Min(i + _jumps[i], _jumps.Length - 1);
-
-            for (var j = i + 1; j <= reach; j++)
-            {
-                nodes[i].Edges.Add((1, nodes[j]));
-            }
-        }
-
-        var distances = ShortestPath.Dijkstra<
-            WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(nodes[0]);
-
-        return distances[nodes[^1]];
-    }
+    public int DijkstraOverHopGraph() => JumpGameIISolution.MinJumpsByDijkstraOverHopGraph(_hopGraph);
 }

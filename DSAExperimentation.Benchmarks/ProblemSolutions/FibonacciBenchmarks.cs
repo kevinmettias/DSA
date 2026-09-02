@@ -12,17 +12,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FibonacciBenchmarks
 {
+    private const int RecurrenceOrder = 2; // Fibonacci depends on the previous two terms
+
     [Params(20, 30)]
     public int N;
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursive() => Fib(N);
 
-    private static int Fib(int n) => n <= 1 ? n : Fib(n - 1) + Fib(n - 2);
+    private static int Fib(int n) => n <= 1 ? n : Fib(n - 1) + Fib(n - RecurrenceOrder);
 
     [Benchmark]
     public int TopDownMemoized()
-        => Memoizer.Memoize<int, int>(N, (n, fib) => n <= 1 ? n : fib(n - 1) + fib(n - 2));
+        => Memoizer.Memoize<int, int>(N, (n, fib) => n <= 1 ? n : fib(n - 1) + fib(n - RecurrenceOrder));
 
     [Benchmark]
     public int IterativeConstantSpace()
@@ -34,7 +36,7 @@ public class FibonacciBenchmarks
 
         var (previous, current) = (0, 1);
 
-        for (var i = 2; i <= N; i++)
+        for (var i = RecurrenceOrder; i <= N; i++)
         {
             (previous, current) = (current, previous + current);
         }

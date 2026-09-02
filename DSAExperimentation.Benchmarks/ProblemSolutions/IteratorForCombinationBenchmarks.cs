@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class IteratorForCombinationBenchmarks
 {
+    // The combination length is always half the character count for this benchmark's
+    // fixture (see Setup).
+    private const int CombinationLengthDivisor = 2;
+
     [Params(10, 16)]
     public int CharacterCount;
 
@@ -24,7 +28,7 @@ public class IteratorForCombinationBenchmarks
     public void Setup()
     {
         _characters = new string(Enumerable.Range(0, CharacterCount).Select(i => (char)('a' + i)).ToArray());
-        _combinationLength = CharacterCount / 2;
+        _combinationLength = CharacterCount / CombinationLengthDivisor;
     }
 
     [Benchmark(Baseline = true)]
@@ -35,27 +39,36 @@ public class IteratorForCombinationBenchmarks
 
         for (var mask = 0; mask < subsetCount; mask++)
         {
-            if (int.PopCount(mask) != _combinationLength)
+            var combination = BuildCombinationIfMatch(mask);
+            if (combination is not null)
             {
-                continue;
+                results.Add(combination);
             }
-
-            var chars = new char[_combinationLength];
-            var next = 0;
-
-            for (var bit = 0; bit < _characters.Length; bit++)
-            {
-                if ((mask & (1 << bit)) != 0)
-                {
-                    chars[next++] = _characters[bit];
-                }
-            }
-
-            results.Add(new string(chars));
         }
 
         results.Sort(StringComparer.Ordinal);
         return results;
+    }
+
+    private string? BuildCombinationIfMatch(int mask)
+    {
+        if (int.PopCount(mask) != _combinationLength)
+        {
+            return null;
+        }
+
+        var chars = new char[_combinationLength];
+        var next = 0;
+
+        for (var bit = 0; bit < _characters.Length; bit++)
+        {
+            if ((mask & (1 << bit)) != 0)
+            {
+                chars[next++] = _characters[bit];
+            }
+        }
+
+        return new string(chars);
     }
 
     [Benchmark]
@@ -66,24 +79,33 @@ public class IteratorForCombinationBenchmarks
 
         Backtrack.Search<State, int>(
             state,
-            isSolution: x => x.Chosen.Count == _combinationLength,
-            candidates: x => x.Chosen.Count == _combinationLength
-                ? []
-                : Enumerable.Range(x.Start, _characters.Length - x.Start),
-            choose: (x, index) =>
-            {
-                x.Starts.Push(x.Start);
-                x.Chosen.Add(_characters[index]);
-                x.Start = index + 1;
-            },
-            unchoose: (x, _) =>
-            {
-                x.Start = x.Starts.Pop();
-                x.Chosen.RemoveAt(x.Chosen.Count - 1);
-            },
+            isSolution: IsCombinationComplete,
+            candidates: CandidateIndices,
+            choose: Choose,
+            unchoose: Unchoose,
             onSolution: x => results.Add(new string([.. x.Chosen])));
 
         return results;
+    }
+
+    private bool IsCombinationComplete(State x) => x.Chosen.Count == _combinationLength;
+
+    private IEnumerable<int> CandidateIndices(State x)
+        => x.Chosen.Count == _combinationLength
+            ? []
+            : Enumerable.Range(x.Start, _characters.Length - x.Start);
+
+    private void Choose(State x, int index)
+    {
+        x.Starts.Push(x.Start);
+        x.Chosen.Add(_characters[index]);
+        x.Start = index + 1;
+    }
+
+    private static void Unchoose(State x, int _)
+    {
+        x.Start = x.Starts.Pop();
+        x.Chosen.RemoveAt(x.Chosen.Count - 1);
     }
 
     private sealed class State

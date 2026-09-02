@@ -13,11 +13,17 @@ public sealed partial class New21GameTests
     [InlineData(6, 1, 10, 0.6)]
     [InlineData(21, 17, 10, 0.73278)]
     public void New21GameProbability_LeetCodeExamples_ReturnsExpectedProbability(int n, int k, int maxPts, double expected)
-        => Assert.Equal(expected, New21GameProbability(n, k, maxPts), precision: 5);
+    {
+        var actual = New21GameProbability(n, k, maxPts);
+        Assert.Equal(expected, actual, precision: 5);
+    }
 
     [Fact]
     public void New21GameProbability_KIsZero_AliceStopsImmediatelyAtZero()
-        => Assert.Equal(1.0, New21GameProbability(n: 5, k: 0, maxPts: 3), precision: 5);
+    {
+        var actual = New21GameProbability(n: 5, k: 0, maxPts: 3);
+        Assert.Equal(1.0, actual, precision: 5);
+    }
 
     private static double New21GameProbability(int n, int k, int maxPts)
     {

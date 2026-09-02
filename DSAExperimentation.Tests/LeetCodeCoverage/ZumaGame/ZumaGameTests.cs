@@ -19,15 +19,31 @@ public sealed partial class ZumaGameTests
     [InlineData("RBYYBBRRB", "YRBGB", 3)]
     public void FindMinStep_LeetCodeExamples_ReturnsMinimumBallsNeededOrNegativeOne(
         string board, string hand, int expected)
-        => Assert.Equal(expected, FindMinStep(board, hand));
+    {
+        var minSteps = FindMinStep(board, hand);
+        Assert.Equal(expected, minSteps);
+    }
 
     private static int FindMinStep(string board, string hand)
+    {
+        var (visited, queue) = InitializeSearch(board, hand);
+
+        return RunLevelOrderSearch(queue, visited);
+    }
+
+    private static (Set<string> Visited, RepoQueue Queue) InitializeSearch(string board, string hand)
     {
         var visited = new Set<string>();
         var queue = new RepoQueue();
         var start = board + "|" + SortChars(hand);
         visited.TryAdd(start);
         queue.Enqueue(start);
+
+        return (visited, queue);
+    }
+
+    private static int RunLevelOrderSearch(RepoQueue queue, Set<string> visited)
+    {
         var moves = 0;
 
         while (queue.Count > 0)
@@ -36,34 +52,9 @@ public sealed partial class ZumaGameTests
 
             for (var i = 0; i < levelSize; i++)
             {
-                queue.TryDequeue(out var state);
-                var separator = state.IndexOf('|');
-                var currentBoard = state[..separator];
-                var currentHand = state[(separator + 1)..];
-
-                if (currentBoard.Length == 0)
+                if (ProcessNextState(queue, visited))
                 {
                     return moves;
-                }
-
-                for (var pos = 0; pos <= currentBoard.Length; pos++)
-                {
-                    for (var h = 0; h < currentHand.Length; h++)
-                    {
-                        if (h > 0 && currentHand[h] == currentHand[h - 1])
-                        {
-                            continue;
-                        }
-
-                        var nextBoard = Collapse(currentBoard.Insert(pos, currentHand[h].ToString()));
-                        var nextHand = currentHand.Remove(h, 1);
-                        var next = nextBoard + "|" + nextHand;
-
-                        if (visited.TryAdd(next))
-                        {
-                            queue.Enqueue(next);
-                        }
-                    }
                 }
             }
 
@@ -71,6 +62,49 @@ public sealed partial class ZumaGameTests
         }
 
         return -1;
+    }
+
+    // Dequeues one (board, remaining-hand) state; returns true when the board is
+    // already empty (the search is done), otherwise expands it into every
+    // reachable next state and enqueues the not-yet-visited ones.
+    private static bool ProcessNextState(RepoQueue queue, Set<string> visited)
+    {
+        queue.TryDequeue(out var state);
+        var separator = state.IndexOf('|');
+        var currentBoard = state[..separator];
+        var currentHand = state[(separator + 1)..];
+
+        if (currentBoard.Length == 0)
+        {
+            return true;
+        }
+
+        ExpandState(currentBoard, currentHand, queue, visited);
+        return false;
+    }
+
+    private static void ExpandState(string currentBoard, string currentHand, RepoQueue queue, Set<string> visited)
+    {
+        for (var pos = 0; pos <= currentBoard.Length; pos++)
+        {
+            for (var h = 0; h < currentHand.Length; h++)
+            {
+                if (h > 0 && currentHand[h] == currentHand[h - 1])
+                {
+                    continue;
+                }
+
+                var placed = currentBoard.Insert(pos, currentHand[h].ToString());
+                var nextBoard = Collapse(placed);
+                var nextHand = currentHand.Remove(h, 1);
+                var next = nextBoard + "|" + nextHand;
+
+                if (visited.TryAdd(next))
+                {
+                    queue.Enqueue(next);
+                }
+            }
+        }
     }
 
     private static string SortChars(string s)

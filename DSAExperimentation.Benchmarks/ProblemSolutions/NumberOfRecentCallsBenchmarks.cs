@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfRecentCallsBenchmarks
 {
+    private const int RandomSeed = 933; // LC problem number
+    private const int MaxGapExclusive = 50;
+    private const int WindowMilliseconds = 3000;
+
     [Params(500, 5_000)]
     public int CallCount;
 
@@ -22,13 +26,13 @@ public class NumberOfRecentCallsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(933);
+        var random = new Random(RandomSeed);
         var t = 0;
         _timestamps = new int[CallCount];
 
         for (var i = 0; i < CallCount; i++)
         {
-            t += random.Next(0, 50);
+            t += random.Next(0, MaxGapExclusive);
             _timestamps[i] = t;
         }
     }
@@ -46,7 +50,7 @@ public class NumberOfRecentCallsBenchmarks
 
             foreach (var seen in history)
             {
-                if (seen >= t - 3000)
+                if (seen >= t - WindowMilliseconds)
                 {
                     count++;
                 }
@@ -68,7 +72,7 @@ public class NumberOfRecentCallsBenchmarks
         {
             pings.Enqueue(t);
 
-            while (pings.TryPeek(out var oldest) && oldest < t - 3000)
+            while (pings.TryPeek(out var oldest) && oldest < t - WindowMilliseconds)
             {
                 pings.TryDequeue(out _);
             }

@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumWidthRampBenchmarks
 {
+    private const int RandomSeed = 962; // LC problem number
+
     [Params(500, 5_000)]
     public int Length;
 
@@ -21,7 +23,7 @@ public class MaximumWidthRampBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(962);
+        var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
     }
 

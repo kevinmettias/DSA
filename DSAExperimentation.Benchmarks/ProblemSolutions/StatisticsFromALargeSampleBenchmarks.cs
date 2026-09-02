@@ -15,6 +15,21 @@ public class StatisticsFromALargeSampleBenchmarks
 {
     private const int ValueRange = 256;
 
+    // Random counts are drawn from [1, AverageCountPerValue * MaxCountMultiplier],
+    // so the sampled mean lands near AverageCountPerValue.
+    private const int MaxCountMultiplier = 2;
+
+    // total % MedianParityDivisor distinguishes an odd total (single middle
+    // element) from an even total (two middle elements to average).
+    private const int MedianParityDivisor = 2;
+
+    // total / MedianIndexDivisor locates the middle index/indices of the
+    // sorted sample.
+    private const int MedianIndexDivisor = 2;
+
+    // Divisor used to average the two middle values of an even-sized sample.
+    private const double MedianPairAverageDivisor = 2.0;
+
     [Params(100, 5_000)]
     public int AverageCountPerValue;
 
@@ -28,7 +43,7 @@ public class StatisticsFromALargeSampleBenchmarks
 
         for (var i = 0; i < ValueRange; i++)
         {
-            _count[i] = random.Next(1, (AverageCountPerValue * 2) + 1);
+            _count[i] = random.Next(1, (AverageCountPerValue * MaxCountMultiplier) + 1);
         }
     }
 
@@ -57,9 +72,9 @@ public class StatisticsFromALargeSampleBenchmarks
             }
         }
 
-        return total % 2 == 1
-            ? sample[total / 2]
-            : (sample[(total / 2) - 1] + sample[total / 2]) / 2.0;
+        return total % MedianParityDivisor == 1
+            ? sample[total / MedianIndexDivisor]
+            : (sample[(total / MedianIndexDivisor) - 1] + sample[total / MedianIndexDivisor]) / MedianPairAverageDivisor;
     }
 
     private static double MedianByBinarySearch(long[] count)
@@ -76,13 +91,13 @@ public class StatisticsFromALargeSampleBenchmarks
         var total = running;
         var sequence = new ArraySequence<long>(cumulative);
 
-        if (total % 2 == 1)
+        if (total % MedianParityDivisor == 1)
         {
-            return BinarySearch.LowerBound(sequence, total / 2 + 1);
+            return BinarySearch.LowerBound(sequence, total / MedianIndexDivisor + 1);
         }
 
-        var lowerMiddle = BinarySearch.LowerBound(sequence, total / 2);
-        var upperMiddle = BinarySearch.LowerBound(sequence, total / 2 + 1);
-        return (lowerMiddle + upperMiddle) / 2.0;
+        var lowerMiddle = BinarySearch.LowerBound(sequence, total / MedianIndexDivisor);
+        var upperMiddle = BinarySearch.LowerBound(sequence, total / MedianIndexDivisor + 1);
+        return (lowerMiddle + upperMiddle) / MedianPairAverageDivisor;
     }
 }

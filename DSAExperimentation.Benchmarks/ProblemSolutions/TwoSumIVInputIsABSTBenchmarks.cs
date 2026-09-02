@@ -17,6 +17,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TwoSumIVInputIsABSTBenchmarks
 {
     private const int Target = -1;
+    private const int RandomSeed = 653;
 
     [Params(200, 5_000)]
     public int NodeCount;
@@ -26,7 +27,7 @@ public class TwoSumIVInputIsABSTBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(653);
+        var random = new Random(RandomSeed);
         var values = Enumerable.Range(0, NodeCount).ToArray();
 
         for (var i = values.Length - 1; i > 0; i--)

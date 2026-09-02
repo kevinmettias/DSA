@@ -11,19 +11,35 @@ public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
 {
     [Fact]
     public void IsPrefixOfWord_ClassicExampleOne_ReturnsFour()
-        => Assert.Equal(4, IsPrefixOfWord("i love eating burger", "burg"));
+    {
+        var index = IsPrefixOfWord("i love eating burger", "burg");
+
+        Assert.Equal(4, index);
+    }
 
     [Fact]
     public void IsPrefixOfWord_ClassicExampleTwo_ReturnsTwo()
-        => Assert.Equal(2, IsPrefixOfWord("this problem is an easy problem", "pro"));
+    {
+        var index = IsPrefixOfWord("this problem is an easy problem", "pro");
+
+        Assert.Equal(2, index);
+    }
 
     [Fact]
     public void IsPrefixOfWord_NoWordHasThatPrefix_ReturnsMinusOne()
-        => Assert.Equal(-1, IsPrefixOfWord("i am tired", "you"));
+    {
+        var index = IsPrefixOfWord("i am tired", "you");
+
+        Assert.Equal(-1, index);
+    }
 
     [Fact]
     public void IsPrefixOfWord_SearchWordEqualsWholeWord_ReturnsThatIndex()
-        => Assert.Equal(3, IsPrefixOfWord("i am tired", "tired"));
+    {
+        var index = IsPrefixOfWord("i am tired", "tired");
+
+        Assert.Equal(3, index);
+    }
 
     private static int IsPrefixOfWord(string sentence, string searchWord)
     {

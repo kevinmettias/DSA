@@ -18,6 +18,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindModeInBinarySearchTreeBenchmarks
 {
+    // Average node count per distinct value, so the tree has realistic duplicate runs.
+    private const int NodesPerDistinctValue = 20;
+
+    // LeetCode problem number for Find Mode in Binary Search Tree.
+    private const int RandomSeed = 501;
+
     [Params(500, 20_000)]
     public int NodeCount;
 
@@ -26,7 +32,7 @@ public class FindModeInBinarySearchTreeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var distinctValues = Math.Max(1, NodeCount / 20);
+        var distinctValues = Math.Max(1, NodeCount / NodesPerDistinctValue);
         var values = new int[NodeCount];
 
         for (var i = 0; i < NodeCount; i++)
@@ -34,7 +40,7 @@ public class FindModeInBinarySearchTreeBenchmarks
             values[i] = i % distinctValues;
         }
 
-        var random = new Random(501);
+        var random = new Random(RandomSeed);
         for (var i = values.Length - 1; i > 0; i--)
         {
             var j = random.Next(i + 1);

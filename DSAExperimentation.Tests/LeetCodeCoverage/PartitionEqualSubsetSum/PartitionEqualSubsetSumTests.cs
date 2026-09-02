@@ -26,22 +26,24 @@ public sealed partial class PartitionEqualSubsetSumTests
         }
 
         var half = total / 2;
-        return Memoizer.Memoize<(int Index, int Remaining), bool>((0, half), CanReach);
+        return Memoizer.Memoize<(int Index, int Remaining), bool>(
+            (0, half), (state, canReach) => CanReach(state, canReach, nums));
+    }
 
-        bool CanReach((int Index, int Remaining) state, Func<(int Index, int Remaining), bool> canReach)
+    private static bool CanReach(
+        (int Index, int Remaining) state, Func<(int Index, int Remaining), bool> canReach, int[] nums)
+    {
+        if (state.Remaining == 0)
         {
-            if (state.Remaining == 0)
-            {
-                return true;
-            }
-
-            if (state.Remaining < 0 || state.Index == nums.Length)
-            {
-                return false;
-            }
-
-            return canReach((state.Index + 1, state.Remaining - nums[state.Index]))
-                || canReach((state.Index + 1, state.Remaining));
+            return true;
         }
+
+        if (state.Remaining < 0 || state.Index == nums.Length)
+        {
+            return false;
+        }
+
+        return canReach((state.Index + 1, state.Remaining - nums[state.Index]))
+            || canReach((state.Index + 1, state.Remaining));
     }
 }

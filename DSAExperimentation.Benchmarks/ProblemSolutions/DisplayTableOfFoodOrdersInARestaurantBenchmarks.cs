@@ -19,6 +19,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
 {
+    private const int RandomSeed = 1418; // LC problem number
+    private const int TableCount = 30;
+    private const int FoodCount = 15;
+    private const int FoodFieldIndex = 2;
+
     [Params(200, 2_000)]
     public int OrderCount;
 
@@ -27,9 +32,9 @@ public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1418);
-        var tables = Enumerable.Range(1, 30).Select(t => t.ToString()).ToArray();
-        var foods = Enumerable.Range(0, 15).Select(f => $"Food{f}").ToArray();
+        var random = new Random(RandomSeed);
+        var tables = Enumerable.Range(1, TableCount).Select(t => t.ToString()).ToArray();
+        var foods = Enumerable.Range(0, FoodCount).Select(f => $"Food{f}").ToArray();
 
         _orders = Enumerable.Range(0, OrderCount)
             .Select(i => new[] { $"Customer{i}", tables[random.Next(tables.Length)], foods[random.Next(foods.Length)] })
@@ -39,8 +44,8 @@ public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
     [Benchmark(Baseline = true)]
     public int RescanEveryOrderPerCell()
     {
-        var distinctTables = _orders.Select(o => int.Parse(o[1])).Distinct().OrderBy(t => t).ToArray();
-        var distinctFoods = _orders.Select(o => o[2]).Distinct().OrderBy(f => f, StringComparer.Ordinal).ToArray();
+        var distinctTables = GetDistinctTables();
+        var distinctFoods = GetDistinctFoods();
 
         var cellCount = 0;
 
@@ -50,51 +55,75 @@ public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
 
             foreach (var food in distinctFoods)
             {
-                var count = 0;
-                foreach (var order in _orders)
-                {
-                    if (order[1] == tableText && order[2] == food)
-                    {
-                        count++;
-                    }
-                }
-
-                cellCount += count;
+                cellCount += CountOrdersForCell(tableText, food);
             }
         }
 
         return cellCount;
     }
 
+    private int[] GetDistinctTables()
+        => _orders.Select(o => int.Parse(o[1])).Distinct().OrderBy(t => t).ToArray();
+
+    private string[] GetDistinctFoods()
+        => _orders.Select(o => o[FoodFieldIndex]).Distinct().OrderBy(f => f, StringComparer.Ordinal).ToArray();
+
+    private int CountOrdersForCell(string tableText, string food)
+    {
+        var count = 0;
+
+        foreach (var order in _orders)
+        {
+            if (order[1] == tableText && order[FoodFieldIndex] == food)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     [Benchmark]
     public int GroupedHashMapThenMergeSort()
+    {
+        var (countsByTable, foodNames) = BuildCounts();
+        var sortedFoods = GetSortedFoods(foodNames);
+        var sortedTables = GetSortedTables(countsByTable);
+
+        return SumCells(countsByTable, sortedTables, sortedFoods);
+    }
+
+    private (HashMap<int, HashMap<string, int>> CountsByTable, HashMap<string, bool> FoodNames) BuildCounts()
     {
         var countsByTable = new HashMap<int, HashMap<string, int>>();
         var foodNames = new HashMap<string, bool>();
 
         foreach (var order in _orders)
         {
-            var tableNumber = int.Parse(order[1]);
-            var foodItem = order[2];
-
-            foodNames.Set(foodItem, true);
-
-            if (!countsByTable.TryGetValue(tableNumber, out var foodCounts))
-            {
-                foodCounts = new HashMap<string, int>();
-                countsByTable.Set(tableNumber, foodCounts);
-            }
-
-            foodCounts.TryGetValue(foodItem, out var count);
-            foodCounts.Set(foodItem, count + 1);
+            AccumulateOrder(countsByTable, foodNames, order);
         }
 
+        return (countsByTable, foodNames);
+    }
+
+    private static string[] GetSortedFoods(HashMap<string, bool> foodNames)
+    {
         var sortedFoods = foodNames.Keys.ToArray();
         MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(sortedFoods), StringComparer.Ordinal);
 
+        return sortedFoods;
+    }
+
+    private static int[] GetSortedTables(HashMap<int, HashMap<string, int>> countsByTable)
+    {
         var sortedTables = countsByTable.Keys.ToArray();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedTables));
 
+        return sortedTables;
+    }
+
+    private static int SumCells(HashMap<int, HashMap<string, int>> countsByTable, int[] sortedTables, string[] sortedFoods)
+    {
         var cellCount = 0;
 
         foreach (var table in sortedTables)
@@ -109,5 +138,23 @@ public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
         }
 
         return cellCount;
+    }
+
+    private static void AccumulateOrder(
+        HashMap<int, HashMap<string, int>> countsByTable, HashMap<string, bool> foodNames, string[] order)
+    {
+        var tableNumber = int.Parse(order[1]);
+        var foodItem = order[FoodFieldIndex];
+
+        foodNames.Set(foodItem, true);
+
+        if (!countsByTable.TryGetValue(tableNumber, out var foodCounts))
+        {
+            foodCounts = new HashMap<string, int>();
+            countsByTable.Set(tableNumber, foodCounts);
+        }
+
+        foodCounts.TryGetValue(foodItem, out var count);
+        foodCounts.Set(foodItem, count + 1);
     }
 }

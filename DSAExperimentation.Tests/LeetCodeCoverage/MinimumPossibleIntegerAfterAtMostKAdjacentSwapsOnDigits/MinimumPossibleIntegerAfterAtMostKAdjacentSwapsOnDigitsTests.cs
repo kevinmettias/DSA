@@ -20,23 +20,46 @@ public sealed partial class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDig
 {
     [Fact]
     public void MinInteger_LeetCodeExampleOne_ReturnsSmallestReachableArrangement()
-        => Assert.Equal("1342", MinInteger("4321", k: 4));
+    {
+        var actual = MinInteger("4321", k: 4);
+
+        Assert.Equal("1342", actual);
+    }
 
     [Fact]
     public void MinInteger_LeetCodeExampleTwo_ReturnsSmallestReachableArrangement()
-        => Assert.Equal("010", MinInteger("100", k: 1));
+    {
+        var actual = MinInteger("100", k: 1);
+
+        Assert.Equal("010", actual);
+    }
 
     [Fact]
     public void MinInteger_AlreadyAscending_UnaffectedByAnySwapBudget()
-        => Assert.Equal("36789", MinInteger("36789", k: 1000));
+    {
+        var actual = MinInteger("36789", k: 1000);
+
+        Assert.Equal("36789", actual);
+    }
 
     [Fact]
     public void MinInteger_ZeroSwapBudget_ReturnsInputUnchanged()
-        => Assert.Equal("4321", MinInteger("4321", k: 0));
+    {
+        var actual = MinInteger("4321", k: 0);
+
+        Assert.Equal("4321", actual);
+    }
 
     private static string MinInteger(string num, int k)
     {
-        var n = num.Length;
+        var positionsByDigit = BuildPositionsByDigit(num);
+        var result = PlaceAllDigits(positionsByDigit, num.Length, k);
+
+        return new string(result);
+    }
+
+    private static RepoIntQueue[] BuildPositionsByDigit(string num)
+    {
         var positionsByDigit = new RepoIntQueue[10];
 
         for (var digit = 0; digit < 10; digit++)
@@ -44,39 +67,55 @@ public sealed partial class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDig
             positionsByDigit[digit] = new RepoIntQueue();
         }
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < num.Length; i++)
         {
             positionsByDigit[num[i] - '0'].Enqueue(i);
         }
 
+        return positionsByDigit;
+    }
+
+    private static char[] PlaceAllDigits(RepoIntQueue[] positionsByDigit, int n, int k)
+    {
         var stillUnplaced = new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, n).ToArray());
         var result = new char[n];
         var remainingSwaps = k;
+        var context = new PlacementContext(positionsByDigit, stillUnplaced, result);
 
         for (var i = 0; i < n; i++)
         {
-            for (var digit = 0; digit < 10; digit++)
-            {
-                if (!positionsByDigit[digit].TryPeek(out var position))
-                {
-                    continue;
-                }
-
-                var cost = position == 0 ? 0 : stillUnplaced.PrefixQuery(position - 1);
-
-                if (cost > remainingSwaps)
-                {
-                    continue;
-                }
-
-                remainingSwaps -= cost;
-                result[i] = (char)('0' + digit);
-                positionsByDigit[digit].TryDequeue(out _);
-                stillUnplaced.Add(position, -1);
-                break;
-            }
+            PlaceBestDigit(context, i, ref remainingSwaps);
         }
 
-        return new string(result);
+        return result;
     }
+
+    private static void PlaceBestDigit(PlacementContext context, int i, ref int remainingSwaps)
+    {
+        for (var digit = 0; digit < 10; digit++)
+        {
+            if (!context.PositionsByDigit[digit].TryPeek(out var position))
+            {
+                continue;
+            }
+
+            var cost = position == 0 ? 0 : context.StillUnplaced.PrefixQuery(position - 1);
+
+            if (cost > remainingSwaps)
+            {
+                continue;
+            }
+
+            remainingSwaps -= cost;
+            context.Result[i] = (char)('0' + digit);
+            context.PositionsByDigit[digit].TryDequeue(out _);
+            context.StillUnplaced.Add(position, -1);
+            break;
+        }
+    }
+
+    private readonly record struct PlacementContext(
+        RepoIntQueue[] PositionsByDigit,
+        FenwickTree<int, SumOperation<int>> StillUnplaced,
+        char[] Result);
 }

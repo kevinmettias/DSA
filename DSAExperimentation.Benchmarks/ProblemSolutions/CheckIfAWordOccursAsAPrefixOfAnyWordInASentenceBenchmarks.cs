@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks
 {
     private const string SearchWord = "zzzunmatched";
+    private const int RandomSeed = 1455; // LC problem number
+    private const int AlphabetSize = 26;
+    private const int MinWordLength = 3;
+    private const int MaxWordLengthExclusive = 8;
 
     [Params(200, 5_000)]
     public int WordCount;
@@ -21,9 +25,9 @@ public class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1455);
+        var random = new Random(RandomSeed);
         _words = Enumerable.Range(0, WordCount)
-            .Select(_ => new string((char)('a' + random.Next(0, 26)), random.Next(3, 8)))
+            .Select(_ => new string((char)('a' + random.Next(0, AlphabetSize)), random.Next(MinWordLength, MaxWordLengthExclusive)))
             .ToArray();
     }
 

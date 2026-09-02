@@ -48,27 +48,39 @@ public sealed class JumpGameVITests
     {
         var dp = new int[nums.Length];
         dp[0] = nums[0];
-        var window = new RepoDeque();
-        window.PushBack(0);
+        var window = new MaxResultWindow(dp, k);
+        window.Seed(0);
 
         for (var i = 1; i < nums.Length; i++)
         {
-            while (window.TryPeekFront(out var frontIndex) && frontIndex < i - k)
-            {
-                window.TryPopFront(out _);
-            }
-
-            window.TryPeekFront(out var maxIndex);
-            dp[i] = nums[i] + dp[maxIndex];
-
-            while (window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
+            window.Advance(i, nums[i]);
         }
 
         return dp[^1];
+    }
+
+    private sealed class MaxResultWindow(int[] dp, int k)
+    {
+        private readonly RepoDeque _window = new();
+
+        public void Seed(int index) => _window.PushBack(index);
+
+        public void Advance(int i, int value)
+        {
+            while (_window.TryPeekFront(out var frontIndex) && frontIndex < i - k)
+            {
+                _window.TryPopFront(out _);
+            }
+
+            _window.TryPeekFront(out var maxIndex);
+            dp[i] = value + dp[maxIndex];
+
+            while (_window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
+            {
+                _window.TryPopBack(out _);
+            }
+
+            _window.PushBack(i);
+        }
     }
 }

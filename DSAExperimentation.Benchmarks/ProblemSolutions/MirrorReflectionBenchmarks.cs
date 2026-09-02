@@ -12,6 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MirrorReflectionBenchmarks
 {
+    // Both methods reduce the answer to a parity check on the (reduced) crossing counts.
+    private const int ParityDivisor = 2;
+
+    // LC 858 receptor numbering: (p,0)=0, (p,q)=1, (0,q)=2 - the "top-left" corner.
+    private const int TopLeftReceptor = 2;
+
     [Params(50_000, 500_000)]
     public int P;
 
@@ -35,12 +41,12 @@ public class MirrorReflectionBenchmarks
         }
 
         var m = (long)k * q / p;
-        if (k % 2 == 1 && m % 2 == 0)
+        if (k % ParityDivisor == 1 && m % ParityDivisor == 0)
         {
             return 0;
         }
 
-        return k % 2 == 1 ? 1 : 2;
+        return k % ParityDivisor == 1 ? 1 : TopLeftReceptor;
     }
 
     private static int MirrorReflection(int p, int q)
@@ -49,12 +55,12 @@ public class MirrorReflectionBenchmarks
         var pPrime = p / g;
         var qPrime = q / g;
 
-        if (pPrime % 2 == 1 && qPrime % 2 == 0)
+        if (pPrime % ParityDivisor == 1 && qPrime % ParityDivisor == 0)
         {
             return 0;
         }
 
-        return pPrime % 2 == 1 ? 1 : 2;
+        return pPrime % ParityDivisor == 1 ? 1 : TopLeftReceptor;
     }
 
     private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);

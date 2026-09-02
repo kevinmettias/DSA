@@ -38,6 +38,13 @@ public sealed partial class ValidAnagramTests
             return false;
         }
 
+        var counts = BuildCharacterCounts(s);
+
+        return ConsumesAllCounts(t, counts);
+    }
+
+    private static HashMap<char, int> BuildCharacterCounts(string s)
+    {
         var counts = new HashMap<char, int>();
 
         foreach (var c in s)
@@ -46,6 +53,11 @@ public sealed partial class ValidAnagramTests
             counts.Set(c, count + 1);
         }
 
+        return counts;
+    }
+
+    private static bool ConsumesAllCounts(string t, HashMap<char, int> counts)
+    {
         foreach (var c in t)
         {
             if (!counts.TryGetValue(c, out var count) || count == 0)

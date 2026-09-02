@@ -16,6 +16,7 @@ public class FindTheShortestSuperstringBenchmarks
 {
     private const string Alphabet = "ACGT";
     private const int WordLength = 5;
+    private const int RandomSeed = 943; // LC problem number
 
     [Params(6, 9)]
     public int WordCount;
@@ -26,7 +27,7 @@ public class FindTheShortestSuperstringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(943);
+        var random = new Random(RandomSeed);
         var seen = new HashSet<string>();
         var words = new List<string>();
 
@@ -49,39 +50,48 @@ public class FindTheShortestSuperstringBenchmarks
         _overlap = BuildOverlaps(words);
     }
 
+    private readonly record struct PermutationState(int Size, bool[] Used, int[] Order);
+
     [Benchmark(Baseline = true)]
     public int BruteForcePermutations()
     {
-        var n = WordCount;
-        var used = new bool[n];
-        var order = new int[n];
-        var bestOverlap = 0;
+        var state = new PermutationState(WordCount, new bool[WordCount], new int[WordCount]);
+        var bestOverlap = PermuteBestOverlap(0, 0, state);
+        return _totalLength - bestOverlap;
+    }
 
-        void Permute(int depth, int overlapSoFar)
+    private int PermuteBestOverlap(int depth, int overlapSoFar, PermutationState state)
+    {
+        if (depth == state.Size)
         {
-            if (depth == n)
-            {
-                bestOverlap = Math.Max(bestOverlap, overlapSoFar);
-                return;
-            }
-
-            for (var next = 0; next < n; next++)
-            {
-                if (used[next])
-                {
-                    continue;
-                }
-
-                used[next] = true;
-                order[depth] = next;
-                var added = depth == 0 ? 0 : _overlap[order[depth - 1], next];
-                Permute(depth + 1, overlapSoFar + added);
-                used[next] = false;
-            }
+            return overlapSoFar;
         }
 
-        Permute(0, 0);
-        return _totalLength - bestOverlap;
+        var best = 0;
+
+        for (var next = 0; next < state.Size; next++)
+        {
+            if (state.Used[next])
+            {
+                continue;
+            }
+
+            var branchBest = TryCandidate(next, depth, overlapSoFar, state);
+            best = Math.Max(best, branchBest);
+        }
+
+        return best;
+    }
+
+    private int TryCandidate(int next, int depth, int overlapSoFar, PermutationState state)
+    {
+        state.Used[next] = true;
+        state.Order[depth] = next;
+        var added = depth == 0 ? 0 : _overlap[state.Order[depth - 1], next];
+        var branchBest = PermuteBestOverlap(depth + 1, overlapSoFar + added, state);
+        state.Used[next] = false;
+
+        return branchBest;
     }
 
     [Benchmark]
@@ -89,37 +99,8 @@ public class FindTheShortestSuperstringBenchmarks
     {
         var n = WordCount;
         var fullMask = (1 << n) - 1;
-
-        (int Best, int Prev) Recurrence(
-            (int Mask, int Last) state,
-            Func<(int Mask, int Last), (int Best, int Prev)> best)
-        {
-            var remaining = state.Mask & ~(1 << state.Last);
-            if (remaining == 0)
-            {
-                return (0, -1);
-            }
-
-            var result = (Best: -1, Prev: -1);
-            for (var candidate = 0; candidate < n; candidate++)
-            {
-                if ((remaining & (1 << candidate)) == 0)
-                {
-                    continue;
-                }
-
-                var (subBest, _) = best((remaining, candidate));
-                var total = subBest + _overlap[candidate, state.Last];
-                if (total > result.Best)
-                {
-                    result = (total, candidate);
-                }
-            }
-
-            return result;
-        }
-
         var bestOverlap = 0;
+
         for (var last = 0; last < n; last++)
         {
             var (total, _) = Memoizer.Memoize<(int Mask, int Last), (int Best, int Prev)>((fullMask, last), Recurrence);
@@ -127,6 +108,45 @@ public class FindTheShortestSuperstringBenchmarks
         }
 
         return _totalLength - bestOverlap;
+    }
+
+    private readonly record struct CandidateContext(
+        int Remaining,
+        int LastWord,
+        Func<(int Mask, int Last), (int Best, int Prev)> Best);
+
+    private (int Best, int Prev) Recurrence(
+        (int Mask, int Last) state,
+        Func<(int Mask, int Last), (int Best, int Prev)> best)
+    {
+        var remaining = state.Mask & ~(1 << state.Last);
+        if (remaining == 0)
+        {
+            return (0, -1);
+        }
+
+        var context = new CandidateContext(remaining, state.Last, best);
+        var result = (Best: -1, Prev: -1);
+
+        for (var candidate = 0; candidate < WordCount; candidate++)
+        {
+            result = ConsiderCandidate(candidate, context, result);
+        }
+
+        return result;
+    }
+
+    private (int Best, int Prev) ConsiderCandidate(int candidate, CandidateContext context, (int Best, int Prev) currentResult)
+    {
+        if ((context.Remaining & (1 << candidate)) == 0)
+        {
+            return currentResult;
+        }
+
+        var (subBest, _) = context.Best((context.Remaining, candidate));
+        var total = subBest + _overlap[candidate, context.LastWord];
+
+        return total > currentResult.Best ? (total, candidate) : currentResult;
     }
 
     private static int[,] BuildOverlaps(List<string> words)
@@ -154,7 +174,9 @@ public class FindTheShortestSuperstringBenchmarks
 
         for (var len = max; len > 0; len--)
         {
-            if (left.AsSpan(left.Length - len).SequenceEqual(right.AsSpan(0, len)))
+            var candidateSuffix = left.AsSpan(left.Length - len);
+            var candidatePrefix = right.AsSpan(0, len);
+            if (candidateSuffix.SequenceEqual(candidatePrefix))
             {
                 return len;
             }

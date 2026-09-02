@@ -17,7 +17,10 @@ public sealed partial class JumpGameIIITests
     [InlineData(new[] { 4, 2, 3, 0, 3, 1, 2 }, 0, true)]
     [InlineData(new[] { 3, 0, 2, 1, 2 }, 2, false)]
     public void CanReach_LeetCodeExamples_ReturnsExpected(int[] arr, int start, bool expected)
-        => Assert.Equal(expected, CanReach(arr, start));
+    {
+        var actual = CanReach(arr, start);
+        Assert.Equal(expected, actual);
+    }
 
     private static bool CanReach(int[] arr, int start)
     {

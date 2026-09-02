@@ -81,7 +81,8 @@ public class MaximumLengthOfRepeatedSubarrayBenchmarks
             var (_, bestRight) = explore((i + 1, j));
             var (_, bestDown) = explore((i, j + 1));
 
-            return (matchLen, Math.Max(matchLen, Math.Max(bestRight, bestDown)));
+            var bestFromNeighbors = Math.Max(bestRight, bestDown);
+            return (matchLen, Math.Max(matchLen, bestFromNeighbors));
         }
     }
 }

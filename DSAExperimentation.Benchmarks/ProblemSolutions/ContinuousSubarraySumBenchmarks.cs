@@ -16,6 +16,13 @@ public class ContinuousSubarraySumBenchmarks
 {
     private const int K = 1_000_003;
 
+    // Chosen so K comfortably exceeds any possible total sum of the generated
+    // values, keeping every prefix sum's remainder equal to the prefix sum itself.
+    private const int MaxGeneratedValueExclusive = 100;
+
+    // A qualifying subarray needs at least two elements (start != end).
+    private const int MinimumSubarrayLength = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -25,7 +32,7 @@ public class ContinuousSubarraySumBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxGeneratedValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -50,9 +57,19 @@ public class ContinuousSubarraySumBenchmarks
     [Benchmark]
     public bool HashMapPrefixRemainder()
     {
+        var firstIndexByRemainder = CreateSeededRemainderIndex();
+        return HasQualifyingRemainderPair(firstIndexByRemainder);
+    }
+
+    private static HashMap<int, int> CreateSeededRemainderIndex()
+    {
         var firstIndexByRemainder = new HashMap<int, int>();
         firstIndexByRemainder.Set(0, -1);
+        return firstIndexByRemainder;
+    }
 
+    private bool HasQualifyingRemainderPair(HashMap<int, int> firstIndexByRemainder)
+    {
         var prefixSum = 0;
         for (var i = 0; i < _values.Length; i++)
         {
@@ -61,7 +78,7 @@ public class ContinuousSubarraySumBenchmarks
 
             if (firstIndexByRemainder.TryGetValue(remainder, out var firstIndex))
             {
-                if (i - firstIndex >= 2)
+                if (i - firstIndex >= MinimumSubarrayLength)
                 {
                     return true;
                 }

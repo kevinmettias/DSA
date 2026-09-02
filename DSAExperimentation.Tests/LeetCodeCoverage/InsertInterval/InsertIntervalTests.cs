@@ -1,26 +1,29 @@
-﻿using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.InsertInterval;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertInterval;
 
-// LeetCode 57. Insert Interval: IntervalSet<int> already maintains the sorted,
-// merged closed-interval invariant this problem asks for after one Add.
-public sealed partial class InsertIntervalTests
+// Harness only. Both strategies are InsertIntervalSolution's; IntervalSet<TKey>'s
+// own merge invariant is covered directly by
+// DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs - this
+// file just pins the two strategies to LeetCode's published examples.
+public sealed class InsertIntervalTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 3, 6, 9 }, new[] { 2, 5 }, new[] { 1, 5, 6, 9 })]
-    [InlineData(new[] { 1, 2, 3, 5, 6, 7, 8, 10, 12, 16 }, new[] { 4, 8 }, new[] { 1, 2, 3, 10, 12, 16 })]
-    public void Insert_LeetCodeExamples_ReturnsMergedIntervals(int[] flatIntervals, int[] newInterval, int[] expectedFlat)
-        => Assert.Equal(expectedFlat, Insert(flatIntervals, newInterval).SelectMany(x => new[] { x.Start, x.End }).ToArray());
-
-    private static List<(int Start, int End)> Insert(int[] flatIntervals, int[] newInterval)
-    {
-        var set = new IntervalSet<int>();
-        for (var i = 0; i < flatIntervals.Length; i += 2)
+    public static TheoryData<(int Start, int End)[], (int Start, int End), (int Start, int End)[]> Examples =>
+        new()
         {
-            set.Add(flatIntervals[i], flatIntervals[i + 1]);
-        }
+            { [(1, 3), (6, 9)], (2, 5), [(1, 5), (6, 9)] },
+            { [(1, 2), (3, 5), (6, 7), (8, 10), (12, 16)], (4, 8), [(1, 2), (3, 10), (12, 16)] },
+        };
 
-        set.Add(newInterval[0], newInterval[1]);
-        return Enumerable.Range(0, set.Count).Select(set.Get).ToList();
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void InsertByListSortAndMerge_LeetCodeExamples_ReturnsMergedIntervals(
+        (int Start, int End)[] intervals, (int Start, int End) newInterval, (int Start, int End)[] expected) =>
+        Assert.Equal(expected, InsertIntervalSolution.InsertByListSortAndMerge(intervals, newInterval));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void InsertByIntervalSet_LeetCodeExamples_ReturnsMergedIntervals(
+        (int Start, int End)[] intervals, (int Start, int End) newInterval, (int Start, int End)[] expected) =>
+        Assert.Equal(expected, InsertIntervalSolution.InsertByIntervalSet(intervals, newInterval));
 }

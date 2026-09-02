@@ -12,6 +12,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindMedianFromDataStreamBenchmarks
 {
+    // LC problem number, reused as the fixed benchmark-data seed.
+    private const int RandomSeed = 295;
+
+    private const int MaxStreamValue = 1_000_000;
+
+    // Splits a sorted run in half to locate the median position(s).
+    private const int MedianSplit = 2;
+
+    private const double MedianAverageDivisor = 2.0;
+
     [Params(100, 1_000)]
     public int StreamLength;
 
@@ -20,8 +30,8 @@ public class FindMedianFromDataStreamBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(295);
-        _stream = Enumerable.Range(0, StreamLength).Select(_ => random.Next(1, 1_000_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _stream = Enumerable.Range(0, StreamLength).Select(_ => random.Next(1, MaxStreamValue)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -36,8 +46,10 @@ public class FindMedianFromDataStreamBenchmarks
             var sorted = values.ToArray();
             Array.Sort(sorted);
 
-            var mid = sorted.Length / 2;
-            lastMedian = sorted.Length % 2 == 0 ? (sorted[mid - 1] + sorted[mid]) / 2.0 : sorted[mid];
+            var mid = sorted.Length / MedianSplit;
+            lastMedian = sorted.Length % MedianSplit == 0
+                ? (sorted[mid - 1] + sorted[mid]) / MedianAverageDivisor
+                : sorted[mid];
         }
 
         return lastMedian;
@@ -52,33 +64,48 @@ public class FindMedianFromDataStreamBenchmarks
 
         foreach (var value in _stream)
         {
-            if (lowerHalf.Count == 0 || value <= Peek(lowerHalf))
-            {
-                lowerHalf.Push(value);
-            }
-            else
-            {
-                upperHalf.Push(value);
-            }
-
-            if (lowerHalf.Count > upperHalf.Count + 1)
-            {
-                lowerHalf.TryPop(out var moved);
-                upperHalf.Push(moved);
-            }
-            else if (upperHalf.Count > lowerHalf.Count)
-            {
-                upperHalf.TryPop(out var moved);
-                lowerHalf.Push(moved);
-            }
-
-            lastMedian = lowerHalf.Count > upperHalf.Count
-                ? Peek(lowerHalf)
-                : (Peek(lowerHalf) + Peek(upperHalf)) / 2.0;
+            PushBalanced(lowerHalf, upperHalf, value);
+            lastMedian = CurrentMedian(lowerHalf, upperHalf);
         }
 
         return lastMedian;
     }
+
+    private static void PushBalanced(
+        Heap<int, MaxHeapOrder<int>> lowerHalf, Heap<int, MinHeapOrder<int>> upperHalf, int value)
+    {
+        if (lowerHalf.Count == 0 || value <= Peek(lowerHalf))
+        {
+            lowerHalf.Push(value);
+        }
+        else
+        {
+            upperHalf.Push(value);
+        }
+
+        Rebalance(lowerHalf, upperHalf);
+    }
+
+    private static void Rebalance(
+        Heap<int, MaxHeapOrder<int>> lowerHalf, Heap<int, MinHeapOrder<int>> upperHalf)
+    {
+        if (lowerHalf.Count > upperHalf.Count + 1)
+        {
+            lowerHalf.TryPop(out var moved);
+            upperHalf.Push(moved);
+        }
+        else if (upperHalf.Count > lowerHalf.Count)
+        {
+            upperHalf.TryPop(out var moved);
+            lowerHalf.Push(moved);
+        }
+    }
+
+    private static double CurrentMedian(
+        Heap<int, MaxHeapOrder<int>> lowerHalf, Heap<int, MinHeapOrder<int>> upperHalf) =>
+        lowerHalf.Count > upperHalf.Count
+            ? Peek(lowerHalf)
+            : (Peek(lowerHalf) + Peek(upperHalf)) / MedianAverageDivisor;
 
     private static int Peek<TOrder>(Heap<int, TOrder> heap)
         where TOrder : struct, IHeapOrder<int>

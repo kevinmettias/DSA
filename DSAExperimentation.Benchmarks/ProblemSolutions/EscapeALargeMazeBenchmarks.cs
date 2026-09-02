@@ -18,6 +18,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class EscapeALargeMazeBenchmarks
 {
     private const int BlockedCount = 40;
+    private const int RandomSeed = 1036; // LC problem number
+    private const int BoardMargin = 2;
+    private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     [Params(500, 2_000)]
@@ -27,10 +30,12 @@ public class EscapeALargeMazeBenchmarks
     private (int Row, int Col) _source;
     private (int Row, int Col) _target;
 
+    private readonly record struct FloodFillState(bool[,] Blocked, bool[,] Visited, Stack<(int Row, int Col)> Stack);
+
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1036);
+        var random = new Random(RandomSeed);
         var blockedSet = new Set<(int Row, int Col)>();
         var blockedList = new List<(int Row, int Col)>();
 
@@ -38,7 +43,7 @@ public class EscapeALargeMazeBenchmarks
         // is ever sealed in - both algorithms below are expected to agree: true.
         while (blockedList.Count < BlockedCount)
         {
-            var cell = (Row: random.Next(2, BoardSize - 2), Col: random.Next(2, BoardSize - 2));
+            var cell = (Row: random.Next(BoardMargin, BoardSize - BoardMargin), Col: random.Next(BoardMargin, BoardSize - BoardMargin));
 
             if (blockedSet.TryAdd(cell))
             {
@@ -66,31 +71,36 @@ public class EscapeALargeMazeBenchmarks
         stack.Push(_source);
         visited[_source.Row, _source.Col] = true;
 
+        var state = new FloodFillState(blocked, visited, stack);
+
         while (stack.Count > 0)
         {
-            var (row, col) = stack.Pop();
-
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var nextRow = row + dRow;
-                var nextCol = col + dCol;
-
-                if (nextRow < 0 || nextRow >= BoardSize || nextCol < 0 || nextCol >= BoardSize)
-                {
-                    continue;
-                }
-
-                if (visited[nextRow, nextCol] || blocked[nextRow, nextCol])
-                {
-                    continue;
-                }
-
-                visited[nextRow, nextCol] = true;
-                stack.Push((nextRow, nextCol));
-            }
+            VisitNeighbors(state, stack.Pop());
         }
 
         return visited[_target.Row, _target.Col];
+    }
+
+    private void VisitNeighbors(FloodFillState state, (int Row, int Col) cell)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var nextRow = cell.Row + dRow;
+            var nextCol = cell.Col + dCol;
+
+            if (!InBounds(nextRow, nextCol))
+            {
+                continue;
+            }
+
+            if (state.Visited[nextRow, nextCol] || state.Blocked[nextRow, nextCol])
+            {
+                continue;
+            }
+
+            state.Visited[nextRow, nextCol] = true;
+            state.Stack.Push((nextRow, nextCol));
+        }
     }
 
     [Benchmark]
@@ -103,7 +113,7 @@ public class EscapeALargeMazeBenchmarks
             blocked.TryAdd(cell);
         }
 
-        var threshold = BlockedCount * (BlockedCount - 1) / 2;
+        var threshold = BlockedCount * (BlockedCount - 1) / PairCountDivisor;
 
         return CanEscapeOrReach(_source, _target, blocked, threshold)
             && CanEscapeOrReach(_target, _source, blocked, threshold);
@@ -127,22 +137,32 @@ public class EscapeALargeMazeBenchmarks
                 yield break;
             }
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var next in UnblockedNeighbors(cell, blocked))
             {
-                var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-                if (next.Row < 0 || next.Row >= BoardSize || next.Col < 0 || next.Col >= BoardSize)
-                {
-                    continue;
-                }
-
-                if (blocked.Has(next))
-                {
-                    continue;
-                }
-
                 yield return next;
             }
         }
     }
+
+    private IEnumerable<(int Row, int Col)> UnblockedNeighbors((int Row, int Col) cell, Set<(int Row, int Col)> blocked)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
+
+            if (!InBounds(next.Row, next.Col))
+            {
+                continue;
+            }
+
+            if (blocked.Has(next))
+            {
+                continue;
+            }
+
+            yield return next;
+        }
+    }
+
+    private bool InBounds(int row, int col) => row >= 0 && row < BoardSize && col >= 0 && col < BoardSize;
 }

@@ -11,6 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LastStoneWeightIIBenchmarks
 {
+    private const int RandomSeed = 1049; // LC problem number
+    private const int StoneWeightUpperBound = 100;
+    private const int HalfDivisor = 2;
+    private const int PartitionDifferenceMultiplier = 2;
+
     [Params(30, 200)]
     public int Length;
 
@@ -21,10 +26,10 @@ public class LastStoneWeightIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1049);
-        _stones = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _stones = Enumerable.Range(0, Length).Select(_ => random.Next(1, StoneWeightUpperBound)).ToArray();
         _total = _stones.Sum();
-        _half = _total / 2;
+        _half = _total / HalfDivisor;
     }
 
     [Benchmark(Baseline = true)]
@@ -40,14 +45,14 @@ public class LastStoneWeightIIBenchmarks
             }
         }
 
-        return _total - 2 * dp[_half];
+        return _total - PartitionDifferenceMultiplier * dp[_half];
     }
 
     [Benchmark]
     public int Memoized()
     {
         var closestToHalf = Memoizer.Memoize<(int Index, int Capacity), int>((0, _half), BestReachableSum);
-        return _total - 2 * closestToHalf;
+        return _total - PartitionDifferenceMultiplier * closestToHalf;
 
         int BestReachableSum((int Index, int Capacity) state, Func<(int Index, int Capacity), int> bestReachableSum)
         {

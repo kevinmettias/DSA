@@ -16,6 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GraphConnectivityWithThresholdBenchmarks
 {
+    private const int ThresholdDivisor = 20;
+    private const int RandomSeed = 1627; // LC problem number
+    private const int FirstMultipleFactor = 2;
+
     [Params(500, 5_000)]
     public int CityCount;
 
@@ -25,59 +29,76 @@ public class GraphConnectivityWithThresholdBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _threshold = CityCount / 20;
+        _threshold = CityCount / ThresholdDivisor;
 
-        var random = new Random(1627);
+        var random = new Random(RandomSeed);
         _queries = Enumerable.Range(0, CityCount)
             .Select(_ => new[] { random.Next(1, CityCount + 1), random.Next(1, CityCount + 1) })
             .ToArray();
     }
 
-    [Benchmark(Baseline = true)]
-    public bool[] NaiveUnionFind()
+    private static int[] BuildIdentityParents(int cityCount)
     {
-        var parent = new int[CityCount + 1];
-        for (var i = 0; i <= CityCount; i++)
+        var parent = new int[cityCount + 1];
+
+        for (var i = 0; i <= cityCount; i++)
         {
             parent[i] = i;
         }
 
-        int Find(int x)
-        {
-            while (parent[x] != x)
-            {
-                x = parent[x];
-            }
+        return parent;
+    }
 
-            return x;
+    private static int Find(int[] parent, int x)
+    {
+        while (parent[x] != x)
+        {
+            x = parent[x];
         }
 
-        void Union(int a, int b)
+        return x;
+    }
+
+    private static void Union(int[] parent, int a, int b)
+    {
+        var rootA = Find(parent, a);
+        var rootB = Find(parent, b);
+
+        if (rootA != rootB)
         {
-            var rootA = Find(a);
-            var rootB = Find(b);
-
-            if (rootA != rootB)
-            {
-                parent[rootA] = rootB;
-            }
+            parent[rootA] = rootB;
         }
+    }
 
+    private void UnionByDivisors(int[] parent)
+    {
         for (var divisor = _threshold + 1; divisor <= CityCount; divisor++)
         {
-            for (var multiple = 2 * divisor; multiple <= CityCount; multiple += divisor)
+            for (var multiple = FirstMultipleFactor * divisor; multiple <= CityCount; multiple += divisor)
             {
-                Union(divisor, multiple);
+                Union(parent, divisor, multiple);
             }
         }
+    }
 
+    private bool[] ComputeQueryResults(int[] parent)
+    {
         var results = new bool[_queries.Length];
+
         for (var i = 0; i < _queries.Length; i++)
         {
-            results[i] = Find(_queries[i][0]) == Find(_queries[i][1]);
+            results[i] = Find(parent, _queries[i][0]) == Find(parent, _queries[i][1]);
         }
 
         return results;
+    }
+
+    [Benchmark(Baseline = true)]
+    public bool[] NaiveUnionFind()
+    {
+        var parent = BuildIdentityParents(CityCount);
+        UnionByDivisors(parent);
+        return ComputeQueryResults(parent);
     }
 
     [Benchmark]
@@ -87,7 +108,7 @@ public class GraphConnectivityWithThresholdBenchmarks
 
         for (var divisor = _threshold + 1; divisor <= CityCount; divisor++)
         {
-            for (var multiple = 2 * divisor; multiple <= CityCount; multiple += divisor)
+            for (var multiple = FirstMultipleFactor * divisor; multiple <= CityCount; multiple += divisor)
             {
                 components.Union(divisor, multiple);
             }

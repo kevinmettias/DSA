@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SplitArrayWithSameAverageBenchmarks
 {
+    // LC problem number, used as the RNG seed.
+    private const int RandomSeed = 805;
+    private const int MaxValueExclusive = 30;
+    private const int MaxSubsetSizeDivisor = 2;
+
     [Params(16, 24)]
     public int Length;
 
@@ -25,8 +30,8 @@ public class SplitArrayWithSameAverageBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(805);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 30)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -37,18 +42,7 @@ public class SplitArrayWithSameAverageBenchmarks
 
         for (var mask = 1; mask < (1 << n) - 1; mask++)
         {
-            var count = 0;
-            var sum = 0;
-            for (var i = 0; i < n; i++)
-            {
-                if ((mask & (1 << i)) != 0)
-                {
-                    count++;
-                    sum += _nums[i];
-                }
-            }
-
-            if (sum * n == total * count)
+            if (MaskSplitsEvenly(mask, n, total))
             {
                 return true;
             }
@@ -63,36 +57,62 @@ public class SplitArrayWithSameAverageBenchmarks
         var n = _nums.Length;
         var total = _nums.Sum();
 
-        for (var k = 1; k <= n / 2; k++)
+        for (var k = 1; k <= n / MaxSubsetSizeDivisor; k++)
         {
-            if (total * k % n != 0)
-            {
-                continue;
-            }
-
-            var targetSum = total * k / n;
-            if (Memoizer.Memoize<(int Index, int Count, int Sum), bool>((0, k, targetSum), CanReach))
+            if (HasSubsetOfSizeWithTargetSum(n, total, k))
             {
                 return true;
             }
         }
 
         return false;
+    }
 
-        bool CanReach((int Index, int Count, int Sum) state, Func<(int Index, int Count, int Sum), bool> canReach)
+    // Splits _nums by `mask` into the selected subset (bits set) and the rest, and
+    // checks whether the selected subset's average equals the whole array's.
+    private bool MaskSplitsEvenly(int mask, int n, int total)
+    {
+        var count = 0;
+        var sum = 0;
+
+        for (var i = 0; i < n; i++)
         {
-            if (state.Count == 0)
+            if ((mask & (1 << i)) != 0)
             {
-                return state.Sum == 0;
+                count++;
+                sum += _nums[i];
             }
-
-            if (state.Index == _nums.Length || state.Sum < 0)
-            {
-                return false;
-            }
-
-            return canReach((state.Index + 1, state.Count, state.Sum))
-                || canReach((state.Index + 1, state.Count - 1, state.Sum - _nums[state.Index]));
         }
+
+        return sum * n == total * count;
+    }
+
+    // For one candidate subset size k, checks whether some size-k subset sums to the
+    // exact target that would make its average equal the whole array's.
+    private bool HasSubsetOfSizeWithTargetSum(int n, int total, int k)
+    {
+        if (total * k % n != 0)
+        {
+            return false;
+        }
+
+        var targetSum = total * k / n;
+        return Memoizer.Memoize<(int Index, int Count, int Sum), bool>((0, k, targetSum), CanReach);
+    }
+
+    private bool CanReach((int Index, int Count, int Sum) state, Func<(int Index, int Count, int Sum), bool> canReach)
+    {
+        if (state.Count == 0)
+        {
+            return state.Sum == 0;
+        }
+
+        if (state.Index == _nums.Length || state.Sum < 0)
+        {
+            return false;
+        }
+
+        return canReach((state.Index + 1, state.Count, state.Sum))
+            || canReach((state.Index + 1, state.Count - 1, state.Sum - _nums[state.Index]));
     }
 }

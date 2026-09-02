@@ -10,6 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PartitionEqualSubsetSumBenchmarks
 {
+    private const int RandomSeed = 416; // LC problem number
+    private const int MaxElementValue = 100;
+    private const int SubsetSumDivisor = 2;
+
     [Params(50, 400)]
     public int Length;
 
@@ -19,9 +23,9 @@ public class PartitionEqualSubsetSumBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(416);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100)).ToArray();
-        _half = _nums.Sum() / 2;
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
+        _half = _nums.Sum() / SubsetSumDivisor;
     }
 
     [Benchmark(Baseline = true)]

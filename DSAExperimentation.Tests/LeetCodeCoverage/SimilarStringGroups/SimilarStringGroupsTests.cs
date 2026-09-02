@@ -64,35 +64,62 @@ public sealed partial class SimilarStringGroupsTests
 
     private static bool IsSimilar(string first, string second)
     {
-        var mismatchCount = 0;
-        var firstMismatch = -1;
-        var secondMismatch = -1;
+        var (withinLimit, mismatchCount, firstMismatch, secondMismatch) = CountMismatches(first, second);
 
-        for (var i = 0; i < first.Length; i++)
+        if (!withinLimit)
         {
-            if (first[i] == second[i])
-            {
-                continue;
-            }
-
-            mismatchCount++;
-
-            if (mismatchCount > 2)
-            {
-                return false;
-            }
-
-            if (mismatchCount == 1)
-            {
-                firstMismatch = i;
-            }
-            else
-            {
-                secondMismatch = i;
-            }
+            return false;
         }
 
         return mismatchCount == 0
             || (mismatchCount == 2 && first[firstMismatch] == second[secondMismatch] && first[secondMismatch] == second[firstMismatch]);
+    }
+
+    private static (bool WithinLimit, int MismatchCount, int FirstMismatch, int SecondMismatch) CountMismatches(string first, string second)
+    {
+        var state = new MismatchState { Count = 0, First = -1, Second = -1 };
+
+        for (var i = 0; i < first.Length; i++)
+        {
+            if (!ProcessCharacter(first, second, i, ref state))
+            {
+                return (false, state.Count, state.First, state.Second);
+            }
+        }
+
+        return (true, state.Count, state.First, state.Second);
+    }
+
+    private static bool ProcessCharacter(string first, string second, int i, ref MismatchState state)
+    {
+        if (first[i] == second[i])
+        {
+            return true;
+        }
+
+        state.Count++;
+
+        if (state.Count > 2)
+        {
+            return false;
+        }
+
+        if (state.Count == 1)
+        {
+            state.First = i;
+        }
+        else
+        {
+            state.Second = i;
+        }
+
+        return true;
+    }
+
+    private struct MismatchState
+    {
+        public int Count;
+        public int First;
+        public int Second;
     }
 }

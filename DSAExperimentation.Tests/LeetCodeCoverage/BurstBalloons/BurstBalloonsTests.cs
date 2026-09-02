@@ -19,30 +19,36 @@ public sealed partial class BurstBalloonsTests
 
     private static int MaxCoins(int[] nums)
     {
+        var padded = BuildPaddedBoundary(nums);
+        return Memoizer.Memoize<(int Left, int Right), int>(
+            (0, padded.Length - 1), (range, coins) => CoinsBetween(range, coins, padded));
+    }
+
+    private static int[] BuildPaddedBoundary(int[] nums)
+    {
         var padded = new int[nums.Length + 2];
         padded[0] = 1;
         padded[^1] = 1;
         Array.Copy(nums, 0, padded, 1, nums.Length);
+        return padded;
+    }
 
-        return Memoizer.Memoize<(int Left, int Right), int>((0, padded.Length - 1), CoinsBetween);
-
-        int CoinsBetween((int Left, int Right) range, Func<(int Left, int Right), int> coins)
+    private static int CoinsBetween((int Left, int Right) range, Func<(int Left, int Right), int> coins, int[] padded)
+    {
+        var (left, right) = range;
+        if (right - left <= 1)
         {
-            var (left, right) = range;
-            if (right - left <= 1)
-            {
-                return 0;
-            }
-
-            var best = 0;
-            for (var last = left + 1; last < right; last++)
-            {
-                var gained = (padded[left] * padded[last] * padded[right])
-                    + coins((left, last)) + coins((last, right));
-                best = Math.Max(best, gained);
-            }
-
-            return best;
+            return 0;
         }
+
+        var best = 0;
+        for (var last = left + 1; last < right; last++)
+        {
+            var gained = (padded[left] * padded[last] * padded[right])
+                + coins((left, last)) + coins((last, right));
+            best = Math.Max(best, gained);
+        }
+
+        return best;
     }
 }

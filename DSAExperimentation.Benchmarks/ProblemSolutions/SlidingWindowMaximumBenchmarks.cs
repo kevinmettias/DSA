@@ -12,6 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SlidingWindowMaximumBenchmarks
 {
     private const int WindowSize = 50;
+    private const int ValueBound = 1_000_000;
 
     [Params(2_000, 20_000)]
     public int Length;
@@ -22,7 +23,7 @@ public class SlidingWindowMaximumBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-1_000_000, 1_000_000)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -51,25 +52,32 @@ public class SlidingWindowMaximumBenchmarks
 
         for (var i = 0; i < _values.Length; i++)
         {
-            while (window.TryPeekBack(out var backIndex) && _values[backIndex] <= _values[i])
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
-
-            if (window.TryPeekFront(out var frontIndex) && frontIndex <= i - WindowSize)
-            {
-                window.TryPopFront(out _);
-            }
-
-            if (i >= WindowSize - 1)
-            {
-                window.TryPeekFront(out var maxIndex);
-                sum += _values[maxIndex];
-            }
+            sum += WindowContributionForIndex(window, i);
         }
 
         return sum;
+    }
+
+    private long WindowContributionForIndex(RepoDeque window, int i)
+    {
+        while (window.TryPeekBack(out var backIndex) && _values[backIndex] <= _values[i])
+        {
+            window.TryPopBack(out _);
+        }
+
+        window.PushBack(i);
+
+        if (window.TryPeekFront(out var frontIndex) && frontIndex <= i - WindowSize)
+        {
+            window.TryPopFront(out _);
+        }
+
+        if (i >= WindowSize - 1)
+        {
+            window.TryPeekFront(out var maxIndex);
+            return _values[maxIndex];
+        }
+
+        return 0;
     }
 }

@@ -17,7 +17,9 @@ public sealed partial class AssignCookiesTests
         int[] greed = [1, 2, 3];
         int[] sizes = [1, 1];
 
-        Assert.Equal(1, FindContentChildren(greed, sizes));
+        var actual = FindContentChildren(greed, sizes);
+
+        Assert.Equal(1, actual);
     }
 
     [Fact]
@@ -26,7 +28,9 @@ public sealed partial class AssignCookiesTests
         int[] greed = [1, 2];
         int[] sizes = [1, 2, 3];
 
-        Assert.Equal(2, FindContentChildren(greed, sizes));
+        var actual = FindContentChildren(greed, sizes);
+
+        Assert.Equal(2, actual);
     }
 
     [Fact]
@@ -35,7 +39,9 @@ public sealed partial class AssignCookiesTests
         int[] greed = [5, 9];
         int[] sizes = [1, 2, 3];
 
-        Assert.Equal(0, FindContentChildren(greed, sizes));
+        var actual = FindContentChildren(greed, sizes);
+
+        Assert.Equal(0, actual);
     }
 
     private static int FindContentChildren(int[] greed, int[] sizes)

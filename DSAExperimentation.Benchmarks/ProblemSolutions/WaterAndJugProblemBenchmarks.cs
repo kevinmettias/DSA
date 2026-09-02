@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class WaterAndJugProblemBenchmarks
 {
+    private const int JugYCapacityDivisor = 2;
+
     [Params(40, 300)]
     public int Capacity;
 
@@ -27,7 +29,7 @@ public class WaterAndJugProblemBenchmarks
     public void Setup()
     {
         _jugX = Capacity;
-        _jugY = Capacity / 2;
+        _jugY = Capacity / JugYCapacityDivisor;
         _target = _jugX + _jugY - 1;
     }
 
@@ -45,22 +47,33 @@ public class WaterAndJugProblemBenchmarks
 
         while (pending.TryPop(out var state))
         {
-            if (!visited.Add(state))
-            {
-                continue;
-            }
-
-            if (state.X + state.Y == _target)
+            if (ProcessState(state, visited, pending))
             {
                 return true;
             }
+        }
 
-            foreach (var next in Successors(state))
+        return false;
+    }
+
+    private bool ProcessState(
+        (int X, int Y) state, HashSet<(int X, int Y)> visited, Stack<(int X, int Y)> pending)
+    {
+        if (!visited.Add(state))
+        {
+            return false;
+        }
+
+        if (state.X + state.Y == _target)
+        {
+            return true;
+        }
+
+        foreach (var next in Successors(state))
+        {
+            if (!visited.Contains(next))
             {
-                if (!visited.Contains(next))
-                {
-                    pending.Push(next);
-                }
+                pending.Push(next);
             }
         }
 

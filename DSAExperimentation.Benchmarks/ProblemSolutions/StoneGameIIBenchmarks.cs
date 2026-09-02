@@ -17,6 +17,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StoneGameIIBenchmarks
 {
+    // LC problem number, used as the deterministic seed for pile generation.
+    private const int RandomSeed = 1140;
+
+    // Exclusive upper bound for a pile's stone count.
+    private const int MaxPileSize = 100;
+
+    // LC1140's rule: a turn may take between 1 and 2*M piles.
+    private const int MaxTakeMultiplier = 2;
+
     [Params(10, 14)]
     public int PileCount;
 
@@ -25,8 +34,8 @@ public class StoneGameIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1140);
-        var piles = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        var piles = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, MaxPileSize)).ToArray();
 
         _suffixSum = new int[PileCount + 1];
         for (var i = PileCount - 1; i >= 0; i--)
@@ -40,15 +49,16 @@ public class StoneGameIIBenchmarks
 
     private int Best(int index, int m)
     {
-        if (index + (2 * m) >= PileCount)
+        if (index + (MaxTakeMultiplier * m) >= PileCount)
         {
             return _suffixSum[index];
         }
 
         var result = 0;
-        for (var x = 1; x <= 2 * m; x++)
+        for (var x = 1; x <= MaxTakeMultiplier * m; x++)
         {
-            result = Math.Max(result, _suffixSum[index] - Best(index + x, Math.Max(m, x)));
+            var nextM = Math.Max(m, x);
+            result = Math.Max(result, _suffixSum[index] - Best(index + x, nextM));
         }
 
         return result;
@@ -61,15 +71,16 @@ public class StoneGameIIBenchmarks
     private int BestMemoized((int Index, int M) state, Func<(int Index, int M), int> best)
     {
         var (index, m) = state;
-        if (index + (2 * m) >= PileCount)
+        if (index + (MaxTakeMultiplier * m) >= PileCount)
         {
             return _suffixSum[index];
         }
 
         var result = 0;
-        for (var x = 1; x <= 2 * m; x++)
+        for (var x = 1; x <= MaxTakeMultiplier * m; x++)
         {
-            result = Math.Max(result, _suffixSum[index] - best((index + x, Math.Max(m, x))));
+            var nextM = Math.Max(m, x);
+            result = Math.Max(result, _suffixSum[index] - best((index + x, nextM)));
         }
 
         return result;

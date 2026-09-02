@@ -21,6 +21,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortestPathVisitingAllNodesBenchmarks
 {
+    private const int RandomSeed = 847;
+
     [Params(8, 11)]
     public int NodeCount;
 
@@ -30,7 +32,7 @@ public class ShortestPathVisitingAllNodesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _graph = ShortestPathGraphs.BuildRandomConnectedGraph(NodeCount, seed: 847);
+        _graph = ShortestPathGraphs.BuildRandomConnectedGraph(NodeCount, seed: RandomSeed);
         (_, _startNodes) = ShortestPathGraphs.BuildStateGraph(_graph);
     }
 
@@ -41,6 +43,14 @@ public class ShortestPathVisitingAllNodesBenchmarks
         var visited = new HashSet<(int Node, int Mask)>();
         var queue = new Queue<(int Node, int Mask, int Steps)>();
 
+        SeedStartStates(queue, visited);
+
+        return RunMutationQueueBfs(queue, visited, fullMask);
+    }
+
+    private void SeedStartStates(
+        Queue<(int Node, int Mask, int Steps)> queue, HashSet<(int Node, int Mask)> visited)
+    {
         for (var start = 0; start < NodeCount; start++)
         {
             if (visited.Add((start, 1 << start)))
@@ -48,7 +58,11 @@ public class ShortestPathVisitingAllNodesBenchmarks
                 queue.Enqueue((start, 1 << start, 0));
             }
         }
+    }
 
+    private int RunMutationQueueBfs(
+        Queue<(int Node, int Mask, int Steps)> queue, HashSet<(int Node, int Mask)> visited, int fullMask)
+    {
         while (queue.Count > 0)
         {
             var (node, mask, steps) = queue.Dequeue();

@@ -9,7 +9,10 @@ public sealed partial class WordBreakTests
     [InlineData("leetcode", new[] { "leet", "code" }, true)]
     [InlineData("catsandog", new[] { "cats", "dog", "sand", "and", "cat" }, false)]
     public void WordBreak_LeetCodeExamples_ReturnsWhetherSegmentable(string s, string[] words, bool expected)
-        => Assert.Equal(expected, CanBreak(s, words));
+    {
+        var actual = CanBreak(s, words);
+        Assert.Equal(expected, actual);
+    }
 
     private static bool CanBreak(string s, string[] words)
     {

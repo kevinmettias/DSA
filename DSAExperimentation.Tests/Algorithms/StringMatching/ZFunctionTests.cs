@@ -4,18 +4,33 @@ namespace DSAExperimentation.Tests.Algorithms.StringMatching;
 
 public sealed partial class ZFunctionTests
 {
+    private static readonly (string Text, string Pattern)[] TextPatternCases =
+    [
+        ("hello world", "world"),
+        ("aaaa", "aa"),
+        ("aabaab", "aab"),
+        ("aaaaa", "aaa"),
+        ("mississippi", "issi"),
+        ("abcdef", "xyz"),
+    ];
+
     [Fact]
     public void Compute_KnownText_ReturnsExpectedZArray()
     {
-        var z = ZFunction.Compute("aaabaab");
+        const string Text = "aaabaab";
+        const int RepeatedPrefixLength = 2;
 
-        Assert.Equal([0, 2, 1, 0, 2, 1, 0], z);
+        var z = ZFunction.Compute(Text);
+
+        Assert.Equal([0, RepeatedPrefixLength, 1, 0, RepeatedPrefixLength, 1, 0], z);
     }
 
     [Fact]
     public void Compute_NoRepeatedPrefix_ReturnsAllZeros()
     {
-        var z = ZFunction.Compute("abcde");
+        const string Text = "abcde";
+
+        var z = ZFunction.Compute(Text);
 
         Assert.Equal([0, 0, 0, 0, 0], z);
     }
@@ -23,7 +38,9 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void Compute_EmptyText_ReturnsEmptyArray()
     {
-        var z = ZFunction.Compute("");
+        const string EmptyText = "";
+
+        var z = ZFunction.Compute(EmptyText);
 
         Assert.Empty(z);
     }
@@ -37,36 +54,49 @@ public sealed partial class ZFunctionTests
 
         for (var i = 1; i < text.Length; i++)
         {
-            Assert.Equal(BruteForceLongestCommonPrefix(text, text.AsSpan(i)), z[i]);
+            var bruteForceLength = BruteForceLongestCommonPrefix(text, text.AsSpan(i));
+            Assert.Equal(bruteForceLength, z[i]);
         }
     }
 
     [Fact]
     public void Compute_WithCaseInsensitiveComparer_TreatsCharsAsEqual()
     {
+        const string Text = "AaAa";
+        const int PrefixMatchAtIndex1 = 3;
+        const int PrefixMatchAtIndex2 = 2;
+
         var caseInsensitive = EqualityComparer<char>.Create(
             (left, right) => char.ToUpperInvariant(left) == char.ToUpperInvariant(right),
             value => char.ToUpperInvariant(value).GetHashCode());
 
-        var z = ZFunction.Compute("AaAa", caseInsensitive);
+        var z = ZFunction.Compute(Text, caseInsensitive);
 
-        Assert.Equal([0, 3, 2, 1], z);
+        Assert.Equal([0, PrefixMatchAtIndex1, PrefixMatchAtIndex2, 1], z);
     }
 
     [Fact]
     public void FindAll_PatternPresentOnce_ReturnsSingleIndex()
     {
-        var matches = ZFunction.FindAll("hello world", "world");
+        const string Text = "hello world";
+        const string Pattern = "world";
+        const int MatchIndex = 6;
 
-        Assert.Equal([6], matches);
+        var matches = ZFunction.FindAll(Text, Pattern);
+
+        Assert.Equal([MatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_PatternPresentMultipleTimesOverlapping_ReturnsAllIndices()
     {
-        var matches = ZFunction.FindAll("aaaa", "aa");
+        const string Text = "aaaa";
+        const string Pattern = "aa";
+        const int LastMatchIndex = 2;
 
-        Assert.Equal([0, 1, 2], matches);
+        var matches = ZFunction.FindAll(Text, Pattern);
+
+        Assert.Equal([0, 1, LastMatchIndex], matches);
     }
 
     // Regression coverage for the mirror-reuse branch specifically: a self-overlapping pattern
@@ -76,23 +106,34 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_SelfOverlappingPattern_ReturnsAllRealOccurrencesWithNoPhantomMatches()
     {
-        var matches = ZFunction.FindAll("aabaab", "aab");
+        const string Text = "aabaab";
+        const string Pattern = "aab";
+        const int SecondMatchIndex = 3;
 
-        Assert.Equal([0, 3], matches);
+        var matches = ZFunction.FindAll(Text, Pattern);
+
+        Assert.Equal([0, SecondMatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_HighlySelfOverlappingPattern_ReturnsAllOverlappingOccurrences()
     {
-        var matches = ZFunction.FindAll("aaaaa", "aaa");
+        const string Text = "aaaaa";
+        const string Pattern = "aaa";
+        const int LastMatchIndex = 2;
 
-        Assert.Equal([0, 1, 2], matches);
+        var matches = ZFunction.FindAll(Text, Pattern);
+
+        Assert.Equal([0, 1, LastMatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_PatternAbsent_ReturnsEmptyList()
     {
-        var matches = ZFunction.FindAll("abcdef", "xyz");
+        const string Text = "abcdef";
+        const string Pattern = "xyz";
+
+        var matches = ZFunction.FindAll(Text, Pattern);
 
         Assert.Empty(matches);
     }
@@ -100,7 +141,10 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_PatternLongerThanText_ReturnsEmptyList()
     {
-        var matches = ZFunction.FindAll("ab", "abc");
+        const string Text = "ab";
+        const string Pattern = "abc";
+
+        var matches = ZFunction.FindAll(Text, Pattern);
 
         Assert.Empty(matches);
     }
@@ -108,27 +152,39 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_EmptyPattern_MatchesEveryInsertionPoint()
     {
-        var matches = ZFunction.FindAll("abc", "");
+        const string Text = "abc";
+        const string EmptyPattern = "";
+        const int ThirdInsertionPoint = 2;
+        const int FourthInsertionPoint = 3;
 
-        Assert.Equal([0, 1, 2, 3], matches);
+        var matches = ZFunction.FindAll(Text, EmptyPattern);
+
+        Assert.Equal([0, 1, ThirdInsertionPoint, FourthInsertionPoint], matches);
     }
 
     [Fact]
     public void FindAll_WithCaseInsensitiveComparer_MatchesRegardlessOfCase()
     {
+        const string Text = "AbcABC";
+        const string Pattern = "abc";
+        const int SecondMatchIndex = 3;
+
         var caseInsensitive = EqualityComparer<char>.Create(
             (left, right) => char.ToUpperInvariant(left) == char.ToUpperInvariant(right),
             value => char.ToUpperInvariant(value).GetHashCode());
 
-        var matches = ZFunction.FindAll("AbcABC", "abc", caseInsensitive);
+        var matches = ZFunction.FindAll(Text, Pattern, caseInsensitive);
 
-        Assert.Equal([0, 3], matches);
+        Assert.Equal([0, SecondMatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_WithDefaultComparer_IsCaseSensitive()
     {
-        var matches = ZFunction.FindAll("AbcABC", "abc");
+        const string Text = "AbcABC";
+        const string Pattern = "abc";
+
+        var matches = ZFunction.FindAll(Text, Pattern);
 
         Assert.Empty(matches);
     }
@@ -136,17 +192,7 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_MatchesPrefixFunctionSearchAcrossVariedInputs()
     {
-        (string Text, string Pattern)[] cases =
-        [
-            ("hello world", "world"),
-            ("aaaa", "aa"),
-            ("aabaab", "aab"),
-            ("aaaaa", "aaa"),
-            ("mississippi", "issi"),
-            ("abcdef", "xyz"),
-        ];
-
-        foreach (var (text, pattern) in cases)
+        foreach (var (text, pattern) in TextPatternCases)
         {
             var expected = PrefixFunctionSearch.FindAll(text, pattern);
             var actual = ZFunction.FindAll(text, pattern);

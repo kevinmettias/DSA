@@ -15,11 +15,20 @@ public sealed partial class DesignAnOrderedStreamTests
     {
         var stream = new OrderedStream(5);
 
-        Assert.Equal([], stream.Insert(3, "ccccc"));
-        Assert.Equal(["aaaaa"], stream.Insert(1, "aaaaa"));
-        Assert.Equal(["bbbbb", "ccccc"], stream.Insert(2, "bbbbb"));
-        Assert.Equal([], stream.Insert(5, "eeeee"));
-        Assert.Equal(["ddddd", "eeeee"], stream.Insert(4, "ddddd"));
+        var afterInsert3 = stream.Insert(3, "ccccc");
+        Assert.Equal([], afterInsert3);
+
+        var afterInsert1 = stream.Insert(1, "aaaaa");
+        Assert.Equal(["aaaaa"], afterInsert1);
+
+        var afterInsert2 = stream.Insert(2, "bbbbb");
+        Assert.Equal(["bbbbb", "ccccc"], afterInsert2);
+
+        var afterInsert5 = stream.Insert(5, "eeeee");
+        Assert.Equal([], afterInsert5);
+
+        var afterInsert4 = stream.Insert(4, "ddddd");
+        Assert.Equal(["ddddd", "eeeee"], afterInsert4);
     }
 
     [Fact]
@@ -27,9 +36,14 @@ public sealed partial class DesignAnOrderedStreamTests
     {
         var stream = new OrderedStream(3);
 
-        Assert.Equal(["a"], stream.Insert(1, "a"));
-        Assert.Equal(["b"], stream.Insert(2, "b"));
-        Assert.Equal(["c"], stream.Insert(3, "c"));
+        var afterInsert1 = stream.Insert(1, "a");
+        Assert.Equal(["a"], afterInsert1);
+
+        var afterInsert2 = stream.Insert(2, "b");
+        Assert.Equal(["b"], afterInsert2);
+
+        var afterInsert3 = stream.Insert(3, "c");
+        Assert.Equal(["c"], afterInsert3);
     }
 
     private sealed class OrderedStream

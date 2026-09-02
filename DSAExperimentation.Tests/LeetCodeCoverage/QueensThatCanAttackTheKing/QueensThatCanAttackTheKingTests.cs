@@ -64,24 +64,32 @@ public sealed class QueensThatCanAttackTheKingTests
 
         var attackers = new List<(int Row, int Col)>();
 
-        foreach (var (dRow, dCol) in Directions)
+        foreach (var direction in Directions)
         {
-            var row = king[0] + dRow;
-            var col = king[1] + dCol;
+            var attacker = FindAttackerAlongRay(king, direction, boardSize, occupied);
 
-            while (IsInBounds(row, col, boardSize) && !occupied.Has((row, col)))
+            if (attacker is not null)
             {
-                row += dRow;
-                col += dCol;
-            }
-
-            if (IsInBounds(row, col, boardSize))
-            {
-                attackers.Add((row, col));
+                attackers.Add(attacker.Value);
             }
         }
 
         return attackers;
+    }
+
+    private static (int Row, int Col)? FindAttackerAlongRay(
+        int[] king, (int DRow, int DCol) direction, int boardSize, Set<(int Row, int Col)> occupied)
+    {
+        var row = king[0] + direction.DRow;
+        var col = king[1] + direction.DCol;
+
+        while (IsInBounds(row, col, boardSize) && !occupied.Has((row, col)))
+        {
+            row += direction.DRow;
+            col += direction.DCol;
+        }
+
+        return IsInBounds(row, col, boardSize) ? (row, col) : null;
     }
 
     private static bool IsInBounds(int row, int col, int boardSize) =>

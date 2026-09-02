@@ -31,41 +31,49 @@ public class CrackingTheSafeBenchmarks
 
     private static string CrackSafeSpecialized(int n, int k)
     {
-        var total = (int)Math.Pow(k, n);
-        var answer = new StringBuilder(new string('0', n));
-        var visited = new HashSet<string> { new string('0', n) };
+        var state = new SpecializedSearchState(
+            n, k, new StringBuilder(new string('0', n)), new HashSet<string> { new string('0', n) });
 
-        bool Search()
+        Search(state);
+        return state.Answer.ToString();
+    }
+
+    private static bool Search(SpecializedSearchState state)
+    {
+        if (state.Visited.Count == state.Total)
         {
-            if (visited.Count == total)
+            return true;
+        }
+
+        var prefix = state.Answer.ToString(state.Answer.Length - (state.N - 1), state.N - 1);
+
+        for (var digit = 0; digit < state.K; digit++)
+        {
+            var password = prefix + (char)('0' + digit);
+            if (state.Visited.Add(password) && TryExtend(state, password, digit))
             {
                 return true;
             }
-
-            var prefix = answer.ToString(answer.Length - (n - 1), n - 1);
-
-            for (var digit = 0; digit < k; digit++)
-            {
-                var password = prefix + (char)('0' + digit);
-                if (visited.Add(password))
-                {
-                    answer.Append((char)('0' + digit));
-
-                    if (Search())
-                    {
-                        return true;
-                    }
-
-                    answer.Length -= 1;
-                    visited.Remove(password);
-                }
-            }
-
-            return false;
         }
 
-        Search();
-        return answer.ToString();
+        return false;
+    }
+
+    // The "try password, recurse, undo on failure" branch from Search's digit loop:
+    // appends the digit, recurses, and only rolls back the append/visited-add if the
+    // recursive search did not find a full Eulerian path from here.
+    private static bool TryExtend(SpecializedSearchState state, string password, int digit)
+    {
+        state.Answer.Append((char)('0' + digit));
+
+        if (Search(state))
+        {
+            return true;
+        }
+
+        state.Answer.Length -= 1;
+        state.Visited.Remove(password);
+        return false;
     }
 
     private static string CrackSafeWithBacktrackEngine(int n, int k)
@@ -73,33 +81,43 @@ public class CrackingTheSafeBenchmarks
         var state = new State(n, k);
         string? answer = null;
 
-        Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
-            IsSolution: s => s.Visited.Count == s.Total,
-            Candidates: s => CandidateDigits(s),
-            Choose: (s, digit) =>
-            {
-                s.Visited.TryAdd(NextPassword(s, digit));
-                s.Answer.Append((char)('0' + digit));
-            },
-            Unchoose: (s, digit) =>
-            {
-                s.Visited.TryRemove(CurrentSuffix(s));
-                s.Answer.Length -= 1;
-            },
+        var steps = new BacktrackingSteps<State, int>(
+            IsSolution: IsComplete,
+            Candidates: CandidateDigits,
+            Choose: ChooseDigit,
+            Unchoose: UnchooseDigit,
             OnSolution: s =>
             {
                 answer = s.Answer.ToString();
                 return true;
-            }));
+            });
+
+        Backtrack.TrySearch<State, int>(state, steps);
 
         return answer!;
+    }
+
+    private static bool IsComplete(State state) => state.Visited.Count == state.Total;
+
+    private static void ChooseDigit(State state, int digit)
+    {
+        var password = NextPassword(state, digit);
+        state.Visited.TryAdd(password);
+        state.Answer.Append((char)('0' + digit));
+    }
+
+    private static void UnchooseDigit(State state, int digit)
+    {
+        state.Visited.TryRemove(CurrentSuffix(state));
+        state.Answer.Length -= 1;
     }
 
     private static IEnumerable<int> CandidateDigits(State state)
     {
         for (var digit = 0; digit < state.K; digit++)
         {
-            if (!state.Visited.Has(NextPassword(state, digit)))
+            var candidatePassword = NextPassword(state, digit);
+            if (!state.Visited.Has(candidatePassword))
             {
                 yield return digit;
             }
@@ -129,5 +147,10 @@ public class CrackingTheSafeBenchmarks
         public int Total { get; }
         public StringBuilder Answer { get; }
         public Set<string> Visited { get; }
+    }
+
+    private sealed record SpecializedSearchState(int N, int K, StringBuilder Answer, HashSet<string> Visited)
+    {
+        public int Total => (int)Math.Pow(K, N);
     }
 }

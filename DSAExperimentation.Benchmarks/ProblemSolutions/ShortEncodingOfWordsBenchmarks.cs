@@ -19,6 +19,11 @@ public class ShortEncodingOfWordsBenchmarks
     private static readonly string[] SuffixPool =
         ["e", "me", "time", "bell", "ing", "ation", "tion", "er", "ed", "s"];
 
+    // LC problem number, used as the RNG seed.
+    private const int RandomSeed = 820;
+    private const int MaxPrefixLength = 5;
+    private const int AlphabetSize = 26;
+
     [Params(500, 5_000)]
     public int Length;
 
@@ -27,18 +32,18 @@ public class ShortEncodingOfWordsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(820);
+        var random = new Random(RandomSeed);
         var words = new HashSet<string>();
 
         while (words.Count < Length)
         {
             var suffix = SuffixPool[random.Next(SuffixPool.Length)];
-            var prefixLength = random.Next(0, 5);
+            var prefixLength = random.Next(0, MaxPrefixLength);
             var prefix = new char[prefixLength];
 
             for (var i = 0; i < prefixLength; i++)
             {
-                prefix[i] = (char)('a' + random.Next(26));
+                prefix[i] = (char)('a' + random.Next(AlphabetSize));
             }
 
             words.Add(new string(prefix) + suffix);
@@ -77,56 +82,78 @@ public class ShortEncodingOfWordsBenchmarks
     [Benchmark]
     public int SetBasedSuffixRemoval()
     {
-        var remaining = new Set<string>();
+        var remaining = BuildWordSet(_words);
+        RemoveProperSuffixes(remaining, _words);
+        return SumEncodedLength(_words, remaining.Has);
+    }
 
-        foreach (var word in _words)
+    [Benchmark]
+    public int LowercaseTrieLeafCount()
+    {
+        var trie = BuildReversedTrie(_words);
+        return SumEncodedLength(_words, word =>
         {
-            remaining.TryAdd(word);
+            var node = WalkReversed(trie.Root, word);
+            return IsLeaf(node);
+        });
+    }
+
+    private static Set<string> BuildWordSet(string[] words)
+    {
+        var set = new Set<string>();
+
+        foreach (var word in words)
+        {
+            set.TryAdd(word);
         }
 
-        foreach (var word in _words)
+        return set;
+    }
+
+    private static void RemoveProperSuffixes(Set<string> remaining, string[] words)
+    {
+        foreach (var word in words)
         {
             for (var i = 1; i < word.Length; i++)
             {
                 remaining.TryRemove(word[i..]);
             }
         }
-
-        var length = 0;
-
-        foreach (var word in _words)
-        {
-            if (remaining.Has(word))
-            {
-                length += word.Length + 1;
-            }
-        }
-
-        return length;
     }
 
-    [Benchmark]
-    public int LowercaseTrieLeafCount()
+    private static LowercaseTrie<bool> BuildReversedTrie(string[] words)
     {
         var trie = new LowercaseTrie<bool>();
 
-        foreach (var word in _words)
+        foreach (var word in words)
         {
             trie.Set(Reverse(word), true);
         }
 
+        return trie;
+    }
+
+    private static LowercaseTrieNode<bool> WalkReversed(LowercaseTrieNode<bool> root, string word)
+    {
+        var node = root;
+
+        for (var i = word.Length - 1; i >= 0; i--)
+        {
+            node = node.Children[word[i] - 'a']!;
+        }
+
+        return node;
+    }
+
+    // Sums word.Length + 1 (the word plus its '#' separator) for every word the
+    // predicate says still needs its own encoding.
+    private static int SumEncodedLength(string[] words, Func<string, bool> isKept)
+    {
         var length = 0;
 
-        foreach (var word in _words)
+        foreach (var word in words)
         {
-            var node = trie.Root;
-
-            for (var i = word.Length - 1; i >= 0; i--)
-            {
-                node = node.Children[word[i] - 'a']!;
-            }
-
-            if (IsLeaf(node))
+            if (isKept(word))
             {
                 length += word.Length + 1;
             }

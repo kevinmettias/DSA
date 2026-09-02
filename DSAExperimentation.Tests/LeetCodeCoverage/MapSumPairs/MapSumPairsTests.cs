@@ -68,10 +68,14 @@ public sealed class MapSumPairsTests
 
         public void Insert(string key, int val) => _trie.Set(key, val);
 
-        public int Sum(string prefix) => TreeFold.Fold<
-            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-            SparseArrayChildren<LowercaseTrieNode<int>>, SumValuesAlgebra, int>(WalkTo(_trie.Root, prefix));
+        public int Sum(string prefix)
+        {
+            var node = WalkTo(_trie.Root, prefix);
+            return TreeFold.Fold<
+                LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
+                NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
+                SparseArrayChildren<LowercaseTrieNode<int>>, SumValuesAlgebra, int>(node);
+        }
 
         private static LowercaseTrieNode<int>? WalkTo(LowercaseTrieNode<int> root, string prefix)
         {

@@ -11,6 +11,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AirplaneSeatAssignmentProbabilityBenchmarks
 {
+    // First seat index after the base case (seat 1) that the recursion sums over.
+    private const int FirstAlternativeSeat = 2;
+
+    // Closed-form probability for every seat past the first: the recursion itself
+    // reduces to this constant.
+    private const double NonFirstSeatProbability = 0.5;
+
     [Params(100, 1_000)]
     public int N;
 
@@ -25,7 +32,7 @@ public class AirplaneSeatAssignmentProbabilityBenchmarks
 
             var sum = 1.0;
 
-            for (var j = 2; j < current; j++)
+            for (var j = FirstAlternativeSeat; j < current; j++)
             {
                 sum += probability(j);
             }
@@ -34,5 +41,5 @@ public class AirplaneSeatAssignmentProbabilityBenchmarks
         });
 
     [Benchmark]
-    public double ClosedForm() => N == 1 ? 1.0 : 0.5;
+    public double ClosedForm() => N == 1 ? 1.0 : NonFirstSeatProbability;
 }

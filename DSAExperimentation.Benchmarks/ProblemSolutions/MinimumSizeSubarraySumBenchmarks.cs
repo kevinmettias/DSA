@@ -16,6 +16,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumSizeSubarraySumBenchmarks
 {
+    private const int RandomSeed = 7;
+    private const int MaxElementValueExclusive = 100;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -25,8 +28,8 @@ public class MinimumSizeSubarraySumBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValueExclusive)).ToArray();
         _target = _nums.Sum() + 1;
     }
 

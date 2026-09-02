@@ -13,7 +13,10 @@ public sealed class MirrorReflectionTests
     [InlineData(3, 1, 1)]
     [InlineData(3, 2, 0)]
     public void MirrorReflection_LeetCodeExamples_ReturnsExpectedReceptor(int p, int q, int expected)
-        => Assert.Equal(expected, MirrorReflection(p, q));
+    {
+        var actual = MirrorReflection(p, q);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MirrorReflection(int p, int q)
     {

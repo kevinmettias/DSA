@@ -36,6 +36,12 @@ public sealed class MinimumAreaRectangleTests
 
     private static int MinAreaRect(int[][] points)
     {
+        var seen = BuildSeenSet(points);
+        return SmallestRectangleArea(points, seen);
+    }
+
+    private static Set<(int X, int Y)> BuildSeenSet(int[][] points)
+    {
         var seen = new Set<(int X, int Y)>();
 
         foreach (var point in points)
@@ -43,27 +49,44 @@ public sealed class MinimumAreaRectangleTests
             seen.TryAdd((point[0], point[1]));
         }
 
+        return seen;
+    }
+
+    private static int SmallestRectangleArea(int[][] points, Set<(int X, int Y)> seen)
+    {
         var minArea = int.MaxValue;
 
         for (var i = 0; i < points.Length; i++)
         {
             for (var j = i + 1; j < points.Length; j++)
             {
-                var (x1, y1) = (points[i][0], points[i][1]);
-                var (x2, y2) = (points[j][0], points[j][1]);
+                var area = RectangleArea(points[i], points[j], seen);
 
-                if (x1 == x2 || y1 == y2)
+                if (area is not null)
                 {
-                    continue;
-                }
-
-                if (seen.Has((x1, y2)) && seen.Has((x2, y1)))
-                {
-                    minArea = Math.Min(minArea, Math.Abs((x2 - x1) * (y2 - y1)));
+                    minArea = Math.Min(minArea, area.Value);
                 }
             }
         }
 
         return minArea == int.MaxValue ? 0 : minArea;
+    }
+
+    private static int? RectangleArea(int[] p1, int[] p2, Set<(int X, int Y)> seen)
+    {
+        var (x1, y1) = (p1[0], p1[1]);
+        var (x2, y2) = (p2[0], p2[1]);
+
+        if (x1 == x2 || y1 == y2)
+        {
+            return null;
+        }
+
+        if (seen.Has((x1, y2)) && seen.Has((x2, y1)))
+        {
+            return Math.Abs((x2 - x1) * (y2 - y1));
+        }
+
+        return null;
     }
 }

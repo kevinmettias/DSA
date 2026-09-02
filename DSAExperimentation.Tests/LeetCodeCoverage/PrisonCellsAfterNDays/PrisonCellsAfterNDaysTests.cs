@@ -54,15 +54,8 @@ public sealed partial class PrisonCellsAfterNDaysTests
         {
             if (seenAtDay.TryGetValue(state, out var firstSeenDay))
             {
-                var cycleLength = day - firstSeenDay;
-                var remaining = (n - day) % cycleLength;
-
-                for (var i = 0; i < remaining; i++)
-                {
-                    state = NextState(state);
-                }
-
-                return Decode(state);
+                var finalState = JumpToCycleEnd(state, day, firstSeenDay, n);
+                return Decode(finalState);
             }
 
             seenAtDay.Set(state, day);
@@ -71,6 +64,19 @@ public sealed partial class PrisonCellsAfterNDaysTests
         }
 
         return Decode(state);
+    }
+
+    private static int JumpToCycleEnd(int state, int day, int firstSeenDay, int n)
+    {
+        var cycleLength = day - firstSeenDay;
+        var remaining = (n - day) % cycleLength;
+
+        for (var i = 0; i < remaining; i++)
+        {
+            state = NextState(state);
+        }
+
+        return state;
     }
 
     private static int NextState(int state)

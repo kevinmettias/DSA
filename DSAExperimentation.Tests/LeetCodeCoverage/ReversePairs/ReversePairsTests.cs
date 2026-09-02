@@ -74,7 +74,8 @@ public sealed partial class ReversePairsTests
                 count += tree.Query(firstGreaterRank, sortedDistinct.Length - 1);
             }
 
-            tree.Add(BinarySearch.LowerBound(sequence, (long)value), 1);
+            var rank = BinarySearch.LowerBound(sequence, (long)value);
+            tree.Add(rank, 1);
         }
 
         return count;

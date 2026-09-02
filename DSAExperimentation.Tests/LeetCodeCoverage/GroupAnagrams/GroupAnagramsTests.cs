@@ -1,27 +1,42 @@
-﻿using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.GroupAnagrams;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.GroupAnagrams;
 
-public sealed partial class GroupAnagramsTests
+// Harness only. Both strategies are GroupAnagramsSolution's - this file just
+// pins them to LeetCode's published examples.
+public sealed class GroupAnagramsTests
 {
-    [Fact]
-    public void GroupAnagrams_ClassicExample_GroupsWordsBySortedLetters()
-    {
-        var groups = Group(["eat", "tea", "tan", "ate", "nat", "bat"]);
-        Assert.Contains(groups, g => g.Order().SequenceEqual(["ate", "eat", "tea"]));
-        Assert.Contains(groups, g => g.Order().SequenceEqual(["nat", "tan"]));
-        Assert.Contains(groups, g => g.SequenceEqual(["bat"]));
-    }
-
-    private static List<List<string>> Group(string[] values)
-    {
-        var map = new HashMap<string, List<string>>();
-        foreach (var value in values)
+    public static TheoryData<string[], string[][]> Examples =>
+        new()
         {
-            var chars = value.ToCharArray(); Array.Sort(chars); var key = new string(chars);
-            if (!map.TryGetValue(key, out var group)) { group = []; map.Set(key, group); }
-            group.Add(value);
+            {
+                ["eat", "tea", "tan", "ate", "nat", "bat"],
+                [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]
+            },
+            { [""], [[""]] },
+            { ["a"], [["a"]] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GroupByDictionary_LeetCodeExamples_GroupsWordsBySortedLetters(
+        string[] values, string[][] expectedGroups) =>
+        AssertGroups(expectedGroups, GroupAnagramsSolution.GroupByDictionary(values));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GroupByHashMap_LeetCodeExamples_GroupsWordsBySortedLetters(
+        string[] values, string[][] expectedGroups) =>
+        AssertGroups(expectedGroups, GroupAnagramsSolution.GroupByHashMap(values));
+
+    private static void AssertGroups(string[][] expectedGroups, List<List<string>> actualGroups)
+    {
+        Assert.Equal(expectedGroups.Length, actualGroups.Count);
+
+        foreach (var expectedGroup in expectedGroups)
+        {
+            Assert.Contains(
+                actualGroups, group => group.Order().SequenceEqual(expectedGroup.Order()));
         }
-        return map.Values.ToList();
     }
 }

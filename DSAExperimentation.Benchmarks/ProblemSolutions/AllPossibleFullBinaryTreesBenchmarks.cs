@@ -16,6 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AllPossibleFullBinaryTreesBenchmarks
 {
+    // A full binary tree only exists for odd node counts, so evenness is checked
+    // with this divisor and left-subtree sizes are stepped by it to stay odd.
+    private const int NodeCountParityDivisor = 2;
+
     [Params(13, 19)]
     public int Nodes;
 
@@ -25,11 +29,21 @@ public class AllPossibleFullBinaryTreesBenchmarks
     [Benchmark]
     public int Memoized() => Memoizer.Memoize<int, List<BinaryTreeNode<int>?>>(Nodes, Recurrence).Count;
 
-    private static List<BinaryTreeNode<int>?> Naive(int n)
+    private static List<BinaryTreeNode<int>?> Naive(int n) => BuildFullBinaryTrees(n, Naive);
+
+    private static List<BinaryTreeNode<int>?> Recurrence(int n, Func<int, List<BinaryTreeNode<int>?>> generate) =>
+        BuildFullBinaryTrees(n, generate);
+
+    // Shared recurrence body for both Naive and Recurrence: they differ only in how
+    // sub-counts are generated (plain self-recursion vs. a memoized delegate), so
+    // that single point of variation is passed in as `generate`.
+    private static List<BinaryTreeNode<int>?> BuildFullBinaryTrees(
+        int n,
+        Func<int, List<BinaryTreeNode<int>?>> generate)
     {
         var trees = new List<BinaryTreeNode<int>?>();
 
-        if (n % 2 == 0)
+        if (n % NodeCountParityDivisor == 0)
         {
             return trees;
         }
@@ -40,52 +54,25 @@ public class AllPossibleFullBinaryTreesBenchmarks
             return trees;
         }
 
-        for (var leftCount = 1; leftCount < n; leftCount += 2)
+        for (var leftCount = 1; leftCount < n; leftCount += NodeCountParityDivisor)
         {
-            var lefts = Naive(leftCount);
-            var rights = Naive(n - 1 - leftCount);
-
-            foreach (var left in lefts)
-            {
-                foreach (var right in rights)
-                {
-                    trees.Add(new BinaryTreeNode<int>(0) { Left = left, Right = right });
-                }
-            }
+            AppendSplits(trees, generate(leftCount), generate(n - 1 - leftCount));
         }
 
         return trees;
     }
 
-    private static List<BinaryTreeNode<int>?> Recurrence(int n, Func<int, List<BinaryTreeNode<int>?>> generate)
+    private static void AppendSplits(
+        List<BinaryTreeNode<int>?> trees,
+        List<BinaryTreeNode<int>?> lefts,
+        List<BinaryTreeNode<int>?> rights)
     {
-        var trees = new List<BinaryTreeNode<int>?>();
-
-        if (n % 2 == 0)
+        foreach (var left in lefts)
         {
-            return trees;
-        }
-
-        if (n == 1)
-        {
-            trees.Add(new BinaryTreeNode<int>(0));
-            return trees;
-        }
-
-        for (var leftCount = 1; leftCount < n; leftCount += 2)
-        {
-            var lefts = generate(leftCount);
-            var rights = generate(n - 1 - leftCount);
-
-            foreach (var left in lefts)
+            foreach (var right in rights)
             {
-                foreach (var right in rights)
-                {
-                    trees.Add(new BinaryTreeNode<int>(0) { Left = left, Right = right });
-                }
+                trees.Add(new BinaryTreeNode<int>(0) { Left = left, Right = right });
             }
         }
-
-        return trees;
     }
 }

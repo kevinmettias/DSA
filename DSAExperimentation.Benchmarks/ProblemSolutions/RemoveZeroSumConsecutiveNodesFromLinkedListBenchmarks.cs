@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
 {
+    private const int NodeValueMagnitude = 3;
+    private const int NodeValueExclusiveUpperBound = 4;
+
     [Params(300, 3_000)]
     public int Length;
 
@@ -21,7 +24,7 @@ public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-3, 4)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-NodeValueMagnitude, NodeValueExclusiveUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

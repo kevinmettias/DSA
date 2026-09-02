@@ -19,6 +19,7 @@ public class DesignTwitterBenchmarks
 {
     private const int FeedSize = 10;
     private const int TweetsPerSource = 20;
+    private const int RandomSeed = 13;
 
     [Params(50, 500)]
     public int FollowedUsers;
@@ -28,7 +29,7 @@ public class DesignTwitterBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(13);
+        var random = new Random(RandomSeed);
         var tweetsPerSource = Enumerable.Range(0, FollowedUsers)
             .Select(_ => new DynamicArray<(int Time, int TweetId)>())
             .ToArray();
@@ -76,18 +77,26 @@ public class DesignTwitterBenchmarks
 
         while (feedCount < FeedSize && heap.TryPop(out var top))
         {
-            feedCount++;
-
-            if (top.Position == 0)
-            {
-                continue;
-            }
-
-            var nextPosition = top.Position - 1;
-            var (time, tweetId) = _sources[top.SourceIndex].Get(nextPosition);
-            heap.Push((time, tweetId, top.SourceIndex, nextPosition));
+            AccountForPoppedTweetAndRefillSource(heap, top, ref feedCount);
         }
 
         return feedCount;
+    }
+
+    private void AccountForPoppedTweetAndRefillSource(
+        Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> heap,
+        (int Time, int TweetId, int SourceIndex, int Position) top,
+        ref int feedCount)
+    {
+        feedCount++;
+
+        if (top.Position == 0)
+        {
+            return;
+        }
+
+        var nextPosition = top.Position - 1;
+        var (time, tweetId) = _sources[top.SourceIndex].Get(nextPosition);
+        heap.Push((time, tweetId, top.SourceIndex, nextPosition));
     }
 }

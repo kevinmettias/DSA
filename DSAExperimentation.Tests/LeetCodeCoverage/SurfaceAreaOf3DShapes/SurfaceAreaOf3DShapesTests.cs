@@ -28,10 +28,13 @@ public sealed class SurfaceAreaOf3DShapesTests
         Assert.Equal(34, SurfaceArea(grid));
     }
 
+    private readonly record struct GridView(int[][] Cells, int Size);
+
     private static int SurfaceArea(int[][] grid)
     {
         var n = grid.Length;
         var area = 0;
+        var view = new GridView(grid, n);
 
         for (var row = 0; row < n; row++)
         {
@@ -41,19 +44,19 @@ public sealed class SurfaceAreaOf3DShapesTests
                 if (height == 0) continue;
 
                 area += 2;
-                area += ExposedSide(grid, n, height, row - 1, col);
-                area += ExposedSide(grid, n, height, row + 1, col);
-                area += ExposedSide(grid, n, height, row, col - 1);
-                area += ExposedSide(grid, n, height, row, col + 1);
+                area += ExposedSide(view, height, row - 1, col);
+                area += ExposedSide(view, height, row + 1, col);
+                area += ExposedSide(view, height, row, col - 1);
+                area += ExposedSide(view, height, row, col + 1);
             }
         }
 
         return area;
     }
 
-    private static int ExposedSide(int[][] grid, int n, int height, int row, int col)
+    private static int ExposedSide(GridView view, int height, int row, int col)
     {
-        var neighborHeight = row >= 0 && row < n && col >= 0 && col < n ? grid[row][col] : 0;
+        var neighborHeight = row >= 0 && row < view.Size && col >= 0 && col < view.Size ? view.Cells[row][col] : 0;
         return Math.Max(0, height - neighborHeight);
     }
 }

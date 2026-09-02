@@ -51,7 +51,8 @@ public sealed partial class LargestTriangleAreaTests
             {
                 for (var k = j + 1; k < candidates.Count; k++)
                 {
-                    best = Math.Max(best, Area(candidates[i], candidates[j], candidates[k]));
+                    var area = Area(candidates[i], candidates[j], candidates[k]);
+                    best = Math.Max(best, area);
                 }
             }
         }
@@ -74,6 +75,14 @@ public sealed partial class LargestTriangleAreaTests
 
     private static List<(int X, int Y)> HalfHull((int X, int Y)[] points)
     {
+        var stack = BuildMonotoneStack(points);
+        return DrainToChain(stack);
+    }
+
+    // Sweeps the (already X,Y-sorted) points left to right, popping any point that
+    // would make the chain turn right (or straight) so only left turns survive.
+    private static HullStack BuildMonotoneStack((int X, int Y)[] points)
+    {
         var stack = new HullStack();
 
         foreach (var p in points)
@@ -93,6 +102,13 @@ public sealed partial class LargestTriangleAreaTests
             stack.Push(p);
         }
 
+        return stack;
+    }
+
+    // Pops the stack (LIFO order, so back-to-front relative to the sweep) into a
+    // list, then reverses it back to the original left-to-right chain order.
+    private static List<(int X, int Y)> DrainToChain(HullStack stack)
+    {
         var chain = new List<(int X, int Y)>();
         while (stack.TryPop(out var item))
         {
@@ -104,7 +120,10 @@ public sealed partial class LargestTriangleAreaTests
     }
 
     private static double Area((int X, int Y) a, (int X, int Y) b, (int X, int Y) c)
-        => Math.Abs(Cross(a, b, c)) / 2.0;
+    {
+        var cross = Cross(a, b, c);
+        return Math.Abs(cross) / 2.0;
+    }
 
     private static long Cross((int X, int Y) o, (int X, int Y) a, (int X, int Y) b)
         => (long)(a.X - o.X) * (b.Y - o.Y) - (long)(a.Y - o.Y) * (b.X - o.X);

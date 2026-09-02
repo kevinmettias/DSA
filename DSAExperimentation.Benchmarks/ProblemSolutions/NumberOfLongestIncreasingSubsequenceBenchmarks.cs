@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfLongestIncreasingSubsequenceBenchmarks
 {
+    private const int RandomSeed = 673; // LC 673
+
     [Params(3_000, 8_000)]
     public int Length;
 
@@ -22,7 +24,7 @@ public class NumberOfLongestIncreasingSubsequenceBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(673);
+        var random = new Random(RandomSeed);
         _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
     }
 
@@ -35,28 +37,8 @@ public class NumberOfLongestIncreasingSubsequenceBenchmarks
 
         for (var i = 0; i < _values.Length; i++)
         {
-            length[i] = 1;
-            count[i] = 1;
-
-            for (var j = 0; j < i; j++)
-            {
-                if (_values[j] >= _values[i])
-                {
-                    continue;
-                }
-
-                if (length[j] + 1 > length[i])
-                {
-                    length[i] = length[j] + 1;
-                    count[i] = count[j];
-                }
-                else if (length[j] + 1 == length[i])
-                {
-                    count[i] += count[j];
-                }
-            }
-
-            best = Math.Max(best, length[i]);
+            var currentLength = ComputeLengthAndCount(_values, length, count, i);
+            best = Math.Max(best, currentLength);
         }
 
         var total = 0;
@@ -70,6 +52,32 @@ public class NumberOfLongestIncreasingSubsequenceBenchmarks
         }
 
         return total;
+    }
+
+    private static int ComputeLengthAndCount(int[] values, int[] length, int[] count, int i)
+    {
+        length[i] = 1;
+        count[i] = 1;
+
+        for (var j = 0; j < i; j++)
+        {
+            if (values[j] >= values[i])
+            {
+                continue;
+            }
+
+            if (length[j] + 1 > length[i])
+            {
+                length[i] = length[j] + 1;
+                count[i] = count[j];
+            }
+            else if (length[j] + 1 == length[i])
+            {
+                count[i] += count[j];
+            }
+        }
+
+        return length[i];
     }
 
     [Benchmark]
@@ -86,7 +94,8 @@ public class NumberOfLongestIncreasingSubsequenceBenchmarks
             var candidate = best.Length == 0 ? (Length: 1, Count: 1) : (Length: best.Length + 1, best.Count);
             var existing = tree.Query(rank, rank);
 
-            tree.Update(rank, LisAggregate.Combine(existing, candidate));
+            var combined = LisAggregate.Combine(existing, candidate);
+            tree.Update(rank, combined);
         }
 
         return tree.Query(0, sortedDistinct.Length - 1).Count;

@@ -43,8 +43,7 @@ public sealed class MinimumAreaRectangleIITests
 
     private static double MinAreaFreeRect(int[][] points)
     {
-        var diagonalsByKey =
-            new HashMap<(int SumX, int SumY, int LengthSquared), List<((int X, int Y) First, (int X, int Y) Second)>>();
+        var index = new DiagonalIndex();
         var minArea = double.MaxValue;
 
         for (var i = 0; i < points.Length; i++)
@@ -54,28 +53,47 @@ public sealed class MinimumAreaRectangleIITests
             for (var j = i + 1; j < points.Length; j++)
             {
                 var pointJ = (X: points[j][0], Y: points[j][1]);
-                var dx = pointI.X - pointJ.X;
-                var dy = pointI.Y - pointJ.Y;
-                var key = (pointI.X + pointJ.X, pointI.Y + pointJ.Y, (dx * dx) + (dy * dy));
+                var area = index.ConsiderPair(pointI, pointJ);
 
-                if (!diagonalsByKey.TryGetValue(key, out var matchingDiagonals))
+                if (area is not null)
                 {
-                    matchingDiagonals = [];
-                    diagonalsByKey.Set(key, matchingDiagonals);
+                    minArea = Math.Min(minArea, area.Value);
                 }
-
-                foreach (var (first, second) in matchingDiagonals)
-                {
-                    var sideA = Distance(pointI, first);
-                    var sideB = Distance(pointI, second);
-                    minArea = Math.Min(minArea, sideA * sideB);
-                }
-
-                matchingDiagonals.Add((pointI, pointJ));
             }
         }
 
         return minArea == double.MaxValue ? 0.0 : minArea;
+    }
+
+    private sealed class DiagonalIndex
+    {
+        private readonly HashMap<(int SumX, int SumY, int LengthSquared), List<((int X, int Y) First, (int X, int Y) Second)>> _diagonalsByKey = new();
+
+        public double? ConsiderPair((int X, int Y) pointI, (int X, int Y) pointJ)
+        {
+            var dx = pointI.X - pointJ.X;
+            var dy = pointI.Y - pointJ.Y;
+            var key = (pointI.X + pointJ.X, pointI.Y + pointJ.Y, (dx * dx) + (dy * dy));
+
+            if (!_diagonalsByKey.TryGetValue(key, out var matchingDiagonals))
+            {
+                matchingDiagonals = [];
+                _diagonalsByKey.Set(key, matchingDiagonals);
+            }
+
+            double? best = null;
+
+            foreach (var (first, second) in matchingDiagonals)
+            {
+                var sideA = Distance(pointI, first);
+                var sideB = Distance(pointI, second);
+                var candidate = sideA * sideB;
+                best = best is null ? candidate : Math.Min(best.Value, candidate);
+            }
+
+            matchingDiagonals.Add((pointI, pointJ));
+            return best;
+        }
     }
 
     private static double Distance((int X, int Y) a, (int X, int Y) b)

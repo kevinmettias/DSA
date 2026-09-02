@@ -14,13 +14,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CanIWinBenchmarks
 {
+    private const int GaussSumDivisor = 2;
+
     [Params(6, 8)]
     public int MaxChoosableInteger;
 
     private int _desiredTotal;
 
     [GlobalSetup]
-    public void Setup() => _desiredTotal = MaxChoosableInteger * (MaxChoosableInteger + 1) / 2;
+    public void Setup() => _desiredTotal = MaxChoosableInteger * (MaxChoosableInteger + 1) / GaussSumDivisor;
 
     [Benchmark(Baseline = true)]
     public bool BruteForceRecursion() => CanWinBruteForce(0, _desiredTotal);

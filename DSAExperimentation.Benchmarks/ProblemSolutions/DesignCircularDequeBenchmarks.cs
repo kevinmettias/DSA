@@ -21,36 +21,13 @@ public class DesignCircularDequeBenchmarks
     public int Capacity;
 
     [Benchmark(Baseline = true)]
-    public int ArrayBacked()
-    {
-        var deque = new ArrayCircularDeque(Capacity);
-        var sum = 0;
-
-        for (var i = 0; i < OperationCount; i++)
-        {
-            if (deque.IsFull())
-            {
-                deque.DeleteFront();
-            }
-
-            deque.InsertLast(i);
-
-            if (deque.IsFull())
-            {
-                deque.DeleteLast();
-            }
-
-            deque.InsertFront(i);
-            sum += deque.GetFront() + deque.GetRear();
-        }
-
-        return sum;
-    }
+    public int ArrayBacked() => RunChurnCycle(new ArrayCircularDeque(Capacity));
 
     [Benchmark]
-    public int DequeBacked()
+    public int DequeBacked() => RunChurnCycle(new DequeCircularDeque(Capacity));
+
+    private static int RunChurnCycle(ICircularDeque deque)
     {
-        var deque = new DequeCircularDeque(Capacity);
         var sum = 0;
 
         for (var i = 0; i < OperationCount; i++)
@@ -74,7 +51,24 @@ public class DesignCircularDequeBenchmarks
         return sum;
     }
 
-    private sealed class ArrayCircularDeque(int capacity)
+    private interface ICircularDeque
+    {
+        bool IsFull();
+
+        void InsertFront(int value);
+
+        void InsertLast(int value);
+
+        void DeleteFront();
+
+        void DeleteLast();
+
+        int GetFront();
+
+        int GetRear();
+    }
+
+    private sealed class ArrayCircularDeque(int capacity) : ICircularDeque
     {
         private readonly int[] _items = new int[capacity];
         private int _head;
@@ -108,7 +102,7 @@ public class DesignCircularDequeBenchmarks
         public int GetRear() => _items[(_head + _count - 1 + _items.Length) % _items.Length];
     }
 
-    private sealed class DequeCircularDeque(int capacity)
+    private sealed class DequeCircularDeque(int capacity) : ICircularDeque
     {
         private readonly RepoDeque _items = new();
 

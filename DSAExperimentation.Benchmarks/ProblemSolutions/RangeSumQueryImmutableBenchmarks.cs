@@ -12,6 +12,11 @@ public class RangeSumQueryImmutableBenchmarks
 {
     private const int QueryCount = 500;
 
+    // LC problem number, reused as the Random seed for reproducible benchmark input.
+    private const int RandomSeed = 303;
+
+    private const int ValueRange = 1_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,8 +26,8 @@ public class RangeSumQueryImmutableBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(303);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-1_000, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueRange, ValueRange)).ToArray();
 
         _queries = new (int Left, int Right)[QueryCount];
         for (var i = 0; i < QueryCount; i++)

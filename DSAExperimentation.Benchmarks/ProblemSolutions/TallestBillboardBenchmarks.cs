@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TallestBillboardBenchmarks
 {
     private const int Unreachable = int.MinValue / 2;
+    private const int RandomSeed = 956; // LC problem number
+    private const int MaxRodLength = 50; // exclusive upper bound passed to Random.Next
 
     [Params(12, 14)]
     public int N;
@@ -23,8 +25,8 @@ public class TallestBillboardBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(956);
-        _rods = Enumerable.Range(0, N).Select(_ => random.Next(1, 50)).ToArray();
+        var random = new Random(RandomSeed);
+        _rods = Enumerable.Range(0, N).Select(_ => random.Next(1, MaxRodLength)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -41,8 +43,9 @@ public class TallestBillboardBenchmarks
         var skip = Solve(index + 1, diff);
         var addToTaller = rod + Solve(index + 1, diff + rod);
         var addToShorter = Solve(index + 1, diff - rod);
+        var bestAddChoice = Math.Max(addToTaller, addToShorter);
 
-        return Math.Max(skip, Math.Max(addToTaller, addToShorter));
+        return Math.Max(skip, bestAddChoice);
     }
 
     [Benchmark]
@@ -60,7 +63,8 @@ public class TallestBillboardBenchmarks
         var skip = solve((state.Index + 1, state.Diff));
         var addToTaller = rod + solve((state.Index + 1, state.Diff + rod));
         var addToShorter = solve((state.Index + 1, state.Diff - rod));
+        var bestAddChoice = Math.Max(addToTaller, addToShorter);
 
-        return Math.Max(skip, Math.Max(addToTaller, addToShorter));
+        return Math.Max(skip, bestAddChoice);
     }
 }

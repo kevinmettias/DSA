@@ -40,30 +40,41 @@ public sealed class LongestWellPerformingIntervalTests
     private static int LongestWpi(int[] hours)
     {
         var firstIndexByScore = new HashMap<int, int>();
-        var score = 0;
-        var longest = 0;
+        var tracker = new ScoreTracker();
 
         for (var i = 0; i < hours.Length; i++)
         {
-            score += hours[i] > 8 ? 1 : -1;
-
-            if (score > 0)
-            {
-                longest = i + 1;
-                continue;
-            }
-
-            if (firstIndexByScore.TryGetValue(score - 1, out var priorIndex))
-            {
-                longest = Math.Max(longest, i - priorIndex);
-            }
-
-            if (!firstIndexByScore.HasKey(score))
-            {
-                firstIndexByScore.Set(score, i);
-            }
+            tracker.ProcessDay(i, hours[i], firstIndexByScore);
         }
 
-        return longest;
+        return tracker.Longest;
+    }
+
+    private sealed class ScoreTracker
+    {
+        private int _score;
+
+        public int Longest { get; private set; }
+
+        public void ProcessDay(int i, int hour, HashMap<int, int> firstIndexByScore)
+        {
+            _score += hour > 8 ? 1 : -1;
+
+            if (_score > 0)
+            {
+                Longest = i + 1;
+                return;
+            }
+
+            if (firstIndexByScore.TryGetValue(_score - 1, out var priorIndex))
+            {
+                Longest = Math.Max(Longest, i - priorIndex);
+            }
+
+            if (!firstIndexByScore.HasKey(_score))
+            {
+                firstIndexByScore.Set(_score, i);
+            }
+        }
     }
 }

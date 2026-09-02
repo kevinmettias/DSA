@@ -22,38 +22,43 @@ public class PeekingIteratorBenchmarks
     [Benchmark(Baseline = true)]
     public long IndexTrackedPeek()
     {
-        var index = 0;
-        var havePeeked = false;
-        var peeked = 0;
+        var iterator = new IndexTrackedIterator(_values);
         var sum = 0L;
 
-        bool HasNext() => havePeeked || index < _values.Length;
-
-        int Peek()
+        while (iterator.HasNext())
         {
-            if (!havePeeked)
-            {
-                peeked = _values[index++];
-                havePeeked = true;
-            }
-
-            return peeked;
-        }
-
-        int Next()
-        {
-            var value = Peek();
-            havePeeked = false;
-            return value;
-        }
-
-        while (HasNext())
-        {
-            sum += Peek();
-            sum += Next();
+            sum += iterator.Peek();
+            sum += iterator.Next();
         }
 
         return sum;
+    }
+
+    private sealed class IndexTrackedIterator(int[] values)
+    {
+        private int _index;
+        private bool _havePeeked;
+        private int _peeked;
+
+        public bool HasNext() => _havePeeked || _index < values.Length;
+
+        public int Peek()
+        {
+            if (!_havePeeked)
+            {
+                _peeked = values[_index++];
+                _havePeeked = true;
+            }
+
+            return _peeked;
+        }
+
+        public int Next()
+        {
+            var value = Peek();
+            _havePeeked = false;
+            return value;
+        }
     }
 
     [Benchmark]

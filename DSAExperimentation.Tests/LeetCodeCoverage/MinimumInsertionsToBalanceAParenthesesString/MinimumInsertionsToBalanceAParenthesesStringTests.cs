@@ -30,33 +30,48 @@ public sealed partial class MinimumInsertionsToBalanceAParenthesesStringTests
 
     private static int MinInsertions(string s)
     {
-        var openers = new RepoCharStack();
-        var insertions = 0;
-        var i = 0;
+        var scanner = new ParenScanner(s);
 
-        while (i < s.Length)
+        while (scanner.HasNext)
         {
-            if (s[i] == '(')
-            {
-                openers.Push(s[i]);
-                i++;
-                continue;
-            }
-
-            var hasAdjacentCloser = i + 1 < s.Length && s[i + 1] == ')';
-            if (!hasAdjacentCloser)
-            {
-                insertions++;
-            }
-
-            if (!openers.TryPop(out _))
-            {
-                insertions++;
-            }
-
-            i += hasAdjacentCloser ? 2 : 1;
+            scanner.Advance();
         }
 
-        return insertions + (openers.Count * 2);
+        return scanner.Insertions + (scanner.RemainingOpeners * 2);
+    }
+
+    private sealed class ParenScanner(string s)
+    {
+        private readonly RepoCharStack _openers = new();
+        private int _i;
+
+        public bool HasNext => _i < s.Length;
+
+        public int Insertions { get; private set; }
+
+        public int RemainingOpeners => _openers.Count;
+
+        public void Advance()
+        {
+            if (s[_i] == '(')
+            {
+                _openers.Push(s[_i]);
+                _i++;
+                return;
+            }
+
+            var hasAdjacentCloser = _i + 1 < s.Length && s[_i + 1] == ')';
+            if (!hasAdjacentCloser)
+            {
+                Insertions++;
+            }
+
+            if (!_openers.TryPop(out _))
+            {
+                Insertions++;
+            }
+
+            _i += hasAdjacentCloser ? 2 : 1;
+        }
     }
 }

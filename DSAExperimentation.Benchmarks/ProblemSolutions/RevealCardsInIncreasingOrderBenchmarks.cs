@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RevealCardsInIncreasingOrderBenchmarks
 {
+    private const int RandomSeed = 950; // LC problem number
+    private const int CardValueUpperBound = 1_000_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,37 +23,20 @@ public class RevealCardsInIncreasingOrderBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(950);
-        _deck = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _deck = Enumerable.Range(0, Length).Select(_ => random.Next(1, CardValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
     public int[] ListRemoveAtSimulation()
     {
-        var sorted = (int[])_deck.Clone();
-        Array.Sort(sorted);
-
-        var indices = new List<int>(_deck.Length);
-
-        for (var i = 0; i < _deck.Length; i++)
-        {
-            indices.Add(i);
-        }
-
+        var sorted = SortedDeck();
+        var indices = BuildIndexList(_deck.Length);
         var result = new int[_deck.Length];
 
         foreach (var value in sorted)
         {
-            var revealIndex = indices[0];
-            indices.RemoveAt(0);
-            result[revealIndex] = value;
-
-            if (indices.Count > 0)
-            {
-                var moveToBottom = indices[0];
-                indices.RemoveAt(0);
-                indices.Add(moveToBottom);
-            }
+            RevealAndRotate(indices, result, value);
         }
 
         return result;
@@ -59,29 +45,71 @@ public class RevealCardsInIncreasingOrderBenchmarks
     [Benchmark]
     public int[] QueueSimulation()
     {
-        var sorted = (int[])_deck.Clone();
-        Array.Sort(sorted);
-
-        var indices = new RepoQueue();
-
-        for (var i = 0; i < _deck.Length; i++)
-        {
-            indices.Enqueue(i);
-        }
-
+        var sorted = SortedDeck();
+        var indices = BuildIndexQueue(_deck.Length);
         var result = new int[_deck.Length];
 
         foreach (var value in sorted)
         {
-            indices.TryDequeue(out var revealIndex);
-            result[revealIndex] = value;
-
-            if (indices.TryDequeue(out var moveToBottom))
-            {
-                indices.Enqueue(moveToBottom);
-            }
+            RevealAndRotate(indices, result, value);
         }
 
         return result;
+    }
+
+    private int[] SortedDeck()
+    {
+        var sorted = (int[])_deck.Clone();
+        Array.Sort(sorted);
+        return sorted;
+    }
+
+    private static List<int> BuildIndexList(int length)
+    {
+        var indices = new List<int>(length);
+
+        for (var i = 0; i < length; i++)
+        {
+            indices.Add(i);
+        }
+
+        return indices;
+    }
+
+    private static void RevealAndRotate(List<int> indices, int[] result, int value)
+    {
+        var revealIndex = indices[0];
+        indices.RemoveAt(0);
+        result[revealIndex] = value;
+
+        if (indices.Count > 0)
+        {
+            var moveToBottom = indices[0];
+            indices.RemoveAt(0);
+            indices.Add(moveToBottom);
+        }
+    }
+
+    private static RepoQueue BuildIndexQueue(int length)
+    {
+        var indices = new RepoQueue();
+
+        for (var i = 0; i < length; i++)
+        {
+            indices.Enqueue(i);
+        }
+
+        return indices;
+    }
+
+    private static void RevealAndRotate(RepoQueue indices, int[] result, int value)
+    {
+        indices.TryDequeue(out var revealIndex);
+        result[revealIndex] = value;
+
+        if (indices.TryDequeue(out var moveToBottom))
+        {
+            indices.Enqueue(moveToBottom);
+        }
     }
 }

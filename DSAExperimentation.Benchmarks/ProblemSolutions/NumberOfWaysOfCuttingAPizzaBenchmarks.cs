@@ -51,6 +51,12 @@ public class NumberOfWaysOfCuttingAPizzaBenchmarks
             return 1;
         }
 
+        var total = HorizontalCutWays(row, col, remainingCuts);
+        return (total + VerticalCutWays(row, col, remainingCuts)) % Modulus;
+    }
+
+    private int HorizontalCutWays(int row, int col, int remainingCuts)
+    {
         var total = 0;
 
         for (var nextRow = row + 1; nextRow < Size; nextRow++)
@@ -60,6 +66,13 @@ public class NumberOfWaysOfCuttingAPizzaBenchmarks
                 total = (total + WaysFrom(nextRow, col, remainingCuts - 1)) % Modulus;
             }
         }
+
+        return total;
+    }
+
+    private int VerticalCutWays(int row, int col, int remainingCuts)
+    {
+        var total = 0;
 
         for (var nextCol = col + 1; nextCol < Size; nextCol++)
         {
@@ -74,44 +87,57 @@ public class NumberOfWaysOfCuttingAPizzaBenchmarks
 
     [Benchmark]
     public int MemoizedRecursion()
+        => Memoizer.Memoize<(int Row, int Col, int RemainingCuts), int>((0, 0, Cuts), WaysFromMemoized);
+
+    private int WaysFromMemoized(
+        (int Row, int Col, int RemainingCuts) state,
+        Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
     {
-        return Memoizer.Memoize<(int Row, int Col, int RemainingCuts), int>((0, 0, Cuts), WaysFromMemoized);
+        var (row, col, remainingCuts) = state;
 
-        int WaysFromMemoized(
-            (int Row, int Col, int RemainingCuts) state,
-            Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+        if (_apples[row, col] == 0)
         {
-            var (row, col, remainingCuts) = state;
-
-            if (_apples[row, col] == 0)
-            {
-                return 0;
-            }
-
-            if (remainingCuts == 0)
-            {
-                return 1;
-            }
-
-            var total = 0;
-
-            for (var nextRow = row + 1; nextRow < Size; nextRow++)
-            {
-                if (_apples[row, col] - _apples[nextRow, col] > 0)
-                {
-                    total = (total + waysFrom((nextRow, col, remainingCuts - 1))) % Modulus;
-                }
-            }
-
-            for (var nextCol = col + 1; nextCol < Size; nextCol++)
-            {
-                if (_apples[row, col] - _apples[row, nextCol] > 0)
-                {
-                    total = (total + waysFrom((row, nextCol, remainingCuts - 1))) % Modulus;
-                }
-            }
-
-            return total;
+            return 0;
         }
+
+        if (remainingCuts == 0)
+        {
+            return 1;
+        }
+
+        var total = HorizontalCutWaysMemoized(row, col, remainingCuts, waysFrom);
+        return (total + VerticalCutWaysMemoized(row, col, remainingCuts, waysFrom)) % Modulus;
+    }
+
+    private int HorizontalCutWaysMemoized(
+        int row, int col, int remainingCuts, Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+    {
+        var total = 0;
+
+        for (var nextRow = row + 1; nextRow < Size; nextRow++)
+        {
+            if (_apples[row, col] - _apples[nextRow, col] > 0)
+            {
+                total = (total + waysFrom((nextRow, col, remainingCuts - 1))) % Modulus;
+            }
+        }
+
+        return total;
+    }
+
+    private int VerticalCutWaysMemoized(
+        int row, int col, int remainingCuts, Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+    {
+        var total = 0;
+
+        for (var nextCol = col + 1; nextCol < Size; nextCol++)
+        {
+            if (_apples[row, col] - _apples[row, nextCol] > 0)
+            {
+                total = (total + waysFrom((row, nextCol, remainingCuts - 1))) % Modulus;
+            }
+        }
+
+        return total;
     }
 }

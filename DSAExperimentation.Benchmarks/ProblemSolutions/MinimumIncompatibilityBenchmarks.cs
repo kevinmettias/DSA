@@ -17,6 +17,13 @@ public class MinimumIncompatibilityBenchmarks
 {
     private const int GroupSize = 2;
 
+    // Halves int.MaxValue for a "no group found yet" sentinel that still tolerates
+    // adding a real cost without overflowing.
+    private const int InfinitySentinelDivisor = 2;
+
+    // LC problem number, reused as the fixed benchmark-data seed.
+    private const int RandomSeed = 1681;
+
     [Params(10, 14)]
     public int Length;
 
@@ -26,7 +33,7 @@ public class MinimumIncompatibilityBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1681);
+        var random = new Random(RandomSeed);
         _nums = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
         _fullMask = (1 << Length) - 1;
     }
@@ -34,37 +41,17 @@ public class MinimumIncompatibilityBenchmarks
     [Benchmark(Baseline = true)]
     public int UnmemoizedRecursion() => Best(_fullMask);
 
-    private int Best(int remaining)
-    {
-        if (remaining == 0)
-        {
-            return 0;
-        }
-
-        var lowestBit = remaining & -remaining;
-        var others = remaining & ~lowestBit;
-        var best = int.MaxValue / 2;
-
-        for (var sub = others; ; sub = (sub - 1) & others)
-        {
-            if (PopCount(sub) == GroupSize - 1 && TryGroupCost(sub | lowestBit, out var cost))
-            {
-                best = Math.Min(best, cost + Best(remaining & ~(sub | lowestBit)));
-            }
-
-            if (sub == 0)
-            {
-                break;
-            }
-        }
-
-        return best;
-    }
+    private int Best(int remaining) => ComputeBestCost(remaining, Best);
 
     [Benchmark]
     public int MemoizedRecursion() => Memoizer.Memoize<int, int>(_fullMask, BestMemoized);
 
-    private int BestMemoized(int remaining, Func<int, int> best)
+    private int BestMemoized(int remaining, Func<int, int> best) => ComputeBestCost(remaining, best);
+
+    // Shared recurrence body for both the unmemoized and memoized variants: they
+    // differ only in how the "cost of the rest" is looked up, so that single point
+    // of variation is passed in as `best`.
+    private int ComputeBestCost(int remaining, Func<int, int> best)
     {
         if (remaining == 0)
         {
@@ -73,7 +60,13 @@ public class MinimumIncompatibilityBenchmarks
 
         var lowestBit = remaining & -remaining;
         var others = remaining & ~lowestBit;
-        var result = int.MaxValue / 2;
+
+        return MinimizeOverSubsets(remaining, lowestBit, others, best);
+    }
+
+    private int MinimizeOverSubsets(int remaining, int lowestBit, int others, Func<int, int> best)
+    {
+        var result = int.MaxValue / InfinitySentinelDivisor;
 
         for (var sub = others; ; sub = (sub - 1) & others)
         {
@@ -104,17 +97,26 @@ public class MinimumIncompatibilityBenchmarks
                 continue;
             }
 
-            if (!seen.TryAdd(_nums[i]))
+            if (!TryIncludeMember(i, seen, ref min, ref max))
             {
                 cost = 0;
                 return false;
             }
-
-            min = Math.Min(min, _nums[i]);
-            max = Math.Max(max, _nums[i]);
         }
 
         cost = max - min;
+        return true;
+    }
+
+    private bool TryIncludeMember(int index, Set<int> seen, ref int min, ref int max)
+    {
+        if (!seen.TryAdd(_nums[index]))
+        {
+            return false;
+        }
+
+        min = Math.Min(min, _nums[index]);
+        max = Math.Max(max, _nums[index]);
         return true;
     }
 

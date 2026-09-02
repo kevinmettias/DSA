@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class KthLargestElementInAStreamBenchmarks
 {
     private const int K = 10;
+    private const int RandomSeed = 703; // LC problem number
+    private const int StreamValueExclusiveBound = 1_000_000;
 
     [Params(100, 1_000)]
     public int StreamLength;
@@ -23,8 +25,8 @@ public class KthLargestElementInAStreamBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(703);
-        _stream = Enumerable.Range(0, StreamLength).Select(_ => random.Next(1, 1_000_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _stream = Enumerable.Range(0, StreamLength).Select(_ => random.Next(1, StreamValueExclusiveBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

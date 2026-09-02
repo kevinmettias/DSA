@@ -33,24 +33,37 @@ public sealed partial class RemoveOutermostParenthesesTests
         {
             if (c == '(')
             {
-                if (openers.Count > 0)
-                {
-                    result.Append(c);
-                }
-
-                openers.Push(c);
+                HandleOpener(openers, result, c);
             }
             else
             {
-                openers.TryPop(out _);
-
-                if (openers.Count > 0)
-                {
-                    result.Append(c);
-                }
+                HandleCloser(openers, result, c);
             }
         }
 
         return result.ToString();
+    }
+
+    // The outermost opener of each primitive is the one seen while nothing is open
+    // yet, so it's the only one skipped.
+    private static void HandleOpener(RepoCharStack openers, StringBuilder result, char c)
+    {
+        if (openers.Count > 0)
+        {
+            result.Append(c);
+        }
+
+        openers.Push(c);
+    }
+
+    // Pops first so the post-pop Count symmetrically excludes the outermost closer.
+    private static void HandleCloser(RepoCharStack openers, StringBuilder result, char c)
+    {
+        openers.TryPop(out _);
+
+        if (openers.Count > 0)
+        {
+            result.Append(c);
+        }
     }
 }

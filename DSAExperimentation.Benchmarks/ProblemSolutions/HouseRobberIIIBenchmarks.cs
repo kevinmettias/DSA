@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class HouseRobberIIIBenchmarks
 {
+    private const int MaxNodeValue = 100;
+
     [Params(10, 15)]
     public int Depth;
 
@@ -28,7 +30,7 @@ public class HouseRobberIIIBenchmarks
 
     private static BinaryTreeNode<int> BuildTree(int depth, Random random)
     {
-        var node = new BinaryTreeNode<int>(random.Next(1, 100));
+        var node = new BinaryTreeNode<int>(random.Next(1, MaxNodeValue));
 
         if (depth > 0)
         {

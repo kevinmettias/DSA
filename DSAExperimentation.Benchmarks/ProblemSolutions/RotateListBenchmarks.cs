@@ -1,17 +1,48 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.RotateList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are RotateListSolution's, the same methods
+// RotateListTests proves correct. [GlobalSetup] hoists the workload values, but the
+// list itself is rebuilt fresh inside each benchmark method rather than cached,
+// because the pointer-rewire strategy mutates the list it is handed - a cached
+// list would only be valid for the first measured iteration.
+//
+// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
+// public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class RotateListBenchmarks
 {
-    private int[] _values = null!;
+    // Both benchmarks rotate by roughly a third of the list so they do equivalent work.
+    private const int RotationDivisor = 3;
+
     [Params(200, 5_000)] public int Length;
-    [GlobalSetup] public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
-    [Benchmark(Baseline = true)] public int ArrayRotate() { var k = Length / 3; var copy = _values[^k..].Concat(_values[..^k]).ToArray(); return copy[0]; }
-    [Benchmark] public int LinkedListRotate() => Count(RotateRight(BuildList(_values), Length / 3));
-    private static SinglyLinkedListNode<int>? RotateRight(SinglyLinkedListNode<int>? head, int k) { if (head is null || head.Next is null || k == 0) return head; var length = 1; var tail = head; while (tail.Next is not null) { tail = tail.Next; length++; } var shift = k % length; if (shift == 0) return head; var newTail = head; for (var i = 0; i < length - shift - 1; i++) newTail = newTail.Next!; var newHead = newTail.Next; newTail.Next = null; tail.Next = head; return newHead; }
-    private static SinglyLinkedListNode<int>? BuildList(int[] values) { var dummy = new SinglyLinkedListNode<int>(0); var tail = dummy; foreach (var value in values) { tail.Next = new SinglyLinkedListNode<int>(value); tail = tail.Next; } return dummy.Next; }
-    private static int Count(SinglyLinkedListNode<int>? head) { var count = 0; for (var node = head; node is not null; node = node.Next) count++; return count; }
+
+    private int[] _values = null!;
+
+    [GlobalSetup]
+    public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
+
+    [Benchmark(Baseline = true)]
+    public object? ArrayRebuild() =>
+        RotateListSolution.RotateRightByArrayRebuild(BuildList(_values), Length / RotationDivisor);
+
+    [Benchmark]
+    public object? PointerRewire() =>
+        RotateListSolution.RotateRightByPointerRewire(BuildList(_values), Length / RotationDivisor);
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
 }

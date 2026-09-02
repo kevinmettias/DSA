@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ContainVirusBenchmarks
 {
+    private const int RandomSeed = 749; // LeetCode problem number
+
+    private const double InfectionSeedProbability = 0.15;
+
     [Params(10, 25)]
     public int Side;
 
@@ -22,7 +26,7 @@ public class ContainVirusBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(749);
+        var random = new Random(RandomSeed);
         _grid = new int[Side][];
 
         for (var r = 0; r < Side; r++)
@@ -31,7 +35,7 @@ public class ContainVirusBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < 0.15 ? 1 : 0;
+                _grid[r][c] = random.NextDouble() < InfectionSeedProbability ? 1 : 0;
             }
         }
     }
@@ -50,42 +54,67 @@ public class ContainVirusBenchmarks
 
         while (true)
         {
-            var regions = FindRegions(grid, rows, cols, collectRegion);
-            var mostThreatening = regions.MaxBy(region => region.Threatened.Count);
+            var (done, wallsAdded) = RunQuarantineRound(grid, rows, cols, collectRegion);
 
-            if (mostThreatening is null || mostThreatening.Threatened.Count == 0)
+            if (done)
             {
                 return totalWalls;
             }
 
-            totalWalls += mostThreatening.WallsNeeded;
+            totalWalls += wallsAdded;
+        }
+    }
 
-            foreach (var (row, col) in mostThreatening.Cells)
+    private static (bool Done, int WallsAdded) RunQuarantineRound(
+        int[][] grid, int rows, int cols, CollectRegion collectRegion)
+    {
+        var regions = FindRegions(grid, rows, cols, collectRegion);
+        var mostThreatening = regions.MaxBy(region => region.Threatened.Count);
+
+        if (mostThreatening is null || mostThreatening.Threatened.Count == 0)
+        {
+            return (true, 0);
+        }
+
+        QuarantineRegion(grid, mostThreatening);
+        SpreadRemainingRegions(grid, regions, mostThreatening);
+
+        return (false, mostThreatening.WallsNeeded);
+    }
+
+    private static void QuarantineRegion(int[][] grid, Region region)
+    {
+        foreach (var (row, col) in region.Cells)
+        {
+            grid[row][col] = -1;
+        }
+    }
+
+    private static void SpreadRemainingRegions(int[][] grid, List<Region> regions, Region quarantined)
+    {
+        foreach (var region in regions)
+        {
+            if (region == quarantined)
             {
-                grid[row][col] = -1;
+                continue;
             }
 
-            foreach (var region in regions)
+            foreach (var (row, col) in region.Threatened)
             {
-                if (region == mostThreatening)
-                {
-                    continue;
-                }
-
-                foreach (var (row, col) in region.Threatened)
-                {
-                    grid[row][col] = 1;
-                }
+                grid[row][col] = 1;
             }
         }
     }
 
     private delegate List<(int Row, int Col)> CollectRegion(int[][] grid, int rows, int cols, (int Row, int Col) start);
 
+    private sealed record GridView(int[][] Grid, int Rows, int Cols);
+
     private static List<Region> FindRegions(int[][] grid, int rows, int cols, CollectRegion collectRegion)
     {
         var visited = new HashSet<(int Row, int Col)>();
         var regions = new List<Region>();
+        var view = new GridView(grid, rows, cols);
 
         for (var r = 0; r < rows; r++)
         {
@@ -96,18 +125,25 @@ public class ContainVirusBenchmarks
                     continue;
                 }
 
-                var cells = collectRegion(grid, rows, cols, (r, c));
-
-                foreach (var cell in cells)
-                {
-                    visited.Add(cell);
-                }
-
-                regions.Add(BuildRegion(grid, rows, cols, cells));
+                var region = DiscoverRegion(view, collectRegion, (r, c), visited);
+                regions.Add(region);
             }
         }
 
         return regions;
+    }
+
+    private static Region DiscoverRegion(
+        GridView view, CollectRegion collectRegion, (int Row, int Col) start, HashSet<(int Row, int Col)> visited)
+    {
+        var cells = collectRegion(view.Grid, view.Rows, view.Cols, start);
+
+        foreach (var cell in cells)
+        {
+            visited.Add(cell);
+        }
+
+        return BuildRegion(view.Grid, view.Rows, view.Cols, cells);
     }
 
     private static Region BuildRegion(int[][] grid, int rows, int cols, List<(int Row, int Col)> cells)
@@ -130,34 +166,36 @@ public class ContainVirusBenchmarks
         return new Region(cells, threatened, wallsNeeded);
     }
 
+    private sealed record FloodState(List<(int Row, int Col)> Cells, HashSet<(int Row, int Col)> Visited);
+
     private static List<(int Row, int Col)> CollectRegionRecursive(
         int[][] grid, int rows, int cols, (int Row, int Col) start)
     {
-        var cells = new List<(int Row, int Col)>();
-        var visited = new HashSet<(int Row, int Col)>();
+        var view = new GridView(grid, rows, cols);
+        var state = new FloodState([], []);
 
-        Flood(start);
+        Flood(start, view, state);
 
-        return cells;
+        return state.Cells;
+    }
 
-        void Flood((int Row, int Col) cell)
+    private static void Flood((int Row, int Col) cell, GridView view, FloodState state)
+    {
+        if (cell.Row < 0 || cell.Row >= view.Rows || cell.Col < 0 || cell.Col >= view.Cols)
         {
-            if (cell.Row < 0 || cell.Row >= rows || cell.Col < 0 || cell.Col >= cols)
-            {
-                return;
-            }
-
-            if (grid[cell.Row][cell.Col] != 1 || !visited.Add(cell))
-            {
-                return;
-            }
-
-            cells.Add(cell);
-            Flood((cell.Row - 1, cell.Col));
-            Flood((cell.Row + 1, cell.Col));
-            Flood((cell.Row, cell.Col - 1));
-            Flood((cell.Row, cell.Col + 1));
+            return;
         }
+
+        if (view.Grid[cell.Row][cell.Col] != 1 || !state.Visited.Add(cell))
+        {
+            return;
+        }
+
+        state.Cells.Add(cell);
+        Flood((cell.Row - 1, cell.Col), view, state);
+        Flood((cell.Row + 1, cell.Col), view, state);
+        Flood((cell.Row, cell.Col - 1), view, state);
+        Flood((cell.Row, cell.Col + 1), view, state);
     }
 
     private static List<(int Row, int Col)> CollectRegionViaTraversal(

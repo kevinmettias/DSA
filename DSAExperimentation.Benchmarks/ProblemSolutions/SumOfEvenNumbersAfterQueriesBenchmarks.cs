@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SumOfEvenNumbersAfterQueriesBenchmarks
 {
+    private const int RandomSeed = 985; // LC problem number
+    private const int ValueMagnitudeBound = 1_000;
+    private const int EvenDivisor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,10 +24,10 @@ public class SumOfEvenNumbersAfterQueriesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(985);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-1_000, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueMagnitudeBound, ValueMagnitudeBound)).ToArray();
         _queries = Enumerable.Range(0, Length)
-            .Select(_ => new[] { random.Next(-1_000, 1_000), random.Next(0, Length) })
+            .Select(_ => new[] { random.Next(-ValueMagnitudeBound, ValueMagnitudeBound), random.Next(0, Length) })
             .ToArray();
     }
 
@@ -41,7 +45,7 @@ public class SumOfEvenNumbersAfterQueriesBenchmarks
 
             for (var i = 0; i < nums.Length; i++)
             {
-                if (nums[i] % 2 == 0)
+                if (nums[i] % EvenDivisor == 0)
                 {
                     sum += nums[i];
                 }
@@ -56,47 +60,70 @@ public class SumOfEvenNumbersAfterQueriesBenchmarks
     [Benchmark]
     public int[] RunningEvenSum()
     {
+        var array = PopulateArray(_nums);
+        var evenSum = ComputeInitialEvenSum(array);
+        return ApplyQueriesTrackingEvenSum(array, evenSum);
+    }
+
+    private static DynamicArray<int> PopulateArray(int[] nums)
+    {
         var array = new DynamicArray<int>();
 
-        foreach (var num in _nums)
+        foreach (var num in nums)
         {
             array.Add(num);
         }
 
+        return array;
+    }
+
+    private static int ComputeInitialEvenSum(DynamicArray<int> array)
+    {
         var evenSum = 0;
 
         for (var i = 0; i < array.Count; i++)
         {
-            if (array.Get(i) % 2 == 0)
+            if (array.Get(i) % EvenDivisor == 0)
             {
                 evenSum += array.Get(i);
             }
         }
 
+        return evenSum;
+    }
+
+    private int[] ApplyQueriesTrackingEvenSum(DynamicArray<int> array, int evenSum)
+    {
         var results = new int[_queries.Length];
 
         for (var q = 0; q < _queries.Length; q++)
         {
-            var value = _queries[q][0];
-            var index = _queries[q][1];
-            var before = array.Get(index);
-
-            if (before % 2 == 0)
-            {
-                evenSum -= before;
-            }
-
-            var after = before + value;
-            array.Set(index, after);
-
-            if (after % 2 == 0)
-            {
-                evenSum += after;
-            }
-
+            evenSum = ApplyQueryToEvenSum(array, _queries[q], evenSum);
             results[q] = evenSum;
         }
 
         return results;
+    }
+
+    private static int ApplyQueryToEvenSum(DynamicArray<int> array, int[] query, int evenSum)
+    {
+        var value = query[0];
+        var index = query[1];
+        var before = array.Get(index);
+
+        if (before % EvenDivisor == 0)
+        {
+            evenSum -= before;
+        }
+
+        var after = before + value;
+        array.Set(index, after);
+
+        if (after % EvenDivisor == 0)
+        {
+            evenSum += after;
+        }
+
+        return evenSum;
     }
 }

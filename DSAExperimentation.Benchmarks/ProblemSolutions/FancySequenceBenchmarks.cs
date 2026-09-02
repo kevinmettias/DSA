@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FancySequenceBenchmarks
 {
     private const long Modulo = 1_000_000_007;
+    private const int RandomSeed = 1622; // LC problem number
+    private const int AppendedValueUpperBoundExclusive = 100;
+    private const int AlternatingParityModulus = 2;
+    private const int MinOperationAmount = 2;
+    private const int MaxOperationAmountExclusive = 5;
 
     [Params(200, 2_000)]
     public int Length;
@@ -27,10 +32,10 @@ public class FancySequenceBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1622);
-        _appendValues = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _appendValues = Enumerable.Range(0, Length).Select(_ => random.Next(1, AppendedValueUpperBoundExclusive)).ToArray();
         _operations = Enumerable.Range(0, Length)
-            .Select(i => (IsMultiply: i % 2 == 0, Amount: random.Next(2, 5)))
+            .Select(i => (IsMultiply: i % AlternatingParityModulus == 0, Amount: random.Next(MinOperationAmount, MaxOperationAmountExclusive)))
             .ToArray();
     }
 

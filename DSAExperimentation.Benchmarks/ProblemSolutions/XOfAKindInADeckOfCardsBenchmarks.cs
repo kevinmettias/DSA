@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class XOfAKindInADeckOfCardsBenchmarks
 {
     private const int GroupSize = 4;
+    private const int RandomSeed = 914; // LC problem number
+    private const int MinPartitionSize = 2; // X of a kind requires groups of at least 2
 
     [Params(400, 20_000)]
     public int DeckSize;
@@ -20,7 +22,7 @@ public class XOfAKindInADeckOfCardsBenchmarks
     private int[] _deck = null!;
 
     [GlobalSetup]
-    public void Setup() => _deck = BuildPartitionableDeck(DeckSize, GroupSize, seed: 914);
+    public void Setup() => _deck = BuildPartitionableDeck(DeckSize, GroupSize, seed: RandomSeed);
 
     [Benchmark(Baseline = true)]
     public bool DictionaryCount()
@@ -38,7 +40,7 @@ public class XOfAKindInADeckOfCardsBenchmarks
             gcd = Gcd(gcd, count);
         }
 
-        return gcd >= 2;
+        return gcd >= MinPartitionSize;
     }
 
     [Benchmark]
@@ -58,7 +60,7 @@ public class XOfAKindInADeckOfCardsBenchmarks
             gcd = Gcd(gcd, count);
         }
 
-        return gcd >= 2;
+        return gcd >= MinPartitionSize;
     }
 
     private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);

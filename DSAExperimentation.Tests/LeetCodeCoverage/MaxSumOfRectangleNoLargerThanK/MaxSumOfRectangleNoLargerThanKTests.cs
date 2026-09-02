@@ -18,7 +18,9 @@ public sealed partial class MaxSumOfRectangleNoLargerThanKTests
     {
         int[][] matrix = [[1, 0, 1], [0, -2, 3]];
 
-        Assert.Equal(2, MaxSumSubmatrix(matrix, k: 2));
+        var maxSum = MaxSumSubmatrix(matrix, k: 2);
+
+        Assert.Equal(2, maxSum);
     }
 
     [Fact]
@@ -26,7 +28,9 @@ public sealed partial class MaxSumOfRectangleNoLargerThanKTests
     {
         int[][] matrix = [[2, 2, -1]];
 
-        Assert.Equal(3, MaxSumSubmatrix(matrix, k: 3));
+        var maxSum = MaxSumSubmatrix(matrix, k: 3);
+
+        Assert.Equal(3, maxSum);
     }
 
     private static int MaxSumSubmatrix(int[][] matrix, int k)
@@ -46,7 +50,8 @@ public sealed partial class MaxSumOfRectangleNoLargerThanKTests
                     rowSums[r] += matrix[r][right];
                 }
 
-                best = Math.Max(best, BestWindowNoLargerThanK(rowSums, k));
+                var windowSum = BestWindowNoLargerThanK(rowSums, k);
+                best = Math.Max(best, windowSum);
             }
         }
 

@@ -64,21 +64,27 @@ public sealed partial class PacificAtlanticWaterFlowTests
 
         for (var r = 0; r < rows; r++)
         {
-            FloodFrom((r, 0), pacific);
-            FloodFrom((r, cols - 1), atlantic);
+            FloodFrom((r, 0), pacific, heights);
+            FloodFrom((r, cols - 1), atlantic, heights);
         }
 
         for (var c = 0; c < cols; c++)
         {
-            FloodFrom((0, c), pacific);
-            FloodFrom((rows - 1, c), atlantic);
+            FloodFrom((0, c), pacific, heights);
+            FloodFrom((rows - 1, c), atlantic, heights);
         }
 
+        return CellsReachingBothOceans(heights, pacific, atlantic);
+    }
+
+    private static List<(int Row, int Col)> CellsReachingBothOceans(
+        int[][] heights, Set<(int Row, int Col)> pacific, Set<(int Row, int Col)> atlantic)
+    {
         var result = new List<(int Row, int Col)>();
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < heights.Length; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < heights[0].Length; c++)
             {
                 if (pacific.Has((r, c)) && atlantic.Has((r, c)))
                 {
@@ -88,39 +94,44 @@ public sealed partial class PacificAtlanticWaterFlowTests
         }
 
         return result;
+    }
 
-        void FloodFrom((int Row, int Col) start, Set<(int Row, int Col)> reached)
+    private static void FloodFrom((int Row, int Col) start, Set<(int Row, int Col)> reached, int[][] heights)
+    {
+        if (reached.Has(start))
         {
-            if (reached.Has(start))
-            {
-                return;
-            }
-
-            foreach (var node in DepthFirstSearch.Traverse(start, Neighbors))
-            {
-                reached.TryAdd(node);
-            }
+            return;
         }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+        foreach (var node in DepthFirstSearch.Traverse(start, p => Neighbors(p, heights)))
         {
-            foreach (var (dRow, dCol) in Directions)
+            reached.TryAdd(node);
+        }
+    }
+
+    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p, int[][] heights)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var next = (Row: p.Row + dRow, Col: p.Col + dCol);
+
+            if (CanFlowTo(next, p, heights))
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (heights[nextRow][nextCol] < heights[p.Row][p.Col])
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
+                yield return next;
             }
         }
+    }
+
+    private static bool CanFlowTo((int Row, int Col) next, (int Row, int Col) from, int[][] heights)
+    {
+        var rows = heights.Length;
+        var cols = heights[0].Length;
+
+        if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+        {
+            return false;
+        }
+
+        return heights[next.Row][next.Col] >= heights[from.Row][from.Col];
     }
 }

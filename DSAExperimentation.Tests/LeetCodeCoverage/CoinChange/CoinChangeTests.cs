@@ -16,7 +16,10 @@ public sealed partial class CoinChangeTests
     [InlineData(new[] { 2 }, 3, -1)]
     [InlineData(new[] { 1 }, 0, 0)]
     public void FewestCoins_LeetCodeExamples_ReturnsMinimumCoinCount(int[] coins, int amount, int expected)
-        => Assert.Equal(expected, FewestCoins(coins, amount));
+    {
+        var actual = FewestCoins(coins, amount);
+        Assert.Equal(expected, actual);
+    }
 
     private static int FewestCoins(int[] coins, int amount)
     {

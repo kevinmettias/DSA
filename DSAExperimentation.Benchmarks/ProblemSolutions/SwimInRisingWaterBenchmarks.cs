@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SwimInRisingWaterBenchmarks
 {
+    private const int RandomSeed = 778;
+    private const int MidpointDivisor = 2;
+
     [Params(15, 40)]
     public int Size;
 
@@ -25,7 +28,7 @@ public class SwimInRisingWaterBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(778);
+        var random = new Random(RandomSeed);
         var values = Enumerable.Range(0, Size * Size).OrderBy(_ => random.Next()).ToArray();
         _grid = new int[Size][];
 
@@ -49,7 +52,7 @@ public class SwimInRisingWaterBenchmarks
 
         while (lo < hi)
         {
-            var mid = lo + ((hi - lo) / 2);
+            var mid = lo + ((hi - lo) / MidpointDivisor);
 
             if (CanReachAtTime(mid, n))
             {
@@ -71,37 +74,57 @@ public class SwimInRisingWaterBenchmarks
             return false;
         }
 
+        var context = InitializeFloodFill(n, time);
+        return RunFloodFill(context);
+    }
+
+    private static FloodFillContext InitializeFloodFill(int n, int time)
+    {
         var visited = new bool[n, n];
         var queue = new Queue<(int Row, int Col)>();
         queue.Enqueue((0, 0));
         visited[0, 0] = true;
 
-        while (queue.Count > 0)
-        {
-            var (row, col) = queue.Dequeue();
+        return new FloodFillContext(n, time, visited, queue);
+    }
 
-            if (row == n - 1 && col == n - 1)
+    private bool RunFloodFill(FloodFillContext context)
+    {
+        var n = context.N;
+
+        while (context.Queue.Count > 0)
+        {
+            var current = context.Queue.Dequeue();
+
+            if (current.Row == n - 1 && current.Col == n - 1)
             {
                 return true;
             }
 
-            foreach (var (dr, dc) in Directions)
-            {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc] || _grid[nr][nc] > time)
-                {
-                    continue;
-                }
-
-                visited[nr, nc] = true;
-                queue.Enqueue((nr, nc));
-            }
+            EnqueueReachableNeighbors(current, context);
         }
 
         return false;
     }
+
+    private void EnqueueReachableNeighbors((int Row, int Col) current, FloodFillContext context)
+    {
+        foreach (var (dr, dc) in Directions)
+        {
+            var nr = current.Row + dr;
+            var nc = current.Col + dc;
+
+            if (nr < 0 || nr >= context.N || nc < 0 || nc >= context.N || context.Visited[nr, nc] || _grid[nr][nc] > context.Time)
+            {
+                continue;
+            }
+
+            context.Visited[nr, nc] = true;
+            context.Queue.Enqueue((nr, nc));
+        }
+    }
+
+    private readonly record struct FloodFillContext(int N, int Time, bool[,] Visited, Queue<(int Row, int Col)> Queue);
 
     [Benchmark]
     public int HeapDijkstra()
@@ -113,7 +136,14 @@ public class SwimInRisingWaterBenchmarks
         frontier.Push(((0, 0), _grid[0][0]));
         visited[0, 0] = true;
 
-        while (frontier.TryPop(out var entry))
+        return RunDijkstra(new DijkstraContext(n, visited, frontier));
+    }
+
+    private int RunDijkstra(DijkstraContext context)
+    {
+        var n = context.N;
+
+        while (context.Frontier.TryPop(out var entry))
         {
             var (row, col) = entry.Node;
             var time = entry.Priority;
@@ -123,23 +153,31 @@ public class SwimInRisingWaterBenchmarks
                 return time;
             }
 
-            foreach (var (dr, dc) in Directions)
-            {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc])
-                {
-                    continue;
-                }
-
-                visited[nr, nc] = true;
-                frontier.Push(((nr, nc), Math.Max(time, _grid[nr][nc])));
-            }
+            PushReachableNeighbors(entry.Node, time, context);
         }
 
         return -1;
     }
+
+    private void PushReachableNeighbors((int Row, int Col) current, int time, DijkstraContext context)
+    {
+        foreach (var (dr, dc) in Directions)
+        {
+            var nr = current.Row + dr;
+            var nc = current.Col + dc;
+
+            if (nr < 0 || nr >= context.N || nc < 0 || nc >= context.N || context.Visited[nr, nc])
+            {
+                continue;
+            }
+
+            context.Visited[nr, nc] = true;
+            context.Frontier.Push(((nr, nc), Math.Max(time, _grid[nr][nc])));
+        }
+    }
+
+    private readonly record struct DijkstraContext(
+        int N, bool[,] Visited, Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> Frontier);
 
     private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 }

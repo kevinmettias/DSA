@@ -1,12 +1,26 @@
-﻿using BenchmarkDotNet.Attributes;
-using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.PlusOne;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are PlusOneSolution's. All-nines input forces a full
+// carry cascade, so the array-walk strategy gets no early exit either.
 [MemoryDiagnoser]
 public class PlusOneBenchmarks
 {
-    private int[] _digits = null!; [Params(200, 5_000)] public int Length; [GlobalSetup] public void Setup() => _digits = Enumerable.Repeat(9, Length).ToArray();
-    [Benchmark(Baseline = true)] public int ArrayFromEnd() { var result = _digits.ToArray(); for (var i = result.Length - 1; i >= 0; i--) { if (result[i] < 9) { result[i]++; return result.Length; } result[i] = 0; } return result.Length + 1; }
-    [Benchmark] public int StackDigits() { var stack = new DigitStack(); var carry = 1; for (var i = _digits.Length - 1; i >= 0; i--) { var sum = _digits[i] + carry; stack.Push(sum % 10); carry = sum / 10; } if (carry > 0) stack.Push(carry); var count=0; while (stack.TryPop(out _)) count++; return count; }
+    private const int MaxDigitValue = 9; // base-10 digit ceiling; also the worst-case seed that forces a full carry cascade
+
+    private int[] _digits = null!;
+
+    [Params(200, 5_000)]
+    public int Length;
+
+    [GlobalSetup]
+    public void Setup() => _digits = Enumerable.Repeat(MaxDigitValue, Length).ToArray();
+
+    [Benchmark(Baseline = true)]
+    public int[] ArrayWalk() => PlusOneSolution.IncrementByArrayWalk(_digits);
+
+    [Benchmark]
+    public int[] DigitStack() => PlusOneSolution.IncrementByDigitStack(_digits);
 }

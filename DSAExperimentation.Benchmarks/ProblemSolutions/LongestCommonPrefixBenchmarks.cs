@@ -1,14 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.LongestCommonPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Longest Common Prefix (LC 14): linear shrink-and-compare vs. BinarySearch over
-// the monotone predicate "prefix length n is shared by every string".
+// Harness only: both arms are LongestCommonPrefixSolution's, the same methods
+// LongestCommonPrefixTests proves correct. Linear shrink-and-compare vs.
+// BinarySearch over the monotone predicate "prefix length n is shared by
+// every string".
 [MemoryDiagnoser]
 public class LongestCommonPrefixBenchmarks
 {
+    private static readonly string[] DivergingSuffixes = ["a", "b", "c", "d"];
+
     private string[] _values = null!;
 
     [Params(64, 512)]
@@ -18,58 +21,12 @@ public class LongestCommonPrefixBenchmarks
     public void Setup()
     {
         var prefix = new string('x', PrefixLength);
-        _values =
-        [
-            prefix + "a",
-            prefix + "b",
-            prefix + "c",
-            prefix + "d",
-        ];
+        _values = DivergingSuffixes.Select(suffix => prefix + suffix).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public string LinearScan()
-    {
-        var prefix = _values[0];
-
-        foreach (var value in _values.Skip(1))
-        {
-            while (!value.StartsWith(prefix, StringComparison.Ordinal))
-            {
-                prefix = prefix[..^1];
-            }
-        }
-
-        return prefix;
-    }
+    public string LinearScan() => LongestCommonPrefixSolution.PrefixByLinearScan(_values);
 
     [Benchmark]
-    public string BinarySearchPredicate()
-    {
-        var shortest = _values.Min(value => value.Length);
-        var sequence = new PrefixFeasibilitySequence(_values, shortest);
-        var firstFailingLength = BinarySearch.LowerBound<int, PrefixFeasibilitySequence>(sequence, 1);
-
-        return _values[0][..(firstFailingLength - 1)];
-    }
-
-    private readonly struct PrefixFeasibilitySequence(string[] values, int maxLength) : IRandomAccessSequence<int>
-    {
-        public int Length => maxLength + 1;
-
-        public int Get(int length) => AllSharePrefix(length) ? 0 : 1;
-
-        private bool AllSharePrefix(int length)
-        {
-            for (var i = 1; i < values.Length; i++)
-            {
-                if (!values[0].AsSpan(0, length).SequenceEqual(values[i].AsSpan(0, length)))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
+    public string BinarySearchPredicate() => LongestCommonPrefixSolution.PrefixByBinarySearch(_values);
 }

@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class OddEvenLinkedListBenchmarks
 {
+    private const int ParityDivisor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -29,7 +31,7 @@ public class OddEvenLinkedListBenchmarks
 
         for (var node = head; node is not null; node = node.Next)
         {
-            (index % 2 == 0 ? odds : evens).Add(node.Value);
+            (index % ParityDivisor == 0 ? odds : evens).Add(node.Value);
             index++;
         }
 

@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ValidParenthesisStringBenchmarks
 {
+    private const string OpenParenthesis = "(";
+    private const string CloseParenthesis = ")";
+    private const int BoundaryParenthesisCount = 2; // one leading '(' + one trailing ')'
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -29,34 +33,7 @@ public class ValidParenthesisStringBenchmarks
 
         foreach (var c in _s)
         {
-            var next = new HashSet<int>();
-
-            foreach (var openCount in reachable)
-            {
-                switch (c)
-                {
-                    case '(':
-                        next.Add(openCount + 1);
-                        break;
-                    case ')':
-                        if (openCount > 0)
-                        {
-                            next.Add(openCount - 1);
-                        }
-                        break;
-                    default:
-                        next.Add(openCount + 1);
-                        next.Add(openCount);
-
-                        if (openCount > 0)
-                        {
-                            next.Add(openCount - 1);
-                        }
-                        break;
-                }
-            }
-
-            reachable = next;
+            reachable = ComputeNextReachable(reachable, c);
 
             if (reachable.Count == 0)
             {
@@ -73,9 +50,63 @@ public class ValidParenthesisStringBenchmarks
         var openIndices = new RepoIndexStack();
         var starIndices = new RepoIndexStack();
 
-        for (var i = 0; i < _s.Length; i++)
+        if (!TryMatchClosingParens(_s, openIndices, starIndices))
         {
-            switch (_s[i])
+            return false;
+        }
+
+        return AllOpensMatched(openIndices, starIndices);
+    }
+
+    private static HashSet<int> ComputeNextReachable(HashSet<int> reachable, char c)
+    {
+        var next = new HashSet<int>();
+
+        foreach (var openCount in reachable)
+        {
+            switch (c)
+            {
+                case '(':
+                    AddOpenParenTransition(next, openCount);
+                    break;
+                case ')':
+                    AddCloseParenTransition(next, openCount);
+                    break;
+                default:
+                    AddWildcardTransition(next, openCount);
+                    break;
+            }
+        }
+
+        return next;
+    }
+
+    private static void AddOpenParenTransition(HashSet<int> next, int openCount) => next.Add(openCount + 1);
+
+    private static void AddCloseParenTransition(HashSet<int> next, int openCount)
+    {
+        if (openCount > 0)
+        {
+            next.Add(openCount - 1);
+        }
+    }
+
+    private static void AddWildcardTransition(HashSet<int> next, int openCount)
+    {
+        next.Add(openCount + 1);
+        next.Add(openCount);
+
+        if (openCount > 0)
+        {
+            next.Add(openCount - 1);
+        }
+    }
+
+    private static bool TryMatchClosingParens(string s, RepoIndexStack openIndices, RepoIndexStack starIndices)
+    {
+        for (var i = 0; i < s.Length; i++)
+        {
+            switch (s[i])
             {
                 case '(':
                     openIndices.Push(i);
@@ -92,6 +123,11 @@ public class ValidParenthesisStringBenchmarks
             }
         }
 
+        return true;
+    }
+
+    private static bool AllOpensMatched(RepoIndexStack openIndices, RepoIndexStack starIndices)
+    {
         while (openIndices.TryPop(out var openIndex))
         {
             if (!starIndices.TryPop(out var starIndex) || starIndex < openIndex)
@@ -103,5 +139,5 @@ public class ValidParenthesisStringBenchmarks
         return true;
     }
 
-    private static string BuildInput(int length) => "(" + new string('*', length - 2) + ")";
+    private static string BuildInput(int length) => OpenParenthesis + new string('*', length - BoundaryParenthesisCount) + CloseParenthesis;
 }

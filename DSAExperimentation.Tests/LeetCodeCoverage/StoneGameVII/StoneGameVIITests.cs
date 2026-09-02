@@ -28,6 +28,14 @@ public sealed class StoneGameVIITests
     private static int MaxScoreDifference(int[] stones)
     {
         var n = stones.Length;
+        var prefix = ComputePrefixSums(stones);
+
+        return Memoizer.Memoize<(int Left, int Right), int>((0, n - 1), (range, bestDiff) => Best(prefix, range, bestDiff));
+    }
+
+    private static int[] ComputePrefixSums(int[] stones)
+    {
+        var n = stones.Length;
         var prefix = new int[n + 1];
 
         for (var i = 0; i < n; i++)
@@ -35,29 +43,29 @@ public sealed class StoneGameVIITests
             prefix[i + 1] = prefix[i] + stones[i];
         }
 
-        return Memoizer.Memoize<(int Left, int Right), int>((0, n - 1), Best);
+        return prefix;
+    }
 
-        // Best(left,right) is the max score DIFFERENCE the player to move can force
-        // from stones[left..right]. Removing the left stone scores the remaining
-        // sum stones[left+1..right] now, minus whatever difference the opponent
-        // forces from the resulting (left+1,right) sub-range - the standard
-        // "your margin minus the opponent's best response" recurrence StoneGame/
-        // StoneGameV already use, so the top-level call directly answers "the
-        // difference between the winner's score and the loser's score."
-        int Best((int Left, int Right) range, Func<(int, int), int> bestDiff)
+    // Best(left,right) is the max score DIFFERENCE the player to move can force
+    // from stones[left..right]. Removing the left stone scores the remaining
+    // sum stones[left+1..right] now, minus whatever difference the opponent
+    // forces from the resulting (left+1,right) sub-range - the standard
+    // "your margin minus the opponent's best response" recurrence StoneGame/
+    // StoneGameV already use, so the top-level call directly answers "the
+    // difference between the winner's score and the loser's score."
+    private static int Best(int[] prefix, (int Left, int Right) range, Func<(int, int), int> bestDiff)
+    {
+        var (left, right) = range;
+        if (left == right)
         {
-            var (left, right) = range;
-            if (left == right)
-            {
-                return 0;
-            }
-
-            var removeLeftScore = prefix[right + 1] - prefix[left + 1];
-            var removeRightScore = prefix[right] - prefix[left];
-
-            var takeLeft = removeLeftScore - bestDiff((left + 1, right));
-            var takeRight = removeRightScore - bestDiff((left, right - 1));
-            return Math.Max(takeLeft, takeRight);
+            return 0;
         }
+
+        var removeLeftScore = prefix[right + 1] - prefix[left + 1];
+        var removeRightScore = prefix[right] - prefix[left];
+
+        var takeLeft = removeLeftScore - bestDiff((left + 1, right));
+        var takeRight = removeRightScore - bestDiff((left, right - 1));
+        return Math.Max(takeLeft, takeRight);
     }
 }

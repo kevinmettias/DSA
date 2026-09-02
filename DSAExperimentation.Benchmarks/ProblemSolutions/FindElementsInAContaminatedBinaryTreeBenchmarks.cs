@@ -15,6 +15,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindElementsInAContaminatedBinaryTreeBenchmarks
 {
+    private const int TargetSampleCount = 200;
+    private const int TargetRangeMultiplier = 2;
+    private const int ChildIndexMultiplier = 2;
+    private const int RightChildOffset = 2;
+
     [Params(200, 2_000)]
     public int NodeCount;
 
@@ -27,7 +32,9 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
         _root = BuildCompleteTree(NodeCount);
 
         var random = new Random(1);
-        _targets = Enumerable.Range(0, 200).Select(_ => random.Next(0, NodeCount * 2)).ToArray();
+        _targets = Enumerable.Range(0, TargetSampleCount)
+            .Select(_ => random.Next(0, NodeCount * TargetRangeMultiplier))
+            .ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -81,8 +88,8 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
 
         node.Value = value;
         values.Add(value);
-        Recover(node.Left, 2 * value + 1, values);
-        Recover(node.Right, 2 * value + 2, values);
+        Recover(node.Left, (ChildIndexMultiplier * value) + 1, values);
+        Recover(node.Right, (ChildIndexMultiplier * value) + RightChildOffset, values);
     }
 
     private static BinaryTreeNode<int> BuildCompleteTree(int nodeCount)
@@ -96,21 +103,26 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
 
         for (var i = 0; i < nodeCount; i++)
         {
-            var left = 2 * i + 1;
-            var right = 2 * i + 2;
-
-            if (left < nodeCount)
-            {
-                nodes[i].Left = nodes[left];
-            }
-
-            if (right < nodeCount)
-            {
-                nodes[i].Right = nodes[right];
-            }
+            LinkChildren(nodes, i, nodeCount);
         }
 
         return nodes[0];
+    }
+
+    private static void LinkChildren(BinaryTreeNode<int>[] nodes, int index, int nodeCount)
+    {
+        var left = (ChildIndexMultiplier * index) + 1;
+        var right = (ChildIndexMultiplier * index) + RightChildOffset;
+
+        if (left < nodeCount)
+        {
+            nodes[index].Left = nodes[left];
+        }
+
+        if (right < nodeCount)
+        {
+            nodes[index].Right = nodes[right];
+        }
     }
 
     private readonly struct RecoverHooks : ITopDownHooks<BinaryTreeNode<int>, (int Value, Set<int> Found)>
@@ -124,6 +136,8 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
 
         public static (int Value, Set<int> Found) Descend(
             BinaryTreeNode<int> parent, (int Value, Set<int> Found) parentState, BinaryTreeNode<int> child)
-            => (child == parent.Left ? 2 * parentState.Value + 1 : 2 * parentState.Value + 2, parentState.Found);
+            => (child == parent.Left
+                ? (ChildIndexMultiplier * parentState.Value) + 1
+                : (ChildIndexMultiplier * parentState.Value) + RightChildOffset, parentState.Found);
     }
 }

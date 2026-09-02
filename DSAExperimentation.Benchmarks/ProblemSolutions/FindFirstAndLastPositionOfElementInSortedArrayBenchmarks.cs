@@ -1,15 +1,18 @@
 ﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FindFirstAndLastPositionOfElementInSortedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 [MemoryDiagnoser]
 public class FindFirstAndLastPositionOfElementInSortedArrayBenchmarks
 {
+    private const int ValueDuplicationFactor = 4;
+    private const int TargetDivisor = 8;
+
     private int[] _values = null!;
+    private int _target;
     [Params(200, 5_000)] public int Length;
-    [GlobalSetup] public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / 4).ToArray();
-    [Benchmark(Baseline = true)] public int LinearRange() { var first = Array.IndexOf(_values, Length / 8); var last = Array.LastIndexOf(_values, Length / 8); return first + last; }
-    [Benchmark] public int BinarySearchBounds() { var sequence = new ArraySequence<int>(_values); var target = Length / 8; return BinarySearch.LowerBound(sequence, target) + BinarySearch.UpperBound(sequence, target) - 1; }
+    [GlobalSetup] public void Setup() { _values = Enumerable.Range(0, Length).Select(i => i / ValueDuplicationFactor).ToArray(); _target = Length / TargetDivisor; }
+    [Benchmark(Baseline = true)] public int[] LinearScan() => FindFirstAndLastPositionOfElementInSortedArraySolution.SearchRangeByLinearScan(_values, _target);
+    [Benchmark] public int[] BinarySearchBounds() => FindFirstAndLastPositionOfElementInSortedArraySolution.SearchRangeByBinarySearchBounds(_values, _target);
 }

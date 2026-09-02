@@ -47,7 +47,8 @@ public sealed partial class PathSumIIITests
             },
         };
 
-        Assert.Equal(3, PathSum(root, 8));
+        var actual = PathSum(root, 8);
+        Assert.Equal(3, actual);
     }
 
     [Fact]
@@ -55,7 +56,8 @@ public sealed partial class PathSumIIITests
     {
         var root = new BinaryTreeNode<int>(1) { Left = new(-2), Right = new(-3) };
 
-        Assert.Equal(0, PathSum(root, 100));
+        var actual = PathSum(root, 100);
+        Assert.Equal(0, actual);
     }
 
     private static int PathSum(BinaryTreeNode<int>? root, int target)
@@ -74,13 +76,31 @@ public sealed partial class PathSumIIITests
         }
 
         runningSum += node.Value;
-        var matches = prefixSumCounts.TryGetValue(runningSum - target, out var count) ? count : 0;
+        var matches = CountMatchesEndingHere(runningSum, target, prefixSumCounts);
 
-        prefixSumCounts.Set(runningSum, (prefixSumCounts.TryGetValue(runningSum, out var existing) ? existing : 0) + 1);
+        IncrementPrefixSumCount(runningSum, prefixSumCounts);
 
         matches += CountPaths(node.Left, runningSum, target, prefixSumCounts);
         matches += CountPaths(node.Right, runningSum, target, prefixSumCounts);
 
+        DecrementPrefixSumCount(runningSum, prefixSumCounts);
+
+        return matches;
+    }
+
+    private static int CountMatchesEndingHere(long runningSum, int target, HashMap<long, int> prefixSumCounts)
+        => prefixSumCounts.TryGetValue(runningSum - target, out var count) ? count : 0;
+
+    private static void IncrementPrefixSumCount(long runningSum, HashMap<long, int> prefixSumCounts)
+    {
+        var existing = prefixSumCounts.TryGetValue(runningSum, out var count) ? count : 0;
+        prefixSumCounts.Set(runningSum, existing + 1);
+    }
+
+    // Backtracking step: undoes the increment IncrementPrefixSumCount made for this
+    // node before returning to the parent call, so a sibling subtree never sees it.
+    private static void DecrementPrefixSumCount(long runningSum, HashMap<long, int> prefixSumCounts)
+    {
         var afterChildren = prefixSumCounts.TryGetValue(runningSum, out var updated) ? updated : 0;
 
         if (afterChildren <= 1)
@@ -91,7 +111,5 @@ public sealed partial class PathSumIIITests
         {
             prefixSumCounts.Set(runningSum, afterChildren - 1);
         }
-
-        return matches;
     }
 }

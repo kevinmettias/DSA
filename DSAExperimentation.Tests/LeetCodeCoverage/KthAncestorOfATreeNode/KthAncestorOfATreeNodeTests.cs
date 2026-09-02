@@ -27,9 +27,13 @@ public sealed partial class KthAncestorOfATreeNodeTests
         int[] parent = [-1, 0, 0, 1, 1, 2, 2];
         var ancestorsById = BuildAncestorTable(parent);
 
-        Assert.Equal(1, GetKthAncestor(ancestorsById, node: 3, k: 1));
-        Assert.Equal(0, GetKthAncestor(ancestorsById, node: 5, k: 2));
-        Assert.Equal(-1, GetKthAncestor(ancestorsById, node: 6, k: 3));
+        var thirdNodeFirstAncestor = GetKthAncestor(ancestorsById, node: 3, k: 1);
+        var fifthNodeSecondAncestor = GetKthAncestor(ancestorsById, node: 5, k: 2);
+        var sixthNodeThirdAncestor = GetKthAncestor(ancestorsById, node: 6, k: 3);
+
+        Assert.Equal(1, thirdNodeFirstAncestor);
+        Assert.Equal(0, fifthNodeSecondAncestor);
+        Assert.Equal(-1, sixthNodeThirdAncestor);
     }
 
     [Fact]
@@ -38,7 +42,9 @@ public sealed partial class KthAncestorOfATreeNodeTests
         int[] parent = [-1, 0, 0];
         var ancestorsById = BuildAncestorTable(parent);
 
-        Assert.Equal(-1, GetKthAncestor(ancestorsById, node: 0, k: 1));
+        var rootAncestor = GetKthAncestor(ancestorsById, node: 0, k: 1);
+
+        Assert.Equal(-1, rootAncestor);
     }
 
     private static int GetKthAncestor(TreeAncestorNode[][] ancestorsById, int node, int k)

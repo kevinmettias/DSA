@@ -43,12 +43,28 @@ public sealed partial class ZeroOneMatrixTests
 
     private static int[][] UpdateMatrix(int[][] mat)
     {
-        var rows = mat.Length;
-        var cols = mat[0].Length;
-        var distances = new int[rows][];
+        var (distances, frontier) = SeedDistancesAndFrontier(mat);
+
+        RunMultiSourceBfs(distances, frontier);
+
+        return distances;
+    }
+
+    private static (int[][] Distances, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> Frontier) SeedDistancesAndFrontier(int[][] mat)
+    {
+        var distances = new int[mat.Length][];
         var frontier = new DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>();
 
-        for (var r = 0; r < rows; r++)
+        PopulateDistancesAndFrontier(mat, distances, frontier);
+
+        return (distances, frontier);
+    }
+
+    private static void PopulateDistancesAndFrontier(int[][] mat, int[][] distances, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
+        var cols = mat[0].Length;
+
+        for (var r = 0; r < mat.Length; r++)
         {
             distances[r] = new int[cols];
 
@@ -62,24 +78,36 @@ public sealed partial class ZeroOneMatrixTests
                 }
             }
         }
+    }
 
+    private static void RunMultiSourceBfs(int[][] distances, DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
         while (frontier.TryDequeue(out var cell))
         {
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var nextRow = cell.Row + dRow;
-                var nextCol = cell.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols || distances[nextRow][nextCol] != -1)
-                {
-                    continue;
-                }
-
-                distances[nextRow][nextCol] = distances[cell.Row][cell.Col] + 1;
-                frontier.Enqueue((nextRow, nextCol));
-            }
+            ExploreNeighbors(cell, distances, frontier);
         }
+    }
 
-        return distances;
+    private static void ExploreNeighbors(
+        (int Row, int Col) cell,
+        int[][] distances,
+        DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)> frontier)
+    {
+        var rows = distances.Length;
+        var cols = distances[0].Length;
+
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var nextRow = cell.Row + dRow;
+            var nextCol = cell.Col + dCol;
+
+            if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols || distances[nextRow][nextCol] != -1)
+            {
+                continue;
+            }
+
+            distances[nextRow][nextCol] = distances[cell.Row][cell.Col] + 1;
+            frontier.Enqueue((nextRow, nextCol));
+        }
     }
 }

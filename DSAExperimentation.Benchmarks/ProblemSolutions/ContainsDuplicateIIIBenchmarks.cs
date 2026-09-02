@@ -13,6 +13,8 @@ public class ContainsDuplicateIIIBenchmarks
 {
     private const int IndexDiff = 50;
     private const int ValueDiff = 3;
+    private const int RandomValueUpperBound = 1_000;
+    private const int ValueSpacingMultiplier = 100;
 
     [Params(500, 5_000)]
     public int Length;
@@ -23,7 +25,9 @@ public class ContainsDuplicateIIIBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1_000) * 100).ToArray();
+        _values = Enumerable.Range(0, Length)
+            .Select(_ => random.Next(0, RandomValueUpperBound) * ValueSpacingMultiplier)
+            .ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -51,21 +55,32 @@ public class ContainsDuplicateIIIBenchmarks
 
         for (var i = 0; i < _values.Length; i++)
         {
-            var bucketId = BucketId(_values[i], width);
-
-            if (buckets.HasKey(bucketId)
-                || (buckets.TryGetValue(bucketId - 1, out var lower) && _values[i] - lower <= ValueDiff)
-                || (buckets.TryGetValue(bucketId + 1, out var upper) && upper - _values[i] <= ValueDiff))
+            if (IsDuplicateAtIndex(buckets, i, width))
             {
                 return true;
             }
+        }
 
-            buckets.Set(bucketId, _values[i]);
+        return false;
+    }
 
-            if (i >= IndexDiff)
-            {
-                buckets.TryRemove(BucketId(_values[i - IndexDiff], width));
-            }
+    private bool IsDuplicateAtIndex(HashMap<long, long> buckets, int i, long width)
+    {
+        var bucketId = BucketId(_values[i], width);
+
+        if (buckets.HasKey(bucketId)
+            || (buckets.TryGetValue(bucketId - 1, out var lower) && _values[i] - lower <= ValueDiff)
+            || (buckets.TryGetValue(bucketId + 1, out var upper) && upper - _values[i] <= ValueDiff))
+        {
+            return true;
+        }
+
+        buckets.Set(bucketId, _values[i]);
+
+        if (i >= IndexDiff)
+        {
+            var staleBucketId = BucketId(_values[i - IndexDiff], width);
+            buckets.TryRemove(staleBucketId);
         }
 
         return false;

@@ -1,34 +1,34 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.SwapNodesInPairs;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SwapNodesInPairs;
 
-// LeetCode 24. Swap Nodes in Pairs: pointer rewiring over this repo's mutable
-// SinglyLinkedListNode<T> primitive.
-public sealed partial class SwapNodesInPairsTests
+// Harness only. Both strategies are SwapNodesInPairsSolution's - this file pins
+// them to LeetCode's published examples, stated once as raw values so a fresh
+// SinglyLinkedListNode<int> chain is built per assertion: PointerRewiring rewires
+// the very nodes it is handed, so reusing one already-swapped instance across the
+// two theories sharing this data would silently feed the second call an
+// already-consumed structure.
+public sealed class SwapNodesInPairsTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 2, 3, 4 }, new[] { 2, 1, 4, 3 })]
-    [InlineData(new[] { 1, 2, 3 }, new[] { 2, 1, 3 })]
-    public void SwapPairs_VariedLengths_SwapsAdjacentPairs(int[] values, int[] expected)
-        => Assert.Equal(expected, ToArray(SwapPairs(BuildList(values))));
-
-    private static SinglyLinkedListNode<int>? SwapPairs(SinglyLinkedListNode<int>? head)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
-        var previous = dummy;
-
-        while (previous.Next?.Next is not null)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            var first = previous.Next;
-            var second = first.Next!;
-            first.Next = second.Next;
-            second.Next = first;
-            previous.Next = second;
-            previous = first;
-        }
+            { [1, 2, 3, 4], [2, 1, 4, 3] },
+            { [], [] },
+            { [1], [1] },
+            { [1, 2, 3], [2, 1, 3] },
+        };
 
-        return dummy.Next;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SwapPairsByPointerRewiring_LeetCodeExamples_SwapsAdjacentPairs(int[] values, int[] expected) =>
+        Assert.Equal(expected, ToArray(SwapNodesInPairsSolution.SwapPairsByPointerRewiring(BuildList(values))));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SwapPairsByArrayRoundTrip_LeetCodeExamples_SwapsAdjacentPairs(int[] values, int[] expected) =>
+        Assert.Equal(expected, ToArray(SwapNodesInPairsSolution.SwapPairsByArrayRoundTrip(BuildList(values))));
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

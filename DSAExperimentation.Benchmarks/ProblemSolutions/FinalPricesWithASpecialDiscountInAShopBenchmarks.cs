@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FinalPricesWithASpecialDiscountInAShopBenchmarks
 {
+    private const int MaxPrice = 1_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,7 +23,7 @@ public class FinalPricesWithASpecialDiscountInAShopBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxPrice)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

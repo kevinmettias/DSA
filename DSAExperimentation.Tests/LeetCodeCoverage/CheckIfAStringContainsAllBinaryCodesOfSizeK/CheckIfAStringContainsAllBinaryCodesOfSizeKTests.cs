@@ -14,19 +14,25 @@ public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
     [Fact]
     public void HasAllCodes_ClassicExampleWithEveryTwoBitCode_ReturnsTrue()
     {
-        Assert.True(HasAllCodes("00110110", k: 2));
+        var hasAllCodes = HasAllCodes("00110110", k: 2);
+
+        Assert.True(hasAllCodes);
     }
 
     [Fact]
     public void HasAllCodes_EveryOneBitCodePresent_ReturnsTrue()
     {
-        Assert.True(HasAllCodes("0110", k: 1));
+        var hasAllCodes = HasAllCodes("0110", k: 1);
+
+        Assert.True(hasAllCodes);
     }
 
     [Fact]
     public void HasAllCodes_MissingOneOfTheFourTwoBitCodes_ReturnsFalse()
     {
-        Assert.False(HasAllCodes("0110", k: 2));
+        var hasAllCodes = HasAllCodes("0110", k: 2);
+
+        Assert.False(hasAllCodes);
     }
 
     [Fact]
@@ -35,7 +41,9 @@ public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
         // Fewer than 2^k + k - 1 characters can never contain all 2^k
         // length-k substrings, regardless of content - short-circuited before
         // ever touching the sliding window/Set.
-        Assert.False(HasAllCodes("111", k: 3));
+        var hasAllCodes = HasAllCodes("111", k: 3);
+
+        Assert.False(hasAllCodes);
     }
 
     private static bool HasAllCodes(string s, int k)

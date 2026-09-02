@@ -18,6 +18,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ChalkboardXorGameBenchmarks
 {
+    private const int RandomSeed = 810; // LC problem number
+    private const int RandomValueBitWidth = 16;
+    private const int EvenCountModulus = 2;
+
     [Params(9, 13)]
     public int Length;
 
@@ -26,14 +30,26 @@ public class ChalkboardXorGameBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(810);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1 << 16)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1 << RandomValueBitWidth)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
     public bool BruteForceRecursion() => CurrentPlayerWinsBruteForce((1 << _nums.Length) - 1);
 
-    private bool CurrentPlayerWinsBruteForce(int mask)
+    private bool CurrentPlayerWinsBruteForce(int mask) => CurrentPlayerWins(mask, CurrentPlayerWinsBruteForce);
+
+    [Benchmark]
+    public bool MemoizedRecursion()
+    {
+        var fullMask = (1 << _nums.Length) - 1;
+        return Memoizer.Memoize<int, bool>(fullMask, CurrentPlayerWins);
+    }
+
+    // Shared by both BruteForceRecursion and MemoizedRecursion: the only difference
+    // between them is how the recursive win-check for the remaining mask is resolved
+    // (a direct self-call vs. the Memoizer-provided, memo-backed delegate).
+    private bool CurrentPlayerWins(int mask, Func<int, bool> currentPlayerWins)
     {
         if (XorOf(mask) == 0)
         {
@@ -49,45 +65,13 @@ public class ChalkboardXorGameBenchmarks
             }
 
             var remaining = mask & ~bit;
-            if (XorOf(remaining) != 0 && !CurrentPlayerWinsBruteForce(remaining))
+            if (XorOf(remaining) != 0 && !currentPlayerWins(remaining))
             {
                 return true;
             }
         }
 
         return false;
-    }
-
-    [Benchmark]
-    public bool MemoizedRecursion()
-    {
-        var fullMask = (1 << _nums.Length) - 1;
-        return Memoizer.Memoize<int, bool>(fullMask, CurrentPlayerWinsMemoized);
-
-        bool CurrentPlayerWinsMemoized(int mask, Func<int, bool> currentPlayerWins)
-        {
-            if (XorOf(mask) == 0)
-            {
-                return true;
-            }
-
-            for (var i = 0; i < _nums.Length; i++)
-            {
-                var bit = 1 << i;
-                if ((mask & bit) == 0)
-                {
-                    continue;
-                }
-
-                var remaining = mask & ~bit;
-                if (XorOf(remaining) != 0 && !currentPlayerWins(remaining))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 
     [Benchmark]
@@ -99,7 +83,7 @@ public class ChalkboardXorGameBenchmarks
             xor ^= num;
         }
 
-        return xor == 0 || _nums.Length % 2 == 0;
+        return xor == 0 || _nums.Length % EvenCountModulus == 0;
     }
 
     private int XorOf(int mask)

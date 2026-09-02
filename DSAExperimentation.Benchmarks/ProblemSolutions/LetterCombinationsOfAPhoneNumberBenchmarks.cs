@@ -1,10 +1,18 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Backtracking;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.LetterCombinationsOfAPhoneNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Letter Combinations of a Phone Number (LC 17): direct nested expansion vs. this
-// repo's generic Backtrack.Search enumeration engine.
+// Letter Combinations of a Phone Number (LC 17): harness only. Both arms are
+// LetterCombinationsOfAPhoneNumberSolution's, the same methods
+// LetterCombinationsOfAPhoneNumberTests proves correct - direct nested expansion
+// vs. this repo's generic Backtrack.Search enumeration engine.
+//
+// Both arms now return the built combination list rather than a bare count - the
+// backtracking arm previously only incremented a counter in onSolution, weaker
+// than the answer LetterCombinationsByBacktracking actually produces; promoted
+// here to match, the same deliberate change ARCHITECTURE.md §17.8 records for
+// WordLadderII.
 [MemoryDiagnoser]
 public class LetterCombinationsOfAPhoneNumberBenchmarks
 {
@@ -17,71 +25,10 @@ public class LetterCombinationsOfAPhoneNumberBenchmarks
     public void Setup() => _digits = new string('7', DigitCount);
 
     [Benchmark(Baseline = true)]
-    public int IterativeExpansion()
-    {
-        var results = new List<string> { string.Empty };
-
-        foreach (var digit in _digits)
-        {
-            var next = new List<string>();
-            foreach (var prefix in results)
-            {
-                foreach (var letter in LettersFor(digit))
-                {
-                    next.Add(prefix + letter);
-                }
-            }
-
-            results = next;
-        }
-
-        return results.Count;
-    }
+    public List<string> IterativeExpansion() =>
+        LetterCombinationsOfAPhoneNumberSolution.LetterCombinationsByIterativeExpansion(_digits);
 
     [Benchmark]
-    public int Backtracking()
-    {
-        var count = 0;
-        var state = new CombinationState();
-
-        Backtrack.Search<CombinationState, char>(
-            state,
-            isSolution: s => s.Index == _digits.Length,
-            candidates: s => s.Index == _digits.Length ? [] : LettersFor(_digits[s.Index]),
-            choose: (s, letter) =>
-            {
-                s.Chosen.Add(letter);
-                s.Index++;
-            },
-            unchoose: (s, _) =>
-            {
-                s.Index--;
-                s.Chosen.RemoveAt(s.Chosen.Count - 1);
-            },
-            onSolution: _ => count++);
-
-        return count;
-    }
-
-    private static string LettersFor(char digit)
-        => digit switch
-        {
-            '2' => "abc",
-            '3' => "def",
-            '4' => "ghi",
-            '5' => "jkl",
-            '6' => "mno",
-            '7' => "pqrs",
-            '8' => "tuv",
-            '9' => "wxyz",
-            _ => string.Empty,
-        };
-
-    private sealed class CombinationState
-    {
-        public List<char> Chosen { get; } = [];
-
-        public int Index { get; set; }
-    }
+    public List<string> Backtracking() =>
+        LetterCombinationsOfAPhoneNumberSolution.LetterCombinationsByBacktracking(_digits);
 }
-

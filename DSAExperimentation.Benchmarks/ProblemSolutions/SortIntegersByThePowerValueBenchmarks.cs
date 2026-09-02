@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SortIntegersByThePowerValueBenchmarks
 {
+    // Collatz step: even -> divide by CollatzDivisor; odd -> CollatzMultiplier * x + 1.
+    private const int CollatzDivisor = 2;
+    private const int CollatzMultiplier = 3;
+
     [Params(200, 5_000)]
     public int RangeLength;
 
@@ -74,7 +78,7 @@ public class SortIntegersByThePowerValueBenchmarks
 
         while (x != 1)
         {
-            x = x % 2 == 0 ? x / 2 : (3 * x) + 1;
+            x = x % CollatzDivisor == 0 ? x / CollatzDivisor : (CollatzMultiplier * x) + 1;
             power++;
         }
 

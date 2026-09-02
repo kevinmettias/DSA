@@ -24,36 +24,60 @@ public sealed class NumberOfDigitOneTests
             return 0;
         }
 
+        var digits = BuildDigitStack(n);
+        var placeValue = ComputeInitialPlaceValue(n);
+        var counter = new DigitOneCounter(placeValue);
+        long count = 0;
+
+        while (digits.TryPop(out var digit))
+        {
+            count += counter.ProcessDigit(digit, n);
+        }
+
+        return count;
+    }
+
+    private static DigitStack BuildDigitStack(int n)
+    {
         var digits = new DigitStack();
         for (var remaining = n; remaining > 0; remaining /= 10)
         {
             digits.Push(remaining % 10);
         }
 
+        return digits;
+    }
+
+    private static long ComputeInitialPlaceValue(int n)
+    {
         var placeValue = 1L;
         for (var i = 1; i < CountDigits(n); i++)
         {
             placeValue *= 10;
         }
 
-        long count = 0;
-        long higherDigits = 0;
+        return placeValue;
+    }
 
-        while (digits.TryPop(out var digit))
+    private sealed class DigitOneCounter(long placeValue)
+    {
+        private long _higherDigits;
+
+        public long ProcessDigit(int digit, int n)
         {
             var lowerRemainder = n % placeValue;
-            count += digit switch
+            var contribution = digit switch
             {
-                0 => higherDigits * placeValue,
-                1 => (higherDigits * placeValue) + lowerRemainder + 1,
-                _ => (higherDigits + 1) * placeValue,
+                0 => _higherDigits * placeValue,
+                1 => (_higherDigits * placeValue) + lowerRemainder + 1,
+                _ => (_higherDigits + 1) * placeValue,
             };
 
-            higherDigits = (higherDigits * 10) + digit;
+            _higherDigits = (_higherDigits * 10) + digit;
             placeValue /= 10;
-        }
 
-        return count;
+            return contribution;
+        }
     }
 
     private static int CountDigits(int n)

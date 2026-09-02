@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ShortestSubarrayWithSumAtLeastKBenchmarks
 {
     private const int K = 1_000_000;
+    private const int ValueLowerBound = -5;
+    private const int ValueUpperBoundExclusive = 11;
 
     [Params(400, 3_000)]
     public int Length;
@@ -26,7 +28,7 @@ public class ShortestSubarrayWithSumAtLeastKBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-5, 11)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(ValueLowerBound, ValueUpperBoundExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -59,12 +61,24 @@ public class ShortestSubarrayWithSumAtLeastKBenchmarks
     public int MonotonicDequePrefixScan()
     {
         var n = _values.Length;
+        var prefix = BuildPrefixSums(n);
+
+        return FindShortestSubarrayViaWindow(prefix, n);
+    }
+
+    private long[] BuildPrefixSums(int n)
+    {
         var prefix = new long[n + 1];
         for (var i = 0; i < n; i++)
         {
             prefix[i + 1] = prefix[i] + _values[i];
         }
 
+        return prefix;
+    }
+
+    private static int FindShortestSubarrayViaWindow(long[] prefix, int n)
+    {
         var best = n + 1;
         var window = new RepoDeque();
 

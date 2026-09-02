@@ -32,34 +32,7 @@ public sealed partial class RemoveInvalidParenthesesTests
 
         while (queue.Count > 0)
         {
-            var levelSize = queue.Count;
-            var validAtThisLevel = new List<string>();
-
-            for (var i = 0; i < levelSize; i++)
-            {
-                queue.TryDequeue(out var candidate);
-
-                if (IsValid(candidate))
-                {
-                    validAtThisLevel.Add(candidate);
-                    continue;
-                }
-
-                for (var j = 0; j < candidate.Length; j++)
-                {
-                    if (candidate[j] != '(' && candidate[j] != ')')
-                    {
-                        continue;
-                    }
-
-                    var next = candidate.Remove(j, 1);
-
-                    if (visited.TryAdd(next))
-                    {
-                        queue.Enqueue(next);
-                    }
-                }
-            }
+            var validAtThisLevel = ProcessLevel(queue, visited);
 
             if (validAtThisLevel.Count > 0)
             {
@@ -68,6 +41,44 @@ public sealed partial class RemoveInvalidParenthesesTests
         }
 
         return [];
+    }
+
+    private static List<string> ProcessLevel(RepoQueue queue, Set<string> visited)
+    {
+        var levelSize = queue.Count;
+        var validAtThisLevel = new List<string>();
+
+        for (var i = 0; i < levelSize; i++)
+        {
+            queue.TryDequeue(out var candidate);
+            ProcessCandidate(candidate, queue, visited, validAtThisLevel);
+        }
+
+        return validAtThisLevel;
+    }
+
+    private static void ProcessCandidate(string candidate, RepoQueue queue, Set<string> visited, List<string> validAtThisLevel)
+    {
+        if (IsValid(candidate))
+        {
+            validAtThisLevel.Add(candidate);
+            return;
+        }
+
+        for (var j = 0; j < candidate.Length; j++)
+        {
+            if (candidate[j] != '(' && candidate[j] != ')')
+            {
+                continue;
+            }
+
+            var next = candidate.Remove(j, 1);
+
+            if (visited.TryAdd(next))
+            {
+                queue.Enqueue(next);
+            }
+        }
     }
 
     private static bool IsValid(string s)

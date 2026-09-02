@@ -15,62 +15,133 @@ public sealed class MaximizeGridHappinessTests
 {
     [Fact]
     public void GetMaxGridHappiness_LeetCodeExampleOne_ReturnsTwoHundredForty()
-        => Assert.Equal(240, GetMaxGridHappiness(m: 2, n: 3, introvertsCount: 1, extrovertsCount: 2));
+    {
+        var actual = GetMaxGridHappiness(m: 2, n: 3, introvertsCount: 1, extrovertsCount: 2);
+
+        Assert.Equal(240, actual);
+    }
 
     [Fact]
     public void GetMaxGridHappiness_LeetCodeExampleTwo_ReturnsTwoHundredSixty()
-        => Assert.Equal(260, GetMaxGridHappiness(m: 3, n: 1, introvertsCount: 2, extrovertsCount: 1));
+    {
+        var actual = GetMaxGridHappiness(m: 3, n: 1, introvertsCount: 2, extrovertsCount: 1);
+
+        Assert.Equal(260, actual);
+    }
 
     [Fact]
     public void GetMaxGridHappiness_LeetCodeExampleThree_ReturnsTwoHundredForty()
-        => Assert.Equal(240, GetMaxGridHappiness(m: 2, n: 2, introvertsCount: 4, extrovertsCount: 0));
+    {
+        var actual = GetMaxGridHappiness(m: 2, n: 2, introvertsCount: 4, extrovertsCount: 0);
+
+        Assert.Equal(240, actual);
+    }
+
+    // Bundles the grid-shape values BestFrom/Neighbors/ShiftIn need so passing them
+    // around stays a single parameter instead of three loose, always-together ints.
+    private readonly record struct GridLayout(int ColumnCount, int TotalCells, int OldestDigitScale);
+
+    // Bundles one candidate placement (which type, its base happiness, its already-
+    // shifted mask) with the neighbors/state it needs, so WithPersonPlaced stays a
+    // two-parameter helper instead of the five loose values it would otherwise take.
+    private readonly record struct PlacementAttempt(
+        int PersonType,
+        int BaseHappiness,
+        int Up,
+        int Left,
+        (int Pos, int Mask, int Introverts, int Extroverts) State,
+        int NewMask);
 
     private static int GetMaxGridHappiness(int m, int n, int introvertsCount, int extrovertsCount)
     {
-        var oldestDigitScale = 1;
-        for (var i = 0; i < n - 1; i++)
-        {
-            oldestDigitScale *= 3;
-        }
-
-        var totalCells = m * n;
+        var layout = new GridLayout(n, m * n, PowerOfThree(n - 1));
 
         return Memoizer.Memoize<(int Pos, int Mask, int Introverts, int Extroverts), int>(
-            (0, 0, introvertsCount, extrovertsCount), BestFrom);
+            (0, 0, introvertsCount, extrovertsCount), (state, recurse) => BestFrom(state, layout, recurse));
+    }
 
-        int BestFrom(
-            (int Pos, int Mask, int Introverts, int Extroverts) state,
-            Func<(int Pos, int Mask, int Introverts, int Extroverts), int> bestFrom)
+    private static int PowerOfThree(int exponent)
+    {
+        var value = 1;
+        for (var i = 0; i < exponent; i++)
         {
-            var (pos, mask, introverts, extroverts) = state;
-            if (pos == totalCells || (introverts == 0 && extroverts == 0))
-            {
-                return 0;
-            }
+            value *= 3;
+        }
 
-            var row = pos / n;
-            var col = pos % n;
-            var up = row > 0 ? mask / oldestDigitScale : 0;
-            var left = col > 0 ? mask % 3 : 0;
+        return value;
+    }
 
-            var best = bestFrom((pos + 1, ShiftIn(mask, 0), introverts, extroverts));
+    private static int BestFrom(
+        (int Pos, int Mask, int Introverts, int Extroverts) state,
+        GridLayout layout,
+        Func<(int Pos, int Mask, int Introverts, int Extroverts), int> bestFrom)
+    {
+        var (pos, mask, introverts, extroverts) = state;
+        if (pos == layout.TotalCells || (introverts == 0 && extroverts == 0))
+        {
+            return 0;
+        }
 
-            if (introverts > 0)
-            {
-                var gain = 120 + NeighborDelta(1, up) + NeighborDelta(1, left);
-                best = Math.Max(best, gain + bestFrom((pos + 1, ShiftIn(mask, 1), introverts - 1, extroverts)));
-            }
+        var neighbors = Neighbors(pos, mask, layout);
+        var best = bestFrom((pos + 1, ShiftIn(mask, 0, layout.OldestDigitScale), introverts, extroverts));
 
-            if (extroverts > 0)
-            {
-                var gain = 40 + NeighborDelta(2, up) + NeighborDelta(2, left);
-                best = Math.Max(best, gain + bestFrom((pos + 1, ShiftIn(mask, 2), introverts, extroverts - 1)));
-            }
+        var introvertAttempt = MakeAttempt((1, 120), neighbors, state, layout);
+        best = BestConsideringPlacement(best, introvertAttempt, bestFrom);
 
+        var extrovertAttempt = MakeAttempt((2, 40), neighbors, state, layout);
+        best = BestConsideringPlacement(best, extrovertAttempt, bestFrom);
+
+        return best;
+    }
+
+    private static (int Up, int Left) Neighbors(int pos, int mask, GridLayout layout)
+    {
+        var row = pos / layout.ColumnCount;
+        var col = pos % layout.ColumnCount;
+        return (row > 0 ? mask / layout.OldestDigitScale : 0, col > 0 ? mask % 3 : 0);
+    }
+
+    private static int ShiftIn(int mask, int newType, int oldestDigitScale) => (mask % oldestDigitScale) * 3 + newType;
+
+    private static PlacementAttempt MakeAttempt(
+        (int Type, int BaseHappiness) profile,
+        (int Up, int Left) neighbors,
+        (int Pos, int Mask, int Introverts, int Extroverts) state,
+        GridLayout layout)
+        => new(
+            profile.Type, profile.BaseHappiness, neighbors.Up, neighbors.Left,
+            state, ShiftIn(state.Mask, profile.Type, layout.OldestDigitScale));
+
+    // Skips the recursive lookup entirely once the relevant pool is exhausted -
+    // placing that type isn't a legal candidate move, so there's nothing to try.
+    private static int BestConsideringPlacement(
+        int best, PlacementAttempt attempt, Func<(int Pos, int Mask, int Introverts, int Extroverts), int> bestFrom)
+    {
+        var (_, _, introverts, extroverts) = attempt.State;
+        var poolCount = attempt.PersonType == 1 ? introverts : extroverts;
+
+        if (poolCount == 0)
+        {
             return best;
         }
 
-        int ShiftIn(int mask, int newType) => (mask % oldestDigitScale) * 3 + newType;
+        var withPerson = WithPersonPlaced(attempt, bestFrom);
+        return Math.Max(best, withPerson);
+    }
+
+    private static int WithPersonPlaced(
+        PlacementAttempt attempt, Func<(int Pos, int Mask, int Introverts, int Extroverts), int> bestFrom)
+    {
+        var gain = attempt.BaseHappiness
+            + NeighborDelta(attempt.PersonType, attempt.Up)
+            + NeighborDelta(attempt.PersonType, attempt.Left);
+
+        var (pos, _, introverts, extroverts) = attempt.State;
+        var nextState = attempt.PersonType == 1
+            ? (pos + 1, attempt.NewMask, introverts - 1, extroverts)
+            : (pos + 1, attempt.NewMask, introverts, extroverts - 1);
+
+        return gain + bestFrom(nextState);
     }
 
     private static int NeighborDelta(int personType, int neighbor)

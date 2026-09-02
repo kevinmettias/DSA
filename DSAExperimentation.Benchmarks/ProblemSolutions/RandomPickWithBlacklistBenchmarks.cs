@@ -56,31 +56,35 @@ public class RandomPickWithBlacklistBenchmarks
     public long SetHashMapRemap()
     {
         var whitelistBound = N - _blacklist.Length;
+        var blacklistedSet = BuildBlacklistedSet(_blacklist);
+        var remap = BuildRemap(whitelistBound, _blacklist, blacklistedSet);
+        return PickWithRemap(whitelistBound, remap);
+    }
 
+    private static Set<int> BuildBlacklistedSet(int[] blacklist)
+    {
         var blacklistedSet = new Set<int>();
-        foreach (var value in _blacklist)
+        foreach (var value in blacklist)
         {
             blacklistedSet.TryAdd(value);
         }
 
-        var remap = new HashMap<int, int>();
-        var nextWhitelisted = whitelistBound;
-        foreach (var value in _blacklist)
+        return blacklistedSet;
+    }
+
+    private static HashMap<int, int> BuildRemap(int whitelistBound, int[] blacklist, Set<int> blacklistedSet)
+    {
+        var remapBuilder = new BlacklistRemapBuilder(whitelistBound, blacklistedSet);
+        foreach (var value in blacklist)
         {
-            if (value >= whitelistBound)
-            {
-                continue;
-            }
-
-            while (blacklistedSet.Has(nextWhitelisted))
-            {
-                nextWhitelisted++;
-            }
-
-            remap.Set(value, nextWhitelisted);
-            nextWhitelisted++;
+            remapBuilder.MapIfBlacklistedBelowBound(value);
         }
 
+        return remapBuilder.Remap;
+    }
+
+    private static long PickWithRemap(int whitelistBound, HashMap<int, int> remap)
+    {
         var random = new Random(1);
         long total = 0;
 
@@ -91,5 +95,29 @@ public class RandomPickWithBlacklistBenchmarks
         }
 
         return total;
+    }
+
+    private sealed class BlacklistRemapBuilder(int whitelistBound, Set<int> blacklistedSet)
+    {
+        private readonly int _whitelistBound = whitelistBound;
+        private int _nextWhitelisted = whitelistBound;
+
+        public HashMap<int, int> Remap { get; } = new();
+
+        public void MapIfBlacklistedBelowBound(int value)
+        {
+            if (value >= _whitelistBound)
+            {
+                return;
+            }
+
+            while (blacklistedSet.Has(_nextWhitelisted))
+            {
+                _nextWhitelisted++;
+            }
+
+            Remap.Set(value, _nextWhitelisted);
+            _nextWhitelisted++;
+        }
     }
 }

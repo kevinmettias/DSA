@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumProductSubarrayBenchmarks
 {
+    private const int RandomSeed = 152; // LC problem number
+    private const int ValueMagnitude = 10;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,8 +23,8 @@ public class MaximumProductSubarrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(152);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-10, 11)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueMagnitude, ValueMagnitude + 1)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

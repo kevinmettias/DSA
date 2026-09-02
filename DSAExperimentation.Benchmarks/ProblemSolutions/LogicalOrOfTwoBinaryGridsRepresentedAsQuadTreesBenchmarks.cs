@@ -23,6 +23,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
 {
+    // Quad-tree branching factor: every region splits into 2x2 = 4 quadrants,
+    // so each dimension halves at every recursion level.
+    private const int QuadrantSplitFactor = 2;
+
     [Params(16, 128)]
     public int Size;
 
@@ -42,8 +46,8 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
                 // grid1 splits top/bottom, grid2 splits left/right - every top-level
                 // quadrant of the OR result is genuinely mixed, so neither input tree
                 // nor the merged grid collapses trivially at the root.
-                grid1[row][col] = row < Size / 2 ? 0 : 1;
-                grid2[row][col] = col < Size / 2 ? 0 : 1;
+                grid1[row][col] = row < Size / QuadrantSplitFactor ? 0 : 1;
+                grid2[row][col] = col < Size / QuadrantSplitFactor ? 0 : 1;
             }
         }
 
@@ -55,7 +59,8 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
     public int BruteForceGridMaterialize()
     {
         var merged = MergeGrids();
-        return CountLeaves(BuildBruteForce(merged, 0, 0, Size));
+        var tree = BuildBruteForce(merged, 0, 0, Size);
+        return CountLeaves(tree);
     }
 
     [Benchmark]
@@ -63,18 +68,23 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
     {
         var merged = MergeGrids();
         var rows = merged.Select(row => new FenwickTree<int, SumOperation<int>>(row)).ToArray();
-        return CountLeaves(BuildFenwick(rows, 0, 0, Size));
+        var tree = BuildFenwick(rows, 0, 0, Size);
+        return CountLeaves(tree);
     }
 
     [Benchmark]
-    public int DirectRecursiveMerge() => CountLeaves(Or(_tree1, _tree2));
+    public int DirectRecursiveMerge()
+    {
+        var merged = Or(_tree1, _tree2);
+        return CountLeaves(merged);
+    }
 
     private int[][] MergeGrids()
     {
         var grid1 = NewGrid(Size);
         var grid2 = NewGrid(Size);
-        Fill(_tree1, grid1, 0, 0, Size);
-        Fill(_tree2, grid2, 0, 0, Size);
+        Fill(_tree1, grid1, new GridRegion(0, 0, Size));
+        Fill(_tree2, grid2, new GridRegion(0, 0, Size));
 
         var merged = NewGrid(Size);
         for (var row = 0; row < Size; row++)
@@ -99,14 +109,16 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
         return grid;
     }
 
-    private static void Fill(QuadTreeNode node, int[][] grid, int row, int col, int size)
+    private readonly record struct GridRegion(int Row, int Col, int Size);
+
+    private static void Fill(QuadTreeNode node, int[][] grid, GridRegion region)
     {
         if (node.IsLeaf)
         {
             var value = node.Val ? 1 : 0;
-            for (var r = row; r < row + size; r++)
+            for (var r = region.Row; r < region.Row + region.Size; r++)
             {
-                for (var c = col; c < col + size; c++)
+                for (var c = region.Col; c < region.Col + region.Size; c++)
                 {
                     grid[r][c] = value;
                 }
@@ -115,11 +127,11 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
             return;
         }
 
-        var half = size / 2;
-        Fill(node.TopLeft!, grid, row, col, half);
-        Fill(node.TopRight!, grid, row, col + half, half);
-        Fill(node.BottomLeft!, grid, row + half, col, half);
-        Fill(node.BottomRight!, grid, row + half, col + half, half);
+        var half = region.Size / QuadrantSplitFactor;
+        Fill(node.TopLeft!, grid, region with { Size = half });
+        Fill(node.TopRight!, grid, region with { Col = region.Col + half, Size = half });
+        Fill(node.BottomLeft!, grid, region with { Row = region.Row + half, Size = half });
+        Fill(node.BottomRight!, grid, region with { Row = region.Row + half, Col = region.Col + half, Size = half });
     }
 
     private static QuadTreeNode Build(int[][] grid)
@@ -142,7 +154,7 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
             return new QuadTreeNode(val: sum == area, isLeaf: true);
         }
 
-        var half = size / 2;
+        var half = size / QuadrantSplitFactor;
         return new QuadTreeNode(val: true, isLeaf: false)
         {
             TopLeft = BuildFenwick(rows, row, col, half),
@@ -154,27 +166,35 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
 
     private static QuadTreeNode BuildBruteForce(int[][] grid, int row, int col, int size)
     {
-        var first = grid[row][col];
-        var uniform = true;
-
-        for (var r = row; r < row + size && uniform; r++)
+        if (IsUniformRegion(grid, new GridRegion(row, col, size), out var value))
         {
-            for (var c = col; c < col + size; c++)
+            return new QuadTreeNode(val: value == 1, isLeaf: true);
+        }
+
+        return BuildBruteForceQuadrants(grid, row, col, size);
+    }
+
+    private static bool IsUniformRegion(int[][] grid, GridRegion region, out int value)
+    {
+        value = grid[region.Row][region.Col];
+
+        for (var r = region.Row; r < region.Row + region.Size; r++)
+        {
+            for (var c = region.Col; c < region.Col + region.Size; c++)
             {
-                if (grid[r][c] != first)
+                if (grid[r][c] != value)
                 {
-                    uniform = false;
-                    break;
+                    return false;
                 }
             }
         }
 
-        if (uniform)
-        {
-            return new QuadTreeNode(val: first == 1, isLeaf: true);
-        }
+        return true;
+    }
 
-        var half = size / 2;
+    private static QuadTreeNode BuildBruteForceQuadrants(int[][] grid, int row, int col, int size)
+    {
+        var half = size / QuadrantSplitFactor;
         return new QuadTreeNode(val: true, isLeaf: false)
         {
             TopLeft = BuildBruteForce(grid, row, col, half),

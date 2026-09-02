@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RaceCarBenchmarks
 {
+    private const int AccelerationSpeedMultiplier = 2;
+
     [Params(6, 25)]
     public int Target;
 
@@ -33,31 +35,58 @@ public class RaceCarBenchmarks
 
         while (queue.Count > 0)
         {
-            var (position, speed, commands) = queue.Dequeue();
-
-            if (position == Target)
+            var found = ExpandState(queue.Dequeue(), visited, queue);
+            if (found is not null)
             {
-                return commands;
-            }
-
-            var acceleratePosition = position + speed;
-            var accelerateSpeed = speed * 2;
-
-            if (_nodesByState.ContainsKey((acceleratePosition, accelerateSpeed)) &&
-                visited.Add((acceleratePosition, accelerateSpeed)))
-            {
-                queue.Enqueue((acceleratePosition, accelerateSpeed, commands + 1));
-            }
-
-            var reverseSpeed = speed > 0 ? -1 : 1;
-
-            if (visited.Add((position, reverseSpeed)))
-            {
-                queue.Enqueue((position, reverseSpeed, commands + 1));
+                return found.Value;
             }
         }
 
         return -1;
+    }
+
+    private int? ExpandState(
+        (int Position, int Speed, int Commands) state,
+        HashSet<(int Position, int Speed)> visited,
+        Queue<(int Position, int Speed, int Commands)> queue)
+    {
+        if (state.Position == Target)
+        {
+            return state.Commands;
+        }
+
+        EnqueueAccelerate(state, visited, queue);
+        EnqueueReverse(state, visited, queue);
+
+        return null;
+    }
+
+    private void EnqueueAccelerate(
+        (int Position, int Speed, int Commands) state,
+        HashSet<(int Position, int Speed)> visited,
+        Queue<(int Position, int Speed, int Commands)> queue)
+    {
+        var acceleratePosition = state.Position + state.Speed;
+        var accelerateSpeed = state.Speed * AccelerationSpeedMultiplier;
+
+        if (_nodesByState.ContainsKey((acceleratePosition, accelerateSpeed)) &&
+            visited.Add((acceleratePosition, accelerateSpeed)))
+        {
+            queue.Enqueue((acceleratePosition, accelerateSpeed, state.Commands + 1));
+        }
+    }
+
+    private static void EnqueueReverse(
+        (int Position, int Speed, int Commands) state,
+        HashSet<(int Position, int Speed)> visited,
+        Queue<(int Position, int Speed, int Commands)> queue)
+    {
+        var reverseSpeed = state.Speed > 0 ? -1 : 1;
+
+        if (visited.Add((state.Position, reverseSpeed)))
+        {
+            queue.Enqueue((state.Position, reverseSpeed, state.Commands + 1));
+        }
     }
 
     [Benchmark]

@@ -60,33 +60,42 @@ public sealed partial class FindServersThatHandledMostNumberOfRequestsTests
 
     private static int[] BusiestServers(int k, int[] arrival, int[] load)
     {
-        var availability = new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, k).ToArray());
-        var busy = new Heap<(int End, int Server), MinHeapOrder<(int, int)>>();
-        var handled = new int[k];
+        var pool = new ServerPool(k);
 
         for (var i = 0; i < arrival.Length; i++)
         {
-            var arrivalTime = arrival[i];
-
-            while (busy.TryPeek(out var freed) && freed.End <= arrivalTime)
-            {
-                busy.TryPop(out freed);
-                availability.Add(freed.Server, 1);
-            }
-
-            if (!TryFindAvailableServer(availability, k, i % k, out var server))
-            {
-                continue;
-            }
-
-            availability.Add(server, -1);
-            busy.Push((arrivalTime + load[i], server));
-            handled[server]++;
+            pool.ProcessRequest(i, arrival[i], load[i]);
         }
 
-        var maxHandled = handled.Max();
+        var maxHandled = pool.Handled.Max();
 
-        return [.. Enumerable.Range(0, k).Where(server => handled[server] == maxHandled)];
+        return [.. Enumerable.Range(0, k).Where(server => pool.Handled[server] == maxHandled)];
+    }
+
+    private sealed class ServerPool(int k)
+    {
+        private readonly FenwickTree<int, SumOperation<int>> _availability = new(Enumerable.Repeat(1, k).ToArray());
+        private readonly Heap<(int End, int Server), MinHeapOrder<(int, int)>> _busy = new();
+
+        public int[] Handled { get; } = new int[k];
+
+        public void ProcessRequest(int i, int arrivalTime, int load)
+        {
+            while (_busy.TryPeek(out var freed) && freed.End <= arrivalTime)
+            {
+                _busy.TryPop(out freed);
+                _availability.Add(freed.Server, 1);
+            }
+
+            if (!TryFindAvailableServer(_availability, k, i % k, out var server))
+            {
+                return;
+            }
+
+            _availability.Add(server, -1);
+            _busy.Push((arrivalTime + load, server));
+            Handled[server]++;
+        }
     }
 
     // Smallest available server index >= start, wrapping to [0, start) when nothing

@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RandomPickWithWeightBenchmarks
 {
     private const int PickCalls = 500;
+    private const int RandomSeed = 528; // LC problem number
+    private const int MaxWeightExclusive = 100;
 
     [Params(50, 2_000)]
     public int WeightCount;
@@ -24,13 +26,13 @@ public class RandomPickWithWeightBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(528);
+        var random = new Random(RandomSeed);
         _prefixSums = new int[WeightCount];
         var running = 0;
 
         for (var i = 0; i < WeightCount; i++)
         {
-            running += random.Next(1, 100);
+            running += random.Next(1, MaxWeightExclusive);
             _prefixSums[i] = running;
         }
     }

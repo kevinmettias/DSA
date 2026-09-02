@@ -19,6 +19,9 @@ public class RegionsCutBySlashesBenchmarks
     private const int East = 1;
     private const int South = 2;
     private const int West = 3;
+    private const int TrianglesPerCell = 4;
+    private const int ExpansionFactor = 3;
+    private const int BlockLastOffset = 2;
     private static readonly char[] SlashChars = [' ', '/', '\\'];
 
     [Params(30, 150)]
@@ -45,18 +48,31 @@ public class RegionsCutBySlashesBenchmarks
     [Benchmark(Baseline = true)]
     public int ThreeByThreeExpansionFloodFill()
     {
-        var expandedSize = GridSize * 3;
+        var expandedSize = GridSize * ExpansionFactor;
+        var blocked = BuildBlockedGrid(expandedSize);
+
+        return CountFloodFillRegions(blocked, expandedSize);
+    }
+
+    private bool[,] BuildBlockedGrid(int expandedSize)
+    {
         var blocked = new bool[expandedSize, expandedSize];
 
         for (var r = 0; r < GridSize; r++)
         {
             for (var c = 0; c < GridSize; c++)
             {
-                BlockDiagonal(blocked, r * 3, c * 3, _grid[r][c]);
+                BlockDiagonal(blocked, r * ExpansionFactor, c * ExpansionFactor, _grid[r][c]);
             }
         }
 
+        return blocked;
+    }
+
+    private static int CountFloodFillRegions(bool[,] blocked, int expandedSize)
+    {
         var visited = new bool[expandedSize, expandedSize];
+        var grid = new FloodFillGrid(blocked, visited, expandedSize);
         var regions = 0;
 
         for (var r = 0; r < expandedSize; r++)
@@ -68,7 +84,7 @@ public class RegionsCutBySlashesBenchmarks
                     continue;
                 }
 
-                FloodFill(blocked, visited, expandedSize, r, c);
+                FloodFill(grid, r, c);
                 regions++;
             }
         }
@@ -81,23 +97,25 @@ public class RegionsCutBySlashesBenchmarks
         switch (cell)
         {
             case '/':
-                blocked[rowOffset, colOffset + 2] = true;
+                blocked[rowOffset, colOffset + BlockLastOffset] = true;
                 blocked[rowOffset + 1, colOffset + 1] = true;
-                blocked[rowOffset + 2, colOffset] = true;
+                blocked[rowOffset + BlockLastOffset, colOffset] = true;
                 break;
             case '\\':
                 blocked[rowOffset, colOffset] = true;
                 blocked[rowOffset + 1, colOffset + 1] = true;
-                blocked[rowOffset + 2, colOffset + 2] = true;
+                blocked[rowOffset + BlockLastOffset, colOffset + BlockLastOffset] = true;
                 break;
         }
     }
 
-    private static void FloodFill(bool[,] blocked, bool[,] visited, int expandedSize, int startRow, int startCol)
+    private readonly record struct FloodFillGrid(bool[,] Blocked, bool[,] Visited, int ExpandedSize);
+
+    private static void FloodFill(FloodFillGrid grid, int startRow, int startCol)
     {
         var stack = new Stack<(int Row, int Col)>();
         stack.Push((startRow, startCol));
-        visited[startRow, startCol] = true;
+        grid.Visited[startRow, startCol] = true;
 
         Span<(int DeltaRow, int DeltaCol)> directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
@@ -107,56 +125,63 @@ public class RegionsCutBySlashesBenchmarks
 
             foreach (var (deltaRow, deltaCol) in directions)
             {
-                var nextRow = row + deltaRow;
-                var nextCol = col + deltaCol;
-
-                if (nextRow < 0 || nextRow >= expandedSize || nextCol < 0 || nextCol >= expandedSize)
-                {
-                    continue;
-                }
-
-                if (blocked[nextRow, nextCol] || visited[nextRow, nextCol])
-                {
-                    continue;
-                }
-
-                visited[nextRow, nextCol] = true;
-                stack.Push((nextRow, nextCol));
+                VisitNeighborIfOpen(grid, stack, row + deltaRow, col + deltaCol);
             }
         }
+    }
+
+    private static void VisitNeighborIfOpen(FloodFillGrid grid, Stack<(int Row, int Col)> stack, int nextRow, int nextCol)
+    {
+        if (nextRow < 0 || nextRow >= grid.ExpandedSize || nextCol < 0 || nextCol >= grid.ExpandedSize)
+        {
+            return;
+        }
+
+        if (grid.Blocked[nextRow, nextCol] || grid.Visited[nextRow, nextCol])
+        {
+            return;
+        }
+
+        grid.Visited[nextRow, nextCol] = true;
+        stack.Push((nextRow, nextCol));
     }
 
     [Benchmark]
     public int DisjointSetTriangleUnion()
     {
-        var triangles = new DisjointSet(4 * GridSize * GridSize);
+        var triangles = new DisjointSet(TrianglesPerCell * GridSize * GridSize);
 
         for (var r = 0; r < GridSize; r++)
         {
             for (var c = 0; c < GridSize; c++)
             {
-                var baseId = 4 * (r * GridSize + c);
-                UnionWithinCell(triangles, baseId, _grid[r][c]);
-
-                if (c + 1 < GridSize)
-                {
-                    triangles.Union(baseId + East, 4 * (r * GridSize + c + 1) + West);
-                }
-
-                if (r + 1 < GridSize)
-                {
-                    triangles.Union(baseId + South, 4 * ((r + 1) * GridSize + c) + North);
-                }
+                UnionCellWithNeighbors(triangles, r, c, _grid[r][c]);
             }
         }
 
         var roots = new Set<int>();
-        for (var i = 0; i < 4 * GridSize * GridSize; i++)
+        for (var i = 0; i < TrianglesPerCell * GridSize * GridSize; i++)
         {
             roots.TryAdd(triangles.Find(i));
         }
 
         return roots.Count;
+    }
+
+    private void UnionCellWithNeighbors(DisjointSet triangles, int r, int c, char cell)
+    {
+        var baseId = TrianglesPerCell * (r * GridSize + c);
+        UnionWithinCell(triangles, baseId, cell);
+
+        if (c + 1 < GridSize)
+        {
+            triangles.Union(baseId + East, TrianglesPerCell * (r * GridSize + c + 1) + West);
+        }
+
+        if (r + 1 < GridSize)
+        {
+            triangles.Union(baseId + South, TrianglesPerCell * ((r + 1) * GridSize + c) + North);
+        }
     }
 
     private static void UnionWithinCell(DisjointSet triangles, int baseId, char cell)

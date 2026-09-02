@@ -12,6 +12,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthSmallestInstructionsBenchmarks
 {
+    private const int TotalStepsMultiplier = 2; // destination is [Size, Size], so total steps = 2 * Size
+
+    private const int MedianSequenceDivisor = 2;
+
+    private const string EmptyInstructionPrefix = "";
+
+    private const string HorizontalInstruction = "H";
+
+    private const string VerticalInstruction = "V";
+
     [Params(5, 8)]
     public int Size;
 
@@ -22,59 +32,59 @@ public class KthSmallestInstructionsBenchmarks
     public void Setup()
     {
         _destination = [Size, Size];
-        var totalSequences = Binomial(2 * Size, Size);
-        _k = totalSequences / 2;
+        var totalSequences = Binomial(TotalStepsMultiplier * Size, Size);
+        _k = totalSequences / MedianSequenceDivisor;
     }
 
     [Benchmark(Baseline = true)]
     public string EnumerateAndSort()
     {
         var results = new List<string>();
-        Generate("", _destination[0], _destination[1], results);
+        Generate(EmptyInstructionPrefix, _destination[0], _destination[1], results);
         results.Sort(StringComparer.Ordinal);
         return results[(int)_k - 1];
     }
 
+    private readonly record struct GreedyState(int RemainingV, int RemainingH, long K);
+
     [Benchmark]
     public string MemoizedGreedy()
     {
-        var remainingV = _destination[0];
-        var remainingH = _destination[1];
-        var k = _k;
+        var state = new GreedyState(_destination[0], _destination[1], _k);
         var path = new StringBuilder();
 
-        while (remainingV > 0 || remainingH > 0)
+        while (state.RemainingV > 0 || state.RemainingH > 0)
         {
-            if (remainingH == 0)
-            {
-                path.Append('V');
-                remainingV--;
-                continue;
-            }
-
-            if (remainingV == 0)
-            {
-                path.Append('H');
-                remainingH--;
-                continue;
-            }
-
-            var waysIfH = Memoizer.Memoize<(int V, int H), long>((remainingV, remainingH - 1), Ways);
-
-            if (k <= waysIfH)
-            {
-                path.Append('H');
-                remainingH--;
-            }
-            else
-            {
-                k -= waysIfH;
-                path.Append('V');
-                remainingV--;
-            }
+            state = AppendNextInstruction(state, path);
         }
 
         return path.ToString();
+    }
+
+    private static GreedyState AppendNextInstruction(GreedyState state, StringBuilder path)
+    {
+        if (state.RemainingH == 0)
+        {
+            path.Append('V');
+            return state with { RemainingV = state.RemainingV - 1 };
+        }
+
+        if (state.RemainingV == 0)
+        {
+            path.Append('H');
+            return state with { RemainingH = state.RemainingH - 1 };
+        }
+
+        var waysIfH = Memoizer.Memoize<(int V, int H), long>((state.RemainingV, state.RemainingH - 1), Ways);
+
+        if (state.K <= waysIfH)
+        {
+            path.Append('H');
+            return state with { RemainingH = state.RemainingH - 1 };
+        }
+
+        path.Append('V');
+        return state with { RemainingV = state.RemainingV - 1, K = state.K - waysIfH };
     }
 
     private static void Generate(string prefix, int remainingV, int remainingH, List<string> results)
@@ -87,12 +97,12 @@ public class KthSmallestInstructionsBenchmarks
 
         if (remainingH > 0)
         {
-            Generate(prefix + "H", remainingV, remainingH - 1, results);
+            Generate(prefix + HorizontalInstruction, remainingV, remainingH - 1, results);
         }
 
         if (remainingV > 0)
         {
-            Generate(prefix + "V", remainingV - 1, remainingH, results);
+            Generate(prefix + VerticalInstruction, remainingV - 1, remainingH, results);
         }
     }
 

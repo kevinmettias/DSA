@@ -1,35 +1,33 @@
-﻿using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.WildcardMatching;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.WildcardMatching;
 
-public sealed partial class WildcardMatchingTests
+// Harness only: both strategies live in WildcardMatchingSolution - the textbook
+// greedy two-pointer scan, and a memoized top-down recurrence over this repo's own
+// Memoizer.
+public sealed class WildcardMatchingTests
 {
-    [Theory]
-    [InlineData("aa", "a", false)]
-    [InlineData("aa", "*", true)]
-    [InlineData("cb", "?a", false)]
-    [InlineData("adceb", "*a*b", true)]
-    public void IsMatch_LeetCodeExamples_ReturnsExpected(string text, string pattern, bool expected)
-        => Assert.Equal(expected, IsMatch(text, pattern));
-
-    private static bool IsMatch(string text, string pattern)
-    {
-        return Memoizer.Memoize<(int Text, int Pattern), bool>((0, 0), MatchFrom);
-
-        bool MatchFrom((int Text, int Pattern) state, Func<(int Text, int Pattern), bool> match)
+    public static TheoryData<string, string, bool> Examples =>
+        new()
         {
-            var (i, j) = state;
-            if (j == pattern.Length)
-            {
-                return i == text.Length;
-            }
+            { "aa", "a", false },
+            { "aa", "*", true },
+            { "cb", "?a", false },
+            { "adceb", "*a*b", true },
+            { "", "", true },
+            { "", "*", true },
+            { "", "a", false },
+        };
 
-            if (pattern[j] == '*')
-            {
-                return match((i, j + 1)) || (i < text.Length && match((i + 1, j)));
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsMatchByGreedyTwoPointer_LeetCodeExamples_ReturnsExpected(
+        string text, string pattern, bool expected) =>
+        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByGreedyTwoPointer(text, pattern));
 
-            return i < text.Length && (pattern[j] == '?' || pattern[j] == text[i]) && match((i + 1, j + 1));
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsMatchByMemoizedDp_LeetCodeExamples_ReturnsExpected(
+        string text, string pattern, bool expected) =>
+        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByMemoizedDp(text, pattern));
 }

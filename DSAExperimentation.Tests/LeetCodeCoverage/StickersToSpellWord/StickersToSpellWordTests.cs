@@ -47,6 +47,11 @@ public sealed partial class StickersToSpellWordTests
             return 0;
         }
 
+        return BestOverStickers(state, stickerCounts, minFor);
+    }
+
+    private static int BestOverStickers(string state, int[][] stickerCounts, Func<string, int> minFor)
+    {
         var best = int.MaxValue;
 
         foreach (var counts in stickerCounts)
@@ -56,7 +61,8 @@ public sealed partial class StickersToSpellWordTests
                 continue;
             }
 
-            var sub = minFor(ApplySticker(state, counts));
+            var nextState = ApplySticker(state, counts);
+            var sub = minFor(nextState);
 
             if (sub != int.MaxValue)
             {

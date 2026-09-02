@@ -48,19 +48,7 @@ public sealed partial class IntegerToEnglishWordsTests
 
         while (num > 0)
         {
-            var group = num % 1000;
-            if (group != 0)
-            {
-                if (Scales[scale].Length > 0)
-                {
-                    stack.Push(Scales[scale]);
-                }
-
-                stack.Push(GroupToWords(group));
-            }
-
-            num /= 1000;
-            scale++;
+            (num, scale) = PushGroup(stack, num, scale);
         }
 
         var words = new List<string>();
@@ -72,18 +60,45 @@ public sealed partial class IntegerToEnglishWordsTests
         return string.Join(" ", words);
     }
 
+    private static (int NextNum, int NextScale) PushGroup(WordStack stack, int num, int scale)
+    {
+        var group = num % 1000;
+        if (group != 0)
+        {
+            if (Scales[scale].Length > 0)
+            {
+                stack.Push(Scales[scale]);
+            }
+
+            stack.Push(GroupToWords(group));
+        }
+
+        return (num / 1000, scale + 1);
+    }
+
     private static string GroupToWords(int group)
     {
         var hundreds = group / 100;
         var remainder = group % 100;
         var parts = new List<string>();
 
+        AppendHundreds(parts, hundreds);
+        AppendRemainder(parts, remainder);
+
+        return string.Join(" ", parts);
+    }
+
+    private static void AppendHundreds(List<string> parts, int hundreds)
+    {
         if (hundreds > 0)
         {
             parts.Add(Below20[hundreds]);
             parts.Add("Hundred");
         }
+    }
 
+    private static void AppendRemainder(List<string> parts, int remainder)
+    {
         if (remainder >= 20)
         {
             parts.Add(Tens[remainder / 10]);
@@ -96,7 +111,5 @@ public sealed partial class IntegerToEnglishWordsTests
         {
             parts.Add(Below20[remainder]);
         }
-
-        return string.Join(" ", parts);
     }
 }

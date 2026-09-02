@@ -39,7 +39,8 @@ public sealed partial class KthSmallestInLexicographicalOrderTests
         var order = new List<int>();
         for (var root = 1; root <= 9 && root <= n; root++)
         {
-            order.AddRange(DepthFirstSearch.Traverse(root, current => Successors(current, n)));
+            var traversal = DepthFirstSearch.Traverse(root, current => Successors(current, n));
+            order.AddRange(traversal);
         }
 
         return order[k - 1];

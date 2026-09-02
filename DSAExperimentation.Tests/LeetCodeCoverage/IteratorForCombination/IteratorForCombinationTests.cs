@@ -53,24 +53,31 @@ public sealed partial class IteratorForCombinationTests
 
             Backtrack.Search<State, int>(
                 state,
-                isSolution: x => x.Chosen.Count == combinationLength,
-                candidates: x => x.Chosen.Count == combinationLength
-                    ? []
-                    : Enumerable.Range(x.Start, characters.Length - x.Start),
-                choose: (x, index) =>
-                {
-                    x.Starts.Push(x.Start);
-                    x.Chosen.Add(characters[index]);
-                    x.Start = index + 1;
-                },
-                unchoose: (x, _) =>
-                {
-                    x.Start = x.Starts.Pop();
-                    x.Chosen.RemoveAt(x.Chosen.Count - 1);
-                },
+                isSolution: x => IsSolution(x, combinationLength),
+                candidates: x => Candidates(x, combinationLength, characters.Length),
+                choose: (x, index) => Choose(x, index, characters),
+                unchoose: (x, _) => Unchoose(x),
                 onSolution: x => results.Add(new string([.. x.Chosen])));
 
             return results;
+        }
+
+        private static bool IsSolution(State x, int combinationLength) => x.Chosen.Count == combinationLength;
+
+        private static IEnumerable<int> Candidates(State x, int combinationLength, int characterCount)
+            => x.Chosen.Count == combinationLength ? [] : Enumerable.Range(x.Start, characterCount - x.Start);
+
+        private static void Choose(State x, int index, string characters)
+        {
+            x.Starts.Push(x.Start);
+            x.Chosen.Add(characters[index]);
+            x.Start = index + 1;
+        }
+
+        private static void Unchoose(State x)
+        {
+            x.Start = x.Starts.Pop();
+            x.Chosen.RemoveAt(x.Chosen.Count - 1);
         }
 
         private sealed class State

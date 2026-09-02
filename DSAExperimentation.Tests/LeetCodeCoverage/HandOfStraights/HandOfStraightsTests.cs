@@ -39,6 +39,14 @@ public sealed partial class HandOfStraightsTests
             return false;
         }
 
+        var counts = BuildCounts(hand);
+        var sortedHand = SortedCopy(hand);
+
+        return TryConsumeGroups(sortedHand, counts, groupSize);
+    }
+
+    private static HashMap<int, int> BuildCounts(int[] hand)
+    {
         var counts = new HashMap<int, int>();
 
         foreach (var card in hand)
@@ -47,9 +55,18 @@ public sealed partial class HandOfStraightsTests
             counts.Set(card, count + 1);
         }
 
+        return counts;
+    }
+
+    private static int[] SortedCopy(int[] hand)
+    {
         var sortedHand = (int[])hand.Clone();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
+        return sortedHand;
+    }
 
+    private static bool TryConsumeGroups(int[] sortedHand, HashMap<int, int> counts, int groupSize)
+    {
         foreach (var card in sortedHand)
         {
             counts.TryGetValue(card, out var remaining);
