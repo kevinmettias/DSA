@@ -1,27 +1,72 @@
-﻿using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.BinaryTreeLevelOrderTraversal;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BinaryTreeLevelOrderTraversal;
 
-public sealed partial class BinaryTreeLevelOrderTraversalTests
+// Harness only. Both strategies are BinaryTreeLevelOrderTraversalSolution's -
+// this file pins them to LeetCode's published examples, given in LeetCode's
+// own level-order-with-null array shape (BinaryTreeNode<int> is internal, so
+// it cannot appear in a public TheoryData signature; BuildTree reconstructs
+// it).
+public sealed class BinaryTreeLevelOrderTraversalTests
 {
-    [Fact]
-    public void LevelOrder_ClassicExample_ReturnsLevelsTopDown()
-        => Assert.Equal([[3], [9, 20], [15, 7]], LevelOrder(Tree()));
+    public static TheoryData<int?[], List<List<int>>> Examples =>
+        new()
+        {
+            { [3, 9, 20, null, null, 15, 7], [[3], [9, 20], [15, 7]] },
+            { [1], [[1]] },
+            { [], [] },
+        };
 
-    private static List<List<int>> LevelOrder(BinaryTreeNode<int>? root)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LevelOrderByQueueLevels_LeetCodeExamples_ReturnsLevelsTopDown(
+        int?[] values, List<List<int>> expected) =>
+        Assert.Equal(expected, BinaryTreeLevelOrderTraversalSolution.LevelOrderByQueueLevels(BuildTree(values)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LevelOrderByLevelGroupedTraversal_LeetCodeExamples_ReturnsLevelsTopDown(
+        int?[] values, List<List<int>> expected) =>
+        Assert.Equal(
+            expected,
+            BinaryTreeLevelOrderTraversalSolution.LevelOrderByLevelGroupedTraversal(BuildTree(values)));
+
+    // LeetCode's level-order array shape: each existing node consumes exactly
+    // two subsequent slots for its children, null marking a missing one.
+    private static BinaryTreeNode<int>? BuildTree(int?[] values)
     {
-        LevelHooks.Output.Value = [];
-        LevelGroupedBreadthFirstTraversal.Walk<BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>, NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>, LevelHooks>(root);
-        return LevelHooks.Output.Value!;
-    }
+        if (values.Length == 0 || values[0] is null)
+        {
+            return null;
+        }
 
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
-    {
-        public static readonly AsyncLocal<List<List<int>>> Output = new();
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) => Output.Value!.Add(level.Select(n => n.Value).ToList());
-    }
+        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
 
-    private static BinaryTreeNode<int> Tree() => new(3) { Left = new(9), Right = new(20) { Left = new(15), Right = new(7) } };
+        while (queue.Count > 0 && i < values.Length)
+        {
+            var node = queue.Dequeue();
+
+            if (values[i] is int leftValue)
+            {
+                node.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(node.Left);
+            }
+
+            i++;
+
+            if (i < values.Length && values[i] is int rightValue)
+            {
+                node.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(node.Right);
+            }
+
+            i++;
+        }
+
+        return root;
+    }
 }

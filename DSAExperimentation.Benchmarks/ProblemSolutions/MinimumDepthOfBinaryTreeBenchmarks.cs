@@ -1,8 +1,14 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.MinimumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: the pre-migration version carried two [Benchmark] methods
+// (RecursiveMinDepth, BinaryTreeNodeMinDepth) that both called the exact same
+// private recursive walk - one strategy measured twice, not two. The tree is
+// unchanged: MinimumDepthOfBinaryTreeSolution has only MinDepthByRecursion, so
+// only one arm remains.
 [MemoryDiagnoser]
 public class MinimumDepthOfBinaryTreeBenchmarks
 {
@@ -15,29 +21,6 @@ public class MinimumDepthOfBinaryTreeBenchmarks
     [GlobalSetup]
     public void Setup() => _root = new(1) { Left = new(LeftChildValue), Right = new(RightChildValue) { Right = new(RightGrandchildValue) } };
 
-    [Benchmark(Baseline = true)]
-    public int RecursiveMinDepth() => MinDepth(_root);
-
     [Benchmark]
-    public int BinaryTreeNodeMinDepth() => MinDepth(_root);
-
-    private static int MinDepth(BinaryTreeNode<int>? n)
-    {
-        if (n is null)
-        {
-            return 0;
-        }
-
-        if (n.Left is null)
-        {
-            return 1 + MinDepth(n.Right);
-        }
-
-        if (n.Right is null)
-        {
-            return 1 + MinDepth(n.Left);
-        }
-
-        return 1 + Math.Min(MinDepth(n.Left), MinDepth(n.Right));
-    }
+    public int RecursiveMinDepth() => MinimumDepthOfBinaryTreeSolution.MinDepthByRecursion(_root);
 }

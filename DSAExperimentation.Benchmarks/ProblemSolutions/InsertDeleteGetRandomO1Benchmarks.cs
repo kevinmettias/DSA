@@ -1,14 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1.InsertDeleteGetRandomO1Solution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Insert Delete GetRandom O(1) (LC 380): a plain List<int> baseline (Contains-scan on
-// every Insert, an indexed Remove that shifts every element after the removed slot) vs.
-// this repo's HashMap<int,int> (value -> index) + DynamicArray<int> composition, whose
-// Remove swaps the removed slot with the tail before popping it - DynamicArray.RemoveAt
-// only ever runs on the LAST index, its O(1) path, never the O(n) shifting one.
+// Harness only: both arms are InsertDeleteGetRandomO1Solution's, the same classes
+// InsertDeleteGetRandomO1Tests proves correct. A Design problem's whole point is a
+// sequence of mutating calls against one instance, so there is no separate "prepare
+// input" step to hoist into [GlobalSetup] beyond the insert/removal order arrays
+// themselves - [GlobalSetup] builds those (so shuffling isn't charged to the measured
+// method) and each [Benchmark] arm constructs its own instance and replays the same
+// insert-then-remove script, returning the surviving Count so the JIT can't eliminate
+// the replay as dead code.
 [MemoryDiagnoser]
 public class InsertDeleteGetRandomO1Benchmarks
 {
@@ -28,65 +30,23 @@ public class InsertDeleteGetRandomO1Benchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListBased()
-    {
-        var values = new List<int>();
-
-        foreach (var value in _insertOrder)
-        {
-            if (!values.Contains(value))
-            {
-                values.Add(value);
-            }
-        }
-
-        foreach (var value in _removalOrder)
-        {
-            values.Remove(value);
-        }
-
-        return values.Count;
-    }
+    public int ListScan() => Replay(new RandomizedSetByListScan());
 
     [Benchmark]
-    public int HashMapDynamicArrayComposed()
-    {
-        var indexByValue = new HashMap<int, int>();
-        var values = new DynamicArray<int>();
+    public int HashMapSwapRemove() => Replay(new RandomizedSetByHashMapSwapRemove());
 
+    private int Replay(IRandomizedSet set)
+    {
         foreach (var value in _insertOrder)
         {
-            if (indexByValue.HasKey(value))
-            {
-                continue;
-            }
-
-            values.Add(value);
-            indexByValue.Set(value, values.Count - 1);
+            set.Insert(value);
         }
 
         foreach (var value in _removalOrder)
         {
-            RemoveSwapBack(value, indexByValue, values);
+            set.Remove(value);
         }
 
-        return values.Count;
-    }
-
-    private static void RemoveSwapBack(int value, HashMap<int, int> indexByValue, DynamicArray<int> values)
-    {
-        if (!indexByValue.TryGetValue(value, out var index))
-        {
-            return;
-        }
-
-        var lastIndex = values.Count - 1;
-        var lastValue = values.Get(lastIndex);
-
-        values.Set(index, lastValue);
-        indexByValue.Set(lastValue, index);
-
-        values.RemoveAt(lastIndex);
-        indexByValue.TryRemove(value);
+        return set.Count;
     }
 }

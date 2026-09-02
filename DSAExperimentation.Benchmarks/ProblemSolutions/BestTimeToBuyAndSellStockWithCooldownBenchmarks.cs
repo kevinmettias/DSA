@@ -1,19 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithCooldown;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Best Time to Buy and Sell Stock with Cooldown (LC 309): plain un-memoized recursion
-// over (day, holding) - exponential, since the same state recurs along many different
-// buy/sell/rest paths - vs. this repo's own Memoizer<TState,TResult> caching that
-// exact pair. Length is kept modest (<=28) specifically because the un-memoized
-// baseline's blowup is real, the same reasoning FibonacciBenchmarks.cs's NaiveRecursive
-// already documents.
+// Harness only: both arms are BestTimeToBuyAndSellStockWithCooldownSolution's, the
+// same methods BestTimeToBuyAndSellStockWithCooldownTests proves correct. Length is
+// kept modest (<=28) specifically because the un-memoized baseline's blowup is real,
+// the same reasoning FibonacciBenchmarks.cs's NaiveRecursive already documents.
 [MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
 {
     private const int MaxPrice = 100;
-    private const int CooldownDays = 2;
 
     [Params(20, 28)]
     public int Length;
@@ -28,50 +25,10 @@ public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => ProfitFrom(0, false);
-
-    private int ProfitFrom(int day, bool holding)
-    {
-        if (day >= _prices.Length)
-        {
-            return 0;
-        }
-
-        if (holding)
-        {
-            var sell = _prices[day] + ProfitFrom(day + CooldownDays, false);
-            var hold = ProfitFrom(day + 1, true);
-            return Math.Max(sell, hold);
-        }
-
-        var buy = -_prices[day] + ProfitFrom(day + 1, true);
-        var rest = ProfitFrom(day + 1, false);
-        return Math.Max(buy, rest);
-    }
+    public int UnmemoizedRecursion() =>
+        BestTimeToBuyAndSellStockWithCooldownSolution.MaxProfitByUnmemoizedRecursion(_prices);
 
     [Benchmark]
-    public int MemoizedRecursion()
-    {
-        return Memoizer.Memoize<(int Day, bool Holding), int>((0, false), ProfitFromMemoized);
-
-        int ProfitFromMemoized((int Day, bool Holding) state, Func<(int Day, bool Holding), int> profit)
-        {
-            var (day, holding) = state;
-            if (day >= _prices.Length)
-            {
-                return 0;
-            }
-
-            if (holding)
-            {
-                var sell = _prices[day] + profit((day + CooldownDays, false));
-                var hold = profit((day + 1, true));
-                return Math.Max(sell, hold);
-            }
-
-            var buy = -_prices[day] + profit((day + 1, true));
-            var rest = profit((day + 1, false));
-            return Math.Max(buy, rest);
-        }
-    }
+    public int MemoizedRecursion() =>
+        BestTimeToBuyAndSellStockWithCooldownSolution.MaxProfitByMemoizedRecursion(_prices);
 }

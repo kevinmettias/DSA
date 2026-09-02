@@ -1,14 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.GuessNumberHigherOrLowerII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Guess Number Higher or Lower II (LC 375): plain un-memoized minimax recursion over
-// (low, high) bounds - exponential, since the same (low, high) sub-range recurs across
-// many different choices of guess outside it - vs. this repo's own
-// Memoizer<TState,TResult> caching that exact pair (BurstBalloonsBenchmarks' shape).
-// N is kept modest specifically because the un-memoized baseline's blowup is real, the
-// same reasoning BurstBalloonsBenchmarks/FibonacciBenchmarks already document.
+// Harness only: both arms are GuessNumberHigherOrLowerIISolution's, the same methods
+// GuessNumberHigherOrLowerIITests proves correct. N is kept modest specifically
+// because the un-memoized baseline's blowup is real, the same reasoning
+// BurstBalloonsBenchmarks/FibonacciBenchmarks already document.
 [MemoryDiagnoser]
 public class GuessNumberHigherOrLowerIIBenchmarks
 {
@@ -16,46 +14,8 @@ public class GuessNumberHigherOrLowerIIBenchmarks
     public int N;
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => WorstCaseCost(1, N);
-
-    private int WorstCaseCost(int low, int high)
-    {
-        if (low >= high)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-        for (var guess = low; guess <= high; guess++)
-        {
-            var lowerHalfCost = WorstCaseCost(low, guess - 1);
-            var upperHalfCost = WorstCaseCost(guess + 1, high);
-            var worstHalf = Math.Max(lowerHalfCost, upperHalfCost);
-            best = Math.Min(best, guess + worstHalf);
-        }
-
-        return best;
-    }
+    public int UnmemoizedRecursion() => GuessNumberHigherOrLowerIISolution.GetMoneyAmountByUnmemoizedRecursion(N);
 
     [Benchmark]
-    public int MemoizedRecursion()
-        => Memoizer.Memoize<(int Low, int High), int>((1, N), WorstCaseCostMemoized);
-
-    private static int WorstCaseCostMemoized((int Low, int High) range, Func<(int Low, int High), int> costFor)
-    {
-        var (low, high) = range;
-        if (low >= high)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-        for (var guess = low; guess <= high; guess++)
-        {
-            var worstHalf = Math.Max(costFor((low, guess - 1)), costFor((guess + 1, high)));
-            best = Math.Min(best, guess + worstHalf);
-        }
-
-        return best;
-    }
+    public int MemoizedRecursion() => GuessNumberHigherOrLowerIISolution.GetMoneyAmountByMemoizedRecursion(N);
 }

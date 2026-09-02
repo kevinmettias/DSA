@@ -1,13 +1,11 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SearchA2DMatrixII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchA2DMatrixII;
 
-// LeetCode 240. Search a 2D Matrix II: each row is independently sorted
-// ascending (unlike LC 74, rows are not chained end-to-start), so this repo's
-// own BinarySearch.Find over an ArraySequence<int> witness per row is a
-// direct, correct composition of two existing primitives - see the benchmark
-// for why it is not the asymptotically fastest option.
+// Harness only. All three strategies are SearchA2DMatrixIISolution's - this file
+// pins them to LeetCode's published examples, including the empty-matrix edge
+// case that forces the corner walk to guard its first index instead of assuming a
+// non-empty row.
 public sealed class SearchA2DMatrixIITests
 {
     private static readonly int[][] Matrix =
@@ -19,33 +17,29 @@ public sealed class SearchA2DMatrixIITests
         [18, 21, 23, 26, 30],
     ];
 
-    [Theory]
-    [InlineData(5, true)]
-    [InlineData(20, false)]
-    public void SearchMatrix_LeetCodeExamples_FindsPresenceCorrectly(int target, bool expected)
-    {
-        var found = SearchMatrix(Matrix, target);
-        Assert.Equal(expected, found);
-    }
-
-    [Fact]
-    public void SearchMatrix_EmptyMatrix_ReturnsFalse()
-    {
-        var found = SearchMatrix([], 1);
-        Assert.False(found);
-    }
-
-    private static bool SearchMatrix(int[][] matrix, int target)
-    {
-        foreach (var row in matrix)
+    public static TheoryData<int[][], int, bool> Examples =>
+        new()
         {
-            var sequence = new ArraySequence<int>(row);
-            if (BinarySearch.Find(sequence, target) is not null)
-            {
-                return true;
-            }
-        }
+            { Matrix, 5, true },
+            { Matrix, 20, false },
+            { [], 1, false },
+        };
 
-        return false;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchMatrixByFullScan_LeetCodeExamples_ReturnsWhetherTargetExists(
+        int[][] matrix, int target, bool expected) =>
+        Assert.Equal(expected, SearchA2DMatrixIISolution.SearchMatrixByFullScan(matrix, target));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchMatrixByPerRowBinarySearch_LeetCodeExamples_ReturnsWhetherTargetExists(
+        int[][] matrix, int target, bool expected) =>
+        Assert.Equal(expected, SearchA2DMatrixIISolution.SearchMatrixByPerRowBinarySearch(matrix, target));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchMatrixByStaircaseSearch_LeetCodeExamples_ReturnsWhetherTargetExists(
+        int[][] matrix, int target, bool expected) =>
+        Assert.Equal(expected, SearchA2DMatrixIISolution.SearchMatrixByStaircaseSearch(matrix, target));
 }

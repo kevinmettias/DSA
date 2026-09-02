@@ -1,13 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.PalindromePairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Palindrome Pairs (LC 336): the O(n^2*k) brute force that concatenates and checks
-// every ordered word pair directly vs. the O(n*k^2) approach using this repo's own
-// HashMap<TKey,TValue> as a reversed-complement lookup for every prefix/suffix split
-// - the same complement-lookup shape TwoSumBenchmarks already demonstrates, applied
-// to strings.
+// Harness only: both arms are PalindromePairsSolution's, the same methods
+// PalindromePairsTests proves correct - the O(n^2*k) brute force that concatenates
+// and checks every ordered word pair directly vs. the O(n*k^2) approach using this
+// repo's own HashMap<TKey,TValue> as a reversed-complement lookup for every
+// prefix/suffix split.
 [MemoryDiagnoser]
 public class PalindromePairsBenchmarks
 {
@@ -42,89 +42,8 @@ public class PalindromePairsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce()
-    {
-        var count = 0;
-
-        for (var i = 0; i < _words.Length; i++)
-        {
-            for (var j = 0; j < _words.Length; j++)
-            {
-                if (i != j && IsPalindrome(_words[i] + _words[j]))
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    public int BruteForce() => PalindromePairsSolution.FindPairsByBruteForce(_words).Count;
 
     [Benchmark]
-    public int HashMapComplementLookup()
-    {
-        var indexOf = new HashMap<string, int>();
-        for (var i = 0; i < _words.Length; i++)
-        {
-            indexOf.Set(_words[i], i);
-        }
-
-        var count = 0;
-        for (var i = 0; i < _words.Length; i++)
-        {
-            var word = _words[i];
-            for (var cut = 0; cut <= word.Length; cut++)
-            {
-                count += CountPalindromicPairsAtCut(word, cut, i, indexOf);
-            }
-        }
-
-        return count;
-    }
-
-    private static int CountPalindromicPairsAtCut(string word, int cut, int wordIndex, HashMap<string, int> indexOf)
-    {
-        var prefix = word[..cut];
-        var suffix = word[cut..];
-        var matches = 0;
-
-        if (IsPalindrome(prefix)
-            && indexOf.TryGetValue(Reverse(suffix), out var suffixMatch)
-            && suffixMatch != wordIndex)
-        {
-            matches++;
-        }
-
-        if (cut != word.Length
-            && IsPalindrome(suffix)
-            && indexOf.TryGetValue(Reverse(prefix), out var prefixMatch)
-            && prefixMatch != wordIndex)
-        {
-            matches++;
-        }
-
-        return matches;
-    }
-
-    private static bool IsPalindrome(string s)
-    {
-        var left = 0;
-        var right = s.Length - 1;
-        while (left < right)
-        {
-            if (s[left++] != s[right--])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static string Reverse(string s)
-    {
-        var chars = s.ToCharArray();
-        Array.Reverse(chars);
-        return new string(chars);
-    }
+    public int HashMapComplementLookup() => PalindromePairsSolution.FindPairsByHashMapComplementLookup(_words).Count;
 }

@@ -1,14 +1,12 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MaximumProductSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Maximum Product Subarray (LC 152): the O(n^2) all-subarrays brute force vs.
-// the O(n) single pass tracking both a running min and a running max product
-// (a negative number can turn the running min into the new running max, so
-// both must be tracked, not just the max). No repo primitive applies here -
-// this is a pure running-best scan over the array itself, the same
-// "no stronger reusable primitive" shape already established for
-// MaximumSubarray/GasStation.
+// Harness only: both arms are MaximumProductSubarraySolution's, the same methods
+// MaximumProductSubarrayTests proves correct - the O(n^2) all-subarrays brute
+// force vs. the O(n) single pass tracking both a running min and a running max
+// product.
 [MemoryDiagnoser]
 public class MaximumProductSubarrayBenchmarks
 {
@@ -28,43 +26,8 @@ public class MaximumProductSubarrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceAllSubarrays()
-    {
-        long best = _values[0];
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            long product = 1;
-
-            for (var j = i; j < _values.Length; j++)
-            {
-                product *= _values[j];
-                best = Math.Max(best, product);
-            }
-        }
-
-        return best;
-    }
+    public int BruteForceAllSubarrays() => MaximumProductSubarraySolution.MaxProductByBruteForce(_values);
 
     [Benchmark]
-    public long MinMaxSinglePass()
-    {
-        long min = _values[0];
-        long max = _values[0];
-        long best = _values[0];
-
-        for (var i = 1; i < _values.Length; i++)
-        {
-            if (_values[i] < 0)
-            {
-                (min, max) = (max, min);
-            }
-
-            max = Math.Max(_values[i], max * _values[i]);
-            min = Math.Min(_values[i], min * _values[i]);
-            best = Math.Max(best, max);
-        }
-
-        return best;
-    }
+    public int MinMaxSinglePass() => MaximumProductSubarraySolution.MaxProductByMinMaxScan(_values);
 }

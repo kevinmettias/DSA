@@ -1,0 +1,29 @@
+using DSAExperimentation.LeetCode.CountValidSequences;
+
+namespace DSAExperimentation.Tests.LeetCodeCoverage.CountValidSequences;
+
+// Harness only. The stars-and-bars derivation and both nCr strategies are
+// CountValidSequencesSolution's; this file just pins them to LeetCode's
+// published examples.
+public sealed class CountValidSequencesTests
+{
+    public static TheoryData<int, int, int> Examples =>
+        new()
+        {
+            { 5, 3, 3 },
+            { 3, 2, 2 },
+            { 5, 5, 0 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountByDirectBinomial_LeetCodeExamples_ReturnsCountOfEvenProductSequences(
+        int n, int k, int expected) =>
+        Assert.Equal(expected, CountValidSequencesSolution.CountByDirectBinomial(n, k));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountByPrecomputedFactorials_LeetCodeExamples_ReturnsCountOfEvenProductSequences(
+        int n, int k, int expected) =>
+        Assert.Equal(expected, CountValidSequencesSolution.CountByPrecomputedFactorials(n, k));
+}

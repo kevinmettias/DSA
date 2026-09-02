@@ -1,37 +1,27 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.KthLargestElement;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.KthLargestElement;
 
-// LeetCode 215. Kth Largest Element in an Array: an O(n log k) size-k min-heap,
-// this repo's Heap<T,MinHeapOrder<T>> discarding its smallest root whenever the
-// heap grows past k.
-public sealed partial class KthLargestElementTests
+// Harness only. Both strategies are KthLargestElementSolution's - this file just
+// pins them to LeetCode's published examples.
+public sealed class KthLargestElementTests
 {
-    [Fact]
-    public void FindKthLargest_ClassicExample_ReturnsCorrectRank()
-    {
-        int[] nums = [3, 2, 1, 5, 6, 4];
-
-        var result = FindKthLargest(nums, rank: 2);
-
-        Assert.Equal(5, result);
-    }
-
-    private static int FindKthLargest(int[] nums, int rank)
-    {
-        var heap = new Heap<int, MinHeapOrder<int>>();
-
-        foreach (var value in nums)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            heap.Push(value);
+            { [3, 2, 1, 5, 6, 4], 2, 5 },
+            { [3, 2, 3, 1, 2, 4, 5, 5, 6], 4, 4 },
+        };
 
-            if (heap.Count > rank)
-            {
-                heap.TryPop(out _);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindKthLargestByFullSort_LeetCodeExamples_ReturnsCorrectRank(
+        int[] nums, int rank, int expected) =>
+        Assert.Equal(expected, KthLargestElementSolution.FindKthLargestByFullSort(nums, rank));
 
-        heap.TryPeek(out var kthLargest);
-        return kthLargest;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindKthLargestBySizeKMinHeap_LeetCodeExamples_ReturnsCorrectRank(
+        int[] nums, int rank, int expected) =>
+        Assert.Equal(expected, KthLargestElementSolution.FindKthLargestBySizeKMinHeap(nums, rank));
 }

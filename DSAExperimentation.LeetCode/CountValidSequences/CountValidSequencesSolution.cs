@@ -1,0 +1,69 @@
+using DSAExperimentation.Domain.Modular;
+
+namespace DSAExperimentation.LeetCode.CountValidSequences;
+
+// LeetCode 4002. Count Valid Sequences: sequences of k positive integers summing
+// to n, whose product is even, counted modulo 1e9+7.
+//
+// "Even product" is easier to count as its complement: total sequences minus the
+// sequences whose product is ODD, i.e. every entry is odd. By stars-and-bars,
+// sequences of k positive integers summing to n number C(n - 1, k - 1). An
+// all-odd sequence substitutes x_i = 2y_i - 1 (y_i >= 1); summing to n forces
+// sum(y_i) = (n + k) / 2, only possible when n + k is even, and then there are
+// C((n + k) / 2 - 1, k - 1) of them (the same stars-and-bars count, one level
+// down). The answer is the difference of the two binomial coefficients mod p.
+//
+// Both strategies compute that same difference; they differ only in how nCr(n, r)
+// itself is produced - recomputed on the spot, or read from a table prepared once
+// (the same recomputed-vs-precomputed-factorials split CountWaysToBuildRoomsIn
+// AnAntColony uses, here without a tree to fold over).
+internal static class CountValidSequencesSolution
+{
+    // The textbook arm: no precomputed table, each nCr(n, r) multiplies out its
+    // own numerator and denominator from scratch and divides by one modular
+    // inverse - correct on its own, but O(k) of work per call with no reuse
+    // across the two coefficients this problem always needs.
+    public static int CountByDirectBinomial(int n, int k)
+    {
+        var total = ChooseDirect(n - 1, k - 1);
+        var odd = (n + k) % 2 == 0 ? ChooseDirect((n + k) / 2 - 1, k - 1) : 0;
+
+        return Difference(total, odd);
+    }
+
+    // The composed arm: FactorialTable.Build(n) does the same O(n) factorial work
+    // once, up front, so both nCr lookups below are O(1).
+    public static int CountByPrecomputedFactorials(int n, int k) =>
+        CountByPrecomputedFactorials(FactorialTable.Build(n), n, k);
+
+    public static int CountByPrecomputedFactorials(FactorialTable table, int n, int k)
+    {
+        var total = table.Choose(n - 1, k - 1);
+        var odd = (n + k) % 2 == 0 ? table.Choose((n + k) / 2 - 1, k - 1) : 0;
+
+        return Difference(total, odd);
+    }
+
+    private static int Difference(long total, long odd) =>
+        (int)((total - odd + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
+
+    private static long ChooseDirect(int n, int r)
+    {
+        if (n < 0 || r < 0 || r > n)
+        {
+            return 0;
+        }
+
+        r = Math.Min(r, n - r);
+        var numerator = 1L;
+        var denominator = 1L;
+
+        for (var i = 0; i < r; i++)
+        {
+            numerator = numerator * (n - i) % ModularArithmetic.Modulo;
+            denominator = denominator * (i + 1) % ModularArithmetic.Modulo;
+        }
+
+        return numerator * ModularArithmetic.Inverse(denominator) % ModularArithmetic.Modulo;
+    }
+}

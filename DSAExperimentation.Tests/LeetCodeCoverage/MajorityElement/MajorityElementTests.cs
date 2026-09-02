@@ -1,3 +1,23 @@
-﻿using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.MajorityElement;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MajorityElement;
-public sealed partial class MajorityElementTests { [Theory] [InlineData(new[]{3,2,3},3)] [InlineData(new[]{2,2,1,1,1,2,2},2)] public void MajorityElement_Examples_ReturnsMajority(int[] nums,int expected)=>Assert.Equal(expected,Majority(nums)); private static int Majority(int[] nums){var counts=new HashMap<int,int>();foreach(var n in nums){counts.TryGetValue(n,out var c);c++;if(c>nums.Length/2)return n;counts.Set(n,c);}return nums[0];} }
+
+// Harness only. The one strategy here is MajorityElementSolution's - this file
+// just pins it to LeetCode's published examples plus a couple of edge cases the
+// original two-example test left uncovered.
+public sealed class MajorityElementTests
+{
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [3, 2, 3], 3 }, // LC's example 1
+            { [2, 2, 1, 1, 1, 2, 2], 2 }, // LC's example 2
+            { [1], 1 }, // single element
+            { [6, 5, 5], 5 }, // majority found on the very last element
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MajorityByHashMap_LeetCodeExamples_ReturnsMajorityElement(int[] nums, int expected) =>
+        Assert.Equal(expected, MajorityElementSolution.MajorityByHashMap(nums));
+}

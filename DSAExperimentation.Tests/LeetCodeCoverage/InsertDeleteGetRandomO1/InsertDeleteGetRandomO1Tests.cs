@@ -1,88 +1,127 @@
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1.InsertDeleteGetRandomO1Solution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertDeleteGetRandomO1;
 
-// LeetCode 380. Insert Delete GetRandom O(1): this repo's own HashMap<int,int>
-// (value -> its position in the backing array) composed with DynamicArray<int> (the
-// values themselves) - the MinStack precedent of "compose, don't invent a new
-// representation," applied to a design problem instead of an algorithm. Remove swaps
-// the removed slot with the last slot before truncating, so DynamicArray.RemoveAt
-// always runs on the LAST index - its O(1) path (no shifting), never the O(n) one -
-// which is what makes O(1) removal from the middle of an otherwise-unordered array
-// possible at all.
-public sealed partial class InsertDeleteGetRandomO1Tests
+// Harness only. Both strategies are InsertDeleteGetRandomO1Solution's - this file
+// replays LeetCode's published call sequence, plus the middle-element swap-back case
+// the original test covered, against each IRandomizedSet implementation via a small
+// operation script, so a failure still names the strategy that broke even though the
+// "input" here is a sequence of mutating/querying calls rather than a single argument
+// tuple. GetRandom's result is nondeterministic and depends on each strategy's own
+// internal array order, so its expected slot carries the set of values that are valid
+// to return at that point in the script rather than one exact value - the same
+// "expected slot shape depends on which call it answers" idea ImplementRouterTests
+// already uses for ForwardPacket's int[]. RandomizedSetOp.Apply is pure dispatch - no
+// membership-tracking logic of its own.
+public sealed class InsertDeleteGetRandomO1Tests
 {
-    [Fact]
-    public void InsertRemoveGetRandom_LeetCodeExampleSequence_TracksMembershipCorrectly()
-    {
-        var set = new RandomizedSet();
+    public static TheoryData<RandomizedSetOp[], object?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    RandomizedSetOp.Insert(1),
+                    RandomizedSetOp.Remove(2),
+                    RandomizedSetOp.Insert(2),
+                    RandomizedSetOp.Count(),
+                    RandomizedSetOp.GetRandom(),
+                    RandomizedSetOp.Remove(1),
+                    RandomizedSetOp.Insert(2),
+                    RandomizedSetOp.GetRandom(),
+                ],
+                [true, false, true, 2, new[] { 1, 2 }, true, false, new[] { 2 }]
+            },
+            {
+                [
+                    RandomizedSetOp.Insert(10),
+                    RandomizedSetOp.Insert(20),
+                    RandomizedSetOp.Insert(30),
+                    RandomizedSetOp.Remove(10),
+                    RandomizedSetOp.Count(),
+                    RandomizedSetOp.Remove(10),
+                    RandomizedSetOp.Remove(30),
+                    RandomizedSetOp.Remove(20),
+                    RandomizedSetOp.Count(),
+                ],
+                [true, true, true, true, 2, false, true, true, 0]
+            },
+        };
 
-        Assert.True(set.Insert(1));
-        Assert.False(set.Remove(2));
-        Assert.True(set.Insert(2));
-        Assert.Equal(2, set.Count);
-        Assert.Contains(set.GetRandom(), new[] { 1, 2 });
-        Assert.True(set.Remove(1));
-        Assert.False(set.Insert(2));
-        Assert.Equal(2, set.GetRandom());
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RandomizedSetByListScan_LeetCodeExamples_TracksMembershipCorrectly(
+        RandomizedSetOp[] operations, object?[] expected) =>
+        RunScript(new RandomizedSetByListScan(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RandomizedSetByHashMapSwapRemove_LeetCodeExamples_TracksMembershipCorrectly(
+        RandomizedSetOp[] operations, object?[] expected) =>
+        RunScript(new RandomizedSetByHashMapSwapRemove(), operations, expected);
+
+    private static void RunScript(IRandomizedSet set, RandomizedSetOp[] operations, object?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            AssertMatches(expected[i], operations[i].Apply(set));
+        }
     }
 
-    [Fact]
-    public void Remove_MiddleElement_SwapsLastElementIntoItsSlotAndKeepsLookupsConsistent()
+    // GetRandom's expected slot carries the candidate set of values valid at that
+    // point in the script rather than one exact value; int/bool results
+    // (Insert/Remove/Count) compare fine as plain boxed objects.
+    private static void AssertMatches(object? expected, object? actual)
     {
-        var set = new RandomizedSet();
-        set.Insert(10);
-        set.Insert(20);
-        set.Insert(30);
+        if (expected is int[] candidates)
+        {
+            Assert.Contains(Assert.IsType<int>(actual), candidates);
+        }
+        else
+        {
+            Assert.Equal(expected, actual);
+        }
+    }
+}
 
-        Assert.True(set.Remove(10));
+// One call in a RandomizedSet script: which method to invoke and with what argument.
+// Pure dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays.
+public readonly record struct RandomizedSetOp
+{
+    private readonly Kind _kind;
+    private readonly int _value;
 
-        Assert.Equal(2, set.Count);
-        Assert.False(set.Remove(10));
-        Assert.True(set.Remove(30));
-        Assert.True(set.Remove(20));
-        Assert.Equal(0, set.Count);
+    private RandomizedSetOp(Kind kind, int value)
+    {
+        _kind = kind;
+        _value = value;
     }
 
-    private sealed class RandomizedSet
+    public static RandomizedSetOp Insert(int value) => new(Kind.Insert, value);
+
+    public static RandomizedSetOp Remove(int value) => new(Kind.Remove, value);
+
+    public static RandomizedSetOp GetRandom() => new(Kind.GetRandom, 0);
+
+    public static RandomizedSetOp Count() => new(Kind.Count, 0);
+
+    // Boxed uniformly so a script runner can assert against one expected value per
+    // operation regardless of which method it dispatches to. Internal, not public:
+    // IRandomizedSet is internal to InsertDeleteGetRandomO1Solution, and only this
+    // same assembly's RunScript ever calls Apply.
+    internal object? Apply(IRandomizedSet set) => _kind switch
     {
-        private readonly HashMap<int, int> _indexByValue = new();
-        private readonly DynamicArray<int> _values = new();
-        private readonly Random _random = new(1);
+        Kind.Insert => set.Insert(_value),
+        Kind.Remove => set.Remove(_value),
+        Kind.GetRandom => set.GetRandom(),
+        _ => set.Count,
+    };
 
-        public int Count => _values.Count;
-
-        public bool Insert(int value)
-        {
-            if (_indexByValue.HasKey(value))
-            {
-                return false;
-            }
-
-            _values.Add(value);
-            _indexByValue.Set(value, _values.Count - 1);
-            return true;
-        }
-
-        public bool Remove(int value)
-        {
-            if (!_indexByValue.TryGetValue(value, out var index))
-            {
-                return false;
-            }
-
-            var lastIndex = _values.Count - 1;
-            var lastValue = _values.Get(lastIndex);
-
-            _values.Set(index, lastValue);
-            _indexByValue.Set(lastValue, index);
-
-            _values.RemoveAt(lastIndex);
-            _indexByValue.TryRemove(value);
-            return true;
-        }
-
-        public int GetRandom() => _values.Get(_random.Next(_values.Count));
+    private enum Kind
+    {
+        Insert,
+        Remove,
+        GetRandom,
+        Count,
     }
 }

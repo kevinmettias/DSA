@@ -1,74 +1,64 @@
-using DSAExperimentation.Algorithms.TopologicalSort;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.LeetCodeCoverage.CourseScheduleII.Fixtures;
+using DSAExperimentation.LeetCode.CourseScheduleII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CourseScheduleII;
 
-// LeetCode 210. Course Schedule II: the same Kahn's-algorithm question as Course
-// Schedule (LC 207), except the caller now wants the actual ordering
-// TopologicalSort.TrySort already produces via its own `out` parameter, not just
-// whether one exists - an empty array signals a cycle, matching TrySort's
-// false-on-cycle result one-for-one.
-public sealed partial class CourseScheduleIITests
+// Harness only. Both strategies are CourseScheduleIISolution's - this file pins
+// them to LeetCode's published examples, stated in LeetCode's own (numCourses,
+// prerequisites) input shape. Multiple orderings can satisfy the same
+// prerequisites (the diamond-dependency example accepts both [0,1,2,3] and
+// [0,2,1,3]), so a returned order is checked against the prerequisite
+// constraints themselves rather than against one fixed expected array.
+public sealed class CourseScheduleIITests
 {
-    [Fact]
-    public void FindOrder_NoCycle_ReturnsPrerequisitesFirst()
+    public static TheoryData<int, int[][], bool> Examples =>
+        new()
+        {
+            { 2, [[1, 0]], true },
+            { 2, [[1, 0], [0, 1]], false },
+            { 4, [[1, 0], [2, 0], [3, 1], [3, 2]], true },
+            { 1, [], true },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindOrderByKahnsTopologicalSort_LeetCodeExamples_ReturnsValidCompletionOrder(
+        int numCourses, int[][] prerequisites, bool expectedSolvable) =>
+        AssertValidOrder(
+            numCourses,
+            prerequisites,
+            expectedSolvable,
+            CourseScheduleIISolution.FindOrderByKahnsTopologicalSort(numCourses, prerequisites));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindOrderByNaiveRescan_LeetCodeExamples_ReturnsValidCompletionOrder(
+        int numCourses, int[][] prerequisites, bool expectedSolvable) =>
+        AssertValidOrder(
+            numCourses,
+            prerequisites,
+            expectedSolvable,
+            CourseScheduleIISolution.FindOrderByNaiveRescan(numCourses, prerequisites));
+
+    private static void AssertValidOrder(
+        int numCourses, int[][] prerequisites, bool expectedSolvable, int[] order)
     {
-        var course0 = new CourseNode(0);
-        var course1 = new CourseNode(1);
-        course0.EnabledCourses.Add(course1);
+        if (!expectedSolvable)
+        {
+            Assert.Empty(order);
+            return;
+        }
 
-        var order = FindOrder([course0, course1]);
+        Assert.Equal(numCourses, order.Length);
+        Assert.Equal(Enumerable.Range(0, numCourses).ToHashSet(), order.ToHashSet());
 
-        Assert.Equal([0, 1], order);
-    }
+        foreach (var prerequisite in prerequisites)
+        {
+            var dependent = prerequisite[0];
+            var required = prerequisite[1];
 
-    [Fact]
-    public void FindOrder_CircularPrerequisites_ReturnsEmptyOrder()
-    {
-        var course0 = new CourseNode(0);
-        var course1 = new CourseNode(1);
-        course0.EnabledCourses.Add(course1);
-        course1.EnabledCourses.Add(course0);
-
-        var order = FindOrder([course0, course1]);
-
-        Assert.Empty(order);
-    }
-
-    [Fact]
-    public void FindOrder_DiamondDependency_KeepsEachPrerequisiteBeforeItsDependents()
-    {
-        var course0 = new CourseNode(0);
-        var course1 = new CourseNode(1);
-        var course2 = new CourseNode(2);
-        var course3 = new CourseNode(3);
-        course0.EnabledCourses.Add(course1);
-        course0.EnabledCourses.Add(course2);
-        course1.EnabledCourses.Add(course3);
-        course2.EnabledCourses.Add(course3);
-
-        var order = FindOrder([course0, course1, course2, course3]);
-
-        Assert.Equal(4, order.Length);
-        AssertComesBefore(order, 0, 1);
-        AssertComesBefore(order, 0, 2);
-        AssertComesBefore(order, 1, 3);
-        AssertComesBefore(order, 2, 3);
-    }
-
-    private static void AssertComesBefore(int[] order, int prerequisite, int dependent)
-    {
-        Assert.True(Array.IndexOf(order, prerequisite) < Array.IndexOf(order, dependent));
-    }
-
-    private static int[] FindOrder(List<CourseNode> courses)
-    {
-        var canFinish = TopologicalSort.TrySort<
-            CourseNode, CourseTopology, ListChildren<CourseNode>,
-            NaturalChildOrder<CourseNode, ListChildren<CourseNode>>, ListChildren<CourseNode>>(
-            courses, out var ordering);
-
-        return canFinish ? ordering.Select(c => c.Id).ToArray() : [];
+            Assert.True(
+                Array.IndexOf(order, required) < Array.IndexOf(order, dependent),
+                $"course {required} must come before course {dependent} in {string.Join(",", order)}");
+        }
     }
 }

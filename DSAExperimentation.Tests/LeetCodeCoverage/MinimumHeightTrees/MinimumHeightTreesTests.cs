@@ -1,139 +1,33 @@
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+using DSAExperimentation.LeetCode.MinimumHeightTrees;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumHeightTrees;
 
-// LeetCode 310. Minimum Height Trees: repeatedly peel the current leaves (degree-1
-// nodes) layer by layer, the same "peel the zero-remaining-degree frontier with a
-// queue" shape TopologicalSort's Kahn's algorithm already uses for in-degree
-// (TopologicalSort.cs's own BuildInDegree/ReleaseChildren pair) - just tracking plain
-// undirected degree instead of in-degree, and stopping once 2 or fewer nodes remain
-// instead of running to exhaustion. This repo's own Queue<int> is the frontier, the
-// same RemoveInvalidParenthesesTests.cs uses for its own level-by-level BFS peel. The
-// last layer standing are the roots whose eccentricity - and therefore tree height -
-// is minimal, since they are the tree's own centroid(s) (at most 2 for any tree).
-public sealed partial class MinimumHeightTreesTests
+// Harness only: the algorithms live in MinimumHeightTreesSolution. One test method
+// per strategy over one shared set of LeetCode's own examples, so a failure names
+// the strategy that broke.
+public sealed class MinimumHeightTreesTests
 {
-    [Fact]
-    public void FindRoots_SingleNode_ReturnsThatNodeAsTheOnlyRoot()
-    {
-        var roots = FindRoots(1, []);
-
-        Assert.Equal([0], roots);
-    }
-
-    [Fact]
-    public void FindRoots_StarShape_ReturnsTheSingleCenterRoot()
-    {
-        int[][] edges = [[1, 0], [1, 2], [1, 3]];
-
-        var roots = FindRoots(4, edges);
-
-        Assert.Equal([1], roots);
-    }
-
-    [Fact]
-    public void FindRoots_SixNodeTreeWithOffCenterBranch_ReturnsBothCenterRoots()
-    {
-        int[][] edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]];
-
-        var roots = FindRoots(6, edges);
-
-        Assert.Equal([3, 4], roots.Order());
-    }
-
-    private static List<int> FindRoots(int n, int[][] edges)
-    {
-        if (n == 1)
+    public static TheoryData<int, int[][], int[]> Examples =>
+        new()
         {
-            return [0];
-        }
+            { 1, [], [0] },
+            { 4, [[1, 0], [1, 2], [1, 3]], [1] },
+            { 6, [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]], [3, 4] },
+        };
 
-        var (adjacency, degree) = BuildGraph(n, edges);
-        var leaves = FindInitialLeaves(n, degree);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindRootsByHeightFromEveryNode_LeetCodeExamples_ReturnsMinimumHeightRoots(
+        int n, int[][] edges, int[] expected) =>
+        Assert.Equal(
+            expected.Order(),
+            MinimumHeightTreesSolution.FindRootsByHeightFromEveryNode(n, edges).Order());
 
-        PeelUntilCentroids(leaves, adjacency, degree, n);
-
-        return DrainLeaves(leaves);
-    }
-
-    private static (List<int>[] Adjacency, int[] Degree) BuildGraph(int n, int[][] edges)
-    {
-        var adjacency = new List<int>[n];
-        var degree = new int[n];
-        for (var i = 0; i < n; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            RecordEdge(adjacency, degree, edge);
-        }
-
-        return (adjacency, degree);
-    }
-
-    private static RepoQueue FindInitialLeaves(int n, int[] degree)
-    {
-        var leaves = new RepoQueue();
-
-        for (var i = 0; i < n; i++)
-        {
-            if (degree[i] == 1)
-            {
-                leaves.Enqueue(i);
-            }
-        }
-
-        return leaves;
-    }
-
-    private static void PeelUntilCentroids(RepoQueue leaves, List<int>[] adjacency, int[] degree, int n)
-    {
-        var remaining = n;
-
-        while (remaining > 2)
-        {
-            var leafCount = leaves.Count;
-            remaining -= leafCount;
-
-            PeelLeafLayer(leaves, adjacency, degree, leafCount);
-        }
-    }
-
-    private static List<int> DrainLeaves(RepoQueue leaves)
-    {
-        var roots = new List<int>();
-
-        while (leaves.TryDequeue(out var root))
-        {
-            roots.Add(root);
-        }
-
-        return roots;
-    }
-
-    private static void RecordEdge(List<int>[] adjacency, int[] degree, int[] edge)
-    {
-        adjacency[edge[0]].Add(edge[1]);
-        adjacency[edge[1]].Add(edge[0]);
-        degree[edge[0]]++;
-        degree[edge[1]]++;
-    }
-
-    private static void PeelLeafLayer(RepoQueue leaves, List<int>[] adjacency, int[] degree, int leafCount)
-    {
-        for (var i = 0; i < leafCount; i++)
-        {
-            leaves.TryDequeue(out var leaf);
-
-            foreach (var neighbor in adjacency[leaf])
-            {
-                if (--degree[neighbor] == 1)
-                {
-                    leaves.Enqueue(neighbor);
-                }
-            }
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindRootsByLeafPeeling_LeetCodeExamples_ReturnsMinimumHeightRoots(
+        int n, int[][] edges, int[] expected) =>
+        Assert.Equal(
+            expected.Order(),
+            MinimumHeightTreesSolution.FindRootsByLeafPeeling(n, edges).Order());
 }

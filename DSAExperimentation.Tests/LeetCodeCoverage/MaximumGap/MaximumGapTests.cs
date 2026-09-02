@@ -1,35 +1,28 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MaximumGap;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumGap;
 
-// LeetCode 164. Maximum Gap: sort with this repo's MergeSort over
-// ArrayIndexedSequence, then scan adjacent elements in the sorted order for
-// the largest gap between successive values.
-public sealed partial class MaximumGapTests
+// Harness only. Both strategies are MaximumGapSolution's - LC 164's published
+// examples plus an all-duplicates edge case and a two-element case with a large
+// gap - this file just pins them to LeetCode's expected answers.
+public sealed class MaximumGapTests
 {
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [3, 6, 9, 1], 3 },
+            { [10], 0 },
+            { [1, 1, 1, 1], 0 },
+            { [1, 10_000_000], 9_999_999 },
+        };
+
     [Theory]
-    [InlineData(new[] { 3, 6, 9, 1 }, 3)]
-    [InlineData(new[] { 10 }, 0)]
-    [InlineData(new[] { 1, 1, 1, 1 }, 0)]
-    public void MaximumGap_Examples_ReturnsLargestSortedNeighborGap(int[] nums, int expected) => Assert.Equal(expected, MaxGap(nums));
+    [MemberData(nameof(Examples))]
+    public void MaximumGapBySelectionSort_LeetCodeExamples_ReturnsLargestSortedNeighborGap(int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumGapSolution.MaximumGapBySelectionSort(nums));
 
-    private static int MaxGap(int[] nums)
-    {
-        if (nums.Length < 2)
-        {
-            return 0;
-        }
-
-        var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        var maxGap = 0;
-        for (var i = 1; i < sorted.Length; i++)
-        {
-            maxGap = Math.Max(maxGap, sorted[i] - sorted[i - 1]);
-        }
-
-        return maxGap;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumGapByMergeSort_LeetCodeExamples_ReturnsLargestSortedNeighborGap(int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumGapSolution.MaximumGapByMergeSort(nums));
 }

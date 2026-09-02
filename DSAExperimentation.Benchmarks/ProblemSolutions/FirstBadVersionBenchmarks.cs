@@ -1,13 +1,11 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FirstBadVersion;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// First Bad Version (LC 278): an O(n) linear IsBadVersion scan vs. this repo's own
-// BinarySearch.LowerBound over a monotone virtual sequence (SqrtXBenchmarks' shape) -
-// O(log n) probes instead of walking the whole version history. FirstBad sits at 70%
-// of VersionCount so the linear scan pays close to its full O(n) worst case every call.
+// Harness only: both arms are FirstBadVersionSolution's, the same methods
+// FirstBadVersionTests proves correct. FirstBad sits at 70% of VersionCount so the
+// linear scan pays close to its full O(n) worst case every call.
 [MemoryDiagnoser]
 public class FirstBadVersionBenchmarks
 {
@@ -22,32 +20,9 @@ public class FirstBadVersionBenchmarks
     public void Setup() => _firstBad = (int)(VersionCount * FirstBadFraction);
 
     [Benchmark(Baseline = true)]
-    public int LinearScan()
-    {
-        for (var version = 1; version <= VersionCount; version++)
-        {
-            if (IsBadVersion(version))
-            {
-                return version;
-            }
-        }
-
-        return -1;
-    }
+    public int LinearScan() => FirstBadVersionSolution.FirstBadVersionByLinearScan(VersionCount, _firstBad);
 
     [Benchmark]
-    public int BinarySearchLowerBound()
-    {
-        var sequence = new IsBadVersionSequence(_firstBad, VersionCount);
-        return BinarySearch.LowerBound<int, IsBadVersionSequence>(sequence, 1) + 1;
-    }
-
-    private bool IsBadVersion(int version) => version >= _firstBad;
-
-    private readonly struct IsBadVersionSequence(int firstBad, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-
-        public int Get(int index) => index + 1 >= firstBad ? 1 : 0;
-    }
+    public int BinarySearchLowerBound() =>
+        FirstBadVersionSolution.FirstBadVersionByLowerBound(VersionCount, _firstBad);
 }

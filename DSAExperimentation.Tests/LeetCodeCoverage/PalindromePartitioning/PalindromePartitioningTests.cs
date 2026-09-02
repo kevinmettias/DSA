@@ -1,24 +1,32 @@
-﻿using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.PalindromePartitioning;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioning;
 
-public sealed partial class PalindromePartitioningTests
+// Harness only. PalindromePartitioningSolution owns the backtracking walk; this
+// file pins it to LeetCode's published examples.
+public sealed class PalindromePartitioningTests
 {
-    [Fact]
-    public void Partition_Aab_ReturnsBothPalindromePartitions()
-    {
-        var partitions = Partition("aab").Select(p => string.Join("|", p)).ToArray();
-        Assert.Contains("a|a|b", partitions);
-        Assert.Contains("aa|b", partitions);
-    }
+    public static TheoryData<string, string[][]> Examples =>
+        new()
+        {
+            { "aab", [["a", "a", "b"], ["aa", "b"]] },
+            { "a", [["a"]] },
+        };
 
-    private static List<List<string>> Partition(string s)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PartitionByBacktracking_LeetCodeExamples_ReturnsEveryPalindromePartition(
+        string s, string[][] expected) =>
+        AssertSamePartitions(expected, PalindromePartitioningSolution.PartitionByBacktracking(s));
+
+    private static void AssertSamePartitions(string[][] expected, List<List<string>> actual)
     {
-        var results = new List<List<string>>(); var state = new State();
-        Backtrack.Search<State, string>(state, x => x.Index == s.Length, x => x.Index == s.Length ? [] : Candidates(s, x.Index), (x, part) => { x.Starts.Push(x.Index); x.Index += part.Length; x.Parts.Add(part); }, (x, _) => { x.Index = x.Starts.Pop(); x.Parts.RemoveAt(x.Parts.Count - 1); }, x => results.Add([.. x.Parts]));
-        return results;
+        var actualArrays = actual.Select(x => x.ToArray()).ToArray();
+        Assert.Equal(expected.Length, actualArrays.Length);
+
+        foreach (var partition in expected)
+        {
+            Assert.Contains(actualArrays, x => x.SequenceEqual(partition));
+        }
     }
-    private static IEnumerable<string> Candidates(string s, int start) { for (var end = start; end < s.Length; end++) if (IsPalindrome(s, start, end)) yield return s[start..(end + 1)]; }
-    private static bool IsPalindrome(string s, int l, int r) { while (l < r) if (s[l++] != s[r--]) return false; return true; }
-    private sealed class State { public int Index { get; set; } public Stack<int> Starts { get; } = new(); public List<string> Parts { get; } = []; }
 }

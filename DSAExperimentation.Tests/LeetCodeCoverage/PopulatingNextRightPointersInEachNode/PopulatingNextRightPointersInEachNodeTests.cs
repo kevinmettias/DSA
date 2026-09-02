@@ -1,74 +1,85 @@
-using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNode;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PopulatingNextRightPointersInEachNode;
 
-// LeetCode 116. Populating Next Right Pointers in Each Node: connect each node to
-// its next right neighbor at the same depth (null for the rightmost node of each
-// level). BinaryTreeNode<TValue> has no Next field of its own, so the "populate"
-// step is represented as a HashMap<node, nextNode> built from
-// LevelGroupedBreadthFirstTraversal's own left-to-right level buffers - exactly the
-// per-level grouping this problem asks for, already produced by an existing
-// primitive with no perfect-tree-specific code of its own.
-public sealed partial class PopulatingNextRightPointersInEachNodeTests
+// Harness only. Both strategies are PopulatingNextRightPointersInEachNodeSolution's
+// - this file pins them to LeetCode's published examples. Examples are given as a
+// perfect tree's values in array-heap order (BinaryTreeNode<int> is internal, so it
+// cannot appear in a public TheoryData signature) alongside the expected value of
+// each node's next pointer in that same order, null marking the rightmost node of
+// its level.
+public sealed class PopulatingNextRightPointersInEachNodeTests
 {
-    [Fact]
-    public void Connect_PerfectBinaryTree_LinksEachNodeToItsRightNeighbor()
-    {
-        var root = new BinaryTreeNode<int>(1)
+    public static TheoryData<int[], int?[]> Examples =>
+        new()
         {
-            Left = new(2) { Left = new(4), Right = new(5) },
-            Right = new(3) { Left = new(6), Right = new(7) },
+            { [1, 2, 3, 4, 5, 6, 7], [null, 3, null, 5, 6, 7, null] },
+            { [1, 2, 3], [null, 3, null] },
+            { [1], [null] },
         };
 
-        var next = Connect(root);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ConnectByManualQueueBfs_LeetCodePerfectTrees_LinksEachNodeToItsRightNeighbor(
+        int[] values, int?[] expectedNextValues)
+    {
+        var nodes = BuildPerfectTree(values);
+        var next = PopulatingNextRightPointersInEachNodeSolution.ConnectByManualQueueBfs(nodes[0]);
 
-        AssertNext(next, root, expected: null);
-        AssertNext(next, root.Left!, root.Right);
-        AssertNext(next, root.Right!, expected: null);
-        AssertNext(next, root.Left!.Left!, root.Left!.Right);
-        AssertNext(next, root.Left!.Right!, root.Right!.Left);
-        AssertNext(next, root.Right!.Left!, root.Right!.Right);
-        AssertNext(next, root.Right!.Right!, expected: null);
+        AssertNextValues(nodes, expectedNextValues, node => next.TryGetValue(node, out var n) ? n : null);
     }
 
-    private static void AssertNext(
-        HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node, BinaryTreeNode<int>? expected)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ConnectByLevelGroupedTraversal_LeetCodePerfectTrees_LinksEachNodeToItsRightNeighbor(
+        int[] values, int?[] expectedNextValues)
     {
-        var actual = NextOf(next, node);
-        Assert.Equal(expected, actual);
+        var nodes = BuildPerfectTree(values);
+        var next = PopulatingNextRightPointersInEachNodeSolution.ConnectByLevelGroupedTraversal(nodes[0]);
+
+        AssertNextValues(nodes, expectedNextValues, node => next.TryGetValue(node, out var n) ? n : null);
     }
 
-    private static BinaryTreeNode<int>? NextOf(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node)
-        => next.TryGetValue(node, out var nextNode) ? nextNode : throw new KeyNotFoundException();
-
-    private static HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> Connect(BinaryTreeNode<int> root)
+    private static void AssertNextValues(
+        BinaryTreeNode<int>[] nodes,
+        int?[] expectedNextValues,
+        Func<BinaryTreeNode<int>, BinaryTreeNode<int>?> nextOf)
     {
-        LevelHooks.Output.Value = [];
-
-        LevelGroupedBreadthFirstTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>, LevelHooks>(root);
-
-        var next = new HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?>();
-
-        foreach (var level in LevelHooks.Output.Value!)
+        for (var i = 0; i < nodes.Length; i++)
         {
-            for (var i = 0; i < level.Count; i++)
+            Assert.Equal(expectedNextValues[i], nextOf(nodes[i])?.Value);
+        }
+    }
+
+    // Array-heap layout: node i's children sit at 2i+1 and 2i+2, which is exactly a
+    // perfect binary tree's breadth-first index order - values.Length is always
+    // 2^k - 1 in the examples above, so every row is fully populated.
+    private static BinaryTreeNode<int>[] BuildPerfectTree(int[] values)
+    {
+        var nodes = new BinaryTreeNode<int>[values.Length];
+
+        for (var i = 0; i < values.Length; i++)
+        {
+            nodes[i] = new BinaryTreeNode<int>(values[i]);
+        }
+
+        for (var i = 0; i < nodes.Length; i++)
+        {
+            var left = 2 * i + 1;
+            var right = 2 * i + 2;
+
+            if (left < nodes.Length)
             {
-                next.Set(level[i], i + 1 < level.Count ? level[i + 1] : null);
+                nodes[i].Left = nodes[left];
+            }
+
+            if (right < nodes.Length)
+            {
+                nodes[i].Right = nodes[right];
             }
         }
 
-        return next;
-    }
-
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
-    {
-        public static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
-
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) => Output.Value!.Add(level.ToList());
+        return nodes;
     }
 }

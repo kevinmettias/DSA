@@ -1,30 +1,29 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.NimGame;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NimGame;
 
-// LeetCode 292. Nim Game: canWin(n) = there exists a move of 1-3 stones that leaves
-// the opponent facing a losing position - natural-looking recursion via this repo's
-// Memoizer, no hand-rolled cache, the same shape ClimbingStairsTests.cs/
-// HouseRobberTests.cs already use for their own recurrences. The recursion reduces
-// to the well-known n % 4 != 0 closed form, which the benchmark compares against.
+// Harness only: both strategies live in NimGameSolution and are asserted
+// against the same examples.
 public sealed class NimGameTests
 {
-    [Theory]
-    [InlineData(1, true)]
-    [InlineData(2, true)]
-    [InlineData(3, true)]
-    [InlineData(4, false)]
-    [InlineData(7, true)]
-    [InlineData(8, false)]
-    public void CanWinNim_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected)
-        => Assert.Equal(expected, CanWinNim(n));
-
-    private static bool CanWinNim(int n)
-        => Memoizer.Memoize<int, bool>(n, (stones, canWin) => stones switch
+    public static TheoryData<int, bool> Examples =>
+        new()
         {
-            <= 0 => false,
-            _ => !canWin(stones - 1)
-                || (stones >= 2 && !canWin(stones - 2))
-                || (stones >= 3 && !canWin(stones - 3)),
-        });
+            { 1, true },
+            { 2, true },
+            { 3, true },
+            { 4, false },
+            { 7, true },
+            { 8, false },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanWinByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
+        Assert.Equal(expected, NimGameSolution.CanWinByMemoizedRecursion(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanWinByModuloFormula_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
+        Assert.Equal(expected, NimGameSolution.CanWinByModuloFormula(n));
 }

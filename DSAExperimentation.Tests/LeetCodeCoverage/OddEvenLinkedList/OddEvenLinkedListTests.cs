@@ -1,73 +1,33 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.OddEvenLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OddEvenLinkedList;
 
-// LeetCode 328. Odd Even Linked List: in-place pointer rewiring over this repo's own
-// SinglyLinkedListNode<TValue> - two running cursors (odd/even) splice the list into
-// its odd-indexed nodes followed by its even-indexed nodes, preserving each half's
-// relative order, in O(n) time and O(1) extra space.
-public sealed partial class OddEvenLinkedListTests
+// Harness only. Both strategies are OddEvenLinkedListSolution's - this file just
+// pins them to LeetCode's published examples, plus the empty- and single-node
+// edge cases neither strategy may special-case incorrectly.
+public sealed class OddEvenLinkedListTests
 {
-    [Fact]
-    public void GroupOddEven_FiveNodes_InterleavesOddThenEvenIndices()
-    {
-        var head = Build([1, 2, 3, 4, 5]);
-
-        var reordered = GroupOddEven(head);
-
-        Assert.Equal([1, 3, 5, 2, 4], ToArray(reordered));
-    }
-
-    [Fact]
-    public void GroupOddEven_SevenNodes_InterleavesOddThenEvenIndices()
-    {
-        var head = Build([2, 1, 3, 5, 6, 4, 7]);
-
-        var reordered = GroupOddEven(head);
-
-        Assert.Equal([2, 3, 6, 7, 1, 5, 4], ToArray(reordered));
-    }
-
-    [Fact]
-    public void GroupOddEven_EmptyList_ReturnsNull()
-    {
-        var reordered = GroupOddEven(null);
-
-        Assert.Null(reordered);
-    }
-
-    [Fact]
-    public void GroupOddEven_SingleNode_ReturnsSameNode()
-    {
-        var head = Build([42]);
-
-        var reordered = GroupOddEven(head);
-
-        Assert.Equal([42], ToArray(reordered));
-    }
-
-    private static SinglyLinkedListNode<int>? GroupOddEven(SinglyLinkedListNode<int>? head)
-    {
-        if (head?.Next is null)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            return head;
-        }
+            { [1, 2, 3, 4, 5], [1, 3, 5, 2, 4] },
+            { [2, 1, 3, 5, 6, 4, 7], [2, 3, 6, 7, 1, 5, 4] },
+            { [], [] },
+            { [42], [42] },
+        };
 
-        var odd = head;
-        var even = head.Next;
-        var evenHead = even;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GroupOddEvenByTwoListRebuild_LeetCodeExamples_InterleavesOddThenEvenIndices(
+        int[] values, int[] expected) =>
+        Assert.Equal(expected, ToArray(OddEvenLinkedListSolution.GroupOddEvenByTwoListRebuild(Build(values))));
 
-        while (even?.Next is not null)
-        {
-            odd.Next = even.Next;
-            odd = odd.Next;
-            even.Next = odd.Next;
-            even = even.Next;
-        }
-
-        odd.Next = evenHead;
-        return head;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GroupOddEvenByInPlaceRewire_LeetCodeExamples_InterleavesOddThenEvenIndices(
+        int[] values, int[] expected) =>
+        Assert.Equal(expected, ToArray(OddEvenLinkedListSolution.GroupOddEvenByInPlaceRewire(Build(values))));
 
     private static SinglyLinkedListNode<int>? Build(int[] values)
     {

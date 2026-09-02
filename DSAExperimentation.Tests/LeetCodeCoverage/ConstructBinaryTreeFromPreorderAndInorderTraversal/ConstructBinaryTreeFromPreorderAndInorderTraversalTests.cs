@@ -1,30 +1,31 @@
-﻿using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.ConstructBinaryTreeFromPreorderAndInorderTraversal;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinaryTreeFromPreorderAndInorderTraversal;
 
-public sealed partial class ConstructBinaryTreeFromPreorderAndInorderTraversalTests
+// Harness only: BuildByPreorderIndexMap lives in
+// ConstructBinaryTreeFromPreorderAndInorderTraversalSolution. This file pins it to
+// LeetCode's published examples by re-flattening the reconstructed tree back to
+// preorder and checking it round-trips to the input.
+public sealed class ConstructBinaryTreeFromPreorderAndInorderTraversalTests
 {
-    [Fact]
-    public void BuildTree_ClassicExample_ReconstructsBinaryTree()
-    {
-        var root = Build([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]);
-        Assert.Equal([3, 9, 20, 15, 7], PreOrder(root));
-    }
-
-    private static BinaryTreeNode<int>? Build(int[] preorder, int[] inorder)
-    {
-        var positions = new HashMap<int, int>();
-        for (var i = 0; i < inorder.Length; i++) positions.Set(inorder[i], i);
-        var pre = 0;
-        BinaryTreeNode<int>? BuildRange(int low, int high)
+    public static TheoryData<int[], int[], int[]> Examples =>
+        new()
         {
-            if (low > high) return null;
-            var value = preorder[pre++]; positions.TryGetValue(value, out var mid);
-            return new BinaryTreeNode<int>(value) { Left = BuildRange(low, mid - 1), Right = BuildRange(mid + 1, high) };
-        }
-        return BuildRange(0, inorder.Length - 1);
+            { [3, 9, 20, 15, 7], [9, 3, 15, 20, 7], [3, 9, 20, 15, 7] },
+            { [-1], [-1], [-1] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildByPreorderIndexMap_LeetCodeExamples_ReconstructsBinaryTree(
+        int[] preorder, int[] inorder, int[] expectedPreorder)
+    {
+        var root = ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(preorder, inorder);
+
+        Assert.Equal(expectedPreorder, PreOrder(root));
     }
 
-    private static int[] PreOrder(BinaryTreeNode<int>? root) => root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    private static int[] PreOrder(BinaryTreeNode<int>? root) =>
+        root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
 }

@@ -1,10 +1,11 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.BinaryTreeLevelOrderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are BinaryTreeLevelOrderTraversalSolution's, the
+// same methods BinaryTreeLevelOrderTraversalTests proves correct.
 [MemoryDiagnoser]
 public class BinaryTreeLevelOrderTraversalBenchmarks
 {
@@ -14,9 +15,18 @@ public class BinaryTreeLevelOrderTraversalBenchmarks
     private const int RightLeftValue = 15;
     private const int RightRightValue = 7;
 
-    private BinaryTreeNode<int> _root = null!; [GlobalSetup] public void Setup()=>_root=Tree();
-    [Benchmark(Baseline=true)] public int QueueLevels(){var q=new Queue<BinaryTreeNode<int>>();q.Enqueue(_root);var count=0;while(q.Count>0){var n=q.Count;for(var i=0;i<n;i++){var node=q.Dequeue();count++;if(node.Left is not null)q.Enqueue(node.Left);if(node.Right is not null)q.Enqueue(node.Right);}}return count;}
-    [Benchmark] public int LevelGroupedTraversal(){LevelHooks.Count.Value=0;LevelGroupedBreadthFirstTraversal.Walk<BinaryTreeNode<int>,BinaryTreeTopology<int>,BinaryTreeChildren<int>,NaturalChildOrder<BinaryTreeNode<int>,BinaryTreeChildren<int>>,BinaryTreeChildren<int>,LevelHooks>(_root);return LevelHooks.Count.Value;}
-    private readonly struct LevelHooks:ILevelGroupedHooks<BinaryTreeNode<int>>{public static readonly AsyncLocal<int> Count=new();public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level,int depth)=>Count.Value+=level.Count;}
-    private static BinaryTreeNode<int> Tree()=>new(RootValue){Left=new(LeftValue),Right=new(RightValue){Left=new(RightLeftValue),Right=new(RightRightValue)}};
+    private BinaryTreeNode<int> _root = null!;
+
+    [GlobalSetup]
+    public void Setup() => _root = Tree();
+
+    [Benchmark(Baseline = true)]
+    public List<List<int>> QueueLevels() => BinaryTreeLevelOrderTraversalSolution.LevelOrderByQueueLevels(_root);
+
+    [Benchmark]
+    public List<List<int>> LevelGroupedTraversal() =>
+        BinaryTreeLevelOrderTraversalSolution.LevelOrderByLevelGroupedTraversal(_root);
+
+    private static BinaryTreeNode<int> Tree() =>
+        new(RootValue) { Left = new(LeftValue), Right = new(RightValue) { Left = new(RightLeftValue), Right = new(RightRightValue) } };
 }

@@ -1,11 +1,30 @@
-﻿using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.ValidateBinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateBinarySearchTree;
 
-public sealed partial class ValidateBinarySearchTreeTests
+// Harness only. The bounds-recursion validation itself is
+// ValidateBinarySearchTreeSolution's - this file just pins it to LeetCode's
+// published examples, plus the empty-tree edge case the original test never
+// exercised. BinaryTreeNode<int> is internal, so - as in
+// UniqueBinarySearchTreesIITests - it stays out of a public TheoryData/[Theory]
+// signature and is only ever handed to the solution through private helpers.
+public sealed class ValidateBinarySearchTreeTests
 {
-    [Fact] public void IsValidBST_ValidTree_ReturnsTrue() => Assert.True(IsValid(new BinaryTreeNode<int>(2) { Left = new(1), Right = new(3) }));
-    [Fact] public void IsValidBST_InvalidTree_ReturnsFalse() => Assert.False(IsValid(new BinaryTreeNode<int>(5) { Left = new(1), Right = new(4) { Left = new(3), Right = new(6) } }));
-    private static bool IsValid(BinaryTreeNode<int>? root) => Validate(root, null, null);
-    private static bool Validate(BinaryTreeNode<int>? node, int? min, int? max) => node is null || ((min is null || node.Value > min) && (max is null || node.Value < max) && Validate(node.Left, min, node.Value) && Validate(node.Right, node.Value, max));
+    [Fact]
+    public void IsValidByBoundsRecursion_ValidTree_ReturnsTrue() =>
+        Assert.True(ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(ValidTree()));
+
+    [Fact]
+    public void IsValidByBoundsRecursion_InvalidTree_ReturnsFalse() =>
+        Assert.False(ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(InvalidTree()));
+
+    [Fact]
+    public void IsValidByBoundsRecursion_EmptyTree_ReturnsTrue() =>
+        Assert.True(ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(null));
+
+    private static BinaryTreeNode<int> ValidTree() => new(2) { Left = new(1), Right = new(3) };
+
+    private static BinaryTreeNode<int> InvalidTree() =>
+        new(5) { Left = new(1), Right = new(4) { Left = new(3), Right = new(6) } };
 }

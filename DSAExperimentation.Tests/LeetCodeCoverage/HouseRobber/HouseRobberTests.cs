@@ -1,3 +1,23 @@
-﻿using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.HouseRobber;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobber;
-public sealed partial class HouseRobberTests { [Theory] [InlineData(new[]{1,2,3,1},4)] [InlineData(new[]{2,7,9,3,1},12)] public void Rob_Examples_ReturnsBestNonAdjacentSum(int[] nums,int expected)=>Assert.Equal(expected,Rob(nums)); private static int Rob(int[] nums)=>Memoizer.Memoize<int,int>(0,(i,rob)=>i>=nums.Length?0:Math.Max(rob(i+1),nums[i]+rob(i+2))); }
+
+// Harness only: the one strategy lives in HouseRobberSolution and is asserted
+// against LeetCode's published examples, plus a couple of thin edge cases the
+// original test never covered.
+public sealed class HouseRobberTests
+{
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { new[] { 1, 2, 3, 1 }, 4 },
+            { new[] { 2, 7, 9, 3, 1 }, 12 },
+            { new[] { 5 }, 5 },
+            { new[] { 2, 1, 1, 2 }, 4 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RobByMemoizedRecursion_LeetCodeExamples_ReturnsBestNonAdjacentSum(int[] nums, int expected) =>
+        Assert.Equal(expected, HouseRobberSolution.RobByMemoizedRecursion(nums));
+}

@@ -1,68 +1,59 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.ShuffleAnArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ShuffleAnArray;
 
-// LeetCode 384. Shuffle an Array: in-place Fisher-Yates over this repo's own
-// DynamicArray<int> - Get/Set swap each position against a random earlier-or-equal
-// one, walking from the end down to index 1. O(n), no auxiliary "remaining pool"
-// collection (contrast the naive remove-a-random-remaining-element approach the
-// benchmark compares this against).
-public sealed partial class ShuffleAnArrayTests
+// Harness only: both strategies live in ShuffleAnArraySolution. LeetCode's own
+// reset() is the identity on the caller's stored array, so instead of a dedicated
+// reset() method this asserts the real invariant reset() depends on - shuffling
+// never mutates the array it was given - directly against each strategy.
+public sealed class ShuffleAnArrayTests
 {
-    [Fact]
-    public void Reset_AfterShuffling_ReturnsOriginalConfiguration()
+    public static TheoryData<int[]> Examples =>
+        new()
+        {
+            { [1, 2, 3] },
+            { [1, 2, 3, 4, 5] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShuffleByRemoveRandomRemaining_AfterShuffling_OriginalIsUnchanged(int[] original)
     {
-        var solution = new Solution([1, 2, 3]);
+        var copy = (int[])original.Clone();
 
-        solution.Shuffle();
+        ShuffleAnArraySolution.ShuffleByRemoveRandomRemaining(copy, new Random(1));
 
-        Assert.Equal([1, 2, 3], solution.Reset());
+        Assert.Equal(original, copy);
     }
 
-    [Fact]
-    public void Shuffle_ReturnsAPermutationOfTheOriginalElements()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShuffleByRemoveRandomRemaining_ReturnsAPermutationOfTheOriginalElements(int[] original)
     {
-        int[] original = [1, 2, 3, 4, 5];
-        var solution = new Solution(original);
-
-        var shuffled = solution.Shuffle();
+        var shuffled = ShuffleAnArraySolution.ShuffleByRemoveRandomRemaining(original, new Random(1));
 
         Assert.Equal(original.Length, shuffled.Length);
         Assert.Equal(original.OrderBy(x => x), shuffled.OrderBy(x => x));
     }
 
-    private sealed class Solution
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShuffleByFisherYatesDynamicArray_AfterShuffling_OriginalIsUnchanged(int[] original)
     {
-        private readonly int[] _original;
-        private readonly Random _random = new(1);
+        var copy = (int[])original.Clone();
 
-        public Solution(int[] nums) => _original = (int[])nums.Clone();
+        ShuffleAnArraySolution.ShuffleByFisherYatesDynamicArray(copy, new Random(1));
 
-        public int[] Reset() => (int[])_original.Clone();
+        Assert.Equal(original, copy);
+    }
 
-        public int[] Shuffle()
-        {
-            var values = new DynamicArray<int>();
-            foreach (var value in _original)
-            {
-                values.Add(value);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShuffleByFisherYatesDynamicArray_ReturnsAPermutationOfTheOriginalElements(int[] original)
+    {
+        var shuffled = ShuffleAnArraySolution.ShuffleByFisherYatesDynamicArray(original, new Random(1));
 
-            for (var i = values.Count - 1; i > 0; i--)
-            {
-                var j = _random.Next(i + 1);
-                var temp = values.Get(i);
-                values.Set(i, values.Get(j));
-                values.Set(j, temp);
-            }
-
-            var result = new int[values.Count];
-            for (var i = 0; i < result.Length; i++)
-            {
-                result[i] = values.Get(i);
-            }
-
-            return result;
-        }
+        Assert.Equal(original.Length, shuffled.Length);
+        Assert.Equal(original.OrderBy(x => x), shuffled.OrderBy(x => x));
     }
 }

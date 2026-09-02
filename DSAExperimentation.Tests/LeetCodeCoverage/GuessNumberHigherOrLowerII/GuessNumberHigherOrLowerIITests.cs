@@ -1,40 +1,29 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.GuessNumberHigherOrLowerII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.GuessNumberHigherOrLowerII;
 
-// LeetCode 375. Guess Number Higher or Lower II: minimax interval DP over (low, high)
-// bounds - for each range, the guesser picks k to minimize the worst-case money the
-// adversary can force by revealing the wrong half, and that worst case is itself the
-// max of the two sub-range costs. This repo's own Memoizer<TState,TResult> supplies
-// the cache, keyed by that pair - the same (Left, Right)-state shape BurstBalloons
-// already uses for its own interval DP.
-public sealed partial class GuessNumberHigherOrLowerIITests
+// Harness only: both strategies live in GuessNumberHigherOrLowerIISolution. One test
+// method per strategy over one shared set of LeetCode's own examples, so a failure
+// names the strategy that broke.
+public sealed class GuessNumberHigherOrLowerIITests
 {
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 1, 0 },
+            { 2, 1 },
+            { 10, 16 },
+        };
+
     [Theory]
-    [InlineData(1, 0)]
-    [InlineData(2, 1)]
-    [InlineData(10, 16)]
-    public void GetMoneyAmount_LeetCodeExamples_ReturnsMinimumGuaranteedMoney(int n, int expected)
-        => Assert.Equal(expected, GetMoneyAmount(n));
+    [MemberData(nameof(Examples))]
+    public void GetMoneyAmountByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumGuaranteedMoney(
+        int n, int expected) =>
+        Assert.Equal(expected, GuessNumberHigherOrLowerIISolution.GetMoneyAmountByUnmemoizedRecursion(n));
 
-    private static int GetMoneyAmount(int n)
-        => Memoizer.Memoize<(int Low, int High), int>((1, n), WorstCaseCost);
-
-    private static int WorstCaseCost((int Low, int High) range, Func<(int Low, int High), int> costFor)
-    {
-        var (low, high) = range;
-        if (low >= high)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-        for (var guess = low; guess <= high; guess++)
-        {
-            var worstHalf = Math.Max(costFor((low, guess - 1)), costFor((guess + 1, high)));
-            best = Math.Min(best, guess + worstHalf);
-        }
-
-        return best;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetMoneyAmountByMemoizedRecursion_LeetCodeExamples_ReturnsMinimumGuaranteedMoney(
+        int n, int expected) =>
+        Assert.Equal(expected, GuessNumberHigherOrLowerIISolution.GetMoneyAmountByMemoizedRecursion(n));
 }

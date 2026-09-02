@@ -1,3 +1,25 @@
-﻿using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.RepeatedDNASequences;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RepeatedDNASequences;
-public sealed partial class RepeatedDNASequencesTests { [Fact] public void FindRepeatedDnaSequences_ClassicExample_ReturnsRepeats(){var repeats=Find("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");Assert.Contains("AAAAACCCCC",repeats);Assert.Contains("CCCCCAAAAA",repeats);} private static List<string> Find(string s){var seen=new Set<string>();var repeated=new Set<string>();for(var i=0;i+10<=s.Length;i++){var sub=s.Substring(i,10);if(!seen.TryAdd(sub))repeated.TryAdd(sub);}return repeated.Count==0?[]:repeatedItems(s,repeated);} private static List<string> repeatedItems(string s,Set<string> repeated){var result=new List<string>();var added=new Set<string>();for(var i=0;i+10<=s.Length;i++){var sub=s.Substring(i,10);if(repeated.Has(sub)&&added.TryAdd(sub))result.Add(sub);}return result;} }
+
+// Harness only: the fixed-window scan lives in RepeatedDNASequencesSolution.
+// this file just pins it to LeetCode's published examples plus the edge cases
+// (too short to hold a window, and a window-length string with no repeat) the
+// original test never exercised.
+public sealed class RepeatedDNASequencesTests
+{
+    public static TheoryData<string, string[]> Examples =>
+        new()
+        {
+            { "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT", ["AAAAACCCCC", "CCCCCAAAAA"] },
+            { "AAAAAAAAAAAAA", ["AAAAAAAAAA"] },
+            { "ACGTACGTAC", [] },
+            { "ACGTACGT", [] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindByFixedWindowSet_LeetCodeExamples_ReturnsRepeatedWindowsInFirstAppearanceOrder(
+        string s, string[] expected) =>
+        Assert.Equal(expected, RepeatedDNASequencesSolution.FindByFixedWindowSet(s));
+}

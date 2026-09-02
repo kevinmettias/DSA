@@ -1,176 +1,130 @@
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.DesignTwitter.DesignTwitterSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignTwitter;
 
-// LeetCode 355. Design Twitter: each user's own tweets live in a DynamicArray (append-only,
-// already in post order), a follower's followees live in a HashMap<int,bool> (Set<TValue>
-// itself exposes no enumeration, and getNewsFeed needs to walk every followee, so this
-// composes HashMap directly the same way Set<Element> is itself built on top of it), and
-// getNewsFeed is a k-way merge of "most recent tweet per followed source" via this repo's own
-// max Heap<Element,TOrder> - the same engine ShortestPath's Dijkstra/A* frontier uses, just
-// ordered by (Time, TweetId, SourceIndex, Position) via MaxHeapOrder's ValueTuple.CompareTo
-// instead of ByPriorityOrder's (Node, Priority) projection.
-public sealed partial class DesignTwitterTests
+// Harness only. Both strategies are DesignTwitterSolution's - this file replays
+// LeetCode's published call sequence, plus the two edge cases the original test
+// covered (more than ten tweets from one user, and interleaving self/followee
+// tweets by time), against each ITwitterStrategy implementation via a small
+// operation script, so a failure still names the strategy that broke.
+// TwitterOp.Apply is pure dispatch (which method to call with which arguments) -
+// no feed-ordering logic of its own.
+public sealed class DesignTwitterTests
 {
-    [Fact]
-    public void Twitter_LeetCodeExample_TracksFeedAcrossFollowAndUnfollow()
+    public static TheoryData<TwitterOp[], List<int>?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    TwitterOp.PostTweet(1, 5),
+                    TwitterOp.GetNewsFeed(1),
+                    TwitterOp.Follow(1, 2),
+                    TwitterOp.PostTweet(2, 6),
+                    TwitterOp.GetNewsFeed(1),
+                    TwitterOp.Unfollow(1, 2),
+                    TwitterOp.GetNewsFeed(1),
+                ],
+                [null, [5], null, null, [6, 5], null, [5]]
+            },
+            {
+                [
+                    TwitterOp.PostTweet(1, 0), TwitterOp.PostTweet(1, 1), TwitterOp.PostTweet(1, 2),
+                    TwitterOp.PostTweet(1, 3), TwitterOp.PostTweet(1, 4), TwitterOp.PostTweet(1, 5),
+                    TwitterOp.PostTweet(1, 6), TwitterOp.PostTweet(1, 7), TwitterOp.PostTweet(1, 8),
+                    TwitterOp.PostTweet(1, 9), TwitterOp.PostTweet(1, 10), TwitterOp.PostTweet(1, 11),
+                    TwitterOp.PostTweet(1, 12), TwitterOp.PostTweet(1, 13), TwitterOp.PostTweet(1, 14),
+                    TwitterOp.GetNewsFeed(1),
+                ],
+                [
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+                    [14, 13, 12, 11, 10, 9, 8, 7, 6, 5],
+                ]
+            },
+            {
+                [
+                    TwitterOp.Follow(1, 2),
+                    TwitterOp.PostTweet(1, 10),
+                    TwitterOp.PostTweet(2, 20),
+                    TwitterOp.PostTweet(1, 11),
+                    TwitterOp.PostTweet(2, 21),
+                    TwitterOp.GetNewsFeed(1),
+                ],
+                [null, null, null, null, null, [21, 11, 20, 10]]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TwitterByGatherAllAndSort_LeetCodeExamples_ReturnsMostRecentTenAcrossFollowedSources(
+        TwitterOp[] operations, List<int>?[] expected) =>
+        RunScript(new TwitterByGatherAllAndSort(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TwitterByHeapKWayMerge_LeetCodeExamples_ReturnsMostRecentTenAcrossFollowedSources(
+        TwitterOp[] operations, List<int>?[] expected) =>
+        RunScript(new TwitterByHeapKWayMerge(), operations, expected);
+
+    private static void RunScript(ITwitterStrategy strategy, TwitterOp[] operations, List<int>?[] expected)
     {
-        var twitter = new Twitter();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(strategy));
+        }
+    }
+}
 
-        twitter.PostTweet(1, 5);
-        Assert.Equal([5], twitter.GetNewsFeed(1));
+// One call in a Twitter script: which method to invoke and with what arguments.
+// Pure dispatch, built via the named factories below so a script (like Examples
+// above) reads like the LeetCode call sequence it replays.
+public readonly record struct TwitterOp
+{
+    private readonly Kind _kind;
+    private readonly int _a;
+    private readonly int _b;
 
-        twitter.Follow(1, 2);
-        twitter.PostTweet(2, 6);
-        Assert.Equal([6, 5], twitter.GetNewsFeed(1));
-
-        twitter.Unfollow(1, 2);
-        Assert.Equal([5], twitter.GetNewsFeed(1));
+    private TwitterOp(Kind kind, int a, int b)
+    {
+        _kind = kind;
+        _a = a;
+        _b = b;
     }
 
-    [Fact]
-    public void GetNewsFeed_MoreThanTenTweetsFromOneUser_ReturnsOnlyMostRecentTen()
+    public static TwitterOp PostTweet(int userId, int tweetId) => new(Kind.PostTweet, userId, tweetId);
+
+    public static TwitterOp Follow(int followerId, int followeeId) => new(Kind.Follow, followerId, followeeId);
+
+    public static TwitterOp Unfollow(int followerId, int followeeId) => new(Kind.Unfollow, followerId, followeeId);
+
+    public static TwitterOp GetNewsFeed(int userId) => new(Kind.GetNewsFeed, userId, 0);
+
+    // null for the three void calls, the returned feed for GetNewsFeed - so a
+    // script runner can assert against one expected value per operation uniformly.
+    // Internal, not public: ITwitterStrategy is internal to DesignTwitterSolution,
+    // and only this same assembly's RunScript ever calls Apply.
+    internal List<int>? Apply(ITwitterStrategy strategy)
     {
-        var twitter = new Twitter();
-
-        for (var tweetId = 0; tweetId < 15; tweetId++)
+        switch (_kind)
         {
-            twitter.PostTweet(1, tweetId);
+            case Kind.PostTweet:
+                strategy.PostTweet(_a, _b);
+                return null;
+            case Kind.Follow:
+                strategy.Follow(_a, _b);
+                return null;
+            case Kind.Unfollow:
+                strategy.Unfollow(_a, _b);
+                return null;
+            default:
+                return strategy.GetNewsFeed(_a);
         }
-
-        var feed = twitter.GetNewsFeed(1);
-
-        Assert.Equal(Enumerable.Range(5, 10).Reverse(), feed);
     }
 
-    [Fact]
-    public void GetNewsFeed_InterleavesTweetsFromSelfAndFollowees_MostRecentFirst()
+    private enum Kind
     {
-        var twitter = new Twitter();
-
-        twitter.Follow(1, 2);
-        twitter.PostTweet(1, 10);
-        twitter.PostTweet(2, 20);
-        twitter.PostTweet(1, 11);
-        twitter.PostTweet(2, 21);
-
-        Assert.Equal([21, 11, 20, 10], twitter.GetNewsFeed(1));
-    }
-
-    private sealed class Twitter
-    {
-        private const int FeedSize = 10;
-
-        private int _clock;
-        private readonly HashMap<int, DynamicArray<(int Time, int TweetId)>> _tweetsByUser = new();
-        private readonly HashMap<int, HashMap<int, bool>> _followeesByUser = new();
-
-        public void PostTweet(int userId, int tweetId)
-        {
-            if (!_tweetsByUser.TryGetValue(userId, out var tweets))
-            {
-                tweets = new DynamicArray<(int, int)>();
-                _tweetsByUser.Set(userId, tweets);
-            }
-
-            tweets.Add((_clock++, tweetId));
-        }
-
-        public void Follow(int followerId, int followeeId)
-        {
-            if (!_followeesByUser.TryGetValue(followerId, out var followees))
-            {
-                followees = new HashMap<int, bool>();
-                _followeesByUser.Set(followerId, followees);
-            }
-
-            followees.Set(followeeId, true);
-        }
-
-        public void Unfollow(int followerId, int followeeId)
-        {
-            if (_followeesByUser.TryGetValue(followerId, out var followees))
-            {
-                followees.TryRemove(followeeId);
-            }
-        }
-
-        public List<int> GetNewsFeed(int userId)
-        {
-            var sourceIds = BuildSourceIds(userId);
-            var sources = CollectSources(sourceIds);
-            var heap = SeedHeap(sources);
-
-            var feed = new List<int>();
-
-            while (feed.Count < FeedSize && heap.TryPop(out var top))
-            {
-                ProcessFeedEntry(heap, sources, top, feed);
-            }
-
-            return feed;
-        }
-
-        private List<int> BuildSourceIds(int userId)
-        {
-            var sourceIds = new List<int> { userId };
-
-            if (_followeesByUser.TryGetValue(userId, out var followees))
-            {
-                sourceIds.AddRange(followees.Keys);
-            }
-
-            return sourceIds;
-        }
-
-        private List<DynamicArray<(int Time, int TweetId)>> CollectSources(List<int> sourceIds)
-        {
-            var sources = new List<DynamicArray<(int Time, int TweetId)>>();
-
-            foreach (var id in sourceIds)
-            {
-                if (_tweetsByUser.TryGetValue(id, out var tweets) && tweets.Count > 0)
-                {
-                    sources.Add(tweets);
-                }
-            }
-
-            return sources;
-        }
-
-        private static Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> SeedHeap(
-            List<DynamicArray<(int Time, int TweetId)>> sources)
-        {
-            var heap = new Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>>();
-
-            for (var i = 0; i < sources.Count; i++)
-            {
-                var position = sources[i].Count - 1;
-                var (time, tweetId) = sources[i].Get(position);
-                heap.Push((time, tweetId, i, position));
-            }
-
-            return heap;
-        }
-
-        private static void ProcessFeedEntry(
-            Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> heap,
-            List<DynamicArray<(int Time, int TweetId)>> sources,
-            (int Time, int TweetId, int SourceIndex, int Position) top,
-            List<int> feed)
-        {
-            feed.Add(top.TweetId);
-
-            if (top.Position == 0)
-            {
-                return;
-            }
-
-            var nextPosition = top.Position - 1;
-            var (time, tweetId) = sources[top.SourceIndex].Get(nextPosition);
-            heap.Push((time, tweetId, top.SourceIndex, nextPosition));
-        }
+        PostTweet,
+        Follow,
+        Unfollow,
+        GetNewsFeed,
     }
 }

@@ -1,61 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.AddDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Add Digits (LC 258): direct arithmetic digit-summation (modulo/divide, no
-// intermediate storage) vs. this repo's Stack<T> used as an explicit digit-holding
-// primitive for each summation pass, the same "same algorithm, channeled through a
-// repo Stack<T>" comparison ReverseIntegerBenchmarks.cs already makes.
+// Harness only: both arms are AddDigitsSolution's, the same methods AddDigitsTests
+// proves correct.
 [MemoryDiagnoser]
 public class AddDigitsBenchmarks
 {
-    private const int DecimalBase = 10;
-
     [Params(999_999, int.MaxValue)]
     public int Value;
 
     [Benchmark(Baseline = true)]
-    public int Arithmetic()
-    {
-        var num = Value;
-        while (num >= DecimalBase)
-        {
-            var sum = 0;
-            var remaining = num;
-            while (remaining > 0)
-            {
-                sum += remaining % DecimalBase;
-                remaining /= DecimalBase;
-            }
-
-            num = sum;
-        }
-
-        return num;
-    }
+    public int Arithmetic() => AddDigitsSolution.AddDigitsByArithmetic(Value);
 
     [Benchmark]
-    public int StackDigits()
-    {
-        var num = Value;
-        while (num >= DecimalBase)
-        {
-            var digits = new DigitStack();
-            var remaining = num;
-            while (remaining > 0)
-            {
-                digits.Push(remaining % DecimalBase);
-                remaining /= DecimalBase;
-            }
-
-            num = 0;
-            while (digits.TryPop(out var digit))
-            {
-                num += digit;
-            }
-        }
-
-        return num;
-    }
+    public int StackDigits() => AddDigitsSolution.AddDigitsByStack(Value);
 }

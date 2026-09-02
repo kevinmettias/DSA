@@ -1,3 +1,106 @@
-﻿using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.ImplementQueueUsingStacks;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementQueueUsingStacks;
-public sealed partial class ImplementQueueUsingStacksTests { [Fact] public void MyQueue_Example_BehavesFifo(){var q=new MyQueue();q.Push(1);q.Push(2);Assert.Equal(1,q.Peek());Assert.Equal(1,q.Pop());Assert.False(q.Empty());} private sealed class MyQueue{private readonly RepoStack _in=new();private readonly RepoStack _out=new();public void Push(int x)=>_in.Push(x);public int Pop(){Move();_out.TryPop(out var x);return x;}public int Peek(){Move();_out.TryPeek(out var x);return x;}public bool Empty()=>_in.Count==0&&_out.Count==0;private void Move(){if(_out.Count>0)return;while(_in.TryPop(out var x))_out.Push(x);}} }
+
+// Harness only: the algorithm lives in ImplementQueueUsingStacksSolution.
+// LeetCode's own shape here is a stateful object across a sequence of
+// push/pop/peek/empty calls, so Examples encodes a call script instead of a
+// single argument tuple - the same shape MinStackTests/LRUCacheTests use for
+// their own instance-API problems. Only one strategy exists (the original
+// benchmark's two [Benchmark] arms were both `return 1` placeholders, not a
+// second algorithm to reconcile - see ImplementQueueUsingStacksSolution's own
+// doc comment), so there is only one [Theory] method.
+public sealed class ImplementQueueUsingStacksTests
+{
+    public static TheoryData<QueueOp[], object?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    QueueOp.Push(1),
+                    QueueOp.Push(2),
+                    QueueOp.Peek(),
+                    QueueOp.Pop(),
+                    QueueOp.Empty(),
+                ],
+                [null, null, 1, 1, false]
+            },
+            {
+                [
+                    QueueOp.Push(1),
+                    QueueOp.Push(2),
+                    QueueOp.Push(3),
+                    QueueOp.Pop(),
+                    QueueOp.Pop(),
+                    QueueOp.Push(4),
+                    QueueOp.Peek(),
+                    QueueOp.Pop(),
+                    QueueOp.Empty(),
+                ],
+                [null, null, null, 1, 2, null, 3, 3, false]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByTwoStacks_LeetCodeExamples_BehavesFifo(QueueOp[] operations, object?[] expected)
+    {
+        var queue = ImplementQueueUsingStacksSolution.CreateByTwoStacks();
+
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(queue));
+        }
+    }
+}
+
+// One call in a MyQueue script: which operation to invoke and with what
+// argument. Pure dispatch, built via the named factories below so a script
+// (like Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct QueueOp
+{
+    private readonly Kind _kind;
+    private readonly int _value;
+
+    private QueueOp(Kind kind, int value)
+    {
+        _kind = kind;
+        _value = value;
+    }
+
+    public static QueueOp Push(int value) => new(Kind.Push, value);
+
+    public static QueueOp Pop() => new(Kind.Pop, 0);
+
+    public static QueueOp Peek() => new(Kind.Peek, 0);
+
+    public static QueueOp Empty() => new(Kind.Empty, 0);
+
+    // null for push, the returned value for pop/peek/empty (boxed as its own
+    // type - int or bool - so the harness can assert without forcing every
+    // operation onto one numeric shape). Internal, not public: only this
+    // same assembly's test method ever calls Apply.
+    internal object? Apply(ImplementQueueUsingStacksSolution.TwoStackQueue queue)
+    {
+        switch (_kind)
+        {
+            case Kind.Push:
+                queue.Push(_value);
+                return null;
+            case Kind.Pop:
+                return queue.Pop();
+            case Kind.Peek:
+                return queue.Peek();
+            default:
+                return queue.Empty();
+        }
+    }
+
+    private enum Kind
+    {
+        Push,
+        Pop,
+        Peek,
+        Empty,
+    }
+}

@@ -1,42 +1,30 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.LongestIncreasingSubsequence;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestIncreasingSubsequence;
 
-// LeetCode 300. Longest Increasing Subsequence: patience sorting - each number either
-// extends the current "tails" run or overwrites the first tail it is not smaller
-// than, found via this repo's own BinarySearch.LowerBound (same engine
-// SearchInsertPositionTests already exercises) over a DynamicArraySequence view of a
-// DynamicArray<int>, so Length tracks the run as it grows - giving O(n log n) instead
-// of the textbook O(n^2) DP.
-public sealed partial class LongestIncreasingSubsequenceTests
+// Harness only. Both strategies are LongestIncreasingSubsequenceSolution's - this file
+// just pins them to LeetCode's published examples.
+public sealed class LongestIncreasingSubsequenceTests
 {
-    [Theory]
-    [InlineData(new[] { 10, 9, 2, 5, 3, 7, 101, 18 }, 4)]
-    [InlineData(new[] { 0, 1, 0, 3, 2, 3 }, 4)]
-    [InlineData(new[] { 7, 7, 7, 7, 7, 7, 7 }, 1)]
-    public void LengthOfLis_LeetCodeExamples_ReturnsExpectedLength(int[] nums, int expected)
-        => Assert.Equal(expected, LengthOfLis(nums));
-
-    private static int LengthOfLis(int[] nums)
-    {
-        var tails = new DynamicArray<int>();
-
-        foreach (var num in nums)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            var position = BinarySearch.LowerBound(new DynamicArraySequence<int>(tails), num);
+            { [10, 9, 2, 5, 3, 7, 101, 18], 4 },
+            { [0, 1, 0, 3, 2, 3], 4 },
+            { [7, 7, 7, 7, 7, 7, 7], 1 },
+        };
 
-            if (position == tails.Count)
-            {
-                tails.Add(num);
-            }
-            else
-            {
-                tails.Set(position, num);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LengthOfLisByDynamicProgramming_LeetCodeExamples_ReturnsExpectedLength(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, LongestIncreasingSubsequenceSolution.LengthOfLisByDynamicProgramming(nums));
 
-        return tails.Count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LengthOfLisByPatienceSortingBinarySearch_LeetCodeExamples_ReturnsExpectedLength(
+        int[] nums, int expected) =>
+        Assert.Equal(
+            expected,
+            LongestIncreasingSubsequenceSolution.LengthOfLisByPatienceSortingBinarySearch(nums));
 }

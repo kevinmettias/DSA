@@ -1,79 +1,105 @@
-using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNodeII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PopulatingNextRightPointersInEachNodeII;
 
-// LeetCode 117. Populating Next Right Pointers in Each Node II: same "connect same
-// -depth nodes left to right" contract as #116, but the input is now an arbitrary
-// binary tree instead of a guaranteed-perfect one. LevelGroupedBreadthFirstTraversal
-// never assumed perfection to begin with - BinaryTreeChildren already compacts away
-// null Left/Right slots (Left-then-Right order) before a level is grouped, so a
-// missing sibling just means that level's buffer is shorter, with no separate
-// code path needed for the general case.
-public sealed partial class PopulatingNextRightPointersInEachNodeIITests
+// Harness only. Both strategies are
+// PopulatingNextRightPointersInEachNodeIISolution's - this file pins them to
+// LeetCode's published examples, given in LeetCode's own level-order-with-null
+// array shape (BinaryTreeNode<int> is internal, so it cannot appear in a public
+// TheoryData signature; BuildTree reconstructs it). Every value in an example tree
+// is distinct, so a value can stand in for its node's identity when stating the
+// expected next-pointer chain.
+public sealed class PopulatingNextRightPointersInEachNodeIITests
 {
-    [Fact]
-    public void Connect_TreeWithMissingChildren_LinksAcrossGapsInTheLevel()
-    {
-        // [1,2,3,4,5,null,7] -> 5's next must "reach across" 3's missing left child to land on 7.
-        var root = new BinaryTreeNode<int>(1)
+    public static TheoryData<int?[], (int Value, int? NextValue)[]> Examples =>
+        new()
         {
-            Left = new(2) { Left = new(4), Right = new(5) },
-            Right = new(3) { Right = new(7) },
+            // [1,2,3,4,5,null,7] -> 5's next must "reach across" 3's missing left
+            // child to land on 7.
+            {
+                [1, 2, 3, 4, 5, null, 7],
+                [(1, null), (2, 3), (3, null), (4, 5), (5, 7), (7, null)]
+            },
+            { [], [] },
+            { [1], [(1, null)] },
         };
 
-        var next = Connect(root);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ConnectByManualQueueBfs_LeetCodeExamples_LinksEachNodeToItsRightNeighbor(
+        int?[] values, (int Value, int? NextValue)[] expectedNext)
+    {
+        var (root, byValue) = BuildTree(values);
+        var next = PopulatingNextRightPointersInEachNodeIISolution.ConnectByManualQueueBfs(root);
 
-        AssertNextIsNull(next, root);
-        AssertNextEquals(next, root.Left!, root.Right);
-        AssertNextIsNull(next, root.Right!);
-        AssertNextEquals(next, root.Left!.Left!, root.Left!.Right);
-        AssertNextEquals(next, root.Left!.Right!, root.Right!.Right);
-        AssertNextIsNull(next, root.Right!.Right!);
+        AssertLinks(expectedNext, byValue, node => next.TryGetValue(node, out var nextNode) ? nextNode : throw new KeyNotFoundException());
     }
 
-    private static void AssertNextEquals(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node, BinaryTreeNode<int>? expectedNext)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ConnectByLevelGroupedTraversal_LeetCodeExamples_LinksEachNodeToItsRightNeighbor(
+        int?[] values, (int Value, int? NextValue)[] expectedNext)
     {
-        var actual = NextOf(next, node);
-        Assert.Equal(expectedNext, actual);
+        var (root, byValue) = BuildTree(values);
+        var next = PopulatingNextRightPointersInEachNodeIISolution.ConnectByLevelGroupedTraversal(root);
+
+        AssertLinks(expectedNext, byValue, node => next.TryGetValue(node, out var nextNode) ? nextNode : throw new KeyNotFoundException());
     }
 
-    private static void AssertNextIsNull(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node)
+    private static void AssertLinks(
+        (int Value, int? NextValue)[] expectedNext,
+        Dictionary<int, BinaryTreeNode<int>> byValue,
+        Func<BinaryTreeNode<int>, BinaryTreeNode<int>?> nextOf)
     {
-        var actual = NextOf(next, node);
-        Assert.Null(actual);
-    }
-
-    private static BinaryTreeNode<int>? NextOf(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node)
-        => next.TryGetValue(node, out var nextNode) ? nextNode : throw new KeyNotFoundException();
-
-    private static HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> Connect(BinaryTreeNode<int> root)
-    {
-        LevelHooks.Output.Value = [];
-
-        LevelGroupedBreadthFirstTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>, LevelHooks>(root);
-
-        var next = new HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?>();
-
-        foreach (var level in LevelHooks.Output.Value!)
+        foreach (var (value, nextValue) in expectedNext)
         {
-            for (var i = 0; i < level.Count; i++)
-            {
-                next.Set(level[i], i + 1 < level.Count ? level[i + 1] : null);
-            }
+            var actual = nextOf(byValue[value]);
+            var expected = nextValue is int expectedValue ? byValue[expectedValue] : null;
+            Assert.Equal(expected, actual);
+        }
+    }
+
+    // LeetCode's level-order array shape: each existing node consumes exactly two
+    // subsequent slots for its children, null marking a missing one.
+    private static (BinaryTreeNode<int>? Root, Dictionary<int, BinaryTreeNode<int>> ByValue) BuildTree(int?[] values)
+    {
+        var byValue = new Dictionary<int, BinaryTreeNode<int>>();
+
+        if (values.Length == 0 || values[0] is null)
+        {
+            return (null, byValue);
         }
 
-        return next;
-    }
+        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        byValue[root.Value] = root;
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
 
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
-    {
-        public static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
+        while (queue.Count > 0 && i < values.Length)
+        {
+            var node = queue.Dequeue();
 
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) => Output.Value!.Add(level.ToList());
+            if (values[i] is int leftValue)
+            {
+                node.Left = new BinaryTreeNode<int>(leftValue);
+                byValue[leftValue] = node.Left;
+                queue.Enqueue(node.Left);
+            }
+
+            i++;
+
+            if (i < values.Length && values[i] is int rightValue)
+            {
+                node.Right = new BinaryTreeNode<int>(rightValue);
+                byValue[rightValue] = node.Right;
+                queue.Enqueue(node.Right);
+            }
+
+            i++;
+        }
+
+        return (root, byValue);
     }
 }

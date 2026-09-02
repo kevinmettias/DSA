@@ -1,12 +1,15 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Range Sum Query - Immutable (LC 303): a brute-force rescan baseline (sums nums[left..right]
-// directly, O(n) per SumRange call) vs. this repo's own FenwickTree<int,SumOperation<int>>, built
-// once from the array (O(n log n)) so every SumRange afterward is an O(log n) FenwickTree.Query
-// instead of a rescan. Both methods answer the same fixed batch of queries.
+// Harness only: both arms are RangeSumQueryImmutableSolution's, the same
+// methods RangeSumQueryImmutableTests proves correct, run over a fixed batch of
+// queries - NumArray is constructed once per arm and sumRange is called
+// QueryCount times against it, the pattern LeetCode's own class exposes, so the
+// comparison is "build + QueryCount O(log n) queries" against "no build +
+// QueryCount O(n) rescans".
 [MemoryDiagnoser]
 public class RangeSumQueryImmutableBenchmarks
 {
@@ -45,10 +48,7 @@ public class RangeSumQueryImmutableBenchmarks
 
         foreach (var (left, right) in _queries)
         {
-            for (var i = left; i <= right; i++)
-            {
-                total += _nums[i];
-            }
+            total += RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(_nums, left, right);
         }
 
         return total;
@@ -62,7 +62,7 @@ public class RangeSumQueryImmutableBenchmarks
 
         foreach (var (left, right) in _queries)
         {
-            total += tree.Query(left, right);
+            total += RangeSumQueryImmutableSolution.SumRangeByFenwickTree(tree, left, right);
         }
 
         return total;

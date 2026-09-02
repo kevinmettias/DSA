@@ -1,3 +1,74 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.DeleteNodeInALinkedList;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteNodeInALinkedList;
-public sealed partial class DeleteNodeInALinkedListTests { [Fact] public void DeleteNode_CopiesNextValueAndSkipsNext(){var node=new SinglyLinkedListNode<int>(5){Next=new(1){Next=new(9)}};Delete(node);Assert.Equal(1,node.Value);Assert.Equal(9,node.Next!.Value);} private static void Delete(SinglyLinkedListNode<int> node){node.Value=node.Next!.Value;node.Next=node.Next.Next;} }
+
+// Harness only. The single strategy is DeleteNodeInALinkedListSolution's - this
+// file builds LeetCode's published examples as linked lists, calls the solution on
+// the node at the given position (LeetCode's signature never passes a head
+// reference), then reads the resulting list back from head to verify.
+public sealed class DeleteNodeInALinkedListTests
+{
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
+        {
+            { [4, 5, 1, 9], 1, [4, 1, 9] }, // LeetCode's example 1: delete the second node (value 5)
+            { [4, 5, 1, 9], 2, [4, 5, 9] }, // LeetCode's example 2: delete the third node (value 1)
+            { [5, 1, 9], 0, [1, 9] }, // the original coverage test's case: delete the head node
+            { [1, 2], 0, [2] }, // two-node list, delete the head
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeleteByNextValueCopy_LeetCodeExamples_RemovesTheGivenNode(
+        int[] values, int nodeIndex, int[] expected)
+    {
+        var head = BuildList(values);
+        var target = NodeAt(head, nodeIndex);
+
+        DeleteNodeInALinkedListSolution.DeleteByNextValueCopy(target);
+
+        Assert.Equal(expected, ToArray(head));
+    }
+
+    private static SinglyLinkedListNode<int> BuildList(int[] values)
+    {
+        var head = new SinglyLinkedListNode<int>(values[0]);
+        var tail = head;
+
+        for (var i = 1; i < values.Length; i++)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(values[i]);
+            tail = tail.Next;
+        }
+
+        return head;
+    }
+
+    private static SinglyLinkedListNode<int> NodeAt(SinglyLinkedListNode<int> head, int index)
+    {
+        var node = head;
+
+        for (var i = 0; i < index; i++)
+        {
+            // presumption: allow -- every nodeIndex in Examples stays within the
+            // list BuildList just built for it (never the tail), so Next is always
+            // present while this loop still has steps to take.
+            node = node.Next!;
+        }
+
+        return node;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
+}

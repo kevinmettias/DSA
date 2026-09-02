@@ -1,38 +1,37 @@
-using DSAExperimentation.Algorithms.Ancestry;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.LowestCommonAncestorOfBst;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LowestCommonAncestorOfBst;
 
-// LeetCode 235. Lowest Common Ancestor of a Binary Search Tree: proves this repo's
-// generic tree LCA engine composes directly over a BinarySearchTree<T>'s nodes with
-// zero BST-specific code of its own - the same "generic engines are a free win"
-// payoff phase 1 of this repo's tree work already found for traversal/metrics/paths.
-public sealed partial class LowestCommonAncestorOfBstTests
+// Harness only. The single strategy is LowestCommonAncestorOfBstSolution's,
+// composing this repo's generic tree LCA engine over a BinarySearchTree<int>'s
+// nodes - the same "generic engines are a free win" payoff phase 1 of this repo's
+// tree work already found for traversal/metrics/paths.
+public sealed class LowestCommonAncestorOfBstTests
 {
-    [Fact]
-    public void FindLca_TwoNodesInDifferentSubtrees_ReturnsRoot()
+    public static TheoryData<int, int, int> Examples =>
+        new()
+        {
+            { 2, 8, 6 }, // LeetCode's example 1: nodes in different subtrees of the root
+            { 2, 4, 2 }, // LeetCode's example 2: one node is an ancestor of the other
+            { 0, 5, 2 }, // both nodes several levels deep, diverging at 2
+            { 7, 9, 8 }, // both nodes leaves of the same immediate parent
+            { 3, 9, 6 }, // diverges only at the root
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindLcaByAncestryWalk_LeetCodeExamples_ReturnsTheAncestor(int first, int second, int expected)
     {
         var root = BuildClassicExampleTree();
 
-        var lca = FindLca(root, first: 2, second: 8);
+        var lca = LowestCommonAncestorOfBstSolution.FindLcaByAncestryWalk(
+            root, FindNode(root, first), FindNode(root, second));
 
         // presumption: allow -- both queried values come from FindNode walking the
-        // same tree root roots, so Find always has both nodes reachable and can
-        // only return null when neither is (impossible here).
-        Assert.Equal(6, lca!.Value);
-    }
-
-    [Fact]
-    public void FindLca_OneNodeIsAncestorOfTheOther_ReturnsTheAncestor()
-    {
-        var root = BuildClassicExampleTree();
-
-        var lca = FindLca(root, first: 2, second: 4);
-
-        // presumption: allow -- see FindLca_TwoNodesInDifferentSubtrees_ReturnsRoot's
-        // own comment; the same reachability guarantee holds here.
-        Assert.Equal(2, lca!.Value);
+        // same tree root, so Find always has both nodes reachable and can only
+        // return null when neither is (impossible here).
+        Assert.Equal(expected, lca!.Value);
     }
 
     private static BinaryTreeNode<int> BuildClassicExampleTree()
@@ -47,17 +46,6 @@ public sealed partial class LowestCommonAncestorOfBstTests
         // presumption: allow -- tree always has nine values inserted above before
         // returning, so Root is never null here.
         return tree.Root!;
-    }
-
-    private static BinaryTreeNode<int>? FindLca(BinaryTreeNode<int> root, int first, int second)
-    {
-        var firstNode = FindNode(root, first);
-        var secondNode = FindNode(root, second);
-
-        return LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(
-            root, firstNode, secondNode);
     }
 
     private static BinaryTreeNode<int> FindNode(BinaryTreeNode<int> root, int value)

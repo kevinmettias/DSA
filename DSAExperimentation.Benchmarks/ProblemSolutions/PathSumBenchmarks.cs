@@ -1,10 +1,11 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Paths;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.PathSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are PathSumSolution's, the same methods PathSumTests
+// proves correct.
 [MemoryDiagnoser]
 public class PathSumBenchmarks
 {
@@ -28,17 +29,10 @@ public class PathSumBenchmarks
     public void Setup() => _root = Tree();
 
     [Benchmark(Baseline = true)]
-    public bool RecursivePathSum() => Has(_root, TargetSum);
+    public bool RecursivePathSum() => PathSumSolution.HasPathSumByRecursion(_root, TargetSum);
 
     [Benchmark]
-    public bool AllRootToLeafPathsSum() =>
-        AllRootToLeafPaths.Find<BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>, NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(_root)
-            .Any(p => p.Sum(n => n.Value) == TargetSum);
-
-    private static bool Has(BinaryTreeNode<int>? node, int target) =>
-        node is not null && (node.Left is null && node.Right is null
-            ? node.Value == target
-            : Has(node.Left, target - node.Value) || Has(node.Right, target - node.Value));
+    public bool AllRootToLeafPathsSum() => PathSumSolution.HasPathSumByPathEnumeration(_root, TargetSum);
 
     private static BinaryTreeNode<int> Tree() => new(RootValue)
     {

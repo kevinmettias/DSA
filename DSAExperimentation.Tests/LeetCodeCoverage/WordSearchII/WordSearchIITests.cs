@@ -1,142 +1,38 @@
-using DSAExperimentation.Algorithms.Backtracking;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.WordSearchII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.WordSearchII;
 
-// LeetCode 212. Word Search II: WordSearchTests (LC 79) already proves
-// Backtrack.TrySearch's choose/explore/unchoose walk finds one word on a board.
-// Finding every word from a whole dictionary at once composes exactly one more
-// existing primitive - LowercaseTrie<TValue>, walked node-by-node alongside the
-// board so a branch with no matching trie child is pruned before Candidates() ever
-// yields it, instead of re-running a fresh single-word search per candidate word.
-public sealed partial class WordSearchIITests
+// Harness only. Both search strategies are WordSearchIISolution's - this file just
+// pins them to LeetCode's published examples, including the prefix-sharing case
+// where one dictionary word is itself a prefix of another.
+public sealed class WordSearchIITests
 {
-    [Fact]
-    public void FindWords_LeetCodeExample_ReturnsEveryWordPresentOnTheBoard()
-    {
-        char[][] board =
-        [
-            ['o', 'a', 'a', 'n'],
-            ['e', 't', 'a', 'e'],
-            ['i', 'h', 'k', 'r'],
-            ['i', 'f', 'l', 'v'],
-        ];
-        string[] words = ["oath", "pea", "eat", "rain"];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindWordsByBruteForceDfs_LeetCodeExamples_ReturnsEveryWordPresentOnTheBoard(
+        char[][] board, string[] words, string[] expected) =>
+        Assert.Equal(expected.Order(), WordSearchIISolution.FindWordsByBruteForceDfs(board, words).Order());
 
-        var found = FindWords(board, words);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindWordsByTrieBacktrack_LeetCodeExamples_ReturnsEveryWordPresentOnTheBoard(
+        char[][] board, string[] words, string[] expected) =>
+        Assert.Equal(expected.Order(), WordSearchIISolution.FindWordsByTrieBacktrack(board, words).Order());
 
-        Assert.Equal(["eat", "oath"], found.Order());
-    }
-
-    [Fact]
-    public void FindWords_NoWordsPresent_ReturnsEmptySet()
-    {
-        char[][] board = [['a', 'b'], ['c', 'd']];
-        string[] words = ["dog", "cat"];
-
-        var found = FindWords(board, words);
-
-        Assert.Empty(found);
-    }
-
-    [Fact]
-    public void FindWords_OneWordIsAPrefixOfAnother_FindsBothAlongTheSamePath()
-    {
-        char[][] board = [['a', 'b'], ['c', 'd']];
-        string[] words = ["a", "ab"];
-
-        var found = FindWords(board, words);
-
-        Assert.Equal(["a", "ab"], found.Order());
-    }
-
-    private static HashSet<string> FindWords(char[][] board, string[] words)
-    {
-        var trie = new LowercaseTrie<string>();
-        foreach (var word in words)
+    public static TheoryData<char[][], string[], string[]> Examples =>
+        new()
         {
-            trie.Set(word, word);
-        }
-
-        var found = new HashSet<string>();
-        var context = new SearchContext(board, trie.Root, found);
-
-        for (var row = 0; row < board.Length; row++)
-        for (var col = 0; col < board[0].Length; col++)
-        {
-            SearchFrom(context, row, col);
-        }
-
-        return found;
-    }
-
-    private readonly record struct SearchContext(char[][] Board, LowercaseTrieNode<string> Root, HashSet<string> Found);
-
-    private static void SearchFrom(SearchContext context, int row, int col)
-    {
-        var state = new State(context.Board, context.Root, row, col);
-        Backtrack.Search(state,
-            isSolution: s => s.AtWord,
-            candidates: s => s.Candidates(),
-            choose: (s, p) => s.Choose(p),
-            unchoose: (s, p) => s.Unchoose(p),
-            onSolution: s => context.Found.Add(s.Word));
-    }
-
-    private sealed class State(char[][] board, LowercaseTrieNode<string> root, int startRow, int startCol)
-    {
-        private readonly bool[,] _used = new bool[board.Length, board[0].Length];
-        private readonly Stack<(int Row, int Col, LowercaseTrieNode<string> Node)> _parents = new();
-        private LowercaseTrieNode<string> _node = root;
-        private bool _started;
-        private int Row { get; set; } = startRow;
-        private int Col { get; set; } = startCol;
-
-        public bool AtWord => _node.HasValue;
-        public string Word => _node.Value;
-
-        public IEnumerable<(int Row, int Col)> Candidates()
-        {
-            foreach (var p in Neighbors())
             {
-                if (InBounds(p) && !_used[p.Row, p.Col] && _node.Children[board[p.Row][p.Col] - 'a'] is not null)
-                {
-                    yield return p;
-                }
-            }
-        }
-
-        private bool InBounds((int Row, int Col) p)
-            => p.Row >= 0 && p.Row < board.Length && p.Col >= 0 && p.Col < board[0].Length;
-
-        private IEnumerable<(int Row, int Col)> Neighbors()
-        {
-            if (!_started)
-            {
-                yield return (Row, Col);
-                yield break;
-            }
-
-            yield return (Row + 1, Col);
-            yield return (Row - 1, Col);
-            yield return (Row, Col + 1);
-            yield return (Row, Col - 1);
-        }
-
-        public void Choose((int Row, int Col) p)
-        {
-            _parents.Push((Row, Col, _node));
-            Row = p.Row;
-            Col = p.Col;
-            _used[Row, Col] = true;
-            _node = _node.Children[board[Row][Col] - 'a']!;
-            _started = true;
-        }
-
-        public void Unchoose((int Row, int Col) p)
-        {
-            _used[Row, Col] = false;
-            (Row, Col, _node) = _parents.Pop();
-        }
-    }
+                [
+                    ['o', 'a', 'a', 'n'],
+                    ['e', 't', 'a', 'e'],
+                    ['i', 'h', 'k', 'r'],
+                    ['i', 'f', 'l', 'v'],
+                ],
+                ["oath", "pea", "eat", "rain"],
+                ["eat", "oath"]
+            },
+            { [['a', 'b'], ['c', 'd']], ["dog", "cat"], [] },
+            { [['a', 'b'], ['c', 'd']], ["a", "ab"], ["a", "ab"] },
+        };
 }

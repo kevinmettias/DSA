@@ -1,3 +1,22 @@
-﻿using IntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.EvaluateReversePolishNotation;
-public sealed partial class EvaluateReversePolishNotationTests { [Fact] public void EvalRpn_ClassicExample_ReturnsValue()=>Assert.Equal(9,Eval(["2","1","+","3","*"])); private static int Eval(string[] tokens){var stack=new IntStack();foreach(var t in tokens){if(int.TryParse(t,out var n)){stack.Push(n);continue;}stack.TryPop(out var b);stack.TryPop(out var a);stack.Push(t switch{"+"=>a+b,"-"=>a-b,"*"=>a*b,_=>a/b});}stack.TryPop(out var result);return result;} }
+
+// Harness only. The operand-stack evaluation is
+// EvaluateReversePolishNotationSolution's; this file pins it to LeetCode's
+// published examples.
+public sealed class EvaluateReversePolishNotationTests
+{
+    public static TheoryData<string[], int> Examples =>
+        new()
+        {
+            { ["2", "1", "+", "3", "*"], 9 },
+            { ["4", "13", "5", "/", "+"], 6 },
+            { ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"], 22 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void EvalByOperandStack_LeetCodeExamples_ReturnsExpressionValue(string[] tokens, int expected) =>
+        Assert.Equal(expected, EvaluateReversePolishNotationSolution.EvalByOperandStack(tokens));
+}

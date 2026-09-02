@@ -1,23 +1,23 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.LinkedListRandomNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Linked List Random Node (LC 382): reservoir sampling directly over this repo's
-// SinglyLinkedListNode<int> chain (O(1) extra space, but an O(n) walk on EVERY
-// GetRandom call) vs. caching the list once into a DynamicArray<int> (O(n) space,
-// O(1) per call afterward) - the same space/time tradeoff InsertDeleteGetRandomO1's
-// array-backed GetRandom already commits to, made explicit here as two competing
-// strategies. CallCount is large relative to Length so the array cache's one-time
-// O(n) conversion is amortized across many O(1) lookups, instead of a small call
-// count hiding ReservoirSampling's per-call O(n) cost.
+// Harness only: both arms are LinkedListRandomNodeSolution's, the same methods
+// LinkedListRandomNodeTests proves correct. [GlobalSetup] builds the chain
+// (workload sizing); each [Benchmark] method drives its own construct-once-then
+// -call-many loop - a real Solution instance's own lifetime - so DynamicArrayCache's
+// one-time O(n) DynamicArray conversion is charged to the measured method, same as
+// ReservoirSampling's O(1) setup, rather than hoisting construction into
+// [GlobalSetup] and hiding it from the comparison. CallCount is large relative to
+// Length so that one-time conversion is amortized across many O(1) lookups, instead
+// of a small call count hiding ReservoirSampling's per-call O(n) cost.
 [MemoryDiagnoser]
 public class LinkedListRandomNodeBenchmarks
 {
     private const int CallCount = 2_000;
-    private const int SecondToLastNodeOffset = 2; // value of the node built just before the already-created tail (Length - 1)
-    private const int ReservoirSamplingStartRank = 2; // classic reservoir sampling: result starts as the 1st element, so the next candidate considered is the 2nd
 
     [Params(200, 5_000)]
     public int Length;
@@ -25,16 +25,7 @@ public class LinkedListRandomNodeBenchmarks
     private SinglyLinkedListNode<int> _head = null!;
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var head = new SinglyLinkedListNode<int>(Length - 1);
-        for (var value = Length - SecondToLastNodeOffset; value >= 0; value--)
-        {
-            head = new SinglyLinkedListNode<int>(value) { Next = head };
-        }
-
-        _head = head;
-    }
+    public void Setup() => _head = LinkedListRandomNodeWorkloads.Build(Length);
 
     [Benchmark(Baseline = true)]
     public long ReservoirSampling()
@@ -44,20 +35,7 @@ public class LinkedListRandomNodeBenchmarks
 
         for (var call = 0; call < CallCount; call++)
         {
-            var result = _head.Value;
-            var index = ReservoirSamplingStartRank;
-
-            for (var node = _head.Next; node is not null; node = node.Next)
-            {
-                if (random.Next(index) == 0)
-                {
-                    result = node.Value;
-                }
-
-                index++;
-            }
-
-            sum += result;
+            sum += LinkedListRandomNodeSolution.GetRandomByReservoirSampling(_head, random);
         }
 
         return sum;
@@ -67,17 +45,12 @@ public class LinkedListRandomNodeBenchmarks
     public long DynamicArrayCache()
     {
         var random = new Random(1);
-        var values = new DynamicArray<int>();
-
-        for (var node = _head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
+        var cache = LinkedListRandomNodeSolution.CacheValues(_head);
         long sum = 0;
+
         for (var call = 0; call < CallCount; call++)
         {
-            sum += values.Get(random.Next(values.Count));
+            sum += LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(cache, random);
         }
 
         return sum;

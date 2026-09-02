@@ -1,102 +1,75 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.DesignTwitter.DesignTwitterSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Twitter (LC 355): getNewsFeed is the operation worth benchmarking - merging the
-// most recent tweets across every followed source into a top-10 feed. GatherAllAndSort is
-// the naive approach: concatenate every source's entire tweet history into one list and
-// sort it descending by time, O(m log m) where m is the total tweet count across all
-// followed sources. HeapKWayMerge instead composes this repo's own max Heap<Element,TOrder>
-// to pull only the FeedSize most recent tweets via a k-way merge seeded with one entry per
-// source - O(FollowedUsers log FollowedUsers + FeedSize log FollowedUsers), independent of
-// how many tweets each source has posted in total. Tweet times are interleaved randomly
-// across sources (not one source's whole history at a time) so the top 10 genuinely draw
-// from many different sources instead of always the most-recently-seeded one.
+// Harness only: both arms are DesignTwitterSolution's, the same classes
+// DesignTwitterTests proves correct. LC 355's own Twitter() constructor takes no
+// initial state, so - as with DesignAuctionSystem - there is no separate "prepared
+// input" to hoist through; [GlobalSetup] instead builds one fixed call script: user
+// 0 follows every one of FollowedUsers followees, then TweetsPerSource tweets per
+// followee are posted in randomly interleaved order (so the top 10 genuinely draw
+// from many different sources instead of always the most-recently-seeded one), and
+// each [Benchmark] arm constructs a fresh strategy and replays that script before
+// reading user 0's feed - so script construction, including the random interleave
+// order, is charged to setup rather than to the replay each arm measures.
 [MemoryDiagnoser]
 public class DesignTwitterBenchmarks
 {
-    private const int FeedSize = 10;
+    private const int SelfUserId = 0;
     private const int TweetsPerSource = 20;
     private const int RandomSeed = 13;
 
     [Params(50, 500)]
     public int FollowedUsers;
 
-    private DynamicArray<(int Time, int TweetId)>[] _sources = null!;
+    private List<Action<ITwitterStrategy>> _script = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var tweetsPerSource = Enumerable.Range(0, FollowedUsers)
-            .Select(_ => new DynamicArray<(int Time, int TweetId)>())
-            .ToArray();
-        var totalTweets = FollowedUsers * TweetsPerSource;
-
-        for (var time = 0; time < totalTweets; time++)
-        {
-            var source = random.Next(FollowedUsers);
-            tweetsPerSource[source].Add((time, time));
-        }
-
-        _sources = tweetsPerSource.Where(tweets => tweets.Count > 0).ToArray();
+        _script = BuildScript(FollowedUsers, random);
     }
 
     [Benchmark(Baseline = true)]
-    public int GatherAllAndSort()
-    {
-        var all = new List<(int Time, int TweetId)>();
-
-        foreach (var tweets in _sources)
-        {
-            for (var i = 0; i < tweets.Count; i++)
-            {
-                all.Add(tweets.Get(i));
-            }
-        }
-
-        all.Sort((a, b) => b.Time.CompareTo(a.Time));
-        return all.Take(FeedSize).Count();
-    }
+    public int GatherAllAndSort() => Replay(new TwitterByGatherAllAndSort());
 
     [Benchmark]
-    public int HeapKWayMerge()
+    public int HeapKWayMerge() => Replay(new TwitterByHeapKWayMerge());
+
+    // Sums the returned feed's tweetIds rather than discarding them, so the JIT
+    // can't eliminate the replay as dead code - the same "return the real answer,
+    // not a weaker proxy" shape DesignAuctionSystemBenchmarks already follows.
+    private int Replay(ITwitterStrategy strategy)
     {
-        var heap = new Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>>();
-
-        for (var i = 0; i < _sources.Length; i++)
+        foreach (var op in _script)
         {
-            var position = _sources[i].Count - 1;
-            var (time, tweetId) = _sources[i].Get(position);
-            heap.Push((time, tweetId, i, position));
+            op(strategy);
         }
 
-        var feedCount = 0;
-
-        while (feedCount < FeedSize && heap.TryPop(out var top))
-        {
-            AccountForPoppedTweetAndRefillSource(heap, top, ref feedCount);
-        }
-
-        return feedCount;
+        return strategy.GetNewsFeed(SelfUserId).Sum();
     }
 
-    private void AccountForPoppedTweetAndRefillSource(
-        Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> heap,
-        (int Time, int TweetId, int SourceIndex, int Position) top,
-        ref int feedCount)
+    private static List<Action<ITwitterStrategy>> BuildScript(int followedUsers, Random random)
     {
-        feedCount++;
+        var script = new List<Action<ITwitterStrategy>>();
 
-        if (top.Position == 0)
+        for (var followeeId = 1; followeeId <= followedUsers; followeeId++)
         {
-            return;
+            var capturedFolloweeId = followeeId;
+            script.Add(strategy => strategy.Follow(SelfUserId, capturedFolloweeId));
         }
 
-        var nextPosition = top.Position - 1;
-        var (time, tweetId) = _sources[top.SourceIndex].Get(nextPosition);
-        heap.Push((time, tweetId, top.SourceIndex, nextPosition));
+        var totalTweets = followedUsers * TweetsPerSource;
+
+        for (var tweetId = 0; tweetId < totalTweets; tweetId++)
+        {
+            var sourceUserId = random.Next(1, followedUsers + 1);
+            var capturedTweetId = tweetId;
+            script.Add(strategy => strategy.PostTweet(sourceUserId, capturedTweetId));
+        }
+
+        return script;
     }
 }

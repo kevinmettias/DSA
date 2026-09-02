@@ -1,3 +1,39 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList; using IntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.PalindromeLinkedList;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromeLinkedList;
-public sealed partial class PalindromeLinkedListTests { [Theory] [InlineData(new[]{1,2,2,1},true)] [InlineData(new[]{1,2},false)] public void IsPalindrome_Examples_ReturnsExpected(int[] values,bool expected)=>Assert.Equal(expected,IsPalindrome(Build(values))); private static bool IsPalindrome(SinglyLinkedListNode<int>? h){var stack=new IntStack();for(var n=h;n is not null;n=n.Next)stack.Push(n.Value);for(var n=h;n is not null;n=n.Next){stack.TryPop(out var v);if(v!=n.Value)return false;}return true;} private static SinglyLinkedListNode<int>? Build(int[] a){var d=new SinglyLinkedListNode<int>(0);var t=d;foreach(var v in a){t.Next=new SinglyLinkedListNode<int>(v);t=t.Next;}return d.Next;} }
+
+// Harness only. The single strategy is PalindromeLinkedListSolution's - this file
+// builds LeetCode's published examples as linked lists and checks the result.
+public sealed class PalindromeLinkedListTests
+{
+    public static TheoryData<int[], bool> Examples =>
+        new()
+        {
+            { [1, 2, 2, 1], true },
+            { [1, 2], false },
+            { [1], true },
+            { [1, 2, 3, 2, 1], true },
+            { [1, 2, 3, 3, 2, 1], true },
+            { [1, 2, 1, 3], false },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsPalindromeByStackReversal_LeetCodeExamples_ReturnsExpected(int[] values, bool expected) =>
+        Assert.Equal(expected, PalindromeLinkedListSolution.IsPalindromeByStackReversal(BuildList(values)));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+}

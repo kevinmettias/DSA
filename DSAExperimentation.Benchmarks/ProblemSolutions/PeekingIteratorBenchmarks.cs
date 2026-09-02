@@ -1,13 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using RepoIntQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+using DSAExperimentation.LeetCode.PeekingIterator;
+using static DSAExperimentation.LeetCode.PeekingIterator.PeekingIteratorSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Peeking Iterator (LC 284): a hand-rolled index + "have I already peeked" flag over
-// the raw array vs. this repo's own Queue<T>, whose TryPeek/TryDequeue already are
-// exactly the "look without consuming" / "look and consume" pair the problem asks
-// for - no extra buffering state to write by hand. Both drive the same
-// peek-peek-next pattern to full exhaustion.
+// Harness only: both arms are PeekingIteratorSolution's, the same factories
+// PeekingIteratorTests proves correct. Both drive the same peek-peek-next
+// pattern to full exhaustion, summing every returned value so the JIT can't
+// eliminate the drain as dead code.
 [MemoryDiagnoser]
 public class PeekingIteratorBenchmarks
 {
@@ -20,65 +20,19 @@ public class PeekingIteratorBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public long IndexTrackedPeek()
+    public long IndexTracked() => Drain(CreateByIndexTracked(_values));
+
+    [Benchmark]
+    public long QueuePrimitive() => Drain(CreateByQueuePrimitive(_values));
+
+    private static long Drain(IPeekingIterator iterator)
     {
-        var iterator = new IndexTrackedIterator(_values);
         var sum = 0L;
 
         while (iterator.HasNext())
         {
             sum += iterator.Peek();
             sum += iterator.Next();
-        }
-
-        return sum;
-    }
-
-    private sealed class IndexTrackedIterator(int[] values)
-    {
-        private int _index;
-        private bool _havePeeked;
-        private int _peeked;
-
-        public bool HasNext() => _havePeeked || _index < values.Length;
-
-        public int Peek()
-        {
-            if (!_havePeeked)
-            {
-                _peeked = values[_index++];
-                _havePeeked = true;
-            }
-
-            return _peeked;
-        }
-
-        public int Next()
-        {
-            var value = Peek();
-            _havePeeked = false;
-            return value;
-        }
-    }
-
-    [Benchmark]
-    public long QueueBackedPeek()
-    {
-        var items = new RepoIntQueue();
-
-        foreach (var value in _values)
-        {
-            items.Enqueue(value);
-        }
-
-        var sum = 0L;
-
-        while (items.Count > 0)
-        {
-            items.TryPeek(out var peeked);
-            sum += peeked;
-            items.TryDequeue(out var next);
-            sum += next;
         }
 
         return sum;

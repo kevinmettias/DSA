@@ -1,16 +1,25 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.ValidateBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: the one arm is ValidateBinarySearchTreeSolution's, the same
+// method ValidateBinarySearchTreeTests proves correct. The previous class
+// carried RecursiveBounds and BinaryTreeNodeBounds as two [Benchmark] arms
+// that both called the same private Validate helper - one strategy under two
+// names, not two - so only the survivor remains.
 [MemoryDiagnoser]
 public class ValidateBinarySearchTreeBenchmarks
 {
     private const int RootValue = 2;
     private const int RightValue = 3;
 
-    private BinaryTreeNode<int> _root=null!; [GlobalSetup] public void Setup()=>_root=new BinaryTreeNode<int>(RootValue){Left=new(1),Right=new(RightValue)};
-    [Benchmark(Baseline=true)] public bool RecursiveBounds()=>Validate(_root,null,null);
-    [Benchmark] public bool BinaryTreeNodeBounds()=>Validate(_root,null,null);
-    private static bool Validate(BinaryTreeNode<int>? n,int? min,int? max)=>n is null||((min is null||n.Value>min)&&(max is null||n.Value<max)&&Validate(n.Left,min,n.Value)&&Validate(n.Right,n.Value,max));
+    private BinaryTreeNode<int> _root = null!;
+
+    [GlobalSetup]
+    public void Setup() => _root = new BinaryTreeNode<int>(RootValue) { Left = new(1), Right = new(RightValue) };
+
+    [Benchmark]
+    public bool BoundsRecursion() => ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(_root);
 }

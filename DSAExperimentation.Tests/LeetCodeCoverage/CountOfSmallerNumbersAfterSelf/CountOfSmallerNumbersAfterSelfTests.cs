@@ -1,60 +1,27 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.CountOfSmallerNumbersAfterSelf;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountOfSmallerNumbersAfterSelf;
 
-// LeetCode 315. Count of Smaller Numbers After Self: coordinate-compress nums via
-// BinarySearch.LowerBound over the sorted distinct values, then sweep right-to-left
-// through a FenwickTree<int, SumOperation<int>> (this repo's own Binary Indexed
-// Tree) - PrefixQuery(rank-1) counts every smaller value already added on the way
-// in, and Add(rank, 1) records the current one before moving further left.
-public sealed partial class CountOfSmallerNumbersAfterSelfTests
+// Harness only: the algorithms live in CountOfSmallerNumbersAfterSelfSolution. One
+// test method per strategy over one shared set of LeetCode's own examples, so a
+// failure names the strategy that broke.
+public sealed class CountOfSmallerNumbersAfterSelfTests
 {
-    [Fact]
-    public void CountSmaller_ClassicExample_ReturnsCountsToTheRight()
-    {
-        int[] nums = [5, 2, 6, 1];
-
-        var counts = CountSmaller(nums);
-
-        Assert.Equal([2, 1, 1, 0], counts);
-    }
-
-    [Fact]
-    public void CountSmaller_AllEqualValues_ReturnsAllZeros()
-    {
-        int[] nums = [1, 1, 1];
-
-        var counts = CountSmaller(nums);
-
-        Assert.Equal([0, 0, 0], counts);
-    }
-
-    [Fact]
-    public void CountSmaller_StrictlyDescending_ReturnsDecreasingCounts()
-    {
-        int[] nums = [3, 2, 1];
-
-        var counts = CountSmaller(nums);
-
-        Assert.Equal([2, 1, 0], counts);
-    }
-
-    private static int[] CountSmaller(int[] nums)
-    {
-        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
-        var counts = new int[nums.Length];
-
-        for (var i = nums.Length - 1; i >= 0; i--)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            var rank = BinarySearch.LowerBound(sequence, nums[i]);
-            counts[i] = rank == 0 ? 0 : tree.PrefixQuery(rank - 1);
-            tree.Add(rank, 1);
-        }
+            { [5, 2, 6, 1], [2, 1, 1, 0] },
+            { [1, 1, 1], [0, 0, 0] },
+            { [3, 2, 1], [2, 1, 0] },
+        };
 
-        return counts;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountSmallerByPairwiseScan_LeetCodeExamples_ReturnsCountsToTheRight(int[] nums, int[] expected) =>
+        Assert.Equal(expected, CountOfSmallerNumbersAfterSelfSolution.CountSmallerByPairwiseScan(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountSmallerByFenwickTreeSweep_LeetCodeExamples_ReturnsCountsToTheRight(int[] nums, int[] expected) =>
+        Assert.Equal(expected, CountOfSmallerNumbersAfterSelfSolution.CountSmallerByFenwickTreeSweep(nums));
 }

@@ -1,3 +1,63 @@
-﻿using DSAExperimentation.Algorithms.Traversal.BreadthFirst;using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.BinaryTreeRightSideView;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BinaryTreeRightSideView;
-public sealed partial class BinaryTreeRightSideViewTests { [Fact] public void RightSideView_ClassicExample_ReturnsRightmostPerLevel(){var root=new BinaryTreeNode<int>(1){Left=new(2){Right=new(5)},Right=new(3){Right=new(4)}};Assert.Equal([1,3,4],View(root));} private static List<int> View(BinaryTreeNode<int>? root){Hooks.Result.Value=[];LevelGroupedBreadthFirstTraversal.Walk<BinaryTreeNode<int>,BinaryTreeTopology<int>,BinaryTreeChildren<int>,NaturalChildOrder<BinaryTreeNode<int>,BinaryTreeChildren<int>>,BinaryTreeChildren<int>,Hooks>(root);return Hooks.Result.Value!;} private readonly struct Hooks:ILevelGroupedHooks<BinaryTreeNode<int>>{public static readonly AsyncLocal<List<int>> Result=new();public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level,int depth)=>Result.Value!.Add(level[^1].Value);} }
+
+// Harness only. The level-grouped BFS is BinaryTreeRightSideViewSolution's -
+// this file pins it to LeetCode's published examples, given in LeetCode's own
+// level-order-with-null array shape (BinaryTreeNode<int> is internal, so it
+// cannot appear in a public TheoryData signature; BuildTree reconstructs it).
+public sealed class BinaryTreeRightSideViewTests
+{
+    public static TheoryData<int?[], List<int>> Examples =>
+        new()
+        {
+            { [1, 2, 3, null, 5, null, 4], [1, 3, 4] },
+            { [1, null, 3], [1, 3] },
+            { [], [] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RightSideViewByLevelGroupedTraversal_LeetCodeExamples_ReturnsRightmostPerLevel(
+        int?[] values, List<int> expected) =>
+        Assert.Equal(expected, BinaryTreeRightSideViewSolution.RightSideViewByLevelGroupedTraversal(BuildTree(values)));
+
+    // LeetCode's level-order array shape: each existing node consumes exactly
+    // two subsequent slots for its children, null marking a missing one.
+    private static BinaryTreeNode<int>? BuildTree(int?[] values)
+    {
+        if (values.Length == 0 || values[0] is null)
+        {
+            return null;
+        }
+
+        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (queue.Count > 0 && i < values.Length)
+        {
+            var node = queue.Dequeue();
+
+            if (values[i] is int leftValue)
+            {
+                node.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(node.Left);
+            }
+
+            i++;
+
+            if (i < values.Length && values[i] is int rightValue)
+            {
+                node.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(node.Right);
+            }
+
+            i++;
+        }
+
+        return root;
+    }
+}

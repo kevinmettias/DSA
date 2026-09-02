@@ -1,89 +1,29 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.MaximumProductOfWordLengths;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProductOfWordLengths;
 
-// LeetCode 318. Maximum Product of Word Lengths: each word collapses to a 26-bit
-// letter-presence mask, and this repo's own HashMap<int,int> dedupes words sharing
-// a mask down to the longest one before the pairwise scan - two words can be
-// combined exactly when their masks share no set bit (mask1 & mask2 == 0).
-public sealed partial class MaximumProductOfWordLengthsTests
+// Harness only: both arms are MaximumProductOfWordLengthsSolution's, the same
+// methods MaximumProductOfWordLengthsBenchmarks measures.
+public sealed class MaximumProductOfWordLengthsTests
 {
-    [Fact]
-    public void MaxProduct_ClassicExample_ReturnsLargestDisjointProduct()
-        => Assert.Equal(16, MaxProduct(["abcw", "baz", "foo", "bar", "xtfn", "abcdef"]));
-
-    [Fact]
-    public void MaxProduct_SecondExample_ReturnsLargestDisjointProduct()
-        => Assert.Equal(4, MaxProduct(["a", "ab", "abc", "d", "cd", "bcd", "abcd"]));
-
-    [Fact]
-    public void MaxProduct_EveryWordSharesLetterA_ReturnsZero()
-        => Assert.Equal(0, MaxProduct(["a", "aa", "aaa", "aaaa"]));
-
-    private static int MaxProduct(string[] words)
-    {
-        var maskToMaxLength = BuildLengthsByMask(words);
-        var pairs = ToMaskLengthPairs(maskToMaxLength);
-        return BestDisjointProduct(pairs);
-    }
-
-    private static HashMap<int, int> BuildLengthsByMask(string[] words)
-    {
-        var maskToMaxLength = new HashMap<int, int>();
-
-        foreach (var word in words)
+    public static TheoryData<string[], int> Examples =>
+        new()
         {
-            RecordWordMask(word, maskToMaxLength);
-        }
+            { ["abcw", "baz", "foo", "bar", "xtfn", "abcdef"], 16 },
+            { ["a", "ab", "abc", "d", "cd", "bcd", "abcd"], 4 },
+            { ["a", "aa", "aaa", "aaaa"], 0 },
+            { ["a", "b"], 1 },
+        };
 
-        return maskToMaxLength;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProductByCharacterScan_LeetCodeExamples_ReturnsLargestDisjointProduct(
+        string[] words, int expected) =>
+        Assert.Equal(expected, MaximumProductOfWordLengthsSolution.MaxProductByCharacterScan(words));
 
-    private static (int Mask, int Length)[] ToMaskLengthPairs(HashMap<int, int> maskToMaxLength)
-    {
-        var masks = maskToMaxLength.Keys.ToArray();
-        var pairs = new (int Mask, int Length)[masks.Length];
-
-        for (var i = 0; i < masks.Length; i++)
-        {
-            maskToMaxLength.TryGetValue(masks[i], out var length);
-            pairs[i] = (masks[i], length);
-        }
-
-        return pairs;
-    }
-
-    private static int BestDisjointProduct((int Mask, int Length)[] pairs)
-    {
-        var best = 0;
-
-        for (var i = 0; i < pairs.Length; i++)
-        {
-            for (var j = i + 1; j < pairs.Length; j++)
-            {
-                if ((pairs[i].Mask & pairs[j].Mask) == 0)
-                {
-                    best = Math.Max(best, pairs[i].Length * pairs[j].Length);
-                }
-            }
-        }
-
-        return best;
-    }
-
-    private static void RecordWordMask(string word, HashMap<int, int> maskToMaxLength)
-    {
-        var mask = 0;
-        foreach (var c in word)
-        {
-            mask |= 1 << (c - 'a');
-        }
-
-        if (maskToMaxLength.TryGetValue(mask, out var existingLength) && existingLength >= word.Length)
-        {
-            return;
-        }
-
-        maskToMaxLength.Set(mask, word.Length);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProductByBitmaskHashMap_LeetCodeExamples_ReturnsLargestDisjointProduct(
+        string[] words, int expected) =>
+        Assert.Equal(expected, MaximumProductOfWordLengthsSolution.MaxProductByBitmaskHashMap(words));
 }

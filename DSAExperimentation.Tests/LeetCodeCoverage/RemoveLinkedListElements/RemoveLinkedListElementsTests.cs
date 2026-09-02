@@ -1,3 +1,61 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.RemoveLinkedListElements;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveLinkedListElements;
-public sealed partial class RemoveLinkedListElementsTests { [Fact] public void RemoveElements_Example_RemovesMatchingValues(){var removed=Remove(Build([1,2,6,3,4,5,6]),6);Assert.Equal([1,2,3,4,5],ToArray(removed));} private static SinglyLinkedListNode<int>? Remove(SinglyLinkedListNode<int>? head,int val){var d=new SinglyLinkedListNode<int>(0){Next=head};var p=d;while(p.Next is not null){if(p.Next.Value==val)p.Next=p.Next.Next;else p=p.Next;}return d.Next;} private static SinglyLinkedListNode<int>? Build(int[] values){var d=new SinglyLinkedListNode<int>(0);var t=d;foreach(var v in values){t.Next=new SinglyLinkedListNode<int>(v);t=t.Next;}return d.Next;} private static int[] ToArray(SinglyLinkedListNode<int>? h){var r=new List<int>();for(var n=h;n is not null;n=n.Next)r.Add(n.Value);return r.ToArray();} }
+
+// Harness only. Both strategies are RemoveLinkedListElementsSolution's - this file
+// builds LeetCode's published examples as linked lists and checks the resulting
+// list's values, including the case where val matches the head node itself.
+public sealed class RemoveLinkedListElementsTests
+{
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
+        {
+            { [1, 2, 6, 3, 4, 5, 6], 6, [1, 2, 3, 4, 5] }, // LC's example 1
+            { [], 1, [] }, // LC's example 2
+            { [7, 7, 7, 7], 7, [] }, // LC's example 3
+            { [7, 1, 7, 2, 7], 7, [1, 2] }, // matches at the head too
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveElementsByArrayRebuild_LeetCodeExamples_RemovesMatchingValues(
+        int[] values, int val, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(RemoveLinkedListElementsSolution.RemoveElementsByArrayRebuild(BuildList(values), val)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveElementsByDummyHeadSplice_LeetCodeExamples_RemovesMatchingValues(
+        int[] values, int val, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(RemoveLinkedListElementsSolution.RemoveElementsByDummyHeadSplice(BuildList(values), val)));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
+}

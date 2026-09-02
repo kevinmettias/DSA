@@ -1,51 +1,95 @@
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.RangeSumQueryMutable;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumQueryMutable;
 
-// LeetCode 307. Range Sum Query - Mutable: this repo's own SegmentTree<int,SumOperation<int>>
-// (the point-update/range-query family ARCHITECTURE.md's SegmentTree worked example describes).
-// SegmentTree.Update takes the new value directly, the same shape as LeetCode's update(index,
-// val), so - unlike FenwickTree.Add, a pure delta increment - no "track the old value to compute
-// a delta" bookkeeping is needed here.
+// Harness only. Both strategies are RangeSumQueryMutableSolution's - this file replays
+// LeetCode's published call sequences against each INumArray implementation via a small operation
+// script, so a failure still names the strategy that broke even though the "input" here is a
+// sequence of mutating calls rather than a single argument tuple - the same shape
+// DesignTaskManagerTests already uses for its own instance-API problem. NumArrayOp.Apply is pure
+// dispatch (which method to call with which arguments) - no summing logic of its own.
 public sealed class RangeSumQueryMutableTests
 {
-    [Fact]
-    public void UpdateSumRange_LeetCodeExample_ReflectsMutation()
+    public static TheoryData<int[], NumArrayOp[], int?[]> Examples =>
+        new()
+        {
+            {
+                [1, 3, 5],
+                [
+                    NumArrayOp.SumRange(0, 2),
+                    NumArrayOp.Update(1, 2),
+                    NumArrayOp.SumRange(0, 2),
+                ],
+                [9, null, 8]
+            },
+            {
+                [0, 0, 0, 0],
+                [
+                    NumArrayOp.Update(2, 10),
+                    NumArrayOp.Update(2, 4),
+                    NumArrayOp.SumRange(0, 3),
+                ],
+                [null, null, 4]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByArrayRescan_LeetCodeExamples_ReflectsMutation(int[] initial, NumArrayOp[] operations, int?[] expected) =>
+        RunScript(RangeSumQueryMutableSolution.CreateByArrayRescan(initial), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateBySegmentTreeQuery_LeetCodeExamples_ReflectsMutation(int[] initial, NumArrayOp[] operations, int?[] expected) =>
+        RunScript(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(initial), operations, expected);
+
+    private static void RunScript(INumArray numArray, NumArrayOp[] operations, int?[] expected)
     {
-        var numArray = new NumArrayOperations([1, 3, 5]);
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(numArray));
+        }
+    }
+}
 
-        var initialSum = numArray.SumRange(0, 2);
+// One call in a NumArray script: which operation to invoke and with what arguments. Pure
+// dispatch, built via the named factories below so a script (like Examples above) reads like the
+// LeetCode call sequence it replays.
+public readonly record struct NumArrayOp
+{
+    private readonly Kind _kind;
+    private readonly int _a;
+    private readonly int _b;
 
-        Assert.Equal(9, initialSum);
-
-        numArray.Update(1, 2);
-
-        var updatedSum = numArray.SumRange(0, 2);
-
-        Assert.Equal(8, updatedSum);
+    private NumArrayOp(Kind kind, int a, int b)
+    {
+        _kind = kind;
+        _a = a;
+        _b = b;
     }
 
-    [Fact]
-    public void Update_RepeatedOnSameIndex_UsesLatestValue()
+    public static NumArrayOp Update(int index, int val) => new(Kind.Update, index, val);
+
+    public static NumArrayOp SumRange(int left, int right) => new(Kind.SumRange, left, right);
+
+    // null for Update, the returned sum for SumRange - so a script runner can assert against one
+    // expected value per operation uniformly. Internal, not public: only this same assembly's
+    // RunScript ever calls Apply.
+    internal int? Apply(INumArray numArray)
     {
-        var numArray = new NumArrayOperations([0, 0, 0, 0]);
-
-        numArray.Update(2, 10);
-        numArray.Update(2, 4);
-
-        var sum = numArray.SumRange(0, 3);
-
-        Assert.Equal(4, sum);
+        switch (_kind)
+        {
+            case Kind.Update:
+                numArray.Update(_a, _b);
+                return null;
+            default:
+                return numArray.SumRange(_a, _b);
+        }
     }
 
-    private sealed class NumArrayOperations
+    private enum Kind
     {
-        private readonly SegmentTree<int, SumOperation<int>> _tree;
-
-        public NumArrayOperations(int[] nums) => _tree = new SegmentTree<int, SumOperation<int>>(nums);
-
-        public void Update(int index, int val) => _tree.Update(index, val);
-
-        public int SumRange(int left, int right) => _tree.Query(left, right);
+        Update,
+        SumRange,
     }
 }

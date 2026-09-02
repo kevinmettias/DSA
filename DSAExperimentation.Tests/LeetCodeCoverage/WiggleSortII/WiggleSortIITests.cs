@@ -1,44 +1,46 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.WiggleSortII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.WiggleSortII;
 
-// LeetCode 324. Wiggle Sort II: sort with this repo's own MergeSort over
-// ArrayIndexedSequence (HIndex precedent), then interleave the reversed lower and
-// upper halves into the even/odd index positions. Filling from the reversed halves
-// - rather than a naive ascending interleave - is what keeps the result valid even
-// when the input has repeated values clustered around the median.
-public sealed partial class WiggleSortIITests
+// Harness only: both strategies live in WiggleSortIISolution and are asserted
+// against the same examples - a value permutation check plus the strict wiggle
+// property, since LC accepts any arrangement of the input's own values.
+public sealed class WiggleSortIITests
 {
+    public static TheoryData<int[]> Examples =>
+        new()
+        {
+            new[] { 1, 5, 1, 1, 6, 4 },
+            new[] { 1, 3, 2, 2, 3, 1 },
+            new[] { 4, 5, 5, 6 },
+            new[] { 1, 1, 2, 1, 2, 2, 1 },
+            new[] { 1 },
+        };
+
     [Theory]
-    [InlineData(new[] { 1, 5, 1, 1, 6, 4 })]
-    [InlineData(new[] { 1, 3, 2, 2, 3, 1 })]
-    [InlineData(new[] { 4, 5, 5, 6 })]
-    [InlineData(new[] { 1, 1, 2, 1, 2, 2, 1 })]
-    [InlineData(new[] { 1 })]
-    public void WiggleSort_LeetCodeExamples_ProducesValidWigglePermutation(int[] nums)
+    [MemberData(nameof(Examples))]
+    public void WiggleSortBySelectionSort_LeetCodeExamples_ProducesValidWigglePermutation(int[] nums)
     {
         var original = (int[])nums.Clone();
+        var working = (int[])nums.Clone();
 
-        WiggleSort(nums);
+        WiggleSortIISolution.WiggleSortBySelectionSort(working);
 
-        Assert.Equal(original.OrderBy(x => x), nums.OrderBy(x => x));
-        AssertWiggleProperty(nums);
+        Assert.Equal(original.OrderBy(x => x), working.OrderBy(x => x));
+        AssertWiggleProperty(working);
     }
 
-    private static void WiggleSort(int[] nums)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WiggleSortByMergeSort_LeetCodeExamples_ProducesValidWigglePermutation(int[] nums)
     {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+        var original = (int[])nums.Clone();
+        var working = (int[])nums.Clone();
 
-        var n = nums.Length;
-        var lowIndex = (n - 1) / 2;
-        var highIndex = n - 1;
+        WiggleSortIISolution.WiggleSortByMergeSort(working);
 
-        for (var i = 0; i < n; i++)
-        {
-            nums[i] = i % 2 == 0 ? sorted[lowIndex--] : sorted[highIndex--];
-        }
+        Assert.Equal(original.OrderBy(x => x), working.OrderBy(x => x));
+        AssertWiggleProperty(working);
     }
 
     private static void AssertWiggleProperty(int[] nums)

@@ -1,109 +1,28 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxSumOfRectangleNoLargerThanK;
 
-// LeetCode 363. Max Sum of Rectangle No Larger Than K: for every left/right column
-// pair, compress the matrix to a 1D row-sum array via a running total, then find
-// its best window summing to no more than k using this repo's own
-// BinarySearchTree<int> holding every prefix sum seen so far - for each new prefix
-// sum, the SMALLEST previously-seen prefix sum >= (prefix - k) gives the largest
-// window not exceeding k. That's the classic TreeSet-ceiling approach, walked
-// directly over BinaryTreeNode<int>'s already-public Value/Left/Right rather than a
-// new production primitive (the same kind of problem-specific traversal
-// KthSmallestElementInABSTTests' RankHooks already composes over this tree).
-public sealed partial class MaxSumOfRectangleNoLargerThanKTests
+// Harness only. Both strategies are MaxSumOfRectangleNoLargerThanKSolution's - this
+// file pins them to LeetCode's classic example plus the single-row exact-limit
+// case, so a failure names the strategy that broke.
+public sealed class MaxSumOfRectangleNoLargerThanKTests
 {
-    [Fact]
-    public void MaxSumSubmatrix_ClassicExample_ReturnsLargestSumWithinLimit()
-    {
-        int[][] matrix = [[1, 0, 1], [0, -2, 3]];
-
-        var maxSum = MaxSumSubmatrix(matrix, k: 2);
-
-        Assert.Equal(2, maxSum);
-    }
-
-    [Fact]
-    public void MaxSumSubmatrix_SingleRowAtExactLimit_ReturnsFullRowSum()
-    {
-        int[][] matrix = [[2, 2, -1]];
-
-        var maxSum = MaxSumSubmatrix(matrix, k: 3);
-
-        Assert.Equal(3, maxSum);
-    }
-
-    private static int MaxSumSubmatrix(int[][] matrix, int k)
-    {
-        var rows = matrix.Length;
-        var cols = matrix[0].Length;
-        var best = int.MinValue;
-
-        for (var left = 0; left < cols; left++)
+    public static TheoryData<int[][], int, int> Examples =>
+        new()
         {
-            var rowSums = new int[rows];
+            { [[1, 0, 1], [0, -2, 3]], 2, 2 },
+            { [[2, 2, -1]], 3, 3 },
+        };
 
-            for (var right = left; right < cols; right++)
-            {
-                for (var r = 0; r < rows; r++)
-                {
-                    rowSums[r] += matrix[r][right];
-                }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxSumSubmatrixByBruteForceWindowScan_LeetCodeExamples_ReturnsLargestSumWithinLimit(
+        int[][] matrix, int k, int expected) =>
+        Assert.Equal(expected, MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBruteForceWindowScan(matrix, k));
 
-                var windowSum = BestWindowNoLargerThanK(rowSums, k);
-                best = Math.Max(best, windowSum);
-            }
-        }
-
-        return best;
-    }
-
-    private static int BestWindowNoLargerThanK(int[] rowSums, int k)
-    {
-        var prefixes = new BinarySearchTree<int>();
-        prefixes.Insert(0);
-
-        var best = int.MinValue;
-        var prefix = 0;
-
-        foreach (var value in rowSums)
-        {
-            prefix += value;
-
-            if (TryFindCeiling(prefixes, prefix - k, out var ceiling))
-            {
-                best = Math.Max(best, prefix - ceiling);
-            }
-
-            prefixes.Insert(prefix);
-        }
-
-        return best;
-    }
-
-    // Smallest inserted value >= target - the standard BST ceiling walk, composed
-    // directly over BinarySearchTree<int>'s exposed Root and BinaryTreeNode<int>'s
-    // Left/Right/Value.
-    private static bool TryFindCeiling(BinarySearchTree<int> tree, int target, out int ceiling)
-    {
-        var node = tree.Root;
-        var found = false;
-        ceiling = default;
-
-        while (node is not null)
-        {
-            if (node.Value >= target)
-            {
-                ceiling = node.Value;
-                found = true;
-                node = node.Left;
-            }
-            else
-            {
-                node = node.Right;
-            }
-        }
-
-        return found;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxSumSubmatrixByBstCeilingScan_LeetCodeExamples_ReturnsLargestSumWithinLimit(
+        int[][] matrix, int k, int expected) =>
+        Assert.Equal(expected, MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBstCeilingScan(matrix, k));
 }
