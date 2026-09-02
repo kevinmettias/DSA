@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class OnlineElectionBenchmarks
 {
+    // LC problem number, used as the RNG seed.
+    private const int RandomSeed = 911;
+    private const int CandidateCount = 10;
+    private const int TimeStep = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -27,9 +32,9 @@ public class OnlineElectionBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(911);
-        _persons = Enumerable.Range(0, Length).Select(_ => random.Next(0, 10)).ToArray();
-        _times = Enumerable.Range(0, Length).Select(i => i * 2).ToArray();
+        var random = new Random(RandomSeed);
+        _persons = Enumerable.Range(0, Length).Select(_ => random.Next(0, CandidateCount)).ToArray();
+        _times = Enumerable.Range(0, Length).Select(i => i * TimeStep).ToArray();
         _queries = _times.Select(t => t + 1).ToArray();
     }
 
@@ -40,24 +45,7 @@ public class OnlineElectionBenchmarks
 
         foreach (var t in _queries)
         {
-            var votes = new HashMap<int, int>();
-            var leader = -1;
-            var leaderVotes = 0;
-
-            for (var i = 0; i < _times.Length && _times[i] <= t; i++)
-            {
-                votes.TryGetValue(_persons[i], out var count);
-                count++;
-                votes.Set(_persons[i], count);
-
-                if (count >= leaderVotes)
-                {
-                    leader = _persons[i];
-                    leaderVotes = count;
-                }
-            }
-
-            leaderSum += leader;
+            leaderSum += LeaderAtOrBefore(t);
         }
 
         return leaderSum;
@@ -73,16 +61,7 @@ public class OnlineElectionBenchmarks
 
         for (var i = 0; i < _persons.Length; i++)
         {
-            votes.TryGetValue(_persons[i], out var count);
-            count++;
-            votes.Set(_persons[i], count);
-
-            if (count >= leaderVotes)
-            {
-                leader = _persons[i];
-                leaderVotes = count;
-            }
-
+            TallyVote(votes, _persons[i], ref leader, ref leaderVotes);
             leaders[i] = leader;
         }
 
@@ -96,5 +75,34 @@ public class OnlineElectionBenchmarks
         }
 
         return leaderSum;
+    }
+
+    // Re-counts votes from scratch over [0, queryTime] and returns the resulting leader.
+    private int LeaderAtOrBefore(int queryTime)
+    {
+        var votes = new HashMap<int, int>();
+        var leader = -1;
+        var leaderVotes = 0;
+
+        for (var i = 0; i < _times.Length && _times[i] <= queryTime; i++)
+        {
+            TallyVote(votes, _persons[i], ref leader, ref leaderVotes);
+        }
+
+        return leader;
+    }
+
+    // Records one more vote for `person` and updates the running leader if it changes.
+    private static void TallyVote(HashMap<int, int> votes, int person, ref int leader, ref int leaderVotes)
+    {
+        votes.TryGetValue(person, out var count);
+        count++;
+        votes.Set(person, count);
+
+        if (count >= leaderVotes)
+        {
+            leader = person;
+            leaderVotes = count;
+        }
     }
 }

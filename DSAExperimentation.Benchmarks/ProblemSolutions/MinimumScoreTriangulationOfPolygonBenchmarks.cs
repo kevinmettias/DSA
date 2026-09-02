@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumScoreTriangulationOfPolygonBenchmarks
 {
+    private const int MaxVertexWeight = 100;
+    private const int MinSpanForTriangle = 2;
+
     [Params(10, 14)]
     public int VertexCount;
 
@@ -21,7 +24,7 @@ public class MinimumScoreTriangulationOfPolygonBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, VertexCount).Select(_ => random.Next(1, 100)).ToArray();
+        _values = Enumerable.Range(0, VertexCount).Select(_ => random.Next(1, MaxVertexWeight)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -29,7 +32,7 @@ public class MinimumScoreTriangulationOfPolygonBenchmarks
 
     private int ScoreBetween(int left, int right)
     {
-        if (right - left < 2)
+        if (right - left < MinSpanForTriangle)
         {
             return 0;
         }
@@ -54,7 +57,7 @@ public class MinimumScoreTriangulationOfPolygonBenchmarks
         int ScoreBetweenMemoized((int Left, int Right) range, Func<(int Left, int Right), int> score)
         {
             var (left, right) = range;
-            if (right - left < 2)
+            if (right - left < MinSpanForTriangle)
             {
                 return 0;
             }

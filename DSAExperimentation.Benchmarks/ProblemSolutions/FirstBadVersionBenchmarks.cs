@@ -11,13 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FirstBadVersionBenchmarks
 {
+    private const double FirstBadFraction = 0.7;
+
     [Params(1_000, 1_000_000)]
     public int VersionCount;
 
     private int _firstBad;
 
     [GlobalSetup]
-    public void Setup() => _firstBad = (int)(VersionCount * 0.7);
+    public void Setup() => _firstBad = (int)(VersionCount * FirstBadFraction);
 
     [Benchmark(Baseline = true)]
     public int LinearScan()

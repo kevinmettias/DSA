@@ -34,8 +34,9 @@ public sealed partial class BeautifulArrayTests
     public void Construct_VariousLengths_ProducesABeautifulPermutation(int n)
     {
         var result = Construct(n);
+        var expectedValues = Enumerable.Range(1, n);
 
-        Assert.Equal(Enumerable.Range(1, n), result.OrderBy(x => x));
+        Assert.Equal(expectedValues, result.OrderBy(x => x));
         Assert.True(IsBeautiful(result));
     }
 
@@ -67,16 +68,26 @@ public sealed partial class BeautifulArrayTests
         {
             for (var k = i + 1; k < values.Length; k++)
             {
-                for (var j = k + 1; j < values.Length; j++)
+                if (HasAveragingPair(values, i, k))
                 {
-                    if ((2 * values[k]) == values[i] + values[j])
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
 
         return true;
+    }
+
+    private static bool HasAveragingPair(int[] values, int i, int k)
+    {
+        for (var j = k + 1; j < values.Length; j++)
+        {
+            if ((2 * values[k]) == values[i] + values[j])
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

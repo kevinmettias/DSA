@@ -18,6 +18,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BalanceABinarySearchTreeBenchmarks
 {
+    private const int MidpointDivisor = 2;
+
     [Params(200, 2_000)]
     public int NodeCount;
 
@@ -36,7 +38,8 @@ public class BalanceABinarySearchTreeBenchmarks
             sorted[k - 1] = FindKthSmallest(_root, k);
         }
 
-        return Height(Build(sorted, 0, sorted.Length - 1));
+        var rebuilt = Build(sorted, 0, sorted.Length - 1);
+        return Height(rebuilt);
     }
 
     [Benchmark]
@@ -47,7 +50,8 @@ public class BalanceABinarySearchTreeBenchmarks
         InOrderTraversal.Walk<int, CollectHooks>(_root);
 
         var sorted = State.Sorted.Value;
-        return Height(BuildFromDynamicArray(sorted, 0, sorted.Count - 1));
+        var rebuilt = BuildFromDynamicArray(sorted, 0, sorted.Count - 1);
+        return Height(rebuilt);
     }
 
     private static int FindKthSmallest(BinaryTreeNode<int> root, int k)
@@ -90,7 +94,7 @@ public class BalanceABinarySearchTreeBenchmarks
             return null;
         }
 
-        var mid = low + ((high - low) / 2);
+        var mid = low + ((high - low) / MidpointDivisor);
         return new BinaryTreeNode<int>(sorted[mid])
         {
             Left = Build(sorted, low, mid - 1),
@@ -105,7 +109,7 @@ public class BalanceABinarySearchTreeBenchmarks
             return null;
         }
 
-        var mid = low + ((high - low) / 2);
+        var mid = low + ((high - low) / MidpointDivisor);
         return new BinaryTreeNode<int>(sorted.Get(mid))
         {
             Left = BuildFromDynamicArray(sorted, low, mid - 1),

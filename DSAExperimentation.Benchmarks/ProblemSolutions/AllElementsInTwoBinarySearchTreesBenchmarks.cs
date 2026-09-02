@@ -16,6 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AllElementsInTwoBinarySearchTreesBenchmarks
 {
+    private const int RandomSeedTree1 = 1305; // LeetCode problem number
+    private const int RandomSeedTree2 = 1306;
+    private const int TreeCount = 2;
+
     [Params(300, 5_000)]
     public int NodeCount;
 
@@ -25,14 +29,14 @@ public class AllElementsInTwoBinarySearchTreesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _root1 = BuildTree(seed: 1305);
-        _root2 = BuildTree(seed: 1306);
+        _root1 = BuildTree(seed: RandomSeedTree1);
+        _root2 = BuildTree(seed: RandomSeedTree2);
     }
 
     [Benchmark(Baseline = true)]
     public int[] CollectAllThenSort()
     {
-        var values = new List<int>(NodeCount * 2);
+        var values = new List<int>(NodeCount * TreeCount);
         CollectAll(_root1, values);
         CollectAll(_root2, values);
 

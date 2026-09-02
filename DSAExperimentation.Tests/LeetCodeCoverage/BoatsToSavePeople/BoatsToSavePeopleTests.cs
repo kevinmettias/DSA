@@ -16,7 +16,9 @@ public sealed partial class BoatsToSavePeopleTests
     {
         int[] people = [1, 2];
 
-        Assert.Equal(1, NumRescueBoats(people, limit: 3));
+        var boats = NumRescueBoats(people, limit: 3);
+
+        Assert.Equal(1, boats);
     }
 
     [Fact]
@@ -24,7 +26,9 @@ public sealed partial class BoatsToSavePeopleTests
     {
         int[] people = [3, 2, 2, 1];
 
-        Assert.Equal(3, NumRescueBoats(people, limit: 3));
+        var boats = NumRescueBoats(people, limit: 3);
+
+        Assert.Equal(3, boats);
     }
 
     [Fact]
@@ -32,7 +36,9 @@ public sealed partial class BoatsToSavePeopleTests
     {
         int[] people = [3, 5, 3, 4];
 
-        Assert.Equal(4, NumRescueBoats(people, limit: 5));
+        var boats = NumRescueBoats(people, limit: 5);
+
+        Assert.Equal(4, boats);
     }
 
     private static int NumRescueBoats(int[] people, int limit)

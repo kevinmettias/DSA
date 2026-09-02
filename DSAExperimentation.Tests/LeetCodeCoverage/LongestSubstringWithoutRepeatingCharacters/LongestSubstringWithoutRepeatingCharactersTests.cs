@@ -1,64 +1,30 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.LongestSubstringWithoutRepeatingCharacters;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestSubstringWithoutRepeatingCharacters;
 
-// LeetCode 3. Longest Substring Without Repeating Characters: a single sliding-
-// window pass tracking each character's last-seen index in this repo's own
-// HashMap<char,int>, jumping the window's left edge straight past a repeat
-// instead of shrinking it one character at a time.
-public sealed partial class LongestSubstringWithoutRepeatingCharactersTests
+// Harness only. Both strategies are
+// LongestSubstringWithoutRepeatingCharactersSolution's - this file pins them to
+// LeetCode's published examples.
+public sealed class LongestSubstringWithoutRepeatingCharactersTests
 {
-    [Fact]
-    public void FindLength_ClassicExample_ReturnsLongestUniqueRun()
-    {
-        var length = LongestUniqueSubstringLength("abcabcbb");
-
-        Assert.Equal(3, length);
-    }
-
-    [Fact]
-    public void FindLength_AllSameCharacter_ReturnsOne()
-    {
-        var length = LongestUniqueSubstringLength("bbbbb");
-
-        Assert.Equal(1, length);
-    }
-
-    [Fact]
-    public void FindLength_RepeatBeforeWindowStart_DoesNotFalselyShrinkWindow()
-    {
-        var length = LongestUniqueSubstringLength("pwwkew");
-
-        Assert.Equal(3, length);
-    }
-
-    [Fact]
-    public void FindLength_EmptyString_ReturnsZero()
-    {
-        var length = LongestUniqueSubstringLength("");
-
-        Assert.Equal(0, length);
-    }
-
-    private static int LongestUniqueSubstringLength(string text)
-    {
-        var lastSeenIndex = new HashMap<char, int>();
-        var windowStart = 0;
-        var longest = 0;
-
-        for (var windowEnd = 0; windowEnd < text.Length; windowEnd++)
+    public static TheoryData<string, int> Examples =>
+        new()
         {
-            var current = text[windowEnd];
+            { "abcabcbb", 3 },
+            { "bbbbb", 1 },
+            { "pwwkew", 3 },
+            { "", 0 },
+        };
 
-            if (lastSeenIndex.TryGetValue(current, out var previousIndex) && previousIndex >= windowStart)
-            {
-                windowStart = previousIndex + 1;
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindLengthByBruteForce_LeetCodeExamples_ReturnsLongestUniqueRun(string text, int expected) =>
+        Assert.Equal(expected, LongestSubstringWithoutRepeatingCharactersSolution.FindLengthByBruteForce(text));
 
-            lastSeenIndex.Set(current, windowEnd);
-            longest = Math.Max(longest, windowEnd - windowStart + 1);
-        }
-
-        return longest;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindLengthBySlidingWindowHashMap_LeetCodeExamples_ReturnsLongestUniqueRun(string text, int expected) =>
+        Assert.Equal(
+            expected,
+            LongestSubstringWithoutRepeatingCharactersSolution.FindLengthBySlidingWindowHashMap(text));
 }

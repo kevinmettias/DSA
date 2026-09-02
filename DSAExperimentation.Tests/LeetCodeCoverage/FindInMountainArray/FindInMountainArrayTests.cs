@@ -1,6 +1,7 @@
-using DSAExperimentation.Algorithms;
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.Algorithms;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindInMountainArray;
 
@@ -21,7 +22,9 @@ public sealed partial class FindInMountainArrayTests
     {
         int[] mountain = [1, 2, 3, 4, 5, 3, 1];
 
-        Assert.Equal(2, SearchMountainArray(mountain, target: 3));
+        var index = SearchMountainArray(mountain, target: 3);
+
+        Assert.Equal(2, index);
     }
 
     [Fact]
@@ -29,7 +32,9 @@ public sealed partial class FindInMountainArrayTests
     {
         int[] mountain = [1, 5, 10, 20, 15, 8, 2];
 
-        Assert.Equal(5, SearchMountainArray(mountain, target: 8));
+        var index = SearchMountainArray(mountain, target: 8);
+
+        Assert.Equal(5, index);
     }
 
     [Fact]
@@ -37,7 +42,9 @@ public sealed partial class FindInMountainArrayTests
     {
         int[] mountain = [0, 1, 2, 4, 2, 1];
 
-        Assert.Equal(-1, SearchMountainArray(mountain, target: 3));
+        var index = SearchMountainArray(mountain, target: 3);
+
+        Assert.Equal(-1, index);
     }
 
     private static int SearchMountainArray(int[] mountain, int target)

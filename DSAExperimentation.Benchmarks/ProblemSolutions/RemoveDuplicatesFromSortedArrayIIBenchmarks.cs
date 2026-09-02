@@ -1,41 +1,31 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Remove Duplicates from Sorted Array II (LC 80): a LINQ GroupBy-and-cap read-only
-// baseline (same "convenient LINQ vs. allocation-free primitive" contrast
-// RemoveDuplicatesFromSortedArrayBenchmarks already uses for LC 26) vs. the two-
-// pointer in-place compaction over this repo's own ArrayIndexedSequence<int>.
+// Harness only: both arms are RemoveDuplicatesFromSortedArrayIISolution's, the
+// same methods RemoveDuplicatesFromSortedArrayIITests proves correct. Both
+// strategies mutate the array they are handed, so each call gets its own copy of
+// _values rather than reusing one shared array a later iteration would find
+// already compacted.
 [MemoryDiagnoser]
 public class RemoveDuplicatesFromSortedArrayIIBenchmarks
 {
+    private const int DuplicateRunLength = 3; // every N consecutive elements share the same value in the seeded input
+
     private int[] _values = null!;
 
     [Params(200, 5_000)]
     public int Length;
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / 3).ToArray();
+    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / DuplicateRunLength).ToArray();
 
     [Benchmark(Baseline = true)]
-    public int LinqGroupCapTwo() => _values.GroupBy(x => x).Sum(g => Math.Min(2, g.Count()));
+    public int LinqGroupCapTwo() =>
+        RemoveDuplicatesFromSortedArrayIISolution.RemoveDuplicatesByLinqGroupCapTwo(_values.ToArray());
 
     [Benchmark]
-    public int ArrayIndexedSequenceCompact()
-    {
-        var copy = _values.ToArray();
-        var sequence = new ArrayIndexedSequence<int>(copy);
-        var write = 0;
-
-        for (var read = 0; read < sequence.Length; read++)
-        {
-            if (write < 2 || sequence.Get(read) != sequence.Get(write - 2))
-            {
-                sequence.Set(write++, sequence.Get(read));
-            }
-        }
-
-        return write;
-    }
+    public int ArrayIndexedSequenceCompact() =>
+        RemoveDuplicatesFromSortedArrayIISolution.RemoveDuplicatesByArrayIndexedSequenceCompact(_values.ToArray());
 }

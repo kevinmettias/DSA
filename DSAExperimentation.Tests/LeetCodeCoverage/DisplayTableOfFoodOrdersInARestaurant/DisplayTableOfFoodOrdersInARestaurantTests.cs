@@ -63,49 +63,87 @@ public sealed partial class DisplayTableOfFoodOrdersInARestaurantTests
 
     private static List<List<string>> DisplayTable(string[][] orders)
     {
+        var (countsByTable, foodNames) = TallyOrders(orders);
+        var sortedFoods = SortedFoodNames(foodNames);
+        var sortedTables = SortedTableNumbers(countsByTable);
+
+        var table = BuildHeaderRow(sortedFoods);
+        AppendDataRows(table, sortedTables, sortedFoods, countsByTable);
+
+        return table;
+    }
+
+    private static (HashMap<int, HashMap<string, int>> CountsByTable, HashMap<string, bool> FoodNames) TallyOrders(string[][] orders)
+    {
         var countsByTable = new HashMap<int, HashMap<string, int>>();
         var foodNames = new HashMap<string, bool>();
 
         foreach (var order in orders)
         {
-            var tableNumber = int.Parse(order[1]);
-            var foodItem = order[2];
-
-            foodNames.Set(foodItem, true);
-
-            if (!countsByTable.TryGetValue(tableNumber, out var foodCounts))
-            {
-                foodCounts = new HashMap<string, int>();
-                countsByTable.Set(tableNumber, foodCounts);
-            }
-
-            foodCounts.TryGetValue(foodItem, out var count);
-            foodCounts.Set(foodItem, count + 1);
+            RecordOrder(order, countsByTable, foodNames);
         }
 
+        return (countsByTable, foodNames);
+    }
+
+    private static string[] SortedFoodNames(HashMap<string, bool> foodNames)
+    {
         var sortedFoods = foodNames.Keys.ToArray();
         MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(sortedFoods), StringComparer.Ordinal);
+        return sortedFoods;
+    }
 
+    private static int[] SortedTableNumbers(HashMap<int, HashMap<string, int>> countsByTable)
+    {
         var sortedTables = countsByTable.Keys.ToArray();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedTables));
+        return sortedTables;
+    }
 
+    private static List<List<string>> BuildHeaderRow(string[] sortedFoods)
+    {
         var table = new List<List<string>> { new(["Table"]) };
         table[0].AddRange(sortedFoods);
+        return table;
+    }
 
+    private static void AppendDataRows(List<List<string>> table, int[] sortedTables, string[] sortedFoods, HashMap<int, HashMap<string, int>> countsByTable)
+    {
         foreach (var tableNumber in sortedTables)
         {
-            countsByTable.TryGetValue(tableNumber, out var foodCounts);
-            var row = new List<string> { tableNumber.ToString() };
-
-            foreach (var food in sortedFoods)
-            {
-                foodCounts.TryGetValue(food, out var count);
-                row.Add(count.ToString());
-            }
-
+            var row = BuildRow(tableNumber, sortedFoods, countsByTable);
             table.Add(row);
         }
+    }
 
-        return table;
+    private static List<string> BuildRow(int tableNumber, string[] sortedFoods, HashMap<int, HashMap<string, int>> countsByTable)
+    {
+        countsByTable.TryGetValue(tableNumber, out var foodCounts);
+        var row = new List<string> { tableNumber.ToString() };
+
+        foreach (var food in sortedFoods)
+        {
+            foodCounts.TryGetValue(food, out var count);
+            row.Add(count.ToString());
+        }
+
+        return row;
+    }
+
+    private static void RecordOrder(string[] order, HashMap<int, HashMap<string, int>> countsByTable, HashMap<string, bool> foodNames)
+    {
+        var tableNumber = int.Parse(order[1]);
+        var foodItem = order[2];
+
+        foodNames.Set(foodItem, true);
+
+        if (!countsByTable.TryGetValue(tableNumber, out var foodCounts))
+        {
+            foodCounts = new HashMap<string, int>();
+            countsByTable.Set(tableNumber, foodCounts);
+        }
+
+        foodCounts.TryGetValue(foodItem, out var count);
+        foodCounts.Set(foodItem, count + 1);
     }
 }

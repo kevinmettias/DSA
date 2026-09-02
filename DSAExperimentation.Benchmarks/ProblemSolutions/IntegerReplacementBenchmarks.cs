@@ -18,6 +18,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class IntegerReplacementBenchmarks
 {
+    private const int EvenCheckDivisor = 2;
+
     [Params(21_845, 1_431_655_765)]
     public long N;
 
@@ -29,7 +31,7 @@ public class IntegerReplacementBenchmarks
         => Memoizer.Memoize<long, int>(N, (value, replace) => value switch
         {
             1 => 0,
-            _ when value % 2 == 0 => 1 + replace(value / 2),
+            _ when value % EvenCheckDivisor == 0 => 1 + replace(value / EvenCheckDivisor),
             _ => 1 + Math.Min(replace(value - 1), replace(value + 1)),
         });
 
@@ -37,7 +39,7 @@ public class IntegerReplacementBenchmarks
         => n switch
         {
             1 => 0,
-            _ when n % 2 == 0 => 1 + Replace(n / 2),
+            _ when n % EvenCheckDivisor == 0 => 1 + Replace(n / EvenCheckDivisor),
             _ => 1 + Math.Min(Replace(n - 1), Replace(n + 1)),
         };
 }

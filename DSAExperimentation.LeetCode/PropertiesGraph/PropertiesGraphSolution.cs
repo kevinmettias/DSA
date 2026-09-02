@@ -1,0 +1,168 @@
+using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.DataStructures.Set;
+
+namespace DSAExperimentation.LeetCode.PropertiesGraph;
+
+// LeetCode 3493. Properties Graph: an undirected edge joins i and j whenever
+// intersect(properties[i], properties[j]) - the count of DISTINCT values common
+// to both rows - is >= k. Return the number of connected components.
+//
+// Both strategies test every pair (n <= 100 per LC's own constraints, so O(n^2 *
+// m) is already the intended order) and differ only in what computes intersect()
+// and what tracks components - the same "which primitive would you reach for"
+// contrast CountConnectedComponentsInLCMGraphSolution's two arms draw, just with
+// both axes (set membership, union-find) varied together here instead of one.
+internal static class PropertiesGraphSolution
+{
+    // Baseline: intersect() via a BCL HashSet per row, union-find via a
+    // hand-rolled int[] parent array with path compression - deliberately no
+    // repo primitive, the "what you'd write without this repo" arm the composed
+    // strategy below has to beat.
+    public static int NumberOfComponentsByBruteForce(int[][] properties, int k)
+    {
+        var n = properties.Length;
+        var parent = new int[n];
+
+        for (var i = 0; i < n; i++)
+        {
+            parent[i] = i;
+        }
+
+        var rows = new HashSet<int>[n];
+
+        for (var i = 0; i < n; i++)
+        {
+            rows[i] = [.. properties[i]];
+        }
+
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = i + 1; j < n; j++)
+            {
+                if (IntersectCount(rows[i], rows[j]) >= k)
+                {
+                    Union(parent, i, j);
+                }
+            }
+        }
+
+        var roots = new HashSet<int>();
+
+        for (var i = 0; i < n; i++)
+        {
+            roots.Add(Find(parent, i));
+        }
+
+        return roots.Count;
+    }
+
+    private static int IntersectCount(HashSet<int> a, HashSet<int> b)
+    {
+        var count = 0;
+
+        foreach (var value in a)
+        {
+            if (b.Contains(value))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static int Find(int[] parent, int x)
+    {
+        while (parent[x] != x)
+        {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+
+        return x;
+    }
+
+    private static void Union(int[] parent, int a, int b)
+    {
+        var rootA = Find(parent, a);
+        var rootB = Find(parent, b);
+
+        if (rootA != rootB)
+        {
+            parent[rootA] = rootB;
+        }
+    }
+
+    // Composed: this repo's own Set<int> for both jobs it already has - TryAdd
+    // (via the bulk-seeding constructor) for per-row dedup, Has for O(1)-average
+    // membership - and DisjointSet for union-find, the same forest
+    // CountConnectedComponentsInLCMGraphSolution's own composed arm reaches for.
+    // Set<T> has no enumerator (Trie.cs's own doc comment notes Trie<TValue>
+    // keeps a comparable surface deliberately narrow), so each row's distinct
+    // values are also kept as a plain array alongside its Set - Distinct's own
+    // Set<int> is what produces that array, TryAdd rejecting every repeat.
+    public static int NumberOfComponentsByDisjointSet(int[][] properties, int k)
+    {
+        var n = properties.Length;
+        var forest = new DisjointSet(n);
+        var rowSets = new Set<int>[n];
+        var distinctRows = new int[n][];
+
+        for (var i = 0; i < n; i++)
+        {
+            rowSets[i] = new Set<int>(properties[i]);
+            distinctRows[i] = Distinct(properties[i]);
+        }
+
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = i + 1; j < n; j++)
+            {
+                if (IntersectCount(distinctRows[i], rowSets[j]) >= k)
+                {
+                    forest.Union(i, j);
+                }
+            }
+        }
+
+        var roots = new HashSet<int>();
+
+        for (var i = 0; i < n; i++)
+        {
+            roots.Add(forest.Find(i));
+        }
+
+        return roots.Count;
+    }
+
+    private static int IntersectCount(int[] distinctValues, Set<int> other)
+    {
+        var count = 0;
+
+        foreach (var value in distinctValues)
+        {
+            if (other.Has(value))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static int[] Distinct(int[] row)
+    {
+        var seen = new Set<int>();
+        var distinct = new List<int>(row.Length);
+
+        foreach (var value in row)
+        {
+            if (seen.TryAdd(value))
+            {
+                distinct.Add(value);
+            }
+        }
+
+        return [.. distinct];
+    }
+}

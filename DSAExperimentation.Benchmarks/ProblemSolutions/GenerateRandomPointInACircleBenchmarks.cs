@@ -16,6 +16,8 @@ public class GenerateRandomPointInACircleBenchmarks
     private const double Radius = 10.0;
     private const double XCenter = 5.0;
     private const double YCenter = -3.0;
+    private const double DiameterMultiplier = 2.0;
+    private const double TwoPi = 2.0 * Math.PI;
 
     [Params(1_000, 100_000)]
     public int Draws;
@@ -31,8 +33,8 @@ public class GenerateRandomPointInACircleBenchmarks
             double x, y;
             do
             {
-                x = (random.NextDouble() * 2 * Radius) - Radius;
-                y = (random.NextDouble() * 2 * Radius) - Radius;
+                x = (random.NextDouble() * DiameterMultiplier * Radius) - Radius;
+                y = (random.NextDouble() * DiameterMultiplier * Radius) - Radius;
             }
             while ((x * x) + (y * y) > Radius * Radius);
 
@@ -51,7 +53,7 @@ public class GenerateRandomPointInACircleBenchmarks
         for (var i = 0; i < Draws; i++)
         {
             var r = Radius * Math.Sqrt(random.NextDouble());
-            var angle = random.NextDouble() * 2 * Math.PI;
+            var angle = random.NextDouble() * TwoPi;
             sumX += XCenter + (r * Math.Cos(angle));
         }
 

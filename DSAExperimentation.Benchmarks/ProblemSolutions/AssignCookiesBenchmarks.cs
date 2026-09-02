@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AssignCookiesBenchmarks
 {
+    private const int RandomSeed = 455; // LC problem number
+    private const int RandomValueUpperBound = 1_000;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -23,9 +26,9 @@ public class AssignCookiesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(455);
-        _greed = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
-        _sizes = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _greed = Enumerable.Range(0, Length).Select(_ => random.Next(1, RandomValueUpperBound)).ToArray();
+        _sizes = Enumerable.Range(0, Length).Select(_ => random.Next(1, RandomValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -37,24 +40,41 @@ public class AssignCookiesBenchmarks
 
         foreach (var greed in _greed)
         {
-            var bestIndex = -1;
-
-            for (var j = 0; j < sizes.Length; j++)
+            if (TryAssignSmallestSufficientCookie(sizes, used, greed))
             {
-                if (!used[j] && sizes[j] >= greed && (bestIndex < 0 || sizes[j] < sizes[bestIndex]))
-                {
-                    bestIndex = j;
-                }
-            }
-
-            if (bestIndex >= 0)
-            {
-                used[bestIndex] = true;
                 content++;
             }
         }
 
         return content;
+    }
+
+    private static bool TryAssignSmallestSufficientCookie(int[] sizes, bool[] used, int greed)
+    {
+        var bestIndex = FindSmallestSufficientCookieIndex(sizes, used, greed);
+
+        if (bestIndex < 0)
+        {
+            return false;
+        }
+
+        used[bestIndex] = true;
+        return true;
+    }
+
+    private static int FindSmallestSufficientCookieIndex(int[] sizes, bool[] used, int greed)
+    {
+        var bestIndex = -1;
+
+        for (var j = 0; j < sizes.Length; j++)
+        {
+            if (!used[j] && sizes[j] >= greed && (bestIndex < 0 || sizes[j] < sizes[bestIndex]))
+            {
+                bestIndex = j;
+            }
+        }
+
+        return bestIndex;
     }
 
     [Benchmark]

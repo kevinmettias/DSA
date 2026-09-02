@@ -12,7 +12,8 @@ public sealed class ReshapeTheMatrixTests
     {
         int[][] mat = [[1, 2], [3, 4]];
 
-        Assert.Equal([[1, 2, 3, 4]], MatrixReshape(mat, 1, 4));
+        var reshaped = MatrixReshape(mat, 1, 4);
+        Assert.Equal([[1, 2, 3, 4]], reshaped);
     }
 
     [Fact]
@@ -20,7 +21,8 @@ public sealed class ReshapeTheMatrixTests
     {
         int[][] mat = [[1, 2], [3, 4]];
 
-        Assert.Equal([[1, 2], [3, 4]], MatrixReshape(mat, 2, 4));
+        var reshaped = MatrixReshape(mat, 2, 4);
+        Assert.Equal([[1, 2], [3, 4]], reshaped);
     }
 
     private static int[][] MatrixReshape(int[][] mat, int r, int c)

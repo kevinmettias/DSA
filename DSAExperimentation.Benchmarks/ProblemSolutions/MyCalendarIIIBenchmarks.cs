@@ -16,6 +16,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MyCalendarIIIBenchmarks
 {
+    // LC 732.
+    private const int RandomSeed = 732;
+    private const int StartRangeMultiplier = 2;
+    private const int MaxBookingDuration = 20;
+
     [Params(50, 200)]
     public int Length;
 
@@ -24,12 +29,12 @@ public class MyCalendarIIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(732);
+        var random = new Random(RandomSeed);
         _bookings = Enumerable.Range(0, Length)
             .Select(_ =>
             {
-                var start = random.Next(0, Length * 2);
-                var end = start + random.Next(1, 20);
+                var start = random.Next(0, Length * StartRangeMultiplier);
+                var end = start + random.Next(1, MaxBookingDuration);
                 return (Start: start, End: end);
             })
             .ToArray();
@@ -44,24 +49,38 @@ public class MyCalendarIIIBenchmarks
         foreach (var booking in _bookings)
         {
             bookings.Add(booking);
-
-            foreach (var (candidateStart, _) in bookings)
-            {
-                var overlapCount = 0;
-
-                foreach (var (start, end) in bookings)
-                {
-                    if (start <= candidateStart && candidateStart < end)
-                    {
-                        overlapCount++;
-                    }
-                }
-
-                maxOverlap = Math.Max(maxOverlap, overlapCount);
-            }
+            maxOverlap = Math.Max(maxOverlap, MaxOverlapAcrossStarts(bookings));
         }
 
         return maxOverlap;
+    }
+
+    private static int MaxOverlapAcrossStarts(List<(int Start, int End)> bookings)
+    {
+        var maxOverlap = 0;
+
+        foreach (var (candidateStart, _) in bookings)
+        {
+            var overlapCount = OverlapCountAt(candidateStart, bookings);
+            maxOverlap = Math.Max(maxOverlap, overlapCount);
+        }
+
+        return maxOverlap;
+    }
+
+    private static int OverlapCountAt(int candidateStart, List<(int Start, int End)> bookings)
+    {
+        var overlapCount = 0;
+
+        foreach (var (start, end) in bookings)
+        {
+            if (start <= candidateStart && candidateStart < end)
+            {
+                overlapCount++;
+            }
+        }
+
+        return overlapCount;
     }
 
     [Benchmark]

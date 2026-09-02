@@ -13,22 +13,35 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MostCommonWordBenchmarks
 {
+    // LC problem number, used as the deterministic benchmark input seed.
+    private const int RandomSeed = 819;
+
+    // Prefix shared by every generated word, e.g. "word0", "word1", ...
+    private const string WordPoolPrefix = "word";
+
+    // Bounded to a pool far smaller than Length so words repeat and a real
+    // "most common" winner emerges, the same reasoning TopKFrequentWords/
+    // TopKFrequentElements benchmarks already document for their own pools.
+    private const int WordPoolSize = 500;
+
+    // Number of distinct words banned from counting.
+    private const int BannedWordCount = 5;
+
     [Params(1_000, 20_000)]
     public int Length;
 
     private string[] _words = null!;
     private string[] _banned = null!;
 
+    private readonly record struct BestWordState(string Word, int Count);
+
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(819);
+        var random = new Random(RandomSeed);
 
-        // Bounded to a pool far smaller than Length so words repeat and a real
-        // "most common" winner emerges, the same reasoning TopKFrequentWords/
-        // TopKFrequentElements benchmarks already document for their own pools.
-        _words = Enumerable.Range(0, Length).Select(_ => "word" + random.Next(0, 500)).ToArray();
-        _banned = ["word0", "word1", "word2", "word3", "word4"];
+        _words = Enumerable.Range(0, Length).Select(_ => WordPoolPrefix + random.Next(0, WordPoolSize)).ToArray();
+        _banned = Enumerable.Range(0, BannedWordCount).Select(i => WordPoolPrefix + i).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -36,27 +49,14 @@ public class MostCommonWordBenchmarks
     {
         var bannedWords = new HashSet<string>(_banned);
         var counts = new Dictionary<string, int>();
-        var best = string.Empty;
-        var bestCount = 0;
+        var state = new BestWordState(string.Empty, 0);
 
         foreach (var word in _words)
         {
-            if (bannedWords.Contains(word))
-            {
-                continue;
-            }
-
-            var count = counts.GetValueOrDefault(word) + 1;
-            counts[word] = count;
-
-            if (count > bestCount)
-            {
-                bestCount = count;
-                best = word;
-            }
+            state = UpdateWordCount(bannedWords, counts, word, state);
         }
 
-        return best;
+        return state.Word;
     }
 
     [Benchmark]
@@ -70,27 +70,40 @@ public class MostCommonWordBenchmarks
         }
 
         var counts = new HashMap<string, int>();
-        var best = string.Empty;
-        var bestCount = 0;
+        var state = new BestWordState(string.Empty, 0);
 
         foreach (var word in _words)
         {
-            if (bannedWords.Has(word))
-            {
-                continue;
-            }
-
-            counts.TryGetValue(word, out var count);
-            count++;
-            counts.Set(word, count);
-
-            if (count > bestCount)
-            {
-                bestCount = count;
-                best = word;
-            }
+            state = UpdateWordCount(bannedWords, counts, word, state);
         }
 
-        return best;
+        return state.Word;
+    }
+
+    private static BestWordState UpdateWordCount(HashSet<string> bannedWords, Dictionary<string, int> counts, string word, BestWordState state)
+    {
+        if (bannedWords.Contains(word))
+        {
+            return state;
+        }
+
+        var count = counts.GetValueOrDefault(word) + 1;
+        counts[word] = count;
+
+        return count > state.Count ? new BestWordState(word, count) : state;
+    }
+
+    private static BestWordState UpdateWordCount(Set<string> bannedWords, HashMap<string, int> counts, string word, BestWordState state)
+    {
+        if (bannedWords.Has(word))
+        {
+            return state;
+        }
+
+        counts.TryGetValue(word, out var count);
+        count++;
+        counts.Set(word, count);
+
+        return count > state.Count ? new BestWordState(word, count) : state;
     }
 }

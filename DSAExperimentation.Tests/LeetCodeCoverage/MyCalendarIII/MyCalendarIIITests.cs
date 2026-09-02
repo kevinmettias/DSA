@@ -21,12 +21,12 @@ public sealed partial class MyCalendarIIITests
     {
         var calendar = new MyCalendarThree();
 
-        Assert.Equal(1, calendar.Book(10, 20));
-        Assert.Equal(1, calendar.Book(50, 60));
-        Assert.Equal(2, calendar.Book(10, 40));
-        Assert.Equal(3, calendar.Book(5, 15));
-        Assert.Equal(3, calendar.Book(5, 10));
-        Assert.Equal(3, calendar.Book(25, 55));
+        AssertBook(calendar, 10, 20, expectedMaxOverlap: 1);
+        AssertBook(calendar, 50, 60, expectedMaxOverlap: 1);
+        AssertBook(calendar, 10, 40, expectedMaxOverlap: 2);
+        AssertBook(calendar, 5, 15, expectedMaxOverlap: 3);
+        AssertBook(calendar, 5, 10, expectedMaxOverlap: 3);
+        AssertBook(calendar, 25, 55, expectedMaxOverlap: 3);
     }
 
     [Fact]
@@ -34,9 +34,15 @@ public sealed partial class MyCalendarIIITests
     {
         var calendar = new MyCalendarThree();
 
-        Assert.Equal(1, calendar.Book(0, 5));
-        Assert.Equal(1, calendar.Book(10, 15));
-        Assert.Equal(1, calendar.Book(20, 25));
+        AssertBook(calendar, 0, 5, expectedMaxOverlap: 1);
+        AssertBook(calendar, 10, 15, expectedMaxOverlap: 1);
+        AssertBook(calendar, 20, 25, expectedMaxOverlap: 1);
+    }
+
+    private static void AssertBook(MyCalendarThree calendar, int start, int end, int expectedMaxOverlap)
+    {
+        var actual = calendar.Book(start, end);
+        Assert.Equal(expectedMaxOverlap, actual);
     }
 
     private sealed class MyCalendarThree

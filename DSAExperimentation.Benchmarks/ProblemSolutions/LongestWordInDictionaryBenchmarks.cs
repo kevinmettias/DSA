@@ -15,6 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestWordInDictionaryBenchmarks
 {
+    // LC problem number, used as the deterministic setup seed.
+    private const int RandomSeed = 720;
+    private const int AlphabetSize = 26;
+    private const int FreshChainChance = 4;
+    private const string EmptyPrefix = "";
+    private const string NoQualifyingWord = "";
+
     [Params(50, 500)]
     public int WordCount;
 
@@ -23,15 +30,15 @@ public class LongestWordInDictionaryBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(720);
+        var random = new Random(RandomSeed);
         var words = new List<string>(WordCount);
-        var current = "";
+        var current = EmptyPrefix;
 
         while (words.Count < WordCount)
         {
-            current = current.Length == 0 || random.Next(4) == 0
-                ? ((char)('a' + random.Next(26))).ToString()
-                : current + (char)('a' + random.Next(26));
+            current = current.Length == 0 || random.Next(FreshChainChance) == 0
+                ? ((char)('a' + random.Next(AlphabetSize))).ToString()
+                : current + (char)('a' + random.Next(AlphabetSize));
 
             words.Add(current);
         }
@@ -57,7 +64,7 @@ public class LongestWordInDictionaryBenchmarks
             }
         }
 
-        return best ?? "";
+        return best ?? NoQualifyingWord;
     }
 
     private bool IsBuildable(string word)
@@ -88,36 +95,56 @@ public class LongestWordInDictionaryBenchmarks
     [Benchmark]
     public string LowercaseTrieWalk()
     {
+        var trie = BuildTrie(_words);
+
+        return FindLongestWord(trie.Root, EmptyPrefix, NoQualifyingWord);
+    }
+
+    private static LowercaseTrie<bool> BuildTrie(string[] words)
+    {
         var trie = new LowercaseTrie<bool>();
 
-        foreach (var word in _words)
+        foreach (var word in words)
         {
             trie.Set(word, true);
         }
 
-        var best = "";
+        return trie;
+    }
 
-        Walk(trie.Root, "");
+    private static string FindLongestWord(LowercaseTrieNode<bool> node, string prefix, string best)
+    {
+        best = BetterOf(prefix, best);
+
+        for (var i = 0; i < LowercaseTrieNode<bool>.AlphabetSize; i++)
+        {
+            best = VisitChild(node, i, prefix, best);
+        }
 
         return best;
+    }
 
-        void Walk(LowercaseTrieNode<bool> node, string prefix)
+    private static string VisitChild(LowercaseTrieNode<bool> node, int childIndex, string prefix, string best)
+    {
+        var child = node.Children[childIndex];
+
+        if (child is null || !child.HasValue)
         {
-            if (prefix.Length > 0 &&
-                (prefix.Length > best.Length || (prefix.Length == best.Length && string.CompareOrdinal(prefix, best) < 0)))
-            {
-                best = prefix;
-            }
-
-            for (var i = 0; i < LowercaseTrieNode<bool>.AlphabetSize; i++)
-            {
-                var child = node.Children[i];
-
-                if (child is not null && child.HasValue)
-                {
-                    Walk(child, prefix + (char)('a' + i));
-                }
-            }
+            return best;
         }
+
+        return FindLongestWord(child, prefix + (char)('a' + childIndex), best);
+    }
+
+    private static string BetterOf(string prefix, string best)
+    {
+        if (prefix.Length == 0)
+        {
+            return best;
+        }
+
+        var isBetter = prefix.Length > best.Length || (prefix.Length == best.Length && string.CompareOrdinal(prefix, best) < 0);
+
+        return isBetter ? prefix : best;
     }
 }

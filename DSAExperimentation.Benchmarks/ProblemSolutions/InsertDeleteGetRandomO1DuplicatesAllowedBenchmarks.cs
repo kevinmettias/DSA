@@ -79,51 +79,89 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
 
         foreach (var value in _insertOrder)
         {
-            if (!occurrencesByValue.TryGetValue(value, out var occurrences))
-            {
-                occurrences = new DoublyLinkedList<int>();
-                occurrencesByValue.Set(value, occurrences);
-            }
-
-            var position = values.Count;
-            values.Add(value);
-
-            var node = new DoublyLinkedListNode<int> { Value = position };
-            occurrences.AddFront(node);
-            nodeByPosition.Set(position, node);
+            AddOneOccurrence(value, values, occurrencesByValue, nodeByPosition);
         }
 
         foreach (var value in _removalOrder)
         {
-            if (!occurrencesByValue.TryGetValue(value, out var occurrences) || occurrences.Count == 0)
-            {
-                continue;
-            }
-
-            var removedNode = occurrences.PopBack();
-            var removedPosition = removedNode.Value;
-            nodeByPosition.TryRemove(removedPosition);
-
-            if (occurrences.Count == 0)
-            {
-                occurrencesByValue.TryRemove(value);
-            }
-
-            var lastPosition = values.Count - 1;
-            var lastValue = values.Get(lastPosition);
-            values.Set(removedPosition, lastValue);
-
-            if (removedPosition != lastPosition)
-            {
-                nodeByPosition.TryGetValue(lastPosition, out var movedNode);
-                movedNode.Value = removedPosition;
-                nodeByPosition.TryRemove(lastPosition);
-                nodeByPosition.Set(removedPosition, movedNode);
-            }
-
-            values.RemoveAt(lastPosition);
+            RemoveOneOccurrence(value, values, occurrencesByValue, nodeByPosition);
         }
 
         return values.Count;
+    }
+
+    private static void AddOneOccurrence(
+        int value,
+        DynamicArray<int> values,
+        HashMap<int, DoublyLinkedList<int>> occurrencesByValue,
+        HashMap<int, DoublyLinkedListNode<int>> nodeByPosition)
+    {
+        if (!occurrencesByValue.TryGetValue(value, out var occurrences))
+        {
+            occurrences = new DoublyLinkedList<int>();
+            occurrencesByValue.Set(value, occurrences);
+        }
+
+        var position = values.Count;
+        values.Add(value);
+
+        var node = new DoublyLinkedListNode<int> { Value = position };
+        occurrences.AddFront(node);
+        nodeByPosition.Set(position, node);
+    }
+
+    private static void RemoveOneOccurrence(
+        int value,
+        DynamicArray<int> values,
+        HashMap<int, DoublyLinkedList<int>> occurrencesByValue,
+        HashMap<int, DoublyLinkedListNode<int>> nodeByPosition)
+    {
+        if (!occurrencesByValue.TryGetValue(value, out var occurrences) || occurrences.Count == 0)
+        {
+            return;
+        }
+
+        var removedPosition = PopOccurrence(value, occurrences, occurrencesByValue, nodeByPosition);
+        SwapOutPosition(values, nodeByPosition, removedPosition);
+    }
+
+    private static int PopOccurrence(
+        int value,
+        DoublyLinkedList<int> occurrences,
+        HashMap<int, DoublyLinkedList<int>> occurrencesByValue,
+        HashMap<int, DoublyLinkedListNode<int>> nodeByPosition)
+    {
+        var removedNode = occurrences.PopBack();
+        var removedPosition = removedNode.Value;
+        nodeByPosition.TryRemove(removedPosition);
+
+        if (occurrences.Count == 0)
+        {
+            occurrencesByValue.TryRemove(value);
+        }
+
+        return removedPosition;
+    }
+
+    private static void SwapOutPosition(DynamicArray<int> values, HashMap<int, DoublyLinkedListNode<int>> nodeByPosition, int removedPosition)
+    {
+        var lastPosition = values.Count - 1;
+        var lastValue = values.Get(lastPosition);
+        values.Set(removedPosition, lastValue);
+
+        if (removedPosition != lastPosition)
+        {
+            MoveTrackedNode(nodeByPosition, lastPosition, removedPosition);
+        }
+
+        values.RemoveAt(lastPosition);
+    }
+
+    private static void MoveTrackedNode(HashMap<int, DoublyLinkedListNode<int>> nodeByPosition, int fromPosition, int toPosition)
+    {
+        nodeByPosition.TryGetValue(fromPosition, out var movedNode);
+        movedNode.Value = toPosition;
+        nodeByPosition.TryRemove(fromPosition);
+        nodeByPosition.Set(toPosition, movedNode);
     }
 }

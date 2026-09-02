@@ -17,7 +17,8 @@ public sealed partial class KthSmallestElementInABSTTests
         // [3,1,4,null,2], k = 1 -> 1
         var root = new BinaryTreeNode<int>(3) { Left = new(1) { Right = new(2) }, Right = new(4) };
 
-        Assert.Equal(1, KthSmallest(root, 1));
+        var actual = KthSmallest(root, 1);
+        Assert.Equal(1, actual);
     }
 
     [Fact]
@@ -30,7 +31,8 @@ public sealed partial class KthSmallestElementInABSTTests
             Right = new(6),
         };
 
-        Assert.Equal(3, KthSmallest(root, 3));
+        var actual = KthSmallest(root, 3);
+        Assert.Equal(3, actual);
     }
 
     private static int KthSmallest(BinaryTreeNode<int> root, int k)

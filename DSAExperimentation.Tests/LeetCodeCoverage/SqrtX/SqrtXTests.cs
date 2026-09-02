@@ -1,28 +1,28 @@
-﻿using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SqrtX;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SqrtX;
 
-// LeetCode 69. Sqrt(x): BinarySearch.LowerBound finds the first integer whose
-// square exceeds x over a monotone virtual sequence, then steps back.
-public sealed partial class SqrtXTests
+// Harness only: both strategies live in SqrtXSolution and are asserted against the
+// same examples, including the near-int-max case that stresses the search range.
+public sealed class SqrtXTests
 {
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 0, 0 },
+            { 1, 1 },
+            { 4, 2 },
+            { 8, 2 },
+            { 2147395599, 46339 },
+        };
+
     [Theory]
-    [InlineData(4, 2)]
-    [InlineData(8, 2)]
-    [InlineData(2147395599, 46339)]
-    public void MySqrt_LeetCodeExamples_ReturnsFloorRoot(int x, int expected)
-        => Assert.Equal(expected, MySqrt(x));
+    [MemberData(nameof(Examples))]
+    public void RootByMathSqrt_LeetCodeExamples_ReturnsFloorRoot(int x, int expected) =>
+        Assert.Equal(expected, SqrtXSolution.RootByMathSqrt(x));
 
-    private static int MySqrt(int x)
-    {
-        var sequence = new SquareExceedsSequence(x, Math.Min(x, 46341) + 1);
-        return BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
-    }
-
-    private readonly struct SquareExceedsSequence(long x, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int value) => (long)value * value > x ? 1 : 0;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RootByBinarySearch_LeetCodeExamples_ReturnsFloorRoot(int x, int expected) =>
+        Assert.Equal(expected, SqrtXSolution.RootByBinarySearch(x));
 }

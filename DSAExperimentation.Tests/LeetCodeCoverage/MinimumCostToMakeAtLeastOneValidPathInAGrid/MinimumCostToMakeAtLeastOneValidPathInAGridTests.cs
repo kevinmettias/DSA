@@ -44,46 +44,67 @@ public sealed partial class MinimumCostToMakeAtLeastOneValidPathInAGridTests
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
-        var distances = new Dictionary<(int Row, int Col), int> { [(0, 0)] = 0 };
-        var settled = new HashSet<(int Row, int Col)>();
-        var frontier = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
-        frontier.Push(((0, 0), 0));
+        var search = new GridSearch(grid, rows, cols);
 
-        while (frontier.TryPop(out var entry))
+        return search.Run();
+    }
+
+    private sealed class GridSearch(int[][] grid, int rows, int cols)
+    {
+        private readonly Dictionary<(int Row, int Col), int> _distances = new() { [(0, 0)] = 0 };
+        private readonly HashSet<(int Row, int Col)> _settled = new();
+        private readonly Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> _frontier = new();
+
+        public int Run()
         {
-            var (row, col) = entry.Node;
+            _frontier.Push(((0, 0), 0));
 
-            if (!settled.Add((row, col)))
+            while (_frontier.TryPop(out var entry))
             {
-                continue;
-            }
+                var (row, col) = entry.Node;
 
-            if (row == rows - 1 && col == cols - 1)
-            {
-                return entry.Priority;
-            }
-
-            for (var direction = 0; direction < Directions.Length; direction++)
-            {
-                var (dRow, dCol) = Directions[direction];
-                var (nextRow, nextCol) = (row + dRow, col + dCol);
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
+                if (!_settled.Add((row, col)))
                 {
                     continue;
                 }
 
-                var weight = grid[row][col] == direction + 1 ? 0 : 1;
-                var candidate = distances[(row, col)] + weight;
-
-                if (!distances.TryGetValue((nextRow, nextCol), out var known) || candidate < known)
+                if (row == rows - 1 && col == cols - 1)
                 {
-                    distances[(nextRow, nextCol)] = candidate;
-                    frontier.Push(((nextRow, nextCol), candidate));
+                    return entry.Priority;
                 }
+
+                RelaxNeighbors(row, col);
+            }
+
+            throw new InvalidOperationException("Unreachable for a valid grid: every cell is orthogonally reachable from (0,0).");
+        }
+
+        private void RelaxNeighbors(int row, int col)
+        {
+            for (var direction = 0; direction < Directions.Length; direction++)
+            {
+                RelaxNeighbor(row, col, direction);
             }
         }
 
-        throw new InvalidOperationException("Unreachable for a valid grid: every cell is orthogonally reachable from (0,0).");
+        private void RelaxNeighbor(int row, int col, int direction)
+        {
+            var (dRow, dCol) = Directions[direction];
+            var (nextRow, nextCol) = (row + dRow, col + dCol);
+
+            if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
+            {
+                return;
+            }
+
+            var weight = grid[row][col] == direction + 1 ? 0 : 1;
+            var candidate = _distances[(row, col)] + weight;
+
+            if (!_distances.TryGetValue((nextRow, nextCol), out var known) || candidate < known)
+            {
+                _distances[(nextRow, nextCol)] = candidate;
+                _frontier.Push(((nextRow, nextCol), candidate));
+            }
+        }
     }
 }

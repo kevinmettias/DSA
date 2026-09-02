@@ -14,7 +14,7 @@ public sealed partial class RectangleAreaTests
     public void TotalArea_OverlappingSquares_SubtractsSharedRegionOnce()
     {
         // LeetCode's own example: (-3,0,3,4) and (0,-1,9,2) -> 45
-        var area = TotalArea(-3, 0, 3, 4, 0, -1, 9, 2);
+        var area = TotalArea(new Rectangle(-3, 0, 3, 4), new Rectangle(0, -1, 9, 2));
 
         Assert.Equal(45, area);
     }
@@ -23,7 +23,7 @@ public sealed partial class RectangleAreaTests
     public void TotalArea_TouchingButNotOverlapping_SumsBothAreasWithNoSubtraction()
     {
         // Second example: (-2,-2,2,2) and (-2,-2,2,2) fully coincide -> single area
-        var area = TotalArea(-2, -2, 2, 2, -2, -2, 2, 2);
+        var area = TotalArea(new Rectangle(-2, -2, 2, 2), new Rectangle(-2, -2, 2, 2));
 
         Assert.Equal(16, area);
     }
@@ -31,18 +31,20 @@ public sealed partial class RectangleAreaTests
     [Fact]
     public void TotalArea_DisjointRectangles_SumsBothAreasWithZeroOverlap()
     {
-        var area = TotalArea(0, 0, 2, 2, 10, 10, 12, 12);
+        var area = TotalArea(new Rectangle(0, 0, 2, 2), new Rectangle(10, 10, 12, 12));
 
         Assert.Equal(8, area);
     }
 
-    private static long TotalArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
-    {
-        var area1 = (long)(ax2 - ax1) * (ay2 - ay1);
-        var area2 = (long)(bx2 - bx1) * (by2 - by1);
+    private readonly record struct Rectangle(int X1, int Y1, int X2, int Y2);
 
-        var overlapWidth = Math.Max(0, Math.Min(ax2, bx2) - Math.Max(ax1, bx1));
-        var overlapHeight = Math.Max(0, Math.Min(ay2, by2) - Math.Max(ay1, by1));
+    private static long TotalArea(Rectangle a, Rectangle b)
+    {
+        var area1 = (long)(a.X2 - a.X1) * (a.Y2 - a.Y1);
+        var area2 = (long)(b.X2 - b.X1) * (b.Y2 - b.Y1);
+
+        var overlapWidth = Math.Max(0, Math.Min(a.X2, b.X2) - Math.Max(a.X1, b.X1));
+        var overlapHeight = Math.Max(0, Math.Min(a.Y2, b.Y2) - Math.Max(a.Y1, b.Y1));
 
         return area1 + area2 - (long)overlapWidth * overlapHeight;
     }

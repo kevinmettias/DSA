@@ -18,6 +18,8 @@ public class CountOfRangeSumBenchmarks
 {
     private const int Lower = -1_000;
     private const int Upper = 1_000;
+    private const int RandomSeed = 327; // LC problem number
+    private const int ValueRangeMagnitude = 100;
 
     [Params(200, 5_000)]
     public int Length;
@@ -27,8 +29,8 @@ public class CountOfRangeSumBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(327);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-100, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueRangeMagnitude, ValueRangeMagnitude)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -72,7 +74,8 @@ public class CountOfRangeSumBenchmarks
                 count += tree.Query(loRank, hiRank);
             }
 
-            tree.Add(BinarySearch.LowerBound(sequence, prefixSum), 1);
+            var rank = BinarySearch.LowerBound(sequence, prefixSum);
+            tree.Add(rank, 1);
         }
 
         return count;

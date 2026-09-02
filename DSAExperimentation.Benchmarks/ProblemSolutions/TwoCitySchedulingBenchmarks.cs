@@ -13,6 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class TwoCitySchedulingBenchmarks
 {
+    private const int RandomSeed = 1029; // LC problem number
+    private const int MaxCost = 1_000;
+    private const int CitySplitDivisor = 2; // exactly half go to city A per LC 1029
+
     // Kept even: costs.Length must be 2n per LC 1029's own constraint.
     [Params(200, 4_000)]
     public int Length;
@@ -22,9 +26,9 @@ public class TwoCitySchedulingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1029);
+        var random = new Random(RandomSeed);
         _people = Enumerable.Range(0, Length)
-            .Select(_ => (ACost: random.Next(1, 1_000), BCost: random.Next(1, 1_000)))
+            .Select(_ => (ACost: random.Next(1, MaxCost), BCost: random.Next(1, MaxCost)))
             .ToArray();
     }
 
@@ -34,7 +38,7 @@ public class TwoCitySchedulingBenchmarks
         var people = ((int ACost, int BCost)[])_people.Clone();
         Array.Sort(people, (a, b) => (a.ACost - a.BCost).CompareTo(b.ACost - b.BCost));
 
-        var toCityA = people.Length / 2;
+        var toCityA = people.Length / CitySplitDivisor;
         var total = 0;
 
         for (var i = 0; i < people.Length; i++)
@@ -55,7 +59,7 @@ public class TwoCitySchedulingBenchmarks
         MergeSort.Sort<(int ACost, int BCost), ArrayIndexedSequence<(int ACost, int BCost)>>(
             new ArrayIndexedSequence<(int ACost, int BCost)>(people), byCostDifferenceAscending);
 
-        var toCityA = people.Length / 2;
+        var toCityA = people.Length / CitySplitDivisor;
         var total = 0;
 
         for (var i = 0; i < people.Length; i++)

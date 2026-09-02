@@ -11,6 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DecodeWaysIIBenchmarks
 {
     private const long Mod = 1_000_000_007;
+    private const string WildcardPair = "2*";
+    private const int PairLength = 2;
+    private const int SingleWildcardWays = 9;
+    private const int BothWildcardPairWays = 15;
+    private const int StarThenSmallDigitWays = 2;
+    private const int FirstIsOneStarWays = 9;
+    private const int FirstIsTwoStarWays = 6;
+    private const int DecimalBase = 10;
+    private const int MaxLetterCode = 26;
 
     [Params(20, 200)]
     public int Length;
@@ -18,7 +27,11 @@ public class DecodeWaysIIBenchmarks
     private string _value = null!;
 
     [GlobalSetup]
-    public void Setup() => _value = string.Concat(Enumerable.Repeat("2*", Length / 2));
+    public void Setup()
+    {
+        var pairs = Enumerable.Repeat(WildcardPair, Length / PairLength);
+        _value = string.Concat(pairs);
+    }
 
     [Benchmark(Baseline = true)]
     public long Tabulation()
@@ -37,7 +50,7 @@ public class DecodeWaysIIBenchmarks
 
             if (i + 1 < _value.Length)
             {
-                dp[i] = (dp[i] + (PairWays(_value[i], _value[i + 1]) * dp[i + 2])) % Mod;
+                dp[i] = (dp[i] + (PairWays(_value[i], _value[i + 1]) * dp[i + PairLength])) % Mod;
             }
         }
 
@@ -65,33 +78,33 @@ public class DecodeWaysIIBenchmarks
 
             if (index + 1 < _value.Length)
             {
-                total = (total + (PairWays(_value[index], _value[index + 1]) * decode(index + 2))) % Mod;
+                total = (total + (PairWays(_value[index], _value[index + 1]) * decode(index + PairLength))) % Mod;
             }
 
             return total;
         }
     }
 
-    private static long SingleWays(char c) => c == '*' ? 9 : 1;
+    private static long SingleWays(char c) => c == '*' ? SingleWildcardWays : 1;
 
     private static long PairWays(char first, char second)
     {
         if (first == '*' && second == '*')
         {
-            return 15;
+            return BothWildcardPairWays;
         }
 
         if (first == '*')
         {
-            return second <= '6' ? 2 : 1;
+            return second <= '6' ? StarThenSmallDigitWays : 1;
         }
 
         if (second == '*')
         {
-            return first == '1' ? 9 : first == '2' ? 6 : 0;
+            return first == '1' ? FirstIsOneStarWays : first == '2' ? FirstIsTwoStarWays : 0;
         }
 
-        var value = ((first - '0') * 10) + (second - '0');
-        return value is >= 10 and <= 26 ? 1 : 0;
+        var value = ((first - '0') * DecimalBase) + (second - '0');
+        return value is >= DecimalBase and <= MaxLetterCode ? 1 : 0;
     }
 }

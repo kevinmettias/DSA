@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -12,6 +13,10 @@ public class MinimumNumberOfKConsecutiveBitFlipsBenchmarks
 {
     private const int K = 300;
 
+    private const int BitValueUpperBound = 2;
+
+    private const int ParityModulus = 2;
+
     [Params(3_000, 30_000)]
     public int Length;
 
@@ -21,17 +26,23 @@ public class MinimumNumberOfKConsecutiveBitFlipsBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(2)).ToArray();
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(BitValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
     public int InPlaceWindowFlip()
     {
         var array = (int[])_nums.Clone();
-        var n = array.Length;
+        var flipCount = FlipWindows(array);
+
+        return AllOnes(array) ? flipCount : -1;
+    }
+
+    private static int FlipWindows(int[] array)
+    {
         var flipCount = 0;
 
-        for (var i = 0; i <= n - K; i++)
+        for (var i = 0; i <= array.Length - K; i++)
         {
             if (array[i] != 0)
             {
@@ -46,44 +57,72 @@ public class MinimumNumberOfKConsecutiveBitFlipsBenchmarks
             flipCount++;
         }
 
-        for (var i = 0; i < n; i++)
+        return flipCount;
+    }
+
+    private static bool AllOnes(int[] array)
+    {
+        foreach (var value in array)
         {
-            if (array[i] == 0)
+            if (value == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    [Benchmark]
+    public int QueueTrackedParity()
+    {
+        var activeFlips = new RepoQueue();
+
+        return ProcessBits(activeFlips);
+    }
+
+    private int ProcessBits(RepoQueue activeFlips)
+    {
+        var flipCount = 0;
+
+        for (var i = 0; i < _nums.Length; i++)
+        {
+            var outcome = ProcessIndex(activeFlips, i);
+
+            if (outcome.Impossible)
             {
                 return -1;
+            }
+
+            if (outcome.Flipped)
+            {
+                flipCount++;
             }
         }
 
         return flipCount;
     }
 
-    [Benchmark]
-    public int QueueTrackedParity()
+    private (bool Flipped, bool Impossible) ProcessIndex(RepoQueue activeFlips, int i)
     {
-        var activeFlips = new DSAExperimentation.DataStructures.Queue.Queue<int>();
-        var flipCount = 0;
-
-        for (var i = 0; i < _nums.Length; i++)
+        if (activeFlips.TryPeek(out var earliestStart) && earliestStart + K == i)
         {
-            if (activeFlips.TryPeek(out var earliestStart) && earliestStart + K == i)
-            {
-                activeFlips.TryDequeue(out _);
-            }
-
-            var effectiveBit = _nums[i] ^ (activeFlips.Count % 2);
-
-            if (effectiveBit == 0)
-            {
-                if (i + K > _nums.Length)
-                {
-                    return -1;
-                }
-
-                activeFlips.Enqueue(i);
-                flipCount++;
-            }
+            activeFlips.TryDequeue(out _);
         }
 
-        return flipCount;
+        var effectiveBit = _nums[i] ^ (activeFlips.Count % ParityModulus);
+
+        if (effectiveBit != 0)
+        {
+            return (Flipped: false, Impossible: false);
+        }
+
+        if (i + K > _nums.Length)
+        {
+            return (Flipped: false, Impossible: true);
+        }
+
+        activeFlips.Enqueue(i);
+        return (Flipped: true, Impossible: false);
     }
 }

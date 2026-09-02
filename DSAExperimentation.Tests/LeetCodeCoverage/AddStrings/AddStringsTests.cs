@@ -12,11 +12,28 @@ public sealed partial class AddStringsTests
     [InlineData("456", "77", "533")]
     [InlineData("0", "0", "0")]
     public void AddStrings_LeetCodeExamples_ReturnsDecimalSum(string a, string b, string expected)
-        => Assert.Equal(expected, Add(a, b));
+    {
+        var sum = Add(a, b);
+
+        Assert.Equal(expected, sum);
+    }
 
     private static string Add(string a, string b)
     {
         var stack = new DigitStack();
+        PushDigitsOntoStack(a, b, stack);
+
+        var digits = new List<char>();
+        while (stack.TryPop(out var digit))
+        {
+            digits.Add(digit);
+        }
+
+        return new string(digits.ToArray());
+    }
+
+    private static void PushDigitsOntoStack(string a, string b, DigitStack stack)
+    {
         var i = a.Length - 1;
         var j = b.Length - 1;
         var carry = 0;
@@ -37,13 +54,5 @@ public sealed partial class AddStringsTests
             stack.Push((char)('0' + (sum % 10)));
             carry = sum / 10;
         }
-
-        var digits = new List<char>();
-        while (stack.TryPop(out var digit))
-        {
-            digits.Add(digit);
-        }
-
-        return new string(digits.ToArray());
     }
 }

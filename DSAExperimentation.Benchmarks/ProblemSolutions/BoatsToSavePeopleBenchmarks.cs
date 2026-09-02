@@ -13,6 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class BoatsToSavePeopleBenchmarks
 {
     private const int Limit = 300;
+    private const int RandomSeed = 881;
 
     [Params(200, 3_000)]
     public int Length;
@@ -22,7 +23,7 @@ public class BoatsToSavePeopleBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(881);
+        var random = new Random(RandomSeed);
         _people = Enumerable.Range(0, Length).Select(_ => random.Next(1, Limit)).ToArray();
     }
 
@@ -36,40 +37,57 @@ public class BoatsToSavePeopleBenchmarks
 
         while (remaining > 0)
         {
-            var heaviestIndex = -1;
-
-            for (var i = 0; i < weights.Length; i++)
-            {
-                if (!used[i] && (heaviestIndex < 0 || weights[i] > weights[heaviestIndex]))
-                {
-                    heaviestIndex = i;
-                }
-            }
-
-            used[heaviestIndex] = true;
-            remaining--;
-
-            var lightestIndex = -1;
-
-            for (var i = 0; i < weights.Length; i++)
-            {
-                if (!used[i] && weights[i] + weights[heaviestIndex] <= Limit
-                    && (lightestIndex < 0 || weights[i] < weights[lightestIndex]))
-                {
-                    lightestIndex = i;
-                }
-            }
-
-            if (lightestIndex >= 0)
-            {
-                used[lightestIndex] = true;
-                remaining--;
-            }
-
+            AssignOneBoat(weights, used, ref remaining);
             boats++;
         }
 
         return boats;
+    }
+
+    private void AssignOneBoat(int[] weights, bool[] used, ref int remaining)
+    {
+        var heaviestIndex = FindHeaviestUnused(weights, used);
+        used[heaviestIndex] = true;
+        remaining--;
+
+        var lightestIndex = FindLightestUnusedFitting(weights, used, heaviestIndex);
+
+        if (lightestIndex >= 0)
+        {
+            used[lightestIndex] = true;
+            remaining--;
+        }
+    }
+
+    private static int FindHeaviestUnused(int[] weights, bool[] used)
+    {
+        var heaviestIndex = -1;
+
+        for (var i = 0; i < weights.Length; i++)
+        {
+            if (!used[i] && (heaviestIndex < 0 || weights[i] > weights[heaviestIndex]))
+            {
+                heaviestIndex = i;
+            }
+        }
+
+        return heaviestIndex;
+    }
+
+    private static int FindLightestUnusedFitting(int[] weights, bool[] used, int heaviestIndex)
+    {
+        var lightestIndex = -1;
+
+        for (var i = 0; i < weights.Length; i++)
+        {
+            if (!used[i] && weights[i] + weights[heaviestIndex] <= Limit
+                && (lightestIndex < 0 || weights[i] < weights[lightestIndex]))
+            {
+                lightestIndex = i;
+            }
+        }
+
+        return lightestIndex;
     }
 
     [Benchmark]

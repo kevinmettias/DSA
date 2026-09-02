@@ -36,78 +36,113 @@ public sealed partial class MinimumNumberOfDaysToDisconnectIslandTests
 
     private static int MinDays(int[][] grid)
     {
+        if (IsTriviallyDisconnected(grid))
+        {
+            return 0;
+        }
+
+        if (HasArticulationCell(grid))
+        {
+            return 1;
+        }
+
+        return 2;
+    }
+
+    private static bool IsTriviallyDisconnected(int[][] grid)
+    {
         var totalLand = grid.Sum(row => row.Sum());
 
-        if (totalLand <= 1)
-        {
-            return 0;
-        }
+        return totalLand <= 1 || CountIslandsExcluding(grid, skipRow: -1, skipCol: -1) != 1;
+    }
 
-        if (CountIslandsExcluding(grid, skipRow: -1, skipCol: -1) != 1)
-        {
-            return 0;
-        }
-
+    private static bool HasArticulationCell(int[][] grid)
+    {
         for (var r = 0; r < grid.Length; r++)
         {
             for (var c = 0; c < grid[0].Length; c++)
             {
                 if (grid[r][c] == 1 && CountIslandsExcluding(grid, r, c) != 1)
                 {
-                    return 1;
+                    return true;
                 }
             }
         }
 
-        return 2;
+        return false;
     }
+
+    private readonly record struct IslandScan(int[][] Grid, int Rows, int Cols, int SkipRow, int SkipCol);
 
     private static int CountIslandsExcluding(int[][] grid, int skipRow, int skipCol)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
         var visited = new bool[rows, cols];
+        var scan = new IslandScan(grid, rows, cols, skipRow, skipCol);
+
+        return CountIslands(scan, visited);
+    }
+
+    private static int CountIslands(IslandScan scan, bool[,] visited)
+    {
         var count = 0;
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < scan.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < scan.Cols; c++)
             {
-                if (grid[r][c] != 1 || visited[r, c] || (r == skipRow && c == skipCol))
+                if (scan.Grid[r][c] != 1 || visited[r, c] || (r == scan.SkipRow && c == scan.SkipCol))
                 {
                     continue;
                 }
 
                 count++;
-
-                foreach (var (row, col) in DepthFirstSearch.Traverse((r, c), Neighbors))
-                {
-                    visited[row, col] = true;
-                }
+                MarkIsland(scan, visited, (r, c));
             }
         }
 
         return count;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private static void MarkIsland(IslandScan scan, bool[,] visited, (int Row, int Col) start)
+    {
+        foreach (var (row, col) in DepthFirstSearch.Traverse(start, p => GetNeighbors(scan, p)))
         {
-            foreach (var (dRow, dCol) in Directions)
+            visited[row, col] = true;
+        }
+    }
+
+    private static IEnumerable<(int Row, int Col)> GetNeighbors(IslandScan scan, (int Row, int Col) p)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            if (TryGetNeighbor(scan, p, (dRow, dCol), out var neighbor))
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (grid[nextRow][nextCol] != 1 || (nextRow == skipRow && nextCol == skipCol))
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
+                yield return neighbor;
             }
         }
+    }
+
+    private static bool TryGetNeighbor(
+        IslandScan scan, (int Row, int Col) p, (int DRow, int DCol) offset, out (int Row, int Col) neighbor)
+    {
+        var nextRow = p.Row + offset.DRow;
+        var nextCol = p.Col + offset.DCol;
+
+        if (nextRow < 0 || nextRow >= scan.Rows || nextCol < 0 || nextCol >= scan.Cols)
+        {
+            neighbor = default;
+            return false;
+        }
+
+        if (scan.Grid[nextRow][nextCol] != 1 || (nextRow == scan.SkipRow && nextCol == scan.SkipCol))
+        {
+            neighbor = default;
+            return false;
+        }
+
+        neighbor = (nextRow, nextCol);
+        return true;
     }
 }

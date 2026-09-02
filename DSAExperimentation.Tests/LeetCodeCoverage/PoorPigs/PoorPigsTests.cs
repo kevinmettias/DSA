@@ -16,7 +16,10 @@ public sealed partial class PoorPigsTests
     [InlineData(1, 15, 15, 0)]
     public void PoorPigs_ClassicExamples_ReturnsMinimumPigCount(
         int buckets, int minutesToDie, int minutesToTest, int expected)
-        => Assert.Equal(expected, MinPoisonedPigs(buckets, minutesToDie, minutesToTest));
+    {
+        var actual = MinPoisonedPigs(buckets, minutesToDie, minutesToTest);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MinPoisonedPigs(int buckets, int minutesToDie, int minutesToTest)
     {

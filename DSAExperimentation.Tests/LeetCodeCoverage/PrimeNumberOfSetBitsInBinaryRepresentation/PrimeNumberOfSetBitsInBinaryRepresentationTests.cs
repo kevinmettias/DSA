@@ -14,13 +14,15 @@ public sealed partial class PrimeNumberOfSetBitsInBinaryRepresentationTests
     [Fact]
     public void CountPrimeSetBits_ClassicExampleOne_ReturnsExpectedCount()
     {
-        Assert.Equal(4, CountPrimeSetBits(6, 10));
+        var actual = CountPrimeSetBits(6, 10);
+        Assert.Equal(4, actual);
     }
 
     [Fact]
     public void CountPrimeSetBits_ClassicExampleTwo_ReturnsExpectedCount()
     {
-        Assert.Equal(5, CountPrimeSetBits(10, 15));
+        var actual = CountPrimeSetBits(10, 15);
+        Assert.Equal(5, actual);
     }
 
     private static int CountPrimeSetBits(int left, int right)

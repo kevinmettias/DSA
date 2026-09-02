@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StoneGameVBenchmarks
 {
+    private const int RandomSeed = 1563;
+    private const int MaxStoneValue = 100;
+
     [Params(120, 200)]
     public int PileCount;
 
@@ -23,8 +26,8 @@ public class StoneGameVBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1563);
-        _stoneValue = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _stoneValue = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, MaxStoneValue)).ToArray();
         _prefix = new int[PileCount + 1];
 
         for (var i = 0; i < PileCount; i++)
@@ -47,18 +50,25 @@ public class StoneGameVBenchmarks
 
         for (var mid = left; mid < right; mid++)
         {
-            var leftSum = _prefix[mid + 1] - _prefix[left];
-            var rightSum = _prefix[right + 1] - _prefix[mid + 1];
+            result = BestForSplit(left, right, mid, result);
+        }
 
-            if (leftSum <= rightSum)
-            {
-                result = Math.Max(result, leftSum + Best(left, mid));
-            }
+        return result;
+    }
 
-            if (rightSum <= leftSum)
-            {
-                result = Math.Max(result, rightSum + Best(mid + 1, right));
-            }
+    private int BestForSplit(int left, int right, int mid, int result)
+    {
+        var leftSum = _prefix[mid + 1] - _prefix[left];
+        var rightSum = _prefix[right + 1] - _prefix[mid + 1];
+
+        if (leftSum <= rightSum)
+        {
+            result = Math.Max(result, leftSum + Best(left, mid));
+        }
+
+        if (rightSum <= leftSum)
+        {
+            result = Math.Max(result, rightSum + Best(mid + 1, right));
         }
 
         return result;
@@ -80,18 +90,26 @@ public class StoneGameVBenchmarks
 
         for (var mid = left; mid < right; mid++)
         {
-            var leftSum = _prefix[mid + 1] - _prefix[left];
-            var rightSum = _prefix[right + 1] - _prefix[mid + 1];
+            result = BestForSplitMemoized(range, mid, result, best);
+        }
 
-            if (leftSum <= rightSum)
-            {
-                result = Math.Max(result, leftSum + best((left, mid)));
-            }
+        return result;
+    }
 
-            if (rightSum <= leftSum)
-            {
-                result = Math.Max(result, rightSum + best((mid + 1, right)));
-            }
+    private int BestForSplitMemoized((int Left, int Right) range, int mid, int result, Func<(int, int), int> best)
+    {
+        var (left, right) = range;
+        var leftSum = _prefix[mid + 1] - _prefix[left];
+        var rightSum = _prefix[right + 1] - _prefix[mid + 1];
+
+        if (leftSum <= rightSum)
+        {
+            result = Math.Max(result, leftSum + best((left, mid)));
+        }
+
+        if (rightSum <= leftSum)
+        {
+            result = Math.Max(result, rightSum + best((mid + 1, right)));
         }
 
         return result;

@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SubarraySumEqualsKBenchmarks
 {
     private const int Target = 1_000_000;
+    private const int ValueLowerBound = -10;
+    private const int ValueUpperBoundExclusive = 11;
 
     [Params(200, 5_000)]
     public int Length;
@@ -24,7 +26,7 @@ public class SubarraySumEqualsKBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-10, 11)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(ValueLowerBound, ValueUpperBoundExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

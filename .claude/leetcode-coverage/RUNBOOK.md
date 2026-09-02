@@ -1,5 +1,10 @@
 # LeetCode coverage build-out — agent runbook
 
+> **Two standing jobs share this manifest.** This one ADDS coverage for problems
+> not yet solved. Its companion, `MIGRATION-RUNBOOK.md`, CONVERTS already-covered
+> problems onto the ARCHITECTURE.md §17 tiered shape. They are safe to alternate,
+> and each is self-contained.
+
 This is a standing job, not a one-off. Paste the block below to any Claude Code
 agent/session (this one or a fresh one — nothing here depends on conversation
 history) to make progress on it.

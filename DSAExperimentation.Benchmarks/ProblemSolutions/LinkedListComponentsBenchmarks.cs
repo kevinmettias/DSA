@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LinkedListComponentsBenchmarks
 {
+    private const int EvenModulus = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -22,7 +24,7 @@ public class LinkedListComponentsBenchmarks
     public void Setup()
     {
         _head = Build(Enumerable.Range(0, Length).ToArray());
-        _nums = Enumerable.Range(0, Length).Where(v => v % 2 == 0).Reverse().ToArray();
+        _nums = Enumerable.Range(0, Length).Where(v => v % EvenModulus == 0).Reverse().ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -54,12 +56,23 @@ public class LinkedListComponentsBenchmarks
     [Benchmark]
     public int SetMembership()
     {
+        var present = BuildPresentSet();
+        return CountComponentsBySetMembership(present);
+    }
+
+    private Set<int> BuildPresentSet()
+    {
         var present = new Set<int>();
         foreach (var n in _nums)
         {
             present.TryAdd(n);
         }
 
+        return present;
+    }
+
+    private int CountComponentsBySetMembership(Set<int> present)
+    {
         var count = 0;
         var inComponent = false;
 

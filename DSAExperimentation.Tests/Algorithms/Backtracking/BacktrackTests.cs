@@ -33,6 +33,20 @@ public sealed partial class BacktrackTests
     public void Search_Subsets_EnumeratesAllSubsetsInDfsOrder()
     {
         var nums = new[] { 1, 2, 3 };
+
+        var subsets = EnumerateSubsetsInDfsOrder(nums);
+
+        Assert.Equal(
+            new[]
+            {
+                Array.Empty<int>(), new[] { 1 }, new[] { 1, 2 }, new[] { 1, 2, 3 },
+                new[] { 1, 3 }, new[] { 2 }, new[] { 2, 3 }, new[] { 3 },
+            },
+            subsets);
+    }
+
+    private static List<int[]> EnumerateSubsetsInDfsOrder(int[] nums)
+    {
         var state = new SubsetsState();
         var subsets = new List<int[]>();
 
@@ -50,13 +64,7 @@ public sealed partial class BacktrackTests
             unchoose: (s, _) => s.ChosenIndices.RemoveAt(s.ChosenIndices.Count - 1),
             onSolution: s => subsets.Add(s.ChosenIndices.Select(i => nums[i]).ToArray()));
 
-        Assert.Equal(
-            new[]
-            {
-                Array.Empty<int>(), new[] { 1 }, new[] { 1, 2 }, new[] { 1, 2, 3 },
-                new[] { 1, 3 }, new[] { 2 }, new[] { 2, 3 }, new[] { 3 },
-            },
-            subsets);
+        return subsets;
     }
 
     [Fact]
@@ -175,6 +183,14 @@ public sealed partial class BacktrackTests
             ["C"] = [],
             ["D"] = [],
         };
+
+        var visited = TraverseGraphDfsFromA(graph);
+
+        Assert.Equal(new[] { "A", "B", "D", "C" }, visited);
+    }
+
+    private static List<string> TraverseGraphDfsFromA(Dictionary<string, string[]> graph)
+    {
         var visited = new List<string> { "A" };
         var state = new PathState();
 
@@ -190,6 +206,6 @@ public sealed partial class BacktrackTests
             unchoose: (s, _) => s.Path.RemoveAt(s.Path.Count - 1),
             onSolution: _ => { });
 
-        Assert.Equal(new[] { "A", "B", "D", "C" }, visited);
+        return visited;
     }
 }

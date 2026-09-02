@@ -1,19 +1,22 @@
-using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.AddTwoNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Add Two Numbers (LC 2): converting each digit list to a BigInteger and back is
-// the naive approach many first reach for - each `* 10` grows the running total's
-// limb count by one, so accumulating an n-digit number this way costs O(n^2)
-// overall. DigitwiseListWalk instead walks both lists exactly once with a running
-// carry, using this repo's own SinglyLinkedListNode<int>.Next the same way
-// MergeTwoSortedListsTests splices nodes - O(n) with a single pass building the
-// output list as it goes.
+// Harness only: both arms are AddTwoNumbersSolution's, the same methods
+// AddTwoNumbersTests proves correct. Converting each digit list to a BigInteger
+// and back is the naive approach many first reach for - each `* 10` grows the
+// running total's limb count by one, so accumulating an n-digit number this way
+// costs O(n^2) overall. DigitwiseListWalk instead walks both lists exactly once
+// with a running carry - O(n) with a single pass building the output list as it
+// goes.
 [MemoryDiagnoser]
 public class AddTwoNumbersBenchmarks
 {
+    private const int RandomSeed = 11;
+    private const int DecimalBase = 10;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,80 +26,37 @@ public class AddTwoNumbersBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(11);
+        var random = new Random(RandomSeed);
         _first = BuildRandomDigitList(random, Length);
         _second = BuildRandomDigitList(random, Length);
     }
 
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
+    // Returning the built list itself as object still forces both strategies
+    // through their full construction and keeps BenchmarkDotNet from treating the
+    // call as dead code, which is the point: measuring a length or count instead
+    // would be the same weaker-than-the-real-answer shortcut this migration
+    // removes everywhere else.
     [Benchmark(Baseline = true)]
-    public int BigIntegerConvertAndBack()
-    {
-        var sum = ToBigInteger(_first) + ToBigInteger(_second);
-        var digitCount = 0;
-
-        for (var remaining = sum; remaining > 0; remaining /= 10)
-        {
-            digitCount++;
-        }
-
-        return digitCount;
-    }
+    public object? BigIntegerConvertAndBack() =>
+        AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(_first, _second);
 
     [Benchmark]
-    public int DigitwiseListWalk()
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        var carry = 0;
-        SinglyLinkedListNode<int>? first = _first;
-        SinglyLinkedListNode<int>? second = _second;
-
-        while (first is not null || second is not null || carry != 0)
-        {
-            var digitSum = carry + (first?.Value ?? 0) + (second?.Value ?? 0);
-            carry = digitSum / 10;
-
-            tail.Next = new SinglyLinkedListNode<int>(digitSum % 10);
-            tail = tail.Next;
-
-            first = first?.Next;
-            second = second?.Next;
-        }
-
-        var length = 0;
-        for (var node = dummy.Next; node is not null; node = node.Next)
-        {
-            length++;
-        }
-
-        return length;
-    }
-
-    private static BigInteger ToBigInteger(SinglyLinkedListNode<int>? head)
-    {
-        BigInteger value = 0;
-        BigInteger placeValue = 1;
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            value += node.Value * placeValue;
-            placeValue *= 10;
-        }
-
-        return value;
-    }
+    public object? DigitwiseListWalk() =>
+        AddTwoNumbersSolution.AddByDigitwiseListWalk(_first, _second);
 
     // Digit values only need to be in [0, 10) to exercise both strategies' carry
     // handling under load - LC 2's "no leading zero" constraint is a correctness
     // concern already covered by AddTwoNumbersTests, not a perf-harness one.
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, 10));
+        var head = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, 10));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
             tail = tail.Next;
         }
 

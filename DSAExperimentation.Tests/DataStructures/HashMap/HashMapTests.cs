@@ -170,4 +170,33 @@ public sealed partial class HashMapTests
 
         Assert.Equal(["b"], keys);
     }
+
+    [Fact]
+    public void Count_NewMap_IsZero()
+    {
+        Assert.Equal(0, new HashMap<string, int>().Count);
+    }
+
+    [Fact]
+    public void Count_RisesOnlyForNewKeys()
+    {
+        var map = new HashMap<string, int>();
+
+        map.Set("a", 1);
+        map.Set("b", 2);
+        map.Set("a", 3);
+
+        Assert.Equal(2, map.Count);
+    }
+
+    [Fact]
+    public void Count_FallsWhenAKeyIsRemoved()
+    {
+        var map = new HashMap<string, int>();
+        map.Set("a", 1);
+
+        map.TryRemove("a");
+
+        Assert.Equal(0, map.Count);
+    }
 }

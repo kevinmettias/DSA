@@ -17,7 +17,10 @@ public sealed partial class PalindromePartitioningIIITests
     [InlineData("aabbc", 3, 0)]
     [InlineData("leetcode", 8, 0)]
     public void MinChanges_LeetCodeExamples_ReturnsMinimumCharacterChanges(string s, int k, int expected)
-        => Assert.Equal(expected, MinChanges(s, k));
+    {
+        var actual = MinChanges(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MinChanges(string s, int k)
         => Memoizer.Memoize<(int Position, int PartitionsLeft), int>((0, k), (state, changesFrom) =>

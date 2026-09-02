@@ -51,20 +51,26 @@ public sealed partial class SplitLinkedListInPartsTests
 
         for (var i = 0; i < k && current is not null; i++)
         {
-            parts[i] = current;
             var currentSize = partSize + (i < extra ? 1 : 0);
-
-            for (var j = 1; j < currentSize; j++)
-            {
-                current = current!.Next;
-            }
-
-            var next = current!.Next;
-            current.Next = null;
-            current = next;
+            current = AssignPart(parts, i, currentSize, current);
         }
 
         return parts;
+    }
+
+    private static SinglyLinkedListNode<int>? AssignPart(
+        SinglyLinkedListNode<int>?[] parts, int i, int currentSize, SinglyLinkedListNode<int>? current)
+    {
+        parts[i] = current;
+
+        for (var j = 1; j < currentSize; j++)
+        {
+            current = current!.Next;
+        }
+
+        var next = current!.Next;
+        current.Next = null;
+        return next;
     }
 
     private static SinglyLinkedListNode<int> Build(int[] values)

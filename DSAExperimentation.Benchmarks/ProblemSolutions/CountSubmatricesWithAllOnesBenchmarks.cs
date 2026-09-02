@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountSubmatricesWithAllOnesBenchmarks
 {
+    private const int CellValueUpperBoundExclusive = 2;
+
     [Params(50, 300)]
     public int Size;
 
@@ -22,7 +24,7 @@ public class CountSubmatricesWithAllOnesBenchmarks
     {
         var random = new Random(1);
         _matrix = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, 2)).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, CellValueUpperBoundExclusive)).ToArray())
             .ToArray();
     }
 
@@ -35,23 +37,36 @@ public class CountSubmatricesWithAllOnesBenchmarks
 
         foreach (var row in _matrix)
         {
-            for (var col = 0; col < cols; col++)
-            {
-                heights[col] = row[col] == 1 ? heights[col] + 1 : 0;
-            }
-
-            for (var right = 0; right < cols; right++)
-            {
-                var minHeight = heights[right];
-                for (var left = right; left >= 0 && heights[left] != 0; left--)
-                {
-                    minHeight = Math.Min(minHeight, heights[left]);
-                    total += minHeight;
-                }
-            }
+            UpdateHeights(heights, row);
+            total += CountRowSubmatricesRunningMin(heights);
         }
 
         return total;
+    }
+
+    private static void UpdateHeights(int[] heights, int[] row)
+    {
+        for (var col = 0; col < heights.Length; col++)
+        {
+            heights[col] = row[col] == 1 ? heights[col] + 1 : 0;
+        }
+    }
+
+    private static int CountRowSubmatricesRunningMin(int[] heights)
+    {
+        var rowTotal = 0;
+
+        for (var right = 0; right < heights.Length; right++)
+        {
+            var minHeight = heights[right];
+            for (var left = right; left >= 0 && heights[left] != 0; left--)
+            {
+                minHeight = Math.Min(minHeight, heights[left]);
+                rowTotal += minHeight;
+            }
+        }
+
+        return rowTotal;
     }
 
     [Benchmark]
@@ -63,11 +78,7 @@ public class CountSubmatricesWithAllOnesBenchmarks
 
         foreach (var row in _matrix)
         {
-            for (var col = 0; col < cols; col++)
-            {
-                heights[col] = row[col] == 1 ? heights[col] + 1 : 0;
-            }
-
+            UpdateHeights(heights, row);
             total += CountRowSubmatrices(heights);
         }
 

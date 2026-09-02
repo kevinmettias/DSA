@@ -13,6 +13,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrefixAndSuffixSearchBenchmarks
 {
+    private const int RandomSeed = 745; // LC 745
+    private const int WordLength = 7;
+    private const int AlphabetSize = 26;
+
+    // Length of the prefix/suffix pulled from each word to build a query.
+    private const int QueryAffixLength = 2;
+
+    private const string PrefixSuffixSeparator = "#";
+
     [Params(200, 2_000)]
     public int WordCount;
 
@@ -22,11 +31,11 @@ public class PrefixAndSuffixSearchBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(745);
+        var random = new Random(RandomSeed);
         _words = Enumerable.Range(0, WordCount)
-            .Select(_ => new string(Enumerable.Range(0, 7).Select(_ => (char)('a' + random.Next(26))).ToArray()))
+            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray()))
             .ToArray();
-        _queries = _words.Select(word => (word[..2], word[^2..])).ToArray();
+        _queries = _words.Select(word => (word[..QueryAffixLength], word[^QueryAffixLength..])).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -52,6 +61,14 @@ public class PrefixAndSuffixSearchBenchmarks
     [Benchmark]
     public int PrecomputedHashMapLookup()
     {
+        var indexByPrefixAndSuffix = BuildPrefixSuffixIndex();
+        return FindLastMatchingIndex(indexByPrefixAndSuffix);
+    }
+
+    // One-time O(numWords * wordLength^2) precompute of every (prefix, suffix)
+    // substring pair for every word, keyed to that word's index.
+    private HashMap<string, int> BuildPrefixSuffixIndex()
+    {
         var indexByPrefixAndSuffix = new HashMap<string, int>();
 
         for (var index = 0; index < _words.Length; index++)
@@ -62,17 +79,24 @@ public class PrefixAndSuffixSearchBenchmarks
             {
                 for (var suffixLength = 0; suffixLength <= word.Length; suffixLength++)
                 {
-                    var key = word[..prefixLength] + "#" + word[(word.Length - suffixLength)..];
+                    var key = word[..prefixLength] + PrefixSuffixSeparator + word[(word.Length - suffixLength)..];
                     indexByPrefixAndSuffix.Set(key, index);
                 }
             }
         }
 
+        return indexByPrefixAndSuffix;
+    }
+
+    // Runs every query as a single lookup, keeping the last match like the
+    // linear-scan baseline does.
+    private int FindLastMatchingIndex(HashMap<string, int> indexByPrefixAndSuffix)
+    {
         var found = -1;
 
         foreach (var (prefix, suffix) in _queries)
         {
-            if (indexByPrefixAndSuffix.TryGetValue(prefix + "#" + suffix, out var index))
+            if (indexByPrefixAndSuffix.TryGetValue(prefix + PrefixSuffixSeparator + suffix, out var index))
             {
                 found = index;
             }

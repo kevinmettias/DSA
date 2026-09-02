@@ -46,7 +46,18 @@ public sealed partial class NumberOfWaysOfCuttingAPizzaTests
         Assert.Equal(0, result);
     }
 
+    private readonly record struct AppleGrid(int[,] Apples, int Rows, int Cols);
+
     private static int Ways(string[] pizza, int k)
+    {
+        var grid = new AppleGrid(BuildAppleSuffixSums(pizza), pizza.Length, pizza[0].Length);
+
+        return Memoizer.Memoize<(int Row, int Col, int RemainingCuts), int>(
+            (0, 0, k - 1),
+            (state, waysFrom) => WaysFrom(grid, state, waysFrom));
+    }
+
+    private static int[,] BuildAppleSuffixSums(string[] pizza)
     {
         var rows = pizza.Length;
         var cols = pizza[0].Length;
@@ -61,43 +72,72 @@ public sealed partial class NumberOfWaysOfCuttingAPizzaTests
             }
         }
 
-        return Memoizer.Memoize<(int Row, int Col, int RemainingCuts), int>((0, 0, k - 1), WaysFrom);
+        return apples;
+    }
 
-        int WaysFrom(
-            (int Row, int Col, int RemainingCuts) state,
-            Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+    private static int WaysFrom(
+        AppleGrid grid,
+        (int Row, int Col, int RemainingCuts) state,
+        Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+    {
+        var (row, col, remainingCuts) = state;
+
+        if (grid.Apples[row, col] == 0)
         {
-            var (row, col, remainingCuts) = state;
-
-            if (apples[row, col] == 0)
-            {
-                return 0;
-            }
-
-            if (remainingCuts == 0)
-            {
-                return 1;
-            }
-
-            var total = 0;
-
-            for (var nextRow = row + 1; nextRow < rows; nextRow++)
-            {
-                if (apples[row, col] - apples[nextRow, col] > 0)
-                {
-                    total = (total + waysFrom((nextRow, col, remainingCuts - 1))) % Modulus;
-                }
-            }
-
-            for (var nextCol = col + 1; nextCol < cols; nextCol++)
-            {
-                if (apples[row, col] - apples[row, nextCol] > 0)
-                {
-                    total = (total + waysFrom((row, nextCol, remainingCuts - 1))) % Modulus;
-                }
-            }
-
-            return total;
+            return 0;
         }
+
+        if (remainingCuts == 0)
+        {
+            return 1;
+        }
+
+        var horizontalWays = SumHorizontalCuts(grid, state, waysFrom);
+        var verticalWays = SumVerticalCuts(grid, state, waysFrom);
+
+        return (horizontalWays + verticalWays) % Modulus;
+    }
+
+    private static int SumHorizontalCuts(
+        AppleGrid grid,
+        (int Row, int Col, int RemainingCuts) state,
+        Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+    {
+        var (row, col, remainingCuts) = state;
+
+        return SumCutsAlongAxis(
+            grid.Apples[row, col],
+            (row + 1, grid.Rows),
+            nextRow => grid.Apples[nextRow, col],
+            nextRow => waysFrom((nextRow, col, remainingCuts - 1)));
+    }
+
+    private static int SumVerticalCuts(
+        AppleGrid grid,
+        (int Row, int Col, int RemainingCuts) state,
+        Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+    {
+        var (row, col, remainingCuts) = state;
+
+        return SumCutsAlongAxis(
+            grid.Apples[row, col],
+            (col + 1, grid.Cols),
+            nextCol => grid.Apples[row, nextCol],
+            nextCol => waysFrom((row, nextCol, remainingCuts - 1)));
+    }
+
+    private static int SumCutsAlongAxis(int baseline, (int Start, int Bound) range, Func<int, int> valueAt, Func<int, int> waysAt)
+    {
+        var total = 0;
+
+        for (var next = range.Start; next < range.Bound; next++)
+        {
+            if (baseline - valueAt(next) > 0)
+            {
+                total = (total + waysAt(next)) % Modulus;
+            }
+        }
+
+        return total;
     }
 }

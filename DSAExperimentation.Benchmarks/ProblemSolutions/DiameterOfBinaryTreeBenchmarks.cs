@@ -54,7 +54,8 @@ public class DiameterOfBinaryTreeBenchmarks
         var (_, rightDiameter) = DiameterVia(node.Right);
 
         var diameterThroughNode = leftHeight + rightHeight;
-        var diameter = Math.Max(diameterThroughNode, Math.Max(leftDiameter, rightDiameter));
+        var bestChildDiameter = Math.Max(leftDiameter, rightDiameter);
+        var diameter = Math.Max(diameterThroughNode, bestChildDiameter);
 
         return (1 + Math.Max(leftHeight, rightHeight), diameter);
     }

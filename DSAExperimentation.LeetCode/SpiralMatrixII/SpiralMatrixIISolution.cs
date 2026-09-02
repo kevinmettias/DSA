@@ -1,0 +1,130 @@
+namespace DSAExperimentation.LeetCode.SpiralMatrixII;
+
+// LeetCode 59. Spiral Matrix II: fill an n x n matrix with 1..n^2 in spiral order.
+//
+// Both strategies visit exactly n^2 cells - the gap between them is per-cell
+// overhead, not algorithm class. The direction-vector walk re-derives "have I been
+// here" via a visited set on every step; the boundary-shrinking fill needs no
+// lookup at all, just four fixed index-arithmetic loops per layer. There is no
+// repo Representation/Operations primitive to compose here - a plain int[][] is
+// the same shape this repo's Spiral Matrix (LC 54) coverage already uses.
+internal static class SpiralMatrixIISolution
+{
+    private const int DirectionCount = 4;
+
+    // The textbook approach: walk one cell at a time along a direction vector,
+    // turning clockwise whenever the next cell would leave the bounds or has
+    // already been visited. Written without this repo's primitives - a BCL
+    // HashSet tracks visited cells - since the only input is n; there's no
+    // caller-supplied container to hand this strategy instead.
+    public static int[][] GenerateMatrixByDirectionVectorWalk(int n)
+    {
+        var matrix = Enumerable.Range(0, n).Select(_ => new int[n]).ToArray();
+        var visited = new HashSet<(int Row, int Col)>();
+        int[] deltaRow = [0, 1, 0, -1];
+        int[] deltaCol = [1, 0, -1, 0];
+        var context = new SpiralWalkContext(matrix, visited, deltaRow, deltaCol, n);
+        var position = new SpiralPosition(0, 0, 0);
+
+        for (var value = 1; value <= n * n; value++)
+        {
+            position = StepSpiral(context, position, value);
+        }
+
+        return matrix;
+    }
+
+    private static SpiralPosition StepSpiral(SpiralWalkContext context, SpiralPosition position, int value)
+    {
+        var (matrix, visited, deltaRow, deltaCol, n) = context;
+        var (row, col, direction) = position;
+
+        matrix[row][col] = value;
+        visited.Add((row, col));
+
+        var nextRow = row + deltaRow[direction];
+        var nextCol = col + deltaCol[direction];
+
+        if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n || visited.Contains((nextRow, nextCol)))
+        {
+            direction = (direction + 1) % DirectionCount;
+            nextRow = row + deltaRow[direction];
+            nextCol = col + deltaCol[direction];
+        }
+
+        return new SpiralPosition(nextRow, nextCol, direction);
+    }
+
+    // Boundary-shrinking: fill each ring's top/right/bottom/left edge in turn and
+    // shrink the frame afterward. No membership lookup is needed at all.
+    public static int[][] GenerateMatrixByBoundaryShrinking(int n)
+    {
+        var matrix = Enumerable.Range(0, n).Select(_ => new int[n]).ToArray();
+        var value = 1;
+        var bounds = new SpiralBounds { Top = 0, Bottom = n - 1, Left = 0, Right = n - 1 };
+
+        while (bounds.Top <= bounds.Bottom && bounds.Left <= bounds.Right)
+        {
+            FillRing(matrix, ref value, ref bounds);
+        }
+
+        return matrix;
+    }
+
+    private static void FillRing(int[][] matrix, ref int value, ref SpiralBounds bounds)
+    {
+        FillTopEdge(matrix, ref value, ref bounds);
+        FillRightEdge(matrix, ref value, ref bounds);
+        FillBottomEdge(matrix, ref value, ref bounds);
+        FillLeftEdge(matrix, ref value, ref bounds);
+    }
+
+    private static void FillTopEdge(int[][] matrix, ref int value, ref SpiralBounds bounds)
+    {
+        for (var c = bounds.Left; c <= bounds.Right; c++)
+        {
+            matrix[bounds.Top][c] = value++;
+        }
+        bounds.Top++;
+    }
+
+    private static void FillRightEdge(int[][] matrix, ref int value, ref SpiralBounds bounds)
+    {
+        for (var r = bounds.Top; r <= bounds.Bottom; r++)
+        {
+            matrix[r][bounds.Right] = value++;
+        }
+        bounds.Right--;
+    }
+
+    private static void FillBottomEdge(int[][] matrix, ref int value, ref SpiralBounds bounds)
+    {
+        for (var c = bounds.Right; c >= bounds.Left && bounds.Top <= bounds.Bottom; c--)
+        {
+            matrix[bounds.Bottom][c] = value++;
+        }
+        bounds.Bottom--;
+    }
+
+    private static void FillLeftEdge(int[][] matrix, ref int value, ref SpiralBounds bounds)
+    {
+        for (var r = bounds.Bottom; r >= bounds.Top && bounds.Left <= bounds.Right; r--)
+        {
+            matrix[r][bounds.Left] = value++;
+        }
+        bounds.Left++;
+    }
+
+    private readonly record struct SpiralWalkContext(
+        int[][] Matrix, HashSet<(int Row, int Col)> Visited, int[] DeltaRow, int[] DeltaCol, int N);
+
+    private readonly record struct SpiralPosition(int Row, int Col, int Direction);
+
+    private struct SpiralBounds
+    {
+        public int Top;
+        public int Bottom;
+        public int Left;
+        public int Right;
+    }
+}

@@ -33,11 +33,18 @@ public sealed partial class SumOfSubarrayMinimumsTests
 
     private static int SumSubarrayMins(int[] arr)
     {
+        var left = ComputeDistanceToPreviousSmaller(arr);
+        var right = ComputeDistanceToNextSmallerOrEqual(arr);
+
+        return SumWeightedContributions(arr, left, right);
+    }
+
+    private static int[] ComputeDistanceToPreviousSmaller(int[] arr)
+    {
         var n = arr.Length;
         var left = new int[n];
-        var right = new int[n];
-
         var stack = new RepoIntStack();
+
         for (var i = 0; i < n; i++)
         {
             while (stack.TryPeek(out var top) && arr[top] >= arr[i])
@@ -49,7 +56,15 @@ public sealed partial class SumOfSubarrayMinimumsTests
             stack.Push(i);
         }
 
-        stack = new RepoIntStack();
+        return left;
+    }
+
+    private static int[] ComputeDistanceToNextSmallerOrEqual(int[] arr)
+    {
+        var n = arr.Length;
+        var right = new int[n];
+        var stack = new RepoIntStack();
+
         for (var i = n - 1; i >= 0; i--)
         {
             while (stack.TryPeek(out var top) && arr[top] > arr[i])
@@ -61,8 +76,14 @@ public sealed partial class SumOfSubarrayMinimumsTests
             stack.Push(i);
         }
 
+        return right;
+    }
+
+    private static int SumWeightedContributions(int[] arr, int[] left, int[] right)
+    {
         long sum = 0;
-        for (var i = 0; i < n; i++)
+
+        for (var i = 0; i < arr.Length; i++)
         {
             sum = (sum + ((long)arr[i] * left[i] * right[i])) % Modulus;
         }

@@ -14,6 +14,9 @@ public class MaxAreaOfIslandBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
+    private const int RandomSeed = 3;
+    private const double LandProbability = 0.55;
+
     [Params(30, 120)]
     public int Side;
 
@@ -22,7 +25,7 @@ public class MaxAreaOfIslandBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(3);
+        var random = new Random(RandomSeed);
         _grid = new int[Side][];
 
         for (var r = 0; r < Side; r++)
@@ -31,26 +34,28 @@ public class MaxAreaOfIslandBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < 0.55 ? 1 : 0;
+                _grid[r][c] = random.NextDouble() < LandProbability ? 1 : 0;
             }
         }
     }
+
+    private readonly record struct GridBounds(int Rows, int Cols);
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursiveFloodFill()
     {
         var grid = CloneGrid();
-        var rows = grid.Length;
-        var cols = grid[0].Length;
+        var bounds = new GridBounds(grid.Length, grid[0].Length);
         var best = 0;
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < bounds.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < bounds.Cols; c++)
             {
                 if (grid[r][c] == 1)
                 {
-                    best = Math.Max(best, Flood(grid, r, c, rows, cols));
+                    var floodedArea = Flood(grid, r, c, bounds);
+                    best = Math.Max(best, floodedArea);
                 }
             }
         }
@@ -58,9 +63,9 @@ public class MaxAreaOfIslandBenchmarks
         return best;
     }
 
-    private static int Flood(int[][] grid, int row, int col, int rows, int cols)
+    private static int Flood(int[][] grid, int row, int col, GridBounds bounds)
     {
-        if (row < 0 || row >= rows || col < 0 || col >= cols || grid[row][col] != 1)
+        if (row < 0 || row >= bounds.Rows || col < 0 || col >= bounds.Cols || grid[row][col] != 1)
         {
             return 0;
         }
@@ -68,61 +73,75 @@ public class MaxAreaOfIslandBenchmarks
         grid[row][col] = 0;
 
         return 1
-            + Flood(grid, row + 1, col, rows, cols)
-            + Flood(grid, row - 1, col, rows, cols)
-            + Flood(grid, row, col + 1, rows, cols)
-            + Flood(grid, row, col - 1, rows, cols);
+            + Flood(grid, row + 1, col, bounds)
+            + Flood(grid, row - 1, col, bounds)
+            + Flood(grid, row, col + 1, bounds)
+            + Flood(grid, row, col - 1, bounds);
     }
 
     [Benchmark]
     public int DepthFirstSearchTraversal()
     {
         var grid = CloneGrid();
-        var rows = grid.Length;
-        var cols = grid[0].Length;
+        var bounds = new GridBounds(grid.Length, grid[0].Length);
         var best = 0;
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < bounds.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < bounds.Cols; c++)
             {
                 if (grid[r][c] != 1)
                 {
                     continue;
                 }
 
-                var island = DepthFirstSearch.Traverse((r, c), Neighbors);
-                best = Math.Max(best, island.Count);
-
-                foreach (var (row, col) in island)
-                {
-                    grid[row][col] = 0;
-                }
+                var floodedArea = FloodIslandArea(grid, r, c);
+                best = Math.Max(best, floodedArea);
             }
         }
 
         return best;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private static int FloodIslandArea(int[][] grid, int r, int c)
+    {
+        var island = DepthFirstSearch.Traverse((r, c), p => LandNeighbors(grid, p));
+
+        foreach (var (row, col) in island)
         {
-            foreach (var (dRow, dCol) in Directions)
+            grid[row][col] = 0;
+        }
+
+        return island.Count;
+    }
+
+    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) p)
+    {
+        foreach (var direction in Directions)
+        {
+            if (TryGetLandNeighbor(grid, p, direction, out var neighbor))
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (grid[nextRow][nextCol] != 1)
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
+                yield return neighbor;
             }
         }
+    }
+
+    private static bool TryGetLandNeighbor(
+        int[][] grid,
+        (int Row, int Col) origin,
+        (int DRow, int DCol) delta,
+        out (int Row, int Col) neighbor)
+    {
+        var nextRow = origin.Row + delta.DRow;
+        var nextCol = origin.Col + delta.DCol;
+        neighbor = (nextRow, nextCol);
+
+        if (nextRow < 0 || nextRow >= grid.Length || nextCol < 0 || nextCol >= grid[0].Length)
+        {
+            return false;
+        }
+
+        return grid[nextRow][nextCol] == 1;
     }
 
     private int[][] CloneGrid()

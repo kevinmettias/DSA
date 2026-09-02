@@ -22,44 +22,68 @@ public sealed partial class MaximumProductOfWordLengthsTests
 
     private static int MaxProduct(string[] words)
     {
+        var maskToMaxLength = BuildLengthsByMask(words);
+        var pairs = ToMaskLengthPairs(maskToMaxLength);
+        return BestDisjointProduct(pairs);
+    }
+
+    private static HashMap<int, int> BuildLengthsByMask(string[] words)
+    {
         var maskToMaxLength = new HashMap<int, int>();
 
         foreach (var word in words)
         {
-            var mask = 0;
-            foreach (var c in word)
-            {
-                mask |= 1 << (c - 'a');
-            }
-
-            if (maskToMaxLength.TryGetValue(mask, out var existingLength) && existingLength >= word.Length)
-            {
-                continue;
-            }
-
-            maskToMaxLength.Set(mask, word.Length);
+            RecordWordMask(word, maskToMaxLength);
         }
 
+        return maskToMaxLength;
+    }
+
+    private static (int Mask, int Length)[] ToMaskLengthPairs(HashMap<int, int> maskToMaxLength)
+    {
         var masks = maskToMaxLength.Keys.ToArray();
-        var lengths = new int[masks.Length];
+        var pairs = new (int Mask, int Length)[masks.Length];
+
         for (var i = 0; i < masks.Length; i++)
         {
-            maskToMaxLength.TryGetValue(masks[i], out lengths[i]);
+            maskToMaxLength.TryGetValue(masks[i], out var length);
+            pairs[i] = (masks[i], length);
         }
 
+        return pairs;
+    }
+
+    private static int BestDisjointProduct((int Mask, int Length)[] pairs)
+    {
         var best = 0;
 
-        for (var i = 0; i < masks.Length; i++)
+        for (var i = 0; i < pairs.Length; i++)
         {
-            for (var j = i + 1; j < masks.Length; j++)
+            for (var j = i + 1; j < pairs.Length; j++)
             {
-                if ((masks[i] & masks[j]) == 0)
+                if ((pairs[i].Mask & pairs[j].Mask) == 0)
                 {
-                    best = Math.Max(best, lengths[i] * lengths[j]);
+                    best = Math.Max(best, pairs[i].Length * pairs[j].Length);
                 }
             }
         }
 
         return best;
+    }
+
+    private static void RecordWordMask(string word, HashMap<int, int> maskToMaxLength)
+    {
+        var mask = 0;
+        foreach (var c in word)
+        {
+            mask |= 1 << (c - 'a');
+        }
+
+        if (maskToMaxLength.TryGetValue(mask, out var existingLength) && existingLength >= word.Length)
+        {
+            return;
+        }
+
+        maskToMaxLength.Set(mask, word.Length);
     }
 }

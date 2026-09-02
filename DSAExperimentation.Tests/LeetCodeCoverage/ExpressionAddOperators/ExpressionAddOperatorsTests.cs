@@ -20,7 +20,9 @@ public sealed partial class ExpressionAddOperatorsTests
     {
         var actual = AddOperators(num, target);
 
-        Assert.Equal(expected.OrderBy(x => x, StringComparer.Ordinal), actual.OrderBy(x => x, StringComparer.Ordinal));
+        var expectedSorted = expected.OrderBy(x => x, StringComparer.Ordinal);
+        var actualSorted = actual.OrderBy(x => x, StringComparer.Ordinal);
+        Assert.Equal(expectedSorted, actualSorted);
     }
 
     private readonly record struct ExprState(int Position, long Value, long LastOperand, string Expression);
@@ -52,23 +54,31 @@ public sealed partial class ExpressionAddOperatorsTests
                 yield break;
             }
 
-            var operandValue = long.Parse(operand);
-            var nextPosition = state.Position + length;
-
-            if (state.Position == 0)
+            foreach (var candidate in CandidatesForOperand(state, operand))
             {
-                // The first operand has no operator in front of it.
-                yield return new ExprState(nextPosition, operandValue, operandValue, operand);
-                continue;
+                yield return candidate;
             }
-
-            yield return new ExprState(nextPosition, state.Value + operandValue, operandValue, state.Expression + "+" + operand);
-            yield return new ExprState(nextPosition, state.Value - operandValue, -operandValue, state.Expression + "-" + operand);
-            yield return new ExprState(
-                nextPosition,
-                state.Value - state.LastOperand + (state.LastOperand * operandValue),
-                state.LastOperand * operandValue,
-                state.Expression + "*" + operand);
         }
+    }
+
+    private static IEnumerable<ExprState> CandidatesForOperand(ExprState state, string operand)
+    {
+        var operandValue = long.Parse(operand);
+        var nextPosition = state.Position + operand.Length;
+
+        if (state.Position == 0)
+        {
+            // The first operand has no operator in front of it.
+            yield return new ExprState(nextPosition, operandValue, operandValue, operand);
+            yield break;
+        }
+
+        yield return new ExprState(nextPosition, state.Value + operandValue, operandValue, state.Expression + "+" + operand);
+        yield return new ExprState(nextPosition, state.Value - operandValue, -operandValue, state.Expression + "-" + operand);
+        yield return new ExprState(
+            nextPosition,
+            state.Value - state.LastOperand + (state.LastOperand * operandValue),
+            state.LastOperand * operandValue,
+            state.Expression + "*" + operand);
     }
 }

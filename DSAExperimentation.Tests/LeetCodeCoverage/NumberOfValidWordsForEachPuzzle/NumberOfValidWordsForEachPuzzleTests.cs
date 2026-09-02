@@ -33,7 +33,8 @@ public sealed partial class NumberOfValidWordsForEachPuzzleTests
         var result = new List<int>(puzzles.Length);
         foreach (var puzzle in puzzles)
         {
-            result.Add(CountValidWords(wordCountsByMask, LetterMask(puzzle), 1 << (puzzle[0] - 'a')));
+            var validCount = CountValidWords(wordCountsByMask, LetterMask(puzzle), 1 << (puzzle[0] - 'a'));
+            result.Add(validCount);
         }
 
         return result;

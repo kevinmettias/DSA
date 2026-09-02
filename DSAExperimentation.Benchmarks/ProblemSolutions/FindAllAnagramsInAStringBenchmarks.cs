@@ -12,6 +12,9 @@ public class FindAllAnagramsInAStringBenchmarks
 {
     private const string Pattern = "aeiou";
 
+    // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
+    private const int RandomSeed = 438;
+
     [Params(2_000, 20_000)]
     public int Length;
 
@@ -20,7 +23,7 @@ public class FindAllAnagramsInAStringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(438);
+        var random = new Random(RandomSeed);
         const string alphabet = "abcdefghijklmnopqrstuvwxyz";
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
@@ -39,7 +42,8 @@ public class FindAllAnagramsInAStringBenchmarks
 
         for (var start = 0; start <= _s.Length - Pattern.Length; start++)
         {
-            var window = BuildFrequencyMap(_s.Substring(start, Pattern.Length));
+            var candidateWindow = _s.Substring(start, Pattern.Length);
+            var window = BuildFrequencyMap(candidateWindow);
             if (FrequenciesEqual(window, target))
             {
                 matches++;
@@ -59,40 +63,59 @@ public class FindAllAnagramsInAStringBenchmarks
 
         for (var i = 0; i < _s.Length; i++)
         {
-            if (need.TryGetValue(_s[i], out var needed))
-            {
-                window.TryGetValue(_s[i], out var count);
-                window.Set(_s[i], count + 1);
-                if (count + 1 == needed)
-                {
-                    matched++;
-                }
-            }
+            bool isMatch;
+            (matched, isMatch) = AdvanceWindow(i, need, window, matched);
 
-            if (i < Pattern.Length - 1)
-            {
-                continue;
-            }
-
-            if (matched == need.Count)
+            if (isMatch)
             {
                 matches++;
-            }
-
-            var leaving = _s[i - Pattern.Length + 1];
-            if (need.TryGetValue(leaving, out var neededLeaving))
-            {
-                window.TryGetValue(leaving, out var leavingCount);
-                if (leavingCount == neededLeaving)
-                {
-                    matched--;
-                }
-
-                window.Set(leaving, leavingCount - 1);
             }
         }
 
         return matches;
+    }
+
+    private (int Matched, bool IsMatch) AdvanceWindow(int i, HashMap<char, int> need, HashMap<char, int> window, int matched)
+    {
+        matched = AdvanceEnteringChar(_s[i], need, window, matched);
+
+        if (i < Pattern.Length - 1)
+        {
+            return (matched, false);
+        }
+
+        var isMatch = matched == need.Count;
+
+        var leaving = _s[i - Pattern.Length + 1];
+        matched = AdvanceLeavingChar(leaving, need, window, matched);
+
+        return (matched, isMatch);
+    }
+
+    private static int AdvanceEnteringChar(char entering, HashMap<char, int> need, HashMap<char, int> window, int matched)
+    {
+        if (!need.TryGetValue(entering, out var neededCount))
+        {
+            return matched;
+        }
+
+        window.TryGetValue(entering, out var count);
+        window.Set(entering, count + 1);
+
+        return count + 1 == neededCount ? matched + 1 : matched;
+    }
+
+    private static int AdvanceLeavingChar(char leaving, HashMap<char, int> need, HashMap<char, int> window, int matched)
+    {
+        if (!need.TryGetValue(leaving, out var neededLeaving))
+        {
+            return matched;
+        }
+
+        window.TryGetValue(leaving, out var leavingCount);
+        var updatedMatched = leavingCount == neededLeaving ? matched - 1 : matched;
+        window.Set(leaving, leavingCount - 1);
+        return updatedMatched;
     }
 
     private static HashMap<char, int> BuildFrequencyMap(string value)

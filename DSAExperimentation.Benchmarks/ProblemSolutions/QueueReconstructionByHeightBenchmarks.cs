@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class QueueReconstructionByHeightBenchmarks
 {
+    private const int RandomSeed = 406;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -24,7 +26,7 @@ public class QueueReconstructionByHeightBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(406);
+        var random = new Random(RandomSeed);
         _people = Enumerable.Range(0, Length)
             .Select(_ =>
             {

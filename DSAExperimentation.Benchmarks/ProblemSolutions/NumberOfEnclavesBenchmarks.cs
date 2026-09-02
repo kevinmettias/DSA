@@ -13,6 +13,10 @@ public class NumberOfEnclavesBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
+    private const int RandomSeed = 1020; // LeetCode problem number
+
+    private const double LandDensity = 0.55;
+
     [Params(30, 120)]
     public int Side;
 
@@ -21,7 +25,7 @@ public class NumberOfEnclavesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1020);
+        var random = new Random(RandomSeed);
         _grid = new int[Side][];
 
         for (var r = 0; r < Side; r++)
@@ -30,104 +34,100 @@ public class NumberOfEnclavesBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < 0.55 ? 1 : 0;
+                _grid[r][c] = random.NextDouble() < LandDensity ? 1 : 0;
             }
         }
     }
+
+    private readonly record struct Grid(int[][] Cells, int Rows, int Cols);
+
+    private delegate void SinkAt(Grid grid, int row, int col);
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursiveFloodFill()
     {
-        var grid = CloneGrid();
-        var rows = grid.Length;
-        var cols = grid[0].Length;
+        var cells = CloneGrid();
+        var grid = new Grid(cells, cells.Length, cells[0].Length);
 
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                var onBorder = r == 0 || r == rows - 1 || c == 0 || c == cols - 1;
+        SinkBorderIslands(grid, Flood);
 
-                if (onBorder)
-                {
-                    Flood(grid, r, c, rows, cols);
-                }
-            }
-        }
-
-        return CountLand(grid);
+        return CountLand(cells);
     }
 
-    private static void Flood(int[][] grid, int row, int col, int rows, int cols)
+    private static void Flood(Grid grid, int row, int col)
     {
-        if (row < 0 || row >= rows || col < 0 || col >= cols || grid[row][col] != 1)
+        if (row < 0 || row >= grid.Rows || col < 0 || col >= grid.Cols || grid.Cells[row][col] != 1)
         {
             return;
         }
 
-        grid[row][col] = 0;
+        grid.Cells[row][col] = 0;
 
-        Flood(grid, row + 1, col, rows, cols);
-        Flood(grid, row - 1, col, rows, cols);
-        Flood(grid, row, col + 1, rows, cols);
-        Flood(grid, row, col - 1, rows, cols);
+        Flood(grid, row + 1, col);
+        Flood(grid, row - 1, col);
+        Flood(grid, row, col + 1);
+        Flood(grid, row, col - 1);
     }
 
     [Benchmark]
     public int DepthFirstSearchTraversal()
     {
-        var grid = CloneGrid();
-        var rows = grid.Length;
-        var cols = grid[0].Length;
+        var cells = CloneGrid();
+        var grid = new Grid(cells, cells.Length, cells[0].Length);
 
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                var onBorder = r == 0 || r == rows - 1 || c == 0 || c == cols - 1;
+        SinkBorderIslands(grid, SinkComponent);
 
-                if (onBorder)
-                {
-                    SinkComponent(grid, r, c, rows, cols);
-                }
-            }
-        }
-
-        return CountLand(grid);
+        return CountLand(cells);
     }
 
-    private static void SinkComponent(int[][] grid, int startRow, int startCol, int rows, int cols)
+    private static void SinkComponent(Grid grid, int startRow, int startCol)
     {
-        if (grid[startRow][startCol] != 1)
+        if (grid.Cells[startRow][startCol] != 1)
         {
             return;
         }
 
-        var component = DepthFirstSearch.Traverse((startRow, startCol), Neighbors);
+        var component = DepthFirstSearch.Traverse((startRow, startCol), p => Neighbors(grid, p));
 
         foreach (var (row, col) in component)
         {
-            grid[row][col] = 0;
+            grid.Cells[row][col] = 0;
         }
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+    private static IEnumerable<(int Row, int Col)> Neighbors(Grid grid, (int Row, int Col) p)
+    {
+        foreach (var (dRow, dCol) in Directions)
         {
-            foreach (var (dRow, dCol) in Directions)
+            var nextRow = p.Row + dRow;
+            var nextCol = p.Col + dCol;
+
+            if (nextRow < 0 || nextRow >= grid.Rows || nextCol < 0 || nextCol >= grid.Cols)
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
+                continue;
+            }
 
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
+            if (grid.Cells[nextRow][nextCol] != 1)
+            {
+                continue;
+            }
+
+            yield return (nextRow, nextCol);
+        }
+    }
+
+    private static void SinkBorderIslands(Grid grid, SinkAt sink)
+    {
+        for (var r = 0; r < grid.Rows; r++)
+        {
+            for (var c = 0; c < grid.Cols; c++)
+            {
+                var onBorder = r == 0 || r == grid.Rows - 1 || c == 0 || c == grid.Cols - 1;
+
+                if (onBorder)
                 {
-                    continue;
+                    sink(grid, r, c);
                 }
-
-                if (grid[nextRow][nextCol] != 1)
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
             }
         }
     }

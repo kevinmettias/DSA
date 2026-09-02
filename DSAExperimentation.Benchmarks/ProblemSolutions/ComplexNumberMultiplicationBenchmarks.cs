@@ -15,6 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ComplexNumberMultiplicationBenchmarks
 {
+    private const int RandomSeed = 7;
+    private const int MinComponentValue = -100;
+    private const int MaxComponentValueExclusive = 101;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,7 +27,7 @@ public class ComplexNumberMultiplicationBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
         _pairs = new (string, string)[Length];
 
         for (var i = 0; i < Length; i++)
@@ -33,7 +37,7 @@ public class ComplexNumberMultiplicationBenchmarks
 
         return;
 
-        static string Format(Random random) => $"{random.Next(-100, 101)}+{random.Next(-100, 101)}i";
+        static string Format(Random random) => $"{random.Next(MinComponentValue, MaxComponentValueExclusive)}+{random.Next(MinComponentValue, MaxComponentValueExclusive)}i";
     }
 
     [Benchmark(Baseline = true)]

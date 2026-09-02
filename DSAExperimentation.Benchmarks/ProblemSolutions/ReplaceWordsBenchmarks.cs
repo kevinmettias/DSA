@@ -19,6 +19,15 @@ public class ReplaceWordsBenchmarks
     private const int RootLength = 4;
     private const int WordLength = 9;
 
+    // LC problem number, reused as the Random seed for reproducible benchmark input.
+    private const int RandomSeed = 648;
+
+    // Alternates sentence words between "prefixed with a real dictionary root" and
+    // "fully random" so half the words exercise each strategy.
+    private const int AlternationModulus = 2;
+
+    private const int LowercaseAlphabetSize = 26;
+
     [Params(50, 1_000)]
     public int DictionarySize;
 
@@ -28,13 +37,13 @@ public class ReplaceWordsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(648);
+        var random = new Random(RandomSeed);
         _dictionary = Enumerable.Range(0, DictionarySize)
             .Select(_ => RandomWord(random, RootLength))
             .Distinct()
             .ToArray();
         _sentence = Enumerable.Range(0, DictionarySize)
-            .Select(i => i % 2 == 0
+            .Select(i => i % AlternationModulus == 0
                 ? _dictionary[random.Next(_dictionary.Length)] + RandomWord(random, WordLength - RootLength)
                 : RandomWord(random, WordLength))
             .ToArray();
@@ -113,5 +122,5 @@ public class ReplaceWordsBenchmarks
     }
 
     private static string RandomWord(Random random, int length)
-        => new(Enumerable.Range(0, length).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        => new(Enumerable.Range(0, length).Select(_ => (char)('a' + random.Next(LowercaseAlphabetSize))).ToArray());
 }

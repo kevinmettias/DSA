@@ -13,6 +13,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrimePalindromeBenchmarks
 {
+    private const int DecimalBase = 10;
+    private const int SmallestPrime = 2;
+    private const int OddDivisorStep = 2;
+    private const long FirstOddDivisor = 3L;
+    private const int HalfLengthDivisor = 2;
+    private const int MirrorStartOffset = 2;
+
+    // Every prime palindrome below 12: no two-digit palindrome besides 11 is prime,
+    // since every even-length palindrome is a multiple of 11.
+    private static readonly long[] SmallPrimePalindromes = [2, 3, 5, 7, 11];
+
     [Params(13, 999)]
     public int N;
 
@@ -57,33 +68,21 @@ public class PrimePalindromeBenchmarks
 
     private static long SmallestPrimePalindrome(int n)
     {
-        if (n <= 2)
+        foreach (var smallPrime in SmallPrimePalindromes)
         {
-            return 2;
+            if (n <= smallPrime)
+            {
+                return smallPrime;
+            }
         }
 
-        if (n <= 3)
-        {
-            return 3;
-        }
+        return GeneratePrimePalindrome(n);
+    }
 
-        if (n <= 5)
-        {
-            return 5;
-        }
-
-        if (n <= 7)
-        {
-            return 7;
-        }
-
-        if (n <= 11)
-        {
-            return 11;
-        }
-
-        var exponent = n.ToString().Length / 2;
-        var half = (int)Math.Pow(10, exponent);
+    private static long GeneratePrimePalindrome(int n)
+    {
+        var exponent = n.ToString().Length / HalfLengthDivisor;
+        var half = (int)Math.Pow(DecimalBase, exponent);
 
         while (true)
         {
@@ -105,11 +104,11 @@ public class PrimePalindromeBenchmarks
 
         while (remaining > 0)
         {
-            digits.Insert(0, remaining % 10);
-            remaining /= 10;
+            digits.Insert(0, remaining % DecimalBase);
+            remaining /= DecimalBase;
         }
 
-        for (var i = digits.Count - 2; i >= 0; i--)
+        for (var i = digits.Count - MirrorStartOffset; i >= 0; i--)
         {
             digits.Add(digits.Get(i));
         }
@@ -117,7 +116,7 @@ public class PrimePalindromeBenchmarks
         var value = 0L;
         for (var i = 0; i < digits.Count; i++)
         {
-            value = value * 10 + digits.Get(i);
+            value = value * DecimalBase + digits.Get(i);
         }
 
         return value;
@@ -125,17 +124,17 @@ public class PrimePalindromeBenchmarks
 
     private static bool IsPrime(long value)
     {
-        if (value < 2)
+        if (value < SmallestPrime)
         {
             return false;
         }
 
-        if (value % 2 == 0)
+        if (value % SmallestPrime == 0)
         {
-            return value == 2;
+            return value == SmallestPrime;
         }
 
-        for (var divisor = 3L; divisor * divisor <= value; divisor += 2)
+        for (var divisor = FirstOddDivisor; divisor * divisor <= value; divisor += OddDivisorStep)
         {
             if (value % divisor == 0)
             {

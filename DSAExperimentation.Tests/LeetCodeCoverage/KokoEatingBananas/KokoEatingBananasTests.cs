@@ -17,7 +17,10 @@ public sealed partial class KokoEatingBananasTests
     [InlineData(new[] { 30, 11, 23, 4, 20 }, 6, 23)]
     [InlineData(new[] { 1 }, 1, 1)]
     public void MinEatingSpeed_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(int[] piles, int h, int expected)
-        => Assert.Equal(expected, MinEatingSpeed(piles, h));
+    {
+        var actual = MinEatingSpeed(piles, h);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MinEatingSpeed(int[] piles, int h)
     {

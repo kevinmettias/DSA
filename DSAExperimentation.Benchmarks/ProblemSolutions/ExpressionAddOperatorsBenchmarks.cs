@@ -14,50 +14,54 @@ public class ExpressionAddOperatorsBenchmarks
 {
     private const long UnreachableTarget = long.MinValue;
 
+    private const string AdditionOperator = "+";
+
+    private const string SubtractionOperator = "-";
+
+    private const string MultiplicationOperator = "*";
+
     [Params("1234567", "123456789")]
     public string Num = "";
 
     [Benchmark(Baseline = true)]
-    public int RecursiveBacktrack()
+    public int RecursiveBacktrack() => CountMatches(0, 0, 0);
+
+    private int CountMatches(int position, long value, long lastOperand)
     {
-        var matches = 0;
-        Recurse(0, 0, 0);
-        return matches;
-
-        void Recurse(int position, long value, long lastOperand)
+        if (position == Num.Length)
         {
-            if (position == Num.Length)
-            {
-                if (value == UnreachableTarget)
-                {
-                    matches++;
-                }
-
-                return;
-            }
-
-            for (var length = 1; position + length <= Num.Length; length++)
-            {
-                var operand = Num.Substring(position, length);
-                if (length > 1 && operand[0] == '0')
-                {
-                    break;
-                }
-
-                var operandValue = long.Parse(operand);
-                var nextPosition = position + length;
-
-                if (position == 0)
-                {
-                    Recurse(nextPosition, operandValue, operandValue);
-                    continue;
-                }
-
-                Recurse(nextPosition, value + operandValue, operandValue);
-                Recurse(nextPosition, value - operandValue, -operandValue);
-                Recurse(nextPosition, value - lastOperand + (lastOperand * operandValue), lastOperand * operandValue);
-            }
+            return value == UnreachableTarget ? 1 : 0;
         }
+
+        var matches = 0;
+
+        for (var length = 1; position + length <= Num.Length; length++)
+        {
+            var operand = Num.Substring(position, length);
+            if (length > 1 && operand[0] == '0')
+            {
+                break;
+            }
+
+            matches += CountMatchesForOperand(position, value, lastOperand, operand);
+        }
+
+        return matches;
+    }
+
+    private int CountMatchesForOperand(int position, long value, long lastOperand, string operand)
+    {
+        var operandValue = long.Parse(operand);
+        var nextPosition = position + operand.Length;
+
+        if (position == 0)
+        {
+            return CountMatches(nextPosition, operandValue, operandValue);
+        }
+
+        return CountMatches(nextPosition, value + operandValue, operandValue)
+             + CountMatches(nextPosition, value - operandValue, -operandValue)
+             + CountMatches(nextPosition, value - lastOperand + (lastOperand * operandValue), lastOperand * operandValue);
     }
 
     [Benchmark]
@@ -83,23 +87,31 @@ public class ExpressionAddOperatorsBenchmarks
                 yield break;
             }
 
-            var operandValue = long.Parse(operand);
-            var nextPosition = state.Position + length;
-
-            if (state.Position == 0)
+            foreach (var next in SuccessorsForOperand(state, operand))
             {
-                yield return new ExprState(nextPosition, operandValue, operandValue, operand);
-                continue;
+                yield return next;
             }
-
-            yield return new ExprState(nextPosition, state.Value + operandValue, operandValue, state.Expression + "+" + operand);
-            yield return new ExprState(nextPosition, state.Value - operandValue, -operandValue, state.Expression + "-" + operand);
-            yield return new ExprState(
-                nextPosition,
-                state.Value - state.LastOperand + (state.LastOperand * operandValue),
-                state.LastOperand * operandValue,
-                state.Expression + "*" + operand);
         }
+    }
+
+    private static IEnumerable<ExprState> SuccessorsForOperand(ExprState state, string operand)
+    {
+        var operandValue = long.Parse(operand);
+        var nextPosition = state.Position + operand.Length;
+
+        if (state.Position == 0)
+        {
+            yield return new ExprState(nextPosition, operandValue, operandValue, operand);
+            yield break;
+        }
+
+        yield return new ExprState(nextPosition, state.Value + operandValue, operandValue, state.Expression + AdditionOperator + operand);
+        yield return new ExprState(nextPosition, state.Value - operandValue, -operandValue, state.Expression + SubtractionOperator + operand);
+        yield return new ExprState(
+            nextPosition,
+            state.Value - state.LastOperand + (state.LastOperand * operandValue),
+            state.LastOperand * operandValue,
+            state.Expression + MultiplicationOperator + operand);
     }
 
     // Expression carries the full path so far, the same reason ExpressionAddOperatorsTests

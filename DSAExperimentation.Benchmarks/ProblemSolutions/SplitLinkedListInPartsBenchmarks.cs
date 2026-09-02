@@ -36,29 +36,13 @@ public class SplitLinkedListInPartsBenchmarks
             values.Add(node.Value);
         }
 
-        var size = values.Count / Parts;
-        var extra = values.Count % Parts;
+        var sizing = new PartSizing(values.Count / Parts, values.Count % Parts);
         var parts = new SinglyLinkedListNode<int>?[Parts];
         var index = 0;
 
         for (var i = 0; i < Parts; i++)
         {
-            var currentSize = size + (i < extra ? 1 : 0);
-            if (currentSize == 0)
-            {
-                continue;
-            }
-
-            var dummy = new SinglyLinkedListNode<int>(0);
-            var tail = dummy;
-
-            for (var j = 0; j < currentSize; j++)
-            {
-                tail.Next = new SinglyLinkedListNode<int>(values[index++]);
-                tail = tail.Next;
-            }
-
-            parts[i] = dummy.Next;
+            (parts[i], index) = BuildPart(values, sizing, i, index);
         }
 
         return parts.Count(p => p is not null);
@@ -75,27 +59,54 @@ public class SplitLinkedListInPartsBenchmarks
             length++;
         }
 
-        var size = length / Parts;
-        var extra = length % Parts;
+        var sizing = new PartSizing(length / Parts, length % Parts);
         var parts = new SinglyLinkedListNode<int>?[Parts];
         var current = head;
 
         for (var i = 0; i < Parts && current is not null; i++)
         {
-            parts[i] = current;
-            var currentSize = size + (i < extra ? 1 : 0);
-
-            for (var j = 1; j < currentSize; j++)
-            {
-                current = current!.Next;
-            }
-
-            var next = current!.Next;
-            current.Next = null;
-            current = next;
+            (parts[i], current) = CarvePart(current, sizing, i);
         }
 
         return parts.Count(p => p is not null);
+    }
+
+    private static (SinglyLinkedListNode<int>? Part, int NextIndex) BuildPart(
+        List<int> values, PartSizing sizing, int i, int index)
+    {
+        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
+        if (currentSize == 0)
+        {
+            return (null, index);
+        }
+
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        for (var j = 0; j < currentSize; j++)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(values[index++]);
+            tail = tail.Next;
+        }
+
+        return (dummy.Next, index);
+    }
+
+    private static (SinglyLinkedListNode<int> Part, SinglyLinkedListNode<int>? NextCurrent) CarvePart(
+        SinglyLinkedListNode<int> current, PartSizing sizing, int i)
+    {
+        var part = current;
+        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
+
+        for (var j = 1; j < currentSize; j++)
+        {
+            current = current.Next!;
+        }
+
+        var next = current.Next;
+        current.Next = null;
+
+        return (part, next);
     }
 
     private static SinglyLinkedListNode<int> Build(int[] values)
@@ -125,4 +136,9 @@ public class SplitLinkedListInPartsBenchmarks
 
         return dummy.Next!;
     }
+
+    // The base part length and how many leading parts get one extra node - shared
+    // shape both ArrayRebuild's BuildPart and InPlaceSplit's CarvePart derive
+    // per-part sizes from.
+    private readonly record struct PartSizing(int Size, int Extra);
 }

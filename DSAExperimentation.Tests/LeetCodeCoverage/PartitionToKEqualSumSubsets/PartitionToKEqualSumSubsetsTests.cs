@@ -13,45 +13,62 @@ public sealed partial class PartitionToKEqualSumSubsetsTests
 {
     [Fact]
     public void CanPartitionKSubsets_FourEqualSubsetsPossible_ReturnsTrue()
-        => Assert.True(CanPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], k: 4));
+    {
+        var actual = CanPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], k: 4);
+        Assert.True(actual);
+    }
 
     [Fact]
     public void CanPartitionKSubsets_TotalNotDivisibleByK_ReturnsFalse()
-        => Assert.False(CanPartitionKSubsets([1, 2, 3, 4], k: 3));
+    {
+        var actual = CanPartitionKSubsets([1, 2, 3, 4], k: 3);
+        Assert.False(actual);
+    }
 
     [Fact]
     public void CanPartitionKSubsets_DivisibleTotalButNoValidSplit_ReturnsFalse()
-        => Assert.False(CanPartitionKSubsets([2, 2, 2, 2, 3, 4, 5], k: 4));
+    {
+        var actual = CanPartitionKSubsets([2, 2, 2, 2, 3, 4, 5], k: 4);
+        Assert.False(actual);
+    }
 
     private static bool CanPartitionKSubsets(int[] nums, int k)
     {
         var total = nums.Sum();
 
-        if (total % k != 0)
+        if (!IsPartitionable(nums, k, total, out var target))
         {
             return false;
         }
 
-        var target = total / k;
+        var sorted = SortDescending(nums);
+        var state = new State(sorted, target, k);
+        var steps = BuildSteps(sorted.Length, k);
 
-        if (nums.Max() > target)
-        {
-            return false;
-        }
+        return Backtrack.TrySearch(state, steps);
+    }
 
+    private static bool IsPartitionable(int[] nums, int k, int total, out int target)
+    {
+        target = total / k;
+        return total % k == 0 && nums.Max() <= target;
+    }
+
+    private static int[] SortDescending(int[] nums)
+    {
         var sorted = (int[])nums.Clone();
         Array.Sort(sorted);
         Array.Reverse(sorted);
+        return sorted;
+    }
 
-        var state = new State(sorted, target, k);
-
-        return Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
-            IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, k).Where(s.CanPlace),
+    private static BacktrackingSteps<State, int> BuildSteps(int length, int k) =>
+        new(
+            IsSolution: s => s.Index == length,
+            Candidates: s => s.Index == length ? [] : Enumerable.Range(0, k).Where(s.CanPlace),
             Choose: (s, bucket) => s.Place(bucket),
             Unchoose: (s, bucket) => s.Remove(bucket),
-            OnSolution: _ => true));
-    }
+            OnSolution: _ => true);
 
     private sealed class State(int[] nums, int target, int k)
     {

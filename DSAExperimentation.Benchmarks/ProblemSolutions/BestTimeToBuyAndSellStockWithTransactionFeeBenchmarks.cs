@@ -14,6 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class BestTimeToBuyAndSellStockWithTransactionFeeBenchmarks
 {
     private const int Fee = 2;
+    private const int MaxPrice = 100;
 
     [Params(20, 28)]
     public int Length;
@@ -24,7 +25,7 @@ public class BestTimeToBuyAndSellStockWithTransactionFeeBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(0, 100)).ToArray();
+        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxPrice)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

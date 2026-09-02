@@ -17,15 +17,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumFrequencyStackBenchmarks
 {
+    private const int RandomSeed = 7;
+    private const double PushProbability = 0.6;
+    private const int ValueRange = 50;
+
     [Params(200, 3_000)]
     public int OperationCount;
 
     private (bool IsPush, int Value)[] _operations = null!;
 
+    private readonly record struct FrequencyTracking(HashMap<int, int> Frequencies, HashMap<int, RepoStack> ByFrequency);
+
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
         var operations = new (bool IsPush, int Value)[OperationCount];
         var depth = 0;
 
@@ -35,8 +41,8 @@ public class MaximumFrequencyStackBenchmarks
             // a push, otherwise pushes still outweigh pops, the same push-heavy
             // shape TopKFrequentElementsBenchmarks' bounded-range setup documents
             // for producing real frequency skew.
-            var isPush = depth == 0 || random.NextDouble() < 0.6;
-            operations[i] = (isPush, random.Next(0, 50));
+            var isPush = depth == 0 || random.NextDouble() < PushProbability;
+            operations[i] = (isPush, random.Next(0, ValueRange));
             depth += isPush ? 1 : -1;
         }
 
@@ -51,32 +57,50 @@ public class MaximumFrequencyStackBenchmarks
 
         foreach (var (isPush, value) in _operations)
         {
-            if (isPush)
-            {
-                values.Add(value);
-                continue;
-            }
-
-            var counts = new Dictionary<int, int>();
-
-            foreach (var v in values)
-            {
-                counts[v] = counts.GetValueOrDefault(v) + 1;
-            }
-
-            var maxFrequency = counts.Values.Max();
-            var popIndex = values.Count - 1;
-
-            while (counts[values[popIndex]] != maxFrequency)
-            {
-                popIndex--;
-            }
-
-            sum += values[popIndex];
-            values.RemoveAt(popIndex);
+            sum += ApplyRescanOperation(values, isPush, value);
         }
 
         return sum;
+    }
+
+    private static int ApplyRescanOperation(List<int> values, bool isPush, int value)
+    {
+        if (isPush)
+        {
+            values.Add(value);
+            return 0;
+        }
+
+        var counts = CountFrequencies(values);
+        var popIndex = FindMostRecentMaxFrequencyIndex(values, counts);
+        var popped = values[popIndex];
+        values.RemoveAt(popIndex);
+        return popped;
+    }
+
+    private static Dictionary<int, int> CountFrequencies(List<int> values)
+    {
+        var counts = new Dictionary<int, int>();
+
+        foreach (var v in values)
+        {
+            counts[v] = counts.GetValueOrDefault(v) + 1;
+        }
+
+        return counts;
+    }
+
+    private static int FindMostRecentMaxFrequencyIndex(List<int> values, Dictionary<int, int> counts)
+    {
+        var maxFrequency = counts.Values.Max();
+        var popIndex = values.Count - 1;
+
+        while (counts[values[popIndex]] != maxFrequency)
+        {
+            popIndex--;
+        }
+
+        return popIndex;
     }
 
     [Benchmark]
@@ -84,41 +108,60 @@ public class MaximumFrequencyStackBenchmarks
     {
         var frequencies = new HashMap<int, int>();
         var byFrequency = new HashMap<int, RepoStack>();
+        var tracking = new FrequencyTracking(frequencies, byFrequency);
         var maxFrequency = 0;
         long sum = 0;
 
         foreach (var (isPush, value) in _operations)
         {
-            if (isPush)
-            {
-                frequencies.TryGetValue(value, out var frequency);
-                frequency++;
-                frequencies.Set(value, frequency);
-                maxFrequency = Math.Max(maxFrequency, frequency);
-
-                if (!byFrequency.TryGetValue(frequency, out var group))
-                {
-                    group = new RepoStack();
-                    byFrequency.Set(frequency, group);
-                }
-
-                group.Push(value);
-                continue;
-            }
-
-            byFrequency.TryGetValue(maxFrequency, out var top);
-            top!.TryPop(out var popped);
-            sum += popped;
-
-            frequencies.TryGetValue(popped, out var poppedFrequency);
-            frequencies.Set(popped, poppedFrequency - 1);
-
-            if (top.Count == 0)
-            {
-                maxFrequency--;
-            }
+            sum += ApplyFrequencyStackOperation(tracking, isPush, value, ref maxFrequency);
         }
 
         return sum;
+    }
+
+    private static long ApplyFrequencyStackOperation(FrequencyTracking tracking, bool isPush, int value, ref int maxFrequency)
+    {
+        var (frequencies, byFrequency) = tracking;
+
+        if (isPush)
+        {
+            ApplyPush(frequencies, byFrequency, value, ref maxFrequency);
+            return 0;
+        }
+
+        return ApplyPop(frequencies, byFrequency, ref maxFrequency);
+    }
+
+    private static void ApplyPush(HashMap<int, int> frequencies, HashMap<int, RepoStack> byFrequency, int value, ref int maxFrequency)
+    {
+        frequencies.TryGetValue(value, out var frequency);
+        frequency++;
+        frequencies.Set(value, frequency);
+        maxFrequency = Math.Max(maxFrequency, frequency);
+
+        if (!byFrequency.TryGetValue(frequency, out var group))
+        {
+            group = new RepoStack();
+            byFrequency.Set(frequency, group);
+        }
+
+        group.Push(value);
+    }
+
+    private static int ApplyPop(HashMap<int, int> frequencies, HashMap<int, RepoStack> byFrequency, ref int maxFrequency)
+    {
+        byFrequency.TryGetValue(maxFrequency, out var top);
+        top!.TryPop(out var popped);
+
+        frequencies.TryGetValue(popped, out var poppedFrequency);
+        frequencies.Set(popped, poppedFrequency - 1);
+
+        if (top.Count == 0)
+        {
+            maxFrequency--;
+        }
+
+        return popped;
     }
 }

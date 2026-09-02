@@ -18,13 +18,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthSmallestInLexicographicalOrderBenchmarks
 {
+    private const int HalfDivisor = 2;
+    private const int MaxDigit = 9;
+    private const int DecimalBase = 10;
+
     [Params(200_000, 2_000_000)]
     public int N;
 
     private int _k;
 
     [GlobalSetup]
-    public void Setup() => _k = N / 2;
+    public void Setup() => _k = N / HalfDivisor;
 
     [Benchmark(Baseline = true)]
     public int GenerateAndSortStrings()
@@ -44,9 +48,10 @@ public class KthSmallestInLexicographicalOrderBenchmarks
     public int DepthFirstTraversalOrder()
     {
         var order = new List<int>();
-        for (var root = 1; root <= 9 && root <= N; root++)
+        for (var root = 1; root <= MaxDigit && root <= N; root++)
         {
-            order.AddRange(DepthFirstSearch.Traverse(root, current => Successors(current, N)));
+            var traversal = DepthFirstSearch.Traverse(root, current => Successors(current, N));
+            order.AddRange(traversal);
         }
 
         return order[_k - 1];
@@ -54,9 +59,9 @@ public class KthSmallestInLexicographicalOrderBenchmarks
 
     private static IEnumerable<int> Successors(int current, int n)
     {
-        for (var digit = 0; digit <= 9; digit++)
+        for (var digit = 0; digit <= MaxDigit; digit++)
         {
-            var next = (current * 10) + digit;
+            var next = (current * DecimalBase) + digit;
             if (next > n)
             {
                 yield break;

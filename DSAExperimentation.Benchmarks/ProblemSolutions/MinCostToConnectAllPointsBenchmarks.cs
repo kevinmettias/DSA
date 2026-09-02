@@ -15,6 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinCostToConnectAllPointsBenchmarks
 {
+    private const int RandomSeed = 1584; // LeetCode problem number
+
+    private const int CoordinateBound = 1_000;
+
     [Params(50, 200)]
     public int PointCount;
 
@@ -23,9 +27,9 @@ public class MinCostToConnectAllPointsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1584);
+        var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, PointCount)
-            .Select(_ => new[] { random.Next(-1_000, 1_000), random.Next(-1_000, 1_000) })
+            .Select(_ => new[] { random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound) })
             .ToArray();
     }
 
@@ -42,35 +46,52 @@ public class MinCostToConnectAllPointsBenchmarks
 
         for (var iteration = 0; iteration < n; iteration++)
         {
-            var next = -1;
-
-            for (var candidate = 0; candidate < n; candidate++)
-            {
-                if (!inTree[candidate] && (next == -1 || minEdge[candidate] < minEdge[next]))
-                {
-                    next = candidate;
-                }
-            }
-
-            inTree[next] = true;
-            total += minEdge[next];
-
-            for (var candidate = 0; candidate < n; candidate++)
-            {
-                if (inTree[candidate])
-                {
-                    continue;
-                }
-
-                var distance = ManhattanDistance(_points[next], _points[candidate]);
-                if (distance < minEdge[candidate])
-                {
-                    minEdge[candidate] = distance;
-                }
-            }
+            total += RunPrimIteration(n, inTree, minEdge);
         }
 
         return total;
+    }
+
+    private static int FindNearestOutsideTree(int n, bool[] inTree, int[] minEdge)
+    {
+        var next = -1;
+
+        for (var candidate = 0; candidate < n; candidate++)
+        {
+            if (!inTree[candidate] && (next == -1 || minEdge[candidate] < minEdge[next]))
+            {
+                next = candidate;
+            }
+        }
+
+        return next;
+    }
+
+    private int RunPrimIteration(int n, bool[] inTree, int[] minEdge)
+    {
+        var next = FindNearestOutsideTree(n, inTree, minEdge);
+
+        inTree[next] = true;
+        UpdateMinEdges(n, inTree, minEdge, next);
+
+        return minEdge[next];
+    }
+
+    private void UpdateMinEdges(int n, bool[] inTree, int[] minEdge, int next)
+    {
+        for (var candidate = 0; candidate < n; candidate++)
+        {
+            if (inTree[candidate])
+            {
+                continue;
+            }
+
+            var distance = ManhattanDistance(_points[next], _points[candidate]);
+            if (distance < minEdge[candidate])
+            {
+                minEdge[candidate] = distance;
+            }
+        }
     }
 
     [Benchmark]

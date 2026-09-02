@@ -19,6 +19,11 @@ public class LeastOperatorsToExpressNumberBenchmarks
 {
     private const int X = 2;
 
+    // The units-digit (level 0) cost weight is always 2, independent of X - writing
+    // the base value x itself costs one x/x division to reach 1, so its weight is
+    // fixed rather than derived from the recursion level like every other digit's.
+    private const int UnitsDigitWeight = 2;
+
     [Params(16, 20)]
     public int TargetBitLength;
 
@@ -32,21 +37,28 @@ public class LeastOperatorsToExpressNumberBenchmarks
 
     private static int Cost(int remaining, int level)
     {
-        var weight = level == 0 ? 2 : level;
+        var weight = level == 0 ? UnitsDigitWeight : level;
 
-        // remaining < X is the base case, not just remaining == 0 - see
-        // LeastOperatorsToExpressNumberTests.Cost for why recursing past it
-        // (instead of this closed form) loops forever without ever winning.
-        if (remaining < X)
-        {
-            var baseRoundDown = remaining * weight;
-            var baseRoundUp = (level + 1) + ((X - remaining) * weight);
-            return Math.Min(baseRoundDown, baseRoundUp);
-        }
+        return remaining < X
+            ? BaseCaseCost(remaining, level, weight)
+            : RecursiveCaseCost(remaining, level, weight, Cost);
+    }
 
+    // remaining < X is the base case, not just remaining == 0 - see
+    // LeastOperatorsToExpressNumberTests.Cost for why recursing past it
+    // (instead of this closed form) loops forever without ever winning.
+    private static int BaseCaseCost(int remaining, int level, int weight)
+    {
+        var baseRoundDown = remaining * weight;
+        var baseRoundUp = (level + 1) + ((X - remaining) * weight);
+        return Math.Min(baseRoundDown, baseRoundUp);
+    }
+
+    private static int RecursiveCaseCost(int remaining, int level, int weight, Func<int, int, int> cost)
+    {
         var digit = remaining % X;
         var quotient = remaining / X;
-        var roundDown = (digit * weight) + Cost(quotient, level + 1);
+        var roundDown = (digit * weight) + cost(quotient, level + 1);
 
         // X == 2 is the one value where quotient+1 can land back on remaining
         // itself (remaining == X == 2): skip round-up rather than recurse into
@@ -56,7 +68,7 @@ public class LeastOperatorsToExpressNumberBenchmarks
             return roundDown;
         }
 
-        var roundUp = ((X - digit) * weight) + Cost(quotient + 1, level + 1);
+        var roundUp = ((X - digit) * weight) + cost(quotient + 1, level + 1);
         return Math.Min(roundDown, roundUp);
     }
 
@@ -69,26 +81,11 @@ public class LeastOperatorsToExpressNumberBenchmarks
         int CostMemoized((int Remaining, int Level) state, Func<(int Remaining, int Level), int> cost)
         {
             var (remaining, level) = state;
-            var weight = level == 0 ? 2 : level;
+            var weight = level == 0 ? UnitsDigitWeight : level;
 
-            if (remaining < X)
-            {
-                var baseRoundDown = remaining * weight;
-                var baseRoundUp = (level + 1) + ((X - remaining) * weight);
-                return Math.Min(baseRoundDown, baseRoundUp);
-            }
-
-            var digit = remaining % X;
-            var quotient = remaining / X;
-            var roundDown = (digit * weight) + cost((quotient, level + 1));
-
-            if (quotient + 1 >= remaining)
-            {
-                return roundDown;
-            }
-
-            var roundUp = ((X - digit) * weight) + cost((quotient + 1, level + 1));
-            return Math.Min(roundDown, roundUp);
+            return remaining < X
+                ? BaseCaseCost(remaining, level, weight)
+                : RecursiveCaseCost(remaining, level, weight, (r, l) => cost((r, l)));
         }
     }
 }

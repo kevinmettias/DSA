@@ -44,29 +44,39 @@ public sealed partial class BaseballGameTests
 
         foreach (var op in ops)
         {
-            switch (op)
-            {
-                case "C":
-                    record.TryPop(out _);
-                    break;
-                case "D":
-                    record.TryPeek(out var last);
-                    record.Push(last * 2);
-                    break;
-                case "+":
-                    record.TryPop(out var top);
-                    record.TryPop(out var second);
-                    var sum = top + second;
-                    record.Push(second);
-                    record.Push(top);
-                    record.Push(sum);
-                    break;
-                default:
-                    record.Push(int.Parse(op));
-                    break;
-            }
+            ApplyOp(record, op);
         }
 
+        return SumRecord(record);
+    }
+
+    private static void ApplyOp(RepoIntStack record, string op)
+    {
+        switch (op)
+        {
+            case "C":
+                record.TryPop(out _);
+                break;
+            case "D":
+                record.TryPeek(out var last);
+                record.Push(last * 2);
+                break;
+            case "+":
+                record.TryPop(out var top);
+                record.TryPop(out var second);
+                var sum = top + second;
+                record.Push(second);
+                record.Push(top);
+                record.Push(sum);
+                break;
+            default:
+                record.Push(int.Parse(op));
+                break;
+        }
+    }
+
+    private static int SumRecord(RepoIntStack record)
+    {
         var total = 0;
 
         while (record.TryPop(out var value))

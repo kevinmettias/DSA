@@ -150,33 +150,19 @@ public sealed partial class AllOneDataStructureTests
         public void Inc(string key)
         {
             var hasExisting = _keyNode.TryGetValue(key, out var keyEntryNode);
-
-            if (!hasExisting)
-            {
-                keyEntryNode = new DoublyLinkedListNode<KeyEntry> { Value = new KeyEntry(key) };
-            }
+            keyEntryNode = ResolveIncKeyEntryNode(key, hasExisting, keyEntryNode);
 
             var anchor = hasExisting ? keyEntryNode.Value.CurrentBucket! : _head;
             var newCount = (hasExisting ? anchor.Value.Count : 0) + 1;
 
-            var candidate = anchor.Next!;
-            var newBucketNode = candidate != _tail && candidate.Value.Count == newCount
-                ? candidate
-                : InsertBucketAfter(anchor, newCount);
+            var newBucketNode = FindOrInsertIncBucket(anchor, newCount);
 
             if (hasExisting)
             {
-                anchor.Value.RemoveKeyNode(keyEntryNode);
-
-                if (anchor.Value.KeyCount == 0)
-                {
-                    Unlink(anchor);
-                }
+                DetachFromBucket(anchor, keyEntryNode);
             }
 
-            newBucketNode.Value.AddKeyNode(keyEntryNode);
-            keyEntryNode.Value.CurrentBucket = newBucketNode;
-            _keyNode.Set(key, keyEntryNode);
+            AttachToBucket(key, keyEntryNode, newBucketNode);
         }
 
         public void Dec(string key)
@@ -190,16 +176,9 @@ public sealed partial class AllOneDataStructureTests
             var newCount = oldBucketNode.Value.Count - 1;
             var anchor = oldBucketNode.Previous!;
 
-            var newBucketNode = newCount == 0
-                ? null
-                : anchor != _head && anchor.Value.Count == newCount ? anchor : InsertBucketAfter(anchor, newCount);
+            var newBucketNode = FindOrInsertDecBucket(anchor, newCount);
 
-            oldBucketNode.Value.RemoveKeyNode(keyEntryNode);
-
-            if (oldBucketNode.Value.KeyCount == 0)
-            {
-                Unlink(oldBucketNode);
-            }
+            DetachFromBucket(oldBucketNode, keyEntryNode);
 
             if (newBucketNode is null)
             {
@@ -207,6 +186,40 @@ public sealed partial class AllOneDataStructureTests
                 return;
             }
 
+            AttachToBucket(key, keyEntryNode, newBucketNode);
+        }
+
+        private static DoublyLinkedListNode<KeyEntry> ResolveIncKeyEntryNode(
+            string key, bool hasExisting, DoublyLinkedListNode<KeyEntry>? keyEntryNode)
+            => hasExisting ? keyEntryNode! : new DoublyLinkedListNode<KeyEntry> { Value = new KeyEntry(key) };
+
+        private DoublyLinkedListNode<Bucket> FindOrInsertIncBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
+        {
+            var candidate = anchor.Next!;
+            return candidate != _tail && candidate.Value.Count == newCount
+                ? candidate
+                : InsertBucketAfter(anchor, newCount);
+        }
+
+        private DoublyLinkedListNode<Bucket>? FindOrInsertDecBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
+            => newCount == 0
+                ? null
+                : anchor != _head && anchor.Value.Count == newCount ? anchor : InsertBucketAfter(anchor, newCount);
+
+        private static void DetachFromBucket(
+            DoublyLinkedListNode<Bucket> bucketNode, DoublyLinkedListNode<KeyEntry> keyEntryNode)
+        {
+            bucketNode.Value.RemoveKeyNode(keyEntryNode);
+
+            if (bucketNode.Value.KeyCount == 0)
+            {
+                Unlink(bucketNode);
+            }
+        }
+
+        private void AttachToBucket(
+            string key, DoublyLinkedListNode<KeyEntry> keyEntryNode, DoublyLinkedListNode<Bucket> newBucketNode)
+        {
             newBucketNode.Value.AddKeyNode(keyEntryNode);
             keyEntryNode.Value.CurrentBucket = newBucketNode;
             _keyNode.Set(key, keyEntryNode);

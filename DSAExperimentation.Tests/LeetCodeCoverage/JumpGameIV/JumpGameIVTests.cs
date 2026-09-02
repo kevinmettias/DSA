@@ -31,12 +31,25 @@ public sealed partial class JumpGameIVTests
 
     private static WeightedNode[] BuildHopGraph(int[] arr)
     {
+        var nodes = BuildNodes(arr);
+        var indicesByValue = GroupIndicesByValue(arr);
+        WireEdges(nodes, arr, indicesByValue);
+        return nodes;
+    }
+
+    private static WeightedNode[] BuildNodes(int[] arr)
+    {
         var nodes = new WeightedNode[arr.Length];
         for (var i = 0; i < arr.Length; i++)
         {
             nodes[i] = new WeightedNode(i.ToString());
         }
 
+        return nodes;
+    }
+
+    private static Dictionary<int, List<int>> GroupIndicesByValue(int[] arr)
+    {
         var indicesByValue = new Dictionary<int, List<int>>();
         for (var i = 0; i < arr.Length; i++)
         {
@@ -49,6 +62,11 @@ public sealed partial class JumpGameIVTests
             indices.Add(i);
         }
 
+        return indicesByValue;
+    }
+
+    private static void WireEdges(WeightedNode[] nodes, int[] arr, Dictionary<int, List<int>> indicesByValue)
+    {
         for (var i = 0; i < arr.Length; i++)
         {
             if (i + 1 < arr.Length)
@@ -69,7 +87,5 @@ public sealed partial class JumpGameIVTests
                 }
             }
         }
-
-        return nodes;
     }
 }

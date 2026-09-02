@@ -22,6 +22,10 @@ public class TweetCountsPerFrequencyBenchmarks
 {
     private const int NameCount = 200;
     private const int SecondsPerHour = 3_600;
+    private const int RandomSeed = 1348; // LC 1348
+    private const string NamePrefix = "tweet";
+    private const int HourBucketCount = 10;
+    private const string QueryName = "tweet0";
 
     [Params(2_000, 20_000)]
     public int TweetCount;
@@ -33,14 +37,14 @@ public class TweetCountsPerFrequencyBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1348);
+        var random = new Random(RandomSeed);
         _flatTweets = new (string, int)[TweetCount];
         _timesByName = new HashMap<string, DynamicArray<int>>();
 
         for (var i = 0; i < TweetCount; i++)
         {
-            var name = "tweet" + random.Next(NameCount);
-            var time = random.Next(0, 10 * SecondsPerHour);
+            var name = NamePrefix + random.Next(NameCount);
+            var time = random.Next(0, HourBucketCount * SecondsPerHour);
             _flatTweets[i] = (name, time);
 
             if (!_timesByName.TryGetValue(name, out var times))
@@ -52,13 +56,13 @@ public class TweetCountsPerFrequencyBenchmarks
             times.Add(time);
         }
 
-        _queryName = "tweet0";
+        _queryName = QueryName;
     }
 
     [Benchmark(Baseline = true)]
     public int FlatListFilterPerQuery()
     {
-        var buckets = new int[10];
+        var buckets = new int[HourBucketCount];
 
         foreach (var (name, time) in _flatTweets)
         {
@@ -74,7 +78,7 @@ public class TweetCountsPerFrequencyBenchmarks
     [Benchmark]
     public int HashMapGroupedByName()
     {
-        var buckets = new int[10];
+        var buckets = new int[HourBucketCount];
 
         if (_timesByName.TryGetValue(_queryName, out var queryTimes))
         {

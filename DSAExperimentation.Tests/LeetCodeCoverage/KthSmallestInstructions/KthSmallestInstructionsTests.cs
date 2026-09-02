@@ -14,15 +14,24 @@ public sealed partial class KthSmallestInstructionsTests
 {
     [Fact]
     public void KthSmallestPath_SmallestK_IsAllHBeforeV()
-        => Assert.Equal("HHHVV", KthSmallestPath([2, 3], 1));
+    {
+        var actual = KthSmallestPath([2, 3], 1);
+        Assert.Equal("HHHVV", actual);
+    }
 
     [Fact]
     public void KthSmallestPath_MiddleK_MixesHAndV()
-        => Assert.Equal("HHVHV", KthSmallestPath([2, 3], 2));
+    {
+        var actual = KthSmallestPath([2, 3], 2);
+        Assert.Equal("HHVHV", actual);
+    }
 
     [Fact]
     public void KthSmallestPath_LargestK_IsAllVBeforeH()
-        => Assert.Equal("VVHHH", KthSmallestPath([2, 3], 10));
+    {
+        var actual = KthSmallestPath([2, 3], 10);
+        Assert.Equal("VVHHH", actual);
+    }
 
     private static string KthSmallestPath(int[] destination, long k)
     {
@@ -32,41 +41,46 @@ public sealed partial class KthSmallestInstructionsTests
 
         while (remainingV > 0 || remainingH > 0)
         {
-            if (remainingH == 0)
-            {
-                path.Append('V');
-                remainingV--;
-                continue;
-            }
-
-            if (remainingV == 0)
-            {
-                path.Append('H');
-                remainingH--;
-                continue;
-            }
-
-            var waysIfH = Memoizer.Memoize<(int V, int H), long>((remainingV, remainingH - 1), Ways);
-
-            if (k <= waysIfH)
-            {
-                path.Append('H');
-                remainingH--;
-            }
-            else
-            {
-                k -= waysIfH;
-                path.Append('V');
-                remainingV--;
-            }
+            AppendNextStep(path, ref remainingV, ref remainingH, ref k);
         }
 
         return path.ToString();
+    }
 
-        static long Ways((int V, int H) state, Func<(int V, int H), long> ways)
+    private static void AppendNextStep(StringBuilder path, ref int remainingV, ref int remainingH, ref long k)
+    {
+        if (remainingH == 0)
         {
-            var (v, h) = state;
-            return v == 0 || h == 0 ? 1 : ways((v - 1, h)) + ways((v, h - 1));
+            path.Append('V');
+            remainingV--;
+            return;
         }
+
+        if (remainingV == 0)
+        {
+            path.Append('H');
+            remainingH--;
+            return;
+        }
+
+        var waysIfH = Memoizer.Memoize<(int V, int H), long>((remainingV, remainingH - 1), Ways);
+
+        if (k <= waysIfH)
+        {
+            path.Append('H');
+            remainingH--;
+        }
+        else
+        {
+            k -= waysIfH;
+            path.Append('V');
+            remainingV--;
+        }
+    }
+
+    private static long Ways((int V, int H) state, Func<(int V, int H), long> ways)
+    {
+        var (v, h) = state;
+        return v == 0 || h == 0 ? 1 : ways((v - 1, h)) + ways((v, h - 1));
     }
 }

@@ -15,7 +15,10 @@ public sealed partial class GuessNumberHigherOrLowerTests
     [InlineData(1, 1, 1)]
     [InlineData(2, 1, 1)]
     public void GuessNumber_LeetCodeExamples_ReturnsPickedNumber(int n, int pick, int expected)
-        => Assert.Equal(expected, GuessNumber(n, pick));
+    {
+        var actual = GuessNumber(n, pick);
+        Assert.Equal(expected, actual);
+    }
 
     private static int GuessNumber(int n, int pick)
     {

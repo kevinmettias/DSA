@@ -1,13 +1,25 @@
-﻿using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.UniqueBinarySearchTrees;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.UniqueBinarySearchTrees;
 
-public sealed partial class UniqueBinarySearchTreesTests
+// Harness only. Both strategies are UniqueBinarySearchTreesSolution's - this
+// file just pins them to LeetCode's published examples.
+public sealed class UniqueBinarySearchTreesTests
 {
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 3, 5 },
+            { 1, 1 },
+        };
+
     [Theory]
-    [InlineData(3, 5)]
-    [InlineData(1, 1)]
-    public void NumTrees_LeetCodeExamples_ReturnsCatalanCount(int n, int expected) => Assert.Equal(expected, Count(n));
-    private static int Count(int n) => Memoizer.Memoize<int, int>(n, Catalan);
-    private static int Catalan(int nodes, Func<int, int> count) { if (nodes <= 1) return 1; var total = 0; for (var left = 0; left < nodes; left++) total += count(left) * count(nodes - left - 1); return total; }
+    [MemberData(nameof(Examples))]
+    public void NumTreesByTabulation_LeetCodeExamples_ReturnsCatalanCount(int n, int expected) =>
+        Assert.Equal(expected, UniqueBinarySearchTreesSolution.NumTreesByTabulation(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumTreesByMemoizedCatalan_LeetCodeExamples_ReturnsCatalanCount(int n, int expected) =>
+        Assert.Equal(expected, UniqueBinarySearchTreesSolution.NumTreesByMemoizedCatalan(n));
 }

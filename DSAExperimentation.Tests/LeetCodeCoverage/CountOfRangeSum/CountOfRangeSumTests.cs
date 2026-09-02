@@ -70,20 +70,28 @@ public sealed partial class CountOfRangeSumTests
         var sequence = new ArraySequence<long>(sortedDistinct);
         var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
         var count = 0;
+        var index = new RangeSumIndex(sequence, tree);
 
         foreach (var prefixSum in prefix)
         {
-            var loRank = BinarySearch.LowerBound(sequence, prefixSum - upper);
-            var hiRank = BinarySearch.UpperBound(sequence, prefixSum - lower) - 1;
-
-            if (loRank <= hiRank)
-            {
-                count += tree.Query(loRank, hiRank);
-            }
-
-            tree.Add(BinarySearch.LowerBound(sequence, prefixSum), 1);
+            count += ProcessPrefixSum(index, prefixSum, lower, upper);
         }
 
         return count;
     }
+
+    private static int ProcessPrefixSum(RangeSumIndex index, long prefixSum, int lower, int upper)
+    {
+        var loRank = BinarySearch.LowerBound(index.Sequence, prefixSum - upper);
+        var hiRank = BinarySearch.UpperBound(index.Sequence, prefixSum - lower) - 1;
+
+        var contribution = loRank <= hiRank ? index.Tree.Query(loRank, hiRank) : 0;
+
+        var insertRank = BinarySearch.LowerBound(index.Sequence, prefixSum);
+        index.Tree.Add(insertRank, 1);
+
+        return contribution;
+    }
+
+    private readonly record struct RangeSumIndex(ArraySequence<long> Sequence, FenwickTree<int, SumOperation<int>> Tree);
 }

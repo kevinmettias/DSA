@@ -12,6 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BurstBalloonsBenchmarks
 {
+    private const int RandomSeed = 1;
+    private const int MaxBalloonValueExclusive = 100;
+
+    // Two sentinel balloons of value 1 padded onto each end of the array.
+    private const int SentinelPadCount = 2;
+
     [Params(10, 14)]
     public int BalloonCount;
 
@@ -20,13 +26,13 @@ public class BurstBalloonsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        _padded = new int[BalloonCount + 2];
+        var random = new Random(RandomSeed);
+        _padded = new int[BalloonCount + SentinelPadCount];
         _padded[0] = 1;
         _padded[^1] = 1;
         for (var i = 1; i <= BalloonCount; i++)
         {
-            _padded[i] = random.Next(1, 100);
+            _padded[i] = random.Next(1, MaxBalloonValueExclusive);
         }
     }
 

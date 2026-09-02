@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LexicographicalNumbersBenchmarks
 {
+    private const int MaxDigit = 9;
+    private const int DecimalBase = 10;
+
     [Params(1_000, 500_000)]
     public int N;
 
@@ -26,9 +29,10 @@ public class LexicographicalNumbersBenchmarks
     {
         var order = new List<int>(N);
 
-        for (var root = 1; root <= 9 && root <= N; root++)
+        for (var root = 1; root <= MaxDigit && root <= N; root++)
         {
-            order.AddRange(DepthFirstSearch.Traverse(root, current => Successors(current, N)));
+            var traversal = DepthFirstSearch.Traverse(root, current => Successors(current, N));
+            order.AddRange(traversal);
         }
 
         return order;
@@ -36,9 +40,9 @@ public class LexicographicalNumbersBenchmarks
 
     private static IEnumerable<int> Successors(int current, int n)
     {
-        for (var digit = 0; digit <= 9; digit++)
+        for (var digit = 0; digit <= MaxDigit; digit++)
         {
-            var next = (current * 10) + digit;
+            var next = (current * DecimalBase) + digit;
             if (next > n)
             {
                 yield break;

@@ -14,6 +14,13 @@ public class MaximumNestingDepthOfTheParenthesesBenchmarks
 {
     private const int MaxDepthCap = 20;
 
+    // LC problem number, reused as the deterministic benchmark seed.
+    private const int RandomSeed = 1614;
+
+    private const int CharsPerPair = 2;
+
+    private const int CoinFlipRange = 2;
+
     [Params(1_000, 20_000)]
     public int PairCount;
 
@@ -22,7 +29,7 @@ public class MaximumNestingDepthOfTheParenthesesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1614);
+        var random = new Random(RandomSeed);
         _expression = GenerateBalanced(PairCount, MaxDepthCap, random);
     }
 
@@ -74,28 +81,32 @@ public class MaximumNestingDepthOfTheParenthesesBenchmarks
     // shape ScoreOfParenthesesBenchmarks/RemoveOutermostParenthesesBenchmarks use.
     private static string GenerateBalanced(int pairCount, int maxDepth, Random random)
     {
-        var result = new char[pairCount * 2];
-        var openCount = 0;
-        var closeCount = 0;
+        var result = new char[pairCount * CharsPerPair];
+        var counts = (Open: 0, Close: 0);
 
         for (var i = 0; i < result.Length; i++)
         {
-            var depth = openCount - closeCount;
-            var canOpen = openCount < pairCount && depth < maxDepth;
-            var canClose = closeCount < openCount;
-
-            if (canOpen && (!canClose || random.Next(2) == 0))
-            {
-                result[i] = '(';
-                openCount++;
-            }
-            else
-            {
-                result[i] = ')';
-                closeCount++;
-            }
+            (result[i], counts) = NextChar(pairCount, maxDepth, counts, random);
         }
 
         return new string(result);
+    }
+
+    private static (char Char, (int Open, int Close) Counts) NextChar(
+        int pairCount,
+        int maxDepth,
+        (int Open, int Close) counts,
+        Random random)
+    {
+        var depth = counts.Open - counts.Close;
+        var canOpen = counts.Open < pairCount && depth < maxDepth;
+        var canClose = counts.Close < counts.Open;
+
+        if (canOpen && (!canClose || random.Next(CoinFlipRange) == 0))
+        {
+            return ('(', (counts.Open + 1, counts.Close));
+        }
+
+        return (')', (counts.Open, counts.Close + 1));
     }
 }

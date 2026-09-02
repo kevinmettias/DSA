@@ -40,6 +40,13 @@ public class CircleAndRectangleOverlappingBenchmarks
         var width = _x2 - _x1 + 1;
         var height = _y2 - _y1 + 1;
 
+        var withinCircle = BuildCircleMembershipGrid();
+
+        return AnyPointWithinCircle(withinCircle, width * height);
+    }
+
+    private DynamicArray<bool> BuildCircleMembershipGrid()
+    {
         var withinCircle = new DynamicArray<bool>();
         for (var y = _y1; y <= _y2; y++)
         {
@@ -51,7 +58,12 @@ public class CircleAndRectangleOverlappingBenchmarks
             }
         }
 
-        for (var i = 0; i < width * height; i++)
+        return withinCircle;
+    }
+
+    private static bool AnyPointWithinCircle(DynamicArray<bool> withinCircle, int pointCount)
+    {
+        for (var i = 0; i < pointCount; i++)
         {
             if (withinCircle.Get(i))
             {

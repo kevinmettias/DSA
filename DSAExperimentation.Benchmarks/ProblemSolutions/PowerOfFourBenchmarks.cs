@@ -12,6 +12,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PowerOfFourBenchmarks
 {
+    // Arbitrary fixed seed for reproducible benchmark input.
+    private const int RandomSeed = 3;
+
+    // Coin-flip range: half the values are real powers of four, half are not.
+    private const int CoinFlipRange = 2;
+
+    // 4^k == 2^(2k) - the exponent doubling step from a power-of-four index to its
+    // equivalent binary left-shift amount.
+    private const int PowerOfFourExponentStep = 2;
+
+    // Number of powers of four representable in a non-negative int (4^0..4^15).
+    private const int PowersOfFourCount = 16;
+
+    // The base whose powers are being tested for.
+    private const int PowerOfFourBase = 4;
+
     [Params(1_000, 50_000)]
     public int Length;
 
@@ -20,13 +36,15 @@ public class PowerOfFourBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(3);
+        var random = new Random(RandomSeed);
 
         // Mostly non-powers-of-four, with the occasional real one mixed in - the
         // same "realistic, not artificially easy" spirit TwoSumBenchmarks' target
         // choice documents.
         _values = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(0, 2) == 0 ? 1 << (2 * random.Next(0, 16)) : random.Next(1, int.MaxValue))
+            .Select(_ => random.Next(0, CoinFlipRange) == 0
+                ? 1 << (PowerOfFourExponentStep * random.Next(0, PowersOfFourCount))
+                : random.Next(1, int.MaxValue))
             .ToArray();
     }
 
@@ -70,9 +88,9 @@ public class PowerOfFourBenchmarks
             return false;
         }
 
-        while (n % 4 == 0)
+        while (n % PowerOfFourBase == 0)
         {
-            n /= 4;
+            n /= PowerOfFourBase;
         }
 
         return n == 1;
@@ -80,8 +98,8 @@ public class PowerOfFourBenchmarks
 
     private readonly struct PowersOfFourSequence : IRandomAccessSequence<int>
     {
-        public int Length => 16;
+        public int Length => PowersOfFourCount;
 
-        public int Get(int index) => 1 << (2 * index);
+        public int Get(int index) => 1 << (PowerOfFourExponentStep * index);
     }
 }

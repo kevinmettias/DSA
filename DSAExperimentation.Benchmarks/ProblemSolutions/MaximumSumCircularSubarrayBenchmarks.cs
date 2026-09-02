@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumSumCircularSubarrayBenchmarks
 {
+    private const int RandomSeed = 918; // LC problem number
+    private const int ValueMagnitude = 50;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -20,8 +23,8 @@ public class MaximumSumCircularSubarrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(918);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-50, 51)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueMagnitude, ValueMagnitude + 1)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

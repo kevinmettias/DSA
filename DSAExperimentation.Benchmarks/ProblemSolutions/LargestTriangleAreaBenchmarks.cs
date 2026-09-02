@@ -15,6 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LargestTriangleAreaBenchmarks
 {
+    // LC 812.
+    private const int RandomSeed = 812;
+    private const int CoordinateUpperBound = 1_000;
+    private const int MinHullVerticesForTriangle = 3;
+    private const int MinStackSizeForCrossCheck = 2;
+    private const double TriangleAreaDivisor = 2.0;
+
     [Params(60, 300)]
     public int Length;
 
@@ -23,12 +30,12 @@ public class LargestTriangleAreaBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(812);
+        var random = new Random(RandomSeed);
         var seen = new HashSet<(int X, int Y)>();
 
         while (seen.Count < Length)
         {
-            seen.Add((random.Next(0, 1_000), random.Next(0, 1_000)));
+            seen.Add((random.Next(0, CoordinateUpperBound), random.Next(0, CoordinateUpperBound)));
         }
 
         _points = [.. seen];
@@ -41,7 +48,7 @@ public class LargestTriangleAreaBenchmarks
     public double ConvexHullReduction()
     {
         var hull = ConvexHull(_points);
-        return LargestOver(hull.Count >= 3 ? [.. hull] : _points);
+        return LargestOver(hull.Count >= MinHullVerticesForTriangle ? [.. hull] : _points);
     }
 
     private static double LargestOver((int X, int Y)[] points)
@@ -54,7 +61,8 @@ public class LargestTriangleAreaBenchmarks
             {
                 for (var k = j + 1; k < points.Length; k++)
                 {
-                    best = Math.Max(best, Area(points[i], points[j], points[k]));
+                    var area = Area(points[i], points[j], points[k]);
+                    best = Math.Max(best, area);
                 }
             }
         }
@@ -77,11 +85,20 @@ public class LargestTriangleAreaBenchmarks
 
     private static List<(int X, int Y)> HalfHull((int X, int Y)[] points)
     {
+        var stack = BuildHullStack(points);
+        var chain = DrainToChain(stack);
+
+        chain.Reverse();
+        return chain;
+    }
+
+    private static HullStack BuildHullStack((int X, int Y)[] points)
+    {
         var stack = new HullStack();
 
         foreach (var p in points)
         {
-            while (stack.Count >= 2)
+            while (stack.Count >= MinStackSizeForCrossCheck)
             {
                 stack.TryPop(out var top);
                 stack.TryPeek(out var second);
@@ -96,18 +113,25 @@ public class LargestTriangleAreaBenchmarks
             stack.Push(p);
         }
 
+        return stack;
+    }
+
+    private static List<(int X, int Y)> DrainToChain(HullStack stack)
+    {
         var chain = new List<(int X, int Y)>();
         while (stack.TryPop(out var item))
         {
             chain.Add(item);
         }
 
-        chain.Reverse();
         return chain;
     }
 
     private static double Area((int X, int Y) a, (int X, int Y) b, (int X, int Y) c)
-        => Math.Abs(Cross(a, b, c)) / 2.0;
+    {
+        var cross = Cross(a, b, c);
+        return Math.Abs(cross) / TriangleAreaDivisor;
+    }
 
     private static long Cross((int X, int Y) o, (int X, int Y) a, (int X, int Y) b)
         => (long)(a.X - o.X) * (b.Y - o.Y) - (long)(a.Y - o.Y) * (b.X - o.X);

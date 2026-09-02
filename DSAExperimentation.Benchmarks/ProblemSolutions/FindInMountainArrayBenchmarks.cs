@@ -1,7 +1,8 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms;
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.Algorithms;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,6 +18,11 @@ public class FindInMountainArrayBenchmarks
 {
     private static readonly IComparer<int> Descending = Comparer<int>.Create((a, b) => b.CompareTo(a));
 
+    private const int MidpointDivisor = 2;
+    private const int AscendingStep = 2;
+    private const int DescendingStep = 2;
+    private const int TargetOffsetFromEnd = 2;
+
     [Params(1_000, 100_000)]
     public int Length;
 
@@ -26,20 +32,20 @@ public class FindInMountainArrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var peakIndex = Length / 2;
+        var peakIndex = Length / MidpointDivisor;
         _mountain = new int[Length];
 
         for (var i = 0; i <= peakIndex; i++)
         {
-            _mountain[i] = 2 * i;
+            _mountain[i] = AscendingStep * i;
         }
 
         for (var i = peakIndex + 1; i < Length; i++)
         {
-            _mountain[i] = _mountain[i - 1] - 2;
+            _mountain[i] = _mountain[i - 1] - DescendingStep;
         }
 
-        _target = _mountain[Length - 2];
+        _target = _mountain[Length - TargetOffsetFromEnd];
     }
 
     [Benchmark(Baseline = true)]

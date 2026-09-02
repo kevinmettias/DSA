@@ -18,7 +18,8 @@ public sealed partial class NumberOfStudentsUnableToEatLunchTests
         int[] students = [1, 1, 0, 0];
         int[] sandwiches = [0, 1, 0, 1];
 
-        Assert.Equal(0, CountStudents(students, sandwiches));
+        var actual = CountStudents(students, sandwiches);
+        Assert.Equal(0, actual);
     }
 
     [Fact]
@@ -27,10 +28,21 @@ public sealed partial class NumberOfStudentsUnableToEatLunchTests
         int[] students = [1, 1, 1];
         int[] sandwiches = [0, 0, 0];
 
-        Assert.Equal(3, CountStudents(students, sandwiches));
+        var actual = CountStudents(students, sandwiches);
+        Assert.Equal(3, actual);
     }
 
     private static int CountStudents(int[] students, int[] sandwiches)
+    {
+        var queue = BuildQueue(students);
+        var stack = BuildStack(sandwiches);
+
+        Simulate(queue, stack);
+
+        return queue.Count;
+    }
+
+    private static RepoQueue BuildQueue(int[] students)
     {
         var queue = new RepoQueue();
         foreach (var student in students)
@@ -38,12 +50,25 @@ public sealed partial class NumberOfStudentsUnableToEatLunchTests
             queue.Enqueue(student);
         }
 
+        return queue;
+    }
+
+    private static RepoStack BuildStack(int[] sandwiches)
+    {
         var stack = new RepoStack();
         for (var i = sandwiches.Length - 1; i >= 0; i--)
         {
             stack.Push(sandwiches[i]);
         }
 
+        return stack;
+    }
+
+    // Runs rounds until either the queue empties or a full lap of the current
+    // queue produces no match (consecutiveSkips reaches the queue's own size),
+    // at which point no remaining student can ever be served.
+    private static void Simulate(RepoQueue queue, RepoStack stack)
+    {
         var consecutiveSkips = 0;
 
         while (queue.Count > 0 && consecutiveSkips < queue.Count)
@@ -62,7 +87,5 @@ public sealed partial class NumberOfStudentsUnableToEatLunchTests
                 consecutiveSkips++;
             }
         }
-
-        return queue.Count;
     }
 }

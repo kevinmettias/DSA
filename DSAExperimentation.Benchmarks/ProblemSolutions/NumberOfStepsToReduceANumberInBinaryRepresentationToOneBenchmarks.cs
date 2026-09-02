@@ -16,6 +16,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
 {
+    private const string AlternatingBitUnit = "10";
+    private const int AlternatingBitUnitLength = 2;
+    private const string SingleBitOne = "1";
+    private const int BinaryBase = 2;
+    private const int StepsForOddDigit = 2;
+
     [Params(100, 1_000)]
     public int Length;
 
@@ -23,14 +29,17 @@ public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
 
     [GlobalSetup]
     public void Setup()
-        => _binary = string.Concat(Enumerable.Repeat("10", Length / 2));
+    {
+        var repeatedUnits = Enumerable.Repeat(AlternatingBitUnit, Length / AlternatingBitUnitLength);
+        _binary = string.Concat(repeatedUnits);
+    }
 
     [Benchmark(Baseline = true)]
     public int StackAddSimulation()
     {
         var current = _binary;
         var steps = 0;
-        while (current != "1")
+        while (current != SingleBitOne)
         {
             current = current[^1] == '0' ? current[..^1] : StackAddOne(current);
             steps++;
@@ -47,8 +56,8 @@ public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
         while (i >= 0 || carry > 0)
         {
             var sum = carry + (i >= 0 ? a[i--] - '0' : 0);
-            stack.Push((char)('0' + (sum % 2)));
-            carry = sum / 2;
+            stack.Push((char)('0' + (sum % BinaryBase)));
+            carry = sum / BinaryBase;
         }
 
         var chars = new List<char>();
@@ -68,15 +77,15 @@ public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
         for (var i = _binary.Length - 1; i >= 1; i--)
         {
             var digit = (_binary[i] - '0') + carry;
-            if (digit % 2 == 1)
+            if (digit % BinaryBase == 1)
             {
-                steps += 2;
+                steps += StepsForOddDigit;
                 carry = 1;
             }
             else
             {
                 steps += 1;
-                carry = digit / 2;
+                carry = digit / BinaryBase;
             }
         }
 

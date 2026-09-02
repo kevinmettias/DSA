@@ -41,28 +41,39 @@ public class MyCalendarIIBenchmarks
         var doubles = new List<(int Start, int End)>();
         var accepted = 0;
 
-        foreach (var (start, end) in _events)
+        foreach (var evt in _events)
         {
-            if (doubles.Any(d => start < d.End && d.Start < end))
+            if (TryAcceptBookingByListScan(evt, bookings, doubles))
             {
-                continue;
+                accepted++;
             }
-
-            foreach (var (bStart, bEnd) in bookings)
-            {
-                var overlapStart = Math.Max(start, bStart);
-                var overlapEnd = Math.Min(end, bEnd);
-                if (overlapStart < overlapEnd)
-                {
-                    doubles.Add((overlapStart, overlapEnd));
-                }
-            }
-
-            bookings.Add((start, end));
-            accepted++;
         }
 
         return accepted;
+    }
+
+    private static bool TryAcceptBookingByListScan(
+        (int Start, int End) evt, List<(int Start, int End)> bookings, List<(int Start, int End)> doubles)
+    {
+        var (start, end) = evt;
+
+        if (doubles.Any(d => start < d.End && d.Start < end))
+        {
+            return false;
+        }
+
+        foreach (var (bStart, bEnd) in bookings)
+        {
+            var overlapStart = Math.Max(start, bStart);
+            var overlapEnd = Math.Min(end, bEnd);
+            if (overlapStart < overlapEnd)
+            {
+                doubles.Add((overlapStart, overlapEnd));
+            }
+        }
+
+        bookings.Add((start, end));
+        return true;
     }
 
     [Benchmark]
@@ -72,31 +83,41 @@ public class MyCalendarIIBenchmarks
         var doubled = new IntervalSet<int>();
         var accepted = 0;
 
-        foreach (var (start, end) in _events)
+        foreach (var evt in _events)
         {
-            var closedEnd = end - 1;
-
-            if (doubled.HasOverlap(start, closedEnd))
+            if (TryAcceptBookingByIntervalSetScan(evt, covered, doubled))
             {
-                continue;
+                accepted++;
             }
-
-            for (var i = 0; i < covered.Count; i++)
-            {
-                var (existingStart, existingEnd) = covered.Get(i);
-                var overlapStart = Math.Max(start, existingStart);
-                var overlapEnd = Math.Min(closedEnd, existingEnd);
-
-                if (overlapStart <= overlapEnd)
-                {
-                    doubled.Add(overlapStart, overlapEnd);
-                }
-            }
-
-            covered.Add(start, closedEnd);
-            accepted++;
         }
 
         return accepted;
+    }
+
+    private static bool TryAcceptBookingByIntervalSetScan(
+        (int Start, int End) evt, IntervalSet<int> covered, IntervalSet<int> doubled)
+    {
+        var (start, end) = evt;
+        var closedEnd = end - 1;
+
+        if (doubled.HasOverlap(start, closedEnd))
+        {
+            return false;
+        }
+
+        for (var i = 0; i < covered.Count; i++)
+        {
+            var (existingStart, existingEnd) = covered.Get(i);
+            var overlapStart = Math.Max(start, existingStart);
+            var overlapEnd = Math.Min(closedEnd, existingEnd);
+
+            if (overlapStart <= overlapEnd)
+            {
+                doubled.Add(overlapStart, overlapEnd);
+            }
+        }
+
+        covered.Add(start, closedEnd);
+        return true;
     }
 }

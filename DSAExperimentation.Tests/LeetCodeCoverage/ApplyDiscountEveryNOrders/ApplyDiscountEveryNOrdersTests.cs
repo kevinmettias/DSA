@@ -15,13 +15,13 @@ public sealed class ApplyDiscountEveryNOrdersTests
     {
         var cashier = new Cashier(3, 50, [1, 2, 3, 4, 5, 6, 7], [100, 200, 300, 400, 300, 200, 100]);
 
-        Assert.Equal(500.0, cashier.GetBill([1, 2], [1, 2]));
-        Assert.Equal(4000.0, cashier.GetBill([3, 7], [10, 10]));
-        Assert.Equal(800.0, cashier.GetBill([1, 2, 3, 4, 5, 6, 7], [1, 1, 1, 1, 1, 1, 1]));
-        Assert.Equal(4000.0, cashier.GetBill([4], [10]));
-        Assert.Equal(4000.0, cashier.GetBill([7, 3], [10, 10]));
-        Assert.Equal(7350.0, cashier.GetBill([7, 5, 3, 1, 6, 4, 2], [10, 10, 10, 9, 9, 9, 7]));
-        Assert.Equal(2500.0, cashier.GetBill([2, 3, 5], [5, 3, 2]));
+        AssertBill(cashier, [1, 2], [1, 2], 500.0);
+        AssertBill(cashier, [3, 7], [10, 10], 4000.0);
+        AssertBill(cashier, [1, 2, 3, 4, 5, 6, 7], [1, 1, 1, 1, 1, 1, 1], 800.0);
+        AssertBill(cashier, [4], [10], 4000.0);
+        AssertBill(cashier, [7, 3], [10, 10], 4000.0);
+        AssertBill(cashier, [7, 5, 3, 1, 6, 4, 2], [10, 10, 10, 9, 9, 9, 7], 7350.0);
+        AssertBill(cashier, [2, 3, 5], [5, 3, 2], 2500.0);
     }
 
     [Fact]
@@ -29,8 +29,14 @@ public sealed class ApplyDiscountEveryNOrdersTests
     {
         var cashier = new Cashier(1, 25, [1, 2], [100, 200]);
 
-        Assert.Equal(75.0, cashier.GetBill([1], [1]));
-        Assert.Equal(150.0, cashier.GetBill([2], [1]));
+        AssertBill(cashier, [1], [1], 75.0);
+        AssertBill(cashier, [2], [1], 150.0);
+    }
+
+    private static void AssertBill(Cashier cashier, int[] product, int[] amount, double expected)
+    {
+        var actual = cashier.GetBill(product, amount);
+        Assert.Equal(expected, actual);
     }
 
     private sealed class Cashier

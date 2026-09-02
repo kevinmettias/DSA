@@ -30,34 +30,49 @@ public sealed class GameOfLifeTests
         Assert.Equal([[1, 1], [1, 1]], board);
     }
 
+    private readonly record struct GridDimensions(int Rows, int Cols);
+
     private static void Advance(int[][] board)
     {
-        var rows = board.Length;
-        var cols = board[0].Length;
+        var dimensions = new GridDimensions(board.Length, board[0].Length);
+        var originallyLive = SnapshotLiveCells(board, dimensions);
+        ApplyNextGeneration(board, originallyLive, dimensions);
+    }
+
+    private static Set<int> SnapshotLiveCells(int[][] board, GridDimensions dimensions)
+    {
         var originallyLive = new Set<int>();
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < dimensions.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < dimensions.Cols; c++)
             {
                 if (board[r][c] == 1)
                 {
-                    originallyLive.TryAdd(r * cols + c);
+                    originallyLive.TryAdd(r * dimensions.Cols + c);
                 }
             }
         }
 
-        for (var r = 0; r < rows; r++)
+        return originallyLive;
+    }
+
+    private static void ApplyNextGeneration(int[][] board, Set<int> originallyLive, GridDimensions dimensions)
+    {
+        for (var r = 0; r < dimensions.Rows; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < dimensions.Cols; c++)
             {
-                var liveNeighbors = CountLiveNeighbors(originallyLive, rows, cols, r, c);
-                board[r][c] = liveNeighbors == 3 || (liveNeighbors == 2 && originallyLive.Has(r * cols + c)) ? 1 : 0;
+                var liveNeighbors = CountLiveNeighbors(originallyLive, dimensions, r, c);
+                board[r][c] =
+                    liveNeighbors == 3 || (liveNeighbors == 2 && originallyLive.Has(r * dimensions.Cols + c))
+                        ? 1
+                        : 0;
             }
         }
     }
 
-    private static int CountLiveNeighbors(Set<int> originallyLive, int rows, int cols, int row, int col)
+    private static int CountLiveNeighbors(Set<int> originallyLive, GridDimensions dimensions, int row, int col)
     {
         var count = 0;
 
@@ -65,15 +80,7 @@ public sealed class GameOfLifeTests
         {
             for (var dc = -1; dc <= 1; dc++)
             {
-                if (dr == 0 && dc == 0)
-                {
-                    continue;
-                }
-
-                var r = row + dr;
-                var c = col + dc;
-
-                if (r >= 0 && r < rows && c >= 0 && c < cols && originallyLive.Has(r * cols + c))
+                if (IsLiveNeighbor(originallyLive, dimensions, (row, col), (dr, dc)))
                 {
                     count++;
                 }
@@ -81,5 +88,20 @@ public sealed class GameOfLifeTests
         }
 
         return count;
+    }
+
+    private static bool IsLiveNeighbor(
+        Set<int> originallyLive, GridDimensions dimensions, (int Row, int Col) cell, (int DRow, int DCol) offset)
+    {
+        if (offset.DRow == 0 && offset.DCol == 0)
+        {
+            return false;
+        }
+
+        var r = cell.Row + offset.DRow;
+        var c = cell.Col + offset.DCol;
+
+        return r >= 0 && r < dimensions.Rows && c >= 0 && c < dimensions.Cols
+            && originallyLive.Has(r * dimensions.Cols + c);
     }
 }

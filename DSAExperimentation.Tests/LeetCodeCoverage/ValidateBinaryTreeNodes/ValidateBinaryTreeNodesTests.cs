@@ -56,17 +56,27 @@ public sealed partial class ValidateBinaryTreeNodesTests
                     continue;
                 }
 
-                if (hasParent[child] || components.IsConnected(node, child))
+                if (!TryLinkChild(node, child, hasParent, components))
                 {
                     return false;
                 }
-
-                hasParent[child] = true;
-                components.Union(node, child);
             }
         }
 
         return HasExactlyOneRoot(hasParent) && AllNodesShareOneComponent(components, n);
+    }
+
+    private static bool TryLinkChild(int node, int child, bool[] hasParent, DisjointSet components)
+    {
+        if (hasParent[child] || components.IsConnected(node, child))
+        {
+            return false;
+        }
+
+        hasParent[child] = true;
+        components.Union(node, child);
+
+        return true;
     }
 
     private static bool HasExactlyOneRoot(bool[] hasParent) => hasParent.Count(parented => !parented) == 1;

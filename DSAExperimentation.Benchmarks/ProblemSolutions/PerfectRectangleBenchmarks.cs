@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PerfectRectangleBenchmarks
 {
+    private const int X2Index = 2;
+    private const int Y2Index = 3;
+    private const int PerfectRectangleCornerCount = 4;
+
     [Params(20, 150)]
     public int GridSize;
 
@@ -56,7 +60,7 @@ public class PerfectRectangleBenchmarks
     }
 
     private static bool Overlaps(int[] a, int[] b)
-        => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+        => a[0] < b[X2Index] && b[0] < a[X2Index] && a[1] < b[Y2Index] && b[1] < a[Y2Index];
 
     private static bool AreaMatchesBoundingBox(int[][] rectangles)
     {
@@ -70,9 +74,9 @@ public class PerfectRectangleBenchmarks
         {
             minX = Math.Min(minX, rect[0]);
             minY = Math.Min(minY, rect[1]);
-            maxX = Math.Max(maxX, rect[2]);
-            maxY = Math.Max(maxY, rect[3]);
-            totalArea += (long)(rect[2] - rect[0]) * (rect[3] - rect[1]);
+            maxX = Math.Max(maxX, rect[X2Index]);
+            maxY = Math.Max(maxY, rect[Y2Index]);
+            totalArea += (long)(rect[X2Index] - rect[0]) * (rect[Y2Index] - rect[1]);
         }
 
         return totalArea == (long)(maxX - minX) * (maxY - minY);
@@ -80,35 +84,36 @@ public class PerfectRectangleBenchmarks
 
     private static bool IsRectangleCoverWithSet(int[][] rectangles)
     {
-        var minX = int.MaxValue;
-        var minY = int.MaxValue;
-        var maxX = int.MinValue;
-        var maxY = int.MinValue;
-        long totalArea = 0;
+        var bounds = new BoundingBoxAccumulator();
         var corners = new Set<(int X, int Y)>();
 
         foreach (var rect in rectangles)
         {
-            var (x1, y1, x2, y2) = (rect[0], rect[1], rect[2], rect[3]);
-            minX = Math.Min(minX, x1);
-            minY = Math.Min(minY, y1);
-            maxX = Math.Max(maxX, x2);
-            maxY = Math.Max(maxY, y2);
-            totalArea += (long)(x2 - x1) * (y2 - y1);
-
-            ToggleCorner(corners, (x1, y1));
-            ToggleCorner(corners, (x1, y2));
-            ToggleCorner(corners, (x2, y1));
-            ToggleCorner(corners, (x2, y2));
+            AccumulateRectangle(rect, corners, bounds);
         }
 
-        if (totalArea != (long)(maxX - minX) * (maxY - minY) || corners.Count != 4)
+        if (bounds.TotalArea != (long)(bounds.MaxX - bounds.MinX) * (bounds.MaxY - bounds.MinY) || corners.Count != PerfectRectangleCornerCount)
         {
             return false;
         }
 
-        return corners.Has((minX, minY)) && corners.Has((minX, maxY))
-            && corners.Has((maxX, minY)) && corners.Has((maxX, maxY));
+        return corners.Has((bounds.MinX, bounds.MinY)) && corners.Has((bounds.MinX, bounds.MaxY))
+            && corners.Has((bounds.MaxX, bounds.MinY)) && corners.Has((bounds.MaxX, bounds.MaxY));
+    }
+
+    private static void AccumulateRectangle(int[] rect, Set<(int X, int Y)> corners, BoundingBoxAccumulator bounds)
+    {
+        var (x1, y1, x2, y2) = (rect[0], rect[1], rect[X2Index], rect[Y2Index]);
+        bounds.MinX = Math.Min(bounds.MinX, x1);
+        bounds.MinY = Math.Min(bounds.MinY, y1);
+        bounds.MaxX = Math.Max(bounds.MaxX, x2);
+        bounds.MaxY = Math.Max(bounds.MaxY, y2);
+        bounds.TotalArea += (long)(x2 - x1) * (y2 - y1);
+
+        ToggleCorner(corners, (x1, y1));
+        ToggleCorner(corners, (x1, y2));
+        ToggleCorner(corners, (x2, y1));
+        ToggleCorner(corners, (x2, y2));
     }
 
     private static void ToggleCorner(Set<(int X, int Y)> corners, (int X, int Y) point)
@@ -117,5 +122,14 @@ public class PerfectRectangleBenchmarks
         {
             corners.TryRemove(point);
         }
+    }
+
+    private sealed class BoundingBoxAccumulator
+    {
+        public int MinX = int.MaxValue;
+        public int MinY = int.MaxValue;
+        public int MaxX = int.MinValue;
+        public int MaxY = int.MinValue;
+        public long TotalArea;
     }
 }

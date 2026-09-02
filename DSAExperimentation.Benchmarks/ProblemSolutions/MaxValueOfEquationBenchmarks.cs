@@ -15,6 +15,10 @@ public class MaxValueOfEquationBenchmarks
 {
     private const int K = 1_000_000;
 
+    private const int MaxXStep = 5;
+
+    private const int YCoordinateRange = 1_000;
+
     [Params(500, 4_000)]
     public int Length;
 
@@ -28,8 +32,8 @@ public class MaxValueOfEquationBenchmarks
         _points = Enumerable.Range(0, Length)
             .Select(_ =>
             {
-                x += random.Next(1, 5);
-                return new[] { x, random.Next(-1_000, 1_000) };
+                x += random.Next(1, MaxXStep);
+                return new[] { x, random.Next(-YCoordinateRange, YCoordinateRange) };
             })
             .ToArray();
     }
@@ -63,25 +67,32 @@ public class MaxValueOfEquationBenchmarks
 
         for (var j = 0; j < _points.Length; j++)
         {
-            var (x, y) = (_points[j][0], _points[j][1]);
-
-            while (window.TryPeekFront(out var frontIndex) && x - _points[frontIndex][0] > K)
-            {
-                window.TryPopFront(out _);
-            }
-
-            if (window.TryPeekFront(out var bestIndex))
-            {
-                best = Math.Max(best, x + y + _points[bestIndex][1] - _points[bestIndex][0]);
-            }
-
-            while (window.TryPeekBack(out var backIndex) && _points[backIndex][1] - _points[backIndex][0] <= y - x)
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(j);
+            best = AdvanceWindow(window, j, best);
         }
+
+        return best;
+    }
+
+    private int AdvanceWindow(RepoDeque window, int j, int best)
+    {
+        var (x, y) = (_points[j][0], _points[j][1]);
+
+        while (window.TryPeekFront(out var frontIndex) && x - _points[frontIndex][0] > K)
+        {
+            window.TryPopFront(out _);
+        }
+
+        if (window.TryPeekFront(out var bestIndex))
+        {
+            best = Math.Max(best, x + y + _points[bestIndex][1] - _points[bestIndex][0]);
+        }
+
+        while (window.TryPeekBack(out var backIndex) && _points[backIndex][1] - _points[backIndex][0] <= y - x)
+        {
+            window.TryPopBack(out _);
+        }
+
+        window.PushBack(j);
 
         return best;
     }

@@ -1,11 +1,21 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.PermutationsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are PermutationsIISolution's, now returning the same
+// permutations the test proves correct instead of merely counting them.
 [MemoryDiagnoser]
 public class PermutationsIIBenchmarks
 {
-    [Benchmark(Baseline = true)] public int SpecializedUnique() => Count([1, 1, 2, 2, 3, 3]);
-    [Benchmark] public int SameDedupSearchShape() => Count([1, 1, 2, 2, 3, 3]);
-    private static int Count(int[] nums) { Array.Sort(nums); var used = new bool[nums.Length]; var count = 0; void Search(int depth) { if (depth == nums.Length) { count++; return; } for (var i = 0; i < nums.Length; i++) if (!used[i] && (i == 0 || nums[i] != nums[i - 1] || used[i - 1])) { used[i] = true; Search(depth + 1); used[i] = false; } } Search(0); return count; }
+    // Three duplicate pairs (1,1 / 2,2 / 3,3) - the input both benchmarks dedup-search over.
+    private static readonly int[] ThreeDuplicatePairsInput = [1, 1, 2, 2, 3, 3];
+
+    [Benchmark(Baseline = true)]
+    public List<List<int>> SpecializedRecursive() =>
+        PermutationsIISolution.PermuteUniqueBySpecializedRecursion(ThreeDuplicatePairsInput);
+
+    [Benchmark]
+    public List<List<int>> Backtracking() =>
+        PermutationsIISolution.PermuteUniqueByBacktracking(ThreeDuplicatePairsInput);
 }

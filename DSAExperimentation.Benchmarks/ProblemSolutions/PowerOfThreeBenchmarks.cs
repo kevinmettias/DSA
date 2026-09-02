@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PowerOfThreeBenchmarks
 {
+    private const int PowerBase = 3;
+
     [Params(1162261467, 1162261466)] // 3^19 (a true power of three) vs. one less (not)
     public int Value;
 
@@ -29,9 +31,9 @@ public class PowerOfThreeBenchmarks
             return false;
         }
 
-        while (remaining % 3 == 0)
+        while (remaining % PowerBase == 0)
         {
-            remaining /= 3;
+            remaining /= PowerBase;
         }
 
         return remaining == 1;
@@ -53,7 +55,7 @@ public class PowerOfThreeBenchmarks
         while (power <= int.MaxValue)
         {
             powers.Add((int)power);
-            power *= 3;
+            power *= PowerBase;
         }
 
         return [.. powers];

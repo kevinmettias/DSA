@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthSmallestElementInABSTBenchmarks
 {
+    private const int MedianDivisor = 2;
+
     [Params(500, 20_000)]
     public int NodeCount;
 
@@ -43,7 +45,7 @@ public class KthSmallestElementInABSTBenchmarks
         }
 
         _root = tree.Root;
-        _k = NodeCount / 2;
+        _k = NodeCount / MedianDivisor;
     }
 
     [Benchmark(Baseline = true)]

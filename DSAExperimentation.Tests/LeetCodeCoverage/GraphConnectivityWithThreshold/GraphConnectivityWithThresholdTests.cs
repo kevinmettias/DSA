@@ -18,7 +18,9 @@ public sealed partial class GraphConnectivityWithThresholdTests
     {
         int[][] queries = [[1, 4], [2, 5], [3, 6]];
 
-        Assert.Equal([false, false, true], AreConnected(6, 2, queries));
+        var connected = AreConnected(6, 2, queries);
+
+        Assert.Equal([false, false, true], connected);
     }
 
     [Fact]
@@ -26,7 +28,9 @@ public sealed partial class GraphConnectivityWithThresholdTests
     {
         int[][] queries = [[4, 5], [3, 4], [3, 2], [2, 6], [1, 3]];
 
-        Assert.Equal([true, true, true, true, true], AreConnected(6, 0, queries));
+        var connected = AreConnected(6, 0, queries);
+
+        Assert.Equal([true, true, true, true, true], connected);
     }
 
     [Fact]
@@ -34,7 +38,9 @@ public sealed partial class GraphConnectivityWithThresholdTests
     {
         int[][] queries = [[1, 2], [2, 3], [1, 5]];
 
-        Assert.Equal([false, false, false], AreConnected(5, 3, queries));
+        var connected = AreConnected(5, 3, queries);
+
+        Assert.Equal([false, false, false], connected);
     }
 
     private static bool[] AreConnected(int n, int threshold, int[][] queries)

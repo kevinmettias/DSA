@@ -14,7 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class WordBreakIIBenchmarks
 {
-    private static readonly string[] Dictionary = ["cat"];
+    private const string RepeatedWord = "cat";
+    private const string WordSeparator = " ";
+
+    private static readonly string[] Dictionary = [RepeatedWord];
 
     [Params(600, 3000)]
     public int Length;
@@ -22,7 +25,11 @@ public class WordBreakIIBenchmarks
     private string _s = null!;
 
     [GlobalSetup]
-    public void Setup() => _s = string.Concat(Enumerable.Repeat("cat", Length / 3));
+    public void Setup()
+    {
+        var repeatedWords = Enumerable.Repeat(RepeatedWord, Length / RepeatedWord.Length);
+        _s = string.Concat(repeatedWords);
+    }
 
     [Benchmark(Baseline = true)]
     public int HashSetUnboundedScan()
@@ -30,39 +37,46 @@ public class WordBreakIIBenchmarks
         var words = Dictionary.ToHashSet();
         var memo = new Dictionary<int, List<string>>();
 
-        return From(0).Count;
+        return BuildSentencesHashSet(0, words, memo).Count;
+    }
 
-        List<string> From(int start)
+    private List<string> BuildSentencesHashSet(int start, HashSet<string> words, Dictionary<int, List<string>> memo)
+    {
+        if (memo.TryGetValue(start, out var cached))
         {
-            if (memo.TryGetValue(start, out var cached))
-            {
-                return cached;
-            }
-
-            if (start == _s.Length)
-            {
-                return [string.Empty];
-            }
-
-            var sentences = new List<string>();
-
-            for (var end = start + 1; end <= _s.Length; end++)
-            {
-                var word = _s[start..end];
-
-                if (!words.Contains(word))
-                {
-                    continue;
-                }
-
-                foreach (var suffix in From(end))
-                {
-                    sentences.Add(suffix.Length == 0 ? word : word + " " + suffix);
-                }
-            }
-
-            return memo[start] = sentences;
+            return cached;
         }
+
+        if (start == _s.Length)
+        {
+            return [string.Empty];
+        }
+
+        var sentences = CollectSentencesForStart(start, words, memo);
+
+        return memo[start] = sentences;
+    }
+
+    private List<string> CollectSentencesForStart(int start, HashSet<string> words, Dictionary<int, List<string>> memo)
+    {
+        var sentences = new List<string>();
+
+        for (var end = start + 1; end <= _s.Length; end++)
+        {
+            var word = _s[start..end];
+
+            if (!words.Contains(word))
+            {
+                continue;
+            }
+
+            foreach (var suffix in BuildSentencesHashSet(end, words, memo))
+            {
+                AppendSentence(sentences, word, suffix);
+            }
+        }
+
+        return sentences;
     }
 
     [Benchmark]
@@ -74,38 +88,51 @@ public class WordBreakIIBenchmarks
             trie.Set(word, true);
         }
 
+        List<string> From(int start, Func<int, List<string>> from) => BuildSentencesTrie(start, from, trie);
+
         return Memoizer.Memoize<int, List<string>>(0, From).Count;
-
-        List<string> From(int start, Func<int, List<string>> from)
-        {
-            if (start == _s.Length)
-            {
-                return [string.Empty];
-            }
-
-            var sentences = new List<string>();
-
-            for (var end = start + 1; end <= _s.Length; end++)
-            {
-                var piece = _s[start..end];
-
-                if (!trie.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (!trie.HasKey(piece))
-                {
-                    continue;
-                }
-
-                foreach (var suffix in from(end))
-                {
-                    sentences.Add(suffix.Length == 0 ? piece : piece + " " + suffix);
-                }
-            }
-
-            return sentences;
-        }
     }
+
+    private List<string> BuildSentencesTrie(int start, Func<int, List<string>> from, Trie<bool> trie)
+    {
+        if (start == _s.Length)
+        {
+            return [string.Empty];
+        }
+
+        var sentences = new List<string>();
+
+        for (var end = start + 1; end <= _s.Length; end++)
+        {
+            if (TryExtendMatch(trie, (start, end), from, sentences))
+            {
+                break;
+            }
+        }
+
+        return sentences;
+    }
+
+    private bool TryExtendMatch(Trie<bool> trie, (int Start, int End) span, Func<int, List<string>> from, List<string> sentences)
+    {
+        var piece = _s[span.Start..span.End];
+
+        if (!trie.HasPrefix(piece))
+        {
+            return true;
+        }
+
+        if (trie.HasKey(piece))
+        {
+            foreach (var suffix in from(span.End))
+            {
+                AppendSentence(sentences, piece, suffix);
+            }
+        }
+
+        return false;
+    }
+
+    private static void AppendSentence(List<string> sentences, string word, string suffix)
+        => sentences.Add(suffix.Length == 0 ? word : word + WordSeparator + suffix);
 }

@@ -12,12 +12,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountTheRepetitionsBenchmarks
 {
-    private static readonly string S1 = string.Concat(Enumerable.Repeat("ab", 25)); // 50 chars
+    private const string S1BuildingBlock = "ab";
+    private const int S1BuildingBlockRepeatCount = 25;
+
+    private static readonly string S1 = BuildS1(); // 50 chars
     private static readonly string S2Value = "ba";
     private const int N2 = 1;
 
     [Params(5_000, 100_000)]
     public int N1;
+
+    private static string BuildS1()
+    {
+        var repeatedPairs = Enumerable.Repeat(S1BuildingBlock, S1BuildingBlockRepeatCount);
+        return string.Concat(repeatedPairs);
+    }
 
     [Benchmark(Baseline = true)]
     public int NaiveFullSimulation()
@@ -27,21 +36,28 @@ public class CountTheRepetitionsBenchmarks
 
         for (var copy = 0; copy < N1; copy++)
         {
-            foreach (var c in S1)
-            {
-                if (c == S2Value[s2Index])
-                {
-                    s2Index++;
-                    if (s2Index == S2Value.Length)
-                    {
-                        s2Index = 0;
-                        s2Count++;
-                    }
-                }
-            }
+            ScanCopy(S1, S2Value, ref s2Index, ref s2Count);
         }
 
         return s2Count / N2;
+    }
+
+    private static void ScanCopy(string s1, string s2, ref int s2Index, ref int s2Count)
+    {
+        foreach (var c in s1)
+        {
+            if (c != s2[s2Index])
+            {
+                continue;
+            }
+
+            s2Index++;
+            if (s2Index == s2.Length)
+            {
+                s2Index = 0;
+                s2Count++;
+            }
+        }
     }
 
     [Benchmark]
@@ -61,36 +77,33 @@ public class CountTheRepetitionsBenchmarks
 
         while (s1Count < n1)
         {
-            foreach (var c in s1)
-            {
-                if (c == s2[s2Index])
-                {
-                    s2Index++;
-                    if (s2Index == s2.Length)
-                    {
-                        s2Index = 0;
-                        s2Count++;
-                    }
-                }
-            }
-
+            ScanCopy(s1, s2, ref s2Index, ref s2Count);
             s1Count++;
-
-            if (seen.TryGetValue(s2Index, out var prior))
-            {
-                var cycleS1Count = s1Count - prior.S1Count;
-                var cycleS2Count = s2Count - prior.S2Count;
-                var cycles = (n1 - s1Count) / cycleS1Count;
-
-                s1Count += cycles * cycleS1Count;
-                s2Count += cycles * cycleS2Count;
-            }
-            else
-            {
-                seen.Set(s2Index, (s1Count, s2Count));
-            }
+            (s1Count, s2Count) = RecordOrApplyCycle(seen, s2Index, n1, (s1Count, s2Count));
         }
 
         return s2Count / n2;
+    }
+
+    private static (int S1Count, int S2Count) RecordOrApplyCycle(
+        HashMap<int, (int S1Count, int S2Count)> seen, int s2Index, int n1, (int S1Count, int S2Count) counts)
+    {
+        if (seen.TryGetValue(s2Index, out var prior))
+        {
+            return ApplyDetectedCycle(n1, counts.S1Count, counts.S2Count, prior);
+        }
+
+        seen.Set(s2Index, counts);
+        return counts;
+    }
+
+    private static (int S1Count, int S2Count) ApplyDetectedCycle(
+        int n1, int s1Count, int s2Count, (int S1Count, int S2Count) prior)
+    {
+        var cycleS1Count = s1Count - prior.S1Count;
+        var cycleS2Count = s2Count - prior.S2Count;
+        var cycles = (n1 - s1Count) / cycleS1Count;
+
+        return (s1Count + cycles * cycleS1Count, s2Count + cycles * cycleS2Count);
     }
 }

@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ValidPalindromeIIBenchmarks
 {
+    private const int OffsetDivisor = 3;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -83,7 +85,7 @@ public class ValidPalindromeIIBenchmarks
         var chars = new char[length];
         Array.Fill(chars, 'a');
 
-        var mid1 = length / 3;
+        var mid1 = length / OffsetDivisor;
         var mid2 = length - 1 - mid1;
         chars[mid1] = 'b';
         chars[mid2] = 'c';

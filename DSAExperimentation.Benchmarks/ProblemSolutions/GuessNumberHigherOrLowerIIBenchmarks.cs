@@ -28,7 +28,9 @@ public class GuessNumberHigherOrLowerIIBenchmarks
         var best = int.MaxValue;
         for (var guess = low; guess <= high; guess++)
         {
-            var worstHalf = Math.Max(WorstCaseCost(low, guess - 1), WorstCaseCost(guess + 1, high));
+            var lowerHalfCost = WorstCaseCost(low, guess - 1);
+            var upperHalfCost = WorstCaseCost(guess + 1, high);
+            var worstHalf = Math.Max(lowerHalfCost, upperHalfCost);
             best = Math.Min(best, guess + worstHalf);
         }
 

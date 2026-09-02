@@ -16,6 +16,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class IntegerToEnglishWordsBenchmarks
 {
+    private const string ZeroWord = "Zero";
+    private const string HundredWord = "Hundred";
+    private const string WordSeparator = " ";
+    private const string EmptyWords = "";
+    private const int GroupSize = 1000;
+    private const int HundredsDivisor = 100;
+    private const int TensThreshold = 20;
+    private const int DigitBase = 10;
+
     private static readonly string[] Below20 =
     [
         "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
@@ -43,34 +52,39 @@ public class IntegerToEnglishWordsBenchmarks
     {
         if (num == 0)
         {
-            return "Zero";
+            return ZeroWord;
         }
 
-        var result = "";
+        var result = EmptyWords;
         var scale = 0;
 
         while (num > 0)
         {
-            var group = num % 1000;
-            if (group != 0)
-            {
-                var groupWords = GroupToWords(group);
-                var piece = Scales[scale].Length > 0 ? groupWords + " " + Scales[scale] : groupWords;
-                result = result.Length > 0 ? piece + " " + result : piece;
-            }
-
-            num /= 1000;
+            result = PrependGroup(result, num % GroupSize, scale);
+            num /= GroupSize;
             scale++;
         }
 
         return result;
     }
 
+    private static string PrependGroup(string result, int group, int scale)
+    {
+        if (group == 0)
+        {
+            return result;
+        }
+
+        var groupWords = GroupToWords(group);
+        var piece = Scales[scale].Length > 0 ? groupWords + WordSeparator + Scales[scale] : groupWords;
+        return result.Length > 0 ? piece + WordSeparator + result : piece;
+    }
+
     private static string NumberToWordsStack(int num)
     {
         if (num == 0)
         {
-            return "Zero";
+            return ZeroWord;
         }
 
         var stack = new WordStack();
@@ -78,18 +92,8 @@ public class IntegerToEnglishWordsBenchmarks
 
         while (num > 0)
         {
-            var group = num % 1000;
-            if (group != 0)
-            {
-                if (Scales[scale].Length > 0)
-                {
-                    stack.Push(Scales[scale]);
-                }
-
-                stack.Push(GroupToWords(group));
-            }
-
-            num /= 1000;
+            PushGroup(stack, num % GroupSize, scale);
+            num /= GroupSize;
             scale++;
         }
 
@@ -99,34 +103,58 @@ public class IntegerToEnglishWordsBenchmarks
             words.Add(word);
         }
 
-        return string.Join(" ", words);
+        return string.Join(WordSeparator, words);
+    }
+
+    private static void PushGroup(WordStack stack, int group, int scale)
+    {
+        if (group == 0)
+        {
+            return;
+        }
+
+        if (Scales[scale].Length > 0)
+        {
+            stack.Push(Scales[scale]);
+        }
+
+        stack.Push(GroupToWords(group));
     }
 
     private static string GroupToWords(int group)
     {
-        var hundreds = group / 100;
-        var remainder = group % 100;
+        var hundreds = group / HundredsDivisor;
+        var remainder = group % HundredsDivisor;
         var parts = new List<string>();
 
+        AppendHundreds(parts, hundreds);
+        AppendTensAndOnes(parts, remainder);
+
+        return string.Join(WordSeparator, parts);
+    }
+
+    private static void AppendHundreds(List<string> parts, int hundreds)
+    {
         if (hundreds > 0)
         {
             parts.Add(Below20[hundreds]);
-            parts.Add("Hundred");
+            parts.Add(HundredWord);
         }
+    }
 
-        if (remainder >= 20)
+    private static void AppendTensAndOnes(List<string> parts, int remainder)
+    {
+        if (remainder >= TensThreshold)
         {
-            parts.Add(Tens[remainder / 10]);
-            if (remainder % 10 > 0)
+            parts.Add(Tens[remainder / DigitBase]);
+            if (remainder % DigitBase > 0)
             {
-                parts.Add(Below20[remainder % 10]);
+                parts.Add(Below20[remainder % DigitBase]);
             }
         }
         else if (remainder > 0)
         {
             parts.Add(Below20[remainder]);
         }
-
-        return string.Join(" ", parts);
     }
 }

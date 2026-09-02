@@ -36,13 +36,24 @@ public sealed class NumberOfWaysToWearDifferentHatsToEachOtherTests
     private static int NumberWays(int[][] hats)
     {
         var peopleCount = hats.Length;
+        var hatToPeople = BuildHatToPeople(hats);
+        var fullMask = (1 << peopleCount) - 1;
+
+        var totalWays = Memoizer.Memoize<(int Hat, int Mask), long>(
+            (MaxHat, fullMask), (state, waysFor) => WaysFor(state, waysFor, hatToPeople));
+
+        return (int)totalWays;
+    }
+
+    private static List<int>[] BuildHatToPeople(int[][] hats)
+    {
         var hatToPeople = new List<int>[MaxHat + 1];
         for (var hat = 1; hat <= MaxHat; hat++)
         {
             hatToPeople[hat] = [];
         }
 
-        for (var person = 0; person < peopleCount; person++)
+        for (var person = 0; person < hats.Length; person++)
         {
             foreach (var hat in hats[person])
             {
@@ -50,36 +61,41 @@ public sealed class NumberOfWaysToWearDifferentHatsToEachOtherTests
             }
         }
 
-        var fullMask = (1 << peopleCount) - 1;
+        return hatToPeople;
+    }
 
-        var totalWays = Memoizer.Memoize<(int Hat, int Mask), long>((MaxHat, fullMask), (state, waysFor) =>
+    private static long WaysFor((int Hat, int Mask) state, Func<(int Hat, int Mask), long> waysFor, List<int>[] hatToPeople)
+    {
+        var (hat, mask) = state;
+
+        if (mask == 0)
         {
-            var (hat, mask) = state;
+            return 1L;
+        }
 
-            if (mask == 0)
+        if (hat == 0)
+        {
+            return 0L;
+        }
+
+        var total = waysFor((hat - 1, mask));
+        return AccumulateAssignments(state, waysFor, hatToPeople, total);
+    }
+
+    private static long AccumulateAssignments(
+        (int Hat, int Mask) state, Func<(int Hat, int Mask), long> waysFor, List<int>[] hatToPeople, long total)
+    {
+        var (hat, mask) = state;
+
+        foreach (var person in hatToPeople[hat])
+        {
+            var personBit = 1 << person;
+            if ((mask & personBit) != 0)
             {
-                return 1L;
+                total = (total + waysFor((hat - 1, mask & ~personBit))) % Modulo;
             }
+        }
 
-            if (hat == 0)
-            {
-                return 0L;
-            }
-
-            var total = waysFor((hat - 1, mask));
-
-            foreach (var person in hatToPeople[hat])
-            {
-                var personBit = 1 << person;
-                if ((mask & personBit) != 0)
-                {
-                    total = (total + waysFor((hat - 1, mask & ~personBit))) % Modulo;
-                }
-            }
-
-            return total;
-        });
-
-        return (int)totalWays;
+        return total;
     }
 }

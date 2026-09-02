@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortestSubarrayToBeRemovedToMakeArraySortedBenchmarks
 {
+    private const int RandomSeed = 1574;
+    private const int MaxElementValue = 1_000;
+
     [Params(80, 300)]
     public int Length;
 
@@ -22,8 +25,8 @@ public class ShortestSubarrayToBeRemovedToMakeArraySortedBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1574);
-        _arr = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _arr = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -50,17 +53,17 @@ public class ShortestSubarrayToBeRemovedToMakeArraySortedBenchmarks
     {
         var previous = int.MinValue;
 
-        for (var i = 0; i < removeStart; i++)
+        if (!IsNonDecreasingFrom(arr, 0, removeStart, ref previous))
         {
-            if (arr[i] < previous)
-            {
-                return false;
-            }
-
-            previous = arr[i];
+            return false;
         }
 
-        for (var i = removeEnd; i < arr.Length; i++)
+        return IsNonDecreasingFrom(arr, removeEnd, arr.Length, ref previous);
+    }
+
+    private static bool IsNonDecreasingFrom(int[] arr, int start, int end, ref int previous)
+    {
+        for (var i = start; i < end; i++)
         {
             if (arr[i] < previous)
             {
@@ -79,26 +82,47 @@ public class ShortestSubarrayToBeRemovedToMakeArraySortedBenchmarks
         var arr = _arr;
         var n = arr.Length;
 
-        var left = 0;
-        while (left + 1 < n && arr[left] <= arr[left + 1])
-        {
-            left++;
-        }
+        var left = FindPrefixEnd(arr, n);
 
         if (left == n - 1)
         {
             return 0;
         }
 
+        var right = FindSuffixStart(arr, n);
+        var best = Math.Min(n - left - 1, right);
+
+        return BestOverPrefix(arr, left, right, best);
+    }
+
+    private static int FindPrefixEnd(int[] arr, int n)
+    {
+        var left = 0;
+
+        while (left + 1 < n && arr[left] <= arr[left + 1])
+        {
+            left++;
+        }
+
+        return left;
+    }
+
+    private static int FindSuffixStart(int[] arr, int n)
+    {
         var right = n - 1;
+
         while (right > 0 && arr[right - 1] <= arr[right])
         {
             right--;
         }
 
-        var best = Math.Min(n - left - 1, right);
+        return right;
+    }
 
+    private static int BestOverPrefix(int[] arr, int left, int right, int best)
+    {
         var suffix = new ArraySequence<int>(arr[right..]);
+
         for (var i = 0; i <= left; i++)
         {
             var j = right + BinarySearch.LowerBound(suffix, arr[i]);

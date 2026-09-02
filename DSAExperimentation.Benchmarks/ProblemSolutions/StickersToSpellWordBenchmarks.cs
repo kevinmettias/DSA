@@ -17,6 +17,9 @@ public class StickersToSpellWordBenchmarks
 {
     private static readonly string[] Stickers = ["ab", "ba"];
 
+    private const string RepeatedPair = "ab";
+    private const int AlphabetSize = 26;
+
     [Params(10, 16)]
     public int PairCount;
 
@@ -27,7 +30,8 @@ public class StickersToSpellWordBenchmarks
     public void Setup()
     {
         _stickerCounts = Stickers.Select(BuildCounts).ToArray();
-        var target = string.Concat(Enumerable.Repeat("ab", PairCount));
+        var repeatedPairs = Enumerable.Repeat(RepeatedPair, PairCount);
+        var target = string.Concat(repeatedPairs);
         _sortedTarget = string.Concat(target.OrderBy(c => c));
     }
 
@@ -46,6 +50,13 @@ public class StickersToSpellWordBenchmarks
             return 0;
         }
 
+        return BestOverStickers(state, minFor);
+    }
+
+    // Tries every sticker that covers state's first remaining letter and returns the
+    // fewest additional stickers needed, or int.MaxValue if none of them work.
+    private int BestOverStickers(string state, Func<string, int> minFor)
+    {
         var best = int.MaxValue;
 
         foreach (var counts in _stickerCounts)
@@ -55,7 +66,8 @@ public class StickersToSpellWordBenchmarks
                 continue;
             }
 
-            var sub = minFor(ApplySticker(state, counts));
+            var nextState = ApplySticker(state, counts);
+            var sub = minFor(nextState);
 
             if (sub != int.MaxValue)
             {
@@ -88,7 +100,7 @@ public class StickersToSpellWordBenchmarks
 
     private static int[] BuildCounts(string sticker)
     {
-        var counts = new int[26];
+        var counts = new int[AlphabetSize];
 
         foreach (var c in sticker)
         {

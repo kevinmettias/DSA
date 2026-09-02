@@ -1,0 +1,29 @@
+using DSAExperimentation.LeetCode.PermutationsIV;
+
+namespace DSAExperimentation.Tests.LeetCodeCoverage.PermutationsIV;
+
+// Harness only. The factorial-number-system unranking for both strategies is
+// PermutationsIVSolution's - this file just pins them to LeetCode's published
+// examples, including the k-too-large case that must come back empty.
+public sealed class PermutationsIVTests
+{
+    public static TheoryData<int, long, int[]> Examples =>
+        new()
+        {
+            { 4, 6, [3, 4, 1, 2] },
+            { 3, 2, [3, 2, 1] },
+            { 2, 3, [] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthPermutationByBigIntegerRank_LeetCodeExamples_ReturnsKthAlternatingPermutation(
+        int n, long k, int[] expected) =>
+        Assert.Equal(expected, PermutationsIVSolution.KthPermutationByBigIntegerRank(n, k));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthPermutationByFenwickOrderStatistics_LeetCodeExamples_ReturnsKthAlternatingPermutation(
+        int n, long k, int[] expected) =>
+        Assert.Equal(expected, PermutationsIVSolution.KthPermutationByFenwickOrderStatistics(n, k));
+}

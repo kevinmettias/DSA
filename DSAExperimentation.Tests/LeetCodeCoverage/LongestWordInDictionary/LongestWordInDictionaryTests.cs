@@ -32,6 +32,16 @@ public sealed partial class LongestWordInDictionaryTests
 
     private static string LongestWord(string[] words)
     {
+        var trie = BuildTrie(words);
+        var tracker = new BestWordTracker();
+
+        Walk(trie.Root, "", tracker);
+
+        return tracker.Best;
+    }
+
+    private static LowercaseTrie<bool> BuildTrie(string[] words)
+    {
         var trie = new LowercaseTrie<bool>();
 
         foreach (var word in words)
@@ -39,28 +49,34 @@ public sealed partial class LongestWordInDictionaryTests
             trie.Set(word, true);
         }
 
-        var best = "";
+        return trie;
+    }
 
-        Walk(trie.Root, "");
+    private static void Walk(LowercaseTrieNode<bool> node, string prefix, BestWordTracker tracker)
+    {
+        tracker.Consider(prefix);
 
-        return best;
+        for (var i = 0; i < LowercaseTrieNode<bool>.AlphabetSize; i++)
+        {
+            var child = node.Children[i];
 
-        void Walk(LowercaseTrieNode<bool> node, string prefix)
+            if (child is not null && child.HasValue)
+            {
+                Walk(child, prefix + (char)('a' + i), tracker);
+            }
+        }
+    }
+
+    private sealed class BestWordTracker
+    {
+        public string Best { get; private set; } = "";
+
+        public void Consider(string prefix)
         {
             if (prefix.Length > 0 &&
-                (prefix.Length > best.Length || (prefix.Length == best.Length && string.CompareOrdinal(prefix, best) < 0)))
+                (prefix.Length > Best.Length || (prefix.Length == Best.Length && string.CompareOrdinal(prefix, Best) < 0)))
             {
-                best = prefix;
-            }
-
-            for (var i = 0; i < LowercaseTrieNode<bool>.AlphabetSize; i++)
-            {
-                var child = node.Children[i];
-
-                if (child is not null && child.HasValue)
-                {
-                    Walk(child, prefix + (char)('a' + i));
-                }
+                Best = prefix;
             }
         }
     }

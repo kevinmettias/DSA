@@ -19,6 +19,11 @@ public class DesignAStackWithIncrementOperationBenchmarks
     private const int IncrementWindow = 5;
     private const int IncrementValue = 1;
 
+    // LeetCode problem number for Design a Stack With Increment Operation.
+    private const int RandomSeed = 1381;
+
+    private const int MaxPushedValueExclusive = 1_000;
+
     [Params(200, 2_000)]
     public int PushCount;
 
@@ -27,8 +32,8 @@ public class DesignAStackWithIncrementOperationBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1381);
-        _pushedValues = Enumerable.Range(0, PushCount).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _pushedValues = Enumerable.Range(0, PushCount).Select(_ => random.Next(1, MaxPushedValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

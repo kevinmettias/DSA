@@ -15,6 +15,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindEventualSafeStatesBenchmarks
 {
+    private const int HalfSplitDivisor = 2;
+    private const int MaxForwardFanOut = 3;
+    private const int ColorSafe = 2;
+    private const int ColorUnsafe = 3;
+
     [Params(50, 1_000)]
     public int NodeCount;
 
@@ -23,12 +28,12 @@ public class FindEventualSafeStatesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var half = NodeCount / 2;
+        var half = NodeCount / HalfSplitDivisor;
         _graph = new int[NodeCount][];
 
         for (var i = 0; i < half; i++)
         {
-            var fanOut = Math.Min(3, half - 1 - i);
+            var fanOut = Math.Min(MaxForwardFanOut, half - 1 - i);
             _graph[i] = Enumerable.Range(i + 1, fanOut).ToArray();
         }
 
@@ -60,7 +65,7 @@ public class FindEventualSafeStatesBenchmarks
     {
         if (color[node] > 0)
         {
-            return color[node] == 2;
+            return color[node] == ColorSafe;
         }
 
         color[node] = 1;
@@ -69,12 +74,12 @@ public class FindEventualSafeStatesBenchmarks
         {
             if (!IsSafe(next, color))
             {
-                color[node] = 3;
+                color[node] = ColorUnsafe;
                 return false;
             }
         }
 
-        color[node] = 2;
+        color[node] = ColorSafe;
         return true;
     }
 

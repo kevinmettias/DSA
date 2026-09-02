@@ -99,6 +99,22 @@ public sealed partial class DesignTwitterTests
 
         public List<int> GetNewsFeed(int userId)
         {
+            var sourceIds = BuildSourceIds(userId);
+            var sources = CollectSources(sourceIds);
+            var heap = SeedHeap(sources);
+
+            var feed = new List<int>();
+
+            while (feed.Count < FeedSize && heap.TryPop(out var top))
+            {
+                ProcessFeedEntry(heap, sources, top, feed);
+            }
+
+            return feed;
+        }
+
+        private List<int> BuildSourceIds(int userId)
+        {
             var sourceIds = new List<int> { userId };
 
             if (_followeesByUser.TryGetValue(userId, out var followees))
@@ -106,6 +122,11 @@ public sealed partial class DesignTwitterTests
                 sourceIds.AddRange(followees.Keys);
             }
 
+            return sourceIds;
+        }
+
+        private List<DynamicArray<(int Time, int TweetId)>> CollectSources(List<int> sourceIds)
+        {
             var sources = new List<DynamicArray<(int Time, int TweetId)>>();
 
             foreach (var id in sourceIds)
@@ -116,6 +137,12 @@ public sealed partial class DesignTwitterTests
                 }
             }
 
+            return sources;
+        }
+
+        private static Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> SeedHeap(
+            List<DynamicArray<(int Time, int TweetId)>> sources)
+        {
             var heap = new Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>>();
 
             for (var i = 0; i < sources.Count; i++)
@@ -125,23 +152,25 @@ public sealed partial class DesignTwitterTests
                 heap.Push((time, tweetId, i, position));
             }
 
-            var feed = new List<int>();
+            return heap;
+        }
 
-            while (feed.Count < FeedSize && heap.TryPop(out var top))
+        private static void ProcessFeedEntry(
+            Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> heap,
+            List<DynamicArray<(int Time, int TweetId)>> sources,
+            (int Time, int TweetId, int SourceIndex, int Position) top,
+            List<int> feed)
+        {
+            feed.Add(top.TweetId);
+
+            if (top.Position == 0)
             {
-                feed.Add(top.TweetId);
-
-                if (top.Position == 0)
-                {
-                    continue;
-                }
-
-                var nextPosition = top.Position - 1;
-                var (time, tweetId) = sources[top.SourceIndex].Get(nextPosition);
-                heap.Push((time, tweetId, top.SourceIndex, nextPosition));
+                return;
             }
 
-            return feed;
+            var nextPosition = top.Position - 1;
+            var (time, tweetId) = sources[top.SourceIndex].Get(nextPosition);
+            heap.Push((time, tweetId, top.SourceIndex, nextPosition));
         }
     }
 }

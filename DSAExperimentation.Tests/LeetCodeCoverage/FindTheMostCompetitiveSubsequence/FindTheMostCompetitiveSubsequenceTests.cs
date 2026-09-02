@@ -13,12 +13,22 @@ public sealed partial class FindTheMostCompetitiveSubsequenceTests
     [InlineData(new[] { 3, 5, 2, 6 }, 2, new[] { 2, 6 })]
     [InlineData(new[] { 2, 4, 3, 3, 5, 4, 9, 6 }, 4, new[] { 2, 3, 3, 4 })]
     public void MostCompetitive_LeetCodeExamples_ReturnsLexicographicallySmallestSubsequence(int[] nums, int k, int[] expected)
-        => Assert.Equal(expected, MostCompetitive(nums, k));
+    {
+        var mostCompetitive = MostCompetitive(nums, k);
+        Assert.Equal(expected, mostCompetitive);
+    }
 
     private static int[] MostCompetitive(int[] nums, int k)
     {
         var stack = new CompetitiveStack();
 
+        BuildCompetitiveStack(stack, nums, k);
+
+        return DrainStackToArray(stack);
+    }
+
+    private static void BuildCompetitiveStack(CompetitiveStack stack, int[] nums, int k)
+    {
         for (var i = 0; i < nums.Length; i++)
         {
             while (stack.Count > 0 && stack.TryPeek(out var top) && top > nums[i]
@@ -32,7 +42,10 @@ public sealed partial class FindTheMostCompetitiveSubsequenceTests
                 stack.Push(nums[i]);
             }
         }
+    }
 
+    private static int[] DrainStackToArray(CompetitiveStack stack)
+    {
         var result = new int[stack.Count];
         for (var i = result.Length - 1; i >= 0; i--)
         {

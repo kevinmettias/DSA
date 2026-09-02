@@ -13,6 +13,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveSubFoldersFromTheFilesystemBenchmarks
 {
+    private const int RandomSeed = 1233; // LC problem number
+    private const int MinBreadth = 2;
+    private const int BreadthDivisor = 10;
+    private const int MaxDepthExclusive = 5;
+    private const string FolderNamePrefix = "f";
+    private const string PathSeparator = "/";
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -21,21 +28,21 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1233);
-        var breadth = Math.Max(2, Length / 10);
+        var random = new Random(RandomSeed);
+        var breadth = Math.Max(MinBreadth, Length / BreadthDivisor);
         _folders = new string[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            var depth = random.Next(1, 5);
+            var depth = random.Next(1, MaxDepthExclusive);
             var segments = new string[depth];
 
             for (var d = 0; d < depth; d++)
             {
-                segments[d] = "f" + random.Next(0, breadth);
+                segments[d] = FolderNamePrefix + random.Next(0, breadth);
             }
 
-            _folders[i] = "/" + string.Join('/', segments);
+            _folders[i] = PathSeparator + string.Join('/', segments);
         }
     }
 
@@ -50,7 +57,7 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
 
             for (var j = 0; j < _folders.Length; j++)
             {
-                if (i != j && _folders[i].StartsWith(_folders[j] + "/", StringComparison.Ordinal))
+                if (i != j && _folders[i].StartsWith(_folders[j] + PathSeparator, StringComparison.Ordinal))
                 {
                     isSubfolder = true;
                     break;
@@ -78,7 +85,7 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
 
         foreach (var folder in folders)
         {
-            if (lastKept is null || !folder.StartsWith(lastKept + "/", StringComparison.Ordinal))
+            if (lastKept is null || !folder.StartsWith(lastKept + PathSeparator, StringComparison.Ordinal))
             {
                 count++;
                 lastKept = folder;

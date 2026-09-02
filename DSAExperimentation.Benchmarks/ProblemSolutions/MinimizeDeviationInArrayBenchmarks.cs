@@ -12,6 +12,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimizeDeviationInArrayBenchmarks
 {
+    // LC problem number, used as the deterministic setup seed.
+    private const int RandomSeed = 1675;
+    private const int RandomValueUpperBound = 1_000_000;
+    private const int ParityDivisor = 2;
+    private const int EvenizingMultiplier = 2;
+    private const int HalvingDivisor = 2;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -20,9 +27,9 @@ public class MinimizeDeviationInArrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1675);
-        var nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000_000)).ToArray();
-        _transformed = nums.Select(n => n % 2 == 1 ? n * 2 : n).ToArray();
+        var random = new Random(RandomSeed);
+        var nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, RandomValueUpperBound)).ToArray();
+        _transformed = nums.Select(n => n % ParityDivisor == 1 ? n * EvenizingMultiplier : n).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -38,12 +45,12 @@ public class MinimizeDeviationInArrayBenchmarks
             var max = values[maxIndex];
             deviation = Math.Min(deviation, max - min);
 
-            if (max % 2 != 0)
+            if (max % ParityDivisor != 0)
             {
                 break;
             }
 
-            var half = max / 2;
+            var half = max / HalvingDivisor;
             min = Math.Min(min, half);
             values[maxIndex] = half;
         }
@@ -80,21 +87,27 @@ public class MinimizeDeviationInArrayBenchmarks
 
         var deviation = int.MaxValue;
 
-        while (true)
+        while (TryReduceStep(heap, ref min, ref deviation))
         {
-            heap.TryPop(out var max);
-            deviation = Math.Min(deviation, max - min);
-
-            if (max % 2 != 0)
-            {
-                break;
-            }
-
-            var half = max / 2;
-            min = Math.Min(min, half);
-            heap.Push(half);
         }
 
         return deviation;
+    }
+
+    private static bool TryReduceStep(Heap<int, MaxHeapOrder<int>> heap, ref int min, ref int deviation)
+    {
+        heap.TryPop(out var max);
+        deviation = Math.Min(deviation, max - min);
+
+        if (max % ParityDivisor != 0)
+        {
+            return false;
+        }
+
+        var half = max / HalvingDivisor;
+        min = Math.Min(min, half);
+        heap.Push(half);
+
+        return true;
     }
 }

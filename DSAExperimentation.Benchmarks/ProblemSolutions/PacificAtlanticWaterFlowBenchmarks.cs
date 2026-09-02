@@ -16,6 +16,8 @@ public class PacificAtlanticWaterFlowBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
+    private const int MaxHeight = 1_000;
+
     [Params(10, 25)]
     public int Size;
 
@@ -26,7 +28,7 @@ public class PacificAtlanticWaterFlowBenchmarks
     {
         var random = new Random(1);
         _heights = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, 1_000)).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, MaxHeight)).ToArray())
             .ToArray();
     }
 
@@ -64,32 +66,29 @@ public class PacificAtlanticWaterFlowBenchmarks
 
         visited[row, col] = true;
 
-        if (pacific && (row == 0 || col == 0))
+        if (IsBorderCell(row, col, pacific))
         {
             return true;
         }
 
-        if (!pacific && (row == Size - 1 || col == Size - 1))
+        return TryReachAnyDirection(row, col, visited, pacific);
+    }
+
+    private bool IsBorderCell(int row, int col, bool pacific)
+    {
+        if (pacific)
         {
-            return true;
+            return row == 0 || col == 0;
         }
 
-        foreach (var (dRow, dCol) in Directions)
+        return row == Size - 1 || col == Size - 1;
+    }
+
+    private bool TryReachAnyDirection(int row, int col, bool[,] visited, bool pacific)
+    {
+        foreach (var direction in Directions)
         {
-            var nextRow = row + dRow;
-            var nextCol = col + dCol;
-
-            if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size || visited[nextRow, nextCol])
-            {
-                continue;
-            }
-
-            if (_heights[nextRow][nextCol] > _heights[row][col])
-            {
-                continue;
-            }
-
-            if (Dfs(nextRow, nextCol, visited, pacific))
+            if (TryReachViaDirection((row, col), direction, visited, pacific))
             {
                 return true;
             }
@@ -98,12 +97,38 @@ public class PacificAtlanticWaterFlowBenchmarks
         return false;
     }
 
+    private bool TryReachViaDirection(
+        (int Row, int Col) from, (int DRow, int DCol) direction, bool[,] visited, bool pacific)
+    {
+        var nextRow = from.Row + direction.DRow;
+        var nextCol = from.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size || visited[nextRow, nextCol])
+        {
+            return false;
+        }
+
+        if (_heights[nextRow][nextCol] > _heights[from.Row][from.Col])
+        {
+            return false;
+        }
+
+        return Dfs(nextRow, nextCol, visited, pacific);
+    }
+
     [Benchmark]
     public int MultiSourceFloodFill()
     {
         var pacific = new Set<(int Row, int Col)>();
         var atlantic = new Set<(int Row, int Col)>();
 
+        FloodBorders(pacific, atlantic);
+
+        return CountReachableFromBoth(pacific, atlantic);
+    }
+
+    private void FloodBorders(Set<(int Row, int Col)> pacific, Set<(int Row, int Col)> atlantic)
+    {
         for (var r = 0; r < Size; r++)
         {
             FloodFrom((r, 0), pacific);
@@ -115,7 +140,10 @@ public class PacificAtlanticWaterFlowBenchmarks
             FloodFrom((0, c), pacific);
             FloodFrom((Size - 1, c), atlantic);
         }
+    }
 
+    private int CountReachableFromBoth(Set<(int Row, int Col)> pacific, Set<(int Row, int Col)> atlantic)
+    {
         var count = 0;
 
         for (var r = 0; r < Size; r++)

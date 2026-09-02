@@ -18,7 +18,10 @@ public sealed partial class CoinChangeIITests
     [InlineData(3, new[] { 2 }, 0)]
     [InlineData(10, new[] { 10 }, 1)]
     public void CountChangeCombinations_LeetCodeExamples_ReturnsCombinationCount(int amount, int[] coins, int expected)
-        => Assert.Equal(expected, CountCombinations(amount, coins));
+    {
+        var actual = CountCombinations(amount, coins);
+        Assert.Equal(expected, actual);
+    }
 
     private static int CountCombinations(int amount, int[] coins)
     {

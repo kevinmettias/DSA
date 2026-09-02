@@ -34,23 +34,40 @@ public sealed partial class MinimumCostTreeFromLeafValuesTests
 
         foreach (var value in arr)
         {
-            while (stack.TryPeek(out var top) && top <= value)
-            {
-                stack.TryPop(out var mid);
-                stack.TryPeek(out var next);
-                total += (long)mid * Math.Min(next, value);
-            }
-
-            stack.Push(value);
+            total += PushValue(stack, value);
         }
+
+        total += DrainRemaining(stack);
+
+        return (int)total;
+    }
+
+    private static long PushValue(RepoIntStack stack, int value)
+    {
+        long cost = 0;
+
+        while (stack.TryPeek(out var top) && top <= value)
+        {
+            stack.TryPop(out var mid);
+            stack.TryPeek(out var next);
+            cost += (long)mid * Math.Min(next, value);
+        }
+
+        stack.Push(value);
+        return cost;
+    }
+
+    private static long DrainRemaining(RepoIntStack stack)
+    {
+        long cost = 0;
 
         while (stack.Count > 2)
         {
             stack.TryPop(out var mid);
             stack.TryPeek(out var next);
-            total += (long)mid * next;
+            cost += (long)mid * next;
         }
 
-        return (int)total;
+        return cost;
     }
 }

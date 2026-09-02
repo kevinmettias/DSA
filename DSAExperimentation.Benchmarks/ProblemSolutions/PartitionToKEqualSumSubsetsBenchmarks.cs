@@ -13,6 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PartitionToKEqualSumSubsetsBenchmarks
 {
     private const int NumbersPerSubset = 6;
+    private const int RandomSeed = 2;
 
     [Params(3, 5)]
     public int K;
@@ -30,7 +31,7 @@ public class PartitionToKEqualSumSubsetsBenchmarks
             all.AddRange(perSubset);
         }
 
-        var random = new Random(2);
+        var random = new Random(RandomSeed);
         _nums = all.OrderBy(_ => random.Next()).ToArray();
     }
 
@@ -42,35 +43,45 @@ public class PartitionToKEqualSumSubsetsBenchmarks
         Array.Reverse(sorted);
         var target = sorted.Sum() / K;
         var buckets = new int[K];
+        var context = new PartitionSearchContext(sorted, buckets, target);
 
-        return Search(0);
+        return Search(context, 0);
+    }
 
-        bool Search(int index)
+    private bool Search(PartitionSearchContext context, int index)
+    {
+        if (index == context.Sorted.Length)
         {
-            if (index == sorted.Length)
+            return true;
+        }
+
+        for (var bucket = 0; bucket < K; bucket++)
+        {
+            if (TryPlace(context, index, bucket))
             {
                 return true;
             }
+        }
 
-            for (var bucket = 0; bucket < K; bucket++)
-            {
-                if (buckets[bucket] + sorted[index] > target)
-                {
-                    continue;
-                }
+        return false;
+    }
 
-                buckets[bucket] += sorted[index];
-
-                if (Search(index + 1))
-                {
-                    return true;
-                }
-
-                buckets[bucket] -= sorted[index];
-            }
-
+    private bool TryPlace(PartitionSearchContext context, int index, int bucket)
+    {
+        if (context.Buckets[bucket] + context.Sorted[index] > context.Target)
+        {
             return false;
         }
+
+        context.Buckets[bucket] += context.Sorted[index];
+
+        if (Search(context, index + 1))
+        {
+            return true;
+        }
+
+        context.Buckets[bucket] -= context.Sorted[index];
+        return false;
     }
 
     [Benchmark]
@@ -110,4 +121,6 @@ public class PartitionToKEqualSumSubsetsBenchmarks
             _buckets[bucket] -= nums[Index];
         }
     }
+
+    private readonly record struct PartitionSearchContext(int[] Sorted, int[] Buckets, int Target);
 }

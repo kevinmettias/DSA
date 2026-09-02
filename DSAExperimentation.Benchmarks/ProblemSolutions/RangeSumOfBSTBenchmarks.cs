@@ -15,6 +15,7 @@ public class RangeSumOfBSTBenchmarks
 {
     private const int Low = 0;
     private const int High = 20;
+    private const int RandomSeed = 938;
 
     [Params(500, 20_000)]
     public int Length;
@@ -25,7 +26,7 @@ public class RangeSumOfBSTBenchmarks
     public void Setup()
     {
         var values = Enumerable.Range(0, Length).ToArray();
-        var random = new Random(938);
+        var random = new Random(RandomSeed);
 
         // Fisher-Yates shuffle before insertion, so BinarySearchTree.Insert builds
         // an expected-O(log n)-height tree instead of the O(n)-height degenerate

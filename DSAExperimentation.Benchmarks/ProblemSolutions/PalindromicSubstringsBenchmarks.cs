@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PalindromicSubstringsBenchmarks
 {
+    private const int RandomSeed = 29;
+
     [Params(500, 8_000)]
     public int Length;
 
@@ -22,7 +24,7 @@ public class PalindromicSubstringsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(29);
+        var random = new Random(RandomSeed);
         const string Alphabet = "abcd";
         _text = new string(Enumerable.Range(0, Length).Select(_ => Alphabet[random.Next(Alphabet.Length)]).ToArray());
     }

@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfWaysToPaintN3GridBenchmarks
 {
     private const long Modulus = 1_000_000_007;
+    private const long Row1PatternCount = 6;
+    private const int FirstDpRowIndex = 2;
+    private const long SamePatternWeight = 3;
+    private const long DifferentPatternWeight = 2;
 
     [Params(1_000, 5_000)]
     public int N;
@@ -19,13 +23,13 @@ public class NumberOfWaysToPaintN3GridBenchmarks
     [Benchmark(Baseline = true)]
     public long Tabulation()
     {
-        long same = 6;
-        long different = 6;
+        long same = Row1PatternCount;
+        long different = Row1PatternCount;
 
-        for (var row = 2; row <= N; row++)
+        for (var row = FirstDpRowIndex; row <= N; row++)
         {
-            var nextSame = (3 * same + 2 * different) % Modulus;
-            var nextDifferent = (2 * same + 2 * different) % Modulus;
+            var nextSame = (SamePatternWeight * same + DifferentPatternWeight * different) % Modulus;
+            var nextDifferent = (DifferentPatternWeight * same + DifferentPatternWeight * different) % Modulus;
             same = nextSame;
             different = nextDifferent;
         }
@@ -44,13 +48,13 @@ public class NumberOfWaysToPaintN3GridBenchmarks
     {
         if (row == 1)
         {
-            return (6, 6);
+            return (Row1PatternCount, Row1PatternCount);
         }
 
         var (prevSame, prevDifferent) = ways(row - 1);
 
         return (
-            (3 * prevSame + 2 * prevDifferent) % Modulus,
-            (2 * prevSame + 2 * prevDifferent) % Modulus);
+            (SamePatternWeight * prevSame + DifferentPatternWeight * prevDifferent) % Modulus,
+            (DifferentPatternWeight * prevSame + DifferentPatternWeight * prevDifferent) % Modulus);
     }
 }

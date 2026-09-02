@@ -1,14 +1,16 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MaximumSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Maximum Subarray (LC 53): the textbook O(n^2) all-subarrays brute force vs.
-// Kadane's O(n) single pass. No repo primitive applies here - this is a pure
-// running-best scan over the array itself, the same "no stronger reusable
-// primitive" shape already established for BestTimeToBuyAndSellStock/GasStation.
+// Harness only: both arms are MaximumSubarraySolution's, the same methods
+// MaximumSubarrayTests proves correct.
 [MemoryDiagnoser]
 public class MaximumSubarrayBenchmarks
 {
+    private const int RandomSeed = 53; // LC problem number
+    private const int ValueMagnitude = 50;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -17,41 +19,13 @@ public class MaximumSubarrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(53);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-50, 51)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueMagnitude, ValueMagnitude + 1)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceAllSubarrays()
-    {
-        var best = _values[0];
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            var sum = 0;
-
-            for (var j = i; j < _values.Length; j++)
-            {
-                sum += _values[j];
-                best = Math.Max(best, sum);
-            }
-        }
-
-        return best;
-    }
+    public int BruteForceAllSubarrays() => MaximumSubarraySolution.MaxSubArrayByBruteForce(_values);
 
     [Benchmark]
-    public int KadaneSinglePass()
-    {
-        var best = _values[0];
-        var current = _values[0];
-
-        for (var i = 1; i < _values.Length; i++)
-        {
-            current = Math.Max(_values[i], current + _values[i]);
-            best = Math.Max(best, current);
-        }
-
-        return best;
-    }
+    public int KadaneSinglePass() => MaximumSubarraySolution.MaxSubArrayByKadaneScan(_values);
 }

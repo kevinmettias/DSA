@@ -28,14 +28,14 @@ public sealed partial class RangeModuleTests
         var module = new RangeModule();
 
         module.AddRange(10, 20);
-        Assert.True(module.QueryRange(10, 14));
-        Assert.True(module.QueryRange(13, 15));
-        Assert.True(module.QueryRange(16, 17));
+        AssertQueryRange(module, 10, 14, expectedCovered: true);
+        AssertQueryRange(module, 13, 15, expectedCovered: true);
+        AssertQueryRange(module, 16, 17, expectedCovered: true);
 
         module.RemoveRange(14, 16);
-        Assert.True(module.QueryRange(10, 14));
-        Assert.False(module.QueryRange(13, 15));
-        Assert.True(module.QueryRange(16, 17));
+        AssertQueryRange(module, 10, 14, expectedCovered: true);
+        AssertQueryRange(module, 13, 15, expectedCovered: false);
+        AssertQueryRange(module, 16, 17, expectedCovered: true);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public sealed partial class RangeModuleTests
         module.AddRange(1, 3);
         module.AddRange(5, 7);
 
-        Assert.False(module.QueryRange(2, 6));
+        AssertQueryRange(module, 2, 6, expectedCovered: false);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public sealed partial class RangeModuleTests
         module.AddRange(1, 3);
         module.AddRange(3, 5);
 
-        Assert.True(module.QueryRange(1, 5));
+        AssertQueryRange(module, 1, 5, expectedCovered: true);
     }
 
     [Fact]
@@ -68,8 +68,22 @@ public sealed partial class RangeModuleTests
         module.AddRange(1, 10);
         module.RemoveRange(1, 10);
 
-        Assert.False(module.QueryRange(1, 10));
-        Assert.False(module.QueryRange(2, 3));
+        AssertQueryRange(module, 1, 10, expectedCovered: false);
+        AssertQueryRange(module, 2, 3, expectedCovered: false);
+    }
+
+    private static void AssertQueryRange(RangeModule module, int left, int right, bool expectedCovered)
+    {
+        var actual = module.QueryRange(left, right);
+
+        if (expectedCovered)
+        {
+            Assert.True(actual);
+        }
+        else
+        {
+            Assert.False(actual);
+        }
     }
 
     private sealed class RangeModule
@@ -90,28 +104,38 @@ public sealed partial class RangeModuleTests
 
             for (var i = 0; i < _ranges.Count; i++)
             {
-                var (start, end) = _ranges.Get(i);
-                if (end <= left || start >= right)
-                {
-                    survivors.Add((start, end));
-                    continue;
-                }
-
-                if (start < left)
-                {
-                    survivors.Add((start, left));
-                }
-
-                if (right < end)
-                {
-                    survivors.Add((right, end));
-                }
+                AddSurvivingFragments(_ranges.Get(i), (left, right), survivors);
             }
 
             _ranges = new IntervalSet<int>();
             foreach (var (start, end) in survivors)
             {
                 _ranges.Add(start, end);
+            }
+        }
+
+        private static void AddSurvivingFragments(
+            (int Start, int End) interval,
+            (int Left, int Right) removalRange,
+            List<(int Start, int End)> survivors)
+        {
+            var (start, end) = interval;
+            var (left, right) = removalRange;
+
+            if (end <= left || start >= right)
+            {
+                survivors.Add((start, end));
+                return;
+            }
+
+            if (start < left)
+            {
+                survivors.Add((start, left));
+            }
+
+            if (right < end)
+            {
+                survivors.Add((right, end));
             }
         }
 

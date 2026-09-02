@@ -15,6 +15,7 @@ public class SuperPowBenchmarks
 {
     private const int Modulus = 1337;
     private const int Base = 7;
+    private const int HornerDigitBase = 10;
 
     [Params(10_000, 1_000_000)]
     public int Exponent;
@@ -48,7 +49,7 @@ public class SuperPowBenchmarks
 
         foreach (var digit in b)
         {
-            result = ModPow(result, 10) * ModPow(baseTerm, digit) % Modulus;
+            result = ModPow(result, HornerDigitBase) * ModPow(baseTerm, digit) % Modulus;
         }
 
         return (int)result;

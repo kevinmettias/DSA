@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DeleteNodeInABSTBenchmarks
 {
+    private const int MidpointDivisor = 2;
+
     [Params(500, 20_000)]
     public int NodeCount;
 
@@ -35,7 +37,7 @@ public class DeleteNodeInABSTBenchmarks
         }
 
         _insertionOrder = values;
-        _target = NodeCount / 2;
+        _target = NodeCount / MidpointDivisor;
     }
 
     [Benchmark(Baseline = true)]
@@ -47,7 +49,8 @@ public class DeleteNodeInABSTBenchmarks
         CollectInOrder(root, sorted);
         sorted.Remove(_target);
 
-        return CountNodes(BuildBalanced(sorted, 0, sorted.Count - 1));
+        var rebuilt = BuildBalanced(sorted, 0, sorted.Count - 1);
+        return CountNodes(rebuilt);
     }
 
     [Benchmark]
@@ -124,7 +127,7 @@ public class DeleteNodeInABSTBenchmarks
             return null;
         }
 
-        var mid = low + ((high - low) / 2);
+        var mid = low + ((high - low) / MidpointDivisor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

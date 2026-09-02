@@ -12,6 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class TheSkylineProblemBenchmarks
 {
+    private const int LeftCoordinateSpreadMultiplier = 2;
+    private const int MaxBuildingWidth = 50;
+    private const int MaxBuildingHeight = 1_000;
+    private const int HeightIndex = 2;
+
     [Params(100, 1_000)]
     public int BuildingCount;
 
@@ -25,9 +30,9 @@ public class TheSkylineProblemBenchmarks
 
         for (var i = 0; i < BuildingCount; i++)
         {
-            var left = random.Next(0, BuildingCount * 2);
-            var width = random.Next(1, 50);
-            var height = random.Next(1, 1_000);
+            var left = random.Next(0, BuildingCount * LeftCoordinateSpreadMultiplier);
+            var width = random.Next(1, MaxBuildingWidth);
+            var height = random.Next(1, MaxBuildingHeight);
             _buildings[i] = [left, left + width, height];
         }
     }
@@ -35,91 +40,146 @@ public class TheSkylineProblemBenchmarks
     [Benchmark(Baseline = true)]
     public List<int[]> BruteForceCriticalPoints()
     {
+        var criticalX = CollectCriticalXCoordinates();
+        var result = new List<int[]>();
+        var previousHeight = 0;
+
+        foreach (var x in criticalX)
+        {
+            var currentHeight = MaxHeightAt(x);
+            previousHeight = AppendIfChanged(result, x, currentHeight, previousHeight);
+        }
+
+        return result;
+    }
+
+    private SortedSet<int> CollectCriticalXCoordinates()
+    {
         var criticalX = new SortedSet<int>();
+
         foreach (var building in _buildings)
         {
             criticalX.Add(building[0]);
             criticalX.Add(building[1]);
         }
 
-        var result = new List<int[]>();
-        var previousHeight = 0;
+        return criticalX;
+    }
 
-        foreach (var x in criticalX)
+    private int MaxHeightAt(int x)
+    {
+        var currentHeight = 0;
+
+        foreach (var building in _buildings)
         {
-            var currentHeight = 0;
-            foreach (var building in _buildings)
+            if (building[0] <= x && x < building[1] && building[HeightIndex] > currentHeight)
             {
-                if (building[0] <= x && x < building[1] && building[2] > currentHeight)
-                {
-                    currentHeight = building[2];
-                }
-            }
-
-            if (currentHeight != previousHeight)
-            {
-                result.Add([x, currentHeight]);
-                previousHeight = currentHeight;
+                currentHeight = building[HeightIndex];
             }
         }
 
-        return result;
+        return currentHeight;
+    }
+
+    private static int AppendIfChanged(List<int[]> result, int x, int currentHeight, int previousHeight)
+    {
+        if (currentHeight == previousHeight)
+        {
+            return previousHeight;
+        }
+
+        result.Add([x, currentHeight]);
+        return currentHeight;
     }
 
     [Benchmark]
     public List<int[]> SweepLineHeap()
     {
+        var events = BuildHeightEvents();
+        var frontier = new ActiveHeightFrontier();
+        var result = new List<int[]>();
+        var cursor = (Index: 0, PreviousHeight: 0);
+
+        while (cursor.Index < events.Count)
+        {
+            cursor = ProcessEventGroup(events, frontier, result, cursor);
+        }
+
+        return result;
+    }
+
+    private List<(int X, int Height)> BuildHeightEvents()
+    {
         var events = new List<(int X, int Height)>();
+
         foreach (var building in _buildings)
         {
-            events.Add((building[0], building[2]));
-            events.Add((building[1], -building[2]));
+            events.Add((building[0], building[HeightIndex]));
+            events.Add((building[1], -building[HeightIndex]));
         }
 
         events.Sort((a, b) => a.X.CompareTo(b.X));
 
-        var heap = new Heap<int, MaxHeapOrder<int>>();
-        var pendingRemovals = new HashMap<int, int>();
-        var result = new List<int[]>();
-        var previousHeight = 0;
-        var i = 0;
+        return events;
+    }
 
-        while (i < events.Count)
+    private static (int Index, int PreviousHeight) ProcessEventGroup(
+        List<(int X, int Height)> events,
+        ActiveHeightFrontier frontier,
+        List<int[]> result,
+        (int Index, int PreviousHeight) cursor)
+    {
+        var x = events[cursor.Index].X;
+        var index = ConsumeEventsAtX(events, cursor.Index, x, frontier);
+
+        DrainLazyDeletions(frontier);
+
+        var currentHeight = frontier.Heap.TryPeek(out var peek) ? peek : 0;
+        var previousHeight = cursor.PreviousHeight;
+
+        if (currentHeight != previousHeight)
         {
-            var x = events[i].X;
-
-            while (i < events.Count && events[i].X == x)
-            {
-                var height = events[i].Height;
-
-                if (height > 0)
-                {
-                    heap.Push(height);
-                }
-                else
-                {
-                    pendingRemovals.TryGetValue(-height, out var count);
-                    pendingRemovals.Set(-height, count + 1);
-                }
-
-                i++;
-            }
-
-            while (heap.TryPeek(out var top) && pendingRemovals.TryGetValue(top, out var removedCount) && removedCount > 0)
-            {
-                heap.TryPop(out _);
-                pendingRemovals.Set(top, removedCount - 1);
-            }
-
-            var currentHeight = heap.TryPeek(out var peek) ? peek : 0;
-
-            if (currentHeight != previousHeight)
-            {
-                result.Add([x, currentHeight]);
-                previousHeight = currentHeight;
-            }
+            result.Add([x, currentHeight]);
+            previousHeight = currentHeight;
         }
 
-        return result;
+        return (index, previousHeight);
+    }
+
+    private static int ConsumeEventsAtX(List<(int X, int Height)> events, int index, int x, ActiveHeightFrontier frontier)
+    {
+        while (index < events.Count && events[index].X == x)
+        {
+            var height = events[index].Height;
+
+            if (height > 0)
+            {
+                frontier.Heap.Push(height);
+            }
+            else
+            {
+                frontier.PendingRemovals.TryGetValue(-height, out var count);
+                frontier.PendingRemovals.Set(-height, count + 1);
+            }
+
+            index++;
+        }
+
+        return index;
+    }
+
+    private static void DrainLazyDeletions(ActiveHeightFrontier frontier)
+    {
+        while (frontier.Heap.TryPeek(out var top) && frontier.PendingRemovals.TryGetValue(top, out var removedCount) && removedCount > 0)
+        {
+            frontier.Heap.TryPop(out _);
+            frontier.PendingRemovals.Set(top, removedCount - 1);
+        }
+    }
+
+    private sealed class ActiveHeightFrontier
+    {
+        public Heap<int, MaxHeapOrder<int>> Heap { get; } = new();
+        public HashMap<int, int> PendingRemovals { get; } = new();
     }
 }

@@ -28,32 +28,35 @@ public sealed partial class StoneGameIIITests
 
     private static string Winner(int[] stoneValue)
     {
-        var n = stoneValue.Length;
-        var diff = Memoizer.Memoize<int, int>(0, Best);
+        var diff = Memoizer.Memoize<int, int>(0, (index, bestFrom) => Best(stoneValue, index, bestFrom));
 
-        return diff switch
+        return DetermineWinner(diff);
+    }
+
+    private static string DetermineWinner(int diff)
+        => diff switch
         {
             > 0 => "Alice",
             < 0 => "Bob",
             _ => "Tie",
         };
 
-        int Best(int index, Func<int, int> bestFrom)
+    private static int Best(int[] stoneValue, int index, Func<int, int> bestFrom)
+    {
+        var n = stoneValue.Length;
+        if (index >= n)
         {
-            if (index >= n)
-            {
-                return 0;
-            }
-
-            var result = int.MinValue;
-            var takenSum = 0;
-            for (var take = 1; take <= 3 && index + take <= n; take++)
-            {
-                takenSum += stoneValue[index + take - 1];
-                result = Math.Max(result, takenSum - bestFrom(index + take));
-            }
-
-            return result;
+            return 0;
         }
+
+        var result = int.MinValue;
+        var takenSum = 0;
+        for (var take = 1; take <= 3 && index + take <= n; take++)
+        {
+            takenSum += stoneValue[index + take - 1];
+            result = Math.Max(result, takenSum - bestFrom(index + take));
+        }
+
+        return result;
     }
 }

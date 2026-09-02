@@ -22,7 +22,11 @@ public class MaximumBinaryTreeBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public int RescanForMax() => Height(RescanBuild(_values, 0, _values.Length - 1));
+    public int RescanForMax()
+    {
+        var root = RescanBuild(_values, 0, _values.Length - 1);
+        return Height(root);
+    }
 
     private static BinaryTreeNode<int>? RescanBuild(int[] nums, int low, int high)
     {
@@ -60,20 +64,7 @@ public class MaximumBinaryTreeBenchmarks
 
         foreach (var num in nums)
         {
-            var node = new BinaryTreeNode<int>(num);
-
-            while (stack.TryPeek(out var smaller) && smaller.Value < num)
-            {
-                stack.TryPop(out _);
-                node.Left = smaller;
-            }
-
-            if (stack.TryPeek(out var parent))
-            {
-                parent.Right = node;
-            }
-
-            stack.Push(node);
+            PushNode(stack, num);
         }
 
         BinaryTreeNode<int>? root = null;
@@ -84,5 +75,23 @@ public class MaximumBinaryTreeBenchmarks
         }
 
         return root;
+    }
+
+    private static void PushNode(NodeStack stack, int num)
+    {
+        var node = new BinaryTreeNode<int>(num);
+
+        while (stack.TryPeek(out var smaller) && smaller.Value < num)
+        {
+            stack.TryPop(out _);
+            node.Left = smaller;
+        }
+
+        if (stack.TryPeek(out var parent))
+        {
+            parent.Right = node;
+        }
+
+        stack.Push(node);
     }
 }

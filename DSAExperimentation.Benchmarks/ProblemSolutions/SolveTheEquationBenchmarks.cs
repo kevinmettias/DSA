@@ -16,6 +16,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SolveTheEquationBenchmarks
 {
+    // Arbitrary seed for reproducible benchmark input.
+    private const int RandomSeed = 11;
+
+    // Random.Next(BinaryChoiceBound) yields 0 or 1, used for coin-flip decisions
+    // (term sign, whether a term carries the 'x' variable).
+    private const int BinaryChoiceBound = 2;
+
+    // Exclusive upper bound on a generated term's numeric coefficient magnitude.
+    private const int CoefficientUpperBound = 100;
+
+    private const string InfiniteSolutionsMessage = "Infinite solutions";
+    private const string NoSolutionMessage = "No solution";
+
     [Params(200, 5_000)]
     public int TermsPerSide;
 
@@ -24,7 +37,7 @@ public class SolveTheEquationBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(11);
+        var random = new Random(RandomSeed);
         _equation = $"{BuildSide(random, TermsPerSide)}={BuildSide(random, TermsPerSide)}";
     }
 
@@ -36,12 +49,13 @@ public class SolveTheEquationBenchmarks
         {
             if (t > 0)
             {
-                side.Append(random.Next(2) == 0 ? '+' : '-');
+                side.Append(random.Next(BinaryChoiceBound) == 0 ? '+' : '-');
             }
 
-            side.Append(random.Next(1, 100));
+            var coefficient = random.Next(1, CoefficientUpperBound);
+            side.Append(coefficient);
 
-            if (random.Next(2) == 0)
+            if (random.Next(BinaryChoiceBound) == 0)
             {
                 side.Append('x');
             }
@@ -63,8 +77,10 @@ public class SolveTheEquationBenchmarks
     public string SpanParse()
     {
         var separator = _equation.IndexOf('=');
-        var (leftCoefficient, leftConstant) = ParseSideSpan(_equation.AsSpan(0, separator));
-        var (rightCoefficient, rightConstant) = ParseSideSpan(_equation.AsSpan(separator + 1));
+        var leftSpan = _equation.AsSpan(0, separator);
+        var (leftCoefficient, leftConstant) = ParseSideSpan(leftSpan);
+        var rightSpan = _equation.AsSpan(separator + 1);
+        var (rightCoefficient, rightConstant) = ParseSideSpan(rightSpan);
         return Combine(leftCoefficient, leftConstant, rightCoefficient, rightConstant);
     }
 
@@ -75,101 +91,125 @@ public class SolveTheEquationBenchmarks
 
         if (coefficientX == 0)
         {
-            return constant == 0 ? "Infinite solutions" : "No solution";
+            return constant == 0 ? InfiniteSolutionsMessage : NoSolutionMessage;
         }
 
         return $"x={constant / coefficientX}";
     }
 
+    private readonly record struct EquationParseState(int CoefficientX, int Constant, int Sign, int Index);
+
     private static (int CoefficientX, int Constant) ParseSideSubstring(string side)
     {
-        var coefficientX = 0;
-        var constant = 0;
-        var sign = 1;
-        var i = 0;
+        var state = new EquationParseState(0, 0, 1, 0);
 
-        while (i < side.Length)
+        while (state.Index < side.Length)
         {
-            if (side[i] == '+')
-            {
-                sign = 1;
-                i++;
-                continue;
-            }
-
-            if (side[i] == '-')
-            {
-                sign = -1;
-                i++;
-                continue;
-            }
-
-            var start = i;
-
-            while (i < side.Length && side[i] != '+' && side[i] != '-')
-            {
-                i++;
-            }
-
-            var term = side.Substring(start, i - start);
-
-            if (term[^1] == 'x')
-            {
-                var digits = term[..^1];
-                coefficientX += sign * (digits.Length == 0 ? 1 : int.Parse(digits));
-            }
-            else
-            {
-                constant += sign * int.Parse(term);
-            }
+            state = ConsumeTermSubstring(side, state);
         }
 
-        return (coefficientX, constant);
+        return (state.CoefficientX, state.Constant);
+    }
+
+    private static bool TryConsumeSign(char c, out int sign)
+    {
+        if (c == '+')
+        {
+            sign = 1;
+            return true;
+        }
+
+        if (c == '-')
+        {
+            sign = -1;
+            return true;
+        }
+
+        sign = 0;
+        return false;
+    }
+
+    private static int FindTermEnd(ReadOnlySpan<char> side, int start)
+    {
+        var i = start;
+
+        while (i < side.Length && side[i] != '+' && side[i] != '-')
+        {
+            i++;
+        }
+
+        return i;
+    }
+
+    private static (bool IsCoefficient, int Value) ParseTermValue(ReadOnlySpan<char> term)
+    {
+        if (term[^1] == 'x')
+        {
+            var digits = term[..^1];
+            return (true, digits.IsEmpty ? 1 : int.Parse(digits));
+        }
+
+        return (false, int.Parse(term));
+    }
+
+    private static EquationParseState ApplyTerm(EquationParseState state, bool isCoefficient, int value, int newIndex)
+    {
+        var coefficientX = state.CoefficientX;
+        var constant = state.Constant;
+
+        if (isCoefficient)
+        {
+            coefficientX += state.Sign * value;
+        }
+        else
+        {
+            constant += state.Sign * value;
+        }
+
+        return state with { CoefficientX = coefficientX, Constant = constant, Index = newIndex };
+    }
+
+    private static EquationParseState ConsumeTermSubstring(string side, EquationParseState state)
+    {
+        var i = state.Index;
+
+        if (TryConsumeSign(side[i], out var sign))
+        {
+            return state with { Sign = sign, Index = i + 1 };
+        }
+
+        var end = FindTermEnd(side, i);
+        var term = side.Substring(i, end - i);
+        var (isCoefficient, value) = ParseTermValue(term);
+
+        return ApplyTerm(state, isCoefficient, value, end);
     }
 
     private static (int CoefficientX, int Constant) ParseSideSpan(ReadOnlySpan<char> side)
     {
-        var coefficientX = 0;
-        var constant = 0;
-        var sign = 1;
-        var i = 0;
+        var state = new EquationParseState(0, 0, 1, 0);
 
-        while (i < side.Length)
+        while (state.Index < side.Length)
         {
-            if (side[i] == '+')
-            {
-                sign = 1;
-                i++;
-                continue;
-            }
-
-            if (side[i] == '-')
-            {
-                sign = -1;
-                i++;
-                continue;
-            }
-
-            var start = i;
-
-            while (i < side.Length && side[i] != '+' && side[i] != '-')
-            {
-                i++;
-            }
-
-            var term = side[start..i];
-
-            if (term[^1] == 'x')
-            {
-                var digits = term[..^1];
-                coefficientX += sign * (digits.IsEmpty ? 1 : int.Parse(digits));
-            }
-            else
-            {
-                constant += sign * int.Parse(term);
-            }
+            state = ConsumeTermSpan(side, state);
         }
 
-        return (coefficientX, constant);
+        return (state.CoefficientX, state.Constant);
+    }
+
+    private static EquationParseState ConsumeTermSpan(ReadOnlySpan<char> side, EquationParseState state)
+    {
+        var i = state.Index;
+
+        if (TryConsumeSign(side[i], out var sign))
+        {
+            return state with { Sign = sign, Index = i + 1 };
+        }
+
+        var end = FindTermEnd(side, i);
+        var term = side[i..end];
+        var (isCoefficient, value) = ParseTermValue(term);
+
+        return ApplyTerm(state, isCoefficient, value, end);
     }
 }

@@ -14,6 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumNumberOfCoinsYouCanGetBenchmarks
 {
+    private const int RandomSeed = 1561; // LC problem number
+    private const int MaxPileValueExclusive = 10_000;
+    private const int GroupSize = 3;
+    private const int PickStride = 2;
+
     [Params(300, 3_000)]
     public int PileCount;
 
@@ -22,8 +27,8 @@ public class MaximumNumberOfCoinsYouCanGetBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1561);
-        _piles = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, 10_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _piles = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, MaxPileValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -78,11 +83,11 @@ public class MaximumNumberOfCoinsYouCanGetBenchmarks
         var piles = _piles.ToArray();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(piles));
 
-        var n = piles.Length / 3;
+        var n = piles.Length / GroupSize;
         var total = 0;
         for (var i = 0; i < n; i++)
         {
-            total += piles[n + (2 * i)];
+            total += piles[n + (PickStride * i)];
         }
 
         return total;

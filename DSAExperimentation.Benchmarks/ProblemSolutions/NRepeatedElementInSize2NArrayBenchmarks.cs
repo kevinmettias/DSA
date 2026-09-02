@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NRepeatedElementInSize2NArrayBenchmarks
 {
+    private const int ArrayLengthMultiplier = 2;
+    private const string NoRepeatedElementFoundMessage = "No repeated element found.";
+
     [Params(200, 20_000)]
     public int Length;
 
@@ -28,7 +31,7 @@ public class NRepeatedElementInSize2NArrayBenchmarks
         // the repeat, giving genuine O(n^2) worst-case behavior instead of an
         // accidental near-instant match - the same "force the full scan" intent
         // TwoSumBenchmarks achieves via an unreachable target.
-        var n = Length / 2;
+        var n = Length / ArrayLengthMultiplier;
         var values = new List<int>(Length);
 
         for (var i = 1; i <= n; i++)
@@ -58,7 +61,7 @@ public class NRepeatedElementInSize2NArrayBenchmarks
             }
         }
 
-        throw new InvalidOperationException("No repeated element found.");
+        throw new InvalidOperationException(NoRepeatedElementFoundMessage);
     }
 
     [Benchmark]
@@ -74,6 +77,6 @@ public class NRepeatedElementInSize2NArrayBenchmarks
             }
         }
 
-        throw new InvalidOperationException("No repeated element found.");
+        throw new InvalidOperationException(NoRepeatedElementFoundMessage);
     }
 }

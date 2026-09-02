@@ -15,12 +15,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class UniquePathsIIIBenchmarks
 {
+    private const int EndCellMarker = 2;
+
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     private int[][] _grid = null!;
 
     [GlobalSetup]
-    public void Setup() => _grid = [[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 2]];
+    public void Setup() => _grid = [[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, EndCellMarker]];
 
     [Benchmark(Baseline = true)]
     public int SpecializedRecursive() => CountSpecialized(_grid);
@@ -31,42 +33,51 @@ public class UniquePathsIIIBenchmarks
     private static int CountSpecialized(int[][] grid)
     {
         var total = CountNonObstacleCells(grid);
-        var (startRow, startCol) = FindValue(grid, 1);
-        var count = 0;
+        var start = FindValue(grid, 1);
 
-        void Search(int row, int col, int visited)
+        return Search(grid, start, 1, total);
+    }
+
+    private static int Search(int[][] grid, (int Row, int Col) cell, int visited, int total)
+    {
+        if (grid[cell.Row][cell.Col] == EndCellMarker)
         {
-            if (grid[row][col] == 2)
-            {
-                if (visited == total)
-                {
-                    count++;
-                }
-
-                return;
-            }
-
-            var original = grid[row][col];
-            grid[row][col] = -1;
-
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var nextRow = row + dRow;
-                var nextCol = col + dCol;
-
-                if (nextRow >= 0 && nextRow < grid.Length && nextCol >= 0 && nextCol < grid[0].Length
-                    && grid[nextRow][nextCol] != -1)
-                {
-                    Search(nextRow, nextCol, visited + 1);
-                }
-            }
-
-            grid[row][col] = original;
+            return visited == total ? 1 : 0;
         }
 
-        Search(startRow, startCol, 1);
+        var original = MarkVisited(grid, cell);
+        var count = ExploreNeighbors(grid, cell, visited, total);
+        RestoreCell(grid, cell, original);
+
         return count;
     }
+
+    private static int MarkVisited(int[][] grid, (int Row, int Col) cell)
+    {
+        var original = grid[cell.Row][cell.Col];
+        grid[cell.Row][cell.Col] = -1;
+        return original;
+    }
+
+    private static int ExploreNeighbors(int[][] grid, (int Row, int Col) cell, int visited, int total)
+    {
+        var count = 0;
+
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
+
+            if (next.Row >= 0 && next.Row < grid.Length && next.Col >= 0 && next.Col < grid[0].Length
+                && grid[next.Row][next.Col] != -1)
+            {
+                count += Search(grid, next, visited + 1, total);
+            }
+        }
+
+        return count;
+    }
+
+    private static void RestoreCell(int[][] grid, (int Row, int Col) cell, int original) => grid[cell.Row][cell.Col] = original;
 
     private static int CountWithBacktrackEngine(int[][] grid)
     {
@@ -76,8 +87,8 @@ public class UniquePathsIIIBenchmarks
 
         Backtrack.Search<State, (int Row, int Col)>(
             state,
-            isSolution: s => grid[s.Row][s.Col] == 2 && s.Visited == s.Total,
-            candidates: s => grid[s.Row][s.Col] == 2 ? [] : s.Candidates(),
+            isSolution: s => grid[s.Row][s.Col] == EndCellMarker && s.Visited == s.Total,
+            candidates: s => grid[s.Row][s.Col] == EndCellMarker ? [] : s.Candidates(),
             choose: (s, next) => s.Choose(next),
             unchoose: (s, next) => s.Unchoose(next),
             onSolution: _ => count++);

@@ -14,7 +14,10 @@ public sealed partial class FirstBadVersionTests
     [InlineData(1, 1, 1)]
     [InlineData(2126753390, 1702766719, 1702766719)]
     public void FirstBadVersion_LeetCodeExamples_ReturnsFirstBadVersion(int n, int firstBad, int expected)
-        => Assert.Equal(expected, FirstBadVersion(n, firstBad));
+    {
+        var actual = FirstBadVersion(n, firstBad);
+        Assert.Equal(expected, actual);
+    }
 
     private static int FirstBadVersion(int n, int firstBad)
     {

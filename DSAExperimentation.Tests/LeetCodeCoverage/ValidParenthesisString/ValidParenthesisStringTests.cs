@@ -19,9 +19,24 @@ public sealed partial class ValidParenthesisStringTests
 
     private static bool CheckValidString(string s)
     {
-        var openIndices = new RepoIndexStack();
-        var starIndices = new RepoIndexStack();
+        if (!TryCollectOpenAndStarIndices(s, out var openIndices, out var starIndices))
+        {
+            return false;
+        }
 
+        return ReconcileLeftoverOpens(openIndices, starIndices);
+    }
+
+    private static bool TryCollectOpenAndStarIndices(string s, out RepoIndexStack openIndices, out RepoIndexStack starIndices)
+    {
+        openIndices = new RepoIndexStack();
+        starIndices = new RepoIndexStack();
+
+        return ScanForUnmatchedClosers(s, openIndices, starIndices);
+    }
+
+    private static bool ScanForUnmatchedClosers(string s, RepoIndexStack openIndices, RepoIndexStack starIndices)
+    {
         for (var i = 0; i < s.Length; i++)
         {
             switch (s[i])
@@ -41,6 +56,11 @@ public sealed partial class ValidParenthesisStringTests
             }
         }
 
+        return true;
+    }
+
+    private static bool ReconcileLeftoverOpens(RepoIndexStack openIndices, RepoIndexStack starIndices)
+    {
         while (openIndices.TryPop(out var openIndex))
         {
             if (!starIndices.TryPop(out var starIndex) || starIndex < openIndex)

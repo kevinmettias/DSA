@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class JumpGameVIBenchmarks
 {
     private const int K = 50;
+    private const int RandomSeed = 1696; // LC problem number
+    private const int ValueRange = 1_000;
 
     [Params(2_000, 20_000)]
     public int Length;
@@ -24,8 +26,8 @@ public class JumpGameVIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1696);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-1_000, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueRange, ValueRange)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -58,22 +60,27 @@ public class JumpGameVIBenchmarks
 
         for (var i = 1; i < _nums.Length; i++)
         {
-            while (window.TryPeekFront(out var frontIndex) && frontIndex < i - K)
-            {
-                window.TryPopFront(out _);
-            }
-
-            window.TryPeekFront(out var maxIndex);
-            dp[i] = _nums[i] + dp[maxIndex];
-
-            while (window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
+            AdvanceWindow(i, dp, window);
         }
 
         return dp[^1];
+    }
+
+    private void AdvanceWindow(int i, int[] dp, RepoDeque window)
+    {
+        while (window.TryPeekFront(out var frontIndex) && frontIndex < i - K)
+        {
+            window.TryPopFront(out _);
+        }
+
+        window.TryPeekFront(out var maxIndex);
+        dp[i] = _nums[i] + dp[maxIndex];
+
+        while (window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
+        {
+            window.TryPopBack(out _);
+        }
+
+        window.PushBack(i);
     }
 }

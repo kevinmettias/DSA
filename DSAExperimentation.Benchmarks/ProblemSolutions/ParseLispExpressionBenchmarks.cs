@@ -22,6 +22,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ParseLispExpressionBenchmarks
 {
+    private const string AddOperator = "add";
+    private const string MultOperator = "mult";
+    private const string LetExpressionPrefix = "(let v";
+    private const int SecondOperandTokenIndex = 2;
+    private const int LetBindingStride = 2;
+    private const int PenultimateIndexOffset = 2;
+
     [Params(50, 400)]
     public int Length;
 
@@ -47,8 +54,8 @@ public class ParseLispExpressionBenchmarks
 
         return tokens[0] switch
         {
-            "add" => EvaluateWithCopiedScope(tokens[1], scope) + EvaluateWithCopiedScope(tokens[2], scope),
-            "mult" => EvaluateWithCopiedScope(tokens[1], scope) * EvaluateWithCopiedScope(tokens[2], scope),
+            AddOperator => EvaluateWithCopiedScope(tokens[1], scope) + EvaluateWithCopiedScope(tokens[SecondOperandTokenIndex], scope),
+            MultOperator => EvaluateWithCopiedScope(tokens[1], scope) * EvaluateWithCopiedScope(tokens[SecondOperandTokenIndex], scope),
             _ => EvaluateLetWithCopiedScope(tokens, scope),
         };
     }
@@ -57,7 +64,7 @@ public class ParseLispExpressionBenchmarks
     {
         var scope = new Dictionary<string, long>(parentScope);
 
-        for (var i = 1; i < tokens.Count - 1; i += 2)
+        for (var i = 1; i < tokens.Count - 1; i += LetBindingStride)
         {
             scope[tokens[i]] = EvaluateWithCopiedScope(tokens[i + 1], scope);
         }
@@ -81,8 +88,8 @@ public class ParseLispExpressionBenchmarks
 
         return tokens[0] switch
         {
-            "add" => Evaluate(tokens[1], scope) + Evaluate(tokens[2], scope),
-            "mult" => Evaluate(tokens[1], scope) * Evaluate(tokens[2], scope),
+            AddOperator => Evaluate(tokens[1], scope) + Evaluate(tokens[SecondOperandTokenIndex], scope),
+            MultOperator => Evaluate(tokens[1], scope) * Evaluate(tokens[SecondOperandTokenIndex], scope),
             _ => EvaluateLet(tokens, scope),
         };
     }
@@ -92,9 +99,10 @@ public class ParseLispExpressionBenchmarks
         var bindings = new HashMap<string, long>();
         var letScope = new RepoScopeNode(bindings) { Next = parentScope };
 
-        for (var i = 1; i < tokens.Count - 1; i += 2)
+        for (var i = 1; i < tokens.Count - 1; i += LetBindingStride)
         {
-            bindings.Set(tokens[i], Evaluate(tokens[i + 1], letScope));
+            var boundValue = Evaluate(tokens[i + 1], letScope);
+            bindings.Set(tokens[i], boundValue);
         }
 
         return Evaluate(tokens[^1], letScope);
@@ -124,6 +132,14 @@ public class ParseLispExpressionBenchmarks
         var depth = 0;
         var start = 0;
 
+        ScanTopLevelTokens(expr, tokens, ref depth, ref start);
+
+        tokens.Add(expr[start..]);
+        return tokens;
+    }
+
+    private static void ScanTopLevelTokens(string expr, List<string> tokens, ref int depth, ref int start)
+    {
         for (var i = 0; i < expr.Length; i++)
         {
             switch (expr[i])
@@ -140,9 +156,6 @@ public class ParseLispExpressionBenchmarks
                     break;
             }
         }
-
-        tokens.Add(expr[start..]);
-        return tokens;
     }
 
     // Builds "(let v0 0 (let v1 1 (let v2 2 ... (add v0 (add v1 v2))...)))" -
@@ -154,7 +167,7 @@ public class ParseLispExpressionBenchmarks
 
         for (var i = 0; i < depth; i++)
         {
-            builder.Append("(let v").Append(i).Append(' ').Append(i).Append(' ');
+            builder.Append(LetExpressionPrefix).Append(i).Append(' ').Append(i).Append(' ');
         }
 
         builder.Append(BuildNestedSum(depth));
@@ -167,7 +180,7 @@ public class ParseLispExpressionBenchmarks
     {
         var expr = $"v{depth - 1}";
 
-        for (var i = depth - 2; i >= 0; i--)
+        for (var i = depth - PenultimateIndexOffset; i >= 0; i--)
         {
             expr = $"(add v{i} {expr})";
         }

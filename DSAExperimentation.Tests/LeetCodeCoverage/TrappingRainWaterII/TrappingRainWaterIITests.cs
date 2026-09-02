@@ -54,45 +54,89 @@ public sealed partial class TrappingRainWaterIITests
             return 0;
         }
 
-        var visited = new bool[rows, cols];
-        var boundary = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
+        var state = SeedBoundary(heightMap);
 
+        return FloodFill(state);
+    }
+
+    private static FloodState SeedBoundary(int[][] heightMap)
+    {
+        var rows = heightMap.Length;
+        var cols = heightMap[0].Length;
+        var state = new FloodState(heightMap, new bool[rows, cols], new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>());
+
+        PopulateBoundary(state, rows, cols);
+
+        return state;
+    }
+
+    private static void PopulateBoundary(FloodState state, int rows, int cols)
+    {
         for (var r = 0; r < rows; r++)
         {
             for (var c = 0; c < cols; c++)
             {
                 if (r == 0 || r == rows - 1 || c == 0 || c == cols - 1)
                 {
-                    boundary.Push(((r, c), heightMap[r][c]));
-                    visited[r, c] = true;
+                    state.Boundary.Push(((r, c), state.HeightMap[r][c]));
+                    state.Visited[r, c] = true;
                 }
             }
         }
+    }
 
+    private static int FloodFill(FloodState state)
+    {
         var water = 0;
 
-        while (boundary.TryPop(out var entry))
+        while (state.Boundary.TryPop(out var entry))
         {
-            var (row, col) = entry.Node;
-            var height = entry.Priority;
-
-            foreach (var (dr, dc) in Directions)
-            {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols || visited[nr, nc])
-                {
-                    continue;
-                }
-
-                visited[nr, nc] = true;
-                var neighborHeight = heightMap[nr][nc];
-                water += Math.Max(0, height - neighborHeight);
-                boundary.Push(((nr, nc), Math.Max(height, neighborHeight)));
-            }
+            water += ExploreNeighbors(entry, state);
         }
 
         return water;
+    }
+
+    private static int ExploreNeighbors(((int Row, int Col) Node, int Priority) entry, FloodState state)
+    {
+        var (row, col) = entry.Node;
+        var height = entry.Priority;
+        var addedWater = 0;
+
+        foreach (var (dr, dc) in Directions)
+        {
+            addedWater += VisitNeighbor((row + dr, col + dc), height, state);
+        }
+
+        return addedWater;
+    }
+
+    private static int VisitNeighbor((int Row, int Col) neighbor, int height, FloodState state)
+    {
+        var rows = state.HeightMap.Length;
+        var cols = state.HeightMap[0].Length;
+
+        if (neighbor.Row < 0 || neighbor.Row >= rows || neighbor.Col < 0 || neighbor.Col >= cols || state.Visited[neighbor.Row, neighbor.Col])
+        {
+            return 0;
+        }
+
+        state.Visited[neighbor.Row, neighbor.Col] = true;
+        var neighborHeight = state.HeightMap[neighbor.Row][neighbor.Col];
+        state.Boundary.Push((neighbor, Math.Max(height, neighborHeight)));
+
+        return Math.Max(0, height - neighborHeight);
+    }
+
+    private sealed class FloodState(
+        int[][] heightMap,
+        bool[,] visited,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> boundary)
+    {
+        public int[][] HeightMap { get; } = heightMap;
+
+        public bool[,] Visited { get; } = visited;
+
+        public Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> Boundary { get; } = boundary;
     }
 }

@@ -12,13 +12,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GuessNumberHigherOrLowerBenchmarks
 {
+    private const double PickFraction = 0.7;
+
     [Params(1_000, 1_000_000)]
     public int NumberCount;
 
     private int _pick;
 
     [GlobalSetup]
-    public void Setup() => _pick = (int)(NumberCount * 0.7);
+    public void Setup() => _pick = (int)(NumberCount * PickFraction);
 
     [Benchmark(Baseline = true)]
     public int LinearScan()

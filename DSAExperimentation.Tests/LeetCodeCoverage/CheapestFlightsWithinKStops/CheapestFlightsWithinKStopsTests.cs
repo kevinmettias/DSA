@@ -17,7 +17,7 @@ public sealed partial class CheapestFlightsWithinKStopsTests
     {
         int[][] flights = [[0, 1, 100], [1, 2, 100], [0, 2, 500]];
 
-        var price = FindCheapestPrice(n: 3, flights, src: 0, dst: 2, k: 1);
+        var price = FindCheapestPrice(n: 3, flights, new FlightQuery(Src: 0, Dst: 2, K: 1));
 
         Assert.Equal(200, price);
     }
@@ -27,7 +27,7 @@ public sealed partial class CheapestFlightsWithinKStopsTests
     {
         int[][] flights = [[0, 1, 100], [1, 2, 100], [0, 2, 500]];
 
-        var price = FindCheapestPrice(n: 3, flights, src: 0, dst: 2, k: 0);
+        var price = FindCheapestPrice(n: 3, flights, new FlightQuery(Src: 0, Dst: 2, K: 0));
 
         Assert.Equal(500, price);
     }
@@ -37,14 +37,29 @@ public sealed partial class CheapestFlightsWithinKStopsTests
     {
         int[][] flights = [[0, 1, 100]];
 
-        var price = FindCheapestPrice(n: 3, flights, src: 0, dst: 2, k: 5);
+        var price = FindCheapestPrice(n: 3, flights, new FlightQuery(Src: 0, Dst: 2, K: 5));
 
         Assert.Equal(-1, price);
     }
 
-    private static int FindCheapestPrice(int n, int[][] flights, int src, int dst, int k)
+    private static int FindCheapestPrice(int n, int[][] flights, FlightQuery query)
     {
-        var maxEdges = k + 1;
+        var maxEdges = query.K + 1;
+        var states = BuildStates(n, maxEdges);
+
+        AddFlightEdges(flights, states, maxEdges);
+
+        var distances = ShortestPath.Dijkstra<
+            FlightState, FlightStateTopology, ListEdges<FlightState, int>, int>(
+            states[query.Src, 0]);
+
+        var best = FindBestPrice(distances, states, query.Dst, maxEdges);
+
+        return best == int.MaxValue ? -1 : best;
+    }
+
+    private static FlightState[,] BuildStates(int n, int maxEdges)
+    {
         var states = new FlightState[n, maxEdges + 1];
 
         for (var city = 0; city < n; city++)
@@ -55,6 +70,11 @@ public sealed partial class CheapestFlightsWithinKStopsTests
             }
         }
 
+        return states;
+    }
+
+    private static void AddFlightEdges(int[][] flights, FlightState[,] states, int maxEdges)
+    {
         foreach (var flight in flights)
         {
             var (from, to, price) = (flight[0], flight[1], flight[2]);
@@ -64,11 +84,10 @@ public sealed partial class CheapestFlightsWithinKStopsTests
                 states[from, layer].Edges.Add((price, states[to, layer + 1]));
             }
         }
+    }
 
-        var distances = ShortestPath.Dijkstra<
-            FlightState, FlightStateTopology, ListEdges<FlightState, int>, int>(
-            states[src, 0]);
-
+    private static int FindBestPrice(Dictionary<FlightState, int> distances, FlightState[,] states, int dst, int maxEdges)
+    {
         var best = int.MaxValue;
 
         for (var layer = 0; layer <= maxEdges; layer++)
@@ -79,6 +98,8 @@ public sealed partial class CheapestFlightsWithinKStopsTests
             }
         }
 
-        return best == int.MaxValue ? -1 : best;
+        return best;
     }
+
+    private readonly record struct FlightQuery(int Src, int Dst, int K);
 }

@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumCostToConnectTwoGroupsOfPointsBenchmarks
 {
+    private const int RandomSeed = 1595; // LC problem number
+    private const int CostExclusiveBound = 100;
+
     [Params(4, 7)]
     public int GroupSize;
 
@@ -23,11 +26,11 @@ public class MinimumCostToConnectTwoGroupsOfPointsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1595);
+        var random = new Random(RandomSeed);
         _cost = new int[GroupSize][];
         for (var i = 0; i < GroupSize; i++)
         {
-            _cost[i] = Enumerable.Range(0, GroupSize).Select(_ => random.Next(1, 100)).ToArray();
+            _cost[i] = Enumerable.Range(0, GroupSize).Select(_ => random.Next(1, CostExclusiveBound)).ToArray();
         }
 
         _minCost2 = new int[GroupSize];

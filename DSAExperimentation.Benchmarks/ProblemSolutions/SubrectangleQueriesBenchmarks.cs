@@ -20,6 +20,8 @@ public class SubrectangleQueriesBenchmarks
 
     private (int Row1, int Col1, int Row2, int Col2, int Value)[] _updates = null!;
 
+    private readonly record struct Rectangle(int Row1, int Col1, int Row2, int Col2);
+
     [GlobalSetup]
     public void Setup()
     {
@@ -43,7 +45,7 @@ public class SubrectangleQueriesBenchmarks
 
         foreach (var (row1, col1, row2, col2, value) in _updates)
         {
-            queries.UpdateSubrectangle(row1, col1, row2, col2, value);
+            queries.UpdateSubrectangle(new Rectangle(row1, col1, row2, col2), value);
         }
 
         return queries.GetValue(Size - 1, Size - 1);
@@ -56,7 +58,7 @@ public class SubrectangleQueriesBenchmarks
 
         foreach (var (row1, col1, row2, col2, value) in _updates)
         {
-            queries.UpdateSubrectangle(row1, col1, row2, col2, value);
+            queries.UpdateSubrectangle(new Rectangle(row1, col1, row2, col2), value);
         }
 
         return queries.GetValue(Size - 1, Size - 1);
@@ -69,11 +71,11 @@ public class SubrectangleQueriesBenchmarks
         public ArraySubrectangleQueries(int size)
             => _rectangle = Enumerable.Range(0, size).Select(_ => new int[size]).ToArray();
 
-        public void UpdateSubrectangle(int row1, int col1, int row2, int col2, int newValue)
+        public void UpdateSubrectangle(Rectangle rect, int newValue)
         {
-            for (var r = row1; r <= row2; r++)
+            for (var r = rect.Row1; r <= rect.Row2; r++)
             {
-                for (var c = col1; c <= col2; c++)
+                for (var c = rect.Col1; c <= rect.Col2; c++)
                 {
                     _rectangle[r][c] = newValue;
                 }
@@ -102,13 +104,13 @@ public class SubrectangleQueriesBenchmarks
             }
         }
 
-        public void UpdateSubrectangle(int row1, int col1, int row2, int col2, int newValue)
+        public void UpdateSubrectangle(Rectangle rect, int newValue)
         {
-            for (var r = row1; r <= row2; r++)
+            for (var r = rect.Row1; r <= rect.Row2; r++)
             {
                 var row = _rectangle.Get(r);
 
-                for (var c = col1; c <= col2; c++)
+                for (var c = rect.Col1; c <= rect.Col2; c++)
                 {
                     row.Set(c, newValue);
                 }

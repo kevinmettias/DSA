@@ -21,6 +21,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountServersThatCommunicateBenchmarks
 {
+    // A cell becomes a server with 1-in-N odds.
+    private const int ServerSpawnDenominator = 4;
+
     [Params(100, 700)]
     public int Size;
 
@@ -38,7 +41,7 @@ public class CountServersThatCommunicateBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _grid[r][c] = random.Next(0, 4) == 0 ? 1 : 0;
+                _grid[r][c] = random.Next(0, ServerSpawnDenominator) == 0 ? 1 : 0;
             }
         }
     }
@@ -94,6 +97,26 @@ public class CountServersThatCommunicateBenchmarks
     [Benchmark]
     public int HashMapRowAndColumnCounts()
     {
+        var (rowCounts, colCounts) = BuildRowAndColumnCounts();
+
+        var communicating = 0;
+
+        for (var r = 0; r < _grid.Length; r++)
+        {
+            for (var c = 0; c < _grid[0].Length; c++)
+            {
+                if (IsCommunicating(r, c, rowCounts, colCounts))
+                {
+                    communicating++;
+                }
+            }
+        }
+
+        return communicating;
+    }
+
+    private (HashMap<int, int> RowCounts, HashMap<int, int> ColCounts) BuildRowAndColumnCounts()
+    {
         var rowCounts = new HashMap<int, int>();
         var colCounts = new HashMap<int, int>();
 
@@ -109,28 +132,20 @@ public class CountServersThatCommunicateBenchmarks
             }
         }
 
-        var communicating = 0;
+        return (rowCounts, colCounts);
+    }
 
-        for (var r = 0; r < _grid.Length; r++)
+    private bool IsCommunicating(int r, int c, HashMap<int, int> rowCounts, HashMap<int, int> colCounts)
+    {
+        if (_grid[r][c] != 1)
         {
-            for (var c = 0; c < _grid[0].Length; c++)
-            {
-                if (_grid[r][c] != 1)
-                {
-                    continue;
-                }
-
-                rowCounts.TryGetValue(r, out var rowCount);
-                colCounts.TryGetValue(c, out var colCount);
-
-                if (rowCount > 1 || colCount > 1)
-                {
-                    communicating++;
-                }
-            }
+            return false;
         }
 
-        return communicating;
+        rowCounts.TryGetValue(r, out var rowCount);
+        colCounts.TryGetValue(c, out var colCount);
+
+        return rowCount > 1 || colCount > 1;
     }
 
     private static void Increment(HashMap<int, int> counts, int key)

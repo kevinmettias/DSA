@@ -15,10 +15,34 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindWinnerOnATicTacToeGameBenchmarks
 {
+    private const string PendingResult = "Pending";
+    private const string PlayerAResult = "A";
+    private const string PlayerBResult = "B";
+    private const int PlayerCount = 2;
+
     [Params(10, 60)]
     public int Size;
 
     private (int Row, int Col)[] _moves = null!;
+
+    // A line to scan for a winner: starting cell plus per-step row/column delta.
+    private readonly record struct LineScan(int StartRow, int StartCol, int DRow, int DCol);
+
+    // Running per-row/per-column/per-diagonal occupancy tallies for the incremental scan.
+    private sealed class LineTallies
+    {
+        public readonly int[] RowCount;
+        public readonly int[] ColCount;
+        public int Diag;
+        public int AntiDiag;
+        public string LastResult = PendingResult;
+
+        public LineTallies(int size)
+        {
+            RowCount = new int[size];
+            ColCount = new int[size];
+        }
+    }
 
     [GlobalSetup]
     public void Setup()
@@ -47,17 +71,17 @@ public class FindWinnerOnATicTacToeGameBenchmarks
     public string RebuildAndRescanEveryMove()
     {
         var board = new int[Size, Size];
-        var lastResult = "Pending";
+        var lastResult = PendingResult;
 
         for (var i = 0; i < _moves.Length; i++)
         {
             var (row, col) = _moves[i];
-            board[row, col] = i % 2 == 0 ? 1 : -1;
+            board[row, col] = i % PlayerCount == 0 ? 1 : -1;
 
             var winner = ScanAllLines(board, Size);
             if (winner != 0)
             {
-                lastResult = winner == 1 ? "A" : "B";
+                lastResult = winner == 1 ? PlayerAResult : PlayerBResult;
             }
         }
 
@@ -66,36 +90,64 @@ public class FindWinnerOnATicTacToeGameBenchmarks
 
     private static int ScanAllLines(int[,] board, int size)
     {
-        for (var r = 0; r < size; r++)
+        var rowWinner = ScanRows(board, size);
+        if (rowWinner != 0)
         {
-            var winner = LineWinner(board, size, r, 0, 0, 1);
-            if (winner != 0)
-            {
-                return winner;
-            }
+            return rowWinner;
         }
 
-        for (var c = 0; c < size; c++)
+        var colWinner = ScanColumns(board, size);
+        if (colWinner != 0)
         {
-            var winner = LineWinner(board, size, 0, c, 1, 0);
-            if (winner != 0)
-            {
-                return winner;
-            }
+            return colWinner;
         }
 
-        var diagWinner = LineWinner(board, size, 0, 0, 1, 1);
+        var diagWinner = ScanMainDiagonal(board, size);
         if (diagWinner != 0)
         {
             return diagWinner;
         }
 
-        return LineWinner(board, size, 0, size - 1, 1, -1);
+        return ScanAntiDiagonal(board, size);
     }
 
-    private static int LineWinner(int[,] board, int size, int startRow, int startCol, int dRow, int dCol)
+    private static int ScanRows(int[,] board, int size)
     {
-        var first = board[startRow, startCol];
+        for (var r = 0; r < size; r++)
+        {
+            var winner = LineWinner(board, size, new LineScan(r, 0, 0, 1));
+            if (winner != 0)
+            {
+                return winner;
+            }
+        }
+
+        return 0;
+    }
+
+    private static int ScanColumns(int[,] board, int size)
+    {
+        for (var c = 0; c < size; c++)
+        {
+            var winner = LineWinner(board, size, new LineScan(0, c, 1, 0));
+            if (winner != 0)
+            {
+                return winner;
+            }
+        }
+
+        return 0;
+    }
+
+    private static int ScanMainDiagonal(int[,] board, int size)
+        => LineWinner(board, size, new LineScan(0, 0, 1, 1));
+
+    private static int ScanAntiDiagonal(int[,] board, int size)
+        => LineWinner(board, size, new LineScan(0, size - 1, 1, -1));
+
+    private static int LineWinner(int[,] board, int size, LineScan line)
+    {
+        var first = board[line.StartRow, line.StartCol];
 
         if (first == 0)
         {
@@ -104,7 +156,7 @@ public class FindWinnerOnATicTacToeGameBenchmarks
 
         for (var i = 1; i < size; i++)
         {
-            if (board[startRow + (i * dRow), startCol + (i * dCol)] != first)
+            if (board[line.StartRow + (i * line.DRow), line.StartCol + (i * line.DCol)] != first)
             {
                 return 0;
             }
@@ -116,29 +168,30 @@ public class FindWinnerOnATicTacToeGameBenchmarks
     [Benchmark]
     public string IncrementalRunningCounts()
     {
-        var rowCount = new int[Size];
-        var colCount = new int[Size];
-        var diag = 0;
-        var antiDiag = 0;
-        var lastResult = "Pending";
+        var tallies = new LineTallies(Size);
 
         for (var i = 0; i < _moves.Length; i++)
         {
-            var (row, col) = _moves[i];
-            var delta = i % 2 == 0 ? 1 : -1;
-
-            rowCount[row] += delta;
-            colCount[col] += delta;
-            diag += row == col ? delta : 0;
-            antiDiag += row + col == Size - 1 ? delta : 0;
-
-            if (Math.Abs(rowCount[row]) == Size || Math.Abs(colCount[col]) == Size
-                || Math.Abs(diag) == Size || Math.Abs(antiDiag) == Size)
-            {
-                lastResult = delta == 1 ? "A" : "B";
-            }
+            ApplyMove(tallies, _moves[i], i);
         }
 
-        return lastResult;
+        return tallies.LastResult;
+    }
+
+    private void ApplyMove(LineTallies tallies, (int Row, int Col) move, int moveIndex)
+    {
+        var (row, col) = move;
+        var delta = moveIndex % PlayerCount == 0 ? 1 : -1;
+
+        tallies.RowCount[row] += delta;
+        tallies.ColCount[col] += delta;
+        tallies.Diag += row == col ? delta : 0;
+        tallies.AntiDiag += row + col == Size - 1 ? delta : 0;
+
+        if (Math.Abs(tallies.RowCount[row]) == Size || Math.Abs(tallies.ColCount[col]) == Size
+            || Math.Abs(tallies.Diag) == Size || Math.Abs(tallies.AntiDiag) == Size)
+        {
+            tallies.LastResult = delta == 1 ? PlayerAResult : PlayerBResult;
+        }
     }
 }

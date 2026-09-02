@@ -1,38 +1,32 @@
-﻿using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.DivideTwoIntegers;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DivideTwoIntegers;
 
-public sealed partial class DivideTwoIntegersTests
+// Harness only: both strategies live in DivideTwoIntegersSolution and are
+// asserted against the same published examples, including the two int32-overflow
+// edge cases LeetCode calls out explicitly.
+public sealed class DivideTwoIntegersTests
 {
+    public static TheoryData<int, int, int> Examples =>
+        new()
+        {
+            { 10, 3, 3 },
+            { 7, -3, -2 },
+            { int.MinValue, -1, int.MaxValue },
+            { int.MinValue, 1, int.MinValue },
+            { int.MaxValue, 7, 306_783_378 },
+            { int.MinValue, 2, -1_073_741_824 },
+        };
+
     [Theory]
-    [InlineData(10, 3, 3)]
-    [InlineData(7, -3, -2)]
-    [InlineData(int.MinValue, -1, int.MaxValue)]
-    [InlineData(int.MinValue, 1, int.MinValue)]
-    public void Divide_LeetCodeExamples_TruncatesTowardZero(int dividend, int divisor, int expected)
-        => Assert.Equal(expected, Divide(dividend, divisor));
+    [MemberData(nameof(Examples))]
+    public void DivideByBuiltInDivision_LeetCodeExamples_TruncatesTowardZero(
+        int dividend, int divisor, int expected) =>
+        Assert.Equal(expected, DivideTwoIntegersSolution.DivideByBuiltInDivision(dividend, divisor));
 
-    private static int Divide(int dividend, int divisor)
-    {
-        if (dividend == int.MinValue && divisor == -1) return int.MaxValue;
-        if (dividend == int.MinValue && divisor == 1) return int.MinValue;
-
-        var negative = (dividend < 0) ^ (divisor < 0);
-        var absDividend = Math.Abs((long)dividend);
-        var absDivisor = Math.Abs((long)divisor);
-        var maxCandidate = (int)Math.Min(int.MaxValue, absDividend);
-        var sequence = new ProductExceedsSequence(absDivisor, absDividend, maxCandidate + 1);
-        var firstTooLarge = BinarySearch.LowerBound<int, ProductExceedsSequence>(sequence, 1);
-        var quotient = firstTooLarge - 1;
-
-        return negative ? -quotient : quotient;
-    }
-
-    private readonly struct ProductExceedsSequence(long divisor, long dividend, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int quotient) => divisor * quotient > dividend ? 1 : 0;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DivideByBinarySearchProduct_LeetCodeExamples_TruncatesTowardZero(
+        int dividend, int divisor, int expected) =>
+        Assert.Equal(expected, DivideTwoIntegersSolution.DivideByBinarySearchProduct(dividend, divisor));
 }
-

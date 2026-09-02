@@ -8,7 +8,10 @@ public sealed partial class InterleavingStringTests
     [InlineData("aabcc", "dbbca", "aadbbcbcac", true)]
     [InlineData("aabcc", "dbbca", "aadbbbaccc", false)]
     public void IsInterleave_LeetCodeExamples_ReturnsExpected(string first, string second, string target, bool expected)
-        => Assert.Equal(expected, IsInterleave(first, second, target));
+    {
+        var actual = IsInterleave(first, second, target);
+        Assert.Equal(expected, actual);
+    }
 
     private static bool IsInterleave(string first, string second, string target)
     {

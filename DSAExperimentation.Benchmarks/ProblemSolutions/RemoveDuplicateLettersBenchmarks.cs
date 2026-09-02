@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveDuplicateLettersBenchmarks
 {
+    private const int RandomSeed = 316; // LC problem number
+    private const int AlphabetSize = 26;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -22,8 +25,8 @@ public class RemoveDuplicateLettersBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(316);
-        _letters = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        var random = new Random(RandomSeed);
+        _letters = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
     }
 
     [Benchmark(Baseline = true)]
@@ -41,30 +44,42 @@ public class RemoveDuplicateLettersBenchmarks
 
         var distinctInS = DistinctLetters(s);
 
-        for (var candidate = 0; candidate < 26; candidate++)
+        for (var candidate = 0; candidate < AlphabetSize; candidate++)
         {
-            if (!distinctInS[candidate])
+            var placed = TryPlaceCandidate(s, distinctInS, candidate);
+
+            if (placed is not null)
             {
-                continue;
+                return placed;
             }
-
-            var c = (char)('a' + candidate);
-            var suffix = s[s.IndexOf(c)..];
-
-            if (!SameDistinctLetters(distinctInS, DistinctLetters(suffix)))
-            {
-                continue;
-            }
-
-            return c + RecursiveSplitSolve(suffix.Replace(c.ToString(), string.Empty));
         }
 
         return string.Empty;
     }
 
+    private static string? TryPlaceCandidate(string s, bool[] distinctInS, int candidate)
+    {
+        if (!distinctInS[candidate])
+        {
+            return null;
+        }
+
+        var c = (char)('a' + candidate);
+        var suffix = s[s.IndexOf(c)..];
+
+        if (!SameDistinctLetters(distinctInS, DistinctLetters(suffix)))
+        {
+            return null;
+        }
+
+        var remainder = suffix.Replace(c.ToString(), string.Empty);
+
+        return c + RecursiveSplitSolve(remainder);
+    }
+
     private static bool[] DistinctLetters(string s)
     {
-        var seen = new bool[26];
+        var seen = new bool[AlphabetSize];
         foreach (var c in s)
         {
             seen[c - 'a'] = true;
@@ -75,7 +90,7 @@ public class RemoveDuplicateLettersBenchmarks
 
     private static bool SameDistinctLetters(bool[] left, bool[] right)
     {
-        for (var i = 0; i < 26; i++)
+        for (var i = 0; i < AlphabetSize; i++)
         {
             if (left[i] != right[i])
             {
@@ -88,32 +103,14 @@ public class RemoveDuplicateLettersBenchmarks
 
     private static string StackAndSetSolve(string s)
     {
-        var lastOccurrence = new int[26];
-        for (var i = 0; i < s.Length; i++)
-        {
-            lastOccurrence[s[i] - 'a'] = i;
-        }
-
+        var lastOccurrence = ComputeLastOccurrence(s);
         var stack = new RepoCharStack();
         var onStack = new RepoCharSet();
+        var state = new DuplicateLetterState(lastOccurrence, stack, onStack);
 
         for (var i = 0; i < s.Length; i++)
         {
-            var c = s[i];
-
-            if (onStack.Has(c))
-            {
-                continue;
-            }
-
-            while (stack.TryPeek(out var top) && top > c && lastOccurrence[top - 'a'] > i)
-            {
-                stack.TryPop(out _);
-                onStack.TryRemove(top);
-            }
-
-            stack.Push(c);
-            onStack.TryAdd(c);
+            ProcessLetter(s[i], i, state);
         }
 
         var result = new char[stack.Count];
@@ -124,4 +121,35 @@ public class RemoveDuplicateLettersBenchmarks
 
         return new string(result);
     }
+
+    private static int[] ComputeLastOccurrence(string s)
+    {
+        var lastOccurrence = new int[AlphabetSize];
+
+        for (var i = 0; i < s.Length; i++)
+        {
+            lastOccurrence[s[i] - 'a'] = i;
+        }
+
+        return lastOccurrence;
+    }
+
+    private static void ProcessLetter(char c, int index, DuplicateLetterState state)
+    {
+        if (state.OnStack.Has(c))
+        {
+            return;
+        }
+
+        while (state.Stack.TryPeek(out var top) && top > c && state.LastOccurrence[top - 'a'] > index)
+        {
+            state.Stack.TryPop(out _);
+            state.OnStack.TryRemove(top);
+        }
+
+        state.Stack.Push(c);
+        state.OnStack.TryAdd(c);
+    }
+
+    private readonly record struct DuplicateLetterState(int[] LastOccurrence, RepoCharStack Stack, RepoCharSet OnStack);
 }

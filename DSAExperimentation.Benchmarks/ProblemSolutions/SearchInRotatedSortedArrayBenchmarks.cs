@@ -1,17 +1,37 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.SearchInRotatedSortedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are SearchInRotatedSortedArraySolution's, the same
+// methods SearchInRotatedSortedArrayTests proves correct.
 [MemoryDiagnoser]
 public class SearchInRotatedSortedArrayBenchmarks
 {
+    // Rotates the sorted array by roughly a third so the pivot sits away from both ends.
+    private const int PivotDivisor = 3;
+
+    // The search target: an existing value two below Length, so it lands away from the
+    // sorted range's own boundary and both strategies do genuine search work.
+    private const int TargetOffsetFromLength = 2;
+
     private int[] _values = null!;
-    [Params(200, 5_000)] public int Length;
-    [GlobalSetup] public void Setup() { var sorted = Enumerable.Range(0, Length).ToArray(); var pivot = Length / 3; _values = sorted[pivot..].Concat(sorted[..pivot]).ToArray(); }
-    [Benchmark(Baseline = true)] public int LinearScan() => Array.IndexOf(_values, Length - 2);
-    [Benchmark] public int BinarySearchPivotAndSlice() { var target = Length - 2; var pivot = BinarySearch.LowerBound<int, PivotSequence>(new PivotSequence(_values), 1); var searchRight = target <= _values[^1]; var start = searchRight ? pivot : 0; var length = searchRight ? _values.Length - pivot : pivot; var found = BinarySearch.Find<int, OffsetSequence>(new OffsetSequence(_values, start, length), target); return found is null ? -1 : start + found.Value; }
-    private readonly struct PivotSequence(int[] nums) : IRandomAccessSequence<int> { public int Length => nums.Length; public int Get(int index) => nums[index] <= nums[^1] ? 1 : 0; }
-    private readonly struct OffsetSequence(int[] nums, int start, int length) : IRandomAccessSequence<int> { public int Length => length; public int Get(int index) => nums[start + index]; }
+
+    [Params(200, 5_000)]
+    public int Length;
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        var sorted = Enumerable.Range(0, Length).ToArray();
+        var pivot = Length / PivotDivisor;
+        _values = sorted[pivot..].Concat(sorted[..pivot]).ToArray();
+    }
+
+    [Benchmark(Baseline = true)]
+    public int LinearScan() => SearchInRotatedSortedArraySolution.SearchByLinearScan(_values, Length - TargetOffsetFromLength);
+
+    [Benchmark]
+    public int BinarySearchPivotAndSlice() =>
+        SearchInRotatedSortedArraySolution.SearchByBinarySearchPivotAndSlice(_values, Length - TargetOffsetFromLength);
 }

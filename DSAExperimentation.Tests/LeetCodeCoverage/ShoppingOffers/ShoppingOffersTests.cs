@@ -17,7 +17,9 @@ public sealed partial class ShoppingOffersTests
         int[][] special = [[3, 0, 5], [1, 2, 10]];
         int[] needs = [3, 2];
 
-        Assert.Equal(14, MinCost(price, special, needs));
+        var minCost = MinCost(price, special, needs);
+
+        Assert.Equal(14, minCost);
     }
 
     [Fact]
@@ -27,7 +29,9 @@ public sealed partial class ShoppingOffersTests
         int[][] special = [[1, 1, 0, 4], [2, 2, 1, 9]];
         int[] needs = [1, 2, 1];
 
-        Assert.Equal(11, MinCost(price, special, needs));
+        var minCost = MinCost(price, special, needs);
+
+        Assert.Equal(11, minCost);
     }
 
     private static int MinCost(int[] price, int[][] special, int[] needs)
@@ -46,7 +50,9 @@ public sealed partial class ShoppingOffersTests
                     continue;
                 }
 
-                best = Math.Min(best, offer[^1] + bestPrice(Encode(Reduce(remaining, offer))));
+                var afterOffer = Reduce(remaining, offer);
+                var afterOfferKey = Encode(afterOffer);
+                best = Math.Min(best, offer[^1] + bestPrice(afterOfferKey));
             }
 
             return best;

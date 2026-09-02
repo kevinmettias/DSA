@@ -70,25 +70,26 @@ public sealed class ImplementMagicDictionaryTests
             {
                 var next = node.Children[candidate];
 
-                if (next is null)
-                {
-                    continue;
-                }
-
-                if (candidate == target)
-                {
-                    if (Search(next, searchWord, index + 1, usedSubstitution))
-                    {
-                        return true;
-                    }
-                }
-                else if (!usedSubstitution && Search(next, searchWord, index + 1, usedSubstitution: true))
+                if (next is not null
+                    && TryDescend(next, searchWord, new SearchState(index, usedSubstitution), candidate == target))
                 {
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private readonly record struct SearchState(int Index, bool UsedSubstitution);
+
+        private static bool TryDescend(LowercaseTrieNode<bool> next, string searchWord, SearchState state, bool isExactMatch)
+        {
+            if (isExactMatch)
+            {
+                return Search(next, searchWord, state.Index + 1, state.UsedSubstitution);
+            }
+
+            return !state.UsedSubstitution && Search(next, searchWord, state.Index + 1, usedSubstitution: true);
         }
     }
 }

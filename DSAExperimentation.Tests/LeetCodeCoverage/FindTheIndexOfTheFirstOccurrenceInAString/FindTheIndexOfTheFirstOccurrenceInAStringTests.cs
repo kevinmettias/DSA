@@ -1,19 +1,33 @@
-﻿using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.FindTheIndexOfTheFirstOccurrenceInAString;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheIndexOfTheFirstOccurrenceInAString;
 
-public sealed partial class FindTheIndexOfTheFirstOccurrenceInAStringTests
+// Harness only: both strategies live in
+// FindTheIndexOfTheFirstOccurrenceInAStringSolution and are asserted against the
+// same published examples.
+public sealed class FindTheIndexOfTheFirstOccurrenceInAStringTests
 {
-    [Theory]
-    [InlineData("sadbutsad", "sad", 0)]
-    [InlineData("leetcode", "leeto", -1)]
-    [InlineData("mississippi", "issip", 4)]
-    public void StrStr_LeetCodeExamples_ReturnsFirstMatch(string haystack, string needle, int expected)
-        => Assert.Equal(expected, StrStr(haystack, needle));
+    public static TheoryData<string, string, int> Examples =>
+        new()
+        {
+            { "sadbutsad", "sad", 0 },
+            { "leetcode", "leeto", -1 },
+            { "mississippi", "issip", 4 },
+        };
 
-    private static int StrStr(string haystack, string needle)
-    {
-        var matches = RollingHashSearch.FindAll(haystack, needle);
-        return matches.Count == 0 ? -1 : matches[0];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IndexOfByStringIndexOf_LeetCodeExamples_ReturnsFirstMatch(
+        string haystack, string needle, int expected) =>
+        Assert.Equal(
+            expected,
+            FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByStringIndexOf(haystack, needle));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IndexOfByRollingHash_LeetCodeExamples_ReturnsFirstMatch(
+        string haystack, string needle, int expected) =>
+        Assert.Equal(
+            expected,
+            FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByRollingHash(haystack, needle));
 }

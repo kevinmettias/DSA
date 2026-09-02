@@ -16,6 +16,10 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
 {
     private const int MaxBoxes = 50;
     private const int MaxWeight = 150;
+    private const int RandomSeed = 1687; // LC problem number
+    private const int SyntheticValueExclusiveUpperBound = 6;
+    private const int MinIndexForPortComparison = 2;
+    private const int RouteCostPerGroup = 2;
 
     [Params(2_000, 20_000)]
     public int Length;
@@ -27,9 +31,9 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1687);
-        _ports = Enumerable.Range(0, Length).Select(_ => random.Next(1, 6)).ToArray();
-        var weights = Enumerable.Range(0, Length).Select(_ => random.Next(1, 6)).ToArray();
+        var random = new Random(RandomSeed);
+        _ports = Enumerable.Range(0, Length).Select(_ => random.Next(1, SyntheticValueExclusiveUpperBound)).ToArray();
+        var weights = Enumerable.Range(0, Length).Select(_ => random.Next(1, SyntheticValueExclusiveUpperBound)).ToArray();
 
         _switchPrefix = new int[Length + 1];
         _weightPrefix = new long[Length + 1];
@@ -37,9 +41,9 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
         for (var i = 1; i <= Length; i++)
         {
             _weightPrefix[i] = _weightPrefix[i - 1] + weights[i - 1];
-            _switchPrefix[i] = i < 2
+            _switchPrefix[i] = i < MinIndexForPortComparison
                 ? 0
-                : _switchPrefix[i - 1] + (_ports[i - 2] != _ports[i - 1] ? 1 : 0);
+                : _switchPrefix[i - 1] + (_ports[i - MinIndexForPortComparison] != _ports[i - 1] ? 1 : 0);
         }
     }
 
@@ -63,7 +67,7 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
                 best = Math.Min(best, dp[j] - _switchPrefix[j + 1]);
             }
 
-            dp[i] = 2 + _switchPrefix[i] + best;
+            dp[i] = RouteCostPerGroup + _switchPrefix[i] + best;
         }
 
         return dp[n];
@@ -80,33 +84,56 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
 
         for (var i = 1; i <= n; i++)
         {
-            while (i - left > MaxBoxes || _weightPrefix[i] - _weightPrefix[left] > MaxWeight)
-            {
-                left++;
-            }
-
-            while (window.TryPeekFront(out var frontIndex) && frontIndex < left)
-            {
-                window.TryPopFront(out _);
-            }
-
-            window.TryPeekFront(out var bestIndex);
-            dp[i] = 2 + _switchPrefix[i] + (dp[bestIndex] - _switchPrefix[bestIndex + 1]);
-
-            if (i == n)
-            {
-                continue;
-            }
-
-            var candidate = dp[i] - _switchPrefix[i + 1];
-            while (window.TryPeekBack(out var backIndex) && dp[backIndex] - _switchPrefix[backIndex + 1] >= candidate)
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
+            AdvanceMonotonicWindow(dp, window, ref left, i);
         }
 
         return dp[n];
+    }
+
+    private void AdvanceMonotonicWindow(int[] dp, RepoDeque window, ref int left, int i)
+    {
+        AdvanceLeftBoundary(ref left, i);
+        EvictStaleFront(window, left);
+        AssignBestFromWindow(dp, window, i);
+
+        if (i == Length)
+        {
+            return;
+        }
+
+        PushCandidate(dp, window, i);
+    }
+
+    private void AdvanceLeftBoundary(ref int left, int i)
+    {
+        while (i - left > MaxBoxes || _weightPrefix[i] - _weightPrefix[left] > MaxWeight)
+        {
+            left++;
+        }
+    }
+
+    private static void EvictStaleFront(RepoDeque window, int left)
+    {
+        while (window.TryPeekFront(out var frontIndex) && frontIndex < left)
+        {
+            window.TryPopFront(out _);
+        }
+    }
+
+    private void AssignBestFromWindow(int[] dp, RepoDeque window, int i)
+    {
+        window.TryPeekFront(out var bestIndex);
+        dp[i] = RouteCostPerGroup + _switchPrefix[i] + (dp[bestIndex] - _switchPrefix[bestIndex + 1]);
+    }
+
+    private void PushCandidate(int[] dp, RepoDeque window, int i)
+    {
+        var candidate = dp[i] - _switchPrefix[i + 1];
+        while (window.TryPeekBack(out var backIndex) && dp[backIndex] - _switchPrefix[backIndex + 1] >= candidate)
+        {
+            window.TryPopBack(out _);
+        }
+
+        window.PushBack(i);
     }
 }

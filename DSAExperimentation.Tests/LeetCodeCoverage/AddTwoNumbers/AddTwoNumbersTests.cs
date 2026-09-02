@@ -1,68 +1,36 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.AddTwoNumbers;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AddTwoNumbers;
 
-// LeetCode 2. Add Two Numbers: a single digit-wise walk over this repo's own
-// SinglyLinkedListNode<int>.Next, the same dummy-head list-building shape
-// MergeTwoSortedListsTests uses. Each list already stores its least-significant
-// digit first, so the carry only ever flows left-to-right as the walk advances -
-// no reversal needed.
-public sealed partial class AddTwoNumbersTests
+// Harness only. Both strategies are AddTwoNumbersSolution's - this file pins them
+// to LeetCode's published examples, stated once as digit arrays in the same
+// least-significant-digit-first order LC 2's own lists use.
+public sealed class AddTwoNumbersTests
 {
-    [Fact]
-    public void Add_ClassicExample_ReturnsDigitwiseSumInReverseOrder()
-    {
-        var first = BuildList([2, 4, 3]);
-        var second = BuildList([5, 6, 4]);
-
-        var sum = AddNumbers(first, second);
-
-        Assert.Equal([7, 0, 8], ToArray(sum));
-    }
-
-    [Fact]
-    public void Add_CarryCascadesPastBothLists_AddsLeadingDigit()
-    {
-        var first = BuildList([9, 9, 9]);
-        var second = BuildList([1]);
-
-        var sum = AddNumbers(first, second);
-
-        Assert.Equal([0, 0, 0, 1], ToArray(sum));
-    }
-
-    [Fact]
-    public void Add_DifferentLengths_PadsShorterListWithZeros()
-    {
-        var first = BuildList([2, 4, 9]);
-        var second = BuildList([5, 6]);
-
-        var sum = AddNumbers(first, second);
-
-        Assert.Equal([7, 0, 0, 1], ToArray(sum));
-    }
-
-    private static SinglyLinkedListNode<int>? AddNumbers(
-        SinglyLinkedListNode<int>? first, SinglyLinkedListNode<int>? second)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        var carry = 0;
-
-        while (first is not null || second is not null || carry != 0)
+    public static TheoryData<int[], int[], int[]> Examples =>
+        new()
         {
-            var digitSum = carry + (first?.Value ?? 0) + (second?.Value ?? 0);
-            carry = digitSum / 10;
+            { [2, 4, 3], [5, 6, 4], [7, 0, 8] },
+            { [9, 9, 9], [1], [0, 0, 0, 1] },
+            { [2, 4, 9], [5, 6], [7, 0, 0, 1] },
+        };
 
-            tail.Next = new SinglyLinkedListNode<int>(digitSum % 10);
-            tail = tail.Next;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AddByDigitwiseListWalk_LeetCodeExamples_ReturnsDigitwiseSumInReverseOrder(
+        int[] first, int[] second, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(AddTwoNumbersSolution.AddByDigitwiseListWalk(BuildList(first), BuildList(second))));
 
-            first = first?.Next;
-            second = second?.Next;
-        }
-
-        return dummy.Next;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AddByBigIntegerConvertAndBack_LeetCodeExamples_ReturnsDigitwiseSumInReverseOrder(
+        int[] first, int[] second, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(BuildList(first), BuildList(second))));
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

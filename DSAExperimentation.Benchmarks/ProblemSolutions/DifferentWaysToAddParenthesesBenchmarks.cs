@@ -11,13 +11,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DifferentWaysToAddParenthesesBenchmarks
 {
+    private const string Operand = "1";
+
     [Params(6, 10)]
     public int OperandCount;
 
     private string _expression = null!;
 
     [GlobalSetup]
-    public void Setup() => _expression = string.Join('+', Enumerable.Repeat("1", OperandCount));
+    public void Setup()
+    {
+        var operands = Enumerable.Repeat(Operand, OperandCount);
+        _expression = string.Join('+', operands);
+    }
 
     [Benchmark(Baseline = true)]
     public int UnmemoizedRecursion() => Evaluate(_expression).Count;

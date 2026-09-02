@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MatchsticksToSquareBenchmarks
 {
+    private const int SquareSideCount = 4;
+
     [Params(6, 8)]
     public int SticksPerSide;
 
@@ -23,7 +25,7 @@ public class MatchsticksToSquareBenchmarks
         var perSide = Enumerable.Range(1, SticksPerSide).ToArray();
         var all = new List<int>();
 
-        for (var side = 0; side < 4; side++)
+        for (var side = 0; side < SquareSideCount; side++)
         {
             all.AddRange(perSide);
         }
@@ -38,37 +40,46 @@ public class MatchsticksToSquareBenchmarks
         var sorted = (int[])_matchsticks.Clone();
         Array.Sort(sorted);
         Array.Reverse(sorted);
-        var side = sorted.Sum() / 4;
-        var buckets = new int[4];
+        var side = sorted.Sum() / SquareSideCount;
+        var buckets = new int[SquareSideCount];
 
-        return Search(0);
+        return Search(new MatchstickSearchState(sorted, buckets, side), 0);
+    }
 
-        bool Search(int index)
+    private static bool Search(MatchstickSearchState state, int index)
+    {
+        if (index == state.Sorted.Length)
         {
-            if (index == sorted.Length)
+            return true;
+        }
+
+        for (var bucket = 0; bucket < SquareSideCount; bucket++)
+        {
+            if (TryPlaceInBucket(state, bucket, index))
             {
                 return true;
             }
+        }
 
-            for (var bucket = 0; bucket < 4; bucket++)
-            {
-                if (buckets[bucket] + sorted[index] > side)
-                {
-                    continue;
-                }
+        return false;
+    }
 
-                buckets[bucket] += sorted[index];
-
-                if (Search(index + 1))
-                {
-                    return true;
-                }
-
-                buckets[bucket] -= sorted[index];
-            }
-
+    private static bool TryPlaceInBucket(MatchstickSearchState state, int bucket, int index)
+    {
+        if (state.Buckets[bucket] + state.Sorted[index] > state.Side)
+        {
             return false;
         }
+
+        state.Buckets[bucket] += state.Sorted[index];
+
+        if (Search(state, index + 1))
+        {
+            return true;
+        }
+
+        state.Buckets[bucket] -= state.Sorted[index];
+        return false;
     }
 
     [Benchmark]
@@ -77,12 +88,12 @@ public class MatchsticksToSquareBenchmarks
         var sorted = (int[])_matchsticks.Clone();
         Array.Sort(sorted);
         Array.Reverse(sorted);
-        var side = sorted.Sum() / 4;
+        var side = sorted.Sum() / SquareSideCount;
         var state = new State(sorted, side);
 
         return Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
             IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, 4).Where(s.CanPlace),
+            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, SquareSideCount).Where(s.CanPlace),
             Choose: (s, bucket) => s.Place(bucket),
             Unchoose: (s, bucket) => s.Remove(bucket),
             OnSolution: _ => true));
@@ -108,4 +119,6 @@ public class MatchsticksToSquareBenchmarks
             _buckets[bucket] -= matchsticks[Index];
         }
     }
+
+    private readonly record struct MatchstickSearchState(int[] Sorted, int[] Buckets, int Side);
 }

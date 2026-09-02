@@ -12,6 +12,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
 {
+    // LC problem number, reused as the deterministic random seed.
+    private const int RandomSeed = 1111;
+
+    // The generated sequence is split evenly between '(' and ')'.
+    private const int HalfLengthDivisor = 2;
+
+    // Exclusive upper bound for the open/close coin flip (0 or 1).
+    private const int CoinFlipBound = 2;
+
+    // Depth parity assigns each character to one of two groups (LC 1111).
+    private const int GroupCount = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,14 +32,14 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1111);
+        var random = new Random(RandomSeed);
         var builder = new System.Text.StringBuilder(Length);
-        var openRemaining = Length / 2;
-        var closeRemaining = Length / 2;
+        var openRemaining = Length / HalfLengthDivisor;
+        var closeRemaining = Length / HalfLengthDivisor;
 
         while (openRemaining > 0 || closeRemaining > 0)
         {
-            if (openRemaining > 0 && (closeRemaining == openRemaining || random.Next(2) == 0))
+            if (openRemaining > 0 && (closeRemaining == openRemaining || random.Next(CoinFlipBound) == 0))
             {
                 builder.Append('(');
                 openRemaining--;
@@ -56,7 +68,7 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
                 depthBefore += _sequence[j] == '(' ? 1 : -1;
             }
 
-            groups[i] = _sequence[i] == '(' ? (depthBefore + 1) % 2 : depthBefore % 2;
+            groups[i] = _sequence[i] == '(' ? (depthBefore + 1) % GroupCount : depthBefore % GroupCount;
         }
 
         return groups;
@@ -73,11 +85,11 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
             if (_sequence[i] == '(')
             {
                 openers.Push(_sequence[i]);
-                groups[i] = openers.Count % 2;
+                groups[i] = openers.Count % GroupCount;
             }
             else
             {
-                groups[i] = openers.Count % 2;
+                groups[i] = openers.Count % GroupCount;
                 openers.TryPop(out _);
             }
         }

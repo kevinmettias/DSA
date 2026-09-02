@@ -51,42 +51,55 @@ public sealed partial class ExamRoomTests
                 return 0;
             }
 
-            var bestIndex = 0;
-            var bestSeat = 0;
-            var bestDistance = _occupied.Get(0);
+            var best = FindBestGap();
+            best = ConsiderEndOfRow(best);
+
+            _occupied.Insert(best.Index, best.Seat);
+            return best.Seat;
+        }
+
+        private SeatCandidate FindBestGap()
+        {
+            var best = new SeatCandidate(0, 0, _occupied.Get(0));
 
             for (var i = 0; i < _occupied.Count - 1; i++)
             {
-                var left = _occupied.Get(i);
-                var right = _occupied.Get(i + 1);
-                var candidate = left + ((right - left) / 2);
-                var distance = candidate - left;
+                var (candidate, distance) = EvaluateGap(i);
 
-                if (distance > bestDistance)
+                if (distance > best.Distance)
                 {
-                    bestDistance = distance;
-                    bestSeat = candidate;
-                    bestIndex = i + 1;
+                    best = new SeatCandidate(i + 1, candidate, distance);
                 }
             }
 
+            return best;
+        }
+
+        private SeatCandidate ConsiderEndOfRow(SeatCandidate best)
+        {
             var lastSeat = _occupied.Get(_occupied.Count - 1);
             var endDistance = seatCount - 1 - lastSeat;
 
-            if (endDistance > bestDistance)
-            {
-                bestSeat = seatCount - 1;
-                bestIndex = _occupied.Count;
-            }
-
-            _occupied.Insert(bestIndex, bestSeat);
-            return bestSeat;
+            return endDistance > best.Distance
+                ? new SeatCandidate(_occupied.Count, seatCount - 1, endDistance)
+                : best;
         }
+
+        private readonly record struct SeatCandidate(int Index, int Seat, int Distance);
 
         public void Leave(int p)
         {
             var index = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(new DynamicArraySequence<int>(_occupied), p);
             _occupied.RemoveAt(index);
+        }
+
+        private (int Candidate, int Distance) EvaluateGap(int i)
+        {
+            var left = _occupied.Get(i);
+            var right = _occupied.Get(i + 1);
+            var candidate = left + ((right - left) / 2);
+            var distance = candidate - left;
+            return (candidate, distance);
         }
     }
 }

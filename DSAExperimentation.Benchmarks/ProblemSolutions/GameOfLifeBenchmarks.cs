@@ -13,6 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GameOfLifeBenchmarks
 {
+    // LC 289.
+    private const int RandomSeed = 289;
+    private const int LiveCellExclusiveBound = 2;
+    private const int BirthNeighborCount = 3;
+    private const int SurvivalNeighborCount = 2;
+
     [Params(50, 300)]
     public int Size;
 
@@ -21,9 +27,9 @@ public class GameOfLifeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(289);
+        var random = new Random(RandomSeed);
         _board = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, 2)).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, LiveCellExclusiveBound)).ToArray())
             .ToArray();
     }
 
@@ -39,8 +45,9 @@ public class GameOfLifeBenchmarks
         {
             for (var c = 0; c < cols; c++)
             {
-                var liveNeighbors = CountLiveNeighborsFromSnapshot(snapshot, rows, cols, r, c);
-                board[r][c] = liveNeighbors == 3 || (liveNeighbors == 2 && snapshot[r][c] == 1) ? 1 : 0;
+                var liveNeighbors = CountLiveNeighborsFromSnapshot(snapshot, new GridPosition(rows, cols, r, c));
+                board[r][c] = liveNeighbors == BirthNeighborCount
+                    || (liveNeighbors == SurvivalNeighborCount && snapshot[r][c] == 1) ? 1 : 0;
             }
         }
 
@@ -53,6 +60,15 @@ public class GameOfLifeBenchmarks
         var board = Clone(_board);
         var rows = board.Length;
         var cols = board[0].Length;
+
+        var originallyLive = BuildOriginallyLive(board, rows, cols);
+        ApplyLifeRulesFromSet(board, originallyLive, rows, cols);
+
+        return board;
+    }
+
+    private static Set<int> BuildOriginallyLive(int[][] board, int rows, int cols)
+    {
         var originallyLive = new Set<int>();
 
         for (var r = 0; r < rows; r++)
@@ -66,19 +82,23 @@ public class GameOfLifeBenchmarks
             }
         }
 
+        return originallyLive;
+    }
+
+    private static void ApplyLifeRulesFromSet(int[][] board, Set<int> originallyLive, int rows, int cols)
+    {
         for (var r = 0; r < rows; r++)
         {
             for (var c = 0; c < cols; c++)
             {
-                var liveNeighbors = CountLiveNeighborsFromSet(originallyLive, rows, cols, r, c);
-                board[r][c] = liveNeighbors == 3 || (liveNeighbors == 2 && originallyLive.Has(r * cols + c)) ? 1 : 0;
+                var liveNeighbors = CountLiveNeighborsFromSet(originallyLive, new GridPosition(rows, cols, r, c));
+                board[r][c] = liveNeighbors == BirthNeighborCount
+                    || (liveNeighbors == SurvivalNeighborCount && originallyLive.Has(r * cols + c)) ? 1 : 0;
             }
         }
-
-        return board;
     }
 
-    private static int CountLiveNeighborsFromSnapshot(int[][] snapshot, int rows, int cols, int row, int col)
+    private static int CountLiveNeighborsFromSnapshot(int[][] snapshot, GridPosition position)
     {
         var count = 0;
 
@@ -91,10 +111,10 @@ public class GameOfLifeBenchmarks
                     continue;
                 }
 
-                var r = row + dr;
-                var c = col + dc;
+                var r = position.Row + dr;
+                var c = position.Col + dc;
 
-                if (r >= 0 && r < rows && c >= 0 && c < cols && snapshot[r][c] == 1)
+                if (r >= 0 && r < position.Rows && c >= 0 && c < position.Cols && snapshot[r][c] == 1)
                 {
                     count++;
                 }
@@ -104,7 +124,7 @@ public class GameOfLifeBenchmarks
         return count;
     }
 
-    private static int CountLiveNeighborsFromSet(Set<int> originallyLive, int rows, int cols, int row, int col)
+    private static int CountLiveNeighborsFromSet(Set<int> originallyLive, GridPosition position)
     {
         var count = 0;
 
@@ -117,10 +137,10 @@ public class GameOfLifeBenchmarks
                     continue;
                 }
 
-                var r = row + dr;
-                var c = col + dc;
+                var r = position.Row + dr;
+                var c = position.Col + dc;
 
-                if (r >= 0 && r < rows && c >= 0 && c < cols && originallyLive.Has(r * cols + c))
+                if (r >= 0 && r < position.Rows && c >= 0 && c < position.Cols && originallyLive.Has(r * position.Cols + c))
                 {
                     count++;
                 }
@@ -132,4 +152,6 @@ public class GameOfLifeBenchmarks
 
     private static int[][] Clone(int[][] matrix)
         => matrix.Select(row => (int[])row.Clone()).ToArray();
+
+    private readonly record struct GridPosition(int Rows, int Cols, int Row, int Col);
 }

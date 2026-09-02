@@ -24,7 +24,8 @@ public sealed partial class SortItemsByGroupsRespectingDependenciesTests
             beforeItems: [[], [6], [5], [6], [3, 6], [], [], []]);
 
         Assert.Equal(8, order.Length);
-        Assert.Equal(Enumerable.Range(0, 8), order.OrderBy(item => item));
+        var expectedItems = Enumerable.Range(0, 8);
+        Assert.Equal(expectedItems, order.OrderBy(item => item));
 
         var position = order.Select((item, index) => (item, index)).ToDictionary(x => x.item, x => x.index);
         Assert.True(position[6] < position[1]);
@@ -58,6 +59,14 @@ public sealed partial class SortItemsByGroupsRespectingDependenciesTests
 
     private static int[] SortItems(int n, int m, int[] group, List<int>[] beforeItems)
     {
+        var (groupIds, groupCount) = AssignSingletonGroups(n, m, group);
+        var (items, groups) = BuildNodes(n, groupCount, groupIds);
+        AddEdges(items, groups, groupIds, beforeItems);
+        return ComputeOrder(items, groups, groupCount);
+    }
+
+    private static (int[] GroupIds, int GroupCount) AssignSingletonGroups(int n, int m, int[] group)
+    {
         var groupIds = (int[])group.Clone();
         var groupCount = m;
         for (var i = 0; i < n; i++)
@@ -68,10 +77,19 @@ public sealed partial class SortItemsByGroupsRespectingDependenciesTests
             }
         }
 
+        return (groupIds, groupCount);
+    }
+
+    private static (List<ItemNode> Items, List<GroupNode> Groups) BuildNodes(int n, int groupCount, int[] groupIds)
+    {
         var items = Enumerable.Range(0, n).Select(id => new ItemNode(id, groupIds[id])).ToList();
         var groups = Enumerable.Range(0, groupCount).Select(id => new GroupNode(id)).ToList();
+        return (items, groups);
+    }
 
-        for (var item = 0; item < n; item++)
+    private static void AddEdges(List<ItemNode> items, List<GroupNode> groups, int[] groupIds, List<int>[] beforeItems)
+    {
+        for (var item = 0; item < items.Count; item++)
         {
             foreach (var prerequisite in beforeItems[item])
             {
@@ -83,7 +101,10 @@ public sealed partial class SortItemsByGroupsRespectingDependenciesTests
                 }
             }
         }
+    }
 
+    private static int[] ComputeOrder(List<ItemNode> items, List<GroupNode> groups, int groupCount)
+    {
         if (!TopologicalSort.TrySort<
                 ItemNode, ItemTopology, ListChildren<ItemNode>,
                 NaturalChildOrder<ItemNode, ListChildren<ItemNode>>, ListChildren<ItemNode>>(

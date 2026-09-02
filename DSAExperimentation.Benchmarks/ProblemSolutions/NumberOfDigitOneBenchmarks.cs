@@ -10,6 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfDigitOneBenchmarks
 {
+    // Base of the positional numeral system both benchmarks decompose N into.
+    private const int DecimalBase = 10;
+
     [Params(20_000, 500_000)]
     public int N;
 
@@ -19,9 +22,9 @@ public class NumberOfDigitOneBenchmarks
         long count = 0;
         for (var number = 1; number <= N; number++)
         {
-            for (var remaining = number; remaining > 0; remaining /= 10)
+            for (var remaining = number; remaining > 0; remaining /= DecimalBase)
             {
-                if (remaining % 10 == 1)
+                if (remaining % DecimalBase == 1)
                 {
                     count++;
                 }
@@ -36,15 +39,15 @@ public class NumberOfDigitOneBenchmarks
     {
         var n = N;
         var digits = new DigitStack();
-        for (var remaining = n; remaining > 0; remaining /= 10)
+        for (var remaining = n; remaining > 0; remaining /= DecimalBase)
         {
-            digits.Push(remaining % 10);
+            digits.Push(remaining % DecimalBase);
         }
 
         var placeValue = 1L;
         for (var i = 1; i < digits.Count; i++)
         {
-            placeValue *= 10;
+            placeValue *= DecimalBase;
         }
 
         long count = 0;
@@ -52,18 +55,27 @@ public class NumberOfDigitOneBenchmarks
 
         while (digits.TryPop(out var digit))
         {
-            var lowerRemainder = n % placeValue;
-            count += digit switch
-            {
-                0 => higherDigits * placeValue,
-                1 => (higherDigits * placeValue) + lowerRemainder + 1,
-                _ => (higherDigits + 1) * placeValue,
-            };
-
-            higherDigits = (higherDigits * 10) + digit;
-            placeValue /= 10;
+            count += AccumulateDigitOnes(digit, n, ref placeValue, ref higherDigits);
         }
 
         return count;
+    }
+
+    // Folds one popped digit into the running ones-count, then advances placeValue
+    // and higherDigits to the next (more significant) digit position - the
+    // self-contained per-digit step of the place-value tally above.
+    private static long AccumulateDigitOnes(int digit, long n, ref long placeValue, ref long higherDigits)
+    {
+        var lowerRemainder = n % placeValue;
+        var delta = digit switch
+        {
+            0 => higherDigits * placeValue,
+            1 => (higherDigits * placeValue) + lowerRemainder + 1,
+            _ => (higherDigits + 1) * placeValue,
+        };
+
+        higherDigits = (higherDigits * DecimalBase) + digit;
+        placeValue /= DecimalBase;
+        return delta;
     }
 }

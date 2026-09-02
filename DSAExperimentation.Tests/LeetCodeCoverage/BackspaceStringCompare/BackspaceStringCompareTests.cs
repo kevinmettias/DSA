@@ -8,16 +8,28 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BackspaceStringCompare;
 public sealed partial class BackspaceStringCompareTests
 {
     [Fact]
-    public void BackspaceCompare_BackspacesCancelEarlierLetters_ReturnsTrue() =>
-        Assert.True(BackspaceCompare("ab#c", "ad#c"));
+    public void BackspaceCompare_BackspacesCancelEarlierLetters_ReturnsTrue()
+    {
+        var actual = BackspaceCompare("ab#c", "ad#c");
+
+        Assert.True(actual);
+    }
 
     [Fact]
-    public void BackspaceCompare_EverythingTypedIsThenDeleted_ReturnsTrue() =>
-        Assert.True(BackspaceCompare("ab##", "c#d#"));
+    public void BackspaceCompare_EverythingTypedIsThenDeleted_ReturnsTrue()
+    {
+        var actual = BackspaceCompare("ab##", "c#d#");
+
+        Assert.True(actual);
+    }
 
     [Fact]
-    public void BackspaceCompare_DifferentSurvivingLetters_ReturnsFalse() =>
-        Assert.False(BackspaceCompare("a#c", "b"));
+    public void BackspaceCompare_DifferentSurvivingLetters_ReturnsFalse()
+    {
+        var actual = BackspaceCompare("a#c", "b");
+
+        Assert.False(actual);
+    }
 
     private static bool BackspaceCompare(string s, string t) => Process(s) == Process(t);
 

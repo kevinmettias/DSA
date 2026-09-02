@@ -44,7 +44,8 @@ public class UglyNumberIIIBenchmarks
         var lcmAb = Lcm(A, B);
         var lcmAc = Lcm(A, C);
         var lcmBc = Lcm(B, C);
-        var upperBound = (int)((long)N * Math.Min(A, Math.Min(B, C)));
+        var smallerOfBAndC = Math.Min(B, C);
+        var upperBound = (int)((long)N * Math.Min(A, smallerOfBAndC));
         var lcmAbc = LcmCapped(lcmAb, C, upperBound);
 
         var sequence = new UglyCountSequence(N, A, B, C, lcmAb, lcmAc, lcmBc, lcmAbc, upperBound);

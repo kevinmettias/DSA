@@ -25,9 +25,13 @@ public sealed partial class OnlineMajorityElementInSubarrayTests
     {
         var checker = new MajorityChecker([1, 1, 2, 2, 1, 1]);
 
-        Assert.Equal(1, checker.Query(0, 5, 4));
-        Assert.Equal(-1, checker.Query(0, 3, 3));
-        Assert.Equal(2, checker.Query(2, 3, 2));
+        var firstQuery = checker.Query(0, 5, 4);
+        var secondQuery = checker.Query(0, 3, 3);
+        var thirdQuery = checker.Query(2, 3, 2);
+
+        Assert.Equal(1, firstQuery);
+        Assert.Equal(-1, secondQuery);
+        Assert.Equal(2, thirdQuery);
     }
 
     [Fact]
@@ -35,7 +39,9 @@ public sealed partial class OnlineMajorityElementInSubarrayTests
     {
         var checker = new MajorityChecker([5, 5, 5, 5, 5]);
 
-        Assert.Equal(5, checker.Query(2, 2, 1));
+        var query = checker.Query(2, 2, 1);
+
+        Assert.Equal(5, query);
     }
 
     private sealed class MajorityChecker

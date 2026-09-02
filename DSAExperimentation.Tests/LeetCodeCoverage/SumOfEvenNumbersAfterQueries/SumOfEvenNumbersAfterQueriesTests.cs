@@ -34,6 +34,21 @@ public sealed partial class SumOfEvenNumbersAfterQueriesTests
 
     private static int[] SumEvenAfterQueries(int[] nums, int[][] queries)
     {
+        var array = BuildArray(nums);
+        var evenSum = ComputeInitialEvenSum(array);
+        var results = new int[queries.Length];
+
+        for (var q = 0; q < queries.Length; q++)
+        {
+            evenSum = ApplyQuery(array, queries[q], evenSum);
+            results[q] = evenSum;
+        }
+
+        return results;
+    }
+
+    private static DynamicArray<int> BuildArray(int[] nums)
+    {
         var array = new DynamicArray<int>();
 
         foreach (var num in nums)
@@ -41,6 +56,11 @@ public sealed partial class SumOfEvenNumbersAfterQueriesTests
             array.Add(num);
         }
 
+        return array;
+    }
+
+    private static int ComputeInitialEvenSum(DynamicArray<int> array)
+    {
         var evenSum = 0;
 
         for (var i = 0; i < array.Count; i++)
@@ -51,30 +71,28 @@ public sealed partial class SumOfEvenNumbersAfterQueriesTests
             }
         }
 
-        var results = new int[queries.Length];
+        return evenSum;
+    }
 
-        for (var q = 0; q < queries.Length; q++)
+    private static int ApplyQuery(DynamicArray<int> array, int[] query, int evenSum)
+    {
+        var value = query[0];
+        var index = query[1];
+        var before = array.Get(index);
+
+        if (before % 2 == 0)
         {
-            var value = queries[q][0];
-            var index = queries[q][1];
-            var before = array.Get(index);
-
-            if (before % 2 == 0)
-            {
-                evenSum -= before;
-            }
-
-            var after = before + value;
-            array.Set(index, after);
-
-            if (after % 2 == 0)
-            {
-                evenSum += after;
-            }
-
-            results[q] = evenSum;
+            evenSum -= before;
         }
 
-        return results;
+        var after = before + value;
+        array.Set(index, after);
+
+        if (after % 2 == 0)
+        {
+            evenSum += after;
+        }
+
+        return evenSum;
     }
 }

@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LastStoneWeightBenchmarks
 {
+    private const int RandomSeed = 1046; // LC problem number
+    private const int MaxStoneWeightExclusive = 1_000;
+
     [Params(200, 5_000)]
     public int StoneCount;
 
@@ -19,8 +22,8 @@ public class LastStoneWeightBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1046);
-        _stones = Enumerable.Range(0, StoneCount).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _stones = Enumerable.Range(0, StoneCount).Select(_ => random.Next(1, MaxStoneWeightExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -34,8 +37,11 @@ public class LastStoneWeightBenchmarks
             var secondIndex = IndexOfLargest(remaining, firstIndex);
             var difference = remaining[firstIndex] - remaining[secondIndex];
 
-            remaining.RemoveAt(Math.Max(firstIndex, secondIndex));
-            remaining.RemoveAt(Math.Min(firstIndex, secondIndex));
+            var higherIndex = Math.Max(firstIndex, secondIndex);
+            remaining.RemoveAt(higherIndex);
+
+            var lowerIndex = Math.Min(firstIndex, secondIndex);
+            remaining.RemoveAt(lowerIndex);
 
             if (difference != 0)
             {

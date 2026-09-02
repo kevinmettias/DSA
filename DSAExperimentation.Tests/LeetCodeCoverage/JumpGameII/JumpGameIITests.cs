@@ -1,51 +1,28 @@
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
+using DSAExperimentation.LeetCode.JumpGameII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameII;
 
-// LeetCode 45. Jump Game II: minimum jumps to reach the last index, modeled as an
-// implicit unweighted-hop graph (index i has an edge to every index reachable in one
-// jump) and answered with this repo's own ShortestPath.Dijkstra - not the textbook
-// O(n) greedy two-pointer scan.
-public sealed partial class JumpGameIITests
+// Harness only: both strategies live in JumpGameIISolution - the textbook greedy
+// two-pointer scan, and modeling reachability as an implicit unweighted-hop graph
+// (index i -> every index one jump away) answered with this repo's own
+// ShortestPath.Dijkstra.
+public sealed class JumpGameIITests
 {
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [2, 3, 1, 1, 4], 2 },
+            { [2, 3, 0, 1, 4], 2 },
+            { [0], 0 },
+        };
+
     [Theory]
-    [InlineData(new[] { 2, 3, 1, 1, 4 }, 2)]
-    [InlineData(new[] { 2, 3, 0, 1, 4 }, 2)]
-    [InlineData(new[] { 0 }, 0)]
-    public void MinJumps_DijkstraOverImplicitHopGraph_ReturnsMinimumJumpCount(int[] nums, int expected)
-        => Assert.Equal(expected, MinJumps(nums));
+    [MemberData(nameof(Examples))]
+    public void MinJumpsByGreedyTwoPointer_LeetCodeExamples_ReturnsMinimumJumpCount(int[] nums, int expected) =>
+        Assert.Equal(expected, JumpGameIISolution.MinJumpsByGreedyTwoPointer(nums));
 
-    private static int MinJumps(int[] nums)
-    {
-        var nodes = BuildHopGraph(nums);
-
-        var distances = ShortestPath.Dijkstra<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(nodes[0]);
-
-        return distances[nodes[^1]];
-    }
-
-    private static WeightedNode[] BuildHopGraph(int[] nums)
-    {
-        var nodes = new WeightedNode[nums.Length];
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            nodes[i] = new WeightedNode(i.ToString());
-        }
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            var reach = Math.Min(i + nums[i], nums.Length - 1);
-
-            for (var j = i + 1; j <= reach; j++)
-            {
-                nodes[i].Edges.Add((1, nodes[j]));
-            }
-        }
-
-        return nodes;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinJumpsByDijkstraOverHopGraph_LeetCodeExamples_ReturnsMinimumJumpCount(int[] nums, int expected) =>
+        Assert.Equal(expected, JumpGameIISolution.MinJumpsByDijkstraOverHopGraph(nums));
 }

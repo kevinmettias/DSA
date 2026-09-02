@@ -14,11 +14,15 @@ public sealed class RangeSumQueryMutableTests
     {
         var numArray = new NumArrayOperations([1, 3, 5]);
 
-        Assert.Equal(9, numArray.SumRange(0, 2));
+        var initialSum = numArray.SumRange(0, 2);
+
+        Assert.Equal(9, initialSum);
 
         numArray.Update(1, 2);
 
-        Assert.Equal(8, numArray.SumRange(0, 2));
+        var updatedSum = numArray.SumRange(0, 2);
+
+        Assert.Equal(8, updatedSum);
     }
 
     [Fact]
@@ -29,7 +33,9 @@ public sealed class RangeSumQueryMutableTests
         numArray.Update(2, 10);
         numArray.Update(2, 4);
 
-        Assert.Equal(4, numArray.SumRange(0, 3));
+        var sum = numArray.SumRange(0, 3);
+
+        Assert.Equal(4, sum);
     }
 
     private sealed class NumArrayOperations

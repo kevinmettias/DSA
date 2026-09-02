@@ -31,6 +31,14 @@ public sealed partial class ShortEncodingOfWordsTests
 
     private static int MinimumLengthEncoding(string[] words)
     {
+        var distinctWords = Deduplicate(words);
+        var remaining = FindWordsThatAreNotSuffixesOfAnother(distinctWords);
+
+        return SumEncodingLength(distinctWords, remaining);
+    }
+
+    private static List<string> Deduplicate(string[] words)
+    {
         var distinctWords = new List<string>();
         var seen = new Set<string>();
 
@@ -42,6 +50,13 @@ public sealed partial class ShortEncodingOfWordsTests
             }
         }
 
+        return distinctWords;
+    }
+
+    // Every word starts as a survivor, then every one of its proper suffixes gets
+    // evicted the instant a longer word is found to contain it.
+    private static Set<string> FindWordsThatAreNotSuffixesOfAnother(List<string> distinctWords)
+    {
         var remaining = new Set<string>();
 
         foreach (var word in distinctWords)
@@ -57,6 +72,11 @@ public sealed partial class ShortEncodingOfWordsTests
             }
         }
 
+        return remaining;
+    }
+
+    private static int SumEncodingLength(List<string> distinctWords, Set<string> remaining)
+    {
         var length = 0;
 
         foreach (var word in distinctWords)

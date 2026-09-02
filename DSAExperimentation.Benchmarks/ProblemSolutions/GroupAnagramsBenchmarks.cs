@@ -1,13 +1,34 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.GroupAnagrams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are GroupAnagramsSolution's, the same methods
+// GroupAnagramsTests proves correct. Each arm reports the built group count
+// rather than the groups themselves, so the result isn't discarded as dead
+// code without materializing a potentially large object graph on every
+// iteration.
 [MemoryDiagnoser]
 public class GroupAnagramsBenchmarks
 {
-    private string[] _values = null!; [Params(200, 5_000)] public int Length; [GlobalSetup] public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i % 2 == 0 ? "eat" : "tea").ToArray();
-    [Benchmark(Baseline = true)] public int DictionaryGroup() => _values.GroupBy(Key).Count();
-    [Benchmark] public int HashMapGroup() { var map = new HashMap<string, List<string>>(); foreach (var value in _values) { var key = Key(value); if (!map.TryGetValue(key, out var group)) { group = []; map.Set(key, group); } group.Add(value); } return map.Count; }
-    private static string Key(string value) { var chars = value.ToCharArray(); Array.Sort(chars); return new string(chars); }
+    private const int SourceWordCount = 2;
+    private const string FirstAnagramWord = "eat";
+    private const string SecondAnagramWord = "tea";
+
+    private string[] _values = null!;
+
+    [Params(200, 5_000)]
+    public int Length;
+
+    [GlobalSetup]
+    public void Setup()
+        => _values = Enumerable.Range(0, Length)
+            .Select(i => i % SourceWordCount == 0 ? FirstAnagramWord : SecondAnagramWord)
+            .ToArray();
+
+    [Benchmark(Baseline = true)]
+    public int DictionaryGroup() => GroupAnagramsSolution.GroupByDictionary(_values).Count;
+
+    [Benchmark]
+    public int HashMapGroup() => GroupAnagramsSolution.GroupByHashMap(_values).Count;
 }

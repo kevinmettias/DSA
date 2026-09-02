@@ -12,23 +12,33 @@ public sealed partial class LinkedListInBinaryTreeTests
 {
     [Fact]
     public void IsSubPath_ListMatchesADownwardPath_ReturnsTrue()
-        => Assert.True(IsSubPath(
-            List(4, 6, 8),
-            new BinaryTreeNode<int>(1)
-            {
-                Left = new(4) { Left = new(2), Right = new(6) { Right = new(8) } },
-                Right = new(5),
-            }));
+    {
+        var list = List(4, 6, 8);
+        var tree = new BinaryTreeNode<int>(1)
+        {
+            Left = new(4) { Left = new(2), Right = new(6) { Right = new(8) } },
+            Right = new(5),
+        };
+
+        var isSubPath = IsSubPath(list, tree);
+
+        Assert.True(isSubPath);
+    }
 
     [Fact]
     public void IsSubPath_ListRunsOutOfMatchingChildren_ReturnsFalse()
-        => Assert.False(IsSubPath(
-            List(4, 2, 6),
-            new BinaryTreeNode<int>(1)
-            {
-                Left = new(4) { Left = new(2), Right = new(6) { Right = new(8) } },
-                Right = new(5),
-            }));
+    {
+        var list = List(4, 2, 6);
+        var tree = new BinaryTreeNode<int>(1)
+        {
+            Left = new(4) { Left = new(2), Right = new(6) { Right = new(8) } },
+            Right = new(5),
+        };
+
+        var isSubPath = IsSubPath(list, tree);
+
+        Assert.False(isSubPath);
+    }
 
     private static bool IsSubPath(SinglyLinkedListNode<int>? head, BinaryTreeNode<int>? root)
         => root is not null && (MatchesFromHere(head, root) || IsSubPath(head, root.Left) || IsSubPath(head, root.Right));

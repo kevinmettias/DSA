@@ -17,6 +17,11 @@ public class CarFleetBenchmarks
 {
     private const int Target = 1_000_000;
 
+    // LeetCode problem number for Car Fleet.
+    private const int RandomSeed = 853;
+
+    private const int MaxRandomSpeedDivisorExclusive = 100;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -25,7 +30,7 @@ public class CarFleetBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(853);
+        var random = new Random(RandomSeed);
         var positions = Enumerable.Range(0, Length)
             .Select(_ => random.Next(1, Target))
             .Distinct()
@@ -33,7 +38,7 @@ public class CarFleetBenchmarks
             .ToArray();
 
         _arrivalTimesByPositionDescending = positions
-            .Select(p => (double)(Target - p) / random.Next(1, 100))
+            .Select(p => (double)(Target - p) / random.Next(1, MaxRandomSpeedDivisorExclusive))
             .ToArray();
     }
 

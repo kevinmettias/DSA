@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheMostCompetitiveSubsequenceBenchmarks
 {
+    private const int SubsequenceLengthDivisor = 3;
+
     [Params(500, 5_000)]
     public int Length;
 
@@ -22,7 +24,7 @@ public class FindTheMostCompetitiveSubsequenceBenchmarks
     {
         var random = new Random(1);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
-        _k = Length / 3;
+        _k = Length / SubsequenceLengthDivisor;
     }
 
     [Benchmark(Baseline = true)]

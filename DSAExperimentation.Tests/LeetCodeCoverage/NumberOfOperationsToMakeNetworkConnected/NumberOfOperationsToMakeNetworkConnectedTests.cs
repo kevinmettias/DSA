@@ -17,7 +17,9 @@ public sealed partial class NumberOfOperationsToMakeNetworkConnectedTests
     {
         int[][] connections = [[0, 1], [0, 2], [1, 2]];
 
-        Assert.Equal(1, MakeConnected(4, connections));
+        var operations = MakeConnected(4, connections);
+
+        Assert.Equal(1, operations);
     }
 
     [Fact]
@@ -25,7 +27,9 @@ public sealed partial class NumberOfOperationsToMakeNetworkConnectedTests
     {
         int[][] connections = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3]];
 
-        Assert.Equal(2, MakeConnected(6, connections));
+        var operations = MakeConnected(6, connections);
+
+        Assert.Equal(2, operations);
     }
 
     [Fact]
@@ -33,7 +37,9 @@ public sealed partial class NumberOfOperationsToMakeNetworkConnectedTests
     {
         int[][] connections = [[0, 1], [0, 2], [0, 3], [1, 2]];
 
-        Assert.Equal(-1, MakeConnected(6, connections));
+        var operations = MakeConnected(6, connections);
+
+        Assert.Equal(-1, operations);
     }
 
     [Fact]
@@ -41,7 +47,9 @@ public sealed partial class NumberOfOperationsToMakeNetworkConnectedTests
     {
         int[][] connections = [[0, 1], [1, 2], [2, 3]];
 
-        Assert.Equal(0, MakeConnected(4, connections));
+        var operations = MakeConnected(4, connections);
+
+        Assert.Equal(0, operations);
     }
 
     private static int MakeConnected(int n, int[][] connections)

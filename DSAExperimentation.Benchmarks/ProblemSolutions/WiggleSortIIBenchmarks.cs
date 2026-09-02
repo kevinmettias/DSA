@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class WiggleSortIIBenchmarks
 {
+    private const int RandomSeed = 324; // LC problem number
+    private const int ValueRangeDivisor = 2; // bounds random values to Length/2 so duplicates are common
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -19,8 +22,8 @@ public class WiggleSortIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(324);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length / 2)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length / ValueRangeDivisor)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -54,16 +57,19 @@ public class WiggleSortIIBenchmarks
         return Interleave(sorted);
     }
 
+    private const int InterleaveMidpointDivisor = 2; // splits the sorted array into low/high halves
+    private const int IndexParityDivisor = 2; // alternates destination index between the low and high half
+
     private static int[] Interleave(int[] sorted)
     {
         var n = sorted.Length;
         var result = new int[n];
-        var lowIndex = (n - 1) / 2;
+        var lowIndex = (n - 1) / InterleaveMidpointDivisor;
         var highIndex = n - 1;
 
         for (var i = 0; i < n; i++)
         {
-            result[i] = i % 2 == 0 ? sorted[lowIndex--] : sorted[highIndex--];
+            result[i] = i % IndexParityDivisor == 0 ? sorted[lowIndex--] : sorted[highIndex--];
         }
 
         return result;

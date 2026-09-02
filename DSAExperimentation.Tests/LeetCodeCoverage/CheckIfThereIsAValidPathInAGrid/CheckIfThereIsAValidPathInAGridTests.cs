@@ -71,18 +71,24 @@ public sealed partial class CheckIfThereIsAValidPathInAGridTests
             {
                 var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
-                if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+                if (IsValidNeighbor(next, (dRow, dCol), grid))
                 {
-                    continue;
+                    yield return next;
                 }
-
-                if (Array.IndexOf(Openings[grid[next.Row][next.Col]], (-dRow, -dCol)) < 0)
-                {
-                    continue;
-                }
-
-                yield return next;
             }
         }
+    }
+
+    private static bool IsValidNeighbor((int Row, int Col) next, (int DRow, int DCol) direction, int[][] grid)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+
+        if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+        {
+            return false;
+        }
+
+        return Array.IndexOf(Openings[grid[next.Row][next.Col]], (-direction.DRow, -direction.DCol)) >= 0;
     }
 }

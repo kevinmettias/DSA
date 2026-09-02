@@ -16,13 +16,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SoupServingsBenchmarks
 {
+    private const int ServingSizeMl = 25;
+    private const int CeilingRoundingOffset = 24;
+    private const double TieProbability = 0.5;
+    private const double BranchProbability = 0.25;
+    private const int FourUnitPour = 4;
+    private const int ThreeUnitPour = 3;
+    private const int TwoUnitPour = 2;
+
     [Params(600, 850)]
     public int N;
 
     private int _servings;
 
     [GlobalSetup]
-    public void Setup() => _servings = (N + 24) / 25;
+    public void Setup() => _servings = (N + CeilingRoundingOffset) / ServingSizeMl;
 
     [Benchmark(Baseline = true)]
     public double UnmemoizedRecursion() => Probability(_servings, _servings);
@@ -31,7 +39,7 @@ public class SoupServingsBenchmarks
     {
         if (a <= 0 && b <= 0)
         {
-            return 0.5;
+            return TieProbability;
         }
 
         if (a <= 0)
@@ -44,11 +52,11 @@ public class SoupServingsBenchmarks
             return 0.0;
         }
 
-        return 0.25 * (
-            Probability(a - 4, b)
-            + Probability(a - 3, b - 1)
-            + Probability(a - 2, b - 2)
-            + Probability(a - 1, b - 3));
+        return BranchProbability * (
+            Probability(a - FourUnitPour, b)
+            + Probability(a - ThreeUnitPour, b - 1)
+            + Probability(a - TwoUnitPour, b - TwoUnitPour)
+            + Probability(a - 1, b - ThreeUnitPour));
     }
 
     [Benchmark]
@@ -60,7 +68,7 @@ public class SoupServingsBenchmarks
         var (a, b) = remaining;
         if (a <= 0 && b <= 0)
         {
-            return 0.5;
+            return TieProbability;
         }
 
         if (a <= 0)
@@ -73,10 +81,10 @@ public class SoupServingsBenchmarks
             return 0.0;
         }
 
-        return 0.25 * (
-            probability((a - 4, b))
-            + probability((a - 3, b - 1))
-            + probability((a - 2, b - 2))
-            + probability((a - 1, b - 3)));
+        return BranchProbability * (
+            probability((a - FourUnitPour, b))
+            + probability((a - ThreeUnitPour, b - 1))
+            + probability((a - TwoUnitPour, b - TwoUnitPour))
+            + probability((a - 1, b - ThreeUnitPour)));
     }
 }

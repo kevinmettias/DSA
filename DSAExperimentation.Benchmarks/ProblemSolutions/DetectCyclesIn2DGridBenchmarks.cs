@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DetectCyclesIn2DGridBenchmarks
 {
+    // LC problem number, reused as the deterministic seed.
+    private const int RandomSeed = 1559;
+
     private static readonly char[] Letters = ['a', 'b', 'c'];
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
@@ -25,7 +28,7 @@ public class DetectCyclesIn2DGridBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1559);
+        var random = new Random(RandomSeed);
         _grid = new char[GridSize][];
 
         for (var r = 0; r < GridSize; r++)
@@ -61,41 +64,53 @@ public class DetectCyclesIn2DGridBenchmarks
 
     private bool HasCycleFrom(int startRow, int startCol, bool[,] visited)
     {
-        var rows = _grid.Length;
-        var cols = _grid[0].Length;
         var stack = new Stack<(int Row, int Col, int ParentRow, int ParentCol)>();
         stack.Push((startRow, startCol, -1, -1));
         visited[startRow, startCol] = true;
 
         while (stack.Count > 0)
         {
-            var (row, col, parentRow, parentCol) = stack.Pop();
+            var current = stack.Pop();
 
-            foreach (var (dRow, dCol) in Directions)
+            foreach (var direction in Directions)
             {
-                var nextRow = row + dRow;
-                var nextCol = col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (_grid[nextRow][nextCol] != _grid[row][col] || (nextRow == parentRow && nextCol == parentCol))
-                {
-                    continue;
-                }
-
-                if (visited[nextRow, nextCol])
+                if (HasCycleAtNeighbor(current, direction, visited, stack))
                 {
                     return true;
                 }
-
-                visited[nextRow, nextCol] = true;
-                stack.Push((nextRow, nextCol, row, col));
             }
         }
 
+        return false;
+    }
+
+    private bool HasCycleAtNeighbor(
+        (int Row, int Col, int ParentRow, int ParentCol) current,
+        (int DRow, int DCol) direction,
+        bool[,] visited,
+        Stack<(int Row, int Col, int ParentRow, int ParentCol)> stack)
+    {
+        var nextRow = current.Row + direction.DRow;
+        var nextCol = current.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= _grid.Length || nextCol < 0 || nextCol >= _grid[0].Length)
+        {
+            return false;
+        }
+
+        if (_grid[nextRow][nextCol] != _grid[current.Row][current.Col]
+            || (nextRow == current.ParentRow && nextCol == current.ParentCol))
+        {
+            return false;
+        }
+
+        if (visited[nextRow, nextCol])
+        {
+            return true;
+        }
+
+        visited[nextRow, nextCol] = true;
+        stack.Push((nextRow, nextCol, current.Row, current.Col));
         return false;
     }
 

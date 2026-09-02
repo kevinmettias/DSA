@@ -12,6 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class Dota2SenateBenchmarks
 {
+    private const string Radiant = "Radiant";
+    private const string Dire = "Dire";
+
+    // Splits SenatorCount in half so the input is exactly one full block of each party.
+    private const int PartySplitDivisor = 2;
+
     [Params(500, 20_000)]
     public int SenatorCount;
 
@@ -21,7 +27,7 @@ public class Dota2SenateBenchmarks
     public void Setup()
     {
         _senate = new char[SenatorCount];
-        var half = SenatorCount / 2;
+        var half = SenatorCount / PartySplitDivisor;
 
         for (var i = 0; i < SenatorCount; i++)
         {
@@ -32,6 +38,20 @@ public class Dota2SenateBenchmarks
     [Benchmark(Baseline = true)]
     public string CircularRescanSimulation()
     {
+        var remainingRadiant = RunCircularRescan();
+        return remainingRadiant > 0 ? Radiant : Dire;
+    }
+
+    [Benchmark]
+    public string TwoQueueSimulation()
+    {
+        var (radiant, dire) = BuildPartyQueues();
+        RunTwoQueueVoting(radiant, dire, _senate.Length);
+        return radiant.Count > 0 ? Radiant : Dire;
+    }
+
+    private int RunCircularRescan()
+    {
         var banned = new bool[_senate.Length];
         var remainingRadiant = _senate.Count(c => c == 'R');
         var remainingDire = _senate.Length - remainingRadiant;
@@ -39,35 +59,42 @@ public class Dota2SenateBenchmarks
 
         while (remainingRadiant > 0 && remainingDire > 0)
         {
-            if (!banned[i])
-            {
-                var opponent = NextUnbanned(banned, i, _senate[i]);
-                banned[opponent] = true;
-
-                if (_senate[opponent] == 'R')
-                {
-                    remainingRadiant--;
-                }
-                else
-                {
-                    remainingDire--;
-                }
-            }
-
+            (remainingRadiant, remainingDire) = AdvanceCircularRescan(banned, i, remainingRadiant, remainingDire);
             i = (i + 1) % _senate.Length;
         }
 
-        return remainingRadiant > 0 ? "Radiant" : "Dire";
+        return remainingRadiant;
     }
 
-    [Benchmark]
-    public string TwoQueueSimulation()
+    private (int RemainingRadiant, int RemainingDire) AdvanceCircularRescan(
+        bool[] banned, int i, int remainingRadiant, int remainingDire)
     {
-        var n = _senate.Length;
+        if (banned[i])
+        {
+            return (remainingRadiant, remainingDire);
+        }
+
+        var opponent = NextUnbanned(banned, i, _senate[i]);
+        banned[opponent] = true;
+
+        if (_senate[opponent] == 'R')
+        {
+            remainingRadiant--;
+        }
+        else
+        {
+            remainingDire--;
+        }
+
+        return (remainingRadiant, remainingDire);
+    }
+
+    private (RepoQueue Radiant, RepoQueue Dire) BuildPartyQueues()
+    {
         var radiant = new RepoQueue();
         var dire = new RepoQueue();
 
-        for (var idx = 0; idx < n; idx++)
+        for (var idx = 0; idx < _senate.Length; idx++)
         {
             if (_senate[idx] == 'R')
             {
@@ -79,22 +106,30 @@ public class Dota2SenateBenchmarks
             }
         }
 
+        return (radiant, dire);
+    }
+
+    private static void RunTwoQueueVoting(RepoQueue radiant, RepoQueue dire, int n)
+    {
         while (radiant.Count > 0 && dire.Count > 0)
         {
-            radiant.TryDequeue(out var radiantIndex);
-            dire.TryDequeue(out var direIndex);
-
-            if (radiantIndex < direIndex)
-            {
-                radiant.Enqueue(radiantIndex + n);
-            }
-            else
-            {
-                dire.Enqueue(direIndex + n);
-            }
+            CastVote(radiant, dire, n);
         }
+    }
 
-        return radiant.Count > 0 ? "Radiant" : "Dire";
+    private static void CastVote(RepoQueue radiant, RepoQueue dire, int n)
+    {
+        radiant.TryDequeue(out var radiantIndex);
+        dire.TryDequeue(out var direIndex);
+
+        if (radiantIndex < direIndex)
+        {
+            radiant.Enqueue(radiantIndex + n);
+        }
+        else
+        {
+            dire.Enqueue(direIndex + n);
+        }
     }
 
     private int NextUnbanned(bool[] banned, int from, char actingParty)

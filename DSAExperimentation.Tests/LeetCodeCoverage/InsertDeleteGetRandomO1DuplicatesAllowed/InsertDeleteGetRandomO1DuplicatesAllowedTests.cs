@@ -95,6 +95,13 @@ public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedTests
                 return false;
             }
 
+            var removedPosition = PopOccurrence(value, occurrences);
+            SwapOutPosition(removedPosition);
+            return true;
+        }
+
+        private int PopOccurrence(int value, DoublyLinkedList<int> occurrences)
+        {
             var removedNode = occurrences.PopBack();
             var removedPosition = removedNode.Value;
             _nodeByPosition.TryRemove(removedPosition);
@@ -104,22 +111,31 @@ public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedTests
                 _occurrencesByValue.TryRemove(value);
             }
 
+            return removedPosition;
+        }
+
+        private void SwapOutPosition(int removedPosition)
+        {
             var lastPosition = _values.Count - 1;
             var lastValue = _values.Get(lastPosition);
             _values.Set(removedPosition, lastValue);
 
             if (removedPosition != lastPosition)
             {
-                _nodeByPosition.TryGetValue(lastPosition, out var movedNode);
-                movedNode.Value = removedPosition;
-                _nodeByPosition.TryRemove(lastPosition);
-                _nodeByPosition.Set(removedPosition, movedNode);
+                MoveTrackedNode(lastPosition, removedPosition);
             }
 
             _values.RemoveAt(lastPosition);
-            return true;
         }
 
         public int GetRandom() => _values.Get(_random.Next(_values.Count));
+
+        private void MoveTrackedNode(int fromPosition, int toPosition)
+        {
+            _nodeByPosition.TryGetValue(fromPosition, out var movedNode);
+            movedNode.Value = toPosition;
+            _nodeByPosition.TryRemove(fromPosition);
+            _nodeByPosition.Set(toPosition, movedNode);
+        }
     }
 }

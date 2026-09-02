@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinCostClimbingStairsBenchmarks
 {
+    private const int RandomSeed = 746; // LC problem number
+    private const int CostUpperBound = 100; // exclusive upper bound for generated per-step cost
+    private const int TwoStepClimb = 2; // LC 746 allows climbing 1 or 2 steps at a time
+
     [Params(20, 30)]
     public int N;
 
@@ -22,15 +26,15 @@ public class MinCostClimbingStairsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(746);
-        _cost = Enumerable.Range(0, N).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _cost = Enumerable.Range(0, N).Select(_ => random.Next(1, CostUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursive() => Math.Min(CostFrom(0), CostFrom(1));
 
     private int CostFrom(int step)
-        => step >= _cost.Length ? 0 : _cost[step] + Math.Min(CostFrom(step + 1), CostFrom(step + 2));
+        => step >= _cost.Length ? 0 : _cost[step] + Math.Min(CostFrom(step + 1), CostFrom(step + TwoStepClimb));
 
     [Benchmark]
     public int TopDownMemoized()
@@ -48,7 +52,7 @@ public class MinCostClimbingStairsBenchmarks
             return 0;
         }
 
-        return _cost[step] + Math.Min(minCostFrom(step + 1), minCostFrom(step + 2));
+        return _cost[step] + Math.Min(minCostFrom(step + 1), minCostFrom(step + TwoStepClimb));
     }
 
     [Benchmark]
@@ -56,9 +60,9 @@ public class MinCostClimbingStairsBenchmarks
     {
         var (twoBack, oneBack) = (0, 0);
 
-        for (var i = 2; i <= _cost.Length; i++)
+        for (var i = TwoStepClimb; i <= _cost.Length; i++)
         {
-            var current = Math.Min(oneBack + _cost[i - 1], twoBack + _cost[i - 2]);
+            var current = Math.Min(oneBack + _cost[i - 1], twoBack + _cost[i - TwoStepClimb]);
             (twoBack, oneBack) = (oneBack, current);
         }
 

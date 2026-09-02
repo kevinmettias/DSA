@@ -16,6 +16,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TopKFrequentWordsBenchmarks
 {
     private const int K = 10;
+    private const int RandomSeed = 7;
+    private const string WordPrefix = "word";
+    private const int WordPoolSize = 500;
 
     [Params(1_000, 20_000)]
     public int Length;
@@ -25,12 +28,12 @@ public class TopKFrequentWordsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
 
         // Bounded to a pool far smaller than Length so words repeat and real
         // frequency skew (with genuine ties) emerges, the same reasoning
         // TopKFrequentElementsBenchmarks' bounded random range documents.
-        _words = Enumerable.Range(0, Length).Select(_ => "word" + random.Next(0, 500)).ToArray();
+        _words = Enumerable.Range(0, Length).Select(_ => WordPrefix + random.Next(0, WordPoolSize)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -54,14 +57,26 @@ public class TopKFrequentWordsBenchmarks
     [Benchmark]
     public string[] HashMapThenSizeKMinHeap()
     {
+        var counts = CountWords(_words);
+        var heap = BuildTopKHeap(counts);
+        return ExtractDescending(heap);
+    }
+
+    private static HashMap<string, int> CountWords(string[] words)
+    {
         var counts = new HashMap<string, int>();
 
-        foreach (var word in _words)
+        foreach (var word in words)
         {
             counts.TryGetValue(word, out var count);
             counts.Set(word, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<WordPriority, MinHeapOrder<WordPriority>> BuildTopKHeap(HashMap<string, int> counts)
+    {
         var heap = new Heap<WordPriority, MinHeapOrder<WordPriority>>();
 
         foreach (var word in counts.Keys)
@@ -75,6 +90,11 @@ public class TopKFrequentWordsBenchmarks
             }
         }
 
+        return heap;
+    }
+
+    private static string[] ExtractDescending(Heap<WordPriority, MinHeapOrder<WordPriority>> heap)
+    {
         var result = new string[heap.Count];
 
         for (var i = result.Length - 1; i >= 0; i--)

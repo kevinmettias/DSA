@@ -21,12 +21,24 @@ public sealed partial class CountPrimesTests
             return 0;
         }
 
+        var isComposite = BuildCompositeTracker(n);
+        SieveComposites(isComposite, n);
+        return CountUnmarked(isComposite, n);
+    }
+
+    private static DynamicArray<bool> BuildCompositeTracker(int n)
+    {
         var isComposite = new DynamicArray<bool>();
         for (var i = 0; i < n; i++)
         {
             isComposite.Add(false);
         }
 
+        return isComposite;
+    }
+
+    private static void SieveComposites(DynamicArray<bool> isComposite, int n)
+    {
         for (var i = 2; i * i < n; i++)
         {
             if (isComposite.Get(i))
@@ -39,7 +51,10 @@ public sealed partial class CountPrimesTests
                 isComposite.Set(multiple, true);
             }
         }
+    }
 
+    private static int CountUnmarked(DynamicArray<bool> isComposite, int n)
+    {
         var count = 0;
         for (var i = 2; i < n; i++)
         {

@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DailyTemperaturesBenchmarks
 {
+    private const int RandomSeed = 739; // LC problem number
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -19,7 +21,7 @@ public class DailyTemperaturesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(739);
+        var random = new Random(RandomSeed);
         _temperatures = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
     }
 

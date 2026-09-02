@@ -57,7 +57,8 @@ public sealed class SearchSuggestionsSystemTests
 
         var suggestions = SuggestedProducts(products, "havana");
 
-        Assert.Equal(Enumerable.Repeat(new[] { "havana" }, 6), suggestions);
+        var expected = Enumerable.Repeat(new[] { "havana" }, 6);
+        Assert.Equal(expected, suggestions);
     }
 
     private static List<string[]> SuggestedProducts(string[] products, string searchWord)
@@ -72,7 +73,8 @@ public sealed class SearchSuggestionsSystemTests
         foreach (var ch in searchWord)
         {
             prefix += ch;
-            result.Add(MatchesForPrefix(sorted, sequence, prefix));
+            var matches = MatchesForPrefix(sorted, sequence, prefix);
+            result.Add(matches);
         }
 
         return result;

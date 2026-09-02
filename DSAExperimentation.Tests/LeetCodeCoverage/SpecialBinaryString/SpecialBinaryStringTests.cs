@@ -42,6 +42,13 @@ public sealed partial class SpecialBinaryStringTests
             return s;
         }
 
+        var pieces = SplitIntoPieces(s);
+        SortDescending(pieces);
+        return string.Concat(pieces);
+    }
+
+    private static string[] SplitIntoPieces(string s)
+    {
         var pieces = new List<string>();
         var balance = 0;
         var start = 0;
@@ -52,16 +59,18 @@ public sealed partial class SpecialBinaryStringTests
 
             if (balance == 0)
             {
-                pieces.Add("1" + MakeLargestSpecial(s.Substring(start + 1, i - start - 1)) + "0");
+                var interior = s.Substring(start + 1, i - start - 1);
+                pieces.Add("1" + MakeLargestSpecial(interior) + "0");
                 start = i + 1;
             }
         }
 
-        var items = pieces.ToArray();
+        return pieces.ToArray();
+    }
+
+    private static void SortDescending(string[] items)
+    {
         var descending = Comparer<string>.Create((a, b) => string.CompareOrdinal(b, a));
-
         MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(items), descending);
-
-        return string.Concat(items);
     }
 }

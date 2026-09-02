@@ -22,6 +22,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SimilarStringGroupsBenchmarks
 {
+    private const int RandomSeed = 839; // LC 839
+    private const int WordsPerCluster = 8;
+    private const int CoinFlipBound = 2;
+    private const int MaxMismatchCount = 2;
+
     [Params(60, 240)]
     public int WordCount;
 
@@ -30,42 +35,52 @@ public class SimilarStringGroupsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(839);
+        var random = new Random(RandomSeed);
         const string alphabet = "abcdefgh";
-        var clusterCount = Math.Max(1, WordCount / 8);
+        var clusterCount = Math.Max(1, WordCount / WordsPerCluster);
 
         var clusters = new (char[] Base, int SwapI, int SwapJ)[clusterCount];
 
         for (var c = 0; c < clusterCount; c++)
         {
-            var chars = alphabet.ToCharArray();
-            Shuffle(chars, random);
-
-            var i = random.Next(chars.Length);
-            int j;
-
-            do
-            {
-                j = random.Next(chars.Length);
-            } while (j == i);
-
-            clusters[c] = (chars, i, j);
+            clusters[c] = BuildCluster(alphabet, random);
         }
 
         _words = new string[WordCount];
 
         for (var w = 0; w < WordCount; w++)
         {
-            var (baseChars, i, j) = clusters[w % clusterCount];
-            var word = (char[])baseChars.Clone();
-
-            if (random.Next(2) == 0)
-            {
-                (word[i], word[j]) = (word[j], word[i]);
-            }
-
-            _words[w] = new string(word);
+            _words[w] = BuildWord(clusters, w, clusterCount, random);
         }
+    }
+
+    private static string BuildWord((char[] Base, int SwapI, int SwapJ)[] clusters, int w, int clusterCount, Random random)
+    {
+        var (baseChars, i, j) = clusters[w % clusterCount];
+        var word = (char[])baseChars.Clone();
+
+        if (random.Next(CoinFlipBound) == 0)
+        {
+            (word[i], word[j]) = (word[j], word[i]);
+        }
+
+        return new string(word);
+    }
+
+    private static (char[] Base, int SwapI, int SwapJ) BuildCluster(string alphabet, Random random)
+    {
+        var chars = alphabet.ToCharArray();
+        Shuffle(chars, random);
+
+        var i = random.Next(chars.Length);
+        int j;
+
+        do
+        {
+            j = random.Next(chars.Length);
+        } while (j == i);
+
+        return (chars, i, j);
     }
 
     private static void Shuffle(char[] chars, Random random)
@@ -91,23 +106,28 @@ public class SimilarStringGroupsBenchmarks
         {
             for (var j = i + 1; j < _words.Length; j++)
             {
-                if (!IsSimilar(_words[i], _words[j]))
-                {
-                    continue;
-                }
-
-                var groupI = groups.First(g => g.Contains(i));
-                var groupJ = groups.First(g => g.Contains(j));
-
-                if (groupI != groupJ)
-                {
-                    groupI.UnionWith(groupJ);
-                    groups.Remove(groupJ);
-                }
+                MergeIfSimilar(groups, i, j);
             }
         }
 
         return groups.Count;
+    }
+
+    private void MergeIfSimilar(List<HashSet<int>> groups, int i, int j)
+    {
+        if (!IsSimilar(_words[i], _words[j]))
+        {
+            return;
+        }
+
+        var groupI = groups.First(g => g.Contains(i));
+        var groupJ = groups.First(g => g.Contains(j));
+
+        if (groupI != groupJ)
+        {
+            groupI.UnionWith(groupJ);
+            groups.Remove(groupJ);
+        }
     }
 
     [Benchmark]
@@ -136,37 +156,44 @@ public class SimilarStringGroupsBenchmarks
         return roots.Count;
     }
 
+    private readonly record struct MismatchState(int Count, int First, int Second);
+
     private static bool IsSimilar(string first, string second)
     {
-        var mismatchCount = 0;
-        var firstMismatch = -1;
-        var secondMismatch = -1;
+        var state = new MismatchState(0, -1, -1);
 
         for (var i = 0; i < first.Length; i++)
         {
-            if (first[i] == second[i])
-            {
-                continue;
-            }
+            var next = TrackMismatch(first[i], second[i], i, state);
 
-            mismatchCount++;
-
-            if (mismatchCount > 2)
+            if (next is null)
             {
                 return false;
             }
 
-            if (mismatchCount == 1)
-            {
-                firstMismatch = i;
-            }
-            else
-            {
-                secondMismatch = i;
-            }
+            state = next.Value;
         }
 
-        return mismatchCount == 0
-            || (mismatchCount == 2 && first[firstMismatch] == second[secondMismatch] && first[secondMismatch] == second[firstMismatch]);
+        return state.Count == 0
+            || (state.Count == MaxMismatchCount && first[state.First] == second[state.Second] && first[state.Second] == second[state.First]);
+    }
+
+    private static MismatchState? TrackMismatch(char firstChar, char secondChar, int index, MismatchState state)
+    {
+        if (firstChar == secondChar)
+        {
+            return state;
+        }
+
+        var count = state.Count + 1;
+
+        if (count > MaxMismatchCount)
+        {
+            return null;
+        }
+
+        return count == 1
+            ? state with { Count = count, First = index }
+            : state with { Count = count, Second = index };
     }
 }

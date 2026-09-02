@@ -72,22 +72,27 @@ public sealed class EliminationGameTests
 
         while (current.Count > 1)
         {
-            if (!leftToRight)
-            {
-                current = Reverse(current);
-            }
-
-            current = KeepOddPositions(current);
-
-            if (!leftToRight)
-            {
-                current = Reverse(current);
-            }
-
-            leftToRight = !leftToRight;
+            (current, leftToRight) = RunPass(current, leftToRight);
         }
 
         return current.Get(0);
+    }
+
+    private static (DynamicArray<int> Current, bool LeftToRight) RunPass(DynamicArray<int> current, bool leftToRight)
+    {
+        if (!leftToRight)
+        {
+            current = Reverse(current);
+        }
+
+        current = KeepOddPositions(current);
+
+        if (!leftToRight)
+        {
+            current = Reverse(current);
+        }
+
+        return (current, !leftToRight);
     }
 
     private static DynamicArray<int> KeepOddPositions(DynamicArray<int> values)

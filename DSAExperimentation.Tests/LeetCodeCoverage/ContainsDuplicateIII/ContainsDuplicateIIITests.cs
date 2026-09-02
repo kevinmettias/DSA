@@ -17,7 +17,10 @@ public sealed partial class ContainsDuplicateIIITests
     [InlineData(new[] { -1, -1 }, 1, 0, true)]
     [InlineData(new[] { -1, 2147483647 }, 1, 2147483647, false)]
     public void ContainsNearbyAlmostDuplicate_Examples_ReturnsExpected(int[] nums, int indexDiff, int valueDiff, bool expected)
-        => Assert.Equal(expected, ContainsNearbyAlmostDuplicate(nums, indexDiff, valueDiff));
+    {
+        var actual = ContainsNearbyAlmostDuplicate(nums, indexDiff, valueDiff);
+        Assert.Equal(expected, actual);
+    }
 
     private static bool ContainsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff)
     {
@@ -26,30 +29,43 @@ public sealed partial class ContainsDuplicateIIITests
             return false;
         }
 
-        var width = (long)valueDiff + 1;
+        var config = new SlidingWindowConfig(indexDiff, valueDiff, (long)valueDiff + 1);
         var buckets = new HashMap<long, long>();
 
         for (var i = 0; i < nums.Length; i++)
         {
-            var bucketId = BucketId(nums[i], width);
-
-            if (buckets.HasKey(bucketId)
-                || (buckets.TryGetValue(bucketId - 1, out var lower) && nums[i] - lower <= valueDiff)
-                || (buckets.TryGetValue(bucketId + 1, out var upper) && upper - nums[i] <= valueDiff))
+            if (HasNearbyDuplicate(nums, i, config, buckets))
             {
                 return true;
-            }
-
-            buckets.Set(bucketId, nums[i]);
-
-            if (i >= indexDiff)
-            {
-                buckets.TryRemove(BucketId(nums[i - indexDiff], width));
             }
         }
 
         return false;
     }
 
+    private static bool HasNearbyDuplicate(int[] nums, int i, SlidingWindowConfig config, HashMap<long, long> buckets)
+    {
+        var bucketId = BucketId(nums[i], config.Width);
+
+        if (buckets.HasKey(bucketId)
+            || (buckets.TryGetValue(bucketId - 1, out var lower) && nums[i] - lower <= config.ValueDiff)
+            || (buckets.TryGetValue(bucketId + 1, out var upper) && upper - nums[i] <= config.ValueDiff))
+        {
+            return true;
+        }
+
+        buckets.Set(bucketId, nums[i]);
+
+        if (i >= config.IndexDiff)
+        {
+            var evictedBucketId = BucketId(nums[i - config.IndexDiff], config.Width);
+            buckets.TryRemove(evictedBucketId);
+        }
+
+        return false;
+    }
+
     private static long BucketId(long value, long width) => value >= 0 ? value / width : ((value + 1) / width) - 1;
+
+    private readonly record struct SlidingWindowConfig(int IndexDiff, int ValueDiff, long Width);
 }

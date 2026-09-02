@@ -10,15 +10,21 @@ public sealed partial class SubtreeOfAnotherTreeTests
 {
     [Fact]
     public void IsSubtree_MatchingSubtreeExists_ReturnsTrue()
-        => Assert.True(IsSubtree(
+    {
+        var isSubtree = IsSubtree(
             new BinaryTreeNode<int>(3) { Left = new(4) { Left = new(1), Right = new(2) }, Right = new(5) },
-            new BinaryTreeNode<int>(4) { Left = new(1), Right = new(2) }));
+            new BinaryTreeNode<int>(4) { Left = new(1), Right = new(2) });
+        Assert.True(isSubtree);
+    }
 
     [Fact]
     public void IsSubtree_SameShapeDifferentValues_ReturnsFalse()
-        => Assert.False(IsSubtree(
+    {
+        var isSubtree = IsSubtree(
             new BinaryTreeNode<int>(3) { Left = new(4) { Left = new(1), Right = new(2) { Left = new(0) } }, Right = new(5) },
-            new BinaryTreeNode<int>(4) { Left = new(1), Right = new(2) }));
+            new BinaryTreeNode<int>(4) { Left = new(1), Right = new(2) });
+        Assert.False(isSubtree);
+    }
 
     private static bool IsSubtree(BinaryTreeNode<int>? root, BinaryTreeNode<int> subRoot)
         => root is not null && (IsSame(root, subRoot) || IsSubtree(root.Left, subRoot) || IsSubtree(root.Right, subRoot));

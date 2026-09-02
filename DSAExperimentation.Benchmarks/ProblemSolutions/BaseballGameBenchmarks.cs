@@ -12,6 +12,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BaseballGameBenchmarks
 {
+    private const string DoubleOp = "D";
+    private const string SumOp = "+";
+    private const int DoublingMultiplier = 2;
+    private const int SecondToLastOffset = 2;
+    private const int OpCyclePeriod = 5;
+    private const int DoubleOpRemainder = 2;
+    private const int SumOpRemainder = 3;
+    private const int MaxBaseScore = 50;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -28,26 +37,33 @@ public class BaseballGameBenchmarks
 
         foreach (var op in _ops)
         {
-            switch (op)
-            {
-                case "D":
-                    record[top] = record[top - 1] * 2;
-                    top++;
-                    break;
-                case "+":
-                    record[top] = record[top - 1] + record[top - 2];
-                    top++;
-                    break;
-                default:
-                    record[top] = int.Parse(op);
-                    top++;
-                    break;
-            }
+            top = ApplyOperation(op, record, top);
         }
 
+        return SumRecord(record, top);
+    }
+
+    private static int ApplyOperation(string op, int[] record, int top)
+    {
+        switch (op)
+        {
+            case DoubleOp:
+                record[top] = record[top - 1] * DoublingMultiplier;
+                return top + 1;
+            case SumOp:
+                record[top] = record[top - 1] + record[top - SecondToLastOffset];
+                return top + 1;
+            default:
+                record[top] = int.Parse(op);
+                return top + 1;
+        }
+    }
+
+    private static int SumRecord(int[] record, int count)
+    {
         var total = 0;
 
-        for (var i = 0; i < top; i++)
+        for (var i = 0; i < count; i++)
         {
             total += record[i];
         }
@@ -62,26 +78,36 @@ public class BaseballGameBenchmarks
 
         foreach (var op in _ops)
         {
-            switch (op)
-            {
-                case "D":
-                    record.TryPeek(out var last);
-                    record.Push(last * 2);
-                    break;
-                case "+":
-                    record.TryPop(out var top);
-                    record.TryPop(out var second);
-                    var sum = top + second;
-                    record.Push(second);
-                    record.Push(top);
-                    record.Push(sum);
-                    break;
-                default:
-                    record.Push(int.Parse(op));
-                    break;
-            }
+            ApplyStackOperation(op, record);
         }
 
+        return DrainStackTotal(record);
+    }
+
+    private static void ApplyStackOperation(string op, RepoIntStack record)
+    {
+        switch (op)
+        {
+            case DoubleOp:
+                record.TryPeek(out var last);
+                record.Push(last * DoublingMultiplier);
+                break;
+            case SumOp:
+                record.TryPop(out var top);
+                record.TryPop(out var second);
+                var sum = top + second;
+                record.Push(second);
+                record.Push(top);
+                record.Push(sum);
+                break;
+            default:
+                record.Push(int.Parse(op));
+                break;
+        }
+    }
+
+    private static int DrainStackTotal(RepoIntStack record)
+    {
         var total = 0;
 
         while (record.TryPop(out var value))
@@ -98,11 +124,11 @@ public class BaseballGameBenchmarks
 
         for (var i = 0; i < length; i++)
         {
-            ops[i] = (i % 5) switch
+            ops[i] = (i % OpCyclePeriod) switch
             {
-                2 => "D",
-                3 => "+",
-                _ => ((i % 50) + 1).ToString(),
+                DoubleOpRemainder => DoubleOp,
+                SumOpRemainder => SumOp,
+                _ => ((i % MaxBaseScore) + 1).ToString(),
             };
         }
 

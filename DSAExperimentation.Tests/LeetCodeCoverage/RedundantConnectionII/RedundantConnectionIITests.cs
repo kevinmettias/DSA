@@ -46,31 +46,41 @@ public sealed partial class RedundantConnectionIITests
     private static int[] FindRedundantDirectedEdge(int[][] edges)
     {
         var n = edges.Length;
+        var (conflictEdge, priorEdge) = FindConflictingParentEdge(edges);
+
+        return conflictEdge == -1
+            ? FindCycleEdge(edges, n, skip: -1)
+            : ResolveTwoParentConflict(edges, conflictEdge, priorEdge);
+    }
+
+    // Walks every edge once, looking for the first child that already has a parent
+    // edge - that pair is the "two parents" conflict this repo's DisjointSet scan
+    // alone can't detect. Returns (-1, -1) when no node has two parents.
+    private static (int ConflictEdge, int PriorEdge) FindConflictingParentEdge(int[][] edges)
+    {
+        var n = edges.Length;
         var parentEdgeOf = new int[n + 1];
         Array.Fill(parentEdgeOf, -1);
-
-        var conflictEdge = -1;
-        var priorEdge = -1;
 
         for (var i = 0; i < n; i++)
         {
             var child = edges[i][1];
             if (parentEdgeOf[child] != -1)
             {
-                priorEdge = parentEdgeOf[child];
-                conflictEdge = i;
-                break;
+                return (i, parentEdgeOf[child]);
             }
 
             parentEdgeOf[child] = i;
         }
 
-        if (conflictEdge == -1)
-        {
-            return FindCycleEdge(edges, n, skip: -1);
-        }
+        return (-1, -1);
+    }
 
-        var cycleEdge = FindCycleEdge(edges, n, skip: conflictEdge);
+    // Drops the later of the two conflicting edges first; if that still leaves a
+    // cycle, the earlier one was the real redundant edge instead.
+    private static int[] ResolveTwoParentConflict(int[][] edges, int conflictEdge, int priorEdge)
+    {
+        var cycleEdge = FindCycleEdge(edges, edges.Length, skip: conflictEdge);
         return cycleEdge.Length == 0 ? edges[conflictEdge] : edges[priorEdge];
     }
 

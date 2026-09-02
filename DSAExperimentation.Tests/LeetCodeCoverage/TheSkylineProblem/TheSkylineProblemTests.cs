@@ -62,33 +62,37 @@ public sealed partial class TheSkylineProblemTests
 
         events.Sort((a, b) => a.X.CompareTo(b.X));
 
-        var heap = new Heap<int, MaxHeapOrder<int>>();
-        var pendingRemovals = new HashMap<int, int>();
-        var result = new List<int[]>();
-        var previousHeight = 0;
+        var state = new SweepState();
         var i = 0;
 
         while (i < events.Count)
         {
-            var x = events[i].X;
-
-            while (i < events.Count && events[i].X == x)
-            {
-                ApplyEvent(events[i].Height, heap, pendingRemovals);
-                i++;
-            }
-
-            DiscardRemovedTops(heap, pendingRemovals);
-            var currentHeight = heap.TryPeek(out var top) ? top : 0;
-
-            if (currentHeight != previousHeight)
-            {
-                result.Add([x, currentHeight]);
-                previousHeight = currentHeight;
-            }
+            i = ProcessNextXCoordinate(events, i, state);
         }
 
-        return result;
+        return state.Result;
+    }
+
+    private static int ProcessNextXCoordinate(List<(int X, int Height)> events, int i, SweepState state)
+    {
+        var x = events[i].X;
+
+        while (i < events.Count && events[i].X == x)
+        {
+            ApplyEvent(events[i].Height, state.Heap, state.PendingRemovals);
+            i++;
+        }
+
+        DiscardRemovedTops(state.Heap, state.PendingRemovals);
+        var currentHeight = state.Heap.TryPeek(out var top) ? top : 0;
+
+        if (currentHeight != state.PreviousHeight)
+        {
+            state.Result.Add([x, currentHeight]);
+            state.PreviousHeight = currentHeight;
+        }
+
+        return i;
     }
 
     private static void ApplyEvent(int height, Heap<int, MaxHeapOrder<int>> heap, HashMap<int, int> pendingRemovals)
@@ -111,5 +115,16 @@ public sealed partial class TheSkylineProblemTests
             heap.TryPop(out _);
             pendingRemovals.Set(top, count - 1);
         }
+    }
+
+    private sealed class SweepState
+    {
+        public Heap<int, MaxHeapOrder<int>> Heap { get; } = new();
+
+        public HashMap<int, int> PendingRemovals { get; } = new();
+
+        public List<int[]> Result { get; } = [];
+
+        public int PreviousHeight { get; set; }
     }
 }

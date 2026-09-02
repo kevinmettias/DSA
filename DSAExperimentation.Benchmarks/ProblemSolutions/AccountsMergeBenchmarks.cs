@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AccountsMergeBenchmarks
 {
+    private const int RandomSeed = 721; // LC problem number
+    private const int EmailPoolDivisor = 5;
+    private const int MinEmailsPerAccount = 2;
+    private const int EmailCountRange = 3;
+
     [Params(50, 400)]
     public int AccountCount;
 
@@ -25,15 +30,16 @@ public class AccountsMergeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(721);
-        var emailPool = Enumerable.Range(0, Math.Max(1, AccountCount / 5))
+        var random = new Random(RandomSeed);
+        var emailPoolSize = Math.Max(1, AccountCount / EmailPoolDivisor);
+        var emailPool = Enumerable.Range(0, emailPoolSize)
             .Select(i => $"user{i}@mail.com")
             .ToArray();
 
         _accounts = Enumerable.Range(0, AccountCount)
             .Select(i =>
             {
-                var emailCount = 2 + random.Next(3);
+                var emailCount = MinEmailsPerAccount + random.Next(EmailCountRange);
                 var emails = Enumerable.Range(0, emailCount).Select(_ => emailPool[random.Next(emailPool.Length)]).Distinct();
                 return new[] { $"Person{i}" }.Concat(emails).ToArray();
             })
@@ -43,29 +49,45 @@ public class AccountsMergeBenchmarks
     [Benchmark(Baseline = true)]
     public int PairwiseEmailOverlapScan()
     {
-        var parent = new int[_accounts.Length];
+        var parent = BuildIdentityParent(_accounts.Length);
+        UnionSharedEmailPairs(parent, _accounts);
+        return CountDistinctRoots(parent);
+    }
+
+    private static int[] BuildIdentityParent(int size)
+    {
+        var parent = new int[size];
 
         for (var i = 0; i < parent.Length; i++)
         {
             parent[i] = i;
         }
 
-        for (var i = 0; i < _accounts.Length; i++)
+        return parent;
+    }
+
+    private static void UnionSharedEmailPairs(int[] parent, string[][] accounts)
+    {
+        for (var i = 0; i < accounts.Length; i++)
         {
-            for (var j = i + 1; j < _accounts.Length; j++)
+            for (var j = i + 1; j < accounts.Length; j++)
             {
-                if (SharesEmail(_accounts[i], _accounts[j]))
+                if (SharesEmail(accounts[i], accounts[j]))
                 {
                     Union(parent, i, j);
                 }
             }
         }
+    }
 
+    private static int CountDistinctRoots(int[] parent)
+    {
         var roots = new HashSet<int>();
 
         for (var i = 0; i < parent.Length; i++)
         {
-            roots.Add(Find(parent, i));
+            var root = Find(parent, i);
+            roots.Add(root);
         }
 
         return roots.Count;
@@ -113,12 +135,17 @@ public class AccountsMergeBenchmarks
     {
         var components = new DisjointSet(_accounts.Length);
         var firstOwner = new HashMap<string, int>();
+        UnionAccountsBySharedEmail(_accounts, components, firstOwner);
+        return CountDisjointSetRoots(components, _accounts.Length);
+    }
 
-        for (var i = 0; i < _accounts.Length; i++)
+    private static void UnionAccountsBySharedEmail(string[][] accounts, DisjointSet components, HashMap<string, int> firstOwner)
+    {
+        for (var i = 0; i < accounts.Length; i++)
         {
-            for (var j = 1; j < _accounts[i].Length; j++)
+            for (var j = 1; j < accounts[i].Length; j++)
             {
-                var email = _accounts[i][j];
+                var email = accounts[i][j];
 
                 if (firstOwner.TryGetValue(email, out var owner))
                 {
@@ -130,10 +157,13 @@ public class AccountsMergeBenchmarks
                 }
             }
         }
+    }
 
+    private static int CountDisjointSetRoots(DisjointSet components, int accountCount)
+    {
         var roots = new HashMap<int, bool>();
 
-        for (var i = 0; i < _accounts.Length; i++)
+        for (var i = 0; i < accountCount; i++)
         {
             roots.Set(components.Find(i), true);
         }

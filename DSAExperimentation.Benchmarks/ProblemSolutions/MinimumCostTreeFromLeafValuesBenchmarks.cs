@@ -19,6 +19,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumCostTreeFromLeafValuesBenchmarks
 {
+    // LC problem number, reused as the deterministic benchmark seed.
+    private const int RandomSeed = 1130;
+
+    private const int MaxLeafValueExclusive = 100;
+
+    private const int RemainingStackFloor = 2;
+
     [Params(10, 14)]
     public int Length;
 
@@ -27,8 +34,8 @@ public class MinimumCostTreeFromLeafValuesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1130);
-        _arr = Enumerable.Range(0, Length).Select(_ => random.Next(1, 100)).ToArray();
+        var random = new Random(RandomSeed);
+        _arr = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxLeafValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -71,7 +78,17 @@ public class MinimumCostTreeFromLeafValuesBenchmarks
         stack.Push(int.MaxValue);
         long total = 0;
 
-        foreach (var value in _arr)
+        total += MergeSmallerNeighbors(stack, _arr);
+        total += DrainRemainingStack(stack);
+
+        return total;
+    }
+
+    private static long MergeSmallerNeighbors(RepoIntStack stack, int[] values)
+    {
+        long total = 0;
+
+        foreach (var value in values)
         {
             while (stack.TryPeek(out var top) && top <= value)
             {
@@ -83,7 +100,14 @@ public class MinimumCostTreeFromLeafValuesBenchmarks
             stack.Push(value);
         }
 
-        while (stack.Count > 2)
+        return total;
+    }
+
+    private static long DrainRemainingStack(RepoIntStack stack)
+    {
+        long total = 0;
+
+        while (stack.Count > RemainingStackFloor)
         {
             stack.TryPop(out var mid);
             stack.TryPeek(out var next);

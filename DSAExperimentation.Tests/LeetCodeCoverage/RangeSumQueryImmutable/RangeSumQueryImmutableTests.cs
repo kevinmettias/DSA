@@ -13,9 +13,13 @@ public sealed class RangeSumQueryImmutableTests
     {
         var numArray = new NumArrayOperations([-2, 0, 3, -5, 2, -1]);
 
-        Assert.Equal(1, numArray.SumRange(0, 2));
-        Assert.Equal(-1, numArray.SumRange(2, 5));
-        Assert.Equal(-3, numArray.SumRange(0, 5));
+        var firstRange = numArray.SumRange(0, 2);
+        var secondRange = numArray.SumRange(2, 5);
+        var thirdRange = numArray.SumRange(0, 5);
+
+        Assert.Equal(1, firstRange);
+        Assert.Equal(-1, secondRange);
+        Assert.Equal(-3, thirdRange);
     }
 
     [Fact]
@@ -23,7 +27,9 @@ public sealed class RangeSumQueryImmutableTests
     {
         var numArray = new NumArrayOperations([7, -3, 4]);
 
-        Assert.Equal(-3, numArray.SumRange(1, 1));
+        var range = numArray.SumRange(1, 1);
+
+        Assert.Equal(-3, range);
     }
 
     private sealed class NumArrayOperations

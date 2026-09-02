@@ -78,12 +78,27 @@ public sealed class SmallestSufficientTeamTests
 
     private static int[] SmallestSufficientTeam(string[] reqSkills, string[][] people)
     {
+        var skillBit = BuildSkillBitIndex(reqSkills);
+        var personSkillMask = BuildPersonSkillMasks(people, skillBit);
+        var fullMask = (1 << reqSkills.Length) - 1;
+        var teamMask = ComputeTeamMask(personSkillMask, fullMask);
+
+        return ExtractTeam(teamMask, people.Length);
+    }
+
+    private static HashMap<string, int> BuildSkillBitIndex(string[] reqSkills)
+    {
         var skillBit = new HashMap<string, int>();
         for (var i = 0; i < reqSkills.Length; i++)
         {
             skillBit.Set(reqSkills[i], i);
         }
 
+        return skillBit;
+    }
+
+    private static int[] BuildPersonSkillMasks(string[][] people, HashMap<string, int> skillBit)
+    {
         var personSkillMask = new int[people.Length];
         for (var p = 0; p < people.Length; p++)
         {
@@ -96,37 +111,48 @@ public sealed class SmallestSufficientTeamTests
             }
         }
 
-        var fullMask = (1 << reqSkills.Length) - 1;
+        return personSkillMask;
+    }
 
-        var teamMask = Memoizer.Memoize<int, long>(fullMask, (missing, smallestTeamFor) =>
+    private static long ComputeTeamMask(int[] personSkillMask, int fullMask)
+        => Memoizer.Memoize<int, long>(fullMask, (missing, smallestTeamFor) => Best(personSkillMask, missing, smallestTeamFor));
+
+    private static long Best(int[] personSkillMask, int missing, Func<int, long> smallestTeamFor)
+    {
+        if (missing == 0)
         {
-            if (missing == 0)
+            return 0L;
+        }
+
+        return FindBestCandidate(personSkillMask, missing, smallestTeamFor);
+    }
+
+    private static long FindBestCandidate(int[] personSkillMask, int missing, Func<int, long> smallestTeamFor)
+    {
+        var targetBit = missing & -missing;
+        var best = -1L;
+
+        for (var p = 0; p < personSkillMask.Length; p++)
+        {
+            if ((personSkillMask[p] & targetBit) == 0)
             {
-                return 0L;
+                continue;
             }
 
-            var targetBit = missing & -missing;
-            var best = -1L;
-
-            for (var p = 0; p < personSkillMask.Length; p++)
+            var candidate = smallestTeamFor(missing & ~personSkillMask[p]) | (1L << p);
+            if (best == -1 || PopCount(candidate) < PopCount(best))
             {
-                if ((personSkillMask[p] & targetBit) == 0)
-                {
-                    continue;
-                }
-
-                var candidate = smallestTeamFor(missing & ~personSkillMask[p]) | (1L << p);
-                if (best == -1 || PopCount(candidate) < PopCount(best))
-                {
-                    best = candidate;
-                }
+                best = candidate;
             }
+        }
 
-            return best;
-        });
+        return best;
+    }
 
+    private static int[] ExtractTeam(long teamMask, int peopleCount)
+    {
         var team = new List<int>();
-        for (var p = 0; p < people.Length; p++)
+        for (var p = 0; p < peopleCount; p++)
         {
             if ((teamMask & (1L << p)) != 0)
             {

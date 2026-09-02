@@ -29,34 +29,47 @@ public sealed partial class RemoveDuplicateLettersTests
             lastOccurrence[s[i] - 'a'] = i;
         }
 
-        var stack = new RepoCharStack();
-        var onStack = new RepoCharSet();
+        var candidate = new CandidateStack();
 
         for (var i = 0; i < s.Length; i++)
         {
-            var c = s[i];
-
-            if (onStack.Has(c))
-            {
-                continue;
-            }
-
-            while (stack.TryPeek(out var top) && top > c && lastOccurrence[top - 'a'] > i)
-            {
-                stack.TryPop(out _);
-                onStack.TryRemove(top);
-            }
-
-            stack.Push(c);
-            onStack.TryAdd(c);
+            AppendCandidateLetter(candidate, lastOccurrence, s[i], i);
         }
 
-        var result = new char[stack.Count];
+        var result = new char[candidate.Stack.Count];
         for (var i = result.Length - 1; i >= 0; i--)
         {
-            stack.TryPop(out result[i]);
+            candidate.Stack.TryPop(out result[i]);
         }
 
         return new string(result);
+    }
+
+    // Skips a letter already on the candidate stack, otherwise pops any larger
+    // letter that still reappears later in the string before pushing this one -
+    // the greedy monotonic-stack step that keeps the candidate answer smallest.
+    private static void AppendCandidateLetter(CandidateStack candidate, int[] lastOccurrence, char c, int index)
+    {
+        if (candidate.OnStack.Has(c))
+        {
+            return;
+        }
+
+        while (candidate.Stack.TryPeek(out var top) && top > c && lastOccurrence[top - 'a'] > index)
+        {
+            candidate.Stack.TryPop(out _);
+            candidate.OnStack.TryRemove(top);
+        }
+
+        candidate.Stack.Push(c);
+        candidate.OnStack.TryAdd(c);
+    }
+
+    // The candidate answer (as a stack) and which letters are currently on it,
+    // always mutated together.
+    private sealed class CandidateStack
+    {
+        public readonly RepoCharStack Stack = new();
+        public readonly RepoCharSet OnStack = new();
     }
 }

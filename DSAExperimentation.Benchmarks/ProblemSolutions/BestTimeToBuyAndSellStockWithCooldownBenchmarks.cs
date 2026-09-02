@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
 {
+    private const int MaxPrice = 100;
+    private const int CooldownDays = 2;
+
     [Params(20, 28)]
     public int Length;
 
@@ -21,7 +24,7 @@ public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(0, 100)).ToArray();
+        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxPrice)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -36,7 +39,7 @@ public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
 
         if (holding)
         {
-            var sell = _prices[day] + ProfitFrom(day + 2, false);
+            var sell = _prices[day] + ProfitFrom(day + CooldownDays, false);
             var hold = ProfitFrom(day + 1, true);
             return Math.Max(sell, hold);
         }
@@ -61,7 +64,7 @@ public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
 
             if (holding)
             {
-                var sell = _prices[day] + profit((day + 2, false));
+                var sell = _prices[day] + profit((day + CooldownDays, false));
                 var hold = profit((day + 1, true));
                 return Math.Max(sell, hold);
             }

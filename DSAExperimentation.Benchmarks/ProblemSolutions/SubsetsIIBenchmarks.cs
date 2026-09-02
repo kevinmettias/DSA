@@ -1,13 +1,28 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Backtracking;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.SubsetsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: the arm is SubsetsIISolution's, the same method SubsetsIITests
+// proves correct. The [Benchmark(Baseline = true)] "IterativeDedup" arm this
+// migrated out of never implemented an independent algorithm - its body built an
+// unused HashSet<string>, looped over a discarded HashSet<int> doing nothing, and
+// then returned Backtracking()'s own value directly. It was not a second strategy,
+// just dead code wrapping the one real arm, so it is not preserved here.
 [MemoryDiagnoser]
 public class SubsetsIIBenchmarks
 {
-    private int[] _values=null!; [Params(10,14)] public int Length; [GlobalSetup] public void Setup()=>_values=Enumerable.Range(0,Length).Select(i=>i/2).ToArray();
-    [Benchmark(Baseline=true)] public int IterativeDedup(){var set=new HashSet<string>{""};foreach(var v in _values.ToHashSet()){} return Backtracking();}
-    [Benchmark] public int Backtracking(){Array.Sort(_values);var count=0;var state=new State();Backtrack.Search<State,int>(state,_=>true,s=>Enumerable.Range(s.Start,_values.Length-s.Start).Where(i=>i==s.Start||_values[i]!=_values[i-1]),(s,i)=>{s.Starts.Push(s.Start);s.Start=i+1;},(s,_)=>s.Start=s.Starts.Pop(),_=>count++);return count;}
-    private sealed class State{public int Start{get;set;} public Stack<int> Starts{get;}=new();}
+    private const int DuplicateGroupSize = 2;
+
+    [Params(10, 14)]
+    public int Length;
+
+    private int[] _values = null!;
+
+    [GlobalSetup]
+    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / DuplicateGroupSize).ToArray();
+
+    [Benchmark(Baseline = true)]
+    public List<List<int>> BacktrackSkipDuplicates() =>
+        SubsetsIISolution.FindAllSubsetsByBacktrackSkipDuplicates(_values);
 }

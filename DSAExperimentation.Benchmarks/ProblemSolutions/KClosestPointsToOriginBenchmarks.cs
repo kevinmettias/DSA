@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class KClosestPointsToOriginBenchmarks
 {
     private const int K = 10;
+    private const int RandomSeed = 973; // LC problem number
+    private const int CoordinateBound = 10_000;
 
     [Params(1_000, 50_000)]
     public int Length;
@@ -20,9 +22,9 @@ public class KClosestPointsToOriginBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(973);
+        var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, Length)
-            .Select(_ => new[] { random.Next(-10_000, 10_000), random.Next(-10_000, 10_000) })
+            .Select(_ => new[] { random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound) })
             .ToArray();
     }
 

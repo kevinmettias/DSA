@@ -16,6 +16,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortestPathAlgorithmBenchmarks
 {
+    private const int ExtraEdgesPerNode = 3;
+    private const int RandomSeed = 42;
+
     [Params(50, 300)]
     public int NodeCount;
 
@@ -25,7 +28,7 @@ public class ShortestPathAlgorithmBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var (vertices, source) = RandomWeightedGraphs.Build(NodeCount, extraEdgesPerNode: 3, seed: 42);
+        var (vertices, source) = RandomWeightedGraphs.Build(NodeCount, extraEdgesPerNode: ExtraEdgesPerNode, seed: RandomSeed);
         _vertices = vertices;
         _source = source;
     }

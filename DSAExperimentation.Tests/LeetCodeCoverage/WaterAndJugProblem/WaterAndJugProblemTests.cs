@@ -17,7 +17,10 @@ public sealed partial class WaterAndJugProblemTests
     [InlineData(1, 2, 3, true)]
     [InlineData(2, 3, 0, true)]
     public void CanMeasureWater_LeetCodeExamples_MatchesExpectedReachability(int jugX, int jugY, int target, bool expected)
-        => Assert.Equal(expected, CanMeasureWater(jugX, jugY, target));
+    {
+        var actual = CanMeasureWater(jugX, jugY, target);
+        Assert.Equal(expected, actual);
+    }
 
     private static bool CanMeasureWater(int jugX, int jugY, int target)
     {

@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfValidWordsForEachPuzzleBenchmarks
 {
     private const int PuzzleCount = 50;
+    private const int MinWordLength = 3;
+    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [3, 8]
+    private const int PuzzleLength = 7; // LC 1178: every puzzle has exactly 7 distinct letters
+    private const int AlphabetSize = 26;
 
     [Params(200, 4_000)]
     public int WordCount;
@@ -106,11 +110,11 @@ public class NumberOfValidWordsForEachPuzzleBenchmarks
 
     private static string RandomWord(Random random)
     {
-        var length = random.Next(3, 9);
+        var length = random.Next(MinWordLength, WordLengthUpperBound);
         var letters = new HashSet<char>();
         while (letters.Count < length)
         {
-            letters.Add((char)('a' + random.Next(0, 26)));
+            letters.Add((char)('a' + random.Next(0, AlphabetSize)));
         }
 
         return new string(letters.ToArray());
@@ -119,9 +123,9 @@ public class NumberOfValidWordsForEachPuzzleBenchmarks
     private static string RandomPuzzle(Random random)
     {
         var letters = new HashSet<char>();
-        while (letters.Count < 7)
+        while (letters.Count < PuzzleLength)
         {
-            letters.Add((char)('a' + random.Next(0, 26)));
+            letters.Add((char)('a' + random.Next(0, AlphabetSize)));
         }
 
         return new string(letters.ToArray());

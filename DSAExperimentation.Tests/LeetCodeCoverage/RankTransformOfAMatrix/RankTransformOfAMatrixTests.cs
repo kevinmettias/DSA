@@ -80,6 +80,25 @@ public sealed partial class RankTransformOfAMatrixTests
     {
         var rows = matrix.Length;
         var cols = matrix[0].Length;
+        var cells = BuildCells(matrix, rows, cols);
+        SortCellsByValue(cells);
+
+        var rowRank = new int[rows];
+        var colRank = new int[cols];
+        var result = CreateEmptyResult(rows, cols);
+        var grid = new RankingGrid(cells, rows, result, rowRank, colRank);
+        var index = 0;
+
+        while (index < cells.Length)
+        {
+            index = ProcessRankBatch(grid, index);
+        }
+
+        return result;
+    }
+
+    private static (int Value, int Row, int Col)[] BuildCells(int[][] matrix, int rows, int cols)
+    {
         var cells = new (int Value, int Row, int Col)[rows * cols];
 
         for (var r = 0; r < rows; r++)
@@ -90,12 +109,18 @@ public sealed partial class RankTransformOfAMatrixTests
             }
         }
 
+        return cells;
+    }
+
+    private static void SortCellsByValue((int Value, int Row, int Col)[] cells)
+    {
         var byValue = Comparer<(int Value, int Row, int Col)>.Create((a, b) => a.Value.CompareTo(b.Value));
         MergeSort.Sort<(int Value, int Row, int Col), ArrayIndexedSequence<(int Value, int Row, int Col)>>(
             new ArrayIndexedSequence<(int Value, int Row, int Col)>(cells), byValue);
+    }
 
-        var rowRank = new int[rows];
-        var colRank = new int[cols];
+    private static int[][] CreateEmptyResult(int rows, int cols)
+    {
         var result = new int[rows][];
 
         for (var r = 0; r < rows; r++)
@@ -103,59 +128,72 @@ public sealed partial class RankTransformOfAMatrixTests
             result[r] = new int[cols];
         }
 
-        var index = 0;
-
-        while (index < cells.Length)
-        {
-            var end = index;
-
-            while (end < cells.Length && cells[end].Value == cells[index].Value)
-            {
-                end++;
-            }
-
-            AssignBatchRanks(cells, index, end, rows, result, rowRank, colRank);
-            index = end;
-        }
-
         return result;
     }
 
-    private static void AssignBatchRanks(
-        (int Value, int Row, int Col)[] cells, int start, int end, int rows,
-        int[][] result, int[] rowRank, int[] colRank)
+    // Advances past the batch of equal-value cells starting at `index`, assigning
+    // them ranks as one group, and returns the index where the next batch starts.
+    private static int ProcessRankBatch(RankingGrid grid, int index)
     {
-        var components = new DisjointSet(rows + colRank.Length);
+        var end = index;
+
+        while (end < grid.Cells.Length && grid.Cells[end].Value == grid.Cells[index].Value)
+        {
+            end++;
+        }
+
+        AssignBatchRanks(grid, index, end);
+        return end;
+    }
+
+    private static void AssignBatchRanks(RankingGrid grid, int start, int end)
+    {
+        var components = new DisjointSet(grid.Rows + grid.ColRank.Length);
 
         for (var i = start; i < end; i++)
         {
-            components.Union(cells[i].Row, rows + cells[i].Col);
+            components.Union(grid.Cells[i].Row, grid.Rows + grid.Cells[i].Col);
         }
 
         var bestByRoot = new HashMap<int, int>();
 
         for (var i = start; i < end; i++)
         {
-            var (_, row, col) = cells[i];
-            var root = components.Find(row);
-            var candidate = Math.Max(rowRank[row], colRank[col]);
-
-            if (!bestByRoot.TryGetValue(root, out var best) || candidate > best)
-            {
-                bestByRoot.Set(root, candidate);
-            }
+            RecordBestCandidate(grid, grid.Cells[i], components, bestByRoot);
         }
 
         for (var i = start; i < end; i++)
         {
-            var (_, row, col) = cells[i];
-            var root = components.Find(row);
-            bestByRoot.TryGetValue(root, out var best);
-            var rank = best + 1;
-
-            result[row][col] = rank;
-            rowRank[row] = rank;
-            colRank[col] = rank;
+            AssignRankToCell(grid, grid.Cells[i], components, bestByRoot);
         }
     }
+
+    private static void RecordBestCandidate(
+        RankingGrid grid, (int Value, int Row, int Col) cell, DisjointSet components, HashMap<int, int> bestByRoot)
+    {
+        var (_, row, col) = cell;
+        var root = components.Find(row);
+        var candidate = Math.Max(grid.RowRank[row], grid.ColRank[col]);
+
+        if (!bestByRoot.TryGetValue(root, out var best) || candidate > best)
+        {
+            bestByRoot.Set(root, candidate);
+        }
+    }
+
+    private static void AssignRankToCell(
+        RankingGrid grid, (int Value, int Row, int Col) cell, DisjointSet components, HashMap<int, int> bestByRoot)
+    {
+        var (_, row, col) = cell;
+        var root = components.Find(row);
+        bestByRoot.TryGetValue(root, out var best);
+        var rank = best + 1;
+
+        grid.Result[row][col] = rank;
+        grid.RowRank[row] = rank;
+        grid.ColRank[col] = rank;
+    }
+
+    private readonly record struct RankingGrid(
+        (int Value, int Row, int Col)[] Cells, int Rows, int[][] Result, int[] RowRank, int[] ColRank);
 }

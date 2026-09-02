@@ -15,15 +15,27 @@ public sealed partial class GreatestCommonDivisorOfStringsTests
 {
     [Fact]
     public void GcdOfStrings_ClassicExample_ReturnsSharedDivisor()
-        => Assert.Equal("ABC", GcdOfStrings("ABCABC", "ABC"));
+    {
+        var gcd = GcdOfStrings("ABCABC", "ABC");
+
+        Assert.Equal("ABC", gcd);
+    }
 
     [Fact]
     public void GcdOfStrings_SecondExample_ReturnsSharedDivisor()
-        => Assert.Equal("AB", GcdOfStrings("ABABAB", "ABAB"));
+    {
+        var gcd = GcdOfStrings("ABABAB", "ABAB");
+
+        Assert.Equal("AB", gcd);
+    }
 
     [Fact]
     public void GcdOfStrings_NoCommonDivisor_ReturnsEmptyString()
-        => Assert.Equal(string.Empty, GcdOfStrings("LEET", "CODE"));
+    {
+        var gcd = GcdOfStrings("LEET", "CODE");
+
+        Assert.Equal(string.Empty, gcd);
+    }
 
     private static string GcdOfStrings(string str1, string str2)
     {

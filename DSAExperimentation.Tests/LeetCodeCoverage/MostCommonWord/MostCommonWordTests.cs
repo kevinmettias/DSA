@@ -37,29 +37,38 @@ public sealed partial class MostCommonWordTests
             bannedWords.TryAdd(word.ToLowerInvariant());
         }
 
-        var counts = new HashMap<string, int>();
-        var best = string.Empty;
-        var bestCount = 0;
+        var tally = new WordTally();
 
         foreach (var word in Tokenize(paragraph))
         {
-            if (bannedWords.Has(word))
+            if (!bannedWords.Has(word))
             {
-                continue;
-            }
-
-            counts.TryGetValue(word, out var count);
-            count++;
-            counts.Set(word, count);
-
-            if (count > bestCount)
-            {
-                bestCount = count;
-                best = word;
+                tally.Record(word);
             }
         }
 
-        return best;
+        return tally.Best;
+    }
+
+    private sealed class WordTally
+    {
+        private readonly HashMap<string, int> _counts = new();
+        private int _bestCount;
+
+        public string Best { get; private set; } = string.Empty;
+
+        public void Record(string word)
+        {
+            _counts.TryGetValue(word, out var count);
+            count++;
+            _counts.Set(word, count);
+
+            if (count > _bestCount)
+            {
+                _bestCount = count;
+                Best = word;
+            }
+        }
     }
 
     // Splits on runs of non-letters, same as LeetCode's own "words separated by

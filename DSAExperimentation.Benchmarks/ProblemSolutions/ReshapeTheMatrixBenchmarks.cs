@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ReshapeTheMatrixBenchmarks
 {
+    private const int RandomSeed = 566; // LC problem number
+    private const int MaxCellValue = 1_000; // exclusive upper bound passed to Random.Next
+    private const int ReshapeFactor = 2; // rows multiplied, cols divided by the same factor to preserve total cell count
+
     [Params(20, 200)]
     public int Rows;
 
@@ -21,13 +25,13 @@ public class ReshapeTheMatrixBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(566);
+        var random = new Random(RandomSeed);
         const int cols = 8;
-        _mat = Enumerable.Range(0, Rows).Select(_ => Enumerable.Range(0, cols).Select(_ => random.Next(1, 1_000)).ToArray()).ToArray();
+        _mat = Enumerable.Range(0, Rows).Select(_ => Enumerable.Range(0, cols).Select(_ => random.Next(1, MaxCellValue)).ToArray()).ToArray();
 
         // Same total cell count (Rows*cols), reshaped into twice as many rows and half as many columns.
-        _r = Rows * 2;
-        _c = cols / 2;
+        _r = Rows * ReshapeFactor;
+        _c = cols / ReshapeFactor;
     }
 
     [Benchmark(Baseline = true)]

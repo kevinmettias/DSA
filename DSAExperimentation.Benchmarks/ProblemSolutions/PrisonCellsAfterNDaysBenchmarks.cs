@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrisonCellsAfterNDaysBenchmarks
 {
+    private const int CellCount = 8;
+    private const int InteriorCellUpperBound = CellCount - 1;
+
     [Params(10_000, 1_000_000)]
     public int Days;
 
@@ -43,32 +46,47 @@ public class PrisonCellsAfterNDaysBenchmarks
 
         while (day < Days)
         {
-            if (seenAtDay.TryGetValue(state, out var firstSeenDay))
+            var (nextState, nextDay, result) = AdvanceCycleDetection(seenAtDay, state, day);
+
+            if (result is not null)
             {
-                var cycleLength = day - firstSeenDay;
-                var remaining = (Days - day) % cycleLength;
-
-                for (var i = 0; i < remaining; i++)
-                {
-                    state = NextState(state);
-                }
-
-                return Decode(state);
+                return result;
             }
 
-            seenAtDay.Set(state, day);
-            state = NextState(state);
-            day++;
+            state = nextState;
+            day = nextDay;
         }
 
         return Decode(state);
+    }
+
+    private (int State, int Day, int[]? Result) AdvanceCycleDetection(HashMap<int, int> seenAtDay, int state, int day)
+    {
+        if (seenAtDay.TryGetValue(state, out var firstSeenDay))
+        {
+            var cycleLength = day - firstSeenDay;
+            var remaining = (Days - day) % cycleLength;
+
+            for (var i = 0; i < remaining; i++)
+            {
+                state = NextState(state);
+            }
+
+            return (state, day, Decode(state));
+        }
+
+        seenAtDay.Set(state, day);
+        state = NextState(state);
+        day++;
+
+        return (state, day, null);
     }
 
     private static int NextState(int state)
     {
         var next = 0;
 
-        for (var i = 1; i < 7; i++)
+        for (var i = 1; i < InteriorCellUpperBound; i++)
         {
             var left = (state >> (i - 1)) & 1;
             var right = (state >> (i + 1)) & 1;
@@ -99,9 +117,9 @@ public class PrisonCellsAfterNDaysBenchmarks
 
     private static int[] Decode(int state)
     {
-        var cells = new int[8];
+        var cells = new int[CellCount];
 
-        for (var i = 0; i < 8; i++)
+        for (var i = 0; i < CellCount; i++)
         {
             cells[i] = (state >> i) & 1;
         }

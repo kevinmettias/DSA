@@ -20,7 +20,10 @@ public sealed partial class NumberOfMusicPlaylistsTests
     [InlineData(2, 3, 0, 6)]
     [InlineData(2, 3, 1, 2)]
     public void NumMusicPlaylists_LeetCodeExamples_ReturnsPlaylistCount(int n, int goal, int k, long expected)
-        => Assert.Equal(expected, NumMusicPlaylists(n, goal, k));
+    {
+        var actual = NumMusicPlaylists(n, goal, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static long NumMusicPlaylists(int n, int goal, int k)
     {

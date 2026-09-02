@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SortCharactersByFrequencyBenchmarks
 {
+    private const int RandomSeed = 7;
+    private const int AlphabetSize = 26;
+
     [Params(1_000, 50_000)]
     public int Length;
 
@@ -25,11 +28,11 @@ public class SortCharactersByFrequencyBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
 
         // Bounded to a 26-letter alphabet so real frequency skew emerges, the same
         // reasoning TopKFrequentElementsBenchmarks' bounded random range documents.
-        _text = new string([.. Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, 26)))]);
+        _text = new string([.. Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, AlphabetSize)))]);
     }
 
     [Benchmark(Baseline = true)]
@@ -55,6 +58,14 @@ public class SortCharactersByFrequencyBenchmarks
     [Benchmark]
     public string HashMapThenHeapDescendingPop()
     {
+        var counts = BuildFrequencyMap();
+        var heap = BuildDescendingHeap(counts);
+
+        return DrainHeapToString(heap);
+    }
+
+    private HashMap<char, int> BuildFrequencyMap()
+    {
         var counts = new HashMap<char, int>();
 
         foreach (var c in _text)
@@ -63,6 +74,11 @@ public class SortCharactersByFrequencyBenchmarks
             counts.Set(c, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<(char Node, int Priority), ByPriorityOrder<char, int>> BuildDescendingHeap(HashMap<char, int> counts)
+    {
         var heap = new Heap<(char Node, int Priority), ByPriorityOrder<char, int>>();
 
         foreach (var c in counts.Keys)
@@ -71,6 +87,11 @@ public class SortCharactersByFrequencyBenchmarks
             heap.Push((c, -frequency));
         }
 
+        return heap;
+    }
+
+    private string DrainHeapToString(Heap<(char Node, int Priority), ByPriorityOrder<char, int>> heap)
+    {
         var result = new StringBuilder(_text.Length);
 
         while (heap.TryPop(out var top))

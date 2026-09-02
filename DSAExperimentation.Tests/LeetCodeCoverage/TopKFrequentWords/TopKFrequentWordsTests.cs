@@ -37,6 +37,14 @@ public sealed partial class TopKFrequentWordsTests
 
     private static string[] TopKFrequent(string[] words, int k)
     {
+        var counts = CountFrequencies(words);
+        var heap = BuildTopKHeap(counts, k);
+
+        return ExtractOrderedResult(heap);
+    }
+
+    private static HashMap<string, int> CountFrequencies(string[] words)
+    {
         var counts = new HashMap<string, int>();
 
         foreach (var word in words)
@@ -45,6 +53,11 @@ public sealed partial class TopKFrequentWordsTests
             counts.Set(word, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<WordPriority, MinHeapOrder<WordPriority>> BuildTopKHeap(HashMap<string, int> counts, int k)
+    {
         var heap = new Heap<WordPriority, MinHeapOrder<WordPriority>>();
 
         foreach (var word in counts.Keys)
@@ -58,6 +71,11 @@ public sealed partial class TopKFrequentWordsTests
             }
         }
 
+        return heap;
+    }
+
+    private static string[] ExtractOrderedResult(Heap<WordPriority, MinHeapOrder<WordPriority>> heap)
+    {
         var result = new string[heap.Count];
 
         for (var i = result.Length - 1; i >= 0; i--)

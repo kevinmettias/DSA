@@ -14,6 +14,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SurfaceAreaOf3DShapesBenchmarks
 {
+    // Exclusive upper bound passed to Random.Next(0, _): cell heights land in [0, 49].
+    private const int MaxHeight = 50;
+
+    // Top face + bottom face contributed by every non-zero-height cell.
+    private const int TopAndBottomFaceArea = 2;
+
+    // One extra height-0 cell on each side of the grid.
+    private const int BorderPadding = 2;
+
     [Params(50, 400)]
     public int Size;
 
@@ -31,7 +40,7 @@ public class SurfaceAreaOf3DShapesBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _grid[r][c] = random.Next(0, 50);
+                _grid[r][c] = random.Next(0, MaxHeight);
             }
         }
     }
@@ -52,7 +61,7 @@ public class SurfaceAreaOf3DShapesBenchmarks
                     continue;
                 }
 
-                area += 2;
+                area += TopAndBottomFaceArea;
                 area += ExposedSide(height, row - 1, col, n);
                 area += ExposedSide(height, row + 1, col, n);
                 area += ExposedSide(height, row, col - 1, n);
@@ -72,12 +81,18 @@ public class SurfaceAreaOf3DShapesBenchmarks
     [Benchmark]
     public int PaddedGridNoBoundsChecks()
     {
-        var n = _grid.Length;
-        var padded = new int[n + 2][];
+        var padded = BuildPaddedGrid();
+        return SumPaddedArea(padded, _grid.Length);
+    }
 
-        for (var r = 0; r < n + 2; r++)
+    private int[][] BuildPaddedGrid()
+    {
+        var n = _grid.Length;
+        var padded = new int[n + BorderPadding][];
+
+        for (var r = 0; r < n + BorderPadding; r++)
         {
-            padded[r] = new int[n + 2];
+            padded[r] = new int[n + BorderPadding];
         }
 
         for (var r = 0; r < n; r++)
@@ -88,26 +103,38 @@ public class SurfaceAreaOf3DShapesBenchmarks
             }
         }
 
+        return padded;
+    }
+
+    private static int SumPaddedArea(int[][] padded, int n)
+    {
         var area = 0;
 
         for (var r = 1; r <= n; r++)
         {
             for (var c = 1; c <= n; c++)
             {
-                var height = padded[r][c];
-                if (height == 0)
-                {
-                    continue;
-                }
-
-                area += 2;
-                area += Math.Max(0, height - padded[r - 1][c]);
-                area += Math.Max(0, height - padded[r + 1][c]);
-                area += Math.Max(0, height - padded[r][c - 1]);
-                area += Math.Max(0, height - padded[r][c + 1]);
+                area += PaddedCellExposedArea(padded, r, c);
             }
         }
 
+        return area;
+    }
+
+    private static int PaddedCellExposedArea(int[][] padded, int r, int c)
+    {
+        var height = padded[r][c];
+
+        if (height == 0)
+        {
+            return 0;
+        }
+
+        var area = TopAndBottomFaceArea;
+        area += Math.Max(0, height - padded[r - 1][c]);
+        area += Math.Max(0, height - padded[r + 1][c]);
+        area += Math.Max(0, height - padded[r][c - 1]);
+        area += Math.Max(0, height - padded[r][c + 1]);
         return area;
     }
 }

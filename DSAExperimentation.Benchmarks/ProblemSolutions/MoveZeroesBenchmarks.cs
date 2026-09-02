@@ -12,13 +12,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MoveZeroesBenchmarks
 {
+    private const int FrontHalfDivisor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
     private int[] _values = null!;
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i < Length / 2 ? 0 : i + 1).ToArray();
+    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i < Length / FrontHalfDivisor ? 0 : i + 1).ToArray();
 
     [Benchmark(Baseline = true)]
     public int LinearScanForNextNonZero()

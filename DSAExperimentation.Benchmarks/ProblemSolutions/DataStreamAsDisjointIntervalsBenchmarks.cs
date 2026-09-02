@@ -15,6 +15,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DataStreamAsDisjointIntervalsBenchmarks
 {
+    private const int RandomSeed = 7;
+
+    // How far the generated value range spreads beyond Length, so intervals overlap
+    // and merge realistically instead of always being disjoint singletons.
+    private const int ValueRangeMultiplier = 3;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -23,8 +29,8 @@ public class DataStreamAsDisjointIntervalsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length * 3)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length * ValueRangeMultiplier)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

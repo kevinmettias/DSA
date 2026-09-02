@@ -1,59 +1,52 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.SetMatrixZeroes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SetMatrixZeroes;
 
-// LeetCode 73. Set Matrix Zeroes: two of this repo's own Set<int> instances
-// tracking which rows and which columns contain a zero, then a second pass
-// zeroes every cell whose row or column is in either set - the standard
-// O(rows+cols)-extra-space approach, composing Set<int> twice.
+// Harness only. Both strategies are SetMatrixZeroesSolution's - this file just
+// pins them to LeetCode's published examples. Each row is cloned before
+// zeroing so the two theory methods never share a mutated matrix.
 public sealed class SetMatrixZeroesTests
 {
-    [Fact]
-    public void SetZeroes_OneZeroCell_ZeroesItsRowAndColumn()
+    public static TheoryData<int[][], int[][]> Examples =>
+        new()
+        {
+            { [[1, 1, 1], [1, 0, 1], [1, 1, 1]], [[1, 0, 1], [0, 0, 0], [1, 0, 1]] },
+            { [[0, 1, 2], [3, 4, 5], [1, 3, 1]], [[0, 0, 0], [0, 4, 5], [0, 3, 1]] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SetZeroesByCopyAndScan_LeetCodeExamples_ZeroesRowsAndColumnsInPlace(
+        int[][] matrix, int[][] expected)
     {
-        int[][] matrix = [[1, 1, 1], [1, 0, 1], [1, 1, 1]];
+        var working = Clone(matrix);
 
-        SetZeroes(matrix);
+        SetMatrixZeroesSolution.SetZeroesByCopyAndScan(working);
 
-        Assert.Equal([[1, 0, 1], [0, 0, 0], [1, 0, 1]], matrix);
+        Assert.Equal(expected, working);
     }
 
-    [Fact]
-    public void SetZeroes_ZeroInFirstRowAndColumn_ZeroesBoth()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SetZeroesByRowColumnSets_LeetCodeExamples_ZeroesRowsAndColumnsInPlace(
+        int[][] matrix, int[][] expected)
     {
-        int[][] matrix = [[0, 1, 2], [3, 4, 5], [1, 3, 1]];
+        var working = Clone(matrix);
 
-        SetZeroes(matrix);
+        SetMatrixZeroesSolution.SetZeroesByRowColumnSets(working);
 
-        Assert.Equal([[0, 0, 0], [0, 4, 5], [0, 3, 1]], matrix);
+        Assert.Equal(expected, working);
     }
 
-    private static void SetZeroes(int[][] matrix)
+    private static int[][] Clone(int[][] matrix)
     {
-        var zeroRows = new Set<int>();
-        var zeroCols = new Set<int>();
+        var copy = new int[matrix.Length][];
 
         for (var r = 0; r < matrix.Length; r++)
         {
-            for (var c = 0; c < matrix[0].Length; c++)
-            {
-                if (matrix[r][c] == 0)
-                {
-                    zeroRows.TryAdd(r);
-                    zeroCols.TryAdd(c);
-                }
-            }
+            copy[r] = (int[])matrix[r].Clone();
         }
 
-        for (var r = 0; r < matrix.Length; r++)
-        {
-            for (var c = 0; c < matrix[0].Length; c++)
-            {
-                if (zeroRows.Has(r) || zeroCols.Has(c))
-                {
-                    matrix[r][c] = 0;
-                }
-            }
-        }
+        return copy;
     }
 }

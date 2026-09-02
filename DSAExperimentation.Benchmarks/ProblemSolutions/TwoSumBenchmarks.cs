@@ -1,17 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.TwoSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Two Sum (LC 1): the canonical O(n^2) brute force vs. the O(n) one-pass HashMap
-// approach, using this repo's own HashMap<TKey,TValue>. _target is deliberately
-// unreachable (all values positive, target negative) so BOTH strategies are forced
-// through their full worst-case scan instead of an early-exit on the first
-// invocation making brute force look artificially competitive.
+// Harness only: both arms are TwoSumSolution's, the same methods TwoSumTests
+// proves correct. Target is deliberately unreachable (all values positive, target
+// negative) so BOTH strategies are forced through their full worst-case scan
+// instead of an early exit making brute force look artificially competitive.
 [MemoryDiagnoser]
 public class TwoSumBenchmarks
 {
     private const int Target = -1;
+    private const int MaxValueExclusive = 1_000;
+    private const int Seed = 1;
 
     [Params(200, 5_000)]
     public int Length;
@@ -21,42 +22,13 @@ public class TwoSumBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(Seed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce()
-    {
-        for (var i = 0; i < _values.Length; i++)
-        {
-            for (var j = i + 1; j < _values.Length; j++)
-            {
-                if (_values[i] + _values[j] == Target)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
+    public bool BruteForce() => TwoSumSolution.TryFindIndicesByBruteForce(_values, Target, out _, out _);
 
     [Benchmark]
-    public bool HashMapOnePass()
-    {
-        var seen = new HashMap<int, int>();
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            if (seen.HasKey(Target - _values[i]))
-            {
-                return true;
-            }
-
-            seen.Set(_values[i], i);
-        }
-
-        return false;
-    }
+    public bool HashMapOnePass() => TwoSumSolution.TryFindIndicesByHashMap(_values, Target, out _, out _);
 }

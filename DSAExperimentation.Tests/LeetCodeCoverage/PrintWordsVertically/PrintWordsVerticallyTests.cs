@@ -36,27 +36,33 @@ public sealed partial class PrintWordsVerticallyTests
 
         for (var column = 0; column < maxLength; column++)
         {
-            var buffer = new DynamicArray<char>();
-
-            foreach (var word in words)
-            {
-                buffer.Add(column < word.Length ? word[column] : ' ');
-            }
-
-            while (buffer.Count > 0 && buffer.Get(buffer.Count - 1) == ' ')
-            {
-                buffer.RemoveAt(buffer.Count - 1);
-            }
-
-            var chars = new char[buffer.Count];
-            for (var i = 0; i < buffer.Count; i++)
-            {
-                chars[i] = buffer.Get(i);
-            }
-
-            result.Add(new string(chars));
+            var columnText = BuildColumn(words, column);
+            result.Add(columnText);
         }
 
         return result;
+    }
+
+    private static string BuildColumn(string[] words, int column)
+    {
+        var buffer = new DynamicArray<char>();
+
+        foreach (var word in words)
+        {
+            buffer.Add(column < word.Length ? word[column] : ' ');
+        }
+
+        while (buffer.Count > 0 && buffer.Get(buffer.Count - 1) == ' ')
+        {
+            buffer.RemoveAt(buffer.Count - 1);
+        }
+
+        var chars = new char[buffer.Count];
+        for (var i = 0; i < buffer.Count; i++)
+        {
+            chars[i] = buffer.Get(i);
+        }
+
+        return new string(chars);
     }
 }

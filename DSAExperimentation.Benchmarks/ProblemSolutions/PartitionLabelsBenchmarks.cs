@@ -13,6 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PartitionLabelsBenchmarks
 {
+    // LC problem number, reused as the deterministic PRNG seed.
+    private const int RandomSeed = 763;
+    private const int AlphabetSize = 26;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,12 +25,12 @@ public class PartitionLabelsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(763);
+        var random = new Random(RandomSeed);
         var chars = new char[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(26));
+            chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
         _text = new string(chars);
@@ -45,26 +49,31 @@ public class PartitionLabelsBenchmarks
 
         while (start < s.Length)
         {
-            var end = start;
-            var i = start;
-
-            while (i <= end)
-            {
-                var last = LastIndexOf(s, s[i]);
-
-                if (last > end)
-                {
-                    end = last;
-                }
-
-                i++;
-            }
-
-            sizes.Add(end - start + 1);
-            start = end + 1;
+            start = ExtendPartitionFromStart(s, start, sizes);
         }
 
         return sizes;
+    }
+
+    private static int ExtendPartitionFromStart(string s, int start, List<int> sizes)
+    {
+        var end = start;
+        var i = start;
+
+        while (i <= end)
+        {
+            var last = LastIndexOf(s, s[i]);
+
+            if (last > end)
+            {
+                end = last;
+            }
+
+            i++;
+        }
+
+        sizes.Add(end - start + 1);
+        return end + 1;
     }
 
     private static int LastIndexOf(string s, char target)
@@ -97,16 +106,20 @@ public class PartitionLabelsBenchmarks
         {
             lastIndex.TryGetValue(s[i], out var furthest);
             end = Math.Max(end, furthest);
-
-            if (i != end)
-            {
-                continue;
-            }
-
-            sizes.Add(end - start + 1);
-            start = i + 1;
+            start = ClosePartitionIfComplete(end, i, start, sizes);
         }
 
         return sizes;
+    }
+
+    private static int ClosePartitionIfComplete(int end, int i, int start, List<int> sizes)
+    {
+        if (i != end)
+        {
+            return start;
+        }
+
+        sizes.Add(end - start + 1);
+        return i + 1;
     }
 }

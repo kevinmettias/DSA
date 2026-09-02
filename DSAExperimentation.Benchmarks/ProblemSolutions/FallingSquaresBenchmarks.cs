@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FallingSquaresBenchmarks
 {
+    private const int PositionRangeMultiplier = 2;
+    private const int MaxSquareSize = 50;
+    private const int CoordinatesPerPosition = 2;
+
     [Params(100, 1_000)]
     public int SquareCount;
 
@@ -25,8 +29,8 @@ public class FallingSquaresBenchmarks
 
         for (var i = 0; i < SquareCount; i++)
         {
-            var left = random.Next(0, SquareCount * 2);
-            var size = random.Next(1, 50);
+            var left = random.Next(0, SquareCount * PositionRangeMultiplier);
+            var size = random.Next(1, MaxSquareSize);
             _positions[i] = [left, size];
         }
     }
@@ -40,27 +44,32 @@ public class FallingSquaresBenchmarks
 
         for (var i = 0; i < _positions.Length; i++)
         {
-            var left = _positions[i][0];
-            var right = left + _positions[i][1];
-            var heightBelow = 0;
-
-            for (var j = 0; j < i; j++)
-            {
-                var otherLeft = _positions[j][0];
-                var otherRight = otherLeft + _positions[j][1];
-
-                if (left < otherRight && otherLeft < right && heights[j] > heightBelow)
-                {
-                    heightBelow = heights[j];
-                }
-            }
-
-            heights[i] = heightBelow + _positions[i][1];
-            overallMax = Math.Max(overallMax, heights[i]);
+            overallMax = StackSquareAndTrackMax(i, heights, overallMax);
             result.Add(overallMax);
         }
 
         return result;
+    }
+
+    private int StackSquareAndTrackMax(int i, int[] heights, int overallMax)
+    {
+        var left = _positions[i][0];
+        var right = left + _positions[i][1];
+        var heightBelow = 0;
+
+        for (var j = 0; j < i; j++)
+        {
+            var otherLeft = _positions[j][0];
+            var otherRight = otherLeft + _positions[j][1];
+
+            if (left < otherRight && otherLeft < right && heights[j] > heightBelow)
+            {
+                heightBelow = heights[j];
+            }
+        }
+
+        heights[i] = heightBelow + _positions[i][1];
+        return Math.Max(overallMax, heights[i]);
     }
 
     [Benchmark]
@@ -90,7 +99,7 @@ public class FallingSquaresBenchmarks
 
     private static int[] CompressCoordinates(int[][] positions)
     {
-        var coordinates = new List<int>(positions.Length * 2);
+        var coordinates = new List<int>(positions.Length * CoordinatesPerPosition);
 
         foreach (var position in positions)
         {

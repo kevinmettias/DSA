@@ -51,10 +51,15 @@ public sealed partial class CourseScheduleIITests
         var order = FindOrder([course0, course1, course2, course3]);
 
         Assert.Equal(4, order.Length);
-        Assert.True(Array.IndexOf(order, 0) < Array.IndexOf(order, 1));
-        Assert.True(Array.IndexOf(order, 0) < Array.IndexOf(order, 2));
-        Assert.True(Array.IndexOf(order, 1) < Array.IndexOf(order, 3));
-        Assert.True(Array.IndexOf(order, 2) < Array.IndexOf(order, 3));
+        AssertComesBefore(order, 0, 1);
+        AssertComesBefore(order, 0, 2);
+        AssertComesBefore(order, 1, 3);
+        AssertComesBefore(order, 2, 3);
+    }
+
+    private static void AssertComesBefore(int[] order, int prerequisite, int dependent)
+    {
+        Assert.True(Array.IndexOf(order, prerequisite) < Array.IndexOf(order, dependent));
     }
 
     private static int[] FindOrder(List<CourseNode> courses)

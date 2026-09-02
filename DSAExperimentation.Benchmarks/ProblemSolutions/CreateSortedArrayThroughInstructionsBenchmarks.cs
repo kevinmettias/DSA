@@ -13,6 +13,11 @@ public class CreateSortedArrayThroughInstructionsBenchmarks
 {
     private const int Modulus = 1_000_000_007;
 
+    // LC problem number, used as the deterministic Random seed.
+    private const int RandomSeed = 1649;
+
+    private const int MaxGeneratedValueExclusive = 1_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,8 +26,8 @@ public class CreateSortedArrayThroughInstructionsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1649);
-        _instructions = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _instructions = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxGeneratedValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -33,26 +38,33 @@ public class CreateSortedArrayThroughInstructionsBenchmarks
 
         foreach (var value in _instructions)
         {
-            var less = 0;
-            var greater = 0;
-
-            foreach (var existing in inserted)
-            {
-                if (existing < value)
-                {
-                    less++;
-                }
-                else if (existing > value)
-                {
-                    greater++;
-                }
-            }
-
-            cost += Math.Min(less, greater);
-            inserted.Add(value);
+            cost = AddAndAccumulateCost(inserted, value, cost);
         }
 
         return (int)(cost % Modulus);
+    }
+
+    private static long AddAndAccumulateCost(List<int> inserted, int value, long cost)
+    {
+        var less = 0;
+        var greater = 0;
+
+        foreach (var existing in inserted)
+        {
+            if (existing < value)
+            {
+                less++;
+            }
+            else if (existing > value)
+            {
+                greater++;
+            }
+        }
+
+        cost += Math.Min(less, greater);
+        inserted.Add(value);
+
+        return cost;
     }
 
     [Benchmark]

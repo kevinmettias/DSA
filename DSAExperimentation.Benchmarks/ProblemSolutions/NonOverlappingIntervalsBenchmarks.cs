@@ -20,6 +20,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NonOverlappingIntervalsBenchmarks
 {
+    // LC 435.
+    private const int RandomSeed = 435;
+    private const int IntervalSpacing = 3;
+    private const int EndOffsetUpperBound = 2;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -28,9 +33,9 @@ public class NonOverlappingIntervalsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(435);
+        var random = new Random(RandomSeed);
         _intervals = Enumerable.Range(0, Length)
-            .Select(i => (Start: i * 3, End: i * 3 + random.Next(0, 2)))
+            .Select(i => (Start: i * IntervalSpacing, End: i * IntervalSpacing + random.Next(0, EndOffsetUpperBound)))
             .OrderBy(_ => random.Next())
             .ToArray();
     }
@@ -44,29 +49,49 @@ public class NonOverlappingIntervalsBenchmarks
 
         while (remaining > 0)
         {
-            var minEnd = int.MaxValue;
-            var minIndex = -1;
+            removedCount += EliminateRound(eliminated, ref remaining);
+        }
 
-            for (var i = 0; i < _intervals.Length; i++)
+        return removedCount;
+    }
+
+    private int EliminateRound(bool[] eliminated, ref int remaining)
+    {
+        var (minEnd, minIndex) = FindMinUneliminatedEnd(eliminated);
+        eliminated[minIndex] = true;
+        remaining--;
+
+        return EliminateOverlapping(eliminated, minEnd, ref remaining);
+    }
+
+    private (int MinEnd, int MinIndex) FindMinUneliminatedEnd(bool[] eliminated)
+    {
+        var minEnd = int.MaxValue;
+        var minIndex = -1;
+
+        for (var i = 0; i < _intervals.Length; i++)
+        {
+            if (!eliminated[i] && _intervals[i].End < minEnd)
             {
-                if (!eliminated[i] && _intervals[i].End < minEnd)
-                {
-                    minEnd = _intervals[i].End;
-                    minIndex = i;
-                }
+                minEnd = _intervals[i].End;
+                minIndex = i;
             }
+        }
 
-            eliminated[minIndex] = true;
-            remaining--;
+        return (minEnd, minIndex);
+    }
 
-            for (var i = 0; i < _intervals.Length; i++)
+    private int EliminateOverlapping(bool[] eliminated, int minEnd, ref int remaining)
+    {
+        var removedCount = 0;
+
+        for (var i = 0; i < _intervals.Length; i++)
+        {
+            if (!eliminated[i] && _intervals[i].Start < minEnd)
             {
-                if (!eliminated[i] && _intervals[i].Start < minEnd)
-                {
-                    eliminated[i] = true;
-                    remaining--;
-                    removedCount++;
-                }
+                eliminated[i] = true;
+                remaining--;
+                removedCount++;
             }
         }
 

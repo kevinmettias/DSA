@@ -64,18 +64,20 @@ public sealed partial class ConstructQuadTreeTests
 
         var root = Build(grid);
         var rebuilt = grid.Select(row => new int[row.Length]).ToArray();
-        Fill(root, rebuilt, 0, 0, grid.Length);
+        Fill(root, rebuilt, new Region(0, 0, grid.Length));
 
         Assert.Equal(grid, rebuilt);
     }
 
-    private static void Fill(QuadTreeNode node, int[][] grid, int row, int col, int size)
+    private readonly record struct Region(int Row, int Col, int Size);
+
+    private static void Fill(QuadTreeNode node, int[][] grid, Region region)
     {
         if (node.IsLeaf)
         {
-            for (var r = row; r < row + size; r++)
+            for (var r = region.Row; r < region.Row + region.Size; r++)
             {
-                for (var c = col; c < col + size; c++)
+                for (var c = region.Col; c < region.Col + region.Size; c++)
                 {
                     grid[r][c] = node.Val ? 1 : 0;
                 }
@@ -84,11 +86,11 @@ public sealed partial class ConstructQuadTreeTests
             return;
         }
 
-        var half = size / 2;
-        Fill(node.TopLeft!, grid, row, col, half);
-        Fill(node.TopRight!, grid, row, col + half, half);
-        Fill(node.BottomLeft!, grid, row + half, col, half);
-        Fill(node.BottomRight!, grid, row + half, col + half, half);
+        var half = region.Size / 2;
+        Fill(node.TopLeft!, grid, new Region(region.Row, region.Col, half));
+        Fill(node.TopRight!, grid, new Region(region.Row, region.Col + half, half));
+        Fill(node.BottomLeft!, grid, new Region(region.Row + half, region.Col, half));
+        Fill(node.BottomRight!, grid, new Region(region.Row + half, region.Col + half, half));
     }
 
     private static QuadTreeNode Build(int[][] grid)

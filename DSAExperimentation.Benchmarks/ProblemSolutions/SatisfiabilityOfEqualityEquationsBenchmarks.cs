@@ -10,6 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SatisfiabilityOfEqualityEquationsBenchmarks
 {
+    private const int AlphabetSize = 26;
+    private const int InequalityProbabilityDenominator = 5;
+    private const string EqualsOperator = "==";
+    private const string NotEqualsOperator = "!=";
+    private const int SecondVariableIndex = 3;
+
     [Params(100, 500)]
     public int EquationCount;
 
@@ -23,9 +29,9 @@ public class SatisfiabilityOfEqualityEquationsBenchmarks
 
         for (var i = 0; i < EquationCount; i++)
         {
-            var a = (char)('a' + random.Next(26));
-            var b = (char)('a' + random.Next(26));
-            var op = random.Next(5) == 0 ? "!=" : "==";
+            var a = (char)('a' + random.Next(AlphabetSize));
+            var b = (char)('a' + random.Next(AlphabetSize));
+            var op = random.Next(InequalityProbabilityDenominator) == 0 ? NotEqualsOperator : EqualsOperator;
             _equations[i] = $"{a}{op}{b}";
         }
     }
@@ -33,30 +39,23 @@ public class SatisfiabilityOfEqualityEquationsBenchmarks
     [Benchmark(Baseline = true)]
     public bool AdjacencyListBfs()
     {
+        var (adjacency, inequalities) = BuildAdjacencyGraph();
+        return !HasContradiction(adjacency, inequalities);
+    }
+
+    private (Dictionary<char, List<char>> Adjacency, List<(char First, char Second)> Inequalities) BuildAdjacencyGraph()
+    {
         var adjacency = new Dictionary<char, List<char>>();
         var inequalities = new List<(char First, char Second)>();
 
         foreach (var equation in _equations)
         {
             var a = equation[0];
-            var b = equation[3];
+            var b = equation[SecondVariableIndex];
 
             if (equation[1] == '=')
             {
-                if (!adjacency.TryGetValue(a, out var aNeighbors))
-                {
-                    aNeighbors = [];
-                    adjacency[a] = aNeighbors;
-                }
-
-                if (!adjacency.TryGetValue(b, out var bNeighbors))
-                {
-                    bNeighbors = [];
-                    adjacency[b] = bNeighbors;
-                }
-
-                aNeighbors.Add(b);
-                bNeighbors.Add(a);
+                AddAdjacencyEdge(adjacency, a, b);
             }
             else
             {
@@ -64,15 +63,38 @@ public class SatisfiabilityOfEqualityEquationsBenchmarks
             }
         }
 
+        return (adjacency, inequalities);
+    }
+
+    private static bool HasContradiction(Dictionary<char, List<char>> adjacency, List<(char First, char Second)> inequalities)
+    {
         foreach (var (first, second) in inequalities)
         {
             if (IsReachable(adjacency, first, second))
             {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
+    }
+
+    private static void AddAdjacencyEdge(Dictionary<char, List<char>> adjacency, char a, char b)
+    {
+        if (!adjacency.TryGetValue(a, out var aNeighbors))
+        {
+            aNeighbors = [];
+            adjacency[a] = aNeighbors;
+        }
+
+        if (!adjacency.TryGetValue(b, out var bNeighbors))
+        {
+            bNeighbors = [];
+            adjacency[b] = bNeighbors;
+        }
+
+        aNeighbors.Add(b);
+        bNeighbors.Add(a);
     }
 
     private static bool IsReachable(Dictionary<char, List<char>> adjacency, char start, char target)
@@ -82,52 +104,70 @@ public class SatisfiabilityOfEqualityEquationsBenchmarks
             return true;
         }
 
-        var visited = new HashSet<char> { start };
-        var queue = new Queue<char>();
-        queue.Enqueue(start);
+        var frontier = CreateFrontier(start);
 
-        while (queue.Count > 0)
+        while (frontier.Queue.Count > 0)
         {
-            var current = queue.Dequeue();
+            var current = frontier.Queue.Dequeue();
 
-            if (!adjacency.TryGetValue(current, out var neighbors))
+            if (TryExpandFrontier(adjacency, current, target, frontier))
             {
-                continue;
-            }
-
-            foreach (var next in neighbors)
-            {
-                if (next == target)
-                {
-                    return true;
-                }
-
-                if (visited.Add(next))
-                {
-                    queue.Enqueue(next);
-                }
+                return true;
             }
         }
 
         return false;
     }
 
+    private static SearchFrontier CreateFrontier(char start)
+    {
+        var visited = new HashSet<char> { start };
+        var queue = new Queue<char>();
+        queue.Enqueue(start);
+        return new SearchFrontier(visited, queue);
+    }
+
+    private static bool TryExpandFrontier(Dictionary<char, List<char>> adjacency, char current, char target, SearchFrontier frontier)
+    {
+        if (!adjacency.TryGetValue(current, out var neighbors))
+        {
+            return false;
+        }
+
+        foreach (var next in neighbors)
+        {
+            if (next == target)
+            {
+                return true;
+            }
+
+            if (frontier.Visited.Add(next))
+            {
+                frontier.Queue.Enqueue(next);
+            }
+        }
+
+        return false;
+    }
+
+    private readonly record struct SearchFrontier(HashSet<char> Visited, Queue<char> Queue);
+
     [Benchmark]
     public bool DisjointSetUnionFind()
     {
-        var components = new DisjointSet(26);
+        var components = new DisjointSet(AlphabetSize);
 
         foreach (var equation in _equations)
         {
             if (equation[1] == '=')
             {
-                components.Union(equation[0] - 'a', equation[3] - 'a');
+                components.Union(equation[0] - 'a', equation[SecondVariableIndex] - 'a');
             }
         }
 
         foreach (var equation in _equations)
         {
-            if (equation[1] == '!' && components.IsConnected(equation[0] - 'a', equation[3] - 'a'))
+            if (equation[1] == '!' && components.IsConnected(equation[0] - 'a', equation[SecondVariableIndex] - 'a'))
             {
                 return false;
             }

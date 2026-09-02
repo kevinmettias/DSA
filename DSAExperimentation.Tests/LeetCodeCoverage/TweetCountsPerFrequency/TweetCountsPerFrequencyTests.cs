@@ -19,12 +19,16 @@ public sealed partial class TweetCountsPerFrequencyTests
         tweetCounts.RecordTweet("tweet3", 60);
         tweetCounts.RecordTweet("tweet3", 10);
 
-        Assert.Equal([2], tweetCounts.GetTweetCountsPerFrequency("minute", "tweet3", 0, 59));
-        Assert.Equal([2, 1], tweetCounts.GetTweetCountsPerFrequency("minute", "tweet3", 0, 60));
+        var minuteBucketsNarrowWindow = tweetCounts.GetTweetCountsPerFrequency("minute", "tweet3", 0, 59);
+        Assert.Equal([2], minuteBucketsNarrowWindow);
+
+        var minuteBucketsWiderWindow = tweetCounts.GetTweetCountsPerFrequency("minute", "tweet3", 0, 60);
+        Assert.Equal([2, 1], minuteBucketsWiderWindow);
 
         tweetCounts.RecordTweet("tweet3", 120);
 
-        Assert.Equal([4], tweetCounts.GetTweetCountsPerFrequency("hour", "tweet3", 0, 210));
+        var hourBuckets = tweetCounts.GetTweetCountsPerFrequency("hour", "tweet3", 0, 210);
+        Assert.Equal([4], hourBuckets);
     }
 
     [Fact]
@@ -34,7 +38,8 @@ public sealed partial class TweetCountsPerFrequencyTests
 
         tweetCounts.RecordTweet("tweet1", 5);
 
-        Assert.Equal([0, 0], tweetCounts.GetTweetCountsPerFrequency("day", "tweet2", 0, 86_400));
+        var dayBucketsForUnrecordedName = tweetCounts.GetTweetCountsPerFrequency("day", "tweet2", 0, 86_400);
+        Assert.Equal([0, 0], dayBucketsForUnrecordedName);
     }
 
     private sealed class TweetCounts
@@ -58,30 +63,43 @@ public sealed partial class TweetCountsPerFrequencyTests
 
         public List<int> GetTweetCountsPerFrequency(string freq, string tweetName, int startTime, int endTime)
         {
-            var chunkSeconds = freq switch
-            {
-                "minute" => SecondsPerMinute,
-                "hour" => SecondsPerHour,
-                _ => SecondsPerDay,
-            };
-
-            var buckets = new List<int>(new int[(endTime - startTime) / chunkSeconds + 1]);
+            var window = new TimeWindow(startTime, endTime);
+            var chunkSeconds = ResolveChunkSeconds(freq);
+            var buckets = CreateEmptyBuckets(window, chunkSeconds);
 
             if (!_timesByName.TryGetValue(tweetName, out var times))
             {
                 return buckets;
             }
 
-            for (var i = 0; i < times.Count; i++)
-            {
-                var time = times.Get(i);
-                if (time >= startTime && time <= endTime)
-                {
-                    buckets[(time - startTime) / chunkSeconds]++;
-                }
-            }
+            BucketTweetTimes(times, window, chunkSeconds, buckets);
 
             return buckets;
         }
+
+        private static int ResolveChunkSeconds(string freq)
+            => freq switch
+            {
+                "minute" => SecondsPerMinute,
+                "hour" => SecondsPerHour,
+                _ => SecondsPerDay,
+            };
+
+        private static List<int> CreateEmptyBuckets(TimeWindow window, int chunkSeconds)
+            => new(new int[(window.EndTime - window.StartTime) / chunkSeconds + 1]);
+
+        private static void BucketTweetTimes(DynamicArray<int> times, TimeWindow window, int chunkSeconds, List<int> buckets)
+        {
+            for (var i = 0; i < times.Count; i++)
+            {
+                var time = times.Get(i);
+                if (time >= window.StartTime && time <= window.EndTime)
+                {
+                    buckets[(time - window.StartTime) / chunkSeconds]++;
+                }
+            }
+        }
+
+        private readonly record struct TimeWindow(int StartTime, int EndTime);
     }
 }

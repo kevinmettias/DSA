@@ -29,6 +29,15 @@ public sealed partial class FrogJumpTests
 
     private static bool CanCross(int[] stones)
     {
+        var jumpsByStone = BuildEmptyJumpsByStone(stones);
+        SeedStartJump(jumpsByStone, stones[0]);
+        PropagateJumps(jumpsByStone, stones);
+
+        return HasReachableJump(jumpsByStone, stones[^1]);
+    }
+
+    private static HashMap<int, HashMap<int, bool>> BuildEmptyJumpsByStone(int[] stones)
+    {
         var jumpsByStone = new HashMap<int, HashMap<int, bool>>();
 
         foreach (var stone in stones)
@@ -36,33 +45,49 @@ public sealed partial class FrogJumpTests
             jumpsByStone.Set(stone, new HashMap<int, bool>());
         }
 
-        jumpsByStone.TryGetValue(stones[0], out var startJumps);
-        startJumps.Set(0, true);
+        return jumpsByStone;
+    }
 
+    private static void SeedStartJump(HashMap<int, HashMap<int, bool>> jumpsByStone, int firstStone)
+    {
+        jumpsByStone.TryGetValue(firstStone, out var startJumps);
+        startJumps.Set(0, true);
+    }
+
+    private static void PropagateJumps(HashMap<int, HashMap<int, bool>> jumpsByStone, int[] stones)
+    {
         foreach (var stone in stones)
         {
             jumpsByStone.TryGetValue(stone, out var jumps);
 
             foreach (var jump in jumps.Keys)
             {
-                for (var delta = -1; delta <= 1; delta++)
-                {
-                    var nextJump = jump + delta;
-
-                    if (nextJump <= 0)
-                    {
-                        continue;
-                    }
-
-                    if (jumpsByStone.TryGetValue(stone + nextJump, out var nextJumps))
-                    {
-                        nextJumps.Set(nextJump, true);
-                    }
-                }
+                ExpandJump(jumpsByStone, stone, jump);
             }
         }
+    }
 
-        jumpsByStone.TryGetValue(stones[^1], out var lastJumps);
+    private static void ExpandJump(HashMap<int, HashMap<int, bool>> jumpsByStone, int stone, int jump)
+    {
+        for (var delta = -1; delta <= 1; delta++)
+        {
+            var nextJump = jump + delta;
+
+            if (nextJump <= 0)
+            {
+                continue;
+            }
+
+            if (jumpsByStone.TryGetValue(stone + nextJump, out var nextJumps))
+            {
+                nextJumps.Set(nextJump, true);
+            }
+        }
+    }
+
+    private static bool HasReachableJump(HashMap<int, HashMap<int, bool>> jumpsByStone, int lastStone)
+    {
+        jumpsByStone.TryGetValue(lastStone, out var lastJumps);
         return lastJumps.Count > 0;
     }
 }

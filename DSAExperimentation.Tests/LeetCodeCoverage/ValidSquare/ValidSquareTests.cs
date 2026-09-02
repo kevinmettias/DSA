@@ -19,7 +19,9 @@ public sealed partial class ValidSquareTests
         int[] p3 = [1, 0];
         int[] p4 = [0, 1];
 
-        Assert.True(ValidSquare(p1, p2, p3, p4));
+        var isValidSquare = ValidSquare(p1, p2, p3, p4);
+
+        Assert.True(isValidSquare);
     }
 
     [Fact]
@@ -30,7 +32,9 @@ public sealed partial class ValidSquareTests
         int[] p3 = [1, 0];
         int[] p4 = [0, 12];
 
-        Assert.False(ValidSquare(p1, p2, p3, p4));
+        var isValidSquare = ValidSquare(p1, p2, p3, p4);
+
+        Assert.False(isValidSquare);
     }
 
     [Fact]
@@ -41,7 +45,9 @@ public sealed partial class ValidSquareTests
         int[] p3 = [2, 2];
         int[] p4 = [3, 3];
 
-        Assert.False(ValidSquare(p1, p2, p3, p4));
+        var isValidSquare = ValidSquare(p1, p2, p3, p4);
+
+        Assert.False(isValidSquare);
     }
 
     [Fact]
@@ -52,7 +58,9 @@ public sealed partial class ValidSquareTests
         int[] p3 = [5, 5];
         int[] p4 = [5, 5];
 
-        Assert.False(ValidSquare(p1, p2, p3, p4));
+        var isValidSquare = ValidSquare(p1, p2, p3, p4);
+
+        Assert.False(isValidSquare);
     }
 
     private static bool ValidSquare(int[] p1, int[] p2, int[] p3, int[] p4)

@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RangeSumQueryMutableBenchmarks
 {
     private const int OperationCount = 500;
+    private const int RandomSeed = 307; // LC problem number
+    private const int ValueBound = 1_000;
+    private const int OperationTypeCount = 2;
 
     [Params(200, 5_000)]
     public int Length;
@@ -21,15 +24,15 @@ public class RangeSumQueryMutableBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(307);
-        _initial = Enumerable.Range(0, Length).Select(_ => random.Next(-1_000, 1_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _initial = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
 
         _operations = new (bool IsUpdate, int A, int B)[OperationCount];
         for (var i = 0; i < OperationCount; i++)
         {
-            if (random.Next(2) == 0)
+            if (random.Next(OperationTypeCount) == 0)
             {
-                _operations[i] = (true, random.Next(0, Length), random.Next(-1_000, 1_000));
+                _operations[i] = (true, random.Next(0, Length), random.Next(-ValueBound, ValueBound));
             }
             else
             {

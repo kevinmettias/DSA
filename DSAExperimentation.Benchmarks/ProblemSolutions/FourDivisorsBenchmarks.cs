@@ -13,6 +13,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FourDivisorsBenchmarks
 {
+    // LC 1390.
+    private const int RandomSeed = 1390;
+    private const int MaxGeneratedNumber = 20_000;
+    private const int TargetDivisorCount = 4;
+    private const int DistinctDivisorPairCount = 2;
+
+    // floor(sqrt(int.MaxValue)) + 1, keeps the divisor^2 comparison in
+    // SquareExceedsSequence from overflowing.
+    private const int MaxSafeDivisorBound = 46_341;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -21,8 +31,8 @@ public class FourDivisorsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1390);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 20_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxGeneratedNumber)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -66,18 +76,18 @@ public class FourDivisorsBenchmarks
             count++;
             sum += divisor;
 
-            if (count > 4)
+            if (count > TargetDivisorCount)
             {
                 return 0;
             }
         }
 
-        return count == 4 ? sum : 0;
+        return count == TargetDivisorCount ? sum : 0;
     }
 
     private static int AnchoredDivisorSumIfExactlyFour(int num)
     {
-        var sequence = new SquareExceedsSequence(num, Math.Min(num, 46_341) + 1);
+        var sequence = new SquareExceedsSequence(num, Math.Min(num, MaxSafeDivisorBound) + 1);
         var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
 
         var count = 0;
@@ -85,22 +95,29 @@ public class FourDivisorsBenchmarks
 
         for (var divisor = anchor; divisor >= 1; divisor--)
         {
-            if (num % divisor != 0)
-            {
-                continue;
-            }
+            (count, sum, var exceeded) = AccumulateDivisorPair(num, divisor, count, sum);
 
-            var paired = num / divisor;
-            count += divisor == paired ? 1 : 2;
-            sum += divisor == paired ? divisor : divisor + paired;
-
-            if (count > 4)
+            if (exceeded)
             {
                 return 0;
             }
         }
 
-        return count == 4 ? sum : 0;
+        return count == TargetDivisorCount ? sum : 0;
+    }
+
+    private static (int Count, int Sum, bool Exceeded) AccumulateDivisorPair(int num, int divisor, int count, int sum)
+    {
+        if (num % divisor != 0)
+        {
+            return (count, sum, false);
+        }
+
+        var paired = num / divisor;
+        count += divisor == paired ? 1 : DistinctDivisorPairCount;
+        sum += divisor == paired ? divisor : divisor + paired;
+
+        return (count, sum, count > TargetDivisorCount);
     }
 
     private readonly struct SquareExceedsSequence(long x, int length) : IRandomAccessSequence<int>

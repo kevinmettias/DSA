@@ -1,27 +1,59 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.PartitionList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionList;
 
-public sealed partial class PartitionListTests
+// Harness only. Both strategies are PartitionListSolution's - this file builds
+// LeetCode's published examples as linked lists and checks the resulting list's
+// values.
+public sealed class PartitionListTests
 {
-    [Fact]
-    public void Partition_ClassicExample_PreservesRelativeOrderWithinSides()
-        => Assert.Equal([1, 2, 2, 4, 3, 5], ToArray(Partition(Build([1, 4, 3, 2, 5, 2]), 3)));
-
-    private static SinglyLinkedListNode<int>? Partition(SinglyLinkedListNode<int>? head, int x)
-    {
-        var before = new SinglyLinkedListNode<int>(0); var beforeTail = before;
-        var after = new SinglyLinkedListNode<int>(0); var afterTail = after;
-        for (var node = head; node is not null;)
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
         {
-            var next = node.Next; node.Next = null;
-            if (node.Value < x) { beforeTail.Next = node; beforeTail = node; } else { afterTail.Next = node; afterTail = node; }
-            node = next;
+            { [1, 4, 3, 2, 5, 2], 3, [1, 2, 2, 4, 3, 5] },
+            { [2, 1], 2, [1, 2] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PartitionByArrayRebuild_LeetCodeExamples_PartitionsList(
+        int[] values, int x, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(PartitionListSolution.PartitionByArrayRebuild(BuildList(values), x)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PartitionByPointerSplice_LeetCodeExamples_PartitionsList(
+        int[] values, int x, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(PartitionListSolution.PartitionByPointerSplice(BuildList(values), x)));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
         }
-        beforeTail.Next = after.Next;
-        return before.Next;
+
+        return dummy.Next;
     }
 
-    private static SinglyLinkedListNode<int>? Build(int[] values) { var d = new SinglyLinkedListNode<int>(0); var t = d; foreach (var v in values) { t.Next = new SinglyLinkedListNode<int>(v); t = t.Next; } return d.Next; }
-    private static int[] ToArray(SinglyLinkedListNode<int>? head) { var values = new List<int>(); for (var n = head; n is not null; n = n.Next) values.Add(n.Value); return values.ToArray(); }
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
 }

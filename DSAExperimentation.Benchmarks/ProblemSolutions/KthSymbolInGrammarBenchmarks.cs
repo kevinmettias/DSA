@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthSymbolInGrammarBenchmarks
 {
+    private const int BranchingFactor = 2;
+
     [Params(10, 20)]
     public int N;
 
@@ -29,26 +31,31 @@ public class KthSymbolInGrammarBenchmarks
 
         for (var level = 1; level < N; level++)
         {
-            var next = new List<char>(row.Count * 2);
-
-            foreach (var symbol in row)
-            {
-                if (symbol == '0')
-                {
-                    next.Add('0');
-                    next.Add('1');
-                }
-                else
-                {
-                    next.Add('1');
-                    next.Add('0');
-                }
-            }
-
-            row = next;
+            row = BuildNextRow(row);
         }
 
         return row[_k - 1] - '0';
+    }
+
+    private static List<char> BuildNextRow(List<char> row)
+    {
+        var next = new List<char>(row.Count * BranchingFactor);
+
+        foreach (var symbol in row)
+        {
+            if (symbol == '0')
+            {
+                next.Add('0');
+                next.Add('1');
+            }
+            else
+            {
+                next.Add('1');
+                next.Add('0');
+            }
+        }
+
+        return next;
     }
 
     [Benchmark]
@@ -61,8 +68,8 @@ public class KthSymbolInGrammarBenchmarks
             return 0;
         }
 
-        var parent = KthGrammar(n - 1, (k + 1) / 2);
-        var isSecondHalfOfParent = k % 2 == 0;
+        var parent = KthGrammar(n - 1, (k + 1) / BranchingFactor);
+        var isSecondHalfOfParent = k % BranchingFactor == 0;
 
         return isSecondHalfOfParent ? 1 - parent : parent;
     }

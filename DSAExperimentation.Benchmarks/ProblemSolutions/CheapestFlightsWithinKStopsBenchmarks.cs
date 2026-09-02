@@ -15,6 +15,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheapestFlightsWithinKStopsBenchmarks
 {
+    // Lower bound on the K-stop count so small CityCount values still get a
+    // non-trivial search depth.
+    private const int MinStops = 2;
+
+    // CityCount is divided by this to derive K, scaling the stop bound with graph size.
+    private const int StopScaleFactor = 6;
+
+    // Arbitrary fixed seed for reproducible benchmark input.
+    private const int RandomSeed = 7;
+
+    private const int MaxFlightPrice = 100;
+
+    // Extra randomly-targeted edges added per city, on top of its guaranteed back edge.
+    private const int ExtraEdgesPerCity = 2;
+
     [Params(15, 40)]
     public int CityCount;
 
@@ -27,34 +42,52 @@ public class CheapestFlightsWithinKStopsBenchmarks
     public void Setup()
     {
         // "At most K stops" is "at most K+1 edges" - _maxEdges is that bound.
-        _maxEdges = Math.Max(2, CityCount / 6) + 1;
+        _maxEdges = Math.Max(MinStops, CityCount / StopScaleFactor) + 1;
         _dst = CityCount - 1;
 
-        var random = new Random(7);
+        var flights = BuildFlights(CityCount);
+
+        _adjacency = BuildAdjacency(CityCount, flights);
+        _states = BuildStates(CityCount, flights, _maxEdges + 1);
+    }
+
+    private static List<(int From, int To, int Price)> BuildFlights(int cityCount)
+    {
+        var random = new Random(RandomSeed);
         var flights = new List<(int From, int To, int Price)>();
 
         // A back edge per node guarantees reachability from city 0, then a couple
         // of extra random edges per node for branching density.
-        for (var i = 1; i < CityCount; i++)
-        {
-            flights.Add((random.Next(i), i, random.Next(1, 100)));
-        }
+        AddBackEdges(cityCount, random, flights);
+        AddBranchingEdges(cityCount, random, flights);
 
-        for (var i = 0; i < CityCount; i++)
+        return flights;
+    }
+
+    private static void AddBackEdges(
+        int cityCount, Random random, List<(int From, int To, int Price)> flights)
+    {
+        for (var i = 1; i < cityCount; i++)
         {
-            for (var e = 0; e < 2; e++)
+            flights.Add((random.Next(i), i, random.Next(1, MaxFlightPrice)));
+        }
+    }
+
+    private static void AddBranchingEdges(
+        int cityCount, Random random, List<(int From, int To, int Price)> flights)
+    {
+        for (var i = 0; i < cityCount; i++)
+        {
+            for (var e = 0; e < ExtraEdgesPerCity; e++)
             {
-                var target = random.Next(CityCount);
+                var target = random.Next(cityCount);
 
                 if (target != i)
                 {
-                    flights.Add((i, target, random.Next(1, 100)));
+                    flights.Add((i, target, random.Next(1, MaxFlightPrice)));
                 }
             }
         }
-
-        _adjacency = BuildAdjacency(CityCount, flights);
-        _states = BuildStates(CityCount, flights, _maxEdges + 1);
     }
 
     [Benchmark(Baseline = true)]

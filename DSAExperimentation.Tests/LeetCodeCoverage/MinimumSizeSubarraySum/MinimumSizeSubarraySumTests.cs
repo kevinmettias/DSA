@@ -16,15 +16,27 @@ public sealed partial class MinimumSizeSubarraySumTests
 {
     [Fact]
     public void MinSubArrayLen_ClassicExample_ReturnsShortestWindowLength()
-        => Assert.Equal(2, MinSubArrayLen(7, [2, 3, 1, 2, 4, 3]));
+    {
+        var length = MinSubArrayLen(7, [2, 3, 1, 2, 4, 3]);
+
+        Assert.Equal(2, length);
+    }
 
     [Fact]
     public void MinSubArrayLen_ExactSingleElementMatch_ReturnsOne()
-        => Assert.Equal(1, MinSubArrayLen(4, [1, 4, 4]));
+    {
+        var length = MinSubArrayLen(4, [1, 4, 4]);
+
+        Assert.Equal(1, length);
+    }
 
     [Fact]
     public void MinSubArrayLen_TargetExceedsTotalSum_ReturnsZero()
-        => Assert.Equal(0, MinSubArrayLen(11, [1, 1, 1, 1, 1, 1, 1, 1]));
+    {
+        var length = MinSubArrayLen(11, [1, 1, 1, 1, 1, 1, 1, 1]);
+
+        Assert.Equal(0, length);
+    }
 
     private static int MinSubArrayLen(int target, int[] nums)
     {

@@ -20,6 +20,11 @@ public class CourseScheduleIVBenchmarks
 {
     private const int QueryCount = 300;
 
+    // LC problem number, used as the deterministic Random seed.
+    private const int RandomSeed = 1462;
+
+    private const int EdgesPerCourse = 2;
+
     [Params(50, 150)]
     public int CourseCount;
 
@@ -29,12 +34,12 @@ public class CourseScheduleIVBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1462);
+        var random = new Random(RandomSeed);
         _courses = [.. Enumerable.Range(0, CourseCount).Select(id => new WeightedGraphNode(id))];
 
         for (var i = 0; i < CourseCount - 1; i++)
         {
-            for (var e = 0; e < 2; e++)
+            for (var e = 0; e < EdgesPerCourse; e++)
             {
                 var to = i + 1 + random.Next(CourseCount - i - 1);
                 _courses[i].Edges.Add((1, _courses[to]));
@@ -93,11 +98,22 @@ public class CourseScheduleIVBenchmarks
             return true;
         }
 
+        var (visited, pending) = CreateBfsFrontier(from);
+        return BfsReachesTarget(visited, pending, to);
+    }
+
+    private (bool[] Visited, Queue<int> Pending) CreateBfsFrontier(int from)
+    {
         var visited = new bool[CourseCount];
         var pending = new Queue<int>();
         visited[from] = true;
         pending.Enqueue(from);
 
+        return (visited, pending);
+    }
+
+    private bool BfsReachesTarget(bool[] visited, Queue<int> pending, int to)
+    {
         while (pending.Count > 0)
         {
             var current = pending.Dequeue();

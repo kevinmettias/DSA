@@ -1,81 +1,36 @@
-﻿using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ThreeSum;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ThreeSum;
 
-// LeetCode 15. 3Sum: sort with this repo's MergeSort over ArrayIndexedSequence,
-// then use the usual linear two-pointer sweep over each fixed first element.
-public sealed partial class ThreeSumTests
+// Harness only. Both strategies are ThreeSumSolution's - this file just pins
+// them to LeetCode's published examples. Triplet order is not part of the
+// contract for either strategy (the brute force collects into a HashSet), so
+// examples are compared as sorted sets of triplets.
+public sealed class ThreeSumTests
 {
-    [Fact]
-    public void FindTriplets_ClassicExample_ReturnsUniqueZeroSumTriplets()
-    {
-        int[] nums = [-1, 0, 1, 2, -1, -4];
-
-        var triplets = FindTriplets(nums);
-
-        Assert.Equal(2, triplets.Count);
-        Assert.Contains((-1, -1, 2), triplets);
-        Assert.Contains((-1, 0, 1), triplets);
-    }
-
-    [Fact]
-    public void FindTriplets_AllZeroes_ReturnsSingleTriplet()
-    {
-        int[] nums = [0, 0, 0, 0];
-
-        var triplets = FindTriplets(nums);
-
-        Assert.Equal([new ValueTuple<int, int, int>(0, 0, 0)], triplets);
-    }
-
-    private static List<(int First, int Second, int Third)> FindTriplets(int[] nums)
-    {
-        var sorted = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        var results = new List<(int First, int Second, int Third)>();
-
-        for (var i = 0; i < sorted.Length - 2; i++)
+    public static TheoryData<int[], (int First, int Second, int Third)[]> Examples =>
+        new()
         {
-            if (i > 0 && sorted[i] == sorted[i - 1])
-            {
-                continue;
-            }
+            { [-1, 0, 1, 2, -1, -4], [(-1, -1, 2), (-1, 0, 1)] },
+            { [0, 1, 1], [] },
+            { [0, 0, 0], [(0, 0, 0)] },
+            { [0, 0, 0, 0], [(0, 0, 0)] },
+        };
 
-            var left = i + 1;
-            var right = sorted.Length - 1;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindTripletsByBruteForce_LeetCodeExamples_ReturnsUniqueZeroSumTriplets(
+        int[] nums, (int First, int Second, int Third)[] expected) =>
+        AssertSameTriplets(expected, ThreeSumSolution.FindTripletsByBruteForce(nums));
 
-            while (left < right)
-            {
-                var sum = sorted[i] + sorted[left] + sorted[right];
-                if (sum == 0)
-                {
-                    results.Add((sorted[i], sorted[left], sorted[right]));
-                    left++;
-                    right--;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindTripletsByMergeSortTwoPointers_LeetCodeExamples_ReturnsUniqueZeroSumTriplets(
+        int[] nums, (int First, int Second, int Third)[] expected) =>
+        AssertSameTriplets(expected, ThreeSumSolution.FindTripletsByMergeSortTwoPointers(nums));
 
-                    while (left < right && sorted[left] == sorted[left - 1])
-                    {
-                        left++;
-                    }
-
-                    while (left < right && sorted[right] == sorted[right + 1])
-                    {
-                        right--;
-                    }
-                }
-                else if (sum < 0)
-                {
-                    left++;
-                }
-                else
-                {
-                    right--;
-                }
-            }
-        }
-
-        return results;
-    }
+    private static void AssertSameTriplets(
+        (int First, int Second, int Third)[] expected,
+        List<(int First, int Second, int Third)> actual) =>
+        Assert.Equal(expected.OrderBy(triplet => triplet), actual.OrderBy(triplet => triplet));
 }

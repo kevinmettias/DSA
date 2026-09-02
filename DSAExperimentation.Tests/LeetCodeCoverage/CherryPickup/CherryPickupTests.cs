@@ -53,34 +53,39 @@ public sealed partial class CherryPickupTests
     {
         var n = grid.GetLength(0);
 
-        var result = Memoizer.Memoize<(int Row1, int Col1, int Col2), int>((0, 0, 0), CherriesFrom);
+        var result = Memoizer.Memoize<(int Row1, int Col1, int Col2), int>(
+            (0, 0, 0),
+            (state, cherriesFrom) => CherriesFrom(state, cherriesFrom, grid, n));
+
         return Math.Max(0, result);
+    }
 
-        int CherriesFrom(
-            (int Row1, int Col1, int Col2) state,
-            Func<(int Row1, int Col1, int Col2), int> cherriesFrom)
+    private static int CherriesFrom(
+        (int Row1, int Col1, int Col2) state,
+        Func<(int Row1, int Col1, int Col2), int> cherriesFrom,
+        int[,] grid,
+        int n)
+    {
+        var (row1, col1, col2) = state;
+        var row2 = row1 + col1 - col2;
+
+        if (row1 >= n || col1 >= n || row2 < 0 || row2 >= n || col2 < 0 || col2 >= n
+            || grid[row1, col1] == -1 || grid[row2, col2] == -1)
         {
-            var (row1, col1, col2) = state;
-            var row2 = row1 + col1 - col2;
-
-            if (row1 >= n || col1 >= n || row2 < 0 || row2 >= n || col2 < 0 || col2 >= n
-                || grid[row1, col1] == -1 || grid[row2, col2] == -1)
-            {
-                return Blocked;
-            }
-
-            if (row1 == n - 1 && col1 == n - 1)
-            {
-                return grid[row1, col1];
-            }
-
-            var picked = grid[row1, col1] + (col1 == col2 ? 0 : grid[row2, col2]);
-
-            var bestNext = Math.Max(
-                Math.Max(cherriesFrom((row1 + 1, col1, col2 + 1)), cherriesFrom((row1 + 1, col1, col2))),
-                Math.Max(cherriesFrom((row1, col1 + 1, col2 + 1)), cherriesFrom((row1, col1 + 1, col2))));
-
-            return bestNext == Blocked ? Blocked : picked + bestNext;
+            return Blocked;
         }
+
+        if (row1 == n - 1 && col1 == n - 1)
+        {
+            return grid[row1, col1];
+        }
+
+        var picked = grid[row1, col1] + (col1 == col2 ? 0 : grid[row2, col2]);
+
+        var moveFromRow1 = Math.Max(cherriesFrom((row1 + 1, col1, col2 + 1)), cherriesFrom((row1 + 1, col1, col2)));
+        var moveFromCol1 = Math.Max(cherriesFrom((row1, col1 + 1, col2 + 1)), cherriesFrom((row1, col1 + 1, col2)));
+        var bestNext = Math.Max(moveFromRow1, moveFromCol1);
+
+        return bestNext == Blocked ? Blocked : picked + bestNext;
     }
 }

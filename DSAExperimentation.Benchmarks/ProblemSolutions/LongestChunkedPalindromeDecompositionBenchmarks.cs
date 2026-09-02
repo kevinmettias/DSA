@@ -16,6 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestChunkedPalindromeDecompositionBenchmarks
 {
+    private const int CodePointBase = 1000;
+
+    private const int MatchedPairChunkCount = 2;
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -27,74 +31,74 @@ public class LongestChunkedPalindromeDecompositionBenchmarks
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)(1000 + i);
+            chars[i] = (char)(CodePointBase + i);
         }
 
         _text = new string(chars);
     }
 
+    private readonly record struct ChunkScanState(string Left, string Right, int Count, int I, int J);
+
     [Benchmark(Baseline = true)]
     public int NaiveConcatenation()
     {
-        var i = 0;
-        var j = _text.Length - 1;
-        var left = string.Empty;
-        var right = string.Empty;
-        var count = 0;
+        var state = new ChunkScanState(string.Empty, string.Empty, 0, 0, _text.Length - 1);
 
-        while (i < j)
+        while (state.I < state.J)
         {
-            left += _text[i];
-            right = _text[j] + right;
-
-            if (left == right)
-            {
-                count += 2;
-                left = string.Empty;
-                right = string.Empty;
-            }
-
-            i++;
-            j--;
+            state = AdvanceNaiveStep(state);
         }
 
-        if (left.Length > 0 || i == j)
-        {
-            count++;
-        }
-
-        return count;
+        return state.Count + (state.Left.Length > 0 || state.I == state.J ? 1 : 0);
     }
+
+    private ChunkScanState AdvanceNaiveStep(ChunkScanState state)
+    {
+        var left = state.Left + _text[state.I];
+        var right = _text[state.J] + state.Right;
+        var count = state.Count;
+
+        if (left == right)
+        {
+            count += MatchedPairChunkCount;
+            left = string.Empty;
+            right = string.Empty;
+        }
+
+        return state with { Left = left, Right = right, Count = count, I = state.I + 1, J = state.J - 1 };
+    }
+
+    private readonly record struct HashChunkState(int MatchStart, int I, int J, int Count);
 
     [Benchmark]
     public int RollingHashChunking()
     {
         var hash = new RollingHash(_text);
-        var matchStart = 0;
-        var i = 0;
-        var j = _text.Length - 1;
-        var count = 0;
+        var state = new HashChunkState(0, 0, _text.Length - 1, 0);
 
-        while (i < j)
+        while (state.I < state.J)
         {
-            var len = i - matchStart + 1;
-
-            if (hash.Hash(matchStart, len) == hash.Hash(j, len)
-                && _text.AsSpan(matchStart, len).SequenceEqual(_text.AsSpan(j, len)))
-            {
-                count += 2;
-                matchStart = i + 1;
-            }
-
-            i++;
-            j--;
+            state = AdvanceHashStep(hash, state);
         }
 
-        if (matchStart <= j)
+        return state.Count + (state.MatchStart <= state.J ? 1 : 0);
+    }
+
+    private HashChunkState AdvanceHashStep(RollingHash hash, HashChunkState state)
+    {
+        var len = state.I - state.MatchStart + 1;
+        var matchStart = state.MatchStart;
+        var count = state.Count;
+
+        var leftSpan = _text.AsSpan(matchStart, len);
+        var rightSpan = _text.AsSpan(state.J, len);
+
+        if (hash.Hash(matchStart, len) == hash.Hash(state.J, len) && leftSpan.SequenceEqual(rightSpan))
         {
-            count++;
+            count += MatchedPairChunkCount;
+            matchStart = state.I + 1;
         }
 
-        return count;
+        return state with { MatchStart = matchStart, Count = count, I = state.I + 1, J = state.J - 1 };
     }
 }

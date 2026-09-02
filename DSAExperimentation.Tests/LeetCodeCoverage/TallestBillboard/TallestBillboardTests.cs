@@ -47,8 +47,9 @@ public sealed partial class TallestBillboardTests
             var skip = solve((state.Index + 1, state.Diff));
             var addToTaller = rod + solve((state.Index + 1, state.Diff + rod));
             var addToShorter = solve((state.Index + 1, state.Diff - rod));
+            var tallerOrShorter = Math.Max(addToTaller, addToShorter);
 
-            return Math.Max(skip, Math.Max(addToTaller, addToShorter));
+            return Math.Max(skip, tallerOrShorter);
         }
     }
 }

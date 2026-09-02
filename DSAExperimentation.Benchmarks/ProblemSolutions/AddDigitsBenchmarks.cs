@@ -10,6 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AddDigitsBenchmarks
 {
+    private const int DecimalBase = 10;
+
     [Params(999_999, int.MaxValue)]
     public int Value;
 
@@ -17,14 +19,14 @@ public class AddDigitsBenchmarks
     public int Arithmetic()
     {
         var num = Value;
-        while (num >= 10)
+        while (num >= DecimalBase)
         {
             var sum = 0;
             var remaining = num;
             while (remaining > 0)
             {
-                sum += remaining % 10;
-                remaining /= 10;
+                sum += remaining % DecimalBase;
+                remaining /= DecimalBase;
             }
 
             num = sum;
@@ -37,14 +39,14 @@ public class AddDigitsBenchmarks
     public int StackDigits()
     {
         var num = Value;
-        while (num >= 10)
+        while (num >= DecimalBase)
         {
             var digits = new DigitStack();
             var remaining = num;
             while (remaining > 0)
             {
-                digits.Push(remaining % 10);
-                remaining /= 10;
+                digits.Push(remaining % DecimalBase);
+                remaining /= DecimalBase;
             }
 
             num = 0;

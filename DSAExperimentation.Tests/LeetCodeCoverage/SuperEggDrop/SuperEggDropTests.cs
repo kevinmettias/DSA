@@ -17,7 +17,10 @@ public sealed partial class SuperEggDropTests
     [InlineData(2, 6, 3)]
     [InlineData(3, 14, 4)]
     public void SuperEggDrop_LeetCodeExamples_ReturnsMinimumWorstCaseMoves(int eggs, int floors, int expected)
-        => Assert.Equal(expected, MinMoves(eggs, floors));
+    {
+        var moves = MinMoves(eggs, floors);
+        Assert.Equal(expected, moves);
+    }
 
     private static int MinMoves(int eggs, int floors)
         => Memoizer.Memoize<(int Eggs, int Floors), int>((eggs, floors), WorstCaseMoves);
@@ -35,20 +38,34 @@ public sealed partial class SuperEggDropTests
         while (low <= high)
         {
             var trial = (low + high) / 2;
-            var breaks = movesFor((eggs - 1, trial - 1));
-            var survives = movesFor((eggs, floors - trial));
-            best = Math.Min(best, 1 + Math.Max(breaks, survives));
-
-            if (breaks < survives)
-            {
-                low = trial + 1;
-            }
-            else
-            {
-                high = trial - 1;
-            }
+            (low, high, best) = EvaluateTrial(state, trial, (low, high, best), movesFor);
         }
 
         return best;
+    }
+
+    // One binary-search probe: score `trial` as the next drop floor, then narrow
+    // toward whichever side (breaks vs. survives) currently costs more moves - the
+    // block WorstCaseMoves' while loop repeats once per probe.
+    private static (int Low, int High, int Best) EvaluateTrial(
+        (int Eggs, int Floors) state, int trial, (int Low, int High, int Best) search, Func<(int Eggs, int Floors), int> movesFor)
+    {
+        var (eggs, floors) = state;
+        var (low, high, best) = search;
+
+        var breaks = movesFor((eggs - 1, trial - 1));
+        var survives = movesFor((eggs, floors - trial));
+        best = Math.Min(best, 1 + Math.Max(breaks, survives));
+
+        if (breaks < survives)
+        {
+            low = trial + 1;
+        }
+        else
+        {
+            high = trial - 1;
+        }
+
+        return (low, high, best);
     }
 }

@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CouplesHoldingHandsBenchmarks
 {
+    private const int RandomSeed = 765; // LC problem number
+    private const int SeatsPerCouple = 2;
+
     [Params(200, 5_000)]
     public int CoupleCount;
 
@@ -25,7 +28,7 @@ public class CouplesHoldingHandsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var seatCount = CoupleCount * 2;
+        var seatCount = CoupleCount * SeatsPerCouple;
         var row = new int[seatCount];
 
         for (var i = 0; i < seatCount; i++)
@@ -33,7 +36,7 @@ public class CouplesHoldingHandsBenchmarks
             row[i] = i;
         }
 
-        var random = new Random(765);
+        var random = new Random(RandomSeed);
 
         for (var i = seatCount - 1; i > 0; i--)
         {
@@ -58,38 +61,47 @@ public class CouplesHoldingHandsBenchmarks
 
         var swaps = 0;
 
-        for (var seat = 0; seat < n; seat += 2)
+        for (var seat = 0; seat < n; seat += SeatsPerCouple)
         {
-            var first = row[seat];
-            var partner = first % 2 == 0 ? first + 1 : first - 1;
-
-            if (row[seat + 1] == partner)
+            if (SwapPartnerIntoPlace(row, position, seat))
             {
-                continue;
+                swaps++;
             }
-
-            var partnerSeat = position[partner];
-            var displaced = row[seat + 1];
-
-            row[seat + 1] = partner;
-            row[partnerSeat] = displaced;
-            position[partner] = seat + 1;
-            position[displaced] = partnerSeat;
-            swaps++;
         }
 
         return swaps;
     }
 
+    private static bool SwapPartnerIntoPlace(int[] row, int[] position, int seat)
+    {
+        var first = row[seat];
+        var partner = first % SeatsPerCouple == 0 ? first + 1 : first - 1;
+
+        if (row[seat + 1] == partner)
+        {
+            return false;
+        }
+
+        var partnerSeat = position[partner];
+        var displaced = row[seat + 1];
+
+        row[seat + 1] = partner;
+        row[partnerSeat] = displaced;
+        position[partner] = seat + 1;
+        position[displaced] = partnerSeat;
+
+        return true;
+    }
+
     [Benchmark]
     public int DisjointSetComponentCounting()
     {
-        var coupleCount = _row.Length / 2;
+        var coupleCount = _row.Length / SeatsPerCouple;
         var couples = new DisjointSet(coupleCount);
 
-        for (var seat = 0; seat < _row.Length; seat += 2)
+        for (var seat = 0; seat < _row.Length; seat += SeatsPerCouple)
         {
-            couples.Union(_row[seat] / 2, _row[seat + 1] / 2);
+            couples.Union(_row[seat] / SeatsPerCouple, _row[seat + 1] / SeatsPerCouple);
         }
 
         var roots = new Set<int>();

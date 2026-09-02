@@ -49,24 +49,12 @@ public sealed partial class IPOTests
 
     private static int FindMaximizedCapital(int k, int w, int[] profits, int[] capitals)
     {
-        var byCapital = new Heap<(int Node, int Priority), ByPriorityOrder<int, int>>();
-
-        for (var i = 0; i < profits.Length; i++)
-        {
-            byCapital.Push((profits[i], capitals[i]));
-        }
-
+        var byCapital = BuildCapitalHeap(profits, capitals);
         var byProfit = new Heap<int, MaxHeapOrder<int>>();
 
         for (var round = 0; round < k; round++)
         {
-            while (byCapital.TryPeek(out var cheapest) && cheapest.Priority <= w)
-            {
-                byCapital.TryPop(out var popped);
-                byProfit.Push(popped.Node);
-            }
-
-            if (!byProfit.TryPop(out var bestProfit))
+            if (!TryTakeBestProject(byCapital, byProfit, w, out var bestProfit))
             {
                 break;
             }
@@ -75,5 +63,32 @@ public sealed partial class IPOTests
         }
 
         return w;
+    }
+
+    private static Heap<(int Node, int Priority), ByPriorityOrder<int, int>> BuildCapitalHeap(int[] profits, int[] capitals)
+    {
+        var byCapital = new Heap<(int Node, int Priority), ByPriorityOrder<int, int>>();
+
+        for (var i = 0; i < profits.Length; i++)
+        {
+            byCapital.Push((profits[i], capitals[i]));
+        }
+
+        return byCapital;
+    }
+
+    private static bool TryTakeBestProject(
+        Heap<(int Node, int Priority), ByPriorityOrder<int, int>> byCapital,
+        Heap<int, MaxHeapOrder<int>> byProfit,
+        int w,
+        out int bestProfit)
+    {
+        while (byCapital.TryPeek(out var cheapest) && cheapest.Priority <= w)
+        {
+            byCapital.TryPop(out var popped);
+            byProfit.Push(popped.Node);
+        }
+
+        return byProfit.TryPop(out bestProfit);
     }
 }

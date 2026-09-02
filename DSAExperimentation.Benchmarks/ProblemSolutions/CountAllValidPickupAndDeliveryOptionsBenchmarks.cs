@@ -13,6 +13,10 @@ public class CountAllValidPickupAndDeliveryOptionsBenchmarks
 {
     private const long Mod = 1_000_000_007;
 
+    // Coefficient in the f(i) = f(i-1) * i * (2i-1) recurrence: each new delivery can
+    // be inserted into any of the (2i-1) valid slots among the existing i-1 orders.
+    private const int NewOrderSlotCoefficient = 2;
+
     [Params(100, 10_000)]
     public int Orders;
 
@@ -22,7 +26,7 @@ public class CountAllValidPickupAndDeliveryOptionsBenchmarks
         var ways = 1L;
         for (var i = 1; i <= Orders; i++)
         {
-            ways = ways * i % Mod * (2 * i - 1) % Mod;
+            ways = ways * i % Mod * (NewOrderSlotCoefficient * i - 1) % Mod;
         }
 
         return ways;
@@ -32,5 +36,5 @@ public class CountAllValidPickupAndDeliveryOptionsBenchmarks
     public long Memoized() => Memoizer.Memoize<int, long>(Orders, Ways);
 
     private static long Ways(int orders, Func<int, long> ways)
-        => orders == 0 ? 1L : ways(orders - 1) * orders % Mod * (2 * orders - 1) % Mod;
+        => orders == 0 ? 1L : ways(orders - 1) * orders % Mod * (NewOrderSlotCoefficient * orders - 1) % Mod;
 }

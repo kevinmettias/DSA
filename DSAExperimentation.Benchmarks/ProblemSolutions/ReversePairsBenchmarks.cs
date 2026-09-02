@@ -15,6 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ReversePairsBenchmarks
 {
+    private const int RandomSeed = 493; // LC problem number
+    private const int ValueBound = 10_000;
+    private const long ReversePairMultiplier = 2L;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -23,8 +27,8 @@ public class ReversePairsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(493);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-10_000, 10_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -36,7 +40,7 @@ public class ReversePairsBenchmarks
         {
             for (var j = i + 1; j < _nums.Length; j++)
             {
-                if ((long)_nums[i] > 2L * _nums[j])
+                if ((long)_nums[i] > ReversePairMultiplier * _nums[j])
                 {
                     count++;
                 }
@@ -56,14 +60,15 @@ public class ReversePairsBenchmarks
 
         foreach (var value in _nums)
         {
-            var firstGreaterRank = BinarySearch.UpperBound(sequence, 2L * value);
+            var firstGreaterRank = BinarySearch.UpperBound(sequence, ReversePairMultiplier * value);
 
             if (firstGreaterRank < sortedDistinct.Length)
             {
                 count += tree.Query(firstGreaterRank, sortedDistinct.Length - 1);
             }
 
-            tree.Add(BinarySearch.LowerBound(sequence, (long)value), 1);
+            var rank = BinarySearch.LowerBound(sequence, (long)value);
+            tree.Add(rank, 1);
         }
 
         return count;

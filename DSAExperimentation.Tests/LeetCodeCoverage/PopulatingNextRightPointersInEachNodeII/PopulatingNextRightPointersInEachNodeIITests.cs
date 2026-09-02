@@ -26,12 +26,24 @@ public sealed partial class PopulatingNextRightPointersInEachNodeIITests
 
         var next = Connect(root);
 
-        Assert.Null(NextOf(next, root));
-        Assert.Equal(root.Right, NextOf(next, root.Left!));
-        Assert.Null(NextOf(next, root.Right!));
-        Assert.Equal(root.Left!.Right, NextOf(next, root.Left!.Left!));
-        Assert.Equal(root.Right!.Right, NextOf(next, root.Left!.Right!));
-        Assert.Null(NextOf(next, root.Right!.Right!));
+        AssertNextIsNull(next, root);
+        AssertNextEquals(next, root.Left!, root.Right);
+        AssertNextIsNull(next, root.Right!);
+        AssertNextEquals(next, root.Left!.Left!, root.Left!.Right);
+        AssertNextEquals(next, root.Left!.Right!, root.Right!.Right);
+        AssertNextIsNull(next, root.Right!.Right!);
+    }
+
+    private static void AssertNextEquals(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node, BinaryTreeNode<int>? expectedNext)
+    {
+        var actual = NextOf(next, node);
+        Assert.Equal(expectedNext, actual);
+    }
+
+    private static void AssertNextIsNull(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node)
+    {
+        var actual = NextOf(next, node);
+        Assert.Null(actual);
     }
 
     private static BinaryTreeNode<int>? NextOf(HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> next, BinaryTreeNode<int> node)

@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StoneGameVIBenchmarks
 {
+    private const int RandomSeed = 1686; // LC problem number
+    private const int MaxStoneValue = 1_000; // exclusive upper bound passed to Random.Next
+
     [Params(200, 4_000)]
     public int Length;
 
@@ -21,9 +24,9 @@ public class StoneGameVIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1686);
+        var random = new Random(RandomSeed);
         _stones = Enumerable.Range(0, Length)
-            .Select(_ => (Alice: random.Next(1, 1_000), Bob: random.Next(1, 1_000)))
+            .Select(_ => (Alice: random.Next(1, MaxStoneValue), Bob: random.Next(1, MaxStoneValue)))
             .ToArray();
     }
 
@@ -49,6 +52,8 @@ public class StoneGameVIBenchmarks
         return ScoreDifference(stones);
     }
 
+    private const int TurnParityDivisor = 2; // even index -> Alice's turn, odd index -> Bob's turn
+
     private static int ScoreDifference((int Alice, int Bob)[] stones)
     {
         var aliceScore = 0;
@@ -56,7 +61,7 @@ public class StoneGameVIBenchmarks
 
         for (var i = 0; i < stones.Length; i++)
         {
-            if (i % 2 == 0)
+            if (i % TurnParityDivisor == 0)
             {
                 aliceScore += stones[i].Alice;
             }

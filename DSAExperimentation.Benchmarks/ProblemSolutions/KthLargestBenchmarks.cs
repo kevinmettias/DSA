@@ -11,6 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class KthLargestBenchmarks
 {
     private const int K = 10;
+    private const int RandomSeed = 7;
 
     [Params(1_000, 50_000)]
     public int Length;
@@ -20,7 +21,7 @@ public class KthLargestBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(7);
+        var random = new Random(RandomSeed);
         _values = Enumerable.Range(0, Length).Select(_ => random.Next()).ToArray();
     }
 

@@ -37,33 +37,44 @@ public sealed partial class PalindromePairsTests
             indexOf.Set(words[i], i);
         }
 
-        var pairs = new List<(int, int)>();
+        var finder = new PairFinder(indexOf);
+
         for (var i = 0; i < words.Length; i++)
         {
             var word = words[i];
             for (var cut = 0; cut <= word.Length; cut++)
             {
-                var prefix = word[..cut];
-                var suffix = word[cut..];
-
-                if (IsPalindrome(prefix)
-                    && indexOf.TryGetValue(Reverse(suffix), out var suffixMatch)
-                    && suffixMatch != i)
-                {
-                    pairs.Add((suffixMatch, i));
-                }
-
-                if (cut != word.Length
-                    && IsPalindrome(suffix)
-                    && indexOf.TryGetValue(Reverse(prefix), out var prefixMatch)
-                    && prefixMatch != i)
-                {
-                    pairs.Add((i, prefixMatch));
-                }
+                finder.AddPairsAtCut(word, i, cut);
             }
         }
 
-        return pairs;
+        return finder.Pairs;
+    }
+
+    private sealed class PairFinder(HashMap<string, int> indexOf)
+    {
+        public List<(int First, int Second)> Pairs { get; } = [];
+
+        public void AddPairsAtCut(string word, int i, int cut)
+        {
+            var prefix = word[..cut];
+            var suffix = word[cut..];
+
+            if (IsPalindrome(prefix)
+                && indexOf.TryGetValue(Reverse(suffix), out var suffixMatch)
+                && suffixMatch != i)
+            {
+                Pairs.Add((suffixMatch, i));
+            }
+
+            if (cut != word.Length
+                && IsPalindrome(suffix)
+                && indexOf.TryGetValue(Reverse(prefix), out var prefixMatch)
+                && prefixMatch != i)
+            {
+                Pairs.Add((i, prefixMatch));
+            }
+        }
     }
 
     private static bool IsPalindrome(string s)

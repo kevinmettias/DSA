@@ -12,6 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ImplementRand10UsingRand7Benchmarks
 {
+    private const int Rand7UpperBoundExclusive = 8;
+    private const int Rand7RangeSize = 7;
+    private const int RejectionThreshold = 40;
+    private const int Rand10Range = 10;
+
     [Params(1_000, 100_000)]
     public int Calls;
 
@@ -20,7 +25,7 @@ public class ImplementRand10UsingRand7Benchmarks
     [GlobalSetup]
     public void Setup() => _random = new Random(1);
 
-    private int Rand7() => _random.Next(1, 8);
+    private int Rand7() => _random.Next(1, Rand7UpperBoundExclusive);
 
     [Benchmark(Baseline = true)]
     public int NaiveModuloFold()
@@ -28,7 +33,7 @@ public class ImplementRand10UsingRand7Benchmarks
         var last = 0;
         for (var i = 0; i < Calls; i++)
         {
-            last = 1 + (Rand7() - 1) % 10;
+            last = 1 + (Rand7() - 1) % Rand10Range;
         }
 
         return last;
@@ -45,10 +50,10 @@ public class ImplementRand10UsingRand7Benchmarks
             {
                 var row = Rand7();
                 var col = Rand7();
-                index = (row - 1) * 7 + col;
-            } while (index > 40);
+                index = (row - 1) * Rand7RangeSize + col;
+            } while (index > RejectionThreshold);
 
-            last = 1 + (index - 1) % 10;
+            last = 1 + (index - 1) % Rand10Range;
         }
 
         return last;

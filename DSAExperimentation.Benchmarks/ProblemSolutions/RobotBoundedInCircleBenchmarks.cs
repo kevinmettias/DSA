@@ -10,6 +10,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RobotBoundedInCircleBenchmarks
 {
+    private const int SouthDirection = 2;
+    private const int WestDirection = 3;
+    private const int DirectionCount = 4;
+    private const int LeftTurnOffset = 3;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -26,66 +31,95 @@ public class RobotBoundedInCircleBenchmarks
     [Benchmark(Baseline = true)]
     public bool SwitchStatement()
     {
-        var direction = 0;
-        var x = 0;
-        var y = 0;
+        var state = new RobotState();
 
         foreach (var instruction in _instructions)
         {
-            switch (instruction)
-            {
-                case 'G':
-                    switch (direction)
-                    {
-                        case 0: y++; break;
-                        case 1: x++; break;
-                        case 2: y--; break;
-                        default: x--; break;
-                    }
-                    break;
-                case 'L':
-                    direction = (direction + 3) % 4;
-                    break;
-                case 'R':
-                    direction = (direction + 1) % 4;
-                    break;
-            }
+            ApplySwitchInstruction(state, instruction);
         }
 
-        return (x == 0 && y == 0) || direction != 0;
+        return IsBounded(state);
+    }
+
+    private static void ApplySwitchInstruction(RobotState state, char instruction)
+    {
+        switch (instruction)
+        {
+            case 'G':
+                MoveForward(state);
+                break;
+            case 'L':
+                TurnLeft(state);
+                break;
+            case 'R':
+                TurnRight(state);
+                break;
+        }
+    }
+
+    private static void MoveForward(RobotState state)
+    {
+        switch (state.Direction)
+        {
+            case 0: state.Y++; break;
+            case 1: state.X++; break;
+            case SouthDirection: state.Y--; break;
+            default: state.X--; break;
+        }
     }
 
     [Benchmark]
     public bool HashMapLookup()
     {
-        var stepDeltas = new HashMap<int, (int Dx, int Dy)>();
-        stepDeltas.Set(0, (0, 1));
-        stepDeltas.Set(1, (1, 0));
-        stepDeltas.Set(2, (0, -1));
-        stepDeltas.Set(3, (-1, 0));
-
-        var direction = 0;
-        var x = 0;
-        var y = 0;
+        var stepDeltas = BuildStepDeltas();
+        var state = new RobotState();
 
         foreach (var instruction in _instructions)
         {
-            switch (instruction)
-            {
-                case 'G':
-                    stepDeltas.TryGetValue(direction, out var delta);
-                    x += delta.Dx;
-                    y += delta.Dy;
-                    break;
-                case 'L':
-                    direction = (direction + 3) % 4;
-                    break;
-                case 'R':
-                    direction = (direction + 1) % 4;
-                    break;
-            }
+            ApplyHashMapInstruction(stepDeltas, state, instruction);
         }
 
-        return (x == 0 && y == 0) || direction != 0;
+        return IsBounded(state);
+    }
+
+    private static HashMap<int, (int Dx, int Dy)> BuildStepDeltas()
+    {
+        var stepDeltas = new HashMap<int, (int Dx, int Dy)>();
+        stepDeltas.Set(0, (0, 1));
+        stepDeltas.Set(1, (1, 0));
+        stepDeltas.Set(SouthDirection, (0, -1));
+        stepDeltas.Set(WestDirection, (-1, 0));
+        return stepDeltas;
+    }
+
+    private static void ApplyHashMapInstruction(HashMap<int, (int Dx, int Dy)> stepDeltas, RobotState state, char instruction)
+    {
+        switch (instruction)
+        {
+            case 'G':
+                stepDeltas.TryGetValue(state.Direction, out var delta);
+                state.X += delta.Dx;
+                state.Y += delta.Dy;
+                break;
+            case 'L':
+                TurnLeft(state);
+                break;
+            case 'R':
+                TurnRight(state);
+                break;
+        }
+    }
+
+    private static void TurnLeft(RobotState state) => state.Direction = (state.Direction + LeftTurnOffset) % DirectionCount;
+
+    private static void TurnRight(RobotState state) => state.Direction = (state.Direction + 1) % DirectionCount;
+
+    private static bool IsBounded(RobotState state) => (state.X == 0 && state.Y == 0) || state.Direction != 0;
+
+    private sealed class RobotState
+    {
+        public int Direction;
+        public int X;
+        public int Y;
     }
 }

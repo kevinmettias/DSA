@@ -20,6 +20,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthAncestorOfATreeNodeBenchmarks
 {
+    private const int RandomSeed = 1483; // LC problem number
+    private const int BranchingFactor = 2;
+    private const int QueryCount = 1_000_000;
+
     [Params(2_000, 20_000)]
     public int NodeCount;
 
@@ -29,16 +33,16 @@ public class KthAncestorOfATreeNodeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1483);
+        var random = new Random(RandomSeed);
         _parent = new int[NodeCount];
         _parent[0] = -1;
 
         for (var i = 1; i < NodeCount; i++)
         {
-            _parent[i] = (i - 1) / 2;
+            _parent[i] = (i - 1) / BranchingFactor;
         }
 
-        _queries = Enumerable.Range(0, 1_000_000)
+        _queries = Enumerable.Range(0, QueryCount)
             .Select(_ => (Node: random.Next(NodeCount), K: random.Next(1, NodeCount)))
             .ToArray();
     }

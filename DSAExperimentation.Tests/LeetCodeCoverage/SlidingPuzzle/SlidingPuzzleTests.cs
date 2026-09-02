@@ -71,6 +71,13 @@ public sealed partial class SlidingPuzzleTests
     // Every permutation of "012345" becomes a node ('0' stands in for the blank).
     private static HashMap<string, PuzzleNode> BuildGraph()
     {
+        var nodesByState = CreateNodes();
+        WireNeighbors(nodesByState);
+        return nodesByState;
+    }
+
+    private static HashMap<string, PuzzleNode> CreateNodes()
+    {
         var nodesByState = new HashMap<string, PuzzleNode>();
 
         foreach (var state in GenerateAllPermutations())
@@ -78,6 +85,11 @@ public sealed partial class SlidingPuzzleTests
             nodesByState.Set(state, new PuzzleNode(state));
         }
 
+        return nodesByState;
+    }
+
+    private static void WireNeighbors(HashMap<string, PuzzleNode> nodesByState)
+    {
         foreach (var state in nodesByState.Keys)
         {
             nodesByState.TryGetValue(state, out var node);
@@ -93,8 +105,6 @@ public sealed partial class SlidingPuzzleTests
                 }
             }
         }
-
-        return nodesByState;
     }
 
     private static List<string> GenerateAllPermutations()

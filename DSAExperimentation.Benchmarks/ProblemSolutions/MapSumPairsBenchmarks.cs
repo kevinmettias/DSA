@@ -21,6 +21,9 @@ public class MapSumPairsBenchmarks
 {
     private const int KeyLength = 8;
     private const int PrefixLength = 3;
+    private const int RandomSeed = 677; // LC problem number
+    private const int MaxValueExclusive = 100;
+    private const int AlphabetSize = 26;
 
     [Params(5_000, 20_000)]
     public int KeyCount;
@@ -32,9 +35,9 @@ public class MapSumPairsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(677);
+        var random = new Random(RandomSeed);
         _keys = Enumerable.Range(0, KeyCount).Select(_ => RandomWord(random)).Distinct().ToArray();
-        _values = _keys.Select(_ => random.Next(1, 100)).ToArray();
+        _values = _keys.Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
         _prefixes = _keys.Select(key => key[..PrefixLength]).ToArray();
     }
 
@@ -77,10 +80,15 @@ public class MapSumPairsBenchmarks
         return total;
     }
 
-    private static int Sum(LowercaseTrieNode<int> root, string prefix) => TreeFold.Fold<
-        LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-        NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-        SparseArrayChildren<LowercaseTrieNode<int>>, SumValuesAlgebra, int>(WalkTo(root, prefix));
+    private static int Sum(LowercaseTrieNode<int> root, string prefix)
+    {
+        var subtreeRoot = WalkTo(root, prefix);
+
+        return TreeFold.Fold<
+            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
+            NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
+            SparseArrayChildren<LowercaseTrieNode<int>>, SumValuesAlgebra, int>(subtreeRoot);
+    }
 
     private static LowercaseTrieNode<int>? WalkTo(LowercaseTrieNode<int> root, string prefix)
     {
@@ -100,7 +108,7 @@ public class MapSumPairsBenchmarks
     }
 
     private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
 
     // See MapSumPairsTests.SumValuesAlgebra for the full explanation - repeated here
     // rather than shared because TwoSumBenchmarks/MedianOfTwoSortedArraysBenchmarks

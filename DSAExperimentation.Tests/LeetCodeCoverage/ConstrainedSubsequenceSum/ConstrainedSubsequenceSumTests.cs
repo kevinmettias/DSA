@@ -35,34 +35,46 @@ public sealed class ConstrainedSubsequenceSumTests
 
     private static int ConstrainedSubsetSum(int[] nums, int k)
     {
-        var dp = new int[nums.Length];
-        var window = new RepoDeque();
+        var state = new SlidingWindowState(nums, k);
         var best = int.MinValue;
 
         for (var i = 0; i < nums.Length; i++)
         {
-            if (window.TryPeekFront(out var frontIndex) && frontIndex < i - k)
-            {
-                window.TryPopFront(out _);
-            }
-
-            var windowMax = 0;
-            if (window.TryPeekFront(out var maxIndex))
-            {
-                windowMax = Math.Max(0, dp[maxIndex]);
-            }
-
-            dp[i] = nums[i] + windowMax;
-            best = Math.Max(best, dp[i]);
-
-            while (window.TryPeekBack(out var backIndex) && dp[backIndex] <= dp[i])
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
+            best = Math.Max(best, state.ComputeDpValue(i));
         }
 
         return best;
+    }
+
+    private sealed class SlidingWindowState(int[] nums, int k)
+    {
+        private readonly int[] _dp = new int[nums.Length];
+        private readonly RepoDeque _window = new();
+
+        public int ComputeDpValue(int i)
+        {
+            if (_window.TryPeekFront(out var frontIndex) && frontIndex < i - k)
+            {
+                _window.TryPopFront(out _);
+            }
+
+            var windowMax = 0;
+            if (_window.TryPeekFront(out var maxIndex))
+            {
+                windowMax = Math.Max(0, _dp[maxIndex]);
+            }
+
+            var value = nums[i] + windowMax;
+
+            while (_window.TryPeekBack(out var backIndex) && _dp[backIndex] <= value)
+            {
+                _window.TryPopBack(out _);
+            }
+
+            _window.PushBack(i);
+            _dp[i] = value;
+
+            return value;
+        }
     }
 }

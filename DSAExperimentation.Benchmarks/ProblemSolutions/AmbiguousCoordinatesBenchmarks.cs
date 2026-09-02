@@ -14,6 +14,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AmbiguousCoordinatesBenchmarks
 {
+    // LC problem number, used as the deterministic seed for digit-string generation.
+    private const int RandomSeed = 816;
+
+    // The leading digit is drawn from 1-9 (never a leading zero).
+    private const int NonZeroDigitRange = 9;
+
+    // Every other digit is drawn from 0-9.
+    private const int DigitRange = 10;
+
+    // The string form of the number zero - the only digit run allowed a leading zero.
+    private const string Zero = "0";
+
     [Params(8, 16)]
     public int Length;
 
@@ -22,13 +34,13 @@ public class AmbiguousCoordinatesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(816);
+        var random = new Random(RandomSeed);
         var chars = new char[Length];
-        chars[0] = (char)('1' + random.Next(9));
+        chars[0] = (char)('1' + random.Next(NonZeroDigitRange));
 
         for (var i = 1; i < Length; i++)
         {
-            chars[i] = (char)('0' + random.Next(10));
+            chars[i] = (char)('0' + random.Next(DigitRange));
         }
 
         _digits = new string(chars);
@@ -98,19 +110,19 @@ public class AmbiguousCoordinatesBenchmarks
         }
     }
 
-    private static bool IsValidWhole(string digits) => digits == "0" || digits[0] != '0';
+    private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != '0';
 
     private static bool IsValidWithDot(string candidate)
     {
         var dotIndex = candidate.IndexOf('.');
         var intPart = candidate[..dotIndex];
         var fracPart = candidate[(dotIndex + 1)..];
-        return (intPart == "0" || intPart[0] != '0') && fracPart[^1] != '0';
+        return (intPart == Zero || intPart[0] != '0') && fracPart[^1] != '0';
     }
 
     private static IEnumerable<string> SlicedValidNumbers(string digits)
     {
-        if (digits == "0" || digits[0] != '0')
+        if (digits == Zero || digits[0] != '0')
         {
             yield return digits;
         }
@@ -120,7 +132,7 @@ public class AmbiguousCoordinatesBenchmarks
             var intPart = digits[..dot];
             var fracPart = digits[dot..];
 
-            if ((intPart == "0" || intPart[0] != '0') && fracPart[^1] != '0')
+            if ((intPart == Zero || intPart[0] != '0') && fracPart[^1] != '0')
             {
                 yield return $"{intPart}.{fracPart}";
             }

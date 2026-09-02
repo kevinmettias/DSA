@@ -16,12 +16,24 @@ public sealed partial class RemoveKDigitsTests
     [InlineData("10", 2, "0")]
     [InlineData("112", 1, "11")]
     public void RemoveKDigits_ClassicExamples_ReturnsSmallestPossibleNumber(string num, int k, string expected)
-        => Assert.Equal(expected, RemoveKDigits(num, k));
+    {
+        var actual = RemoveKDigits(num, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static string RemoveKDigits(string num, int k)
     {
         var stack = new DigitStack();
+        k = PopGreaterDigits(stack, num, k);
+        PopRemainingBudget(stack, k);
 
+        var digits = PopAllIntoArray(stack);
+
+        return TrimLeadingZeros(digits);
+    }
+
+    private static int PopGreaterDigits(DigitStack stack, string num, int k)
+    {
         foreach (var digit in num)
         {
             while (k > 0 && stack.TryPeek(out var top) && top > digit)
@@ -33,17 +45,30 @@ public sealed partial class RemoveKDigitsTests
             stack.Push(digit);
         }
 
+        return k;
+    }
+
+    private static void PopRemainingBudget(DigitStack stack, int k)
+    {
         while (k > 0 && stack.TryPop(out _))
         {
             k--;
         }
+    }
 
+    private static char[] PopAllIntoArray(DigitStack stack)
+    {
         var digits = new char[stack.Count];
         for (var i = digits.Length - 1; i >= 0; i--)
         {
             stack.TryPop(out digits[i]);
         }
 
+        return digits;
+    }
+
+    private static string TrimLeadingZeros(char[] digits)
+    {
         var trimmed = new string(digits).TrimStart('0');
         return trimmed.Length == 0 ? "0" : trimmed;
     }

@@ -16,13 +16,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestHappyPrefixBenchmarks
 {
+    private const string MismatchSuffix = "b"; // forces every candidate length's comparison to fail only on the last character
+
     [Params(200, 5_000)]
     public int Length;
 
     private string _value = null!;
 
     [GlobalSetup]
-    public void Setup() => _value = new string('a', Length - 1) + "b";
+    public void Setup() => _value = new string('a', Length - 1) + MismatchSuffix;
 
     [Benchmark(Baseline = true)]
     public int ShrinkAndCompare()
@@ -31,7 +33,10 @@ public class LongestHappyPrefixBenchmarks
 
         for (var length = s.Length - 1; length >= 1; length--)
         {
-            if (s.AsSpan(0, length).SequenceEqual(s.AsSpan(s.Length - length, length)))
+            var prefix = s.AsSpan(0, length);
+            var suffix = s.AsSpan(s.Length - length, length);
+
+            if (prefix.SequenceEqual(suffix))
             {
                 return length;
             }

@@ -16,6 +16,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestWellPerformingIntervalBenchmarks
 {
+    private const int CoinFlipUpperBoundExclusive = 2;
+
+    private const int TiringHour = 9;
+
+    private const int NotTiringHour = 6;
+
+    private const int TiringThreshold = 8;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -25,7 +33,9 @@ public class LongestWellPerformingIntervalBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _hours = Enumerable.Range(0, Length).Select(_ => random.Next(0, 2) == 1 ? 9 : 6).ToArray();
+        _hours = Enumerable.Range(0, Length)
+            .Select(_ => random.Next(0, CoinFlipUpperBoundExclusive) == 1 ? TiringHour : NotTiringHour)
+            .ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -37,7 +47,7 @@ public class LongestWellPerformingIntervalBenchmarks
             var score = 0;
             for (var end = start; end < _hours.Length; end++)
             {
-                score += _hours[end] > 8 ? 1 : -1;
+                score += _hours[end] > TiringThreshold ? 1 : -1;
                 if (score > 0 && end - start + 1 > longest)
                 {
                     longest = end - start + 1;
@@ -48,34 +58,43 @@ public class LongestWellPerformingIntervalBenchmarks
         return longest;
     }
 
+    private readonly record struct PrefixScoreState(int Score, int Longest);
+
     [Benchmark]
     public int HashMapPrefixScore()
     {
         var firstIndexByScore = new HashMap<int, int>();
-        var score = 0;
-        var longest = 0;
+        var state = new PrefixScoreState(0, 0);
 
         for (var i = 0; i < _hours.Length; i++)
         {
-            score += _hours[i] > 8 ? 1 : -1;
-
-            if (score > 0)
-            {
-                longest = i + 1;
-                continue;
-            }
-
-            if (firstIndexByScore.TryGetValue(score - 1, out var priorIndex))
-            {
-                longest = Math.Max(longest, i - priorIndex);
-            }
-
-            if (!firstIndexByScore.HasKey(score))
-            {
-                firstIndexByScore.Set(score, i);
-            }
+            state = AdvancePrefixScore(state, firstIndexByScore, i);
         }
 
-        return longest;
+        return state.Longest;
+    }
+
+    private PrefixScoreState AdvancePrefixScore(PrefixScoreState state, HashMap<int, int> firstIndexByScore, int i)
+    {
+        var score = state.Score + (_hours[i] > TiringThreshold ? 1 : -1);
+
+        if (score > 0)
+        {
+            return state with { Score = score, Longest = i + 1 };
+        }
+
+        var longest = state.Longest;
+
+        if (firstIndexByScore.TryGetValue(score - 1, out var priorIndex))
+        {
+            longest = Math.Max(longest, i - priorIndex);
+        }
+
+        if (!firstIndexByScore.HasKey(score))
+        {
+            firstIndexByScore.Set(score, i);
+        }
+
+        return state with { Score = score, Longest = longest };
     }
 }

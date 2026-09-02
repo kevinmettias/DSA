@@ -21,6 +21,7 @@ public class RangeModuleBenchmarks
 {
     private const int RangeWidth = 2;
     private const int Stride = 4;
+    private const int RandomSeed = 17;
 
     [Params(200, 5_000)]
     public int Length;
@@ -43,7 +44,7 @@ public class RangeModuleBenchmarks
             _intervalSet.Add(start, end);
         }
 
-        var random = new Random(17);
+        var random = new Random(RandomSeed);
         var span = Length * Stride;
         _queries = Enumerable.Range(0, Length)
             .Select(_ =>

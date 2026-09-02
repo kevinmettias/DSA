@@ -1,15 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using StackOfInt = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.RotateImage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Rotate Image (LC 48): transpose-then-reverse using the BCL's Array.Reverse vs. the
-// same transpose followed by this repo's own LIFO Stack<T> to reverse each row - the
-// same digit-reversal primitive ReverseInteger composes, applied to matrix rows
-// instead of decimal digits.
+// Harness only: both arms are RotateImageSolution's, the same methods
+// RotateImageTests proves correct. Each iteration clones the pristine matrix
+// before rotating, since the solution mutates in place and [GlobalSetup] runs
+// once per benchmark, not once per invocation.
 [MemoryDiagnoser]
 public class RotateImageBenchmarks
 {
+    private const int MaxCellValueExclusive = 1_000;
+
     [Params(50, 300)]
     public int Size;
 
@@ -27,63 +29,25 @@ public class RotateImageBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _matrix[r][c] = random.Next(1, 1_000);
+                _matrix[r][c] = random.Next(1, MaxCellValueExclusive);
             }
         }
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] TransposeThenArrayReverse()
+    public int[][] ArrayReverse()
     {
         var matrix = Clone(_matrix);
-        Transpose(matrix);
-
-        foreach (var row in matrix)
-        {
-            Array.Reverse(row);
-        }
-
+        RotateImageSolution.RotateByArrayReverse(matrix);
         return matrix;
     }
 
     [Benchmark]
-    public int[][] TransposeThenStackReverse()
+    public int[][] StackReverse()
     {
         var matrix = Clone(_matrix);
-        Transpose(matrix);
-
-        foreach (var row in matrix)
-        {
-            ReverseWithStack(row);
-        }
-
+        RotateImageSolution.RotateByStackReverse(matrix);
         return matrix;
-    }
-
-    private static void Transpose(int[][] matrix)
-    {
-        for (var r = 0; r < matrix.Length; r++)
-        {
-            for (var c = r + 1; c < matrix.Length; c++)
-            {
-                (matrix[r][c], matrix[c][r]) = (matrix[c][r], matrix[r][c]);
-            }
-        }
-    }
-
-    private static void ReverseWithStack(int[] row)
-    {
-        var pushed = new StackOfInt();
-
-        foreach (var value in row)
-        {
-            pushed.Push(value);
-        }
-
-        for (var i = 0; i < row.Length; i++)
-        {
-            pushed.TryPop(out row[i]);
-        }
     }
 
     private static int[][] Clone(int[][] matrix)

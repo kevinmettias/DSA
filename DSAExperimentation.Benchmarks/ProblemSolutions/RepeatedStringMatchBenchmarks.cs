@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RepeatedStringMatchBenchmarks
 {
+    private const int APatternFillerLength = 9;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,7 +23,7 @@ public class RepeatedStringMatchBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _a = new string('a', 9) + 'b';
+        _a = new string('a', APatternFillerLength) + 'b';
         _b = new string('a', Length) + 'c';
     }
 
@@ -37,7 +39,8 @@ public class RepeatedStringMatchBenchmarks
 
         for (var repeats = minRepeats; repeats <= minRepeats + 1; repeats++)
         {
-            var candidate = string.Concat(Enumerable.Repeat(a, repeats));
+            var repeatedSegments = Enumerable.Repeat(a, repeats);
+            var candidate = string.Concat(repeatedSegments);
             if (contains(candidate, b))
             {
                 return repeats;

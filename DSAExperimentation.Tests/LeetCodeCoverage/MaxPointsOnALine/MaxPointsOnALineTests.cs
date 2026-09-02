@@ -44,36 +44,53 @@ public sealed class MaxPointsOnALineTests
 
         for (var i = 0; i < points.Length; i++)
         {
-            var slopeCounts = new HashMap<(int Dx, int Dy), int>();
-            var duplicates = 0;
-            var localBest = 0;
-
-            for (var j = 0; j < points.Length; j++)
-            {
-                if (j == i)
-                {
-                    continue;
-                }
-
-                var dx = points[j][0] - points[i][0];
-                var dy = points[j][1] - points[i][1];
-
-                if (dx == 0 && dy == 0)
-                {
-                    duplicates++;
-                    continue;
-                }
-
-                var key = ReducedSlope(dx, dy);
-                var count = slopeCounts.TryGetValue(key, out var existing) ? existing + 1 : 1;
-                slopeCounts.Set(key, count);
-                localBest = Math.Max(localBest, count);
-            }
-
-            best = Math.Max(best, localBest + duplicates + 1);
+            best = Math.Max(best, ScanFromAnchor(points, i) + 1);
         }
 
         return best;
+    }
+
+    private static int ScanFromAnchor(int[][] points, int i)
+    {
+        var scan = new AnchorScan();
+
+        for (var j = 0; j < points.Length; j++)
+        {
+            if (j == i)
+            {
+                continue;
+            }
+
+            scan.Consider(points, i, j);
+        }
+
+        return scan.Result;
+    }
+
+    private sealed class AnchorScan
+    {
+        private readonly HashMap<(int Dx, int Dy), int> _slopeCounts = new();
+        private int _duplicates;
+        private int _localBest;
+
+        public int Result => _localBest + _duplicates;
+
+        public void Consider(int[][] points, int i, int j)
+        {
+            var dx = points[j][0] - points[i][0];
+            var dy = points[j][1] - points[i][1];
+
+            if (dx == 0 && dy == 0)
+            {
+                _duplicates++;
+                return;
+            }
+
+            var key = ReducedSlope(dx, dy);
+            var count = _slopeCounts.TryGetValue(key, out var existing) ? existing + 1 : 1;
+            _slopeCounts.Set(key, count);
+            _localBest = Math.Max(_localBest, count);
+        }
     }
 
     // Reduces (dx, dy) to a canonical slope key: divide out the GCD, then fix

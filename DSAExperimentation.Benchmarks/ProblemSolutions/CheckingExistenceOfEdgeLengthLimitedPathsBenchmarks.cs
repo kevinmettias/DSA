@@ -15,6 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
 {
+    private const int RandomSeed = 1697; // LC problem number
+    private const int EdgeCountPerNodeMultiplier = 3;
+    private const int QueryCountPerNodeMultiplier = 2;
+    private const int MaxEdgeWeight = 1_000_000;
+    private const int EdgeWeightIndex = 2;
+    private const int QueryLimitIndex = 2;
+
     [Params(100, 2_000)]
     public int NodeCount;
 
@@ -24,16 +31,16 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1697);
-        var edgeCount = NodeCount * 3;
-        var queryCount = NodeCount * 2;
+        var random = new Random(RandomSeed);
+        var edgeCount = NodeCount * EdgeCountPerNodeMultiplier;
+        var queryCount = NodeCount * QueryCountPerNodeMultiplier;
 
         _edgeList = Enumerable.Range(0, edgeCount)
-            .Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount), random.Next(1, 1_000_000) })
+            .Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount), random.Next(1, MaxEdgeWeight) })
             .ToArray();
 
         _queries = Enumerable.Range(0, queryCount)
-            .Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount), random.Next(1, 1_000_000) })
+            .Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount), random.Next(1, MaxEdgeWeight) })
             .ToArray();
     }
 
@@ -48,15 +55,15 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
 
         foreach (var edge in _edgeList)
         {
-            adjacency[edge[0]].Add((edge[1], edge[2]));
-            adjacency[edge[1]].Add((edge[0], edge[2]));
+            adjacency[edge[0]].Add((edge[1], edge[EdgeWeightIndex]));
+            adjacency[edge[1]].Add((edge[0], edge[EdgeWeightIndex]));
         }
 
         var results = new bool[_queries.Length];
 
         for (var i = 0; i < _queries.Length; i++)
         {
-            results[i] = HasLimitedPath(adjacency, _queries[i][0], _queries[i][1], _queries[i][2]);
+            results[i] = HasLimitedPath(adjacency, _queries[i][0], _queries[i][1], _queries[i][QueryLimitIndex]);
         }
 
         return results;
@@ -69,6 +76,12 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
             return true;
         }
 
+        var query = new PathQuery(target, limit);
+        return TraverseForTarget(adjacency, start, query);
+    }
+
+    private bool TraverseForTarget(List<(int To, int Weight)>[] adjacency, int start, PathQuery query)
+    {
         var visited = new bool[NodeCount];
         var stack = new Stack<int>();
         stack.Push(start);
@@ -78,21 +91,31 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
         {
             var node = stack.Pop();
 
-            foreach (var (to, weight) in adjacency[node])
+            if (VisitNeighbors(adjacency[node], query, visited, stack))
             {
-                if (weight >= limit || visited[to])
-                {
-                    continue;
-                }
-
-                if (to == target)
-                {
-                    return true;
-                }
-
-                visited[to] = true;
-                stack.Push(to);
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    private static bool VisitNeighbors(List<(int To, int Weight)> neighbors, PathQuery query, bool[] visited, Stack<int> stack)
+    {
+        foreach (var (to, weight) in neighbors)
+        {
+            if (weight >= query.Limit || visited[to])
+            {
+                continue;
+            }
+
+            if (to == query.Target)
+            {
+                return true;
+            }
+
+            visited[to] = true;
+            stack.Push(to);
         }
 
         return false;
@@ -101,8 +124,8 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
     [Benchmark]
     public bool[] OfflineDisjointSetSweep()
     {
-        var edgesByWeight = _edgeList.OrderBy(edge => edge[2]).ToArray();
-        var queryOrder = Enumerable.Range(0, _queries.Length).OrderBy(i => _queries[i][2]).ToArray();
+        var edgesByWeight = _edgeList.OrderBy(edge => edge[EdgeWeightIndex]).ToArray();
+        var queryOrder = Enumerable.Range(0, _queries.Length).OrderBy(i => _queries[i][QueryLimitIndex]).ToArray();
 
         var components = new DisjointSet(NodeCount);
         var results = new bool[_queries.Length];
@@ -112,7 +135,7 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
         {
             var query = _queries[queryIndex];
 
-            while (edgeIndex < edgesByWeight.Length && edgesByWeight[edgeIndex][2] < query[2])
+            while (edgeIndex < edgesByWeight.Length && edgesByWeight[edgeIndex][EdgeWeightIndex] < query[QueryLimitIndex])
             {
                 components.Union(edgesByWeight[edgeIndex][0], edgesByWeight[edgeIndex][1]);
                 edgeIndex++;
@@ -123,4 +146,6 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
 
         return results;
     }
+
+    private readonly record struct PathQuery(int Target, int Limit);
 }

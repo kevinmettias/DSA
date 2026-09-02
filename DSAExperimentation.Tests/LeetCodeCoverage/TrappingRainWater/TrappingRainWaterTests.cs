@@ -1,55 +1,28 @@
-using RainStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.TrappingRainWater;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TrappingRainWater;
 
-// LeetCode 42. Trapping Rain Water: the classic monotonic-stack sweep over
-// this repo's own Stack<int>, holding bar indices (not heights). Once a
-// taller bar arrives, every shorter bar popped off the top had its floor
-// bounded on the left by the new stack top and on the right by the current
-// bar - min(leftWall, rightWall) - floor, times the gap width, is exactly
-// the water that bar's position trapped.
-public sealed partial class TrappingRainWaterTests
+// Harness only. Both strategies live in TrappingRainWaterSolution - this file
+// just pins them to LeetCode's published examples plus a couple of edge cases
+// (no walls tall enough to trap anything, and a single bar).
+public sealed class TrappingRainWaterTests
 {
-    [Fact]
-    public void Trap_ClassicExample_ReturnsTotalTrappedWater()
-    {
-        int[] height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1];
-
-        Assert.Equal(6, Trap(height));
-    }
-
-    [Fact]
-    public void Trap_TwoBasinsBetweenThreeWalls_ReturnsSummedTrappedWater()
-    {
-        int[] height = [4, 2, 0, 3, 2, 5];
-
-        Assert.Equal(9, Trap(height));
-    }
-
-    private static int Trap(int[] height)
-    {
-        var indices = new RainStack();
-        var water = 0;
-
-        for (var i = 0; i < height.Length; i++)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            while (indices.TryPeek(out var top) && height[top] < height[i])
-            {
-                indices.TryPop(out _);
+            { [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1], 6 },
+            { [4, 2, 0, 3, 2, 5], 9 },
+            { [1, 2, 3, 4, 5], 0 },
+            { [5], 0 },
+        };
 
-                if (!indices.TryPeek(out var left))
-                {
-                    break;
-                }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TrapByBruteForce_LeetCodeExamples_ReturnsTotalTrappedWater(int[] height, int expected) =>
+        Assert.Equal(expected, TrappingRainWaterSolution.TrapByBruteForce(height));
 
-                var width = i - left - 1;
-                var boundedHeight = Math.Min(height[left], height[i]) - height[top];
-                water += width * boundedHeight;
-            }
-
-            indices.Push(i);
-        }
-
-        return water;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TrapByMonotonicStack_LeetCodeExamples_ReturnsTotalTrappedWater(int[] height, int expected) =>
+        Assert.Equal(expected, TrappingRainWaterSolution.TrapByMonotonicStack(height));
 }

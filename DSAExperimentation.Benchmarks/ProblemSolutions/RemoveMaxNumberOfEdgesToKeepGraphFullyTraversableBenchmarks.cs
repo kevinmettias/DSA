@@ -17,6 +17,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 {
+    private const int RandomSeed = 1579; // LC problem number
+    private const int FirstNonRootNode = 2;
+    private const int ExtraEdgeMultiplier = 2;
+    private const int EdgeTypeUpperBoundExclusive = 4;
+    private const int BothOwnersEdgeType = 3;
+    private const int EdgeTargetIndex = 2;
+    private const int BobOwnerType = 2;
+
     [Params(50, 300)]
     public int NodeCount;
 
@@ -25,15 +33,15 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1579);
+        var random = new Random(RandomSeed);
         var edges = new List<int[]>();
 
-        for (var i = 2; i <= NodeCount; i++)
+        for (var i = FirstNonRootNode; i <= NodeCount; i++)
         {
-            edges.Add([3, random.Next(1, i), i]);
+            edges.Add([BothOwnersEdgeType, random.Next(1, i), i]);
         }
 
-        for (var e = 0; e < NodeCount * 2; e++)
+        for (var e = 0; e < NodeCount * ExtraEdgeMultiplier; e++)
         {
             var u = random.Next(1, NodeCount + 1);
             var v = random.Next(1, NodeCount + 1);
@@ -43,7 +51,7 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
                 continue;
             }
 
-            edges.Add([random.Next(1, 4), u, v]);
+            edges.Add([random.Next(1, EdgeTypeUpperBoundExclusive), u, v]);
         }
 
         _edges = [.. edges];
@@ -64,50 +72,66 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 
         foreach (var edge in _edges)
         {
-            if (edge[0] != 3)
+            if (TryConnectSpanningEdge(edge, alice, bob))
             {
-                continue;
+                usedEdges++;
             }
-
-            var (u, v) = (edge[1] - 1, edge[2] - 1);
-            if (CanReach(alice, u, v))
-            {
-                continue;
-            }
-
-            Connect(alice, u, v);
-            Connect(bob, u, v);
-            usedEdges++;
         }
 
         usedEdges += ConnectOwnEdges(alice, ownerType: 1);
-        usedEdges += ConnectOwnEdges(bob, ownerType: 2);
+        usedEdges += ConnectOwnEdges(bob, ownerType: BobOwnerType);
 
         return IsFullyConnected(alice) && IsFullyConnected(bob) ? _edges.Length - usedEdges : -1;
+    }
 
-        int ConnectOwnEdges(List<int>[] adjacency, int ownerType)
+    private bool TryConnectSpanningEdge(int[] edge, List<int>[] alice, List<int>[] bob)
+    {
+        if (edge[0] != BothOwnersEdgeType)
         {
-            var used = 0;
+            return false;
+        }
 
-            foreach (var edge in _edges)
+        var (u, v) = (edge[1] - 1, edge[EdgeTargetIndex] - 1);
+        if (CanReach(alice, u, v))
+        {
+            return false;
+        }
+
+        Connect(alice, u, v);
+        Connect(bob, u, v);
+        return true;
+    }
+
+    private int ConnectOwnEdges(List<int>[] adjacency, int ownerType)
+    {
+        var used = 0;
+
+        foreach (var edge in _edges)
+        {
+            if (TryConnectOwnEdge(edge, ownerType, adjacency))
             {
-                if (edge[0] != ownerType)
-                {
-                    continue;
-                }
-
-                var (u, v) = (edge[1] - 1, edge[2] - 1);
-                if (CanReach(adjacency, u, v))
-                {
-                    continue;
-                }
-
-                Connect(adjacency, u, v);
                 used++;
             }
-
-            return used;
         }
+
+        return used;
+    }
+
+    private bool TryConnectOwnEdge(int[] edge, int ownerType, List<int>[] adjacency)
+    {
+        if (edge[0] != ownerType)
+        {
+            return false;
+        }
+
+        var (u, v) = (edge[1] - 1, edge[EdgeTargetIndex] - 1);
+        if (CanReach(adjacency, u, v))
+        {
+            return false;
+        }
+
+        Connect(adjacency, u, v);
+        return true;
     }
 
     private static void Connect(List<int>[] adjacency, int u, int v)
@@ -131,17 +155,22 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
                 return true;
             }
 
-            foreach (var next in adjacency[current])
-            {
-                if (!visited[next])
-                {
-                    visited[next] = true;
-                    queue.Enqueue(next);
-                }
-            }
+            EnqueueUnvisitedNeighbors(adjacency, current, visited, queue);
         }
 
         return false;
+    }
+
+    private static void EnqueueUnvisitedNeighbors(List<int>[] adjacency, int node, bool[] visited, Queue<int> queue)
+    {
+        foreach (var next in adjacency[node])
+        {
+            if (!visited[next])
+            {
+                visited[next] = true;
+                queue.Enqueue(next);
+            }
+        }
     }
 
     private bool IsFullyConnected(List<int>[] adjacency) => CanReachEveryNode(adjacency);
@@ -180,26 +209,34 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 
         foreach (var edge in _edges)
         {
-            if (edge[0] != 3)
+            if (TryUnionSpanningEdge(edge, alice, bob))
             {
-                continue;
+                usedEdges++;
             }
-
-            var (u, v) = (edge[1] - 1, edge[2] - 1);
-            if (alice.IsConnected(u, v))
-            {
-                continue;
-            }
-
-            alice.Union(u, v);
-            bob.Union(u, v);
-            usedEdges++;
         }
 
         usedEdges += UnionOwnEdges(alice, ownerType: 1);
-        usedEdges += UnionOwnEdges(bob, ownerType: 2);
+        usedEdges += UnionOwnEdges(bob, ownerType: BobOwnerType);
 
         return IsFullyConnected(alice) && IsFullyConnected(bob) ? _edges.Length - usedEdges : -1;
+    }
+
+    private bool TryUnionSpanningEdge(int[] edge, DisjointSet alice, DisjointSet bob)
+    {
+        if (edge[0] != BothOwnersEdgeType)
+        {
+            return false;
+        }
+
+        var (u, v) = (edge[1] - 1, edge[EdgeTargetIndex] - 1);
+        if (alice.IsConnected(u, v))
+        {
+            return false;
+        }
+
+        alice.Union(u, v);
+        bob.Union(u, v);
+        return true;
     }
 
     private int UnionOwnEdges(DisjointSet components, int ownerType)
@@ -213,7 +250,7 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
                 continue;
             }
 
-            var (u, v) = (edge[1] - 1, edge[2] - 1);
+            var (u, v) = (edge[1] - 1, edge[EdgeTargetIndex] - 1);
             if (components.IsConnected(u, v))
             {
                 continue;

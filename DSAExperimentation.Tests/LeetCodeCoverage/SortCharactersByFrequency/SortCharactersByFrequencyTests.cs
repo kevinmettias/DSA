@@ -33,6 +33,13 @@ public sealed partial class SortCharactersByFrequencyTests
 
     private static string FrequencySort(string s)
     {
+        var counts = CountCharacters(s);
+        var heap = BuildHeap(counts);
+        return Drain(heap, s.Length);
+    }
+
+    private static HashMap<char, int> CountCharacters(string s)
+    {
         var counts = new HashMap<char, int>();
 
         foreach (var c in s)
@@ -41,6 +48,11 @@ public sealed partial class SortCharactersByFrequencyTests
             counts.Set(c, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<(char Node, int Priority), ByPriorityOrder<char, int>> BuildHeap(HashMap<char, int> counts)
+    {
         var heap = new Heap<(char Node, int Priority), ByPriorityOrder<char, int>>();
 
         foreach (var c in counts.Keys)
@@ -49,7 +61,12 @@ public sealed partial class SortCharactersByFrequencyTests
             heap.Push((c, -frequency));
         }
 
-        var result = new StringBuilder(s.Length);
+        return heap;
+    }
+
+    private static string Drain(Heap<(char Node, int Priority), ByPriorityOrder<char, int>> heap, int capacity)
+    {
+        var result = new StringBuilder(capacity);
 
         while (heap.TryPop(out var top))
         {

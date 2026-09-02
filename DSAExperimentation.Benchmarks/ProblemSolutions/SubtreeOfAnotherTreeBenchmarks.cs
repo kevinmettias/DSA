@@ -18,6 +18,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SubtreeOfAnotherTreeBenchmarks
 {
+    private const int SubRootSizeDivisor = 2;
+    private const string NullMarker = "#null";
+
     [Params(200, 2_000)]
     public int NodeCount;
 
@@ -28,7 +31,7 @@ public class SubtreeOfAnotherTreeBenchmarks
     public void Setup()
     {
         _root = BuildLeftChain(NodeCount, lastValue: 1);
-        _subRoot = BuildLeftChain(NodeCount / 2, lastValue: -1);
+        _subRoot = BuildLeftChain(NodeCount / SubRootSizeDivisor, lastValue: -1);
     }
 
     private static BinaryTreeNode<int> BuildLeftChain(int length, int lastValue)
@@ -69,7 +72,7 @@ public class SubtreeOfAnotherTreeBenchmarks
     {
         if (node is null)
         {
-            builder.Append("#null");
+            builder.Append(NullMarker);
             return;
         }
 

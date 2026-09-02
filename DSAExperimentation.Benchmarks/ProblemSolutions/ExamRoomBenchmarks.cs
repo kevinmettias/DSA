@@ -20,13 +20,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ExamRoomBenchmarks
 {
+    // Extra room capacity appended beyond Length so BestAvailableSeat's end-of-room
+    // gap is never the tightest constraint by construction.
+    private const int RoomCapacityPadding = 1_000;
+
+    // Splits a left/right seat pair to find the midpoint candidate seat.
+    private const int MidpointDivisor = 2;
+
     [Params(200, 2_000)]
     public int Length;
 
     private int _seatCount;
 
     [GlobalSetup]
-    public void Setup() => _seatCount = Length + 1_000;
+    public void Setup() => _seatCount = Length + RoomCapacityPadding;
 
     [Benchmark(Baseline = true)]
     public int LinearScanList()
@@ -95,34 +102,32 @@ public class ExamRoomBenchmarks
 
     private (int Index, int Seat) BestAvailableSeat(int count, Func<int, int> get)
     {
-        var bestIndex = 0;
-        var bestSeat = 0;
-        var bestDistance = get(0);
+        var best = (Index: 0, Seat: 0, Distance: get(0));
 
         for (var i = 0; i < count - 1; i++)
         {
-            var left = get(i);
-            var right = get(i + 1);
-            var candidate = left + ((right - left) / 2);
-            var distance = candidate - left;
-
-            if (distance > bestDistance)
-            {
-                bestDistance = distance;
-                bestSeat = candidate;
-                bestIndex = i + 1;
-            }
+            best = ConsiderGapSeat(get, i, best);
         }
 
         var lastSeat = get(count - 1);
         var endDistance = _seatCount - 1 - lastSeat;
 
-        if (endDistance > bestDistance)
+        if (endDistance > best.Distance)
         {
-            bestSeat = _seatCount - 1;
-            bestIndex = count;
+            best = (count, _seatCount - 1, endDistance);
         }
 
-        return (bestIndex, bestSeat);
+        return (best.Index, best.Seat);
+    }
+
+    private static (int Index, int Seat, int Distance) ConsiderGapSeat(
+        Func<int, int> get, int i, (int Index, int Seat, int Distance) best)
+    {
+        var left = get(i);
+        var right = get(i + 1);
+        var candidate = left + ((right - left) / MidpointDivisor);
+        var distance = candidate - left;
+
+        return distance > best.Distance ? (i + 1, candidate, distance) : best;
     }
 }

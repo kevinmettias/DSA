@@ -1,46 +1,30 @@
-﻿using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.ReverseInteger;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseInteger;
 
-// LeetCode 7. Reverse Integer: use this repo's LIFO Stack<T> as the explicit
-// digit-reversal primitive, with the problem's 32-bit overflow rule checked after
-// reconstruction.
-public sealed partial class ReverseIntegerTests
+// Harness only: both strategies live in ReverseIntegerSolution and are asserted
+// against the same examples, including the two inputs whose reversal overflows a
+// 32-bit int.
+public sealed class ReverseIntegerTests
 {
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 123, 321 },
+            { -123, -321 },
+            { 120, 21 },
+            { 0, 0 },
+            { 1534236469, 0 },
+            { -1563847412, 0 },
+        };
+
     [Theory]
-    [InlineData(123, 321)]
-    [InlineData(-123, -321)]
-    [InlineData(120, 21)]
-    [InlineData(0, 0)]
-    public void Reverse_InRangeInput_ReturnsDigitsInReverseOrder(int value, int expected)
-        => Assert.Equal(expected, Reverse(value));
+    [MemberData(nameof(Examples))]
+    public void ReverseByArithmetic_LeetCodeExamples_ReturnsReversedDigits(int value, int expected) =>
+        Assert.Equal(expected, ReverseIntegerSolution.ReverseByArithmetic(value));
 
     [Theory]
-    [InlineData(1534236469)]
-    [InlineData(-1563847412)]
-    public void Reverse_ReversedValueOverflows_ReturnsZero(int value)
-        => Assert.Equal(0, Reverse(value));
-
-    private static int Reverse(int value)
-    {
-        var digits = new DigitStack();
-        foreach (var digit in Math.Abs((long)value).ToString())
-        {
-            digits.Push(digit);
-        }
-
-        long reversed = 0;
-        while (digits.TryPop(out var digit))
-        {
-            reversed = (reversed * 10) + (digit - '0');
-        }
-
-        if (value < 0)
-        {
-            reversed = -reversed;
-        }
-
-        return reversed is < int.MinValue or > int.MaxValue ? 0 : (int)reversed;
-    }
+    [MemberData(nameof(Examples))]
+    public void ReverseByDigitStack_LeetCodeExamples_ReturnsReversedDigits(int value, int expected) =>
+        Assert.Equal(expected, ReverseIntegerSolution.ReverseByDigitStack(value));
 }
-

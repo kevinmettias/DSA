@@ -16,6 +16,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumNumberOfDaysToEatNOrangesBenchmarks
 {
+    // The recurrence's two branches: eat n%2 one at a time then halve the rest, or
+    // eat n%3 one at a time then take a third of the rest.
+    private const int EatOneAtATimeThenHalveDivisor = 2;
+    private const int EatOneAtATimeThenThirdDivisor = 3;
+
     [Params(100_000, 2_000_000_000)]
     public int N;
 
@@ -23,11 +28,17 @@ public class MinimumNumberOfDaysToEatNOrangesBenchmarks
     public int UnmemoizedRecursion() => MinDays(N);
 
     private static int MinDays(int n)
-        => n <= 1 ? n : 1 + Math.Min((n % 2) + MinDays(n / 2), (n % 3) + MinDays(n / 3));
+        => n <= 1
+            ? n
+            : 1 + Math.Min(
+                (n % EatOneAtATimeThenHalveDivisor) + MinDays(n / EatOneAtATimeThenHalveDivisor),
+                (n % EatOneAtATimeThenThirdDivisor) + MinDays(n / EatOneAtATimeThenThirdDivisor));
 
     [Benchmark]
     public int MemoizedRecurrence()
         => Memoizer.Memoize<int, int>(N, (value, days) => value <= 1
             ? value
-            : 1 + Math.Min((value % 2) + days(value / 2), (value % 3) + days(value / 3)));
+            : 1 + Math.Min(
+                (value % EatOneAtATimeThenHalveDivisor) + days(value / EatOneAtATimeThenHalveDivisor),
+                (value % EatOneAtATimeThenThirdDivisor) + days(value / EatOneAtATimeThenThirdDivisor)));
 }

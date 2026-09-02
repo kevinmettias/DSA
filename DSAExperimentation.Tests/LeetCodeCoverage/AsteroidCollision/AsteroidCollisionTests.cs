@@ -34,29 +34,7 @@ public sealed partial class AsteroidCollisionTests
 
         foreach (var asteroid in asteroids)
         {
-            var current = asteroid;
-            var alive = true;
-
-            while (alive && current < 0 && stack.TryPeek(out var top) && top > 0)
-            {
-                if (top < -current)
-                {
-                    stack.TryPop(out _);
-                    continue;
-                }
-
-                if (top == -current)
-                {
-                    stack.TryPop(out _);
-                }
-
-                alive = false;
-            }
-
-            if (alive)
-            {
-                stack.Push(current);
-            }
+            ProcessAsteroid(stack, asteroid);
         }
 
         var result = new int[stack.Count];
@@ -67,5 +45,34 @@ public sealed partial class AsteroidCollisionTests
         }
 
         return result;
+    }
+
+    private static void ProcessAsteroid(RepoAsteroidStack stack, int asteroid)
+    {
+        if (ResolveCollisions(stack, asteroid))
+        {
+            stack.Push(asteroid);
+        }
+    }
+
+    private static bool ResolveCollisions(RepoAsteroidStack stack, int current)
+    {
+        while (current < 0 && stack.TryPeek(out var top) && top > 0)
+        {
+            if (top < -current)
+            {
+                stack.TryPop(out _);
+                continue;
+            }
+
+            if (top == -current)
+            {
+                stack.TryPop(out _);
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }

@@ -43,7 +43,8 @@ public sealed partial class UglyNumberIIITests
         var lcmAb = Lcm(a, b);
         var lcmAc = Lcm(a, c);
         var lcmBc = Lcm(b, c);
-        var upperBound = checked((int)((long)n * Math.Min(a, Math.Min(b, c))));
+        var minBc = Math.Min(b, c);
+        var upperBound = checked((int)((long)n * Math.Min(a, minBc)));
         var lcmAbc = LcmCapped(lcmAb, c, upperBound);
 
         var sequence = new UglyCountSequence(n, a, b, c, lcmAb, lcmAc, lcmBc, lcmAbc, upperBound);

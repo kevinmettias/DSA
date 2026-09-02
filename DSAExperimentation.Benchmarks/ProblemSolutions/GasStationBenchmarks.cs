@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GasStationBenchmarks
 {
+    private const int RandomSeed = 134; // LC problem number
+    private const int MaxStationAmount = 10;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -22,14 +25,14 @@ public class GasStationBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(134);
+        var random = new Random(RandomSeed);
         _gas = new int[Length];
         _cost = new int[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            _gas[i] = random.Next(1, 10);
-            _cost[i] = random.Next(1, 10);
+            _gas[i] = random.Next(1, MaxStationAmount);
+            _cost[i] = random.Next(1, MaxStationAmount);
         }
 
         // Guarantee a solution exists (total gas >= total cost) without moving it to
@@ -43,28 +46,31 @@ public class GasStationBenchmarks
     {
         for (var start = 0; start < _gas.Length; start++)
         {
-            var tank = 0;
-            var completed = true;
-
-            for (var step = 0; step < _gas.Length; step++)
-            {
-                var i = (start + step) % _gas.Length;
-                tank += _gas[i] - _cost[i];
-
-                if (tank < 0)
-                {
-                    completed = false;
-                    break;
-                }
-            }
-
-            if (completed)
+            if (CanCompleteLap(start))
             {
                 return start;
             }
         }
 
         return -1;
+    }
+
+    private bool CanCompleteLap(int start)
+    {
+        var tank = 0;
+
+        for (var step = 0; step < _gas.Length; step++)
+        {
+            var i = (start + step) % _gas.Length;
+            tank += _gas[i] - _cost[i];
+
+            if (tank < 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     [Benchmark]

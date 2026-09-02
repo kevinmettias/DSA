@@ -1,14 +1,49 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedListII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are RemoveDuplicatesFromSortedListIISolution's, the same
+// methods RemoveDuplicatesFromSortedListIITests proves correct. [GlobalSetup]
+// hoists the workload values, but the list itself is rebuilt fresh inside each
+// benchmark method rather than cached, because the two-pointer-scan strategy
+// splices nodes out of the list it is handed - a cached list would only be valid
+// for the first measured iteration.
+//
+// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
+// public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class RemoveDuplicatesFromSortedListIIBenchmarks
 {
-    private int[] _values = null!; [Params(200, 5_000)] public int Length; [GlobalSetup] public void Setup()=>_values=Enumerable.Range(0,Length).Select(i=>i/2).ToArray();
-    [Benchmark(Baseline=true)] public int ArrayRunFilter()=>_values.GroupBy(x=>x).Where(g=>g.Count()==1).Count();
-    [Benchmark] public int LinkedListRunFilter()=>Count(DeleteDuplicates(Build(_values)));
-    private static SinglyLinkedListNode<int>? DeleteDuplicates(SinglyLinkedListNode<int>? head){var dummy=new SinglyLinkedListNode<int>(0){Next=head};var previous=dummy;while(previous.Next is not null){var current=previous.Next;var dup=false;while(current.Next is not null&&current.Value==current.Next.Value){dup=true;current=current.Next;}if(dup)previous.Next=current.Next;else previous=previous.Next;}return dummy.Next;}
-    private static SinglyLinkedListNode<int>? Build(int[] values){var d=new SinglyLinkedListNode<int>(0);var t=d;foreach(var v in values){t.Next=new SinglyLinkedListNode<int>(v);t=t.Next;}return d.Next;} private static int Count(SinglyLinkedListNode<int>? h){var c=0;for(var n=h;n is not null;n=n.Next)c++;return c;}
+    private const int RunLengthDivisor = 2;
+
+    [Params(200, 5_000)]
+    public int Length;
+
+    private int[] _values = null!;
+
+    [GlobalSetup]
+    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / RunLengthDivisor).ToArray();
+
+    [Benchmark(Baseline = true)]
+    public object? ArrayGroupFilter() =>
+        RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByArrayGroupFilter(BuildList(_values));
+
+    [Benchmark]
+    public object? TwoPointerScan() =>
+        RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByTwoPointerScan(BuildList(_values));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
 }

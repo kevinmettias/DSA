@@ -19,6 +19,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PathWithMaximumProbabilityBenchmarks
 {
+    private const int RandomSeed = 1514; // LC problem number
+    private const int ExtraEdgesPerNode = 2;
+    private const double MinEdgeProbability = 0.5;
+    private const double EdgeProbabilityRange = 0.49; // probability lands in (0.5, 0.99]
+
     [Params(10, 14)]
     public int NodeCount;
 
@@ -30,25 +35,39 @@ public class PathWithMaximumProbabilityBenchmarks
     public void Setup()
     {
         _target = NodeCount - 1;
-        var random = new Random(1514);
+        var random = new Random(RandomSeed);
 
+        InitializeGraph();
+        AddGuaranteedReachabilityEdges(random);
+        AddExtraBranchingEdges(random);
+    }
+
+    private void InitializeGraph()
+    {
         _nodes = Enumerable.Range(0, NodeCount).Select(id => new ProbabilityNode(id)).ToArray();
         _adjacency = Enumerable.Range(0, NodeCount).Select(_ => new List<(double, int)>()).ToArray();
+    }
 
-        // Guarantees node 0 reaches every node: each node i > 0 gets one
-        // forward edge from an earlier, already-reachable node j < i.
+    // Guarantees node 0 reaches every node: each node i > 0 gets one
+    // forward edge from an earlier, already-reachable node j < i.
+    private void AddGuaranteedReachabilityEdges(Random random)
+    {
         for (var i = 1; i < NodeCount; i++)
         {
             AddEdge(random.Next(i), i, random);
         }
+    }
 
-        // Extra forward edges per node for branching density, so NaiveDfs
-        // actually explores an exponential number of distinct paths.
+    // Extra forward edges per node for branching density, so NaiveDfs
+    // actually explores an exponential number of distinct paths.
+    private void AddExtraBranchingEdges(Random random)
+    {
         for (var i = 0; i < NodeCount - 1; i++)
         {
-            for (var e = 0; e < 2; e++)
+            for (var e = 0; e < ExtraEdgesPerNode; e++)
             {
-                AddEdge(i, random.Next(i + 1, NodeCount), random);
+                var to = random.Next(i + 1, NodeCount);
+                AddEdge(i, to, random);
             }
         }
     }
@@ -85,7 +104,7 @@ public class PathWithMaximumProbabilityBenchmarks
 
     private void AddEdge(int from, int to, Random random)
     {
-        var probability = 0.5 + (random.NextDouble() * 0.49); // (0.5, 0.99]
+        var probability = MinEdgeProbability + (random.NextDouble() * EdgeProbabilityRange); // (0.5, 0.99]
         _adjacency[from].Add((probability, to));
         _nodes[from].Edges.Add((-Math.Log(probability), _nodes[to]));
     }

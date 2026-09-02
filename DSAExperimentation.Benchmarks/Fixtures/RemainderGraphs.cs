@@ -7,6 +7,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // through real work instead of an immediate "-1" short circuit.
 internal static class RemainderGraphs
 {
+    private const int DecimalDigitBase = 10;
+
     public static (Dictionary<int, RemainderNode> NodesByRemainder, RemainderNode StartNode) BuildGraph(int k)
     {
         var nodesByRemainder = new Dictionary<int, RemainderNode>();
@@ -18,7 +20,7 @@ internal static class RemainderGraphs
 
         foreach (var node in nodesByRemainder.Values)
         {
-            node.Neighbors.Add(nodesByRemainder[(node.Remainder * 10 + 1) % k]);
+            node.Neighbors.Add(nodesByRemainder[(node.Remainder * DecimalDigitBase + 1) % k]);
         }
 
         return (nodesByRemainder, nodesByRemainder[1 % k]);

@@ -12,12 +12,22 @@ public sealed partial class CountAllPossibleRoutesTests
 {
     private const int Mod = 1_000_000_007;
 
+    public static TheoryData<int[], RouteQuery, int> LocationsAndQueryToExpectedRouteCount => new()
+    {
+        { new[] { 2, 3, 6, 8, 4 }, new RouteQuery(1, 3, 5), 4 },
+        { new[] { 4, 3, 1 }, new RouteQuery(1, 0, 6), 5 },
+        { new[] { 5, 2, 1 }, new RouteQuery(0, 2, 3), 0 },
+    };
+
     [Theory]
-    [InlineData(new[] { 2, 3, 6, 8, 4 }, 1, 3, 5, 4)]
-    [InlineData(new[] { 4, 3, 1 }, 1, 0, 6, 5)]
-    [InlineData(new[] { 5, 2, 1 }, 0, 2, 3, 0)]
-    public void CountRoutes_LeetCodeExamples_ReturnsRouteCount(int[] locations, int start, int finish, int fuel, int expected)
-        => Assert.Equal(expected, CountRoutes(locations, start, finish, fuel));
+    [MemberData(nameof(LocationsAndQueryToExpectedRouteCount))]
+    public void CountRoutes_LeetCodeExamples_ReturnsRouteCount(int[] locations, RouteQuery query, int expected)
+    {
+        var actual = CountRoutes(locations, query.Start, query.Finish, query.Fuel);
+        Assert.Equal(expected, actual);
+    }
+
+    public readonly record struct RouteQuery(int Start, int Finish, int Fuel);
 
     private static int CountRoutes(int[] locations, int start, int finish, int fuel)
     {

@@ -24,6 +24,11 @@ public class CheckIfThereIsAValidPathInAGridBenchmarks
         [6] = [(0, 1), (-1, 0)],
     };
 
+    // LC problem number, reused as the deterministic benchmark seed.
+    private const int RandomSeed = 1391;
+
+    private const int StreetTypeUpperBound = 7;
+
     [Params(10, 30)]
     public int Size;
 
@@ -32,9 +37,9 @@ public class CheckIfThereIsAValidPathInAGridBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1391);
+        var random = new Random(RandomSeed);
         _grid = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(1, 7)).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(1, StreetTypeUpperBound)).ToArray())
             .ToArray();
     }
 
@@ -59,6 +64,11 @@ public class CheckIfThereIsAValidPathInAGridBenchmarks
             return true;
         }
 
+        return TryReachTargetFromNeighbor(row, col, visited);
+    }
+
+    private bool TryReachTargetFromNeighbor(int row, int col, bool[,] visited)
+    {
         foreach (var (dRow, dCol) in Openings[_grid[row][col]])
         {
             var nextRow = row + dRow;

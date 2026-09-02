@@ -26,7 +26,11 @@ public class StampingTheSequenceBenchmarks
     private string _target = string.Empty;
 
     [GlobalSetup]
-    public void Setup() => _target = string.Concat(Enumerable.Repeat(Stamp, Repeats));
+    public void Setup()
+    {
+        var repeatedStamp = Enumerable.Repeat(Stamp, Repeats);
+        _target = string.Concat(repeatedStamp);
+    }
 
     [Benchmark(Baseline = true)]
     public int ListPrepend()
@@ -39,27 +43,32 @@ public class StampingTheSequenceBenchmarks
 
         for (var round = 0; round < windowCount && turnedCount < _target.Length; round++)
         {
-            var stampedThisRound = false;
-
-            for (var i = 0; i < windowCount; i++)
-            {
-                if (done[i] || !TryStampWindow(chars, i, ref turnedCount))
-                {
-                    continue;
-                }
-
-                done[i] = true;
-                stampedThisRound = true;
-                order.Insert(0, i);
-            }
-
-            if (!stampedThisRound)
+            if (!StampPass(chars, done, order, ref turnedCount))
             {
                 break;
             }
         }
 
         return order.Count;
+    }
+
+    private static bool StampPass(char[] chars, bool[] done, List<int> order, ref int turnedCount)
+    {
+        var stampedThisRound = false;
+
+        for (var i = 0; i < done.Length; i++)
+        {
+            if (done[i] || !TryStampWindow(chars, i, ref turnedCount))
+            {
+                continue;
+            }
+
+            done[i] = true;
+            stampedThisRound = true;
+            order.Insert(0, i);
+        }
+
+        return stampedThisRound;
     }
 
     [Benchmark]
@@ -73,21 +82,7 @@ public class StampingTheSequenceBenchmarks
 
         for (var round = 0; round < windowCount && turnedCount < _target.Length; round++)
         {
-            var stampedThisRound = false;
-
-            for (var i = 0; i < windowCount; i++)
-            {
-                if (done[i] || !TryStampWindow(chars, i, ref turnedCount))
-                {
-                    continue;
-                }
-
-                done[i] = true;
-                stampedThisRound = true;
-                order.Push(i);
-            }
-
-            if (!stampedThisRound)
+            if (!StampPass(chars, done, order, ref turnedCount))
             {
                 break;
             }
@@ -103,9 +98,47 @@ public class StampingTheSequenceBenchmarks
         return result.Length;
     }
 
+    private static bool StampPass(char[] chars, bool[] done, RepoStampStack order, ref int turnedCount)
+    {
+        var stampedThisRound = false;
+
+        for (var i = 0; i < done.Length; i++)
+        {
+            if (done[i] || !TryStampWindow(chars, i, ref turnedCount))
+            {
+                continue;
+            }
+
+            done[i] = true;
+            stampedThisRound = true;
+            order.Push(i);
+        }
+
+        return stampedThisRound;
+    }
+
     private static bool TryStampWindow(char[] chars, int start, ref int turnedCount)
     {
-        var hasLiveCharacter = false;
+        if (!CanStampWindow(chars, start, out var hasLiveCharacter) || !hasLiveCharacter)
+        {
+            return false;
+        }
+
+        for (var k = 0; k < Stamp.Length; k++)
+        {
+            if (chars[start + k] != '?')
+            {
+                chars[start + k] = '?';
+                turnedCount++;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool CanStampWindow(char[] chars, int start, out bool hasLiveCharacter)
+    {
+        hasLiveCharacter = false;
 
         for (var k = 0; k < Stamp.Length; k++)
         {
@@ -122,20 +155,6 @@ public class StampingTheSequenceBenchmarks
             }
 
             hasLiveCharacter = true;
-        }
-
-        if (!hasLiveCharacter)
-        {
-            return false;
-        }
-
-        for (var k = 0; k < Stamp.Length; k++)
-        {
-            if (chars[start + k] != '?')
-            {
-                chars[start + k] = '?';
-                turnedCount++;
-            }
         }
 
         return true;

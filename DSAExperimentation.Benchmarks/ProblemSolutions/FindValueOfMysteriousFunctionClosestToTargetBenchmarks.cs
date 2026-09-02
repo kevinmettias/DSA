@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
 {
     private const int Target = 1 << 15; // mid-range target unreachable by any single value, forces a full scan
+    private const int RandomSeed = 1521; // LC problem number
+    private const int ValueBitWidth = 20;
 
     [Params(200, 5_000)]
     public int Length;
@@ -20,8 +22,8 @@ public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1521);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1 << 20)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1 << ValueBitWidth)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

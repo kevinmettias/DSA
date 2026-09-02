@@ -15,7 +15,10 @@ public sealed partial class MaximumLengthOfRepeatedSubarrayTests
     [InlineData(new[] { 0, 0, 0, 0, 0 }, new[] { 0, 0, 0, 0, 0 }, 5)]
     [InlineData(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, 0)]
     public void FindLength_LeetCodeExamples_ReturnsLongestRepeatedRun(int[] first, int[] second, int expected)
-        => Assert.Equal(expected, FindLength(first, second));
+    {
+        var actual = FindLength(first, second);
+        Assert.Equal(expected, actual);
+    }
 
     private static int FindLength(int[] first, int[] second)
     {
@@ -41,8 +44,9 @@ public sealed partial class MaximumLengthOfRepeatedSubarrayTests
 
             var (_, bestRight) = explore((i + 1, j));
             var (_, bestDown) = explore((i, j + 1));
+            var bestOfRightAndDown = Math.Max(bestRight, bestDown);
 
-            return (matchLen, Math.Max(matchLen, Math.Max(bestRight, bestDown)));
+            return (matchLen, Math.Max(matchLen, bestOfRightAndDown));
         }
     }
 }

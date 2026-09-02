@@ -21,6 +21,11 @@ public class LargestComponentSizeByCommonFactorBenchmarks
 {
     private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13];
 
+    // LC problem number, reused as the deterministic benchmark seed.
+    private const int RandomSeed = 952;
+
+    private const int SmallestPrimeFactor = 2;
+
     [Params(50, 400)]
     public int Length;
 
@@ -29,7 +34,7 @@ public class LargestComponentSizeByCommonFactorBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(952);
+        var random = new Random(RandomSeed);
         _values = Enumerable.Range(0, Length)
             .Select(_ => SharedPrimes[random.Next(SharedPrimes.Length)] * SharedPrimes[random.Next(SharedPrimes.Length)])
             .ToArray();
@@ -38,13 +43,25 @@ public class LargestComponentSizeByCommonFactorBenchmarks
     [Benchmark(Baseline = true)]
     public int PairwiseGcdScan()
     {
-        var parent = new int[_values.Length];
+        var parent = InitializeParent(_values.Length);
+        UnionPairsSharingFactor(parent);
+        return LargestComponentSizeByParent(parent);
+    }
+
+    private static int[] InitializeParent(int length)
+    {
+        var parent = new int[length];
 
         for (var i = 0; i < parent.Length; i++)
         {
             parent[i] = i;
         }
 
+        return parent;
+    }
+
+    private void UnionPairsSharingFactor(int[] parent)
+    {
         for (var i = 0; i < _values.Length; i++)
         {
             for (var j = i + 1; j < _values.Length; j++)
@@ -55,7 +72,10 @@ public class LargestComponentSizeByCommonFactorBenchmarks
                 }
             }
         }
+    }
 
+    private int LargestComponentSizeByParent(int[] parent)
+    {
         var counts = new int[_values.Length];
         var largest = 0;
 
@@ -113,6 +133,11 @@ public class LargestComponentSizeByCommonFactorBenchmarks
             }
         }
 
+        return LargestComponentSizeByDisjointSet(components);
+    }
+
+    private int LargestComponentSizeByDisjointSet(DisjointSet components)
+    {
         var sizeByRoot = new HashMap<int, int>();
         var largest = 1;
 
@@ -130,7 +155,7 @@ public class LargestComponentSizeByCommonFactorBenchmarks
 
     private static IEnumerable<int> PrimeFactors(int value)
     {
-        for (var factor = 2; factor * factor <= value; factor++)
+        for (var factor = SmallestPrimeFactor; factor * factor <= value; factor++)
         {
             if (value % factor != 0)
             {

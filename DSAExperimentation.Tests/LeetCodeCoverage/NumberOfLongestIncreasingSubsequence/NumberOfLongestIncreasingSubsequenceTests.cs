@@ -38,8 +38,9 @@ public sealed class NumberOfLongestIncreasingSubsequenceTests
             var best = rank == 0 ? (Length: 0, Count: 0) : tree.Query(0, rank - 1);
             var candidate = best.Length == 0 ? (Length: 1, Count: 1) : (Length: best.Length + 1, best.Count);
             var existing = tree.Query(rank, rank);
+            var combined = LisAggregate.Combine(existing, candidate);
 
-            tree.Update(rank, LisAggregate.Combine(existing, candidate));
+            tree.Update(rank, combined);
         }
 
         return tree.Query(0, sortedDistinct.Length - 1).Count;

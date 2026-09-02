@@ -22,7 +22,10 @@ public sealed partial class ParseLispExpressionTests
     [InlineData("(add 1 2)", 3)]
     [InlineData("(mult 3 (add 2 3))", 15)]
     public void Evaluate_LeetCodeExamples_ReturnsExpectedValue(string expression, long expected)
-        => Assert.Equal(expected, Evaluate(expression, null));
+    {
+        var actual = Evaluate(expression, null);
+        Assert.Equal(expected, actual);
+    }
 
     private static long Evaluate(string expr, RepoScopeNode? scope)
     {
@@ -48,7 +51,8 @@ public sealed partial class ParseLispExpressionTests
 
         for (var i = 1; i < tokens.Count - 1; i += 2)
         {
-            bindings.Set(tokens[i], Evaluate(tokens[i + 1], letScope));
+            var boundValue = Evaluate(tokens[i + 1], letScope);
+            bindings.Set(tokens[i], boundValue);
         }
 
         return Evaluate(tokens[^1], letScope);
@@ -77,9 +81,14 @@ public sealed partial class ParseLispExpressionTests
     // its own inner space.
     private static List<string> SplitTopLevelTokens(string expr)
     {
-        var tokens = new List<string>();
+        var splitPoints = FindTopLevelSpaces(expr);
+        return ExtractTokensBetween(expr, splitPoints);
+    }
+
+    private static List<int> FindTopLevelSpaces(string expr)
+    {
+        var splitPoints = new List<int>();
         var depth = 0;
-        var start = 0;
 
         for (var i = 0; i < expr.Length; i++)
         {
@@ -92,10 +101,23 @@ public sealed partial class ParseLispExpressionTests
                     depth--;
                     break;
                 case ' ' when depth == 0:
-                    tokens.Add(expr[start..i]);
-                    start = i + 1;
+                    splitPoints.Add(i);
                     break;
             }
+        }
+
+        return splitPoints;
+    }
+
+    private static List<string> ExtractTokensBetween(string expr, List<int> splitPoints)
+    {
+        var tokens = new List<string>();
+        var start = 0;
+
+        foreach (var splitPoint in splitPoints)
+        {
+            tokens.Add(expr[start..splitPoint]);
+            start = splitPoint + 1;
         }
 
         tokens.Add(expr[start..]);

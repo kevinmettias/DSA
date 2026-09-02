@@ -19,33 +19,46 @@ public sealed partial class LongestRepeatingCharacterReplacementTests
     [InlineData("", 2, 0)]
     public void CharacterReplacement_SlidingWindowHashMap_ReturnsLongestAchievableRun(
         string s, int k, int expected)
-        => Assert.Equal(expected, CharacterReplacement(s, k));
+    {
+        var actual = CharacterReplacement(s, k);
+        Assert.Equal(expected, actual);
+    }
+
+    private readonly record struct ReplacementContext(string S, int K, HashMap<char, int> Counts);
+
+    private readonly record struct WindowState(int Start, int MostFrequentCount, int Longest);
 
     private static int CharacterReplacement(string s, int k)
     {
-        var counts = new HashMap<char, int>();
-        var windowStart = 0;
-        var mostFrequentCount = 0;
-        var longest = 0;
+        var context = new ReplacementContext(s, k, new HashMap<char, int>());
+        var state = new WindowState(0, 0, 0);
 
         for (var windowEnd = 0; windowEnd < s.Length; windowEnd++)
         {
-            var incoming = s[windowEnd];
-            counts.TryGetValue(incoming, out var incomingCount);
-            counts.Set(incoming, incomingCount + 1);
-            mostFrequentCount = Math.Max(mostFrequentCount, incomingCount + 1);
-
-            if (windowEnd - windowStart + 1 - mostFrequentCount > k)
-            {
-                var outgoing = s[windowStart];
-                counts.TryGetValue(outgoing, out var outgoingCount);
-                counts.Set(outgoing, outgoingCount - 1);
-                windowStart++;
-            }
-
-            longest = Math.Max(longest, windowEnd - windowStart + 1);
+            state = AdvanceWindow(context, windowEnd, state);
         }
 
-        return longest;
+        return state.Longest;
+    }
+
+    private static WindowState AdvanceWindow(ReplacementContext context, int windowEnd, WindowState state)
+    {
+        var incoming = context.S[windowEnd];
+        context.Counts.TryGetValue(incoming, out var incomingCount);
+        context.Counts.Set(incoming, incomingCount + 1);
+        var mostFrequentCount = Math.Max(state.MostFrequentCount, incomingCount + 1);
+
+        var windowStart = state.Start;
+        if (windowEnd - windowStart + 1 - mostFrequentCount > context.K)
+        {
+            var outgoing = context.S[windowStart];
+            context.Counts.TryGetValue(outgoing, out var outgoingCount);
+            context.Counts.Set(outgoing, outgoingCount - 1);
+            windowStart++;
+        }
+
+        var longest = Math.Max(state.Longest, windowEnd - windowStart + 1);
+
+        return new WindowState(windowStart, mostFrequentCount, longest);
     }
 }

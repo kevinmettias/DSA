@@ -13,6 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountGoodNodesInBinaryTreeBenchmarks
 {
+    private const int RandomSeed = 1448; // LC problem number
+    private const int CompleteTreeBranchingFactor = 2;
+    private const int RightChildIndexOffset = 2;
+
     [Params(200, 2_000)]
     public int NodeCount;
 
@@ -21,7 +25,7 @@ public class CountGoodNodesInBinaryTreeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1448);
+        var random = new Random(RandomSeed);
         _root = BuildCompleteTree(NodeCount, random);
     }
 
@@ -62,10 +66,19 @@ public class CountGoodNodesInBinaryTreeBenchmarks
             nodes[i] = new BinaryTreeNode<int>(random.Next(0, nodeCount));
         }
 
+        LinkChildren(nodes, nodeCount);
+
+        return nodes[0];
+    }
+
+    // Wires each index's array-implicit children per the standard complete-binary-tree
+    // indexing formula (left = 2i+1, right = 2i+2).
+    private static void LinkChildren(BinaryTreeNode<int>[] nodes, int nodeCount)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
-            var left = 2 * i + 1;
-            var right = 2 * i + 2;
+            var left = (CompleteTreeBranchingFactor * i) + 1;
+            var right = (CompleteTreeBranchingFactor * i) + RightChildIndexOffset;
 
             if (left < nodeCount)
             {
@@ -77,8 +90,6 @@ public class CountGoodNodesInBinaryTreeBenchmarks
                 nodes[i].Right = nodes[right];
             }
         }
-
-        return nodes[0];
     }
 
     private sealed class Counter

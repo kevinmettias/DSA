@@ -4,6 +4,9 @@ namespace DSAExperimentation.Tests.DataStructures.SegmentTree;
 
 public sealed partial class SegmentTreeIndexTests
 {
+    private const int MidLevelNode = 5;
+    private const int DeepNode = 42;
+
     public static TheoryData<int, int> NodeToExpectedLeftChild => new()
     {
         { 0, 1 },
@@ -29,7 +32,7 @@ public sealed partial class SegmentTreeIndexTests
     [Fact]
     public void RightChild_IsAlwaysLeftChildPlusOne()
     {
-        foreach (var node in new[] { 0, 1, 5, 42 })
+        foreach (var node in new[] { 0, 1, MidLevelNode, DeepNode })
         {
             Assert.Equal(SegmentTreeIndex.LeftChild(node) + 1, SegmentTreeIndex.RightChild(node));
         }

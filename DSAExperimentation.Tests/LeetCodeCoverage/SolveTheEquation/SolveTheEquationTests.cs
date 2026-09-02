@@ -20,8 +20,10 @@ public sealed class SolveTheEquationTests
     private static string Solve(string equation)
     {
         var separator = equation.IndexOf('=');
-        var (leftCoefficient, leftConstant) = ParseSide(equation.AsSpan(0, separator));
-        var (rightCoefficient, rightConstant) = ParseSide(equation.AsSpan(separator + 1));
+        var leftSpan = equation.AsSpan(0, separator);
+        var (leftCoefficient, leftConstant) = ParseSide(leftSpan);
+        var rightSpan = equation.AsSpan(separator + 1);
+        var (rightCoefficient, rightConstant) = ParseSide(rightSpan);
 
         var coefficientX = leftCoefficient - rightCoefficient;
         var constant = rightConstant - leftConstant;
@@ -34,49 +36,78 @@ public sealed class SolveTheEquationTests
         return $"x={constant / coefficientX}";
     }
 
+    private sealed class ParseState
+    {
+        public int Index;
+        public int Sign = 1;
+        public int CoefficientX;
+        public int Constant;
+    }
+
     private static (int CoefficientX, int Constant) ParseSide(ReadOnlySpan<char> side)
     {
-        var coefficientX = 0;
-        var constant = 0;
-        var sign = 1;
-        var i = 0;
+        var state = new ParseState();
 
-        while (i < side.Length)
+        while (state.Index < side.Length)
         {
-            if (side[i] == '+')
-            {
-                sign = 1;
-                i++;
-                continue;
-            }
-
-            if (side[i] == '-')
-            {
-                sign = -1;
-                i++;
-                continue;
-            }
-
-            var start = i;
-
-            while (i < side.Length && side[i] != '+' && side[i] != '-')
-            {
-                i++;
-            }
-
-            var term = side[start..i];
-
-            if (term[^1] == 'x')
-            {
-                var digits = term[..^1];
-                coefficientX += sign * (digits.IsEmpty ? 1 : int.Parse(digits));
-            }
-            else
-            {
-                constant += sign * int.Parse(term);
-            }
+            ParseNextToken(side, state);
         }
 
-        return (coefficientX, constant);
+        return (state.CoefficientX, state.Constant);
+    }
+
+    private static void ParseNextToken(ReadOnlySpan<char> side, ParseState state)
+    {
+        if (TryConsumeSign(side, state))
+        {
+            return;
+        }
+
+        ConsumeTerm(side, state);
+    }
+
+    private static bool TryConsumeSign(ReadOnlySpan<char> side, ParseState state)
+    {
+        if (side[state.Index] == '+')
+        {
+            state.Sign = 1;
+            state.Index++;
+            return true;
+        }
+
+        if (side[state.Index] == '-')
+        {
+            state.Sign = -1;
+            state.Index++;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void ConsumeTerm(ReadOnlySpan<char> side, ParseState state)
+    {
+        var start = state.Index;
+
+        while (state.Index < side.Length && side[state.Index] != '+' && side[state.Index] != '-')
+        {
+            state.Index++;
+        }
+
+        var term = side[start..state.Index];
+        AccumulateTerm(term, state);
+    }
+
+    private static void AccumulateTerm(ReadOnlySpan<char> term, ParseState state)
+    {
+        if (term[^1] == 'x')
+        {
+            var digits = term[..^1];
+            state.CoefficientX += state.Sign * (digits.IsEmpty ? 1 : int.Parse(digits));
+        }
+        else
+        {
+            state.Constant += state.Sign * int.Parse(term);
+        }
     }
 }

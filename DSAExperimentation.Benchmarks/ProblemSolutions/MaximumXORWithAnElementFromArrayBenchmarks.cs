@@ -16,19 +16,24 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumXORWithAnElementFromArrayBenchmarks
 {
+    private const int RandomSeed = 1707;
+    private const int ValueLimit = 1_000_000;
+
     [Params(200, 3_000)]
     public int Length;
 
     private int[] _nums = null!;
     private int[][] _queries = null!;
 
+    private readonly record struct SweepState(int[] SortedNums, BitTrie Trie);
+
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1707);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1_000_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueLimit)).ToArray();
         _queries = Enumerable.Range(0, Length)
-            .Select(_ => new[] { random.Next(0, 1_000_000), random.Next(0, 1_000_000) })
+            .Select(_ => new[] { random.Next(0, ValueLimit), random.Next(0, ValueLimit) })
             .ToArray();
     }
 
@@ -69,23 +74,29 @@ public class MaximumXORWithAnElementFromArrayBenchmarks
             Comparer<int>.Create((a, b) => _queries[a][1].CompareTo(_queries[b][1])));
 
         var answers = new int[_queries.Length];
-        var trie = new BitTrie();
+        var state = new SweepState(sortedNums, new BitTrie());
         var numIndex = 0;
 
         foreach (var queryIndex in queryOrder)
         {
-            var xi = _queries[queryIndex][0];
-            var mi = _queries[queryIndex][1];
-
-            while (numIndex < sortedNums.Length && sortedNums[numIndex] <= mi)
-            {
-                trie.Insert(sortedNums[numIndex]);
-                numIndex++;
-            }
-
-            answers[queryIndex] = trie.TryMaxXor(xi, out var candidate) ? candidate : -1;
+            ResolveQuery(state, ref numIndex, answers, queryIndex);
         }
 
         return answers;
+    }
+
+    private void ResolveQuery(SweepState state, ref int numIndex, int[] answers, int queryIndex)
+    {
+        var (sortedNums, trie) = state;
+        var xi = _queries[queryIndex][0];
+        var mi = _queries[queryIndex][1];
+
+        while (numIndex < sortedNums.Length && sortedNums[numIndex] <= mi)
+        {
+            trie.Insert(sortedNums[numIndex]);
+            numIndex++;
+        }
+
+        answers[queryIndex] = trie.TryMaxXor(xi, out var candidate) ? candidate : -1;
     }
 }

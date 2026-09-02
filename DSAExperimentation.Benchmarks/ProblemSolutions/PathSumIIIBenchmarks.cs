@@ -71,13 +71,25 @@ public class PathSumIIIBenchmarks
         }
 
         runningSum += node.Value;
-        var matches = prefixSumCounts.TryGetValue(runningSum - Target, out var count) ? count : 0;
-
-        prefixSumCounts.Set(runningSum, (prefixSumCounts.TryGetValue(runningSum, out var existing) ? existing : 0) + 1);
+        var matches = CountMatchesAtNode(runningSum, prefixSumCounts);
+        RecordPrefixSum(runningSum, prefixSumCounts);
 
         matches += CountPaths(node.Left, runningSum, prefixSumCounts);
         matches += CountPaths(node.Right, runningSum, prefixSumCounts);
 
+        UnwindPrefixSum(runningSum, prefixSumCounts);
+
+        return matches;
+    }
+
+    private static int CountMatchesAtNode(long runningSum, HashMap<long, int> prefixSumCounts)
+        => prefixSumCounts.TryGetValue(runningSum - Target, out var count) ? count : 0;
+
+    private static void RecordPrefixSum(long runningSum, HashMap<long, int> prefixSumCounts)
+        => prefixSumCounts.Set(runningSum, (prefixSumCounts.TryGetValue(runningSum, out var existing) ? existing : 0) + 1);
+
+    private static void UnwindPrefixSum(long runningSum, HashMap<long, int> prefixSumCounts)
+    {
         var afterChildren = prefixSumCounts.TryGetValue(runningSum, out var updated) ? updated : 0;
 
         if (afterChildren <= 1)
@@ -88,7 +100,5 @@ public class PathSumIIIBenchmarks
         {
             prefixSumCounts.Set(runningSum, afterChildren - 1);
         }
-
-        return matches;
     }
 }

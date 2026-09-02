@@ -13,6 +13,12 @@ public class PrimeArrangementsBenchmarks
 {
     private const int Modulo = 1_000_000_007;
 
+    // 2 is the smallest prime; every prime-related loop or threshold starts here.
+    private const int SmallestPrime = 2;
+
+    // Factorial multiplication only needs to start at 2 - 0! and 1! are both 1.
+    private const int FactorialLoopStart = 2;
+
     [Params(2_000, 20_000)]
     public int N;
 
@@ -31,7 +37,7 @@ public class PrimeArrangementsBenchmarks
     private static long Factorial(int n)
     {
         var result = 1L;
-        for (var i = 2; i <= n; i++)
+        for (var i = FactorialLoopStart; i <= n; i++)
         {
             result = result * i % Modulo;
         }
@@ -43,11 +49,11 @@ public class PrimeArrangementsBenchmarks
     {
         var count = 0;
 
-        for (var candidate = 2; candidate <= n; candidate++)
+        for (var candidate = SmallestPrime; candidate <= n; candidate++)
         {
             var isPrime = true;
 
-            for (var divisor = 2; divisor * divisor <= candidate; divisor++)
+            for (var divisor = SmallestPrime; divisor * divisor <= candidate; divisor++)
             {
                 if (candidate % divisor == 0)
                 {
@@ -67,18 +73,30 @@ public class PrimeArrangementsBenchmarks
 
     private static int CountPrimesUpToBySieve(int n)
     {
-        if (n < 2)
+        if (n < SmallestPrime)
         {
             return 0;
         }
 
+        var isComposite = BuildSieve(n);
+        MarkComposites(isComposite, n);
+        return CountUnmarked(isComposite, n);
+    }
+
+    private static DynamicArray<bool> BuildSieve(int n)
+    {
         var isComposite = new DynamicArray<bool>();
         for (var i = 0; i <= n; i++)
         {
             isComposite.Add(false);
         }
 
-        for (var i = 2; i * i <= n; i++)
+        return isComposite;
+    }
+
+    private static void MarkComposites(DynamicArray<bool> isComposite, int n)
+    {
+        for (var i = SmallestPrime; i * i <= n; i++)
         {
             if (isComposite.Get(i))
             {
@@ -90,9 +108,12 @@ public class PrimeArrangementsBenchmarks
                 isComposite.Set(multiple, true);
             }
         }
+    }
 
+    private static int CountUnmarked(DynamicArray<bool> isComposite, int n)
+    {
         var count = 0;
-        for (var i = 2; i <= n; i++)
+        for (var i = SmallestPrime; i <= n; i++)
         {
             if (!isComposite.Get(i))
             {

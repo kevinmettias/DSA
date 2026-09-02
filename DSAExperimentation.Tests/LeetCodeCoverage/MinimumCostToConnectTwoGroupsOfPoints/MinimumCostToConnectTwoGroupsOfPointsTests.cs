@@ -35,7 +35,17 @@ public sealed partial class MinimumCostToConnectTwoGroupsOfPointsTests
     {
         var size1 = cost.Length;
         var size2 = cost[0].Length;
+        var minCost2 = BuildMinCost2(cost, size1, size2);
+        var context = new ConnectContext(cost, size1, size2, minCost2);
 
+        return Memoizer.Memoize<(int Index, int Mask), int>(
+            (0, 0), (state, costFor) => Recurrence(state, costFor, context));
+    }
+
+    private readonly record struct ConnectContext(int[][] Cost, int Size1, int Size2, int[] MinCost2);
+
+    private static int[] BuildMinCost2(int[][] cost, int size1, int size2)
+    {
         var minCost2 = new int[size2];
         for (var j = 0; j < size2; j++)
         {
@@ -46,32 +56,39 @@ public sealed partial class MinimumCostToConnectTwoGroupsOfPointsTests
             }
         }
 
-        return Memoizer.Memoize<(int Index, int Mask), int>((0, 0), (state, costFor) =>
+        return minCost2;
+    }
+
+    private static int Recurrence((int Index, int Mask) state, Func<(int Index, int Mask), int> costFor, ConnectContext context)
+    {
+        var (index, mask) = state;
+
+        if (index == context.Size1)
         {
-            var (index, mask) = state;
+            return RemainingCost(mask, context);
+        }
 
-            if (index == size1)
+        var best = int.MaxValue;
+        for (var j = 0; j < context.Size2; j++)
+        {
+            var candidate = context.Cost[index][j] + costFor((index + 1, mask | (1 << j)));
+            best = Math.Min(best, candidate);
+        }
+
+        return best;
+    }
+
+    private static int RemainingCost(int mask, ConnectContext context)
+    {
+        var remaining = 0;
+        for (var j = 0; j < context.Size2; j++)
+        {
+            if ((mask & (1 << j)) == 0)
             {
-                var remaining = 0;
-                for (var j = 0; j < size2; j++)
-                {
-                    if ((mask & (1 << j)) == 0)
-                    {
-                        remaining += minCost2[j];
-                    }
-                }
-
-                return remaining;
+                remaining += context.MinCost2[j];
             }
+        }
 
-            var best = int.MaxValue;
-            for (var j = 0; j < size2; j++)
-            {
-                var candidate = cost[index][j] + costFor((index + 1, mask | (1 << j)));
-                best = Math.Min(best, candidate);
-            }
-
-            return best;
-        });
+        return remaining;
     }
 }

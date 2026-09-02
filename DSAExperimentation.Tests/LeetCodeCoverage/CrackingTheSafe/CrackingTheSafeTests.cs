@@ -48,7 +48,8 @@ public sealed partial class CrackingTheSafeTests
 
         for (var password = 0; password < total; password++)
         {
-            Assert.Contains(ToBaseK(password, n, k), safe);
+            var passwordDigits = ToBaseK(password, n, k);
+            Assert.Contains(passwordDigits, safe);
         }
     }
 
@@ -69,33 +70,43 @@ public sealed partial class CrackingTheSafeTests
         var state = new State(n, k);
         string? answer = null;
 
-        Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
-            IsSolution: s => s.Visited.Count == s.Total,
-            Candidates: s => CandidateDigits(s),
-            Choose: (s, digit) =>
-            {
-                s.Visited.TryAdd(NextPassword(s, digit));
-                s.Answer.Append((char)('0' + digit));
-            },
-            Unchoose: (s, digit) =>
-            {
-                s.Visited.TryRemove(CurrentSuffix(s));
-                s.Answer.Length -= 1;
-            },
-            OnSolution: s =>
-            {
-                answer = s.Answer.ToString();
-                return true;
-            }));
+        var steps = BuildSteps(result => answer = result);
+        Backtrack.TrySearch(state, steps);
 
         return answer!;
+    }
+
+    private static BacktrackingSteps<State, int> BuildSteps(Action<string> onSolutionFound) =>
+        new(
+            IsSolution: s => s.Visited.Count == s.Total,
+            Candidates: CandidateDigits,
+            Choose: ChooseDigit,
+            Unchoose: UnchooseDigit,
+            OnSolution: s =>
+            {
+                onSolutionFound(s.Answer.ToString());
+                return true;
+            });
+
+    private static void ChooseDigit(State s, int digit)
+    {
+        var nextPassword = NextPassword(s, digit);
+        s.Visited.TryAdd(nextPassword);
+        s.Answer.Append((char)('0' + digit));
+    }
+
+    private static void UnchooseDigit(State s, int digit)
+    {
+        s.Visited.TryRemove(CurrentSuffix(s));
+        s.Answer.Length -= 1;
     }
 
     private static IEnumerable<int> CandidateDigits(State state)
     {
         for (var digit = 0; digit < state.K; digit++)
         {
-            if (!state.Visited.Has(NextPassword(state, digit)))
+            var nextPassword = NextPassword(state, digit);
+            if (!state.Visited.Has(nextPassword))
             {
                 yield return digit;
             }

@@ -16,9 +16,14 @@ public sealed partial class LongestSubstringWithAtLeastKRepeatingCharactersTests
     [InlineData("ababbc", 2, 5)]
     [InlineData("weitong", 2, 0)]
     public void LongestSubstring_LeetCodeExamples_ReturnsLongestQualifyingLength(string s, int k, int expected)
-        => Assert.Equal(expected, LongestSubstring(s, k));
+    {
+        var actual = LongestSubstring(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static int LongestSubstring(string s, int k) => LongestSubstringInRange(s, 0, s.Length, k);
+
+    private readonly record struct SubstringRange(int Start, int End);
 
     private static int LongestSubstringInRange(string s, int start, int end, int k)
     {
@@ -27,26 +32,45 @@ public sealed partial class LongestSubstringWithAtLeastKRepeatingCharactersTests
             return 0;
         }
 
+        var range = new SubstringRange(start, end);
+        var counts = CountCharacters(s, range);
+        var splitIndex = FindCharacterBelowThreshold(s, range, k, counts);
+
+        if (splitIndex < 0)
+        {
+            return end - start;
+        }
+
+        var left = LongestSubstringInRange(s, start, splitIndex, k);
+        var right = LongestSubstringInRange(s, splitIndex + 1, end, k);
+        return Math.Max(left, right);
+    }
+
+    private static HashMap<char, int> CountCharacters(string s, SubstringRange range)
+    {
         var counts = new HashMap<char, int>();
 
-        for (var i = start; i < end; i++)
+        for (var i = range.Start; i < range.End; i++)
         {
             counts.TryGetValue(s[i], out var count);
             counts.Set(s[i], count + 1);
         }
 
-        for (var i = start; i < end; i++)
+        return counts;
+    }
+
+    private static int FindCharacterBelowThreshold(string s, SubstringRange range, int k, HashMap<char, int> counts)
+    {
+        for (var i = range.Start; i < range.End; i++)
         {
             counts.TryGetValue(s[i], out var count);
 
             if (count < k)
             {
-                var left = LongestSubstringInRange(s, start, i, k);
-                var right = LongestSubstringInRange(s, i + 1, end, k);
-                return Math.Max(left, right);
+                return i;
             }
         }
 
-        return end - start;
+        return -1;
     }
 }

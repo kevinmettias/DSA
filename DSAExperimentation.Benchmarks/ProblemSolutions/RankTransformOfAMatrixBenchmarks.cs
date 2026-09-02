@@ -21,6 +21,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RankTransformOfAMatrixBenchmarks
 {
+    private const int RandomSeed = 1632; // LC problem number
+    private const int ValueRange = 100_000;
+
     [Params(8, 20)]
     public int Size;
 
@@ -29,7 +32,7 @@ public class RankTransformOfAMatrixBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1632);
+        var random = new Random(RandomSeed);
         _matrix = new int[Size][];
 
         for (var r = 0; r < Size; r++)
@@ -38,7 +41,7 @@ public class RankTransformOfAMatrixBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _matrix[r][c] = random.Next(-100_000, 100_000);
+                _matrix[r][c] = random.Next(-ValueRange, ValueRange);
             }
         }
     }
@@ -48,18 +51,39 @@ public class RankTransformOfAMatrixBenchmarks
     {
         var rows = _matrix.Length;
         var cols = _matrix[0].Length;
+        var rank = CreateInitialRanks(rows, cols);
+
+        RelaxRanksUntilStable(rows, cols, rank);
+
+        return rank;
+    }
+
+    private static int[][] CreateInitialRanks(int rows, int cols)
+    {
         var rank = new int[rows][];
 
         for (var r = 0; r < rows; r++)
         {
-            rank[r] = new int[cols];
-
-            for (var c = 0; c < cols; c++)
-            {
-                rank[r][c] = 1;
-            }
+            rank[r] = CreateInitialRankRow(cols);
         }
 
+        return rank;
+    }
+
+    private static int[] CreateInitialRankRow(int cols)
+    {
+        var row = new int[cols];
+
+        for (var c = 0; c < cols; c++)
+        {
+            row[c] = 1;
+        }
+
+        return row;
+    }
+
+    private void RelaxRanksUntilStable(int rows, int cols, int[][] rank)
+    {
         var changed = true;
 
         while (changed)
@@ -68,8 +92,6 @@ public class RankTransformOfAMatrixBenchmarks
             changed |= RelaxRows(rows, cols, rank);
             changed |= RelaxColumns(rows, cols, rank);
         }
-
-        return rank;
     }
 
     private bool RelaxRows(int rows, int cols, int[][] rank)
@@ -78,13 +100,7 @@ public class RankTransformOfAMatrixBenchmarks
 
         for (var r = 0; r < rows; r++)
         {
-            for (var i = 0; i < cols; i++)
-            {
-                for (var j = i + 1; j < cols; j++)
-                {
-                    changed |= RelaxPair(_matrix[r][i], _matrix[r][j], rank[r], i, rank[r], j);
-                }
-            }
+            changed |= RelaxLine(cols, i => _matrix[r][i], i => new RankCell(rank[r], i));
         }
 
         return changed;
@@ -96,37 +112,46 @@ public class RankTransformOfAMatrixBenchmarks
 
         for (var c = 0; c < cols; c++)
         {
-            for (var i = 0; i < rows; i++)
+            changed |= RelaxLine(rows, i => _matrix[i][c], i => new RankCell(rank[i], c));
+        }
+
+        return changed;
+    }
+
+    private static bool RelaxLine(int count, Func<int, int> valueAt, Func<int, RankCell> cellAt)
+    {
+        var changed = false;
+
+        for (var i = 0; i < count; i++)
+        {
+            for (var j = i + 1; j < count; j++)
             {
-                for (var j = i + 1; j < rows; j++)
-                {
-                    changed |= RelaxPair(_matrix[i][c], _matrix[j][c], rank[i], c, rank[j], c);
-                }
+                changed |= RelaxPair(valueAt(i), valueAt(j), cellAt(i), cellAt(j));
             }
         }
 
         return changed;
     }
 
-    private static bool RelaxPair(int valueA, int valueB, int[] rankRowA, int colA, int[] rankRowB, int colB)
+    private static bool RelaxPair(int valueA, int valueB, RankCell cellA, RankCell cellB)
     {
-        if (valueA < valueB && rankRowA[colA] >= rankRowB[colB])
+        if (valueA < valueB && cellA.Row[cellA.Col] >= cellB.Row[cellB.Col])
         {
-            rankRowB[colB] = rankRowA[colA] + 1;
+            cellB.Row[cellB.Col] = cellA.Row[cellA.Col] + 1;
             return true;
         }
 
-        if (valueB < valueA && rankRowB[colB] >= rankRowA[colA])
+        if (valueB < valueA && cellB.Row[cellB.Col] >= cellA.Row[cellA.Col])
         {
-            rankRowA[colA] = rankRowB[colB] + 1;
+            cellA.Row[cellA.Col] = cellB.Row[cellB.Col] + 1;
             return true;
         }
 
-        if (valueA == valueB && rankRowA[colA] != rankRowB[colB])
+        if (valueA == valueB && cellA.Row[cellA.Col] != cellB.Row[cellB.Col])
         {
-            var merged = Math.Max(rankRowA[colA], rankRowB[colB]);
-            rankRowA[colA] = merged;
-            rankRowB[colB] = merged;
+            var merged = Math.Max(cellA.Row[cellA.Col], cellB.Row[cellB.Col]);
+            cellA.Row[cellA.Col] = merged;
+            cellB.Row[cellB.Col] = merged;
             return true;
         }
 
@@ -138,6 +163,20 @@ public class RankTransformOfAMatrixBenchmarks
     {
         var rows = _matrix.Length;
         var cols = _matrix[0].Length;
+        var cells = BuildCells(rows, cols);
+
+        SortCellsByValue(cells);
+
+        var result = CreateEmptyResult(rows, cols);
+        var context = new RankingBatchContext(cells, rows, result, new int[rows], new int[cols]);
+
+        ProcessAllBatches(context);
+
+        return result;
+    }
+
+    private (int Value, int Row, int Col)[] BuildCells(int rows, int cols)
+    {
         var cells = new (int Value, int Row, int Col)[rows * cols];
 
         for (var r = 0; r < rows; r++)
@@ -148,12 +187,18 @@ public class RankTransformOfAMatrixBenchmarks
             }
         }
 
+        return cells;
+    }
+
+    private static void SortCellsByValue((int Value, int Row, int Col)[] cells)
+    {
         var byValue = Comparer<(int Value, int Row, int Col)>.Create((a, b) => a.Value.CompareTo(b.Value));
         MergeSort.Sort<(int Value, int Row, int Col), ArrayIndexedSequence<(int Value, int Row, int Col)>>(
             new ArrayIndexedSequence<(int Value, int Row, int Col)>(cells), byValue);
+    }
 
-        var rowRank = new int[rows];
-        var colRank = new int[cols];
+    private static int[][] CreateEmptyResult(int rows, int cols)
+    {
         var result = new int[rows][];
 
         for (var r = 0; r < rows; r++)
@@ -161,59 +206,84 @@ public class RankTransformOfAMatrixBenchmarks
             result[r] = new int[cols];
         }
 
-        var index = 0;
-
-        while (index < cells.Length)
-        {
-            var end = index;
-
-            while (end < cells.Length && cells[end].Value == cells[index].Value)
-            {
-                end++;
-            }
-
-            AssignBatchRanks(cells, index, end, rows, result, rowRank, colRank);
-            index = end;
-        }
-
         return result;
     }
 
-    private static void AssignBatchRanks(
-        (int Value, int Row, int Col)[] cells, int start, int end, int rows,
-        int[][] result, int[] rowRank, int[] colRank)
+    private static void ProcessAllBatches(RankingBatchContext context)
     {
-        var components = new DisjointSet(rows + colRank.Length);
+        var index = 0;
+
+        while (index < context.Cells.Length)
+        {
+            index = ProcessNextBatch(context, index);
+        }
+    }
+
+    private static int ProcessNextBatch(RankingBatchContext context, int index)
+    {
+        var end = index;
+
+        while (end < context.Cells.Length && context.Cells[end].Value == context.Cells[index].Value)
+        {
+            end++;
+        }
+
+        AssignBatchRanks(context, index, end);
+
+        return end;
+    }
+
+    private static void AssignBatchRanks(RankingBatchContext context, int start, int end)
+    {
+        var cells = context.Cells;
+        var components = new DisjointSet(context.Rows + context.ColRank.Length);
 
         for (var i = start; i < end; i++)
         {
-            components.Union(cells[i].Row, rows + cells[i].Col);
+            components.Union(cells[i].Row, context.Rows + cells[i].Col);
         }
 
         var bestByRoot = new HashMap<int, int>();
 
         for (var i = start; i < end; i++)
         {
-            var (_, row, col) = cells[i];
-            var root = components.Find(row);
-            var candidate = Math.Max(rowRank[row], colRank[col]);
-
-            if (!bestByRoot.TryGetValue(root, out var best) || candidate > best)
-            {
-                bestByRoot.Set(root, candidate);
-            }
+            UpdateBestForCell(context, components, bestByRoot, cells[i]);
         }
 
         for (var i = start; i < end; i++)
         {
-            var (_, row, col) = cells[i];
-            var root = components.Find(row);
-            bestByRoot.TryGetValue(root, out var best);
-            var rank = best + 1;
-
-            result[row][col] = rank;
-            rowRank[row] = rank;
-            colRank[col] = rank;
+            AssignCellRank(context, components, bestByRoot, cells[i]);
         }
     }
+
+    private static void UpdateBestForCell(
+        RankingBatchContext context, DisjointSet components, HashMap<int, int> bestByRoot, (int Value, int Row, int Col) cell)
+    {
+        var (_, row, col) = cell;
+        var root = components.Find(row);
+        var candidate = Math.Max(context.RowRank[row], context.ColRank[col]);
+
+        if (!bestByRoot.TryGetValue(root, out var best) || candidate > best)
+        {
+            bestByRoot.Set(root, candidate);
+        }
+    }
+
+    private static void AssignCellRank(
+        RankingBatchContext context, DisjointSet components, HashMap<int, int> bestByRoot, (int Value, int Row, int Col) cell)
+    {
+        var (_, row, col) = cell;
+        var root = components.Find(row);
+        bestByRoot.TryGetValue(root, out var best);
+        var rank = best + 1;
+
+        context.Result[row][col] = rank;
+        context.RowRank[row] = rank;
+        context.ColRank[col] = rank;
+    }
+
+    private readonly record struct RankCell(int[] Row, int Col);
+
+    private readonly record struct RankingBatchContext(
+        (int Value, int Row, int Col)[] Cells, int Rows, int[][] Result, int[] RowRank, int[] ColRank);
 }

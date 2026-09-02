@@ -15,9 +15,20 @@ public sealed partial class LexicographicallySmallestEquivalentStringTests
     [InlineData("leetcode", "programs", "sourcecode", "aauaaaaada")]
     public void SmallestEquivalentString_LeetCodeExamples_ReturnsRemappedString(
         string s1, string s2, string baseStr, string expected)
-        => Assert.Equal(expected, SmallestEquivalentString(s1, s2, baseStr));
+    {
+        var actual = SmallestEquivalentString(s1, s2, baseStr);
+        Assert.Equal(expected, actual);
+    }
 
     private static string SmallestEquivalentString(string s1, string s2, string baseStr)
+    {
+        var equivalences = BuildEquivalences(s1, s2);
+        var smallestInGroup = ComputeSmallestPerGroup(equivalences);
+
+        return RemapThroughGroups(baseStr, equivalences, smallestInGroup);
+    }
+
+    private static DisjointSet BuildEquivalences(string s1, string s2)
     {
         var equivalences = new DisjointSet(26);
 
@@ -26,7 +37,13 @@ public sealed partial class LexicographicallySmallestEquivalentStringTests
             equivalences.Union(s1[i] - 'a', s2[i] - 'a');
         }
 
+        return equivalences;
+    }
+
+    private static char[] ComputeSmallestPerGroup(DisjointSet equivalences)
+    {
         var smallestInGroup = new char[26];
+
         for (var letter = 0; letter < 26; letter++)
         {
             var root = equivalences.Find(letter);
@@ -38,7 +55,13 @@ public sealed partial class LexicographicallySmallestEquivalentStringTests
             }
         }
 
+        return smallestInGroup;
+    }
+
+    private static string RemapThroughGroups(string baseStr, DisjointSet equivalences, char[] smallestInGroup)
+    {
         var result = new char[baseStr.Length];
+
         for (var i = 0; i < baseStr.Length; i++)
         {
             result[i] = smallestInGroup[equivalences.Find(baseStr[i] - 'a')];

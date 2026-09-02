@@ -20,6 +20,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenchmarks
 {
     private const int DistanceThreshold = 50;
+    private const int RandomSeed = 1334; // LC problem number
+    private const int ExtraRoadsPerCity = 2;
+    private const int MaxRoadWeight = 20;
 
     [Params(30, 120)]
     public int CityCount;
@@ -29,7 +32,7 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1334);
+        var random = new Random(RandomSeed);
         _vertices = [.. Enumerable.Range(0, CityCount).Select(id => new WeightedGraphNode(id))];
 
         for (var i = 1; i < CityCount; i++)
@@ -40,7 +43,7 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
 
         for (var i = 0; i < CityCount; i++)
         {
-            for (var e = 0; e < 2; e++)
+            for (var e = 0; e < ExtraRoadsPerCity; e++)
             {
                 var target = random.Next(CityCount);
 
@@ -54,7 +57,7 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
 
     private static void AddRoad(WeightedGraphNode a, WeightedGraphNode b, Random random)
     {
-        var weight = random.Next(1, 20);
+        var weight = random.Next(1, MaxRoadWeight);
         a.Edges.Add((weight, b));
         b.Edges.Add((weight, a));
     }
@@ -95,17 +98,7 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
 
         for (var city = 0; city < _vertices.Count; city++)
         {
-            var count = 0;
-
-            for (var other = 0; other < _vertices.Count; other++)
-            {
-                if (other != city
-                    && distances.TryGetValue((_vertices[city], _vertices[other]), out var distance)
-                    && distance <= DistanceThreshold)
-                {
-                    count++;
-                }
-            }
+            var count = CountNeighborsWithinThreshold(city, distances);
 
             if (count <= bestCount)
             {
@@ -115,5 +108,23 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
         }
 
         return bestCity;
+    }
+
+    private int CountNeighborsWithinThreshold(
+        int city, Dictionary<(WeightedGraphNode From, WeightedGraphNode To), int> distances)
+    {
+        var count = 0;
+
+        for (var other = 0; other < _vertices.Count; other++)
+        {
+            if (other != city
+                && distances.TryGetValue((_vertices[city], _vertices[other]), out var distance)
+                && distance <= DistanceThreshold)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 }

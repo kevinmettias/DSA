@@ -13,6 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveKDigitsBenchmarks
 {
+    private const int DigitCount = 10;
+    private const int RemovalFraction = 3;
+    private const string ZeroResult = "0";
+
     [Params(500, 5_000)]
     public int Length;
 
@@ -27,11 +31,11 @@ public class RemoveKDigitsBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            digits[i] = (char)('0' + random.Next(0, 10));
+            digits[i] = (char)('0' + random.Next(0, DigitCount));
         }
 
         _num = new string(digits);
-        _k = Length / 3;
+        _k = Length / RemovalFraction;
     }
 
     [Benchmark(Baseline = true)]
@@ -55,17 +59,24 @@ public class RemoveKDigitsBenchmarks
             current = current.Remove(removeIndex, 1);
         }
 
-        var trimmed = current.TrimStart('0');
-        return trimmed.Length == 0 ? "0" : trimmed;
+        return TrimLeadingZeros(current);
     }
 
     [Benchmark]
     public string MonotonicStackSweep()
     {
         var stack = new DigitStack();
-        var remaining = _k;
+        var remaining = SweepDigits(stack, _num, _k);
+        RemoveTrailingExcess(stack, remaining);
+        var digits = DrainStackToDigits(stack);
+        return TrimLeadingZeros(new string(digits));
+    }
 
-        foreach (var digit in _num)
+    // Pushes each digit, popping off any larger digits still eligible for removal -
+    // the monotonic-stack greedy sweep. Returns the removal budget left afterward.
+    private static int SweepDigits(DigitStack stack, string num, int remaining)
+    {
+        foreach (var digit in num)
         {
             while (remaining > 0 && stack.TryPeek(out var top) && top > digit)
             {
@@ -76,18 +87,32 @@ public class RemoveKDigitsBenchmarks
             stack.Push(digit);
         }
 
+        return remaining;
+    }
+
+    // If the sweep didn't use up the full removal budget, trims the remainder off the end.
+    private static void RemoveTrailingExcess(DigitStack stack, int remaining)
+    {
         while (remaining > 0 && stack.TryPop(out _))
         {
             remaining--;
         }
+    }
 
+    private static char[] DrainStackToDigits(DigitStack stack)
+    {
         var digits = new char[stack.Count];
         for (var i = digits.Length - 1; i >= 0; i--)
         {
             stack.TryPop(out digits[i]);
         }
 
-        var trimmed = new string(digits).TrimStart('0');
-        return trimmed.Length == 0 ? "0" : trimmed;
+        return digits;
+    }
+
+    private static string TrimLeadingZeros(string value)
+    {
+        var trimmed = value.TrimStart('0');
+        return trimmed.Length == 0 ? ZeroResult : trimmed;
     }
 }

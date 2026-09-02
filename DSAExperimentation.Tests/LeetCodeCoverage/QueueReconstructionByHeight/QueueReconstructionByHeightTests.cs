@@ -36,6 +36,13 @@ public sealed partial class QueueReconstructionByHeightTests
 
     private static int[][] ReconstructQueue(int[][] people)
     {
+        var items = SortedItems(people);
+        var queue = BuildQueue(items);
+        return ToResultArray(queue);
+    }
+
+    private static (int Height, int K)[] SortedItems(int[][] people)
+    {
         var items = people.Select(p => (Height: p[0], K: p[1])).ToArray();
         var byHeightDescendingThenKAscending = Comparer<(int Height, int K)>.Create(
             (a, b) => a.Height != b.Height ? b.Height.CompareTo(a.Height) : a.K.CompareTo(b.K));
@@ -43,6 +50,11 @@ public sealed partial class QueueReconstructionByHeightTests
         MergeSort.Sort<(int Height, int K), ArrayIndexedSequence<(int Height, int K)>>(
             new ArrayIndexedSequence<(int Height, int K)>(items), byHeightDescendingThenKAscending);
 
+        return items;
+    }
+
+    private static DynamicArray<(int Height, int K)> BuildQueue((int Height, int K)[] items)
+    {
         var queue = new DynamicArray<(int Height, int K)>();
 
         foreach (var person in items)
@@ -50,6 +62,11 @@ public sealed partial class QueueReconstructionByHeightTests
             queue.Insert(person.K, person);
         }
 
+        return queue;
+    }
+
+    private static int[][] ToResultArray(DynamicArray<(int Height, int K)> queue)
+    {
         var result = new int[queue.Count][];
 
         for (var i = 0; i < queue.Count; i++)

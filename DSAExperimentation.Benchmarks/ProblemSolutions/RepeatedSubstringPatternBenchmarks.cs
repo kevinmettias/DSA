@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RepeatedSubstringPatternBenchmarks
 {
+    private const int AlphabetSize = 26;
+    private const int MaxPeriodDivisor = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,7 +24,7 @@ public class RepeatedSubstringPatternBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
     }
 
     [Benchmark(Baseline = true)]
@@ -29,7 +32,7 @@ public class RepeatedSubstringPatternBenchmarks
     {
         var n = _text.Length;
 
-        for (var period = 1; period <= n / 2; period++)
+        for (var period = 1; period <= n / MaxPeriodDivisor; period++)
         {
             if (n % period != 0)
             {

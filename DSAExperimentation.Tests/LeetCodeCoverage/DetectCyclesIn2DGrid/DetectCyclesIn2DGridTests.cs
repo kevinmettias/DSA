@@ -37,22 +37,25 @@ public sealed partial class DetectCyclesIn2DGridTests
         Assert.False(ContainsCycle(grid));
     }
 
+    private readonly record struct GridContext(string[] Grid, DisjointSet Components, int Cols);
+
     private static bool ContainsCycle(string[] grid)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
         var components = new DisjointSet(rows * cols);
+        var context = new GridContext(grid, components, cols);
 
         for (var row = 0; row < rows; row++)
         {
             for (var col = 0; col < cols; col++)
             {
-                if (HasCycleThroughNeighbor(grid, components, cols, (row, col), (row, col + 1)))
+                if (HasCycleThroughNeighbor(context, (row, col), (row, col + 1)))
                 {
                     return true;
                 }
 
-                if (HasCycleThroughNeighbor(grid, components, cols, (row, col), (row + 1, col)))
+                if (HasCycleThroughNeighbor(context, (row, col), (row + 1, col)))
                 {
                     return true;
                 }
@@ -63,23 +66,23 @@ public sealed partial class DetectCyclesIn2DGridTests
     }
 
     private static bool HasCycleThroughNeighbor(
-        string[] grid, DisjointSet components, int cols, (int Row, int Col) cell, (int Row, int Col) neighbor)
+        GridContext context, (int Row, int Col) cell, (int Row, int Col) neighbor)
     {
-        if (neighbor.Row >= grid.Length || neighbor.Col >= cols
-            || grid[neighbor.Row][neighbor.Col] != grid[cell.Row][cell.Col])
+        if (neighbor.Row >= context.Grid.Length || neighbor.Col >= context.Cols
+            || context.Grid[neighbor.Row][neighbor.Col] != context.Grid[cell.Row][cell.Col])
         {
             return false;
         }
 
-        var id = (cell.Row * cols) + cell.Col;
-        var neighborId = (neighbor.Row * cols) + neighbor.Col;
+        var id = (cell.Row * context.Cols) + cell.Col;
+        var neighborId = (neighbor.Row * context.Cols) + neighbor.Col;
 
-        if (components.IsConnected(id, neighborId))
+        if (context.Components.IsConnected(id, neighborId))
         {
             return true;
         }
 
-        components.Union(id, neighborId);
+        context.Components.Union(id, neighborId);
         return false;
     }
 }

@@ -19,7 +19,10 @@ public sealed partial class SplitArrayLargestSumTests
     [InlineData(new[] { 1, 2, 3, 4, 5 }, 2, 9)]
     [InlineData(new[] { 1, 4, 4 }, 3, 4)]
     public void MinimizedLargestSum_LeetCodeExamples_ReturnsSmallestFeasibleMax(int[] nums, int k, int expected)
-        => Assert.Equal(expected, MinimizedLargestSum(nums, k));
+    {
+        var actual = MinimizedLargestSum(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MinimizedLargestSum(int[] nums, int k)
     {

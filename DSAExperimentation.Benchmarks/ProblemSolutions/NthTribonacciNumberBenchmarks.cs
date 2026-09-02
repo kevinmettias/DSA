@@ -9,6 +9,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NthTribonacciNumberBenchmarks
 {
+    private const int SecondPriorTermOffset = 2;
+    private const int ThirdPriorTermOffset = 3;
+
     [Params(20, 30)]
     public int N;
 
@@ -19,8 +22,8 @@ public class NthTribonacciNumberBenchmarks
         => n switch
         {
             0 => 0,
-            1 or 2 => 1,
-            _ => Tribonacci(n - 1) + Tribonacci(n - 2) + Tribonacci(n - 3)
+            1 or SecondPriorTermOffset => 1,
+            _ => Tribonacci(n - 1) + Tribonacci(n - SecondPriorTermOffset) + Tribonacci(n - ThirdPriorTermOffset)
         };
 
     [Benchmark]
@@ -30,7 +33,7 @@ public class NthTribonacciNumberBenchmarks
             (value, trib) => value switch
             {
                 0 => 0,
-                1 or 2 => 1,
-                _ => trib(value - 1) + trib(value - 2) + trib(value - 3)
+                1 or SecondPriorTermOffset => 1,
+                _ => trib(value - 1) + trib(value - SecondPriorTermOffset) + trib(value - ThirdPriorTermOffset)
             });
 }

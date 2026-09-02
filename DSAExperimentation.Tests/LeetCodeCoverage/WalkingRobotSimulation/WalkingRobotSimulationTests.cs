@@ -41,42 +41,55 @@ public sealed class WalkingRobotSimulationTests
             blocked.TryAdd((obstacle[0], obstacle[1]));
         }
 
-        var direction = 0;
-        var x = 0;
-        var y = 0;
-        var maxDistanceSquared = 0;
+        var state = (Direction: 0, X: 0, Y: 0, MaxDistanceSquared: 0);
 
         foreach (var command in commands)
         {
-            if (command == -2)
-            {
-                direction = (direction + 3) % 4;
-                continue;
-            }
-
-            if (command == -1)
-            {
-                direction = (direction + 1) % 4;
-                continue;
-            }
-
-            for (var step = 0; step < command; step++)
-            {
-                var nextX = x + DeltaX[direction];
-                var nextY = y + DeltaY[direction];
-
-                if (blocked.Has((nextX, nextY)))
-                {
-                    break;
-                }
-
-                x = nextX;
-                y = nextY;
-            }
-
-            maxDistanceSquared = Math.Max(maxDistanceSquared, x * x + y * y);
+            state = ProcessCommand(command, state, blocked);
         }
 
-        return maxDistanceSquared;
+        return state.MaxDistanceSquared;
+    }
+
+    private static (int Direction, int X, int Y, int MaxDistanceSquared) ProcessCommand(
+        int command,
+        (int Direction, int X, int Y, int MaxDistanceSquared) state,
+        Set<(int X, int Y)> blocked)
+    {
+        if (command == -2)
+        {
+            return ((state.Direction + 3) % 4, state.X, state.Y, state.MaxDistanceSquared);
+        }
+
+        if (command == -1)
+        {
+            return ((state.Direction + 1) % 4, state.X, state.Y, state.MaxDistanceSquared);
+        }
+
+        var (x, y) = MoveForward((state.X, state.Y), state.Direction, command, blocked);
+        var maxDistanceSquared = Math.Max(state.MaxDistanceSquared, x * x + y * y);
+
+        return (state.Direction, x, y, maxDistanceSquared);
+    }
+
+    private static (int X, int Y) MoveForward((int X, int Y) position, int direction, int steps, Set<(int X, int Y)> blocked)
+    {
+        var (x, y) = position;
+
+        for (var step = 0; step < steps; step++)
+        {
+            var nextX = x + DeltaX[direction];
+            var nextY = y + DeltaY[direction];
+
+            if (blocked.Has((nextX, nextY)))
+            {
+                break;
+            }
+
+            x = nextX;
+            y = nextY;
+        }
+
+        return (x, y);
     }
 }

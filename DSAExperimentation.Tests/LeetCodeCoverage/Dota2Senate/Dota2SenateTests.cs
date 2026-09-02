@@ -21,11 +21,17 @@ public sealed partial class Dota2SenateTests
 
     private static string PredictPartyVictory(string senate)
     {
-        var n = senate.Length;
+        var (radiant, dire) = BuildPartyQueues(senate);
+        SimulateVoting(radiant, dire);
+        return radiant.Count > 0 ? "Radiant" : "Dire";
+    }
+
+    private static (RepoQueue Radiant, RepoQueue Dire) BuildPartyQueues(string senate)
+    {
         var radiant = new RepoQueue();
         var dire = new RepoQueue();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < senate.Length; i++)
         {
             if (senate[i] == 'R')
             {
@@ -36,6 +42,13 @@ public sealed partial class Dota2SenateTests
                 dire.Enqueue(i);
             }
         }
+
+        return (radiant, dire);
+    }
+
+    private static void SimulateVoting(RepoQueue radiant, RepoQueue dire)
+    {
+        var n = radiant.Count + dire.Count;
 
         while (radiant.Count > 0 && dire.Count > 0)
         {
@@ -51,7 +64,5 @@ public sealed partial class Dota2SenateTests
                 dire.Enqueue(direIndex + n);
             }
         }
-
-        return radiant.Count > 0 ? "Radiant" : "Dire";
     }
 }

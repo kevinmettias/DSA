@@ -16,7 +16,8 @@ public sealed partial class TwoSumIVInputIsABSTTests
     {
         var tree = BuildClassicExampleTree();
 
-        Assert.True(FindTarget(tree.Root, k: 9));
+        var found = FindTarget(tree.Root, k: 9);
+        Assert.True(found);
     }
 
     [Fact]
@@ -24,7 +25,8 @@ public sealed partial class TwoSumIVInputIsABSTTests
     {
         var tree = BuildClassicExampleTree();
 
-        Assert.False(FindTarget(tree.Root, k: 28));
+        var found = FindTarget(tree.Root, k: 28);
+        Assert.False(found);
     }
 
     // Insert order [5,3,6,2,4,7] recreates the classic LC 653 example tree exactly:

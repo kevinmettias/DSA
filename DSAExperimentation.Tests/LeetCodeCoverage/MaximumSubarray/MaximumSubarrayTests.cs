@@ -1,17 +1,29 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSubarray;
+using DSAExperimentation.LeetCode.MaximumSubarray;
 
+namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSubarray;
+
+// Harness only. Both strategies live in MaximumSubarraySolution and are
+// asserted against the same examples, including a single-element array and
+// an all-positive array where the whole array is the best subarray.
 public sealed class MaximumSubarrayTests
 {
-    [Theory]
-    [InlineData(new[] { -2,1,-3,4,-1,2,1,-5,4 }, 6)]
-    [InlineData(new[] { 1 }, 1)]
-    [InlineData(new[] { 5,4,-1,7,8 }, 23)]
-    public void MaxSubArray_KadaneScan_ReturnsBestContiguousSum(int[] nums, int expected) => Assert.Equal(expected, MaxSubArray(nums));
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [-2, 1, -3, 4, -1, 2, 1, -5, 4], 6 },
+            { [1], 1 },
+            { [5, 4, -1, 7, 8], 23 },
+            { [-1], -1 },
+            { [-2, -1], -1 },
+        };
 
-    private static int MaxSubArray(int[] nums)
-    {
-        var best = nums[0]; var current = nums[0];
-        for (var i = 1; i < nums.Length; i++) { current = Math.Max(nums[i], current + nums[i]); best = Math.Max(best, current); }
-        return best;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxSubArrayByBruteForce_LeetCodeExamples_ReturnsBestContiguousSum(int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumSubarraySolution.MaxSubArrayByBruteForce(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxSubArrayByKadaneScan_LeetCodeExamples_ReturnsBestContiguousSum(int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumSubarraySolution.MaxSubArrayByKadaneScan(nums));
 }

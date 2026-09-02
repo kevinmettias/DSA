@@ -18,22 +18,52 @@ public sealed partial class TheKthFactorOfNTests
     [InlineData(4, 4, -1)]
     [InlineData(1, 1, 1)]
     public void KthFactor_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(int n, int k, int expected)
-        => Assert.Equal(expected, KthFactor(n, k));
+    {
+        var factor = KthFactor(n, k);
+        Assert.Equal(expected, factor);
+    }
 
     private static int KthFactor(int n, int k)
     {
-        var sequence = new SquareExceedsSequence(n, n + 1);
-        var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
+        var anchor = FindAnchor(n);
         var remaining = k;
 
+        if (TryFindAscending(n, anchor, ref remaining, out var found))
+        {
+            return found;
+        }
+
+        if (TryFindDescending(n, anchor, ref remaining, out found))
+        {
+            return found;
+        }
+
+        return -1;
+    }
+
+    private static int FindAnchor(int n)
+    {
+        var sequence = new SquareExceedsSequence(n, n + 1);
+        return BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
+    }
+
+    private static bool TryFindAscending(int n, int anchor, ref int remaining, out int found)
+    {
         for (var divisor = 1; divisor <= anchor; divisor++)
         {
             if (n % divisor == 0 && --remaining == 0)
             {
-                return divisor;
+                found = divisor;
+                return true;
             }
         }
 
+        found = -1;
+        return false;
+    }
+
+    private static bool TryFindDescending(int n, int anchor, ref int remaining, out int found)
+    {
         for (var divisor = anchor; divisor >= 1; divisor--)
         {
             if (divisor * divisor == n || n % divisor != 0)
@@ -43,11 +73,13 @@ public sealed partial class TheKthFactorOfNTests
 
             if (--remaining == 0)
             {
-                return n / divisor;
+                found = n / divisor;
+                return true;
             }
         }
 
-        return -1;
+        found = -1;
+        return false;
     }
 
     private readonly struct SquareExceedsSequence(long x, int length) : IRandomAccessSequence<int>

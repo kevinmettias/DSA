@@ -15,6 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RLEIteratorBenchmarks
 {
     private const int RunCount = 100;
+    private const int RandomSeed = 900;
+    private const int ValuesPerRun = 2;
+    private const int MaxRunValueExclusive = 1_000;
+    private const int MaxQueryLength = 50;
 
     [Params(2_000, 200_000)]
     public int TotalCount;
@@ -25,7 +29,7 @@ public class RLEIteratorBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(900);
+        var random = new Random(RandomSeed);
         _encoding = BuildEncoding(random, TotalCount);
         _queries = BuildQueries(random, TotalCount);
     }
@@ -72,7 +76,7 @@ public class RLEIteratorBenchmarks
 
     private static int[] BuildEncoding(Random random, int totalCount)
     {
-        var encoding = new int[RunCount * 2];
+        var encoding = new int[RunCount * ValuesPerRun];
         var remaining = totalCount;
 
         for (var run = 0; run < RunCount; run++)
@@ -81,8 +85,8 @@ public class RLEIteratorBenchmarks
             var count = run == RunCount - 1 ? remaining : Math.Max(1, remaining / runsLeft);
             remaining -= count;
 
-            encoding[run * 2] = count;
-            encoding[(run * 2) + 1] = random.Next(1, 1_000);
+            encoding[run * ValuesPerRun] = count;
+            encoding[(run * ValuesPerRun) + 1] = random.Next(1, MaxRunValueExclusive);
         }
 
         return encoding;
@@ -95,7 +99,8 @@ public class RLEIteratorBenchmarks
 
         while (remaining > 0)
         {
-            var n = Math.Min(remaining, random.Next(1, 50));
+            var candidateLength = random.Next(1, MaxQueryLength);
+            var n = Math.Min(remaining, candidateLength);
             queries.Add(n);
             remaining -= n;
         }
@@ -106,7 +111,7 @@ public class RLEIteratorBenchmarks
     private static int[] Decompress(int[] encoding)
     {
         var totalCount = 0;
-        for (var i = 0; i < encoding.Length; i += 2)
+        for (var i = 0; i < encoding.Length; i += ValuesPerRun)
         {
             totalCount += encoding[i];
         }
@@ -114,7 +119,7 @@ public class RLEIteratorBenchmarks
         var values = new int[totalCount];
         var index = 0;
 
-        for (var i = 0; i < encoding.Length; i += 2)
+        for (var i = 0; i < encoding.Length; i += ValuesPerRun)
         {
             for (var repeat = 0; repeat < encoding[i]; repeat++)
             {
@@ -133,7 +138,7 @@ public class RLEIteratorBenchmarks
 
         public RleIterator(int[] encoding)
         {
-            for (var i = 0; i < encoding.Length; i += 2)
+            for (var i = 0; i < encoding.Length; i += ValuesPerRun)
             {
                 _runs.Enqueue((encoding[i], encoding[i + 1]));
             }

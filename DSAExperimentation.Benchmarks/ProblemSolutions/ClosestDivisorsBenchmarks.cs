@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ClosestDivisorsBenchmarks
 {
+    private const int SecondCandidateOffset = 2; // both benchmarks check num+1 and num+2
+    private const int SqrtAnchorCeiling = 46_341; // ceil(sqrt(int.MaxValue)), caps the binary-search anchor
+
     [Params(1_000, 100_000)]
     public int Num;
 
@@ -18,7 +21,7 @@ public class ClosestDivisorsBenchmarks
     public (int First, int Second) BruteForce()
     {
         var lower = BruteForcePairFor(Num + 1);
-        var upper = BruteForcePairFor(Num + 2);
+        var upper = BruteForcePairFor(Num + SecondCandidateOffset);
         return upper.Second - upper.First < lower.Second - lower.First ? upper : lower;
     }
 
@@ -26,7 +29,7 @@ public class ClosestDivisorsBenchmarks
     public (int First, int Second) BinarySearchAnchored()
     {
         var lower = AnchoredPairFor(Num + 1);
-        var upper = AnchoredPairFor(Num + 2);
+        var upper = AnchoredPairFor(Num + SecondCandidateOffset);
         return upper.Second - upper.First < lower.Second - lower.First ? upper : lower;
     }
 
@@ -52,7 +55,7 @@ public class ClosestDivisorsBenchmarks
 
     private static (int First, int Second) AnchoredPairFor(int candidate)
     {
-        var sequence = new SquareExceedsSequence(candidate, Math.Min(candidate, 46_341) + 1);
+        var sequence = new SquareExceedsSequence(candidate, Math.Min(candidate, SqrtAnchorCeiling) + 1);
         var divisor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
 
         while (candidate % divisor != 0)

@@ -17,7 +17,10 @@ public sealed class SuperPowTests
     [InlineData(1, new[] { 4, 3, 3, 8, 5, 2 }, 1)]
     [InlineData(3, new[] { 1, 0 }, 221)] // 3^10 = 59049, 59049 mod 1337 = 221
     public void SuperPow_LeetCodeExamples_ReturnsModularPower(int a, int[] b, int expected)
-        => Assert.Equal(expected, SuperPow(a, b));
+    {
+        var actual = SuperPow(a, b);
+        Assert.Equal(expected, actual);
+    }
 
     private static int SuperPow(int a, int[] b)
     {

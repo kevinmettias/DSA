@@ -47,23 +47,32 @@ public sealed partial class MinimizeDeviationInArrayTests
             min = Math.Min(min, value);
         }
 
-        var deviation = int.MaxValue;
+        var reducer = new DeviationReducer(heap, min);
+        return reducer.Reduce();
+    }
 
-        while (true)
+    private sealed class DeviationReducer(Heap<int, MaxHeapOrder<int>> heap, int min)
+    {
+        public int Reduce()
         {
-            heap.TryPop(out var max);
-            deviation = Math.Min(deviation, max - min);
+            var deviation = int.MaxValue;
 
-            if (max % 2 != 0)
+            while (true)
             {
-                break;
+                heap.TryPop(out var max);
+                deviation = Math.Min(deviation, max - min);
+
+                if (max % 2 != 0)
+                {
+                    break;
+                }
+
+                var half = max / 2;
+                min = Math.Min(min, half);
+                heap.Push(half);
             }
 
-            var half = max / 2;
-            min = Math.Min(min, half);
-            heap.Push(half);
+            return deviation;
         }
-
-        return deviation;
     }
 }

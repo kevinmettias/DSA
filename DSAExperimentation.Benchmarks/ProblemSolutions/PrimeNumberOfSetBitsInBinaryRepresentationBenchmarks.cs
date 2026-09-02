@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
 {
+    private const int SmallestPrime = 2;
+    private static readonly int[] PrimeSetBitCounts = { 2, 3, 5, 7, 11, 13, 17, 19 };
+
     [Params(1_000, 100_000)]
     public int RangeWidth;
 
@@ -72,12 +75,12 @@ public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
 
     private static bool IsPrime(int value)
     {
-        if (value < 2)
+        if (value < SmallestPrime)
         {
             return false;
         }
 
-        for (var divisor = 2; divisor * divisor <= value; divisor++)
+        for (var divisor = SmallestPrime; divisor * divisor <= value; divisor++)
         {
             if (value % divisor == 0)
             {
@@ -91,7 +94,7 @@ public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
     private static Set<int> BuildPrimeBitCounts()
     {
         var primes = new Set<int>();
-        foreach (var candidate in new[] { 2, 3, 5, 7, 11, 13, 17, 19 })
+        foreach (var candidate in PrimeSetBitCounts)
         {
             primes.TryAdd(candidate);
         }

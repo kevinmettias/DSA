@@ -50,26 +50,40 @@ public sealed partial class MaximumNumberOfVisiblePointsTests
 
     private static int VisiblePoints(int[][] points, int angle, int[] location)
     {
-        var samePoint = 0;
+        var angles = CollectAngles(points, location, out var samePoint);
+
+        var sorted = angles.ToArray();
+        MergeSort.Sort<double, ArrayIndexedSequence<double>>(new ArrayIndexedSequence<double>(sorted));
+
+        var doubled = DuplicateWithWrap(sorted);
+        var widestWindow = WidestWindow(doubled, angle);
+
+        return Math.Min(widestWindow, sorted.Length) + samePoint;
+    }
+
+    private static List<double> CollectAngles(int[][] points, int[] location, out int samePoint)
+    {
+        samePoint = 0;
         var angles = new List<double>(points.Length);
 
         foreach (var point in points)
         {
-            var dx = point[0] - location[0];
-            var dy = point[1] - location[1];
+            var pointAngle = ComputeAngle(point, location);
 
-            if (dx == 0 && dy == 0)
+            if (pointAngle is null)
             {
                 samePoint++;
                 continue;
             }
 
-            angles.Add(Math.Atan2(dy, dx) * 180.0 / Math.PI);
+            angles.Add(pointAngle.Value);
         }
 
-        var sorted = angles.ToArray();
-        MergeSort.Sort<double, ArrayIndexedSequence<double>>(new ArrayIndexedSequence<double>(sorted));
+        return angles;
+    }
 
+    private static double[] DuplicateWithWrap(double[] sorted)
+    {
         var doubled = new double[sorted.Length * 2];
 
         for (var i = 0; i < sorted.Length; i++)
@@ -78,6 +92,11 @@ public sealed partial class MaximumNumberOfVisiblePointsTests
             doubled[i + sorted.Length] = sorted[i] + 360.0;
         }
 
+        return doubled;
+    }
+
+    private static int WidestWindow(double[] doubled, int angle)
+    {
         var widestWindow = 0;
         var left = 0;
 
@@ -91,6 +110,19 @@ public sealed partial class MaximumNumberOfVisiblePointsTests
             widestWindow = Math.Max(widestWindow, right - left + 1);
         }
 
-        return Math.Min(widestWindow, sorted.Length) + samePoint;
+        return widestWindow;
+    }
+
+    private static double? ComputeAngle(int[] point, int[] location)
+    {
+        var dx = point[0] - location[0];
+        var dy = point[1] - location[1];
+
+        if (dx == 0 && dy == 0)
+        {
+            return null;
+        }
+
+        return Math.Atan2(dy, dx) * 180.0 / Math.PI;
     }
 }

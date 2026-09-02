@@ -11,6 +11,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ParsingABooleanExpressionBenchmarks
 {
+    // random.Next(LeafChance) == 0: roughly a 1-in-4 chance to end the generated
+    // expression early, independent of remaining depth.
+    private const int LeafChance = 4;
+
+    // random.Next(TokenChoiceCount): coin flip between the two leaf tokens below.
+    private const int TokenChoiceCount = 2;
+    private const string TrueToken = "t";
+    private const string FalseToken = "f";
+
+    // random.Next(OperatorChoiceCount): choose among !, &, |.
+    private const int OperatorChoiceCount = 3;
+
+    // Length of the operator character plus its following '(' - consumed together.
+    private const int OperatorAndParenLength = 2;
+
     [Params(8, 12)]
     public int Depth;
 
@@ -35,12 +50,12 @@ public class ParsingABooleanExpressionBenchmarks
 
     private static string Generate(Random random, int depth)
     {
-        if (depth == 0 || random.Next(4) == 0)
+        if (depth == 0 || random.Next(LeafChance) == 0)
         {
-            return random.Next(2) == 0 ? "t" : "f";
+            return random.Next(TokenChoiceCount) == 0 ? TrueToken : FalseToken;
         }
 
-        return random.Next(3) switch
+        return random.Next(OperatorChoiceCount) switch
         {
             0 => $"!({Generate(random, depth - 1)})",
             1 => $"&({Generate(random, depth - 1)},{Generate(random, depth - 1)})",
@@ -60,20 +75,30 @@ public class ParsingABooleanExpressionBenchmarks
             return c == 't';
         }
 
-        index += 2; // consume the operator character and its '('
+        index += OperatorAndParenLength; // consume the operator character and its '('
 
-        if (c == '!')
-        {
-            var value = ParseExpression(expression, ref index);
-            index++; // consume ')'
-            return !value;
-        }
+        return c == '!'
+            ? ParseNot(expression, ref index)
+            : ParseOperands(expression, c, ref index);
+    }
 
-        var result = c == '&';
+    // Consumes the operand of a unary '!' and its closing ')'.
+    private static bool ParseNot(string expression, ref int index)
+    {
+        var value = ParseExpression(expression, ref index);
+        index++; // consume ')'
+        return !value;
+    }
+
+    // Consumes the comma-separated operands of an n-ary '&'/'|' up to its closing
+    // ')', folding them with the operator as they're parsed.
+    private static bool ParseOperands(string expression, char op, ref int index)
+    {
+        var result = op == '&';
         while (expression[index] != ')')
         {
             var operand = ParseExpression(expression, ref index);
-            result = c == '&' ? result && operand : result || operand;
+            result = op == '&' ? result && operand : result || operand;
 
             if (expression[index] == ',')
             {
@@ -111,8 +136,18 @@ public class ParsingABooleanExpressionBenchmarks
 
     private static char EvaluateGroup(RepoCharStack stack)
     {
-        var trueCount = 0;
-        var falseCount = 0;
+        CountOperands(stack, out var trueCount, out var falseCount);
+        var op = ConsumeGroupOperator(stack);
+        var value = EvaluateOperator(op, trueCount, falseCount);
+        return ToBooleanToken(value);
+    }
+
+    // Pops every operand of the innermost group (down to, but not including, its
+    // opening '(') and tallies how many were true vs. false.
+    private static void CountOperands(RepoCharStack stack, out int trueCount, out int falseCount)
+    {
+        trueCount = 0;
+        falseCount = 0;
 
         while (stack.TryPeek(out var top) && top != '(')
         {
@@ -126,17 +161,22 @@ public class ParsingABooleanExpressionBenchmarks
                 falseCount++;
             }
         }
+    }
 
+    // Pops the group's opening '(' and its operator character, returning the operator.
+    private static char ConsumeGroupOperator(RepoCharStack stack)
+    {
         stack.TryPop(out _); // the matching '('
         stack.TryPop(out var op);
-
-        var value = op switch
-        {
-            '!' => trueCount == 0,
-            '&' => falseCount == 0,
-            _ => trueCount > 0, // '|'
-        };
-
-        return value ? 't' : 'f';
+        return op;
     }
+
+    private static bool EvaluateOperator(char op, int trueCount, int falseCount) => op switch
+    {
+        '!' => trueCount == 0,
+        '&' => falseCount == 0,
+        _ => trueCount > 0, // '|'
+    };
+
+    private static char ToBooleanToken(bool value) => value ? 't' : 'f';
 }

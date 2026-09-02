@@ -17,7 +17,11 @@ public sealed partial class AllPossibleFullBinaryTreesTests
         var trees = AllPossibleFbt(7);
 
         Assert.Equal(5, trees.Count);
-        Assert.All(trees, tree => Assert.True(IsFullWithNodeCount(tree, 7)));
+        Assert.All(trees, tree =>
+        {
+            var isFullWithNodeCount = IsFullWithNodeCount(tree, 7);
+            Assert.True(isFullWithNodeCount);
+        });
     }
 
     [Fact]
@@ -53,6 +57,13 @@ public sealed partial class AllPossibleFullBinaryTreesTests
             return trees;
         }
 
+        AddAllCombinations(trees, n);
+
+        return trees;
+    }
+
+    private static void AddAllCombinations(List<BinaryTreeNode<int>?> trees, int n)
+    {
         for (var leftCount = 1; leftCount < n; leftCount += 2)
         {
             var lefts = AllPossibleFbt(leftCount);
@@ -66,8 +77,6 @@ public sealed partial class AllPossibleFullBinaryTreesTests
                 }
             }
         }
-
-        return trees;
     }
 
     private static bool IsFullWithNodeCount(BinaryTreeNode<int>? node, int expectedCount) =>

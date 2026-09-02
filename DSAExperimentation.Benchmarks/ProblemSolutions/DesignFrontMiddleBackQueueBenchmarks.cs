@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DesignFrontMiddleBackQueueBenchmarks
 {
+    private const int OperationCycleLength = 3; // cycles push front/middle/back
+    private const int MiddleIndexDivisor = 2;
+
     [Params(5_000, 50_000)]
     public int Calls;
 
@@ -22,10 +25,10 @@ public class DesignFrontMiddleBackQueueBenchmarks
 
         for (var i = 0; i < Calls; i++)
         {
-            switch (i % 3)
+            switch (i % OperationCycleLength)
             {
                 case 0: list.Insert(0, i); break;
-                case 1: list.Insert(list.Count / 2, i); break;
+                case 1: list.Insert(list.Count / MiddleIndexDivisor, i); break;
                 default: list.Add(i); break;
             }
         }
@@ -40,7 +43,7 @@ public class DesignFrontMiddleBackQueueBenchmarks
 
         for (var i = 0; i < Calls; i++)
         {
-            switch (i % 3)
+            switch (i % OperationCycleLength)
             {
                 case 0: queue.PushFront(i); break;
                 case 1: queue.PushMiddle(i); break;

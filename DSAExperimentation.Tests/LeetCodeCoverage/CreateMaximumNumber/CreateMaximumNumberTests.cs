@@ -15,7 +15,10 @@ public sealed partial class CreateMaximumNumberTests
     [InlineData(new[] { 6, 7 }, new[] { 6, 0, 4 }, 5, new[] { 6, 7, 6, 0, 4 })]
     [InlineData(new[] { 3, 9 }, new[] { 8, 9 }, 3, new[] { 9, 8, 9 })]
     public void MaxNumber_LeetCodeExamples_ReturnsLargestMergedDigits(int[] nums1, int[] nums2, int k, int[] expected)
-        => Assert.Equal(expected, MaxNumber(nums1, nums2, k));
+    {
+        var actual = MaxNumber(nums1, nums2, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static int[] MaxNumber(int[] nums1, int[] nums2, int k)
     {
@@ -26,7 +29,9 @@ public sealed partial class CreateMaximumNumberTests
 
         for (var i = lowI; i <= highI; i++)
         {
-            var candidate = MergePreferringLarger(MaxSubsequence(nums1, i), MaxSubsequence(nums2, k - i));
+            var subsequence1 = MaxSubsequence(nums1, i);
+            var subsequence2 = MaxSubsequence(nums2, k - i);
+            var candidate = MergePreferringLarger(subsequence1, subsequence2);
             if (IsGreaterOrEqual(candidate, 0, best, 0))
             {
                 best = candidate;
@@ -41,6 +46,14 @@ public sealed partial class CreateMaximumNumberTests
         var stack = new MaxDigitsStack();
         var drop = nums.Length - length;
 
+        BuildMonotonicStack(stack, nums, drop);
+        TrimToLength(stack, length);
+
+        return ExtractDigits(stack, length);
+    }
+
+    private static void BuildMonotonicStack(MaxDigitsStack stack, int[] nums, int drop)
+    {
         foreach (var num in nums)
         {
             while (drop > 0 && stack.TryPeek(out var top) && top < num)
@@ -51,12 +64,18 @@ public sealed partial class CreateMaximumNumberTests
 
             stack.Push(num);
         }
+    }
 
+    private static void TrimToLength(MaxDigitsStack stack, int length)
+    {
         while (stack.Count > length)
         {
             stack.TryPop(out _);
         }
+    }
 
+    private static int[] ExtractDigits(MaxDigitsStack stack, int length)
+    {
         var result = new int[length];
         for (var i = length - 1; i >= 0; i--)
         {

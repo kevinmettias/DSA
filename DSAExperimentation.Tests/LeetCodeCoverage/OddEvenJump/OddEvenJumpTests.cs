@@ -49,35 +49,57 @@ public sealed partial class OddEvenJumpTests
 
     private static int OddEvenJumps(int[] arr)
     {
-        var n = arr.Length;
+        var jumpTargets = ComputeJumpTargets(arr);
+
+        return CountGoodStarts(arr.Length, jumpTargets);
+    }
+
+    private static (int[] OddNext, int[] EvenNext) ComputeJumpTargets(int[] arr)
+    {
         var oddNext = NextJumpIndices(arr, ascending: true);
         var evenNext = NextJumpIndices(arr, ascending: false);
 
-        var odd = new bool[n];
-        var even = new bool[n];
-        odd[n - 1] = even[n - 1] = true;
+        return (oddNext, evenNext);
+    }
 
+    private static int CountGoodStarts(int n, (int[] OddNext, int[] EvenNext) jumps)
+    {
+        var reach = InitializeReachability(n);
         var goodStarts = 1;
 
         for (var i = n - 2; i >= 0; i--)
         {
-            if (oddNext[i] != -1)
-            {
-                odd[i] = even[oddNext[i]];
-            }
-
-            if (evenNext[i] != -1)
-            {
-                even[i] = odd[evenNext[i]];
-            }
-
-            if (odd[i])
+            if (UpdateReachability(i, jumps, reach))
             {
                 goodStarts++;
             }
         }
 
         return goodStarts;
+    }
+
+    private static (bool[] Odd, bool[] Even) InitializeReachability(int n)
+    {
+        var odd = new bool[n];
+        var even = new bool[n];
+        odd[n - 1] = even[n - 1] = true;
+
+        return (odd, even);
+    }
+
+    private static bool UpdateReachability(int i, (int[] OddNext, int[] EvenNext) jumps, (bool[] Odd, bool[] Even) reach)
+    {
+        if (jumps.OddNext[i] != -1)
+        {
+            reach.Odd[i] = reach.Even[jumps.OddNext[i]];
+        }
+
+        if (jumps.EvenNext[i] != -1)
+        {
+            reach.Even[i] = reach.Odd[jumps.EvenNext[i]];
+        }
+
+        return reach.Odd[i];
     }
 
     // Sorts indices by (value, index) - ascending for odd jumps, descending for even
@@ -88,15 +110,28 @@ public sealed partial class OddEvenJumpTests
     // qualifying value can land on.
     private static int[] NextJumpIndices(int[] arr, bool ascending)
     {
-        var n = arr.Length;
-        var indices = Enumerable.Range(0, n).ToArray();
+        var indices = SortIndicesByJumpOrder(arr, ascending);
 
-        var comparer = ascending
-            ? Comparer<int>.Create((a, b) => arr[a] != arr[b] ? arr[a].CompareTo(arr[b]) : a.CompareTo(b))
-            : Comparer<int>.Create((a, b) => arr[a] != arr[b] ? arr[b].CompareTo(arr[a]) : a.CompareTo(b));
+        return ResolveJumpTargets(indices, arr.Length);
+    }
+
+    private static int[] SortIndicesByJumpOrder(int[] arr, bool ascending)
+    {
+        var indices = Enumerable.Range(0, arr.Length).ToArray();
+        var comparer = BuildJumpOrderComparer(arr, ascending);
 
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(indices), comparer);
 
+        return indices;
+    }
+
+    private static IComparer<int> BuildJumpOrderComparer(int[] arr, bool ascending) =>
+        ascending
+            ? Comparer<int>.Create((a, b) => arr[a] != arr[b] ? arr[a].CompareTo(arr[b]) : a.CompareTo(b))
+            : Comparer<int>.Create((a, b) => arr[a] != arr[b] ? arr[b].CompareTo(arr[a]) : a.CompareTo(b));
+
+    private static int[] ResolveJumpTargets(int[] indices, int n)
+    {
         var next = new int[n];
         Array.Fill(next, -1);
 

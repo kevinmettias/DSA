@@ -5,7 +5,7 @@ public sealed class GasStationTests
     [Theory]
     [InlineData(new[] { 1,2,3,4,5 }, new[] { 3,4,5,1,2 }, 3)]
     [InlineData(new[] { 2,3,4 }, new[] { 3,4,3 }, -1)]
-    public void CanCompleteCircuit_GreedyDebtReset_ReturnsStartIndex(int[] gas, int[] cost, int expected) => Assert.Equal(expected, CanCompleteCircuit(gas, cost));
+    public void CanCompleteCircuit_GreedyDebtReset_ReturnsStartIndex(int[] gas, int[] cost, int expected) { var actual = CanCompleteCircuit(gas, cost); Assert.Equal(expected, actual); }
 
     private static int CanCompleteCircuit(int[] gas, int[] cost)
     {

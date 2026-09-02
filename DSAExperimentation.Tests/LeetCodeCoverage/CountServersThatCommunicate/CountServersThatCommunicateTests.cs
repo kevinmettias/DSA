@@ -37,7 +37,14 @@ public sealed class CountServersThatCommunicateTests
     {
         var rowCounts = new HashMap<int, int>();
         var colCounts = new HashMap<int, int>();
+        TallyServers(grid, rowCounts, colCounts);
 
+        var counts = new ServerCounts(rowCounts, colCounts);
+        return CountCommunicating(grid, counts);
+    }
+
+    private static void TallyServers(int[][] grid, HashMap<int, int> rowCounts, HashMap<int, int> colCounts)
+    {
         for (var r = 0; r < grid.Length; r++)
         {
             for (var c = 0; c < grid[0].Length; c++)
@@ -49,22 +56,17 @@ public sealed class CountServersThatCommunicateTests
                 }
             }
         }
+    }
 
+    private static int CountCommunicating(int[][] grid, ServerCounts counts)
+    {
         var communicating = 0;
 
         for (var r = 0; r < grid.Length; r++)
         {
             for (var c = 0; c < grid[0].Length; c++)
             {
-                if (grid[r][c] != 1)
-                {
-                    continue;
-                }
-
-                rowCounts.TryGetValue(r, out var rowCount);
-                colCounts.TryGetValue(c, out var colCount);
-
-                if (rowCount > 1 || colCount > 1)
+                if (Communicates(grid, r, c, counts))
                 {
                     communicating++;
                 }
@@ -73,6 +75,21 @@ public sealed class CountServersThatCommunicateTests
 
         return communicating;
     }
+
+    private static bool Communicates(int[][] grid, int r, int c, ServerCounts counts)
+    {
+        if (grid[r][c] != 1)
+        {
+            return false;
+        }
+
+        counts.RowCounts.TryGetValue(r, out var rowCount);
+        counts.ColCounts.TryGetValue(c, out var colCount);
+
+        return rowCount > 1 || colCount > 1;
+    }
+
+    private readonly record struct ServerCounts(HashMap<int, int> RowCounts, HashMap<int, int> ColCounts);
 
     private static void Increment(HashMap<int, int> counts, int key)
     {

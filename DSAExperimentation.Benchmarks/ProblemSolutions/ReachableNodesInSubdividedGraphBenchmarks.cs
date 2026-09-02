@@ -17,6 +17,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ReachableNodesInSubdividedGraphBenchmarks
 {
+    // LC problem number, used as the deterministic seed for graph generation.
+    private const int RandomSeed = 882;
+
+    private const int ExtraEdgesPerNode = 2;
+
+    // Move budget scales with node count so larger graphs stay proportionally explorable.
+    private const int MovesPerNodeBudget = 25;
+
     [Params(30, 150)]
     public int NodeCount;
 
@@ -27,7 +35,7 @@ public class ReachableNodesInSubdividedGraphBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var (vertices, _) = RandomWeightedGraphs.Build(NodeCount, extraEdgesPerNode: 2, seed: 882);
+        var (vertices, _) = RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, RandomSeed);
 
         // Capture the directed edge list once before symmetrizing, so every edge is
         // represented exactly once regardless of how many directions it's walkable in.
@@ -42,11 +50,17 @@ public class ReachableNodesInSubdividedGraphBenchmarks
 
         _vertices = vertices;
         _edges = directedEdges.Select(e => (e.From, e.To, Cnt: e.Weight - 1)).ToList();
-        _maxMoves = NodeCount * 25;
+        _maxMoves = NodeCount * MovesPerNodeBudget;
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForceSubdividedBfs()
+    {
+        var adjacency = BuildSubdividedAdjacency();
+        return CountReachableViaBfs(adjacency);
+    }
+
+    private List<List<int>> BuildSubdividedAdjacency()
     {
         var adjacency = new List<List<int>>(NodeCount);
 
@@ -61,15 +75,27 @@ public class ReachableNodesInSubdividedGraphBenchmarks
 
             for (var k = 0; k < cnt; k++)
             {
-                var mid = adjacency.Count;
-                adjacency.Add([]);
-                Connect(adjacency, previous, mid);
-                previous = mid;
+                previous = AppendSubdivisionNode(adjacency, previous);
             }
 
             Connect(adjacency, previous, to);
         }
 
+        return adjacency;
+    }
+
+    // Appends one new subdivision node between `previous` and the rest of the chain,
+    // returning the new node's id so the caller can keep threading the chain forward.
+    private static int AppendSubdivisionNode(List<List<int>> adjacency, int previous)
+    {
+        var mid = adjacency.Count;
+        adjacency.Add([]);
+        Connect(adjacency, previous, mid);
+        return mid;
+    }
+
+    private int CountReachableViaBfs(List<List<int>> adjacency)
+    {
         var distance = new int[adjacency.Count];
         Array.Fill(distance, -1);
         distance[0] = 0;
@@ -82,24 +108,28 @@ public class ReachableNodesInSubdividedGraphBenchmarks
         {
             var node = queue.Dequeue();
             reachable++;
-
-            foreach (var next in adjacency[node])
-            {
-                if (distance[next] != -1)
-                {
-                    continue;
-                }
-
-                distance[next] = distance[node] + 1;
-
-                if (distance[next] <= _maxMoves)
-                {
-                    queue.Enqueue(next);
-                }
-            }
+            VisitNeighbors(adjacency, distance, queue, node);
         }
 
         return reachable;
+    }
+
+    private void VisitNeighbors(List<List<int>> adjacency, int[] distance, Queue<int> queue, int node)
+    {
+        foreach (var next in adjacency[node])
+        {
+            if (distance[next] != -1)
+            {
+                continue;
+            }
+
+            distance[next] = distance[node] + 1;
+
+            if (distance[next] <= _maxMoves)
+            {
+                queue.Enqueue(next);
+            }
+        }
     }
 
     [Benchmark]
@@ -108,6 +138,11 @@ public class ReachableNodesInSubdividedGraphBenchmarks
         var distances = ShortestPath.Dijkstra<
             WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(_vertices[0]);
 
+        return CountReachableOriginalVertices(distances) + CountReachableSubdivisionNodes(distances);
+    }
+
+    private int CountReachableOriginalVertices(Dictionary<WeightedGraphNode, int> distances)
+    {
         var reachable = 0;
 
         foreach (var vertex in _vertices)
@@ -118,18 +153,34 @@ public class ReachableNodesInSubdividedGraphBenchmarks
             }
         }
 
+        return reachable;
+    }
+
+    private int CountReachableSubdivisionNodes(Dictionary<WeightedGraphNode, int> distances)
+    {
+        var reachable = 0;
+
         foreach (var (from, to, cnt) in _edges)
         {
-            var fromU = distances.TryGetValue(_vertices[from], out var du)
-                ? Math.Max(0, Math.Min(cnt, _maxMoves - du))
-                : 0;
-            var fromV = distances.TryGetValue(_vertices[to], out var dv)
-                ? Math.Max(0, Math.Min(cnt, _maxMoves - dv))
-                : 0;
-            reachable += Math.Min(cnt, fromU + fromV);
+            var remainingFromStart = RemainingSubdivisionCapacity(distances, _vertices[from], cnt);
+            var remainingFromEnd = RemainingSubdivisionCapacity(distances, _vertices[to], cnt);
+            reachable += Math.Min(cnt, remainingFromStart + remainingFromEnd);
         }
 
         return reachable;
+    }
+
+    // How many of an edge's `edgeSubdivisionCount` subdivision nodes are still within
+    // the move budget when walked in from `vertex`.
+    private int RemainingSubdivisionCapacity(Dictionary<WeightedGraphNode, int> distances, WeightedGraphNode vertex, int edgeSubdivisionCount)
+    {
+        if (!distances.TryGetValue(vertex, out var distance))
+        {
+            return 0;
+        }
+
+        var movesLeftOnEdge = Math.Min(edgeSubdivisionCount, _maxMoves - distance);
+        return Math.Max(0, movesLeftOnEdge);
     }
 
     private static void Connect(List<List<int>> adjacency, int a, int b)

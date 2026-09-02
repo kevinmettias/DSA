@@ -1,5 +1,7 @@
 using DSAExperimentation.DataStructures.Sequence;
 
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.Algorithms.Searching;
 
 // Requires a finite IRandomAccessSequence<Element> that is already sorted per the supplied

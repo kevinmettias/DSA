@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ApplyDiscountEveryNOrdersBenchmarks
 {
+    private const int PricePerUnit = 10;
+
     [Params(200, 5_000)]
     public int ProductCount;
 
@@ -28,7 +30,7 @@ public class ApplyDiscountEveryNOrdersBenchmarks
     public void Setup()
     {
         _catalogProductIds = Enumerable.Range(1, ProductCount).ToArray();
-        _catalogPrices = Enumerable.Range(1, ProductCount).Select(i => i * 10).ToArray();
+        _catalogPrices = Enumerable.Range(1, ProductCount).Select(i => i * PricePerUnit).ToArray();
 
         _priceByProduct = new HashMap<int, int>();
         for (var i = 0; i < _catalogProductIds.Length; i++)

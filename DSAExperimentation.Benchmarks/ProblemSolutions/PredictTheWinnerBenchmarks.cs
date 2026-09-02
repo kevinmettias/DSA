@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PredictTheWinnerBenchmarks
 {
+    private const int MaxScoreValueExclusive = 100;
+
     [Params(22, 26)]
     public int N;
 
@@ -21,7 +23,7 @@ public class PredictTheWinnerBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, N).Select(_ => random.Next(1, 100)).ToArray();
+        _nums = Enumerable.Range(0, N).Select(_ => random.Next(1, MaxScoreValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RussianDollEnvelopesBenchmarks
 {
+    private const int RandomSeed = 11;
+
     [Params(200, 3_000)]
     public int Length;
 
@@ -23,7 +25,7 @@ public class RussianDollEnvelopesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(11);
+        var random = new Random(RandomSeed);
         _envelopes = Enumerable.Range(0, Length)
             .Select(_ => (Width: random.Next(1, Length), Height: random.Next(1, Length)))
             .ToArray();
@@ -60,12 +62,24 @@ public class RussianDollEnvelopesBenchmarks
     public int SortThenPatienceSorting()
     {
         var items = ((int Width, int Height)[])_envelopes.Clone();
+        SortByWidthAscendingHeightDescending(items);
+
+        var tails = BuildPatienceSortTails(items);
+
+        return tails.Count;
+    }
+
+    private static void SortByWidthAscendingHeightDescending((int Width, int Height)[] items)
+    {
         var byWidthThenHeightDescending = Comparer<(int Width, int Height)>.Create(
             (a, b) => a.Width != b.Width ? a.Width.CompareTo(b.Width) : b.Height.CompareTo(a.Height));
 
         MergeSort.Sort<(int Width, int Height), ArrayIndexedSequence<(int Width, int Height)>>(
             new ArrayIndexedSequence<(int Width, int Height)>(items), byWidthThenHeightDescending);
+    }
 
+    private static DynamicArray<int> BuildPatienceSortTails((int Width, int Height)[] items)
+    {
         var tails = new DynamicArray<int>();
 
         foreach (var (_, height) in items)
@@ -82,6 +96,6 @@ public class RussianDollEnvelopesBenchmarks
             }
         }
 
-        return tails.Count;
+        return tails;
     }
 }

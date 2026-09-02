@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FlattenNestedListIteratorBenchmarks
 {
+    private const int LeavesPerNestedPair = 2;
+
     [Params(200, 5_000)]
     public int LeafCount;
 
@@ -23,9 +25,10 @@ public class FlattenNestedListIteratorBenchmarks
         // do real unwrapping work for the whole input, not just a flat top level.
         _nestedList = [];
 
-        for (var i = 0; i < LeafCount; i += 2)
+        for (var i = 0; i < LeafCount; i += LeavesPerNestedPair)
         {
-            _nestedList.Add(NestedInteger.OfList(NestedInteger.OfInteger(i), NestedInteger.OfInteger(i + 1)));
+            var pair = NestedInteger.OfList(NestedInteger.OfInteger(i), NestedInteger.OfInteger(i + 1));
+            _nestedList.Add(pair);
         }
     }
 

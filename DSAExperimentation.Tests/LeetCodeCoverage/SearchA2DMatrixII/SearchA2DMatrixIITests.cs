@@ -23,11 +23,17 @@ public sealed class SearchA2DMatrixIITests
     [InlineData(5, true)]
     [InlineData(20, false)]
     public void SearchMatrix_LeetCodeExamples_FindsPresenceCorrectly(int target, bool expected)
-        => Assert.Equal(expected, SearchMatrix(Matrix, target));
+    {
+        var found = SearchMatrix(Matrix, target);
+        Assert.Equal(expected, found);
+    }
 
     [Fact]
     public void SearchMatrix_EmptyMatrix_ReturnsFalse()
-        => Assert.False(SearchMatrix([], 1));
+    {
+        var found = SearchMatrix([], 1);
+        Assert.False(found);
+    }
 
     private static bool SearchMatrix(int[][] matrix, int target)
     {

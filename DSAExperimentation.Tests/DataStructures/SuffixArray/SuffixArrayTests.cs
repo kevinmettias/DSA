@@ -4,10 +4,26 @@ namespace DSAExperimentation.Tests.DataStructures.SuffixArray;
 
 public sealed partial class SuffixArrayTests
 {
+    private const string RepeatedAa = "aa";
+    private const string Banana = "banana";
+    private const string Aaaa = "aaaa";
+    private const string Mississippi = "mississippi";
+    private const string Abcabd = "abcabd";
+    private const string Aabaabaaab = "aabaabaaab";
+    private const string Dcba = "dcba";
+    private const string EmptyText = "";
+    private const string SingleCharacterText = "a";
+    private const string MixedCaseText = "BaAb";
+
+    private static readonly int[] BananaSuffixOrder = [5, 3, 1, 0, 4, 2];
+    private static readonly int[] BananaLcpValues = [1, 3, 0, 0, 2];
+    private static readonly int[] DcbaSuffixOrder = [3, 2, 1, 0];
+    private static readonly string[] VariedTexts = [Banana, RepeatedAa, Aaaa, Mississippi, Abcabd, Aabaabaaab];
+
     [Fact]
     public void Suffixes_RepeatedCharacterText_OrdersShorterSuffixFirst()
     {
-        var suffixArray = new SuffixArrayStructure("aa");
+        var suffixArray = new SuffixArrayStructure(RepeatedAa);
 
         Assert.Equal([1, 0], suffixArray.Suffixes);
     }
@@ -15,7 +31,7 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void LcpArray_RepeatedCharacterText_ReportsSharedPrefixLength()
     {
-        var suffixArray = new SuffixArrayStructure("aa");
+        var suffixArray = new SuffixArrayStructure(RepeatedAa);
 
         Assert.Equal([1], suffixArray.LongestCommonPrefixArray);
     }
@@ -23,23 +39,23 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void Suffixes_Banana_MatchesPublishedReferenceOrder()
     {
-        var suffixArray = new SuffixArrayStructure("banana");
+        var suffixArray = new SuffixArrayStructure(Banana);
 
-        Assert.Equal([5, 3, 1, 0, 4, 2], suffixArray.Suffixes);
+        Assert.Equal(BananaSuffixOrder, suffixArray.Suffixes);
     }
 
     [Fact]
     public void LcpArray_Banana_MatchesPublishedReferenceValues()
     {
-        var suffixArray = new SuffixArrayStructure("banana");
+        var suffixArray = new SuffixArrayStructure(Banana);
 
-        Assert.Equal([1, 3, 0, 0, 2], suffixArray.LongestCommonPrefixArray);
+        Assert.Equal(BananaLcpValues, suffixArray.LongestCommonPrefixArray);
     }
 
     [Fact]
     public void Rank_IsInverseOfSuffixes()
     {
-        var suffixArray = new SuffixArrayStructure("banana");
+        var suffixArray = new SuffixArrayStructure(Banana);
 
         for (var i = 0; i < suffixArray.Suffixes.Length; i++)
         {
@@ -50,7 +66,7 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void Suffixes_EmptyText_ReturnsEmptyArray()
     {
-        var suffixArray = new SuffixArrayStructure("");
+        var suffixArray = new SuffixArrayStructure(EmptyText);
 
         Assert.Empty(suffixArray.Suffixes);
     }
@@ -58,7 +74,7 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void LcpArray_EmptyText_ReturnsEmptyArray()
     {
-        var suffixArray = new SuffixArrayStructure("");
+        var suffixArray = new SuffixArrayStructure(EmptyText);
 
         Assert.Empty(suffixArray.LongestCommonPrefixArray);
     }
@@ -66,7 +82,7 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void LcpArray_SingleCharacterText_ReturnsEmptyArray()
     {
-        var suffixArray = new SuffixArrayStructure("a");
+        var suffixArray = new SuffixArrayStructure(SingleCharacterText);
 
         Assert.Empty(suffixArray.LongestCommonPrefixArray);
     }
@@ -74,17 +90,15 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void Suffixes_AllDistinctCharacters_ReturnsOrdinaryLexicographicOrder()
     {
-        var suffixArray = new SuffixArrayStructure("dcba");
+        var suffixArray = new SuffixArrayStructure(Dcba);
 
-        Assert.Equal([3, 2, 1, 0], suffixArray.Suffixes);
+        Assert.Equal(DcbaSuffixOrder, suffixArray.Suffixes);
     }
 
     [Fact]
     public void Suffixes_MatchesBruteForceSortForVariedInputs()
     {
-        string[] texts = ["banana", "aa", "aaaa", "mississippi", "abcabd", "aabaabaaab"];
-
-        foreach (var text in texts)
+        foreach (var text in VariedTexts)
         {
             var suffixArray = new SuffixArrayStructure(text);
             var expected = BruteForceSuffixOrder(text);
@@ -96,9 +110,7 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void LcpArray_MatchesBruteForceLongestCommonPrefixForVariedInputs()
     {
-        string[] texts = ["banana", "aa", "aaaa", "mississippi", "abcabd", "aabaabaaab"];
-
-        foreach (var text in texts)
+        foreach (var text in VariedTexts)
         {
             var suffixArray = new SuffixArrayStructure(text);
 
@@ -118,8 +130,8 @@ public sealed partial class SuffixArrayTests
         var caseInsensitive = Comparer<char>.Create(
             (left, right) => char.ToUpperInvariant(left).CompareTo(char.ToUpperInvariant(right)));
 
-        var suffixArray = new SuffixArrayStructure("BaAb", caseInsensitive);
-        var expected = BruteForceSuffixOrder("BaAb", caseInsensitive);
+        var suffixArray = new SuffixArrayStructure(MixedCaseText, caseInsensitive);
+        var expected = BruteForceSuffixOrder(MixedCaseText, caseInsensitive);
 
         Assert.Equal(expected, suffixArray.Suffixes);
     }

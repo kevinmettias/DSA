@@ -1,58 +1,56 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.MergeKSortedLists;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are MergeKSortedListsSolution's, the same methods
+// MergeKSortedListsTests proves correct. MergeListsByHeap splices the input
+// nodes' own Next pointers into the merged chain rather than allocating new
+// ones, so - unlike AddTwoNumbersBenchmarks' non-destructive reads - the list
+// array cannot be hoisted into [GlobalSetup] and reused across iterations: a
+// merge from one iteration would consume the very structure the next iteration
+// needs. [GlobalSetup] therefore only seeds the raw per-list values, and each
+// [Benchmark] call rebuilds a fresh SinglyLinkedListNode<int>?[] from them.
+//
+// Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
+// a public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class MergeKSortedListsBenchmarks
 {
-    [Params(8, 64)] public int ListCount;
+    private const int ValuesPerList = 64;
+
+    [Params(8, 64)]
+    public int ListCount;
+
     private int[][] _values = null!;
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(0, ListCount).Select(offset => Enumerable.Range(0, 64).Select(i => (i * ListCount) + offset).ToArray()).ToArray();
+    public void Setup() =>
+        _values = Enumerable.Range(0, ListCount)
+            .Select(offset => Enumerable.Range(0, ValuesPerList).Select(i => (i * ListCount) + offset).ToArray())
+            .ToArray();
 
     [Benchmark(Baseline = true)]
-    public int FlattenSort()
-    {
-        var values = _values.SelectMany(x => x).ToArray();
-        Array.Sort(values);
-        return values.Length;
-    }
+    public object? FlattenSort() =>
+        MergeKSortedListsSolution.MergeListsByFlattenSort(BuildLists());
 
     [Benchmark]
-    public int HeapMerge() => Count(MergeKLists(_values.Select(BuildList).ToArray()));
+    public object? MergeByHeap() =>
+        MergeKSortedListsSolution.MergeListsByHeap(BuildLists());
 
-    private static SinglyLinkedListNode<int>? MergeKLists(SinglyLinkedListNode<int>?[] lists)
-    {
-        var heap = new Heap<SinglyLinkedListNode<int>, NodeOrder>();
-        foreach (var list in lists) if (list is not null) heap.Push(list);
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        while (heap.TryPop(out var node))
-        {
-            if (node.Next is not null) heap.Push(node.Next);
-            tail.Next = node; tail = node;
-        }
-        tail.Next = null;
-        return dummy.Next;
-    }
-
-    private readonly struct NodeOrder : IHeapOrder<SinglyLinkedListNode<int>>
-    {
-        public static bool HasPriority(SinglyLinkedListNode<int> candidate, SinglyLinkedListNode<int> incumbent) => candidate.Value < incumbent.Value;
-    }
+    private SinglyLinkedListNode<int>?[] BuildLists() => _values.Select(BuildList).ToArray();
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
-        var dummy = new SinglyLinkedListNode<int>(0); var tail = dummy;
-        foreach (var value in values) { tail.Next = new SinglyLinkedListNode<int>(value); tail = tail.Next; }
-        return dummy.Next;
-    }
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
 
-    private static int Count(SinglyLinkedListNode<int>? head)
-    {
-        var count = 0; for (var node = head; node is not null; node = node.Next) count++; return count;
+        return dummy.Next;
     }
 }

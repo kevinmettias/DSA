@@ -17,6 +17,11 @@ public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
 {
     private static readonly (int DRow, int DCol)[] Directions = [(0, 1), (0, -1), (1, 0), (-1, 0)];
 
+    // LC problem number, reused as the deterministic benchmark seed.
+    private const int RandomSeed = 1368;
+
+    private const int ArrowDirectionUpperBound = 5;
+
     [Params(15, 40)]
     public int Size;
 
@@ -25,7 +30,7 @@ public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1368);
+        var random = new Random(RandomSeed);
         _grid = new int[Size][];
 
         for (var row = 0; row < Size; row++)
@@ -34,7 +39,7 @@ public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
 
             for (var col = 0; col < Size; col++)
             {
-                _grid[row][col] = random.Next(1, 5);
+                _grid[row][col] = random.Next(1, ArrowDirectionUpperBound);
             }
         }
     }
@@ -49,41 +54,55 @@ public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
 
         for (var round = 0; round < n * n; round++)
         {
-            var (row, col) = FindUnsettledMinimum(distances, settled, n);
+            var cell = FindUnsettledMinimum(distances, settled, n);
 
-            if (row < 0)
+            if (cell.Row < 0)
             {
                 break;
             }
 
-            settled[row, col] = true;
-
-            if (row == n - 1 && col == n - 1)
+            if (SettleAndRelax(cell, n, distances, settled))
             {
-                return distances[row, col]!.Value;
-            }
-
-            for (var direction = 0; direction < Directions.Length; direction++)
-            {
-                var (dRow, dCol) = Directions[direction];
-                var (nextRow, nextCol) = (row + dRow, col + dCol);
-
-                if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n || settled[nextRow, nextCol])
-                {
-                    continue;
-                }
-
-                var weight = _grid[row][col] == direction + 1 ? 0 : 1;
-                var candidate = distances[row, col]!.Value + weight;
-
-                if (distances[nextRow, nextCol] is null || candidate < distances[nextRow, nextCol])
-                {
-                    distances[nextRow, nextCol] = candidate;
-                }
+                return distances[cell.Row, cell.Col]!.Value;
             }
         }
 
         return distances[n - 1, n - 1]!.Value;
+    }
+
+    private bool SettleAndRelax((int Row, int Col) cell, int n, int?[,] distances, bool[,] settled)
+    {
+        settled[cell.Row, cell.Col] = true;
+
+        if (cell.Row == n - 1 && cell.Col == n - 1)
+        {
+            return true;
+        }
+
+        RelaxNeighbors(cell, n, distances, settled);
+        return false;
+    }
+
+    private void RelaxNeighbors((int Row, int Col) cell, int n, int?[,] distances, bool[,] settled)
+    {
+        for (var direction = 0; direction < Directions.Length; direction++)
+        {
+            var (dRow, dCol) = Directions[direction];
+            var (nextRow, nextCol) = (cell.Row + dRow, cell.Col + dCol);
+
+            if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n || settled[nextRow, nextCol])
+            {
+                continue;
+            }
+
+            var weight = _grid[cell.Row][cell.Col] == direction + 1 ? 0 : 1;
+            var candidate = distances[cell.Row, cell.Col]!.Value + weight;
+
+            if (distances[nextRow, nextCol] is null || candidate < distances[nextRow, nextCol])
+            {
+                distances[nextRow, nextCol] = candidate;
+            }
+        }
     }
 
     private static (int Row, int Col) FindUnsettledMinimum(int?[,] distances, bool[,] settled, int n)
@@ -117,39 +136,46 @@ public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
 
         while (frontier.TryPop(out var entry))
         {
-            var (row, col) = entry.Node;
-
-            if (!settled.Add((row, col)))
+            if (!settled.Add(entry.Node))
             {
                 continue;
             }
 
-            if (row == n - 1 && col == n - 1)
+            if (entry.Node.Row == n - 1 && entry.Node.Col == n - 1)
             {
                 return entry.Priority;
             }
 
-            for (var direction = 0; direction < Directions.Length; direction++)
-            {
-                var (dRow, dCol) = Directions[direction];
-                var (nextRow, nextCol) = (row + dRow, col + dCol);
-
-                if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n)
-                {
-                    continue;
-                }
-
-                var weight = _grid[row][col] == direction + 1 ? 0 : 1;
-                var candidate = distances[(row, col)] + weight;
-
-                if (!distances.TryGetValue((nextRow, nextCol), out var known) || candidate < known)
-                {
-                    distances[(nextRow, nextCol)] = candidate;
-                    frontier.Push(((nextRow, nextCol), candidate));
-                }
-            }
+            RelaxNeighborsIntoFrontier(entry.Node, n, distances, frontier);
         }
 
         return distances[(n - 1, n - 1)];
+    }
+
+    private void RelaxNeighborsIntoFrontier(
+        (int Row, int Col) cell,
+        int n,
+        Dictionary<(int Row, int Col), int> distances,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> frontier)
+    {
+        for (var direction = 0; direction < Directions.Length; direction++)
+        {
+            var (dRow, dCol) = Directions[direction];
+            var (nextRow, nextCol) = (cell.Row + dRow, cell.Col + dCol);
+
+            if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n)
+            {
+                continue;
+            }
+
+            var weight = _grid[cell.Row][cell.Col] == direction + 1 ? 0 : 1;
+            var candidate = distances[cell] + weight;
+
+            if (!distances.TryGetValue((nextRow, nextCol), out var known) || candidate < known)
+            {
+                distances[(nextRow, nextCol)] = candidate;
+                frontier.Push(((nextRow, nextCol), candidate));
+            }
+        }
     }
 }

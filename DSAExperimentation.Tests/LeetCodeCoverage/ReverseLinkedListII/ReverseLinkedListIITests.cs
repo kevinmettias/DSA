@@ -1,25 +1,60 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.ReverseLinkedListII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseLinkedListII;
 
-public sealed partial class ReverseLinkedListIITests
+// Harness only. Both strategies are ReverseLinkedListIISolution's - this file
+// builds LeetCode's published examples as linked lists and checks the resulting
+// list's values.
+public sealed class ReverseLinkedListIITests
 {
-    [Theory]
-    [InlineData(new[] { 1, 2, 3, 4, 5 }, 2, 4, new[] { 1, 4, 3, 2, 5 })]
-    [InlineData(new[] { 5 }, 1, 1, new[] { 5 })]
-    public void ReverseBetween_LeetCodeExamples_ReversesClosedRange(int[] values, int left, int right, int[] expected)
-        => Assert.Equal(expected, ToArray(ReverseBetween(Build(values), left, right)));
+    public static TheoryData<int[], int, int, int[]> Examples =>
+        new()
+        {
+            { [1, 2, 3, 4, 5], 2, 4, [1, 4, 3, 2, 5] },
+            { [5], 1, 1, [5] },
+            { [1, 2, 3, 4, 5], 1, 5, [5, 4, 3, 2, 1] },
+            { [1, 2, 3, 4, 5], 1, 3, [3, 2, 1, 4, 5] },
+            { [1, 2, 3, 4, 5], 3, 5, [1, 2, 5, 4, 3] },
+        };
 
-    private static SinglyLinkedListNode<int>? ReverseBetween(SinglyLinkedListNode<int>? head, int left, int right)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReverseBetweenByArrayRebuild_LeetCodeExamples_ReversesClosedRange(
+        int[] values, int left, int right, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(ReverseLinkedListIISolution.ReverseBetweenByArrayRebuild(BuildList(values), left, right)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReverseBetweenByHeadInsertion_LeetCodeExamples_ReversesClosedRange(
+        int[] values, int left, int right, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(ReverseLinkedListIISolution.ReverseBetweenByHeadInsertion(BuildList(values), left, right)));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
-        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
-        var before = dummy;
-        for (var i = 1; i < left; i++) before = before.Next!;
-        var current = before.Next;
-        for (var i = 0; i < right - left; i++) { var moved = current!.Next!; current.Next = moved.Next; moved.Next = before.Next; before.Next = moved; }
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
         return dummy.Next;
     }
 
-    private static SinglyLinkedListNode<int>? Build(int[] values) { var d = new SinglyLinkedListNode<int>(0); var t = d; foreach (var v in values) { t.Next = new SinglyLinkedListNode<int>(v); t = t.Next; } return d.Next; }
-    private static int[] ToArray(SinglyLinkedListNode<int>? head) { var values = new List<int>(); for (var n = head; n is not null; n = n.Next) values.Add(n.Value); return values.ToArray(); }
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
 }

@@ -15,6 +15,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ValidSquareBenchmarks
 {
+    private const int RandomSeed = 593; // LC problem number
+    private const int AlternationModulus = 2;
+    private const int CoordinateBound = 1_000;
+    private const int MaxHalfSide = 500;
+    private const int ExpectedSideCount = 4;
+    private const int ExpectedDiagonalCount = 2;
+    private const int DiagonalToSideSquaredRatio = 2;
+    private const int ThirdSideIndex = 2;
+    private const int FourthSideIndex = 3;
+    private const int FirstDiagonalIndex = 4;
+    private const int SecondDiagonalIndex = 5;
+    private const int PairwiseDistanceCount = 6;
+
     [Params(5_000, 100_000)]
     public int BatchCount;
 
@@ -23,20 +36,20 @@ public class ValidSquareBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(593);
+        var random = new Random(RandomSeed);
         _batches = new int[BatchCount][][];
 
         for (var i = 0; i < BatchCount; i++)
         {
-            _batches[i] = i % 2 == 0 ? RandomSquare(random) : RandomQuad(random);
+            _batches[i] = i % AlternationModulus == 0 ? RandomSquare(random) : RandomQuad(random);
         }
     }
 
     private static int[][] RandomSquare(Random random)
     {
-        var cx = random.Next(-1_000, 1_000);
-        var cy = random.Next(-1_000, 1_000);
-        var half = random.Next(1, 500);
+        var cx = random.Next(-CoordinateBound, CoordinateBound);
+        var cy = random.Next(-CoordinateBound, CoordinateBound);
+        var half = random.Next(1, MaxHalfSide);
 
         return
         [
@@ -49,10 +62,10 @@ public class ValidSquareBenchmarks
 
     private static int[][] RandomQuad(Random random) =>
     [
-        [random.Next(-1_000, 1_000), random.Next(-1_000, 1_000)],
-        [random.Next(-1_000, 1_000), random.Next(-1_000, 1_000)],
-        [random.Next(-1_000, 1_000), random.Next(-1_000, 1_000)],
-        [random.Next(-1_000, 1_000), random.Next(-1_000, 1_000)],
+        [random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound)],
+        [random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound)],
+        [random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound)],
+        [random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound)],
     ];
 
     [Benchmark(Baseline = true)]
@@ -90,7 +103,18 @@ public class ValidSquareBenchmarks
     private static bool IsValidSquareManualScan(int[][] points)
     {
         var distances = SquaredDistances(points);
+        var (min, max) = FindMinAndMax(distances);
 
+        if (min <= 0)
+        {
+            return false;
+        }
+
+        return HasValidSideAndDiagonalCounts(distances, min, max);
+    }
+
+    private static (long Min, long Max) FindMinAndMax(long[] distances)
+    {
         var min = long.MaxValue;
         var max = long.MinValue;
         foreach (var distance in distances)
@@ -99,11 +123,11 @@ public class ValidSquareBenchmarks
             max = Math.Max(max, distance);
         }
 
-        if (min <= 0)
-        {
-            return false;
-        }
+        return (min, max);
+    }
 
+    private static bool HasValidSideAndDiagonalCounts(long[] distances, long min, long max)
+    {
         var sideCount = 0;
         var diagonalCount = 0;
         foreach (var distance in distances)
@@ -122,7 +146,7 @@ public class ValidSquareBenchmarks
             }
         }
 
-        return sideCount == 4 && diagonalCount == 2 && max == 2 * min;
+        return sideCount == ExpectedSideCount && diagonalCount == ExpectedDiagonalCount && max == DiagonalToSideSquaredRatio * min;
     }
 
     private static bool IsValidSquareMergeSort(int[][] points)
@@ -132,13 +156,13 @@ public class ValidSquareBenchmarks
 
         var side = distances[0];
         return side > 0
-            && distances[1] == side && distances[2] == side && distances[3] == side
-            && distances[4] == distances[5] && distances[4] == 2 * side;
+            && distances[1] == side && distances[ThirdSideIndex] == side && distances[FourthSideIndex] == side
+            && distances[FirstDiagonalIndex] == distances[SecondDiagonalIndex] && distances[FirstDiagonalIndex] == DiagonalToSideSquaredRatio * side;
     }
 
     private static long[] SquaredDistances(int[][] points)
     {
-        var distances = new long[6];
+        var distances = new long[PairwiseDistanceCount];
         var next = 0;
 
         for (var i = 0; i < points.Length; i++)

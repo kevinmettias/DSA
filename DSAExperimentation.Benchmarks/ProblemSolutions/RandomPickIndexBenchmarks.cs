@@ -15,6 +15,7 @@ public class RandomPickIndexBenchmarks
 {
     private const int Target = 7;
     private const int PickCalls = 500;
+    private const int ValueUpperBound = 50;
 
     [Params(2_000, 50_000)]
     public int Length;
@@ -25,7 +26,7 @@ public class RandomPickIndexBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, 50)).ToArray();
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -36,31 +37,44 @@ public class RandomPickIndexBenchmarks
 
         for (var call = 0; call < PickCalls; call++)
         {
-            var seenCount = 0;
-            var chosen = -1;
-
-            for (var i = 0; i < _nums.Length; i++)
-            {
-                if (_nums[i] != Target)
-                {
-                    continue;
-                }
-
-                seenCount++;
-                if (random.Next(seenCount) == 0)
-                {
-                    chosen = i;
-                }
-            }
-
-            total += chosen;
+            total += ReservoirPick(random);
         }
 
         return total;
     }
 
+    private long ReservoirPick(Random random)
+    {
+        var seenCount = 0;
+        var chosen = -1;
+
+        for (var i = 0; i < _nums.Length; i++)
+        {
+            if (_nums[i] != Target)
+            {
+                continue;
+            }
+
+            seenCount++;
+            if (random.Next(seenCount) == 0)
+            {
+                chosen = i;
+            }
+        }
+
+        return chosen;
+    }
+
     [Benchmark]
     public long HashMapDynamicArrayIndexed()
+    {
+        var indicesByValue = BuildIndicesByValue();
+        indicesByValue.TryGetValue(Target, out var targetIndices);
+
+        return SumRandomPicks(targetIndices);
+    }
+
+    private HashMap<int, DynamicArray<int>> BuildIndicesByValue()
     {
         var indicesByValue = new HashMap<int, DynamicArray<int>>();
 
@@ -75,8 +89,11 @@ public class RandomPickIndexBenchmarks
             indices.Add(i);
         }
 
-        indicesByValue.TryGetValue(Target, out var targetIndices);
+        return indicesByValue;
+    }
 
+    private static long SumRandomPicks(DynamicArray<int> targetIndices)
+    {
         var random = new Random(1);
         long total = 0;
 

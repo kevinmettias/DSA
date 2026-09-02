@@ -28,10 +28,20 @@ public class SlidingPuzzleBenchmarks
     [Benchmark(Baseline = true)]
     public int MutationQueueBfs()
     {
+        var (visited, queue) = InitializeMutationBfsState();
+        return RunMutationBfs(queue, visited);
+    }
+
+    private (HashSet<string> Visited, Queue<(string State, int Moves)> Queue) InitializeMutationBfsState()
+    {
         var visited = new HashSet<string> { StartState };
         var queue = new Queue<(string State, int Moves)>();
         queue.Enqueue((StartState, 0));
+        return (visited, queue);
+    }
 
+    private static int RunMutationBfs(Queue<(string State, int Moves)> queue, HashSet<string> visited)
+    {
         while (queue.Count > 0)
         {
             var (state, moves) = queue.Dequeue();

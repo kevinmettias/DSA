@@ -12,6 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaxPointsOnALineBenchmarks
 {
+    private const int RandomSeed = 149; // LC problem number
+    private const int CoordinateRange = 1_000;
+    private const int MinimumPointsForTrivialResult = 2;
+    private const int TrivialCollinearPairCount = 2;
+
     [Params(600, 1500)]
     public int Length;
 
@@ -20,9 +25,9 @@ public class MaxPointsOnALineBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(149);
+        var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, Length)
-            .Select(_ => new[] { random.Next(-1_000, 1_000), random.Next(-1_000, 1_000) })
+            .Select(_ => new[] { random.Next(-CoordinateRange, CoordinateRange), random.Next(-CoordinateRange, CoordinateRange) })
             .ToArray();
     }
 
@@ -31,35 +36,41 @@ public class MaxPointsOnALineBenchmarks
     {
         var n = _points.Length;
 
-        if (n <= 2)
+        if (n <= MinimumPointsForTrivialResult)
         {
             return n;
         }
 
-        var best = 2;
+        var best = TrivialCollinearPairCount;
 
         for (var i = 0; i < n; i++)
         {
             for (var j = i + 1; j < n; j++)
             {
-                var count = 2;
-
-                for (var k = j + 1; k < n; k++)
-                {
-                    var cross = (long)(_points[j][0] - _points[i][0]) * (_points[k][1] - _points[i][1])
-                              - (long)(_points[j][1] - _points[i][1]) * (_points[k][0] - _points[i][0]);
-
-                    if (cross == 0)
-                    {
-                        count++;
-                    }
-                }
-
-                best = Math.Max(best, count);
+                var collinearCount = CountCollinearWithPair(i, j);
+                best = Math.Max(best, collinearCount);
             }
         }
 
         return best;
+    }
+
+    private int CountCollinearWithPair(int i, int j)
+    {
+        var count = TrivialCollinearPairCount;
+
+        for (var k = j + 1; k < _points.Length; k++)
+        {
+            var cross = (long)(_points[j][0] - _points[i][0]) * (_points[k][1] - _points[i][1])
+                      - (long)(_points[j][1] - _points[i][1]) * (_points[k][0] - _points[i][0]);
+
+            if (cross == 0)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     [Benchmark]
@@ -67,7 +78,7 @@ public class MaxPointsOnALineBenchmarks
     {
         var n = _points.Length;
 
-        if (n <= 2)
+        if (n <= MinimumPointsForTrivialResult)
         {
             return n;
         }
@@ -76,28 +87,40 @@ public class MaxPointsOnALineBenchmarks
 
         for (var i = 0; i < n; i++)
         {
-            var slopeCounts = new HashMap<(int Dx, int Dy), int>();
-            var localBest = 0;
-
-            for (var j = 0; j < n; j++)
-            {
-                if (j == i)
-                {
-                    continue;
-                }
-
-                var dx = _points[j][0] - _points[i][0];
-                var dy = _points[j][1] - _points[i][1];
-                var key = ReducedSlope(dx, dy);
-                var count = slopeCounts.TryGetValue(key, out var existing) ? existing + 1 : 1;
-                slopeCounts.Set(key, count);
-                localBest = Math.Max(localBest, count);
-            }
-
-            best = Math.Max(best, localBest + 1);
+            var anchorBest = CountCollinearThroughAnchor(n, i);
+            best = Math.Max(best, anchorBest);
         }
 
         return best;
+    }
+
+    private int CountCollinearThroughAnchor(int n, int anchorIndex)
+    {
+        var slopeCounts = new HashMap<(int Dx, int Dy), int>();
+        var localBest = 0;
+
+        for (var j = 0; j < n; j++)
+        {
+            localBest = AccumulateSlopeCount(slopeCounts, localBest, anchorIndex, j);
+        }
+
+        return localBest + 1;
+    }
+
+    private int AccumulateSlopeCount(HashMap<(int Dx, int Dy), int> slopeCounts, int localBest, int anchorIndex, int otherIndex)
+    {
+        if (otherIndex == anchorIndex)
+        {
+            return localBest;
+        }
+
+        var dx = _points[otherIndex][0] - _points[anchorIndex][0];
+        var dy = _points[otherIndex][1] - _points[anchorIndex][1];
+        var key = ReducedSlope(dx, dy);
+        var count = slopeCounts.TryGetValue(key, out var existing) ? existing + 1 : 1;
+        slopeCounts.Set(key, count);
+
+        return Math.Max(localBest, count);
     }
 
     private static (int, int) ReducedSlope(int dx, int dy)

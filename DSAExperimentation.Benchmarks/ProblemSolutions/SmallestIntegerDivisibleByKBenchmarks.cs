@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SmallestIntegerDivisibleByKBenchmarks
 {
+    private const int DecimalBase = 10;
+
     [Params(201, 5_001)]
     public int K;
 
@@ -34,7 +36,7 @@ public class SmallestIntegerDivisibleByKBenchmarks
 
         for (var length = 1; length <= K; length++)
         {
-            remainder = ((remainder * 10) + 1) % K;
+            remainder = ((remainder * DecimalBase) + 1) % K;
 
             if (remainder == 0)
             {

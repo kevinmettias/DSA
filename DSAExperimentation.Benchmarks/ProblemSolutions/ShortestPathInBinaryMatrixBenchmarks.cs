@@ -20,6 +20,9 @@ public class ShortestPathInBinaryMatrixBenchmarks
         (1, -1), (1, 0), (1, 1),
     ];
 
+    // 1-in-10 chance a cell is blocked.
+    private const int BlockedCellProbability = 10;
+
     [Params(10, 25)]
     public int Size;
 
@@ -30,7 +33,7 @@ public class ShortestPathInBinaryMatrixBenchmarks
     {
         var random = new Random(1);
         _grid = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, 10) == 0 ? 1 : 0).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, BlockedCellProbability) == 0 ? 1 : 0).ToArray())
             .ToArray();
         _grid[0][0] = 0;
         _grid[Size - 1][Size - 1] = 0;
@@ -39,23 +42,14 @@ public class ShortestPathInBinaryMatrixBenchmarks
     [Benchmark(Baseline = true)]
     public int BclQueueBfs()
     {
-        if (_grid[0][0] != 0 || _grid[Size - 1][Size - 1] != 0)
+        if (IsStartOrEndBlocked())
         {
             return -1;
         }
 
-        var distance = new int[Size, Size];
-        for (var r = 0; r < Size; r++)
-        {
-            for (var c = 0; c < Size; c++)
-            {
-                distance[r, c] = -1;
-            }
-        }
-
+        var distance = CreateUnvisitedDistanceGrid();
         var frontier = new System.Collections.Generic.Queue<(int Row, int Col)>();
-        distance[0, 0] = 1;
-        frontier.Enqueue((0, 0));
+        SeedFrontier(distance, frontier.Enqueue);
 
         while (frontier.Count > 0)
         {
@@ -66,20 +60,7 @@ public class ShortestPathInBinaryMatrixBenchmarks
                 return distance[cell.Row, cell.Col];
             }
 
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var nextRow = cell.Row + dRow;
-                var nextCol = cell.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size
-                    || _grid[nextRow][nextCol] != 0 || distance[nextRow, nextCol] != -1)
-                {
-                    continue;
-                }
-
-                distance[nextRow, nextCol] = distance[cell.Row, cell.Col] + 1;
-                frontier.Enqueue((nextRow, nextCol));
-            }
+            RelaxNeighbors(cell, distance, frontier.Enqueue);
         }
 
         return -1;
@@ -88,23 +69,14 @@ public class ShortestPathInBinaryMatrixBenchmarks
     [Benchmark]
     public int RepoQueueBfs()
     {
-        if (_grid[0][0] != 0 || _grid[Size - 1][Size - 1] != 0)
+        if (IsStartOrEndBlocked())
         {
             return -1;
         }
 
-        var distance = new int[Size, Size];
-        for (var r = 0; r < Size; r++)
-        {
-            for (var c = 0; c < Size; c++)
-            {
-                distance[r, c] = -1;
-            }
-        }
-
+        var distance = CreateUnvisitedDistanceGrid();
         var frontier = new DSAExperimentation.DataStructures.Queue.Queue<(int Row, int Col)>();
-        distance[0, 0] = 1;
-        frontier.Enqueue((0, 0));
+        SeedFrontier(distance, frontier.Enqueue);
 
         while (frontier.TryDequeue(out var cell))
         {
@@ -113,22 +85,64 @@ public class ShortestPathInBinaryMatrixBenchmarks
                 return distance[cell.Row, cell.Col];
             }
 
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var nextRow = cell.Row + dRow;
-                var nextCol = cell.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size
-                    || _grid[nextRow][nextCol] != 0 || distance[nextRow, nextCol] != -1)
-                {
-                    continue;
-                }
-
-                distance[nextRow, nextCol] = distance[cell.Row, cell.Col] + 1;
-                frontier.Enqueue((nextRow, nextCol));
-            }
+            RelaxNeighbors(cell, distance, frontier.Enqueue);
         }
 
         return -1;
+    }
+
+    private bool IsStartOrEndBlocked() => _grid[0][0] != 0 || _grid[Size - 1][Size - 1] != 0;
+
+    // Marks the top-left cell reached and seeds the frontier with it.
+    private static void SeedFrontier(int[,] distance, Action<(int Row, int Col)> enqueue)
+    {
+        distance[0, 0] = 1;
+        enqueue((0, 0));
+    }
+
+    // Relaxes every one of `cell`'s 8 neighbors and enqueues each one that was relaxed.
+    private void RelaxNeighbors((int Row, int Col) cell, int[,] distance, Action<(int Row, int Col)> enqueue)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            if (TryRelax(cell, (dRow, dCol), distance, out var next))
+            {
+                enqueue(next);
+            }
+        }
+    }
+
+    private int[,] CreateUnvisitedDistanceGrid()
+    {
+        var distance = new int[Size, Size];
+
+        for (var r = 0; r < Size; r++)
+        {
+            for (var c = 0; c < Size; c++)
+            {
+                distance[r, c] = -1;
+            }
+        }
+
+        return distance;
+    }
+
+    // Computes the neighbor one step from `cell` in `direction` and, if it's in
+    // bounds, unblocked, and not yet visited, records its distance and returns it.
+    private bool TryRelax((int Row, int Col) cell, (int DRow, int DCol) direction, int[,] distance, out (int Row, int Col) next)
+    {
+        var nextRow = cell.Row + direction.DRow;
+        var nextCol = cell.Col + direction.DCol;
+
+        if (nextRow < 0 || nextRow >= Size || nextCol < 0 || nextCol >= Size
+            || _grid[nextRow][nextCol] != 0 || distance[nextRow, nextCol] != -1)
+        {
+            next = default;
+            return false;
+        }
+
+        distance[nextRow, nextCol] = distance[cell.Row, cell.Col] + 1;
+        next = (nextRow, nextCol);
+        return true;
     }
 }

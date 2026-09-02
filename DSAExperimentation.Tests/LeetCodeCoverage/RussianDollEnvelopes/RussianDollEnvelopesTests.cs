@@ -31,13 +31,29 @@ public sealed partial class RussianDollEnvelopesTests
 
     private static int MaxEnvelopes(int[][] envelopes)
     {
-        var items = envelopes.Select(envelope => (Width: envelope[0], Height: envelope[1])).ToArray();
+        var items = BuildItems(envelopes);
+        SortByWidthAscendingHeightDescending(items);
+
+        return ComputeLongestIncreasingHeightRun(items);
+    }
+
+    private static (int Width, int Height)[] BuildItems(int[][] envelopes)
+        => envelopes.Select(envelope => (Width: envelope[0], Height: envelope[1])).ToArray();
+
+    // Width ascending, height descending on ties - so envelopes sharing a width can
+    // never chain into each other.
+    private static void SortByWidthAscendingHeightDescending((int Width, int Height)[] items)
+    {
         var byWidthThenHeightDescending = Comparer<(int Width, int Height)>.Create(
             (a, b) => a.Width != b.Width ? a.Width.CompareTo(b.Width) : b.Height.CompareTo(a.Height));
 
         MergeSort.Sort<(int Width, int Height), ArrayIndexedSequence<(int Width, int Height)>>(
             new ArrayIndexedSequence<(int Width, int Height)>(items), byWidthThenHeightDescending);
+    }
 
+    // Patience-sorting LIS over the heights, once width ties can no longer chain.
+    private static int ComputeLongestIncreasingHeightRun((int Width, int Height)[] items)
+    {
         var tails = new DynamicArray<int>();
 
         foreach (var (_, height) in items)

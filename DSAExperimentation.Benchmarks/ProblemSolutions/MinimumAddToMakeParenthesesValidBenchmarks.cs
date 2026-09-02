@@ -10,6 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumAddToMakeParenthesesValidBenchmarks
 {
+    private const int RandomSeed = 921; // LC problem number
+    private const int BracketTypeExclusiveBound = 2; // picks between '(' and ')'
+
     [Params(1_000, 20_000)]
     public int Length;
 
@@ -18,12 +21,12 @@ public class MinimumAddToMakeParenthesesValidBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(921);
+        var random = new Random(RandomSeed);
         var chars = new char[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = random.Next(0, 2) == 0 ? '(' : ')';
+            chars[i] = random.Next(0, BracketTypeExclusiveBound) == 0 ? '(' : ')';
         }
 
         _brackets = new string(chars);

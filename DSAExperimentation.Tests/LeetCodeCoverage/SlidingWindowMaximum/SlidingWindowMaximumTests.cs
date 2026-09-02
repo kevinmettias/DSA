@@ -34,28 +34,36 @@ public sealed class SlidingWindowMaximumTests
     {
         var result = new int[nums.Length - k + 1];
         var window = new RepoDeque();
+        var query = new WindowQuery(nums, k);
 
         for (var i = 0; i < nums.Length; i++)
         {
-            while (window.TryPeekBack(out var backIndex) && nums[backIndex] <= nums[i])
-            {
-                window.TryPopBack(out _);
-            }
-
-            window.PushBack(i);
-
-            if (window.TryPeekFront(out var frontIndex) && frontIndex <= i - k)
-            {
-                window.TryPopFront(out _);
-            }
-
-            if (i >= k - 1)
-            {
-                window.TryPeekFront(out var maxIndex);
-                result[i - k + 1] = nums[maxIndex];
-            }
+            SlideWindow(query, window, result, i);
         }
 
         return result;
     }
+
+    private static void SlideWindow(WindowQuery query, RepoDeque window, int[] result, int i)
+    {
+        while (window.TryPeekBack(out var backIndex) && query.Nums[backIndex] <= query.Nums[i])
+        {
+            window.TryPopBack(out _);
+        }
+
+        window.PushBack(i);
+
+        if (window.TryPeekFront(out var frontIndex) && frontIndex <= i - query.K)
+        {
+            window.TryPopFront(out _);
+        }
+
+        if (i >= query.K - 1)
+        {
+            window.TryPeekFront(out var maxIndex);
+            result[i - query.K + 1] = query.Nums[maxIndex];
+        }
+    }
+
+    private readonly record struct WindowQuery(int[] Nums, int K);
 }

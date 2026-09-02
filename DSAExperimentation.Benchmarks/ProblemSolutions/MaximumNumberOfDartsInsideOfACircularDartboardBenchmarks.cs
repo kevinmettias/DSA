@@ -17,6 +17,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
 {
     private const int Radius = 50;
+    private const int RandomSeed = 1453; // LC problem number
+    private const int CoordinateRange = 100;
+    private const double MaxPairDistanceSquaredFactor = 4.0;
+    private const double Half = 2.0;
+    private const double DistanceComparisonEpsilon = 1e-6;
 
     [Params(20, 60)]
     public int DartCount;
@@ -26,9 +31,9 @@ public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1453);
+        var random = new Random(RandomSeed);
         _darts = Enumerable.Range(0, DartCount)
-            .Select(_ => new[] { random.Next(-100, 100), random.Next(-100, 100) })
+            .Select(_ => new[] { random.Next(-CoordinateRange, CoordinateRange), random.Next(-CoordinateRange, CoordinateRange) })
             .ToArray();
     }
 
@@ -64,27 +69,33 @@ public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
 
             for (var j = i + 1; j < _darts.Length; j++)
             {
-                var dx = (double)(_darts[j][0] - _darts[i][0]);
-                var dy = (double)(_darts[j][1] - _darts[i][1]);
-                var distanceSquared = (dx * dx) + (dy * dy);
-
-                if (distanceSquared > 4.0 * Radius * Radius)
-                {
-                    continue;
-                }
-
-                var midX = (_darts[i][0] + _darts[j][0]) / 2.0;
-                var midY = (_darts[i][1] + _darts[j][1]) / 2.0;
-                var distance = Math.Sqrt(distanceSquared);
-                var halfChord = distance / 2.0;
-                var height = Math.Sqrt(Math.Max(0.0, ((double)Radius * Radius) - (halfChord * halfChord)));
-                var offsetX = -dy / distance * height;
-                var offsetY = dx / distance * height;
-
-                add((midX + offsetX, midY + offsetY));
-                add((midX - offsetX, midY - offsetY));
+                AddIntersectionCandidates(add, i, j);
             }
         }
+    }
+
+    private void AddIntersectionCandidates(Action<(double X, double Y)> add, int i, int j)
+    {
+        var dx = (double)(_darts[j][0] - _darts[i][0]);
+        var dy = (double)(_darts[j][1] - _darts[i][1]);
+        var distanceSquared = (dx * dx) + (dy * dy);
+
+        if (distanceSquared > MaxPairDistanceSquaredFactor * Radius * Radius)
+        {
+            return;
+        }
+
+        var midX = (_darts[i][0] + _darts[j][0]) / Half;
+        var midY = (_darts[i][1] + _darts[j][1]) / Half;
+        var distance = Math.Sqrt(distanceSquared);
+        var halfChord = distance / Half;
+        var heightSquared = Math.Max(0.0, ((double)Radius * Radius) - (halfChord * halfChord));
+        var height = Math.Sqrt(heightSquared);
+        var offsetX = -dy / distance * height;
+        var offsetY = dx / distance * height;
+
+        add((midX + offsetX, midY + offsetY));
+        add((midX - offsetX, midY - offsetY));
     }
 
     private int BestCount(List<(double X, double Y)> candidates)
@@ -108,7 +119,7 @@ public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
             var dx = dart[0] - center.X;
             var dy = dart[1] - center.Y;
 
-            if ((dx * dx) + (dy * dy) <= ((double)Radius * Radius) + 1e-6)
+            if ((dx * dx) + (dy * dy) <= ((double)Radius * Radius) + DistanceComparisonEpsilon)
             {
                 count++;
             }

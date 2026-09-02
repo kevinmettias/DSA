@@ -44,20 +44,33 @@ public sealed partial class ShortestPathVisitingAllNodesTests
 
         for (var start = 0; start < graph.Length; start++)
         {
-            var startNode = nodesByState[(start, 1 << start)];
+            var distanceFromStart = ShortestPathFromStart(nodesByState, start, fullMask);
+            shortest = Math.Min(shortest, distanceFromStart);
+        }
 
-            var distances = Reduce.Graph<
-                VisitStateNode, VisitStateTopology, ListChildren<VisitStateNode>,
-                NaturalChildOrder<VisitStateNode, ListChildren<VisitStateNode>>, ListChildren<VisitStateNode>,
-                BreadthFirstReduceOrder<VisitStateNode>,
-                DistanceMapReduceAlgebra<VisitStateNode>, Dictionary<VisitStateNode, int>>(startNode);
+        return shortest;
+    }
 
-            foreach (var (state, distance) in distances)
+    // Single-source BFS distance map from `start`, reduced down to the first depth
+    // at which any (node, mask) state reaches the full mask.
+    private static int ShortestPathFromStart(
+        Dictionary<(int Node, int Mask), VisitStateNode> nodesByState, int start, int fullMask)
+    {
+        var startNode = nodesByState[(start, 1 << start)];
+
+        var distances = Reduce.Graph<
+            VisitStateNode, VisitStateTopology, ListChildren<VisitStateNode>,
+            NaturalChildOrder<VisitStateNode, ListChildren<VisitStateNode>>, ListChildren<VisitStateNode>,
+            BreadthFirstReduceOrder<VisitStateNode>,
+            DistanceMapReduceAlgebra<VisitStateNode>, Dictionary<VisitStateNode, int>>(startNode);
+
+        var shortest = int.MaxValue;
+
+        foreach (var (state, distance) in distances)
+        {
+            if (state.Mask == fullMask && distance < shortest)
             {
-                if (state.Mask == fullMask && distance < shortest)
-                {
-                    shortest = distance;
-                }
+                shortest = distance;
             }
         }
 

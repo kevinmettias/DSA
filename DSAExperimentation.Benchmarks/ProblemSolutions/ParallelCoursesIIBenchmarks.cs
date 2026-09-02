@@ -27,30 +27,13 @@ public class ParallelCoursesIIBenchmarks
     [Benchmark(Baseline = true)]
     public int BruteForceRecursion() => SemestersFrom(0);
 
-    private int SemestersFrom(int completedMask)
-    {
-        if (completedMask == _fullMask)
-        {
-            return 0;
-        }
-
-        var ready = _fullMask & ~completedMask;
-        var best = int.MaxValue;
-        for (var subset = ready; subset > 0; subset = (subset - 1) & ready)
-        {
-            if (PopCount(subset) > K)
-            {
-                continue;
-            }
-
-            best = Math.Min(best, SemestersFrom(completedMask | subset));
-        }
-
-        return 1 + best;
-    }
+    private int SemestersFrom(int completedMask) => SolveSemesters(completedMask, SemestersFrom);
 
     [Benchmark]
-    public int MemoizedRecursion() => Memoizer.Memoize<int, int>(0, (completedMask, semestersFrom) =>
+    public int MemoizedRecursion()
+        => Memoizer.Memoize<int, int>(0, (completedMask, semestersFrom) => SolveSemesters(completedMask, semestersFrom));
+
+    private int SolveSemesters(int completedMask, Func<int, int> semestersFrom)
     {
         if (completedMask == _fullMask)
         {
@@ -70,7 +53,7 @@ public class ParallelCoursesIIBenchmarks
         }
 
         return 1 + best;
-    });
+    }
 
     private static int PopCount(int value)
     {

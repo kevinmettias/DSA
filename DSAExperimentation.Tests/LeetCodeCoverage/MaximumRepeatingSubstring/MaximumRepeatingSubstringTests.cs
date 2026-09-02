@@ -15,7 +15,10 @@ public sealed partial class MaximumRepeatingSubstringTests
     [InlineData("ababc", "ac", 0)]
     [InlineData("aaabaaaabaaabaaaabaaaabaaaabaaaaba", "aaaba", 5)]
     public void MaxRepeating_LeetCodeExamples_ReturnsMaximumRepeatCount(string sequence, string word, int expected)
-        => Assert.Equal(expected, MaxRepeating(sequence, word));
+    {
+        var actual = MaxRepeating(sequence, word);
+        Assert.Equal(expected, actual);
+    }
 
     private static int MaxRepeating(string sequence, string word)
     {

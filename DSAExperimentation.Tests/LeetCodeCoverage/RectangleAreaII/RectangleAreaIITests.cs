@@ -52,28 +52,32 @@ public sealed partial class RectangleAreaIITests
 
         for (var i = 0; i < xs.Length - 1; i++)
         {
-            var x1 = xs[i];
-            var x2 = xs[i + 1];
-            var yIntervals = new IntervalSet<int>();
-
-            foreach (var rectangle in rectangles)
-            {
-                if (rectangle[0] <= x1 && rectangle[2] >= x2)
-                {
-                    yIntervals.Add(rectangle[1], rectangle[3]);
-                }
-            }
-
-            long height = 0;
-            for (var j = 0; j < yIntervals.Count; j++)
-            {
-                var (start, end) = yIntervals.Get(j);
-                height += end - start;
-            }
-
-            area = (area + (x2 - x1) * (height % Modulus)) % Modulus;
+            var slabArea = SlabArea(rectangles, xs[i], xs[i + 1]);
+            area = (area + slabArea) % Modulus;
         }
 
         return (int)area;
+    }
+
+    private static long SlabArea(int[][] rectangles, int x1, int x2)
+    {
+        var yIntervals = new IntervalSet<int>();
+
+        foreach (var rectangle in rectangles)
+        {
+            if (rectangle[0] <= x1 && rectangle[2] >= x2)
+            {
+                yIntervals.Add(rectangle[1], rectangle[3]);
+            }
+        }
+
+        long height = 0;
+        for (var j = 0; j < yIntervals.Count; j++)
+        {
+            var (start, end) = yIntervals.Get(j);
+            height += end - start;
+        }
+
+        return (x2 - x1) * (height % Modulus);
     }
 }

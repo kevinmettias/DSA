@@ -23,13 +23,19 @@ public sealed partial class TimeBasedKeyValueStoreTests
 
         store.Set("foo", "bar", 1);
 
-        Assert.Equal("bar", store.Get("foo", 1));
-        Assert.Equal("bar", store.Get("foo", 3));
+        var valueAtTimestamp1 = store.Get("foo", 1);
+        Assert.Equal("bar", valueAtTimestamp1);
+
+        var valueAtTimestamp3 = store.Get("foo", 3);
+        Assert.Equal("bar", valueAtTimestamp3);
 
         store.Set("foo", "bar2", 4);
 
-        Assert.Equal("bar2", store.Get("foo", 4));
-        Assert.Equal("bar2", store.Get("foo", 5));
+        var valueAtTimestamp4 = store.Get("foo", 4);
+        Assert.Equal("bar2", valueAtTimestamp4);
+
+        var valueAtTimestamp5 = store.Get("foo", 5);
+        Assert.Equal("bar2", valueAtTimestamp5);
     }
 
     [Fact]
@@ -38,7 +44,8 @@ public sealed partial class TimeBasedKeyValueStoreTests
         var store = new TimeMap();
         store.Set("foo", "bar", 5);
 
-        Assert.Equal(string.Empty, store.Get("foo", 1));
+        var valueBeforeAnySet = store.Get("foo", 1);
+        Assert.Equal(string.Empty, valueBeforeAnySet);
     }
 
     [Fact]
@@ -46,7 +53,8 @@ public sealed partial class TimeBasedKeyValueStoreTests
     {
         var store = new TimeMap();
 
-        Assert.Equal(string.Empty, store.Get("missing", 10));
+        var valueForUnknownKey = store.Get("missing", 10);
+        Assert.Equal(string.Empty, valueForUnknownKey);
     }
 
     private sealed class TimeMap

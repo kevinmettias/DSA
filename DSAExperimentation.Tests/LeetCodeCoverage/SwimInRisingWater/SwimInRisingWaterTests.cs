@@ -69,21 +69,34 @@ public sealed partial class SwimInRisingWaterTests
                 return time;
             }
 
-            foreach (var (dr, dc) in Directions)
-            {
-                var nr = row + dr;
-                var nc = col + dc;
-
-                if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc])
-                {
-                    continue;
-                }
-
-                visited[nr, nc] = true;
-                frontier.Push(((nr, nc), Math.Max(time, grid[nr][nc])));
-            }
+            ExploreNeighbors(entry, grid, visited, frontier);
         }
 
         throw new InvalidOperationException("Unreachable for a valid n x n grid: every cell connects to (0,0).");
+    }
+
+    private static void ExploreNeighbors(
+        ((int Row, int Col) Node, int Priority) entry,
+        int[][] grid,
+        bool[,] visited,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> frontier)
+    {
+        var (row, col) = entry.Node;
+        var time = entry.Priority;
+        var n = grid.Length;
+
+        foreach (var (dr, dc) in Directions)
+        {
+            var nr = row + dr;
+            var nc = col + dc;
+
+            if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc])
+            {
+                continue;
+            }
+
+            visited[nr, nc] = true;
+            frontier.Push(((nr, nc), Math.Max(time, grid[nr][nc])));
+        }
     }
 }

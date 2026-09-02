@@ -22,6 +22,8 @@ public class QueensThatCanAttackTheKingBenchmarks
     ];
 
     private const int BoardSize = 1_000;
+    private const int BoardCenter = BoardSize / 2;
+    private const int RandomSeed = 1222;
 
     [Params(50, 500)]
     public int QueensCount;
@@ -32,8 +34,8 @@ public class QueensThatCanAttackTheKingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1222);
-        _king = (BoardSize / 2, BoardSize / 2);
+        var random = new Random(RandomSeed);
+        _king = (BoardCenter, BoardCenter);
 
         var coordinates = new HashSet<(int Row, int Col)>();
 
@@ -89,22 +91,27 @@ public class QueensThatCanAttackTheKingBenchmarks
 
         foreach (var (dRow, dCol) in Directions)
         {
-            var row = _king.Row + dRow;
-            var col = _king.Col + dCol;
-
-            while (IsInBounds(row, col) && !occupied.Has((row, col)))
-            {
-                row += dRow;
-                col += dCol;
-            }
-
-            if (IsInBounds(row, col))
+            if (IsAttackerAlongRay(dRow, dCol, occupied))
             {
                 attackers++;
             }
         }
 
         return attackers;
+    }
+
+    private bool IsAttackerAlongRay(int dRow, int dCol, Set<(int Row, int Col)> occupied)
+    {
+        var row = _king.Row + dRow;
+        var col = _king.Col + dCol;
+
+        while (IsInBounds(row, col) && !occupied.Has((row, col)))
+        {
+            row += dRow;
+            col += dCol;
+        }
+
+        return IsInBounds(row, col);
     }
 
     private bool IsOccupiedByLinearScan(int row, int col)

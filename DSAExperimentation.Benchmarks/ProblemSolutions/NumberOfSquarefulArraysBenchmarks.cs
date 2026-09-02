@@ -12,6 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfSquarefulArraysBenchmarks
 {
+    private const int ValueUpperBound = 50;
+
     [Params(8, 10)]
     public int Length;
 
@@ -21,7 +23,7 @@ public class NumberOfSquarefulArraysBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 50)).ToArray();
+        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
         Array.Sort(_nums);
     }
 
@@ -33,37 +35,42 @@ public class NumberOfSquarefulArraysBenchmarks
 
     private static int CountViaFullPermutations(int[] nums)
     {
-        var count = 0;
-        var used = new bool[nums.Length];
-        var current = new int[nums.Length];
+        var state = new PermutationState(nums);
+        return Permute(state, 0);
+    }
 
-        void Permute(int depth)
+    private static int Permute(PermutationState state, int depth)
+    {
+        if (depth == state.Nums.Length)
         {
-            if (depth == nums.Length)
-            {
-                if (IsSquareful(current))
-                {
-                    count++;
-                }
-
-                return;
-            }
-
-            for (var i = 0; i < nums.Length; i++)
-            {
-                if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
-                {
-                    continue;
-                }
-
-                used[i] = true;
-                current[depth] = nums[i];
-                Permute(depth + 1);
-                used[i] = false;
-            }
+            return IsSquareful(state.Current) ? 1 : 0;
         }
 
-        Permute(0);
+        var count = 0;
+
+        for (var i = 0; i < state.Nums.Length; i++)
+        {
+            count += TryPlace(state, depth, i);
+        }
+
+        return count;
+    }
+
+    private static int TryPlace(PermutationState state, int depth, int i)
+    {
+        var used = state.Used;
+        var nums = state.Nums;
+
+        if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
+        {
+            return 0;
+        }
+
+        used[i] = true;
+        state.Current[depth] = nums[i];
+        var count = Permute(state, depth + 1);
+        used[i] = false;
+
         return count;
     }
 
@@ -111,5 +118,12 @@ public class NumberOfSquarefulArraysBenchmarks
     {
         public bool[] Used { get; } = new bool[length];
         public List<int> Values { get; } = [];
+    }
+
+    private sealed class PermutationState(int[] nums)
+    {
+        public int[] Nums { get; } = nums;
+        public bool[] Used { get; } = new bool[nums.Length];
+        public int[] Current { get; } = new int[nums.Length];
     }
 }

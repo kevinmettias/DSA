@@ -74,28 +74,28 @@
     {
       "check": "check-folder-organization",
       "path": "DSAExperimentation/DataStructures",
-      "reason": "ARCHITECTURE.md \u00a713.3 documents this flat, one-folder-per-domain layout as the deliberate outcome of four successive reorgs (\u00a713) - a data structure's identity is its representation/topology, so grouping domains under an intermediate category folder would recreate the domain-first tree the reorg explicitly undid.",
+      "reason": "ARCHITECTURE.md §13.3 documents this flat, one-folder-per-domain layout as the deliberate outcome of four successive reorgs (§13) - a data structure's identity is its representation/topology, so grouping domains under an intermediate category folder would recreate the domain-first tree the reorg explicitly undid.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-folder-organization",
       "path": "DSAExperimentation/Algorithms",
-      "reason": "ARCHITECTURE.md \u00a713.3 documents this flat, one-folder-per-utility layout as the deliberate outcome of four successive reorgs (\u00a713.2's second reorg organizes Algorithms/ by utility, not by domain) - an intermediate category folder here would recreate exactly the domain-first grouping that reorg undid.",
+      "reason": "ARCHITECTURE.md §13.3 documents this flat, one-folder-per-utility layout as the deliberate outcome of four successive reorgs (§13.2's second reorg organizes Algorithms/ by utility, not by domain) - an intermediate category folder here would recreate exactly the domain-first grouping that reorg undid.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-folder-organization",
       "path": "DSAExperimentation.Tests/DataStructures",
-      "reason": "mirrors DSAExperimentation/DataStructures one level deeper per ARCHITECTURE.md \u00a713.3 ('DSAExperimentation.Tests/ mirrors both trees one level deeper') - same deliberate flat, one-folder-per-domain layout.",
+      "reason": "mirrors DSAExperimentation/DataStructures one level deeper per ARCHITECTURE.md §13.3 ('DSAExperimentation.Tests/ mirrors both trees one level deeper') - same deliberate flat, one-folder-per-domain layout.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
     {
       "check": "check-folder-organization",
       "path": "DSAExperimentation.Tests/Algorithms",
-      "reason": "mirrors DSAExperimentation/Algorithms one level deeper per ARCHITECTURE.md \u00a713.3 ('DSAExperimentation.Tests/ mirrors both trees one level deeper') - same deliberate flat, one-folder-per-utility layout.",
+      "reason": "mirrors DSAExperimentation/Algorithms one level deeper per ARCHITECTURE.md §13.3 ('DSAExperimentation.Tests/ mirrors both trees one level deeper') - same deliberate flat, one-folder-per-utility layout.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -597,370 +597,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Connectivity/ConnectedComponents.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/IterativeFoldEvaluation.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/RecursiveFoldEvaluation.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Metrics/DiameterAlgebra.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Metrics/HeightAlgebra.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Metrics/SizeAlgebra.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Reducing/BreadthFirstReduceOrder.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Reducing/DepthFirstReduceOrder.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Reducing/DistanceMapReduceAlgebra.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Reducing/ZipReduceAlgebra.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/ShortestPaths/ZeroHeuristic.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/TrackedVisitGuard.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/UnguardedVisit.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/NaturalChildOrder.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ReverseChildOrder.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/EdgeTargets.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ListChildren.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ListEdges.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/ReversedChildren.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Ordering/SparseArrayChildren.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Contracts/Topologies/EdgeTopologyAsGraphTopology.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Grids/GridChildren.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Grids/GridTopology.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BinaryTreeChildren.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Count/Get implement IChildren<BinaryTreeNode<TValue>>, the same capability interface GridChildren.cs already carries this exact waiver for, and are exercised the same way: through the algorithms generic over that interface (DepthFirstTraversal, LevelGroupedBreadthFirstTraversal, TreeMetrics, LowestCommonAncestor, AllRootToLeafPaths - see BinaryTreeTraversalTests.cs/BinaryTreeMetricsTests.cs/BinaryTreeLowestCommonAncestorTests.cs/BinaryTreeAllRootToLeafPathsTests.cs), which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BinaryTreeTopology.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' GetChildren implements ITreeTopology<BinaryTreeNode<TValue>,BinaryTreeChildren<TValue>>, the same capability interface GridTopology.cs already carries this exact waiver for, and is exercised the same way: through the algorithms generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/ShortestPaths/ByPriorityOrder.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/CheckedFold.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/Dags/DagFold.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/Dags/Trees/TreeFold.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Metrics/TreeMetrics.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Paths/AllRootToLeafPaths.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Reducing/Reduce.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/ShortestPaths/Grids/GridShortestPath.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Traversal/BreadthFirst/BreadthFirstTraversal.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Traversal/BreadthFirst/LevelGroupedBreadthFirstTraversal.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Traversal/DepthFirst/DepthFirstTraversal.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Traversal/TopDown/TopDownTraversal.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/BreadthFirstWalk.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract. check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/DepthFirstWalk.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Every flagged member here implements a capability interface (IFoldAlgebra/IReduceAlgebra/IFoldEvaluationStrategy/IReduceOrderStrategy/IPathHeuristic/IVisitGuard/IChildOrder/IChildren/IEdges/IGraphTopology/IHeapOrder) and is exercised through the algorithm generic over that interface, which is exactly the tested contract. check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/TopDownWalk.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Grids/Grid.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArray.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/HashMap/HashMap.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Set/Set.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/DisjointSet/DisjointSetForest.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Buffers/ContiguousGroupBufferStorage.cs",
-      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Deque/CircularBuffer.cs",
-      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Deque/Deque.cs",
-      "reason": "check-test-coverage's own doc names this exact tension as an open question: the current attribution logic credits a test to exactly one function, so a function exercised and asserted inside a test body, but whose name doesn't win that match, still produces an unattributed finding. Every flagged member here is genuinely called and asserted on by real tests (verified directly), just under a test name describing the scenario rather than repeating the member name; the doc's own guidance is to use the allow-untested escape hatch for this rather than write throwaway name-matching tests.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArrayStorage.cs",
-      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/HashMap/HashMapStorage.cs",
-      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Heap/HeapArray.cs",
-      "reason": "check-test-coverage's own doc exempts contract-bound members and this repo already waives the same pattern for HashMapStorage: this is an internal Representation/storage-layer type whose members are exercised through its owning type's own test class (this type is never constructed directly by a test), not a public contract of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-literals",
       "path": "DSAExperimentation.Tests/Algorithms/Traversal/TraversalTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - a single-letter graph/tree node label, a small sample array element, an index/count the test expects back, or a lookup key/message like \"missing\" - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
@@ -1430,13 +1066,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/IntervalSet/IntervalSet.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' IntervalEndsView.Length/Get implement Searching's IRandomAccessSequence<TKey>, the same capability interface GridChildren.cs/BinaryTreeChildren.cs already carry this exact waiver for, and are exercised the same way: through BinarySearch.LowerBound, called from IntervalSet.Add/HasOverlap and covered by IntervalSetTests.cs, which is exactly the tested contract. IntervalSet's own Count/Get are covered directly by name (Count_ReflectsNumberOfDisjointIntervalsAfterMerging/Get_ReturnsIntervalAtGivenIndex in IntervalSetTests.cs), not waived.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-literals",
       "path": "DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs",
       "reason": "every check-literals finding here is an arbitrary fixture value - an interval endpoint or the count/index the test expects back - that genuinely means only itself, not a magic constant whose name would add information a reader doesn't already have from the literal.",
@@ -1545,13 +1174,6 @@
       "check": "check-responsibility-extraction",
       "path": "DSAExperimentation/Algorithms/StringMatching/Manacher.cs",
       "reason": "the shared 'Compute' prefix across ComputeOddRadii/ComputeEvenRadii's 4 overload declarations is not a hidden module - it names the one algorithm's two inseparable halves. Manacher's algorithm computes odd- and even-centered palindrome radii by the same technique, and FindLongestPalindromicSubstring genuinely needs both results together to answer 'what is the single longest palindrome' (an odd-only or even-only palindrome could each independently be the answer). Splitting them into separate files would fragment one cohesive technique into two files that always get called together, the same 'this broad surface is the type's actual minimum complete API' shape Deque.cs's own check-responsibility-extraction waiver already establishes.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/StringMatching/Manacher.cs",
-      "reason": "RightmostPalindromeEdge.ExpandTo is a private nested record struct's member, un-fileworthy on its own - the same status PrefixFunctionSearch.cs's own doc comment already gives BinarySearch's BisectionStep and its own FailureFunctionMatcher (never crosses either public method's boundary). It is exercised on every call to ComputeOddRadii/ComputeEvenRadii, which ManacherTests.cs's brute-force cross-check tests (ComputeOddRadii_MatchesBruteForceExpansionAcrossVariedStrings / ComputeEvenRadii_MatchesBruteForceExpansionAcrossVariedStrings) already drive across 9 varied strings - exercised transitively through the algorithm that owns it, the same bucket check-test-coverage's own doc exempts for contract-bound/algorithm-internal names.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1843,20 +1465,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/StringMatching/ZFunction.cs",
-      "reason": "MatchedWindow.ExpandTo is a private nested record struct's member, un-fileworthy on its own - the same status PrefixFunctionSearch.cs's own doc comment already gives BinarySearch's BisectionStep and its own FailureFunctionMatcher, and the same status Manacher.cs's RightmostPalindromeEdge.ExpandTo already carries under this exact check (never crosses either public method's boundary). It is exercised on every call to Compute/FindAll, which ZFunctionTests.cs's own brute-force cross-check (Compute_MatchesBruteForceLongestCommonPrefix) and varied FindAll facts already drive - exercised transitively through the algorithm that owns it, the same bucket check-test-coverage's own doc exempts for contract-bound/algorithm-internal names.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/SuffixTree/SuffixTreeNode.cs",
-      "reason": "IsSuffixEnd is a one-line computed property (SuffixStart >= 0) on an internal node type with no dedicated test file of its own - the same 'algorithm-internal member, exercised transitively' bucket check-test-coverage's own doc exempts. Every SuffixTreeTests.cs Contains/FindOccurrences fact walks AllSuffixStartsFrom, which reads IsSuffixEnd on every visited node; a dedicated SuffixTreeNodeTests.cs asserting on the property in isolation would just restate its own one-line body.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/AhoCorasick/AhoCorasick.cs",
       "reason": "each ! (RequireChild's child!, LinkChildren's u.Fail!, GoTo's current.Fail!) is named inline as a `presumption: allow` comment stating the invariant that makes it true (key freshly enumerated from Children.Keys; u/current's Fail already assigned before being reachable here) - recorded here too since the default marker policy only honours safety-critical checks.",
@@ -1871,27 +1479,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BitTrieChildren.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' Count/Get implement IChildren<BitTrieNode>, the same capability interface BinaryTreeChildren.cs/GridChildren.cs already carry this exact waiver for, and are exercised the same way: through the algorithm generic over that interface (TreeMetrics.Size, see BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain), which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/BitTrieTopology.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' GetChildren implements ITreeTopology<BitTrieNode,BitTrieChildren>, the same capability interface BinaryTreeTopology.cs/GridTopology.cs already carry this exact waiver for, and is exercised the same way: through TreeMetrics.Size (see BitTrieTests.Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain), which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrieTopology.cs",
-      "reason": "check-test-coverage's own doc (public-type-test-coverage.md / unit-test-per-logic-unit.md) exempts 'contract-bound names - an interface implementation, an override, Dispose: the contract that named the method is what tests it.' GetChildren implements ITreeTopology<LowercaseTrieNode<TValue>,SparseArrayChildren<LowercaseTrieNode<TValue>>>, the same capability interface BinaryTreeTopology.cs/GridTopology.cs already carry this exact waiver for, and is exercised the same way: through TreeMetrics.Size and LowestCommonAncestor.Find (see LowercaseTrieTests.cs), which is exactly the tested contract.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrie.cs",
       "reason": "TryGetValue's value = default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (value is only meaningful when the method returns true, the standard TryGetValue/TryParse out-parameter contract Trie<TValue>.TryGetValue already uses) - recorded here too since the default marker policy only honours safety-critical checks.",
@@ -1902,6 +1489,237 @@
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/Graph/Engines/Dags/Trees/LowercaseTrieNode.cs",
       "reason": "Value's default! is named inline as a `presumption: allow` comment stating the invariant that makes it true (Value is only meaningful once HasValue is true, checked by every reader before use) - recorded here too since the default marker policy only honours safety-critical checks.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfMovesToMakePalindromeBenchmarks.cs",
+      "reason": "the two flagged `2` literals in FillMirroredHalf are `length / 2` (halving a length) and `length % 2 == 1` (odd-length parity check) - the mathematical divisor/modulus for 'half' and 'odd', not an arbitrary business constant. A named constant (e.g. `Two`) would restate the literal without adding information.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-transposable-parameters",
+      "path": "DSAExperimentation/DataStructures/Graph/Hamming/HammingGraph.cs",
+      "reason": "IsOneApart(a, b) is a symmetric predicate - Hamming distance is a metric, so d(a,b) == d(b,a) and transposing the two arguments cannot change the result. The check's premise, that a caller can silently get a wrong answer by swapping adjacent same-typed parameters, does not hold for a symmetric relation, and wrapping either side in a distinct type would state a directionality this predicate does not have. The neighbouring OneCharacterMutations(value, alphabet), where transposition IS meaningful, was fixed properly instead by introducing the Alphabet type.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-constant-placement",
+      "path": "DSAExperimentation/Domain/Modular/ModularArithmetic.cs",
+      "reason": "The check asks that a visible constant be moved to 'a type of its own whose subject IS these values'. ModularArithmetic is already that type: the modulus is not incidental state inside a class about something else, it is the single value the whole type is parameterised by, and both public operations (Inverse, Power) are defined only with respect to it. Extracting Modulo to a separate type would leave ModularArithmetic unable to state what it is arithmetic modulo of, in the one file a reader would look in.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.LeetCode/CountWaysToBuildRoomsInAnAntColony/RoomWaysAlgebra.cs",
+      "reason": "The `2` is Factorial's loop start: 0! and 1! are both 1, so multiplication only has to begin at 2. It is the arithmetic's own identity boundary and means nothing but itself - naming it (FirstNonIdentityFactor) would add a constant whose definition is strictly less clear than the literal it replaces.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-constant-placement",
+      "path": "DSAExperimentation/Domain/Locks/LockWheels.cs",
+      "reason": "LockWheels IS the remedy this check prescribes - it was extracted from LockGraph in this same pass precisely because the check asked for 'a type of its own, in its own file whose subject IS these values'. Count/Modulus/CombinationSpace are the lock's dimensions and the entire subject of the type and file; there is no further type to move them to. Same shape as the ModularArithmetic.Modulo waiver.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.LeetCode/**",
+      "reason": "The check reads a shared method-name prefix as a hidden module boundary that wants extracting. In this tier the shared prefix IS the module: ARCHITECTURE.md section 17.3 requires every strategy for one LeetCode problem to live in that problem's one solution class, named <Operation>By<Strategy>, so MinTurnsByMutationQueue/MinTurnsByReduceGraph (each with a LeetCode-shaped and a hoisted overload, hence four declarations) all share the operation the problem asks for. Extracting them apart is precisely the split this reorg existed to undo - it is what let the test and the benchmark drift onto different functions. The boundary the check infers is already the file.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-primary-constructor",
+      "path": "DSAExperimentation/DataStructures/Graph/Hamming/HammingGraph.cs",
+      "reason": "The constructor is deliberately private: HammingGraph's invariant is that every one-character-apart pair among its nodes is already wired, which only Build establishes. A C# primary constructor is always as accessible as its type, so taking the check's advice would expose a second construction path that produces an unwired graph and silently reports no neighbours. The fields exist to keep that door shut, not because the constructor is boilerplate.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation.LeetCode/**",
+      "reason": "The check splits a class into clusters of methods that share state and reports two or more as separate responsibilities. A solution class in this tier has no state at all: ARCHITECTURE.md section 17.3 requires every strategy for one problem to sit in one static class, and independent strategies for the same question share nothing BY CONSTRUCTION - that independence is the point, it is what makes them comparable arms. Splitting them into distinct types would recreate exactly the separation section 17.1 documents as the defect (the test and the benchmark each holding their own copy of the algorithm). Fires once per migrated problem on the convention working as designed.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.LeetCode/**",
+      "reason": "Not a naming-convention exemption: the check accepts this repo's ordinary `Member_Scenario_Expectation` test names (DataStructures/Heap/Heap.cs passes with them). It fires here because a solution file is <Name>Solution.cs while its harness is <Name>Tests.cs under Tests/LeetCodeCoverage/, so the file names do not correspond. The coverage itself is complete by construction - ARCHITECTURE.md 17.7 requires one test method per strategy, so every public strategy is asserted against LeetCode's published examples. Waived on the file-name correspondence alone; renaming 780+ harness folders to satisfy it would be churn, not coverage.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Connectivity/ConnectedComponents.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Seed. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/CheckedFold.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Failure, TryFold. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/Dags/DagFold.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Fold. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/Dags/Trees/TreeFold.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Fold. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/IterativeFoldEvaluation.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Evaluate. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/RecursiveFoldEvaluation.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Evaluate. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Enter. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Metrics/TreeMetrics.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Diameter, Height, HeightAndSize, Size. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Paths/AllRootToLeafPaths.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Descend, Visit. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/BreadthFirstReduceOrder.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Evaluate. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/DepthFirstReduceOrder.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Evaluate. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Reducing/Reduce.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Graph, Tree. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/ShortestPaths/Grids/GridShortestPath.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Distance. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/StringMatching/Manacher.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: ExpandTo. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/StringMatching/ZFunction.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: ExpandTo. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/BreadthFirst/BreadthFirstTraversal.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Walk, WalkGraph. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/BreadthFirst/LevelGroupedBreadthFirstTraversal.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Walk. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Traversal/DepthFirst/DepthFirstTraversal.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Walk, WalkGraph. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/BreadthFirstWalk.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Enter, Seed. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/Algorithms/Walking/DepthFirstWalk.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Enter, Exit, Seed. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/Graph/Grids/Grid.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Cols, IsPassable, Rows. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/HashMap/HashMapStorage.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Unlink. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/IntervalSet/IntervalSet.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Get, Length. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation/DataStructures/SuffixTree/SuffixTreeNode.cs",
+      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: IsSuffixEnd. The fix is to write a <Name>Tests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }

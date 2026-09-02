@@ -52,6 +52,22 @@ public sealed partial class AccountsMergeTests
 
     private static List<string[]> Merge(string[][] accounts)
     {
+        var components = BuildDisjointSetFromSharedEmails(accounts);
+        var emailsByRoot = GroupEmailsByRoot(accounts, components);
+
+        var merged = new List<string[]>();
+
+        foreach (var root in emailsByRoot.Keys)
+        {
+            var account = BuildMergedAccount(root, emailsByRoot, accounts);
+            merged.Add(account);
+        }
+
+        return merged;
+    }
+
+    private static DisjointSet BuildDisjointSetFromSharedEmails(string[][] accounts)
+    {
         var components = new DisjointSet(accounts.Length);
         var firstOwner = new HashMap<string, int>();
 
@@ -72,6 +88,11 @@ public sealed partial class AccountsMergeTests
             }
         }
 
+        return components;
+    }
+
+    private static HashMap<int, HashMap<string, bool>> GroupEmailsByRoot(string[][] accounts, DisjointSet components)
+    {
         var emailsByRoot = new HashMap<int, HashMap<string, bool>>();
 
         for (var i = 0; i < accounts.Length; i++)
@@ -90,20 +111,18 @@ public sealed partial class AccountsMergeTests
             }
         }
 
-        var merged = new List<string[]>();
+        return emailsByRoot;
+    }
 
-        foreach (var root in emailsByRoot.Keys)
-        {
-            emailsByRoot.TryGetValue(root, out var emails);
-            var sortedEmails = emails.Keys.ToArray();
-            MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(sortedEmails), StringComparer.Ordinal);
+    private static string[] BuildMergedAccount(int root, HashMap<int, HashMap<string, bool>> emailsByRoot, string[][] accounts)
+    {
+        emailsByRoot.TryGetValue(root, out var emails);
+        var sortedEmails = emails.Keys.ToArray();
+        MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(sortedEmails), StringComparer.Ordinal);
 
-            var account = new string[sortedEmails.Length + 1];
-            account[0] = accounts[root][0];
-            Array.Copy(sortedEmails, 0, account, 1, sortedEmails.Length);
-            merged.Add(account);
-        }
-
-        return merged;
+        var account = new string[sortedEmails.Length + 1];
+        account[0] = accounts[root][0];
+        Array.Copy(sortedEmails, 0, account, 1, sortedEmails.Length);
+        return account;
     }
 }

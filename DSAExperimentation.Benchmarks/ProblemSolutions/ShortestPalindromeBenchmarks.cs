@@ -12,6 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortestPalindromeBenchmarks
 {
+    private const int AlphabetSize = 26;
+    private const string FailureFunctionSeparator = "#";
+
     [Params(200, 2_000)]
     public int Length;
 
@@ -25,7 +28,7 @@ public class ShortestPalindromeBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = (char)('a' + random.Next(0, 26));
+            chars[i] = (char)('a' + random.Next(0, AlphabetSize));
         }
 
         _value = new string(chars);
@@ -69,7 +72,7 @@ public class ShortestPalindromeBenchmarks
     public string KmpFailureFunction()
     {
         var reversed = new string(_value.Reverse().ToArray());
-        var combined = _value + "#" + reversed;
+        var combined = _value + FailureFunctionSeparator + reversed;
         var failure = PrefixFunctionSearch.ComputeFailureFunction(combined);
         var longestPalindromicPrefix = failure[^1];
 

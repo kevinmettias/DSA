@@ -54,16 +54,21 @@ public sealed partial class NumberOfEnclavesTests
 
                 if (onBorder)
                 {
-                    Sink(r, c);
+                    Sink(r, c, grid);
                 }
             }
         }
 
+        return CountRemainingLand(grid);
+    }
+
+    private static int CountRemainingLand(int[][] grid)
+    {
         var enclaves = 0;
 
-        for (var r = 0; r < rows; r++)
+        for (var r = 0; r < grid.Length; r++)
         {
-            for (var c = 0; c < cols; c++)
+            for (var c = 0; c < grid[0].Length; c++)
             {
                 if (grid[r][c] == 1)
                 {
@@ -73,41 +78,46 @@ public sealed partial class NumberOfEnclavesTests
         }
 
         return enclaves;
+    }
 
-        void Sink(int startRow, int startCol)
+    private static void Sink(int startRow, int startCol, int[][] grid)
+    {
+        if (grid[startRow][startCol] != 1)
         {
-            if (grid[startRow][startCol] != 1)
-            {
-                return;
-            }
-
-            var component = DepthFirstSearch.Traverse((startRow, startCol), Neighbors);
-
-            foreach (var (row, col) in component)
-            {
-                grid[row][col] = 0;
-            }
+            return;
         }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
+        var component = DepthFirstSearch.Traverse((startRow, startCol), p => Neighbors(p, grid));
+
+        foreach (var (row, col) in component)
         {
-            foreach (var (dRow, dCol) in Directions)
+            grid[row][col] = 0;
+        }
+    }
+
+    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p, int[][] grid)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var next = (Row: p.Row + dRow, Col: p.Col + dCol);
+
+            if (IsLand(next, rows, cols, grid))
             {
-                var nextRow = p.Row + dRow;
-                var nextCol = p.Col + dCol;
-
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-                {
-                    continue;
-                }
-
-                if (grid[nextRow][nextCol] != 1)
-                {
-                    continue;
-                }
-
-                yield return (nextRow, nextCol);
+                yield return next;
             }
         }
+    }
+
+    private static bool IsLand((int Row, int Col) next, int rows, int cols, int[][] grid)
+    {
+        if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+        {
+            return false;
+        }
+
+        return grid[next.Row][next.Col] == 1;
     }
 }

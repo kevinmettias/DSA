@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class JumpGameIIIBenchmarks
 {
+    // LC problem number, reused as the deterministic seed.
+    private const int RandomSeed = 1306;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -22,7 +25,7 @@ public class JumpGameIIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1306);
+        var random = new Random(RandomSeed);
         _arr = new int[Length];
 
         for (var i = 0; i < Length; i++)
@@ -42,35 +45,49 @@ public class JumpGameIIIBenchmarks
 
         while (pending.Count > 0)
         {
-            var index = pending.Pop();
-
-            if (visited[index])
-            {
-                continue;
-            }
-
-            visited[index] = true;
-
-            if (_arr[index] == 0)
+            if (VisitNext(pending, visited))
             {
                 return true;
-            }
-
-            var forward = index + _arr[index];
-            var backward = index - _arr[index];
-
-            if (forward < _arr.Length && !visited[forward])
-            {
-                pending.Push(forward);
-            }
-
-            if (backward >= 0 && !visited[backward])
-            {
-                pending.Push(backward);
             }
         }
 
         return false;
+    }
+
+    private bool VisitNext(Stack<int> pending, bool[] visited)
+    {
+        var index = pending.Pop();
+
+        if (visited[index])
+        {
+            return false;
+        }
+
+        visited[index] = true;
+
+        if (_arr[index] == 0)
+        {
+            return true;
+        }
+
+        EnqueueNeighbors(index, pending, visited);
+        return false;
+    }
+
+    private void EnqueueNeighbors(int index, Stack<int> pending, bool[] visited)
+    {
+        var forward = index + _arr[index];
+        var backward = index - _arr[index];
+
+        if (forward < _arr.Length && !visited[forward])
+        {
+            pending.Push(forward);
+        }
+
+        if (backward >= 0 && !visited[backward])
+        {
+            pending.Push(backward);
+        }
     }
 
     [Benchmark]

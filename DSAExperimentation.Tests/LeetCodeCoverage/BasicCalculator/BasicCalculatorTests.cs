@@ -20,50 +20,69 @@ public sealed partial class BasicCalculatorTests
     private static int Calculate(string expression)
     {
         var stack = new RepoStack();
-        var result = 0;
-        var sign = 1;
+        var state = new CalculatorState();
         var i = 0;
 
         while (i < expression.Length)
         {
-            var c = expression[i];
+            i = ProcessToken(expression, i, stack, state);
+        }
 
-            if (char.IsDigit(c))
-            {
-                var number = 0;
+        return state.Result;
+    }
 
-                while (i < expression.Length && char.IsDigit(expression[i]))
-                {
-                    number = number * 10 + (expression[i] - '0');
-                    i++;
-                }
+    private static int ProcessToken(string expression, int i, RepoStack stack, CalculatorState state)
+    {
+        var c = expression[i];
 
-                result += sign * number;
-                continue;
-            }
+        if (char.IsDigit(c))
+        {
+            return ConsumeNumber(expression, i, state);
+        }
 
-            switch (c)
-            {
-                case '+':
-                    sign = 1;
-                    break;
-                case '-':
-                    sign = -1;
-                    break;
-                case '(':
-                    stack.Push((result, sign));
-                    result = 0;
-                    sign = 1;
-                    break;
-                case ')':
-                    stack.TryPop(out var outer);
-                    result = outer.Result + outer.Sign * result;
-                    break;
-            }
+        ApplyOperator(c, stack, state);
+        return i + 1;
+    }
 
+    private static void ApplyOperator(char c, RepoStack stack, CalculatorState state)
+    {
+        switch (c)
+        {
+            case '+':
+                state.Sign = 1;
+                break;
+            case '-':
+                state.Sign = -1;
+                break;
+            case '(':
+                stack.Push((state.Result, state.Sign));
+                state.Result = 0;
+                state.Sign = 1;
+                break;
+            case ')':
+                stack.TryPop(out var outer);
+                state.Result = outer.Result + outer.Sign * state.Result;
+                break;
+        }
+    }
+
+    private static int ConsumeNumber(string expression, int i, CalculatorState state)
+    {
+        var number = 0;
+
+        while (i < expression.Length && char.IsDigit(expression[i]))
+        {
+            number = number * 10 + (expression[i] - '0');
             i++;
         }
 
-        return result;
+        state.Result += state.Sign * number;
+        return i;
+    }
+
+    private sealed class CalculatorState
+    {
+        public int Result;
+        public int Sign = 1;
     }
 }

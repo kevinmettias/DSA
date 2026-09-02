@@ -7,12 +7,18 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
 public sealed partial class BitTrieTests
 {
+    // The canonical LeetCode 421 example: nums = [3,10,5,25,2,8], the maximum XOR
+    // pair is 5^25 = 28.
+    private static readonly int[] ClassicExampleValues = [3, 10, 5, 25, 2, 8];
+
     [Fact]
     public void TryMaxXor_EmptyTrie_ReturnsFalse()
     {
+        const int QueryValue = 5;
+
         var trie = new BitTrieOperations();
 
-        var found = trie.TryMaxXor(5, out var result);
+        var found = trie.TryMaxXor(QueryValue, out var result);
 
         Assert.False(found);
         Assert.Equal(0, result);
@@ -21,36 +27,39 @@ public sealed partial class BitTrieTests
     [Fact]
     public void TryMaxXor_SingleInsertedValue_ReturnsXorAgainstIt()
     {
-        var trie = new BitTrieOperations();
-        trie.Insert(3);
+        const int InsertedValue = 3;
+        const int QueryValue = 5;
 
-        var found = trie.TryMaxXor(5, out var result);
+        var trie = new BitTrieOperations();
+        trie.Insert(InsertedValue);
+
+        var found = trie.TryMaxXor(QueryValue, out var result);
 
         Assert.True(found);
-        Assert.Equal(3 ^ 5, result);
+        Assert.Equal(InsertedValue ^ QueryValue, result);
     }
 
-    // The canonical LeetCode 421 example: nums = [3,10,5,25,2,8], the maximum XOR
-    // pair is 5^25 = 28.
     [Fact]
     public void TryMaxXor_ClassicExample_FindsMaximumAcrossAllInsertedValues()
     {
+        const int ExpectedMaxXor = 28;
+
         var trie = new BitTrieOperations();
 
-        foreach (var value in new[] { 3, 10, 5, 25, 2, 8 })
+        foreach (var value in ClassicExampleValues)
         {
             trie.Insert(value);
         }
 
         var best = 0;
 
-        foreach (var query in new[] { 3, 10, 5, 25, 2, 8 })
+        foreach (var query in ClassicExampleValues)
         {
             trie.TryMaxXor(query, out var result);
             best = Math.Max(best, result);
         }
 
-        Assert.Equal(28, best);
+        Assert.Equal(ExpectedMaxXor, best);
     }
 
     [Fact]
@@ -59,34 +68,42 @@ public sealed partial class BitTrieTests
         // 0b0000 and 0b1111: opposite at every one of these 4 bits, so their XOR
         // (0b1111 = 15) beats any pairing with 0b1110 (XOR 1) even though 0b1110
         // is numerically closer to 0b1111 than 0b0000 is.
+        const int NearNeighborValue = 0b1110;
+        const int FullyOppositeQuery = 0b1111;
+
         var trie = new BitTrieOperations();
         trie.Insert(0b0000);
-        trie.Insert(0b1110);
+        trie.Insert(NearNeighborValue);
 
-        var found = trie.TryMaxXor(0b1111, out var result);
+        var found = trie.TryMaxXor(FullyOppositeQuery, out var result);
 
         Assert.True(found);
-        Assert.Equal(0b1111, result);
+        Assert.Equal(FullyOppositeQuery, result);
     }
 
     [Fact]
     public void Insert_DuplicateValue_IncrementsCountForEachCall()
     {
+        const int DuplicateValue = 7;
+        const int ExpectedCountAfterTwoInserts = 2;
+
         var trie = new BitTrieOperations();
 
-        trie.Insert(7);
-        trie.Insert(7);
+        trie.Insert(DuplicateValue);
+        trie.Insert(DuplicateValue);
 
-        Assert.Equal(2, trie.Count);
+        Assert.Equal(ExpectedCountAfterTwoInserts, trie.Count);
     }
 
     [Fact]
     public void TryMaxXor_ValueXorWithItself_CanReturnZero()
     {
-        var trie = new BitTrieOperations();
-        trie.Insert(9);
+        const int Value = 9;
 
-        var found = trie.TryMaxXor(9, out var result);
+        var trie = new BitTrieOperations();
+        trie.Insert(Value);
+
+        var found = trie.TryMaxXor(Value, out var result);
 
         Assert.True(found);
         Assert.Equal(0, result);
@@ -110,6 +127,8 @@ public sealed partial class BitTrieTests
     [Fact]
     public void Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain()
     {
+        const int ExpectedNodeCount = 34;
+
         var trie = new BitTrieOperations();
         trie.Insert(0);
         trie.Insert(1);
@@ -119,6 +138,6 @@ public sealed partial class BitTrieTests
             NaturalChildOrder<BitTrieNode, BitTrieChildren>,
             BitTrieChildren>(trie.Root);
 
-        Assert.Equal(34, size);
+        Assert.Equal(ExpectedNodeCount, size);
     }
 }

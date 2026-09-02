@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NextGreaterNodeInLinkedListBenchmarks
 {
+    private const int RandomSeed = 1019;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -21,7 +23,7 @@ public class NextGreaterNodeInLinkedListBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1019);
+        var random = new Random(RandomSeed);
         var values = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
         _head = Build(values);
     }

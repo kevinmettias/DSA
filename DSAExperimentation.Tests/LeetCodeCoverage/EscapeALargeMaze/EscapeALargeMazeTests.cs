@@ -23,13 +23,17 @@ public sealed partial class EscapeALargeMazeTests
     {
         int[][] blocked = [[0, 1], [1, 0]];
 
-        Assert.False(IsEscapePossible(blocked, [0, 0], [0, 2]));
+        var canEscape = IsEscapePossible(blocked, [0, 0], [0, 2]);
+
+        Assert.False(canEscape);
     }
 
     [Fact]
     public void IsEscapePossible_NoBlockedCells_ReturnsTrue()
     {
-        Assert.True(IsEscapePossible([], [0, 0], [999_999, 999_999]));
+        var canEscape = IsEscapePossible([], [0, 0], [999_999, 999_999]);
+
+        Assert.True(canEscape);
     }
 
     [Fact]
@@ -39,7 +43,9 @@ public sealed partial class EscapeALargeMazeTests
         // the source can slip through to the open board rather than being sealed in.
         int[][] blocked = [[1, 3], [1, 4], [1, 6]];
 
-        Assert.True(IsEscapePossible(blocked, [0, 5], [50, 50]));
+        var canEscape = IsEscapePossible(blocked, [0, 5], [50, 50]);
+
+        Assert.True(canEscape);
     }
 
     private const int MaxCoordinate = 999_999;
@@ -61,40 +67,53 @@ public sealed partial class EscapeALargeMazeTests
         return CanEscapeOrReach(from, to, blocked, threshold) && CanEscapeOrReach(to, from, blocked, threshold);
     }
 
+    // Mutable per-search counter: Traverse calls the successors func exactly once per
+    // newly visited node, so this tracks visited count across calls without needing
+    // access to Traverse's own internals. A plain captured local can't do this once
+    // Successors moves out to a real method instead of a closure, hence this holder.
+    private sealed class VisitBudget
+    {
+        public int VisitedCount;
+    }
+
     private static bool CanEscapeOrReach(
         (int Row, int Col) start, (int Row, int Col) other, Set<(int Row, int Col)> blocked, int threshold)
     {
-        var visitedCount = 0;
-
-        var reached = DepthFirstSearch.Traverse(start, Successors);
+        var budget = new VisitBudget();
+        var reached = DepthFirstSearch.Traverse(start, cell => Successors(cell, blocked, threshold, budget));
 
         return reached.Count > threshold || reached.Contains(other);
+    }
 
-        IEnumerable<(int Row, int Col)> Successors((int Row, int Col) cell)
+    private static IEnumerable<(int Row, int Col)> Successors(
+        (int Row, int Col) cell, Set<(int Row, int Col)> blocked, int threshold, VisitBudget budget)
+    {
+        budget.VisitedCount++;
+
+        if (budget.VisitedCount > threshold)
         {
-            visitedCount++;
+            yield break;
+        }
 
-            if (visitedCount > threshold)
+        foreach (var direction in Directions)
+        {
+            if (TryGetOpenNeighbor(cell, direction, blocked, out var next))
             {
-                yield break;
-            }
-
-            foreach (var (dRow, dCol) in Directions)
-            {
-                var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-                if (next.Row < 0 || next.Row > MaxCoordinate || next.Col < 0 || next.Col > MaxCoordinate)
-                {
-                    continue;
-                }
-
-                if (blocked.Has(next))
-                {
-                    continue;
-                }
-
                 yield return next;
             }
         }
+    }
+
+    private static bool TryGetOpenNeighbor(
+        (int Row, int Col) cell, (int DRow, int DCol) direction, Set<(int Row, int Col)> blocked, out (int Row, int Col) next)
+    {
+        next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+
+        if (next.Row < 0 || next.Row > MaxCoordinate || next.Col < 0 || next.Col > MaxCoordinate)
+        {
+            return false;
+        }
+
+        return !blocked.Has(next);
     }
 }

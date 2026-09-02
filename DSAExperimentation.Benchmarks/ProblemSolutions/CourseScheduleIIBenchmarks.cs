@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CourseScheduleIIBenchmarks
 {
+    private const int MaxFanOut = 3;
+
     [Params(50, 1_000)]
     public int CourseCount;
 
@@ -27,7 +29,7 @@ public class CourseScheduleIIBenchmarks
 
         for (var i = 0; i < CourseCount; i++)
         {
-            var fanOut = Math.Min(3, CourseCount - 1 - i);
+            var fanOut = Math.Min(MaxFanOut, CourseCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
                 _courses[i].EnabledCourses.Add(_courses[i + f]);
@@ -52,21 +54,34 @@ public class CourseScheduleIIBenchmarks
 
         while (remaining.Count > 0)
         {
-            var next = remaining.FirstOrDefault(course => inDegree[course] == 0);
-            if (next is null)
+            if (!TryAdvanceNaiveRescan(remaining, inDegree, order))
             {
                 break;
-            }
-
-            order.Add(next);
-            remaining.Remove(next);
-            foreach (var dependent in next.EnabledCourses)
-            {
-                inDegree[dependent]--;
             }
         }
 
         return order.Count;
+    }
+
+    private static bool TryAdvanceNaiveRescan(
+        List<CourseNode> remaining, Dictionary<CourseNode, int> inDegree, List<CourseNode> order)
+    {
+        var next = remaining.FirstOrDefault(course => inDegree[course] == 0);
+
+        if (next is null)
+        {
+            return false;
+        }
+
+        order.Add(next);
+        remaining.Remove(next);
+
+        foreach (var dependent in next.EnabledCourses)
+        {
+            inDegree[dependent]--;
+        }
+
+        return true;
     }
 
     [Benchmark]

@@ -17,6 +17,9 @@ public class DistributeRepeatingIntegersBenchmarks
 {
     private const int OrdersPerValue = 6;
 
+    // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
+    private const int RandomSeed = 1655;
+
     [Params(3, 5)]
     public int ValueCount;
 
@@ -34,7 +37,7 @@ public class DistributeRepeatingIntegersBenchmarks
             all.AddRange(perValue);
         }
 
-        var random = new Random(1655);
+        var random = new Random(RandomSeed);
         _orders = all.OrderBy(_ => random.Next()).ToArray();
         _stock = Enumerable.Repeat(perValue.Sum(), ValueCount).ToArray();
     }
@@ -47,34 +50,43 @@ public class DistributeRepeatingIntegersBenchmarks
         Array.Reverse(sorted);
         var remaining = (int[])_stock.Clone();
 
-        return Search(0);
+        return Search(sorted, remaining, 0);
+    }
 
-        bool Search(int index)
+    private static bool Search(int[] sorted, int[] remaining, int index)
+    {
+        if (index == sorted.Length)
         {
-            if (index == sorted.Length)
+            return true;
+        }
+
+        for (var value = 0; value < remaining.Length; value++)
+        {
+            if (TryAssign(sorted, remaining, value, index))
             {
                 return true;
             }
+        }
 
-            for (var value = 0; value < remaining.Length; value++)
-            {
-                if (remaining[value] < sorted[index])
-                {
-                    continue;
-                }
+        return false;
+    }
 
-                remaining[value] -= sorted[index];
-
-                if (Search(index + 1))
-                {
-                    return true;
-                }
-
-                remaining[value] += sorted[index];
-            }
-
+    private static bool TryAssign(int[] sorted, int[] remaining, int value, int index)
+    {
+        if (remaining[value] < sorted[index])
+        {
             return false;
         }
+
+        remaining[value] -= sorted[index];
+
+        if (Search(sorted, remaining, index + 1))
+        {
+            return true;
+        }
+
+        remaining[value] += sorted[index];
+        return false;
     }
 
     [Benchmark]

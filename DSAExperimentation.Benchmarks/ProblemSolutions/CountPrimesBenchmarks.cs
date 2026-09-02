@@ -9,6 +9,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountPrimesBenchmarks
 {
+    private const int SmallestCandidate = 2;
+
     [Params(2_000, 20_000)]
     public int N;
 
@@ -17,11 +19,11 @@ public class CountPrimesBenchmarks
     {
         var count = 0;
 
-        for (var candidate = 2; candidate < N; candidate++)
+        for (var candidate = SmallestCandidate; candidate < N; candidate++)
         {
             var isPrime = true;
 
-            for (var divisor = 2; divisor * divisor <= candidate; divisor++)
+            for (var divisor = SmallestCandidate; divisor * divisor <= candidate; divisor++)
             {
                 if (candidate % divisor == 0)
                 {
@@ -42,18 +44,33 @@ public class CountPrimesBenchmarks
     [Benchmark]
     public int SieveOfEratosthenes()
     {
-        if (N < 2)
+        if (N < SmallestCandidate)
         {
             return 0;
         }
 
+        var isComposite = BuildSieveArray();
+
+        MarkComposites(isComposite);
+
+        return CountUnmarked(isComposite);
+    }
+
+    private DynamicArray<bool> BuildSieveArray()
+    {
         var isComposite = new DynamicArray<bool>();
+
         for (var i = 0; i < N; i++)
         {
             isComposite.Add(false);
         }
 
-        for (var i = 2; i * i < N; i++)
+        return isComposite;
+    }
+
+    private void MarkComposites(DynamicArray<bool> isComposite)
+    {
+        for (var i = SmallestCandidate; i * i < N; i++)
         {
             if (isComposite.Get(i))
             {
@@ -65,9 +82,13 @@ public class CountPrimesBenchmarks
                 isComposite.Set(multiple, true);
             }
         }
+    }
 
+    private int CountUnmarked(DynamicArray<bool> isComposite)
+    {
         var count = 0;
-        for (var i = 2; i < N; i++)
+
+        for (var i = SmallestCandidate; i < N; i++)
         {
             if (!isComposite.Get(i))
             {

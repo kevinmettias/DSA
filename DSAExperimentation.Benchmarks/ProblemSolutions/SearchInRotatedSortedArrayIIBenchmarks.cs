@@ -1,19 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Search in Rotated Sorted Array II (LC 81): a plain O(n) linear scan vs. trimming
-// duplicate boundary values off the left edge and handing the remaining slice to
-// this repo's own BinarySearch.LowerBound/Find, the same pivot-then-bisect strategy
-// SearchInRotatedSortedArrayBenchmarks (LC 33) already uses. A bounded band of
+// Harness only: both arms are SearchInRotatedSortedArrayIISolution's, the same
+// methods SearchInRotatedSortedArrayIITests proves correct. A bounded band of
 // duplicate values is stamped across both ends so the trim loop does real, but
 // small, work relative to Length - large enough to exercise duplicate handling,
 // small enough that the O(log n) win over LinearScan still shows.
 [MemoryDiagnoser]
 public class SearchInRotatedSortedArrayIIBenchmarks
 {
+    private const int PivotDivisor = 3; // rotation pivot is one third of the way into the array
+    private const int DuplicateSpanDivisor = 8; // fraction of Length stamped with duplicate boundary values
+    private const int MaxDuplicateSpan = 40; // upper bound on how many boundary elements are duplicated
+    private const int TargetDivisor = 2; // target sits halfway into the pre-rotation segment
+
     private int[] _values = null!;
     private int _target;
 
@@ -24,10 +26,10 @@ public class SearchInRotatedSortedArrayIIBenchmarks
     public void Setup()
     {
         var sorted = Enumerable.Range(0, Length).ToArray();
-        var pivot = Length / 3;
+        var pivot = Length / PivotDivisor;
         var rotated = sorted[pivot..].Concat(sorted[..pivot]).ToArray();
 
-        var duplicateSpan = Math.Min(Length / 8, 40);
+        var duplicateSpan = Math.Min(Length / DuplicateSpanDivisor, MaxDuplicateSpan);
         for (var i = 0; i < duplicateSpan; i++)
         {
             rotated[i] = rotated[0];
@@ -35,44 +37,13 @@ public class SearchInRotatedSortedArrayIIBenchmarks
         }
 
         _values = rotated;
-        _target = pivot / 2;
+        _target = pivot / TargetDivisor;
     }
 
     [Benchmark(Baseline = true)]
-    public bool LinearScan() => Array.IndexOf(_values, _target) >= 0;
+    public bool LinearScan() => SearchInRotatedSortedArrayIISolution.SearchByLinearScan(_values, _target);
 
     [Benchmark]
-    public bool TrimDuplicatesThenBinarySearch()
-    {
-        var left = 0;
-        var right = _values.Length - 1;
-
-        while (left < right && _values[left] == _values[right])
-        {
-            left++;
-        }
-
-        var trimmedLength = right - left + 1;
-        var trimmedLast = _values[right];
-
-        var pivot = BinarySearch.LowerBound<int, PivotSequence>(new PivotSequence(_values, left, trimmedLength, trimmedLast), 1);
-        var searchRight = _target <= trimmedLast;
-        var start = searchRight ? pivot : 0;
-        var length = searchRight ? trimmedLength - pivot : pivot;
-        var found = BinarySearch.Find<int, OffsetSequence>(new OffsetSequence(_values, left + start, length), _target);
-
-        return found is not null;
-    }
-
-    private readonly struct PivotSequence(int[] nums, int start, int length, int lastValue) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int index) => nums[start + index] <= lastValue ? 1 : 0;
-    }
-
-    private readonly struct OffsetSequence(int[] nums, int start, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int index) => nums[start + index];
-    }
+    public bool TrimDuplicatesThenBinarySearch() =>
+        SearchInRotatedSortedArrayIISolution.SearchByTrimDuplicatesThenBinarySearch(_values, _target);
 }

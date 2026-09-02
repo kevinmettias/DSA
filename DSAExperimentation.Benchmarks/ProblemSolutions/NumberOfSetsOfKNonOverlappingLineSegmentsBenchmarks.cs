@@ -14,6 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
 {
     private const long Modulo = 1_000_000_007;
+    private const int PointsToKDivisor = 4;
+    private const int TargetMultiplier = 2;
 
     [Params(50, 500)]
     public int Points;
@@ -21,13 +23,13 @@ public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
     private int _k;
 
     [GlobalSetup]
-    public void Setup() => _k = Points / 4;
+    public void Setup() => _k = Points / PointsToKDivisor;
 
     [Benchmark(Baseline = true)]
     public long Tabulation()
     {
         var n = Points + _k - 1;
-        var target = 2 * _k;
+        var target = TargetMultiplier * _k;
         var table = new long[n + 1, target + 1];
 
         for (var row = 0; row <= n; row++)
@@ -42,7 +44,7 @@ public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
     }
 
     [Benchmark]
-    public long Memoized() => Choose(Points + _k - 1, 2 * _k);
+    public long Memoized() => Choose(Points + _k - 1, TargetMultiplier * _k);
 
     private static long Choose(int n, int k) => Memoizer.Memoize<(int N, int K), long>((n, k), ChooseRecurrence);
 

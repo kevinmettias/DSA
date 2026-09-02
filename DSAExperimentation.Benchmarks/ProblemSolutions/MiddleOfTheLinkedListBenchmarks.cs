@@ -12,6 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MiddleOfTheLinkedListBenchmarks
 {
+    private const int RandomSeed = 876; // LC problem number
+    private const int MidpointDivisor = 2;
+    private const int MaxNodeValueExclusive = 1_000;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -20,7 +24,7 @@ public class MiddleOfTheLinkedListBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(876);
+        var random = new Random(RandomSeed);
         _head = BuildRandomList(random, Length);
     }
 
@@ -33,7 +37,7 @@ public class MiddleOfTheLinkedListBenchmarks
             count++;
         }
 
-        var target = count / 2;
+        var target = count / MidpointDivisor;
         var current = _head;
         for (var i = 0; i < target; i++)
         {
@@ -60,12 +64,12 @@ public class MiddleOfTheLinkedListBenchmarks
 
     private static SinglyLinkedListNode<int> BuildRandomList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, 1_000));
+        var head = new SinglyLinkedListNode<int>(random.Next(0, MaxNodeValueExclusive));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, 1_000));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, MaxNodeValueExclusive));
             tail = tail.Next;
         }
 

@@ -1,41 +1,41 @@
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedArrayII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveDuplicatesFromSortedArrayII;
 
-// LeetCode 80. Remove Duplicates from Sorted Array II: the same read/write two-
-// pointer compaction over this repo's own ArrayIndexedSequence<int> that
-// RemoveDuplicatesFromSortedArrayTests (LC 26) already uses, generalized from
-// "keep if different from the last kept element" to "keep if different from the
-// element kept two slots back" - which is exactly what caps every run at 2
-// occurrences instead of 1.
-public sealed partial class RemoveDuplicatesFromSortedArrayIITests
+// Harness only. Both strategies are RemoveDuplicatesFromSortedArrayIISolution's -
+// this file pins them to LeetCode's published examples, asserting both the
+// reported length and the compacted at-most-twice prefix it describes.
+public sealed class RemoveDuplicatesFromSortedArrayIITests
 {
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
+        {
+            { [0, 0, 1, 1, 1, 1, 2, 3, 3], 7, [0, 0, 1, 1, 2, 3, 3] },
+            { [1, 1, 1, 2, 2, 3], 5, [1, 1, 2, 2, 3] },
+            { [1], 1, [1] },
+            { [], 0, [] },
+            { [1, 2, 3], 3, [1, 2, 3] },
+        };
+
     [Theory]
-    [InlineData(new[] { 0, 0, 1, 1, 1, 1, 2, 3, 3 }, 7, new[] { 0, 0, 1, 1, 2, 3, 3 })]
-    [InlineData(new[] { 1, 1, 1, 2, 2, 3 }, 5, new[] { 1, 1, 2, 2, 3 })]
-    [InlineData(new[] { 1 }, 1, new[] { 1 })]
-    public void RemoveDuplicates_ArrayIndexedSequenceCompaction_AllowsAtMostTwoOccurrences(
+    [MemberData(nameof(Examples))]
+    public void RemoveDuplicatesByLinqGroupCapTwo_LeetCodeExamples_CompactsAtMostTwoPrefix(
         int[] nums, int expectedLength, int[] expectedPrefix)
     {
-        var length = RemoveDuplicates(nums);
+        var length = RemoveDuplicatesFromSortedArrayIISolution.RemoveDuplicatesByLinqGroupCapTwo(nums);
 
         Assert.Equal(expectedLength, length);
         Assert.Equal(expectedPrefix, nums[..length]);
     }
 
-    private static int RemoveDuplicates(int[] nums)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveDuplicatesByArrayIndexedSequenceCompact_LeetCodeExamples_CompactsAtMostTwoPrefix(
+        int[] nums, int expectedLength, int[] expectedPrefix)
     {
-        var sequence = new ArrayIndexedSequence<int>(nums);
-        var write = 0;
+        var length = RemoveDuplicatesFromSortedArrayIISolution.RemoveDuplicatesByArrayIndexedSequenceCompact(nums);
 
-        for (var read = 0; read < sequence.Length; read++)
-        {
-            if (write < 2 || sequence.Get(read) != sequence.Get(write - 2))
-            {
-                sequence.Set(write++, sequence.Get(read));
-            }
-        }
-
-        return write;
+        Assert.Equal(expectedLength, length);
+        Assert.Equal(expectedPrefix, nums[..length]);
     }
 }

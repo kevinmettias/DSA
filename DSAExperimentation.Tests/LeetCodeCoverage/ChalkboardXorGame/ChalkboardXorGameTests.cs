@@ -19,45 +19,50 @@ public sealed partial class ChalkboardXorGameTests
     private static bool AliceWins(int[] nums)
     {
         var fullMask = (1 << nums.Length) - 1;
-        return Memoizer.Memoize<int, bool>(fullMask, CurrentPlayerWins);
+        return Memoizer.Memoize<int, bool>(fullMask, (mask, currentPlayerWins) => CurrentPlayerWins(mask, currentPlayerWins, nums));
+    }
 
-        bool CurrentPlayerWins(int mask, Func<int, bool> currentPlayerWins)
+    private static bool CurrentPlayerWins(int mask, Func<int, bool> currentPlayerWins, int[] nums)
+    {
+        if (XorOf(mask, nums) == 0)
         {
-            if (XorOf(mask) == 0)
+            return true;
+        }
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if (TryLoseByRemoving(mask, i, currentPlayerWins, nums))
             {
                 return true;
             }
+        }
 
-            for (var i = 0; i < nums.Length; i++)
-            {
-                var bit = 1 << i;
-                if ((mask & bit) == 0)
-                {
-                    continue;
-                }
+        return false;
+    }
 
-                var remaining = mask & ~bit;
-                if (XorOf(remaining) != 0 && !currentPlayerWins(remaining))
-                {
-                    return true;
-                }
-            }
-
+    private static bool TryLoseByRemoving(int mask, int i, Func<int, bool> currentPlayerWins, int[] nums)
+    {
+        var bit = 1 << i;
+        if ((mask & bit) == 0)
+        {
             return false;
         }
 
-        int XorOf(int mask)
-        {
-            var result = 0;
-            for (var i = 0; i < nums.Length; i++)
-            {
-                if ((mask & (1 << i)) != 0)
-                {
-                    result ^= nums[i];
-                }
-            }
+        var remaining = mask & ~bit;
+        return XorOf(remaining, nums) != 0 && !currentPlayerWins(remaining);
+    }
 
-            return result;
+    private static int XorOf(int mask, int[] nums)
+    {
+        var result = 0;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if ((mask & (1 << i)) != 0)
+            {
+                result ^= nums[i];
+            }
         }
+
+        return result;
     }
 }

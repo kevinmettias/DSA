@@ -13,6 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NextGreaterElementIBenchmarks
 {
+    private const int RandomSeed = 496; // LC problem number
+
     [Params(200, 2_500)]
     public int Length;
 
@@ -22,7 +24,7 @@ public class NextGreaterElementIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(496);
+        var random = new Random(RandomSeed);
         _nums2 = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
         _nums1 = _nums2.OrderBy(_ => random.Next()).ToArray();
     }

@@ -18,6 +18,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class IsGraphBipartiteBenchmarks
 {
+    // The graph is split into exactly two sides (A and B) to stay bipartite by
+    // construction.
+    private const int PartitionCount = 2;
+
+    // Extra cross-only edges added per node for density.
+    private const int DensityEdgesPerNode = 2;
+
     [Params(200, 5_000)]
     public int NodeCount;
 
@@ -28,30 +35,39 @@ public class IsGraphBipartiteBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        var half = NodeCount / 2;
+        var half = NodeCount / PartitionCount;
         var edges = new List<(int From, int To)>();
 
-        // Guarantee connectivity: every B-side node gets one cross edge back to a
-        // random A-side node.
+        AddConnectivityEdges(edges, random, half);
+        AddDensityEdges(edges, random, half);
+
+        _adjacency = BuildAdjacency(NodeCount, edges);
+        _nodes = BuildGraphNodes(NodeCount, edges);
+    }
+
+    // Guarantee connectivity: every B-side node gets one cross edge back to a
+    // random A-side node.
+    private void AddConnectivityEdges(List<(int From, int To)> edges, Random random, int half)
+    {
         for (var i = half; i < NodeCount; i++)
         {
             edges.Add((random.Next(half), i));
         }
+    }
 
-        // Extra cross-only edges for density - still strictly A-to-B, so the graph
-        // stays bipartite by construction.
+    // Extra cross-only edges for density - still strictly A-to-B, so the graph
+    // stays bipartite by construction.
+    private void AddDensityEdges(List<(int From, int To)> edges, Random random, int half)
+    {
         for (var i = 0; i < NodeCount; i++)
         {
-            for (var e = 0; e < 2; e++)
+            for (var e = 0; e < DensityEdgesPerNode; e++)
             {
                 var inA = i < half;
                 var target = inA ? half + random.Next(NodeCount - half) : random.Next(half);
                 edges.Add((i, target));
             }
         }
-
-        _adjacency = BuildAdjacency(NodeCount, edges);
-        _nodes = BuildGraphNodes(NodeCount, edges);
     }
 
     [Benchmark(Baseline = true)]

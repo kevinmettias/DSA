@@ -14,6 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckIfItIsAGoodArrayBenchmarks
 {
+    private const int RandomSeed = 6;
+    private const int MultipleFactor = 3; // keeps _values multiples of 3 so the running gcd never reaches 1 early
+    private const int MaxRandomValueExclusive = 50_000;
+
     [Params(50, 200)]
     public int Length;
 
@@ -22,8 +26,8 @@ public class CheckIfItIsAGoodArrayBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(6);
-        _values = Enumerable.Range(0, Length).Select(_ => 3 * random.Next(1, 50_000)).ToArray();
+        var random = new Random(RandomSeed);
+        _values = Enumerable.Range(0, Length).Select(_ => MultipleFactor * random.Next(1, MaxRandomValueExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

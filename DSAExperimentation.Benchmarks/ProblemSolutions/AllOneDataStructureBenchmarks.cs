@@ -17,6 +17,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AllOneDataStructureBenchmarks
 {
+    private const int RandomSeed = 432; // LC problem number
+    private const string KeyPrefix = "key";
+    private const int OpsCapacityMultiplier = 4;
+    private const int GetMaxKeyOpType = 2;
+    private const int GetMinKeyOpType = 3;
+    private const string NoKeySentinel = "";
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -25,9 +32,9 @@ public class AllOneDataStructureBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(432);
-        var keys = Enumerable.Range(0, Length).Select(i => "key" + i).ToArray();
-        var ops = new List<(int Type, string Key)>(Length * 4);
+        var random = new Random(RandomSeed);
+        var keys = Enumerable.Range(0, Length).Select(i => KeyPrefix + i).ToArray();
+        var ops = new List<(int Type, string Key)>(Length * OpsCapacityMultiplier);
 
         foreach (var key in keys)
         {
@@ -37,8 +44,8 @@ public class AllOneDataStructureBenchmarks
         for (var round = 0; round < Length; round++)
         {
             ops.Add((0, keys[random.Next(keys.Length)]));
-            ops.Add((2, ""));
-            ops.Add((3, ""));
+            ops.Add((GetMaxKeyOpType, NoKeySentinel));
+            ops.Add((GetMinKeyOpType, NoKeySentinel));
         }
 
         _ops = [.. ops];
@@ -57,10 +64,10 @@ public class AllOneDataStructureBenchmarks
                 case 0:
                     counts[key] = counts.GetValueOrDefault(key) + 1;
                     break;
-                case 2:
+                case GetMaxKeyOpType:
                     checksum += MaxKey(counts).Length;
                     break;
-                case 3:
+                case GetMinKeyOpType:
                     checksum += MinKey(counts).Length;
                     break;
             }
@@ -82,10 +89,10 @@ public class AllOneDataStructureBenchmarks
                 case 0:
                     allOne.Inc(key);
                     break;
-                case 2:
+                case GetMaxKeyOpType:
                     checksum += allOne.GetMaxKey().Length;
                     break;
-                case 3:
+                case GetMinKeyOpType:
                     checksum += allOne.GetMinKey().Length;
                     break;
             }
@@ -96,7 +103,7 @@ public class AllOneDataStructureBenchmarks
 
     private static string MaxKey(Dictionary<string, int> counts)
     {
-        var best = "";
+        var best = NoKeySentinel;
         var bestCount = int.MinValue;
 
         foreach (var (key, count) in counts)
@@ -113,7 +120,7 @@ public class AllOneDataStructureBenchmarks
 
     private static string MinKey(Dictionary<string, int> counts)
     {
-        var best = "";
+        var best = NoKeySentinel;
         var bestCount = int.MaxValue;
 
         foreach (var (key, count) in counts)
@@ -171,7 +178,7 @@ public class AllOneDataStructureBenchmarks
             KeyCount--;
         }
 
-        public string PeekAnyKey() => _keysHead.Next == _keysTail ? "" : _keysHead.Next!.Value.Key;
+        public string PeekAnyKey() => _keysHead.Next == _keysTail ? NoKeySentinel : _keysHead.Next!.Value.Key;
     }
 
     private sealed class AllOne
@@ -197,30 +204,46 @@ public class AllOneDataStructureBenchmarks
 
             var anchor = hasExisting ? keyEntryNode.Value.CurrentBucket! : _head;
             var newCount = (hasExisting ? anchor.Value.Count : 0) + 1;
-
-            var candidate = anchor.Next!;
-            var newBucketNode = candidate != _tail && candidate.Value.Count == newCount
-                ? candidate
-                : InsertBucketAfter(anchor, newCount);
+            var newBucketNode = FindOrCreateBucket(anchor, newCount);
 
             if (hasExisting)
             {
-                anchor.Value.RemoveKeyNode(keyEntryNode);
-
-                if (anchor.Value.KeyCount == 0)
-                {
-                    Unlink(anchor);
-                }
+                DetachFromBucket(anchor, keyEntryNode);
             }
 
-            newBucketNode.Value.AddKeyNode(keyEntryNode);
-            keyEntryNode.Value.CurrentBucket = newBucketNode;
-            _keyNode.Set(key, keyEntryNode);
+            AttachToBucket(newBucketNode, key, keyEntryNode);
         }
 
-        public string GetMaxKey() => _tail.Previous == _head ? "" : _tail.Previous!.Value.PeekAnyKey();
+        public string GetMaxKey() => _tail.Previous == _head ? NoKeySentinel : _tail.Previous!.Value.PeekAnyKey();
 
-        public string GetMinKey() => _head.Next == _tail ? "" : _head.Next!.Value.PeekAnyKey();
+        public string GetMinKey() => _head.Next == _tail ? NoKeySentinel : _head.Next!.Value.PeekAnyKey();
+
+        private DoublyLinkedListNode<Bucket> FindOrCreateBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
+        {
+            var candidate = anchor.Next!;
+            return candidate != _tail && candidate.Value.Count == newCount
+                ? candidate
+                : InsertBucketAfter(anchor, newCount);
+        }
+
+        private static void DetachFromBucket(
+            DoublyLinkedListNode<Bucket> anchor, DoublyLinkedListNode<KeyEntry> keyEntryNode)
+        {
+            anchor.Value.RemoveKeyNode(keyEntryNode);
+
+            if (anchor.Value.KeyCount == 0)
+            {
+                Unlink(anchor);
+            }
+        }
+
+        private void AttachToBucket(
+            DoublyLinkedListNode<Bucket> bucketNode, string key, DoublyLinkedListNode<KeyEntry> keyEntryNode)
+        {
+            bucketNode.Value.AddKeyNode(keyEntryNode);
+            keyEntryNode.Value.CurrentBucket = bucketNode;
+            _keyNode.Set(key, keyEntryNode);
+        }
 
         private static void Unlink(DoublyLinkedListNode<Bucket> node)
         {

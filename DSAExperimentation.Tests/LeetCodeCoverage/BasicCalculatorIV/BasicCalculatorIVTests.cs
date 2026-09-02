@@ -53,6 +53,20 @@ public sealed partial class BasicCalculatorIVTests
 
     private static List<string> Evaluate(string expression, string[] evalvars, int[] evalints)
     {
+        var values = BuildKnownValues(evalvars, evalints);
+
+        var pos = 0;
+        var normalizedExpression = expression.Replace(" ", string.Empty);
+        var polynomial = ParseExpression(normalizedExpression, ref pos, values);
+
+        var termsArray = BuildNonZeroTerms(polynomial);
+        SortTermsByDegreeThenKey(termsArray);
+
+        return FormatTerms(termsArray);
+    }
+
+    private static HashMap<string, int> BuildKnownValues(string[] evalvars, int[] evalints)
+    {
         var values = new HashMap<string, int>();
 
         for (var i = 0; i < evalvars.Length; i++)
@@ -60,9 +74,11 @@ public sealed partial class BasicCalculatorIVTests
             values.Set(evalvars[i], evalints[i]);
         }
 
-        var pos = 0;
-        var polynomial = ParseExpression(expression.Replace(" ", string.Empty), ref pos, values);
+        return values;
+    }
 
+    private static Term[] BuildNonZeroTerms(HashMap<string, long> polynomial)
+    {
         var terms = new List<Term>();
 
         foreach (var key in polynomial.Keys)
@@ -75,7 +91,11 @@ public sealed partial class BasicCalculatorIVTests
             }
         }
 
-        var termsArray = terms.ToArray();
+        return terms.ToArray();
+    }
+
+    private static void SortTermsByDegreeThenKey(Term[] termsArray)
+    {
         var comparer = Comparer<Term>.Create((a, b) =>
         {
             var degreeA = Degree(a.Key);
@@ -84,7 +104,10 @@ public sealed partial class BasicCalculatorIVTests
         });
 
         MergeSort.Sort<Term, ArrayIndexedSequence<Term>>(new ArrayIndexedSequence<Term>(termsArray), comparer);
+    }
 
+    private static List<string> FormatTerms(Term[] termsArray)
+    {
         var formatted = new List<string>();
 
         foreach (var term in termsArray)
@@ -130,24 +153,31 @@ public sealed partial class BasicCalculatorIVTests
     {
         if (expr[pos] == '(')
         {
-            pos++;
-            var inner = ParseExpression(expr, ref pos, values);
-            pos++;
-            return inner;
+            return ParseParenthesized(expr, ref pos, values);
         }
 
         if (char.IsDigit(expr[pos]))
         {
-            var start = pos;
-
-            while (pos < expr.Length && char.IsDigit(expr[pos]))
-            {
-                pos++;
-            }
-
-            return Constant(long.Parse(expr[start..pos]));
+            return ParseConstant(expr, ref pos);
         }
 
+        return ParseVariable(expr, ref pos, values);
+    }
+
+    private static HashMap<string, long> ParseConstant(string expr, ref int pos)
+    {
+        var start = pos;
+
+        while (pos < expr.Length && char.IsDigit(expr[pos]))
+        {
+            pos++;
+        }
+
+        return Constant(long.Parse(expr[start..pos]));
+    }
+
+    private static HashMap<string, long> ParseVariable(string expr, ref int pos, HashMap<string, int> values)
+    {
         var startVar = pos;
 
         while (pos < expr.Length && char.IsLower(expr[pos]))
@@ -156,6 +186,14 @@ public sealed partial class BasicCalculatorIVTests
         }
 
         return Variable(expr[startVar..pos], values);
+    }
+
+    private static HashMap<string, long> ParseParenthesized(string expr, ref int pos, HashMap<string, int> values)
+    {
+        pos++;
+        var inner = ParseExpression(expr, ref pos, values);
+        pos++;
+        return inner;
     }
 
     private static HashMap<string, long> Constant(long value)

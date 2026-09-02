@@ -19,6 +19,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GuessTheWordBenchmarks
 {
+    private const int RandomSeed = 843; // LC problem number
+    private const int WordLength = 6;
+    private const int MiddleIndexDivisor = 2;
+    private const int AlphabetSize = 26;
+
     [Params(100, 1_000)]
     public int WordCount;
 
@@ -28,13 +33,13 @@ public class GuessTheWordBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(843);
+        var random = new Random(RandomSeed);
         var seen = new HashSet<string>();
         var words = new List<string>();
 
         while (words.Count < WordCount)
         {
-            var word = RandomWord(random, 6);
+            var word = RandomWord(random, WordLength);
 
             if (seen.Add(word))
             {
@@ -43,7 +48,7 @@ public class GuessTheWordBenchmarks
         }
 
         _wordList = words.ToArray();
-        _secret = _wordList[WordCount / 2];
+        _secret = _wordList[WordCount / MiddleIndexDivisor];
     }
 
     private static string RandomWord(Random random, int length)
@@ -52,7 +57,7 @@ public class GuessTheWordBenchmarks
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = (char)('a' + random.Next(26));
+            chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
         return new string(chars);
@@ -108,20 +113,25 @@ public class GuessTheWordBenchmarks
                 return guessCount;
             }
 
-            var next = new DynamicArray<string>();
-
-            for (var i = 0; i < candidates.Count; i++)
-            {
-                var candidate = candidates.Get(i);
-
-                if (MatchCount(candidate, guess) == matches)
-                {
-                    next.Add(candidate);
-                }
-            }
-
-            candidates = next;
+            candidates = NarrowCandidates(candidates, guess, matches);
         }
+    }
+
+    private static DynamicArray<string> NarrowCandidates(DynamicArray<string> candidates, string guess, int matches)
+    {
+        var next = new DynamicArray<string>();
+
+        for (var i = 0; i < candidates.Count; i++)
+        {
+            var candidate = candidates.Get(i);
+
+            if (MatchCount(candidate, guess) == matches)
+            {
+                next.Add(candidate);
+            }
+        }
+
+        return next;
     }
 
     private static int MatchCount(string first, string second)

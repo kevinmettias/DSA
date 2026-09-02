@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ProductOfTheLastKNumbersBenchmarks
 {
+    private const int MaxFactorValueExclusive = 10;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -25,7 +27,7 @@ public class ProductOfTheLastKNumbersBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _rawValues = Enumerable.Range(0, Length).Select(_ => random.Next(1, 10)).ToArray();
+        _rawValues = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxFactorValueExclusive)).ToArray();
 
         _prefixProducts = new DynamicArray<long>();
         _prefixProducts.Add(1);

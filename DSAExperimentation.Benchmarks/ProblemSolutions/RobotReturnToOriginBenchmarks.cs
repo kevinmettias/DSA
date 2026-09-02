@@ -24,30 +24,35 @@ public class RobotReturnToOriginBenchmarks
     [Benchmark(Baseline = true)]
     public bool SwitchStatement()
     {
+        var (x, y) = ApplyMoves(_moves);
+        return IsAtOrigin(x, y);
+    }
+
+    private static (int X, int Y) ApplyMoves(char[] moves)
+    {
         var x = 0;
         var y = 0;
 
-        foreach (var move in _moves)
+        foreach (var move in moves)
         {
-            switch (move)
-            {
-                case 'U':
-                    y++;
-                    break;
-                case 'D':
-                    y--;
-                    break;
-                case 'L':
-                    x--;
-                    break;
-                case 'R':
-                    x++;
-                    break;
-            }
+            var (dx, dy) = DeltaFor(move);
+            x += dx;
+            y += dy;
         }
 
-        return x == 0 && y == 0;
+        return (x, y);
     }
+
+    private static (int Dx, int Dy) DeltaFor(char move) => move switch
+    {
+        'U' => (0, 1),
+        'D' => (0, -1),
+        'L' => (-1, 0),
+        'R' => (1, 0),
+        _ => (0, 0),
+    };
+
+    private static bool IsAtOrigin(int x, int y) => x == 0 && y == 0;
 
     [Benchmark]
     public bool HashMapLookup()
@@ -70,6 +75,6 @@ public class RobotReturnToOriginBenchmarks
             }
         }
 
-        return x == 0 && y == 0;
+        return IsAtOrigin(x, y);
     }
 }

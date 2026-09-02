@@ -20,6 +20,9 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
 {
     private const int K = 50;
     private const int Cols = 8;
+    private const int RandomSeed = 363; // LC problem number
+    private const int MinCellValue = -10;
+    private const int MaxCellValueExclusive = 11;
 
     [Params(200, 3_000)]
     public int Rows;
@@ -29,39 +32,22 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(363);
+        var random = new Random(RandomSeed);
         _matrix = Enumerable.Range(0, Rows)
-            .Select(_ => Enumerable.Range(0, Cols).Select(_ => random.Next(-10, 11)).ToArray())
+            .Select(_ => Enumerable.Range(0, Cols).Select(_ => random.Next(MinCellValue, MaxCellValueExclusive)).ToArray())
             .ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceWindowScan()
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var best = int.MinValue;
-
-        for (var left = 0; left < cols; left++)
-        {
-            var rowSums = new int[rows];
-
-            for (var right = left; right < cols; right++)
-            {
-                for (var r = 0; r < rows; r++)
-                {
-                    rowSums[r] += _matrix[r][right];
-                }
-
-                best = Math.Max(best, BestWindowBruteForce(rowSums));
-            }
-        }
-
-        return best;
-    }
+    public int BruteForceWindowScan() => ScanColumnPairs(BestWindowBruteForce);
 
     [Benchmark]
-    public int BstCeilingScan()
+    public int BstCeilingScan() => ScanColumnPairs(BestWindowBstCeiling);
+
+    // Shared column-pair/row-window scan shape both benchmarks ride: only how a
+    // single row-sum window's best value is computed (brute force vs. BST
+    // ceiling lookup) differs between them.
+    private int ScanColumnPairs(Func<int[], int> bestWindow)
     {
         var rows = _matrix.Length;
         var cols = _matrix[0].Length;
@@ -78,7 +64,7 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
                     rowSums[r] += _matrix[r][right];
                 }
 
-                best = Math.Max(best, BestWindowBstCeiling(rowSums));
+                best = Math.Max(best, bestWindow(rowSums));
             }
         }
 

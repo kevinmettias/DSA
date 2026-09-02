@@ -20,6 +20,8 @@ public class WordSearchIIBenchmarks
 {
     private const int BoardSize = 8;
     private const int WordLength = 4;
+    private const int RandomSeed = 17;
+    private const int AlphabetSize = 26;
 
     [Params(20, 200)]
     public int WordCount;
@@ -30,12 +32,12 @@ public class WordSearchIIBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(17);
+        var random = new Random(RandomSeed);
         _board = Enumerable.Range(0, BoardSize)
-            .Select(_ => Enumerable.Range(0, BoardSize).Select(_ => (char)('a' + random.Next(26))).ToArray())
+            .Select(_ => Enumerable.Range(0, BoardSize).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray())
             .ToArray();
         _words = Enumerable.Range(0, WordCount)
-            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(26))).ToArray()))
+            .Select(_ => new string(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray()))
             .ToArray();
     }
 
@@ -76,29 +78,15 @@ public class WordSearchIIBenchmarks
     private bool ExistsOnBoard(string word)
     {
         var used = new bool[_board.Length, _board[0].Length];
+        return ScanBoardForWord(new WordSearchContext(word, used));
+    }
 
-        bool Search(int r, int c, int i)
-        {
-            if (i == word.Length)
-            {
-                return true;
-            }
-
-            if (r < 0 || r >= _board.Length || c < 0 || c >= _board[0].Length || used[r, c] || _board[r][c] != word[i])
-            {
-                return false;
-            }
-
-            used[r, c] = true;
-            var matched = Search(r + 1, c, i + 1) || Search(r - 1, c, i + 1) || Search(r, c + 1, i + 1) || Search(r, c - 1, i + 1);
-            used[r, c] = false;
-            return matched;
-        }
-
+    private bool ScanBoardForWord(WordSearchContext context)
+    {
         for (var row = 0; row < _board.Length; row++)
         for (var col = 0; col < _board[0].Length; col++)
         {
-            if (Search(row, col, 0))
+            if (SearchFromCell(context, row, col, 0))
             {
                 return true;
             }
@@ -106,6 +94,29 @@ public class WordSearchIIBenchmarks
 
         return false;
     }
+
+    private bool SearchFromCell(WordSearchContext context, int r, int c, int i)
+    {
+        if (i == context.Word.Length)
+        {
+            return true;
+        }
+
+        if (r < 0 || r >= _board.Length || c < 0 || c >= _board[0].Length || context.Used[r, c] || _board[r][c] != context.Word[i])
+        {
+            return false;
+        }
+
+        context.Used[r, c] = true;
+        var matched = SearchFromCell(context, r + 1, c, i + 1)
+            || SearchFromCell(context, r - 1, c, i + 1)
+            || SearchFromCell(context, r, c + 1, i + 1)
+            || SearchFromCell(context, r, c - 1, i + 1);
+        context.Used[r, c] = false;
+        return matched;
+    }
+
+    private readonly record struct WordSearchContext(string Word, bool[,] Used);
 
     private void SearchFrom(LowercaseTrieNode<string> root, int row, int col, HashSet<string> found)
     {

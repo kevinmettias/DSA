@@ -15,6 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TopKFrequentElementsBenchmarks
 {
     private const int K = 10;
+    private const int RandomSeed = 5;
+    private const int ValueUpperBoundExclusive = 2_000;
 
     [Params(1_000, 50_000)]
     public int Length;
@@ -24,12 +26,12 @@ public class TopKFrequentElementsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(5);
+        var random = new Random(RandomSeed);
 
         // Bounded to a range far smaller than Length so values repeat and real
         // frequency skew emerges, the same reasoning TwoSumBenchmarks' bounded
         // random range documents.
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 2_000)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBoundExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -52,6 +54,14 @@ public class TopKFrequentElementsBenchmarks
     [Benchmark]
     public int[] HashMapThenSizeKMinHeap()
     {
+        var counts = BuildFrequencyMap();
+        var heap = BuildSizeKMinHeap(counts);
+
+        return DrainHeapDescending(heap);
+    }
+
+    private HashMap<int, int> BuildFrequencyMap()
+    {
         var counts = new HashMap<int, int>();
 
         foreach (var value in _values)
@@ -60,6 +70,11 @@ public class TopKFrequentElementsBenchmarks
             counts.Set(value, count + 1);
         }
 
+        return counts;
+    }
+
+    private static Heap<(int Node, int Priority), ByPriorityOrder<int, int>> BuildSizeKMinHeap(HashMap<int, int> counts)
+    {
         var heap = new Heap<(int Node, int Priority), ByPriorityOrder<int, int>>();
 
         foreach (var value in counts.Keys)
@@ -73,6 +88,11 @@ public class TopKFrequentElementsBenchmarks
             }
         }
 
+        return heap;
+    }
+
+    private static int[] DrainHeapDescending(Heap<(int Node, int Priority), ByPriorityOrder<int, int>> heap)
+    {
         var result = new int[heap.Count];
 
         for (var i = result.Length - 1; i >= 0; i--)

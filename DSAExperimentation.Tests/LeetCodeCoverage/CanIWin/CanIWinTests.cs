@@ -18,7 +18,10 @@ public sealed class CanIWinTests
     [InlineData(4, 11, false)]
     [InlineData(4, 6, true)]
     public void CanIWin_LeetCodeExamples_MatchesExpectedOutcome(int maxChoosableInteger, int desiredTotal, bool expected)
-        => Assert.Equal(expected, CanIWin(maxChoosableInteger, desiredTotal));
+    {
+        var canWin = CanIWin(maxChoosableInteger, desiredTotal);
+        Assert.Equal(expected, canWin);
+    }
 
     private static bool CanIWin(int maxChoosableInteger, int desiredTotal)
     {
@@ -37,20 +40,25 @@ public sealed class CanIWinTests
         {
             for (var i = 1; i <= maxChoosableInteger; i++)
             {
-                var bit = 1 << (i - 1);
-                if ((usedMask & bit) != 0)
-                {
-                    continue;
-                }
-
-                var remaining = desiredTotal - SumChosen(usedMask | bit, maxChoosableInteger);
-                if (remaining <= 0 || !canWin(usedMask | bit))
+                if (CanWinByPicking(i, usedMask, canWin))
                 {
                     return true;
                 }
             }
 
             return false;
+
+            bool CanWinByPicking(int pick, int mask, Func<int, bool> canWinFromNext)
+            {
+                var bit = 1 << (pick - 1);
+                if ((mask & bit) != 0)
+                {
+                    return false;
+                }
+
+                var remaining = desiredTotal - SumChosen(mask | bit, maxChoosableInteger);
+                return remaining <= 0 || !canWinFromNext(mask | bit);
+            }
         });
     }
 

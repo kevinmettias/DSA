@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DesignHashSetBenchmarks
 {
+    private const int RandomSeed = 705; // LC problem number
+
     [Params(200, 5_000)]
     public int Count;
 
@@ -22,7 +24,7 @@ public class DesignHashSetBenchmarks
     {
         _addOrder = Enumerable.Range(0, Count).ToArray();
 
-        var random = new Random(705);
+        var random = new Random(RandomSeed);
         _containsOrder = _addOrder.OrderBy(_ => random.Next()).ToArray();
     }
 

@@ -10,6 +10,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AddStringsBenchmarks
 {
+    // The LeetCode problem number, reused as the deterministic random seed.
+    private const int RandomSeed = 415;
+
+    private const int DecimalBase = 10;
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -19,9 +24,9 @@ public class AddStringsBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(415);
-        _a = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(10))));
-        _b = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(10))));
+        var random = new Random(RandomSeed);
+        _a = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalBase))));
+        _b = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalBase))));
     }
 
     [Benchmark(Baseline = true)]
@@ -34,19 +39,8 @@ public class AddStringsBenchmarks
 
         while (i >= 0 || j >= 0 || carry > 0)
         {
-            var sum = carry;
-            if (i >= 0)
-            {
-                sum += _a[i--] - '0';
-            }
-
-            if (j >= 0)
-            {
-                sum += _b[j--] - '0';
-            }
-
-            digits.Add((char)('0' + (sum % 10)));
-            carry = sum / 10;
+            var digit = NextDigit(ref i, ref j, ref carry);
+            digits.Add(digit);
         }
 
         digits.Reverse();
@@ -63,19 +57,8 @@ public class AddStringsBenchmarks
 
         while (i >= 0 || j >= 0 || carry > 0)
         {
-            var sum = carry;
-            if (i >= 0)
-            {
-                sum += _a[i--] - '0';
-            }
-
-            if (j >= 0)
-            {
-                sum += _b[j--] - '0';
-            }
-
-            stack.Push((char)('0' + (sum % 10)));
-            carry = sum / 10;
+            var digit = NextDigit(ref i, ref j, ref carry);
+            stack.Push(digit);
         }
 
         var digits = new List<char>();
@@ -85,5 +68,24 @@ public class AddStringsBenchmarks
         }
 
         return new string(digits.ToArray());
+    }
+
+    // Consumes at most one trailing digit from each of _a/_b (advancing i/j),
+    // folds it into carry, and returns the resulting base-10 digit character.
+    private char NextDigit(ref int i, ref int j, ref int carry)
+    {
+        var sum = carry;
+        if (i >= 0)
+        {
+            sum += _a[i--] - '0';
+        }
+
+        if (j >= 0)
+        {
+            sum += _b[j--] - '0';
+        }
+
+        carry = sum / DecimalBase;
+        return (char)('0' + (sum % DecimalBase));
     }
 }

@@ -13,6 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TransposeMatrixBenchmarks
 {
     private const int BlockSize = 32;
+    private const int MatrixValueUpperBoundExclusive = 1_000;
 
     [Params(100, 800)]
     public int Size;
@@ -31,7 +32,7 @@ public class TransposeMatrixBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _matrix[r][c] = random.Next(1, 1_000);
+                _matrix[r][c] = random.Next(1, MatrixValueUpperBoundExclusive);
             }
         }
     }
@@ -65,20 +66,27 @@ public class TransposeMatrixBenchmarks
         {
             for (var blockCol = 0; blockCol < cols; blockCol += BlockSize)
             {
-                var rowLimit = Math.Min(blockRow + BlockSize, rows);
-                var colLimit = Math.Min(blockCol + BlockSize, cols);
-
-                for (var r = blockRow; r < rowLimit; r++)
-                {
-                    for (var c = blockCol; c < colLimit; c++)
-                    {
-                        result[c][r] = _matrix[r][c];
-                    }
-                }
+                TransposeBlock(result, blockRow, blockCol);
             }
         }
 
         return result;
+    }
+
+    private void TransposeBlock(int[][] result, int blockRow, int blockCol)
+    {
+        var rows = _matrix.Length;
+        var cols = _matrix[0].Length;
+        var rowLimit = Math.Min(blockRow + BlockSize, rows);
+        var colLimit = Math.Min(blockCol + BlockSize, cols);
+
+        for (var r = blockRow; r < rowLimit; r++)
+        {
+            for (var c = blockCol; c < colLimit; c++)
+            {
+                result[c][r] = _matrix[r][c];
+            }
+        }
     }
 
     private static int[][] NewMatrix(int rows, int cols)

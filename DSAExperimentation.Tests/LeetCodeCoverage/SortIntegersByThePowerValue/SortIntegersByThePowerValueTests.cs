@@ -16,7 +16,10 @@ public sealed partial class SortIntegersByThePowerValueTests
     [InlineData(12, 15, 2, 13)]
     [InlineData(7, 11, 4, 7)]
     public void GetKth_LeetCodeExamples_ReturnsKthIntegerByPowerValue(int lo, int hi, int k, int expected)
-        => Assert.Equal(expected, GetKth(lo, hi, k));
+    {
+        var actual = GetKth(lo, hi, k);
+        Assert.Equal(expected, actual);
+    }
 
     private static int GetKth(int lo, int hi, int k)
     {

@@ -17,6 +17,8 @@ public class NumberOfMatchingSubsequencesBenchmarks
 {
     private const int TextLength = 20_000;
     private const char UnreachableChar = 'z';
+    private const int WordLength = 4;
+    private const int AlphabetSize = 25;
 
     [Params(200, 2_000)]
     public int WordCount;
@@ -29,7 +31,7 @@ public class NumberOfMatchingSubsequencesBenchmarks
     {
         var random = new Random(1);
         _s = GenerateText(random, TextLength);
-        _words = Enumerable.Range(0, WordCount).Select(_ => GenerateText(random, 4) + UnreachableChar).ToArray();
+        _words = Enumerable.Range(0, WordCount).Select(_ => GenerateText(random, WordLength) + UnreachableChar).ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -69,40 +71,60 @@ public class NumberOfMatchingSubsequencesBenchmarks
     private static int NumMatchingSubseq(string s, string[] words)
     {
         var buckets = new HashMap<char, WaitingQueue>();
-
-        foreach (var word in words)
-        {
-            Enqueue(buckets, word, 0);
-        }
+        SeedBuckets(buckets, words);
 
         var matches = 0;
 
         foreach (var c in s)
         {
-            if (!buckets.TryGetValue(c, out var waiting))
+            matches += ProcessBucket(buckets, c);
+        }
+
+        return matches;
+    }
+
+    private static void SeedBuckets(HashMap<char, WaitingQueue> buckets, string[] words)
+    {
+        foreach (var word in words)
+        {
+            Enqueue(buckets, word, 0);
+        }
+    }
+
+    private static int ProcessBucket(HashMap<char, WaitingQueue> buckets, char c)
+    {
+        if (!buckets.TryGetValue(c, out var waiting))
+        {
+            return 0;
+        }
+
+        var matches = 0;
+        var pending = waiting.Count;
+
+        for (var i = 0; i < pending; i++)
+        {
+            waiting.TryDequeue(out var entry);
+
+            if (AdvancePendingEntry(buckets, entry))
             {
-                continue;
-            }
-
-            var pending = waiting.Count;
-
-            for (var i = 0; i < pending; i++)
-            {
-                waiting.TryDequeue(out var entry);
-                var nextIndex = entry.Index + 1;
-
-                if (nextIndex == entry.Word.Length)
-                {
-                    matches++;
-                }
-                else
-                {
-                    Enqueue(buckets, entry.Word, nextIndex);
-                }
+                matches++;
             }
         }
 
         return matches;
+    }
+
+    private static bool AdvancePendingEntry(HashMap<char, WaitingQueue> buckets, (string Word, int Index) entry)
+    {
+        var nextIndex = entry.Index + 1;
+
+        if (nextIndex == entry.Word.Length)
+        {
+            return true;
+        }
+
+        Enqueue(buckets, entry.Word, nextIndex);
+        return false;
     }
 
     private static void Enqueue(HashMap<char, WaitingQueue> buckets, string word, int index)
@@ -124,7 +146,7 @@ public class NumberOfMatchingSubsequencesBenchmarks
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = (char)('a' + random.Next(25));
+            chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
         return new string(chars);

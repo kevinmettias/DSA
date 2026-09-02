@@ -14,13 +14,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FruitIntoBasketsBenchmarks
 {
+    private const int MaxBasketTypes = 2;
+
     [Params(200, 5_000)]
     public int Length;
 
     private int[] _fruits = null!;
 
     [GlobalSetup]
-    public void Setup() => _fruits = Enumerable.Range(0, Length).Select(i => i % 2).ToArray();
+    public void Setup() => _fruits = Enumerable.Range(0, Length).Select(i => i % MaxBasketTypes).ToArray();
 
     [Benchmark(Baseline = true)]
     public int BruteForce()
@@ -35,7 +37,7 @@ public class FruitIntoBasketsBenchmarks
             {
                 seen.Add(_fruits[end]);
 
-                if (seen.Count > 2)
+                if (seen.Count > MaxBasketTypes)
                 {
                     break;
                 }
@@ -56,29 +58,34 @@ public class FruitIntoBasketsBenchmarks
 
         for (var windowEnd = 0; windowEnd < _fruits.Length; windowEnd++)
         {
-            basketCounts.TryGetValue(_fruits[windowEnd], out var count);
-            basketCounts.Set(_fruits[windowEnd], count + 1);
-
-            while (basketCounts.Count > 2)
-            {
-                var leaving = _fruits[windowStart];
-                basketCounts.TryGetValue(leaving, out var leavingCount);
-
-                if (leavingCount == 1)
-                {
-                    basketCounts.TryRemove(leaving);
-                }
-                else
-                {
-                    basketCounts.Set(leaving, leavingCount - 1);
-                }
-
-                windowStart++;
-            }
-
-            longest = Math.Max(longest, windowEnd - windowStart + 1);
+            longest = AdvanceWindow(windowEnd, ref windowStart, basketCounts, longest);
         }
 
         return longest;
+    }
+
+    private int AdvanceWindow(int windowEnd, ref int windowStart, HashMap<int, int> basketCounts, int longest)
+    {
+        basketCounts.TryGetValue(_fruits[windowEnd], out var count);
+        basketCounts.Set(_fruits[windowEnd], count + 1);
+
+        while (basketCounts.Count > MaxBasketTypes)
+        {
+            var leaving = _fruits[windowStart];
+            basketCounts.TryGetValue(leaving, out var leavingCount);
+
+            if (leavingCount == 1)
+            {
+                basketCounts.TryRemove(leaving);
+            }
+            else
+            {
+                basketCounts.Set(leaving, leavingCount - 1);
+            }
+
+            windowStart++;
+        }
+
+        return Math.Max(longest, windowEnd - windowStart + 1);
     }
 }

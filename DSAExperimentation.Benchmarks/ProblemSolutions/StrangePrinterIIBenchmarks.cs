@@ -18,6 +18,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StrangePrinterIIBenchmarks
 {
+    private const int MaxFanOut = 3;
+
     [Params(50, 1_000)]
     public int ColorCount;
 
@@ -30,7 +32,7 @@ public class StrangePrinterIIBenchmarks
 
         for (var i = 0; i < ColorCount; i++)
         {
-            var fanOut = Math.Min(3, ColorCount - 1 - i);
+            var fanOut = Math.Min(MaxFanOut, ColorCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
                 _colors[i].MustPrintBefore.Add(_colors[i + f]);
@@ -53,23 +55,30 @@ public class StrangePrinterIIBenchmarks
         var remaining = new List<ColorNode>(_colors);
         var order = new List<ColorNode>(_colors.Count);
 
-        while (remaining.Count > 0)
+        while (remaining.Count > 0 && TryTakeNextReadyColor(remaining, order, inDegree))
         {
-            var next = remaining.FirstOrDefault(color => inDegree[color] == 0);
-            if (next is null)
-            {
-                break;
-            }
-
-            order.Add(next);
-            remaining.Remove(next);
-            foreach (var dependent in next.MustPrintBefore)
-            {
-                inDegree[dependent]--;
-            }
         }
 
         return order.Count;
+    }
+
+    private static bool TryTakeNextReadyColor(
+        List<ColorNode> remaining, List<ColorNode> order, Dictionary<ColorNode, int> inDegree)
+    {
+        var next = remaining.FirstOrDefault(color => inDegree[color] == 0);
+        if (next is null)
+        {
+            return false;
+        }
+
+        order.Add(next);
+        remaining.Remove(next);
+        foreach (var dependent in next.MustPrintBefore)
+        {
+            inDegree[dependent]--;
+        }
+
+        return true;
     }
 
     [Benchmark]

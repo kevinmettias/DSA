@@ -17,6 +17,12 @@ public class ScoreOfParenthesesBenchmarks
 {
     private const int MaxDepth = 10;
 
+    // LC problem number, used as the RNG seed.
+    private const int RandomSeed = 856;
+    private const int NestedScoreMultiplier = 2;
+    private const int CharsPerPair = 2;
+    private const int CoinFlipBound = 2;
+
     [Params(100, 2_000)]
     public int PairCount;
 
@@ -25,7 +31,7 @@ public class ScoreOfParenthesesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(856);
+        var random = new Random(RandomSeed);
         _expression = GenerateBalanced(PairCount, MaxDepth, random);
     }
 
@@ -72,7 +78,7 @@ public class ScoreOfParenthesesBenchmarks
 
             scores.TryPop(out var inner);
             scores.TryPop(out var outer);
-            scores.Push(outer + Math.Max(2 * inner, 1));
+            scores.Push(outer + Math.Max(NestedScoreMultiplier * inner, 1));
         }
 
         scores.TryPop(out var result);
@@ -86,28 +92,38 @@ public class ScoreOfParenthesesBenchmarks
     // approach either.
     private static string GenerateBalanced(int pairCount, int maxDepth, Random random)
     {
-        var result = new char[pairCount * 2];
-        var openCount = 0;
-        var closeCount = 0;
+        var result = new char[pairCount * CharsPerPair];
+        var counts = new ParenCounts();
 
         for (var i = 0; i < result.Length; i++)
         {
-            var depth = openCount - closeCount;
-            var canOpen = openCount < pairCount && depth < maxDepth;
-            var canClose = closeCount < openCount;
-
-            if (canOpen && (!canClose || random.Next(2) == 0))
-            {
-                result[i] = '(';
-                openCount++;
-            }
-            else
-            {
-                result[i] = ')';
-                closeCount++;
-            }
+            result[i] = NextParenChar(pairCount, maxDepth, random, ref counts);
         }
 
         return new string(result);
+    }
+
+    // Decides the next character of the balanced string and advances the running
+    // open/close counts accordingly.
+    private static char NextParenChar(int pairCount, int maxDepth, Random random, ref ParenCounts counts)
+    {
+        var depth = counts.Open - counts.Close;
+        var canOpen = counts.Open < pairCount && depth < maxDepth;
+        var canClose = counts.Close < counts.Open;
+
+        if (canOpen && (!canClose || random.Next(CoinFlipBound) == 0))
+        {
+            counts.Open++;
+            return '(';
+        }
+
+        counts.Close++;
+        return ')';
+    }
+
+    private struct ParenCounts
+    {
+        public int Open;
+        public int Close;
     }
 }

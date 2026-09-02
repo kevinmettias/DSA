@@ -17,7 +17,7 @@ public sealed partial class PathWithMaximumProbabilityTests
     public void MaxProbability_LeetCodeExampleOne_PrefersHigherProductTwoHopPath()
     {
         var probability = MaxProbability(
-            n: 3, edges: [[0, 1], [1, 2], [0, 2]], succProb: [0.5, 0.5, 0.2], start: 0, end: 2);
+            new ProbabilityGraph(NodeCount: 3, Edges: [[0, 1], [1, 2], [0, 2]], SuccessProbabilities: [0.5, 0.5, 0.2]), start: 0, end: 2);
 
         Assert.Equal(0.25, probability, precision: 5);
     }
@@ -26,7 +26,7 @@ public sealed partial class PathWithMaximumProbabilityTests
     public void MaxProbability_LeetCodeExampleTwo_PrefersDirectEdgeOverLongerPath()
     {
         var probability = MaxProbability(
-            n: 3, edges: [[0, 1], [1, 2], [0, 2]], succProb: [0.5, 0.5, 0.3], start: 0, end: 2);
+            new ProbabilityGraph(NodeCount: 3, Edges: [[0, 1], [1, 2], [0, 2]], SuccessProbabilities: [0.5, 0.5, 0.3]), start: 0, end: 2);
 
         Assert.Equal(0.3, probability, precision: 5);
     }
@@ -34,19 +34,21 @@ public sealed partial class PathWithMaximumProbabilityTests
     [Fact]
     public void MaxProbability_LeetCodeExampleThree_UnreachableTargetReturnsZero()
     {
-        var probability = MaxProbability(n: 3, edges: [[0, 1]], succProb: [0.5], start: 0, end: 2);
+        var probability = MaxProbability(new ProbabilityGraph(NodeCount: 3, Edges: [[0, 1]], SuccessProbabilities: [0.5]), start: 0, end: 2);
 
         Assert.Equal(0.0, probability, precision: 5);
     }
 
-    private static double MaxProbability(int n, int[][] edges, double[] succProb, int start, int end)
-    {
-        var nodes = Enumerable.Range(0, n).Select(id => new ProbabilityNode(id)).ToArray();
+    private readonly record struct ProbabilityGraph(int NodeCount, int[][] Edges, double[] SuccessProbabilities);
 
-        for (var i = 0; i < edges.Length; i++)
+    private static double MaxProbability(ProbabilityGraph graph, int start, int end)
+    {
+        var nodes = Enumerable.Range(0, graph.NodeCount).Select(id => new ProbabilityNode(id)).ToArray();
+
+        for (var i = 0; i < graph.Edges.Length; i++)
         {
-            var (a, b) = (edges[i][0], edges[i][1]);
-            var cost = -Math.Log(succProb[i]);
+            var (a, b) = (graph.Edges[i][0], graph.Edges[i][1]);
+            var cost = -Math.Log(graph.SuccessProbabilities[i]);
             nodes[a].Edges.Add((cost, nodes[b]));
             nodes[b].Edges.Add((cost, nodes[a]));
         }

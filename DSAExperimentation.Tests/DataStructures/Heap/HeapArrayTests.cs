@@ -67,4 +67,29 @@ public sealed partial class HeapArrayTests
 
         Assert.Equal(1, array.Count);
     }
+
+    [Fact]
+    public void Get_ReturnsTheElementStoredAtThatSlot()
+    {
+        var array = new HeapArray<int>();
+
+        array.Add(7);
+        array.Add(9);
+
+        Assert.Equal(7, array.Get(0));
+        Assert.Equal(9, array.Get(1));
+    }
+
+    [Fact]
+    public void Get_AfterASwap_ReflectsTheNewPositions()
+    {
+        var array = new HeapArray<int>();
+        array.Add(7);
+        array.Add(9);
+
+        array.Swap(0, 1);
+
+        Assert.Equal(9, array.Get(0));
+        Assert.Equal(7, array.Get(1));
+    }
 }

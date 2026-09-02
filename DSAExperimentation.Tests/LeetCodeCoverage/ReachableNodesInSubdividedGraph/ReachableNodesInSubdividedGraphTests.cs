@@ -51,6 +51,19 @@ public sealed partial class ReachableNodesInSubdividedGraphTests
 
     private static int CountReachableNodes(int[][] edges, int maxMoves, int n)
     {
+        var nodes = CreateNodes(n);
+        ConnectEdges(nodes, edges);
+
+        var distances = ShortestPath.Dijkstra<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
+            nodes[0]);
+
+        var reachable = CountDirectlyReachableNodes(nodes, distances, maxMoves);
+        reachable += CountSubdivisionsReachable(edges, maxMoves, nodes, distances);
+        return reachable;
+    }
+
+    private static Dictionary<int, WeightedNode> CreateNodes(int n)
+    {
         var nodes = new Dictionary<int, WeightedNode>();
 
         for (var i = 0; i < n; i++)
@@ -58,17 +71,20 @@ public sealed partial class ReachableNodesInSubdividedGraphTests
             nodes[i] = new WeightedNode(i.ToString());
         }
 
+        return nodes;
+    }
+
+    private static void ConnectEdges(Dictionary<int, WeightedNode> nodes, int[][] edges)
+    {
         foreach (var edge in edges)
         {
-            var (u, v, cnt) = (edge[0], edge[1], edge[2]);
-            var weight = cnt + 1;
-            nodes[u].Edges.Add((weight, nodes[v]));
-            nodes[v].Edges.Add((weight, nodes[u]));
+            AddBidirectionalEdge(nodes, edge);
         }
+    }
 
-        var distances = ShortestPath.Dijkstra<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            nodes[0]);
-
+    private static int CountDirectlyReachableNodes(
+        Dictionary<int, WeightedNode> nodes, Dictionary<WeightedNode, int> distances, int maxMoves)
+    {
         var reachable = 0;
 
         foreach (var node in nodes.Values)
@@ -79,14 +95,49 @@ public sealed partial class ReachableNodesInSubdividedGraphTests
             }
         }
 
+        return reachable;
+    }
+
+    private static int CountSubdivisionsReachable(
+        int[][] edges, int maxMoves, Dictionary<int, WeightedNode> nodes, Dictionary<WeightedNode, int> distances)
+    {
+        var reachable = 0;
+
         foreach (var edge in edges)
         {
-            var (u, v, cnt) = (edge[0], edge[1], edge[2]);
-            var fromU = distances.TryGetValue(nodes[u], out var du) ? Math.Max(0, Math.Min(cnt, maxMoves - du)) : 0;
-            var fromV = distances.TryGetValue(nodes[v], out var dv) ? Math.Max(0, Math.Min(cnt, maxMoves - dv)) : 0;
-            reachable += Math.Min(cnt, fromU + fromV);
+            reachable += CountEdgeSubdivisionsReachable(edge, maxMoves, nodes, distances);
         }
 
         return reachable;
+    }
+
+    private static int CountEdgeSubdivisionsReachable(
+        int[] edge, int maxMoves, Dictionary<int, WeightedNode> nodes, Dictionary<WeightedNode, int> distances)
+    {
+        var (u, v, cnt) = (edge[0], edge[1], edge[2]);
+        var fromU = CountReachableSubdivisions(nodes[u], cnt, maxMoves, distances);
+        var fromV = CountReachableSubdivisions(nodes[v], cnt, maxMoves, distances);
+        return Math.Min(cnt, fromU + fromV);
+    }
+
+    private static void AddBidirectionalEdge(Dictionary<int, WeightedNode> nodes, int[] edge)
+    {
+        var (u, v, cnt) = (edge[0], edge[1], edge[2]);
+        var weight = cnt + 1;
+        nodes[u].Edges.Add((weight, nodes[v]));
+        nodes[v].Edges.Add((weight, nodes[u]));
+    }
+
+    // How many of this edge's `cnt` subdivision nodes are reachable by walking out
+    // from `node`, given the leftover move budget after reaching it.
+    private static int CountReachableSubdivisions(WeightedNode node, int cnt, int maxMoves, Dictionary<WeightedNode, int> distances)
+    {
+        if (!distances.TryGetValue(node, out var distance))
+        {
+            return 0;
+        }
+
+        var remainingBudget = Math.Min(cnt, maxMoves - distance);
+        return Math.Max(0, remainingBudget);
     }
 }

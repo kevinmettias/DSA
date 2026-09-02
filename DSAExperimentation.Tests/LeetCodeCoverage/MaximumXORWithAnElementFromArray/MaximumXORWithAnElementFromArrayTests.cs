@@ -20,7 +20,8 @@ public sealed partial class MaximumXORWithAnElementFromArrayTests
         int[] nums = [0, 1, 2, 3, 4];
         int[][] queries = [[3, 1], [1, 3], [5, 6]];
 
-        Assert.Equal([3, 3, 7], MaximizeXor(nums, queries));
+        var actual = MaximizeXor(nums, queries);
+        Assert.Equal([3, 3, 7], actual);
     }
 
     [Fact]
@@ -29,7 +30,8 @@ public sealed partial class MaximumXORWithAnElementFromArrayTests
         int[] nums = [5, 2, 4, 6, 6, 3];
         int[][] queries = [[12, 4], [8, 1], [6, 3]];
 
-        Assert.Equal([15, -1, 5], MaximizeXor(nums, queries));
+        var actual = MaximizeXor(nums, queries);
+        Assert.Equal([15, -1, 5], actual);
     }
 
     private static int[] MaximizeXor(int[] nums, int[][] queries)
@@ -48,18 +50,25 @@ public sealed partial class MaximumXORWithAnElementFromArrayTests
 
         foreach (var queryIndex in queryOrder)
         {
-            var xi = queries[queryIndex][0];
-            var mi = queries[queryIndex][1];
-
-            while (numIndex < sortedNums.Length && sortedNums[numIndex] <= mi)
-            {
-                trie.Insert(sortedNums[numIndex]);
-                numIndex++;
-            }
-
-            answers[queryIndex] = trie.TryMaxXor(xi, out var candidate) ? candidate : -1;
+            answers[queryIndex] = ProcessQuery(queries[queryIndex], sortedNums, trie, ref numIndex);
         }
 
         return answers;
+    }
+
+    // Inserts every not-yet-inserted num <= this query's limit (mi) into the trie,
+    // advancing the shared numIndex cursor, then answers this query with TryMaxXor.
+    private static int ProcessQuery(int[] query, int[] sortedNums, BitTrie trie, ref int numIndex)
+    {
+        var xi = query[0];
+        var mi = query[1];
+
+        while (numIndex < sortedNums.Length && sortedNums[numIndex] <= mi)
+        {
+            trie.Insert(sortedNums[numIndex]);
+            numIndex++;
+        }
+
+        return trie.TryMaxXor(xi, out var candidate) ? candidate : -1;
     }
 }

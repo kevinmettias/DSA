@@ -60,6 +60,11 @@ public sealed partial class AddTwoNumbersIITests
             secondDigits.Push(node.Value);
         }
 
+        return CombineDigitStacks(firstDigits, secondDigits);
+    }
+
+    private static SinglyLinkedListNode<int>? CombineDigitStacks(NumberStack firstDigits, NumberStack secondDigits)
+    {
         SinglyLinkedListNode<int>? head = null;
         var carry = 0;
 

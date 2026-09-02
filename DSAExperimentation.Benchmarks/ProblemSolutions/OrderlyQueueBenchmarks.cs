@@ -19,6 +19,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class OrderlyQueueBenchmarks
 {
+    private const int RandomSeed = 899; // LC problem number
+    private const int AlphabetSize = 26;
+
     [Params(50_000, 100_000)]
     public int Length;
 
@@ -27,8 +30,8 @@ public class OrderlyQueueBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(899);
-        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(26))).ToArray());
+        var random = new Random(RandomSeed);
+        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
     }
 
     [Benchmark(Baseline = true)]
@@ -38,7 +41,9 @@ public class OrderlyQueueBenchmarks
 
         for (var start = 1; start < _s.Length; start++)
         {
-            var rotation = string.Concat(_s.AsSpan(start), _s.AsSpan(0, start));
+            var tail = _s.AsSpan(start);
+            var head = _s.AsSpan(0, start);
+            var rotation = string.Concat(tail, head);
             if (string.CompareOrdinal(rotation, best) < 0)
             {
                 best = rotation;

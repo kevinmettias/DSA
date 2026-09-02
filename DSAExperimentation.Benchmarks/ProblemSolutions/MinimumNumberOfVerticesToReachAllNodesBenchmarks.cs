@@ -14,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
 {
+    private const int RandomSeed = 1557; // LC problem number
+    private const int EdgeCountUpperBoundExclusive = 3;
+
     [Params(200, 5_000)]
     public int NodeCount;
 
@@ -22,12 +25,12 @@ public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1557);
+        var random = new Random(RandomSeed);
         var edges = new List<(int From, int To)>();
 
         for (var to = 1; to < NodeCount; to++)
         {
-            var edgeCount = random.Next(1, 3);
+            var edgeCount = random.Next(1, EdgeCountUpperBoundExclusive);
             for (var e = 0; e < edgeCount; e++)
             {
                 edges.Add((random.Next(to), to));

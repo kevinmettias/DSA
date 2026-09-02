@@ -19,24 +19,31 @@ public class ValidateStackSequencesBenchmarks
     private int[] _pushed = null!;
     private int[] _popped = null!;
 
+    private const int RandomSeed = 946;
+    private const int BranchChoiceCount = 2;
+
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(946);
+        var random = new Random(RandomSeed);
         _pushed = Enumerable.Range(0, Length).ToArray();
+        _popped = SimulatePushPopSequence(random, Length, _pushed);
+    }
 
+    private static int[] SimulatePushPopSequence(Random random, int length, int[] pushed)
+    {
         var stack = new System.Collections.Generic.Stack<int>();
         var popped = new List<int>();
         var pushIndex = 0;
 
-        while (popped.Count < Length)
+        while (popped.Count < length)
         {
-            var canPush = pushIndex < Length;
+            var canPush = pushIndex < length;
             var canPop = stack.Count > 0;
 
-            if (canPush && (!canPop || random.Next(2) == 0))
+            if (canPush && (!canPop || random.Next(BranchChoiceCount) == 0))
             {
-                stack.Push(_pushed[pushIndex]);
+                stack.Push(pushed[pushIndex]);
                 pushIndex++;
             }
             else
@@ -45,7 +52,7 @@ public class ValidateStackSequencesBenchmarks
             }
         }
 
-        _popped = popped.ToArray();
+        return popped.ToArray();
     }
 
     [Benchmark(Baseline = true)]
@@ -58,28 +65,45 @@ public class ValidateStackSequencesBenchmarks
             return true;
         }
 
-        if (stack.Count > 0 && stack.Peek() == _popped[popIndex])
+        if (TryPopBranch(pushIndex, popIndex, stack))
         {
-            var top = stack.Pop();
-            if (TryMatch(pushIndex, popIndex + 1, stack))
-            {
-                return true;
-            }
-
-            stack.Push(top);
+            return true;
         }
 
-        if (pushIndex < _pushed.Length)
-        {
-            stack.Push(_pushed[pushIndex]);
-            if (TryMatch(pushIndex + 1, popIndex, stack))
-            {
-                return true;
-            }
+        return TryPushBranch(pushIndex, popIndex, stack);
+    }
 
-            stack.Pop();
+    private bool TryPopBranch(int pushIndex, int popIndex, System.Collections.Generic.Stack<int> stack)
+    {
+        if (stack.Count == 0 || stack.Peek() != _popped[popIndex])
+        {
+            return false;
         }
 
+        var top = stack.Pop();
+        if (TryMatch(pushIndex, popIndex + 1, stack))
+        {
+            return true;
+        }
+
+        stack.Push(top);
+        return false;
+    }
+
+    private bool TryPushBranch(int pushIndex, int popIndex, System.Collections.Generic.Stack<int> stack)
+    {
+        if (pushIndex >= _pushed.Length)
+        {
+            return false;
+        }
+
+        stack.Push(_pushed[pushIndex]);
+        if (TryMatch(pushIndex + 1, popIndex, stack))
+        {
+            return true;
+        }
+
+        stack.Pop();
         return false;
     }
 

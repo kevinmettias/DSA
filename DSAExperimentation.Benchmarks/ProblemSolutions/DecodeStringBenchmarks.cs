@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DecodeStringBenchmarks
 {
+    private const int DecimalBase = 10;
+    private const string EncodedTile = "2[ab]";
+
     [Params(200, 5_000)]
     public int Length;
 
@@ -35,43 +38,62 @@ public class DecodeStringBenchmarks
     [Benchmark]
     public string StackScan()
     {
-        var counts = new RepoCountStack();
-        var builders = new RepoBuilderStack();
-        var current = new StringBuilder();
-        var number = 0;
+        var state = new ScanState();
+        return RunScan(_encoded, state).ToString();
+    }
 
-        foreach (var c in _encoded)
+    private static StringBuilder RunScan(string encoded, ScanState state)
+    {
+        foreach (var c in encoded)
         {
             if (char.IsDigit(c))
             {
-                number = (number * 10) + (c - '0');
+                state.Number = (state.Number * DecimalBase) + (c - '0');
             }
             else if (c == '[')
             {
-                counts.Push(number);
-                builders.Push(current);
-                current = new StringBuilder();
-                number = 0;
+                PushGroup(state);
             }
             else if (c == ']')
             {
-                counts.TryPop(out var repeatCount);
-                builders.TryPop(out var outer);
-
-                for (var r = 0; r < repeatCount; r++)
-                {
-                    outer.Append(current);
-                }
-
-                current = outer;
+                PopGroup(state);
             }
             else
             {
-                current.Append(c);
+                state.Current.Append(c);
             }
         }
 
-        return current.ToString();
+        return state.Current;
+    }
+
+    private static void PushGroup(ScanState state)
+    {
+        state.Counts.Push(state.Number);
+        state.Builders.Push(state.Current);
+        state.Current = new StringBuilder();
+        state.Number = 0;
+    }
+
+    private static void PopGroup(ScanState state)
+    {
+        state.Counts.TryPop(out var repeatCount);
+        state.Builders.TryPop(out var outer);
+
+        for (var r = 0; r < repeatCount; r++)
+        {
+            outer.Append(state.Current);
+        }
+
+        state.Current = outer;
+    }
+
+    private sealed class ScanState
+    {
+        public RepoCountStack Counts { get; } = new();
+        public RepoBuilderStack Builders { get; } = new();
+        public StringBuilder Current { get; set; } = new();
+        public int Number { get; set; }
     }
 
     private static StringBuilder DecodeRecursive(string s, ref int i)
@@ -82,22 +104,7 @@ public class DecodeStringBenchmarks
         {
             if (char.IsDigit(s[i]))
             {
-                var number = 0;
-
-                while (char.IsDigit(s[i]))
-                {
-                    number = (number * 10) + (s[i] - '0');
-                    i++;
-                }
-
-                i++; // skip '['
-                var inner = DecodeRecursive(s, ref i);
-                i++; // skip ']'
-
-                for (var r = 0; r < number; r++)
-                {
-                    builder.Append(inner);
-                }
+                AppendRepeatedGroup(s, ref i, builder);
             }
             else
             {
@@ -109,13 +116,36 @@ public class DecodeStringBenchmarks
         return builder;
     }
 
+    // The digit branch from DecodeRecursive's scan loop: parses the repeat count,
+    // recurses into the bracketed group, then tiles the decoded inner text that many
+    // times onto the caller's builder.
+    private static void AppendRepeatedGroup(string s, ref int i, StringBuilder builder)
+    {
+        var number = 0;
+
+        while (char.IsDigit(s[i]))
+        {
+            number = (number * DecimalBase) + (s[i] - '0');
+            i++;
+        }
+
+        i++; // skip '['
+        var inner = DecodeRecursive(s, ref i);
+        i++; // skip ']'
+
+        for (var r = 0; r < number; r++)
+        {
+            builder.Append(inner);
+        }
+    }
+
     private static string BuildEncoded(int length)
     {
         var builder = new StringBuilder();
 
         while (builder.Length < length)
         {
-            builder.Append("2[ab]");
+            builder.Append(EncodedTile);
         }
 
         return builder.ToString();

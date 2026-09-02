@@ -11,6 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PalindromePairsBenchmarks
 {
+    private const int WordLengthBound = 9;
+    private const int AlphabetSize = 3;
+
     [Params(80, 400)]
     public int WordCount;
 
@@ -24,12 +27,12 @@ public class PalindromePairsBenchmarks
 
         while (unique.Count < WordCount)
         {
-            var length = random.Next(1, 9);
+            var length = random.Next(1, WordLengthBound);
             var chars = new char[length];
 
             for (var i = 0; i < length; i++)
             {
-                chars[i] = (char)('a' + random.Next(3));
+                chars[i] = (char)('a' + random.Next(AlphabetSize));
             }
 
             unique.Add(new string(chars));
@@ -72,27 +75,35 @@ public class PalindromePairsBenchmarks
             var word = _words[i];
             for (var cut = 0; cut <= word.Length; cut++)
             {
-                var prefix = word[..cut];
-                var suffix = word[cut..];
-
-                if (IsPalindrome(prefix)
-                    && indexOf.TryGetValue(Reverse(suffix), out var suffixMatch)
-                    && suffixMatch != i)
-                {
-                    count++;
-                }
-
-                if (cut != word.Length
-                    && IsPalindrome(suffix)
-                    && indexOf.TryGetValue(Reverse(prefix), out var prefixMatch)
-                    && prefixMatch != i)
-                {
-                    count++;
-                }
+                count += CountPalindromicPairsAtCut(word, cut, i, indexOf);
             }
         }
 
         return count;
+    }
+
+    private static int CountPalindromicPairsAtCut(string word, int cut, int wordIndex, HashMap<string, int> indexOf)
+    {
+        var prefix = word[..cut];
+        var suffix = word[cut..];
+        var matches = 0;
+
+        if (IsPalindrome(prefix)
+            && indexOf.TryGetValue(Reverse(suffix), out var suffixMatch)
+            && suffixMatch != wordIndex)
+        {
+            matches++;
+        }
+
+        if (cut != word.Length
+            && IsPalindrome(suffix)
+            && indexOf.TryGetValue(Reverse(prefix), out var prefixMatch)
+            && prefixMatch != wordIndex)
+        {
+            matches++;
+        }
+
+        return matches;
     }
 
     private static bool IsPalindrome(string s)

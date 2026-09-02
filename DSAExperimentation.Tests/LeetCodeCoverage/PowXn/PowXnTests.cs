@@ -1,41 +1,28 @@
+using DSAExperimentation.LeetCode.PowXn;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PowXn;
 
-// LeetCode 50. Pow(x, n): iterative exponentiation by squaring over a single running
-// scalar. No repo container or algorithm primitive applies here - there is nothing
-// to compose over one double and one exponent counter, the same "lighter
-// repo-primitive fit" case as Power of Two's bit trick.
+// Harness only. Both strategies are PowXnSolution's; this file just pins them to
+// LeetCode's published examples, including the int.MinValue exponent that would
+// overflow a plain int negation and forces both strategies through the long-typed
+// exponent path instead.
 public sealed class PowXnTests
 {
+    public static TheoryData<double, int, double> Examples =>
+        new()
+        {
+            { 2.0, 10, 1024.0 },
+            { 2.0, -2, 0.25 },
+            { 1.0, int.MinValue, 1.0 },
+        };
+
     [Theory]
-    [InlineData(2.0, 10, 1024.0)]
-    [InlineData(2.0, -2, 0.25)]
-    [InlineData(1.0, int.MinValue, 1.0)]
-    public void MyPow_ExponentiationBySquaring_ReturnsExpected(double x, int n, double expected)
-        => Assert.Equal(expected, MyPow(x, n), 6);
+    [MemberData(nameof(Examples))]
+    public void PowByRepeatedMultiplication_LeetCodeExamples_ReturnsExpected(double x, int n, double expected) =>
+        Assert.Equal(expected, PowXnSolution.PowByRepeatedMultiplication(x, n), 6);
 
-    private static double MyPow(double x, int n)
-    {
-        long exponent = n;
-
-        if (exponent < 0)
-        {
-            x = 1 / x;
-            exponent = -exponent;
-        }
-
-        var result = 1.0;
-
-        while (exponent > 0)
-        {
-            if ((exponent & 1) == 1)
-            {
-                result *= x;
-            }
-
-            x *= x;
-            exponent >>= 1;
-        }
-
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PowByExponentiationBySquaring_LeetCodeExamples_ReturnsExpected(double x, int n, double expected) =>
+        Assert.Equal(expected, PowXnSolution.PowByExponentiationBySquaring(x, n), 6);
 }
