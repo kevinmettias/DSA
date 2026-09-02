@@ -1,74 +1,54 @@
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.RandomPickIndex.RandomPickIndexSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickIndex;
 
-// LeetCode 398. Random Pick Index: the InsertDeleteGetRandomO1 precedent (HashMap +
-// DynamicArray + seeded Random) applied to a grouping problem instead of a swap-with-
-// -tail removal one - HashMap<int, DynamicArray<int>> groups every index by its value
-// once at construction, so each Pick(target) is a single O(1)-expected lookup plus one
-// uniform draw over that value's own index list, instead of a fresh O(n) scan per call.
-public sealed partial class RandomPickIndexTests
+// Harness only. Both strategies are RandomPickIndexSolution's - this replays
+// repeated Pick(target) calls against each IRandomPickIndex implementation built
+// from LeetCode's published nums. Pick's result is nondeterministic, so each
+// example carries the full set of indices that are valid to return for its
+// target rather than one exact value - the same "expected slot carries a
+// candidate set" idea InsertDeleteGetRandomO1Tests already uses for GetRandom -
+// plus, where the original test asserted it, that every valid index eventually
+// gets returned across many calls.
+public sealed class RandomPickIndexTests
 {
-    [Fact]
-    public void Pick_TargetWithMultipleOccurrences_AlwaysReturnsAMatchingIndex()
-    {
-        var solution = new Solution([1, 2, 3, 3, 3], seed: 1);
-
-        for (var i = 0; i < 50; i++)
+    public static TheoryData<int[], int, int[], int, bool> Examples =>
+        new()
         {
-            var picked = solution.Pick(3);
-            Assert.Contains(picked, new[] { 2, 3, 4 });
-        }
-    }
+            { [1, 2, 3, 3, 3], 3, [2, 3, 4], 50, false },
+            { [5, 1, 5, 2, 5, 5], 2, [3], 1, true },
+            { [5, 1, 5, 2, 5, 5], 5, [0, 2, 4, 5], 200, true },
+        };
 
-    [Fact]
-    public void Pick_TargetWithSingleOccurrence_AlwaysReturnsThatIndex()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByReservoirSampling(
+        int[] nums, int target, int[] validIndices, int trials, bool expectAllSeen)
+        => AssertPicksAreValid(
+            new RandomPickIndexByReservoirSampling(nums), target, validIndices, trials, expectAllSeen);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByHashMapGrouping(
+        int[] nums, int target, int[] validIndices, int trials, bool expectAllSeen)
+        => AssertPicksAreValid(
+            new RandomPickIndexByHashMapGrouping(nums), target, validIndices, trials, expectAllSeen);
+
+    private static void AssertPicksAreValid(
+        IRandomPickIndex solution, int target, int[] validIndices, int trials, bool expectAllSeen)
     {
-        var solution = new Solution([5, 1, 5, 2, 5, 5], seed: 1);
-
-        Assert.Equal(3, solution.Pick(2));
-    }
-
-    [Fact]
-    public void Pick_ManyCalls_EventuallyReturnsEveryMatchingIndex()
-    {
-        var solution = new Solution([5, 1, 5, 2, 5, 5], seed: 1);
         var seen = new HashSet<int>();
 
-        for (var i = 0; i < 200; i++)
+        for (var i = 0; i < trials; i++)
         {
-            seen.Add(solution.Pick(5));
+            var picked = solution.Pick(target);
+            Assert.Contains(picked, validIndices);
+            seen.Add(picked);
         }
 
-        Assert.Equal(new[] { 0, 2, 4, 5 }, seen.OrderBy(index => index));
-    }
-
-    private sealed class Solution
-    {
-        private readonly HashMap<int, DynamicArray<int>> _indicesByValue = new();
-        private readonly Random _random;
-
-        public Solution(int[] nums, int seed)
+        if (expectAllSeen)
         {
-            _random = new Random(seed);
-
-            for (var i = 0; i < nums.Length; i++)
-            {
-                if (!_indicesByValue.TryGetValue(nums[i], out var indices))
-                {
-                    indices = new DynamicArray<int>();
-                    _indicesByValue.Set(nums[i], indices);
-                }
-
-                indices.Add(i);
-            }
-        }
-
-        public int Pick(int target)
-        {
-            _indicesByValue.TryGetValue(target, out var indices);
-            return indices.Get(_random.Next(indices.Count));
+            Assert.Equal(validIndices.OrderBy(index => index), seen.OrderBy(index => index));
         }
     }
 }

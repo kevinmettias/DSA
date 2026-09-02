@@ -1,41 +1,27 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.FirstUniqueCharacterInAString;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FirstUniqueCharacterInAString;
 
-// LeetCode 387. First Unique Character in a String: a HashMap<char,int> frequency
-// count pass followed by a second pass returning the first index whose count is 1 -
-// the same character-bookkeeping shape LongestSubstringWithoutRepeatingCharacters
-// already uses this repo's own HashMap<TKey,TValue> for.
+// Harness only. Both strategies live in FirstUniqueCharacterInAStringSolution and
+// are asserted against the same examples.
 public sealed class FirstUniqueCharacterInAStringTests
 {
+    public static TheoryData<string, int> Examples =>
+        new()
+        {
+            { "leetcode", 0 },
+            { "loveleetcode", 2 },
+            { "aabb", -1 },
+            { "z", 0 },
+        };
+
     [Theory]
-    [InlineData("leetcode", 0)]
-    [InlineData("loveleetcode", 2)]
-    [InlineData("aabb", -1)]
-    [InlineData("z", 0)]
-    public void FirstUniqChar_Examples_ReturnsExpectedIndex(string s, int expected)
-        => Assert.Equal(expected, FirstUniqChar(s));
+    [MemberData(nameof(Examples))]
+    public void FirstUniqCharByBruteForce_LeetCodeExamples_ReturnsExpectedIndex(string s, int expected) =>
+        Assert.Equal(expected, FirstUniqueCharacterInAStringSolution.FirstUniqCharByBruteForce(s));
 
-    private static int FirstUniqChar(string s)
-    {
-        var counts = new HashMap<char, int>();
-
-        foreach (var c in s)
-        {
-            counts.TryGetValue(c, out var count);
-            counts.Set(c, count + 1);
-        }
-
-        for (var i = 0; i < s.Length; i++)
-        {
-            counts.TryGetValue(s[i], out var count);
-
-            if (count == 1)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FirstUniqCharByHashMapTwoPass_LeetCodeExamples_ReturnsExpectedIndex(string s, int expected) =>
+        Assert.Equal(expected, FirstUniqueCharacterInAStringSolution.FirstUniqCharByHashMapTwoPass(s));
 }
