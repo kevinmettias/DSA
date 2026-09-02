@@ -1,10 +1,16 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.DistinctSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: the single arm is DistinctSubsequencesSolution's, the same method
+// DistinctSubsequencesTests proves correct.
 [MemoryDiagnoser]
 public class DistinctSubsequencesBenchmarks
 {
-    [Benchmark(Baseline = true)] public int Baseline() => 1;
-    [Benchmark] public int PrimitiveComposed() => 1;
+    private const string Source = "rabbbit";
+    private const string Target = "rabbit";
+
+    [Benchmark(Baseline = true)]
+    public int MemoizedRecursion() => DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(Source, Target);
 }

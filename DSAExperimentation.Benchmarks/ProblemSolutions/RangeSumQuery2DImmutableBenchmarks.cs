@@ -1,13 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Range Sum Query 2D - Immutable (LC 304): a brute-force cell scan baseline (sums every cell in
-// the region directly, O(rows*cols) per SumRegion call) vs. one FenwickTree<int,SumOperation<int>>
-// built per row (O(rows*cols*log(cols)) once), so SumRegion afterward walks only the covered rows
-// and does an O(log cols) FenwickTree.Query per row instead of rescanning every cell. Both answer
-// the same fixed batch of queries over a square matrix.
+// Harness only: both arms are RangeSumQuery2DImmutableSolution's, the same factories
+// RangeSumQuery2DImmutableTests proves correct - a brute-force cell scan baseline (sums every
+// cell in the region directly, O(rows*cols) per SumRegion call) vs. one
+// FenwickTree<int,SumOperation<int>> built per row (O(rows*cols*log(cols)) once), so SumRegion
+// afterward walks only the covered rows and does an O(log cols) FenwickTree.Query per row instead
+// of rescanning every cell. [GlobalSetup] builds the random matrix and query batch; each
+// [Benchmark] arm's own factory call (construction included) plus the full query replay is what
+// gets measured, the same shape LRUCacheBenchmarks uses for its own design problem.
 [MemoryDiagnoser]
 public class RangeSumQuery2DImmutableBenchmarks
 {
@@ -44,36 +47,21 @@ public class RangeSumQuery2DImmutableBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceCellScan()
-    {
-        var total = 0L;
-
-        foreach (var (row1, col1, row2, col2) in _queries)
-        {
-            for (var row = row1; row <= row2; row++)
-            {
-                for (var col = col1; col <= col2; col++)
-                {
-                    total += _matrix[row][col];
-                }
-            }
-        }
-
-        return total;
-    }
+    public long BruteForceCellScan() => Replay(RangeSumQuery2DImmutableSolution.CreateByBruteForceCellScan(_matrix));
 
     [Benchmark]
-    public long RowFenwickTreeQuery()
+    public long RowFenwickTreeQuery() => Replay(RangeSumQuery2DImmutableSolution.CreateByRowFenwickTree(_matrix));
+
+    // Sums every returned region sum rather than discarding it, so the JIT can't eliminate the
+    // replay as dead code - the same "return the real answer, not a weaker proxy" shape
+    // OpenTheLockBenchmarks/LRUCacheBenchmarks already follow.
+    private long Replay(INumMatrix numMatrix)
     {
-        var rows = _matrix.Select(row => new FenwickTree<int, SumOperation<int>>(row)).ToArray();
         var total = 0L;
 
         foreach (var (row1, col1, row2, col2) in _queries)
         {
-            for (var row = row1; row <= row2; row++)
-            {
-                total += rows[row].Query(col1, col2);
-            }
+            total += numMatrix.SumRegion(row1, col1, row2, col2);
         }
 
         return total;

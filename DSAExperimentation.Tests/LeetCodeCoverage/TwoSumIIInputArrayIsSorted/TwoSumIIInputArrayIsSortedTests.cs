@@ -1,4 +1,25 @@
-﻿using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.TwoSumIIInputArrayIsSorted;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSumIIInputArrayIsSorted;
-public sealed partial class TwoSumIIInputArrayIsSortedTests { [Fact] public void TwoSum_SortedExample_ReturnsOneBasedIndices(){var actual=TwoSum([2,7,11,15],9);Assert.Equal([1,2],actual);} private static int[] TwoSum(int[] nums,int target){for(var i=0;i<nums.Length;i++){var found=BinarySearch.Find<int,OffsetSequence>(new OffsetSequence(nums,i+1,nums.Length-i-1),target-nums[i]);if(found is not null)return [i+1,i+found.Value+2];}return [];} private readonly struct OffsetSequence(int[] nums,int start,int length):IRandomAccessSequence<int>{public int Length=>length;public int Get(int i)=>nums[start+i];} }
+
+// Harness only. OffsetSequence is DataStructures.Sequence's and the one strategy
+// here is TwoSumIIInputArrayIsSortedSolution's - this file just pins it to
+// LeetCode's published examples, including a duplicate-valued array to prove the
+// binary search still lands on the correct pair, not merely some equal value.
+public sealed class TwoSumIIInputArrayIsSortedTests
+{
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
+        {
+            { [2, 7, 11, 15], 9, [1, 2] }, // LC's example 1
+            { [2, 3, 4], 6, [1, 3] }, // LC's example 2
+            { [-1, 0], -1, [1, 2] }, // LC's example 3
+            { [1, 2, 3, 4, 4, 9, 56, 90], 8, [4, 5] }, // duplicate values in the array
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TryFindIndicesByBinarySearch_LeetCodeExamples_ReturnsOneBasedIndices(
+        int[] nums, int target, int[] expected) =>
+        Assert.Equal(expected, TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByBinarySearch(nums, target));
+}

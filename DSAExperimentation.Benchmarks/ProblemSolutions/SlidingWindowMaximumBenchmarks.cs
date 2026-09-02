@@ -1,13 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using DSAExperimentation.LeetCode.SlidingWindowMaximum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Sliding Window Maximum (LC 239): rescanning every window from scratch
-// (O(n*k)) vs. this repo's own Deque<int> as a monotonic decreasing-value index
-// window (O(n), each index pushed/popped at most once). Values are random over
-// a wide range so ties/early-exit shortcuts in BruteForceRescan can't make it
-// look artificially competitive.
+// Harness only: both arms are SlidingWindowMaximumSolution's, the same methods
+// SlidingWindowMaximumTests proves correct. Values are random over a wide range
+// so ties/early-exit shortcuts in BruteForceRescan can't make it look
+// artificially competitive. Both arms now build the actual per-window maximum
+// array (LeetCode's real answer shape) rather than the summed reduction the
+// pre-migration arms measured.
 [MemoryDiagnoser]
 public class SlidingWindowMaximumBenchmarks
 {
@@ -27,57 +28,10 @@ public class SlidingWindowMaximumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceRescan()
-    {
-        long sum = 0;
-        for (var i = 0; i <= _values.Length - WindowSize; i++)
-        {
-            var windowMax = int.MinValue;
-            for (var j = i; j < i + WindowSize; j++)
-            {
-                windowMax = Math.Max(windowMax, _values[j]);
-            }
-
-            sum += windowMax;
-        }
-
-        return sum;
-    }
+    public int[] BruteForceRescan() =>
+        SlidingWindowMaximumSolution.MaxSlidingWindowByBruteForceRescan(_values, WindowSize);
 
     [Benchmark]
-    public long MonotonicDeque()
-    {
-        var window = new RepoDeque();
-        long sum = 0;
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            sum += WindowContributionForIndex(window, i);
-        }
-
-        return sum;
-    }
-
-    private long WindowContributionForIndex(RepoDeque window, int i)
-    {
-        while (window.TryPeekBack(out var backIndex) && _values[backIndex] <= _values[i])
-        {
-            window.TryPopBack(out _);
-        }
-
-        window.PushBack(i);
-
-        if (window.TryPeekFront(out var frontIndex) && frontIndex <= i - WindowSize)
-        {
-            window.TryPopFront(out _);
-        }
-
-        if (i >= WindowSize - 1)
-        {
-            window.TryPeekFront(out var maxIndex);
-            return _values[maxIndex];
-        }
-
-        return 0;
-    }
+    public int[] MonotonicDeque() =>
+        SlidingWindowMaximumSolution.MaxSlidingWindowByMonotonicDeque(_values, WindowSize);
 }

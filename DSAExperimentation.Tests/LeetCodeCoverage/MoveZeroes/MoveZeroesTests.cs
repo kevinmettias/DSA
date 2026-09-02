@@ -1,60 +1,40 @@
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MoveZeroes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MoveZeroes;
 
-// LeetCode 283. Move Zeroes: the same ArrayIndexedSequence<T> Get/Set two-pointer
-// swap SortColors already proves out for this repo, specialized to a single
-// zero/nonzero split instead of the three-way Dutch-flag partition.
-public sealed partial class MoveZeroesTests
+// Harness only. Both strategies are MoveZeroesSolution's - this file just pins
+// them to LeetCode's published examples.
+public sealed class MoveZeroesTests
 {
-    [Fact]
-    public void MoveZeroesToEnd_ClassicExample_MovesZeroesToEndPreservingOrder()
-    {
-        int[] nums = [0, 1, 0, 3, 12];
-
-        MoveZeroesToEnd(nums);
-
-        Assert.Equal([1, 3, 12, 0, 0], nums);
-    }
-
-    [Fact]
-    public void MoveZeroesToEnd_SingleZero_NoOp()
-    {
-        int[] nums = [0];
-
-        MoveZeroesToEnd(nums);
-
-        Assert.Equal([0], nums);
-    }
-
-    [Fact]
-    public void MoveZeroesToEnd_NoZeroes_LeavesOrderUnchanged()
-    {
-        int[] nums = [4, 2, 7];
-
-        MoveZeroesToEnd(nums);
-
-        Assert.Equal([4, 2, 7], nums);
-    }
-
-    private static void MoveZeroesToEnd(int[] nums)
-    {
-        var seq = new ArrayIndexedSequence<int>(nums);
-        var insertPos = 0;
-
-        for (var i = 0; i < seq.Length; i++)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            if (seq.Get(i) != 0)
-            {
-                Swap(seq, insertPos++, i);
-            }
-        }
+            { [0, 1, 0, 3, 12], [1, 3, 12, 0, 0] },
+            { [0], [0] },
+            { [4, 2, 7], [4, 2, 7] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MoveZeroesToEndByLinearScan_LeetCodeExamples_MovesZeroesToEndPreservingOrder(
+        int[] nums, int[] expected)
+    {
+        var copy = (int[])nums.Clone();
+
+        MoveZeroesSolution.MoveZeroesToEndByLinearScan(copy);
+
+        Assert.Equal(expected, copy);
     }
 
-    private static void Swap(ArrayIndexedSequence<int> seq, int first, int second)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MoveZeroesToEndByArrayIndexedTwoPointer_LeetCodeExamples_MovesZeroesToEndPreservingOrder(
+        int[] nums, int[] expected)
     {
-        var temp = seq.Get(first);
-        seq.Set(first, seq.Get(second));
-        seq.Set(second, temp);
+        var copy = (int[])nums.Clone();
+
+        MoveZeroesSolution.MoveZeroesToEndByArrayIndexedTwoPointer(copy);
+
+        Assert.Equal(expected, copy);
     }
 }

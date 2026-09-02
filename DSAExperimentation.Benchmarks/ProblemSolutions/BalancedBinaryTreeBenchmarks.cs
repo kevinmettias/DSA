@@ -1,8 +1,15 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.BalancedBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: the single arm is BalancedBinaryTreeSolution's, the same
+// method BalancedBinaryTreeTests proves correct. The original benchmark's
+// two [Benchmark] arms (HeightCheck, BinaryTreeNodeCheck) called the exact
+// same private helper - one real strategy, not two - so there is only one
+// arm here too, mirroring ConvertSortedArrayToBinarySearchTreeBenchmarks'
+// precedent for a single-strategy problem.
 [MemoryDiagnoser]
 public class BalancedBinaryTreeBenchmarks
 {
@@ -12,8 +19,16 @@ public class BalancedBinaryTreeBenchmarks
     private const int RightLeftValue = 15;
     private const int RightRightValue = 7;
 
-    private BinaryTreeNode<int> _root=null!; [GlobalSetup] public void Setup()=>_root=new(RootValue){Left=new(LeftValue),Right=new(RightValue){Left=new(RightLeftValue),Right=new(RightRightValue)}};
-    [Benchmark(Baseline=true)] public bool HeightCheck()=>HeightOrUnbalanced(_root)>=0;
-    [Benchmark] public bool BinaryTreeNodeCheck()=>HeightOrUnbalanced(_root)>=0;
-    private static int HeightOrUnbalanced(BinaryTreeNode<int>? n){if(n is null)return 0;var l=HeightOrUnbalanced(n.Left);var r=HeightOrUnbalanced(n.Right);if(l<0||r<0||Math.Abs(l-r)>1)return -1;return 1+Math.Max(l,r);}
+    private BinaryTreeNode<int> _root = null!;
+
+    [GlobalSetup]
+    public void Setup() =>
+        _root = new(RootValue)
+        {
+            Left = new(LeftValue),
+            Right = new(RightValue) { Left = new(RightLeftValue), Right = new(RightRightValue) },
+        };
+
+    [Benchmark(Baseline = true)]
+    public bool HeightRecursion() => BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(_root);
 }

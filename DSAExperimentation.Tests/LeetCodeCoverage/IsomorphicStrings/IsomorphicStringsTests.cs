@@ -1,3 +1,31 @@
-﻿using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.IsomorphicStrings;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.IsomorphicStrings;
-public sealed partial class IsomorphicStringsTests { [Theory] [InlineData("egg","add",true)] [InlineData("foo","bar",false)] public void IsIsomorphic_Examples_ReturnsExpected(string s,string t,bool expected){var actual=IsIso(s,t);Assert.Equal(expected,actual);} private static bool IsIso(string s,string t){var st=new HashMap<char,char>();var ts=new HashMap<char,char>();for(var i=0;i<s.Length;i++){if(st.TryGetValue(s[i],out var a)&&a!=t[i])return false;if(ts.TryGetValue(t[i],out var b)&&b!=s[i])return false;st.Set(s[i],t[i]);ts.Set(t[i],s[i]);}return true;} }
+
+// Harness only: both strategies live in IsomorphicStringsSolution. One test
+// method per strategy over one shared set of LeetCode's own examples, plus a
+// couple that exercise both mapping directions, so a failure names the
+// strategy (and direction) that broke.
+public sealed class IsomorphicStringsTests
+{
+    public static TheoryData<string, string, bool> Examples =>
+        new()
+        {
+            { "egg", "add", true },
+            { "foo", "bar", false },
+            { "paper", "title", true },
+            { "badc", "baba", false },
+            { "ab", "aa", false },
+            { "", "", true },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsIsomorphicByDictionary_LeetCodeExamples_ReturnsExpected(string s, string t, bool expected) =>
+        Assert.Equal(expected, IsomorphicStringsSolution.IsIsomorphicByDictionary(s, t));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsIsomorphicByHashMap_LeetCodeExamples_ReturnsExpected(string s, string t, bool expected) =>
+        Assert.Equal(expected, IsomorphicStringsSolution.IsIsomorphicByHashMap(s, t));
+}

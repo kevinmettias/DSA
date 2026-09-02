@@ -1,81 +1,60 @@
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<string>;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SerializeAndDeserializeBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBinaryTree;
 
-// LeetCode 297. Serialize and Deserialize Binary Tree: preorder serialization with a
-// "#" null-marker sentinel, using this repo's own BinaryTreeNode<TValue> as the tree
-// representation and Queue<string> to walk the serialized tokens back into a tree in
-// the exact order they were written - the same recursive preorder shape
-// ConstructBinaryTreeFromPreorderAndInorderTraversalTests already builds a tree with.
-public sealed partial class SerializeAndDeserializeBinaryTreeTests
+// Harness only. Both round-trip strategies are
+// SerializeAndDeserializeBinaryTreeSolution's - this file just pins them to
+// LeetCode's published examples via a preorder-sequence comparison, since the
+// restored tree only needs to be structurally identical, not reference-equal.
+public sealed class SerializeAndDeserializeBinaryTreeTests
 {
-    private const string NullMarker = "#";
+    // Each row is a preorder traversal with null children marked (null), matching
+    // the solution's own token grammar - value, then left, then right.
+    public static TheoryData<int?[]> Examples =>
+        new()
+        {
+            new int?[] { 1, 2, null, null, 3, 4, null, null, 5, null, null },
+            new int?[] { null },
+            new int?[] { 42, null, null },
+        };
 
-    [Fact]
-    public void SerializeThenDeserialize_ClassicExample_RoundTripsPreOrder()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SerializeByStringConcatThenDeserializeByStringConcat_LeetCodeExamples_RoundTripsPreOrder(
+        int?[] preorder)
     {
-        var root = new BinaryTreeNode<int>(1) { Left = new BinaryTreeNode<int>(2), Right = new BinaryTreeNode<int>(3) { Left = new BinaryTreeNode<int>(4), Right = new BinaryTreeNode<int>(5) } };
+        var root = BuildTree(preorder);
 
-        var restored = Deserialize(Serialize(root));
+        var restored = SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(
+            SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(root));
 
         Assert.Equal(PreOrder(root), PreOrder(restored));
     }
 
-    [Fact]
-    public void SerializeThenDeserialize_EmptyTree_RoundTripsToNull()
-        => Assert.Null(Deserialize(Serialize(null)));
-
-    [Fact]
-    public void SerializeThenDeserialize_SingleNode_RoundTrips()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SerializeByQueueThenDeserializeByQueue_LeetCodeExamples_RoundTripsPreOrder(int?[] preorder)
     {
-        var root = new BinaryTreeNode<int>(42);
+        var root = BuildTree(preorder);
 
-        var restored = Deserialize(Serialize(root));
+        var restored = SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(
+            SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(root));
 
         Assert.Equal(PreOrder(root), PreOrder(restored));
     }
 
-    private static string Serialize(BinaryTreeNode<int>? root)
+    private static BinaryTreeNode<int>? BuildTree(int?[] preorder)
     {
-        var tokens = new List<string>();
-        WriteNode(root, tokens);
-        return string.Join(',', tokens);
-    }
+        var index = 0;
 
-    private static void WriteNode(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
+        BinaryTreeNode<int>? Build()
         {
-            tokens.Add(NullMarker);
-            return;
+            var value = preorder[index++];
+            return value is null ? null : new BinaryTreeNode<int>(value.Value) { Left = Build(), Right = Build() };
         }
 
-        tokens.Add(node.Value.ToString());
-        WriteNode(node.Left, tokens);
-        WriteNode(node.Right, tokens);
-    }
-
-    private static BinaryTreeNode<int>? Deserialize(string data)
-    {
-        var tokens = new RepoQueue();
-
-        foreach (var token in data.Split(','))
-        {
-            tokens.Enqueue(token);
-        }
-
-        return ReadNode(tokens);
-    }
-
-    private static BinaryTreeNode<int>? ReadNode(RepoQueue tokens)
-    {
-        if (!tokens.TryDequeue(out var token) || token == NullMarker)
-        {
-            return null;
-        }
-
-        return new BinaryTreeNode<int>(int.Parse(token)) { Left = ReadNode(tokens), Right = ReadNode(tokens) };
+        return Build();
     }
 
     private static int[] PreOrder(BinaryTreeNode<int>? root)

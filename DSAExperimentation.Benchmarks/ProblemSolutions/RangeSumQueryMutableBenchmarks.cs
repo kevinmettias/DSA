@@ -1,12 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.RangeSumQueryMutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Range Sum Query - Mutable (LC 307): a raw-array baseline (Update writes the slot directly,
-// O(1); SumRange rescans the range, O(n)) vs. this repo's own SegmentTree<int,SumOperation<int>>
-// (Update and Query both O(log n)). Both process the same interleaved stream of update/sumRange
-// calls, rebuilt fresh each iteration so mutation from one run never leaks into the next.
+// Harness only: both arms are RangeSumQueryMutableSolution's, the same factories
+// RangeSumQueryMutableTests proves correct - a raw-array baseline (Update writes the slot
+// directly, O(1); SumRange rescans the range, O(n)) vs. this repo's own
+// SegmentTree<int,SumOperation<int>> (Update and Query both O(log n)). Both process the same
+// interleaved stream of update/sumRange calls against a fresh instance built by their own factory
+// each iteration, so mutation from one run never leaks into the next.
 [MemoryDiagnoser]
 public class RangeSumQueryMutableBenchmarks
 {
@@ -44,44 +46,27 @@ public class RangeSumQueryMutableBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ArrayRescan()
-    {
-        var nums = (int[])_initial.Clone();
-        var total = 0L;
-
-        foreach (var (isUpdate, a, b) in _operations)
-        {
-            if (isUpdate)
-            {
-                nums[a] = b;
-            }
-            else
-            {
-                for (var i = a; i <= b; i++)
-                {
-                    total += nums[i];
-                }
-            }
-        }
-
-        return total;
-    }
+    public long ArrayRescan() => Replay(RangeSumQueryMutableSolution.CreateByArrayRescan(_initial));
 
     [Benchmark]
-    public long SegmentTreeQuery()
+    public long SegmentTreeQuery() => Replay(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(_initial));
+
+    // Sums every returned SumRange result rather than discarding it, so the JIT can't eliminate
+    // the replay as dead code - the same "return the real answer, not a weaker proxy" shape
+    // OpenTheLockBenchmarks/LRUCacheBenchmarks already follow.
+    private long Replay(INumArray numArray)
     {
-        var tree = new SegmentTree<int, SumOperation<int>>(_initial);
         var total = 0L;
 
         foreach (var (isUpdate, a, b) in _operations)
         {
             if (isUpdate)
             {
-                tree.Update(a, b);
+                numArray.Update(a, b);
             }
             else
             {
-                total += tree.Query(a, b);
+                total += numArray.SumRange(a, b);
             }
         }
 

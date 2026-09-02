@@ -1,130 +1,38 @@
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.TheSkylineProblem;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TheSkylineProblem;
 
-// LeetCode 218. The Skyline Problem: a left-to-right sweep over each building's start/end
-// x-coordinate, tracking active heights in this repo's own Heap<int,MaxHeapOrder<int>> with
-// lazy deletion via a HashMap<int,int> pending-removal count - the standard technique for a
-// heap that, per Heap.cs's own doc comment, offers no arbitrary Remove. Events sharing an
-// x-coordinate are applied as one batch before the height is re-read, so intra-batch ordering
-// never affects the result (verified by the third test below, where an ending and a starting
-// building of equal height share an x-coordinate).
-public sealed partial class TheSkylineProblemTests
+// Harness only: both strategies live in TheSkylineProblemSolution. One test method
+// per strategy over one shared set of LeetCode's own examples, so a failure names
+// the strategy that broke. The third example has an ending building and a starting
+// building of equal height sharing an x-coordinate, proving intra-batch event
+// order doesn't affect the result.
+public sealed class TheSkylineProblemTests
 {
-    [Fact]
-    public void GetSkyline_FiveOverlappingBuildings_ReturnsClassicKeyPoints()
-    {
-        int[][] buildings =
-        [
-            [2, 9, 10],
-            [3, 7, 15],
-            [5, 12, 12],
-            [15, 20, 10],
-            [19, 24, 8],
-        ];
-
-        var skyline = GetSkyline(buildings);
-
-        Assert.Equal(
-            [[2, 10], [3, 15], [7, 12], [12, 0], [15, 10], [20, 8], [24, 0]],
-            skyline);
-    }
-
-    [Fact]
-    public void GetSkyline_SingleBuilding_ReturnsRiseThenFall()
-    {
-        int[][] buildings = [[0, 2, 3]];
-
-        var skyline = GetSkyline(buildings);
-
-        Assert.Equal([[0, 3], [2, 0]], skyline);
-    }
-
-    [Fact]
-    public void GetSkyline_TwoAdjacentBuildingsOfEqualHeight_MergesIntoOneRun()
-    {
-        int[][] buildings = [[1, 5, 4], [5, 10, 4]];
-
-        var skyline = GetSkyline(buildings);
-
-        Assert.Equal([[1, 4], [10, 0]], skyline);
-    }
-
-    private static List<int[]> GetSkyline(int[][] buildings)
-    {
-        var events = new List<(int X, int Height)>();
-        foreach (var building in buildings)
+    public static TheoryData<int[][], int[][]> Examples =>
+        new()
         {
-            events.Add((building[0], building[2]));
-            events.Add((building[1], -building[2]));
-        }
+            {
+                [[2, 9, 10], [3, 7, 15], [5, 12, 12], [15, 20, 10], [19, 24, 8]],
+                [[2, 10], [3, 15], [7, 12], [12, 0], [15, 10], [20, 8], [24, 0]]
+            },
+            {
+                [[0, 2, 3]],
+                [[0, 3], [2, 0]]
+            },
+            {
+                [[1, 5, 4], [5, 10, 4]],
+                [[1, 4], [10, 0]]
+            },
+        };
 
-        events.Sort((a, b) => a.X.CompareTo(b.X));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetSkylineByBruteForce_LeetCodeExamples_ReturnsKeyPoints(int[][] buildings, int[][] expected) =>
+        Assert.Equal(expected, TheSkylineProblemSolution.GetSkylineByBruteForce(buildings));
 
-        var state = new SweepState();
-        var i = 0;
-
-        while (i < events.Count)
-        {
-            i = ProcessNextXCoordinate(events, i, state);
-        }
-
-        return state.Result;
-    }
-
-    private static int ProcessNextXCoordinate(List<(int X, int Height)> events, int i, SweepState state)
-    {
-        var x = events[i].X;
-
-        while (i < events.Count && events[i].X == x)
-        {
-            ApplyEvent(events[i].Height, state.Heap, state.PendingRemovals);
-            i++;
-        }
-
-        DiscardRemovedTops(state.Heap, state.PendingRemovals);
-        var currentHeight = state.Heap.TryPeek(out var top) ? top : 0;
-
-        if (currentHeight != state.PreviousHeight)
-        {
-            state.Result.Add([x, currentHeight]);
-            state.PreviousHeight = currentHeight;
-        }
-
-        return i;
-    }
-
-    private static void ApplyEvent(int height, Heap<int, MaxHeapOrder<int>> heap, HashMap<int, int> pendingRemovals)
-    {
-        if (height > 0)
-        {
-            heap.Push(height);
-            return;
-        }
-
-        var endingHeight = -height;
-        pendingRemovals.TryGetValue(endingHeight, out var count);
-        pendingRemovals.Set(endingHeight, count + 1);
-    }
-
-    private static void DiscardRemovedTops(Heap<int, MaxHeapOrder<int>> heap, HashMap<int, int> pendingRemovals)
-    {
-        while (heap.TryPeek(out var top) && pendingRemovals.TryGetValue(top, out var count) && count > 0)
-        {
-            heap.TryPop(out _);
-            pendingRemovals.Set(top, count - 1);
-        }
-    }
-
-    private sealed class SweepState
-    {
-        public Heap<int, MaxHeapOrder<int>> Heap { get; } = new();
-
-        public HashMap<int, int> PendingRemovals { get; } = new();
-
-        public List<int[]> Result { get; } = [];
-
-        public int PreviousHeight { get; set; }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetSkylineBySweepLineHeap_LeetCodeExamples_ReturnsKeyPoints(int[][] buildings, int[][] expected) =>
+        Assert.Equal(expected, TheSkylineProblemSolution.GetSkylineBySweepLineHeap(buildings));
 }

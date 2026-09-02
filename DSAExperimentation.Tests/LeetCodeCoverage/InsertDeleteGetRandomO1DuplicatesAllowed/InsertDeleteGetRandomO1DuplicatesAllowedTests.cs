@@ -1,141 +1,136 @@
-using DSAExperimentation.DataStructures.DoublyLinkedList;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed.InsertDeleteGetRandomO1DuplicatesAllowedSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertDeleteGetRandomO1DuplicatesAllowed;
 
-// LeetCode 381. Insert Delete GetRandom O(1) - Duplicates allowed: LC380's swap-with-
-// the-tail trick alone isn't enough once a value can occupy more than one array
-// position - Remove needs to pick SOME occurrence of the target value in O(1), which a
-// value -> single-index HashMap can no longer represent. This repo's HashMap<TKey,
-// DoublyLinkedListNode<TValue>> + DoublyLinkedList<TValue> intrusive-node composition -
-// the exact shape LruCache/LfuCache already use for O(1) arbitrary-node removal - gives
-// each value its own DoublyLinkedList of "occurrence" nodes, one per array position it
-// currently holds; PopBack both picks and removes an occurrence in one O(1) step. A
-// second HashMap<int, Node> (array position -> the occurrence node that currently
-// represents it) is what lets the post-swap step retarget the moved element's occurrence
-// record by mutating one node's Value in place - O(1), no list scan, the same role a
-// swapped element's own index update plays in LC380.
-public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedTests
+// Harness only. Both strategies are InsertDeleteGetRandomO1DuplicatesAllowedSolution's
+// - this file replays the original test's three call sequences (the LeetCode-published
+// script, removing one of two duplicates, and re-inserting a value after it has been
+// fully removed) against each IRandomizedCollection implementation via a small
+// operation script, so a failure still names the strategy that broke. GetRandom's
+// result is nondeterministic and depends on each strategy's own internal array order,
+// so its expected slot carries the set of values that are valid to return at that
+// point in the script rather than one exact value - the same "expected slot shape
+// depends on which call it answers" idea ImplementRouterTests already uses for
+// ForwardPacket's int[]. RandomizedCollectionOp.Apply is pure dispatch - no
+// multiplicity-tracking logic of its own.
+public sealed class InsertDeleteGetRandomO1DuplicatesAllowedTests
 {
-    [Fact]
-    public void InsertRemoveGetRandom_LeetCodeExampleSequence_TracksMultiplicitiesCorrectly()
+    public static TheoryData<RandomizedCollectionOp[], object?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    RandomizedCollectionOp.Insert(1),
+                    RandomizedCollectionOp.Insert(1),
+                    RandomizedCollectionOp.Insert(2),
+                    RandomizedCollectionOp.Count(),
+                    RandomizedCollectionOp.GetRandom(),
+                    RandomizedCollectionOp.Remove(1),
+                    RandomizedCollectionOp.Count(),
+                ],
+                [true, false, true, 3, new[] { 1, 2 }, true, 2]
+            },
+            {
+                [
+                    RandomizedCollectionOp.Insert(5),
+                    RandomizedCollectionOp.Insert(5),
+                    RandomizedCollectionOp.Insert(7),
+                    RandomizedCollectionOp.Remove(5),
+                    RandomizedCollectionOp.Count(),
+                    RandomizedCollectionOp.Remove(5),
+                    RandomizedCollectionOp.Remove(5),
+                    RandomizedCollectionOp.Count(),
+                    RandomizedCollectionOp.GetRandom(),
+                ],
+                [true, false, true, true, 2, true, false, 1, new[] { 7 }]
+            },
+            {
+                [
+                    RandomizedCollectionOp.Insert(9),
+                    RandomizedCollectionOp.Remove(9),
+                    RandomizedCollectionOp.Insert(9),
+                ],
+                [true, true, true]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RandomizedCollectionByListScan_LeetCodeExamples_TracksMultiplicitiesCorrectly(
+        RandomizedCollectionOp[] operations, object?[] expected) =>
+        RunScript(new RandomizedCollectionByListScan(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RandomizedCollectionByLinkedOccurrences_LeetCodeExamples_TracksMultiplicitiesCorrectly(
+        RandomizedCollectionOp[] operations, object?[] expected) =>
+        RunScript(new RandomizedCollectionByLinkedOccurrences(), operations, expected);
+
+    private static void RunScript(
+        IRandomizedCollection collection, RandomizedCollectionOp[] operations, object?[] expected)
     {
-        var collection = new RandomizedCollection();
-
-        Assert.True(collection.Insert(1));
-        Assert.False(collection.Insert(1));
-        Assert.True(collection.Insert(2));
-        Assert.Equal(3, collection.Count);
-        Assert.Contains(collection.GetRandom(), new[] { 1, 2 });
-
-        Assert.True(collection.Remove(1));
-        Assert.Equal(2, collection.Count);
+        for (var i = 0; i < operations.Length; i++)
+        {
+            AssertMatches(expected[i], operations[i].Apply(collection));
+        }
     }
 
-    [Fact]
-    public void Remove_OneOfTwoDuplicates_LeavesTheOtherOccurrenceInPlace()
+    // GetRandom's expected slot carries the candidate set of values valid at that
+    // point in the script rather than one exact value; int/bool results
+    // (Insert/Remove/Count) compare fine as plain boxed objects.
+    private static void AssertMatches(object? expected, object? actual)
     {
-        var collection = new RandomizedCollection();
-        collection.Insert(5);
-        collection.Insert(5);
-        collection.Insert(7);
+        if (expected is int[] candidates)
+        {
+            Assert.Contains(Assert.IsType<int>(actual), candidates);
+        }
+        else
+        {
+            Assert.Equal(expected, actual);
+        }
+    }
+}
 
-        Assert.True(collection.Remove(5));
-        Assert.Equal(2, collection.Count);
+// One call in a RandomizedCollection script: which method to invoke and with what
+// argument. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the call sequence it replays.
+public readonly record struct RandomizedCollectionOp
+{
+    private readonly Kind _kind;
+    private readonly int _value;
 
-        Assert.True(collection.Remove(5));
-        Assert.False(collection.Remove(5));
-        Assert.Equal(1, collection.Count);
-        Assert.Equal(7, collection.GetRandom());
+    private RandomizedCollectionOp(Kind kind, int value)
+    {
+        _kind = kind;
+        _value = value;
     }
 
-    [Fact]
-    public void Insert_AfterFullyRemovingAValue_ReportsItAsNewAgain()
+    public static RandomizedCollectionOp Insert(int value) => new(Kind.Insert, value);
+
+    public static RandomizedCollectionOp Remove(int value) => new(Kind.Remove, value);
+
+    public static RandomizedCollectionOp GetRandom() => new(Kind.GetRandom, 0);
+
+    public static RandomizedCollectionOp Count() => new(Kind.Count, 0);
+
+    // Boxed uniformly so a script runner can assert against one expected value per
+    // operation regardless of which method it dispatches to. Internal, not public:
+    // IRandomizedCollection is internal to
+    // InsertDeleteGetRandomO1DuplicatesAllowedSolution, and only this same assembly's
+    // RunScript ever calls Apply.
+    internal object? Apply(IRandomizedCollection collection) => _kind switch
     {
-        var collection = new RandomizedCollection();
-        collection.Insert(9);
+        Kind.Insert => collection.Insert(_value),
+        Kind.Remove => collection.Remove(_value),
+        Kind.GetRandom => collection.GetRandom(),
+        _ => collection.Count,
+    };
 
-        Assert.True(collection.Remove(9));
-        Assert.True(collection.Insert(9));
-    }
-
-    private sealed class RandomizedCollection
+    private enum Kind
     {
-        private readonly DynamicArray<int> _values = new();
-        private readonly HashMap<int, DoublyLinkedList<int>> _occurrencesByValue = new();
-        private readonly HashMap<int, DoublyLinkedListNode<int>> _nodeByPosition = new();
-        private readonly Random _random = new(1);
-
-        public int Count => _values.Count;
-
-        public bool Insert(int value)
-        {
-            var isNewValue = !_occurrencesByValue.TryGetValue(value, out var occurrences);
-            if (isNewValue)
-            {
-                occurrences = new DoublyLinkedList<int>();
-                _occurrencesByValue.Set(value, occurrences);
-            }
-
-            var position = _values.Count;
-            _values.Add(value);
-
-            var node = new DoublyLinkedListNode<int> { Value = position };
-            occurrences.AddFront(node);
-            _nodeByPosition.Set(position, node);
-
-            return isNewValue;
-        }
-
-        public bool Remove(int value)
-        {
-            if (!_occurrencesByValue.TryGetValue(value, out var occurrences) || occurrences.Count == 0)
-            {
-                return false;
-            }
-
-            var removedPosition = PopOccurrence(value, occurrences);
-            SwapOutPosition(removedPosition);
-            return true;
-        }
-
-        private int PopOccurrence(int value, DoublyLinkedList<int> occurrences)
-        {
-            var removedNode = occurrences.PopBack();
-            var removedPosition = removedNode.Value;
-            _nodeByPosition.TryRemove(removedPosition);
-
-            if (occurrences.Count == 0)
-            {
-                _occurrencesByValue.TryRemove(value);
-            }
-
-            return removedPosition;
-        }
-
-        private void SwapOutPosition(int removedPosition)
-        {
-            var lastPosition = _values.Count - 1;
-            var lastValue = _values.Get(lastPosition);
-            _values.Set(removedPosition, lastValue);
-
-            if (removedPosition != lastPosition)
-            {
-                MoveTrackedNode(lastPosition, removedPosition);
-            }
-
-            _values.RemoveAt(lastPosition);
-        }
-
-        public int GetRandom() => _values.Get(_random.Next(_values.Count));
-
-        private void MoveTrackedNode(int fromPosition, int toPosition)
-        {
-            _nodeByPosition.TryGetValue(fromPosition, out var movedNode);
-            movedNode.Value = toPosition;
-            _nodeByPosition.TryRemove(fromPosition);
-            _nodeByPosition.Set(toPosition, movedNode);
-        }
+        Insert,
+        Remove,
+        GetRandom,
+        Count,
     }
 }

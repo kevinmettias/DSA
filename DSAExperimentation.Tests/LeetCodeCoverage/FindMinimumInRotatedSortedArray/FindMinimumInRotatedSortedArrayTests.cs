@@ -1,4 +1,29 @@
-﻿using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FindMinimumInRotatedSortedArray;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMinimumInRotatedSortedArray;
-public sealed partial class FindMinimumInRotatedSortedArrayTests { [Theory] [InlineData(new[]{3,4,5,1,2},1)] [InlineData(new[]{4,5,6,7,0,1,2},0)] public void FindMin_Examples_ReturnsMinimum(int[] nums,int expected)=>Assert.Equal(expected,FindMin(nums)); private static int FindMin(int[] nums){var pivot=BinarySearch.LowerBound<int,PivotSequence>(new PivotSequence(nums),1);return nums[pivot];} private readonly struct PivotSequence(int[] nums):IRandomAccessSequence<int>{public int Length=>nums.Length;public int Get(int i)=>nums[i]<=nums[^1]?1:0;} }
+
+// Harness only: both strategies live in FindMinimumInRotatedSortedArraySolution
+// and are asserted against the same examples, including the unrotated array and
+// the two-element rotation that exercise the pivot proxy at its edges.
+public sealed class FindMinimumInRotatedSortedArrayTests
+{
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [3, 4, 5, 1, 2], 1 },
+            { [4, 5, 6, 7, 0, 1, 2], 0 },
+            { [11, 13, 15, 17], 11 },
+            { [1], 1 },
+            { [2, 1], 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMinByLinearScan_LeetCodeExamples_ReturnsMinimum(int[] nums, int expected) =>
+        Assert.Equal(expected, FindMinimumInRotatedSortedArraySolution.FindMinByLinearScan(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMinByPivotLowerBound_LeetCodeExamples_ReturnsMinimum(int[] nums, int expected) =>
+        Assert.Equal(expected, FindMinimumInRotatedSortedArraySolution.FindMinByPivotLowerBound(nums));
+}

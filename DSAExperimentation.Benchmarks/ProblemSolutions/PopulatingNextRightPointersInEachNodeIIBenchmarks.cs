@@ -1,17 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNodeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Populating Next Right Pointers in Each Node II (LC 117): identical connect
-// contract to #116, but the input is only guaranteed to be an arbitrary binary
-// tree, not a perfect one. BinaryTrees.Skewed (a right-only chain, one node per
-// level) is the extreme non-perfect shape - proof that neither benchmarked
-// strategy needs perfect-tree-specific code to stay correct here.
+// Harness only: both arms are PopulatingNextRightPointersInEachNodeIISolution's, the
+// same methods PopulatingNextRightPointersInEachNodeIITests proves correct.
+// BinaryTrees.Skewed (a right-only chain, one node per level) is the extreme
+// non-perfect shape - proof that neither strategy needs perfect-tree-specific code
+// to stay correct here.
 [MemoryDiagnoser]
 public class PopulatingNextRightPointersInEachNodeIIBenchmarks
 {
@@ -24,100 +22,10 @@ public class PopulatingNextRightPointersInEachNodeIIBenchmarks
     public void Setup() => _root = BinaryTrees.Skewed(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public int ManualQueueBfs()
-    {
-        var next = new Dictionary<BinaryTreeNode<int>, BinaryTreeNode<int>?>();
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(_root);
-        var linked = 0;
-
-        while (queue.Count > 0)
-        {
-            var levelSize = queue.Count;
-            BinaryTreeNode<int>? previous = null;
-
-            for (var i = 0; i < levelSize; i++)
-            {
-                (previous, linked) = LinkNode(queue, next, previous, linked);
-            }
-
-            next[previous!] = null;
-        }
-
-        return linked;
-    }
-
-    private static (BinaryTreeNode<int>? Previous, int Linked) LinkNode(
-        Queue<BinaryTreeNode<int>> queue,
-        Dictionary<BinaryTreeNode<int>, BinaryTreeNode<int>?> next,
-        BinaryTreeNode<int>? previous,
-        int linked)
-    {
-        var node = queue.Dequeue();
-
-        if (previous is not null)
-        {
-            next[previous] = node;
-            linked++;
-        }
-
-        if (node.Left is not null)
-        {
-            queue.Enqueue(node.Left);
-        }
-
-        if (node.Right is not null)
-        {
-            queue.Enqueue(node.Right);
-        }
-
-        return (node, linked);
-    }
+    public int ManualQueueBfs() =>
+        PopulatingNextRightPointersInEachNodeIISolution.ConnectByManualQueueBfs(_root).Count;
 
     [Benchmark]
-    public int LevelGroupedTraversal()
-    {
-        var levels = CollectLevels();
-        return CountLinks(levels);
-    }
-
-    private List<List<BinaryTreeNode<int>>> CollectLevels()
-    {
-        LevelHooks.Output.Value = [];
-
-        LevelGroupedBreadthFirstTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>, LevelHooks>(_root);
-
-        return LevelHooks.Output.Value!;
-    }
-
-    private static int CountLinks(List<List<BinaryTreeNode<int>>> levels)
-    {
-        var next = new HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?>();
-        var linked = 0;
-
-        foreach (var level in levels)
-        {
-            for (var i = 0; i < level.Count; i++)
-            {
-                var nextNode = i + 1 < level.Count ? level[i + 1] : null;
-                next.Set(level[i], nextNode);
-
-                if (nextNode is not null)
-                {
-                    linked++;
-                }
-            }
-        }
-
-        return linked;
-    }
-
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
-    {
-        public static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
-
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) => Output.Value!.Add(level.ToList());
-    }
+    public int LevelGroupedTraversal() =>
+        PopulatingNextRightPointersInEachNodeIISolution.ConnectByLevelGroupedTraversal(_root).Count;
 }

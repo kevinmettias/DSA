@@ -1,11 +1,28 @@
-﻿using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.BalancedBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BalancedBinaryTree;
 
-public sealed partial class BalancedBinaryTreeTests
+// Harness only. The height-or-unbalanced recursion is
+// BalancedBinaryTreeSolution's; this file just pins it to LeetCode's
+// published examples plus the trivial empty-tree and single-node cases.
+public sealed class BalancedBinaryTreeTests
 {
-    [Fact] public void IsBalanced_BalancedTree_ReturnsTrue() => Assert.True(IsBalanced(new BinaryTreeNode<int>(3) { Left = new(9), Right = new(20) { Left = new(15), Right = new(7) } }));
-    [Fact] public void IsBalanced_UnbalancedTree_ReturnsFalse() => Assert.False(IsBalanced(new BinaryTreeNode<int>(1) { Left = new(2) { Left = new(3) { Left = new(4) } } }));
-    private static bool IsBalanced(BinaryTreeNode<int>? root) => HeightOrUnbalanced(root) >= 0;
-    private static int HeightOrUnbalanced(BinaryTreeNode<int>? node) { if (node is null) return 0; var left = HeightOrUnbalanced(node.Left); var right = HeightOrUnbalanced(node.Right); if (left < 0 || right < 0 || Math.Abs(left - right) > 1) return -1; return 1 + Math.Max(left, right); }
+    [Fact]
+    public void IsBalancedByHeightRecursion_BalancedTree_ReturnsTrue() =>
+        Assert.True(BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(
+            new BinaryTreeNode<int>(3) { Left = new(9), Right = new(20) { Left = new(15), Right = new(7) } }));
+
+    [Fact]
+    public void IsBalancedByHeightRecursion_UnbalancedTree_ReturnsFalse() =>
+        Assert.False(BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(
+            new BinaryTreeNode<int>(1) { Left = new(2) { Left = new(3) { Left = new(4) } } }));
+
+    [Fact]
+    public void IsBalancedByHeightRecursion_EmptyTree_ReturnsTrue() =>
+        Assert.True(BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(null));
+
+    [Fact]
+    public void IsBalancedByHeightRecursion_SingleNode_ReturnsTrue() =>
+        Assert.True(BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(new BinaryTreeNode<int>(1)));
 }

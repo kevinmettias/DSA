@@ -1,2 +1,23 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.SingleNumberII;
-public sealed partial class SingleNumberIITests { [Theory] [InlineData(new[]{2,2,3,2},3)] [InlineData(new[]{0,1,0,1,0,1,99},99)] public void SingleNumber_Triples_ReturnsUnique(int[] nums,int expected){var result=0;for(var bit=0;bit<32;bit++){var count=nums.Count(n=>((n>>bit)&1)==1);if(count%3!=0)result|=1<<bit;}Assert.Equal(expected,result);} }
+using DSAExperimentation.LeetCode.SingleNumberII;
+
+namespace DSAExperimentation.Tests.LeetCodeCoverage.SingleNumberII;
+
+// Harness only: the one strategy lives in SingleNumberIISolution and is asserted
+// against LeetCode's published examples plus a single-element case and a
+// negative-value case the two-case original didn't cover.
+public sealed class SingleNumberIITests
+{
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [2, 2, 3, 2], 3 },
+            { [0, 1, 0, 1, 0, 1, 99], 99 },
+            { [5], 5 },
+            { [-2, -2, 1, -2], 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindSingleByBitCountModThree_LeetCodeExamples_ReturnsTheUnpairedValue(int[] nums, int expected) =>
+        Assert.Equal(expected, SingleNumberIISolution.FindSingleByBitCountModThree(nums));
+}

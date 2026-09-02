@@ -1,10 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Paths;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.PathSumII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are PathSumIISolution's, the same methods
+// PathSumIITests proves correct. The original benchmark's two arms counted
+// matching paths instead of building them - weaker than the test's own helper,
+// which already built LeetCode's real answer - so both arms here return the
+// paths themselves, same as the tree and target below.
 [MemoryDiagnoser]
 public class PathSumIIBenchmarks
 {
@@ -46,34 +50,10 @@ public class PathSumIIBenchmarks
     };
 
     [Benchmark(Baseline = true)]
-    public int RecursiveCollect()
-    {
-        var count = 0;
-
-        void Search(BinaryTreeNode<int>? node, int sum)
-        {
-            if (node is null)
-            {
-                return;
-            }
-
-            sum += node.Value;
-
-            if (node.Left is null && node.Right is null && sum == TargetPathSum)
-            {
-                count++;
-            }
-
-            Search(node.Left, sum);
-            Search(node.Right, sum);
-        }
-
-        Search(_root, 0);
-        return count;
-    }
+    public List<List<int>> RecursiveBacktrack() =>
+        PathSumIISolution.FindPathsByRecursiveBacktrack(_root, TargetPathSum);
 
     [Benchmark]
-    public int AllRootToLeafPathsCollect() =>
-        AllRootToLeafPaths.Find<BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>, NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(_root)
-            .Count(p => p.Sum(n => n.Value) == TargetPathSum);
+    public List<List<int>> AllRootToLeafPaths() =>
+        PathSumIISolution.FindPathsByAllRootToLeafPaths(_root, TargetPathSum);
 }

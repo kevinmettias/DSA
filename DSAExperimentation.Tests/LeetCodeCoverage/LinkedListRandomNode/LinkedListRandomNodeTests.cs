@@ -1,38 +1,43 @@
-using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.LinkedListRandomNode;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListRandomNode;
 
-// LeetCode 382. Linked List Random Node: this repo's own SinglyLinkedListNode<int>
-// walked once into a DynamicArray<int> cache, then GetRandom is a single O(1) indexed
-// read - the same value -> DynamicArray<int> "cache once, GetRandom in O(1)" shape
-// InsertDeleteGetRandomO1/InsertDeleteGetRandomO1DuplicatesAllowed already use for
-// their own GetRandom().
-public sealed partial class LinkedListRandomNodeTests
+// Harness only: both strategies live in LinkedListRandomNodeSolution.
+// SinglyLinkedListNode<int> is internal, so it cannot appear in a public
+// TheoryData<...> member (CS0053) - the same reason BinarySearchTreeIteratorTests
+// and BalancedBinaryTreeTests use one [Fact] per case rather than [Theory]. Each
+// scenario is asserted against both strategies so a failure names which one broke;
+// GetRandomByDynamicArrayCache is exercised through its LeetCode-shaped overload,
+// which itself delegates to the prepared-cache overload (CacheValues + the
+// DynamicArray<int> overload), so both are covered transitively - the same
+// pattern OpenTheLockTests uses for MinTurnsByReduceGraph.
+public sealed class LinkedListRandomNodeTests
 {
     [Fact]
-    public void GetRandom_SingleNodeList_AlwaysReturnsThatValue()
+    public void GetRandomByReservoirSampling_SingleNodeList_AlwaysReturnsThatValue()
     {
-        var solution = new Solution(new SinglyLinkedListNode<int>(42));
+        var head = new SinglyLinkedListNode<int>(42);
+        var random = new Random(1);
 
         for (var i = 0; i < 20; i++)
         {
-            Assert.Equal(42, solution.GetRandom());
+            Assert.Equal(42, LinkedListRandomNodeSolution.GetRandomByReservoirSampling(head, random));
         }
     }
 
     [Fact]
-    public void GetRandom_MultiNodeList_EventuallyReturnsEveryValue()
+    public void GetRandomByReservoirSampling_MultiNodeList_EventuallyReturnsEveryValue()
     {
         var third = new SinglyLinkedListNode<int>(3);
         var second = new SinglyLinkedListNode<int>(2) { Next = third };
         var head = new SinglyLinkedListNode<int>(1) { Next = second };
-        var solution = new Solution(head);
+        var random = new Random(1);
 
         var seen = new HashSet<int>();
         for (var i = 0; i < 200; i++)
         {
-            var value = solution.GetRandom();
+            var value = LinkedListRandomNodeSolution.GetRandomByReservoirSampling(head, random);
             Assert.True(value is 1 or 2 or 3);
             seen.Add(value);
         }
@@ -40,19 +45,34 @@ public sealed partial class LinkedListRandomNodeTests
         Assert.Equal(3, seen.Count);
     }
 
-    private sealed class Solution
+    [Fact]
+    public void GetRandomByDynamicArrayCache_SingleNodeList_AlwaysReturnsThatValue()
     {
-        private readonly DynamicArray<int> _values = new();
-        private readonly Random _random = new(1);
+        var head = new SinglyLinkedListNode<int>(42);
+        var random = new Random(1);
 
-        public Solution(SinglyLinkedListNode<int> head)
+        for (var i = 0; i < 20; i++)
         {
-            for (var node = head; node is not null; node = node.Next)
-            {
-                _values.Add(node.Value);
-            }
+            Assert.Equal(42, LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(head, random));
+        }
+    }
+
+    [Fact]
+    public void GetRandomByDynamicArrayCache_MultiNodeList_EventuallyReturnsEveryValue()
+    {
+        var third = new SinglyLinkedListNode<int>(3);
+        var second = new SinglyLinkedListNode<int>(2) { Next = third };
+        var head = new SinglyLinkedListNode<int>(1) { Next = second };
+        var random = new Random(1);
+
+        var seen = new HashSet<int>();
+        for (var i = 0; i < 200; i++)
+        {
+            var value = LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(head, random);
+            Assert.True(value is 1 or 2 or 3);
+            seen.Add(value);
         }
 
-        public int GetRandom() => _values.Get(_random.Next(_values.Count));
+        Assert.Equal(3, seen.Count);
     }
 }

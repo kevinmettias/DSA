@@ -1,39 +1,32 @@
-using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.ShortestPalindrome;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestPalindrome;
 
-// LeetCode 214. Shortest Palindrome: build s + separator + reverse(s) and reuse this repo's
-// own KMP prefix/failure function (PrefixFunctionSearch.ComputeFailureFunction) - its value at
-// the last index is exactly the length of the longest run that is simultaneously a prefix of s
-// and a suffix of reverse(s), i.e. the longest palindromic PREFIX of s. Prepending the reverse
-// of whatever's left over makes the whole string a palindrome with the fewest possible
-// characters.
-public sealed partial class ShortestPalindromeTests
+// Harness only. Both strategies are ShortestPalindromeSolution's - this file just
+// pins them to LeetCode's published examples plus the edge cases the original
+// coverage carried (empty string, single char, already-palindrome).
+public sealed class ShortestPalindromeTests
 {
-    [Theory]
-    [InlineData("aacecaaa", "aaacecaaa")]
-    [InlineData("abcd", "dcbabcd")]
-    [InlineData("", "")]
-    [InlineData("a", "a")]
-    [InlineData("aa", "aa")]
-    [InlineData("racecar", "racecar")]
-    public void BuildShortestPalindrome_VariousInputs_PrependsFewestCharacters(string s, string expected)
-    {
-        Assert.Equal(expected, BuildShortestPalindrome(s));
-    }
-
-    private static string BuildShortestPalindrome(string s)
-    {
-        if (s.Length == 0)
+    public static TheoryData<string, string> Examples =>
+        new()
         {
-            return s;
-        }
+            { "aacecaaa", "aaacecaaa" },
+            { "abcd", "dcbabcd" },
+            { "", "" },
+            { "a", "a" },
+            { "aa", "aa" },
+            { "racecar", "racecar" },
+        };
 
-        var reversed = new string(s.Reverse().ToArray());
-        var combined = s + "#" + reversed;
-        var failure = PrefixFunctionSearch.ComputeFailureFunction(combined);
-        var longestPalindromicPrefix = failure[^1];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildShortestPalindromeByNaiveScan_LeetCodeExamples_PrependsFewestCharacters(
+        string s, string expected) =>
+        Assert.Equal(expected, ShortestPalindromeSolution.BuildShortestPalindromeByNaiveScan(s));
 
-        return new string(s[longestPalindromicPrefix..].Reverse().ToArray()) + s;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildShortestPalindromeByKmpFailureFunction_LeetCodeExamples_PrependsFewestCharacters(
+        string s, string expected) =>
+        Assert.Equal(expected, ShortestPalindromeSolution.BuildShortestPalindromeByKmpFailureFunction(s));
 }

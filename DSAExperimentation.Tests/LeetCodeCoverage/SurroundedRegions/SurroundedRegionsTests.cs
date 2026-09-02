@@ -1,32 +1,41 @@
-﻿using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.SurroundedRegions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SurroundedRegions;
 
-public sealed partial class SurroundedRegionsTests
+// Harness only: the border-DFS strategy lives in
+// SurroundedRegionsSolution - this file just pins it to LeetCode's published
+// examples. Solve mutates its board in place, so each example carries the
+// input and the expected post-mutation board.
+public sealed class SurroundedRegionsTests
 {
-    [Fact]
-    public void Solve_ClassicExample_CapturesInteriorRegions()
-    {
-        char[][] board = [['X','X','X','X'],['X','O','O','X'],['X','X','O','X'],['X','O','X','X']];
-        Solve(board);
-        Assert.Equal([['X','X','X','X'],['X','X','X','X'],['X','X','X','X'],['X','O','X','X']], board);
-    }
+    public static TheoryData<char[][], char[][]> Examples =>
+        new()
+        {
+            {
+                [['X', 'X', 'X', 'X'], ['X', 'O', 'O', 'X'], ['X', 'X', 'O', 'X'], ['X', 'O', 'X', 'X']],
+                [['X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X'], ['X', 'X', 'X', 'X'], ['X', 'O', 'X', 'X']]
+            },
+            {
+                [['X']],
+                [['X']]
+            },
+            {
+                [['O']],
+                [['O']]
+            },
+            {
+                [['O', 'O'], ['O', 'O']],
+                [['O', 'O'], ['O', 'O']]
+            },
+        };
 
-    private static void Solve(char[][] board)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SolveByBorderDepthFirstSearch_LeetCodeExamples_CapturesInteriorRegions(
+        char[][] board, char[][] expected)
     {
-        var rows = board.Length; var cols = board[0].Length;
-        for (var r = 0; r < rows; r++) { Mark((r, 0)); Mark((r, cols - 1)); }
-        for (var c = 0; c < cols; c++) { Mark((0, c)); Mark((rows - 1, c)); }
-        for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) board[r][c] = board[r][c] == '#' ? 'O' : 'X';
-        void Mark((int Row, int Col) start)
-        {
-            if (board[start.Row][start.Col] != 'O') return;
-            foreach (var (row, col) in DepthFirstSearch.Traverse(start, Neighbors)) board[row][col] = '#';
-        }
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
-        {
-            (int Row, int Col)[] next = [(p.Row + 1, p.Col), (p.Row - 1, p.Col), (p.Row, p.Col + 1), (p.Row, p.Col - 1)];
-            foreach (var n in next) if (n.Row >= 0 && n.Row < rows && n.Col >= 0 && n.Col < cols && board[n.Row][n.Col] == 'O') yield return n;
-        }
+        SurroundedRegionsSolution.SolveByBorderDepthFirstSearch(board);
+
+        Assert.Equal(expected, board);
     }
 }

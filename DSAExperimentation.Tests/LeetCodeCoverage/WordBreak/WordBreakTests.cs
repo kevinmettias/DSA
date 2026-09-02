@@ -1,33 +1,22 @@
-﻿using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.WordBreak;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.WordBreak;
 
-public sealed partial class WordBreakTests
+// Harness only. The Trie<bool> + Memoizer composition is WordBreakSolution's -
+// this file just pins it to LeetCode's published examples.
+public sealed class WordBreakTests
 {
-    [Theory]
-    [InlineData("leetcode", new[] { "leet", "code" }, true)]
-    [InlineData("catsandog", new[] { "cats", "dog", "sand", "and", "cat" }, false)]
-    public void WordBreak_LeetCodeExamples_ReturnsWhetherSegmentable(string s, string[] words, bool expected)
-    {
-        var actual = CanBreak(s, words);
-        Assert.Equal(expected, actual);
-    }
-
-    private static bool CanBreak(string s, string[] words)
-    {
-        var trie = new Trie<bool>(); foreach (var word in words) trie.Set(word, true);
-        return Memoizer.Memoize<int, bool>(0, From);
-        bool From(int start, Func<int, bool> can)
+    public static TheoryData<string, string[], bool> Examples =>
+        new()
         {
-            if (start == s.Length) return true;
-            for (var end = start + 1; end <= s.Length; end++)
-            {
-                var piece = s[start..end];
-                if (!trie.HasPrefix(piece)) break;
-                if (trie.HasKey(piece) && can(end)) return true;
-            }
-            return false;
-        }
-    }
+            { "leetcode", ["leet", "code"], true },
+            { "applepenapple", ["apple", "pen"], true },
+            { "catsandog", ["cats", "dog", "sand", "and", "cat"], false },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanBreakByTrieMemoized_LeetCodeExamples_ReturnsWhetherSegmentable(
+        string s, string[] wordDict, bool expected) =>
+        Assert.Equal(expected, WordBreakSolution.CanBreakByTrieMemoized(s, wordDict));
 }

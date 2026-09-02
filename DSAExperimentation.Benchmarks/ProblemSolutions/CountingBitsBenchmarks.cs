@@ -1,12 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.CountingBits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Counting Bits (LC 338): counting each number's set bits independently (the
-// textbook per-number loop) vs. this repo's own Memoizer-driven DP recurrence
-// ans[i] = ans[i>>1] + (i&1) - the same Memoizer composition HouseRobberBenchmarks/
-// HouseRobberIIBenchmarks already use for a different recurrence.
+// Harness only: both arms are CountingBitsSolution's, the same methods
+// CountingBitsTests proves correct. N is a scalar [Params] value with nothing to
+// hoist into [GlobalSetup] - there is no input container to prepare ahead of the
+// measured call.
 [MemoryDiagnoser]
 public class CountingBitsBenchmarks
 {
@@ -14,34 +14,8 @@ public class CountingBitsBenchmarks
     public int N;
 
     [Benchmark(Baseline = true)]
-    public int PerNumberLoop()
-    {
-        var total = 0;
-
-        for (var i = 0; i <= N; i++)
-        {
-            var value = i;
-            while (value != 0)
-            {
-                value &= value - 1;
-                total++;
-            }
-        }
-
-        return total;
-    }
+    public int[] PerNumberLoop() => CountingBitsSolution.CountBitsByPerNumberLoop(N);
 
     [Benchmark]
-    public int MemoizedRecurrence()
-    {
-        var total = 0;
-
-        for (var i = 0; i <= N; i++)
-        {
-            total += Memoizer.Memoize<int, int>(
-                i, (value, countBits) => value == 0 ? 0 : countBits(value >> 1) + (value & 1));
-        }
-
-        return total;
-    }
+    public int[] MemoizedRecurrence() => CountingBitsSolution.CountBitsByMemoizedRecurrence(N);
 }

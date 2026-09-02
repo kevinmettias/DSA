@@ -1,0 +1,26 @@
+using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockV;
+
+namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockV;
+
+// Harness only. Both strategies are BestTimeToBuyAndSellStockVSolution's - this
+// file just pins them to LeetCode's published examples.
+public sealed class BestTimeToBuyAndSellStockVTests
+{
+    public static TheoryData<int[], int, long> Examples =>
+        new()
+        {
+            { [1, 7, 9, 8, 2], 2, 14L },
+            { [12, 16, 19, 19, 8, 1, 19, 13, 9], 3, 36L },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByBruteForce_LeetCodeExamples_ReturnsMaximumProfit(int[] prices, int k, long expected) =>
+        Assert.Equal(expected, BestTimeToBuyAndSellStockVSolution.MaxProfitByBruteForce(prices, k));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByTransactionMemoization_LeetCodeExamples_ReturnsMaximumProfit(
+        int[] prices, int k, long expected) =>
+        Assert.Equal(expected, BestTimeToBuyAndSellStockVSolution.MaxProfitByTransactionMemoization(prices, k));
+}

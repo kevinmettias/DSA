@@ -1,3 +1,31 @@
-﻿using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.HappyNumber;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.HappyNumber;
-public sealed partial class HappyNumberTests { [Theory] [InlineData(19,true)] [InlineData(2,false)] public void IsHappy_Examples_ReturnsExpected(int n,bool expected)=>Assert.Equal(expected,IsHappy(n)); private static bool IsHappy(int n){var seen=new Set<int>();while(n!=1&&seen.TryAdd(n)){var sum=0;while(n>0){var d=n%10;sum+=d*d;n/=10;}n=sum;}return n==1;} }
+
+// Harness only: both strategies are HappyNumberSolution's - this file pins them
+// to LeetCode's published examples plus a couple of extra cases proving the
+// cycle-detection actually terminates instead of looping forever.
+public sealed class HappyNumberTests
+{
+    public static TheoryData<int, bool> Examples =>
+        new()
+        {
+            { 19, true }, // LC's example 1
+            { 2, false }, // LC's example 2
+            { 1, true }, // already happy, no iteration needed
+            { 7, true }, // reaches 1 after several steps
+            { 4, false }, // the canonical 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4 cycle
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsHappyByVisitedSet_LeetCodeExamples_ReturnsWhetherDigitSquareSumReachesOne(
+        int n, bool expected) =>
+        Assert.Equal(expected, HappyNumberSolution.IsHappyByVisitedSet(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsHappyByFloydCycleDetection_LeetCodeExamples_ReturnsWhetherDigitSquareSumReachesOne(
+        int n, bool expected) =>
+        Assert.Equal(expected, HappyNumberSolution.IsHappyByFloydCycleDetection(n));
+}

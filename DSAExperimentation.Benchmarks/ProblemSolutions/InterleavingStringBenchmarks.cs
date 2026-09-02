@@ -1,10 +1,20 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.InterleavingString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: the one arm is InterleavingStringSolution's, the same method
+// InterleavingStringTests proves correct. The previous class was a
+// compile-smoke placeholder (`=> 1` on both arms) that measured nothing; this
+// measures the actual memoized recursion against LeetCode's own example.
 [MemoryDiagnoser]
 public class InterleavingStringBenchmarks
 {
-    [Benchmark(Baseline = true)] public int Baseline() => 1;
-    [Benchmark] public int PrimitiveComposed() => 1;
+    private const string First = "aabcc";
+    private const string Second = "dbbca";
+    private const string Target = "aadbbcbcac";
+
+    [Benchmark]
+    public bool MemoizedRecursion() =>
+        InterleavingStringSolution.IsInterleaveByMemoizedRecursion(First, Second, Target);
 }

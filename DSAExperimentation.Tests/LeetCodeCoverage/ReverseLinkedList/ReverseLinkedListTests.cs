@@ -1,3 +1,52 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.ReverseLinkedList;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseLinkedList;
-public sealed partial class ReverseLinkedListTests { [Fact] public void ReverseList_Example_ReversesPointers()=>Assert.Equal([5,4,3,2,1],ToArray(Reverse(Build([1,2,3,4,5])))); private static SinglyLinkedListNode<int>? Reverse(SinglyLinkedListNode<int>? head){SinglyLinkedListNode<int>? prev=null;for(var cur=head;cur is not null;){var next=cur.Next;cur.Next=prev;prev=cur;cur=next;}return prev;} private static SinglyLinkedListNode<int>? Build(int[] values){var d=new SinglyLinkedListNode<int>(0);var t=d;foreach(var v in values){t.Next=new SinglyLinkedListNode<int>(v);t=t.Next;}return d.Next;} private static int[] ToArray(SinglyLinkedListNode<int>? h){var r=new List<int>();for(var n=h;n is not null;n=n.Next)r.Add(n.Value);return r.ToArray();} }
+
+// Harness only. The single strategy is ReverseLinkedListSolution's - this file
+// builds LeetCode's published examples as linked lists and checks the
+// resulting list's values.
+public sealed class ReverseLinkedListTests
+{
+    public static TheoryData<int[], int[]> Examples =>
+        new()
+        {
+            { [1, 2, 3, 4, 5], [5, 4, 3, 2, 1] },
+            { [1, 2], [2, 1] },
+            { [], [] },
+            { [1], [1] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReverseListByIterativeRewire_LeetCodeExamples_ReversesPointers(int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(ReverseLinkedListSolution.ReverseListByIterativeRewire(BuildList(values))));
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
+}

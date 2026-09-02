@@ -1,49 +1,29 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.CombinationSumIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CombinationSumIV;
 
-// LeetCode 377. Combination Sum IV: counting recurrence
-// f(remaining) = sum over nums <= remaining of f(remaining - num), via this repo's own
-// Memoizer (CoinChange precedent) instead of the textbook un-memoized exponential
-// recursion - each remaining target is solved once and reused across every number
-// choice that lands back on it. Despite the problem's own "combination" wording, order
-// matters (LeetCode counts [1,3] and [3,1] as two different combinations for target 4)
-// - the recurrence already reflects that by trying every num at every remaining
-// target, not just nums at-or-after the previous choice the way a true (order-
-// independent) combination count would restrict the inner loop.
-public sealed partial class CombinationSumIVTests
+// Harness only: both strategies live in CombinationSumIVSolution. One test method per
+// strategy over one shared set of LeetCode's own examples, so a failure names the
+// strategy that broke.
+public sealed class CombinationSumIVTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 2, 3 }, 4, 7)]
-    [InlineData(new[] { 9 }, 3, 0)]
-    [InlineData(new[] { 1 }, 0, 1)]
-    public void CountCombinations_LeetCodeExamples_ReturnsOrderSensitiveCount(int[] nums, int target, int expected)
-    {
-        var actual = CountCombinations(nums, target);
-        Assert.Equal(expected, actual);
-    }
-
-    private static int CountCombinations(int[] nums, int target)
-    {
-        return Memoizer.Memoize<int, int>(target, WaysFor);
-
-        int WaysFor(int remaining, Func<int, int> ways)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            if (remaining == 0)
-            {
-                return 1;
-            }
+            { [1, 2, 3], 4, 7 },
+            { [9], 3, 0 },
+            { [1], 0, 1 },
+        };
 
-            var total = 0;
-            foreach (var num in nums)
-            {
-                if (num <= remaining)
-                {
-                    total += ways(remaining - num);
-                }
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountCombinationsByTabulation_LeetCodeExamples_ReturnsOrderSensitiveCount(
+        int[] nums, int target, int expected) =>
+        Assert.Equal(expected, CombinationSumIVSolution.CountCombinationsByTabulation(nums, target));
 
-            return total;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountCombinationsByMemoizedRecursion_LeetCodeExamples_ReturnsOrderSensitiveCount(
+        int[] nums, int target, int expected) =>
+        Assert.Equal(expected, CombinationSumIVSolution.CountCombinationsByMemoizedRecursion(nums, target));
 }

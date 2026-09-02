@@ -1,63 +1,26 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.PowerOfThree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Power of Three (LC 326): the textbook O(log3 n) repeated-division loop vs. this
-// repo's BinarySearch.Find over an ArraySequence<int> of the 20 powers of three that
-// fit in a 32-bit int (3^0..3^19) - reframing "is n a power of three" as a bounded
-// lookup instead of a division loop.
+// Harness only: both arms are PowerOfThreeSolution's. The binary search arm takes
+// the hoisted ArraySequence<int> overload so wrapping the (already-precomputed)
+// powers-of-three table is not charged to the measured search.
 [MemoryDiagnoser]
 public class PowerOfThreeBenchmarks
 {
-    private const int PowerBase = 3;
-
     [Params(1162261467, 1162261466)] // 3^19 (a true power of three) vs. one less (not)
     public int Value;
 
-    private int[] _powersOfThree = null!;
+    private ArraySequence<int> _powersOfThree;
 
     [GlobalSetup]
-    public void Setup() => _powersOfThree = BuildPowersOfThree();
+    public void Setup() => _powersOfThree = new ArraySequence<int>(PowerOfThreeSolution.PowersOfThree);
 
     [Benchmark(Baseline = true)]
-    public bool DivisionLoop()
-    {
-        var remaining = Value;
-
-        if (remaining < 1)
-        {
-            return false;
-        }
-
-        while (remaining % PowerBase == 0)
-        {
-            remaining /= PowerBase;
-        }
-
-        return remaining == 1;
-    }
+    public bool DivisionLoop() => PowerOfThreeSolution.IsPowerOfThreeByDivisionLoop(Value);
 
     [Benchmark]
-    public bool BinarySearchOverPowers()
-    {
-        var sequence = new ArraySequence<int>(_powersOfThree);
-
-        return BinarySearch.Find<int, ArraySequence<int>>(sequence, Value) is not null;
-    }
-
-    private static int[] BuildPowersOfThree()
-    {
-        var powers = new List<int>();
-        long power = 1;
-
-        while (power <= int.MaxValue)
-        {
-            powers.Add((int)power);
-            power *= PowerBase;
-        }
-
-        return [.. powers];
-    }
+    public bool BinarySearchOverPowers() => PowerOfThreeSolution.IsPowerOfThreeByBinarySearch(Value, _powersOfThree);
 }

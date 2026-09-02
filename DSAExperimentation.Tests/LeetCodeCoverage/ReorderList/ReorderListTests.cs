@@ -1,3 +1,56 @@
-﻿using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.ReorderList;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReorderList;
-public sealed partial class ReorderListTests { [Fact] public void ReorderList_Example_ReordersInPlace(){var h=Build([1,2,3,4]);Reorder(h);Assert.Equal([1,4,2,3],ToArray(h));} private static void Reorder(SinglyLinkedListNode<int>? head){if(head?.Next is null)return;var slow=head;var fast=head;while(fast.Next?.Next is not null){slow=slow.Next!;fast=fast.Next.Next;}var second=Reverse(slow.Next);slow.Next=null;var first=head;while(second is not null){var n1=first!.Next;var n2=second.Next;first.Next=second;second.Next=n1;first=n1;second=n2;}} private static SinglyLinkedListNode<int>? Reverse(SinglyLinkedListNode<int>? h){SinglyLinkedListNode<int>? p=null;for(var c=h;c is not null;){var n=c.Next;c.Next=p;p=c;c=n;}return p;} private static SinglyLinkedListNode<int>? Build(int[] a){var d=new SinglyLinkedListNode<int>(0);var t=d;foreach(var v in a){t.Next=new SinglyLinkedListNode<int>(v);t=t.Next;}return d.Next;} private static int[] ToArray(SinglyLinkedListNode<int>? h){var r=new List<int>();for(var n=h;n is not null;n=n.Next)r.Add(n.Value);return r.ToArray();} }
+
+// Harness only. The single strategy is ReorderListSolution's - this file
+// builds LeetCode's published examples as linked lists, reorders in place,
+// and checks the resulting list's values.
+public sealed class ReorderListTests
+{
+    public static TheoryData<int[], int[]> Examples =>
+        new()
+        {
+            { [1, 2, 3, 4], [1, 4, 2, 3] },
+            { [1, 2, 3, 4, 5], [1, 5, 2, 4, 3] },
+            { [1], [1] },
+            { [1, 2], [1, 2] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReorderByReverseAndMergeInPlace_LeetCodeExamples_ReordersInPlace(int[] values, int[] expected)
+    {
+        var head = BuildList(values);
+
+        ReorderListSolution.ReorderByReverseAndMergeInPlace(head);
+
+        Assert.Equal(expected, ToArray(head));
+    }
+
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
+}

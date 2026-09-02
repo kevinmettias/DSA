@@ -1,25 +1,98 @@
-using DSAExperimentation.DataStructures.Cache.LruCache;
+using DSAExperimentation.DataStructures.Cache;
+using DSAExperimentation.LeetCode.LRUCache;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LRUCache;
 
-public sealed partial class LRUCacheTests
+// Harness only. Both strategies are LRUCacheSolution's - this file replays
+// LeetCode's published call sequence against each ICache<int,int> instance,
+// so a failure still names the strategy that broke even though the "input"
+// here is a sequence of get/put calls rather than a single argument tuple -
+// the same shape DesignTaskManagerTests already uses for its own instance-API
+// problem. LRUCacheOp.Apply is pure dispatch plus LeetCode's own -1-on-miss
+// convention (ICache<TKey,TValue>.TryGetValue leaves `value` undefined on a
+// miss, per its own doc comment) - no eviction logic of its own.
+public sealed class LRUCacheTests
 {
-    [Fact]
-    public void LruCache_LeetCodeExample_EvictsLeastRecentlyUsedKey()
+    public static TheoryData<int, LRUCacheOp[], int?[]> Examples =>
+        new()
+        {
+            {
+                2,
+                [
+                    LRUCacheOp.Put(1, 1),
+                    LRUCacheOp.Put(2, 2),
+                    LRUCacheOp.Get(1),
+                    LRUCacheOp.Put(3, 3),
+                    LRUCacheOp.Get(2),
+                    LRUCacheOp.Put(4, 4),
+                    LRUCacheOp.Get(1),
+                    LRUCacheOp.Get(3),
+                    LRUCacheOp.Get(4),
+                ],
+                [null, null, 1, null, -1, null, -1, 3, 4]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLruCachePrimitive_LeetCodeExample_EvictsLeastRecentlyUsedKey(
+        int capacity, LRUCacheOp[] operations, int?[] expected) =>
+        RunScript(LRUCacheSolution.CreateByLruCachePrimitive(capacity), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByDictionaryLinkedList_LeetCodeExample_EvictsLeastRecentlyUsedKey(
+        int capacity, LRUCacheOp[] operations, int?[] expected) =>
+        RunScript(LRUCacheSolution.CreateByDictionaryLinkedList(capacity), operations, expected);
+
+    private static void RunScript(ICache<int, int> cache, LRUCacheOp[] operations, int?[] expected)
     {
-        var cache = new LruCache<int, int>(2);
-        cache.Set(1, 1); cache.Set(2, 2);
-        var containsOne = cache.TryGetValue(1, out var one);
-        Assert.True(containsOne); Assert.Equal(1, one);
-        cache.Set(3, 3);
-        var containsTwo = cache.TryGetValue(2, out _);
-        Assert.False(containsTwo);
-        cache.Set(4, 4);
-        var containsOneAfterEviction = cache.TryGetValue(1, out _);
-        Assert.False(containsOneAfterEviction);
-        var containsThree = cache.TryGetValue(3, out var three);
-        Assert.True(containsThree); Assert.Equal(3, three);
-        var containsFour = cache.TryGetValue(4, out var four);
-        Assert.True(containsFour); Assert.Equal(4, four);
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(cache));
+        }
+    }
+}
+
+// One call in an LRUCache script: which method to invoke and with what
+// arguments. Pure dispatch, built via the named factories below so a script
+// (like Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct LRUCacheOp
+{
+    private readonly Kind _kind;
+    private readonly int _key;
+    private readonly int _value;
+
+    private LRUCacheOp(Kind kind, int key, int value)
+    {
+        _kind = kind;
+        _key = key;
+        _value = value;
+    }
+
+    public static LRUCacheOp Get(int key) => new(Kind.Get, key, 0);
+
+    public static LRUCacheOp Put(int key, int value) => new(Kind.Put, key, value);
+
+    // null for put, the returned value for get (LeetCode's own -1-on-miss
+    // convention, since ICache<TKey,TValue>.TryGetValue's out value is only
+    // meaningful when it returns true) - so a script runner can assert
+    // against one expected value per operation uniformly. Internal, not
+    // public: only this same assembly's test method ever calls Apply.
+    internal int? Apply(ICache<int, int> cache)
+    {
+        if (_kind == Kind.Put)
+        {
+            cache.Set(_key, _value);
+            return null;
+        }
+
+        return cache.TryGetValue(_key, out var value) ? value : -1;
+    }
+
+    private enum Kind
+    {
+        Get,
+        Put,
     }
 }

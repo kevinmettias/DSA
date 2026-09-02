@@ -1,62 +1,43 @@
-using DSAExperimentation.Tests.LeetCodeCoverage.FlattenNestedListIterator.Fixtures;
-using NestedStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.Tests.LeetCodeCoverage.FlattenNestedListIterator.Fixtures.NestedInteger>;
+using DSAExperimentation.LeetCode.FlattenNestedListIterator;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FlattenNestedListIterator;
 
-// LeetCode 341. Flatten Nested List Iterator: this repo's own LIFO Stack<T> holding
-// not-yet-flattened NestedIntegers, pushed in reverse so the leftmost element pops
-// first. HasNext lazily unwraps nested lists (pushing their children back on, still
-// reversed) until the top is a plain integer or the stack empties - the same lazy
-// "only do the work next() actually needs" shape BinarySearchTreeIteratorTests'
-// PushLeft gives in-order BST traversal.
-public sealed partial class FlattenNestedListIteratorTests
+// Harness only: both strategies live in FlattenNestedListIteratorSolution. Each
+// example is its own [Fact] per strategy rather than a [Theory] - NestedInteger is
+// internal, so a List<NestedInteger> cannot appear in a public TheoryData<...>
+// member (CS0053), the same reason BinarySearchTreeIteratorTests uses one [Fact]
+// per tree rather than [Theory].
+public sealed class FlattenNestedListIteratorTests
 {
     [Fact]
-    public void Next_ClassicExample_FlattensNestedListInOrder()
-    {
-        // [[1,1],2,[1,1]]
-        List<NestedInteger> nestedList =
-        [
-            NestedInteger.OfList(NestedInteger.OfInteger(1), NestedInteger.OfInteger(1)),
-            NestedInteger.OfInteger(2),
-            NestedInteger.OfList(NestedInteger.OfInteger(1), NestedInteger.OfInteger(1)),
-        ];
-
-        Assert.Equal([1, 1, 2, 1, 1], Flatten(nestedList));
-    }
+    public void CreateByLazyStack_ClassicExample_FlattensNestedListInOrder() =>
+        Assert.Equal([1, 1, 2, 1, 1], Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(ClassicExample())));
 
     [Fact]
-    public void Next_DeeplyNestedList_FlattensEveryDepthInOrder()
-    {
-        // [1,[4,[6]]]
-        List<NestedInteger> nestedList =
-        [
-            NestedInteger.OfInteger(1),
-            NestedInteger.OfList(NestedInteger.OfInteger(4), NestedInteger.OfList(NestedInteger.OfInteger(6))),
-        ];
-
-        Assert.Equal([1, 4, 6], Flatten(nestedList));
-    }
+    public void CreateByLazyStack_DeeplyNestedList_FlattensEveryDepthInOrder() =>
+        Assert.Equal([1, 4, 6], Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(DeeplyNestedList())));
 
     [Fact]
-    public void HasNext_EmptyNestedListsInterspersed_SkipsThemEntirely()
-    {
-        // [[],1,[],2,[]]
-        List<NestedInteger> nestedList =
-        [
-            NestedInteger.OfList(),
-            NestedInteger.OfInteger(1),
-            NestedInteger.OfList(),
-            NestedInteger.OfInteger(2),
-            NestedInteger.OfList(),
-        ];
+    public void CreateByLazyStack_EmptyNestedListsInterspersed_SkipsThemEntirely() =>
+        Assert.Equal(
+            [1, 2], Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(EmptyNestedListsInterspersed())));
 
-        Assert.Equal([1, 2], Flatten(nestedList));
-    }
+    [Fact]
+    public void CreateByEagerFlatten_ClassicExample_FlattensNestedListInOrder() =>
+        Assert.Equal(
+            [1, 1, 2, 1, 1], Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(ClassicExample())));
 
-    private static List<int> Flatten(List<NestedInteger> nestedList)
+    [Fact]
+    public void CreateByEagerFlatten_DeeplyNestedList_FlattensEveryDepthInOrder() =>
+        Assert.Equal([1, 4, 6], Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(DeeplyNestedList())));
+
+    [Fact]
+    public void CreateByEagerFlatten_EmptyNestedListsInterspersed_SkipsThemEntirely() =>
+        Assert.Equal(
+            [1, 2], Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(EmptyNestedListsInterspersed())));
+
+    private static List<int> Flatten(FlattenNestedListIteratorSolution.IFlattenIterator iterator)
     {
-        var iterator = new NestedIterator(nestedList);
         var flattened = new List<int>();
 
         while (iterator.HasNext())
@@ -67,35 +48,28 @@ public sealed partial class FlattenNestedListIteratorTests
         return flattened;
     }
 
-    private sealed class NestedIterator
-    {
-        private readonly NestedStack _pending = new();
+    // [[1,1],2,[1,1]]
+    private static List<NestedInteger> ClassicExample() =>
+        [
+            NestedInteger.OfList(NestedInteger.OfInteger(1), NestedInteger.OfInteger(1)),
+            NestedInteger.OfInteger(2),
+            NestedInteger.OfList(NestedInteger.OfInteger(1), NestedInteger.OfInteger(1)),
+        ];
 
-        public NestedIterator(List<NestedInteger> nestedList) => PushReversed(nestedList);
+    // [1,[4,[6]]]
+    private static List<NestedInteger> DeeplyNestedList() =>
+        [
+            NestedInteger.OfInteger(1),
+            NestedInteger.OfList(NestedInteger.OfInteger(4), NestedInteger.OfList(NestedInteger.OfInteger(6))),
+        ];
 
-        public bool HasNext()
-        {
-            while (_pending.TryPeek(out var top) && !top.IsInteger)
-            {
-                _pending.TryPop(out _);
-                PushReversed(top.Elements);
-            }
-
-            return _pending.Count > 0;
-        }
-
-        public int Next()
-        {
-            _pending.TryPop(out var top);
-            return top.Value;
-        }
-
-        private void PushReversed(List<NestedInteger> elements)
-        {
-            for (var i = elements.Count - 1; i >= 0; i--)
-            {
-                _pending.Push(elements[i]);
-            }
-        }
-    }
+    // [[],1,[],2,[]]
+    private static List<NestedInteger> EmptyNestedListsInterspersed() =>
+        [
+            NestedInteger.OfList(),
+            NestedInteger.OfInteger(1),
+            NestedInteger.OfList(),
+            NestedInteger.OfInteger(2),
+            NestedInteger.OfList(),
+        ];
 }

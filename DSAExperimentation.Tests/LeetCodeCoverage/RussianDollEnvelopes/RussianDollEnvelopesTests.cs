@@ -1,75 +1,27 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RussianDollEnvelopes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RussianDollEnvelopes;
 
-// LeetCode 354. Russian Doll Envelopes: sort by width ascending, height descending on ties
-// (so envelopes sharing a width can never chain into each other) via this repo's own
-// MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence, then the answer is the
-// Longest Increasing Subsequence of the resulting heights - the exact patience-sorting-via-
-// BinarySearch.LowerBound approach LongestIncreasingSubsequenceTests.cs already exercises,
-// reused here unchanged over a DynamicArraySequence<int> "tails" buffer.
-public sealed partial class RussianDollEnvelopesTests
+// Harness only. Both strategies are RussianDollEnvelopesSolution's - this file just pins them to
+// LeetCode's published examples, including the all-tied-widths case that cannot chain at all.
+public sealed class RussianDollEnvelopesTests
 {
-    [Fact]
-    public void MaxEnvelopes_LeetCodeExample_ReturnsLongestChain()
-    {
-        int[][] envelopes = [[5, 4], [6, 4], [6, 7], [2, 3]];
-
-        Assert.Equal(3, MaxEnvelopes(envelopes));
-    }
-
-    [Fact]
-    public void MaxEnvelopes_AllSameSize_CannotDollAnyIntoAnother()
-    {
-        int[][] envelopes = [[1, 1], [1, 1], [1, 1]];
-
-        Assert.Equal(1, MaxEnvelopes(envelopes));
-    }
-
-    private static int MaxEnvelopes(int[][] envelopes)
-    {
-        var items = BuildItems(envelopes);
-        SortByWidthAscendingHeightDescending(items);
-
-        return ComputeLongestIncreasingHeightRun(items);
-    }
-
-    private static (int Width, int Height)[] BuildItems(int[][] envelopes)
-        => envelopes.Select(envelope => (Width: envelope[0], Height: envelope[1])).ToArray();
-
-    // Width ascending, height descending on ties - so envelopes sharing a width can
-    // never chain into each other.
-    private static void SortByWidthAscendingHeightDescending((int Width, int Height)[] items)
-    {
-        var byWidthThenHeightDescending = Comparer<(int Width, int Height)>.Create(
-            (a, b) => a.Width != b.Width ? a.Width.CompareTo(b.Width) : b.Height.CompareTo(a.Height));
-
-        MergeSort.Sort<(int Width, int Height), ArrayIndexedSequence<(int Width, int Height)>>(
-            new ArrayIndexedSequence<(int Width, int Height)>(items), byWidthThenHeightDescending);
-    }
-
-    // Patience-sorting LIS over the heights, once width ties can no longer chain.
-    private static int ComputeLongestIncreasingHeightRun((int Width, int Height)[] items)
-    {
-        var tails = new DynamicArray<int>();
-
-        foreach (var (_, height) in items)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            var position = BinarySearch.LowerBound(new DynamicArraySequence<int>(tails), height);
+            { [[5, 4], [6, 4], [6, 7], [2, 3]], 3 },
+            { [[1, 1], [1, 1], [1, 1]], 1 },
+        };
 
-            if (position == tails.Count)
-            {
-                tails.Add(height);
-            }
-            else
-            {
-                tails.Set(position, height);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxEnvelopesBySortThenPatience_LeetCodeExamples_ReturnsLongestChain(
+        int[][] envelopes, int expected) =>
+        Assert.Equal(expected, RussianDollEnvelopesSolution.MaxEnvelopesBySortThenPatience(envelopes));
 
-        return tails.Count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxEnvelopesByBruteForceDp_LeetCodeExamples_ReturnsLongestChain(
+        int[][] envelopes, int expected) =>
+        Assert.Equal(expected, RussianDollEnvelopesSolution.MaxEnvelopesByBruteForceDp(envelopes));
 }

@@ -1,3 +1,50 @@
-﻿using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.NumberOfIslands;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfIslands;
-public sealed partial class NumberOfIslandsTests { [Fact] public void NumIslands_Example_CountsComponents(){char[][] g=[['1','1','0'],['1','0','0'],['0','0','1']];Assert.Equal(2,Count(g));} private static int Count(char[][] grid){var count=0;for(var r=0;r<grid.Length;r++)for(var c=0;c<grid[0].Length;c++){if(grid[r][c]!='1')continue;count++;foreach(var (row,col) in DepthFirstSearch.Traverse((r,c),Neighbors))grid[row][col]='0';}return count;IEnumerable<(int row,int col)> Neighbors((int row,int col)p){(int row,int col)[] ns=[(p.row+1,p.col),(p.row-1,p.col),(p.row,p.col+1),(p.row,p.col-1)];foreach(var n in ns)if(n.row>=0&&n.row<grid.Length&&n.col>=0&&n.col<grid[0].Length&&grid[n.row][n.col]=='1')yield return n;}} }
+
+// Harness only. The flood-fill count is NumberOfIslandsSolution's; this file
+// just pins it to LeetCode's published examples plus the original coverage grid.
+public sealed class NumberOfIslandsTests
+{
+    public static TheoryData<char[][], int> Examples =>
+        new()
+        {
+            {
+                new[]
+                {
+                    new[] { '1', '1', '0' },
+                    new[] { '1', '0', '0' },
+                    new[] { '0', '0', '1' },
+                },
+                2
+            },
+            {
+                new[]
+                {
+                    new[] { '1', '1', '1', '1', '0' },
+                    new[] { '1', '1', '0', '1', '0' },
+                    new[] { '1', '1', '0', '0', '0' },
+                    new[] { '0', '0', '0', '0', '0' },
+                },
+                1
+            },
+            {
+                new[]
+                {
+                    new[] { '1', '1', '0', '0', '0' },
+                    new[] { '1', '1', '0', '0', '0' },
+                    new[] { '0', '0', '1', '0', '0' },
+                    new[] { '0', '0', '0', '1', '1' },
+                },
+                3
+            },
+            { new[] { new[] { '0' } }, 0 },
+            { new[] { new[] { '1', '1', '1' } }, 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountIslandsByDepthFirstSink_LeetCodeExamples_ReturnsComponentCount(
+        char[][] grid, int expected) =>
+        Assert.Equal(expected, NumberOfIslandsSolution.CountIslandsByDepthFirstSink(grid));
+}

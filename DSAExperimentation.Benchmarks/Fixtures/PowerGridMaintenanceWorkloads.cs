@@ -1,0 +1,48 @@
+namespace DSAExperimentation.Benchmarks.Fixtures;
+
+// Benchmark workload sizing for LC 3607 - stations 2..c each connect to a random
+// earlier station (guaranteeing one connected grid spanning all of them) plus a
+// couple of extra random edges for density, and queries alternate a station going
+// offline with a maintenance check on a random station, so most checks eventually
+// land on an offline one and have to search their grid for a replacement.
+internal static class PowerGridMaintenanceWorkloads
+{
+    private const int ExtraConnectionsPerStation = 2;
+
+    public static int[][] BuildConnections(int c, int seed)
+    {
+        var random = new Random(seed);
+        var connections = new List<int[]>();
+
+        for (var station = 2; station <= c; station++)
+        {
+            connections.Add([random.Next(1, station), station]);
+
+            for (var extra = 0; extra < ExtraConnectionsPerStation; extra++)
+            {
+                var other = random.Next(1, c + 1);
+
+                if (other != station)
+                {
+                    connections.Add([station, other]);
+                }
+            }
+        }
+
+        return [.. connections];
+    }
+
+    public static int[][] BuildQueries(int c, int queryCount, int seed)
+    {
+        var random = new Random(seed);
+        var queries = new int[queryCount][];
+
+        for (var i = 0; i < queryCount; i++)
+        {
+            var type = i % 3 == 0 ? 2 : 1;
+            queries[i] = [type, random.Next(1, c + 1)];
+        }
+
+        return queries;
+    }
+}

@@ -1,2 +1,20 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseBits;
-public sealed partial class ReverseBitsTests { [Fact] public void ReverseBits_Example_ReturnsReversedPattern(){Assert.Equal(964176192u,Reverse(43261596u));} private static uint Reverse(uint n){var r=0u;for(var i=0;i<32;i++){r=(r<<1)|(n&1);n>>=1;}return r;} }
+using DSAExperimentation.LeetCode.ReverseBits;
+
+namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseBits;
+
+// Harness only: the single strategy lives in ReverseBitsSolution and is asserted
+// against LeetCode's published examples.
+public sealed class ReverseBitsTests
+{
+    public static TheoryData<uint, uint> Examples =>
+        new()
+        {
+            { 43261596u, 964176192u },
+            { 4294967293u, 3221225471u },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReverseByBitShift_LeetCodeExamples_ReturnsReversedBitPattern(uint n, uint expected) =>
+        Assert.Equal(expected, ReverseBitsSolution.ReverseByBitShift(n));
+}

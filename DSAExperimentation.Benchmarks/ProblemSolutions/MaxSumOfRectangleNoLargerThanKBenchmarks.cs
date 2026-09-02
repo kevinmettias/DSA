@@ -1,20 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Max Sum of Rectangle No Larger Than K (LC 363): for every column pair, an
-// O(rows^2) brute-force scan of every start/end window in the compressed 1D
-// row-sum array vs. this repo's own BinarySearchTree<int> holding prefix sums,
-// answering each "smallest prefix sum >= (current - k)" query in O(log rows)
-// instead of an O(rows) scan - the same ceiling composition
-// MaxSumOfRectangleNoLargerThanKTests uses. Columns stay fixed at a small constant
-// (Cols) so both methods pay the same O(cols^2) outer-loop factor; Rows is the
-// scaled [Params] axis, isolating the O(rows^2) vs. O(rows*log(rows)) inner-window
-// asymptotic split the same way MaximumSubarrayBenchmarks isolates brute-force vs.
-// Kadane on array Length alone. A brute-force O(cols^2*rows^2) with both axes
-// scaled together would blow up to a 4th-power cost long before the BST's
-// per-node allocation overhead stops dominating at small n.
+// Harness only: both arms are MaxSumOfRectangleNoLargerThanKSolution's, the same
+// methods MaxSumOfRectangleNoLargerThanKTests proves correct. Columns stay fixed at
+// a small constant (Cols) so both methods pay the same O(cols^2) outer-loop factor;
+// Rows is the scaled [Params] axis, isolating the O(rows^2) vs. O(rows*log(rows))
+// inner-window asymptotic split the same way MaximumSubarrayBenchmarks isolates
+// brute-force vs. Kadane on array Length alone. A brute-force O(cols^2*rows^2) with
+// both axes scaled together would blow up to a 4th-power cost long before the BST's
+// per-node allocation overhead stops dominating at small n. The matrix LeetCode's
+// own signature takes (int[][]) is exactly what [GlobalSetup] builds, so there is
+// no separate hoisted overload to add here - construction is already charged to
+// setup, not to either measured method.
 [MemoryDiagnoser]
 public class MaxSumOfRectangleNoLargerThanKBenchmarks
 {
@@ -39,103 +38,8 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceWindowScan() => ScanColumnPairs(BestWindowBruteForce);
+    public int BruteForceWindowScan() => MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBruteForceWindowScan(_matrix, K);
 
     [Benchmark]
-    public int BstCeilingScan() => ScanColumnPairs(BestWindowBstCeiling);
-
-    // Shared column-pair/row-window scan shape both benchmarks ride: only how a
-    // single row-sum window's best value is computed (brute force vs. BST
-    // ceiling lookup) differs between them.
-    private int ScanColumnPairs(Func<int[], int> bestWindow)
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var best = int.MinValue;
-
-        for (var left = 0; left < cols; left++)
-        {
-            var rowSums = new int[rows];
-
-            for (var right = left; right < cols; right++)
-            {
-                for (var r = 0; r < rows; r++)
-                {
-                    rowSums[r] += _matrix[r][right];
-                }
-
-                best = Math.Max(best, bestWindow(rowSums));
-            }
-        }
-
-        return best;
-    }
-
-    private static int BestWindowBruteForce(int[] rowSums)
-    {
-        var best = int.MinValue;
-
-        for (var start = 0; start < rowSums.Length; start++)
-        {
-            var sum = 0;
-
-            for (var end = start; end < rowSums.Length; end++)
-            {
-                sum += rowSums[end];
-
-                if (sum <= K)
-                {
-                    best = Math.Max(best, sum);
-                }
-            }
-        }
-
-        return best;
-    }
-
-    private static int BestWindowBstCeiling(int[] rowSums)
-    {
-        var prefixes = new BinarySearchTree<int>();
-        prefixes.Insert(0);
-
-        var best = int.MinValue;
-        var prefix = 0;
-
-        foreach (var value in rowSums)
-        {
-            prefix += value;
-
-            if (TryFindCeiling(prefixes, prefix - K, out var ceiling))
-            {
-                best = Math.Max(best, prefix - ceiling);
-            }
-
-            prefixes.Insert(prefix);
-        }
-
-        return best;
-    }
-
-    private static bool TryFindCeiling(BinarySearchTree<int> tree, int target, out int ceiling)
-    {
-        var node = tree.Root;
-        var found = false;
-        ceiling = default;
-
-        while (node is not null)
-        {
-            if (node.Value >= target)
-            {
-                ceiling = node.Value;
-                found = true;
-                node = node.Left;
-            }
-            else
-            {
-                node = node.Right;
-            }
-        }
-
-        return found;
-    }
+    public int BstCeilingScan() => MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBstCeilingScan(_matrix, K);
 }

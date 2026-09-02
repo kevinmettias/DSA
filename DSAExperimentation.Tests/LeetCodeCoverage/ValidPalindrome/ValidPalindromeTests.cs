@@ -1,2 +1,21 @@
-﻿namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidPalindrome;
-public sealed partial class ValidPalindromeTests { [Theory] [InlineData("A man, a plan, a canal: Panama",true)] [InlineData("race a car",false)] public void IsPalindrome_Examples_IgnoresNonAlphanumeric(string value,bool expected)=>Assert.Equal(expected,IsPalindrome(value)); private static bool IsPalindrome(string value){var left=0;var right=value.Length-1;while(left<right){while(left<right&&!char.IsLetterOrDigit(value[left]))left++;while(left<right&&!char.IsLetterOrDigit(value[right]))right--;if(char.ToLowerInvariant(value[left++])!=char.ToLowerInvariant(value[right--]))return false;}return true;} }
+using DSAExperimentation.LeetCode.ValidPalindrome;
+
+namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidPalindrome;
+
+// Harness only. The two-pointer scan is ValidPalindromeSolution's; this file
+// pins it to LeetCode's published examples.
+public sealed class ValidPalindromeTests
+{
+    public static TheoryData<string, bool> Examples =>
+        new()
+        {
+            { "A man, a plan, a canal: Panama", true },
+            { "race a car", false },
+            { " ", true },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsPalindromeByTwoPointerScan_LeetCodeExamples_IgnoresNonAlphanumeric(string value, bool expected) =>
+        Assert.Equal(expected, ValidPalindromeSolution.IsPalindromeByTwoPointerScan(value));
+}

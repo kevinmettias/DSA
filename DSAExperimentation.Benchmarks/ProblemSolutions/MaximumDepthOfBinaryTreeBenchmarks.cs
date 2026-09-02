@@ -1,10 +1,11 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Metrics;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.MaximumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
+// Harness only: both arms are MaximumDepthOfBinaryTreeSolution's, the same
+// methods MaximumDepthOfBinaryTreeTests proves correct.
 [MemoryDiagnoser]
 public class MaximumDepthOfBinaryTreeBenchmarks
 {
@@ -25,11 +26,8 @@ public class MaximumDepthOfBinaryTreeBenchmarks
         };
 
     [Benchmark(Baseline = true)]
-    public int RecursiveHeight() => Height(_root);
+    public int RecursiveHeight() => MaximumDepthOfBinaryTreeSolution.MaxDepthByRecursion(_root);
 
     [Benchmark]
-    public int TreeMetricsHeight() =>
-        TreeMetrics.Height<BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>, NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(_root);
-
-    private static int Height(BinaryTreeNode<int>? n) => n is null ? 0 : 1 + Math.Max(Height(n.Left), Height(n.Right));
+    public int TreeMetricsHeight() => MaximumDepthOfBinaryTreeSolution.MaxDepthByTreeMetrics(_root);
 }

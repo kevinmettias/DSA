@@ -1,12 +1,10 @@
-using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumQuery2DImmutable;
 
-// LeetCode 304. Range Sum Query 2D - Immutable: no new 2D data structure - one of this repo's own
-// FenwickTree<int,SumOperation<int>> per row, the same "compose the existing 1D primitive
-// multiple times" move RangeFenwickTree.cs already makes with two FenwickTree instances.
-// SumRegion sums each covered row's O(log cols) FenwickTree.Query(col1, col2) across
-// [row1, row2], instead of rescanning every cell in the region.
+// Harness only. Both strategies are RangeSumQuery2DImmutableSolution's - this file just pins them
+// to LeetCode's published examples, one [Theory] per strategy so a failure names the strategy that
+// broke.
 public sealed class RangeSumQuery2DImmutableTests
 {
     private static readonly int[][] ExampleMatrix =
@@ -18,47 +16,32 @@ public sealed class RangeSumQuery2DImmutableTests
         [1, 0, 3, 0, 5],
     ];
 
-    [Fact]
-    public void SumRegion_LeetCodeExample_ReturnsExpectedSums()
-    {
-        var numMatrix = new NumMatrixOperations(ExampleMatrix);
-
-        var firstRegion = numMatrix.SumRegion(2, 1, 4, 3);
-        var secondRegion = numMatrix.SumRegion(1, 1, 2, 2);
-        var thirdRegion = numMatrix.SumRegion(1, 2, 2, 4);
-
-        Assert.Equal(8, firstRegion);
-        Assert.Equal(11, secondRegion);
-        Assert.Equal(12, thirdRegion);
-    }
-
-    [Fact]
-    public void SumRegion_SingleCell_ReturnsThatCell()
-    {
-        var numMatrix = new NumMatrixOperations(ExampleMatrix);
-
-        var region = numMatrix.SumRegion(1, 1, 1, 1);
-
-        Assert.Equal(6, region);
-    }
-
-    private sealed class NumMatrixOperations
-    {
-        private readonly FenwickTree<int, SumOperation<int>>[] _rows;
-
-        public NumMatrixOperations(int[][] matrix)
-            => _rows = matrix.Select(row => new FenwickTree<int, SumOperation<int>>(row)).ToArray();
-
-        public int SumRegion(int row1, int col1, int row2, int col2)
+    public static TheoryData<int, int, int, int, int> Examples =>
+        new()
         {
-            var total = 0;
+            { 2, 1, 4, 3, 8 },
+            { 1, 1, 2, 2, 11 },
+            { 1, 2, 2, 4, 12 },
+            { 1, 1, 1, 1, 6 },
+        };
 
-            for (var row = row1; row <= row2; row++)
-            {
-                total += _rows[row].Query(col1, col2);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBruteForceCellScan_LeetCodeExamples_ReturnsRegionSum(
+        int row1, int col1, int row2, int col2, int expected)
+    {
+        var numMatrix = RangeSumQuery2DImmutableSolution.CreateByBruteForceCellScan(ExampleMatrix);
 
-            return total;
-        }
+        Assert.Equal(expected, numMatrix.SumRegion(row1, col1, row2, col2));
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByRowFenwickTree_LeetCodeExamples_ReturnsRegionSum(
+        int row1, int col1, int row2, int col2, int expected)
+    {
+        var numMatrix = RangeSumQuery2DImmutableSolution.CreateByRowFenwickTree(ExampleMatrix);
+
+        Assert.Equal(expected, numMatrix.SumRegion(row1, col1, row2, col2));
     }
 }

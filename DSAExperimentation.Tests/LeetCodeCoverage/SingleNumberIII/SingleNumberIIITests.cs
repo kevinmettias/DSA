@@ -1,53 +1,28 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.SingleNumberIII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SingleNumberIII;
 
-// LeetCode 260. Single Number III: every element appears exactly twice
-// except two, which appear exactly once. A HashMap<int,int> frequency count
-// isolates them in one O(n) pass - the same lookup-table technique
-// TwoSumTests already uses, just counting occurrences instead of indices.
-public sealed partial class SingleNumberIIITests
+// Harness only: both strategies live in SingleNumberIIISolution and are asserted
+// against the same examples. LC260 accepts either order for the two singletons,
+// so each result is sorted before comparing.
+public sealed class SingleNumberIIITests
 {
-    [Fact]
-    public void FindSingleNumbers_ClassicExample_ReturnsBothUniqueValues()
-    {
-        int[] nums = [1, 2, 1, 3, 2, 5];
-
-        var found = FindTwoSingleNumbers(nums);
-
-        Assert.Equal([3, 5], found.OrderBy(x => x));
-    }
-
-    [Fact]
-    public void FindSingleNumbers_TwoElementsOnly_ReturnsBoth()
-    {
-        int[] nums = [-1, 0];
-
-        var found = FindTwoSingleNumbers(nums);
-
-        Assert.Equal([-1, 0], found.OrderBy(x => x));
-    }
-
-    private static int[] FindTwoSingleNumbers(int[] nums)
-    {
-        var counts = new HashMap<int, int>();
-
-        foreach (var n in nums)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            counts.TryGetValue(n, out var existing);
-            counts.Set(n, existing + 1);
-        }
+            { new[] { 1, 2, 1, 3, 2, 5 }, new[] { 3, 5 } },
+            { new[] { -1, 0 }, new[] { -1, 0 } },
+        };
 
-        var result = new List<int>();
-        foreach (var key in counts.Keys)
-        {
-            counts.TryGetValue(key, out var count);
-            if (count == 1)
-            {
-                result.Add(key);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindSingleNumbersByBruteForce_LeetCodeExamples_ReturnsBothUniqueValues(
+        int[] nums, int[] expected) =>
+        Assert.Equal(expected, SingleNumberIIISolution.FindSingleNumbersByBruteForce(nums).OrderBy(x => x));
 
-        return result.ToArray();
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindSingleNumbersByHashMapFrequencyCount_LeetCodeExamples_ReturnsBothUniqueValues(
+        int[] nums, int[] expected) =>
+        Assert.Equal(expected, SingleNumberIIISolution.FindSingleNumbersByHashMapFrequencyCount(nums).OrderBy(x => x));
 }

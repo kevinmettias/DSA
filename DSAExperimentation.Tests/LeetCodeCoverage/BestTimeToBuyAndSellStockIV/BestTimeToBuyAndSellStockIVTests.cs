@@ -1,3 +1,26 @@
-﻿using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockIV;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockIV;
-public sealed partial class BestTimeToBuyAndSellStockIVTests { [Theory] [InlineData(2,new[]{2,4,1},2)] [InlineData(2,new[]{3,2,6,5,0,3},7)] public void MaxProfit_Examples_ReturnsBestKTransactions(int k,int[] prices,int expected){var actual=MaxProfit(k,prices);Assert.Equal(expected,actual);} private static int MaxProfit(int k,int[] prices){return Memoizer.Memoize<(int Day,int Holding,int Done),int>((0,0,0),Best);int Best((int Day,int Holding,int Done)s,Func<(int Day,int Holding,int Done),int> best){if(s.Day==prices.Length||s.Done==k)return 0;var skip=best((s.Day+1,s.Holding,s.Done));return s.Holding==1?Math.Max(skip,prices[s.Day]+best((s.Day+1,0,s.Done+1))):Math.Max(skip,-prices[s.Day]+best((s.Day+1,1,s.Done)));}} }
+
+// Harness only: both strategies live in BestTimeToBuyAndSellStockIVSolution and
+// are asserted against the same examples.
+public sealed class BestTimeToBuyAndSellStockIVTests
+{
+    public static TheoryData<int, int[], int> Examples =>
+        new()
+        {
+            { 2, [2, 4, 1], 2 },
+            { 2, [3, 2, 6, 5, 0, 3], 7 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByBruteForce_LeetCodeExamples_ReturnsBestKTransactions(int k, int[] prices, int expected) =>
+        Assert.Equal(expected, BestTimeToBuyAndSellStockIVSolution.MaxProfitByBruteForce(prices, k));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByTransactionMemoization_LeetCodeExamples_ReturnsBestKTransactions(
+        int k, int[] prices, int expected) =>
+        Assert.Equal(expected, BestTimeToBuyAndSellStockIVSolution.MaxProfitByTransactionMemoization(prices, k));
+}
