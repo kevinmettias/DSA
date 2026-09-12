@@ -1,100 +1,63 @@
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.RandomPickWithBlacklist;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickWithBlacklist;
 
-// LeetCode 710. Random Pick with Blacklist: the standard O(B) remap solution - a
-// Set<int> (blacklist membership, used only while scanning for remap targets) plus a
-// HashMap<int,int> (every blacklisted number below the whitelist boundary
-// M = N - blacklist.Length remapped, once, to a whitelisted number >= M) - built entirely
-// in the constructor so every Pick() afterward is a single random draw plus one
-// O(1)-expected lookup, never a per-call rescan of the blacklist the way naive rejection
-// sampling needs.
-public sealed partial class RandomPickWithBlacklistTests
+// Harness only. Both strategies are RandomPickWithBlacklistSolution's - this file
+// replays LeetCode's published (n, blacklist, seed) scenarios against each IRandomPick
+// instance, so a failure still names the strategy that broke. The pre-migration test
+// only proved CreateBySetHashMapRemap's behaviour - CreateByRejectionSampling's baseline
+// (previously untested scaffolding inlined in the benchmark) gets the same coverage
+// here for the first time. Every scenario asserts the two properties LeetCode itself
+// guarantees - every Pick() lands in the whitelist and nowhere else - and the
+// "eventually covers every whitelisted number" scenario additionally asserts full
+// coverage after enough calls, exactly as the pre-migration test did for its one
+// strategy.
+public sealed class RandomPickWithBlacklistTests
 {
-    [Fact]
-    public void Pick_NeverReturnsABlacklistedNumber()
-    {
-        var solution = new Solution(7, [2, 3, 5], seed: 1);
-        var blacklisted = new HashSet<int> { 2, 3, 5 };
-
-        for (var i = 0; i < 200; i++)
+    public static TheoryData<int, int[], int, int, int[], bool> Examples =>
+        new()
         {
-            var picked = solution.Pick();
-            Assert.InRange(picked, 0, 6);
-            Assert.DoesNotContain(picked, blacklisted);
-        }
-    }
+            // Never returns a blacklisted number.
+            { 7, [2, 3, 5], 1, 200, [0, 1, 4, 6], false },
+            // Many calls eventually return every whitelisted number.
+            { 5, [1, 3], 1, 200, [0, 2, 4], true },
+            // Empty blacklist always returns within range.
+            { 3, [], 1, 20, [0, 1, 2], false },
+        };
 
-    [Fact]
-    public void Pick_ManyCalls_EventuallyReturnsEveryWhitelistedNumber()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByRejectionSampling_LeetCodeExamples_OnlyReturnsWhitelistedNumbers(
+        int n, int[] blacklist, int seed, int calls, int[] whitelisted, bool expectFullCoverage) =>
+        AssertOnlyReturnsWhitelistedNumbers(
+            RandomPickWithBlacklistSolution.CreateByRejectionSampling(n, blacklist, seed),
+            calls, whitelisted, expectFullCoverage);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateBySetHashMapRemap_LeetCodeExamples_OnlyReturnsWhitelistedNumbers(
+        int n, int[] blacklist, int seed, int calls, int[] whitelisted, bool expectFullCoverage) =>
+        AssertOnlyReturnsWhitelistedNumbers(
+            RandomPickWithBlacklistSolution.CreateBySetHashMapRemap(n, blacklist, seed),
+            calls, whitelisted, expectFullCoverage);
+
+    private static void AssertOnlyReturnsWhitelistedNumbers(
+        RandomPickWithBlacklistSolution.IRandomPick randomPick,
+        int calls, int[] whitelisted, bool expectFullCoverage)
     {
-        var solution = new Solution(5, [1, 3], seed: 1);
+        var whitelistedSet = new HashSet<int>(whitelisted);
         var seen = new HashSet<int>();
 
-        for (var i = 0; i < 200; i++)
+        for (var i = 0; i < calls; i++)
         {
-            seen.Add(solution.Pick());
+            var picked = randomPick.Pick();
+            Assert.Contains(picked, whitelistedSet);
+            seen.Add(picked);
         }
 
-        Assert.Equal(new[] { 0, 2, 4 }, seen.OrderBy(x => x));
-    }
-
-    [Fact]
-    public void Pick_EmptyBlacklist_AlwaysReturnsWithinRange()
-    {
-        var solution = new Solution(3, [], seed: 1);
-
-        for (var i = 0; i < 20; i++)
+        if (expectFullCoverage)
         {
-            Assert.InRange(solution.Pick(), 0, 2);
-        }
-    }
-
-    private sealed class Solution
-    {
-        private readonly HashMap<int, int> _remap = new();
-        private readonly Random _random;
-        private readonly int _whitelistBound;
-
-        public Solution(int n, int[] blacklist, int seed)
-        {
-            _random = new Random(seed);
-            _whitelistBound = n - blacklist.Length;
-
-            var blacklistedSet = new Set<int>();
-            foreach (var value in blacklist)
-            {
-                blacklistedSet.TryAdd(value);
-            }
-
-            var nextWhitelisted = _whitelistBound;
-            foreach (var value in blacklist)
-            {
-                nextWhitelisted = MapIfNeeded(value, blacklistedSet, nextWhitelisted);
-            }
-        }
-
-        private int MapIfNeeded(int value, Set<int> blacklistedSet, int nextWhitelisted)
-        {
-            if (value >= _whitelistBound)
-            {
-                return nextWhitelisted; // already outside the drawn range, needs no remap target
-            }
-
-            while (blacklistedSet.Has(nextWhitelisted))
-            {
-                nextWhitelisted++;
-            }
-
-            _remap.Set(value, nextWhitelisted);
-            return nextWhitelisted + 1;
-        }
-
-        public int Pick()
-        {
-            var candidate = _random.Next(_whitelistBound);
-            return _remap.TryGetValue(candidate, out var mapped) ? mapped : candidate;
+            Assert.Equal(whitelistedSet.OrderBy(x => x), seen.OrderBy(x => x));
         }
     }
 }

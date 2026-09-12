@@ -1,149 +1,117 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.IntervalSet;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RangeModule;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeModule;
 
-// LeetCode 715. Range Module: half-open [left, right) ranges tracked over the real
-// line. addRange composes straight onto IntervalSet<int>.Add - unlike
-// DataStreamAsDisjointIntervalsTests (LC 352), no +1 encoding trick is needed here,
-// because IntervalSet's closed-interval overlap rule (a <= d && c <= b) already
-// treats two half-open ranges stored as raw (Start, End) pairs as touching/merging
-// exactly when they share a boundary value, which is precisely the "no gap between
-// them" condition half-open range coverage needs. queryRange finds the one interval
-// that could contain [left, right) via BinarySearch.UpperBound over a Starts view -
-// the same "IRandomAccessSequence witness over an existing structure's own Get" idiom
-// IntervalSet.cs's own HasOverlap/Add already use internally (its own doc comment
-// names this as a sanctioned reuse, ARCHITECTURE.md §4's ByPriorityOrder precedent) -
-// then checks that candidate's End reaches right. removeRange has no counterpart on
-// IntervalSet (it exposes no Remove), so it rebuilds: split every stored interval
-// that overlaps [left, right) into its surviving fragments and re-Add each one to a
-// fresh IntervalSet, composing only Get/Count/Add, never reaching into IntervalSet's
-// private storage.
-public sealed partial class RangeModuleTests
+// Harness only. Both strategies are RangeModuleSolution's - this file replays
+// LeetCode's published call sequences against each IRangeModule instance, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of AddRange/QueryRange/RemoveRange calls rather than a single argument
+// tuple, the same shape AllOneDataStructureTests already uses for its own instance-
+// API problem. The pre-migration test only proved CreateByIntervalSetBinarySearch's
+// behaviour - CreateByLinearScan's baseline (previously untested scaffolding inlined
+// in the benchmark, and there only for queryRange) gets that same coverage here for
+// the first time. RangeModuleOp.Apply is pure dispatch, no interval logic of its own.
+public sealed class RangeModuleTests
 {
-    [Fact]
-    public void RangeModule_LeetCodeExample_TracksAddQueryAndRemove()
-    {
-        var module = new RangeModule();
-
-        module.AddRange(10, 20);
-        AssertQueryRange(module, 10, 14, expectedCovered: true);
-        AssertQueryRange(module, 13, 15, expectedCovered: true);
-        AssertQueryRange(module, 16, 17, expectedCovered: true);
-
-        module.RemoveRange(14, 16);
-        AssertQueryRange(module, 10, 14, expectedCovered: true);
-        AssertQueryRange(module, 13, 15, expectedCovered: false);
-        AssertQueryRange(module, 16, 17, expectedCovered: true);
-    }
-
-    [Fact]
-    public void QueryRange_SpansTwoUnmergedRanges_ReturnsFalse()
-    {
-        var module = new RangeModule();
-
-        module.AddRange(1, 3);
-        module.AddRange(5, 7);
-
-        AssertQueryRange(module, 2, 6, expectedCovered: false);
-    }
-
-    [Fact]
-    public void AddRange_TouchingRanges_MergeIntoOneContiguousRange()
-    {
-        var module = new RangeModule();
-
-        module.AddRange(1, 3);
-        module.AddRange(3, 5);
-
-        AssertQueryRange(module, 1, 5, expectedCovered: true);
-    }
-
-    [Fact]
-    public void RemoveRange_EntireTrackedRange_LeavesNothingQueryable()
-    {
-        var module = new RangeModule();
-
-        module.AddRange(1, 10);
-        module.RemoveRange(1, 10);
-
-        AssertQueryRange(module, 1, 10, expectedCovered: false);
-        AssertQueryRange(module, 2, 3, expectedCovered: false);
-    }
-
-    private static void AssertQueryRange(RangeModule module, int left, int right, bool expectedCovered)
-    {
-        var actual = module.QueryRange(left, right);
-
-        if (expectedCovered)
+    public static TheoryData<RangeModuleOp[], bool?[]> Examples =>
+        new()
         {
-            Assert.True(actual);
-        }
-        else
+            {
+                [
+                    RangeModuleOp.Add(10, 20),
+                    RangeModuleOp.Query(10, 14),
+                    RangeModuleOp.Query(13, 15),
+                    RangeModuleOp.Query(16, 17),
+                    RangeModuleOp.Remove(14, 16),
+                    RangeModuleOp.Query(10, 14),
+                    RangeModuleOp.Query(13, 15),
+                    RangeModuleOp.Query(16, 17),
+                ],
+                [null, true, true, true, null, true, false, true]
+            },
+            {
+                [RangeModuleOp.Add(1, 3), RangeModuleOp.Add(5, 7), RangeModuleOp.Query(2, 6)],
+                [null, null, false]
+            },
+            {
+                [RangeModuleOp.Add(1, 3), RangeModuleOp.Add(3, 5), RangeModuleOp.Query(1, 5)],
+                [null, null, true]
+            },
+            {
+                [
+                    RangeModuleOp.Add(1, 10),
+                    RangeModuleOp.Remove(1, 10),
+                    RangeModuleOp.Query(1, 10),
+                    RangeModuleOp.Query(2, 3),
+                ],
+                [null, null, false, false]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByIntervalSetBinarySearch_LeetCodeExamples_TracksAddQueryAndRemove(
+        RangeModuleOp[] operations, bool?[] expected) =>
+        RunScript(RangeModuleSolution.CreateByIntervalSetBinarySearch(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLinearScan_LeetCodeExamples_TracksAddQueryAndRemove(
+        RangeModuleOp[] operations, bool?[] expected) =>
+        RunScript(RangeModuleSolution.CreateByLinearScan(), operations, expected);
+
+    private static void RunScript(RangeModuleSolution.IRangeModule module, RangeModuleOp[] operations, bool?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
         {
-            Assert.False(actual);
+            Assert.Equal(expected[i], operations[i].Apply(module));
         }
     }
+}
 
-    private sealed class RangeModule
+// One call in a RangeModule script: which method to invoke and with what bounds. Pure
+// dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays. Add/Remove return null (no
+// comparable value); Query returns the actual answer - the same null-means-"no return
+// value" convention AllOneOp.Apply uses for its own Inc/Dec split.
+public readonly record struct RangeModuleOp
+{
+    private readonly Kind _kind;
+    private readonly int _left;
+    private readonly int _right;
+
+    private RangeModuleOp(Kind kind, int left, int right)
     {
-        private IntervalSet<int> _ranges = new();
+        _kind = kind;
+        _left = left;
+        _right = right;
+    }
 
-        public void AddRange(int left, int right) => _ranges.Add(left, right);
+    public static RangeModuleOp Add(int left, int right) => new(Kind.Add, left, right);
 
-        public bool QueryRange(int left, int right)
+    public static RangeModuleOp Query(int left, int right) => new(Kind.Query, left, right);
+
+    public static RangeModuleOp Remove(int left, int right) => new(Kind.Remove, left, right);
+
+    internal bool? Apply(RangeModuleSolution.IRangeModule module)
+    {
+        switch (_kind)
         {
-            var candidate = BinarySearch.UpperBound<int, StartsView>(new StartsView(_ranges), left) - 1;
-            return candidate >= 0 && _ranges.Get(candidate).End >= right;
+            case Kind.Add:
+                module.AddRange(_left, _right);
+                return null;
+            case Kind.Query:
+                return module.QueryRange(_left, _right);
+            default:
+                module.RemoveRange(_left, _right);
+                return null;
         }
+    }
 
-        public void RemoveRange(int left, int right)
-        {
-            var survivors = new List<(int Start, int End)>();
-
-            for (var i = 0; i < _ranges.Count; i++)
-            {
-                AddSurvivingFragments(_ranges.Get(i), (left, right), survivors);
-            }
-
-            _ranges = new IntervalSet<int>();
-            foreach (var (start, end) in survivors)
-            {
-                _ranges.Add(start, end);
-            }
-        }
-
-        private static void AddSurvivingFragments(
-            (int Start, int End) interval,
-            (int Left, int Right) removalRange,
-            List<(int Start, int End)> survivors)
-        {
-            var (start, end) = interval;
-            var (left, right) = removalRange;
-
-            if (end <= left || start >= right)
-            {
-                survivors.Add((start, end));
-                return;
-            }
-
-            if (start < left)
-            {
-                survivors.Add((start, left));
-            }
-
-            if (right < end)
-            {
-                survivors.Add((right, end));
-            }
-        }
-
-        private readonly struct StartsView(IntervalSet<int> intervals) : IRandomAccessSequence<int>
-        {
-            public int Length => intervals.Count;
-
-            public int Get(int index) => intervals.Get(index).Start;
-        }
+    private enum Kind
+    {
+        Add,
+        Query,
+        Remove,
     }
 }

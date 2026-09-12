@@ -1,53 +1,33 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithTransactionFee;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockWithTransactionFee;
 
-// LeetCode 714. Best Time to Buy and Sell Stock with Transaction Fee: the same
-// (day, holding) state-machine DP shape BestTimeToBuyAndSellStockWithCooldownTests
-// (LC 309) already establishes, just with the "next buy skipped" cooldown rule
-// swapped out for "subtract fee once per completed sale" - the sell transition pays
-// fee instead of advancing an extra day. This repo's own Memoizer<TState,TResult>
-// supplies the cache, keyed by that same pair.
-public sealed partial class BestTimeToBuyAndSellStockWithTransactionFeeTests
+// Harness only. Both strategies are
+// BestTimeToBuyAndSellStockWithTransactionFeeSolution's - this file just pins them
+// to LeetCode's published examples.
+public sealed class BestTimeToBuyAndSellStockWithTransactionFeeTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 3, 2, 8, 4, 9 }, 2, 8)]
-    [InlineData(new[] { 1, 3, 7, 5, 10, 3 }, 3, 6)]
-    public void MaxProfit_LeetCodeExamples_ReturnsBestProfitAfterFees(int[] prices, int fee, int expected)
-    {
-        var actual = MaxProfit(prices, fee);
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void MaxProfit_FeeExceedsAnyGain_ReturnsZero()
-    {
-        var actual = MaxProfit([1, 2], fee: 5);
-        Assert.Equal(0, actual);
-    }
-
-    private static int MaxProfit(int[] prices, int fee)
-    {
-        return Memoizer.Memoize<(int Day, bool Holding), int>((0, false), ProfitFrom);
-
-        int ProfitFrom((int Day, bool Holding) state, Func<(int Day, bool Holding), int> profit)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            var (day, holding) = state;
-            if (day >= prices.Length)
-            {
-                return 0;
-            }
+            { [1, 3, 2, 8, 4, 9], 2, 8 },
+            { [1, 3, 7, 5, 10, 3], 3, 6 },
+            { [1, 2], 5, 0 },
+        };
 
-            if (holding)
-            {
-                var sell = prices[day] - fee + profit((day + 1, false));
-                var hold = profit((day + 1, true));
-                return Math.Max(sell, hold);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByUnmemoizedRecursion_LeetCodeExamples_ReturnsBestProfitAfterFees(
+        int[] prices, int fee, int expected) =>
+        Assert.Equal(
+            expected,
+            BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByUnmemoizedRecursion(prices, fee));
 
-            var buy = -prices[day] + profit((day + 1, true));
-            var rest = profit((day + 1, false));
-            return Math.Max(buy, rest);
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxProfitByMemoizedRecursion_LeetCodeExamples_ReturnsBestProfitAfterFees(
+        int[] prices, int fee, int expected) =>
+        Assert.Equal(
+            expected,
+            BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByMemoizedRecursion(prices, fee));
 }
