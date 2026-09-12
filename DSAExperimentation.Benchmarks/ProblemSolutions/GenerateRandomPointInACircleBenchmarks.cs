@@ -1,60 +1,40 @@
 using BenchmarkDotNet.Attributes;
+using static DSAExperimentation.LeetCode.GenerateRandomPointInACircle.GenerateRandomPointInACircleSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Generate Random Point in a Circle (LC 478): rejection sampling over the bounding
-// square (loop until a drawn point actually lands inside the circle, discarding
-// roughly 1 - pi/4 (~21%) of draws) vs. the closed-form single-draw polar transform
-// (r = radius * sqrt(u), theta = u * 2*PI) that always lands inside on the first try.
-// Both draw from a freshly seeded System.Random per call - the ShuffleAnArrayBenchmarks
-// precedent - since the problem has no Representation/Topology axis for a repo
-// DataStructure to add (ARCHITECTURE.md section 12.2's "Operations + open runtime
-// object" shape).
+// Harness only: both arms are GenerateRandomPointInACircleSolution's, the same
+// classes GenerateRandomPointInACircleTests proves correct. Rejection sampling
+// over the bounding square (discarding roughly 1 - pi/4 (~21%) of draws) vs. the
+// closed-form single-draw polar transform that always lands inside on the first
+// try. Each [Benchmark] arm builds its own fresh instance (mirroring how a real
+// caller constructs a Solution once) before replaying Draws RandPoint() calls,
+// summing the X coordinate so the JIT can't eliminate the replay as dead code.
 [MemoryDiagnoser]
 public class GenerateRandomPointInACircleBenchmarks
 {
     private const double Radius = 10.0;
     private const double XCenter = 5.0;
     private const double YCenter = -3.0;
-    private const double DiameterMultiplier = 2.0;
-    private const double TwoPi = 2.0 * Math.PI;
 
     [Params(1_000, 100_000)]
     public int Draws;
 
     [Benchmark(Baseline = true)]
-    public double RejectionSampling()
-    {
-        var random = new Random(1);
-        var sumX = 0.0;
-
-        for (var i = 0; i < Draws; i++)
-        {
-            double x, y;
-            do
-            {
-                x = (random.NextDouble() * DiameterMultiplier * Radius) - Radius;
-                y = (random.NextDouble() * DiameterMultiplier * Radius) - Radius;
-            }
-            while ((x * x) + (y * y) > Radius * Radius);
-
-            sumX += XCenter + x;
-        }
-
-        return sumX;
-    }
+    public double RejectionSampling() =>
+        Replay(new GenerateRandomPointInACircleByRejectionSampling(Radius, XCenter, YCenter));
 
     [Benchmark]
-    public double ClosedFormPolar()
+    public double ClosedFormPolar() =>
+        Replay(new GenerateRandomPointInACircleByClosedFormPolar(Radius, XCenter, YCenter));
+
+    private double Replay(IRandomPointGenerator generator)
     {
-        var random = new Random(1);
         var sumX = 0.0;
 
         for (var i = 0; i < Draws; i++)
         {
-            var r = Radius * Math.Sqrt(random.NextDouble());
-            var angle = random.NextDouble() * TwoPi;
-            sumX += XCenter + (r * Math.Cos(angle));
+            sumX += generator.RandPoint()[0];
         }
 
         return sumX;

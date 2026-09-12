@@ -1,15 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.NextGreaterElementI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Next Greater Element I (LC 496): the O(n*m) per-query rescan of nums2 vs. a single
-// O(m) monotonic-decreasing sweep through this repo's own Stack<int> that records each
-// value's next-greater element into a HashMap<int,int> - nums1's answers then become
-// O(1) lookups, for O(n+m) overall. nums2 is a random permutation of distinct values so
-// no query short-circuits on an early match, forcing PerQueryRescan through its full
-// worst-case inner scan.
+// Harness only: both arms are NextGreaterElementISolution's, the same methods
+// NextGreaterElementITests proves correct. nums2 is a random permutation of
+// distinct values so no query short-circuits on an early match, forcing
+// PerQueryRescan through its full worst-case inner scan.
 [MemoryDiagnoser]
 public class NextGreaterElementIBenchmarks
 {
@@ -30,54 +27,10 @@ public class NextGreaterElementIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] PerQueryRescan()
-    {
-        var result = new int[_nums1.Length];
-
-        for (var i = 0; i < _nums1.Length; i++)
-        {
-            var position = Array.IndexOf(_nums2, _nums1[i]);
-            var answer = -1;
-
-            for (var j = position + 1; j < _nums2.Length; j++)
-            {
-                if (_nums2[j] > _nums1[i])
-                {
-                    answer = _nums2[j];
-                    break;
-                }
-            }
-
-            result[i] = answer;
-        }
-
-        return result;
-    }
+    public int[] PerQueryRescan() =>
+        NextGreaterElementISolution.NextGreaterElementByPerQueryRescan(_nums1, _nums2);
 
     [Benchmark]
-    public int[] MonotonicStackSweep()
-    {
-        var nextGreater = new HashMap<int, int>();
-        var decreasing = new RepoIntStack();
-
-        foreach (var value in _nums2)
-        {
-            while (decreasing.TryPeek(out var top) && top < value)
-            {
-                decreasing.TryPop(out _);
-                nextGreater.Set(top, value);
-            }
-
-            decreasing.Push(value);
-        }
-
-        var result = new int[_nums1.Length];
-
-        for (var i = 0; i < _nums1.Length; i++)
-        {
-            result[i] = nextGreater.TryGetValue(_nums1[i], out var greater) ? greater : -1;
-        }
-
-        return result;
-    }
+    public int[] MonotonicStackSweep() =>
+        NextGreaterElementISolution.NextGreaterElementByMonotonicStackSweep(_nums1, _nums2);
 }

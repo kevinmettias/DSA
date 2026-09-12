@@ -1,14 +1,11 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.TargetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Target Sum (LC 494): plain un-memoized +/- recursion over (index, runningSum) -
-// exponential, since the same (index, runningSum) pair recurs through many different
-// sign-choice paths - vs. this repo's own Memoizer<TState,TResult> caching that exact
-// pair, the same shape PredictTheWinnerBenchmarks already uses. N is kept modest
-// specifically because the un-memoized baseline's 2^N blowup is real, the same
-// reasoning FibonacciNumberBenchmarks documents.
+// Harness only: both arms are TargetSumSolution's, the same methods TargetSumTests
+// proves correct. N is kept modest specifically because the unmemoized baseline's
+// 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents.
 [MemoryDiagnoser]
 public class TargetSumBenchmarks
 {
@@ -31,30 +28,8 @@ public class TargetSumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => CountWays(0, 0);
-
-    private int CountWays(int index, int sum)
-    {
-        if (index == _nums.Length)
-        {
-            return sum == _target ? 1 : 0;
-        }
-
-        return CountWays(index + 1, sum + _nums[index]) + CountWays(index + 1, sum - _nums[index]);
-    }
+    public int UnmemoizedRecursion() => TargetSumSolution.WaysByUnmemoizedRecursion(_nums, _target);
 
     [Benchmark]
-    public int MemoizedRecursion()
-        => Memoizer.Memoize<(int Index, int Sum), int>((0, 0), CountWaysMemoized);
-
-    private int CountWaysMemoized((int Index, int Sum) state, Func<(int Index, int Sum), int> ways)
-    {
-        if (state.Index == _nums.Length)
-        {
-            return state.Sum == _target ? 1 : 0;
-        }
-
-        return ways((state.Index + 1, state.Sum + _nums[state.Index]))
-             + ways((state.Index + 1, state.Sum - _nums[state.Index]));
-    }
+    public int MemoizedRecursion() => TargetSumSolution.WaysByMemoizedRecursion(_nums, _target);
 }
