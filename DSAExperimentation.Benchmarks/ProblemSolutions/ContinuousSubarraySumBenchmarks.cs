@@ -1,11 +1,10 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.ContinuousSubarraySum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Continuous Subarray Sum (LC 523): the O(n^2) brute force (every start/end pair,
-// summing as it extends) vs. this repo's O(n) HashMap<int,int> prefix-sum-remainder
-// tracking (ContainsDuplicateII precedent). K is chosen larger than any possible
+// Harness only: both arms are ContinuousSubarraySumSolution's, the same methods
+// ContinuousSubarraySumTests proves correct. K is chosen larger than any possible
 // total sum of the generated values, so every prefix sum's remainder is just the
 // prefix sum itself - strictly increasing since every value is positive, so no two
 // prefix sums (nor the seeded {0: -1} entry, since every prefix sum stays positive)
@@ -20,9 +19,6 @@ public class ContinuousSubarraySumBenchmarks
     // values, keeping every prefix sum's remainder equal to the prefix sum itself.
     private const int MaxGeneratedValueExclusive = 100;
 
-    // A qualifying subarray needs at least two elements (start != end).
-    private const int MinimumSubarrayLength = 2;
-
     [Params(200, 5_000)]
     public int Length;
 
@@ -36,59 +32,9 @@ public class ContinuousSubarraySumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce()
-    {
-        for (var start = 0; start < _values.Length; start++)
-        {
-            var sum = 0;
-            for (var end = start; end < _values.Length; end++)
-            {
-                sum += _values[end];
-                if (end - start >= 1 && sum % K == 0)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
+    public bool BruteForce() => ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByBruteForce(_values, K);
 
     [Benchmark]
-    public bool HashMapPrefixRemainder()
-    {
-        var firstIndexByRemainder = CreateSeededRemainderIndex();
-        return HasQualifyingRemainderPair(firstIndexByRemainder);
-    }
-
-    private static HashMap<int, int> CreateSeededRemainderIndex()
-    {
-        var firstIndexByRemainder = new HashMap<int, int>();
-        firstIndexByRemainder.Set(0, -1);
-        return firstIndexByRemainder;
-    }
-
-    private bool HasQualifyingRemainderPair(HashMap<int, int> firstIndexByRemainder)
-    {
-        var prefixSum = 0;
-        for (var i = 0; i < _values.Length; i++)
-        {
-            prefixSum += _values[i];
-            var remainder = prefixSum % K;
-
-            if (firstIndexByRemainder.TryGetValue(remainder, out var firstIndex))
-            {
-                if (i - firstIndex >= MinimumSubarrayLength)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                firstIndexByRemainder.Set(remainder, i);
-            }
-        }
-
-        return false;
-    }
+    public bool HashMapPrefixRemainder() =>
+        ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByHashMapPrefixRemainder(_values, K);
 }

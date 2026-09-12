@@ -1,94 +1,30 @@
-using DSAExperimentation.DataStructures.Graph.ShortestPaths;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.IPO;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.IPO;
 
-// LeetCode 502. IPO: the classic two-heap greedy. A min-heap of projects ordered by
-// required capital (this repo's Heap<(int Node, int Priority), ByPriorityOrder
-// <int,int>> - the same (node, priority) projection TopKFrequentElementsTests uses
-// for Dijkstra/A*'s frontier, here projecting (profit, capital) instead of
-// (node, distance)) unlocks newly-affordable projects into a max-heap of their
-// profits (Heap<int, MaxHeapOrder<int>>, the same size-limited-heap shape
-// KthLargestElementTests uses with MinHeapOrder). Each of the k rounds moves every
-// now-affordable project's profit into the max-heap, then greedily takes the best
-// one, growing capital for the next round.
-public sealed partial class IPOTests
+// Harness only: both strategies live in IPOSolution and are asserted against the
+// same examples - the classic two-heap greedy (a min-heap of projects by required
+// capital feeding a max-heap of unlocked profits) and the linear-rescan baseline
+// it has to justify itself against.
+public sealed class IPOTests
 {
-    [Fact]
-    public void FindMaximizedCapital_ClassicExample_GreedilyPicksBestAffordableProjects()
-    {
-        int[] profits = [1, 2, 3];
-        int[] capitals = [0, 1, 1];
-
-        var result = FindMaximizedCapital(k: 2, w: 0, profits, capitals);
-
-        Assert.Equal(4, result);
-    }
-
-    [Fact]
-    public void FindMaximizedCapital_SingleRound_UnlocksOnlyOneProfitBoost()
-    {
-        int[] profits = [1, 2, 3];
-        int[] capitals = [0, 1, 2];
-
-        var result = FindMaximizedCapital(k: 1, w: 0, profits, capitals);
-
-        Assert.Equal(1, result);
-    }
-
-    [Fact]
-    public void FindMaximizedCapital_NoAffordableProject_ReturnsStartingCapital()
-    {
-        int[] profits = [5];
-        int[] capitals = [10];
-
-        var result = FindMaximizedCapital(k: 3, w: 0, profits, capitals);
-
-        Assert.Equal(0, result);
-    }
-
-    private static int FindMaximizedCapital(int k, int w, int[] profits, int[] capitals)
-    {
-        var byCapital = BuildCapitalHeap(profits, capitals);
-        var byProfit = new Heap<int, MaxHeapOrder<int>>();
-
-        for (var round = 0; round < k; round++)
+    public static TheoryData<int, int, int[], int[], int> Examples =>
+        new()
         {
-            if (!TryTakeBestProject(byCapital, byProfit, w, out var bestProfit))
-            {
-                break;
-            }
+            { 2, 0, new[] { 1, 2, 3 }, new[] { 0, 1, 1 }, 4 },
+            { 1, 0, new[] { 1, 2, 3 }, new[] { 0, 1, 2 }, 1 },
+            { 3, 0, new[] { 5 }, new[] { 10 }, 0 },
+        };
 
-            w += bestProfit;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMaximizedCapitalByLinearScan_LeetCodeExamples_GreedilyPicksBestAffordableProjects(
+        int k, int w, int[] profits, int[] capitals, int expected) =>
+        Assert.Equal(expected, IPOSolution.FindMaximizedCapitalByLinearScan(k, w, profits, capitals));
 
-        return w;
-    }
-
-    private static Heap<(int Node, int Priority), ByPriorityOrder<int, int>> BuildCapitalHeap(int[] profits, int[] capitals)
-    {
-        var byCapital = new Heap<(int Node, int Priority), ByPriorityOrder<int, int>>();
-
-        for (var i = 0; i < profits.Length; i++)
-        {
-            byCapital.Push((profits[i], capitals[i]));
-        }
-
-        return byCapital;
-    }
-
-    private static bool TryTakeBestProject(
-        Heap<(int Node, int Priority), ByPriorityOrder<int, int>> byCapital,
-        Heap<int, MaxHeapOrder<int>> byProfit,
-        int w,
-        out int bestProfit)
-    {
-        while (byCapital.TryPeek(out var cheapest) && cheapest.Priority <= w)
-        {
-            byCapital.TryPop(out var popped);
-            byProfit.Push(popped.Node);
-        }
-
-        return byProfit.TryPop(out bestProfit);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMaximizedCapitalByTwoHeapGreedy_LeetCodeExamples_GreedilyPicksBestAffordableProjects(
+        int k, int w, int[] profits, int[] capitals, int expected) =>
+        Assert.Equal(expected, IPOSolution.FindMaximizedCapitalByTwoHeapGreedy(k, w, profits, capitals));
 }
