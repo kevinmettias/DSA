@@ -1,18 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.NetworkDelayTime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // The "which shortest-path algorithm" choice a problem like Network Delay Time
 // (LC 743) or Cheapest Flights Within K Stops (LC 787) actually forces: all three
-// answer the same single-source-distances question on the same non-negative-weight
-// graph, so this is a genuine algorithm swap, not an apples-to-oranges comparison.
-// FloydWarshall computes every pair at once (a strictly harder question than the
-// other two answer) - it is expected to lose here, and the point of including it is
-// exactly that: showing when the all-pairs algorithm is the wrong tool for a
-// single-source query, not just how fast it is in isolation.
+// arms are NetworkDelayTimeSolution's own strategies, the same methods
+// NetworkDelayTimeTests proves correct, called through their generic prepared-input
+// overload so graph construction is charged to [GlobalSetup] rather than to the
+// search being measured. All three answer the same single-source-distances question
+// on the same non-negative-weight graph, so this is a genuine algorithm swap, not an
+// apples-to-oranges comparison. FloydWarshall computes every pair at once (a
+// strictly harder question than the other two answer) - it is expected to lose here,
+// and the point of including it is exactly that: showing when the all-pairs
+// algorithm is the wrong tool for a single-source query, not just how fast it is in
+// isolation.
 [MemoryDiagnoser]
 public class ShortestPathAlgorithmBenchmarks
 {
@@ -35,26 +38,13 @@ public class ShortestPathAlgorithmBenchmarks
 
     [Benchmark(Baseline = true)]
     public int Dijkstra()
-        => ShortestPath.Dijkstra<
-            WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(_source).Count;
+        => NetworkDelayTimeSolution.MinutesToReachAllByDijkstra<WeightedGraphNode, WeightedGraphTopology>(_vertices, _source);
 
     [Benchmark]
     public int BellmanFord()
-    {
-        DSAExperimentation.Algorithms.ShortestPaths.BellmanFord.TryComputeDistances<
-            WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(
-            _vertices, _source, out var distances);
-
-        return distances.Count;
-    }
+        => NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord<WeightedGraphNode, WeightedGraphTopology>(_vertices, _source);
 
     [Benchmark]
     public int FloydWarshall()
-    {
-        AllPairsShortestPaths.TryComputeDistances<
-            WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(
-            _vertices, out var distances);
-
-        return distances.Count;
-    }
+        => NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall<WeightedGraphNode, WeightedGraphTopology>(_vertices, _source);
 }

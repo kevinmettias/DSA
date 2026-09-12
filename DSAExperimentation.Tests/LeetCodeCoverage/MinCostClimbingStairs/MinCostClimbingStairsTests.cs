@@ -1,50 +1,33 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.MinCostClimbingStairs;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinCostClimbingStairs;
 
-// LeetCode 746. Min Cost Climbing Stairs: minCost(i) = cost[i] + min(minCost(i+1),
-// minCost(i+2)), the same top-down recurrence shape ClimbingStairsTests already uses
-// for LC 70, via this repo's own Memoizer. A virtual start state (-1) represents
-// "before the first step," folding the free choice of starting at index 0 or 1 into
-// Math.Min(minCost(0), minCost(1)) inside one shared cache, instead of two separate
-// top-level Memoize calls.
-public sealed partial class MinCostClimbingStairsTests
+// Harness only. MinCostClimbingStairsSolution owns all three strategies; this file
+// pins each of them to LeetCode's published examples.
+public sealed class MinCostClimbingStairsTests
 {
-    [Fact]
-    public void MinCost_ThreeStepExample_ReturnsCheaperOfTheTwoStartingSteps()
-    {
-        int[] cost = [10, 15, 20];
-
-        var minCost = MinCostClimbingStairs(cost);
-
-        Assert.Equal(15, minCost);
-    }
-
-    [Fact]
-    public void MinCost_TenStepExample_ReturnsSixByAlternatingCheapSteps()
-    {
-        int[] cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1];
-
-        var minCost = MinCostClimbingStairs(cost);
-
-        Assert.Equal(6, minCost);
-    }
-
-    private static int MinCostClimbingStairs(int[] cost)
-        => Memoizer.Memoize<int, int>(-1, (step, minCostFrom) => MinCostFromStep(step, cost, minCostFrom));
-
-    private static int MinCostFromStep(int step, int[] cost, Func<int, int> minCostFrom)
-    {
-        if (step < 0)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            return Math.Min(minCostFrom(0), minCostFrom(1));
-        }
+            { [10, 15, 20], 15 },
+            { [1, 100, 1, 1, 1, 100, 1, 1, 100, 1], 6 },
+        };
 
-        if (step >= cost.Length)
-        {
-            return 0;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCostByNaiveRecursive_LeetCodeExamples_ReturnsCheapestClimbCost(
+        int[] cost, int expected) =>
+        Assert.Equal(expected, MinCostClimbingStairsSolution.MinCostByNaiveRecursive(cost));
 
-        return cost[step] + Math.Min(minCostFrom(step + 1), minCostFrom(step + 2));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCostByMemoizedRecurrence_LeetCodeExamples_ReturnsCheapestClimbCost(
+        int[] cost, int expected) =>
+        Assert.Equal(expected, MinCostClimbingStairsSolution.MinCostByMemoizedRecurrence(cost));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCostByIterativeConstantSpace_LeetCodeExamples_ReturnsCheapestClimbCost(
+        int[] cost, int expected) =>
+        Assert.Equal(expected, MinCostClimbingStairsSolution.MinCostByIterativeConstantSpace(cost));
 }

@@ -5285,8 +5285,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MyCalendarII/MyCalendarIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MyCalendarIIBenchmarks.cs",
       "primitivesUsed": "Two DSAExperimentation.DataStructures.IntervalSet.IntervalSet<int> instances - one merging all accepted bookings (_covered), one merging all double-booked territory (_doubled) - composed only via IntervalSet's public Get/Count/HasOverlap/Add surface (the same 'scan Get/Count directly, never reach into private storage' idiom RangeModuleTests.RemoveRange already uses), plus the same half-open-to-closed (end - 1) encoding used for My Calendar I. A new event is rejected only if it touches _doubled (would make a triple); otherwise its intersection with each interval already in _covered becomes new _doubled territory before the event itself is added to _covered.",
-      "notes": "Benchmark: TwoListScan (classic flat-List<(int,int)> bookings + doubles, both linearly scanned, O(n) per call) vs TwoIntervalSetScan (the two-IntervalSet composition). Event stream is a sliding window (event i = [5i, 5i+10)) so every booking double-books only its immediate predecessor, never a triple, and _covered stays merged into a single interval throughout - collapsing the composed version's per-call scan to O(1) plus one O(log n) HasOverlap check, vs the baseline's full O(n) bookings walk. 2 new tests pass (LeetCode's own worked example including the one rejected triple, plus a touching-endpoints-never-doubles case); smoke-tested both benchmark methods directly (Length=50, 500) confirming identical accepted counts (== Length, i.e. no triple ever incorrectly rejected or accepted). Full DSAExperimentation.Tests suite: 1489 passed, 1 pre-existing skip, 0 failed after adding all three problems' tests.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private MyCalendarII helper and benchmark's TwoIntervalSetScan were already the same algorithm (both bool-returning, half-open-to-closed encoding) - no drift to reconcile. Only defect was the untested TwoListScan baseline, now promoted into the solution class and covered by the same TheoryData examples as the real answer. Design-shaped (stateful ICalendar), matching MyCalendarISolution's established pattern.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MyCalendarII/MyCalendarIISolution.cs",
+      "strategies": "CreateByTwoIntervalSetScan (real answer, matches original test+benchmark IntervalSet arm), CreateByTwoListScan (benchmark's untested baseline, promoted to a tested first-class strategy)"
     },
     {
       "id": 732,
@@ -5298,8 +5300,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MyCalendarIII/MyCalendarIIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MyCalendarIIIBenchmarks.cs",
       "primitivesUsed": "HashMap<int,int> as a delta/event-count accumulator (+1 at each booking's start, -1 at its end) plus MergeSort.Sort over an ArrayIndexedSequence<int> to walk the delta keys in ascending order on every Book() call - the standard 'sort the event points, sweep for the running-sum max' technique, substituting for the ordered-map primitive (TreeMap/NavigableMap) this repo doesn't have. Implemented as an incremental MyCalendarThree.Book(start,end) class matching LeetCode's real design-problem shape (same convention as RangeModuleTests), not an offline batch function.",
-      "notes": "Verified against the official 6-call example (returns [1,1,2,3,3,3]) plus a no-overlap sanity case. Benchmark compares against an O(n^3)-ish brute force that rescans every event point against every booking on each call; dry-run confirmed both paths execute and the primitive path's advantage grows with n.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test helper and benchmark's non-baseline arm were verbatim duplicates (both int-returning max-overlap sweeps) - no drift to reconcile. Only defect was the untested BruteForceEventRescan baseline, now promoted and covered by the same TheoryData examples as the real answer. Design-shaped (stateful ICalendar returning int), matching MyCalendarISolution/MyCalendarIISolution's pattern.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MyCalendarIII/MyCalendarIIISolution.cs",
+      "strategies": "CreateByHashMapMergeSortSweep (real answer, matches original test's MyCalendarThree helper and benchmark's duplicate HashMapMergeSortSweep arm), CreateByBruteForceEventRescan (benchmark's untested baseline, promoted to a tested first-class strategy)"
     },
     {
       "id": 735,
@@ -5311,8 +5315,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/AsteroidCollision/AsteroidCollisionTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/AsteroidCollisionBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<int> - single left-to-right pass; right-movers get pushed, each incoming left-mover pops and compares against the stack top until it's destroyed, the top is destroyed, or both are (same 'explicit repo Stack' idiom as BasicCalculatorTests/DecodeStringTests).",
-      "notes": "Verified against all 3 official LeetCode examples plus a moving-apart no-collision case. Benchmark's O(n) Stack pass beats an O(n^2) repeated-rescan-from-start baseline at n=3000 in a dry-run smoke test (0.38x baseline time).",
-      "architectureTier": "pre-section-17"
+      "notes": "Both original arms already returned int[] (the test's helper and the benchmark's StackSimulation arm were the identical algorithm, just duplicated under different names/method splits) so no shape reconciliation was needed. GlobalSetup only builds a plain int[] (LeetCode's own input shape), so no hoisted overload per §17.4 was required. No new DataStructures/Algorithms types introduced (Stack<int> already existed), so no §18 obligation.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/AsteroidCollision/AsteroidCollisionSolution.cs",
+      "strategies": "SimulateByRepeatedScan (naive List rescan baseline, promoted from the benchmark's untested [Benchmark(Baseline=true)] arm), SimulateByStackPass (this repo's Stack<int>, the same algorithm the test's private helper and the benchmark's non-baseline arm both already implemented under different names)"
     },
     {
       "id": 736,
@@ -5324,8 +5330,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ParseLispExpression/ParseLispExpressionTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ParseLispExpressionBenchmarks.cs",
       "primitivesUsed": "HashMap<string,long> per 'let' scope, chained via SinglyLinkedListNode<T>'s existing Value/Next fields reused as an environment-chain link (Value = this scope's bindings, Next = the parent scope) - variable lookup walks Next outward until a HashMap.TryGetValue hits. This composes two existing Representation primitives for a new purpose rather than inventing a new one, the same move NumberOfLongestIncreasingSubsequenceTests already makes for ICombineOperation.",
-      "notes": "Verified against 3 official-shaped nested let/add/mult examples (including the shadowing case yielding 14, and the sequential-rebinding case yielding 5) plus 2 simple add/mult cases. Benchmark compares against a Dictionary-full-copy-per-let baseline; dry-run confirmed ScopeChain allocates consistently less memory at every size (its intended point) though total wall-clock time is dominated in both variants by this simple parser's own O(depth^2) string-slicing cost, which the benchmark's doc comment now states accurately rather than overclaiming a clean end-to-end asymptotic win.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both original arms already returned long on the same LeetCode expression-string input, so no shape reconciliation was needed. GlobalSetup builds a plain string (LeetCode's own input shape), so no hoisted overload per §17.4 was required. RepoScopeNode is a type alias to the existing DataStructures.SinglyLinkedList.SinglyLinkedListNode<HashMap<string,long>> combo, not a new fixture, so nothing to relocate and no §18 obligation.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ParseLispExpression/ParseLispExpressionSolution.cs",
+      "strategies": "EvaluateByCopiedScope (BCL Dictionary-copy-per-let baseline, promoted from the benchmark's untested [Benchmark(Baseline=true)] arm), EvaluateByScopeChain (this repo's HashMap<string,long> chained via SinglyLinkedListNode<T>, the same algorithm the test's private Evaluate helper and the benchmark's ScopeChain arm both already implemented near-identically)"
     },
     {
       "id": 739,
@@ -5337,8 +5345,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DailyTemperatures/DailyTemperaturesTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DailyTemperaturesBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<int> as a monotonic-decreasing stack of pending day indices (same idiom as existing NextGreaterElementI/II coverage)",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private helper and the benchmark's MonotonicStackSweep arm were already identical (both used repo Stack<int> and returned the real answer array), so no drift/reconciliation was needed here - both became first-class solution methods. The benchmark's BruteForceScan baseline was promoted from benchmark-only scaffolding to a tested method (WaitDaysByBruteForceScan), which is the untested-baseline defect this migration targets. Input is a plain int[] in both harnesses, so no hoisted-overload split was needed (GlobalSetup already produces exactly the LeetCode-shaped input). No fixtures existed to relocate.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DailyTemperatures/DailyTemperaturesSolution.cs",
+      "strategies": "WaitDaysByBruteForceScan(int[]), WaitDaysByMonotonicStackSweep(int[])"
     },
     {
       "id": 741,
@@ -5350,8 +5360,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CherryPickup/CherryPickupTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CherryPickupBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer, closed over a (Row1,Col1,Col2) state tuple (Row2 derived as Row1+Col1-Col2)",
-      "notes": "Reframed the round trip (0,0)->(n-1,n-1)->(0,0) as two people walking (0,0)->(n-1,n-1) simultaneously (standard equivalence: forward walk + its reverse cover the same cells) - turns it into the same grid-DP shape UniquePaths/LongestIncreasingPathInAMatrix already use with Memoizer, just closed over 4 simultaneous move combinations. Verified against both official LeetCode examples (expected 5 and 0).",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private Memoizer-based helper and the benchmark's MemoizedRecursion arm implemented the same recurrence; the benchmark's UnmemoizedRecursion baseline (plain exponential recursion, never asserted) was promoted to a first-class, tested method (MaxCherriesByMemoizedRecursion / MaxCherriesByUnmemoizedRecursion), following the BurstBalloonsSolution precedent for the same un-memoized-vs-Memoizer shape. Input is a plain int[,] grid in both harnesses, so no hoisted-overload split was needed. No fixtures existed to relocate; the shared EvaluateCherryState/BestOfFour helpers stayed private inside the solution class since they are single-problem plumbing, not reusable Representation/Operations witnesses.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CherryPickup/CherryPickupSolution.cs",
+      "strategies": "MaxCherriesByUnmemoizedRecursion(int[,]), MaxCherriesByMemoizedRecursion(int[,])"
     },
     {
       "id": 743,
@@ -5363,8 +5375,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/NetworkDelayTime/NetworkDelayTimeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ShortestPathAlgorithmBenchmarks.cs",
       "primitivesUsed": null,
-      "notes": "pre-existing from prior session's curated sample",
-      "architectureTier": "pre-section-17"
+      "notes": "Reconciled: the test's private helper (Dijkstra distances, max-or-(-1)) is now MinutesToReachAllByDijkstra. The benchmark's three arms (Dijkstra/BellmanFord/FloydWarshall) previously returned distances.Count (a weaker measurement than LC743's real answer, per the migration brief's allowance) - promoted all three to the real answer (max distance from source across all n nodes, or -1 if unreachable), consistent with the test's own semantics; FloydWarshall's arm reads its all-pairs matrix down to just the source row. All three strategies verified equal on LeetCode's own examples plus the original test's two cases (12 assertions total, up from 2). Full test suite (6120 tests) and LayeringTests pass; all four projects build clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/NetworkDelayTime/NetworkDelayTimeSolution.cs",
+      "strategies": "MinutesToReachAllByDijkstra, MinutesToReachAllByBellmanFord, MinutesToReachAllByFloydWarshall - each with a LeetCode-shaped overload (int[][] times, int n, int k) and a generic hoisted overload <TNode,TTopology>(List<TNode> vertices, TNode source) over IEdgeTopology<TNode, ListEdges<TNode,int>, int>",
+      "relocatedTypes": "None relocated. Added new problem-local witnesses NetworkNode/NetworkTopology to DSAExperimentation.LeetCode/NetworkDelayTime/ (used by this problem alone in the migrated tier). The pre-existing WeightedNode/WeightedTopology (Tests) and WeightedGraphNode/WeightedGraphTopology/RandomWeightedGraphs (Benchmarks) fixtures were deliberately left untouched: they are shared by a dozen other still-unmigrated LeetCode problems (JumpGameIV, CourseScheduleIV, ModifyGraphEdgeWeights, ReachableNodesInSubdividedGraph, etc.), not carried uniquely by this pair, so relocating/renaming them is out of this migration's scope and would risk colliding with other in-flight migrations. To let the benchmark keep using its existing WeightedGraphNode workload without a new duplicate representation, the three strategies' prepared-input overloads are generic over TNode/TTopology (the reduction itself - 'every node reached? take the max; else -1' - is exactly as generic as ShortestPath.Dijkstra), so the benchmark instantiates them with WeightedGraphNode/WeightedGraphTopology directly."
     },
     {
       "id": 745,
@@ -5376,8 +5391,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PrefixAndSuffixSearch/PrefixAndSuffixSearchTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PrefixAndSuffixSearchBenchmarks.cs",
       "primitivesUsed": "DataStructures.HashMap.HashMap<string,int>, keyed by every \"prefix#suffix\" substring-pair combination of each word (later words overwrite earlier ones on a shared key, so a hit reports the largest matching index)",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Two distinct strategies found: the test's private WordFilter class (precompute every prefix#suffix substring pair into this repo's HashMap<string,int>, later index overwrites earlier on tie) and the benchmark's untested LinearScanPerQuery baseline; the benchmark's own PrecomputedHashMapLookup arm was already the same strategy as the test's helper, just re-derived independently, so it collapsed into one method rather than drifting. The baseline (previously asserted nowhere) is now covered by the harness. Improved the benchmark per the hoisted-overload rule: the HashMap precompute was previously rebuilt inside the measured PrecomputedHashMapLookup benchmark method on every iteration rather than in [GlobalSetup]; added the hoisted HashMap-taking overload and moved the one-time precompute into Setup so only the O(1)-per-query lookup is charged to that arm now, matching what the strategy is meant to demonstrate. Verified against LeetCode's published examples plus both original test cases (10 assertions across both strategies, up from 5 for one strategy). Full test suite (6120 tests) and LayeringTests pass; all four projects build clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PrefixAndSuffixSearch/PrefixAndSuffixSearchSolution.cs",
+      "strategies": "SearchByLinearScan(words, prefix, suffix); SearchByPrecomputedHashMap(words, prefix, suffix) and its hoisted overload SearchByPrecomputedHashMap(HashMap<string,int> index, prefix, suffix); plus the public builder BuildPrefixSuffixIndex(words) used by both the LeetCode-shaped overload and the benchmark's [GlobalSetup]"
     },
     {
       "id": 746,
@@ -5389,8 +5406,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinCostClimbingStairs/MinCostClimbingStairsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinCostClimbingStairsBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer (same top-down-recurrence-via-Memoize shape ClimbingStairsTests/FibonacciBenchmarks already use for LC 70/509); a virtual start state (-1) folds the free 'start at index 0 or 1' choice into one shared cache. Benchmark follows FibonacciBenchmarks' 3-strategy shape: NaiveRecursive (O(2^n)) vs TopDownMemoized (Memoizer) vs IterativeConstantSpace (O(n)/O(1)).",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Three strategies found across the pair: the test's private helper (Memoizer-based top-down DP) duplicated the benchmark's TopDownMemoized arm exactly; the benchmark additionally had an untested NaiveRecursive baseline and an untested IterativeConstantSpace arm. All three now live as first-class methods on MinCostClimbingStairsSolution, all returning the same int (no shape disagreement existed here - both original arms already agreed on 'minimum cost' as an int). No fixtures existed to relocate; no hoisted-input overload was needed since the LeetCode input (int[] cost) is already exactly what GlobalSetup builds. Full suite (6101 tests) plus LayeringTests pass; all four projects build clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MinCostClimbingStairs/MinCostClimbingStairsSolution.cs",
+      "strategies": "MinCostByNaiveRecursive, MinCostByMemoizedRecurrence, MinCostByIterativeConstantSpace"
     },
     {
       "id": 749,
@@ -5402,8 +5421,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ContainVirus/ContainVirusTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ContainVirusBenchmarks.cs",
       "primitivesUsed": "Algorithms.Traversal.DepthFirst.DepthFirstSearch.Traverse for the per-round 4-connected infected-region flood fill (the same primitive MaxAreaOfIslandTests/NumberOfIslandsTests/SurroundedRegionsTests already use for LC 695/200/130), re-run fresh every round since quarantine/spread mutate the grid between rounds. The round-by-round region ranking (HashSet-based threatened-cell count), wall counting, and quarantine/spread bookkeeping is this problem's own bespoke simulation control flow layered on top of that reused flood-fill primitive - not a new data-structure primitive. Benchmark compares a hand-rolled recursive flood fill (baseline, mirroring MaxAreaOfIslandBenchmarks) against the DepthFirstSearch.Traverse-based one, both wrapped in the identical simulation loop.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "The test's private simulation used only the DepthFirstSearch.Traverse-based region discovery (LeetCode-shape signature, mutates its input grid in place); the benchmark additionally had a hand-rolled recursive-flood-fill baseline arm that was never asserted against anything, plus its own duplicate copy of the exact same round-by-round simulation logic (find regions -> rank by threat -> quarantine -> spread). Reconciled onto one shared simulation loop in ContainVirusSolution with two interchangeable region-collection strategies (mirrors MaxAreaOfIslandSolution's NaiveFloodFill/DepthFirstSearch pair for LC 695), both now returning LeetCode's real answer (int wall count) and both cloning their input grid internally so callers' arrays are never mutated - previously the test mutated the caller's array while the benchmark cloned via a private CloneGrid() before each call; unifying on 'always clone' matches the already-migrated MaxAreaOfIsland convention and fixes the latent mutation risk from theory data reuse across the two per-strategy test methods. The problem-local Region class (plain class, not record, for MaxBy reference-identity reasons) stayed a private nested type inside the solution per section 17.3 (a witness used by this problem alone). No DataStructures/Algorithms primitives were invented; DepthFirstSearch.Traverse (existing tier-2 primitive) is reused as-is. Full suite (6101 tests) plus LayeringTests pass; all four projects build clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ContainVirus/ContainVirusSolution.cs",
+      "strategies": "MinimumWallsByNaiveRecursiveFloodFill, MinimumWallsByDepthFirstSearchTraversal"
     },
     {
       "id": 752,
