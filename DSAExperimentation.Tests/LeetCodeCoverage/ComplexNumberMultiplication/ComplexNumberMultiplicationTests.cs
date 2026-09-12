@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.ComplexNumberMultiplication;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ComplexNumberMultiplication;
 
 // LeetCode 537. Complex Number Multiplication: parse "a+bi" into (real, imaginary)
@@ -7,32 +9,28 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ComplexNumberMultiplication;
 // Pow(x, n)/Power of Two.
 public sealed class ComplexNumberMultiplicationTests
 {
-    [Theory]
-    [InlineData("1+1i", "1+1i", "0+2i")]
-    [InlineData("1+-1i", "1+-1i", "0+-2i")]
-    [InlineData("3+2i", "1+-2i", "7+-4i")]
-    public void Multiply_ClassicExamples_ReturnsExpectedProduct(string a, string b, string expected)
+    public static TheoryData<string, string, string> Examples => new()
     {
-        var actual = Multiply(a, b);
+        { "1+1i", "1+1i", "0+2i" },
+        { "1+-1i", "1+-1i", "0+-2i" },
+        { "3+2i", "1+-2i", "7+-4i" },
+        { "-2+3i", "1+-4i", "10+11i" },
+        { "-3+2i", "4+-5i", "-2+23i" },
+    };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MultiplyByStringSplit_ClassicExamples_ReturnsExpectedProduct(string a, string b, string expected)
+    {
+        var actual = ComplexNumberMultiplicationSolution.MultiplyByStringSplit(a, b);
         Assert.Equal(expected, actual);
     }
 
-    private static string Multiply(string a, string b)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MultiplyBySpanParse_ClassicExamples_ReturnsExpectedProduct(string a, string b, string expected)
     {
-        var (realA, imaginaryA) = Parse(a);
-        var (realB, imaginaryB) = Parse(b);
-
-        var real = (realA * realB) - (imaginaryA * imaginaryB);
-        var imaginary = (realA * imaginaryB) + (imaginaryA * realB);
-
-        return $"{real}+{imaginary}i";
-    }
-
-    private static (int Real, int Imaginary) Parse(ReadOnlySpan<char> complex)
-    {
-        var separator = complex.IndexOf('+');
-        var real = int.Parse(complex[..separator]);
-        var imaginary = int.Parse(complex[(separator + 1)..^1]);
-        return (real, imaginary);
+        var actual = ComplexNumberMultiplicationSolution.MultiplyBySpanParse(a, b);
+        Assert.Equal(expected, actual);
     }
 }

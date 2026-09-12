@@ -1,17 +1,15 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.ComplexNumberMultiplication;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Complex Number Multiplication (LC 537): the multiplication formula itself is
 // already O(1) closed-form arithmetic with no naive-vs-optimal algorithmic split -
-// the real cost lives entirely in parsing "a+bi" strings. No repo container or
-// algorithm primitive applies to either parsing strategy below - there is nothing to
-// compose over two fixed-size (int,int) pairs and one closed-form formula, the same
-// "lighter repo-primitive fit" case as Pow(x, n)/Power of Two - so the comparison is
-// between two parsing strategies for the same formula: StringSplitParse is the
+// the real cost lives entirely in parsing "a+bi" strings, so the comparison is
+// between two parsing strategies for the same formula: MultiplyByStringSplit is the
 // straightforward string.Split baseline (a heap-allocated array plus two substrings
-// per operand); SpanParse instead slices with ReadOnlySpan<char> and int.Parse over
-// spans, allocating nothing per operand.
+// per operand); MultiplyBySpanParse instead slices with ReadOnlySpan<char> and
+// int.Parse over spans, allocating nothing per operand.
 [MemoryDiagnoser]
 public class ComplexNumberMultiplicationBenchmarks
 {
@@ -47,7 +45,7 @@ public class ComplexNumberMultiplicationBenchmarks
 
         foreach (var (a, b) in _pairs)
         {
-            result = MultiplySplit(a, b);
+            result = ComplexNumberMultiplicationSolution.MultiplyByStringSplit(a, b);
         }
 
         return result;
@@ -60,43 +58,9 @@ public class ComplexNumberMultiplicationBenchmarks
 
         foreach (var (a, b) in _pairs)
         {
-            result = MultiplySpan(a, b);
+            result = ComplexNumberMultiplicationSolution.MultiplyBySpanParse(a, b);
         }
 
         return result;
-    }
-
-    private static string MultiplySplit(string a, string b)
-    {
-        var (realA, imaginaryA) = ParseSplit(a);
-        var (realB, imaginaryB) = ParseSplit(b);
-
-        var real = (realA * realB) - (imaginaryA * imaginaryB);
-        var imaginary = (realA * imaginaryB) + (imaginaryA * realB);
-
-        return $"{real}+{imaginary}i";
-    }
-
-    private static (int Real, int Imaginary) ParseSplit(string complex)
-    {
-        var parts = complex[..^1].Split('+');
-        return (int.Parse(parts[0]), int.Parse(parts[1]));
-    }
-
-    private static string MultiplySpan(string a, string b)
-    {
-        var (realA, imaginaryA) = ParseSpan(a);
-        var (realB, imaginaryB) = ParseSpan(b);
-
-        var real = (realA * realB) - (imaginaryA * imaginaryB);
-        var imaginary = (realA * imaginaryB) + (imaginaryA * realB);
-
-        return $"{real}+{imaginary}i";
-    }
-
-    private static (int Real, int Imaginary) ParseSpan(ReadOnlySpan<char> complex)
-    {
-        var separator = complex.IndexOf('+');
-        return (int.Parse(complex[..separator]), int.Parse(complex[(separator + 1)..^1]));
     }
 }

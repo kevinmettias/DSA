@@ -1,12 +1,11 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Absolute Difference in BST (LC 530): a hand-rolled recursive in-order
-// collect-then-scan baseline vs. this repo's InOrderTraversal/IInOrderHooks walking
-// the same BinaryTreeNode<int> tree with no intermediate list allocation, the same
-// pairing RecoverBinarySearchTreeBenchmarks already uses.
+// Harness only: both arms are MinimumAbsoluteDifferenceInBSTSolution's, the same
+// methods MinimumAbsoluteDifferenceInBSTTests proves correct.
 [MemoryDiagnoser]
 public class MinimumAbsoluteDifferenceInBSTBenchmarks
 {
@@ -21,61 +20,12 @@ public class MinimumAbsoluteDifferenceInBSTBenchmarks
     public void Setup() => _root = BuildBalancedBst(Size);
 
     [Benchmark(Baseline = true)]
-    public int ManualRecursiveScan()
-    {
-        var values = new List<int>();
-        CollectInOrder(_root, values);
-
-        var minDiff = int.MaxValue;
-        for (var i = 1; i < values.Count; i++)
-        {
-            minDiff = Math.Min(minDiff, values[i] - values[i - 1]);
-        }
-
-        return minDiff;
-    }
+    public int RecursiveScan() =>
+        MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByRecursiveScan(_root);
 
     [Benchmark]
-    public int InOrderTraversalHooks()
-    {
-        State.Prev.Value = null;
-        State.MinDiff.Value = int.MaxValue;
-
-        InOrderTraversal.Walk<int, DiffHooks>(_root);
-
-        return State.MinDiff.Value;
-    }
-
-    private static void CollectInOrder(BinaryTreeNode<int>? node, List<int> values)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        CollectInOrder(node.Left, values);
-        values.Add(node.Value);
-        CollectInOrder(node.Right, values);
-    }
-
-    private readonly struct DiffHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
-        {
-            if (State.Prev.Value is { } prev)
-            {
-                State.MinDiff.Value = Math.Min(State.MinDiff.Value, node.Value - prev.Value);
-            }
-
-            State.Prev.Value = node;
-        }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Prev = new();
-        public static readonly AsyncLocal<int> MinDiff = new();
-    }
+    public int InOrderTraversalHooks() =>
+        MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByInOrderHooks(_root);
 
     // A balanced BST over 0..size-1 - every adjacent in-order pair differs by
     // exactly 1, so the minimum difference is size-independent and never trivially

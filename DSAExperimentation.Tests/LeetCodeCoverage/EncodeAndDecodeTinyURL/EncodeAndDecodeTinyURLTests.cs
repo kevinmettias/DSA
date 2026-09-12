@@ -1,31 +1,50 @@
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.EncodeAndDecodeTinyURL.EncodeAndDecodeTinyURLSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.EncodeAndDecodeTinyURL;
 
-// LeetCode 535. Encode and Decode TinyURL: a bidirectional codec over this repo's own
-// HashMap<TKey,TValue> - one map from short code to original URL for O(1) Decode, a
-// second from URL to short code so re-Encoding an already-seen URL returns the same
-// short code instead of minting a fresh one every call.
-public sealed partial class EncodeAndDecodeTinyURLTests
+// Harness only. Both strategies are EncodeAndDecodeTinyURLSolution's - this file
+// replays LeetCode's published round-trip and dedup scenarios against each
+// ICodecStrategy implementation, so a failure names the strategy that broke.
+public sealed class EncodeAndDecodeTinyURLTests
 {
-    [Fact]
-    public void Decode_AfterEncode_ReturnsOriginalUrl()
-    {
-        var codec = new Codec();
-        const string longUrl = "https://leetcode.com/problems/design-tinyurl";
+    public static TheoryData<string> RoundTripExamples =>
+        new() { "https://leetcode.com/problems/design-tinyurl" };
 
+    public static TheoryData<string, string> DistinctUrlExamples =>
+        new() { { "https://example.com/a", "https://example.com/b" } };
+
+    [Theory]
+    [MemberData(nameof(RoundTripExamples))]
+    public void CodecByLinearScan_Decode_AfterEncode_ReturnsOriginalUrl(string longUrl) =>
+        AssertRoundTrips(new CodecByLinearScan(), longUrl);
+
+    [Theory]
+    [MemberData(nameof(RoundTripExamples))]
+    public void CodecByHashMap_Decode_AfterEncode_ReturnsOriginalUrl(string longUrl) =>
+        AssertRoundTrips(new CodecByHashMap(), longUrl);
+
+    [Theory]
+    [MemberData(nameof(DistinctUrlExamples))]
+    public void CodecByLinearScan_Encode_SameUrlTwice_ReturnsSameShortUrlAndDistinctUrlsGetDistinctCodes(
+        string urlA, string urlB) =>
+        AssertSameUrlDedupesAndDistinctUrlsDiffer(new CodecByLinearScan(), urlA, urlB);
+
+    [Theory]
+    [MemberData(nameof(DistinctUrlExamples))]
+    public void CodecByHashMap_Encode_SameUrlTwice_ReturnsSameShortUrlAndDistinctUrlsGetDistinctCodes(
+        string urlA, string urlB) =>
+        AssertSameUrlDedupesAndDistinctUrlsDiffer(new CodecByHashMap(), urlA, urlB);
+
+    private static void AssertRoundTrips(ICodecStrategy codec, string longUrl)
+    {
         var shortUrl = codec.Encode(longUrl);
 
         Assert.Equal(longUrl, codec.Decode(shortUrl));
     }
 
-    [Fact]
-    public void Encode_SameUrlTwice_ReturnsSameShortUrlAndDistinctUrlsGetDistinctCodes()
+    private static void AssertSameUrlDedupesAndDistinctUrlsDiffer(
+        ICodecStrategy codec, string urlA, string urlB)
     {
-        var codec = new Codec();
-        const string urlA = "https://example.com/a";
-        const string urlB = "https://example.com/b";
-
         var firstShortA = codec.Encode(urlA);
         var secondShortA = codec.Encode(urlA);
         var shortB = codec.Encode(urlB);
@@ -34,31 +53,5 @@ public sealed partial class EncodeAndDecodeTinyURLTests
         Assert.NotEqual(firstShortA, shortB);
         Assert.Equal(urlA, codec.Decode(firstShortA));
         Assert.Equal(urlB, codec.Decode(shortB));
-    }
-
-    private sealed class Codec
-    {
-        private readonly HashMap<string, string> _shortToLong = new();
-        private readonly HashMap<string, string> _longToShort = new();
-        private int _nextId;
-
-        public string Encode(string longUrl)
-        {
-            if (_longToShort.TryGetValue(longUrl, out var existing))
-            {
-                return existing;
-            }
-
-            var shortUrl = $"http://tinyurl.com/{_nextId++}";
-            _shortToLong.Set(shortUrl, longUrl);
-            _longToShort.Set(longUrl, shortUrl);
-            return shortUrl;
-        }
-
-        public string Decode(string shortUrl)
-        {
-            _shortToLong.TryGetValue(shortUrl, out var longUrl);
-            return longUrl!;
-        }
     }
 }
