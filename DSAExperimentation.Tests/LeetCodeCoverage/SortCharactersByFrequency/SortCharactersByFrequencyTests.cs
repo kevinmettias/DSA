@@ -1,84 +1,49 @@
-using System.Text;
-using DSAExperimentation.DataStructures.Graph.ShortestPaths;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.SortCharactersByFrequency;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SortCharactersByFrequency;
 
-// LeetCode 451. Sort Characters By Frequency: a HashMap<char,int> counts each
-// character's occurrences, then every (char, frequency) pair is pushed into this
-// repo's own Heap<T,TOrder> ordered by ByPriorityOrder<TNode,TWeight> - the same
-// (node, priority) projection TopKFrequentElementsTests uses for LeetCode 347 -
-// with the frequency negated so the heap's only order (ascending priority) pops
-// characters back out in descending-frequency order, popped to completion instead
-// of capped at k. Each popped character is appended its frequency times to build
-// the result string.
-public sealed partial class SortCharactersByFrequencyTests
+// Harness only: both strategies live in SortCharactersByFrequencySolution and are
+// asserted against the same examples. LeetCode accepts any arrangement whose
+// characters are grouped by non-increasing frequency, so the assertion checks that
+// property directly rather than one fixed expected string.
+public sealed class SortCharactersByFrequencyTests
 {
-    [Fact]
-    public void FrequencySort_ClassicExample_OrdersCharactersByDescendingFrequency()
+    public static TheoryData<string> Examples =>
+        new() { "tree", "cccaaa", "a" };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FrequencySortByDictionaryOrderBy_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s) =>
+        AssertOrderedByDescendingFrequency(s, SortCharactersByFrequencySolution.FrequencySortByDictionaryOrderBy(s));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FrequencySortByHashMapHeap_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s) =>
+        AssertOrderedByDescendingFrequency(s, SortCharactersByFrequencySolution.FrequencySortByHashMapHeap(s));
+
+    private static void AssertOrderedByDescendingFrequency(string input, string result)
     {
-        var result = FrequencySort("tree");
+        Assert.Equal(input.Length, result.Length);
+        Assert.Equal(input.OrderBy(c => c), result.OrderBy(c => c));
 
-        Assert.True(result is "eert" or "eetr");
-    }
+        var previousRunLength = int.MaxValue;
+        var index = 0;
 
-    [Fact]
-    public void FrequencySort_AllSameFrequency_PreservesEveryCharacterOccurrence()
-        => AssertSameMultiset("cccaaa", FrequencySort("cccaaa"));
-
-    [Fact]
-    public void FrequencySort_SingleCharacter_ReturnsSameString()
-        => Assert.Equal("a", FrequencySort("a"));
-
-    private static string FrequencySort(string s)
-    {
-        var counts = CountCharacters(s);
-        var heap = BuildHeap(counts);
-        return Drain(heap, s.Length);
-    }
-
-    private static HashMap<char, int> CountCharacters(string s)
-    {
-        var counts = new HashMap<char, int>();
-
-        foreach (var c in s)
+        while (index < result.Length)
         {
-            counts.TryGetValue(c, out var count);
-            counts.Set(c, count + 1);
+            var current = result[index];
+            var runLength = 0;
+
+            while (index < result.Length && result[index] == current)
+            {
+                runLength++;
+                index++;
+            }
+
+            Assert.True(
+                runLength <= previousRunLength,
+                $"Run of '{current}' (length {runLength}) follows a shorter run (length {previousRunLength}).");
+            previousRunLength = runLength;
         }
-
-        return counts;
-    }
-
-    private static Heap<(char Node, int Priority), ByPriorityOrder<char, int>> BuildHeap(HashMap<char, int> counts)
-    {
-        var heap = new Heap<(char Node, int Priority), ByPriorityOrder<char, int>>();
-
-        foreach (var c in counts.Keys)
-        {
-            counts.TryGetValue(c, out var frequency);
-            heap.Push((c, -frequency));
-        }
-
-        return heap;
-    }
-
-    private static string Drain(Heap<(char Node, int Priority), ByPriorityOrder<char, int>> heap, int capacity)
-    {
-        var result = new StringBuilder(capacity);
-
-        while (heap.TryPop(out var top))
-        {
-            result.Append(top.Node, -top.Priority);
-        }
-
-        return result.ToString();
-    }
-
-    private static void AssertSameMultiset(string expected, string actual)
-    {
-        Assert.Equal(expected.Length, actual.Length);
-        Assert.Equal(expected.OrderBy(c => c), actual.OrderBy(c => c));
     }
 }

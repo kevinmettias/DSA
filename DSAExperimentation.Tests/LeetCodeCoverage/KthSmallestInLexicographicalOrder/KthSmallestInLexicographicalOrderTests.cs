@@ -1,62 +1,32 @@
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.KthSmallestInLexicographicalOrder;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestInLexicographicalOrder;
 
-// LeetCode 440. K-th Smallest in Lexicographical Order: the lexicographical order of
-// 1..n is exactly the pre-order DFS of the implicit 10-ary "next digit" tree
-// LexicographicalNumbersTests (LC 386) already walks via this repo's own
-// successor-function DepthFirstSearch.Traverse - the k-th smallest is simply the
-// (k-1)-th element of that same order, one root-seeded Traverse call per digit 1-9
-// since each root's subtree is a disjoint range.
-public sealed partial class KthSmallestInLexicographicalOrderTests
+// Harness only. Both strategies are KthSmallestInLexicographicalOrderSolution's -
+// this file just pins them to LeetCode's published example plus the first/last
+// elements of that same lexicographical order.
+public sealed class KthSmallestInLexicographicalOrderTests
 {
-    [Fact]
-    public void FindKthNumber_LeetCodeExample_ReturnsExpectedValue()
-    {
-        var result = FindKthNumber(n: 13, k: 2);
-
-        Assert.Equal(10, result);
-    }
-
-    [Fact]
-    public void FindKthNumber_FirstElement_ReturnsSmallestRoot()
-    {
-        var result = FindKthNumber(n: 13, k: 1);
-
-        Assert.Equal(1, result);
-    }
-
-    [Fact]
-    public void FindKthNumber_LastElement_ReturnsLargestByLexOrder()
-    {
-        var result = FindKthNumber(n: 13, k: 13);
-
-        Assert.Equal(9, result);
-    }
-
-    private static int FindKthNumber(int n, int k)
-    {
-        var order = new List<int>();
-        for (var root = 1; root <= 9 && root <= n; root++)
+    public static TheoryData<int, int, int> Examples =>
+        new()
         {
-            var traversal = DepthFirstSearch.Traverse(root, current => Successors(current, n));
-            order.AddRange(traversal);
-        }
+            { 13, 2, 10 },
+            { 13, 1, 1 },
+            { 13, 13, 9 },
+        };
 
-        return order[k - 1];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindKthNumberByGenerateAndSort_LeetCodeExamples_ReturnsExpectedValue(
+        int n, int k, int expected) =>
+        Assert.Equal(
+            expected, KthSmallestInLexicographicalOrderSolution.FindKthNumberByGenerateAndSort(n, k));
 
-    private static IEnumerable<int> Successors(int current, int n)
-    {
-        for (var digit = 0; digit <= 9; digit++)
-        {
-            var next = (current * 10) + digit;
-            if (next > n)
-            {
-                yield break;
-            }
-
-            yield return next;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindKthNumberByDepthFirstTraversal_LeetCodeExamples_ReturnsExpectedValue(
+        int n, int k, int expected) =>
+        Assert.Equal(
+            expected,
+            KthSmallestInLexicographicalOrderSolution.FindKthNumberByDepthFirstTraversal(n, k));
 }
