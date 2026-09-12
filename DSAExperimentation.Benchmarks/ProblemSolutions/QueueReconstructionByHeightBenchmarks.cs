@@ -1,18 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.QueueReconstructionByHeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Queue Reconstruction by Height (LC 406): both strategies run the same
-// sort-tallest-first-then-insert-at-k algorithm - this problem's insight (why
-// descending height makes the insert index always valid) doesn't leave room
-// for a differently-shaped naive alternative the way HIndex/
-// RussianDollEnvelopes do. SortThenListInsert uses BCL Array.Sort and
-// List<T>.Insert; SortThenDynamicArrayInsert instead composes this repo's own
-// MergeSort.Sort<Element,TSequence> and DynamicArray<Element>.Insert, the same
-// pair QueueReconstructionByHeightTests.cs exercises for correctness.
+// Harness only: both arms are QueueReconstructionByHeightSolution's, the same
+// methods QueueReconstructionByHeightTests proves correct. Each arm takes the
+// (Height, K) pairs [GlobalSetup] already prepared, so decoding LeetCode's
+// int[][] shape is not charged to the measured method - the hoisted overload
+// QueueReconstructionByHeightSolution exposes for exactly that. Both arms
+// return the reconstructed queue itself (LeetCode's actual answer), not just
+// its count.
 [MemoryDiagnoser]
 public class QueueReconstructionByHeightBenchmarks
 {
@@ -37,38 +34,10 @@ public class QueueReconstructionByHeightBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int SortThenListInsert()
-    {
-        var items = ((int Height, int K)[])_people.Clone();
-        Array.Sort(items, (a, b) => a.Height != b.Height ? b.Height.CompareTo(a.Height) : a.K.CompareTo(b.K));
-
-        var queue = new List<(int Height, int K)>();
-
-        foreach (var person in items)
-        {
-            queue.Insert(person.K, person);
-        }
-
-        return queue.Count;
-    }
+    public int[][] ArraySortListInsert() =>
+        QueueReconstructionByHeightSolution.ReconstructQueueByArraySortListInsert(_people);
 
     [Benchmark]
-    public int SortThenDynamicArrayInsert()
-    {
-        var items = ((int Height, int K)[])_people.Clone();
-        var byHeightDescendingThenKAscending = Comparer<(int Height, int K)>.Create(
-            (a, b) => a.Height != b.Height ? b.Height.CompareTo(a.Height) : a.K.CompareTo(b.K));
-
-        MergeSort.Sort<(int Height, int K), ArrayIndexedSequence<(int Height, int K)>>(
-            new ArrayIndexedSequence<(int Height, int K)>(items), byHeightDescendingThenKAscending);
-
-        var queue = new DynamicArray<(int Height, int K)>();
-
-        foreach (var person in items)
-        {
-            queue.Insert(person.K, person);
-        }
-
-        return queue.Count;
-    }
+    public int[][] MergeSortDynamicArrayInsert() =>
+        QueueReconstructionByHeightSolution.ReconstructQueueByMergeSortDynamicArrayInsert(_people);
 }
