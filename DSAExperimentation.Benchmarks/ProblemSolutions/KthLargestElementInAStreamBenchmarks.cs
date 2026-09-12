@@ -1,15 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.KthLargestElementInAStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Kth Largest Element in a Stream (LC 703): a sort-on-every-add baseline (a growable
-// List<int>, re-sorted from scratch on every Add call, O(n log n) per call) vs this
-// repo's own size-k min-heap (Heap<int,MinHeapOrder<int>>, discarding the smallest
-// root whenever the heap grows past k, O(log k) per call) - the
-// FindMedianFromDataStream two-heap benchmark's "process the same interleaved
-// stream, compare per-call cost" shape, specialized to LC703's single running order
-// statistic.
+// Harness only: both arms are KthLargestElementInAStreamSolution's, the same
+// factories KthLargestElementInAStreamTests proves correct, replaying the same
+// interleaved Add stream against a freshly created, unseeded stream instance - a
+// sort-on-every-add baseline (O(n log n) per call) vs. this repo's own size-k
+// min-heap (O(log k) per call) - the FindMedianFromDataStream two-heap
+// benchmark's "process the same interleaved stream, compare per-call cost" shape,
+// specialized to LC703's single running order statistic.
 [MemoryDiagnoser]
 public class KthLargestElementInAStreamBenchmarks
 {
@@ -23,45 +24,24 @@ public class KthLargestElementInAStreamBenchmarks
     private int[] _stream = null!;
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _stream = Enumerable.Range(0, StreamLength).Select(_ => random.Next(1, StreamValueExclusiveBound)).ToArray();
-    }
+    public void Setup() => _stream = KthLargestElementInAStreamWorkloads.BuildStream(
+        StreamLength, RandomSeed, StreamValueExclusiveBound);
 
     [Benchmark(Baseline = true)]
-    public int SortOnEveryAdd()
-    {
-        var values = new List<int>();
-        var lastKthLargest = 0;
-
-        foreach (var value in _stream)
-        {
-            values.Add(value);
-            var sorted = values.ToArray();
-            Array.Sort(sorted);
-            lastKthLargest = sorted[Math.Max(0, sorted.Length - K)];
-        }
-
-        return lastKthLargest;
-    }
+    public int SortOnEveryAdd() =>
+        Replay(KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(K, []));
 
     [Benchmark]
-    public int SizeKMinHeap()
+    public int SizeKMinHeap() =>
+        Replay(KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(K, []));
+
+    private int Replay(IKthLargestStream stream)
     {
-        var heap = new Heap<int, MinHeapOrder<int>>();
         var lastKthLargest = 0;
 
         foreach (var value in _stream)
         {
-            heap.Push(value);
-
-            if (heap.Count > K)
-            {
-                heap.TryPop(out _);
-            }
-
-            heap.TryPeek(out lastKthLargest);
+            lastKthLargest = stream.Add(value);
         }
 
         return lastKthLargest;

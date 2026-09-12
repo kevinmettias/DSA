@@ -1,25 +1,20 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SearchInABinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Search in a Binary Search Tree (LC 700): the naive O(n) linear scan over every
-// value (no ordering exploited) vs. the O(log n) BST descent this repo's own
-// BinarySearchTree<int> gives for free by construction - a plain "compare against
-// the current node, go left or right" walk over BinaryTreeNode<int>, the exact
-// shape BinarySearchTree.Has already uses internally (see
-// SearchInABinarySearchTreeTests for the node-returning variant this mirrors).
-// Both benchmarks build their own input from the same shuffled insertion order so
-// tree height stays close to O(log n) instead of the degenerate O(n)
-// ascending-insertion case, the same convention DeleteNodeInABSTBenchmarks already
-// uses.
+// Harness only. Both arms are SearchInABinarySearchTreeSolution's, the same
+// methods SearchInABinarySearchTreeTests proves correct. Both build their own
+// input from the same shuffled insertion order so tree height stays close to
+// O(log n) instead of the degenerate O(n) ascending-insertion case, the same
+// convention DeleteNodeInABSTBenchmarks already uses.
 [MemoryDiagnoser]
 public class SearchInABinarySearchTreeBenchmarks
 {
     [Params(500, 20_000)]
     public int NodeCount;
 
-    private int[] _values = null!;
     private BinaryTreeNode<int> _root = null!;
     private int _target;
 
@@ -35,8 +30,6 @@ public class SearchInABinarySearchTreeBenchmarks
             (values[i], values[j]) = (values[j], values[i]);
         }
 
-        _values = values;
-
         var tree = new BinarySearchTree<int>();
 
         foreach (var value in values)
@@ -50,30 +43,15 @@ public class SearchInABinarySearchTreeBenchmarks
         _target = NodeCount - 1;
     }
 
+    // Projects to the found node's value (BinaryTreeNode<int> itself is
+    // internal, and a [Benchmark] method must be public) purely so
+    // BenchmarkDotNet has a public return type to consume - the call being
+    // measured is still the one-line solution call.
     [Benchmark(Baseline = true)]
-    public bool LinearScan()
-    {
-        foreach (var value in _values)
-        {
-            if (value == _target)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public int? LinearScan() =>
+        SearchInABinarySearchTreeSolution.SearchBstByLinearScan(_root, _target)?.Value;
 
     [Benchmark]
-    public bool BinarySearchTreeDescent()
-    {
-        var node = _root;
-
-        while (node is not null && node.Value != _target)
-        {
-            node = _target < node.Value ? node.Left : node.Right;
-        }
-
-        return node is not null;
-    }
+    public int? BinarySearchTreeDescent() =>
+        SearchInABinarySearchTreeSolution.SearchBstByBstDescent(_root, _target)?.Value;
 }

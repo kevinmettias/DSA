@@ -1,52 +1,36 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.KthLargestElementInAStream;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.KthLargestElementInAStream;
 
-// LeetCode 703. Kth Largest Element in a Stream: a size-k min-heap using this repo's
-// own Heap<T,MinHeapOrder<T>> - the same "discard the smallest root once the heap
-// grows past k" approach KthLargestElementTests already uses for LC215's one-shot
-// array, wired up as a stateful class here since LC703 asks for the running
-// kth-largest across an open-ended Add stream instead of a single array.
-public sealed partial class KthLargestElementInAStreamTests
+// Harness only: both strategies are KthLargestElementInAStreamSolution's. Each
+// script is a sequence of Add values with the expected running kth-largest checked
+// after every insert, so a failure still names both the strategy and the exact
+// insert that produced the wrong value.
+public sealed class KthLargestElementInAStreamTests
 {
-    [Fact]
-    public void Add_LeetCodeExampleSequence_ReturnsRunningKthLargest()
-    {
-        var kthLargest = new KthLargestStream(3, [4, 5, 8, 2]);
-
-        Assert.Equal(4, kthLargest.Add(3));
-        Assert.Equal(5, kthLargest.Add(5));
-        Assert.Equal(5, kthLargest.Add(10));
-        Assert.Equal(8, kthLargest.Add(9));
-        Assert.Equal(8, kthLargest.Add(4));
-    }
-
-    private sealed class KthLargestStream
-    {
-        private readonly int _k;
-        private readonly Heap<int, MinHeapOrder<int>> _heap = new();
-
-        public KthLargestStream(int k, int[] nums)
+    public static TheoryData<int, int[], int[], int[]> Examples =>
+        new()
         {
-            _k = k;
+            { 3, [4, 5, 8, 2], [3, 5, 10, 9, 4], [4, 5, 5, 8, 8] },
+        };
 
-            foreach (var num in nums)
-            {
-                Add(num);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateBySizeKMinHeap_LeetCodeExampleSequence_ReturnsRunningKthLargest(
+        int k, int[] nums, int[] adds, int[] expected) =>
+        RunScript(KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(k, nums), adds, expected);
 
-        public int Add(int val)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateBySortOnEveryAdd_LeetCodeExampleSequence_ReturnsRunningKthLargest(
+        int k, int[] nums, int[] adds, int[] expected) =>
+        RunScript(KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(k, nums), adds, expected);
+
+    private static void RunScript(IKthLargestStream stream, int[] adds, int[] expected)
+    {
+        for (var i = 0; i < adds.Length; i++)
         {
-            _heap.Push(val);
-
-            if (_heap.Count > _k)
-            {
-                _heap.TryPop(out _);
-            }
-
-            _heap.TryPeek(out var kthLargest);
-            return kthLargest;
+            Assert.Equal(expected[i], stream.Add(adds[i]));
         }
     }
 }

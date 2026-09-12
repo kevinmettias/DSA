@@ -1,20 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.BinarySearchAlgorithm;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Binary Search (LC 704): the canonical O(n) linear scan vs. this repo's own
-// O(log n) BinarySearch.Find over an ArraySequence<int>. _target is deliberately
-// the last element in the sorted array so LinearScan is forced through its full
-// worst-case pass instead of an early exit near the start making it look
-// artificially competitive.
+// Harness only: both arms are BinarySearchAlgorithmSolution's, the same methods
+// BinarySearchAlgorithmTests proves correct.
 [MemoryDiagnoser]
 public class BinarySearchAlgorithmBenchmarks
 {
-    // Spacing between consecutive generated values, so every value is even.
-    private const int ValueStride = 2;
-
     [Params(200, 5_000)]
     public int Length;
 
@@ -24,25 +18,13 @@ public class BinarySearchAlgorithmBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _values = Enumerable.Range(0, Length).Select(i => i * ValueStride).ToArray();
-        _target = (Length - 1) * ValueStride;
+        _values = BinarySearchAlgorithmWorkloads.BuildSortedValues(Length);
+        _target = BinarySearchAlgorithmWorkloads.FarthestTarget(Length);
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScan()
-    {
-        for (var i = 0; i < _values.Length; i++)
-        {
-            if (_values[i] == _target)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    public int LinearScan() => BinarySearchAlgorithmSolution.FindIndexByLinearScan(_values, _target);
 
     [Benchmark]
-    public int BinarySearchFind()
-        => BinarySearch.Find(new ArraySequence<int>(_values), _target) ?? -1;
+    public int BinarySearchFind() => BinarySearchAlgorithmSolution.FindIndexByBinarySearch(_values, _target);
 }

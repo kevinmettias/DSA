@@ -1,14 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.PartitionToKEqualSumSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Partition to K Equal Sum Subsets (LC 698): the same MatchsticksToSquareBenchmarks
-// shape (a hand-specialized recursion vs. this repo's generic Backtrack.TrySearch
-// closed over the identical choose/explore/unchoose steps) generalized from a fixed
-// 4-bucket split to K buckets. _nums is K interleaved copies of 1..NumbersPerSubset,
-// so a perfect split always exists (each subset re-assembles the copy it came from)
-// but the shuffled ordering still forces a real search rather than an immediate match.
+// Harness only: both arms are PartitionToKEqualSumSubsetsSolution's. _nums is K
+// interleaved copies of 1..NumbersPerSubset, so a perfect split always exists
+// (each subset re-assembles the copy it came from) but the shuffled ordering
+// still forces a real search rather than an immediate match.
 [MemoryDiagnoser]
 public class PartitionToKEqualSumSubsetsBenchmarks
 {
@@ -36,91 +34,10 @@ public class PartitionToKEqualSumSubsetsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveBacktracking()
-    {
-        var sorted = (int[])_nums.Clone();
-        Array.Sort(sorted);
-        Array.Reverse(sorted);
-        var target = sorted.Sum() / K;
-        var buckets = new int[K];
-        var context = new PartitionSearchContext(sorted, buckets, target);
-
-        return Search(context, 0);
-    }
-
-    private bool Search(PartitionSearchContext context, int index)
-    {
-        if (index == context.Sorted.Length)
-        {
-            return true;
-        }
-
-        for (var bucket = 0; bucket < K; bucket++)
-        {
-            if (TryPlace(context, index, bucket))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private bool TryPlace(PartitionSearchContext context, int index, int bucket)
-    {
-        if (context.Buckets[bucket] + context.Sorted[index] > context.Target)
-        {
-            return false;
-        }
-
-        context.Buckets[bucket] += context.Sorted[index];
-
-        if (Search(context, index + 1))
-        {
-            return true;
-        }
-
-        context.Buckets[bucket] -= context.Sorted[index];
-        return false;
-    }
+    public bool NaiveBacktracking() =>
+        PartitionToKEqualSumSubsetsSolution.CanPartitionKSubsetsByNaiveBacktracking(_nums, K);
 
     [Benchmark]
-    public bool BacktrackPrimitive()
-    {
-        var sorted = (int[])_nums.Clone();
-        Array.Sort(sorted);
-        Array.Reverse(sorted);
-        var target = sorted.Sum() / K;
-        var state = new State(sorted, target, K);
-
-        return Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
-            IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, K).Where(s.CanPlace),
-            Choose: (s, bucket) => s.Place(bucket),
-            Unchoose: (s, bucket) => s.Remove(bucket),
-            OnSolution: _ => true));
-    }
-
-    private sealed class State(int[] nums, int target, int k)
-    {
-        private readonly int[] _buckets = new int[k];
-
-        public int Index { get; private set; }
-
-        public bool CanPlace(int bucket) => _buckets[bucket] + nums[Index] <= target;
-
-        public void Place(int bucket)
-        {
-            _buckets[bucket] += nums[Index];
-            Index++;
-        }
-
-        public void Remove(int bucket)
-        {
-            Index--;
-            _buckets[bucket] -= nums[Index];
-        }
-    }
-
-    private readonly record struct PartitionSearchContext(int[] Sorted, int[] Buckets, int Target);
+    public bool BacktrackPrimitive() =>
+        PartitionToKEqualSumSubsetsSolution.CanPartitionKSubsetsByGenericBacktrack(_nums, K);
 }

@@ -1,49 +1,107 @@
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignHashMap.DesignHashMapSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignHashMap;
 
-// LeetCode 706. Design HashMap: a thin int-key/int-value wrapper directly over this
-// repo's own HashMap<TKey,TValue> - Put/Get/Remove map 1:1 onto Set/TryGetValue/
-// TryRemove, with Get's LeetCode-mandated "-1 for missing key" contract absorbed at this
-// call site rather than pushed into HashMap itself (whose own TryGetValue already
-// generalizes past any one sentinel value).
-public sealed partial class DesignHashMapTests
+// Harness only. Both strategies are DesignHashMapSolution's - this file replays
+// a script of Put/Get/Remove calls against each IMyHashMap implementation, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of mutating/querying calls rather than a single argument tuple.
+// HashMapOp.Apply is pure dispatch - no key/value storage logic of its own.
+public sealed class DesignHashMapTests
 {
-    [Fact]
-    public void PutGetRemove_LeetCodeExampleSequence_MatchesExpectedResults()
+    public static TheoryData<HashMapOp[], int?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    HashMapOp.Put(1, 1),
+                    HashMapOp.Put(2, 2),
+                    HashMapOp.Get(1),
+                    HashMapOp.Get(3),
+                    HashMapOp.Put(2, 1), // update an existing key's value
+                    HashMapOp.Get(2),
+                    HashMapOp.Remove(2),
+                    HashMapOp.Get(2),
+                ],
+                [null, null, 1, -1, null, 1, null, -1]
+            },
+            {
+                // Removing a key that was never inserted is a no-op.
+                [
+                    HashMapOp.Remove(42),
+                    HashMapOp.Get(42),
+                ],
+                [null, -1]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MyHashMapByLinearScanList_LeetCodeExamples_MatchesExpectedResults(
+        HashMapOp[] operations, int?[] expected) =>
+        RunScript(new MyHashMapByLinearScanList(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MyHashMapByHashMapBacked_LeetCodeExamples_MatchesExpectedResults(
+        HashMapOp[] operations, int?[] expected) =>
+        RunScript(new MyHashMapByHashMapBacked(), operations, expected);
+
+    private static void RunScript(IMyHashMap map, HashMapOp[] operations, int?[] expected)
     {
-        var map = new MyHashMap();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(map));
+        }
+    }
+}
 
-        map.Put(1, 1);
-        map.Put(2, 2);
-        Assert.Equal(1, map.Get(1));
-        Assert.Equal(-1, map.Get(3));
+// One call in a MyHashMap script: which method to invoke and with what
+// key/value. Pure dispatch, built via the named factories below so a script
+// (like Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct HashMapOp
+{
+    private readonly Kind _kind;
+    private readonly int _key;
+    private readonly int _value;
 
-        map.Put(2, 1); // update an existing key's value
-        Assert.Equal(1, map.Get(2));
-
-        map.Remove(2);
-        Assert.Equal(-1, map.Get(2));
+    private HashMapOp(Kind kind, int key, int value)
+    {
+        _kind = kind;
+        _key = key;
+        _value = value;
     }
 
-    [Fact]
-    public void Remove_KeyNeverInserted_IsANoOp()
+    public static HashMapOp Put(int key, int value) => new(Kind.Put, key, value);
+
+    public static HashMapOp Get(int key) => new(Kind.Get, key, 0);
+
+    public static HashMapOp Remove(int key) => new(Kind.Remove, key, 0);
+
+    // null for the two void calls, the looked-up value (or -1) for Get - so a
+    // script runner can assert against one expected value per operation
+    // uniformly. Internal, not public: IMyHashMap is internal to
+    // DesignHashMapSolution, and only this same assembly's RunScript ever
+    // calls Apply.
+    internal int? Apply(IMyHashMap map)
     {
-        var map = new MyHashMap();
-
-        map.Remove(42);
-
-        Assert.Equal(-1, map.Get(42));
+        switch (_kind)
+        {
+            case Kind.Put:
+                map.Put(_key, _value);
+                return null;
+            case Kind.Remove:
+                map.Remove(_key);
+                return null;
+            default:
+                return map.Get(_key);
+        }
     }
 
-    private sealed class MyHashMap
+    private enum Kind
     {
-        private readonly HashMap<int, int> _entries = new();
-
-        public void Put(int key, int value) => _entries.Set(key, value);
-
-        public int Get(int key) => _entries.TryGetValue(key, out var value) ? value : -1;
-
-        public void Remove(int key) => _entries.TryRemove(key);
+        Put,
+        Get,
+        Remove,
     }
 }
