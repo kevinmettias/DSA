@@ -1,79 +1,42 @@
-using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.MyCalendarII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MyCalendarII;
 
-// LeetCode 731. My Calendar II: Book(start, end) allows a double booking (two
-// events overlapping) but rejects any booking that would create a TRIPLE
-// booking. Composes two IntervalSet<int> instances, both using the same
-// half-open-to-closed (end - 1) encoding MyCalendarITests (LC 729) establishes:
-// _covered merges every accepted event, so it always reports the region booked
-// at least once; _doubled merges every region already booked exactly twice.
-// A new event is rejected only if it touches _doubled (that would push some
-// point to 3). Otherwise, its intersection with every interval _covered already
-// stores becomes new double-booked territory - safe, because passing the
-// _doubled check first guarantees nothing _covered reports here is already at
-// 2. This is a manual scan over IntervalSet's own public Get/Count, the same
-// "compose Get/Count directly, never reach into private storage" idiom
-// RangeModuleTests.RemoveRange (LC 715) already uses.
-public sealed partial class MyCalendarIITests
+// Harness only. Both strategies are MyCalendarIISolution's - this file just
+// replays LeetCode's published Book() call scripts against each and asserts
+// the accept/reject result of every single call, including the touching-
+// endpoints case neither strategy may treat as a double booking.
+public sealed class MyCalendarIITests
 {
-    [Fact]
-    public void Book_LeetCodeExample_RejectsOnlyTheTripleBooking()
-    {
-        var calendar = new MyCalendarII();
-
-        AssertBook(calendar, 10, 20, expectedAccepted: true);
-        AssertBook(calendar, 50, 60, expectedAccepted: true);
-        AssertBook(calendar, 10, 40, expectedAccepted: true);
-        AssertBook(calendar, 5, 15, expectedAccepted: false);
-        AssertBook(calendar, 5, 10, expectedAccepted: true);
-        AssertBook(calendar, 25, 55, expectedAccepted: true);
-    }
-
-    [Fact]
-    public void Book_TouchingEndpoints_NeverDoubleBooks()
-    {
-        var calendar = new MyCalendarII();
-
-        AssertBook(calendar, 5, 10, expectedAccepted: true);
-        AssertBook(calendar, 10, 15, expectedAccepted: true);
-        AssertBook(calendar, 0, 5, expectedAccepted: true);
-    }
-
-    private static void AssertBook(MyCalendarII calendar, int start, int end, bool expectedAccepted)
-    {
-        var actual = calendar.Book(start, end);
-        Assert.Equal(expectedAccepted, actual);
-    }
-
-    private sealed class MyCalendarII
-    {
-        private readonly IntervalSet<int> _covered = new();
-        private readonly IntervalSet<int> _doubled = new();
-
-        public bool Book(int start, int end)
+    public static TheoryData<(int Start, int End)[], bool[]> Examples =>
+        new()
         {
-            var closedEnd = end - 1;
-
-            if (_doubled.HasOverlap(start, closedEnd))
             {
-                return false;
-            }
+                [(10, 20), (50, 60), (10, 40), (5, 15), (5, 10), (25, 55)],
+                [true, true, true, false, true, true]
+            },
+            { [(5, 10), (10, 15), (0, 5)], [true, true, true] },
+        };
 
-            for (var i = 0; i < _covered.Count; i++)
-            {
-                var (existingStart, existingEnd) = _covered.Get(i);
-                var overlapStart = Math.Max(start, existingStart);
-                var overlapEnd = Math.Min(closedEnd, existingEnd);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByTwoIntervalSetScan_LeetCodeExamples_RejectsOnlyTripleBookings(
+        (int Start, int End)[] events, bool[] expected) =>
+        AssertSequence(MyCalendarIISolution.CreateByTwoIntervalSetScan(), events, expected);
 
-                if (overlapStart <= overlapEnd)
-                {
-                    _doubled.Add(overlapStart, overlapEnd);
-                }
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByTwoListScan_LeetCodeExamples_RejectsOnlyTripleBookings(
+        (int Start, int End)[] events, bool[] expected) =>
+        AssertSequence(MyCalendarIISolution.CreateByTwoListScan(), events, expected);
 
-            _covered.Add(start, closedEnd);
-            return true;
+    private static void AssertSequence(
+        MyCalendarIISolution.ICalendar calendar, (int Start, int End)[] events, bool[] expected)
+    {
+        for (var i = 0; i < events.Length; i++)
+        {
+            var (start, end) = events[i];
+            Assert.Equal(expected[i], calendar.Book(start, end));
         }
     }
 }

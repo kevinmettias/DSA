@@ -1,78 +1,27 @@
-using RepoAsteroidStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.AsteroidCollision;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AsteroidCollision;
 
-// LeetCode 735. Asteroid Collision: a single left-to-right pass over this repo's
-// own Stack<int> - the same "explicit repo Stack instead of the CLR's own
-// System.Collections.Generic.Stack" move BasicCalculatorTests/DecodeStringTests
-// already make. Every right-moving (positive) asteroid already on the stack
-// keeps getting popped and compared against an incoming left-moving (negative)
-// one until the incoming asteroid is destroyed, both are destroyed, or the
-// stack empties/holds only left-movers - exactly LeetCode's collision rules,
-// with no candidate ever revisited once it survives.
-public sealed partial class AsteroidCollisionTests
+// Harness only: both strategies live in AsteroidCollisionSolution and are
+// asserted against the same examples, including the cascading-collision case.
+public sealed class AsteroidCollisionTests
 {
-    [Fact]
-    public void Simulate_SmallerLeftMoverDestroyed_LargerSurvives()
-        => Assert.Equal([5, 10], Simulate([5, 10, -5]));
-
-    [Fact]
-    public void Simulate_EqualSizedOpposingAsteroids_BothDestroyed()
-        => Assert.Equal([], Simulate([8, -8]));
-
-    [Fact]
-    public void Simulate_LargerLeftMoverDestroysSmallerRightMovers()
-        => Assert.Equal([10], Simulate([10, 2, -5]));
-
-    [Fact]
-    public void Simulate_AsteroidsMovingApart_NeverCollide()
-        => Assert.Equal([-2, -1, 1, 2], Simulate([-2, -1, 1, 2]));
-
-    private static int[] Simulate(int[] asteroids)
-    {
-        var stack = new RepoAsteroidStack();
-
-        foreach (var asteroid in asteroids)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            ProcessAsteroid(stack, asteroid);
-        }
+            { [5, 10, -5], [5, 10] },
+            { [8, -8], [] },
+            { [10, 2, -5], [10] },
+            { [-2, -1, 1, 2], [-2, -1, 1, 2] },
+        };
 
-        var result = new int[stack.Count];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SimulateByRepeatedScan_LeetCodeExamples_ReturnsSurvivors(int[] asteroids, int[] expected) =>
+        Assert.Equal(expected, AsteroidCollisionSolution.SimulateByRepeatedScan(asteroids));
 
-        for (var i = result.Length - 1; i >= 0; i--)
-        {
-            stack.TryPop(out result[i]);
-        }
-
-        return result;
-    }
-
-    private static void ProcessAsteroid(RepoAsteroidStack stack, int asteroid)
-    {
-        if (ResolveCollisions(stack, asteroid))
-        {
-            stack.Push(asteroid);
-        }
-    }
-
-    private static bool ResolveCollisions(RepoAsteroidStack stack, int current)
-    {
-        while (current < 0 && stack.TryPeek(out var top) && top > 0)
-        {
-            if (top < -current)
-            {
-                stack.TryPop(out _);
-                continue;
-            }
-
-            if (top == -current)
-            {
-                stack.TryPop(out _);
-            }
-
-            return false;
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SimulateByStackPass_LeetCodeExamples_ReturnsSurvivors(int[] asteroids, int[] expected) =>
+        Assert.Equal(expected, AsteroidCollisionSolution.SimulateByStackPass(asteroids));
 }

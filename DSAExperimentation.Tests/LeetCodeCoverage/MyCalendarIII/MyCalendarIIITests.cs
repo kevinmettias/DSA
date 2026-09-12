@@ -1,79 +1,41 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MyCalendarIII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MyCalendarIII;
 
-// LeetCode 732. My Calendar III: a delta/sweep-line count, using this repo's own
-// HashMap<int,int> to accumulate a +1 at every booking's start and a -1 at its
-// end (the standard technique for turning "how many intervals overlap right
-// now" into a prefix-sum sweep over event points), then this repo's own
-// MergeSort.Sort over an ArrayIndexedSequence<int> to walk those delta keys in
-// ascending order every time Book is called - the same "no ordered-map
-// primitive, so sort the keys instead of maintaining one" substitution
-// RangeModuleTests already makes for a real TreeMap/NavigableMap. The running
-// prefix sum's maximum after folding this booking's own +1/-1 in is exactly the
-// "k" LeetCode wants back from Book.
-public sealed partial class MyCalendarIIITests
+// Harness only. Both strategies are MyCalendarIIISolution's - this file just
+// replays LeetCode's published Book() call scripts against each and asserts
+// the max-overlap-so-far result returned after every single call.
+public sealed class MyCalendarIIITests
 {
-    [Fact]
-    public void Book_LeetCodeExample_ReturnsMaxOverlapAfterEachBooking()
-    {
-        var calendar = new MyCalendarThree();
-
-        AssertBook(calendar, 10, 20, expectedMaxOverlap: 1);
-        AssertBook(calendar, 50, 60, expectedMaxOverlap: 1);
-        AssertBook(calendar, 10, 40, expectedMaxOverlap: 2);
-        AssertBook(calendar, 5, 15, expectedMaxOverlap: 3);
-        AssertBook(calendar, 5, 10, expectedMaxOverlap: 3);
-        AssertBook(calendar, 25, 55, expectedMaxOverlap: 3);
-    }
-
-    [Fact]
-    public void Book_NoOverlaps_AlwaysReturnsOne()
-    {
-        var calendar = new MyCalendarThree();
-
-        AssertBook(calendar, 0, 5, expectedMaxOverlap: 1);
-        AssertBook(calendar, 10, 15, expectedMaxOverlap: 1);
-        AssertBook(calendar, 20, 25, expectedMaxOverlap: 1);
-    }
-
-    private static void AssertBook(MyCalendarThree calendar, int start, int end, int expectedMaxOverlap)
-    {
-        var actual = calendar.Book(start, end);
-        Assert.Equal(expectedMaxOverlap, actual);
-    }
-
-    private sealed class MyCalendarThree
-    {
-        private readonly HashMap<int, int> _delta = new();
-
-        public int Book(int start, int end)
+    public static TheoryData<(int Start, int End)[], int[]> Examples =>
+        new()
         {
-            AddDelta(start, 1);
-            AddDelta(end, -1);
-
-            var keys = _delta.Keys.ToArray();
-            MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(keys));
-
-            var running = 0;
-            var maxOverlap = 0;
-
-            foreach (var key in keys)
             {
-                _delta.TryGetValue(key, out var change);
-                running += change;
-                maxOverlap = Math.Max(maxOverlap, running);
-            }
+                [(10, 20), (50, 60), (10, 40), (5, 15), (5, 10), (25, 55)],
+                [1, 1, 2, 3, 3, 3]
+            },
+            { [(0, 5), (10, 15), (20, 25)], [1, 1, 1] },
+        };
 
-            return maxOverlap;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByHashMapMergeSortSweep_LeetCodeExamples_ReturnsMaxOverlapAfterEachBooking(
+        (int Start, int End)[] events, int[] expected) =>
+        AssertSequence(MyCalendarIIISolution.CreateByHashMapMergeSortSweep(), events, expected);
 
-        private void AddDelta(int point, int amount)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBruteForceEventRescan_LeetCodeExamples_ReturnsMaxOverlapAfterEachBooking(
+        (int Start, int End)[] events, int[] expected) =>
+        AssertSequence(MyCalendarIIISolution.CreateByBruteForceEventRescan(), events, expected);
+
+    private static void AssertSequence(
+        MyCalendarIIISolution.ICalendar calendar, (int Start, int End)[] events, int[] expected)
+    {
+        for (var i = 0; i < events.Length; i++)
         {
-            var current = _delta.TryGetValue(point, out var existing) ? existing : 0;
-            _delta.Set(point, current + amount);
+            var (start, end) = events[i];
+            Assert.Equal(expected[i], calendar.Book(start, end));
         }
     }
 }

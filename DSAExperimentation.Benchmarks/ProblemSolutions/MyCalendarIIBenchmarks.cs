@@ -1,22 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.MyCalendarII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// My Calendar II (LC 731): a sliding-window event stream (event i =
+// Harness only: both arms are MyCalendarIISolution's, the same strategies
+// MyCalendarIITests proves correct. A sliding-window event stream (event i =
 // [i*Stride, i*Stride+EventWidth), Stride < EventWidth) where every event
-// double-books with its immediate predecessor only, never a triple.
-// TwoListScan is the classic solution - a flat List<(int,int)> of every raw
-// booking plus a flat List<(int,int)> of every double-booked region, both
-// scanned linearly on each call, O(n) per call. TwoIntervalSetScan instead
-// composes two of this repo's own IntervalSet<int> instances - one tracking
-// merged coverage, one tracking merged double-booked territory (see
-// MyCalendarIITests for the full reasoning and the half-open-to-closed
-// (end - 1) encoding both use). Because this event stream keeps every accepted
-// booking touching the one before it, the covered set stays merged into a
-// single interval throughout, so the scan that replaces TwoListScan's O(n)
-// bookings walk collapses to O(1), and the triple-booking guard becomes an
-// O(log n) binary search (IntervalSet.HasOverlap) instead of a second linear scan.
+// double-books with its immediate predecessor only, never a triple. Drain
+// feeds the whole generated event sequence through Book() one call at a
+// time - the LeetCode-shaped sequence itself, not a batch construction -
+// counting how many were accepted.
 [MemoryDiagnoser]
 public class MyCalendarIIBenchmarks
 {
@@ -35,89 +28,23 @@ public class MyCalendarIIBenchmarks
             .ToArray();
 
     [Benchmark(Baseline = true)]
-    public int TwoListScan()
-    {
-        var bookings = new List<(int Start, int End)>();
-        var doubles = new List<(int Start, int End)>();
-        var accepted = 0;
-
-        foreach (var evt in _events)
-        {
-            if (TryAcceptBookingByListScan(evt, bookings, doubles))
-            {
-                accepted++;
-            }
-        }
-
-        return accepted;
-    }
-
-    private static bool TryAcceptBookingByListScan(
-        (int Start, int End) evt, List<(int Start, int End)> bookings, List<(int Start, int End)> doubles)
-    {
-        var (start, end) = evt;
-
-        if (doubles.Any(d => start < d.End && d.Start < end))
-        {
-            return false;
-        }
-
-        foreach (var (bStart, bEnd) in bookings)
-        {
-            var overlapStart = Math.Max(start, bStart);
-            var overlapEnd = Math.Min(end, bEnd);
-            if (overlapStart < overlapEnd)
-            {
-                doubles.Add((overlapStart, overlapEnd));
-            }
-        }
-
-        bookings.Add((start, end));
-        return true;
-    }
+    public int TwoListScan() => Drain(MyCalendarIISolution.CreateByTwoListScan());
 
     [Benchmark]
-    public int TwoIntervalSetScan()
+    public int TwoIntervalSetScan() => Drain(MyCalendarIISolution.CreateByTwoIntervalSetScan());
+
+    private int Drain(MyCalendarIISolution.ICalendar calendar)
     {
-        var covered = new IntervalSet<int>();
-        var doubled = new IntervalSet<int>();
         var accepted = 0;
 
-        foreach (var evt in _events)
+        foreach (var (start, end) in _events)
         {
-            if (TryAcceptBookingByIntervalSetScan(evt, covered, doubled))
+            if (calendar.Book(start, end))
             {
                 accepted++;
             }
         }
 
         return accepted;
-    }
-
-    private static bool TryAcceptBookingByIntervalSetScan(
-        (int Start, int End) evt, IntervalSet<int> covered, IntervalSet<int> doubled)
-    {
-        var (start, end) = evt;
-        var closedEnd = end - 1;
-
-        if (doubled.HasOverlap(start, closedEnd))
-        {
-            return false;
-        }
-
-        for (var i = 0; i < covered.Count; i++)
-        {
-            var (existingStart, existingEnd) = covered.Get(i);
-            var overlapStart = Math.Max(start, existingStart);
-            var overlapEnd = Math.Min(closedEnd, existingEnd);
-
-            if (overlapStart <= overlapEnd)
-            {
-                doubled.Add(overlapStart, overlapEnd);
-            }
-        }
-
-        covered.Add(start, closedEnd);
-        return true;
     }
 }
