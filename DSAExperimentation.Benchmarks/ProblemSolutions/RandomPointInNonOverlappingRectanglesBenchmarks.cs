@@ -1,17 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RandomPointInNonOverlappingRectangles;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Random Point in Non-overlapping Rectangles (LC 497): a linear weighted scan
-// through the cumulative-area prefix sums (walk until the running total exceeds
-// the draw, O(n) per Pick) vs. this repo's own BinarySearch.UpperBound over an
-// ArraySequence<int> of the same prefix sums (O(log n) per Pick), the same
-// prefix-sum-plus-BinarySearch pairing CountOfSmallerNumbersAfterSelfBenchmarks
-// already uses for rank lookup. Both draw from the same seeded Random sequence so
-// neither benefits from a luckier draw order; the in-rectangle point itself is a
-// second, unweighted draw identical in both.
+// Harness only: both arms are RandomPointInNonOverlappingRectanglesSolution's, the
+// same methods RandomPointInNonOverlappingRectanglesTests proves correct. Each arm
+// is handed the prepared prefix-sum array its hoisted overload takes, so building
+// it is charged to [GlobalSetup] rather than to the picks being measured. Both
+// draw from a fresh, identically-seeded Random per invocation so neither benefits
+// from a luckier draw order; the summed coordinates avoid materializing an int[]
+// per pick while still exercising the real point both arms return.
 [MemoryDiagnoser]
 public class RandomPointInNonOverlappingRectanglesBenchmarks
 {
@@ -19,8 +17,6 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     private const int RandomSeed = 497; // LC problem number
     private const int RectangleXStep = 10;
     private const int MaxRectangleDimension = 5;
-    private const int RectX2Index = 2;
-    private const int RectY2Index = 3;
 
     [Params(50, 2_000)]
     public int RectangleCount;
@@ -49,22 +45,16 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearWeightedScan()
+    public long LinearScan()
     {
         var random = new Random(1);
         long total = 0;
 
         for (var call = 0; call < PickCalls; call++)
         {
-            var draw = random.Next(_prefixAreas[^1]);
-            var index = 0;
-
-            while (_prefixAreas[index] <= draw)
-            {
-                index++;
-            }
-
-            total += PointWithin(_rects[index], random);
+            var point =
+                RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(_rects, _prefixAreas, random);
+            total += point[0] + point[1];
         }
 
         return total;
@@ -74,24 +64,15 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     public long BinarySearchUpperBound()
     {
         var random = new Random(1);
-        var sequence = new ArraySequence<int>(_prefixAreas);
         long total = 0;
 
         for (var call = 0; call < PickCalls; call++)
         {
-            var draw = random.Next(_prefixAreas[^1]);
-            var index = BinarySearch.UpperBound(sequence, draw);
-
-            total += PointWithin(_rects[index], random);
+            var point = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(
+                _rects, _prefixAreas, random);
+            total += point[0] + point[1];
         }
 
         return total;
-    }
-
-    private static long PointWithin(int[] rect, Random random)
-    {
-        var x = rect[0] + random.Next(rect[RectX2Index] - rect[0] + 1);
-        var y = rect[1] + random.Next(rect[RectY2Index] - rect[1] + 1);
-        return x + y;
     }
 }

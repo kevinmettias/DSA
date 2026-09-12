@@ -4066,8 +4066,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ConcatenatedWords/ConcatenatedWordsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ConcatenatedWordsBenchmarks.cs",
       "primitivesUsed": "DataStructures.Trie.Trie<bool> (dictionary with HasPrefix pruning) + Algorithms.DynamicProgramming.Memoizer (segmentation DP) - the WordBreak precedent, with the first piece barred from consuming the whole word so a match requires >=2 pieces.",
-      "notes": "Test verifies the classic LC example (catsdogcats/dogcatsdog/ratcatdogcat found, hippopotamuses not) plus a no-match case. Benchmark mirrors WordBreakIIBenchmarks: HashSet unbounded scan vs Trie-pruned Memoizer over a tiled 'cat' word, isolating segmentation-scan cost.",
-      "architectureTier": "pre-section-17"
+      "notes": "Reconciled onto LeetCode's real answer shape: the test's per-word CanFormFromOtherWords(word, trie) helper and the benchmark's single-word bool-returning arms (HashSetUnboundedScan/TriePrunedMemoized) were both promoted into full FindAll(words) methods that return the List<string> of concatenated words, per §17's 'promote a weaker benchmark arm to the real answer' allowance. Benchmark now hoists dictionary/trie construction into [GlobalSetup] (Set<string> and Trie<bool>, neither IEnumerable, so no overload ambiguity with the string[] LeetCode-shaped overload) and keeps the same _words tiling workload (one long candidate built from repeated 'cat' tiles, plus the dictionary word itself) so both strategies still classify the identical expensive candidate. No Fixtures/ folder existed for this problem, so nothing to relocate.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ConcatenatedWords/ConcatenatedWordsSolution.cs",
+      "strategies": "FindAllByHashSetScan(string[] words) / FindAllByHashSetScan(string[] words, Set<string> dictionary); FindAllByTriePrunedMemo(string[] words) / FindAllByTriePrunedMemo(string[] words, Trie<bool> trie)"
     },
     {
       "id": 473,
@@ -4079,8 +4081,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MatchsticksToSquare/MatchsticksToSquareTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MatchsticksToSquareBenchmarks.cs",
       "primitivesUsed": "Algorithms.Backtracking.Backtrack.TrySearch + BacktrackingSteps - the NQueens/SudokuSolver precedent. State is a mutable class with 4 running bucket sums + a placement index; Candidates only offers buckets that don't overshoot the target side length.",
-      "notes": "Test covers a solvable case, an unsolvable one where total is a multiple of 4 but no valid split exists (LC's own example 2), and a <4-matchsticks early-false case. Benchmark follows NQueensBenchmarks' shape: hand-specialized recursion vs. the generic Backtrack facade over an identical choose/explore/unchoose search on a guaranteed-solvable, shuffled instance.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's CanMakeSquare (Backtrack.TrySearch composition) and the benchmark's hand-written recursive baseline were both already answering the real bool question, so no shape reconciliation was needed - the benchmark's second arm (BacktrackPrimitive) was a byte-for-byte duplicate of the test's algorithm, now unified as CanMakeSquareByGenericBacktrack. No hoisted-input overload: descending sort is part of each strategy's own approach (mirrors the reference AddBinary pair, which also has none), and [GlobalSetup] already builds only the raw, unsorted LeetCode-shaped int[] input. No Fixtures/ folder existed for this problem.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MatchsticksToSquare/MatchsticksToSquareSolution.cs",
+      "strategies": "CanMakeSquareByNaiveBacktracking(int[] matchsticks); CanMakeSquareByGenericBacktrack(int[] matchsticks)"
     },
     {
       "id": 478,
@@ -4092,8 +4096,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/GenerateRandomPointInACircle/GenerateRandomPointInACircleTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/GenerateRandomPointInACircleBenchmarks.cs",
       "primitivesUsed": "System.Random (this repo's established randomness primitive per ShuffleAnArray/RandomPickIndex/LinkedListRandomNode) driving a closed-form polar transform (r = radius*sqrt(u), theta = u*2*PI). No DataStructures/Algorithms type applies on top of that: the problem has no storage/topology axis at all, the same 'Operations + open runtime object, no Representation axis' shape ARCHITECTURE.md section 12.2 documents for Algorithms/Traversal/DepthFirst/DepthFirstSearch.cs - not a missing-primitive gap, just nothing to compose.",
-      "notes": "Test checks all draws land within the circle (distance <= radius), that draws are varied (not degenerate), and that radius=0 always returns the exact center. Benchmark compares rejection sampling over the bounding square vs. the closed-form single-draw transform, both via freshly seeded System.Random per call (ShuffleAnArrayBenchmarks precedent).",
-      "architectureTier": "pre-section-17"
+      "notes": "Design-category problem (stateful Solution class, not a pure function), so the 'strategy' unit is a class implementing a shared interface rather than a static method, matching the RandomPickIndexSolution/FindMedianFromDataStreamSolution precedent instead of OpenTheLock/AddBinary's static-method shape. The test's private Solution helper only implemented the closed-form polar strategy; the benchmark's baseline (rejection sampling over the bounding square) had never been unit-tested. Both are now first-class classes under test. Constructors match LeetCode's real signature (radius, xCenter, yCenter) with an internal unseeded Random, matching RandomPickIndexByReservoirSampling's precedent (no seed parameter); tests assert invariants (containment, zero-radius exact center, draw variety) rather than exact values, since RandPoint is intentionally nondeterministic. No fixtures existed to relocate; no new DataStructures/Algorithms primitive was needed.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/GenerateRandomPointInACircle/GenerateRandomPointInACircleSolution.cs",
+      "strategies": "GenerateRandomPointInACircleByRejectionSampling.RandPoint (baseline), GenerateRandomPointInACircleByClosedFormPolar.RandPoint - both implementing internal interface IRandomPointGenerator, following the RandomPickIndexSolution/FindMedianFromDataStreamSolution Design-problem shape (a stateful class per strategy, constructed once, called repeatedly)"
     },
     {
       "id": 480,
@@ -4105,8 +4111,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SlidingWindowMedian/SlidingWindowMedianTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SlidingWindowMedianBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Heap.Heap<T,TOrder> (MaxHeapOrder<int> lower-half heap + MinHeapOrder<int> upper-half heap) plus DSAExperimentation.DataStructures.HashMap.HashMap<int,int> for lazy deletion of values leaving the window",
-      "notes": "Classic two-heap + lazy-deletion approach, extending FindMedianFromDataStreamTests' MedianFinderOperations with a window-eviction Erase. Benchmark's WindowSize raised 25->500 so the O(n log k) heap approach actually beats O(n*k log k) re-sort; dry run confirmed gap widening ~3.6x (Length=2000) -> ~7.7x (Length=8000). Full suite: 1272 passed, 1 pre-existing skip, 0 failed.",
-      "architectureTier": "pre-section-17"
+      "notes": "The test's private SlidingWindowMedianOperations and the benchmark's near-identical private copy were the same two-heap-with-lazy-deletion algorithm, written twice; consolidated into one TwoHeapWindow helper inside the solution class. The benchmark's SortEachWindow baseline computed an approximate median for even-sized windows (sortedWindow[k/2] alone, per its own 'approximate median' comment) since it was never asserted against anything; promoted it to the real median (averaging the two middle values when k is even) per the instruction that a benchmark arm measuring something weaker than the real answer may be promoted - this is now exercised by the test harness. Benchmark measurement also changed from tracking only the last window's median to returning the full per-window result array (mirroring WordLadderII's precedent in ARCHITECTURE.md section 17.8), since both arms are now the same methods the test proves correct. No fixtures existed to relocate; no new DataStructures/Algorithms primitive was needed.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SlidingWindowMedian/SlidingWindowMedianSolution.cs",
+      "strategies": "MedianSlidingWindowBySortEachWindow (baseline, promoted to a correct median), MedianSlidingWindowByTwoHeapsLazyDeletion (private nested TwoHeapWindow helper, moved out of both harnesses)"
     },
     {
       "id": 486,
@@ -4118,8 +4126,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PredictTheWinner/PredictTheWinnerTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PredictTheWinnerBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.DynamicProgramming.Memoizer<TState,TResult> - minimax interval DP over (Left,Right) bounds, same shape as BurstBalloons/GuessNumberHigherOrLowerII",
-      "notes": "Score-difference recurrence dp(l,r)=max(nums[l]-dp(l+1,r), nums[r]-dp(l,r-1)); player 1 wins/ties iff dp(0,n-1)>=0. Benchmark Params raised (18,22)->(22,26) after a dry run showed the smaller N still favored the unmemoized baseline (Memoizer overhead dominates below the crossover); final Params show ~2.9x -> ~33x speedup.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private CanPlayerOneWin(bool) and the benchmark's MemoizedRecursion(int) are the same Memoizer-based algorithm reconciled onto LeetCode's real bool answer shape as CanWinByMemoizedRecursion. The benchmark's UnmemoizedRecursion baseline (int score-diff) was likewise promoted to bool as CanWinByUnmemoizedRecursion and made a first-class tested method instead of a benchmark-only helper. No hoisted overload needed: GlobalSetup only builds the int[] nums array itself, which is already LeetCode's own input shape, so there is no separate processed-input type to split out (unlike OpenTheLock's LockGraph).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PredictTheWinner/PredictTheWinnerSolution.cs",
+      "strategies": "CanWinByUnmemoizedRecursion, CanWinByMemoizedRecursion"
     },
     {
       "id": 488,
@@ -4131,8 +4141,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ZumaGame/ZumaGameTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ZumaGameBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Queue.Queue<string> (BFS frontier) + DSAExperimentation.DataStructures.Set.Set<string> (visited-state dedup), the same shape as RemoveInvalidParentheses (LC301)",
-      "notes": "Level-by-level BFS over (board,remaining-hand) states; insert+cascade-collapse simulation is plain string logic around the two primitives. Verified against all 4 official LeetCode examples incl. the -1 case. Benchmark's synthetic 'RRWW'-repeated board turned out to admit a same-move-count shortcut whenever the repeat count is even, so BoardRepeats is kept odd (3,9) at both sizes; dry run confirmed gap widening ~6.3x -> ~25x (1.2GB -> 7.3MB allocated).",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private FindMinStep (level-order BFS with Queue<string>+Set<string>) and the benchmark's QueueBfsDedup are the same algorithm, consolidated into FindMinStepByQueueBfsDedup; the benchmark's baseline BruteForceDfs became FindMinStepByBruteForceDfs. Both already returned LeetCode's real answer shape (int minimum balls, or -1), so no reconciliation of return type was needed -- only deduplication of the two copies of Collapse/CollapseOnePass/SortChars, which now live once in the solution class and are shared by both strategies. MinCollapseRunLength (=3) and the '|' state separator are LeetCode-488-specific implementation constants used by nothing else, so they stayed as private consts in the solution file per SS17.3 rather than being promoted to Domain/. No fixture types existed to relocate. No hoisted overload needed: GlobalSetup only builds the plain board string, already LeetCode's input shape.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ZumaGame/ZumaGameSolution.cs",
+      "strategies": "FindMinStepByBruteForceDfs, FindMinStepByQueueBfsDedup"
     },
     {
       "id": 493,
@@ -4144,8 +4156,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ReversePairs/ReversePairsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ReversePairsBenchmarks.cs",
       "primitivesUsed": "FenwickTree<int,SumOperation<int>> (Binary Indexed Tree) + Algorithms.Searching.BinarySearch.LowerBound/UpperBound over ArraySequence<long> - coordinate-compression-plus-Fenwick sweep, same shape as the existing CountOfSmallerNumbersAfterSelf/CountOfRangeSum coverage, generalized to a value-dependent (2*value) split via UpperBound.",
-      "notes": "Values compressed as long since 2*nums[j] can overflow a 32-bit int; a dedicated test (nums=[int.MinValue,int.MinValue]) proves the long threshold is load-bearing, not incidental. 4/4 new tests pass; full suite 1299/1300 (1 pre-existing unrelated skip); benchmarks project builds clean.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between the test and benchmark arms here (both already returned the reverse-pair count as int) - the defect was solely the untested pairwise-scan baseline, now a first-class method with its own theory tests. No Fixtures/ folder existed for this problem. No hoisted-overload split needed: the benchmark's [GlobalSetup] only builds the int[] input itself, which is already the natural LeetCode-shaped parameter.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ReversePairs/ReversePairsSolution.cs",
+      "strategies": "CountByPairwiseScan (promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), CountByFenwickTreeSweep (the test's private helper and the benchmark's FenwickTreeSweep arm, which already agreed and are now one method)"
     },
     {
       "id": 494,
@@ -4157,8 +4171,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/TargetSum/TargetSumTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TargetSumBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer - top-down +/- recursion over (index, runningSum) memoized via Memoizer.Memoize<(int,int),int>, same shape as DecodeWays/PredictTheWinner.",
-      "notes": "Benchmark compares un-memoized exponential (index,sum) recursion vs. the Memoizer-cached version (PredictTheWinnerBenchmarks precedent), N kept modest (18/22) since the un-memoized baseline is genuinely 2^N. 3/3 new tests pass.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between the test and benchmark memoized arms (both correctly returned the sign-assignment count). Added no new example beyond the original three (classic 5-way case, single-element exact match, unreachable target), which already cover the boundary shapes. No Fixtures/ folder existed for this problem. No hoisted-overload split needed: GlobalSetup only builds the int[] nums and int target values themselves, which are already the natural LeetCode-shaped parameters.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/TargetSum/TargetSumSolution.cs",
+      "strategies": "WaysByUnmemoizedRecursion (promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), WaysByMemoizedRecursion (the test's private helper and the benchmark's MemoizedRecursion arm, which were already identical Memoizer-based implementations and are now one method)"
     },
     {
       "id": 496,
@@ -4170,8 +4186,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/NextGreaterElementI/NextGreaterElementITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/NextGreaterElementIBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<int> (monotonic decreasing walk over nums2) + DataStructures.HashMap.HashMap<int,int> (value -> next-greater map), same composition MinStack/EvaluateReversePolishNotation already use.",
-      "notes": "Used the RepoIntStack using-alias convention (MinStackTests/EvaluateReversePolishNotationTests precedent) to avoid the System.Collections.Generic.Stack<T> name collision. 3/3 new tests pass.",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature drift between test and benchmark here - both already returned int[] answers. -1 sentinel replaced with the existing LeetCodeAnswer.None constant per section 17.9 instead of a new local constant. No fixtures existed for this problem. Test rewritten as TheoryData Examples (the three original Fact cases) + one Theory per strategy.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/NextGreaterElementI/NextGreaterElementISolution.cs",
+      "strategies": "NextGreaterElementByPerQueryRescan (baseline, was PerQueryRescan bench + test's private helper's brute-force twin - promoted to first-class), NextGreaterElementByMonotonicStackSweep (was test's private NextGreaterElement helper and bench's MonotonicStackSweep, byte-for-byte identical logic - merged into one method)"
     },
     {
       "id": 497,
@@ -4183,8 +4201,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RandomPointInNonOverlappingRectangles/RandomPointInNonOverlappingRectanglesTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RandomPointInNonOverlappingRectanglesBenchmarks.cs",
       "primitivesUsed": "Algorithms.Searching.BinarySearch.UpperBound + DataStructures.Sequence.ArraySequence<int> over a prefix-sum-of-areas array for O(log n) weighted-by-area rectangle selection; System.Random for the in-rectangle draw",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "This is a LeetCode 'design' problem (constructor + repeated Pick()), not a pure function. Modeled the shared mutable random-sequence state by threading a System.Random reference through each static Pick call (a reference type, so passing the same instance across repeated calls reproduces the original stateful Solution's behavior) rather than inventing a stateful wrapper type. Test's original private Solution class only ever ran the linear-scan path; the binary-search strategy previously lived only in the benchmark with zero assertions - now both are proven by the same TheoryData-driven Theory methods (bounds-containment checks generalized to the real 'point lies in some given rectangle' definition instead of hand-copied per-example box literals) plus the area-weighting dominance check, once per strategy. Benchmark's coordinate-summing return (long) was kept as-is since it already returns the real computed point's coordinates (not a weaker proxy like a count) - just aggregated to avoid per-iteration array churn, matching the original design. No fixtures existed for this problem; ArraySequence<int> and BinarySearch.UpperBound (existing Algorithms/DataStructures primitives) were reused, not duplicated.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RandomPointInNonOverlappingRectangles/RandomPointInNonOverlappingRectanglesSolution.cs",
+      "strategies": "PickByLinearScan / PickByLinearScan(rects, prefixAreas, random) hoisted overload (was test's private Solution class's default path + benchmark's LinearWeightedScan/PointWithin), PickByBinarySearchUpperBound / PickByBinarySearchUpperBound(rects, prefixAreas, random) hoisted overload (was benchmark's BinarySearchUpperBound arm, which the test's private Solution never exercised - test only ever ran the linear-scan Pick)"
     },
     {
       "id": 498,

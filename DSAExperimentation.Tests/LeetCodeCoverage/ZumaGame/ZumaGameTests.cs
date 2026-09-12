@@ -1,156 +1,29 @@
-using System.Text;
-using DSAExperimentation.DataStructures.Set;
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<string>;
+using DSAExperimentation.LeetCode.ZumaGame;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ZumaGame;
 
-// LeetCode 488. Zuma Game: level-by-level BFS over "insert one hand ball, then
-// cascade-collapse any run of 3+ same-colored balls" states, using this repo's own
-// Queue<string> as the frontier and Set<string> to dedupe (board, remaining-hand)
-// states already tried - the exact RemoveInvalidParentheses/LC301 shape, since each
-// BFS level here corresponds to using one more ball from the hand, so the first
-// level whose board empties out holds the minimum number of balls needed.
-public sealed partial class ZumaGameTests
+// Harness only. Both strategies are ZumaGameSolution's - this file just pins them to
+// LeetCode's published examples.
+public sealed class ZumaGameTests
 {
+    public static TheoryData<string, string, int> Examples =>
+        new()
+        {
+            { "WRRBBW", "RB", -1 },
+            { "WWRRBBWW", "WRBRW", 2 },
+            { "G", "GGGGG", 2 },
+            { "RBYYBBRRB", "YRBGB", 3 },
+        };
+
     [Theory]
-    [InlineData("WRRBBW", "RB", -1)]
-    [InlineData("WWRRBBWW", "WRBRW", 2)]
-    [InlineData("G", "GGGGG", 2)]
-    [InlineData("RBYYBBRRB", "YRBGB", 3)]
-    public void FindMinStep_LeetCodeExamples_ReturnsMinimumBallsNeededOrNegativeOne(
-        string board, string hand, int expected)
-    {
-        var minSteps = FindMinStep(board, hand);
-        Assert.Equal(expected, minSteps);
-    }
+    [MemberData(nameof(Examples))]
+    public void FindMinStepByBruteForceDfs_LeetCodeExamples_ReturnsMinimumBallsNeededOrNegativeOne(
+        string board, string hand, int expected) =>
+        Assert.Equal(expected, ZumaGameSolution.FindMinStepByBruteForceDfs(board, hand));
 
-    private static int FindMinStep(string board, string hand)
-    {
-        var (visited, queue) = InitializeSearch(board, hand);
-
-        return RunLevelOrderSearch(queue, visited);
-    }
-
-    private static (Set<string> Visited, RepoQueue Queue) InitializeSearch(string board, string hand)
-    {
-        var visited = new Set<string>();
-        var queue = new RepoQueue();
-        var start = board + "|" + SortChars(hand);
-        visited.TryAdd(start);
-        queue.Enqueue(start);
-
-        return (visited, queue);
-    }
-
-    private static int RunLevelOrderSearch(RepoQueue queue, Set<string> visited)
-    {
-        var moves = 0;
-
-        while (queue.Count > 0)
-        {
-            var levelSize = queue.Count;
-
-            for (var i = 0; i < levelSize; i++)
-            {
-                if (ProcessNextState(queue, visited))
-                {
-                    return moves;
-                }
-            }
-
-            moves++;
-        }
-
-        return -1;
-    }
-
-    // Dequeues one (board, remaining-hand) state; returns true when the board is
-    // already empty (the search is done), otherwise expands it into every
-    // reachable next state and enqueues the not-yet-visited ones.
-    private static bool ProcessNextState(RepoQueue queue, Set<string> visited)
-    {
-        queue.TryDequeue(out var state);
-        var separator = state.IndexOf('|');
-        var currentBoard = state[..separator];
-        var currentHand = state[(separator + 1)..];
-
-        if (currentBoard.Length == 0)
-        {
-            return true;
-        }
-
-        ExpandState(currentBoard, currentHand, queue, visited);
-        return false;
-    }
-
-    private static void ExpandState(string currentBoard, string currentHand, RepoQueue queue, Set<string> visited)
-    {
-        for (var pos = 0; pos <= currentBoard.Length; pos++)
-        {
-            for (var h = 0; h < currentHand.Length; h++)
-            {
-                if (h > 0 && currentHand[h] == currentHand[h - 1])
-                {
-                    continue;
-                }
-
-                var placed = currentBoard.Insert(pos, currentHand[h].ToString());
-                var nextBoard = Collapse(placed);
-                var nextHand = currentHand.Remove(h, 1);
-                var next = nextBoard + "|" + nextHand;
-
-                if (visited.TryAdd(next))
-                {
-                    queue.Enqueue(next);
-                }
-            }
-        }
-    }
-
-    private static string SortChars(string s)
-    {
-        var chars = s.ToCharArray();
-        Array.Sort(chars);
-        return new string(chars);
-    }
-
-    private static string Collapse(string board)
-    {
-        while (true)
-        {
-            var next = CollapseOnePass(board);
-
-            if (next == board)
-            {
-                return next;
-            }
-
-            board = next;
-        }
-    }
-
-    private static string CollapseOnePass(string board)
-    {
-        var builder = new StringBuilder();
-        var i = 0;
-
-        while (i < board.Length)
-        {
-            var j = i;
-
-            while (j < board.Length && board[j] == board[i])
-            {
-                j++;
-            }
-
-            if (j - i < 3)
-            {
-                builder.Append(board, i, j - i);
-            }
-
-            i = j;
-        }
-
-        return builder.ToString();
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMinStepByQueueBfsDedup_LeetCodeExamples_ReturnsMinimumBallsNeededOrNegativeOne(
+        string board, string hand, int expected) =>
+        Assert.Equal(expected, ZumaGameSolution.FindMinStepByQueueBfsDedup(board, hand));
 }
