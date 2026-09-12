@@ -1,68 +1,67 @@
+using DSAExperimentation.LeetCode.ImplementRand10UsingRand7;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementRand10UsingRand7;
 
-// LeetCode 470. Implement Rand10() Using Rand7(): the classic 7x7 rejection-sampling
-// grid - two Rand7() calls address a uniform 1..49 cell, the 9 cells beyond 40 are
-// discarded (uniform draws stay uniform under rejection) and the remaining 1..40 folds
-// down to 1..10. No repo DataStructures/Algorithms primitive fits this problem's actual
-// challenge (rejection-sampling arithmetic over a black-box RNG, not storage/traversal/
-// search), so - matching the "lighter repo-primitive fit" precedent already used for
-// LC 190/191/231 - this composes a seeded System.Random the same way every other
-// randomness problem in this suite does (ShuffleAnArrayTests.cs, RandomPickIndexTests.cs,
-// LinkedListRandomNodeTests.cs), standing in for the black-box Rand7() the real LeetCode
-// judge supplies.
+// Harness only: both strategies live in ImplementRand10UsingRand7Solution. A seeded
+// System.Random stands in for the black-box Rand7() the real LeetCode judge
+// supplies (this suite's established randomness-problem convention - see
+// ShuffleAnArrayTests, RandomPickIndexTests, LinkedListRandomNodeTests).
+//
+// Rand10ByRejectionSampling is the only strategy asserted for uniformity, because
+// it is the only one that is supposed to be uniform. Rand10ByNaiveModuloFold is
+// asserted only to stay in range 1..10 - it is a deliberately biased "fast but
+// wrong" contrast (see the solution's own doc comment), so a uniformity assertion
+// against it would be asserting a property the strategy does not have.
 public sealed class ImplementRand10UsingRand7Tests
 {
-    [Fact]
-    public void Rand10_ManyCalls_AlwaysStaysInRange()
+    private static Func<int> SeededRand7(int seed)
     {
-        var solution = new Solution(seed: 1);
+        var random = new Random(seed);
+        return () => random.Next(1, 8);
+    }
+
+    [Fact]
+    public void Rand10ByRejectionSampling_ManyCalls_AlwaysStaysInRange()
+    {
+        var rand7 = SeededRand7(seed: 1);
 
         for (var i = 0; i < 2_000; i++)
         {
-            var value = solution.Rand10();
+            var value = ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(rand7);
             Assert.InRange(value, 1, 10);
         }
     }
 
     [Fact]
-    public void Rand10_ManyCalls_EventuallyReturnsEveryValueRoughlyUniformly()
+    public void Rand10ByRejectionSampling_ManyCalls_EventuallyReturnsEveryValueRoughlyUniformly()
     {
-        var solution = new Solution(seed: 1);
+        var rand7 = SeededRand7(seed: 1);
         var counts = new int[11];
 
         const int trials = 20_000;
         for (var i = 0; i < trials; i++)
         {
-            counts[solution.Rand10()]++;
+            counts[ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(rand7)]++;
         }
 
         for (var value = 1; value <= 10; value++)
         {
-            // Expected count per value is trials/10 = 2000; a wide tolerance keeps this
-            // deterministic-seed test robust to the rejection sampler's own variance.
+            // Expected count per value is trials/10 = 2000; a wide tolerance keeps
+            // this deterministic-seed test robust to the rejection sampler's own
+            // variance.
             Assert.InRange(counts[value], 1_500, 2_500);
         }
     }
 
-    private sealed class Solution
+    [Fact]
+    public void Rand10ByNaiveModuloFold_ManyCalls_AlwaysStaysInRange()
     {
-        private readonly Random _random;
+        var rand7 = SeededRand7(seed: 1);
 
-        public Solution(int seed) => _random = new Random(seed);
-
-        public int Rand10()
+        for (var i = 0; i < 2_000; i++)
         {
-            int index;
-            do
-            {
-                var row = Rand7();
-                var col = Rand7();
-                index = (row - 1) * 7 + col;
-            } while (index > 40);
-
-            return 1 + (index - 1) % 10;
+            var value = ImplementRand10UsingRand7Solution.Rand10ByNaiveModuloFold(rand7);
+            Assert.InRange(value, 1, 10);
         }
-
-        private int Rand7() => _random.Next(1, 8);
     }
 }
