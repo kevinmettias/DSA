@@ -3622,7 +3622,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FrogJumpBenchmarks.cs",
       "primitivesUsed": "HashMap<TKey,TValue> (DataStructures/HashMap), nested as HashMap<int, HashMap<int, bool>> - stone position -> set of jump sizes reachable there, the same nested-HashMap-as-set idiom DesignTwitterTests.cs already uses for a followee set. Benchmark baseline is un-memoized recursive DFS with Array.BinarySearch.",
       "notes": null,
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 406,
@@ -3635,7 +3635,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/QueueReconstructionByHeightBenchmarks.cs",
       "primitivesUsed": "MergeSort.Sort<Element,TSequence> over ArrayIndexedSequence with a custom (height desc, k asc) comparer (Algorithms/Sorting), then DynamicArray<Element>.Insert(k, person) (DataStructures/DynamicArray) - the exact sort-then-insert-at-index pair RussianDollEnvelopesTests.cs already exercises, just with a different comparer and inserting into the DynamicArray directly instead of feeding a patience-sorting LIS.",
       "notes": null,
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 407,
@@ -3648,7 +3648,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TrappingRainWaterIIBenchmarks.cs",
       "primitivesUsed": "Heap<Element,TOrder> ordered by ByPriorityOrder<TNode,TWeight> (DataStructures/Heap, DataStructures/Graph/ShortestPaths) as a Dijkstra-shaped min-heap frontier over (row,col) cells keyed by water level - the exact frontier shape ShortestPath.cs's own SearchState.Queue uses, just with a boundary-seeded flood-fill relaxation instead of edge relaxation. A plain bool[,] tracks visited cells, mirroring ShortestPath.cs's own use of a plain BCL HashSet (not the repo's Set<T>) for its Settled set.",
       "notes": null,
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 410,
@@ -3661,7 +3661,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SplitArrayLargestSumBenchmarks.cs",
       "primitivesUsed": "Algorithms.Searching.BinarySearch.LowerBound composed with a custom on-demand DataStructures.Sequence.IRandomAccessSequence<bool> witness (FeasibleSplitSequence) that computes greedy split-feasibility per candidate limit - classic 'binary search on the answer', mirroring GridChildren's computed-not-stored Representation idiom. Benchmark compares a hand-rolled int lo/hi bisection loop (baseline) against the same greedy check driven through BinarySearch.LowerBound (primitive-based); cross-checked against each other over 200 random trials.",
       "notes": null,
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 415,
@@ -3674,7 +3674,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/AddStringsBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<char>, same shape as the existing AddBinary (LC 67) coverage - base-10 digit-by-digit addition with carry, pushing least-significant-first so popping yields the digits most-significant-first. Benchmark compares a List<char>+Reverse baseline against the Stack<char> version; cross-checked against BigInteger addition over 200 random trials.",
       "notes": null,
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 416,
@@ -3687,7 +3687,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PartitionEqualSubsetSumBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer - 0/1-knapsack subset-sum recurrence over state (Index, Remaining), same idiom as CoinChange/CombinationSumIV/WordBreak. Benchmark compares plain bottom-up bool[] tabulation (baseline) against the Memoizer-based top-down recursion (primitive-based); cross-checked against each other over 200 random trials.",
       "notes": null,
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 417,
@@ -3700,7 +3700,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PacificAtlanticWaterFlowBenchmarks.cs",
       "primitivesUsed": "Algorithms/Traversal/DepthFirst/DepthFirstSearch.Traverse (successor-function DFS - the same multi-source border-flood-fill shape SurroundedRegionsTests already uses) + DataStructures/Set/Set<T> (HashMap-backed) for the two ocean-reachability sets, since heights (unlike SurroundedRegions' board) can't be mutated in place as a visited marker.",
       "notes": "Test: 3 xUnit facts (classic LC example, single cell, flat grid) all passing. Benchmark: naive per-cell DFS-to-border re-scan (fresh rows*cols visited array per cell) vs. the multi-source flood-fill primitive; verified with a BenchmarkDotNet ShortRun job - MultiSourceFloodFill goes from 0.77x at Size=10 to 0.24x (about 4x faster) at Size=25, showing the expected O(rows*cols) vs O((rows*cols)^2) gap widening with size.",
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 421,
@@ -3713,7 +3713,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumXOROfTwoNumbersInAnArrayBenchmarks.cs",
       "primitivesUsed": "DataStructures/Graph/Engines/Dags/Trees/BitTrie - a 32-level bit trie already in the repo whose own doc comment states it was built specifically for this LC 421 family (Insert + TryMaxXor's opposite-bit greedy walk).",
       "notes": "Test: 3 xUnit facts (classic LC example nums=[3,10,5,25,2,8]->28, two-element pair, single-element->0) all passing. Benchmark: O(n^2) pairwise XOR scan vs. BitTrie's O(32n) insert+greedy-query; verified with a ShortRun job - BitTrieGreedy is 5x slower at Length=200 (small-n constant overhead of 32-level node allocation dominates) but crosses over to 0.41x (about 2.4x faster) at Length=5000, the expected small-n-vs-asymptotic trade-off already precedented by this repo's own TwoSumBenchmarks comment.",
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 424,
@@ -3726,7 +3726,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/LongestRepeatingCharacterReplacementBenchmarks.cs",
       "primitivesUsed": "DataStructures/HashMap/HashMap<char,int> for the sliding window's per-character counts - the same primitive/shape LongestSubstringWithoutRepeatingCharactersTests and MinimumWindowSubstringTests already use for their own sliding windows.",
       "notes": "Test: xUnit Theory with 4 cases (ABAB/k=2->4, AABABBA/k=1->4, AAAA/k=2->4, empty->0) all passing. Benchmark: per-start-index brute-force recount (breaks out once infeasible) vs. the single O(n) HashMap sliding window; verified with a ShortRun job - SlidingWindowHashMap is about 5x faster (0.19x) than BruteForce at Length=5000 on an all-same-character forcing input that keeps BruteForce's inner loop from ever breaking early.",
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 427,
@@ -3739,7 +3739,7 @@
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ConstructQuadTreeBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.FenwickTree.FenwickTree<int,SumOperation<int>> - one per grid row (same 2D region-sum move as RangeSumQuery2DImmutableTests, LC 304): a region is uniform iff its Fenwick-computed sum is 0 or the full area. Output node is a test-local Fixtures/QuadTreeNode.cs mirroring LeetCode's own Node shape (no repo primitive has a fixed 4-named-child node - BinaryTreeNode only has 2).",
       "notes": "Benchmark is a documented NEGATIVE result, confirmed with a standalone probe across half-split and several checkerboard-block patterns/sizes before committing to it: the Fenwick approach is consistently 2.75x-18.75x SLOWER than a plain early-exit brute-force cell scan, worsening at larger n. Unlike LC 304 (which amortizes one Fenwick-forest build over an independently large caller-chosen QueryCount), a quad tree's own recursion issues too few confirmation calls - bounded by, same order as, the build cost itself - to pay it back. A real instance of ARCHITECTURE.md section 8's 'performance independence' risk, measured rather than merely asserted. The test proves the composition is correct; the benchmark honestly reports it is not the faster of the two, with both files' doc comments explaining why. 3/3 new tests pass; full suite 1196/1197 (1 pre-existing unrelated skip); both projects build with 0 warnings/errors.",
-      "architectureTier": "pre-section-17"
+      "architectureTier": "section-17"
     },
     {
       "id": 430,

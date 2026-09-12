@@ -1,12 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.PartitionEqualSubsetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Partition Equal Subset Sum (LC 416): plain bottom-up bool[] tabulation vs.
-// this repo's Memoizer-based top-down recursion (CoinChange/CombinationSumIV
-// precedent) - both solve the same 0/1-knapsack subset-sum recurrence in
-// O(nums.Length * half), just walking it from opposite directions.
+// Harness only: both arms are PartitionEqualSubsetSumSolution's, the same methods
+// PartitionEqualSubsetSumTests proves correct. Each arm takes the prepared-input
+// overload with `half` already computed, so that summation is charged to
+// [GlobalSetup] rather than to the search being measured.
 [MemoryDiagnoser]
 public class PartitionEqualSubsetSumBenchmarks
 {
@@ -29,41 +29,8 @@ public class PartitionEqualSubsetSumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool Tabulation()
-    {
-        var dp = new bool[_half + 1];
-        dp[0] = true;
-
-        foreach (var num in _nums)
-        {
-            for (var remaining = _half; remaining >= num; remaining--)
-            {
-                dp[remaining] = dp[remaining] || dp[remaining - num];
-            }
-        }
-
-        return dp[_half];
-    }
+    public bool Tabulation() => PartitionEqualSubsetSumSolution.CanPartitionByTabulation(_nums, _half);
 
     [Benchmark]
-    public bool Memoized()
-    {
-        return Memoizer.Memoize<(int Index, int Remaining), bool>((0, _half), CanReach);
-
-        bool CanReach((int Index, int Remaining) state, Func<(int Index, int Remaining), bool> canReach)
-        {
-            if (state.Remaining == 0)
-            {
-                return true;
-            }
-
-            if (state.Remaining < 0 || state.Index == _nums.Length)
-            {
-                return false;
-            }
-
-            return canReach((state.Index + 1, state.Remaining - _nums[state.Index]))
-                || canReach((state.Index + 1, state.Remaining));
-        }
-    }
+    public bool Memoized() => PartitionEqualSubsetSumSolution.CanPartitionByMemoization(_nums, _half);
 }

@@ -1,18 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.FrogJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Frog Jump (LC 403): the textbook un-memoized recursive DFS (retrying every
-// {-1,0,+1} jump-size delta with a binary search for the landing stone) vs.
-// this repo's own HashMap<TKey,TValue>, nested as HashMap<int, HashMap<int,
-// bool>> to record every jump size already known to reach each stone so no
-// state is ever re-explored. _stones is built as consecutive integers (every
-// jump delta from every reachable stone lands on another real stone) with an
-// unreachable final stone appended far away - the same "rig the input so
-// both strategies are forced through their full worst case" trick
-// TwoSumBenchmarks/JumpGameBenchmarks use, here forcing RecursiveBruteForce
-// through its full exponential search instead of returning early on success.
+// Harness only: both arms are FrogJumpSolution's, the same methods
+// FrogJumpTests proves correct. _stones is built as consecutive integers
+// (every jump delta from every reachable stone lands on another real stone)
+// with an unreachable final stone appended far away - the same "rig the
+// input so both strategies are forced through their full worst case" trick
+// TwoSumBenchmarks/JumpGameBenchmarks use, here forcing
+// CanCrossByRecursiveBruteForce through its full exponential search instead
+// of returning early on success.
 [MemoryDiagnoser]
 public class FrogJumpBenchmarks
 {
@@ -43,97 +41,8 @@ public class FrogJumpBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool RecursiveBruteForce() => TryJump(_stones, 0, 0);
-
-    private static bool TryJump(int[] stones, int index, int lastJump)
-    {
-        if (index == stones.Length - 1)
-        {
-            return true;
-        }
-
-        for (var delta = -1; delta <= 1; delta++)
-        {
-            if (TryDelta(stones, index, lastJump, delta))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryDelta(int[] stones, int index, int lastJump, int delta)
-    {
-        var jump = lastJump + delta;
-
-        if (jump <= 0)
-        {
-            return false;
-        }
-
-        var nextIndex = Array.BinarySearch(stones, index + 1, stones.Length - index - 1, stones[index] + jump);
-
-        return nextIndex >= 0 && TryJump(stones, nextIndex, jump);
-    }
+    public bool RecursiveBruteForce() => FrogJumpSolution.CanCrossByRecursiveBruteForce(_stones);
 
     [Benchmark]
-    public bool HashMapDynamicProgramming()
-    {
-        var jumpsByStone = BuildJumpsByStone();
-        SeedStartJump(jumpsByStone);
-        PropagateJumps(jumpsByStone);
-
-        jumpsByStone.TryGetValue(_stones[^1], out var lastJumps);
-        return lastJumps.Count > 0;
-    }
-
-    private HashMap<int, HashMap<int, bool>> BuildJumpsByStone()
-    {
-        var jumpsByStone = new HashMap<int, HashMap<int, bool>>();
-
-        foreach (var stone in _stones)
-        {
-            jumpsByStone.Set(stone, new HashMap<int, bool>());
-        }
-
-        return jumpsByStone;
-    }
-
-    private void SeedStartJump(HashMap<int, HashMap<int, bool>> jumpsByStone)
-    {
-        jumpsByStone.TryGetValue(_stones[0], out var startJumps);
-        startJumps.Set(0, true);
-    }
-
-    private void PropagateJumps(HashMap<int, HashMap<int, bool>> jumpsByStone)
-    {
-        foreach (var stone in _stones)
-        {
-            jumpsByStone.TryGetValue(stone, out var jumps);
-
-            foreach (var jump in jumps.Keys)
-            {
-                PropagateJumpsFromStone(jumpsByStone, stone, jump);
-            }
-        }
-    }
-
-    private static void PropagateJumpsFromStone(HashMap<int, HashMap<int, bool>> jumpsByStone, int stone, int jump)
-    {
-        for (var delta = -1; delta <= 1; delta++)
-        {
-            var nextJump = jump + delta;
-
-            if (nextJump <= 0)
-            {
-                continue;
-            }
-
-            if (jumpsByStone.TryGetValue(stone + nextJump, out var nextJumps))
-            {
-                nextJumps.Set(nextJump, true);
-            }
-        }
-    }
+    public bool HashMapDynamicProgramming() => FrogJumpSolution.CanCrossByHashMapDynamicProgramming(_stones);
 }
