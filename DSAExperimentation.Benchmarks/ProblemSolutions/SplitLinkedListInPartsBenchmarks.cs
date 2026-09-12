@@ -1,17 +1,18 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.SplitLinkedListInParts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Split Linked List in Parts (LC 725): ArrayRebuild is the naive approach -
-// materialize every value into a List<int>, then allocate k brand-new
-// SinglyLinkedListNode<int> chains from slices of it, O(n) extra node
-// allocation on top of the input list. InPlaceSplit instead walks this repo's
-// SinglyLinkedListNode<int> chain once and cuts existing Next pointers to carve
-// out each part, reusing every original node - only the k-length result array
-// is new allocation. Both methods clone the shared fixture first (OddEvenLinkedListBenchmarks
-// precedent) since InPlaceSplit mutates the chain it walks and BenchmarkDotNet
-// invokes each [Benchmark] method many times against the one GlobalSetup fixture.
+// Harness only: both arms are SplitLinkedListInPartsSolution's, the same
+// methods SplitLinkedListInPartsTests proves correct. Each benchmark method
+// clones the shared fixture first (OddEvenLinkedListBenchmarks precedent)
+// since [GlobalSetup] runs once per benchmark, not once per invocation, and
+// InPlaceRewire mutates the chain it walks. Both arms report the non-null
+// part count rather than the SinglyLinkedListNode<int>?[] itself: that type
+// is internal, and a public [Benchmark] method on this public class cannot
+// return it (CS0050) - the same constraint OddEvenLinkedListBenchmarks
+// resolves the same way, by counting instead of returning the chain.
 [MemoryDiagnoser]
 public class SplitLinkedListInPartsBenchmarks
 {
@@ -26,88 +27,14 @@ public class SplitLinkedListInPartsBenchmarks
     public void Setup() => _head = Build(Enumerable.Range(0, Length).ToArray());
 
     [Benchmark(Baseline = true)]
-    public int ArrayRebuild()
-    {
-        var head = Clone(_head);
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        var sizing = new PartSizing(values.Count / Parts, values.Count % Parts);
-        var parts = new SinglyLinkedListNode<int>?[Parts];
-        var index = 0;
-
-        for (var i = 0; i < Parts; i++)
-        {
-            (parts[i], index) = BuildPart(values, sizing, i, index);
-        }
-
-        return parts.Count(p => p is not null);
-    }
+    public int ArrayRebuild() =>
+        CountNonNullParts(SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Clone(_head), Parts));
 
     [Benchmark]
-    public int InPlaceSplit()
-    {
-        var head = Clone(_head);
-        var length = 0;
+    public int InPlaceRewire() =>
+        CountNonNullParts(SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Clone(_head), Parts));
 
-        for (var node = head; node is not null; node = node.Next)
-        {
-            length++;
-        }
-
-        var sizing = new PartSizing(length / Parts, length % Parts);
-        var parts = new SinglyLinkedListNode<int>?[Parts];
-        var current = head;
-
-        for (var i = 0; i < Parts && current is not null; i++)
-        {
-            (parts[i], current) = CarvePart(current, sizing, i);
-        }
-
-        return parts.Count(p => p is not null);
-    }
-
-    private static (SinglyLinkedListNode<int>? Part, int NextIndex) BuildPart(
-        List<int> values, PartSizing sizing, int i, int index)
-    {
-        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
-        if (currentSize == 0)
-        {
-            return (null, index);
-        }
-
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        for (var j = 0; j < currentSize; j++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[index++]);
-            tail = tail.Next;
-        }
-
-        return (dummy.Next, index);
-    }
-
-    private static (SinglyLinkedListNode<int> Part, SinglyLinkedListNode<int>? NextCurrent) CarvePart(
-        SinglyLinkedListNode<int> current, PartSizing sizing, int i)
-    {
-        var part = current;
-        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
-
-        for (var j = 1; j < currentSize; j++)
-        {
-            current = current.Next!;
-        }
-
-        var next = current.Next;
-        current.Next = null;
-
-        return (part, next);
-    }
+    private static int CountNonNullParts(SinglyLinkedListNode<int>?[] parts) => parts.Count(p => p is not null);
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
@@ -136,9 +63,4 @@ public class SplitLinkedListInPartsBenchmarks
 
         return dummy.Next!;
     }
-
-    // The base part length and how many leading parts get one extra node - shared
-    // shape both ArrayRebuild's BuildPart and InPlaceSplit's CarvePart derive
-    // per-part sizes from.
-    private readonly record struct PartSizing(int Size, int Extra);
 }

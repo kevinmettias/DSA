@@ -1,52 +1,31 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.MaximumLengthOfRepeatedSubarray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumLengthOfRepeatedSubarray;
 
-// LeetCode 718. Maximum Length of Repeated Subarray: this repo's Memoizer over
-// suffix-pair states (i, j), the same two-sequence-DP shape EditDistance/
-// DistinctSubsequences already use. Each state returns both "the exact match run
-// starting here" and "the best run found anywhere from here onward," so a single
-// memoized walk from (0, 0) covers every starting pair without hand-deriving the
-// whole table - the max-over-all-pairs answer falls out of Best at the start state.
-public sealed partial class MaximumLengthOfRepeatedSubarrayTests
+// Harness only. Both strategies are MaximumLengthOfRepeatedSubarraySolution's -
+// FindLengthByBruteForce (previously untested scaffolding inlined in the benchmark)
+// gets the same LeetCode examples as FindLengthByMemoizedSuffixPairDp (previously the
+// test's own private helper), so a failure names the strategy that broke.
+public sealed class MaximumLengthOfRepeatedSubarrayTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 1, 4, 7 }, 3)]
-    [InlineData(new[] { 0, 0, 0, 0, 0 }, new[] { 0, 0, 0, 0, 0 }, 5)]
-    [InlineData(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, 0)]
-    public void FindLength_LeetCodeExamples_ReturnsLongestRepeatedRun(int[] first, int[] second, int expected)
-    {
-        var actual = FindLength(first, second);
-        Assert.Equal(expected, actual);
-    }
-
-    private static int FindLength(int[] first, int[] second)
-    {
-        var (_, best) = Memoizer.Memoize<(int First, int Second), (int MatchLen, int Best)>((0, 0), Explore);
-        return best;
-
-        (int MatchLen, int Best) Explore((int First, int Second) state, Func<(int First, int Second), (int MatchLen, int Best)> explore)
+    public static TheoryData<int[], int[], int> Examples =>
+        new()
         {
-            var (i, j) = state;
+            { [1, 2, 3, 2, 1], [3, 2, 1, 4, 7], 3 },
+            { [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], 5 },
+            { [1, 2, 3], [4, 5, 6], 0 },
+        };
 
-            if (i == first.Length || j == second.Length)
-            {
-                return (0, 0);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindLengthByBruteForce_LeetCodeExamples_ReturnsLongestRepeatedRun(
+        int[] first, int[] second, int expected) =>
+        Assert.Equal(expected, MaximumLengthOfRepeatedSubarraySolution.FindLengthByBruteForce(first, second));
 
-            var matchLen = 0;
-
-            if (first[i] == second[j])
-            {
-                var (nextMatch, _) = explore((i + 1, j + 1));
-                matchLen = 1 + nextMatch;
-            }
-
-            var (_, bestRight) = explore((i + 1, j));
-            var (_, bestDown) = explore((i, j + 1));
-            var bestOfRightAndDown = Math.Max(bestRight, bestDown);
-
-            return (matchLen, Math.Max(matchLen, bestOfRightAndDown));
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindLengthByMemoizedSuffixPairDp_LeetCodeExamples_ReturnsLongestRepeatedRun(
+        int[] first, int[] second, int expected) =>
+        Assert.Equal(
+            expected, MaximumLengthOfRepeatedSubarraySolution.FindLengthByMemoizedSuffixPairDp(first, second));
 }

@@ -1,126 +1,145 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.DesignLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignLinkedList;
 
-// LeetCode 707. Design Linked List: a singly-linked MyLinkedList built directly over
-// this repo's own SinglyLinkedListNode<TValue> chain. A dummy head sentinel - the same
-// "dummy-head list building" precedent AddTwoNumbers already uses - makes AddAtHead/
-// AddAtIndex(0, _)/DeleteAtIndex(0) branch-free special cases instead of needing their
-// own "is this the first node" checks; every other index just walks .Next from the
-// sentinel to the node just before it.
-public sealed partial class DesignLinkedListTests
+// Harness only. Both strategies are DesignLinkedListSolution's - this file replays
+// LeetCode's published call sequences against each IMyLinkedList instance, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of Get/AddAtHead/AddAtTail/AddAtIndex/DeleteAtIndex calls rather than a
+// single argument tuple, the same shape LRUCacheTests already uses for its own
+// instance-API problem. The pre-migration test only proved
+// CreateBySinglyLinkedListChain's behaviour - CreateByArrayList's baseline
+// (previously scaffolding inlined in the benchmark, and only exercising AddAtHead in
+// isolation there) gets the same full-API coverage here for the first time.
+// DesignLinkedListOp.Apply is pure dispatch, no list logic of its own.
+public sealed class DesignLinkedListTests
 {
-    [Fact]
-    public void Operations_LeetCodeExampleSequence_MatchesExpectedResults()
-    {
-        var list = new MyLinkedList();
-
-        list.AddAtHead(1);
-        list.AddAtTail(3);
-        list.AddAtIndex(1, 2); // list: 1 -> 2 -> 3
-        Assert.Equal(2, list.Get(1));
-
-        list.DeleteAtIndex(1); // list: 1 -> 3
-        Assert.Equal(3, list.Get(1));
-    }
-
-    [Fact]
-    public void Get_IndexOutOfBounds_ReturnsNegativeOne()
-    {
-        var list = new MyLinkedList();
-        list.AddAtHead(7);
-
-        Assert.Equal(-1, list.Get(5));
-        Assert.Equal(-1, list.Get(-1));
-    }
-
-    [Fact]
-    public void AddAtIndex_EqualToLength_AppendsAtTail()
-    {
-        var list = new MyLinkedList();
-        list.AddAtHead(1);
-
-        list.AddAtIndex(1, 2);
-
-        Assert.Equal(2, list.Get(1));
-    }
-
-    [Fact]
-    public void AddAtIndex_GreaterThanLength_IsANoOp()
-    {
-        var list = new MyLinkedList();
-        list.AddAtHead(1);
-
-        list.AddAtIndex(5, 99);
-
-        Assert.Equal(-1, list.Get(1));
-    }
-
-    [Fact]
-    public void DeleteAtIndex_IndexOutOfBounds_IsANoOp()
-    {
-        var list = new MyLinkedList();
-        list.AddAtHead(1);
-
-        list.DeleteAtIndex(5);
-
-        Assert.Equal(1, list.Get(0));
-    }
-
-    private sealed class MyLinkedList
-    {
-        private readonly SinglyLinkedListNode<int> _dummyHead = new(default);
-        private int _count;
-
-        public int Get(int index)
+    public static TheoryData<DesignLinkedListOp[], int?[]> Examples =>
+        new()
         {
-            if (index < 0 || index >= _count)
             {
-                return -1;
-            }
+                [
+                    DesignLinkedListOp.AddAtHead(1),
+                    DesignLinkedListOp.AddAtTail(3),
+                    DesignLinkedListOp.AddAtIndex(1, 2), // list: 1 -> 2 -> 3
+                    DesignLinkedListOp.Get(1),
+                    DesignLinkedListOp.DeleteAtIndex(1), // list: 1 -> 3
+                    DesignLinkedListOp.Get(1),
+                ],
+                [null, null, null, 2, null, 3]
+            },
+            {
+                [
+                    DesignLinkedListOp.AddAtHead(7),
+                    DesignLinkedListOp.Get(5),
+                    DesignLinkedListOp.Get(-1),
+                ],
+                [null, -1, -1]
+            },
+            {
+                [
+                    DesignLinkedListOp.AddAtHead(1),
+                    DesignLinkedListOp.AddAtIndex(1, 2), // index == length appends at tail
+                    DesignLinkedListOp.Get(1),
+                ],
+                [null, null, 2]
+            },
+            {
+                [
+                    DesignLinkedListOp.AddAtHead(1),
+                    DesignLinkedListOp.AddAtIndex(5, 99), // index > length is a no-op
+                    DesignLinkedListOp.Get(1),
+                ],
+                [null, null, -1]
+            },
+            {
+                [
+                    DesignLinkedListOp.AddAtHead(1),
+                    DesignLinkedListOp.DeleteAtIndex(5), // out-of-bounds delete is a no-op
+                    DesignLinkedListOp.Get(0),
+                ],
+                [null, null, 1]
+            },
+        };
 
-            return NodeBefore(index).Next!.Value;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateBySinglyLinkedListChain_LeetCodeExamples_MatchesExpectedResults(
+        DesignLinkedListOp[] operations, int?[] expected) =>
+        RunScript(DesignLinkedListSolution.CreateBySinglyLinkedListChain(), operations, expected);
 
-        public void AddAtHead(int value) => AddAtIndex(0, value);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByArrayList_LeetCodeExamples_MatchesExpectedResults(
+        DesignLinkedListOp[] operations, int?[] expected) =>
+        RunScript(DesignLinkedListSolution.CreateByArrayList(), operations, expected);
 
-        public void AddAtTail(int value) => AddAtIndex(_count, value);
-
-        public void AddAtIndex(int index, int value)
+    private static void RunScript(
+        DesignLinkedListSolution.IMyLinkedList list, DesignLinkedListOp[] operations, int?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
         {
-            if (index > _count)
-            {
-                return;
-            }
-
-            var startIndex = Math.Max(index, 0);
-            var previous = NodeBefore(startIndex);
-            var node = new SinglyLinkedListNode<int>(value) { Next = previous.Next };
-            previous.Next = node;
-            _count++;
+            Assert.Equal(expected[i], operations[i].Apply(list));
         }
+    }
+}
 
-        public void DeleteAtIndex(int index)
+// One call in a DesignLinkedList script: which method to invoke and with what
+// arguments. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays. Get returns the
+// actual value (or -1 on LeetCode's own out-of-bounds convention); every mutator
+// returns null, the same null-means-"no return value" convention LRUCacheOp.Apply
+// uses for its own put/get split.
+public readonly record struct DesignLinkedListOp
+{
+    private readonly Kind _kind;
+    private readonly int _index;
+    private readonly int _value;
+
+    private DesignLinkedListOp(Kind kind, int index, int value)
+    {
+        _kind = kind;
+        _index = index;
+        _value = value;
+    }
+
+    public static DesignLinkedListOp Get(int index) => new(Kind.Get, index, 0);
+
+    public static DesignLinkedListOp AddAtHead(int value) => new(Kind.AddAtHead, 0, value);
+
+    public static DesignLinkedListOp AddAtTail(int value) => new(Kind.AddAtTail, 0, value);
+
+    public static DesignLinkedListOp AddAtIndex(int index, int value) => new(Kind.AddAtIndex, index, value);
+
+    public static DesignLinkedListOp DeleteAtIndex(int index) => new(Kind.DeleteAtIndex, index, 0);
+
+    internal int? Apply(DesignLinkedListSolution.IMyLinkedList list)
+    {
+        switch (_kind)
         {
-            if (index < 0 || index >= _count)
-            {
-                return;
-            }
-
-            var previous = NodeBefore(index);
-            previous.Next = previous.Next!.Next;
-            _count--;
+            case Kind.Get:
+                return list.Get(_index);
+            case Kind.AddAtHead:
+                list.AddAtHead(_value);
+                return null;
+            case Kind.AddAtTail:
+                list.AddAtTail(_value);
+                return null;
+            case Kind.AddAtIndex:
+                list.AddAtIndex(_index, _value);
+                return null;
+            default:
+                list.DeleteAtIndex(_index);
+                return null;
         }
+    }
 
-        private SinglyLinkedListNode<int> NodeBefore(int index)
-        {
-            var node = _dummyHead;
-            for (var i = 0; i < index; i++)
-            {
-                node = node.Next!;
-            }
-
-            return node;
-        }
+    private enum Kind
+    {
+        Get,
+        AddAtHead,
+        AddAtTail,
+        AddAtIndex,
+        DeleteAtIndex,
     }
 }

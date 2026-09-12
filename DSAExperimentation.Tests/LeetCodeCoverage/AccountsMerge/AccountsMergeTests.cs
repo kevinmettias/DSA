@@ -1,128 +1,64 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.AccountsMerge;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AccountsMerge;
 
-// LeetCode 721. Accounts Merge: DisjointSet over account indices, unioned whenever two
-// accounts share an email (first-seen owner tracked via HashMap<email,accountIndex>,
-// the same RedundantConnectionTests union-on-shared-element shape applied to emails
-// instead of graph edges). Each merged root's emails are deduped via a
-// HashMap<email,bool> and sorted with this repo's MergeSort over ArrayIndexedSequence
-// - the same "sort with this repo's MergeSort" convention ThreeSumTests already uses.
-// Ordinal, not the default comparer: Comparer<string>.Default is culture-aware and
-// (verified in this repo's own en-US test environment) does not agree with '_' < '0'
-// < 's' character-code order, so LeetCode's own "sorted" output would silently mismatch
-// a culture-collated one on some machines/CI locales.
-public sealed partial class AccountsMergeTests
+// Harness only. Both strategies are AccountsMergeSolution's - this file just pins
+// them to LeetCode's published examples. Merged-account order is unspecified by
+// LeetCode, so examples are checked as a set of expected accounts rather than by
+// position.
+public sealed class AccountsMergeTests
 {
-    [Fact]
-    public void Merge_ClassicExample_MergesAccountsSharingAnEmail()
-    {
-        string[][] accounts =
-        [
-            ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
-            ["John", "johnsmith@mail.com", "john00@mail.com"],
-            ["Mary", "mary@mail.com"],
-            ["John", "johnnybravo@mail.com"],
-        ];
-
-        var merged = Merge(accounts);
-
-        Assert.Equal(3, merged.Count);
-        Assert.Contains(merged, a => a.SequenceEqual(new[] { "John", "john00@mail.com", "john_newyork@mail.com", "johnsmith@mail.com" }));
-        Assert.Contains(merged, a => a.SequenceEqual(new[] { "Mary", "mary@mail.com" }));
-        Assert.Contains(merged, a => a.SequenceEqual(new[] { "John", "johnnybravo@mail.com" }));
-    }
-
-    [Fact]
-    public void Merge_NoSharedEmails_KeepsEachAccountSeparate()
-    {
-        string[][] accounts =
-        [
-            ["Alice", "alice@mail.com"],
-            ["Bob", "bob@mail.com"],
-        ];
-
-        var merged = Merge(accounts);
-
-        Assert.Equal(2, merged.Count);
-    }
-
-    private static List<string[]> Merge(string[][] accounts)
-    {
-        var components = BuildDisjointSetFromSharedEmails(accounts);
-        var emailsByRoot = GroupEmailsByRoot(accounts, components);
-
-        var merged = new List<string[]>();
-
-        foreach (var root in emailsByRoot.Keys)
+    public static TheoryData<string[][], string[][]> Examples =>
+        new()
         {
-            var account = BuildMergedAccount(root, emailsByRoot, accounts);
-            merged.Add(account);
-        }
-
-        return merged;
-    }
-
-    private static DisjointSet BuildDisjointSetFromSharedEmails(string[][] accounts)
-    {
-        var components = new DisjointSet(accounts.Length);
-        var firstOwner = new HashMap<string, int>();
-
-        for (var i = 0; i < accounts.Length; i++)
-        {
-            for (var j = 1; j < accounts[i].Length; j++)
             {
-                var email = accounts[i][j];
-
-                if (firstOwner.TryGetValue(email, out var owner))
+                new[]
                 {
-                    components.Union(i, owner);
-                }
-                else
+                    new[] { "John", "johnsmith@mail.com", "john_newyork@mail.com" },
+                    new[] { "John", "johnsmith@mail.com", "john00@mail.com" },
+                    new[] { "Mary", "mary@mail.com" },
+                    new[] { "John", "johnnybravo@mail.com" },
+                },
+                new[]
                 {
-                    firstOwner.Set(email, i);
+                    new[] { "John", "john00@mail.com", "john_newyork@mail.com", "johnsmith@mail.com" },
+                    new[] { "Mary", "mary@mail.com" },
+                    new[] { "John", "johnnybravo@mail.com" },
                 }
-            }
-        }
+            },
+            {
+                new[]
+                {
+                    new[] { "Alice", "alice@mail.com" },
+                    new[] { "Bob", "bob@mail.com" },
+                },
+                new[]
+                {
+                    new[] { "Alice", "alice@mail.com" },
+                    new[] { "Bob", "bob@mail.com" },
+                }
+            },
+        };
 
-        return components;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeByPairwiseEmailScan_LeetCodeExamples_MergesAccountsSharingAnEmail(
+        string[][] accounts, string[][] expected) =>
+        AssertSameAccounts(expected, AccountsMergeSolution.MergeByPairwiseEmailScan(accounts));
 
-    private static HashMap<int, HashMap<string, bool>> GroupEmailsByRoot(string[][] accounts, DisjointSet components)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeByUnionFindByEmail_LeetCodeExamples_MergesAccountsSharingAnEmail(
+        string[][] accounts, string[][] expected) =>
+        AssertSameAccounts(expected, AccountsMergeSolution.MergeByUnionFindByEmail(accounts));
+
+    private static void AssertSameAccounts(string[][] expected, List<string[]> actual)
     {
-        var emailsByRoot = new HashMap<int, HashMap<string, bool>>();
+        Assert.Equal(expected.Length, actual.Count);
 
-        for (var i = 0; i < accounts.Length; i++)
+        foreach (var account in expected)
         {
-            var root = components.Find(i);
-
-            if (!emailsByRoot.TryGetValue(root, out var emails))
-            {
-                emails = new HashMap<string, bool>();
-                emailsByRoot.Set(root, emails);
-            }
-
-            for (var j = 1; j < accounts[i].Length; j++)
-            {
-                emails.Set(accounts[i][j], true);
-            }
+            Assert.Contains(actual, a => a.SequenceEqual(account));
         }
-
-        return emailsByRoot;
-    }
-
-    private static string[] BuildMergedAccount(int root, HashMap<int, HashMap<string, bool>> emailsByRoot, string[][] accounts)
-    {
-        emailsByRoot.TryGetValue(root, out var emails);
-        var sortedEmails = emails.Keys.ToArray();
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(sortedEmails), StringComparer.Ordinal);
-
-        var account = new string[sortedEmails.Length + 1];
-        account[0] = accounts[root][0];
-        Array.Copy(sortedEmails, 0, account, 1, sortedEmails.Length);
-        return account;
     }
 }

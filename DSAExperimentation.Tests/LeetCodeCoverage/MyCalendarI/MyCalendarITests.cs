@@ -1,61 +1,39 @@
-using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.MyCalendarI;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MyCalendarI;
 
-// LeetCode 729. My Calendar I: Book(start, end) rejects any double booking (two
-// events sharing so much as a single point in time) and accepts otherwise -
-// half-open [start, end) semantics where touching endpoints do NOT conflict.
-// IntervalSet<TKey>'s own overlap rule is CLOSED-interval (touching endpoints DO
-// merge/conflict - see its own doc comment, which explicitly calls out My
-// Calendar as the semantics it does NOT model and says callers must adjust).
-// This repo already has the adjustment idiom for exactly this mismatch, just in
-// the opposite direction: DataStreamAsDisjointIntervalsTests (LC 352) encodes a
-// single point v as the closed pair (v, v + 1) to gain adjacency-merging.
-// Here each half-open event [start, end) is instead encoded as the closed pair
-// (start, end - 1), which makes IntervalSet's closed-interval overlap check
-// exactly equivalent to half-open overlap for integer endpoints.
-public sealed partial class MyCalendarITests
+// Harness only. Both strategies are MyCalendarISolution's - this file just
+// replays LeetCode's published Book() call scripts against each and asserts
+// the accept/reject result of every single call, including the touching-
+// endpoints case neither strategy may treat as a conflict.
+public sealed class MyCalendarITests
 {
-    [Fact]
-    public void Book_LeetCodeExample_RejectsOnlyTheOverlappingEvent()
-    {
-        var calendar = new MyCalendarI();
-
-        var firstBooked = calendar.Book(10, 20);
-        Assert.True(firstBooked);
-
-        var overlappingBooked = calendar.Book(15, 25);
-        Assert.False(overlappingBooked);
-
-        var touchingBooked = calendar.Book(20, 30);
-        Assert.True(touchingBooked);
-    }
-
-    [Fact]
-    public void Book_TouchingEndpoints_BothAccepted()
-    {
-        var calendar = new MyCalendarI();
-
-        var firstBooked = calendar.Book(5, 10);
-        Assert.True(firstBooked);
-
-        var secondBooked = calendar.Book(10, 15);
-        Assert.True(secondBooked);
-    }
-
-    private sealed class MyCalendarI
-    {
-        private readonly IntervalSet<int> _bookings = new();
-
-        public bool Book(int start, int end)
+    public static TheoryData<(int Start, int End)[], bool[]> Examples =>
+        new()
         {
-            if (_bookings.HasOverlap(start, end - 1))
-            {
-                return false;
-            }
+            { [(10, 20), (15, 25), (20, 30)], [true, false, true] },
+            { [(5, 10), (10, 15)], [true, true] },
+        };
 
-            _bookings.Add(start, end - 1);
-            return true;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByIntervalSet_LeetCodeExamples_RejectsOnlyOverlappingEvents(
+        (int Start, int End)[] events, bool[] expected) =>
+        AssertSequence(MyCalendarISolution.CreateByIntervalSet(), events, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLinearScan_LeetCodeExamples_RejectsOnlyOverlappingEvents(
+        (int Start, int End)[] events, bool[] expected) =>
+        AssertSequence(MyCalendarISolution.CreateByLinearScan(), events, expected);
+
+    private static void AssertSequence(
+        MyCalendarISolution.ICalendar calendar, (int Start, int End)[] events, bool[] expected)
+    {
+        for (var i = 0; i < events.Length; i++)
+        {
+            var (start, end) = events[i];
+            Assert.Equal(expected[i], calendar.Book(start, end));
         }
     }
 }
