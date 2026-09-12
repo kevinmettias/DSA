@@ -1,78 +1,53 @@
-using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.NumberOfProvinces;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfProvinces;
 
-// LeetCode 547. Number of Provinces: union every pair the adjacency matrix marks
-// connected into this repo's own DisjointSet, then count distinct roots with this
-// repo's own Set<int> - the same DisjointSet RedundantConnectionTests already uses
-// to detect a cycle-closing edge, just counting components at the end instead of
-// stopping at the first edge that finds two nodes already joined.
-public sealed partial class NumberOfProvincesTests
+// Harness only: the algorithms live in NumberOfProvincesSolution. One test method
+// per strategy over one shared set of LeetCode's own examples, so a failure names
+// the strategy that broke.
+public sealed class NumberOfProvincesTests
 {
-    [Fact]
-    public void CountProvinces_ClassicExample_ReturnsTwoProvinces()
-    {
-        int[][] isConnected =
-        [
-            [1, 1, 0],
-            [1, 1, 0],
-            [0, 0, 1],
-        ];
-
-        Assert.Equal(2, CountProvinces(isConnected));
-    }
-
-    [Fact]
-    public void CountProvinces_NoCityConnectedToAnother_ReturnsOneProvincePerCity()
-    {
-        int[][] isConnected =
-        [
-            [1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1],
-        ];
-
-        Assert.Equal(3, CountProvinces(isConnected));
-    }
-
-    [Fact]
-    public void CountProvinces_TransitiveChain_MergesIntoSingleProvince()
-    {
-        // City 0 connects only to 1, and 1 only to 2 - no direct 0-2 edge, so the
-        // province still has to be discovered transitively through Union's chaining.
-        int[][] isConnected =
-        [
-            [1, 1, 0],
-            [1, 1, 1],
-            [0, 1, 1],
-        ];
-
-        Assert.Equal(1, CountProvinces(isConnected));
-    }
-
-    private static int CountProvinces(int[][] isConnected)
-    {
-        var cityCount = isConnected.Length;
-        var components = new DisjointSet(cityCount);
-
-        for (var i = 0; i < cityCount; i++)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            for (var j = i + 1; j < cityCount; j++)
             {
-                if (isConnected[i][j] == 1)
-                {
-                    components.Union(i, j);
-                }
-            }
-        }
+                [
+                    [1, 1, 0],
+                    [1, 1, 0],
+                    [0, 0, 1],
+                ],
+                2
+            },
+            {
+                [
+                    [1, 0, 0],
+                    [0, 1, 0],
+                    [0, 0, 1],
+                ],
+                3
+            },
+            {
+                // City 0 connects only to 1, and 1 only to 2 - no direct 0-2 edge,
+                // so the province still has to be discovered transitively through
+                // Union's chaining.
+                [
+                    [1, 1, 0],
+                    [1, 1, 1],
+                    [0, 1, 1],
+                ],
+                1
+            },
+        };
 
-        var roots = new Set<int>();
-        for (var i = 0; i < cityCount; i++)
-        {
-            roots.TryAdd(components.Find(i));
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountProvincesByDepthFirstFloodFill_LeetCodeExamples_ReturnsProvinceCount(
+        int[][] isConnected, int expected) =>
+        Assert.Equal(expected, NumberOfProvincesSolution.CountProvincesByDepthFirstFloodFill(isConnected));
 
-        return roots.Count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountProvincesByDisjointSetUnionFind_LeetCodeExamples_ReturnsProvinceCount(
+        int[][] isConnected, int expected) =>
+        Assert.Equal(expected, NumberOfProvincesSolution.CountProvincesByDisjointSetUnionFind(isConnected));
 }

@@ -1,31 +1,67 @@
-using DSAExperimentation.Algorithms.Metrics;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.DiameterOfBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DiameterOfBinaryTree;
 
-// LeetCode 543. Diameter of Binary Tree: the longest path between any two nodes,
-// measured in edges, is exactly this repo's own TreeMetrics.Diameter -
-// DiameterAlgebra already tracks, per node, the two tallest child heights (the best
-// path THROUGH that node) alongside the best diameter seen in any subtree so far,
-// via one TreeFold pass. No new primitive needed - same shape MaximumDepthOfBinary
-// TreeTests already proves for TreeMetrics.Height.
-public sealed partial class DiameterOfBinaryTreeTests
+// LeetCode 543. Diameter of Binary Tree. See DiameterOfBinaryTreeSolution for the
+// two strategies: a naive recompute-height-per-node baseline, and this repo's own
+// TreeMetrics.Diameter fold. Examples are stated as LeetCode's own level-order
+// arrays - BinaryTreeNode<int> is internal, so it cannot appear in a public
+// TheoryData member; BuildTree reconstructs it inside each test method instead.
+public sealed class DiameterOfBinaryTreeTests
 {
-    [Fact]
-    public void DiameterOfBinaryTree_ClassicExample_ReturnsLongestPathEdgeCount()
-        => Assert.Equal(3, Diameter(new BinaryTreeNode<int>(1) { Left = new(2) { Left = new(4), Right = new(5) }, Right = new(3) }));
+    public static TheoryData<int?[], int> Examples()
+    {
+        var data = new TheoryData<int?[], int>
+        {
+            { [1, 2, 3, 4, 5], 3 },
+            { [1, 2], 1 },
+            { [1], 0 },
+        };
 
-    [Fact]
-    public void DiameterOfBinaryTree_TwoNodeTree_ReturnsOne()
-        => Assert.Equal(1, Diameter(new BinaryTreeNode<int>(1) { Left = new(2) }));
+        return data;
+    }
 
-    [Fact]
-    public void DiameterOfBinaryTree_SingleNode_ReturnsZero()
-        => Assert.Equal(0, Diameter(new BinaryTreeNode<int>(1)));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DiameterByRecomputedHeightPerNode_ReturnsLongestPathEdgeCount(int?[] levelOrder, int expected)
+        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByRecomputedHeightPerNode(BuildTree(levelOrder)));
 
-    private static int Diameter(BinaryTreeNode<int> root)
-        => TreeMetrics.Diameter<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DiameterByTreeMetricsFold_ReturnsLongestPathEdgeCount(int?[] levelOrder, int expected)
+        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByTreeMetricsFold(BuildTree(levelOrder)));
+
+    // LeetCode's own level-order input shape: a BFS-ordered array with null
+    // standing in for a missing child.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
+    {
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (i < levelOrder.Length)
+        {
+            var current = queue.Dequeue();
+
+            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
+            {
+                current.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(current.Left);
+            }
+
+            i++;
+
+            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+            {
+                current.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(current.Right);
+            }
+
+            i++;
+        }
+
+        return root;
+    }
 }
