@@ -1,77 +1,114 @@
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using static DSAExperimentation.LeetCode.DesignCircularQueue.DesignCircularQueueSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignCircularQueue;
 
-// LeetCode 622. Design Circular Queue: a fixed-capacity FIFO with O(1) Front/Rear
-// peeks at both ends of the same wraparound buffer - exactly this repo's Deque<int>
-// (wraparound-array representation, ARCHITECTURE.md §4.1's "earned by needing O(1)
-// at both ends") with an external capacity bound layered on top for IsFull, the
-// same "compose, don't invent a new representation" move MinStackTests already makes
-// over Stack<int>.
-public sealed partial class DesignCircularQueueTests
+// Harness only: the algorithm lives in DesignCircularQueueSolution. LeetCode's own
+// shape here is a stateful object across a sequence of calls, so Examples encodes a
+// call script instead of a single argument tuple - the same shape
+// DesignTaskManagerTests already uses for its own instance-API problem.
+// CircularQueueOp.Apply encodes LeetCode's own bool results as 1/0 alongside
+// Front/Rear's int results, matching the mixed bool/int shape LeetCode's own judge
+// output already uses for this call sequence.
+public sealed class DesignCircularQueueTests
 {
-    [Fact]
-    public void EnQueueDeQueueFrontRear_LeetCodeExample_MatchesExpectedSequence()
-    {
-        var queue = new MyCircularQueue(3);
+    public static TheoryData<int, CircularQueueOp[], int[]> Examples =>
+        new()
+        {
+            {
+                3,
+                [
+                    CircularQueueOp.EnQueue(1),
+                    CircularQueueOp.EnQueue(2),
+                    CircularQueueOp.EnQueue(3),
+                    CircularQueueOp.EnQueue(4),
+                    CircularQueueOp.Rear(),
+                    CircularQueueOp.IsFull(),
+                    CircularQueueOp.DeQueue(),
+                    CircularQueueOp.EnQueue(4),
+                    CircularQueueOp.Rear(),
+                    CircularQueueOp.Front(),
+                ],
+                [1, 1, 1, 0, 3, 1, 1, 1, 4, 2]
+            },
+            {
+                1,
+                [
+                    CircularQueueOp.IsEmpty(),
+                    CircularQueueOp.DeQueue(),
+                    CircularQueueOp.IsEmpty(),
+                ],
+                [1, 0, 1]
+            },
+        };
 
-        Assert.True(queue.EnQueue(1));
-        Assert.True(queue.EnQueue(2));
-        Assert.True(queue.EnQueue(3));
-        Assert.False(queue.EnQueue(4));
-        Assert.Equal(3, queue.Rear());
-        Assert.True(queue.IsFull());
-        Assert.True(queue.DeQueue());
-        Assert.True(queue.EnQueue(4));
-        Assert.Equal(4, queue.Rear());
-        Assert.Equal(2, queue.Front());
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CircularQueueByArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
+        int capacity, CircularQueueOp[] operations, int[] expected) =>
+        RunScript(new CircularQueueByArrayBacked(capacity), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CircularQueueByDequeBacked_LeetCodeExamples_MatchesExpectedSequence(
+        int capacity, CircularQueueOp[] operations, int[] expected) =>
+        RunScript(new CircularQueueByDequeBacked(capacity), operations, expected);
+
+    private static void RunScript(ICircularQueue queue, CircularQueueOp[] operations, int[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(queue));
+        }
+    }
+}
+
+// One call in a CircularQueue script: which operation to invoke and with what
+// argument. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays. Internal, not
+// public: only this same assembly's test method ever calls Apply.
+public readonly record struct CircularQueueOp
+{
+    private readonly Kind _kind;
+    private readonly int _value;
+
+    private CircularQueueOp(Kind kind, int value)
+    {
+        _kind = kind;
+        _value = value;
     }
 
-    [Fact]
-    public void DeQueue_EmptyQueue_ReturnsFalseAndStaysEmpty()
+    public static CircularQueueOp EnQueue(int value) => new(Kind.EnQueue, value);
+
+    public static CircularQueueOp DeQueue() => new(Kind.DeQueue, 0);
+
+    public static CircularQueueOp Front() => new(Kind.Front, 0);
+
+    public static CircularQueueOp Rear() => new(Kind.Rear, 0);
+
+    public static CircularQueueOp IsEmpty() => new(Kind.IsEmpty, 0);
+
+    public static CircularQueueOp IsFull() => new(Kind.IsFull, 0);
+
+    // 1/0 for the four bool-returning operations, the actual value for
+    // Front/Rear - so a script runner can assert against one expected value per
+    // operation uniformly.
+    internal int Apply(ICircularQueue queue) => _kind switch
     {
-        var queue = new MyCircularQueue(1);
+        Kind.EnQueue => queue.EnQueue(_value) ? 1 : 0,
+        Kind.DeQueue => queue.DeQueue() ? 1 : 0,
+        Kind.Front => queue.Front(),
+        Kind.Rear => queue.Rear(),
+        Kind.IsEmpty => queue.IsEmpty() ? 1 : 0,
+        _ => queue.IsFull() ? 1 : 0,
+    };
 
-        Assert.True(queue.IsEmpty());
-        Assert.False(queue.DeQueue());
-        Assert.True(queue.IsEmpty());
-    }
-
-    private sealed class MyCircularQueue
+    private enum Kind
     {
-        private readonly RepoDeque _items = new();
-        private readonly int _capacity;
-
-        public MyCircularQueue(int k) => _capacity = k;
-
-        public bool EnQueue(int value)
-        {
-            if (IsFull())
-            {
-                return false;
-            }
-
-            _items.PushBack(value);
-            return true;
-        }
-
-        public bool DeQueue()
-        {
-            if (IsEmpty())
-            {
-                return false;
-            }
-
-            _items.TryPopFront(out _);
-            return true;
-        }
-
-        public int Front() => _items.TryPeekFront(out var value) ? value : -1;
-
-        public int Rear() => _items.TryPeekBack(out var value) ? value : -1;
-
-        public bool IsEmpty() => _items.Count == 0;
-
-        public bool IsFull() => _items.Count == _capacity;
+        EnQueue,
+        DeQueue,
+        Front,
+        Rear,
+        IsEmpty,
+        IsFull,
     }
 }

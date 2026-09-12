@@ -1,16 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.PermutationInString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Permutation in String (LC 567): rebuilding and comparing a fresh frequency
-// HashMap<char,int> for every window start (O(n*m)) vs. a single sliding pass
-// that maintains one window HashMap<char,int> incrementally, using a running
-// "matched distinct characters" counter instead of a full per-window comparison
-// (O(n+m)) - the same shape this repo's Find All Anagrams in a String (438)
-// benchmark already uses, here returning on the first match instead of
-// collecting every one. s1 is deliberately absent from s2 so both strategies are
-// forced through their full worst-case scan.
+// Harness only: both arms are PermutationInStringSolution's, the same methods
+// PermutationInStringTests proves correct. s1 is fixed and deliberately absent
+// from s2 so both strategies are forced through their full worst-case scan.
 [MemoryDiagnoser]
 public class PermutationInStringBenchmarks
 {
@@ -23,141 +19,14 @@ public class PermutationInStringBenchmarks
     private string _s2 = null!;
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        const string alphabet = "bcdfghjklmnpqrstvwxyz";
-        var chars = new char[Length];
-        for (var i = 0; i < Length; i++)
-        {
-            chars[i] = alphabet[random.Next(alphabet.Length)];
-        }
-
-        _s2 = new string(chars);
-    }
+    public void Setup() =>
+        _s2 = PermutationInStringWorkloads.BuildHaystack(Length, seed: RandomSeed);
 
     [Benchmark(Baseline = true)]
-    public bool PerWindowFrequencyRebuild()
-    {
-        var target = BuildFrequencyMap(Pattern);
-
-        for (var start = 0; start <= _s2.Length - Pattern.Length; start++)
-        {
-            var windowText = _s2.Substring(start, Pattern.Length);
-            var window = BuildFrequencyMap(windowText);
-            if (FrequenciesEqual(window, target))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool PerWindowFrequencyRebuild() =>
+        PermutationInStringSolution.CheckInclusionByPerWindowRebuild(Pattern, _s2);
 
     [Benchmark]
-    public bool SlidingWindowFrequencyMap()
-    {
-        var need = BuildFrequencyMap(Pattern);
-        var window = new HashMap<char, int>();
-        var state = new FrequencyWindow(need, window);
-        var matched = 0;
-
-        for (var i = 0; i < _s2.Length; i++)
-        {
-            var (found, updatedMatched) = AdvanceWindow(_s2, i, state, matched);
-            matched = updatedMatched;
-            if (found)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static (bool Found, int MatchedCount) AdvanceWindow(string s2, int i, FrequencyWindow state, int matchedCount)
-    {
-        matchedCount = AddIncoming(s2[i], state, matchedCount);
-
-        if (i < Pattern.Length - 1)
-        {
-            return (false, matchedCount);
-        }
-
-        if (matchedCount == state.Need.Count)
-        {
-            return (true, matchedCount);
-        }
-
-        matchedCount = RemoveOutgoing(s2[i - Pattern.Length + 1], state, matchedCount);
-
-        return (false, matchedCount);
-    }
-
-    private static int AddIncoming(char c, FrequencyWindow state, int matchedCount)
-    {
-        if (!state.Need.TryGetValue(c, out var needed))
-        {
-            return matchedCount;
-        }
-
-        state.Window.TryGetValue(c, out var count);
-        state.Window.Set(c, count + 1);
-        if (count + 1 == needed)
-        {
-            matchedCount++;
-        }
-
-        return matchedCount;
-    }
-
-    private static int RemoveOutgoing(char c, FrequencyWindow state, int matchedCount)
-    {
-        if (!state.Need.TryGetValue(c, out var neededLeaving))
-        {
-            return matchedCount;
-        }
-
-        state.Window.TryGetValue(c, out var leavingCount);
-        if (leavingCount == neededLeaving)
-        {
-            matchedCount--;
-        }
-
-        state.Window.Set(c, leavingCount - 1);
-        return matchedCount;
-    }
-
-    private static HashMap<char, int> BuildFrequencyMap(string value)
-    {
-        var counts = new HashMap<char, int>();
-        foreach (var c in value)
-        {
-            counts.TryGetValue(c, out var count);
-            counts.Set(c, count + 1);
-        }
-
-        return counts;
-    }
-
-    private static bool FrequenciesEqual(HashMap<char, int> window, HashMap<char, int> target)
-    {
-        if (window.Count != target.Count)
-        {
-            return false;
-        }
-
-        foreach (var key in target.Keys)
-        {
-            target.TryGetValue(key, out var expected);
-            if (!window.TryGetValue(key, out var actual) || actual != expected)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private readonly record struct FrequencyWindow(HashMap<char, int> Need, HashMap<char, int> Window);
+    public bool SlidingWindowFrequencyMap() =>
+        PermutationInStringSolution.CheckInclusionBySlidingWindow(Pattern, _s2);
 }

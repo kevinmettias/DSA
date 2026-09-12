@@ -1,47 +1,29 @@
+using DSAExperimentation.LeetCode.ReshapeTheMatrix;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReshapeTheMatrix;
 
-// LeetCode 566. Reshape the Matrix: the matrix is a plain int[][] (same shape as
-// this repo's existing SpiralMatrix/SpiralMatrix II coverage), and every cell
-// moves exactly once via row-major linear-index arithmetic - there's no
-// Representation/Operations primitive to compose here, nothing exists that needs
-// composing.
+// LeetCode 566. Reshape the Matrix: both strategies must produce the same
+// row-major reshape (or the original matrix back, when the cell counts don't
+// match) - see ReshapeTheMatrixSolution for the strategies themselves.
 public sealed class ReshapeTheMatrixTests
 {
-    [Fact]
-    public void MatrixReshape_TwoByTwoToOneByFour_PreservesRowMajorOrder()
+    public static TheoryData<int[][], int, int, int[][]> Examples => new()
     {
-        int[][] mat = [[1, 2], [3, 4]];
+        { [[1, 2], [3, 4]], 1, 4, [[1, 2, 3, 4]] },
+        { [[1, 2], [3, 4]], 2, 4, [[1, 2], [3, 4]] },
+    };
 
-        var reshaped = MatrixReshape(mat, 1, 4);
-        Assert.Equal([[1, 2, 3, 4]], reshaped);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReshapeByLinearIndexDivMod_Example_ReturnsRowMajorReshape(int[][] mat, int r, int c, int[][] expected)
+    {
+        Assert.Equal(expected, ReshapeTheMatrixSolution.ReshapeByLinearIndexDivMod(mat, r, c));
     }
 
-    [Fact]
-    public void MatrixReshape_IncompatibleDimensions_ReturnsOriginalMatrix()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReshapeByCursorWalk_Example_ReturnsRowMajorReshape(int[][] mat, int r, int c, int[][] expected)
     {
-        int[][] mat = [[1, 2], [3, 4]];
-
-        var reshaped = MatrixReshape(mat, 2, 4);
-        Assert.Equal([[1, 2], [3, 4]], reshaped);
-    }
-
-    private static int[][] MatrixReshape(int[][] mat, int r, int c)
-    {
-        var rows = mat.Length;
-        var cols = mat[0].Length;
-
-        if (rows * cols != r * c)
-        {
-            return mat;
-        }
-
-        var reshaped = Enumerable.Range(0, r).Select(_ => new int[c]).ToArray();
-
-        for (var i = 0; i < rows * cols; i++)
-        {
-            reshaped[i / c][i % c] = mat[i / cols][i % cols];
-        }
-
-        return reshaped;
+        Assert.Equal(expected, ReshapeTheMatrixSolution.ReshapeByCursorWalk(mat, r, c));
     }
 }
