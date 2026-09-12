@@ -1,15 +1,13 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.ValidPalindromeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Valid Palindrome II (LC 680): the naive "try deleting each character in turn, then
-// re-check the whole result" approach (O(n^2): n candidate strings, each an O(n)
-// build-plus-check) vs. the O(n) two-pointer scan that only ever retries the exact two
-// candidate ranges adjacent to the first mismatch. Same "bare index arithmetic, no
-// repo primitive" shape as ValidPalindromeBenchmarks (LC 125) - see
-// ValidPalindromeIITests for why that holds here too. _s places two differing
-// characters symmetrically off-center so the initial scan runs a genuine O(n)
-// distance before finding the mismatch, instead of collapsing to O(1) at either end.
+// Valid Palindrome II (LC 680): harness only - both arms are
+// ValidPalindromeIISolution's, the same methods ValidPalindromeIITests proves
+// correct. _s places two differing characters symmetrically off-center so the
+// initial scan runs a genuine O(n) distance before finding the mismatch,
+// instead of collapsing to O(1) at either end.
 [MemoryDiagnoser]
 public class ValidPalindromeIIBenchmarks
 {
@@ -24,61 +22,10 @@ public class ValidPalindromeIIBenchmarks
     public void Setup() => _s = BuildInput(Length);
 
     [Benchmark(Baseline = true)]
-    public bool TryEachSingleDeletion()
-    {
-        if (IsPalindromeRange(_s, 0, _s.Length - 1))
-        {
-            return true;
-        }
-
-        for (var skip = 0; skip < _s.Length; skip++)
-        {
-            var candidate = _s.Remove(skip, 1);
-
-            if (IsPalindromeRange(candidate, 0, candidate.Length - 1))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool TryEachSingleDeletion() => ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(_s);
 
     [Benchmark]
-    public bool MismatchSkipTwoPointer()
-    {
-        var left = 0;
-        var right = _s.Length - 1;
-
-        while (left < right)
-        {
-            if (_s[left] != _s[right])
-            {
-                return IsPalindromeRange(_s, left + 1, right) || IsPalindromeRange(_s, left, right - 1);
-            }
-
-            left++;
-            right--;
-        }
-
-        return true;
-    }
-
-    private static bool IsPalindromeRange(string s, int left, int right)
-    {
-        while (left < right)
-        {
-            if (s[left] != s[right])
-            {
-                return false;
-            }
-
-            left++;
-            right--;
-        }
-
-        return true;
-    }
+    public bool MismatchSkipTwoPointer() => ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(_s);
 
     private static string BuildInput(int length)
     {

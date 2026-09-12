@@ -1,74 +1,31 @@
-using RepoIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using static DSAExperimentation.LeetCode.ValidParenthesisString.ValidParenthesisStringSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidParenthesisString;
 
-// LeetCode 678. Valid Parenthesis String: two of this repo's own Stack<int>
-// (ValidParenthesesTests/NextGreaterElementITests precedent for Stack<char>/Stack<int>)
-// track the indices of unmatched '(' and unmatched '*'. Each ')' first consumes an
-// open paren, falling back to a wildcard; any opens still unmatched afterward are then
-// paired against wildcards positioned after them, greedily from the innermost pair out.
-public sealed partial class ValidParenthesisStringTests
+// Harness only. Both strategies are ValidParenthesisStringSolution's, so a
+// failure names the strategy that broke.
+public sealed class ValidParenthesisStringTests
 {
+    public static TheoryData<string, bool> Examples =>
+        new()
+        {
+            { "()", true },
+            { "(*)", true },
+            { "(*))", true },
+            { "(((", false },
+            { "", true },
+            { "*", true },
+            { "(", false },
+            { ")(", false },
+        };
+
     [Theory]
-    [InlineData("()", true)]
-    [InlineData("(*)", true)]
-    [InlineData("(*))", true)]
-    [InlineData("(((", false)]
-    public void CheckValidString_Examples_MatchesExpectedValidity(string s, bool expected) =>
-        Assert.Equal(expected, CheckValidString(s));
+    [MemberData(nameof(Examples))]
+    public void CheckValidStringByReachableOpenCountDp_Examples_MatchesExpectedValidity(string s, bool expected) =>
+        Assert.Equal(expected, CheckValidStringByReachableOpenCountDp(s));
 
-    private static bool CheckValidString(string s)
-    {
-        if (!TryCollectOpenAndStarIndices(s, out var openIndices, out var starIndices))
-        {
-            return false;
-        }
-
-        return ReconcileLeftoverOpens(openIndices, starIndices);
-    }
-
-    private static bool TryCollectOpenAndStarIndices(string s, out RepoIndexStack openIndices, out RepoIndexStack starIndices)
-    {
-        openIndices = new RepoIndexStack();
-        starIndices = new RepoIndexStack();
-
-        return ScanForUnmatchedClosers(s, openIndices, starIndices);
-    }
-
-    private static bool ScanForUnmatchedClosers(string s, RepoIndexStack openIndices, RepoIndexStack starIndices)
-    {
-        for (var i = 0; i < s.Length; i++)
-        {
-            switch (s[i])
-            {
-                case '(':
-                    openIndices.Push(i);
-                    break;
-                case '*':
-                    starIndices.Push(i);
-                    break;
-                default:
-                    if (!openIndices.TryPop(out _) && !starIndices.TryPop(out _))
-                    {
-                        return false;
-                    }
-                    break;
-            }
-        }
-
-        return true;
-    }
-
-    private static bool ReconcileLeftoverOpens(RepoIndexStack openIndices, RepoIndexStack starIndices)
-    {
-        while (openIndices.TryPop(out var openIndex))
-        {
-            if (!starIndices.TryPop(out var starIndex) || starIndex < openIndex)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckValidStringByTwoIndexStackSweep_Examples_MatchesExpectedValidity(string s, bool expected) =>
+        Assert.Equal(expected, CheckValidStringByTwoIndexStackSweep(s));
 }

@@ -4830,8 +4830,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/NumberOfLongestIncreasingSubsequence/NumberOfLongestIncreasingSubsequenceTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/NumberOfLongestIncreasingSubsequenceBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.SegmentTree.SegmentTree<Element,TOperation> (point-update/range-query, generic over a new ICombineOperation<(int Length,int Count)> witness struct defined in the test/benchmark files themselves, not production code) composed with Algorithms.Searching.BinarySearch.LowerBound over an ArraySequence<int> of sorted distinct values for coordinate compression - the same LowerBound engine LongestIncreasingSubsequenceTests (LC300) already exercises. Sweeping left to right, Query(0,rank-1) gives the best (longest length, and how many subsequences reach it) among all strictly-smaller values seen so far; Update folds the new candidate into whatever's already stored for this exact value via the witness's Combine (prefer longer length, sum counts on a tie - the standard associative/commutative 'argmax with tie-count' aggregate, same shape as SegmentTree's own MaxOperation<Element>). O(n log n) instead of the textbook O(n^2) double loop.",
-      "notes": "Verified correct by hand-tracing all 4 test cases plus a BenchmarkDotNet dry run. Params tuned to (3_000, 8_000) after an initial dry run at smaller sizes showed the SegmentTree approach starting out slightly SLOWER than the O(n^2) DP baseline (tuple/boxing constant-factor overhead dominating at small n) before crossing over - at (3_000, 8_000) both dry-run rows already favor the primitive (0.69x -> 0.22x of baseline, i.e. ~1.45x -> 4.5x faster), matching this repo's established 'wins at both sizes, gap widens' benchmark convention. Full DSAExperimentation.Tests suite (1406 passed, 1 pre-existing unrelated skip) and both projects' Release builds pass after the addition.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between the test's algorithm and the benchmark's non-baseline arm for this problem - both were already the same segment-tree code, just duplicated. The defect fixed here is purely the duplication plus the untested baseline (DynamicProgramming/FindNumberOfLisByBruteForce is now under test via the Theory method, where before it was asserted by nothing).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/NumberOfLongestIncreasingSubsequence/NumberOfLongestIncreasingSubsequenceSolution.cs",
+      "strategies": "FindNumberOfLisByBruteForce (textbook O(n^2) DP, was the benchmark's Baseline arm), FindNumberOfLisBySegmentTree (coordinate-compression + SegmentTree<(Length,Count),LisAggregate>, was both the test's private helper and the benchmark's non-baseline arm - identical code in both, no drift found on this problem)",
+      "relocatedTypes": "LisAggregate (ICombineOperation<(int Length,int Count)> witness) moved from being duplicated separately in the test file and the benchmark file into DSAExperimentation.LeetCode/NumberOfLongestIncreasingSubsequence/LisAggregate.cs - it answers LC 673 alone (fixes this problem's specific aggregate semantics), so it stays beside the solution per the CountWaysToBuildRoomsInAnAntColony precedent rather than moving to Domain/ or Algorithms/."
     },
     {
       "id": 676,
@@ -4843,8 +4846,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ImplementMagicDictionary/ImplementMagicDictionaryTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ImplementMagicDictionaryBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.LowercaseTrie<bool> (bounded-alphabet Trie; LC676's dictionary words are lowercase-English-only, exactly LowercaseTrie's committed domain). buildDict is a direct loop over Trie.Set. Search is a manual DFS over the trie's already-public Root/LowercaseTrieNode.Children (the same navigation LowercaseTrieTests.WalkTo and ReplaceWordsBenchmarks.ShortestRootPrefix already rehearse) trying every one-character substitution at exactly one position - composed in the test/benchmark file itself rather than added as a new Set/HasKey/HasPrefix-style method on the production Trie/LowercaseTrie types, since 'exactly one substitution allowed' isn't a prefix/lookup query those types' existing surface provides.",
-      "notes": "Verified correct by hand-tracing all example cases plus a BenchmarkDotNet dry run. Params tuned to (10_000, 30_000) after dry runs at smaller sizes (50/1_000, then 5_000/20_000) showed the trie DFS's real per-node overhead (26-way branch check + recursive call per level) making it slower than the tight brute-force char-compare loop until dictionaries got large enough; at (10_000, 30_000) both rows favor the primitive (0.77x -> 0.28x of baseline, ~1.3x -> 3.6x faster), matching this repo's established 'wins at both sizes, gap widens' convention. Full DSAExperimentation.Tests suite (1406 passed, 1 pre-existing unrelated skip) and both projects' Release builds pass after the addition.",
-      "architectureTier": "pre-section-17"
+      "notes": "Reconciled a real drift: the test's helper answered LeetCode's actual per-call boolean (search(String) -> boolean), but both benchmark arms (BruteForce and the old TrieSearch) instead counted matches across a whole batch of search words and returned that count - 'measuring something weaker than the real answer' per the migration brief. Promoted both benchmark arms to call the real Search(string)->bool strategy once per word (via the new IMagicDictionary.Search), with the match-counting now living only in the benchmark harness's Replay loop (to keep the JIT from eliminating the call) rather than inside the algorithm. BuildDict's trie-construction cost stays inside the timed [Benchmark] method (not hoisted to [GlobalSetup]), matching the original TrieSearch benchmark's own measurement scope, so no second overload was needed per step 4.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ImplementMagicDictionary/ImplementMagicDictionarySolution.cs",
+      "strategies": "CreateByBruteForce (IMagicDictionary backed by a plain string[] scan computing Hamming distance per search - was the benchmark's Baseline arm) and CreateByTrieSearch (IMagicDictionary backed by this repo's LowercaseTrie<bool>, one-substitution DFS over Root/Children - was both the test's private MagicDictionary helper and the benchmark's TrieSearch arm). Modeled as a design-problem factory (CreateBy<Strategy>() -> IMagicDictionary) matching the AllOneDataStructureSolution/LRUCacheSolution/MinStackSolution precedent for stateful LeetCode APIs, rather than static functions, since LeetCode's own shape here is buildDict-once-then-search-many."
     },
     {
       "id": 677,
@@ -4856,8 +4861,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MapSumPairs/MapSumPairsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MapSumPairsBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.LowercaseTrie<int> stores each key's value at its end-of-word node (insert reuses Set's own overwrite-on-existing-key semantics, exactly LC677's override rule). sum(prefix) walks to the prefix's node via the trie's already-public Root/Children, then folds a new IFoldAlgebra<LowercaseTrieNode<int>,int> witness (SumValuesAlgebra, defined in the test/benchmark files - Combine = node's own value plus children's already-folded sums, the same shape SizeAlgebra.Combine=1+children.Sum() uses for TreeMetrics.Size) over the subtree via Algorithms.Folding.Dags.Trees.TreeFold.Fold - a real ITreeTopology witness reused generically per ARCHITECTURE.md §13.8, with TreeFold.Fold(null) already resolving to 0 for a missing prefix so no special-casing is needed.",
-      "notes": "Verified correct via the 4 xUnit test cases (LC example, override-on-duplicate-insert, unknown prefix -> 0, empty-prefix sums everything) plus a BenchmarkDotNet dry run. Params tuned to (5_000, 20_000) after an initial dry run at (50, 1_000) showed TreeFold's per-node allocation (a TResult[] array per visited node, per RecursiveFoldEvaluation.cs) and SparseArrayChildren's O(alphabet)-per-Get cost making it slower than a raw StartsWith scan at small sizes; at (5_000, 20_000) both rows favor the primitive (0.60x -> 0.20x of baseline, ~1.7x -> 5x faster), matching this repo's established 'wins at both sizes, gap widens' convention. Full DSAExperimentation.Tests suite (1406 passed, 1 pre-existing unrelated skip) and both projects' Release builds pass after the addition.",
-      "architectureTier": "pre-section-17"
+      "notes": "No behavior change. Test's original MapSum private class (trie strategy) and the benchmark's TrieFoldSum arm were the same algorithm already; both are now MapSumByTrieFold. The benchmark's DictionaryScan baseline (parallel string[]/int[] arrays scanned with StartsWith) was promoted into MapSumByDictionaryScan using a BCL Dictionary<string,int> instead, since the design-style Insert/Sum API needs override-on-existing-key semantics (which Dictionary's indexer gives for free) rather than a one-shot batch scan - same DictionaryScan comparison, now under test via MapSumByDictionaryScan_LeetCodeExamples_ReturnsExpectedSums (it was previously untested, per the defect this migration fixes). No hoisted-input overload was needed (design problems take scalar Insert/Sum calls, not a constructed container - same as the DesignAddAndSearchWordsDataStructure precedent). Test examples cover every scenario the original 4 [Fact]s asserted (basic sum, prefix growth after a second insert, override on duplicate key, unknown prefix, empty prefix) restated as one TheoryData table replayed against both strategies. Full test suite run afterward showed 2 unrelated failures in RedundantConnectionIITests from a different, concurrently-in-progress migration by another session - untouched by this change.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MapSumPairs/MapSumPairsSolution.cs",
+      "strategies": "MapSumByDictionaryScan (baseline: BCL Dictionary<string,int> + StartsWith scan), MapSumByTrieFold (LowercaseTrie<int> + TreeFold(SumValuesAlgebra)) - both implement a shared internal IMapSumStrategy { Insert(string,int); Sum(string) } surface, mirroring the DesignAddAndSearchWordsDataStructureSolution pattern for design-shaped problems",
+      "relocatedTypes": "SumValuesAlgebra (IFoldAlgebra<LowercaseTrieNode<int>,int> witness, previously duplicated verbatim in both the test and the benchmark) -> DSAExperimentation.LeetCode/MapSumPairs/SumValuesAlgebra.cs, a problem-specific witness per ARCHITECTURE.md 17.3/17.6 (answers only LC677, so it stays beside the solution rather than in Algorithms/Folding)"
     },
     {
       "id": 678,
@@ -4869,8 +4877,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ValidParenthesisString/ValidParenthesisStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ValidParenthesisStringBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Stack.Stack<int> x2 (unmatched '(' indices, unmatched '*' indices) - classic two-stack sweep, same Stack<T> ValidParenthesesTests/NextGreaterElementITests already use.",
-      "notes": "Baseline in the benchmark is a HashSet<int>-backed reachable-open-count DP (O(n^2)) vs. the O(n) two-stack sweep; short-job dry run confirmed correctness and showed the primitive ~438x-15,400x faster across Params(200, 5_000). Full 1440-test suite and both Release builds pass, 0 warnings.",
-      "architectureTier": "pre-section-17"
+      "notes": "No behavior change - both strategies already returned bool over the same string input in the test and the benchmark, so no test/benchmark disagreement to reconcile and no fixtures to relocate. No hoisted-input overload needed: the input is the LeetCode string itself, already built once in [GlobalSetup] with no separate domain container to hoist construction of. Kept all 4 original examples plus added \"\", \"*\", \"(\", \")(\" to round out edge-case coverage (verified against the algorithm's own logic, not just LeetCode's published examples).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ValidParenthesisString/ValidParenthesisStringSolution.cs",
+      "strategies": "CheckValidStringByReachableOpenCountDp (baseline: BCL HashSet<int> reachable-open-count DP), CheckValidStringByTwoIndexStackSweep (this repo's Stack<int> tracking unmatched '(' and '*' indices)"
     },
     {
       "id": 680,
@@ -4882,8 +4892,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ValidPalindromeII/ValidPalindromeIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ValidPalindromeIIBenchmarks.cs",
       "primitivesUsed": "Bare two-pointer character scan over the raw string (mismatch-skip variant of ValidPalindromeTests' LC-125 scan); no stronger reusable repo primitive fits this shape, matching that file's own established precedent.",
-      "notes": "Baseline is the naive try-every-single-deletion O(n^2) approach vs. the O(n) mismatch-skip two-pointer; short-job dry run confirmed correctness and showed the primitive ~290x-7,300x faster across Params(200, 5_000). Full 1440-test suite and both Release builds pass, 0 warnings.",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature drift here (unlike the TwoSum/AddBinary cases the section-17 writeup describes): the test's private IsValidPalindrome helper and the benchmark's MismatchSkipTwoPointer arm were already textually identical bool-returning two-pointer scans, so they collapsed into one strategy without reconciliation. No fixtures existed to relocate. No new DataStructures/Algorithms type needed (matches the migrated ValidPalindrome/LC125 precedent: bare index arithmetic, no reusable primitive applies).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ValidPalindromeII/ValidPalindromeIISolution.cs",
+      "strategies": "IsValidPalindromeByBruteForceDeletion (promoted baseline, was the benchmark's untested [Benchmark(Baseline = true)] arm), IsValidPalindromeByMismatchSkip (was duplicated verbatim in both the test's private helper and the benchmark's second arm)"
     },
     {
       "id": 682,
@@ -4895,8 +4907,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/BaseballGame/BaseballGameTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/BaseballGameBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Stack.Stack<int> - Push/TryPeek/TryPop replay of the round record for \"C\"/\"D\"/\"+\", same Stack<T> ValidParenthesesTests/NextGreaterElementITests already use.",
-      "notes": "No complexity-class gap exists for this problem (both strategies are O(n)); benchmark instead pits Stack<T> against a hand-rolled array+manual-top-index cursor, where the manual array wins on raw throughput due to Stack<T>'s DynamicArray growth overhead - a legitimate real comparison result, not the primitive always winning. Full 1440-test suite and both Release builds pass, 0 warnings.",
-      "architectureTier": "pre-section-17"
+      "notes": "The benchmark's original ManualArrayCursor baseline omitted a 'C' case entirely (safe there only because its synthetic _ops workload never emits 'C', per its own comment); promoting it to a first-class, LeetCode-correct solution required adding a real 'C' -> top-- branch so it actually implements LC 682's full semantics (needed to pass the test's 'C' example, [\"5\",\"2\",\"C\",\"D\",\"+\"] -> 30). This is a like-for-like completion of the same algorithm, not a behavior change to any asserted case. No fixtures existed to relocate; no new DataStructures/Algorithms type needed (Stack<int> already exists and is the same one ValidParentheses/NextGreaterElementI use).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/BaseballGame/BaseballGameSolution.cs",
+      "strategies": "CalPointsByManualArrayCursor (promoted baseline, was the benchmark's untested [Benchmark(Baseline = true)] arm), CalPointsByStackReplay (was duplicated in the test's private helpers and the benchmark's StackReplay arm, using this repo's Stack<int>)"
     },
     {
       "id": 684,
@@ -4908,8 +4922,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RedundantConnection/RedundantConnectionTests.cs",
       "benchmarkPath": null,
       "primitivesUsed": null,
-      "notes": "pre-existing from prior session's curated sample; benchmark backfill needed for policy consistency",
-      "architectureTier": "pre-section-17"
+      "notes": "Single strategy (no benchmark existed for this problem). Reconciled the test's tuple-based (int,int)[]/nodeCount signature onto LeetCode's real int[][] edges -> int[] shape; DisjointSet is an existing tier-1 primitive so no new types were needed. Added LeetCode's official example 2 to the TheoryData since the original test only had one case.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RedundantConnection/RedundantConnectionSolution.cs",
+      "strategies": "FindRedundantEdgeByDisjointSet(int[][] edges) -> int[]"
     },
     {
       "id": 685,
@@ -4921,8 +4937,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RedundantConnectionII/RedundantConnectionIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RedundantConnectionIIBenchmarks.cs",
       "primitivesUsed": "DataStructures.DisjointSet.DisjointSet (union-find, path compression + union-by-rank), reused exactly as LC684's existing RedundantConnectionTests does. The extra LC685-specific step (finding the in-degree-2 node's two candidate edges, then re-running the DisjointSet cycle scan with one of them skipped) is plain composition in the test/benchmark file, no new primitive.",
-      "notes": "Verified against all 3 classic LeetCode examples (both-parents-drop-later, no-double-parent-pure-cycle, both-parents-must-drop-earlier). Benchmark compares a genuinely correct O(n^2) brute force (per-candidate in-degree check + uncompressed find-root cycle check) against the O(n) DisjointSet-based approach; smoke-tested via `dotnet run -c Release -- --job Dry` and confirmed the expected ~20x gap at NodeCount=5000.",
-      "architectureTier": "pre-section-17"
+      "notes": "Two strategies found: the test's private helper and the benchmark's DisjointSetTwoPass are the same DisjointSet algorithm (one strategy); the benchmark's NaiveRemovalScan baseline is the second, promoted to a first-class method. FOUND A REAL BUG in that baseline while writing its test coverage (exactly the class of defect this migration targets): it returned the FIRST valid edge-removal found scanning forward, but LC 685 requires the LAST valid removal when a plain cycle (no two-parent conflict) admits more than one fix - it failed 2 of 3 LeetCode examples once actually asserted. Fixed it to scan all n candidates and keep the last valid one (still O(n^2), same forced full-scan character the benchmark's workload doc comment describes) so it now agrees with the DisjointSet strategy on every example; LeetCode's real answer won per the migration's own tie-breaking rule. No fixture relocation needed - DisjointSet is already a DataStructures/ primitive; no new DataStructures/Algorithms types were introduced so no additional direct-unit-test obligation under section 18. Verified: all 4 projects build clean; full DSAExperimentation.Tests suite (6022 passed, 1 skipped, 0 failed) including LayeringTests.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RedundantConnectionII/RedundantConnectionIISolution.cs",
+      "strategies": "FindRedundantEdgeByDisjointSet(int[][] edges) -> int[]; FindRedundantEdgeByRemovalScan(int[][] edges) -> int[]"
     },
     {
       "id": 686,
@@ -4934,8 +4952,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RepeatedStringMatch/RepeatedStringMatchTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RepeatedStringMatchBenchmarks.cs",
       "primitivesUsed": "Algorithms.StringMatching.PrefixFunctionSearch (KMP FindAll), used as the substring-containment check against up to ceil(b.Length/a.Length)+1 repeats of a.",
-      "notes": "Verified against both official LeetCode examples plus a no-match case. Benchmark follows the existing FindTheIndexOfTheFirstOccurrenceInAStringBenchmarks precedent of a built-in method (string.Contains) as the 'baseline' vs the repo's own string-matching primitive; smoke-tested and runs cleanly (built-in Contains happens to win at these sizes - a real, honest result, not a bug, matching this repo's own note elsewhere that a naive/BCL approach can legitimately outperform a guaranteed-asymptotic one).",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature drift here: the test's private helper and both benchmark arms already agreed on the int repeat-count shape (unlike LC 1's indices-vs-bool case cited in the task). No GlobalSetup-hoisting needed beyond the two input strings themselves, which are already LeetCode's own shape, so no second overload was added. No Fixtures/ folder existed for this problem in either project.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RepeatedStringMatch/RepeatedStringMatchSolution.cs",
+      "strategies": "MinRepeatsByStringContains (baseline, BCL string.Contains), MinRepeatsByPrefixFunctionSearch (this repo's KMP-based PrefixFunctionSearch)"
     },
     {
       "id": 691,
@@ -4947,8 +4967,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/StickersToSpellWord/StickersToSpellWordTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/StickersToSpellWordBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer.Memoize<string,int>, memoizing over the canonically-sorted remaining-target-letters state, the same role it already plays for WordBreak/DecodeWays. State length strictly decreases every recursive call (the applied sticker always consumes at least one copy of the state's own first character), satisfying Memoizer's documented well-founded-recursion precondition.",
-      "notes": "Verified against both official LeetCode examples (stickers=[with,example,science]/thehat -> 3; stickers=[notice,possible]/basicbasic -> -1). Benchmark contrasts unmemoized vs Memoizer-backed recursion using deliberately equal-effect stickers (ab/ba) so every choice path converges on identical states, maximizing the overlap memoization exploits; smoke-tested via `dotnet run -c Release -- --job Dry` and confirmed the expected large gap at PairCount=16 (21.5ms naive vs 1.4ms memoized).",
-      "architectureTier": "pre-section-17"
+      "notes": "Promoted per the task's allowance: both original benchmark arms returned Solve's raw int.MaxValue sentinel for an uncoverable target instead of LeetCode's real -1 answer (the workload never hits that path, so it went unnoticed); both migrated strategies now map int.MaxValue to LeetCodeAnswer.None (-1), matching the test's own conversion and LC's actual answer shape. No pre-existing Fixtures/ folder existed for this problem in either project; the new PreparedStickers type does not trigger the Section 18 direct-unit-test obligation since it lives under LeetCode/, not DataStructures/ or Algorithms/, and is exercised by StickersToSpellWordTests through the solution's strategies.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/StickersToSpellWord/StickersToSpellWordSolution.cs",
+      "strategies": "MinStickersByNaiveRecursion (baseline, hand-rolled unmemoized recursion, BCL internals) and MinStickersByMemoizedRecursion (Algorithms.DynamicProgramming.Memoizer.Memoize<string,int>), each with a LeetCode-shaped (string[] stickers, string target) overload and a hoisted PreparedStickers overload for GlobalSetup use",
+      "relocatedTypes": "New problem-local witness DSAExperimentation.LeetCode/StickersToSpellWord/PreparedStickers.cs (readonly record struct: int[][] StickerCounts + sorted target string, with a Build factory) - not a relocation of an existing fixture (there was none for this problem in either project), but a new bespoke-to-this-problem type per step 4's hoisted-overload rule, placed in the LeetCode problem folder per step 5 since it fixes nothing generic enough for DataStructures/Algorithms/Domain and is used by this problem alone."
     },
     {
       "id": 692,
