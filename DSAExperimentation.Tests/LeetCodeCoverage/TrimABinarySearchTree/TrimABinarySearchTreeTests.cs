@@ -1,58 +1,44 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.TrimABinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TrimABinarySearchTree;
 
-// LeetCode 669. Trim a Binary Search Tree: this repo's own BinarySearchTree<TValue>
-// builds the input tree via Insert, then a recursive trim mutates Left/Right in
-// place - exactly the reason BinaryTreeNode<TValue>'s own doc comment names this
-// problem for why Left/Right stay settable. An out-of-range node is dropped by
-// returning its in-range child's own trimmed result in its place, the same
-// "return the replacement subtree root, caller reassigns node.Left/node.Right"
-// shape BinarySearchTree.TryDelete already uses. InOrderTraversal/IInOrderHooks
-// (the same composition DeleteNodeInABSTTests already uses) confirms what
-// survives is still sorted and fully inside [low, high].
-public sealed partial class TrimABinarySearchTreeTests
+// Harness only. Both strategies are TrimABinarySearchTreeSolution's; this file
+// builds LeetCode's published examples via this repo's own
+// BinarySearchTree<int>.Insert and confirms what survives via
+// InOrderTraversal/IInOrderHooks (the same composition DeleteNodeInABSTTests
+// already uses), which also confirms the surviving values stay sorted.
+public sealed class TrimABinarySearchTreeTests
 {
-    [Fact]
-    public void Trim_ClassicExample_DropsNodesOutsideRange()
+    public static TheoryData<int[], int, int, int[]> Examples =>
+        new()
+        {
+            { [3, 0, 4, 2, 1], 1, 3, [1, 2, 3] },
+            { [1, 0, 2], 3, 5, [] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TrimByInPlaceMutation_VariousRanges_DropsNodesOutsideRange(
+        int[] values, int low, int high, int[] expected)
     {
-        var tree = BuildTree([3, 0, 4, 2, 1]);
+        var tree = BuildTree(values);
 
-        var trimmed = Trim(tree.Root, 1, 3);
+        var trimmed = TrimABinarySearchTreeSolution.TrimByInPlaceMutation(tree.Root, low, high);
 
-        Assert.Equal([1, 2, 3], InOrderValues(trimmed));
+        Assert.Equal(expected, InOrderValues(trimmed));
     }
 
-    [Fact]
-    public void Trim_EntireRangeBelowLow_ReturnsEmptyTree()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TrimByCollectAndRebuild_VariousRanges_DropsNodesOutsideRange(
+        int[] values, int low, int high, int[] expected)
     {
-        var tree = BuildTree([1, 0, 2]);
+        var tree = BuildTree(values);
 
-        var trimmed = Trim(tree.Root, 3, 5);
+        var trimmed = TrimABinarySearchTreeSolution.TrimByCollectAndRebuild(tree.Root, low, high);
 
-        Assert.Null(trimmed);
-    }
-
-    private static BinaryTreeNode<int>? Trim(BinaryTreeNode<int>? node, int low, int high)
-    {
-        if (node is null)
-        {
-            return null;
-        }
-
-        if (node.Value < low)
-        {
-            return Trim(node.Right, low, high);
-        }
-
-        if (node.Value > high)
-        {
-            return Trim(node.Left, low, high);
-        }
-
-        node.Left = Trim(node.Left, low, high);
-        node.Right = Trim(node.Right, low, high);
-        return node;
+        Assert.Equal(expected, InOrderValues(trimmed));
     }
 
     private static BinarySearchTree<int> BuildTree(int[] values)
