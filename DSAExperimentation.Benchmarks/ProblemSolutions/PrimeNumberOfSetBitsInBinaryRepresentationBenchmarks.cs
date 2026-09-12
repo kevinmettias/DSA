@@ -1,20 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.PrimeNumberOfSetBitsInBinaryRepresentation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Prime Number of Set Bits in Binary Representation (LC 762): checking each
-// value's popcount for primality via trial division on every call vs. this
-// repo's own Set<int> (HashMap<Element,bool>-backed) holding the fixed small set
-// of primes <= 20 once, then doing an O(1) membership check per value - right <=
-// 10^6 bounds every popcount to at most 20, so the set never grows past 8 entries
-// regardless of range width.
+// Harness only: both arms are PrimeNumberOfSetBitsInBinaryRepresentationSolution's,
+// the same methods PrimeNumberOfSetBitsInBinaryRepresentationTests proves correct.
+// right <= 10^6 bounds every popcount to at most 20, so the precomputed-set
+// strategy's lookup table never grows past 8 entries regardless of range width.
 [MemoryDiagnoser]
 public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
 {
-    private const int SmallestPrime = 2;
-    private static readonly int[] PrimeSetBitCounts = { 2, 3, 5, 7, 11, 13, 17, 19 };
-
     [Params(1_000, 100_000)]
     public int RangeWidth;
 
@@ -29,76 +24,10 @@ public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int TrialDivisionPerValue()
-    {
-        var count = 0;
-
-        for (var value = _left; value <= _right; value++)
-        {
-            if (IsPrime(CountSetBits(value)))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+    public int TrialDivisionPerValue() =>
+        PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByTrialDivision(_left, _right);
 
     [Benchmark]
-    public int PrecomputedSetLookup()
-    {
-        var primeBitCounts = BuildPrimeBitCounts();
-        var count = 0;
-
-        for (var value = _left; value <= _right; value++)
-        {
-            if (primeBitCounts.Has(CountSetBits(value)))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private static int CountSetBits(int value)
-    {
-        var bits = 0;
-        while (value != 0)
-        {
-            value &= value - 1;
-            bits++;
-        }
-
-        return bits;
-    }
-
-    private static bool IsPrime(int value)
-    {
-        if (value < SmallestPrime)
-        {
-            return false;
-        }
-
-        for (var divisor = SmallestPrime; divisor * divisor <= value; divisor++)
-        {
-            if (value % divisor == 0)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static Set<int> BuildPrimeBitCounts()
-    {
-        var primes = new Set<int>();
-        foreach (var candidate in PrimeSetBitCounts)
-        {
-            primes.TryAdd(candidate);
-        }
-
-        return primes;
-    }
+    public int PrecomputedSetLookup() =>
+        PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByPrecomputedSet(_left, _right);
 }

@@ -1,65 +1,32 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.PrimeNumberOfSetBitsInBinaryRepresentation;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimeNumberOfSetBitsInBinaryRepresentation;
 
-// LeetCode 762. Prime Number of Set Bits in Binary Representation: right <= 10^6
-// bounds every candidate's popcount to at most 20, so "is this bit count prime"
-// reduces to membership in the fixed small set of primes <= 20 - this repo's own
-// Set<int> (HashMap<Element,bool>-backed), the same closed-membership-check role
-// TwoSumTests'/RepeatedDNASequencesTests' HashMap/Set already play.
-public sealed partial class PrimeNumberOfSetBitsInBinaryRepresentationTests
+// Harness only: both strategies live in PrimeNumberOfSetBitsInBinaryRepresentationSolution
+// and are asserted against the same examples.
+public sealed class PrimeNumberOfSetBitsInBinaryRepresentationTests
 {
-    private static readonly Set<int> PrimeBitCounts = BuildPrimeBitCounts();
-
-    [Fact]
-    public void CountPrimeSetBits_ClassicExampleOne_ReturnsExpectedCount()
-    {
-        var actual = CountPrimeSetBits(6, 10);
-        Assert.Equal(4, actual);
-    }
-
-    [Fact]
-    public void CountPrimeSetBits_ClassicExampleTwo_ReturnsExpectedCount()
-    {
-        var actual = CountPrimeSetBits(10, 15);
-        Assert.Equal(5, actual);
-    }
-
-    private static int CountPrimeSetBits(int left, int right)
-    {
-        var count = 0;
-
-        for (var value = left; value <= right; value++)
+    public static TheoryData<int, int, int> Examples =>
+        new()
         {
-            if (PrimeBitCounts.Has(CountSetBits(value)))
-            {
-                count++;
-            }
-        }
+            { 6, 10, 4 },
+            { 10, 15, 5 },
+            { 3, 3, 1 },
+        };
 
-        return count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountPrimeSetBitsByTrialDivision_LeetCodeExamples_ReturnsExpectedCount(
+        int left, int right, int expected) =>
+        Assert.Equal(
+            expected,
+            PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByTrialDivision(left, right));
 
-    private static int CountSetBits(int value)
-    {
-        var bits = 0;
-        while (value != 0)
-        {
-            value &= value - 1;
-            bits++;
-        }
-
-        return bits;
-    }
-
-    private static Set<int> BuildPrimeBitCounts()
-    {
-        var primes = new Set<int>();
-        foreach (var candidate in new[] { 2, 3, 5, 7, 11, 13, 17, 19 })
-        {
-            primes.TryAdd(candidate);
-        }
-
-        return primes;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountPrimeSetBitsByPrecomputedSet_LeetCodeExamples_ReturnsExpectedCount(
+        int left, int right, int expected) =>
+        Assert.Equal(
+            expected,
+            PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByPrecomputedSet(left, right));
 }

@@ -1,70 +1,27 @@
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.MaxChunksToMakeSortedII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxChunksToMakeSortedII;
 
-// LeetCode 768. Max Chunks To Make Sorted II: a monotonic non-decreasing
-// Stack<int> of each closed chunk's max value (DailyTemperaturesTests' Stack<int>
-// precedent, applied here to chunk-merging instead of a wait-day sweep). A value
-// smaller than the top merges every chunk whose max exceeds it into one, since all
-// of them must now sort together with it; the final stack size is the chunk count.
-// Unlike LC769 (Max Chunks To Make Sorted), arr isn't a 0..n-1 permutation here -
-// duplicates and arbitrary values are allowed, which is exactly why index-identity
-// tricks don't work and the merge has to compare values instead.
-public sealed partial class MaxChunksToMakeSortedIITests
+// Harness only. Both strategies are MaxChunksToMakeSortedIISolution's - this file
+// just pins them to LeetCode's published examples plus a single-element edge case.
+public sealed class MaxChunksToMakeSortedIITests
 {
-    [Fact]
-    public void MaxChunks_StrictlyDecreasing_ReturnsOneChunk()
-    {
-        int[] arr = [5, 4, 3, 2, 1];
-
-        var chunks = MaxChunksToSorted(arr);
-
-        Assert.Equal(1, chunks);
-    }
-
-    [Fact]
-    public void MaxChunks_ClassicExampleWithDuplicates_ReturnsFourChunks()
-    {
-        int[] arr = [2, 1, 3, 4, 4];
-
-        var chunks = MaxChunksToSorted(arr);
-
-        Assert.Equal(4, chunks);
-    }
-
-    [Fact]
-    public void MaxChunks_AlreadySorted_ReturnsOneChunkPerElement()
-    {
-        int[] arr = [1, 0, 2, 3, 4];
-
-        var chunks = MaxChunksToSorted(arr);
-
-        Assert.Equal(4, chunks);
-    }
-
-    private static int MaxChunksToSorted(int[] arr)
-    {
-        var chunkMaxes = new RepoIntStack();
-
-        foreach (var num in arr)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            if (chunkMaxes.TryPeek(out var currentMax) && num < currentMax)
-            {
-                chunkMaxes.TryPop(out var mergedMax);
+            { [5, 4, 3, 2, 1], 1 },
+            { [2, 1, 3, 4, 4], 4 },
+            { [1, 0, 2, 3, 4], 4 },
+            { [7], 1 },
+        };
 
-                while (chunkMaxes.TryPeek(out var previousMax) && previousMax > num)
-                {
-                    chunkMaxes.TryPop(out _);
-                }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxChunksByBruteForceSuffixRescan_LeetCodeExamples_ReturnsMaxChunkCount(int[] arr, int expected) =>
+        Assert.Equal(expected, MaxChunksToMakeSortedIISolution.MaxChunksByBruteForceSuffixRescan(arr));
 
-                chunkMaxes.Push(mergedMax);
-            }
-            else
-            {
-                chunkMaxes.Push(num);
-            }
-        }
-
-        return chunkMaxes.Count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxChunksByMonotonicStackMerge_LeetCodeExamples_ReturnsMaxChunkCount(int[] arr, int expected) =>
+        Assert.Equal(expected, MaxChunksToMakeSortedIISolution.MaxChunksByMonotonicStackMerge(arr));
 }

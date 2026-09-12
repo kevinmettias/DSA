@@ -1,12 +1,11 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MaxChunksToMakeSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Max Chunks To Make Sorted (LC 769): the O(n^2) brute force re-derives the prefix
-// max from scratch for every candidate boundary i, vs. the O(n) single pass that
-// carries the running max forward across iterations instead of re-scanning - the
-// same "redo the scan vs. carry the accumulator" complexity split TwoSumBenchmarks/
-// JumpGameBenchmarks already use for their own O(n^2)-vs-O(n) comparisons.
+// Harness only: both arms are MaxChunksToMakeSortedSolution's, the same methods
+// MaxChunksToMakeSortedTests proves correct, run over a random permutation of
+// 0..Length-1 so neither strategy gets to special-case an already-sorted input.
 [MemoryDiagnoser]
 public class MaxChunksToMakeSortedBenchmarks
 {
@@ -31,44 +30,8 @@ public class MaxChunksToMakeSortedBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce()
-    {
-        var chunks = 0;
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            var prefixMax = 0;
-
-            for (var j = 0; j <= i; j++)
-            {
-                prefixMax = Math.Max(prefixMax, _values[j]);
-            }
-
-            if (prefixMax == i)
-            {
-                chunks++;
-            }
-        }
-
-        return chunks;
-    }
+    public int BruteForce() => MaxChunksToMakeSortedSolution.MaxChunksByBruteForce(_values);
 
     [Benchmark]
-    public int RunningMaxScan()
-    {
-        var chunks = 0;
-        var runningMax = 0;
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            runningMax = Math.Max(runningMax, _values[i]);
-
-            if (runningMax == i)
-            {
-                chunks++;
-            }
-        }
-
-        return chunks;
-    }
+    public int RunningMaxScan() => MaxChunksToMakeSortedSolution.MaxChunksByRunningMaxScan(_values);
 }

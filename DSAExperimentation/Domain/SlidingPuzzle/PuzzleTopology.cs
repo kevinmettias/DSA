@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.SlidingPuzzle.Fixtures;
+namespace DSAExperimentation.Domain.SlidingPuzzle;
 
 internal readonly struct PuzzleTopology : IGraphTopology<PuzzleNode, ListChildren<PuzzleNode>>
 {

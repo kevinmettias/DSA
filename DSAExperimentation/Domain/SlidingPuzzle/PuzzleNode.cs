@@ -1,9 +1,9 @@
-namespace DSAExperimentation.Tests.LeetCodeCoverage.SlidingPuzzle.Fixtures;
+namespace DSAExperimentation.Domain.SlidingPuzzle;
 
 // One node per reachable 2x3 board permutation ("012345"'s 720 arrangements, '0'
 // standing in for the empty slot); Neighbors holds the (at most 3) boards exactly
 // one blank-tile slide away, filled in once while the graph is built - the same
-// role OpenTheLock's LockNode.Neighbors plays for wheel-turn adjacency.
+// role Domain.Locks' LockNode.Neighbors plays for wheel-turn adjacency.
 internal sealed class PuzzleNode(string state)
 {
     public string State { get; } = state;
