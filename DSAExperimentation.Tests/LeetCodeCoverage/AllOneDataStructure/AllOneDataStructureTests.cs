@@ -1,251 +1,124 @@
-using DSAExperimentation.DataStructures.DoublyLinkedList;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.AllOneDataStructure;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AllOneDataStructure;
 
-// LeetCode 432. All O`one Data Structure: an ascending doubly linked list of count "buckets" -
-// the same frequency-bucket idea LfuCache.cs already uses for O(1) eviction, generalized from
-// "insert only at the front" to "insert next to whichever neighbor bucket the moving key
-// should land beside" via DoublyLinkedListNode's own public Previous/Next (its own doc comment
-// already anticipates a composer splicing directly - the same way LruCache/LfuCache splice
-// indirectly through DoublyLinkedList<T>). getMaxKey/getMinKey are then just tail.Previous/
-// head.Next - O(1) even across gaps in the count sequence, which a bare incremented/decremented
-// int bound (LfuCache's own _minFrequency trick) cannot guarantee once a key's count can both
-// increase AND decrease.
-//
-// Each bucket's own key membership is a SECOND, independent DoublyLinkedListNode chain, not a
-// HashMap<string,bool> - HashMap<TKey,TValue>.Keys is documented as an eager List snapshot of
-// every entry, so "grab any one key" would silently cost O(bucket size) per call instead of
-// O(1), defeating the whole point. A composer needing indexed lookup AND O(1) grab-the-first-
-// entry has to hold that entry itself, which is exactly what DoublyLinkedListNode's own public
-// Previous/Next are for.
-public sealed partial class AllOneDataStructureTests
+// Harness only. Both strategies are AllOneDataStructureSolution's - this file replays
+// LeetCode's published call sequences against each IAllOne instance, so a failure still
+// names the strategy that broke even though the "input" here is a sequence of
+// Inc/Dec/GetMaxKey/GetMinKey calls rather than a single argument tuple, the same shape
+// LRUCacheTests already uses for its own instance-API problem. The pre-migration test
+// only proved CreateByBucketedLinkedList's Dec behaviour - CreateByDictionaryScan's
+// baseline (previously untested scaffolding inlined in the benchmark) gets that same
+// coverage here for the first time. AllOneOp.Apply is pure dispatch, no counting logic
+// of its own.
+public sealed class AllOneDataStructureTests
 {
-    [Fact]
-    public void GetMaxKeyAndGetMinKey_ClassicExample_ReturnsExpectedKeys()
-    {
-        var allOne = new AllOne();
-
-        allOne.Inc("hello");
-        allOne.Inc("hello");
-        allOne.Inc("leet");
-
-        Assert.Equal("hello", allOne.GetMaxKey());
-        Assert.Equal("leet", allOne.GetMinKey());
-    }
-
-    [Fact]
-    public void GetMinKey_EmptyStructure_ReturnsEmptyString()
-    {
-        var allOne = new AllOne();
-
-        Assert.Equal("", allOne.GetMinKey());
-        Assert.Equal("", allOne.GetMaxKey());
-    }
-
-    [Fact]
-    public void Dec_RemovesKeyEntirely_WhenCountReachesZero()
-    {
-        var allOne = new AllOne();
-        allOne.Inc("a");
-
-        allOne.Dec("a");
-
-        Assert.Equal("", allOne.GetMaxKey());
-    }
-
-    [Fact]
-    public void GetMinKey_AfterFullyRemovingSoleMinimumKey_JumpsAcrossGapToNextRealBucket()
-    {
-        // "a" is pushed up to count 4 first, so no bucket ever exists at counts 2 or 3; "c"
-        // is then inserted (count 1) and fully removed again, leaving only "a" at count 4. A
-        // min-tracking scheme that just assumes "the new minimum is oldMinimum + 1" (as
-        // LfuCache's own _minFrequency safely can, since frequency there only ever increases)
-        // would wrongly look for a bucket at count 2, which was never created.
-        var allOne = new AllOne();
-        allOne.Inc("a");
-        allOne.Inc("a");
-        allOne.Inc("a");
-        allOne.Inc("a");
-
-        allOne.Inc("c");
-        allOne.Dec("c");
-
-        Assert.Equal("a", allOne.GetMinKey());
-        Assert.Equal("a", allOne.GetMaxKey());
-    }
-
-    [Fact]
-    public void Inc_SameKeyRepeatedly_KeepsSingleEntryVisibleAsBothMaxAndMin()
-    {
-        var allOne = new AllOne();
-
-        for (var i = 0; i < 5; i++)
+    public static TheoryData<AllOneOp[], string?[]> Examples =>
+        new()
         {
-            allOne.Inc("only");
-        }
-
-        Assert.Equal("only", allOne.GetMaxKey());
-        Assert.Equal("only", allOne.GetMinKey());
-    }
-
-    private sealed class KeyEntry(string key)
-    {
-        public string Key { get; } = key;
-
-        public DoublyLinkedListNode<Bucket>? CurrentBucket { get; set; }
-    }
-
-    private sealed class Bucket
-    {
-        private readonly DoublyLinkedListNode<KeyEntry> _keysHead = new();
-        private readonly DoublyLinkedListNode<KeyEntry> _keysTail = new();
-
-        public int Count { get; }
-
-        public int KeyCount { get; private set; }
-
-        public Bucket(int count)
-        {
-            Count = count;
-            _keysHead.Next = _keysTail;
-            _keysTail.Previous = _keysHead;
-        }
-
-        public void AddKeyNode(DoublyLinkedListNode<KeyEntry> node)
-        {
-            var next = _keysHead.Next!;
-
-            node.Previous = _keysHead;
-            node.Next = next;
-            _keysHead.Next = node;
-            next.Previous = node;
-
-            KeyCount++;
-        }
-
-        public void RemoveKeyNode(DoublyLinkedListNode<KeyEntry> node)
-        {
-            node.Previous!.Next = node.Next;
-            node.Next!.Previous = node.Previous;
-
-            KeyCount--;
-        }
-
-        public string PeekAnyKey() => _keysHead.Next == _keysTail ? "" : _keysHead.Next!.Value.Key;
-    }
-
-    private sealed class AllOne
-    {
-        private readonly HashMap<string, DoublyLinkedListNode<KeyEntry>> _keyNode = new();
-        private readonly DoublyLinkedListNode<Bucket> _head = new();
-        private readonly DoublyLinkedListNode<Bucket> _tail = new();
-
-        public AllOne()
-        {
-            _head.Next = _tail;
-            _tail.Previous = _head;
-        }
-
-        public void Inc(string key)
-        {
-            var hasExisting = _keyNode.TryGetValue(key, out var keyEntryNode);
-            keyEntryNode = ResolveIncKeyEntryNode(key, hasExisting, keyEntryNode);
-
-            var anchor = hasExisting ? keyEntryNode.Value.CurrentBucket! : _head;
-            var newCount = (hasExisting ? anchor.Value.Count : 0) + 1;
-
-            var newBucketNode = FindOrInsertIncBucket(anchor, newCount);
-
-            if (hasExisting)
             {
-                DetachFromBucket(anchor, keyEntryNode);
-            }
-
-            AttachToBucket(key, keyEntryNode, newBucketNode);
-        }
-
-        public void Dec(string key)
-        {
-            if (!_keyNode.TryGetValue(key, out var keyEntryNode))
+                [AllOneOp.Inc("hello"), AllOneOp.Inc("hello"), AllOneOp.Inc("leet"), AllOneOp.GetMax(), AllOneOp.GetMin()],
+                [null, null, null, "hello", "leet"]
+            },
             {
-                return;
-            }
-
-            var oldBucketNode = keyEntryNode.Value.CurrentBucket!;
-            var newCount = oldBucketNode.Value.Count - 1;
-            var anchor = oldBucketNode.Previous!;
-
-            var newBucketNode = FindOrInsertDecBucket(anchor, newCount);
-
-            DetachFromBucket(oldBucketNode, keyEntryNode);
-
-            if (newBucketNode is null)
+                [AllOneOp.GetMin(), AllOneOp.GetMax()],
+                ["", ""]
+            },
             {
-                _keyNode.TryRemove(key);
-                return;
-            }
-
-            AttachToBucket(key, keyEntryNode, newBucketNode);
-        }
-
-        private static DoublyLinkedListNode<KeyEntry> ResolveIncKeyEntryNode(
-            string key, bool hasExisting, DoublyLinkedListNode<KeyEntry>? keyEntryNode)
-            => hasExisting ? keyEntryNode! : new DoublyLinkedListNode<KeyEntry> { Value = new KeyEntry(key) };
-
-        private DoublyLinkedListNode<Bucket> FindOrInsertIncBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
-        {
-            var candidate = anchor.Next!;
-            return candidate != _tail && candidate.Value.Count == newCount
-                ? candidate
-                : InsertBucketAfter(anchor, newCount);
-        }
-
-        private DoublyLinkedListNode<Bucket>? FindOrInsertDecBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
-            => newCount == 0
-                ? null
-                : anchor != _head && anchor.Value.Count == newCount ? anchor : InsertBucketAfter(anchor, newCount);
-
-        private static void DetachFromBucket(
-            DoublyLinkedListNode<Bucket> bucketNode, DoublyLinkedListNode<KeyEntry> keyEntryNode)
-        {
-            bucketNode.Value.RemoveKeyNode(keyEntryNode);
-
-            if (bucketNode.Value.KeyCount == 0)
+                [AllOneOp.Inc("a"), AllOneOp.Dec("a"), AllOneOp.GetMax()],
+                [null, null, ""]
+            },
             {
-                Unlink(bucketNode);
-            }
-        }
+                // "a" is pushed up to count 4 first, so no bucket ever exists at counts 2 or
+                // 3; "c" is then inserted (count 1) and fully removed again, leaving only "a"
+                // at count 4. A min-tracking scheme that just assumes "the new minimum is
+                // oldMinimum + 1" would wrongly look for a bucket at count 2, which was never
+                // created.
+                [
+                    AllOneOp.Inc("a"), AllOneOp.Inc("a"), AllOneOp.Inc("a"), AllOneOp.Inc("a"),
+                    AllOneOp.Inc("c"), AllOneOp.Dec("c"),
+                    AllOneOp.GetMin(), AllOneOp.GetMax(),
+                ],
+                [null, null, null, null, null, null, "a", "a"]
+            },
+            {
+                [
+                    AllOneOp.Inc("only"), AllOneOp.Inc("only"), AllOneOp.Inc("only"),
+                    AllOneOp.Inc("only"), AllOneOp.Inc("only"),
+                    AllOneOp.GetMax(), AllOneOp.GetMin(),
+                ],
+                [null, null, null, null, null, "only", "only"]
+            },
+        };
 
-        private void AttachToBucket(
-            string key, DoublyLinkedListNode<KeyEntry> keyEntryNode, DoublyLinkedListNode<Bucket> newBucketNode)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBucketedLinkedList_LeetCodeExamples_TracksMaxAndMinCountKeys(
+        AllOneOp[] operations, string?[] expected) =>
+        RunScript(AllOneDataStructureSolution.CreateByBucketedLinkedList(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByDictionaryScan_LeetCodeExamples_TracksMaxAndMinCountKeys(
+        AllOneOp[] operations, string?[] expected) =>
+        RunScript(AllOneDataStructureSolution.CreateByDictionaryScan(), operations, expected);
+
+    private static void RunScript(
+        AllOneDataStructureSolution.IAllOne allOne, AllOneOp[] operations, string?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
         {
-            newBucketNode.Value.AddKeyNode(keyEntryNode);
-            keyEntryNode.Value.CurrentBucket = newBucketNode;
-            _keyNode.Set(key, keyEntryNode);
+            Assert.Equal(expected[i], operations[i].Apply(allOne));
         }
+    }
+}
 
-        public string GetMaxKey() => _tail.Previous == _head ? "" : _tail.Previous!.Value.PeekAnyKey();
+// One call in an AllOne script: which method to invoke and with what key. Pure dispatch,
+// built via the named factories below so a script (like Examples above) reads like the
+// LeetCode call sequence it replays. Inc/Dec return null (no comparable key); GetMax/GetMin
+// return the actual answer, including "" for an empty structure - the same null-means-
+// "no return value" convention LRUCacheOp.Apply uses for its own put/get split.
+public readonly record struct AllOneOp
+{
+    private readonly Kind _kind;
+    private readonly string _key;
 
-        public string GetMinKey() => _head.Next == _tail ? "" : _head.Next!.Value.PeekAnyKey();
+    private AllOneOp(Kind kind, string key)
+    {
+        _kind = kind;
+        _key = key;
+    }
 
-        private static void Unlink(DoublyLinkedListNode<Bucket> node)
+    public static AllOneOp Inc(string key) => new(Kind.Inc, key);
+
+    public static AllOneOp Dec(string key) => new(Kind.Dec, key);
+
+    public static AllOneOp GetMax() => new(Kind.GetMax, "");
+
+    public static AllOneOp GetMin() => new(Kind.GetMin, "");
+
+    internal string? Apply(AllOneDataStructureSolution.IAllOne allOne)
+    {
+        switch (_kind)
         {
-            node.Previous!.Next = node.Next;
-            node.Next!.Previous = node.Previous;
+            case Kind.Inc:
+                allOne.Inc(_key);
+                return null;
+            case Kind.Dec:
+                allOne.Dec(_key);
+                return null;
+            case Kind.GetMax:
+                return allOne.GetMaxKey();
+            default:
+                return allOne.GetMinKey();
         }
+    }
 
-        private static DoublyLinkedListNode<Bucket> InsertBucketAfter(DoublyLinkedListNode<Bucket> anchor, int count)
-        {
-            var node = new DoublyLinkedListNode<Bucket> { Value = new Bucket(count) };
-            var next = anchor.Next!;
-
-            node.Previous = anchor;
-            node.Next = next;
-            anchor.Next = node;
-            next.Previous = node;
-
-            return node;
-        }
+    private enum Kind
+    {
+        Inc,
+        Dec,
+        GetMax,
+        GetMin,
     }
 }

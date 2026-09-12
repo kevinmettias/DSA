@@ -1,22 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.NonOverlappingIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Non-overlapping Intervals (LC 435): the O(n^2) brute force (repeatedly rescan
-// every still-active interval for the smallest end, keep it, then eliminate
-// every remaining interval it strictly overlaps) vs. this repo's own O(n log n)
-// MergeSort over ArrayIndexedSequence to sort once by end, followed by a single
-// O(n) greedy pass (NonOverlappingIntervalsTests' algorithm) - the same
-// sort-then-greedy composition MinimumNumberOfArrowsToBurstBalloonsBenchmarks
-// already proves, with the overlap comparison flipped ('>=' keeps touching
-// intervals, since LC 435 - unlike LC 452 - does not treat a shared endpoint as
-// overlapping). _intervals is generated as mostly non-overlapping, shuffled
-// intervals (few removals needed), which hits brute force's true worst case -
-// its outer "find the next kept interval" loop runs close to n times, each
-// paying a full O(n) rescan - instead of the heavy-overlap case where most
-// intervals get eliminated in the first few rounds.
+// Harness only: both arms are NonOverlappingIntervalsSolution's, the same
+// methods NonOverlappingIntervalsTests proves correct. _intervals is generated
+// as mostly non-overlapping, shuffled intervals (few removals needed), which
+// hits brute force's true worst case - its outer "find the next kept interval"
+// loop runs close to n times, each paying a full O(n) rescan - instead of the
+// heavy-overlap case where most intervals get eliminated in the first few
+// rounds. SortByEndThenGreedyScan clones _intervals per invocation because the
+// sort strategy mutates its input in place and each BenchmarkDotNet iteration
+// must start from the same unsorted, shuffled workload.
 [MemoryDiagnoser]
 public class NonOverlappingIntervalsBenchmarks
 {
@@ -41,84 +36,10 @@ public class NonOverlappingIntervalsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRepeatedMinEndScan()
-    {
-        var eliminated = new bool[_intervals.Length];
-        var remaining = _intervals.Length;
-        var removedCount = 0;
-
-        while (remaining > 0)
-        {
-            removedCount += EliminateRound(eliminated, ref remaining);
-        }
-
-        return removedCount;
-    }
-
-    private int EliminateRound(bool[] eliminated, ref int remaining)
-    {
-        var (minEnd, minIndex) = FindMinUneliminatedEnd(eliminated);
-        eliminated[minIndex] = true;
-        remaining--;
-
-        return EliminateOverlapping(eliminated, minEnd, ref remaining);
-    }
-
-    private (int MinEnd, int MinIndex) FindMinUneliminatedEnd(bool[] eliminated)
-    {
-        var minEnd = int.MaxValue;
-        var minIndex = -1;
-
-        for (var i = 0; i < _intervals.Length; i++)
-        {
-            if (!eliminated[i] && _intervals[i].End < minEnd)
-            {
-                minEnd = _intervals[i].End;
-                minIndex = i;
-            }
-        }
-
-        return (minEnd, minIndex);
-    }
-
-    private int EliminateOverlapping(bool[] eliminated, int minEnd, ref int remaining)
-    {
-        var removedCount = 0;
-
-        for (var i = 0; i < _intervals.Length; i++)
-        {
-            if (!eliminated[i] && _intervals[i].Start < minEnd)
-            {
-                eliminated[i] = true;
-                remaining--;
-                removedCount++;
-            }
-        }
-
-        return removedCount;
-    }
+    public int BruteForceRepeatedMinEndScan() =>
+        NonOverlappingIntervalsSolution.EraseOverlapIntervalsByBruteForce(_intervals);
 
     [Benchmark]
-    public int SortByEndThenGreedyScan()
-    {
-        var items = ((int Start, int End)[])_intervals.Clone();
-
-        MergeSort.Sort<(int Start, int End), ArrayIndexedSequence<(int Start, int End)>>(
-            new ArrayIndexedSequence<(int Start, int End)>(items),
-            Comparer<(int Start, int End)>.Create((a, b) => a.End.CompareTo(b.End)));
-
-        var kept = 1;
-        var lastEnd = items[0].End;
-
-        for (var i = 1; i < items.Length; i++)
-        {
-            if (items[i].Start >= lastEnd)
-            {
-                kept++;
-                lastEnd = items[i].End;
-            }
-        }
-
-        return items.Length - kept;
-    }
+    public int SortByEndThenGreedyScan() =>
+        NonOverlappingIntervalsSolution.EraseOverlapIntervalsBySortThenGreedy(((int Start, int End)[])_intervals.Clone());
 }

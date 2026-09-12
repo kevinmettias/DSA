@@ -1,85 +1,36 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using NumberStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.AddTwoNumbersII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AddTwoNumbersII;
 
-// LeetCode 445. Add Two Numbers II: digits are stored most-significant-first here
-// (the reverse of AddTwoNumbersTests' LC 2 order), so digit-wise addition has to
-// start from each list's tail, not its head. This repo's own Stack<T> - the same
-// LIFO primitive ReverseIntegerTests uses - reverses each list's digit order without
-// ever mutating the input lists: push every value while walking .Next once, then pop
-// both stacks in lockstep with a running carry, prepending each result digit onto
-// the front of the output list as it's produced.
-public sealed partial class AddTwoNumbersIITests
+// Harness only. Both strategies are AddTwoNumbersIISolution's - this file just
+// pins them to LeetCode's published examples, converting each row's operand/result
+// arrays to/from the repo's own SinglyLinkedListNode<int>.
+public sealed class AddTwoNumbersIITests
 {
-    [Fact]
-    public void Add_ClassicExample_ReturnsDigitwiseSumInOrder()
-    {
-        var first = BuildList([7, 2, 4, 3]);
-        var second = BuildList([5, 6, 4]);
-
-        var sum = AddNumbers(first, second);
-
-        Assert.Equal([7, 8, 0, 7], ToArray(sum));
-    }
-
-    [Fact]
-    public void Add_CarryCascadesPastBothLists_AddsLeadingDigit()
-    {
-        var first = BuildList([9, 9, 9]);
-        var second = BuildList([1]);
-
-        var sum = AddNumbers(first, second);
-
-        Assert.Equal([1, 0, 0, 0], ToArray(sum));
-    }
-
-    [Fact]
-    public void Add_DifferentLengths_HandlesShorterSecondOperand()
-    {
-        var first = BuildList([8, 4, 6]);
-        var second = BuildList([5]);
-
-        var sum = AddNumbers(first, second);
-
-        Assert.Equal([8, 5, 1], ToArray(sum));
-    }
-
-    private static SinglyLinkedListNode<int>? AddNumbers(
-        SinglyLinkedListNode<int>? first, SinglyLinkedListNode<int>? second)
-    {
-        var firstDigits = new NumberStack();
-        for (var node = first; node is not null; node = node.Next)
+    public static TheoryData<int[], int[], int[]> Examples =>
+        new()
         {
-            firstDigits.Push(node.Value);
-        }
+            { [7, 2, 4, 3], [5, 6, 4], [7, 8, 0, 7] },
+            { [9, 9, 9], [1], [1, 0, 0, 0] },
+            { [8, 4, 6], [5], [8, 5, 1] },
+        };
 
-        var secondDigits = new NumberStack();
-        for (var node = second; node is not null; node = node.Next)
-        {
-            secondDigits.Push(node.Value);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AddByBigInteger_LeetCodeExamples_ReturnsDigitwiseSumInOrder(
+        int[] first, int[] second, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(AddTwoNumbersIISolution.AddByBigInteger(BuildList(first), BuildList(second))));
 
-        return CombineDigitStacks(firstDigits, secondDigits);
-    }
-
-    private static SinglyLinkedListNode<int>? CombineDigitStacks(NumberStack firstDigits, NumberStack secondDigits)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        var carry = 0;
-
-        while (firstDigits.Count > 0 || secondDigits.Count > 0 || carry != 0)
-        {
-            var a = firstDigits.TryPop(out var firstDigit) ? firstDigit : 0;
-            var b = secondDigits.TryPop(out var secondDigit) ? secondDigit : 0;
-            var digitSum = carry + a + b;
-            carry = digitSum / 10;
-
-            head = new SinglyLinkedListNode<int>(digitSum % 10) { Next = head };
-        }
-
-        return head;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AddByTwoStacks_LeetCodeExamples_ReturnsDigitwiseSumInOrder(
+        int[] first, int[] second, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(AddTwoNumbersIISolution.AddByTwoStacks(BuildList(first), BuildList(second))));
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

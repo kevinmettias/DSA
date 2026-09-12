@@ -1,26 +1,24 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<string>;
+using DSAExperimentation.LeetCode.SerializeAndDeserializeBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Serialize and Deserialize BST (LC 449): the general-binary-tree approach (LC 297,
-// see SerializeAndDeserializeBinaryTreeBenchmarks) writes a null-marker token for
-// every empty child and replays them through a Queue<string> - roughly double the
-// token count and dequeues an n-node BST actually needs - vs. exploiting the BST
-// ordering invariant directly: a pre-order VALUE-ONLY sequence, replayed through
-// this repo's own BinarySearchTree<int>.Insert, reconstructs the identical shape
-// with no null markers and no queue at all, since Insert's own comparison walk on
-// each value IS the walk that produced pre-order in the first place.
+// Harness only: both arms are SerializeAndDeserializeBSTSolution's, the same
+// methods SerializeAndDeserializeBSTTests proves correct. The workload tree is
+// built once in GlobalSetup - via a manual, non-repo insert over a shuffled
+// insertion order - so neither arm's timing is charged for tree construction, only
+// for the round trip through its own serialization grammar. CountNodes only exists
+// to give a [Benchmark] method (which must be public) a public return value for an
+// internal BinaryTreeNode<int>, the same technique
+// SerializeAndDeserializeBinaryTreeBenchmarks uses.
 [MemoryDiagnoser]
 public class SerializeAndDeserializeBSTBenchmarks
 {
-    private const string NullMarker = "#";
-
     [Params(500, 20_000)]
     public int NodeCount;
 
-    private int[] _insertionOrder = null!;
+    private BinaryTreeNode<int> _root = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -34,32 +32,18 @@ public class SerializeAndDeserializeBSTBenchmarks
             (values[i], values[j]) = (values[j], values[i]);
         }
 
-        _insertionOrder = values;
+        _root = BuildManual(values);
     }
 
     [Benchmark(Baseline = true)]
-    public int NullMarkerQueueRoundTrip()
-    {
-        var root = BuildManual(_insertionOrder);
-
-        var tokens = new List<string>();
-        WriteWithNullMarkers(root, tokens);
-        var serialized = string.Join(',', tokens);
-
-        return CountNodes(ReadWithNullMarkers(serialized));
-    }
+    public int NullMarkerQueueRoundTrip() =>
+        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
+            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root)));
 
     [Benchmark]
-    public int PreOrderValueOnlyRoundTrip()
-    {
-        var root = BuildManual(_insertionOrder);
-
-        var tokens = new List<string>();
-        WriteValuesOnly(root, tokens);
-        var serialized = string.Join(',', tokens);
-
-        return CountNodes(ReadViaBstInsert(serialized));
-    }
+    public int PreOrderValueOnlyRoundTrip() =>
+        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
+            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root)));
 
     private static BinaryTreeNode<int> BuildManual(int[] values)
     {
@@ -102,65 +86,6 @@ public class SerializeAndDeserializeBSTBenchmarks
         }
     }
 
-    private static void WriteWithNullMarkers(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
-        {
-            tokens.Add(NullMarker);
-            return;
-        }
-
-        tokens.Add(node.Value.ToString());
-        WriteWithNullMarkers(node.Left, tokens);
-        WriteWithNullMarkers(node.Right, tokens);
-    }
-
-    private static BinaryTreeNode<int>? ReadWithNullMarkers(string data)
-    {
-        var tokens = new RepoQueue();
-
-        foreach (var token in data.Split(','))
-        {
-            tokens.Enqueue(token);
-        }
-
-        return ReadNode(tokens);
-    }
-
-    private static BinaryTreeNode<int>? ReadNode(RepoQueue tokens)
-    {
-        if (!tokens.TryDequeue(out var token) || token == NullMarker)
-        {
-            return null;
-        }
-
-        return new BinaryTreeNode<int>(int.Parse(token)) { Left = ReadNode(tokens), Right = ReadNode(tokens) };
-    }
-
-    private static void WriteValuesOnly(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        tokens.Add(node.Value.ToString());
-        WriteValuesOnly(node.Left, tokens);
-        WriteValuesOnly(node.Right, tokens);
-    }
-
-    private static BinaryTreeNode<int>? ReadViaBstInsert(string data)
-    {
-        var tree = new BinarySearchTree<int>();
-
-        foreach (var token in data.Split(','))
-        {
-            tree.Insert(int.Parse(token));
-        }
-
-        return tree.Root;
-    }
-
-    private static int CountNodes(BinaryTreeNode<int>? node)
-        => node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
+    private static int CountNodes(BinaryTreeNode<int>? node) =>
+        node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
 }

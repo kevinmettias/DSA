@@ -1,79 +1,62 @@
-using DSAExperimentation.Tests.LeetCodeCoverage.FlattenAMultilevelDoublyLinkedList.Fixtures;
-using PendingStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.Tests.LeetCodeCoverage.FlattenAMultilevelDoublyLinkedList.Fixtures.Node>;
+using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FlattenAMultilevelDoublyLinkedList;
 
-// LeetCode 430. Flatten a Multilevel Doubly Linked List: this repo's own LIFO Stack<T>
-// holding each level's not-yet-resumed Next pointer, the same "push where DFS should resume,
-// descend now" shape FlattenNestedListIteratorTests' pending stack already uses for LC 341's
-// nested lists - here descending into Child instead of a NestedInteger's own sublist.
-public sealed partial class FlattenAMultilevelDoublyLinkedListTests
+// Harness only. Both strategies are FlattenAMultilevelDoublyLinkedListSolution's - this
+// file just pins them to LeetCode's published examples, asserting the depth-first order,
+// that every Child pointer is gone, and that Previous is rebuilt consistently throughout -
+// the three things the pre-migration test checked across three separate Facts, now
+// checked together for every example against every strategy so a failure names the
+// strategy that broke.
+public sealed class FlattenAMultilevelDoublyLinkedListTests
 {
-    [Fact]
-    public void Flatten_ChildNestedTwoLevelsDeep_ProducesDepthFirstOrderWithNoChildPointersLeft()
+    // Each level is (ParentLevel, ParentIndex, Values): ParentLevel < 0 marks the top level
+    // (its first node is the list head); otherwise Values' first node becomes the Child of
+    // levels[ParentLevel]'s node at ParentIndex. Plain tuples/arrays only, so Examples stays
+    // a public member without exposing the internal Node type through its signature - the
+    // graph itself is built privately in BuildMultilevelList, same as MinStackTests keeps
+    // MinStackSolution.MinStackOperations out of its own public signatures.
+    public static TheoryData<(int ParentLevel, int ParentIndex, int[] Values)[], int[]> Examples =>
+        new()
+        {
+            {
+                [(-1, -1, [1, 2, 3]), (0, 1, [4, 5]), (1, 0, [6, 7])],
+                [1, 2, 4, 6, 7, 5, 3]
+            },
+            {
+                [(-1, -1, [1, 2])],
+                [1, 2]
+            },
+            {
+                [(-1, -1, [1, 2]), (0, 1, [3])],
+                [1, 2, 3]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FlattenByStack_LeetCodeExamples_ProducesDepthFirstOrderWithPointersConsistent(
+        (int ParentLevel, int ParentIndex, int[] Values)[] levels, int[] expected) =>
+        AssertFlattened(FlattenAMultilevelDoublyLinkedListSolution.FlattenByStack(BuildMultilevelList(levels)), expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FlattenByBruteForceRescan_LeetCodeExamples_ProducesDepthFirstOrderWithPointersConsistent(
+        (int ParentLevel, int ParentIndex, int[] Values)[] levels, int[] expected) =>
+        AssertFlattened(FlattenAMultilevelDoublyLinkedListSolution.FlattenByBruteForceRescan(BuildMultilevelList(levels)), expected);
+
+    private static void AssertFlattened(Node? head, int[] expected)
     {
-        var n1 = new Node(1);
-        var n2 = new Node(2);
-        var n3 = new Node(3);
-        Link(n1, n2, n3);
-
-        var c1 = new Node(4);
-        var c2 = new Node(5);
-        Link(c1, c2);
-        n2.Child = c1;
-
-        var g1 = new Node(6);
-        var g2 = new Node(7);
-        Link(g1, g2);
-        c1.Child = g1;
-
-        var head = Flatten(n1);
-
-        Assert.Equal([1, 2, 4, 6, 7, 5, 3], ToValues(head));
-        Assert.All(ToNodes(head), node => Assert.Null(node.Child));
-    }
-
-    [Fact]
-    public void Flatten_NoChildren_LeavesFlatListUnchanged()
-    {
-        var n1 = new Node(1);
-        var n2 = new Node(2);
-        Link(n1, n2);
-
-        var head = Flatten(n1);
-
-        Assert.Equal([1, 2], ToValues(head));
-    }
-
-    [Fact]
-    public void Flatten_PreservesPreviousPointersThroughout()
-    {
-        var n1 = new Node(1);
-        var n2 = new Node(2);
-        Link(n1, n2);
-
-        var c1 = new Node(3);
-        n2.Child = c1;
-
-        var head = Flatten(n1);
         var nodes = ToNodes(head);
+
+        Assert.Equal(expected, nodes.Select(node => node.Val));
+        Assert.All(nodes, node => Assert.Null(node.Child));
 
         for (var i = 1; i < nodes.Count; i++)
         {
             Assert.Same(nodes[i - 1], nodes[i].Previous);
         }
     }
-
-    private static void Link(params Node[] nodes)
-    {
-        for (var i = 0; i < nodes.Length - 1; i++)
-        {
-            nodes[i].Next = nodes[i + 1];
-            nodes[i + 1].Previous = nodes[i];
-        }
-    }
-
-    private static List<int> ToValues(Node? head) => ToNodes(head).Select(node => node.Val).ToList();
 
     private static List<Node> ToNodes(Node? head)
     {
@@ -87,48 +70,37 @@ public sealed partial class FlattenAMultilevelDoublyLinkedListTests
         return nodes;
     }
 
-    private static Node? Flatten(Node? head)
+    private static Node BuildMultilevelList((int ParentLevel, int ParentIndex, int[] Values)[] levels)
     {
-        if (head is null)
+        var levelNodes = new List<Node>[levels.Length];
+        Node? head = null;
+
+        for (var levelIndex = 0; levelIndex < levels.Length; levelIndex++)
         {
-            return null;
+            var (parentLevel, parentIndex, values) = levels[levelIndex];
+            var nodes = values.Select(value => new Node(value)).ToList();
+            Link([.. nodes]);
+            levelNodes[levelIndex] = nodes;
+
+            if (parentLevel < 0)
+            {
+                head = nodes[0];
+            }
+            else
+            {
+                levelNodes[parentLevel][parentIndex].Child = nodes[0];
+            }
         }
 
-        var pending = new PendingStack();
-        var current = head;
-
-        while (current is not null)
-        {
-            AdvanceNode(current, pending);
-            current = current.Next;
-        }
-
-        return head;
+        return head!;
     }
 
-    private static void AdvanceNode(Node current, PendingStack pending)
+    private static void Link(params Node[] nodes)
     {
-        if (current.Child is not null)
+        for (var i = 0; i < nodes.Length - 1; i++)
         {
-            DescendIntoChild(current, current.Child, pending);
+            nodes[i].Next = nodes[i + 1];
+            nodes[i + 1].Previous = nodes[i];
         }
-
-        if (current.Next is null && pending.TryPop(out var resumed))
-        {
-            current.Next = resumed;
-            resumed.Previous = current;
-        }
-    }
-
-    private static void DescendIntoChild(Node current, Node child, PendingStack pending)
-    {
-        if (current.Next is not null)
-        {
-            pending.Push(current.Next);
-        }
-
-        current.Next = child;
-        child.Previous = current;
-        current.Child = null;
     }
 }

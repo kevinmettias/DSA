@@ -1,14 +1,13 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Flatten a Multilevel Doubly Linked List (LC 430): a brute-force approach that rescans from
-// head after every single splice (the classic "no bookkeeping" naive flatten, O(n^2) once every
-// node has a child) vs. this repo's own LIFO Stack<T> holding each level's not-yet-resumed Next
-// pointer, letting one forward pass splice every child list in O(n) - the same "push where DFS
-// should resume, descend now" shape FlattenNestedListIteratorBenchmarks already uses for LC 341.
-// Each [Benchmark] rebuilds a fresh copy since flattening is destructive (Child pointers are
-// cleared in place), matching RotateImageBenchmarks' per-invocation Clone convention.
+// Harness only: both arms are FlattenAMultilevelDoublyLinkedListSolution's, the same
+// methods FlattenAMultilevelDoublyLinkedListTests proves correct. Each [Benchmark] rebuilds
+// a fresh copy since flattening is destructive (Child pointers are cleared in place),
+// matching RotateImageBenchmarks' per-invocation Clone convention - so list construction
+// stays outside [GlobalSetup] deliberately, same as the pre-migration benchmark.
 [MemoryDiagnoser]
 public class FlattenAMultilevelDoublyLinkedListBenchmarks
 {
@@ -16,10 +15,12 @@ public class FlattenAMultilevelDoublyLinkedListBenchmarks
     public int Length;
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRescanFromHead() => CountNodes(BruteForceFlatten(BuildList(Length)));
+    public int BruteForceRescanFromHead() =>
+        CountNodes(FlattenAMultilevelDoublyLinkedListSolution.FlattenByBruteForceRescan(BuildList(Length)));
 
     [Benchmark]
-    public int StackBasedOnePass() => CountNodes(StackFlatten(BuildList(Length)));
+    public int StackBasedOnePass() =>
+        CountNodes(FlattenAMultilevelDoublyLinkedListSolution.FlattenByStack(BuildList(Length)));
 
     private static Node BuildList(int length)
     {
@@ -52,128 +53,5 @@ public class FlattenAMultilevelDoublyLinkedListBenchmarks
         }
 
         return count;
-    }
-
-    private static Node? BruteForceFlatten(Node? head)
-    {
-        while (TrySpliceNextChild(head))
-        {
-        }
-
-        return head;
-    }
-
-    private static bool TrySpliceNextChild(Node? head)
-    {
-        var splicePoint = FindNodeWithChild(head);
-        if (splicePoint is null)
-        {
-            return false;
-        }
-
-        var after = splicePoint.Next;
-        var childHead = AttachChildAsNext(splicePoint);
-        var tail = FindTail(childHead);
-        ReattachRemainder(tail, after);
-
-        return true;
-    }
-
-    private static Node AttachChildAsNext(Node splicePoint)
-    {
-        var childHead = splicePoint.Child!;
-        splicePoint.Next = childHead;
-        childHead.Previous = splicePoint;
-        splicePoint.Child = null;
-        return childHead;
-    }
-
-    private static Node FindTail(Node node)
-    {
-        var tail = node;
-        while (tail.Next is not null)
-        {
-            tail = tail.Next;
-        }
-
-        return tail;
-    }
-
-    private static void ReattachRemainder(Node tail, Node? after)
-    {
-        tail.Next = after;
-        if (after is not null)
-        {
-            after.Previous = tail;
-        }
-    }
-
-    private static Node? FindNodeWithChild(Node? head)
-    {
-        for (var node = head; node is not null; node = node.Next)
-        {
-            if (node.Child is not null)
-            {
-                return node;
-            }
-        }
-
-        return null;
-    }
-
-    private static Node? StackFlatten(Node? head)
-    {
-        if (head is null)
-        {
-            return null;
-        }
-
-        WalkAndFlatten(head);
-        return head;
-    }
-
-    private static void WalkAndFlatten(Node head)
-    {
-        var pending = new DSAExperimentation.DataStructures.Stack.Stack<Node>();
-        var current = head;
-
-        while (current is not null)
-        {
-            if (current.Child is not null)
-            {
-                SpliceChildIntoNext(current, pending);
-            }
-
-            if (current.Next is null && pending.TryPop(out var resumed))
-            {
-                current.Next = resumed;
-                resumed.Previous = current;
-            }
-
-            current = current.Next;
-        }
-    }
-
-    private static void SpliceChildIntoNext(Node current, DSAExperimentation.DataStructures.Stack.Stack<Node> pending)
-    {
-        if (current.Next is not null)
-        {
-            pending.Push(current.Next);
-        }
-
-        current.Next = current.Child;
-        current.Child!.Previous = current;
-        current.Child = null;
-    }
-
-    private sealed class Node(int val)
-    {
-        public int Val { get; } = val;
-
-        public Node? Previous { get; set; }
-
-        public Node? Next { get; set; }
-
-        public Node? Child { get; set; }
     }
 }

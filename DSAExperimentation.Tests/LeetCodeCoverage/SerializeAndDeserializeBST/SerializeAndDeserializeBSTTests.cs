@@ -1,76 +1,57 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SerializeAndDeserializeBST;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBST;
 
-// LeetCode 449. Serialize and Deserialize BST: unlike the general Binary Tree
-// version (LC 297, see SerializeAndDeserializeBinaryTreeTests), a BST's own
-// ordering invariant means a pre-order VALUE sequence alone (no null markers) is
-// enough to reconstruct the exact same shape - re-inserting those same values, in
-// that same pre-order, into a fresh tree via this repo's own
-// BinarySearchTree<TValue>.Insert always re-derives identical left/right
-// placement, since Insert's own less-than/greater-than walk is exactly the walk
-// that produced pre-order in the first place. Serialize itself is a thin local
-// pre-order walk over BinaryTreeNode<TValue>, the same shape
-// SerializeAndDeserializeBinaryTreeTests already uses for its own WriteNode - just
-// without the null-marker token, since a BST never needs one to round-trip.
-public sealed partial class SerializeAndDeserializeBSTTests
+// Harness only. Both round-trip strategies are SerializeAndDeserializeBSTSolution's
+// - this file just pins them to LeetCode's published examples via a preorder-value
+// sequence, building each example tree through this repo's own
+// BinarySearchTree<int>.Insert so its shape is always genuinely BST-ordered, and
+// comparing round-tripped shape by preorder traversal since the restored tree only
+// needs to be structurally identical, not reference-equal.
+public sealed class SerializeAndDeserializeBSTTests
 {
-    [Fact]
-    public void SerializeThenDeserialize_ClassicExample_RoundTripsToSameShape()
-    {
-        // [5,3,6,2,4]
-        var root = new BinaryTreeNode<int>(5) { Left = new(3) { Left = new(2), Right = new(4) }, Right = new(6) };
+    public static TheoryData<int[]> Examples =>
+        new()
+        {
+            new int[] { },
+            new int[] { 42 },
+            new int[] { 5, 3, 2, 4, 6 },
+        };
 
-        var restored = Deserialize(Serialize(root));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SerializeByNullMarkerQueueThenDeserializeByNullMarkerQueue_LeetCodeExamples_RoundTripsPreOrder(
+        int[] preOrder)
+    {
+        var root = BuildTree(preOrder);
+
+        var restored = SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
+            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(root));
 
         Assert.Equal(PreOrder(root), PreOrder(restored));
     }
 
-    [Fact]
-    public void SerializeThenDeserialize_EmptyTree_RoundTripsToNull()
-        => Assert.Null(Deserialize(Serialize(null)));
-
-    [Fact]
-    public void SerializeThenDeserialize_SingleNode_RoundTrips()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SerializeByPreOrderValuesThenDeserializeByBstInsert_LeetCodeExamples_RoundTripsPreOrder(
+        int[] preOrder)
     {
-        var root = new BinaryTreeNode<int>(42);
+        var root = BuildTree(preOrder);
 
-        var restored = Deserialize(Serialize(root));
+        var restored = SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
+            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(root));
 
         Assert.Equal(PreOrder(root), PreOrder(restored));
     }
 
-    private static string Serialize(BinaryTreeNode<int>? root)
+    private static BinaryTreeNode<int>? BuildTree(int[] preOrder)
     {
-        var tokens = new List<string>();
-        WritePreOrder(root, tokens);
-        return string.Join(',', tokens);
-    }
-
-    private static void WritePreOrder(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        tokens.Add(node.Value.ToString());
-        WritePreOrder(node.Left, tokens);
-        WritePreOrder(node.Right, tokens);
-    }
-
-    private static BinaryTreeNode<int>? Deserialize(string data)
-    {
-        if (data.Length == 0)
-        {
-            return null;
-        }
-
         var tree = new BinarySearchTree<int>();
 
-        foreach (var token in data.Split(','))
+        foreach (var value in preOrder)
         {
-            tree.Insert(int.Parse(token));
+            tree.Insert(value);
         }
 
         return tree.Root;
