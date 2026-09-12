@@ -1,48 +1,59 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SearchInABinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchInABinarySearchTree;
 
-// LeetCode 700. Search in a Binary Search Tree: the same "compare against the
-// current node, descend left or right" walk this repo's own
-// BinarySearchTree<TValue>.Has already performs internally, but returning the
-// matching BinaryTreeNode<TValue> itself instead of a bare bool - so its own
-// subtree comes along for free, exactly what LeetCode expects back. The same
-// FindNode shape LowestCommonAncestorOfBstTests already uses, minus its "value is
-// always present" presumption, since this problem's own examples include a val
-// that is not in the tree.
-public sealed partial class SearchInABinarySearchTreeTests
+// Harness only. Both strategies are SearchInABinarySearchTreeSolution's; this
+// file pins them to LeetCode's published examples, including the one where the
+// value is absent and the one where the value is the root itself (its own
+// subtree - the whole tree - comes back).
+public sealed class SearchInABinarySearchTreeTests
 {
-    [Fact]
-    public void SearchBst_ValuePresent_ReturnsSubtreeRootedAtThatValue()
-    {
-        var root = BuildTree(4, 2, 7, 1, 3);
+    public static TheoryData<int[], int, int?, int?, int?> Examples =>
+        new()
+        {
+            { [4, 2, 7, 1, 3], 2, 2, 1, 3 },
+            { [4, 2, 7, 1, 3], 5, null, null, null },
+            { [4, 2, 7, 1, 3], 4, 4, 2, 7 },
+        };
 
-        var found = SearchBst(root, 2);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchBstByLinearScan_LeetCodeExamples_ReturnsSubtreeRootedAtValue(
+        int[] treeValues, int val, int? expectedValue, int? expectedLeft, int? expectedRight)
+    {
+        var root = BuildTree(treeValues);
+
+        var found = SearchInABinarySearchTreeSolution.SearchBstByLinearScan(root, val);
+
+        AssertFound(found, expectedValue, expectedLeft, expectedRight);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SearchBstByBstDescent_LeetCodeExamples_ReturnsSubtreeRootedAtValue(
+        int[] treeValues, int val, int? expectedValue, int? expectedLeft, int? expectedRight)
+    {
+        var root = BuildTree(treeValues);
+
+        var found = SearchInABinarySearchTreeSolution.SearchBstByBstDescent(root, val);
+
+        AssertFound(found, expectedValue, expectedLeft, expectedRight);
+    }
+
+    private static void AssertFound(
+        BinaryTreeNode<int>? found, int? expectedValue, int? expectedLeft, int? expectedRight)
+    {
+        if (expectedValue is null)
+        {
+            Assert.Null(found);
+            return;
+        }
 
         Assert.NotNull(found);
-        Assert.Equal(2, found!.Value);
-        Assert.Equal(1, found.Left!.Value);
-        Assert.Equal(3, found.Right!.Value);
-    }
-
-    [Fact]
-    public void SearchBst_ValueAbsent_ReturnsNull()
-    {
-        var root = BuildTree(4, 2, 7, 1, 3);
-
-        var found = SearchBst(root, 5);
-
-        Assert.Null(found);
-    }
-
-    [Fact]
-    public void SearchBst_ValueIsRoot_ReturnsWholeTree()
-    {
-        var root = BuildTree(4, 2, 7, 1, 3);
-
-        var found = SearchBst(root, 4);
-
-        Assert.Same(root, found);
+        Assert.Equal(expectedValue, found!.Value);
+        Assert.Equal(expectedLeft, found.Left?.Value);
+        Assert.Equal(expectedRight, found.Right?.Value);
     }
 
     private static BinaryTreeNode<int> BuildTree(params int[] values)
@@ -58,17 +69,5 @@ public sealed partial class SearchInABinarySearchTreeTests
         // values array, so at least one Insert above always ran and Root is never
         // null here.
         return tree.Root!;
-    }
-
-    private static BinaryTreeNode<int>? SearchBst(BinaryTreeNode<int>? root, int val)
-    {
-        var node = root;
-
-        while (node is not null && node.Value != val)
-        {
-            node = val < node.Value ? node.Left : node.Right;
-        }
-
-        return node;
     }
 }

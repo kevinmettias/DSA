@@ -4983,8 +4983,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/TopKFrequentWords/TopKFrequentWordsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TopKFrequentWordsBenchmarks.cs",
       "primitivesUsed": "HashMap<string,int> for frequency counting; Heap<Element,TOrder> closed over the generic MinHeapOrder<Element>, ordered by a private WordPriority : IComparable<WordPriority> (frequency ascending, word descending on ties) as a size-k min-heap that evicts the least-frequent/lexicographically-largest word whenever it grows past k. Mirrors ReconstructItineraryTests' Heap<string,MinHeapOrder<string>> idiom and TopKFrequentElementsTests' size-k-heap shape.",
-      "notes": "Benchmark compares Dictionary+OrderByDescending/ThenBy full sort vs. HashMap+size-k-heap; both verified to agree via a standalone smoke run.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test and benchmark arms already agreed on the answer shape (string[] of words) so no reconciliation was needed beyond making k a parameter of the baseline instead of a hardcoded constant. No hoisted-overload pair was needed: the only input is the raw words array, and array generation is workload sizing that stays in the benchmark's [GlobalSetup].",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/TopKFrequentWords/TopKFrequentWordsSolution.cs",
+      "strategies": "TopKFrequentByFullSort (baseline: BCL Dictionary + OrderByDescending/ThenBy tie-break, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm, generalized to take k instead of the benchmark's hardcoded K=10), TopKFrequentByMinHeap (this repo's HashMap<string,int> + size-k Heap<WordPriority, MinHeapOrder<WordPriority>>, identical to the test's former private helper and the benchmark's HashMapThenSizeKMinHeap arm)",
+      "relocatedTypes": "WordPriority (IComparable tie-break record struct) kept as a private nested type inside TopKFrequentWordsSolution - it encodes LC 692's own tie-break rule and answers no other problem, so per ARCHITECTURE.md 17.3 it stays in the LeetCode problem folder rather than Algorithms/ or Domain/. No separate Fixtures/ folder existed to relocate."
     },
     {
       "id": 695,
@@ -4996,8 +4999,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaxAreaOfIsland/MaxAreaOfIslandTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaxAreaOfIslandBenchmarks.cs",
       "primitivesUsed": "Algorithms.Traversal.DepthFirst.DepthFirstSearch.Traverse over a bare (row,col) successor function, same as NumberOfIslandsTests/SurroundedRegionsTests/PacificAtlanticWaterFlowTests; the traversal's own List<TNode>.Count is used as the island's area instead of just counting components.",
-      "notes": "Benchmark compares a hand-rolled recursive flood fill vs. DepthFirstSearch.Traverse; both verified to agree via a standalone smoke run across two grid sizes.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both original arms mutate the grid in place (zeroing visited cells) and the original benchmark's own [Benchmark] methods each called a local CloneGrid() first so repeated BenchmarkDotNet invocations over the same fixture always started from the true input. I moved that clone-before-mutating step into both solution methods themselves (unconditionally, for both strategies) so the behavior is identical for the benchmark's repeated-invocation case and also makes the solution safe for a test harness that reuses grid literals across multiple [Theory] methods - this does not change any returned value on any input, only guarantees the caller's own array is never mutated as a side effect. No Fixtures/ subfolder existed to relocate; workload sizing (grid dimensions, land probability, random seed) stays in the benchmark's own [GlobalSetup].",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MaxAreaOfIsland/MaxAreaOfIslandSolution.cs",
+      "strategies": "MaxAreaByNaiveFloodFill (baseline: hand-recursive BCL-only flood fill, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), MaxAreaByDepthFirstSearch (this repo's DepthFirstSearch.Traverse walking each island's land component, identical algorithm to the test's former private helper and the benchmark's DepthFirstSearchTraversal arm)"
     },
     {
       "id": 698,
@@ -5009,8 +5014,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PartitionToKEqualSumSubsets/PartitionToKEqualSumSubsetsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PartitionToKEqualSumSubsetsBenchmarks.cs",
       "primitivesUsed": "Algorithms.Backtracking.Backtrack.TrySearch / BacktrackingSteps, generalizing MatchsticksToSquareTests' 4-bucket pattern (LC 473, which is this problem's k=4 special case) to a caller-supplied k-bucket State.",
-      "notes": "Benchmark compares a hand-rolled recursive backtracking search vs. Backtrack.TrySearch closed over identical choose/explore/unchoose steps; both verified to agree (and both find a valid partition) via a standalone smoke run for k=3 and k=5.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private CanPartitionKSubsets helper and the bench's BacktrackPrimitive arm were the same Backtrack.TrySearch strategy already (renamed to CanPartitionKSubsetsByGenericBacktrack); the bench's NaiveBacktracking baseline is now a first-class, tested method (CanPartitionKSubsetsByNaiveBacktracking). Both original arms already returned bool on the same inputs, so no reconciliation was needed. No fixtures existed to relocate. Mirrors the already-migrated MatchsticksToSquare (LC 473, this problem's k=4 special case) shape exactly, generalizing SquareSideCount to the k parameter.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PartitionToKEqualSumSubsets/PartitionToKEqualSumSubsetsSolution.cs",
+      "strategies": "CanPartitionKSubsetsByNaiveBacktracking, CanPartitionKSubsetsByGenericBacktrack"
     },
     {
       "id": 699,
@@ -5022,8 +5029,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FallingSquares/FallingSquaresTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FallingSquaresBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.LazySegmentTree.LazySegmentTree<int,int?,RangeAssignMaxOperation<int>> over a coordinate-compressed x-axis: range-max Query answers 'what height is already stacked under this square's footprint' and range-assign UpdateRange plants the new landed height across that footprint (RangeAssignMaxOperation's own algebra: a newer assignment always overwrites). Coordinate compression/binary-search plumbing uses plain BCL (List.Distinct/OrderBy, Array.BinarySearch), the same 'BCL for incidental sort/search plumbing, repo primitive for the real algorithm' split TheSkylineProblemTests already establishes with events.Sort. Verified against a trusted O(n^2) brute force across 200 randomized inputs (scratch stress test, removed after verification) plus 3 hand-checked xUnit cases.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private FallingSquares helper (coordinate compression + LazySegmentTree<int,int?,RangeAssignMaxOperation<int>>) became HeightsByLazySegmentTree; the bench's BruteForceOverlapScan baseline became the first-class, tested HeightsByBruteForceOverlapScan. Both original arms already returned List<int> on the same inputs, so no reconciliation was needed. LazySegmentTree and RangeAssignMaxOperation are pre-existing DataStructures/ primitives, composed rather than duplicated. No fixtures existed to relocate; CoordinatesPerPosition (an algorithm constant, not workload sizing) moved with CompressCoordinates into the solution class, while PositionRangeMultiplier/MaxSquareSize (workload sizing) stayed in the benchmark's GlobalSetup.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/FallingSquares/FallingSquaresSolution.cs",
+      "strategies": "HeightsByBruteForceOverlapScan, HeightsByLazySegmentTree"
     },
     {
       "id": 700,
@@ -5035,8 +5044,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SearchInABinarySearchTree/SearchInABinarySearchTreeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SearchInABinarySearchTreeBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.BinaryTreeNode<TValue> (compare-and-descend-left/right walk, the same shape BinarySearchTree.Has already uses internally) plus BinarySearchTree<TValue>.Insert to build the input tree. The node-returning descent is written locally in the test (a one-line while-loop), the same 'FindNode' shape LowestCommonAncestorOfBstTests already uses, minus its always-present presumption since LC700's own examples include a val absent from the tree. Benchmark contrasts an O(n) unordered linear scan against the O(log n) BST descent (shuffled insertion order, same convention DeleteNodeInABSTBenchmarks uses to avoid the degenerate ascending-insert case).",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private SearchBst helper and the benchmark's BinarySearchTreeDescent arm were the same algorithm under two names, reconciled into SearchBstByBstDescent returning the node (not the benchmark's bool). The benchmark's naive baseline previously scanned a separate values array (ignoring the tree, returning bool) - promoted to a genuine unordered DFS over the tree itself (BCL Stack<T> internals) returning the matched node, so it now answers the real question and is asserted for the first time. Benchmark methods project the result to int? via ?.Value since BinaryTreeNode<int> is internal and a public [Benchmark] method's return type must be at least as accessible; the measured call is still the one-line solution call.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SearchInABinarySearchTree/SearchInABinarySearchTreeSolution.cs",
+      "strategies": "SearchBstByLinearScan(BinaryTreeNode<int>? root, int val), SearchBstByBstDescent(BinaryTreeNode<int>? root, int val) - both return BinaryTreeNode<int>? (LeetCode's real answer shape: the matching subtree or null)"
     },
     {
       "id": 701,
@@ -5048,8 +5059,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/InsertIntoABinarySearchTree/InsertIntoABinarySearchTreeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/InsertIntoABinarySearchTreeBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.BinarySearchTree<TValue>.Insert directly is the target LeetCode operation (LC701 accepts any valid resulting BST, so no adapter is needed beyond confirming the value landed and ordering is preserved via InOrderTraversal/IInOrderHooks, the same composition DeleteNodeInABSTTests already uses for its own post-mutation check). Benchmark mirrors DeleteNodeInABSTBenchmarks' shape: a naive collect-in-order + sorted-list-insert + full balanced-rebuild baseline (touches all n nodes) vs. BinarySearchTree.Insert's O(h) root-to-empty-slot walk.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "The test never duplicated an algorithm (it called this repo's own BinarySearchTree<int>.Insert directly, already covered by DataStructures/Graph/Engines/Dags/Trees/BinarySearchTreeTests.cs), but the benchmark's baseline (BuildManual/CollectInOrder/BuildBalanced, all BCL-only) was untested scaffolding and both benchmark arms returned int (a node/element count) instead of LeetCode's real answer (the resulting tree). Promoted both to return the actual root; the baseline is now InsertByCollectSortRebuild, a first-class, tested strategy. Since LeetCode accepts ANY valid resulting BST, the harness asserts via in-order traversal (values present, in order) rather than one strategy's specific node-placement shape, which the original test's leftmost-leaf structural assertion was accidentally strategy-specific. No hoisted 'prepared input' overload was added: the original benchmark deliberately builds a fresh tree from the insertion order inside each measured call for both arms (matching DeleteNodeInABSTBenchmarks convention), which this migration preserves unchanged. Benchmark methods project to int? via ?.Value for the same public-return-type reason as #700.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/InsertIntoABinarySearchTree/InsertIntoABinarySearchTreeSolution.cs",
+      "strategies": "InsertByCollectSortRebuild(IEnumerable<int> existingValues, int newValue), InsertByBstInsert(IEnumerable<int> existingValues, int newValue) - both return BinaryTreeNode<int>? (the resulting BST's root)"
     },
     {
       "id": 703,
@@ -5061,8 +5074,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/KthLargestElementInAStream/KthLargestElementInAStreamTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/KthLargestElementInAStreamBenchmarks.cs",
       "primitivesUsed": "DataStructures.Heap.Heap<Element,TOrder> with MinHeapOrder<int> - size-k min-heap (same approach as the existing LC215 KthLargestElement folder), wired into a stateful KthLargestStream class for LC703's streaming Add(val) contract. Verified distinct-by-content from the pre-existing LC215 folder (one-shot static function vs. this problem's incremental class), so this is genuinely new coverage, not a duplicate.",
-      "notes": "Benchmark: sort-on-every-add List<int> baseline vs size-k min-heap. 4/4 new facts pass; full suite 1444 passed / 1 pre-existing skip.",
-      "architectureTier": "pre-section-17"
+      "notes": "This is a LeetCode 'design problem' (class KthLargest(k, nums) with instance method add(val)), not a single pure function, so the two strategies are modeled as private nested classes behind a shared IKthLargestStream interface with public static factory methods CreateBy<Strategy>, exactly the shape already established by FindMedianFromDataStreamSolution (LC295) for the same kind of stateful streaming problem. Behavior unchanged: both strategies return the same running kth-largest sequence the original test's KthLargestStream class asserted (4,5,5,8,8 for k=3, nums=[4,5,8,2], adds=[3,5,10,9,4]), now checked against both strategies instead of just one, and the benchmark's previously-untested SortOnEveryAdd baseline is now under test via CreateBySortOnEveryAdd.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/KthLargestElementInAStream/KthLargestElementInAStreamSolution.cs",
+      "strategies": "CreateBySortOnEveryAdd(int k, IEnumerable<int> nums) -> IKthLargestStream (BCL List, re-sorted every Add; promoted from the benchmark's untested baseline arm); CreateBySizeKMinHeap(int k, IEnumerable<int> nums) -> IKthLargestStream (this repo's Heap<int,MinHeapOrder<int>>, discard-smallest-past-k, unifying the test's private nested KthLargestStream class and the benchmark's SizeKMinHeap method, which had drifted into two separate implementations of the same algorithm)",
+      "relocatedTypes": "IKthLargestStream interface (Add(int val) contract) kept in the LeetCode/KthLargestElementInAStream problem folder, not DataStructures/ or Domain/ - it is bespoke to this one problem's design-problem shape, mirroring FindMedianFromDataStreamSolution's IMedianFinder precedent for LC295. New Benchmarks/Fixtures/KthLargestElementInAStreamWorkloads.cs holds only the random-stream sizing/seeding that was inline in the old benchmark's [GlobalSetup]."
     },
     {
       "id": 704,
@@ -5074,8 +5090,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/BinarySearchAlgorithm/BinarySearchAlgorithmTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/BinarySearchAlgorithmBenchmarks.cs",
       "primitivesUsed": "Algorithms.Searching.BinarySearch.Find over DataStructures.Sequence.ArraySequence<int>, translating Find's null-when-absent to LC704's -1 via ??.",
-      "notes": "Named the folder/namespace/class BinarySearchAlgorithm instead of the bare title BinarySearch: a sibling namespace literally called ...LeetCodeCoverage.BinarySearch shadowed the production Algorithms.Searching.BinarySearch class for every other LeetCodeCoverage test file that imports it unqualified via `using` (33 files broke with CS0234 on the first build attempt, since C# prefers an enclosing-namespace name over a using-imported type). Renamed and rebuilt clean; full suite re-verified green (1444 passed) afterward. Benchmark: O(n) linear scan vs O(log n) BinarySearch.Find, target forced to the last element.",
-      "architectureTier": "pre-section-17"
+      "notes": "No hoisted-input overload added: ArraySequence<int> is a zero-cost readonly struct wrapper around the caller's array (DataStructures/Sequence/ArraySequence.cs), so unlike LockGraph/Set<string> there is no real construction cost to charge to [GlobalSetup] separately - the benchmark still builds the sorted array and target in [GlobalSetup], but the measured methods take the plain int[]. Moved the array/target construction that was inline in the old benchmark into a new Benchmarks/Fixtures/BinarySearchAlgorithmWorkloads.cs (BuildSortedValues/FarthestTarget), matching the LockWorkloads/MissingNumberWorkloads convention of keeping only workload sizing in Fixtures. Behavior unchanged: both strategies return LeetCode's -1-for-not-found convention (via LeetCodeAnswer.None) on the same two published examples the original test asserted.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/BinarySearchAlgorithm/BinarySearchAlgorithmSolution.cs",
+      "strategies": "FindIndexByLinearScan(int[] nums, int target) -> int (promoted from the benchmark's previously-untested LinearScan baseline); FindIndexByBinarySearch(int[] nums, int target) -> int (this repo's Algorithms.Searching.BinarySearch.Find over an ArraySequence<int>, null translated to LeetCodeAnswer.None/-1 at the call site, same composition the pre-existing test helper already used)"
     },
     {
       "id": 705,
@@ -5087,8 +5105,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DesignHashSet/DesignHashSetTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignHashSetBenchmarks.cs",
       "primitivesUsed": "DataStructures.Set.Set<Element> (HashMap<Element,bool>-backed) wired directly into MyHashSet's Add/Remove/Contains.",
-      "notes": "Benchmark: List<int> Contains-scan baseline vs Set<int> O(1)-average. All new facts pass; full suite 1444 passed / 1 pre-existing skip after all three problems were added.",
-      "architectureTier": "pre-section-17"
+      "notes": "No behavior drift found between test and benchmark for this problem (both effectively implement the same LeetCode HashSet contract), so nothing needed reconciling toward 'LeetCode's real answer' beyond unifying the two into one interface. Test harness rewritten as a HashSetOp script (mirrors DesignTaskManagerTests'/InsertDeleteGetRandomO1Tests' Op-dispatch pattern) replayed via TheoryData against both strategies; kept the original example sequence and added LeetCode's own published example (duplicate-Add no-op case) since the original only exercised Add of distinct keys. Benchmark reduced to two one-line [Benchmark] arms delegating to the solution classes, preserving original [Params]/[GlobalSetup] exactly. No fixtures existed to relocate; no new DataStructures/Algorithms types introduced, so section 18 does not apply. Verified: all four projects build clean; full DSAExperimentation.Tests suite (6040 passed / 0 failed / 1 skipped) including Tests/Architecture/LayeringTests.cs passes.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DesignHashSet/DesignHashSetSolution.cs",
+      "strategies": "MyHashSetByListScan (baseline, promoted from the benchmark's untested List<int> arm), MyHashSetBySetBacked (matches the test's former private MyHashSet helper, backed by this repo's Set<int>) - both implementing a shared internal IMyHashSet interface (Add/Remove/Contains), following the Design-problem class-per-strategy shape already used by InsertDeleteGetRandomO1Solution rather than the <Operation>By<Strategy> static-method shape (no single pure-function signature exists for a stateful Add/Remove/Contains API)."
     },
     {
       "id": 706,
@@ -5100,8 +5120,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DesignHashMap/DesignHashMapTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignHashMapBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<TKey,TValue> - a thin int-key/int-value MyHashMap wrapper mapping Put/Get/Remove directly onto Set/TryGetValue/TryRemove, absorbing LeetCode's -1-for-missing-key contract at the call site.",
-      "notes": "New coverage. Benchmark: naive List<(int,int)> linear scan vs. repo HashMap on [Params(200,5000)]. Verified with a warmup+min-of-7 Stopwatch harness: near-parity at 200, HashMap 41x faster at 5000, 272x at 20000 (spot-checked). Full suite green (1471 passed / 1 pre-existing unrelated skip), both projects build 0 warnings/errors.",
-      "architectureTier": "pre-section-17"
+      "notes": "The benchmark's baseline arm only ever exercised insert-then-probe, never an update-existing-key Put; MyHashMapByLinearScanList had to be written as a real linear-scan map (update in place on a repeated key) to be a first-class, LeetCode-correct strategy under test rather than a narrower benchmark-only shortcut - this is the 'baseline promoted to the real answer' case the task calls out. Benchmark's RepoHashMap arm used HashMap.HasKey directly; the harness now calls Get(key) != -1 through the shared interface instead, which is behaviorally identical for this workload only because every populated value equals its own (non-negative) key, so -1 can never be a legitimate stored value - noted here since it's a small representational change, not a behavior change on the actual measured workload. Test harness rewritten as a HashMapOp script; kept both original examples (LeetCode sequence + remove-never-inserted no-op) unchanged. No fixtures to relocate; no new DataStructures/Algorithms types, so section 18 does not apply. Verified: all four projects build clean; full DSAExperimentation.Tests suite (6040 passed / 0 failed / 1 skipped) including LayeringTests passes.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DesignHashMap/DesignHashMapSolution.cs",
+      "strategies": "MyHashMapByLinearScanList (baseline, promoted from the benchmark's untested List<(int,int)> arm - rewritten as a genuinely correct Put/Get/Remove implementation with key-update-on-Put support, since the original benchmark arm only ever inserted each key once and never needed that path), MyHashMapByHashMapBacked (matches the test's former private MyHashMap helper, backed by this repo's HashMap<int,int>) - both implementing a shared internal IMyHashMap interface (Put/Get/Remove), same Design-problem class-per-strategy shape as DesignHashSetSolution/InsertDeleteGetRandomO1Solution."
     },
     {
       "id": 707,

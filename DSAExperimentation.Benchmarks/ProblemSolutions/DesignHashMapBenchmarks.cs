@@ -1,14 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignHashMap.DesignHashMapSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design HashMap (LC 706): a naive List<(int Key,int Value)> linear-scan map (the
-// "no hashing at all" baseline a first-pass implementation reaches for) vs. this repo's
-// HashMap<TKey,TValue>. Both are populated with the same Length distinct keys, then
-// probed with Length Get calls split evenly between present and absent keys, so the
-// linear scan's O(n) cost per lookup is fully exercised on every probe rather than
-// short-circuited by an early hit.
+// Harness only: both arms are DesignHashMapSolution's, the same classes
+// DesignHashMapTests proves correct. Both are populated with the same Length
+// distinct keys, then probed with Length Get calls split evenly between present
+// and absent keys, so the linear scan's O(n) cost per lookup is fully exercised
+// on every probe rather than short-circuited by an early hit. Every populated
+// value equals its own key (always >= 0), so "Get(key) != -1" is an unambiguous
+// hit test for both strategies.
 [MemoryDiagnoser]
 public class DesignHashMapBenchmarks
 {
@@ -34,43 +35,23 @@ public class DesignHashMapBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanList()
-    {
-        var entries = new List<(int Key, int Value)>(Length);
-        foreach (var key in _keys)
-        {
-            entries.Add((key, key));
-        }
-
-        var found = 0;
-        foreach (var probe in _probeKeys)
-        {
-            foreach (var entry in entries)
-            {
-                if (entry.Key == probe)
-                {
-                    found++;
-                    break;
-                }
-            }
-        }
-
-        return found;
-    }
+    public int LinearScanList() => Replay(new MyHashMapByLinearScanList());
 
     [Benchmark]
-    public int RepoHashMap()
+    public int HashMapBacked() => Replay(new MyHashMapByHashMapBacked());
+
+    private int Replay(IMyHashMap map)
     {
-        var map = new HashMap<int, int>();
         foreach (var key in _keys)
         {
-            map.Set(key, key);
+            map.Put(key, key);
         }
 
         var found = 0;
+
         foreach (var probe in _probeKeys)
         {
-            if (map.HasKey(probe))
+            if (map.Get(probe) != -1)
             {
                 found++;
             }

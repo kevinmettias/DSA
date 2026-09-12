@@ -1,13 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Set;
+using static DSAExperimentation.LeetCode.DesignHashSet.DesignHashSetSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design HashSet (LC 705): a plain List<int> baseline (Contains-scan before every
-// Add, indexed Remove that shifts every trailing element) vs. this repo's own
-// Set<int> (HashMap<Element,bool>-backed, the InsertDeleteGetRandomO1Benchmarks
-// precedent of composing this repo's HashMap for a "design" problem instead of a
-// one-shot algorithm) - O(n) per call vs. O(1) average per call.
+// Harness only: both arms are DesignHashSetSolution's, the same classes
+// DesignHashSetTests proves correct. A Design problem's whole point is a
+// sequence of mutating calls against one instance, so there is no separate
+// "prepare input" step to hoist into [GlobalSetup] beyond the add/probe order
+// arrays themselves - [GlobalSetup] builds those (so shuffling isn't charged to
+// the measured method) and each [Benchmark] arm constructs its own instance and
+// replays the same add-then-probe script - O(n) per call vs. O(1) average per
+// call.
 [MemoryDiagnoser]
 public class DesignHashSetBenchmarks
 {
@@ -29,46 +32,23 @@ public class DesignHashSetBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListBased()
-    {
-        var values = new List<int>();
-
-        foreach (var value in _addOrder)
-        {
-            if (!values.Contains(value))
-            {
-                values.Add(value);
-            }
-        }
-
-        var hits = 0;
-
-        foreach (var value in _containsOrder)
-        {
-            if (values.Contains(value))
-            {
-                hits++;
-            }
-        }
-
-        return hits;
-    }
+    public int ListScan() => Replay(new MyHashSetByListScan());
 
     [Benchmark]
-    public int SetBacked()
-    {
-        var values = new Set<int>();
+    public int SetBacked() => Replay(new MyHashSetBySetBacked());
 
+    private int Replay(IMyHashSet set)
+    {
         foreach (var value in _addOrder)
         {
-            values.TryAdd(value);
+            set.Add(value);
         }
 
         var hits = 0;
 
         foreach (var value in _containsOrder)
         {
-            if (values.Has(value))
+            if (set.Contains(value))
             {
                 hits++;
             }

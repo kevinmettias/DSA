@@ -1,66 +1,46 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertIntoABinarySearchTree;
 
-// LeetCode 701. Insert into a Binary Search Tree: this repo's own
-// BinarySearchTree<TValue>.Insert already is the target operation - the same
-// find-the-empty-slot-and-attach walk this problem asks for, with LeetCode's own
-// "any valid resulting BST is accepted" relaxation meaning no adapter is needed
-// beyond checking the value landed and the tree is still validly ordered
-// afterward (InOrderTraversal/IInOrderHooks, the same composition
-// DeleteNodeInABSTTests already uses for its own post-mutation check).
-public sealed partial class InsertIntoABinarySearchTreeTests
+// Harness only. Both strategies are InsertIntoABinarySearchTreeSolution's; this
+// file pins them to LeetCode's published examples. LeetCode accepts ANY valid
+// resulting BST, so assertions check the in-order sequence (every original
+// value present, in order, plus the new one) rather than one particular shape.
+public sealed class InsertIntoABinarySearchTreeTests
 {
-    [Fact]
-    public void Insert_NewLeafValue_IsFindableAndKeepsRemainingKeysOrdered()
-    {
-        var tree = BuildTree([4, 2, 7, 1, 3]);
-
-        tree.Insert(5);
-
-        Assert.True(tree.Has(5));
-        Assert.Equal([1, 2, 3, 4, 5, 7], InOrderValues(tree));
-    }
-
-    [Fact]
-    public void Insert_IntoEmptyTree_BecomesTheRoot()
-    {
-        var tree = new BinarySearchTree<int>();
-
-        tree.Insert(42);
-
-        Assert.NotNull(tree.Root);
-        Assert.Equal(42, tree.Root!.Value);
-        Assert.Equal(1, tree.Count);
-    }
-
-    [Fact]
-    public void Insert_ValueSmallerThanEveryExistingKey_BecomesLeftmostLeaf()
-    {
-        var tree = BuildTree([4, 2, 7]);
-
-        tree.Insert(1);
-
-        Assert.Equal([1, 2, 4, 7], InOrderValues(tree));
-        Assert.Equal(1, tree.Root!.Left!.Left!.Value);
-    }
-
-    private static BinarySearchTree<int> BuildTree(int[] values)
-    {
-        var tree = new BinarySearchTree<int>();
-
-        foreach (var value in values)
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
         {
-            tree.Insert(value);
-        }
+            { [4, 2, 7, 1, 3], 5, [1, 2, 3, 4, 5, 7] },
+            { [], 42, [42] },
+            { [4, 2, 7], 1, [1, 2, 4, 7] },
+        };
 
-        return tree;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void InsertByCollectSortRebuild_LeetCodeExamples_ReturnsBstContainingNewValue(
+        int[] existingValues, int newValue, int[] expectedInOrder)
+    {
+        var root = InsertIntoABinarySearchTreeSolution.InsertByCollectSortRebuild(existingValues, newValue);
+
+        Assert.Equal(expectedInOrder, InOrderValues(root));
     }
 
-    private static int[] InOrderValues(BinarySearchTree<int> tree)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void InsertByBstInsert_LeetCodeExamples_ReturnsBstContainingNewValue(
+        int[] existingValues, int newValue, int[] expectedInOrder)
+    {
+        var root = InsertIntoABinarySearchTreeSolution.InsertByBstInsert(existingValues, newValue);
+
+        Assert.Equal(expectedInOrder, InOrderValues(root));
+    }
+
+    private static int[] InOrderValues(BinaryTreeNode<int>? root)
     {
         State.Values.Value = [];
-        InOrderTraversal.Walk<int, CollectHooks>(tree.Root);
+        InOrderTraversal.Walk<int, CollectHooks>(root);
         return [.. State.Values.Value!];
     }
 
