@@ -1,13 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using static DSAExperimentation.LeetCode.DesignCircularQueue.DesignCircularQueueSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Circular Queue (LC 622): the textbook fixed int[] + head/tail/count
-// wraparound implementation vs. this repo's Deque<int> (already a wraparound-array
-// Representation, ARCHITECTURE.md §4.1) wrapped with an external capacity bound for
-// IsFull. Each [Benchmark] churns EnQueue/DeQueue pairs at a queue already at
-// capacity, forcing every operation through the wraparound path at both ends.
+// Harness only: both arms are DesignCircularQueueSolution's, the same classes
+// DesignCircularQueueTests proves correct. [GlobalSetup] builds one fixed,
+// deterministic call script - enough EnQueues to fill the queue exactly, then
+// repeated DeQueue/EnQueue/Rear rounds once it is at capacity, so every operation
+// after the fill is forced through the wraparound path at both ends - the same
+// "script construction charged to setup, replay is what gets measured" shape
+// DesignTaskManagerBenchmarks already uses for its own instance-API problem.
 [MemoryDiagnoser]
 public class DesignCircularQueueBenchmarks
 {
@@ -16,84 +18,54 @@ public class DesignCircularQueueBenchmarks
     [Params(8, 512)]
     public int Capacity;
 
+    private List<Func<ICircularQueue, int>> _script = null!;
+
+    [GlobalSetup]
+    public void Setup() => _script = BuildScript(Capacity, OperationCount);
+
     [Benchmark(Baseline = true)]
-    public int ArrayBacked()
-    {
-        var queue = new ArrayCircularQueue(Capacity);
-        var rearSum = 0;
-
-        for (var i = 0; i < OperationCount; i++)
-        {
-            if (queue.IsFull())
-            {
-                queue.DeQueue();
-            }
-
-            queue.EnQueue(i);
-            rearSum += queue.Rear();
-        }
-
-        return rearSum;
-    }
+    public long ArrayBacked() => Replay(new CircularQueueByArrayBacked(Capacity));
 
     [Benchmark]
-    public int DequeBacked()
-    {
-        var queue = new DequeCircularQueue(Capacity);
-        var rearSum = 0;
+    public long DequeBacked() => Replay(new CircularQueueByDequeBacked(Capacity));
 
-        for (var i = 0; i < OperationCount; i++)
+    // Sums every returned value rather than discarding it, so the JIT can't
+    // eliminate the replay as dead code - the same "return the real answer, not a
+    // weaker proxy" shape OpenTheLockBenchmarks/DesignTaskManagerBenchmarks
+    // already follow.
+    private long Replay(ICircularQueue queue)
+    {
+        var resultSum = 0L;
+
+        foreach (var op in _script)
         {
-            if (queue.IsFull())
+            resultSum += op(queue);
+        }
+
+        return resultSum;
+    }
+
+    private static List<Func<ICircularQueue, int>> BuildScript(int capacity, int operationCount)
+    {
+        var script = new List<Func<ICircularQueue, int>>();
+
+        for (var i = 0; i < operationCount; i++)
+        {
+            var value = i;
+
+            // Once the queue has been filled to capacity, every further EnQueue
+            // must first make room - churning both ends of the wraparound buffer
+            // for the remainder of the script, exactly as the pre-migration
+            // benchmark's IsFull()-guarded loop did.
+            if (i >= capacity)
             {
-                queue.DeQueue();
+                script.Add(queue => queue.DeQueue() ? 1 : 0);
             }
 
-            queue.EnQueue(i);
-            rearSum += queue.Rear();
+            script.Add(queue => queue.EnQueue(value) ? 1 : 0);
+            script.Add(queue => queue.Rear());
         }
 
-        return rearSum;
-    }
-
-    private sealed class ArrayCircularQueue
-    {
-        private readonly int[] _items;
-        private int _head;
-        private int _count;
-
-        public ArrayCircularQueue(int capacity) => _items = new int[capacity];
-
-        public bool IsFull() => _count == _items.Length;
-
-        public void EnQueue(int value)
-        {
-            _items[(_head + _count) % _items.Length] = value;
-            _count++;
-        }
-
-        public void DeQueue()
-        {
-            _head = (_head + 1) % _items.Length;
-            _count--;
-        }
-
-        public int Rear() => _items[(_head + _count - 1 + _items.Length) % _items.Length];
-    }
-
-    private sealed class DequeCircularQueue
-    {
-        private readonly RepoDeque _items = new();
-        private readonly int _capacity;
-
-        public DequeCircularQueue(int capacity) => _capacity = capacity;
-
-        public bool IsFull() => _items.Count == _capacity;
-
-        public void EnQueue(int value) => _items.PushBack(value);
-
-        public void DeQueue() => _items.TryPopFront(out _);
-
-        public int Rear() => _items.TryPeekBack(out var value) ? value : -1;
+        return script;
     }
 }

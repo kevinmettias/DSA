@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.ReshapeTheMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -7,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // that increments destination row/col directly, wrapping only when a row fills up
 // (no division or modulo per cell). Both visit exactly rows*cols cells - the gap
 // is per-cell arithmetic overhead, not algorithm class, the same framing this
-// repo's SpiralMatrixII benchmark already uses for a matrix-fill comparison.
+// repo's SpiralMatrixII benchmark already uses for a matrix-fill comparison. Both
+// strategies are proved equivalent by ReshapeTheMatrixTests.
 [MemoryDiagnoser]
 public class ReshapeTheMatrixBenchmarks
 {
@@ -35,43 +37,8 @@ public class ReshapeTheMatrixBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] LinearIndexDivMod()
-    {
-        var cols = _mat[0].Length;
-        var reshaped = Enumerable.Range(0, _r).Select(_ => new int[_c]).ToArray();
-
-        for (var i = 0; i < Rows * cols; i++)
-        {
-            reshaped[i / _c][i % _c] = _mat[i / cols][i % cols];
-        }
-
-        return reshaped;
-    }
+    public int[][] LinearIndexDivMod() => ReshapeTheMatrixSolution.ReshapeByLinearIndexDivMod(_mat, _r, _c);
 
     [Benchmark]
-    public int[][] CursorWalk()
-    {
-        var reshaped = Enumerable.Range(0, _r).Select(_ => new int[_c]).ToArray();
-        var destRow = 0;
-        var destCol = 0;
-
-        for (var r = 0; r < _mat.Length; r++)
-        {
-            for (var c = 0; c < _mat[0].Length; c++)
-            {
-                reshaped[destRow][destCol] = _mat[r][c];
-                destCol++;
-
-                if (destCol != _c)
-                {
-                    continue;
-                }
-
-                destCol = 0;
-                destRow++;
-            }
-        }
-
-        return reshaped;
-    }
+    public int[][] CursorWalk() => ReshapeTheMatrixSolution.ReshapeByCursorWalk(_mat, _r, _c);
 }

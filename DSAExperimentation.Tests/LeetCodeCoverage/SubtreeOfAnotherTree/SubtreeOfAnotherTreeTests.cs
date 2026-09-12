@@ -1,34 +1,63 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SubtreeOfAnotherTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SubtreeOfAnotherTree;
 
-// LeetCode 572. Subtree of Another Tree: for every node of the main tree, check
-// whether the subtree rooted there is structurally identical to subRoot - the
-// same node-by-node equality SameTreeTests already proves - stopping at the
-// first match.
-public sealed partial class SubtreeOfAnotherTreeTests
+// Harness only. Both structural-match strategies are
+// SubtreeOfAnotherTreeSolution's - this file just pins them to LeetCode's
+// published examples plus a couple of edge cases (a whole-tree match, and a
+// subRoot value that never appears in root at all). BinaryTreeNode<int> is
+// internal, so - as in SameTreeTests/ValidateBinarySearchTreeTests - it stays
+// out of a public TheoryData/[Theory] signature and is only ever handed to the
+// solution through private helpers.
+public sealed class SubtreeOfAnotherTreeTests
 {
     [Fact]
-    public void IsSubtree_MatchingSubtreeExists_ReturnsTrue()
-    {
-        var isSubtree = IsSubtree(
-            new BinaryTreeNode<int>(3) { Left = new(4) { Left = new(1), Right = new(2) }, Right = new(5) },
-            new BinaryTreeNode<int>(4) { Left = new(1), Right = new(2) });
-        Assert.True(isSubtree);
-    }
+    public void IsSubtreeByRecursiveCompareAtEveryNode_MatchingSubtreeExists_ReturnsTrue() =>
+        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(Root(), SubRoot()));
 
     [Fact]
-    public void IsSubtree_SameShapeDifferentValues_ReturnsFalse()
-    {
-        var isSubtree = IsSubtree(
-            new BinaryTreeNode<int>(3) { Left = new(4) { Left = new(1), Right = new(2) { Left = new(0) } }, Right = new(5) },
-            new BinaryTreeNode<int>(4) { Left = new(1), Right = new(2) });
-        Assert.False(isSubtree);
-    }
+    public void IsSubtreeByRecursiveCompareAtEveryNode_SameShapeDifferentValues_ReturnsFalse() =>
+        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(RootWithExtraLeaf(), SubRoot()));
 
-    private static bool IsSubtree(BinaryTreeNode<int>? root, BinaryTreeNode<int> subRoot)
-        => root is not null && (IsSame(root, subRoot) || IsSubtree(root.Left, subRoot) || IsSubtree(root.Right, subRoot));
+    [Fact]
+    public void IsSubtreeByRecursiveCompareAtEveryNode_WholeTreeMatch_ReturnsTrue() =>
+        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(Tree(5), Tree(5)));
 
-    private static bool IsSame(BinaryTreeNode<int>? p, BinaryTreeNode<int>? q)
-        => p is null || q is null ? p is null && q is null : p.Value == q.Value && IsSame(p.Left, q.Left) && IsSame(p.Right, q.Right);
+    [Fact]
+    public void IsSubtreeByRecursiveCompareAtEveryNode_SubRootValueNeverAppearsInRoot_ReturnsFalse() =>
+        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(
+            Tree(1, left: Tree(2)), Tree(3)));
+
+    [Fact]
+    public void IsSubtreeBySerializeThenKmpSearch_MatchingSubtreeExists_ReturnsTrue() =>
+        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(Root(), SubRoot()));
+
+    [Fact]
+    public void IsSubtreeBySerializeThenKmpSearch_SameShapeDifferentValues_ReturnsFalse() =>
+        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(RootWithExtraLeaf(), SubRoot()));
+
+    [Fact]
+    public void IsSubtreeBySerializeThenKmpSearch_WholeTreeMatch_ReturnsTrue() =>
+        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(Tree(5), Tree(5)));
+
+    [Fact]
+    public void IsSubtreeBySerializeThenKmpSearch_SubRootValueNeverAppearsInRoot_ReturnsFalse() =>
+        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(
+            Tree(1, left: Tree(2)), Tree(3)));
+
+    // 3 -> left: 4(left:1, right:2), right: 5
+    private static BinaryTreeNode<int> Root() =>
+        Tree(3, left: Tree(4, left: Tree(1), right: Tree(2)), right: Tree(5));
+
+    // Same as Root(), but 4's right child (2) carries an extra leaf, so no node's
+    // subtree is structurally identical to SubRoot() anymore.
+    private static BinaryTreeNode<int> RootWithExtraLeaf() =>
+        Tree(3, left: Tree(4, left: Tree(1), right: Tree(2, left: Tree(0))), right: Tree(5));
+
+    // 4 -> left: 1, right: 2
+    private static BinaryTreeNode<int> SubRoot() => Tree(4, left: Tree(1), right: Tree(2));
+
+    private static BinaryTreeNode<int> Tree(int value, BinaryTreeNode<int>? left = null, BinaryTreeNode<int>? right = null) =>
+        new(value) { Left = left, Right = right };
 }

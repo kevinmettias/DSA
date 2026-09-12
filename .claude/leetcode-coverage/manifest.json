@@ -4518,8 +4518,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ArrayPartition/ArrayPartitionTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ArrayPartitionBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.Sorting.MergeSort.Sort<int, ArrayIndexedSequence<int>> (same composition ThreeSumTests/ThreeSumBenchmarks already use) - sort ascending, then sum every even-indexed element, which maximizes the sum of pair-minimums.",
-      "notes": "Benchmark compares an O(n^2) repeated-smallest-pair scan (no sort) against the O(n log n) MergeSort + pair-sum approach; dry run confirmed the gap: MergeSort ~3.6x faster at Length=5000 despite higher constant overhead at Length=200. 2/2 new tests pass; full suite 1348 passed / 1 pre-existing unrelated skip / 0 failed; benchmarks project builds Release with 0 warnings.",
-      "architectureTier": "pre-section-17"
+      "notes": "No fixtures involved. Both original arms already agreed on the answer shape (int sum) so no reconciliation was needed - the defect here was purely the untested baseline plus the duplicated MergeSort arm. Test's TheoryData carries both original examples (4-element and 6-element cases). Benchmark GlobalSetup already produced the plain LeetCode-shaped int[] input, so no hoisted-overload pair was needed (matches the AddBinary reference shape, not OpenTheLock's).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ArrayPartition/ArrayPartitionSolution.cs",
+      "strategies": "MaxSumByRepeatedSmallestPairScan (O(n^2) baseline, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm, pure BCL internals), MaxSumByMergeSort (this repo's MergeSort over ArrayIndexedSequence + even-index summation, previously duplicated verbatim between the test's private ArrayPairSum helper and the benchmark's MergeSortPairSum)"
     },
     {
       "id": 566,
@@ -4531,8 +4533,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ReshapeTheMatrix/ReshapeTheMatrixTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ReshapeTheMatrixBenchmarks.cs",
       "primitivesUsed": "None - the matrix is a plain int[][] (same shape as this repo's existing SpiralMatrix/SpiralMatrixII/SetMatrixZeroes coverage) and every cell moves exactly once via row-major linear-index arithmetic; nothing in DataStructures/Algorithms needs composing, matching the precedent already recorded for SpiralMatrixII (id 566's manifest entry text should mirror that reasoning).",
-      "notes": "Benchmark compares a linear-index div/mod walk against a cursor walk that increments destination row/col directly (no per-cell division), the same 'per-cell overhead, not algorithm class' framing SpiralMatrixIIBenchmarks already uses. 2/2 new tests pass; full suite 1348 passed / 1 pre-existing unrelated skip / 0 failed; benchmarks project builds Release with 0 warnings.",
-      "architectureTier": "pre-section-17"
+      "notes": "No fixtures involved. ReshapeByCursorWalk's benchmark form lacked the rows*cols != r*c incompatible-dimensions guard (its workload always constructs compatible dimensions, so the gap was invisible); promoted it to include the same guard as ReshapeByLinearIndexDivMod so both strategies implement LeetCode's real, total answer rather than a workload-narrowed one. Test's TheoryData carries both original examples (compatible reshape, and incompatible-dimensions passthrough), asserted against both strategies. No hoisted-overload pair needed - GlobalSetup builds the plain LeetCode-shaped int[][]/r/c inputs directly.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ReshapeTheMatrix/ReshapeTheMatrixSolution.cs",
+      "strategies": "ReshapeByLinearIndexDivMod (flat-index div/mod walk; matches the test's original private MatrixReshape helper and the benchmark's baseline LinearIndexDivMod arm), ReshapeByCursorWalk (destination-cursor walk with wraparound, previously only in the benchmark and untested)"
     },
     {
       "id": 567,
@@ -4544,8 +4548,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PermutationInString/PermutationInStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PermutationInStringBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<char,int> - the identical fixed-size sliding-window pattern (two frequency maps plus a running 'matched distinct characters' counter) this repo's Find All Anagrams in a String (LC 438) coverage already composes; same algorithm family as LC 438 but a genuinely distinct LeetCode problem (returns bool on first match, not a list of every match index), so this is new coverage rather than a duplicate.",
-      "notes": "Benchmark compares a per-window frequency-map rebuild (O(n*m)) against the incremental sliding-window HashMap (O(n+m)); dry run confirmed ~3x speedup at both Length=2000 and Length=20000 with zero allocation on the sliding-window side. 2/2 new tests pass; full suite 1348 passed / 1 pre-existing unrelated skip / 0 failed; benchmarks project builds Release with 0 warnings.",
-      "architectureTier": "pre-section-17"
+      "notes": "No test/benchmark drift found for this problem - test's CheckInclusion and the benchmark's SlidingWindowFrequencyMap arm were already the same algorithm (sliding-window HashMap<char,int> with a running matched-distinct-chars counter), so they collapsed into one strategy, CheckInclusionBySlidingWindow. The benchmark's baseline arm (PerWindowFrequencyRebuild) was promoted to a first-class method, CheckInclusionByPerWindowRebuild, but its internals were switched from this repo's HashMap<char,int> to a BCL Dictionary<char,int> per SS17.5 ('a baseline's internals stay BCL'; only the input container may be a repo type, and here the input is just two plain strings). Extracted the benchmark's inline random-haystack generation into a new tier-5 workload fixture, DSAExperimentation.Benchmarks/Fixtures/PermutationInStringWorkloads.cs (BuildHaystack), following the DigitStringWorkloads/LockWorkloads naming convention - no Domain-tier type was warranted since nothing here fixes problem content. Test was thin (2 examples); added 2 more (s1 longer than s2; a match only found after the window has slid). All strategies verified to return LeetCode's real bool answer on every example. Full DSAExperimentation.Tests suite (5941 passed, 1 pre-existing unrelated skip, 0 failed) and all four projects (DSAExperimentation, .LeetCode, .Tests, .Benchmarks) build clean, including Tests/Architecture/LayeringTests.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PermutationInString/PermutationInStringSolution.cs",
+      "strategies": "CheckInclusionByPerWindowRebuild (baseline), CheckInclusionBySlidingWindow"
     },
     {
       "id": 572,
@@ -4557,8 +4563,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SubtreeOfAnotherTree/SubtreeOfAnotherTreeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SubtreeOfAnotherTreeBenchmarks.cs",
       "primitivesUsed": "DataStructures.Graph.Engines.Dags.Trees.BinaryTreeNode<int> (SameTree-style recursive equality composed at every node, matching the existing SameTree/BalancedBinaryTree coverage-test convention). Benchmark's optimized side additionally composes Algorithms.StringMatching.PrefixFunctionSearch (KMP) over a '#'-delimited preorder serialization to turn the check into an O(n+m) substring search vs. the naive O(n*m) baseline.",
-      "notes": "Forced worst-case benchmark inputs: both trees are left-skewed chains sharing filler value 1, with subRoot's deepest node set to a value (-1) that never appears in root, so neither approach can short-circuit early.",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature drift (both arms already returned bool). The test's private IsSubtree/IsSame recursion and the benchmark's identically-named baseline arm were the same textbook O(n*m) walk written out twice - that duplication is exactly the defect this migration removes - so they became one method, IsSubtreeByRecursiveCompareAtEveryNode; its internals are plain recursion, satisfying SS17.5's BCL-baseline rule since BinaryTreeNode<int> is the input shape, not internal scratch state. The benchmark-only serialize-and-KMP-search arm became IsSubtreeBySerializeThenKmpSearch, composing this repo's existing Algorithms/StringMatching/PrefixFunctionSearch (no new primitive needed). Extracted the benchmark's left-chain tree-building into a new tier-5 workload fixture, DSAExperimentation.Benchmarks/Fixtures/SubtreeOfAnotherTreeWorkloads.cs (BuildLeftChain + SubRootSizeDivisor) - this is a stress-shape choice for measurement (SS17.7's 'choosing ... an input size'), not problem content, so it stays out of Domain/. BinaryTreeNode<int> is internal, so a public TheoryData<BinaryTreeNode<int>,...>/[Theory] signature fails to compile (CS0053/CS0051, confirmed by trying it); followed the exact precedent already established by SameTreeTests/ValidateBinarySearchTreeTests: one [Fact] per example per strategy, building trees through private helpers. Test was thin (2 examples); added 2 more (a whole-tree exact match, and a subRoot value absent from root entirely) run against both strategies. Full DSAExperimentation.Tests suite (5941 passed, 1 pre-existing unrelated skip, 0 failed) and all four projects build clean, including Tests/Architecture/LayeringTests.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SubtreeOfAnotherTree/SubtreeOfAnotherTreeSolution.cs",
+      "strategies": "IsSubtreeByRecursiveCompareAtEveryNode (baseline), IsSubtreeBySerializeThenKmpSearch"
     },
     {
       "id": 581,
@@ -4570,8 +4578,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ShortestUnsortedContinuousSubarray/ShortestUnsortedContinuousSubarrayTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ShortestUnsortedContinuousSubarrayBenchmarks.cs",
       "primitivesUsed": "Algorithms.Sorting.MergeSort over DataStructures.Sequence.ArrayIndexedSequence<int> (same shape as MaximumGapTests) to produce a sorted copy, then a leftmost/rightmost-mismatch scan against the original array to find the shortest span needing re-sorting.",
-      "notes": "Benchmark compares O(n^2) selection sort vs. O(n log n) MergeSort, both followed by the identical scan, mirroring MaximumGapBenchmarks' structure.",
-      "architectureTier": "pre-section-17"
+      "notes": "No shape disagreement here (both original arms already returned the same int span length), so no answer promotion was needed beyond giving the baseline a first-class, tested home. No fixtures existed to relocate; both strategies compose only pre-existing DataStructures.Sequence/Algorithms.Sorting primitives, so no new DataStructures/Algorithms type was required.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ShortestUnsortedContinuousSubarray/ShortestUnsortedContinuousSubarraySolution.cs",
+      "strategies": "FindUnsortedSubarrayBySelectionSortScan (O(n^2) baseline, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), FindUnsortedSubarrayByMergeSortScan (this repo's MergeSort over ArrayIndexedSequence, previously duplicated identically in the test's private helper and the benchmark's second arm)"
     },
     {
       "id": 587,
@@ -4583,8 +4593,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ErectTheFence/ErectTheFenceTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ErectTheFenceBenchmarks.cs",
       "primitivesUsed": "Algorithms.Sorting.MergeSort over DataStructures.Sequence.ArrayIndexedSequence<(int,int)> (sort points by x then y with a custom IComparer, same shape as MinimumNumberOfArrowsToBurstBalloonsTests) + DataStructures.Stack.Stack<(int,int)> (Andrew's monotone-chain pop-while/push-back-once sweep, same shape as LargestRectangleInHistogramTests) to build the strict convex-hull corners; a second collinearity/betweenness scan against each hull edge (plain inline arithmetic, same category as MaxPointsOnALineBenchmarks' inline cross product) recovers the boundary trees that a textbook hull would otherwise drop.",
-      "notes": "No geometry/convex-hull primitive exists in DataStructures/ or Algorithms/, but none was needed: this is composition of existing Sort + Stack primitives around problem-specific arithmetic, not a new production primitive. Hand-verified both LeetCode official examples (including the all-collinear edge case) by tracing the algorithm before coding; both pass. Benchmark compares O(n^3) every-pair half-plane brute force vs. the O(n log n + h*n) primitive-based approach on random point clouds where hull size h << n.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both original benchmark arms measured fence.Count instead of building the fence, weaker than LeetCode's real answer (the point set) that the test's helper actually computed; both are promoted here to return List<(int X, int Y)>, matching the test helper and LeetCode's actual answer shape, per the prompt's guidance that promoting a weaker benchmark measurement to the real answer is fine. Reconciled the small guard difference too: the test helper short-circuited points.Length < 3 by returning all points as-is (a hull needs >=3 points to have an interior) while the benchmark arms had no such guard (immaterial at their Params of 50/300) - kept the guard in both solution methods since it is part of correct behavior at small n, not the difference being tested. No fixtures existed to relocate; both strategies compose only pre-existing DataStructures.Sequence/DataStructures.Stack/Algorithms.Sorting primitives, so no new DataStructures/Algorithms type was required. Verified: DSAExperimentation.Tests, DSAExperimentation.Benchmarks and DSAExperimentation.LeetCode all build clean, and the full DSAExperimentation.Tests suite (5914 passed, 1 pre-existing unrelated skip) plus Tests/Architecture/LayeringTests.cs pass.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ErectTheFence/ErectTheFenceSolution.cs",
+      "strategies": "OuterTreesByBruteForceHalfPlaneScan (O(n^3) baseline: every ordered point pair tested as a candidate hull line via a half-plane scan, then a collinearity/betweenness fold-in on qualifying edges - promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), OuterTreesByMonotoneChain (this repo's MergeSort over ArrayIndexedSequence to sort by (x,y), then Andrew's monotone chain over this repo's Stack<(int,int)> to get O(h) strict corners, then the same edge scan restricted to those h edges - previously duplicated identically between the test's private OuterTrees helper and the benchmark's second arm)"
     },
     {
       "id": 592,
@@ -4608,8 +4620,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ValidSquare/ValidSquareTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ValidSquareBenchmarks.cs",
       "primitivesUsed": "Algorithms.Sorting.MergeSort over DataStructures.Sequence.ArrayIndexedSequence: sorts the 6 pairwise squared distances among the 4 points, then a fixed-index check on the sorted result classifies the square/non-square shape (four equal sides, two equal diagonals = 2x a side) - same 'sort then scan' idiom as HIndexTests/HIndexBenchmarks.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private helper and the benchmark's non-baseline MergeSortThenScan arm were the identical sort-then-fixed-index-scan algorithm; consolidated into one strategy, IsValidSquareByMergeSort. The benchmark's [Benchmark(Baseline = true)] ManualMinMaxScan arm was never asserted anywhere; promoted to a first-class, now-tested strategy IsValidSquareByMinMaxScan per the hoisted-overload rule since GlobalSetup pre-builds the batch of int[][] quads. Both strategies' internals unchanged (baseline stays pure-BCL array/Math.Min/Math.Max). Test harness keeps all 4 original examples and adds a rotated/diamond-square true case, since the original only covered an axis-aligned true example.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ValidSquare/ValidSquareSolution.cs",
+      "strategies": "IsValidSquareByMergeSort(int[] p1,p2,p3,p4) + IsValidSquareByMergeSort(int[][] points); IsValidSquareByMinMaxScan(int[] p1,p2,p3,p4) + IsValidSquareByMinMaxScan(int[][] points)"
     },
     {
       "id": 621,
@@ -4621,8 +4635,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/TaskScheduler/TaskSchedulerTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TaskSchedulerBenchmarks.cs",
       "primitivesUsed": "DataStructures.HashMap<char,int> (per-task frequency counts) + DataStructures.Heap.Heap<int,MaxHeapOrder<int>> (max-heap always offering the most-frequent remaining task) + DataStructures.Queue.Queue<(int,int)> (holds a just-run task until its cooldown expires before re-pushing onto the heap) - the classic LeetCode heap+queue CPU-tick scheduler simulation.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private helper and the benchmark's non-baseline HashMapHeapAndCooldownQueue arm were the identical HashMap+Heap+cooldown-Queue algorithm, but the benchmark had hardcoded the cooldown as a private Cooldown=3 constant instead of LeetCode's own n parameter; reconciled onto LeastIntervalByCooldownHeap(tasks, n). The benchmark's untested [Benchmark(Baseline = true)] TickByTickArrayScan arm (also hardcoded to Cooldown=3) was promoted to a first-class, tested LeastIntervalByArrayScan(tasks, n), internals kept pure-BCL (flat int[] frequency/last-used arrays). No hoisted prepared-input overload needed: GlobalSetup only builds the char[] tasks array itself, already LeetCode's own input shape (same no-overload case as the AddBinary reference). Test harness keeps all 3 original examples and adds a trivial single-task case.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/TaskScheduler/TaskSchedulerSolution.cs",
+      "strategies": "LeastIntervalByCooldownHeap(char[] tasks, int n); LeastIntervalByArrayScan(char[] tasks, int n)"
     },
     {
       "id": 622,
@@ -4634,8 +4650,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DesignCircularQueue/DesignCircularQueueTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignCircularQueueBenchmarks.cs",
       "primitivesUsed": "DataStructures.Deque.Deque<int> (wraparound-array FIFO/deque, O(1) at both ends) - MyCircularQueue wraps it with an external capacity field for IsFull, otherwise using PushBack/TryPopFront/TryPeekFront/TryPeekBack as-is.",
-      "notes": "Benchmark compares a textbook fixed int[]+head/tail/count implementation vs. the Deque<int>-backed one under sustained wraparound churn at two capacities (8, 512).",
-      "architectureTier": "pre-section-17"
+      "notes": "Design problem (stateful instance API), so per §17.3/DesignTaskManagerSolution precedent the 'strategies' are two classes implementing a shared internal ICircularQueue interface rather than two static methods. The test's MyCircularQueue and the benchmark's DequeCircularQueue were the same strategy duplicated (per the defect this migration targets) and collapsed into one CircularQueueByDequeBacked; the benchmark's ArrayCircularQueue baseline was untested until now and is promoted to CircularQueueByArrayBacked, a first-class, directly-tested strategy. Test harness uses a CircularQueueOp call-script (mirroring MinStackOp/LRUCacheOp/TaskManagerOp), encoding LeetCode's own mixed bool/int results as 1/0 for the four bool-returning ops. Benchmark's [GlobalSetup] now builds one fixed, deterministic op script (fill-then-churn) replayed against each strategy; no hoisted overload was needed since there is no repo container to pre-build (capacity is a bare int). Both projects build clean; all 4 DesignCircularQueue tests pass (2 examples x 2 strategies).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DesignCircularQueue/DesignCircularQueueSolution.cs",
+      "strategies": "CircularQueueByArrayBacked (baseline: BCL int[] head/count wraparound, promoted from the benchmark's untested ArrayCircularQueue), CircularQueueByDequeBacked (composed: this repo's Deque<int> + external capacity bound, reconciled from the test's private MyCircularQueue and the benchmark's DequeCircularQueue, which were duplicate implementations of the same strategy)"
     },
     {
       "id": 638,
@@ -4647,8 +4665,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ShoppingOffers/ShoppingOffersTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ShoppingOffersBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer - memoizes the DFS-over-remaining-needs recurrence (offer-applies-or-not at each state), keyed on the needs vector encoded as a comma-joined string (TState=string) so distinct offer-application orders that land on the same remaining vector reuse one cached answer.",
-      "notes": "Verified against both official LeetCode examples (expected 14 and 11). Benchmark params (NeedsPerItem=4,7) show the expected crossover: BruteForce cheaper at the tiny size (memo overhead dominates), Memoized cheaper once BruteForce's redundant re-exploration starts to blow up.",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature drift here (unlike TwoSum/AddBinary) - both the test's and benchmark's memoized arms already returned the same int total cost on the same (price, special, needs) shape, so this was a straightforward hoist rather than a reconciliation. DirectCost/Applies/Reduce/Encode/Decode are shared private helpers used by both strategies (input-independent utilities, not duplicated algorithm logic). No hoisted [GlobalSetup] overload needed - the benchmark's prepared input is a trivial 3-element int[] literal, not a repo container. Both projects build clean; all 4 ShoppingOffers tests pass (2 examples x 2 strategies).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ShoppingOffers/ShoppingOffersSolution.cs",
+      "strategies": "MinCostByBruteForce (unmemoized DFS baseline, promoted from the benchmark's untested BestPriceUnmemoized), MinCostByMemoizedDfs (this repo's Memoizer over a comma-joined needs-vector key, moved from the test's private MinCost helper, which the benchmark's Memoized() arm already duplicated near-verbatim)"
     },
     {
       "id": 639,
