@@ -3916,8 +3916,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumNumberOfArrowsToBurstBalloons/MinimumNumberOfArrowsToBurstBalloonsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfArrowsToBurstBalloonsBenchmarks.cs",
       "primitivesUsed": "MergeSort.Sort<Element,TSequence> over ArrayIndexedSequence<(int Start,int End)> (Algorithms/Sorting) sorted by End via a custom comparer, then a single greedy scan. Deliberately NOT IntervalSet: its transitive overlap-merge (e.g. [1,2],[2,3],[3,4] merging into one interval) is not the same quantity as minimum stabbing points, which the test explicitly documents/asserts against.",
-      "notes": "Benchmark compares O(n^2) BruteForceRepeatedMinEndScan (repeated linear rescans for the min-end unburst balloon) vs O(n log n) SortByEndThenGreedyScan; data generator uses mostly non-overlapping shuffled balloons so brute force hits its true worst case. Dry-run at Length=3000: baseline 12.3ms vs primitive 2.6ms.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both the test's private helper and the benchmark's non-baseline arm already agreed on the answer shape (count of arrows, int) and algorithm, so no reconciliation was needed - just consolidation. Added a hoisted (int Start,int End)[] overload for each strategy since the benchmark's GlobalSetup already built points in that tuple shape (not int[][]); the two overloads can never collide since int[][] and (int,int)[] are distinct, non-convertible array element types. No fixtures existed to relocate. Verified: DSAExperimentation.LeetCode, .Tests, and .Benchmarks all build clean; full test suite (5801 passed/1 pre-existing skip) and LayeringTests pass.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumNumberOfArrowsToBurstBalloons/MinimumNumberOfArrowsToBurstBalloonsSolution.cs",
+      "strategies": "FindMinArrowShotsByBruteForceRescan(int[][]) + hoisted overload((int Start,int End)[]); FindMinArrowShotsBySortEndsThenGreedyScan(int[][]) + hoisted overload((int Start,int End)[])"
     },
     {
       "id": 455,
@@ -3929,8 +3931,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/AssignCookies/AssignCookiesTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/AssignCookiesBenchmarks.cs",
       "primitivesUsed": "MergeSort.Sort<int,ArrayIndexedSequence<int>> (Algorithms/Sorting) applied to both the greed-factor and cookie-size arrays, followed by a two-pointer greedy pass - same shape HIndexTests already exercises for a single array.",
-      "notes": "Benchmark compares O(n*m) BruteForceSmallestSufficientScan (linear rescan per child for the smallest sufficient remaining cookie) vs O(n log n + m log m) SortThenTwoPointer. Dry-run at Length=3000: baseline 17.2ms vs primitive 4.0ms.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both arms already agreed on shape (count of content children, int); consolidated as-is, behaviour unchanged. No hoisted overload needed - the benchmark's GlobalSetup already produces plain int[] arrays identical to LeetCode's own parameter shape, so there was nothing extra to hoist. No fixtures existed to relocate. Verified: all four projects build clean; full test suite (5801 passed/1 pre-existing skip) and LayeringTests pass.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/AssignCookies/AssignCookiesSolution.cs",
+      "strategies": "FindContentChildrenByBruteForceScan(int[] greed, int[] sizes); FindContentChildrenBySortThenTwoPointer(int[] greed, int[] sizes)"
     },
     {
       "id": 456,
@@ -3942,8 +3946,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/OneThreeTwoPattern/OneThreeTwoPatternTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/OneThreeTwoPatternBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<int> (aliased as OneThreeTwoStack) as a decreasing monotonic stack in a right-to-left sweep tracking a running 'third' candidate - same precedent as LargestRectangleInHistogramTests/TrappingRainWaterTests.",
-      "notes": "Benchmark compares O(n^2) BruteForceMinPrefixScan (running prefix-min plus a rescan to the right) vs O(n) MonotonicStack, on a strictly-increasing (pattern-free) array to force full worst-case scans on both. Dry-run at Length=3000: baseline 3.07ms vs primitive 1.88ms (at Length=200 the stack's constant-factor overhead makes it slower than baseline, which is expected small-n behavior, not a bug).",
-      "architectureTier": "pre-section-17"
+      "notes": "No return-shape disagreement between test and benchmark arms (both bool, matching LeetCode's real answer) - straightforward consolidation, no reconciliation needed. No hoisted overload needed (GlobalSetup only builds the raw int[] input, same as the AddBinary reference shape). No new DataStructures/Algorithms types introduced, so no Section 18 obligation.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/OneThreeTwoPattern/OneThreeTwoPatternSolution.cs",
+      "strategies": "HasPatternByBruteForce (baseline, O(n^2) prefix-min rescan, promoted from benchmark's untested [Benchmark(Baseline=true)] arm), HasPatternByMonotonicStack (repo Stack<int> right-to-left sweep, was duplicated identically in both the test's private helper and the benchmark's non-baseline arm; consolidated to one)"
     },
     {
       "id": 457,
@@ -3955,8 +3961,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CircularArrayLoop/CircularArrayLoopTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CircularArrayLoopBenchmarks.cs",
       "primitivesUsed": "DataStructures.SinglyLinkedList.SinglyLinkedListNode<int> + SinglyLinkedList.CycleDetection.HasCycle (Floyd's tortoise-and-hare) - the array's (i + nums[i]) mod n jump rule is built once as a functional graph of node links (edges left null for same-index self-loops and direction-mismatched adjacent steps, both of which disqualify a LeetCode cycle), then HasCycle is run from every start index.",
-      "notes": "13 new tests pass; full DSAExperimentation.Tests suite: 1254 passed, 0 failed, 1 pre-existing skip. Both Tests and Benchmarks projects build Release with 0 warnings/errors.",
-      "architectureTier": "pre-section-17"
+      "notes": "No return-shape disagreement (both bool, matching LeetCode's real answer). DSAExperimentation.Benchmarks/Fixtures/CircularArray{Graphs,Node,Topology}.cs looked related by filename but belong to a different problem (LC 2515, Shortest Distance to Target String in a Circular Array) and were left untouched - not this problem's fixtures. Kept GlobalSetup's random-value construction inline unchanged rather than adding a hoisted-input overload, per step 7's 'preserving the original GlobalSetup workload' - the pre-migration benchmark already charged graph construction to the measured LinkedListFloyd method itself, and no fixture needed relocating. No new DataStructures/Algorithms types introduced, so no Section 18 obligation.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CircularArrayLoop/CircularArrayLoopSolution.cs",
+      "strategies": "HasLoopByHashSetWalk (baseline, BCL HashSet per-start walk, promoted from benchmark's untested [Benchmark(Baseline=true)] arm), HasLoopByLinkedListFloyd (repo SinglyLinkedListNode<int> functional graph + CycleDetection.HasCycle, was duplicated identically in both the test's private helper and the benchmark's non-baseline arm; consolidated to one)"
     },
     {
       "id": 458,
@@ -3968,8 +3976,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PoorPigs/PoorPigsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PoorPigsBenchmarks.cs",
       "primitivesUsed": "Algorithms.Searching.BinarySearch.LowerBound + DataStructures.Sequence.ArraySequence<long> - (rounds+1)^pigs is monotonic in pigs, so the minimum pig count is the lower bound of `buckets` over an ArraySequence<long> of precomputed powers.",
-      "notes": "Verified against all 3 official LeetCode examples plus the buckets=1 edge case; all pass. Full suite green as above.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's helper and benchmark's non-baseline arm both computed basis=(minutesToTest/minutesToDie)+1 then binary-searched precomputed powers - no drift there. The baseline arm (LinearRecompute) had drifted to a narrower signature (Buckets only, Basis hardcoded to 2) since it lived only in the benchmark; reconciled onto LeetCode's real 3-parameter signature (buckets, minutesToDie, minutesToTest) so both strategies answer the same question and the baseline is now under test. Benchmark calls both with MinutesToDie=MinutesToTest=15 (basis 2) to preserve the original measured workload exactly.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PoorPigs/PoorPigsSolution.cs",
+      "strategies": "MinPigsByLinearRecompute (naive baseline, promoted from the benchmark's untested [Benchmark(Baseline=true)] arm), MinPigsByBinarySearch (test's private helper + benchmark's BinarySearchOverPowers, which were already the same algorithm)"
     },
     {
       "id": 459,
@@ -3981,8 +3991,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RepeatedSubstringPattern/RepeatedSubstringPatternTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RepeatedSubstringPatternBenchmarks.cs",
       "primitivesUsed": "Algorithms.StringMatching.PrefixFunctionSearch.ComputeFailureFunction (existing KMP) - s repeats iff failure[^1] is nonzero and s.Length % (s.Length - failure[^1]) == 0; this exact reuse beyond FindAll is called out in that primitive's own doc comment.",
-      "notes": "Full suite green as above.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between the test's private helper and the benchmark's KmpFailureFunction arm - both already returned bool via PrefixFunctionSearch.ComputeFailureFunction. The DivisorBruteForce baseline was untested before this migration; it is now a first-class method with its own theory cases. The benchmark's random-string GlobalSetup workload is left inline (workload sizing/seeding of a raw string, not a domain object) rather than hoisted into a second overload, since the LeetCode-shaped parameter (string) already is the prepared input.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RepeatedSubstringPattern/RepeatedSubstringPatternSolution.cs",
+      "strategies": "HasRepeatedSubstringPatternByDivisorBruteForce (naive baseline, promoted from the benchmark's untested [Benchmark(Baseline=true)] arm), HasRepeatedSubstringPatternByKmpFailureFunction (test's private helper + benchmark's non-baseline arm, which were already identical)"
     },
     {
       "id": 460,
@@ -3994,8 +4006,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/LFUCache/LFUCacheTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/LFUCacheBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Cache.LfuCache.LfuCache<TKey,TValue> - existing HashMap + frequency-bucket linked-list cache directly models get/put LFU eviction.",
-      "notes": "Full test suite passed after addition (710 passed, 1 skipped); benchmark project builds in Release with 0 warnings. Benchmark class is a compile-smoke placeholder for this pass and should be backfilled with a meaningful comparison in a later benchmark-quality sweep.",
-      "architectureTier": "pre-section-17"
+      "notes": "This pair didn't match the literal 'inline helper vs inline benchmark arm' defect: the old test called DataStructures.Cache.LfuCache.LfuCache<int,int> directly (one Fact, no algorithm inlined), and the old benchmark was a placeholder stub (Baseline()=>1, PrimitiveComposed()=>1) measuring nothing. Followed the already-migrated LRUCacheSolution/LRUCacheTests/LRUCacheBenchmarks pattern (LC 146, the exact peer problem) as the template: added a genuine textbook baseline (CreateByDictionaryLinearScan) as a first-class strategy so it's finally under test, both factories return ICache<int,int>. Test now states LeetCode's official worked example (including the frequency-tie-broken-by-LRU case) plus the original coverage entry's thinner example as LFUCacheOp scripts (Get/Put with LeetCode's -1-on-miss convention), one Theory per strategy. Benchmark rebuilt as a script-replay harness (GlobalSetup builds a fixed put/get script sized by [Params(200, 2000)], Replay sums returned values so the JIT can't dead-code it) mirroring LRUCacheBenchmarks exactly. No fixtures existed to relocate. Verified: dotnet build (Release) on Tests and Benchmarks projects, 0 errors; full DSAExperimentation.Tests suite (5801 passed / 1 unrelated skip, including Tests/Architecture/LayeringTests.cs) green.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/LFUCache/LFUCacheSolution.cs",
+      "strategies": "CreateByLfuCachePrimitive (composes the existing DataStructures/Cache/LfuCache primitive, already under its own direct unit tests), CreateByDictionaryLinearScan (new baseline: BCL Dictionary keyed entry carrying value/frequency/tick, O(n) linear-scan eviction)"
     },
     {
       "id": 464,
@@ -4007,8 +4021,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CanIWin/CanIWinTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CanIWinBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.DynamicProgramming.Memoizer - natural memoized recursion (same shape as NimGameTests/ClimbingStairsTests) keyed on an int bitmask of already-picked numbers.",
-      "notes": "Benchmark compares unmemoized bitmask recursion (O(n!) worst case) vs Memoizer-routed version (O(2^n * n)), with desiredTotal set to the full sum so both are forced through the worst-case tree. All 12 new tests pass; full suite 1256/1257 (1 pre-existing unrelated skip). Manually verified LeetCode's official examples (10,11)->false, (10,1)->true, (10,40)->false plus the maxSum<desiredTotal short-circuit (4,11)->false.",
-      "architectureTier": "pre-section-17"
+      "notes": "No test/benchmark drift here (unlike LC1's indices-vs-bool case) - the test's private helper and the benchmark's memoized arm computed the same thing via the same Memoizer composition, just duplicated. The real defect was the benchmark's brute-force baseline being untested; it is now CanWinByBruteForceRecursion under CanIWinTests' Theory coverage. No hoisted-overload split was needed: the benchmark only hoists the cheap desiredTotal=Gauss-sum computation into GlobalSetup, not a container construction, so the method keeps LeetCode's own (int maxChoosableInteger, int desiredTotal) shape with no repo-type overload. No new DataStructures/Algorithms primitives introduced; no fixtures to relocate. Verified: dotnet build (Release) on Tests and Benchmarks projects, 0 errors; full DSAExperimentation.Tests suite (5801 passed / 1 unrelated skip, including LayeringTests.cs) green.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CanIWin/CanIWinSolution.cs",
+      "strategies": "CanWinByBruteForceRecursion (unmemoized bitmask recursion, was the benchmark's untested [Benchmark(Baseline = true)] arm, promoted to a first-class tested strategy), CanWinByMemoizedRecursion (Algorithms.DynamicProgramming.Memoizer over the used-numbers bitmask, was both the test's private CanIWin helper and the benchmark's MemoizedRecursion arm - the two already agreed in shape (bool) and logic, just reconciled into one method)"
     },
     {
       "id": 466,
@@ -4020,8 +4036,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CountTheRepetitions/CountTheRepetitionsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CountTheRepetitionsBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<int,(int,int)> - cycle-detection cache mapping 'position within s2' to (s1Count, s2Count) at first arrival while greedily walking s2 across repeated copies of s1; a repeat is guaranteed within |s2|+1 copies of s1 by pigeonhole, enabling a fast-forward over the remaining copies instead of a character-by-character walk.",
-      "notes": "Benchmark compares the naive O(N1*|S1|) full simulation (the shape that times out on LeetCode's real n1<=10^6 constraint) against the HashMap cycle-detection version, whose cost stays flat as N1 grows. Verified the classic example (acb,4,ab,2)->2 and hand-traced a large n1=1,000,000 case (->10,000) before asserting. All new tests pass; full suite 1256/1257.",
-      "architectureTier": "pre-section-17"
+      "notes": "No answer-shape drift to reconcile - both source arms already returned LeetCode's real int answer. No fixtures existed for this problem. Verified: all four projects build clean; both strategies pass all 4 example cases (including the large n1=1,000,000 case); full suite 5802/5803 passed (1 pre-existing unrelated skip) including Tests/Architecture/LayeringTests. Manifest updated to architectureTier: section-17.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CountTheRepetitions/CountTheRepetitionsSolution.cs",
+      "strategies": "GetMaxRepetitionsByHashMapCycleDetection (test's private GetMaxRepetitions helper and benchmark's HashMapCycleDetection arm - identical HashMap<int,(int,int)> cycle-detection bodies, no drift), GetMaxRepetitionsByNaiveSimulation (benchmark's previously-untested [Benchmark(Baseline = true)] NaiveFullSimulation arm, now a first-class tested method). Both share a private ScanOneS1Copy helper for the underlying character walk."
     },
     {
       "id": 470,
@@ -4033,8 +4051,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ImplementRand10UsingRand7/ImplementRand10UsingRand7Tests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ImplementRand10UsingRand7Benchmarks.cs",
       "primitivesUsed": "Seeded System.Random standing in for the black-box Rand7(), the same convention every other randomness problem in this coverage suite uses (ShuffleAnArrayTests, RandomPickIndexTests, LinkedListRandomNodeTests). No DataStructures/Algorithms primitive fits this problem's actual challenge (rejection-sampling arithmetic over a black-box RNG, no storage/traversal/search involved) - 'lighter repo-primitive fit', the same bucket already used for LC 190/191/231.",
-      "notes": "Classic 7x7 rejection-sampling grid (two Rand7() calls address a uniform 1..49 cell, 9 cells beyond 40 discarded, remainder folds to 1..10). Benchmark contrasts this against a single-Rand7-call modulo fold, explicitly labeled a 'fast but statistically wrong' contrast (it can never produce 8/9/10) rather than a correctness baseline, since only one correct algorithm exists for this problem. All new tests pass (range + rough-uniformity checks over 2,000/20,000 trials with a fixed seed); full suite 1256/1257.",
-      "architectureTier": "pre-section-17"
+      "notes": "No fixtures existed. Rand10ByNaiveModuloFold is intentionally biased (documented in the original benchmark as a 'fast but wrong' contrast, not a correctness baseline), so its test asserts only range 1..10, not uniformity - Rand10ByRejectionSampling alone keeps the original range + rough-uniformity assertions over 2,000/20,000 seeded trials. Verified: all four projects build clean; full suite 5802/5803 passed (1 pre-existing unrelated skip) including Tests/Architecture/LayeringTests. Manifest updated to architectureTier: section-17.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ImplementRand10UsingRand7/ImplementRand10UsingRand7Solution.cs",
+      "strategies": "Rand10ByRejectionSampling (test's private Solution.Rand10() and benchmark's RejectionSampling arm - identical two-Rand7()-call 7x7 rejection grid, no drift), Rand10ByNaiveModuloFold (benchmark's previously-untested [Benchmark(Baseline = true)] NaiveModuloFold arm, now a first-class tested method). Both take Rand7 as an injected Func<int> delegate, matching LinkedListRandomNodeSolution's 'randomness passed explicitly' convention."
     },
     {
       "id": 472,
