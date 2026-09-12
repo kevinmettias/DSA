@@ -1,105 +1,52 @@
-using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.Algorithms.Folding.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using static DSAExperimentation.LeetCode.MapSumPairs.MapSumPairsSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MapSumPairs;
 
-// LeetCode 677. Map Sum Pairs: this repo's own LowercaseTrie<int> (bounded-alphabet
-// Trie, a real ITreeTopology witness per ARCHITECTURE.md §13.8) stores each key's
-// value at its end-of-word node - insert reuses Set's own overwrite-on-existing-key
-// semantics directly, exactly LC677's own "override to the new pair" rule. sum(prefix)
-// walks to the prefix's node (via the trie's already-public Root/Children, the same
-// navigation LowercaseTrieTests.WalkTo already rehearses) and folds a
-// SumValuesAlgebra - Combine = this node's own value plus its children's already-
-// folded sums, the same shape SizeAlgebra.Combine = 1 + children.Sum() already uses
-// for TreeMetrics.Size - over its subtree via TreeFold.Fold, with no prefix-sum-
-// specific trie code needed. A missing prefix's WalkTo returns null, and
-// TreeFold.Fold(null) already resolves to TAlgebra.Empty = 0, so "no key shares this
-// prefix" needs no special-casing either.
+// Harness only. Both strategies are MapSumPairsSolution's - this file inserts
+// every key/value in keys/values, then replays sum queries against each
+// IMapSumStrategy implementation and checks the totals LeetCode itself
+// publishes, so a failure still names the strategy that broke.
 public sealed class MapSumPairsTests
 {
-    [Fact]
-    public void Sum_LeetCodeExample_ReturnsExpectedTotals()
-    {
-        var mapSum = new MapSum();
-
-        mapSum.Insert("apple", 3);
-        Assert.Equal(3, mapSum.Sum("ap"));
-
-        mapSum.Insert("app", 2);
-        Assert.Equal(5, mapSum.Sum("ap"));
-    }
-
-    [Fact]
-    public void Insert_ExistingKey_OverridesPreviousValue()
-    {
-        var mapSum = new MapSum();
-
-        mapSum.Insert("apple", 3);
-        mapSum.Insert("apple", 10);
-
-        Assert.Equal(10, mapSum.Sum("apple"));
-    }
-
-    [Fact]
-    public void Sum_UnknownPrefix_ReturnsZero()
-    {
-        var mapSum = new MapSum();
-        mapSum.Insert("apple", 3);
-
-        Assert.Equal(0, mapSum.Sum("banana"));
-    }
-
-    [Fact]
-    public void Sum_EmptyPrefix_SumsEveryInsertedValue()
-    {
-        var mapSum = new MapSum();
-        mapSum.Insert("apple", 3);
-        mapSum.Insert("app", 2);
-        mapSum.Insert("banana", 4);
-
-        Assert.Equal(9, mapSum.Sum(""));
-    }
-
-    private sealed class MapSum
-    {
-        private readonly LowercaseTrie<int> _trie = new();
-
-        public void Insert(string key, int val) => _trie.Set(key, val);
-
-        public int Sum(string prefix)
+    public static TheoryData<string[], int[], string[], int[]> Examples =>
+        new()
         {
-            var node = WalkTo(_trie.Root, prefix);
-            return TreeFold.Fold<
-                LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-                NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-                SparseArrayChildren<LowercaseTrieNode<int>>, SumValuesAlgebra, int>(node);
+            // insert("apple", 3); sum("ap") == 3
+            { ["apple"], [3], ["ap"], [3] },
+            // insert("apple", 3); insert("app", 2); sum("ap") == 5
+            { ["apple", "app"], [3, 2], ["ap"], [5] },
+            // insert("apple", 3); insert("apple", 10) overrides; sum("apple") == 10
+            { ["apple", "apple"], [3, 10], ["apple"], [10] },
+            // insert("apple", 3); sum("banana") == 0 - unknown prefix
+            { ["apple"], [3], ["banana"], [0] },
+            // insert("apple", 3); insert("app", 2); insert("banana", 4);
+            // sum("") == 9 - empty prefix sums every inserted value
+            { ["apple", "app", "banana"], [3, 2, 4], [""], [9] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MapSumByDictionaryScan_LeetCodeExamples_ReturnsExpectedSums(
+        string[] keys, int[] values, string[] prefixes, int[] expected) =>
+        AssertSums(new MapSumByDictionaryScan(), keys, values, prefixes, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MapSumByTrieFold_LeetCodeExamples_ReturnsExpectedSums(
+        string[] keys, int[] values, string[] prefixes, int[] expected) =>
+        AssertSums(new MapSumByTrieFold(), keys, values, prefixes, expected);
+
+    private static void AssertSums(
+        IMapSumStrategy mapSum, string[] keys, int[] values, string[] prefixes, int[] expected)
+    {
+        for (var i = 0; i < keys.Length; i++)
+        {
+            mapSum.Insert(keys[i], values[i]);
         }
 
-        private static LowercaseTrieNode<int>? WalkTo(LowercaseTrieNode<int> root, string prefix)
+        for (var i = 0; i < prefixes.Length; i++)
         {
-            var current = root;
-
-            foreach (var ch in prefix)
-            {
-                current = current.Children[ch - 'a'];
-
-                if (current is null)
-                {
-                    return null;
-                }
-            }
-
-            return current;
+            Assert.Equal(expected[i], mapSum.Sum(prefixes[i]));
         }
-    }
-
-    private readonly struct SumValuesAlgebra : IFoldAlgebra<LowercaseTrieNode<int>, int>
-    {
-        public static int Empty => 0;
-
-        public static int Combine(LowercaseTrieNode<int> node, IReadOnlyList<int> children)
-            => (node.HasValue ? node.Value : 0) + children.Sum();
     }
 }

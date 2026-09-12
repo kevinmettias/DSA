@@ -1,19 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.ImplementMagicDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Implement Magic Dictionary (LC 676): scanning the whole dictionary and computing a
-// Hamming distance for every search word (same ReplaceWordsBenchmarks precedent -
-// build+scan cost has to be paid every call either way, so both benchmark methods
-// process a full batch of search words per call rather than just one, the same way
-// ReplaceWordsBenchmarks batches sentence words) vs. this repo's own
-// LowercaseTrie<bool>, walked via a one-substitution DFS over its already-public
-// Root/Children. O(words * dictionarySize * wordLength) vs. O(dictionarySize *
-// wordLength) to build the trie once plus O(words * wordLength * alphabetSize) to
-// search it. Each search word is exactly one dictionary word with a single character
-// substituted (guaranteed to be a real match), so neither strategy gets to
-// short-circuit on an early "definitely no match" bail-out.
+// Harness only: both arms are ImplementMagicDictionarySolution's, the same
+// factories ImplementMagicDictionaryTests proves correct. [GlobalSetup] builds
+// the dictionary and, for each dictionary word, a search word that is exactly
+// one character away from it (guaranteed to be a real match) - build+scan cost
+// has to be paid every call either way, so Replay processes a full batch of
+// search words per call rather than just one, the same "script construction
+// charged to setup, replay is what gets measured" shape LRUCacheBenchmarks
+// already uses for its own instance-API problem. O(words * dictionarySize *
+// wordLength) vs. O(dictionarySize * wordLength) to build the trie once plus
+// O(words * wordLength * alphabetSize) to search it.
 [MemoryDiagnoser]
 public class ImplementMagicDictionaryBenchmarks
 {
@@ -38,103 +37,26 @@ public class ImplementMagicDictionaryBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce()
-    {
-        var matches = 0;
-
-        foreach (var searchWord in _searchWords)
-        {
-            if (_dictionary.Any(word => IsOneCharacterAway(word, searchWord)))
-            {
-                matches++;
-            }
-        }
-
-        return matches;
-    }
-
-    private static bool IsOneCharacterAway(string word, string searchWord)
-    {
-        if (word.Length != searchWord.Length)
-        {
-            return false;
-        }
-
-        var differences = 0;
-
-        for (var i = 0; i < word.Length && differences <= 1; i++)
-        {
-            if (word[i] != searchWord[i])
-            {
-                differences++;
-            }
-        }
-
-        return differences == 1;
-    }
+    public int BruteForce() => Replay(ImplementMagicDictionarySolution.CreateByBruteForce());
 
     [Benchmark]
-    public int TrieSearch()
-    {
-        var trie = new LowercaseTrie<bool>();
+    public int TrieSearch() => Replay(ImplementMagicDictionarySolution.CreateByTrieSearch());
 
-        foreach (var word in _dictionary)
-        {
-            trie.Set(word, true);
-        }
+    private int Replay(ImplementMagicDictionarySolution.IMagicDictionary magicDictionary)
+    {
+        magicDictionary.BuildDict(_dictionary);
 
         var matches = 0;
 
         foreach (var searchWord in _searchWords)
         {
-            if (Search(trie.Root, new SearchState(searchWord, 0, UsedSubstitution: false)))
+            if (magicDictionary.Search(searchWord))
             {
                 matches++;
             }
         }
 
         return matches;
-    }
-
-    private readonly record struct SearchState(string SearchWord, int Index, bool UsedSubstitution);
-
-    private static bool Search(LowercaseTrieNode<bool> node, SearchState state)
-    {
-        if (state.Index == state.SearchWord.Length)
-        {
-            return state.UsedSubstitution && node.HasValue;
-        }
-
-        return SearchChildren(node, state);
-    }
-
-    private static bool SearchChildren(LowercaseTrieNode<bool> node, SearchState state)
-    {
-        var target = state.SearchWord[state.Index] - 'a';
-
-        for (var candidate = 0; candidate < LowercaseTrieNode<bool>.AlphabetSize; candidate++)
-        {
-            var next = node.Children[candidate];
-
-            if (next is not null && TryMatchCandidate(next, state, isTargetCandidate: candidate == target))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryMatchCandidate(LowercaseTrieNode<bool> next, SearchState state, bool isTargetCandidate)
-    {
-        var nextState = state with { Index = state.Index + 1 };
-
-        if (isTargetCandidate)
-        {
-            return Search(next, nextState);
-        }
-
-        return !state.UsedSubstitution && Search(next, nextState with { UsedSubstitution = true });
     }
 
     private static string RandomWord(Random random)
