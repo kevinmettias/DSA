@@ -4680,8 +4680,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DecodeWaysII/DecodeWaysIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DecodeWaysIIBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer, widening this repo's existing Decode Ways single/pair recurrence so '*' contributes the matching wildcard-digit way-counts (SingleWays/PairWays helpers), with every running total reduced mod 1e9+7.",
-      "notes": "Test cases verified by hand (including a self-derived '**' -> 96 and '*6*' -> 99, cross-checked two ways). Benchmark mirrors DecodeWaysBenchmarks.cs's existing Tabulation-vs-Memoized shape.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test's private helper and both benchmark arms already agreed on the same long-count-mod-1e9+7 answer shape, so no reconciliation was needed - just extraction into a solution class per the DecodeWays precedent. Test rewritten as a pure harness with a shared TheoryData<string,long> Examples, one [Theory] per strategy. Benchmark reduced to one-line calls into the solution class; workload sizing ([Params], [GlobalSetup] wildcard-pair construction) stayed in the benchmark file per section 17.7. No Fixtures folder existed for this problem, and no new DataStructures/Algorithms type was introduced, so section 18 does not apply. Verified: DSAExperimentation.LeetCode and DSAExperimentation.Tests both build clean; the 10 DecodeWaysII tests plus LayeringTests all pass.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DecodeWaysII/DecodeWaysIISolution.cs",
+      "strategies": "NumDecodingsByTabulation (baseline, promoted from the benchmark's untested Tabulation arm), NumDecodingsByMemoization (this repo's Algorithms.DynamicProgramming.Memoizer, matching the plain DecodeWays precedent)"
     },
     {
       "id": 640,
@@ -4693,8 +4695,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SolveTheEquation/SolveTheEquationTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SolveTheEquationBenchmarks.cs",
       "primitivesUsed": "None - a single left-to-right scan per equation side (sign, then digits, then optional trailing 'x') over ReadOnlySpan<char>, folded into a running (coefficient-of-x, constant) pair, then one O(1) combine/solve step. No repo container or algorithm primitive applies to a single closed-form parse-then-combine problem like this - same 'lighter repo-primitive fit' precedent this repo's own manifest already accepted for Complex Number Multiplication (LC 537) / ComplexNumberMultiplicationTests.cs.",
-      "notes": "4/4 new tests pass (3 official LeetCode examples 'x+5-3+x=6+x-2'->x=2, 'x=x'->Infinite solutions, '2x=x'->x=0, plus one hand-derived No-solution edge case 'x=x+2'). Benchmark mirrors ComplexNumberMultiplicationBenchmarks' shape: SubstringParse (allocating string.Substring per term) vs SpanParse (zero-alloc ReadOnlySpan<char> slicing) over the same combine/solve logic. dotnet build (Debug, Tests) and dotnet build (Release, Benchmarks) both succeeded with 0 errors; BenchmarkDotNet dry run confirmed SpanParse allocates 0 B per op vs ~22KB/~544KB for SubstringParse at TermsPerSide=200/5000, and both variants agree on the same solved-equation output.",
-      "architectureTier": "pre-section-17"
+      "notes": "The test's own private Solve helper was already span-based and answer-shape-identical to the benchmark's SpanParse arm (same algorithm, just a mutable ParseState class vs the benchmark's immutable record-with-expressions state) - these were one strategy, not two, so I kept the benchmark's already-well-factored implementation verbatim in the solution class rather than keeping both. The benchmark's SubstringParse baseline was untested by anything; it is now a first-class method under test. No repo container or algorithm primitive applies (same as the ComplexNumberMultiplication/LC-537 precedent this problem's own comments already cite), so both strategies' internals stay plain BCL string/span parsing. Test rewritten as a pure harness (shared TheoryData<string,string> Examples, one [Theory] per strategy, keeping all 4 original LeetCode/edge-case examples). Benchmark reduced to one-line calls into the solution class; the random equation-string workload generator (BuildSide) stayed in the benchmark file, matching the ComplexNumberMultiplicationBenchmarks precedent of not extracting ad hoc random-string workloads into Fixtures. No Fixtures folder existed, and no new DataStructures/Algorithms type was introduced. Verified: DSAExperimentation.LeetCode and DSAExperimentation.Tests both build clean; the 8 SolveTheEquation tests plus LayeringTests all pass.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SolveTheEquation/SolveTheEquationSolution.cs",
+      "strategies": "SolveBySubstringParse (baseline, promoted from the benchmark's untested SubstringParse arm), SolveBySpanParse (the same span-based term scan the test's private helper and the benchmark's SpanParse arm both already implemented, reconciled onto one method)"
     },
     {
       "id": 641,
@@ -4706,8 +4710,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DesignCircularDeque/DesignCircularDequeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignCircularDequeBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.Deque.Deque<int> (wraparound-array Representation, ARCHITECTURE.md §4.1) with an external capacity bound layered on top for IsFull - the exact same 'compose, don't invent a new representation' move DesignCircularQueueTests already makes over this same Deque<int>, here exercising both ends (PushFront/PushBack/TryPopFront/TryPopBack/TryPeekFront/TryPeekBack) instead of only the FIFO pair.",
-      "notes": "2/2 new tests pass, including the official LeetCode operation sequence verbatim (insertLast/insertLast/insertFront/insertFront(fails-full)/getRear/isFull/deleteLast/insertFront/getFront). Benchmark mirrors DesignCircularQueueBenchmarks' shape: a hand-rolled fixed int[]+head/count wraparound baseline vs the Deque<int>-backed one, churning an insert-last/insert-front/delete-front/delete-last cycle at (near) capacity to force wraparound on both ends. dotnet build (Debug, Tests) and dotnet build (Release, Benchmarks) both succeeded with 0 errors (one transient Benchmarks build failure was observed mid-session from two unrelated in-progress concurrent-session files, MaximumBinaryTreeBenchmarks.cs/TrimABinarySearchTreeBenchmarks.cs referencing internal BinaryTreeNode<int> from a public method - not part of this cluster, and it self-resolved on retry). BenchmarkDotNet dry run executed both variants correctly and allocation-free at Capacity=8/512.",
-      "architectureTier": "pre-section-17"
+      "notes": "Design-problem shape (stateful object, 8 operations), mirrored on the already-migrated DesignCircularQueueSolution precedent: internal static class DesignCircularDequeSolution holds a shared ICircularDeque interface plus the two strategy classes. Reconciled a drift: the test's MyCircularDeque returned bool from InsertFront/InsertLast/DeleteFront/DeleteLast (matching LeetCode's real API) and -1 sentinels from GetFront/GetRear on empty, while the benchmark's ArrayCircularDeque/DequeCircularDeque returned void and never checked bounds internally (relying on the benchmark's own external IsFull()-guarded churn loop, and never asseryted against anything). Promoted the array-backed arm to the real bool/int LeetCode answer shape (now internally checks IsFull/IsEmpty and returns LeetCodeAnswer.None on empty peeks), so it is a first-class tested strategy instead of an untested baseline. Test harness rewritten as a call-script (CircularDequeOp/Apply, mirroring DesignCircularQueueTests' CircularQueueOp) with one [Theory] per strategy, preserving both original examples exactly (capacity-3 sequence and the capacity-1 empty-deque sequence). Benchmark harness rewritten as a one-line-per-arm churn cycle summing every bool/int result (long accumulator, matching the DesignCircularQueueBenchmarks style) so the JIT cannot dead-code-eliminate it; same [Params(8, 512)] and 50,000-operation churn shape preserved. No Fixtures/ subfolder existed for this problem. Build (DSAExperimentation, DSAExperimentation.LeetCode, DSAExperimentation.Tests, DSAExperimentation.Benchmarks) and full test suite (5982 passed) verified clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DesignCircularDeque/DesignCircularDequeSolution.cs",
+      "strategies": "CircularDequeByArrayBacked (baseline, promoted from benchmark-only untested arm to a real bool-returning ICircularDeque implementation), CircularDequeByDequeBacked (promoted from the test's private MyCircularDeque helper, composes DataStructures.Deque.Deque<int>)"
     },
     {
       "id": 647,
@@ -4719,8 +4725,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PalindromicSubstrings/PalindromicSubstringsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PalindromicSubstringsBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.StringMatching.Manacher.ComputeOddRadii/ComputeEvenRadii - summing every radius counts every palindromic substring in one O(n) pass, since a radius of k at a center means k nested palindromes (of increasing length) are centered there. Same primitive LongestPalindromicSubstringTests already reuses for LC 5, read differently here: that test takes the max radius, this one takes the sum.",
-      "notes": "4/4 new tests pass, verified by hand: 'abc'->3 ('a','b','c'), 'aaa'->6 ('a','a','a','aa','aa','aaa'), 'aba'->4 ('a','b','a','aba'), 'a'->1. Benchmark mirrors LongestPalindromicSubstringBenchmarks' shape: an O(n^2) expand-around-every-center counting baseline vs the O(n) Manacher-radii-sum, over the same 4-letter-alphabet text generator so the quadratic baseline actually pays its worst case. dotnet build (Debug, Tests) and dotnet build (Release, Benchmarks) both succeeded with 0 errors; BenchmarkDotNet dry run executed both variants correctly at Length=500/8000 (a single-iteration dry run only confirms correctness/no crashes, not the asymptotic crossover a full run would show).",
-      "architectureTier": "pre-section-17"
+      "notes": "Both the test's and benchmark's helpers already agreed on the answer shape (int count) and algorithm, unlike the drifted pairs this cluster targets - the only defect here was duplication (same two algorithms written once in each harness) plus the untested baseline. Mirrored the already-migrated LongestPalindromicSubstringSolution precedent, which composes the same Manacher primitive read differently (max radius vs. sum of radii here). No hoisted overload needed - input is a plain string, no repo-type construction to charge to [GlobalSetup]. Test rewritten as TheoryData Examples (kept all 4 original cases: 'abc'->3, 'aaa'->6, 'aba'->4, 'a'->1) with one [Theory] per strategy. Benchmark rewritten as one-line [Benchmark] calls into the solution class; random-text [GlobalSetup] (4-letter alphabet, seed 29, [Params(500, 8000)]) is unchanged workload sizing/seeding, kept inline in the benchmark exactly as the LongestPalindromicSubstring precedent does (no shared Fixtures type existed to relocate). Build and full test suite (5982 passed) verified clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PalindromicSubstrings/PalindromicSubstringsSolution.cs",
+      "strategies": "CountSubstringsByExpandAroundCenter(string) - baseline, promoted from the benchmark's private CountExpansionsFrom helper; CountSubstringsByManacher(string) - promoted from the test's private CountSubstrings helper, composes Algorithms.StringMatching.Manacher.ComputeOddRadii/ComputeEvenRadii"
     },
     {
       "id": 648,
@@ -4732,8 +4740,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ReplaceWords/ReplaceWordsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ReplaceWordsBenchmarks.cs",
       "primitivesUsed": "DataStructures.Graph.Engines.Dags.Trees.LowercaseTrie<bool> holding the dictionary of roots; walk the trie once per sentence word and stop at the first HasValue node reached, which is exactly the shortest matching root (root-to-leaf walk order guarantees this).",
-      "notes": "Benchmark compares a naive per-word full-dictionary StartsWith scan (O(words*dict*rootLen), forced to check every root since only checking-until-first-match wouldn't guarantee the shortest one) vs. a single LowercaseTrie walk (O(words*wordLen)).",
-      "architectureTier": "pre-section-17"
+      "notes": "Test and benchmark strategies already agreed on answer shape (string) - no drift to reconcile. LowercaseTrie<bool> already existed in DataStructures/Graph/Engines/Dags/Trees, so no fixture relocation needed. Benchmark's GlobalSetup only builds the LeetCode-shaped inputs (string[] dictionary, string sentence) - changed the hoisted _sentence field from string[] to a pre-joined string so joining isn't charged to the measured method; no second hoisted-input overload was needed since nothing beyond LeetCode's own input shape is prepared. Added no new test examples beyond the original two (both were LeetCode's own published-style cases and both strategies are now asserted against each).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ReplaceWords/ReplaceWordsSolution.cs",
+      "strategies": "ReplaceByDictionaryScan (baseline, BCL StartsWith scan), ReplaceByTrieWalk (this repo's LowercaseTrie<bool>, walk stops at first HasValue node)"
     },
     {
       "id": 649,
@@ -4745,8 +4755,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/Dota2Senate/Dota2SenateTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/Dota2SenateBenchmarks.cs",
       "primitivesUsed": "DataStructures.Queue.Queue<int>, one instance per party (Radiant/Dire), holding senator indices in voting order - the standard two-queue simulation (earlier front index bans the other; winner re-enqueued at index+n).",
-      "notes": "Benchmark compares an O(n^2)-worst-case circular rescan-for-next-unbanned-opponent baseline (input deliberately grouped all-R-then-all-D to force long skip chains) vs. the O(n) two-Queue<int> simulation. Used the 'RepoQueue' alias convention (precedented in TaskSchedulerTests/Benchmarks) since ImplicitUsings pulls in System.Collections.Generic.Queue<T>, which would otherwise collide with the bare name.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test and benchmark strategies already agreed on answer shape (string party name) - no drift to reconcile. Queue<int> already existed in DataStructures/Queue, so no fixture relocation needed. No hoisted prepared-input overload added for the two-queue strategy: the queues are drained by the simulation itself, so - unlike a read-only graph such as OpenTheLock's LockGraph - there is nothing safe to reuse across benchmark invocations; rebuilding them per call (as the original benchmark already did) is the only correct option. Changed the benchmark's hoisted field from char[] to string so it matches Solution's LeetCode-shaped parameter directly. Added 3 extra examples (single-party R, single-party D, a 5-senator case) beyond the original two thin cases, all verified against the queue-simulation algorithm by hand.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/Dota2Senate/Dota2SenateSolution.cs",
+      "strategies": "PredictPartyVictoryByCircularRescan (baseline, BCL bool[] banned-flag rescan), PredictPartyVictoryByTwoQueueSimulation (this repo's Queue<int>, one per party)"
     },
     {
       "id": 653,
@@ -4758,8 +4770,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/TwoSumIVInputIsABST/TwoSumIVInputIsABSTTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TwoSumIVInputIsABSTBenchmarks.cs",
       "primitivesUsed": "DataStructures.Graph.Engines.Dags.Trees.BinarySearchTree<int> (built via Insert, exposing Root/BinaryTreeNode<int>) + DataStructures.Set.Set<int> (single DFS over the tree checking each node's complement against values already seen) - the same one-pass Set/HashMap idiom TwoSumTests/ContainsDuplicateTests already use.",
-      "notes": "Naming follows the 'Two Sum II - Input Array Is Sorted' -> TwoSumIIInputArrayIsSorted precedent already in the manifest, so 'Two Sum IV - Input is a BST' -> TwoSumIVInputIsABST. Benchmark compares collect-into-List-then-nested-pair-scan (O(n^2), TwoSumBenchmarks' own baseline shape) vs. the BinarySearchTree+Set DFS (O(n)); target deliberately unreachable to force full worst-case work in both.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both the test helper and the benchmark's two arms already agreed on shape (bool) and behavior, so no reconciliation was needed beyond consolidating them into one solution class. No hoisted-overload was needed: the input to both strategies is already LeetCode's own shape (BinaryTreeNode<int>? root, int k) - the tree built in [GlobalSetup]/per test case IS the prepared input, there is no separate raw-input overload to hoist from. Test rewritten as a TheoryData-driven harness (2 strategies x 4 examples = 8 assertions vs. the original 2); added a two-node true case and a single-node false case (value can't pair with itself) to the original two examples. Full test suite (5982 passed / 1 skipped / 0 failed) and targeted run both green; all four projects build clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/TwoSumIVInputIsABST/TwoSumIVInputIsABSTSolution.cs",
+      "strategies": "FindTargetByNestedPairScan (baseline, O(n^2) collect+scan), FindTargetByDepthFirstSetLookup (O(n) one-pass DFS + Set<int>)"
     },
     {
       "id": 654,
@@ -4771,8 +4785,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaximumBinaryTree/MaximumBinaryTreeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumBinaryTreeBenchmarks.cs",
       "primitivesUsed": "BinaryTreeNode<TValue> (Graph.Engines.Dags.Trees) + Stack<Element> (DataStructures.Stack): O(n) monotonic-stack construction (each new value pops smaller nodes into its own Left chain, then attaches under the remaining top's Right) benchmarked against a naive O(n^2)-worst-case recursive rescan-for-max baseline on an ascending array.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "BEHAVIOR CHANGE PROMOTED PER INSTRUCTIONS: the benchmark's baseline (RescanForMax) previously returned only Height(root) - a weaker measurement than the real answer - while the test's monotonic-stack helper already returned the actual built tree. Promoted the baseline to return the real BinaryTreeNode<int>? tree (identical construction logic, just no longer wrapped in Height), matching the test's answer shape; verified both strategies produce the LeetCode-correct tree via the existing example assertions. Both [Benchmark] methods return `object?` rather than `BinaryTreeNode<int>?` directly - BinaryTreeNode<int> is internal, and a public [Benchmark] method returning an internal type across the InternalsVisibleTo boundary is CS0050 (inconsistent accessibility); `object?` is this repo's established convention for exactly this case (~35 existing precedents in DSAExperimentation.Benchmarks, e.g. LinkedListCycleIIBenchmarks, ConstructQuadTreeBenchmarks). No hoisted overload needed: input is already LeetCode's own int[] shape, GlobalSetup only sizes the array. Test rewritten as a TheoryData-driven harness comparing a hand-written expected tree shape string (a serializer, not a construction algorithm) per strategy per example - 3 examples x 2 strategies = 6 assertions, up from the original 2 Facts covering only one strategy. Full test suite (5982 passed / 1 skipped / 0 failed) and targeted run both green; all four projects build clean.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MaximumBinaryTree/MaximumBinaryTreeSolution.cs",
+      "strategies": "ConstructByRescanForMax (baseline, O(n^2) textbook find-max/split/recurse), ConstructByMonotonicStack (O(n) LIFO Stack<T> construction)"
     },
     {
       "id": 657,
@@ -4784,8 +4800,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RobotReturnToOrigin/RobotReturnToOriginTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RobotReturnToOriginBenchmarks.cs",
       "primitivesUsed": "HashMap<TKey,TValue> (DataStructures.HashMap) used as a char -> (dx,dy) displacement lookup table, folded over the move string; benchmarked against a hand-written switch-statement baseline.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No fixture relocation needed - HashMap<char,(int,int)> already lives in DataStructures/HashMap. GlobalSetup now builds the random move sequence as a string instead of char[] so it is exactly LeetCode's own parameter shape; no hoisted overload was needed since there is nothing to construct beyond that string. Behaviour unchanged on all original inputs. Full test suite run (dotnet test DSAExperimentation.Tests): 5982 passed, 1 skipped, 0 failed, including Tests/Architecture/LayeringTests.cs.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RobotReturnToOrigin/RobotReturnToOriginSolution.cs",
+      "strategies": "JudgeCircleBySwitch (promoted from the benchmark's untested [Benchmark(Baseline = true)] SwitchStatement arm), JudgeCircleByHashMapLookup (the test's private JudgeCircle helper and the benchmark's HashMapLookup arm were the same bool-returning algorithm; merged into one method)"
     },
     {
       "id": 669,
@@ -4797,8 +4815,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/TrimABinarySearchTree/TrimABinarySearchTreeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TrimABinarySearchTreeBenchmarks.cs",
       "primitivesUsed": "BinarySearchTree<TValue>.Insert (builds the input tree) + a recursive trim mutating BinaryTreeNode<TValue>.Left/Right in place (the exact use case BinaryTreeNode's own doc comment names) + InOrderTraversal/IInOrderHooks to verify the surviving sequence is sorted and in-range; benchmarked against a collect-then-reinsert-into-a-fresh-BST baseline.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Behaviour-changing fix per the task's own rule: the benchmark's CollectAndRebuild baseline previously returned CountNodes(tree.Root) - a node count - instead of LeetCode's real answer (the trimmed subtree root). Promoted it to return BinaryTreeNode<int>? like the in-place strategy, and both are now proven equal-in-content via the test harness's shared Examples/InOrderValues check. Because BinaryTreeNode<int> is internal, the public [Benchmark] methods cannot return it directly (CS0050), so the benchmark harness keeps a local CountNodes helper - harness measurement plumbing only, not a second copy of either algorithm - to project each result to a public int for BenchmarkDotNet, mirroring the .Count role ARCHITECTURE.md section 17.8 gives WordLadderIIBenchmarks. No fixture relocation needed - BinaryTreeNode<int>/BinarySearchTree<int>/InOrderTraversal already live in DataStructures/Graph/Engines/Dags/Trees. While building DSAExperimentation.Benchmarks as a whole, hit the same CS0050 pattern in MaximumBinaryTreeBenchmarks.cs, which is a different, currently-uncommitted, in-progress migration by a concurrent session (not one of this cluster's two problems) - left untouched per the concurrency instructions. DSAExperimentation.Tests, DSAExperimentation.LeetCode, and DSAExperimentation all build clean, and the full test suite (5982 passed, 1 skipped, 0 failed, LayeringTests included) passes with these two files' final content.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/TrimABinarySearchTree/TrimABinarySearchTreeSolution.cs",
+      "strategies": "TrimByInPlaceMutation (the test's private Trim helper and the benchmark's InPlaceTrim arm were identical; merged into one method), TrimByCollectAndRebuild (the benchmark's CollectAndRebuild baseline)"
     },
     {
       "id": 673,
