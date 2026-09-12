@@ -1,41 +1,56 @@
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.RandomFlipMatrix.RandomFlipMatrixSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomFlipMatrix;
 
-// LeetCode 519. Random Flip Matrix: this repo's own HashMap<int,int> (a sparse
-// "logical value currently sitting at this flat index" override map) composed with a
-// plain Random - the InsertDeleteGetRandomO1 precedent's "swap the picked slot with
-// the last slot" trick, applied without ever materializing the full m*n array. That
-// sparsity is what makes this practical at all: LeetCode's own constraints allow up
-// to 10^4 x 10^4 = 10^8 cells, far too large to allocate, while flip calls are capped
-// at 1000 - so the HashMap only ever grows to the number of cells actually flipped.
-// Reset drops the swap map and restores the full remaining count; it never needs to
-// revisit or clear any individual entry, since every index beyond the current
-// _remaining boundary is treated as untouched again regardless of what it held before.
-public sealed partial class RandomFlipMatrixTests
+// Harness only. Both strategies are RandomFlipMatrixSolution's - this file replays the
+// two properties LeetCode's Flip/Reset contract guarantees (every cell is visited
+// exactly once before the matrix fills, and Reset restores full coverage) against each
+// IFlipMatrix implementation, so a failure names the strategy that broke.
+public sealed class RandomFlipMatrixTests
 {
+    public static TheoryData<int, int> Dimensions =>
+        new()
+        {
+            { 2, 3 },
+            { 3, 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Dimensions))]
+    public void FlipMatrixByListScan_Flip_UntilMatrixFull_VisitsEveryCellExactlyOnce(int rows, int cols) =>
+        AssertFlipsUntilFullVisitEveryCellExactlyOnce(new FlipMatrixByListScan(rows, cols, new Random(1)), rows, cols);
+
+    [Theory]
+    [MemberData(nameof(Dimensions))]
+    public void FlipMatrixByHashMapSwapRemove_Flip_UntilMatrixFull_VisitsEveryCellExactlyOnce(int rows, int cols) =>
+        AssertFlipsUntilFullVisitEveryCellExactlyOnce(new FlipMatrixByHashMapSwapRemove(rows, cols, new Random(1)), rows, cols);
+
     [Fact]
-    public void Flip_UntilMatrixFull_VisitsEveryCellExactlyOnce()
+    public void FlipMatrixByListScan_Reset_AfterPartialFlips_AllowsFullCoverageAgain() =>
+        AssertResetAfterPartialFlipsAllowsFullCoverageAgain(new FlipMatrixByListScan(2, 2, new Random(2)));
+
+    [Fact]
+    public void FlipMatrixByHashMapSwapRemove_Reset_AfterPartialFlips_AllowsFullCoverageAgain() =>
+        AssertResetAfterPartialFlipsAllowsFullCoverageAgain(new FlipMatrixByHashMapSwapRemove(2, 2, new Random(2)));
+
+    private static void AssertFlipsUntilFullVisitEveryCellExactlyOnce(IFlipMatrix matrix, int rows, int cols)
     {
-        var matrix = new FlipMatrix(2, 3, new Random(1));
         var seen = new HashSet<(int Row, int Col)>();
 
-        for (var i = 0; i < 6; i++)
+        for (var i = 0; i < rows * cols; i++)
         {
             var cell = matrix.Flip();
 
-            Assert.InRange(cell[0], 0, 1);
-            Assert.InRange(cell[1], 0, 2);
+            Assert.InRange(cell[0], 0, rows - 1);
+            Assert.InRange(cell[1], 0, cols - 1);
             Assert.True(seen.Add((cell[0], cell[1])), "Flip returned an already-flipped cell before the matrix was full.");
         }
 
-        Assert.Equal(6, seen.Count);
+        Assert.Equal(rows * cols, seen.Count);
     }
 
-    [Fact]
-    public void Reset_AfterPartialFlips_AllowsFullCoverageAgain()
+    private static void AssertResetAfterPartialFlipsAllowsFullCoverageAgain(IFlipMatrix matrix)
     {
-        var matrix = new FlipMatrix(2, 2, new Random(2));
         matrix.Flip();
         matrix.Flip();
 
@@ -49,40 +64,5 @@ public sealed partial class RandomFlipMatrixTests
         }
 
         Assert.Equal(4, seen.Count);
-    }
-
-    private sealed class FlipMatrix
-    {
-        private readonly int _cols;
-        private readonly int _totalCells;
-        private readonly Random _random;
-        private HashMap<int, int> _swapped = new();
-        private int _remaining;
-
-        public FlipMatrix(int rows, int cols, Random random)
-        {
-            _cols = cols;
-            _totalCells = rows * cols;
-            _random = random;
-            _remaining = _totalCells;
-        }
-
-        public int[] Flip()
-        {
-            var pick = _random.Next(_remaining);
-            var value = _swapped.TryGetValue(pick, out var mapped) ? mapped : pick;
-
-            _remaining--;
-            var lastValue = _swapped.TryGetValue(_remaining, out var lastMapped) ? lastMapped : _remaining;
-            _swapped.Set(pick, lastValue);
-
-            return [value / _cols, value % _cols];
-        }
-
-        public void Reset()
-        {
-            _swapped = new HashMap<int, int>();
-            _remaining = _totalCells;
-        }
     }
 }

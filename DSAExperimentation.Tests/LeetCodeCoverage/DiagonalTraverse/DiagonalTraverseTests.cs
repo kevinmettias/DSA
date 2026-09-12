@@ -1,83 +1,28 @@
-using DiagonalStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.DiagonalTraverse;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DiagonalTraverse;
 
-// LeetCode 498. Diagonal Traverse: group cells by row+col diagonal index and
-// collect each diagonal in row-ascending order; every OTHER diagonal must come
-// out reversed, so pushing that diagonal's values onto this repo's own LIFO
-// Stack<int> and popping them back off - the same digit/row-reversal primitive
-// RotateImageTests composes - reverses it with no separate reversal loop.
-public sealed partial class DiagonalTraverseTests
+// Harness only. Both zig-zag walks are DiagonalTraverseSolution's - this file
+// just pins them to LeetCode's published examples.
+public sealed class DiagonalTraverseTests
 {
-    [Fact]
-    public void FindDiagonalOrder_ThreeByThreeMatrix_ZigZagsAlongDiagonals()
-    {
-        int[][] matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-
-        Assert.Equal([1, 2, 4, 7, 5, 3, 6, 8, 9], FindDiagonalOrder(matrix));
-    }
-
-    [Fact]
-    public void FindDiagonalOrder_TwoByTwoMatrix_ZigZagsAlongDiagonals()
-    {
-        int[][] matrix = [[1, 2], [3, 4]];
-
-        Assert.Equal([1, 2, 3, 4], FindDiagonalOrder(matrix));
-    }
-
-    [Fact]
-    public void FindDiagonalOrder_SingleRow_ReturnsRowAsIs()
-    {
-        int[][] matrix = [[1, 2, 3, 4]];
-
-        Assert.Equal([1, 2, 3, 4], FindDiagonalOrder(matrix));
-    }
-
-    private static int[] FindDiagonalOrder(int[][] matrix)
-    {
-        var rows = matrix.Length;
-        var cols = matrix[0].Length;
-        var result = new int[rows * cols];
-        var next = 0;
-
-        for (var diagonal = 0; diagonal <= rows + cols - 2; diagonal++)
+    public static TheoryData<int[][], int[]> Examples =>
+        new()
         {
-            var range = new DiagonalRange(diagonal, Math.Max(0, diagonal - cols + 1), Math.Min(diagonal, rows - 1));
+            { [[1, 2, 3], [4, 5, 6], [7, 8, 9]], [1, 2, 4, 7, 5, 3, 6, 8, 9] },
+            { [[1, 2], [3, 4]], [1, 2, 3, 4] },
+            { [[1, 2, 3, 4]], [1, 2, 3, 4] },
+        };
 
-            next = diagonal % 2 == 0
-                ? WriteReversedDiagonal(matrix, range, result, next)
-                : WriteStraightDiagonal(matrix, range, result, next);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindDiagonalOrderByDirectionToggle_LeetCodeExamples_ZigZagsAlongDiagonals(
+        int[][] matrix, int[] expected) =>
+        Assert.Equal(expected, DiagonalTraverseSolution.FindDiagonalOrderByDirectionToggle(matrix));
 
-        return result;
-    }
-
-    private readonly record struct DiagonalRange(int Diagonal, int RowStart, int RowEnd);
-
-    private static int WriteReversedDiagonal(int[][] matrix, DiagonalRange range, int[] result, int next)
-    {
-        var reversed = new DiagonalStack();
-
-        for (var r = range.RowStart; r <= range.RowEnd; r++)
-        {
-            reversed.Push(matrix[r][range.Diagonal - r]);
-        }
-
-        for (var r = range.RowStart; r <= range.RowEnd; r++)
-        {
-            reversed.TryPop(out result[next++]);
-        }
-
-        return next;
-    }
-
-    private static int WriteStraightDiagonal(int[][] matrix, DiagonalRange range, int[] result, int next)
-    {
-        for (var r = range.RowStart; r <= range.RowEnd; r++)
-        {
-            result[next++] = matrix[r][range.Diagonal - r];
-        }
-
-        return next;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindDiagonalOrderByStackReversal_LeetCodeExamples_ZigZagsAlongDiagonals(
+        int[][] matrix, int[] expected) =>
+        Assert.Equal(expected, DiagonalTraverseSolution.FindDiagonalOrderByStackReversal(matrix));
 }

@@ -1,95 +1,75 @@
-using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.FindModeInBinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindModeInBinarySearchTree;
 
-// LeetCode 501. Find Mode in Binary Search Tree: an in-order walk of a BST visits
-// equal values consecutively, so tracking a running streak length while walking
-// finds every most-frequent value in one O(n) pass with no extra map - this
-// repo's own InOrderTraversal/IInOrderHooks over BinaryTreeNode<int>, the same
-// composition KthSmallestElementInABSTTests uses, collecting modes into a
-// DynamicArray<int> instead of a BCL List<int>.
-public sealed partial class FindModeInBinarySearchTreeTests
+// Harness only. Both mode-finding strategies are
+// FindModeInBinarySearchTreeSolution's; this file pins them to LeetCode's
+// published examples. BinaryTreeNode<int> is internal, so - as in
+// RecoverBinarySearchTreeTests - it stays out of a public TheoryData/[Theory]
+// signature; each example is a private factory rebuilt fresh per [Fact].
+// LeetCode accepts the modes in any order, so both strategies' results are
+// sorted before comparing - the hash-map strategy in particular has no reason to
+// come out in ascending order the way the in-order-walk strategy naturally does.
+public sealed class FindModeInBinarySearchTreeTests
 {
     [Fact]
-    public void FindMode_SingleModeFromADuplicateInARightSubtree_ReturnsThatValue()
-    {
-        // [1,null,2,2] -> [2]
-        var root = new BinaryTreeNode<int>(1) { Right = new(2) { Left = new(2) } };
-
-        Assert.Equal([2], FindMode(root));
-    }
+    public void FindModeByHashMapFrequencyCount_SingleModeFromADuplicateInARightSubtree_ReturnsThatValue() =>
+        Assert.Equal(
+            [2],
+            FindModeInBinarySearchTreeSolution
+                .FindModeByHashMapFrequencyCount(SingleModeInRightSubtree())
+                .OrderBy(x => x));
 
     [Fact]
-    public void FindMode_MultipleValuesTiedForMostFrequent_ReturnsAllOfThem()
-    {
-        var root = new BinaryTreeNode<int>(2)
+    public void FindModeByInOrderTraversalStreak_SingleModeFromADuplicateInARightSubtree_ReturnsThatValue() =>
+        Assert.Equal(
+            [2],
+            FindModeInBinarySearchTreeSolution
+                .FindModeByInOrderTraversalStreak(SingleModeInRightSubtree())
+                .OrderBy(x => x));
+
+    [Fact]
+    public void FindModeByHashMapFrequencyCount_MultipleValuesTiedForMostFrequent_ReturnsAllOfThem() =>
+        Assert.Equal(
+            [1, 3],
+            FindModeInBinarySearchTreeSolution
+                .FindModeByHashMapFrequencyCount(TiedModesAcrossBothSubtrees())
+                .OrderBy(x => x));
+
+    [Fact]
+    public void FindModeByInOrderTraversalStreak_MultipleValuesTiedForMostFrequent_ReturnsAllOfThem() =>
+        Assert.Equal(
+            [1, 3],
+            FindModeInBinarySearchTreeSolution
+                .FindModeByInOrderTraversalStreak(TiedModesAcrossBothSubtrees())
+                .OrderBy(x => x));
+
+    [Fact]
+    public void FindModeByHashMapFrequencyCount_SingleNode_ReturnsItsValue() =>
+        Assert.Equal(
+            [7],
+            FindModeInBinarySearchTreeSolution
+                .FindModeByHashMapFrequencyCount(new BinaryTreeNode<int>(7))
+                .OrderBy(x => x));
+
+    [Fact]
+    public void FindModeByInOrderTraversalStreak_SingleNode_ReturnsItsValue() =>
+        Assert.Equal(
+            [7],
+            FindModeInBinarySearchTreeSolution
+                .FindModeByInOrderTraversalStreak(new BinaryTreeNode<int>(7))
+                .OrderBy(x => x));
+
+    // [1,null,2,2] -> [2]
+    private static BinaryTreeNode<int> SingleModeInRightSubtree() =>
+        new(1) { Right = new(2) { Left = new(2) } };
+
+    // [2,1,3,1,null,3] -> [1,3], one tie in each subtree
+    private static BinaryTreeNode<int> TiedModesAcrossBothSubtrees() =>
+        new(2)
         {
             Left = new(1) { Left = new(1) },
             Right = new(3) { Right = new(3) },
         };
-
-        Assert.Equal([1, 3], FindMode(root));
-    }
-
-    [Fact]
-    public void FindMode_SingleNode_ReturnsItsValue()
-    {
-        var root = new BinaryTreeNode<int>(7);
-
-        Assert.Equal([7], FindMode(root));
-    }
-
-    private static int[] FindMode(BinaryTreeNode<int> root)
-    {
-        State.Modes.Value = new DynamicArray<int>();
-        State.CurrentValue.Value = 0;
-        State.CurrentCount.Value = 0;
-        State.MaxCount.Value = 0;
-
-        InOrderTraversal.Walk<int, ModeHooks>(root);
-
-        var modes = State.Modes.Value;
-        var result = new int[modes.Count];
-
-        for (var i = 0; i < modes.Count; i++)
-        {
-            result[i] = modes.Get(i);
-        }
-
-        return result;
-    }
-
-    private readonly struct ModeHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
-        {
-            if (State.CurrentCount.Value == 0 || node.Value != State.CurrentValue.Value)
-            {
-                State.CurrentValue.Value = node.Value;
-                State.CurrentCount.Value = 0;
-            }
-
-            State.CurrentCount.Value++;
-
-            if (State.CurrentCount.Value > State.MaxCount.Value)
-            {
-                State.MaxCount.Value = State.CurrentCount.Value;
-                State.Modes.Value = new DynamicArray<int>();
-                State.Modes.Value.Add(node.Value);
-            }
-            else if (State.CurrentCount.Value == State.MaxCount.Value)
-            {
-                State.Modes.Value!.Add(node.Value);
-            }
-        }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Modes = new();
-        public static readonly AsyncLocal<int> CurrentValue = new();
-        public static readonly AsyncLocal<int> CurrentCount = new();
-        public static readonly AsyncLocal<int> MaxCount = new();
-    }
 }

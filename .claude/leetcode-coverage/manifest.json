@@ -4216,8 +4216,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DiagonalTraverse/DiagonalTraverseTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DiagonalTraverseBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<int> to reverse alternating diagonals (push the diagonal's natural row-ascending order, pop it back off), the same reversal idiom RotateImageTests uses for matrix rows",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No behavior change: test's private helper and the benchmark's DiagonalGroupsWithStackReversal arm implemented the same algorithm and already agreed with the DirectionToggleWalk baseline on int[] output shape, so both strategies moved over verbatim as first-class methods. No Fixtures/ folder existed for this problem.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DiagonalTraverse/DiagonalTraverseSolution.cs",
+      "strategies": "FindDiagonalOrderByDirectionToggle (baseline, BCL cursor bounce), FindDiagonalOrderByStackReversal (diagonal grouping + repo Stack<int> reversal)"
     },
     {
       "id": 501,
@@ -4229,8 +4231,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FindModeInBinarySearchTree/FindModeInBinarySearchTreeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FindModeInBinarySearchTreeBenchmarks.cs",
       "primitivesUsed": "DataStructures.Graph.Engines.Dags.Trees.InOrderTraversal/IInOrderHooks over BinaryTreeNode<int> (sorted in-order walk turns mode-finding into a running-streak scan) + DataStructures.DynamicArray.DynamicArray<int> to collect the modes",
-      "notes": "Benchmark fixture builds BinaryTreeNode<int> directly (not via BinarySearchTree<TValue>.Insert, which treats a duplicate value as a no-op) since LC 501's BST explicitly allows repeated values.",
-      "architectureTier": "pre-section-17"
+      "notes": "Test and benchmark already agreed on the InOrderTraversalStreak algorithm (BinaryTreeNode<int> is internal, so both the harness examples and the reference RecoverBinarySearchTreeTests pattern use private tree-factory methods per [Fact] rather than a public TheoryData<BinaryTreeNode<int>,...>). LeetCode 501 accepts modes in any order, and the promoted HashMapFrequencyCount baseline iterates a Dictionary whose enumeration order isn't guaranteed to match the in-order strategy's ascending output, so both strategies' assertions sort results with .OrderBy(x => x) before comparing (precedent: SingleNumberIIITests, WordBreakIITests) - this is a harness-assertion change only, not a change to what either strategy returns.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/FindModeInBinarySearchTree/FindModeInBinarySearchTreeSolution.cs",
+      "strategies": "FindModeByHashMapFrequencyCount (baseline, BCL Dictionary frequency count + max pass), FindModeByInOrderTraversalStreak (repo InOrderTraversal/IInOrderHooks running-streak walk into DynamicArray<int>)",
+      "relocatedTypes": "FindModeInBinarySearchTreeWorkloads.BuildTree (+ its private InsertAllowingDuplicates helper) moved from FindModeInBinarySearchTreeBenchmarks.cs into DSAExperimentation.Benchmarks/Fixtures/FindModeInBinarySearchTreeWorkloads.cs, as workload sizing/construction (mirrors LockWorkloads.BuildDeadends) rather than a Domain/ type - it builds a random BST of a given size/seed for the benchmark only, never touched by the solution or the tests."
     },
     {
       "id": 502,
@@ -4242,8 +4247,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/IPO/IPOTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/IPOBenchmarks.cs",
       "primitivesUsed": "DataStructures.Heap.Heap<Element,TOrder> - two-heap greedy: min-heap of projects by required capital via Heap<(int Node,int Priority), ByPriorityOrder<int,int>> (the same node/priority projection TopKFrequentElementsTests uses), feeding a max-heap of unlocked profits via Heap<int, MaxHeapOrder<int>> (the same size-limited-heap shape KthLargestElementTests uses). No new primitive needed.",
-      "notes": "9 xUnit tests total across the 3 problems all pass; both projects build clean; each benchmark class verified to run without error via a BenchmarkDotNet --job Dry smoke run.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between test and benchmark: both already agreed on the two-heap greedy's signature/shape (int k, int w, int[] profits, int[] capitals) -> int. No hoisted overload needed since the benchmark's [GlobalSetup] only sizes/seeds the profits/capitals arrays (workload sizing, stays in the benchmark) - it does not build any additional repo container, so both strategies take the arrays directly, matching LeetCode's own input shape. No fixture types existed to relocate; Heap, ByPriorityOrder and MaxHeapOrder were already DataStructures types used unmodified.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/IPO/IPOSolution.cs",
+      "strategies": "FindMaximizedCapitalByLinearScan (baseline, O(k*n) rescan, promoted from the benchmark's private LinearScanPerRound helper), FindMaximizedCapitalByTwoHeapGreedy (composed strategy, using existing DataStructures.Heap.Heap<T,TOrder> with ByPriorityOrder<int,int> and MaxHeapOrder<int>)"
     },
     {
       "id": 503,
@@ -4255,8 +4262,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/NextGreaterElementII/NextGreaterElementIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/NextGreaterElementIIBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<int> - classic monotonic-stack sweep (same OneThreeTwoPattern/LargestRectangleInHistogram precedent) walking the array twice (i % n) to resolve the circular wrap-around. No new primitive needed.",
-      "notes": "Verified via xUnit tests and a BenchmarkDotNet Dry-job smoke run.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between test and benchmark: both already returned int[] in LeetCode's own shape (nums -> int[] result with -1 for 'no next greater'). Replaced the literal -1 sentinel with the existing LeetCode.LeetCodeAnswer.None constant per the repo's own duplicate-constant convention (17.9). No hoisted overload needed - input is a plain int[] matching LeetCode's shape directly, and the benchmark's [GlobalSetup] only sizes/seeds that array. No fixture types existed to relocate.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/NextGreaterElementII/NextGreaterElementIISolution.cs",
+      "strategies": "NextGreaterElementsByBruteForce (baseline, O(n^2) scan-ahead, promoted from the benchmark's BruteForce arm), NextGreaterElementsByMonotonicStack (composed strategy, using existing DataStructures.Stack.Stack<int>)"
     },
     {
       "id": 509,
@@ -4268,8 +4277,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FibonacciNumber/FibonacciNumberTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FibonacciNumberBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer.Memoize<TState,TResult> - the fib(n)=fib(n-1)+fib(n-2) recurrence expressed directly, same ClimbingStairsTests precedent. No new primitive needed.",
-      "notes": "Verified via xUnit tests and a BenchmarkDotNet Dry-job smoke run (naive O(2^n) recursion vs. memoized O(n)).",
-      "architectureTier": "pre-section-17"
+      "notes": "No shape mismatch between the test helper and the benchmark arms - both already returned the Fibonacci number itself, so no reconciliation was needed. No fixtures, no GlobalSetup construction to hoist (N is a plain int Params value), so no second overloads were required. The naive recursion baseline is now under test for the first time (base cases 0/1, n=5, n=20).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/FibonacciNumber/FibonacciNumberSolution.cs",
+      "strategies": "FibByNaiveRecursion (naive O(2^n) double recursion, promoted from the benchmark's untested Baseline arm), FibByMemoizedTopDown (Memoizer-backed O(n) top-down DP, was the test's private Fib helper and the benchmark's MemoizedTopDown arm)"
     },
     {
       "id": 518,
@@ -4281,8 +4292,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CoinChangeII/CoinChangeIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CoinChangeIIBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.DynamicProgramming.Memoizer, closed over a 2-D (coinIndex, remainingAmount) ValueTuple state (CombinationSumIV precedent for the counting shape, DistinctSubsequences precedent for the tuple state) - forward-only coin indexing keeps it a combination count, not CombinationSumIV's permutation count.",
-      "notes": "Benchmark compares bottom-up 1-D tabulation (outer loop coins, inner loop amount ascending - standard combination-counting trick) against the Memoizer-based top-down recursion; both O(coins.Length * amount). Dry-run smoke test confirmed both run correctly (Tabulation ~386us-409us, Memoized ~2.9ms-5.4ms at Amount=200/2000 - tabulation wins on constant factors here since the 2-D tuple-keyed Dictionary in Memoizer has real per-lookup overhead, same shape as the CoinChange/CombinationSumIV precedents). All 3 test cases pass, matching LeetCode's own examples exactly.",
-      "architectureTier": "pre-section-17"
+      "notes": "Both original arms already computed the same combination count for the same (amount, coins) signature - no bool/count-vs-index mismatch to reconcile here. Benchmark's Coins array is a fixed static field (not GlobalSetup-constructed from a workload generator), so no hoisted-overload pair was needed; both strategies take (int amount, int[] coins) directly. Tabulation baseline is now under test for the first time against all three LeetCode examples. Kept the original overflow-behavior note (both arms overflow identically at large Amount, which is fine since only wall-clock time is measured in the benchmark).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CoinChangeII/CoinChangeIISolution.cs",
+      "strategies": "CountCombinationsByTabulation (bottom-up 1-D DP, promoted from the benchmark's untested Baseline arm), CountCombinationsByMemoizedTopDown (Memoizer-backed top-down recursion over a 2-D (index, remaining) tuple state, was the test's private CountCombinations helper and the benchmark's Memoized arm)"
     },
     {
       "id": 519,
@@ -4294,8 +4307,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RandomFlipMatrix/RandomFlipMatrixTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RandomFlipMatrixBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<int,int> (sparse index-override map) + System.Random, composing the InsertDeleteGetRandomO1 'swap the picked slot with the last slot' trick without ever materializing the full m*n array - the sparsity is what makes cells up to 10^4 x 10^4 tractable when flip calls are capped at 1000.",
-      "notes": "Test builds a private FlipMatrix nested class (Flip/Reset) and verifies full coverage with no repeats over rows*cols flips, plus that Reset() restores full coverage after a partial drain. Benchmark compares a List<int>-based random-RemoveAt baseline (O(n) shift per flip) against the HashMap swap-to-back approach (O(1) amortized); dry run showed the HashMap approach overtake the List baseline by Cells=5000 (2.6ms vs 3.5ms), consistent with the expected asymptotic crossover. Full 8-test batch and full suite (1308/1309, 1 pre-existing unrelated skip) pass.",
-      "architectureTier": "pre-section-17"
+      "notes": "Reconciled the test's row/col-shaped FlipMatrix (HashMap swap-remove) with the benchmark's flat-checksum List-based baseline: gave FlipMatrixByListScan the same [row,col] return shape as the HashMap strategy (rows=1 in the benchmark reproduces the original flat-index checksum exactly, so behaviour is unchanged), and made the previously-untested List-based baseline a real, tested strategy instead of scaffolding hidden in the benchmark. No fixtures existed to relocate; no new DataStructures/Algorithms primitives were needed.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RandomFlipMatrix/RandomFlipMatrixSolution.cs",
+      "strategies": "FlipMatrixByListScan (baseline, BCL List<int> shift-remove, promoted from the benchmark's untested ListBased arm), FlipMatrixByHashMapSwapRemove (the test's private FlipMatrix, now first-class) - both implement a shared internal IFlipMatrix { int[] Flip(); void Reset(); } surface, following the InsertDeleteGetRandomO1 design-problem precedent (instance API, not a pure function, so no <Operation>By<Strategy> static methods)."
     },
     {
       "id": 523,
@@ -4307,8 +4322,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/ContinuousSubarraySum/ContinuousSubarraySumTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/ContinuousSubarraySumBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<int,int> tracking each prefix-sum-mod-k remainder's earliest index (ContainsDuplicateII precedent for the 'first occurrence index' shape, keyed by remainder instead of by value); seeded with {0:-1} so a subarray starting at index 0 registers the same as any other.",
-      "notes": "All 3 LeetCode example cases pass. Benchmark compares O(n^2) brute force against the O(n) HashMap remainder-tracking approach; K is chosen larger than any possible generated total sum so no early match short-circuits either method, forcing the full worst-case scan on both. Dry run confirmed the O(n) approach overtakes brute force at Length=5000 (3.4ms vs 9.1ms).",
-      "architectureTier": "pre-section-17"
+      "notes": "Both original arms already agreed on the bool answer shape, so no reconciliation was needed beyond moving each into the solution class. No GlobalSetup-hoisted container to justify a second overload - the benchmark's [GlobalSetup] only builds the int[] nums array itself, which is already LeetCode's own input shape. No fixtures existed to relocate; no new DataStructures/Algorithms primitives were needed. Added two extra TheoryData examples (a true and a false case beyond the three original ones) since HasSubarraySumMultipleOfKByBruteForce had no prior direct test coverage at all.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/ContinuousSubarraySum/ContinuousSubarraySumSolution.cs",
+      "strategies": "HasSubarraySumMultipleOfKByBruteForce (the benchmark's previously-untested O(n^2) baseline, promoted to a first-class method), HasSubarraySumMultipleOfKByHashMapPrefixRemainder (the test's private helper, now first-class using DataStructures.HashMap)"
     },
     {
       "id": 526,
@@ -4320,8 +4337,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/BeautifulArrangement/BeautifulArrangementTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/BeautifulArrangementBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.Backtracking.Backtrack.Search<TState,TChoice> (same composition PermutationsTests/PermutationSequenceTests already use) - the v % position == 0 / position % v == 0 divisibility rule is folded directly into the Candidates delegate, so illegal values are pruned before being placed rather than generated and rejected afterward.",
-      "notes": "3 tests (n=1,2,3,4 -> 1,2,3,8, matching the known Beautiful Arrangement counts; my first guess of 3 for n=4 was wrong and fixed to 8 after a failing test run). Benchmark compares GenerateThenFilter (materialize every full permutation, validate all n positions afterward) vs PrunedBacktracking (same Backtrack.Search engine as the test) at N=6,8. Full test suite: 1317 passed, 1 pre-existing skip, 0 failed.",
-      "architectureTier": "pre-section-17"
+      "notes": "No drift between test and benchmark for this problem - both already answered with the real count (int), so no reconciliation was needed. No fixture types existed to relocate. Test harness kept all 4 original examples (n=1..4) as TheoryData, now asserted against both strategies (4 -> 8 assertions). No new DataStructures/Algorithms primitives required.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/BeautifulArrangement/BeautifulArrangementSolution.cs",
+      "strategies": "CountByGenerateThenFilter (baseline, promoted from the benchmark's private helper into a first-class tested method), CountByPrunedBacktracking (this repo's Backtrack.Search with the divisibility rule folded into Candidates)"
     },
     {
       "id": 528,
@@ -4333,8 +4352,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/RandomPickWithWeight/RandomPickWithWeightTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/RandomPickWithWeightBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.Searching.BinarySearch.UpperBound + DSAExperimentation.DataStructures.Sequence.ArraySequence<int> - near-verbatim reuse of the RandomPointInNonOverlappingRectangles precedent's prefix-sum-plus-BinarySearch technique, applied directly to weights instead of rectangle areas (no 2D point draw needed).",
-      "notes": "3 tests (single weight always picked, multiple weights always valid, one far-larger weight dominates >480/500 draws). Benchmark compares a LinearWeightedScan baseline (O(n) walk of the prefix-sum array) vs BinarySearch.UpperBound (O(log n)) at WeightCount=50,2000, seeded identically. Full test suite passes.",
-      "architectureTier": "pre-section-17"
+      "notes": "Design-category problem (constructor + repeated PickIndex() calls), so followed the already-migrated RandomPickIndexSolution/RandomPickIndexBenchmarks shape exactly: a shared IRandomPickWithWeight interface with two implementing classes, each taking (int[] w) mirroring LeetCode's own constructor plus an (int[] w, Random random) overload for deterministic tests/benchmarks. The benchmark previously hoisted a pre-built prefix-sum array directly into [GlobalSetup] and called free functions over it with no Solution instance at all - reconciled onto the Design shape by hoisting only the raw weight workload into [GlobalSetup] (matching RandomPickIndexBenchmarks' convention) and charging each strategy's own prefix-sum construction to its [Benchmark] call, same as RandomPickIndexBenchmarks charges its HashMap construction. Test previously had only one strategy (BinarySearchUpperBound, via a private helper class) with no baseline under test; the linear-scan baseline is now first-class and tested too, all 3 original examples/assertions preserved and doubled across both strategies (3 -> 6 test methods). No fixture types existed to relocate. No new DataStructures/Algorithms primitives required.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/RandomPickWithWeight/RandomPickWithWeightSolution.cs",
+      "strategies": "RandomPickWithWeightByLinearScan (baseline, promoted from the benchmark's private LinearWeightedScan arm), RandomPickWithWeightByBinarySearchUpperBound (the strategy the original test's private Solution class and the benchmark's second arm both already implemented)"
     },
     {
       "id": 530,

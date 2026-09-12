@@ -1,32 +1,28 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.FibonacciNumber;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FibonacciNumber;
 
-// LeetCode 509. Fibonacci Number: fib(n) = fib(n-1) + fib(n-2), the textbook
-// recurrence this repo's Memoizer exists to express directly - the same
-// ClimbingStairsTests precedent, minus the "+1 shift" Climbing Stairs applies on
-// top of the same shape.
-public sealed partial class FibonacciNumberTests
+// Harness only. Both strategies are FibonacciNumberSolution's - this file just pins
+// them to LeetCode's published examples, including the naive baseline, which was
+// never asserted before this migration.
+public sealed class FibonacciNumberTests
 {
-    [Fact]
-    public void Fib_BaseCases_ReturnInputUnchanged()
-    {
-        Assert.Equal(0, Fib(0));
-        Assert.Equal(1, Fib(1));
-    }
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 0, 0 },
+            { 1, 1 },
+            { 5, 5 },
+            { 20, 6765 },
+        };
 
-    [Fact]
-    public void Fib_ClassicExample_ReturnsCorrectValue()
-    {
-        Assert.Equal(5, Fib(5));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FibByNaiveRecursion_LeetCodeExamples_ReturnsFibonacciNumber(int n, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByNaiveRecursion(n));
 
-    [Fact]
-    public void Fib_LargerInput_ReturnsCorrectValue()
-    {
-        Assert.Equal(6765, Fib(20));
-    }
-
-    private static int Fib(int n)
-        => Memoizer.Memoize<int, int>(n, (value, fib) => value <= 1 ? value : fib(value - 1) + fib(value - 2));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FibByMemoizedTopDown_LeetCodeExamples_ReturnsFibonacciNumber(int n, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByMemoizedTopDown(n));
 }

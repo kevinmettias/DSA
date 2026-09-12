@@ -1,44 +1,56 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using static DSAExperimentation.LeetCode.RandomPickWithWeight.RandomPickWithWeightSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickWithWeight;
 
-// LeetCode 528. Random Pick with Weight: the same prefix-sum-plus-BinarySearch
-// technique RandomPointInNonOverlappingRectangleTests uses for area-weighted
-// sampling, applied directly to index weights instead of rectangle areas - a
-// cumulative-sum array of w, one uniform draw over the total, and this repo's own
-// BinarySearch.UpperBound over an ArraySequence<int> to find which index's
-// cumulative range the draw landed in.
-public sealed partial class RandomPickWithWeightTests
+// Harness only. Both strategies are RandomPickWithWeightSolution's - this
+// replays repeated PickIndex() calls against each IRandomPickWithWeight
+// implementation built from LeetCode's published w. PickIndex's result is
+// nondeterministic, so each example carries a seed (as the original hand-written
+// test did) and the set of indices that are valid to return, plus a dedicated
+// statistical case checking that a far-larger weight is favored accordingly.
+public sealed class RandomPickWithWeightTests
 {
-    [Fact]
-    public void PickIndex_SingleWeight_AlwaysReturnsThatIndex()
-    {
-        var solution = new Solution([1], seed: 1);
-
-        for (var i = 0; i < 20; i++)
+    public static TheoryData<int[], int, int[], int> Examples =>
+        new()
         {
-            Assert.Equal(0, solution.PickIndex());
+            { [1], 1, [0], 20 },
+            { [1, 3, 2], 2, [0, 1, 2], 200 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByLinearScan(
+        int[] w, int seed, int[] validIndices, int trials)
+        => AssertPicksAreValid(new RandomPickWithWeightByLinearScan(w, new Random(seed)), validIndices, trials);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByBinarySearchUpperBound(
+        int[] w, int seed, int[] validIndices, int trials)
+        => AssertPicksAreValid(
+            new RandomPickWithWeightByBinarySearchUpperBound(w, new Random(seed)), validIndices, trials);
+
+    [Fact]
+    public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOftenByLinearScan()
+        => AssertHeavilyWeightedIndexDominates(new RandomPickWithWeightByLinearScan([1, 999], new Random(3)));
+
+    [Fact]
+    public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOftenByBinarySearchUpperBound()
+        => AssertHeavilyWeightedIndexDominates(
+            new RandomPickWithWeightByBinarySearchUpperBound([1, 999], new Random(3)));
+
+    private static void AssertPicksAreValid(IRandomPickWithWeight solution, int[] validIndices, int trials)
+    {
+        for (var i = 0; i < trials; i++)
+        {
+            Assert.Contains(solution.PickIndex(), validIndices);
         }
     }
 
-    [Fact]
-    public void PickIndex_MultipleWeights_AlwaysReturnsAValidIndex()
+    private static void AssertHeavilyWeightedIndexDominates(IRandomPickWithWeight solution)
     {
-        var solution = new Solution([1, 3, 2], seed: 2);
-
-        for (var i = 0; i < 200; i++)
-        {
-            Assert.Contains(solution.PickIndex(), new[] { 0, 1, 2 });
-        }
-    }
-
-    [Fact]
-    public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOften()
-    {
-        var solution = new Solution([1, 999], seed: 3);
-
         var heavyIndexHits = 0;
+
         for (var i = 0; i < 500; i++)
         {
             if (solution.PickIndex() == 1)
@@ -48,31 +60,5 @@ public sealed partial class RandomPickWithWeightTests
         }
 
         Assert.True(heavyIndexHits > 480);
-    }
-
-    private sealed class Solution
-    {
-        private readonly int[] _prefixSums;
-        private readonly Random _random;
-
-        public Solution(int[] w, int seed)
-        {
-            _random = new Random(seed);
-            _prefixSums = new int[w.Length];
-
-            var running = 0;
-            for (var i = 0; i < w.Length; i++)
-            {
-                running += w[i];
-                _prefixSums[i] = running;
-            }
-        }
-
-        public int PickIndex()
-        {
-            var draw = _random.Next(_prefixSums[^1]);
-            var sequence = new ArraySequence<int>(_prefixSums);
-            return BinarySearch.UpperBound(sequence, draw);
-        }
     }
 }

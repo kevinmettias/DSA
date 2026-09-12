@@ -1,16 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using static DSAExperimentation.LeetCode.RandomPickWithWeight.RandomPickWithWeightSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Random Pick with Weight (LC 528): a linear weighted scan through the cumulative
-// -sum prefix array (walk until the running total exceeds the draw, O(n) per
-// PickIndex) vs. this repo's own BinarySearch.UpperBound over an ArraySequence<int>
-// of the same prefix sums (O(log n) per PickIndex), the same prefix-sum-plus-
-// BinarySearch pairing RandomPointInNonOverlappingRectanglesBenchmarks already uses
-// for area-weighted sampling. Both draw from the same seeded Random sequence so
-// neither benefits from a luckier draw order.
+// Harness only: both arms are RandomPickWithWeightSolution's, the same classes
+// RandomPickWithWeightTests proves correct. A Design problem's whole point is a
+// sequence of calls against one instance, so [GlobalSetup] only prepares the raw
+// weight workload - not charging that generation to the measured method - and
+// each [Benchmark] arm builds its own fresh instance from it (mirroring how a
+// real caller constructs a Solution once, and charging the prefix-sum
+// construction that instance performs to the same measurement, exactly like
+// RandomPickIndexBenchmarks charges its HashMap construction) before replaying
+// the same PickCalls script from the same seeded draw sequence, returning the
+// running total so the JIT can't eliminate the replay as dead code.
 [MemoryDiagnoser]
 public class RandomPickWithWeightBenchmarks
 {
@@ -21,55 +23,29 @@ public class RandomPickWithWeightBenchmarks
     [Params(50, 2_000)]
     public int WeightCount;
 
-    private int[] _prefixSums = null!;
+    private int[] _weights = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _prefixSums = new int[WeightCount];
-        var running = 0;
-
-        for (var i = 0; i < WeightCount; i++)
-        {
-            running += random.Next(1, MaxWeightExclusive);
-            _prefixSums[i] = running;
-        }
+        _weights = Enumerable.Range(0, WeightCount).Select(_ => random.Next(1, MaxWeightExclusive)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearWeightedScan()
-    {
-        var random = new Random(1);
-        long total = 0;
-
-        for (var call = 0; call < PickCalls; call++)
-        {
-            var draw = random.Next(_prefixSums[^1]);
-            var index = 0;
-
-            while (_prefixSums[index] <= draw)
-            {
-                index++;
-            }
-
-            total += index;
-        }
-
-        return total;
-    }
+    public long LinearScan() => Replay(new RandomPickWithWeightByLinearScan(_weights, new Random(1)));
 
     [Benchmark]
     public long BinarySearchUpperBound()
+        => Replay(new RandomPickWithWeightByBinarySearchUpperBound(_weights, new Random(1)));
+
+    private static long Replay(IRandomPickWithWeight solution)
     {
-        var random = new Random(1);
-        var sequence = new ArraySequence<int>(_prefixSums);
         long total = 0;
 
         for (var call = 0; call < PickCalls; call++)
         {
-            var draw = random.Next(_prefixSums[^1]);
-            total += BinarySearch.UpperBound(sequence, draw);
+            total += solution.PickIndex();
         }
 
         return total;
