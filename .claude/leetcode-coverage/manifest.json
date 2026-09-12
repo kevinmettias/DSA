@@ -5450,8 +5450,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CrackingTheSafe/CrackingTheSafeTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CrackingTheSafeBenchmarks.cs",
       "primitivesUsed": "Algorithms.Backtracking.Backtrack.TrySearch (choose/explore/unchoose engine over one shared mutable state) + DataStructures.Set.Set<string> as the visited-passwords membership set, closed over a shared StringBuilder answer and digit choices — the same composition SudokuSolverTests/SudokuSolverBenchmarks already use for a different backtracking board, here walking a de Bruijn graph's edges instead of Sudoku cells. Benchmark compares a hand-specialized recursive greedy-with-undo search against the identical algorithm expressed via Backtrack.TrySearch, at N=2,3 with K=2 fixed.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test and benchmark both already answered the real LeetCode question (the safe string itself), so no shape reconciliation was needed - only deduplication of the twice-written BacktrackEngine strategy and promotion of the benchmark-only baseline into a first-class, now-tested method. Benchmark Baseline arm renamed from SpecializedRecursive to GreedyRecursion to match the solution method name.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CrackingTheSafe/CrackingTheSafeSolution.cs",
+      "strategies": "CrackSafeByGreedyRecursion (baseline: hand-specialized recursive greedy-with-undo search over a BCL HashSet<string>, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), CrackSafeByBacktrackEngine (Backtrack.TrySearch engine closed over a Set<string>, previously duplicated independently in both the test's private CrackSafe helper and the benchmark's BacktrackEngine arm)",
+      "relocatedTypes": "None moved out of the problem folder. EngineState and SpecializedState are witnesses used by this problem alone (per ARCHITECTURE.md 17.3/17.6) and stay as private nested types inside CrackingTheSafeSolution.cs, mirroring AddBinarySolution's private DigitWalk."
     },
     {
       "id": 761,
@@ -5463,8 +5466,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SpecialBinaryString/SpecialBinaryStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SpecialBinaryStringBenchmarks.cs",
       "primitivesUsed": "Algorithms.Sorting.MergeSort.Sort<string, ArrayIndexedSequence<string>> with a descending Comparer<string>, sorting sibling special-substring pieces at each recursion level — the same custom-comparer composition RussianDollEnvelopesTests/QueueReconstructionByHeightTests already exercise. Benchmark compares BCL Array.Sort vs. this repo's MergeSort.Sort within the identical recursive split-into-special-pieces algorithm, over generated special binary strings of 50/200 1-0 pairs.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Test and benchmark both already answered the real LeetCode question (the maximized string), so no shape reconciliation was needed. SplitIntoPieces (the shared balance-zero split) stays as shared private scaffolding inside the solution class, called by both public strategies with a recurse callback, matching the benchmark's own prior structure.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SpecialBinaryString/SpecialBinaryStringSolution.cs",
+      "strategies": "MakeLargestSpecialByArraySort (baseline: BCL Array.Sort per recursion level, promoted from the benchmark's untested [Benchmark(Baseline = true)] arm), MakeLargestSpecialByMergeSort (this repo's MergeSort.Sort over ArrayIndexedSequence<string> with a descending comparer - previously the test's private MakeLargestSpecial helper, duplicated again as the benchmark's MergeSortPrimitive arm)",
+      "relocatedTypes": "GenerateSpecial (input-generation workload builder, previously private in the benchmark) moved to DSAExperimentation.Benchmarks/Fixtures/SpecialBinaryStringWorkloads.cs as workload sizing/seeding per ARCHITECTURE.md 17.7 - it fixes nothing about the problem's content, only how large/random an input to measure."
     },
     {
       "id": 762,
@@ -5476,8 +5482,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PrimeNumberOfSetBitsInBinaryRepresentation/PrimeNumberOfSetBitsInBinaryRepresentationTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks.cs",
       "primitivesUsed": "DataStructures.Set.Set<int> (HashMap<Element,bool>-backed) holding the fixed small set of primes <= 20 for O(1) popcount-primality membership checks — the same HashMap/Set membership-lookup role TwoSumTests/RepeatedDNASequencesTests already play. Benchmark compares per-value trial-division primality checking against the precomputed Set<int> lookup, at range widths 1,000/100,000.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No signature reconciliation needed - both harnesses already answered LeetCode's real question (count in range) with matching int signatures. No fixtures existed to relocate. Precomputed prime-bitcount Set<int> is now a static readonly field on the solution class (built once) rather than rebuilt per benchmark call; behavior/output unchanged. Test examples: kept both official LeetCode examples (6,10)->4 and (10,15)->5, added one edge case (3,3)->1 since the original test was thin (2 examples).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PrimeNumberOfSetBitsInBinaryRepresentation/PrimeNumberOfSetBitsInBinaryRepresentationSolution.cs",
+      "strategies": "CountPrimeSetBitsByTrialDivision (baseline, promoted from the benchmark's untested TrialDivisionPerValue arm), CountPrimeSetBitsByPrecomputedSet (matches the test's private helper and the benchmark's PrecomputedSetLookup arm, which were the same strategy already)"
     },
     {
       "id": 763,
@@ -5489,8 +5497,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PartitionLabels/PartitionLabelsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PartitionLabelsBenchmarks.cs",
       "primitivesUsed": "HashMap<char,int> (one O(n) pass recording each letter's last occurrence, TwoSumTests' exact shape), driving a greedy expand-and-close partition scan",
-      "notes": "Benchmark compares an O(n^2) brute force (LastIndexOf rescanned per character) against the HashMap one-pass approach on random lowercase strings.",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature reconciliation needed - both harnesses already returned List<int> partition sizes, LeetCode's real answer shape. No fixtures existed to relocate (HashMap<char,int> is a pre-existing DataStructures type, not a problem-specific fixture).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PartitionLabels/PartitionLabelsSolution.cs",
+      "strategies": "PartitionLabelSizesByBruteForceRescan (baseline, from the benchmark's untested BruteForceRescan arm), PartitionLabelSizesByHashMapOnePass (the test's private helper and the benchmark's HashMapOnePass arm, which were the same strategy already, just organized differently - a nested PartitionScanner class in the test vs. inline locals in the benchmark)"
     },
     {
       "id": 765,
@@ -5502,8 +5512,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/CouplesHoldingHands/CouplesHoldingHandsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/CouplesHoldingHandsBenchmarks.cs",
       "primitivesUsed": "DisjointSet (union each seat pair's two occupants by couple id) + Set<int> (count distinct roots) - NumberOfProvincesTests' exact composition, applied to a permutation's cycle structure; answer = coupleCount - distinctRoots",
-      "notes": "Benchmark compares the textbook greedy swap-simulation baseline against the DisjointSet/Set component-counting approach on a randomly shuffled seating row.",
-      "architectureTier": "pre-section-17"
+      "notes": "No hoisted-overload pair needed: [GlobalSetup] only builds the int[] row, which is already LeetCode's own input shape, so both strategies take int[] directly. No fixtures existed for this problem. Added one extra Examples case (already-paired couple, [0,1] -> 0) beyond the original three.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/CouplesHoldingHands/CouplesHoldingHandsSolution.cs",
+      "strategies": "MinSwapsByGreedySwap (baseline, BCL-only, moved out of the benchmark's private helper), MinSwapsByDisjointSet (the test's private helper and the benchmark's non-baseline arm were the identical DisjointSet+Set<int> algorithm, unified into one strategy)"
     },
     {
       "id": 768,
@@ -5515,8 +5527,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaxChunksToMakeSortedII/MaxChunksToMakeSortedIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaxChunksToMakeSortedIIBenchmarks.cs",
       "primitivesUsed": "Stack<int> (DailyTemperaturesTests' exact precedent) holding each closed chunk's max value; a smaller incoming value merges every chunk whose max exceeds it",
-      "notes": "Benchmark compares an O(n^2) brute force (full suffix rescan per candidate boundary) against the monotonic-stack O(n) merge on a random permutation.",
-      "architectureTier": "pre-section-17"
+      "notes": "No hoisted-overload pair needed: [GlobalSetup] only builds the int[] values array, already LeetCode's shape. No fixtures existed for this problem. Added one extra Examples case (single-element array [7] -> 1) beyond the original three.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MaxChunksToMakeSortedII/MaxChunksToMakeSortedIISolution.cs",
+      "strategies": "MaxChunksByBruteForceSuffixRescan (baseline, BCL-only, promoted from the benchmark's private helpers), MaxChunksByMonotonicStackMerge (the test's private helper and the benchmark's non-baseline arm were the identical Stack<int> algorithm, unified into one strategy)"
     },
     {
       "id": 769,
@@ -5528,8 +5542,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaxChunksToMakeSorted/MaxChunksToMakeSortedTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaxChunksToMakeSortedBenchmarks.cs",
       "primitivesUsed": "Greedy single-pass running-max scan over array input (same shape as JumpGame's existing manifest entry); no stronger reusable repo primitive applies beyond ordinary sequence traversal.",
-      "notes": "3 test cases pass (strictly-descending -> 1 chunk, nearly-sorted -> 4 chunks, already-sorted -> 5 chunks). Benchmark compares an O(n^2) brute force (re-deriving the prefix max from scratch per candidate boundary) against the O(n) running-max single pass on a Fisher-Yates-shuffled permutation (seed 1); both verified to agree at Length=200/5000 via a throwaway console smoke run. dotnet build/test of both touched projects: 0 warnings, 0 errors, all new tests pass.",
-      "architectureTier": "pre-section-17"
+      "notes": "No signature drift between the test helper and benchmark arms here - both already returned int (chunk count). Workload construction (Fisher-Yates shuffle of a permutation) stayed inline in [GlobalSetup], matching the precedent in TwoSumBenchmarks (trivial int[] workload gen is not extracted to Benchmarks/Fixtures). No fixtures existed to relocate. Verified: build clean, all 26 targeted tests (MaxChunks + LayeringTests subset) pass, and the full suite (6157 passed / 1 pre-existing unrelated skip) passes after the change.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MaxChunksToMakeSorted/MaxChunksToMakeSortedSolution.cs",
+      "strategies": "MaxChunksByBruteForce (O(n^2) baseline, was the benchmark's [Benchmark(Baseline=true)] BruteForce arm, promoted to a tested first-class method), MaxChunksByRunningMaxScan (O(n), was both the test's private MaxChunksToSorted helper and the benchmark's RunningMaxScan arm)"
     },
     {
       "id": 770,
@@ -5541,8 +5557,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/BasicCalculatorIV/BasicCalculatorIVTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/BasicCalculatorIVBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<TKey,TValue> - used twice: an evalvars->evalints substitution lookup, and the term-key(sorted '*'-joined variables)->coefficient polynomial accumulator built/combined by a hand-written recursive-descent parser (+/- lowest precedence, * higher, parens override) - plus DSAExperimentation.Algorithms.Sorting.MergeSort over ArrayIndexedSequence<Term> for the final degree-desc/lexicographic-asc term ordering.",
-      "notes": "The existing BasicCalculator/ folder covers LC224 only (plain integer expression eval, no variables/polynomials) - confirmed by reading its content before starting; this is a genuinely separate, uncovered problem. 4 hand-computed-and-verified test cases pass: known-variable linear substitution, dual-symbolic linear terms, degree-2 expansion via (e+8)*(e-8), and a fully-known-variable product collapsing to one constant. Benchmark compares a plain BCL Dictionary<string,long>+List.Sort polynomial accumulator against the identical algorithm over this repo's HashMap+MergeSort, on a sum-of-Length-distinct-variables expression (200/2000, base-26 'aa,ab,...' generated names); both verified to agree via a throwaway console smoke run. dotnet build/test of both touched projects: 0 warnings, 0 errors, all new tests pass.",
-      "architectureTier": "pre-section-17"
+      "notes": "Behavior reconciled onto LeetCode's real answer shape: the benchmark's two [Benchmark] arms only counted terms (returned int via terms.Count / termsArray.Length) - both are promoted here to return the actual List<string> of formatted terms (e.g. \"-1*a\", \"14\") that the test's private helper already produced and that LC 770 actually asks for; the benchmark harness now measures/returns that same List<string>. The benchmark's arms also never exercised evalvars/evalints substitution (workload always passes none); the promoted EvaluateBy* methods do support it (needed for correctness/test parity) via a known-value lookup baked into each strategy's Variable closure at construction time - functionally identical to the test's original values.TryGetValue substitution. Term (private record struct) is a witness used by this problem alone, so it stays nested in the solution file per step 5's last bullet - nothing to relocate to DataStructures/Algorithms/Domain. BuildExpression/VariableName (workload-sizing helpers) stayed inline in the benchmark class rather than moving to Benchmarks/Fixtures, matching the TwoSumBenchmarks precedent of not extracting problem-local, non-reused workload generators. Verified: build clean, all 8 targeted tests pass, and the full suite (6157 passed / 1 pre-existing unrelated skip) passes after the change.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/BasicCalculatorIV/BasicCalculatorIVSolution.cs",
+      "strategies": "EvaluateByDictionaryPolynomial (BCL Dictionary<string,long> + List<T>.Sort baseline, was the benchmark's DictionaryPolynomial baseline arm), EvaluateByHashMapMergeSort (repo HashMap<string,long> + MergeSort over ArrayIndexedSequence<Term>, was both the test's private recursive-descent helper set and the benchmark's HashMapMergeSort arm). Both strategies share one generic recursive-descent parser core (ParseExpressionCore/ParseTermCore/ParseFactorCore) parametrized by a private PolynomialOps<T> record (Add/Negate/Multiply/Constant/Variable), exactly mirroring the generic-core design the pre-migration benchmark already used, so the two representations cannot drift on grammar."
     },
     {
       "id": 773,
@@ -5554,8 +5572,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SlidingPuzzle/SlidingPuzzleTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SlidingPuzzleBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<TKey,TValue> (state->node lookup) + DSAExperimentation.Algorithms.Reducing.Reduce.Graph with BreadthFirstReduceOrder<TNode>/DistanceMapReduceAlgebra<TNode> over an IGraphTopology<PuzzleNode,ListChildren<PuzzleNode>> witness built from all 720 permutations of the 2x3 board - the identical OpenTheLock (LC752) composition, just over a fixed 6-cell blank-tile-slide adjacency table instead of 4-wheel arithmetic. Needed a Fixtures/ subfolder (PuzzleNode/PuzzleTopology) for the custom node/topology type, same precedent as OpenTheLock/CourseSchedule.",
-      "notes": "3 official LeetCode examples pass: 1-move-from-solved -> 1, opposite-parity board -> -1 (unreachable), and the classic 5-move example -> 5. Benchmark compares a textbook Queue<(string,int)>+HashSet<string> BFS against this repo's Reduce.Graph BFS-distance-map, parameterized over the same two example start boards; both verified to agree via a throwaway console smoke run. dotnet build/test of both touched projects: 0 warnings, 0 errors, all new tests pass.",
-      "architectureTier": "pre-section-17"
+      "notes": "Original defect: the test's private SlidingPuzzle() helper (Reduce.Graph strategy) was the only strategy under test; the benchmark's [Benchmark(Baseline = true)] MutationQueueBfs textbook BFS was never asserted. Both original arms already agreed on the answer shape (int: fewest moves, or -1), so no shape reconciliation was needed - just deduplication and promoting the baseline to a tested, named strategy. Added one extra example (already-solved board -> 0) that neither original arm exercised, per the instruction to add cases if the original coverage was thin. Behaviour unchanged on all original inputs; LeetCodeAnswer.None (-1) used in place of the literal -1 for the 'unreachable' return.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SlidingPuzzle/SlidingPuzzleSolution.cs",
+      "strategies": "MinMovesByMutationQueue(int[][] board) + MinMovesByMutationQueue(string start) [textbook baseline, promoted from the benchmark's untested [Benchmark(Baseline=true)] arm]; MinMovesByReduceGraph(int[][] board) + MinMovesByReduceGraph(PuzzleGraph graph, string start) [hoisted overload, matches the test's original private helper]",
+      "relocatedTypes": "PuzzleNode.cs and PuzzleTopology.cs (previously duplicated verbatim in both DSAExperimentation.Tests/LeetCodeCoverage/SlidingPuzzle/Fixtures/ and DSAExperimentation.Benchmarks/Fixtures/) -> DSAExperimentation/Domain/SlidingPuzzle/ (Representation+Topology witnesses for a graph whose vertex set and adjacency are fixed by LC 773's own 2x3 board, the same classification as Domain/Locks' LockNode/LockTopology). New DSAExperimentation/Domain/SlidingPuzzle/PuzzleGraph.cs consolidates the previously-duplicated permutation-generation/adjacency-table/graph-building logic that lived separately as a private test helper and as DSAExperimentation.Benchmarks/Fixtures/PuzzleGraphs.cs (deleted). Per section 18, PuzzleGraph and PuzzleTopology got their own direct unit tests at DSAExperimentation.Tests/Domain/SlidingPuzzle/{PuzzleGraphTests.cs,PuzzleTopologyTests.cs} (11 new tests) since this migration put new types under DataStructures/Domain tier."
     },
     {
       "id": 778,
@@ -5567,8 +5588,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SwimInRisingWater/SwimInRisingWaterTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SwimInRisingWaterBenchmarks.cs",
       "primitivesUsed": "DataStructures.Heap.Heap<Element,TOrder> ordered by Graph.ShortestPaths.ByPriorityOrder<TNode,TWeight> (the exact Dijkstra-shaped frontier shape TrappingRainWaterIITests/TrappingRainWaterIIBenchmarks already use) as a min-heap over (row,col) cells keyed by the minimax (bottleneck) elevation crossed so far, with a plain bool[,] visited array mirroring ShortestPath.cs's own BCL-HashSet Settled-set precedent. Math.Max stands in for the usual summed-distance relaxation.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "No fixtures existed for this problem (both arms operated directly on int[][] grid, no domain graph type), so no relocation was needed - this cluster was purely 'algorithm written twice, one arm untested.' Both original arms already agreed on the answer shape (int: minimum time). One resolved disagreement: the test's helper threw InvalidOperationException on an exhausted frontier (documented as unreachable for a valid n x n grid) while the benchmark's HeapDijkstra arm instead returned -1 in that same branch; since the branch is genuinely unreachable under LeetCode's own guarantees (every cell is orthogonally connected to (0,0)), the migrated MinTimeByHeapDijkstra keeps the test's defensive throw rather than the benchmark's silent -1, since a throw surfaces a real bug in this defensive branch instead of masking it as a valid answer.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/SwimInRisingWater/SwimInRisingWaterSolution.cs",
+      "strategies": "MinTimeByBinarySearchFloodFill(int[][] grid) [textbook baseline, promoted from the benchmark's untested [Benchmark(Baseline=true)] arm]; MinTimeByHeapDijkstra(int[][] grid) [matches the test's original private SwimInWater helper, composes this repo's Heap<Element,TOrder>/ByPriorityOrder]"
     },
     {
       "id": 779,
