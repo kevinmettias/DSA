@@ -1,97 +1,78 @@
-using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.Algorithms.Folding.Dags.Trees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SmallestSubtreeWithAllTheDeepestNodes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestSubtreeWithAllTheDeepestNodes;
 
-// LeetCode 865. Smallest Subtree with all the Deepest Nodes: one TreeFold pass
-// over this repo's own BinaryTreeNode<T> - DeepestSubtreeAlgebra tracks, per node,
-// the deepest level reached in its subtree alongside the subtree root that already
-// contains every one of ITS deepest nodes (a tie between children promotes to this
-// node; otherwise the single deeper child's answer propagates unchanged), the same
-// "(depth, candidate) fold state" shape DiameterAlgebra already establishes for
-// LC543's DiameterOfBinaryTreeTests. No ready-made TreeMetrics facade fits this
-// exact combination, so the algebra stays local to this test rather than joining
-// Algorithms/Metrics - the same "don't promote a witness until a second consumer
-// earns it" judgment call ARCHITECTURE.md Sec.5 step 3 already makes for Representation.
-public sealed partial class SmallestSubtreeWithAllTheDeepestNodesTests
+// Harness only. Both strategies are SmallestSubtreeWithAllTheDeepestNodesSolution's -
+// the hand-rolled (depth, candidate) recursion and the TreeFold pass over
+// DeepestSubtreeAlgebra. Examples are stated in LeetCode's own level-order-with-null
+// array shape (BinaryTreeNode<int> is internal, so it cannot appear in a public
+// TheoryData signature), and the expected answer is the value of the subtree root
+// LeetCode reports - values are distinct in every example, so the value identifies
+// exactly one node of the tree.
+public sealed class SmallestSubtreeWithAllTheDeepestNodesTests
 {
-    [Fact]
-    public void SubtreeWithAllDeepest_AllLeavesTiedAtSameDepth_ReturnsRoot()
-    {
-        var root = new BinaryTreeNode<int>(1)
+    public static TheoryData<int?[], int> Examples =>
+        new()
         {
-            Left = new BinaryTreeNode<int>(2) { Left = new BinaryTreeNode<int>(4), Right = new BinaryTreeNode<int>(5) },
-            Right = new BinaryTreeNode<int>(3) { Left = new BinaryTreeNode<int>(6), Right = new BinaryTreeNode<int>(7) },
+            { [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4], 2 },
+            { [1], 1 },
+            { [0, 1, 3, null, 2], 2 },
+            { [1, 2, 3, 4, 5, 6, 7], 1 },
+            { [0, 1, null, null, 3], 3 },
         };
 
-        Assert.Same(root, SubtreeWithAllDeepest(root));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SubtreeWithAllDeepestByRecursion_LeetCodeExamples_ReturnsSmallestSubtreeRoot(
+        int?[] levelOrder, int expected) =>
+        Assert.Equal(
+            expected,
+            SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByRecursion(BuildTree(levelOrder))!.Value);
 
-    [Fact]
-    public void SubtreeWithAllDeepest_SingleDeepestLeaf_ReturnsThatLeaf()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SubtreeWithAllDeepestByTreeFold_LeetCodeExamples_ReturnsSmallestSubtreeRoot(
+        int?[] levelOrder, int expected) =>
+        Assert.Equal(
+            expected,
+            SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByTreeFold(BuildTree(levelOrder))!.Value);
+
+    // LeetCode's level-order array shape: each existing node consumes exactly two
+    // subsequent slots for its children, null marking a missing one.
+    private static BinaryTreeNode<int>? BuildTree(int?[] levelOrder)
     {
-        var deepest = new BinaryTreeNode<int>(3);
-        var root = new BinaryTreeNode<int>(0) { Left = new BinaryTreeNode<int>(1) { Right = deepest } };
-
-        Assert.Same(deepest, SubtreeWithAllDeepest(root));
-    }
-
-    private static BinaryTreeNode<int>? SubtreeWithAllDeepest(BinaryTreeNode<int>? root)
-        => TreeFold.Fold<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            DeepestSubtreeAlgebra, (int Depth, BinaryTreeNode<int>? Node)>(root).Node;
-
-    private readonly struct DeepestSubtreeAlgebra
-        : IFoldAlgebra<BinaryTreeNode<int>, (int Depth, BinaryTreeNode<int>? Node)>
-    {
-        public static (int Depth, BinaryTreeNode<int>? Node) Empty => (-1, null);
-
-        public static (int Depth, BinaryTreeNode<int>? Node) Combine(
-            BinaryTreeNode<int> node, IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
+        if (levelOrder.Length == 0 || levelOrder[0] is null)
         {
-            if (children.Count == 0)
-            {
-                return (0, node);
-            }
-
-            var maxDepth = ComputeMaxDepth(children);
-            var (deepest, tieCount) = FindDeepestAtMaxDepth(children, maxDepth);
-
-            return (maxDepth + 1, tieCount == 1 ? deepest : node);
+            return null;
         }
 
-        private static int ComputeMaxDepth(IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (queue.Count > 0 && i < levelOrder.Length)
         {
-            var maxDepth = 0;
-            for (var i = 0; i < children.Count; i++)
+            var node = queue.Dequeue();
+
+            if (levelOrder[i] is int leftValue)
             {
-                if (children[i].Depth > maxDepth)
-                {
-                    maxDepth = children[i].Depth;
-                }
+                node.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(node.Left);
             }
 
-            return maxDepth;
-        }
+            i++;
 
-        private static (BinaryTreeNode<int>? Deepest, int TieCount) FindDeepestAtMaxDepth(
-            IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children, int maxDepth)
-        {
-            BinaryTreeNode<int>? deepest = null;
-            var tieCount = 0;
-            for (var i = 0; i < children.Count; i++)
+            if (i < levelOrder.Length && levelOrder[i] is int rightValue)
             {
-                if (children[i].Depth == maxDepth)
-                {
-                    tieCount++;
-                    deepest = children[i].Node;
-                }
+                node.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(node.Right);
             }
 
-            return (deepest, tieCount);
+            i++;
         }
+
+        return root;
     }
 }

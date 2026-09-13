@@ -1,36 +1,35 @@
+using DSAExperimentation.LeetCode.MirrorReflection;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MirrorReflection;
 
-// LeetCode 858. Mirror Reflection: reduce (p, q) by their GCD (the Euclidean
-// algorithm, this repo's own inline-primitive precedent from MaxPointsOnALine's
-// slope-reduction and Reaching Points' backward-reduction loop) then read the
-// receptor off the reduced pair's parity. No repo container/algorithm primitive
-// applies to a single running (p, q) pair - the same "lighter repo-primitive fit"
-// category Reaching Points/Pow(x,n) already establish.
+// Harness only. Both strategies are MirrorReflectionSolution's - this file pins
+// them to LeetCode's published examples plus pairs that exercise the GCD reduction
+// itself (non-coprime (p, q), and q = p), including the O(p) unfolding simulation
+// that used to live unasserted in the benchmark.
 public sealed class MirrorReflectionTests
 {
-    [Theory]
-    [InlineData(2, 1, 2)]
-    [InlineData(3, 1, 1)]
-    [InlineData(3, 2, 0)]
-    public void MirrorReflection_LeetCodeExamples_ReturnsExpectedReceptor(int p, int q, int expected)
-    {
-        var actual = MirrorReflection(p, q);
-        Assert.Equal(expected, actual);
-    }
-
-    private static int MirrorReflection(int p, int q)
-    {
-        var g = Gcd(p, q);
-        var pPrime = p / g;
-        var qPrime = q / g;
-
-        if (pPrime % 2 == 1 && qPrime % 2 == 0)
+    public static TheoryData<int, int, int> Examples =>
+        new()
         {
-            return 0;
-        }
+            { 2, 1, 2 },
+            { 3, 1, 1 },
+            { 3, 2, 0 },
+            { 1, 1, 1 },
+            { 4, 2, 2 },
+            { 4, 3, 2 },
+            { 5, 2, 0 },
+            { 6, 4, 0 },
+        };
 
-        return pPrime % 2 == 1 ? 1 : 2;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReceptorBySimulatedUnfolding_LeetCodeExamples_ReturnsReceptorTheRayHits(
+        int p, int q, int expected) =>
+        Assert.Equal(expected, MirrorReflectionSolution.ReceptorBySimulatedUnfolding(p, q));
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReceptorByGcdReduction_LeetCodeExamples_ReturnsReceptorTheRayHits(
+        int p, int q, int expected) =>
+        Assert.Equal(expected, MirrorReflectionSolution.ReceptorByGcdReduction(p, q));
 }

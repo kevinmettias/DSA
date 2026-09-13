@@ -1,31 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ExamRoom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Exam Room (LC 855): both variants share the exact same BestAvailableSeat scan
-// - a single pass over the occupied seats that finds the widest min-distance
-// gap, which already yields the insertion index for free, so Seat() itself is
-// unaffected by which primitive backs the room. Leave(p) is where they differ:
-// LinearScanList keeps occupied seats in a plain, sorted List<int> and locates
-// p via List<T>.Remove's own linear scan (MyCalendarIBenchmarks' LinearScan
-// precedent), O(n) per call. BinarySearchDynamicArray instead composes this
-// repo's own DynamicArray<int> + BinarySearch.LowerBound (IntervalSet/
-// MyCalendarI precedent), O(log n) to locate p before the same O(n) shift
-// every array-backed removal pays either way. Every seated student later
-// leaves in the arrival order they sat, so both variants run the same number
-// of Seat()/Leave() calls doing comparable total work.
+// Harness only: both arms are ExamRoomSolution's, the same strategies ExamRoomTests
+// proves correct. Both share the identical Seat() gap scan, so what is being compared
+// is Leave(p): the baseline's O(n) List<T>.Remove scan versus this repo's O(log n)
+// BinarySearch.LowerBound locate. Drain seats Length students, then has every one of
+// them leave in the order they arrived, so both arms run the same call script. The
+// room itself is stateful and must be rebuilt per invocation, so [GlobalSetup] only
+// fixes the workload SIZE (ARCHITECTURE.md §17.7).
 [MemoryDiagnoser]
 public class ExamRoomBenchmarks
 {
-    // Extra room capacity appended beyond Length so BestAvailableSeat's end-of-room
-    // gap is never the tightest constraint by construction.
+    // Extra room capacity appended beyond Length so the end-of-room gap is never the
+    // tightest constraint by construction.
     private const int RoomCapacityPadding = 1_000;
-
-    // Splits a left/right seat pair to find the midpoint candidate seat.
-    private const int MidpointDivisor = 2;
 
     [Params(200, 2_000)]
     public int Length;
@@ -36,98 +26,26 @@ public class ExamRoomBenchmarks
     public void Setup() => _seatCount = Length + RoomCapacityPadding;
 
     [Benchmark(Baseline = true)]
-    public int LinearScanList()
-    {
-        var occupied = new List<int>();
-        var assigned = new int[Length];
-
-        for (var i = 0; i < Length; i++)
-        {
-            assigned[i] = SeatLinear(occupied);
-        }
-
-        foreach (var seat in assigned)
-        {
-            occupied.Remove(seat);
-        }
-
-        return occupied.Count;
-    }
+    public int LinearScanList() => Drain(ExamRoomSolution.CreateByLinearScanList(_seatCount));
 
     [Benchmark]
     public int BinarySearchDynamicArray()
+        => Drain(ExamRoomSolution.CreateByBinarySearchDynamicArray(_seatCount));
+
+    private int Drain(ExamRoomSolution.IExamRoom room)
     {
-        var occupied = new DynamicArray<int>();
         var assigned = new int[Length];
 
         for (var i = 0; i < Length; i++)
         {
-            assigned[i] = SeatSorted(occupied);
+            assigned[i] = room.Seat();
         }
 
         foreach (var seat in assigned)
         {
-            var index = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(new DynamicArraySequence<int>(occupied), seat);
-            occupied.RemoveAt(index);
+            room.Leave(seat);
         }
 
-        return occupied.Count;
-    }
-
-    private int SeatLinear(List<int> occupied)
-    {
-        if (occupied.Count == 0)
-        {
-            occupied.Insert(0, 0);
-            return 0;
-        }
-
-        var (bestIndex, bestSeat) = BestAvailableSeat(occupied.Count, i => occupied[i]);
-        occupied.Insert(bestIndex, bestSeat);
-        return bestSeat;
-    }
-
-    private int SeatSorted(DynamicArray<int> occupied)
-    {
-        if (occupied.Count == 0)
-        {
-            occupied.Insert(0, 0);
-            return 0;
-        }
-
-        var (bestIndex, bestSeat) = BestAvailableSeat(occupied.Count, occupied.Get);
-        occupied.Insert(bestIndex, bestSeat);
-        return bestSeat;
-    }
-
-    private (int Index, int Seat) BestAvailableSeat(int count, Func<int, int> get)
-    {
-        var best = (Index: 0, Seat: 0, Distance: get(0));
-
-        for (var i = 0; i < count - 1; i++)
-        {
-            best = ConsiderGapSeat(get, i, best);
-        }
-
-        var lastSeat = get(count - 1);
-        var endDistance = _seatCount - 1 - lastSeat;
-
-        if (endDistance > best.Distance)
-        {
-            best = (count, _seatCount - 1, endDistance);
-        }
-
-        return (best.Index, best.Seat);
-    }
-
-    private static (int Index, int Seat, int Distance) ConsiderGapSeat(
-        Func<int, int> get, int i, (int Index, int Seat, int Distance) best)
-    {
-        var left = get(i);
-        var right = get(i + 1);
-        var candidate = left + ((right - left) / MidpointDivisor);
-        var distance = candidate - left;
-
-        return distance > best.Distance ? (i + 1, candidate, distance) : best;
+        return assigned[Length - 1];
     }
 }
