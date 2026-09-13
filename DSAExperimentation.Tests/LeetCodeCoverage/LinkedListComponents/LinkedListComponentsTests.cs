@@ -1,82 +1,51 @@
-using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.LinkedListComponents;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListComponents;
 
-// LeetCode 817. Linked List Components: a single walk over this repo's own
-// SinglyLinkedListNode<int>.Next, testing O(1) membership against this repo's own
-// Set<int> (backed by HashMap, same ContainsDuplicateTests composition) instead of
-// an O(k) linear scan of nums per node. A component starts whenever the current
-// node's value is in the set and the previous node's either wasn't or didn't exist.
-public sealed partial class LinkedListComponentsTests
+// Harness only. Both strategies - the per-node linear scan of nums and the Set<int>
+// membership walk - are LinkedListComponentsSolution's; this file states LeetCode's
+// published examples once, as the list's values and nums, plus the run-counting
+// edges the two arms have to agree on.
+public sealed class LinkedListComponentsTests
 {
-    [Fact]
-    public void NumComponents_TwoSeparateRuns_ReturnsTwo()
-    {
-        var head = BuildList([0, 1, 2, 3]);
-
-        var count = NumComponents(head, [0, 1, 3]);
-
-        Assert.Equal(2, count);
-    }
-
-    [Fact]
-    public void NumComponents_NonConsecutiveMembersAcrossGap_ReturnsTwo()
-    {
-        var head = BuildList([0, 1, 2, 3, 4]);
-
-        var count = NumComponents(head, [0, 3, 1, 4]);
-
-        Assert.Equal(2, count);
-    }
-
-    private static int NumComponents(SinglyLinkedListNode<int>? head, int[] nums)
-    {
-        var present = BuildPresentSet(nums);
-        var counter = new ComponentCounter();
-
-        for (var node = head; node is not null; node = node.Next)
+    public static TheoryData<int[], int[], int> Examples =>
+        new()
         {
-            counter.Advance(present.Has(node.Value));
-        }
+            // LC example 1: 0 and 1 are adjacent in the list, 3 is on its own.
+            { [0, 1, 2, 3], [0, 1, 3], 2 },
 
-        return counter.Count;
-    }
+            // LC example 2: nums is unordered, and adjacency in the list is what
+            // decides - [0, 1] then [3, 4].
+            { [0, 1, 2, 3, 4], [0, 3, 1, 4], 2 },
 
-    private static Set<int> BuildPresentSet(int[] nums)
-    {
-        var present = new Set<int>();
-        foreach (var n in nums)
-        {
-            present.TryAdd(n);
-        }
+            // Every value present: the whole list is one component.
+            { [0, 1, 2, 3], [3, 2, 1, 0], 1 },
 
-        return present;
-    }
+            // Nothing present: no component ever opens.
+            { [0, 1, 2, 3], [], 0 },
 
-    private sealed class ComponentCounter
-    {
-        private bool _inComponent;
+            // A single node, present.
+            { [7], [7], 1 },
 
-        public int Count { get; private set; }
+            // Runs opening at the head and closing at the tail, with a gap between.
+            { [0, 1, 2, 3, 4], [0, 1, 4], 2 },
 
-        public void Advance(bool present)
-        {
-            if (present)
-            {
-                if (!_inComponent)
-                {
-                    Count++;
-                }
+            // Alternating membership: every present node is its own component.
+            { [0, 1, 2, 3, 4], [0, 2, 4], 3 },
+        };
 
-                _inComponent = true;
-            }
-            else
-            {
-                _inComponent = false;
-            }
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumComponentsByLinearScan_LeetCodeExamples_ReturnsConnectedComponentCount(
+        int[] values, int[] nums, int expected) =>
+        Assert.Equal(expected, LinkedListComponentsSolution.NumComponentsByLinearScan(BuildList(values), nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumComponentsBySetMembership_LeetCodeExamples_ReturnsConnectedComponentCount(
+        int[] values, int[] nums, int expected) =>
+        Assert.Equal(expected, LinkedListComponentsSolution.NumComponentsBySetMembership(BuildList(values), nums));
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
@@ -87,15 +56,20 @@ public sealed partial class LinkedListComponentsTests
         {
             var node = new SinglyLinkedListNode<int>(value);
             head ??= node;
-
-            if (tail is not null)
-            {
-                tail.Next = node;
-            }
-
+            AppendAfter(tail, node);
             tail = node;
         }
 
         return head;
+    }
+
+    // No previous node to link on the very first iteration (tail is still null) -
+    // head itself becomes that first node instead, back in BuildList.
+    private static void AppendAfter(SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int> node)
+    {
+        if (tail is not null)
+        {
+            tail.Next = node;
+        }
     }
 }

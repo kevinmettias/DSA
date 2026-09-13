@@ -1,178 +1,35 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.BricksFallingWhenHit;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BricksFallingWhenHit;
 
-// LeetCode 803. Bricks Falling When Hit: process hits in reverse, "un-hitting"
-// bricks back into the grid and unioning each newly-restored brick with any
-// already-standing neighbor (and a virtual roof node, for row 0) via this repo's
-// own DisjointSet. A brick's component size is caller-side bookkeeping threaded
-// beside Find/Union - DisjointSet itself has no size query, the same "own scratch
-// state next to a composed primitive" shape TopologicalSort.cs's in-degree
-// dictionary and ShortestPath.cs's Distances dictionary already establish - so no
-// new production primitive is needed, only a size[] array local to this solution.
-public sealed partial class BricksFallingWhenHitTests
+// Harness only. Both strategies are BricksFallingWhenHitSolution's - the forward
+// BFS replay and the reverse-time DisjointSet walk - pinned here to LeetCode's
+// published examples plus the cases the two disagree about most easily: a hit on
+// a cell that was never a brick, a hit whose own brick is the only thing that
+// falls, and a hit that severs a whole slab from the roof.
+public sealed class BricksFallingWhenHitTests
 {
-    [Fact]
-    public void HitBricks_ClassicExample_FallingBricksExcludeTheHitBrickItself()
-    {
-        int[][] grid = [[1, 0, 0, 0], [1, 1, 1, 0]];
-        int[][] hits = [[1, 0]];
-
-        var fallen = HitBricks(grid, hits);
-
-        Assert.Equal([2], fallen);
-    }
-
-    [Fact]
-    public void HitBricks_HitsThatNeverReconnectToTheRoof_ReturnZero()
-    {
-        int[][] grid = [[1, 0, 0, 0], [1, 1, 0, 0]];
-        int[][] hits = [[1, 1], [1, 0]];
-
-        var fallen = HitBricks(grid, hits);
-
-        Assert.Equal([0, 0], fallen);
-    }
-
-    private static int[] HitBricks(int[][] grid, int[][] hits)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-        var roof = rows * cols;
-
-        var present = BuildPresentGridAfterHits(grid, hits);
-        var (components, size) = InitializeComponents(present, rows, cols, roof);
-        var gridState = new GridState(components, size, present, rows, cols, roof);
-
-        ConnectAllStandingBricks(gridState);
-
-        var fallenReversed = new int[hits.Length];
-        var hitContext = new HitProcessingContext(hits, grid, fallenReversed);
-        ProcessHitsInReverse(gridState, hitContext);
-
-        return fallenReversed;
-    }
-
-    private static bool[,] BuildPresentGridAfterHits(int[][] grid, int[][] hits)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-        var present = new bool[rows, cols];
-
-        for (var r = 0; r < rows; r++)
+    public static TheoryData<int[][], int[][], int[]> Examples =>
+        new()
         {
-            for (var c = 0; c < cols; c++)
-            {
-                present[r, c] = grid[r][c] == 1;
-            }
-        }
+            { [[1, 0, 0, 0], [1, 1, 1, 0]], [[1, 0]], [2] },
+            { [[1, 0, 0, 0], [1, 1, 0, 0]], [[1, 1], [1, 0]], [0, 0] },
+            { [[1, 1, 1]], [[0, 1]], [0] },
+            { [[1, 0], [1, 1]], [[0, 1]], [0] },
+            { [[1, 1], [1, 0]], [[1, 0]], [0] },
+            { [[1, 1, 1], [0, 0, 1], [1, 1, 1]], [[1, 2]], [3] },
+            { [[1, 1]], [], [] },
+        };
 
-        foreach (var hit in hits)
-        {
-            present[hit[0], hit[1]] = false;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void HitBricksByForwardReplayBfs_LeetCodeExamples_ReturnsBricksFallenPerHit(
+        int[][] grid, int[][] hits, int[] expected) =>
+        Assert.Equal(expected, BricksFallingWhenHitSolution.HitBricksByForwardReplayBfs(grid, hits));
 
-        return present;
-    }
-
-    private static (DisjointSet Components, int[] Size) InitializeComponents(bool[,] present, int rows, int cols, int roof)
-    {
-        var components = new DisjointSet(roof + 1);
-        var size = new int[roof + 1];
-
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                if (present[r, c])
-                {
-                    size[(r * cols) + c] = 1;
-                }
-            }
-        }
-
-        return (components, size);
-    }
-
-    private static void ConnectAllStandingBricks(GridState state)
-    {
-        for (var r = 0; r < state.Rows; r++)
-        {
-            for (var c = 0; c < state.Cols; c++)
-            {
-                if (state.Present[r, c])
-                {
-                    ConnectToStandingNeighbors(state, r, c);
-                }
-            }
-        }
-    }
-
-    private static void ProcessHitsInReverse(GridState state, HitProcessingContext context)
-    {
-        for (var i = context.Hits.Length - 1; i >= 0; i--)
-        {
-            ProcessReverseHit(state, context, i);
-        }
-    }
-
-    private static void ProcessReverseHit(GridState state, HitProcessingContext context, int i)
-    {
-        var row = context.Hits[i][0];
-        var col = context.Hits[i][1];
-
-        if (context.Grid[row][col] == 0)
-        {
-            return;
-        }
-
-        var beforeSize = state.Size[state.Components.Find(state.Roof)];
-        state.Present[row, col] = true;
-        state.Size[(row * state.Cols) + col] = 1;
-        ConnectToStandingNeighbors(state, row, col);
-        var afterSize = state.Size[state.Components.Find(state.Roof)];
-
-        context.FallenReversed[i] = afterSize > beforeSize ? afterSize - beforeSize - 1 : 0;
-    }
-
-    private static void ConnectToStandingNeighbors(GridState state, int row, int col)
-    {
-        var cellId = (row * state.Cols) + col;
-
-        if (row == 0)
-        {
-            Union(state.Components, state.Size, cellId, state.Roof);
-        }
-
-        (int Row, int Col)[] neighbors = [(row - 1, col), (row + 1, col), (row, col - 1), (row, col + 1)];
-
-        foreach (var (neighborRow, neighborCol) in neighbors)
-        {
-            if (neighborRow >= 0 && neighborRow < state.Rows && neighborCol >= 0 && neighborCol < state.Cols
-                && state.Present[neighborRow, neighborCol])
-            {
-                Union(state.Components, state.Size, cellId, (neighborRow * state.Cols) + neighborCol);
-            }
-        }
-    }
-
-    private readonly record struct GridState(
-        DisjointSet Components, int[] Size, bool[,] Present, int Rows, int Cols, int Roof);
-
-    private readonly record struct HitProcessingContext(int[][] Hits, int[][] Grid, int[] FallenReversed);
-
-    private static void Union(DisjointSet components, int[] size, int first, int second)
-    {
-        var firstRoot = components.Find(first);
-        var secondRoot = components.Find(second);
-
-        if (firstRoot == secondRoot)
-        {
-            return;
-        }
-
-        components.Union(first, second);
-        var mergedRoot = components.Find(first);
-        size[mergedRoot] = size[firstRoot] + size[secondRoot];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void HitBricksByReverseTimeDisjointSet_LeetCodeExamples_ReturnsBricksFallenPerHit(
+        int[][] grid, int[][] hits, int[] expected) =>
+        Assert.Equal(expected, BricksFallingWhenHitSolution.HitBricksByReverseTimeDisjointSet(grid, hits));
 }

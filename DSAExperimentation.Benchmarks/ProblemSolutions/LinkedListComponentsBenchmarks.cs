@@ -1,14 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.LinkedListComponents;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Linked List Components (LC 817): an O(n*k) baseline that linearly scans the nums
-// array for every list node vs. this repo's own Set<int> (backed by HashMap, same
-// ContainsDuplicateBenchmarks precedent) giving O(1) membership per node, O(n+k)
-// overall. Every other value is included in nums, so the baseline's linear scan
-// never gets to short-circuit early on a hit near the front of the array.
+// Harness only: both arms are LinkedListComponentsSolution's, the same methods
+// LinkedListComponentsTests proves correct - an O(n*k) baseline that linearly scans
+// the nums array for every list node against this repo's own Set<int> (HashMap-
+// backed, the same ContainsDuplicateBenchmarks precedent) giving O(1) membership
+// per node, O(n+k) overall including seeding the set. Every other value is included
+// in nums, in descending order, so the baseline's linear scan never gets to
+// short-circuit early on a hit near the front of the array.
 [MemoryDiagnoser]
 public class LinkedListComponentsBenchmarks
 {
@@ -28,73 +30,10 @@ public class LinkedListComponentsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanPerNode()
-    {
-        var count = 0;
-        var inComponent = false;
-
-        for (var node = _head; node is not null; node = node.Next)
-        {
-            if (Array.IndexOf(_nums, node.Value) >= 0)
-            {
-                if (!inComponent)
-                {
-                    count++;
-                }
-
-                inComponent = true;
-            }
-            else
-            {
-                inComponent = false;
-            }
-        }
-
-        return count;
-    }
+    public int LinearScanPerNode() => LinkedListComponentsSolution.NumComponentsByLinearScan(_head, _nums);
 
     [Benchmark]
-    public int SetMembership()
-    {
-        var present = BuildPresentSet();
-        return CountComponentsBySetMembership(present);
-    }
-
-    private Set<int> BuildPresentSet()
-    {
-        var present = new Set<int>();
-        foreach (var n in _nums)
-        {
-            present.TryAdd(n);
-        }
-
-        return present;
-    }
-
-    private int CountComponentsBySetMembership(Set<int> present)
-    {
-        var count = 0;
-        var inComponent = false;
-
-        for (var node = _head; node is not null; node = node.Next)
-        {
-            if (present.Has(node.Value))
-            {
-                if (!inComponent)
-                {
-                    count++;
-                }
-
-                inComponent = true;
-            }
-            else
-            {
-                inComponent = false;
-            }
-        }
-
-        return count;
-    }
+    public int SetMembership() => LinkedListComponentsSolution.NumComponentsBySetMembership(_head, _nums);
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {

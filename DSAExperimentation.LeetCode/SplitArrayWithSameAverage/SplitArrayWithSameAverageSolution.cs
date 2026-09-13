@@ -1,0 +1,112 @@
+using DSAExperimentation.Algorithms.DynamicProgramming;
+
+namespace DSAExperimentation.LeetCode.SplitArrayWithSameAverage;
+
+// LeetCode 805. Split Array With Same Average: can the array be split into two
+// non-empty parts with the same average?
+//
+// avg(A) == avg(B) holds exactly when avg(A) == avg(whole), so the question
+// reduces to "does some proper non-empty subset of size k (1 <= k <= n/2, by
+// symmetry with its complement) sum to total*k/n". The baseline enumerates all
+// 2^n subsets as bit masks; the composed strategy runs that as a
+// 0/1-knapsack-with-a-required-count recurrence over (index, countNeeded,
+// sumNeeded) through this repo's own Memoizer - the PartitionEqualSubsetSum
+// precedent with one extra dimension (a required subset SIZE, not just a
+// required subset SUM).
+internal static class SplitArrayWithSameAverageSolution
+{
+    // A subset and its complement give the same split, so only sizes up to half
+    // the array need to be tried.
+    private const int MaxSubsetSizeDivisor = 2;
+
+    // The textbook answer: every proper non-empty subset as a bit mask, checked
+    // with the division-free test sum * n == total * count. BCL arithmetic only -
+    // it is the arm the memoized DP has to justify itself against, and at n = 30
+    // it is the 2^n wall LeetCode's constraints exist to force.
+    public static bool CanSplitBySubsetMasks(int[] nums)
+    {
+        var n = nums.Length;
+        var total = nums.Sum();
+
+        for (var mask = 1; mask < (1 << n) - 1; mask++)
+        {
+            if (MaskSplitsEvenly(nums, mask, n, total))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Splits nums by `mask` into the selected subset (bits set) and the rest, and
+    // checks whether the selected subset's average equals the whole array's.
+    private static bool MaskSplitsEvenly(int[] nums, int mask, int n, int total)
+    {
+        var count = 0;
+        var sum = 0;
+
+        for (var i = 0; i < n; i++)
+        {
+            if ((mask & (1 << i)) != 0)
+            {
+                count++;
+                sum += nums[i];
+            }
+        }
+
+        return sum * n == total * count;
+    }
+
+    // This repo's own Memoizer over (index, countNeeded, sumNeeded): one candidate
+    // subset size at a time, each a subset-sum search that also has to land on an
+    // exact element count. O(n * (n/2) * sum) instead of O(2^n).
+    public static bool CanSplitByMemoizedSubsetSum(int[] nums)
+    {
+        var n = nums.Length;
+        var total = nums.Sum();
+
+        for (var k = 1; k <= n / MaxSubsetSizeDivisor; k++)
+        {
+            if (HasSubsetOfSizeWithTargetSum(nums, n, total, k))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // For one candidate subset size k, checks whether some size-k subset sums to
+    // the exact target that would make its average equal the whole array's. A
+    // target that is not an integer rules the size out with no search at all.
+    private static bool HasSubsetOfSizeWithTargetSum(int[] nums, int n, int total, int k)
+    {
+        if (total * k % n != 0)
+        {
+            return false;
+        }
+
+        var targetSum = total * k / n;
+
+        return Memoizer.Memoize<(int Index, int Count, int Sum), bool>(
+            (0, k, targetSum), (state, canReach) => CanReach(nums, state, canReach));
+    }
+
+    private static bool CanReach(
+        int[] nums, (int Index, int Count, int Sum) state, Func<(int Index, int Count, int Sum), bool> canReach)
+    {
+        if (state.Count == 0)
+        {
+            return state.Sum == 0;
+        }
+
+        if (state.Index == nums.Length || state.Sum < 0)
+        {
+            return false;
+        }
+
+        return canReach((state.Index + 1, state.Count, state.Sum))
+            || canReach((state.Index + 1, state.Count - 1, state.Sum - nums[state.Index]));
+    }
+}

@@ -1,26 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.ChalkboardXorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Chalkboard XOR Game (LC 810): the textbook unmemoized bitmask minimax recursion
-// (re-explores every erase order that reaches the same remaining subset, O(n!) worst
-// case - same shape CanIWinBenchmarks' used-numbers bitmask) vs. that same recursion
-// routed through this repo's own Memoizer, keyed on the remaining-elements bitmask
-// (O(2^n * n) states), vs. the well-known O(n) closed form the recursion itself
-// reduces to (xor(nums) == 0) || (nums.Length % 2 == 0) - the same "recursion reduces
-// to a closed form" comparison NimGameBenchmarks already makes. The two Length values
-// deliberately straddle the crossover: at 9 the unmemoized tree is still small enough
-// to roughly match the Memoizer's own per-call overhead, but at 13 it is already
-// ~32x slower in a local dry run - the same factorial blowup CanIWinBenchmarks
-// documents for its own unmemoized bitmask baseline, here made visible sooner
-// because every mask, not just a used-numbers subset, is a distinct memo key.
+// Harness only: all three arms are ChalkboardXorGameSolution's, the same methods
+// ChalkboardXorGameTests proves correct. The two Length values deliberately straddle
+// the crossover: at 9 the unmemoized tree is still small enough to roughly match the
+// Memoizer's own per-call overhead, but at 13 it is already ~32x slower in a local
+// dry run - the same factorial blowup CanIWinBenchmarks documents for its own
+// unmemoized bitmask baseline, here made visible sooner because every mask, not just
+// a used-numbers subset, is a distinct memo key. The closed form is O(n) and shows
+// what the whole search reduces to.
 [MemoryDiagnoser]
 public class ChalkboardXorGameBenchmarks
 {
     private const int RandomSeed = 810; // LC problem number
     private const int RandomValueBitWidth = 16;
-    private const int EvenCountModulus = 2;
 
     [Params(9, 13)]
     public int Length;
@@ -35,68 +30,11 @@ public class ChalkboardXorGameBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceRecursion() => CurrentPlayerWinsBruteForce((1 << _nums.Length) - 1);
-
-    private bool CurrentPlayerWinsBruteForce(int mask) => CurrentPlayerWins(mask, CurrentPlayerWinsBruteForce);
+    public bool BruteForceRecursion() => ChalkboardXorGameSolution.AliceWinsByBruteForceRecursion(_nums);
 
     [Benchmark]
-    public bool MemoizedRecursion()
-    {
-        var fullMask = (1 << _nums.Length) - 1;
-        return Memoizer.Memoize<int, bool>(fullMask, CurrentPlayerWins);
-    }
-
-    // Shared by both BruteForceRecursion and MemoizedRecursion: the only difference
-    // between them is how the recursive win-check for the remaining mask is resolved
-    // (a direct self-call vs. the Memoizer-provided, memo-backed delegate).
-    private bool CurrentPlayerWins(int mask, Func<int, bool> currentPlayerWins)
-    {
-        if (XorOf(mask) == 0)
-        {
-            return true;
-        }
-
-        for (var i = 0; i < _nums.Length; i++)
-        {
-            var bit = 1 << i;
-            if ((mask & bit) == 0)
-            {
-                continue;
-            }
-
-            var remaining = mask & ~bit;
-            if (XorOf(remaining) != 0 && !currentPlayerWins(remaining))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool MemoizedRecursion() => ChalkboardXorGameSolution.AliceWinsByMemoizedRecursion(_nums);
 
     [Benchmark]
-    public bool ClosedFormFormula()
-    {
-        var xor = 0;
-        foreach (var num in _nums)
-        {
-            xor ^= num;
-        }
-
-        return xor == 0 || _nums.Length % EvenCountModulus == 0;
-    }
-
-    private int XorOf(int mask)
-    {
-        var result = 0;
-        for (var i = 0; i < _nums.Length; i++)
-        {
-            if ((mask & (1 << i)) != 0)
-            {
-                result ^= _nums[i];
-            }
-        }
-
-        return result;
-    }
+    public bool ClosedFormFormula() => ChalkboardXorGameSolution.AliceWinsByXorParityFormula(_nums);
 }
