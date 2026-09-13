@@ -1,77 +1,95 @@
-using DSAExperimentation.Algorithms.Traversal.TopDown;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.FindElementsInAContaminatedBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindElementsInAContaminatedBinaryTree;
 
-// LeetCode 1261. Find Elements in a Contaminated Binary Tree: recover the tree's
-// values with this repo's own TopDownTraversal - root.val = 0, and Descend computes
-// 2*parent+1 for a left child / 2*parent+2 for a right child, exactly the "value
-// inherited from the parent, computed fresh per child" shape ITopDownHooks exists
-// for - collecting every recovered value into this repo's own Set<int> along the
-// way, giving Find O(1) lookup instead of a search.
-public sealed partial class FindElementsInAContaminatedBinaryTreeTests
+// LeetCode 1261. Find Elements in a Contaminated Binary Tree. See
+// FindElementsInAContaminatedBinaryTreeSolution for the two strategies: a recursive
+// recovery into a BCL List answered by linear scan, and this repo's own
+// TopDownTraversal recovering into a Set<int> answered in O(1).
+//
+// Examples are stated as LeetCode's own level-order arrays - BinaryTreeNode<int> is
+// internal, so it cannot appear in a public TheoryData member; BuildTree
+// reconstructs the tree inside each test method instead. Every present node carries
+// the contaminated value -1 and null stands for a missing child: only the shape is
+// input, since recovery overwrites every value.
+public sealed class FindElementsInAContaminatedBinaryTreeTests
 {
-    [Fact]
-    public void Find_ValuesPresentInRecoveredTree_ReturnsTrue()
-    {
-        var elements = new FindElements(ContaminatedTree());
-
-        Assert.True(elements.Find(0));
-        Assert.True(elements.Find(1));
-        Assert.True(elements.Find(2));
-        Assert.True(elements.Find(3));
-        Assert.True(elements.Find(4));
-    }
-
-    [Fact]
-    public void Find_ValuesAbsentFromRecoveredTree_ReturnsFalse()
-    {
-        var elements = new FindElements(ContaminatedTree());
-
-        Assert.False(elements.Find(5));
-        Assert.False(elements.Find(6));
-    }
-
-    // Left/Right shape only - the contaminated values themselves (-1, per the
-    // problem statement) never matter, since recovery overwrites every node's Value.
-    // Shape: root -> left -> {left.left, left.right}; root -> right (leaf).
-    private static BinaryTreeNode<int> ContaminatedTree()
-        => new(-1)
+    public static TheoryData<int?[], int[], bool[]> Examples =>
+        new()
         {
-            Left = new(-1) { Left = new(-1), Right = new(-1) },
-            Right = new(-1),
+            // LeetCode example 1: root -> right only, recovering to {0, 2}.
+            { [-1, null, -1], [1, 2], [false, true] },
+
+            // LeetCode example 2, widened to the full 0..6 sweep the pre-migration
+            // test asserted: a five-node complete tree recovering to {0, 1, 2, 3, 4}.
+            { [-1, -1, -1, -1, -1], [0, 1, 2, 3, 4, 5, 6], [true, true, true, true, true, false, false] },
+
+            // LeetCode example 3: a left-leaning chain hanging off the right child,
+            // recovering to {0, 2, 5, 11} - the case that proves values are derived
+            // from position rather than from insertion order.
+            { [-1, null, -1, -1, null, -1], [2, 3, 4, 5], [true, false, false, true] },
+
+            // Root alone: 0 is present and nothing else is.
+            { [-1], [0, 1], [true, false] },
         };
 
-    private sealed class FindElements
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByListScan_LeetCodeExamples_FindsExactlyTheRecoveredValues(
+        int?[] levelOrder, int[] targets, bool[] expected) =>
+        AssertFinds(
+            FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(BuildTree(levelOrder)),
+            targets,
+            expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByTopDownSet_LeetCodeExamples_FindsExactlyTheRecoveredValues(
+        int?[] levelOrder, int[] targets, bool[] expected) =>
+        AssertFinds(
+            FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(BuildTree(levelOrder)),
+            targets,
+            expected);
+
+    private static void AssertFinds(IFindElements elements, int[] targets, bool[] expected)
     {
-        private readonly Set<int> _values;
-
-        public FindElements(BinaryTreeNode<int> root)
+        for (var i = 0; i < targets.Length; i++)
         {
-            _values = new Set<int>();
-
-            TopDownTraversal.Walk<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-                RecoverHooks, (int Value, Set<int> Found)>(root, (0, _values));
+            Assert.Equal(expected[i], elements.Find(targets[i]));
         }
+    }
 
-        public bool Find(int target) => _values.Has(target);
+    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
+    // in for a missing child.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
+    {
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
 
-        private readonly struct RecoverHooks : ITopDownHooks<BinaryTreeNode<int>, (int Value, Set<int> Found)>
+        while (i < levelOrder.Length)
         {
-            public static void Visit(
-                BinaryTreeNode<int> node, (int Value, Set<int> Found) state, int depth, NodePosition position)
+            var current = queue.Dequeue();
+
+            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
             {
-                node.Value = state.Value;
-                state.Found.TryAdd(state.Value);
+                current.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(current.Left);
             }
 
-            public static (int Value, Set<int> Found) Descend(
-                BinaryTreeNode<int> parent, (int Value, Set<int> Found) parentState, BinaryTreeNode<int> child)
-                => (child == parent.Left ? 2 * parentState.Value + 1 : 2 * parentState.Value + 2, parentState.Found);
+            i++;
+
+            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+            {
+                current.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(current.Right);
+            }
+
+            i++;
         }
+
+        return root;
     }
 }

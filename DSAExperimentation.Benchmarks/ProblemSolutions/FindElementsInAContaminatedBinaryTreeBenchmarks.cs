@@ -1,24 +1,28 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Traversal.TopDown;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.FindElementsInAContaminatedBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find Elements in a Contaminated Binary Tree (LC 1261): recover values with a
-// plain recursive DFS into a List<int>, then answer each Find with a linear
-// Contains scan, vs. this repo's own TopDownTraversal to recover values (root.val =
-// 0, Descend computes 2*parent+1/2*parent+2) into this repo's own Set<int>, giving
-// O(1) Find. The tree is built as a complete binary tree, so node i's recovered
-// value is exactly i - the same array-index-as-value shape a binary heap has.
+// Harness only: both arms are FindElementsInAContaminatedBinaryTreeSolution's, the
+// same factories FindElementsInAContaminatedBinaryTreeTests proves correct. Each
+// arm recovers the tree once and then answers the same fixed batch of Find queries,
+// so the measurement is the recovery walk plus the per-query lookup cost the
+// recovered container implies - a List scanned linearly vs. this repo's own
+// Set<int>.
+//
+// The tree is a complete binary tree built in [GlobalSetup] from Fixtures'
+// BinaryTrees.Balanced, so node i's recovered value is exactly i - the same
+// array-index-as-value shape a binary heap has. Half the sampled targets therefore
+// miss, which is the worst case for the linear scan and the case the hashed lookup
+// exists for.
 [MemoryDiagnoser]
 public class FindElementsInAContaminatedBinaryTreeBenchmarks
 {
     private const int TargetSampleCount = 200;
     private const int TargetRangeMultiplier = 2;
-    private const int ChildIndexMultiplier = 2;
-    private const int RightChildOffset = 2;
+    private const int TargetSeed = 1;
 
     [Params(200, 2_000)]
     public int NodeCount;
@@ -29,115 +33,34 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _root = BuildCompleteTree(NodeCount);
+        _root = BinaryTrees.Balanced(NodeCount);
 
-        var random = new Random(1);
+        var random = new Random(TargetSeed);
         _targets = Enumerable.Range(0, TargetSampleCount)
             .Select(_ => random.Next(0, NodeCount * TargetRangeMultiplier))
             .ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public int ListRecoverThenLinearScan()
-    {
-        var values = new List<int>();
-        Recover(_root, 0, values);
-
-        var found = 0;
-
-        foreach (var target in _targets)
-        {
-            if (values.Contains(target))
-            {
-                found++;
-            }
-        }
-
-        return found;
-    }
+    public int ListRecoverThenLinearScan() =>
+        CountFound(FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(_root));
 
     [Benchmark]
-    public int TopDownRecoverThenSetLookup()
+    public int TopDownRecoverThenSetLookup() =>
+        CountFound(FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(_root));
+
+    private int CountFound(IFindElements elements)
     {
-        var values = new Set<int>();
-
-        TopDownTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            RecoverHooks, (int Value, Set<int> Found)>(_root, (0, values));
-
         var found = 0;
 
         foreach (var target in _targets)
         {
-            if (values.Has(target))
+            if (elements.Find(target))
             {
                 found++;
             }
         }
 
         return found;
-    }
-
-    private static void Recover(BinaryTreeNode<int>? node, int value, List<int> values)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        node.Value = value;
-        values.Add(value);
-        Recover(node.Left, (ChildIndexMultiplier * value) + 1, values);
-        Recover(node.Right, (ChildIndexMultiplier * value) + RightChildOffset, values);
-    }
-
-    private static BinaryTreeNode<int> BuildCompleteTree(int nodeCount)
-    {
-        var nodes = new BinaryTreeNode<int>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            nodes[i] = new BinaryTreeNode<int>(-1);
-        }
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            LinkChildren(nodes, i, nodeCount);
-        }
-
-        return nodes[0];
-    }
-
-    private static void LinkChildren(BinaryTreeNode<int>[] nodes, int index, int nodeCount)
-    {
-        var left = (ChildIndexMultiplier * index) + 1;
-        var right = (ChildIndexMultiplier * index) + RightChildOffset;
-
-        if (left < nodeCount)
-        {
-            nodes[index].Left = nodes[left];
-        }
-
-        if (right < nodeCount)
-        {
-            nodes[index].Right = nodes[right];
-        }
-    }
-
-    private readonly struct RecoverHooks : ITopDownHooks<BinaryTreeNode<int>, (int Value, Set<int> Found)>
-    {
-        public static void Visit(
-            BinaryTreeNode<int> node, (int Value, Set<int> Found) state, int depth, NodePosition position)
-        {
-            node.Value = state.Value;
-            state.Found.TryAdd(state.Value);
-        }
-
-        public static (int Value, Set<int> Found) Descend(
-            BinaryTreeNode<int> parent, (int Value, Set<int> Found) parentState, BinaryTreeNode<int> child)
-            => (child == parent.Left
-                ? (ChildIndexMultiplier * parentState.Value) + 1
-                : (ChildIndexMultiplier * parentState.Value) + RightChildOffset, parentState.Found);
     }
 }

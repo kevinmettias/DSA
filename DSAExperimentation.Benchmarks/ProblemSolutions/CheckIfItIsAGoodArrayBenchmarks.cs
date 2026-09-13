@@ -1,16 +1,16 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.CheckIfItIsAGoodArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Check If It Is a Good Array (LC 1250): Bezout's identity reduces the whole
-// problem to "is the array's gcd 1", so the only real performance question left
-// is how each pairwise Gcd step itself is computed - repeated subtraction (the
-// textbook first algorithm, O(max(a,b)/min(a,b)) per pair) vs. the modulo-based
-// Euclidean algorithm (O(log(min(a,b))) per pair), the same "two ways to
-// compute the same fold" framing WaterAndJugProblemBenchmarks' GcdFormula uses
-// its own private Gcd for. _values are all multiples of 3, guaranteeing the
-// running gcd never reaches 1 early, so both benchmarks are forced through
-// every element instead of one short-circuiting on the first pair.
+// Harness only: both arms are CheckIfItIsAGoodArraySolution's, the same methods
+// CheckIfItIsAGoodArrayTests proves correct. Bezout's identity reduces LC 1250 to
+// "is the array's gcd 1", so the performance question left is how each pairwise
+// gcd step is computed - repeated subtraction (O(max(a,b)/min(a,b)) per pair) vs.
+// the modulo-based Euclidean algorithm (O(log min(a,b)) per pair). _values are all
+// multiples of 3, guaranteeing the running gcd never reaches 1 early, so both arms
+// are forced through every element instead of one short-circuiting on the first
+// pair.
 [MemoryDiagnoser]
 public class CheckIfItIsAGoodArrayBenchmarks
 {
@@ -31,51 +31,10 @@ public class CheckIfItIsAGoodArrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool SubtractionGcdFold()
-    {
-        var gcd = _values[0];
-
-        foreach (var value in _values)
-        {
-            gcd = SubtractionGcd(gcd, value);
-        }
-
-        return gcd == 1;
-    }
+    public bool IsGoodArrayBySubtractionGcd() =>
+        CheckIfItIsAGoodArraySolution.IsGoodArrayBySubtractionGcd(_values);
 
     [Benchmark]
-    public bool EuclideanGcdFold()
-    {
-        var gcd = _values[0];
-
-        foreach (var value in _values)
-        {
-            gcd = EuclideanGcd(gcd, value);
-        }
-
-        return gcd == 1;
-    }
-
-    // The textbook first Gcd algorithm: repeatedly subtract the smaller value
-    // from the larger until they're equal. Correct, but O(max/min) per pair -
-    // a value that's a small multiple of the running gcd forces one subtraction
-    // per multiple instead of one division.
-    private static int SubtractionGcd(int a, int b)
-    {
-        while (a != b)
-        {
-            if (a > b)
-            {
-                a -= b;
-            }
-            else
-            {
-                b -= a;
-            }
-        }
-
-        return a;
-    }
-
-    private static int EuclideanGcd(int a, int b) => b == 0 ? a : EuclideanGcd(b, a % b);
+    public bool IsGoodArrayByEuclideanGcd() =>
+        CheckIfItIsAGoodArraySolution.IsGoodArrayByEuclideanGcd(_values);
 }
