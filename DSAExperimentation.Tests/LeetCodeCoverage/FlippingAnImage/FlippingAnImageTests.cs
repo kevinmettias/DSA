@@ -1,66 +1,54 @@
-using StackOfInt = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.FlippingAnImage;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FlippingAnImage;
 
-// LeetCode 832. Flipping an Image: horizontally flipping a row is exactly a LIFO
-// reversal - push every value in a row onto this repo's own Stack<T> (the same
-// digit-reversal primitive ReverseIntegerTests/RotateImageTests already use for
-// LC 7/48), then pop the values back out into the row while inverting each bit
-// (1 - value) as it comes off the stack. Popping naturally reverses row order, so
-// flip-then-invert happens in the single pop pass.
-public sealed partial class FlippingAnImageTests
+// Harness only. Both strategies are FlippingAnImageSolution's - this file just
+// pins them to LeetCode's published examples. Each row is cloned before flipping
+// so the two theory methods never share a rewritten image.
+public sealed class FlippingAnImageTests
 {
-    [Fact]
-    public void FlipAndInvertImage_ThreeByThreeExample_FlipsThenInvertsEachRow()
-    {
-        int[][] image = [[1, 1, 0], [1, 0, 1], [0, 0, 0]];
-
-        var result = FlipAndInvertImage(image);
-
-        int[][] expected = [[1, 0, 0], [0, 1, 0], [1, 1, 1]];
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void FlipAndInvertImage_FourByFourExample_FlipsThenInvertsEachRow()
-    {
-        int[][] image = [[1, 1, 0, 0], [1, 0, 0, 1], [0, 1, 1, 1], [1, 0, 1, 0]];
-
-        var result = FlipAndInvertImage(image);
-
-        int[][] expected = [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 1], [1, 0, 1, 0]];
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void FlipAndInvertImage_SingleColumn_InvertsEachCellWithoutOrderChange()
-    {
-        int[][] image = [[1], [0], [1]];
-
-        var result = FlipAndInvertImage(image);
-
-        int[][] expected = [[0], [1], [0]];
-        Assert.Equal(expected, result);
-    }
-
-    private static int[][] FlipAndInvertImage(int[][] image)
-    {
-        foreach (var row in image)
+    public static TheoryData<int[][], int[][]> Examples =>
+        new()
         {
-            var pending = new StackOfInt();
-
-            foreach (var value in row)
             {
-                pending.Push(value);
-            }
-
-            var index = 0;
-            while (pending.TryPop(out var value))
+                [[1, 1, 0], [1, 0, 1], [0, 0, 0]],
+                [[1, 0, 0], [0, 1, 0], [1, 1, 1]]
+            },
             {
-                row[index++] = 1 - value;
-            }
+                [[1, 1, 0, 0], [1, 0, 0, 1], [0, 1, 1, 1], [1, 0, 1, 0]],
+                [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 1], [1, 0, 1, 0]]
+            },
+            {
+                [[1], [0], [1]],
+                [[0], [1], [0]]
+            },
+            {
+                [[0, 1]],
+                [[0, 1]]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FlipAndInvertImageByTwoPointerReverse_LeetCodeExamples_FlipsThenInvertsEachRow(
+        int[][] image, int[][] expected) =>
+        Assert.Equal(expected, FlippingAnImageSolution.FlipAndInvertImageByTwoPointerReverse(Clone(image)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FlipAndInvertImageByStackReverse_LeetCodeExamples_FlipsThenInvertsEachRow(
+        int[][] image, int[][] expected) =>
+        Assert.Equal(expected, FlippingAnImageSolution.FlipAndInvertImageByStackReverse(Clone(image)));
+
+    private static int[][] Clone(int[][] image)
+    {
+        var copy = new int[image.Length][];
+
+        for (var r = 0; r < image.Length; r++)
+        {
+            copy[r] = (int[])image[r].Clone();
         }
 
-        return image;
+        return copy;
     }
 }

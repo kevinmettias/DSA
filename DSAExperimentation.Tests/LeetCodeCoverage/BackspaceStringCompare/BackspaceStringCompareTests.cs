@@ -1,61 +1,34 @@
-using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.BackspaceStringCompare;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BackspaceStringCompare;
 
-// LeetCode 844. Backspace String Compare: this repo's Stack<char> replays each
-// string's keystrokes, popping on '#' the same way ValidParenthesesTests' Stack<char>
-// pops on a closing bracket - the processed result is whatever's left on the stack.
-public sealed partial class BackspaceStringCompareTests
+// Harness only. Both replay strategies are BackspaceStringCompareSolution's - this
+// file just pins them to LeetCode's published examples, including the cases that
+// decide whether a backspace on already-empty text is the no-op LeetCode says it
+// is and whether two strings that agree character-for-character after replay but
+// not before are still reported equal.
+public sealed class BackspaceStringCompareTests
 {
-    [Fact]
-    public void BackspaceCompare_BackspacesCancelEarlierLetters_ReturnsTrue()
-    {
-        var actual = BackspaceCompare("ab#c", "ad#c");
-
-        Assert.True(actual);
-    }
-
-    [Fact]
-    public void BackspaceCompare_EverythingTypedIsThenDeleted_ReturnsTrue()
-    {
-        var actual = BackspaceCompare("ab##", "c#d#");
-
-        Assert.True(actual);
-    }
-
-    [Fact]
-    public void BackspaceCompare_DifferentSurvivingLetters_ReturnsFalse()
-    {
-        var actual = BackspaceCompare("a#c", "b");
-
-        Assert.False(actual);
-    }
-
-    private static bool BackspaceCompare(string s, string t) => Process(s) == Process(t);
-
-    private static string Process(string input)
-    {
-        var stack = new RepoCharStack();
-
-        foreach (var ch in input)
+    public static TheoryData<string, string, bool> Examples =>
+        new()
         {
-            if (ch == '#')
-            {
-                stack.TryPop(out _);
-            }
-            else
-            {
-                stack.Push(ch);
-            }
-        }
+            { "ab#c", "ad#c", true },
+            { "ab##", "c#d#", true },
+            { "a#c", "b", false },
+            { "bxj##tw", "bxj###tw", false },
+            { "y#fo##f", "y#f#o##f", true },
+            { "###a", "a", true },
+        };
 
-        var chars = new char[stack.Count];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BackspaceCompareByBclStack_LeetCodeExamples_ReturnsWhetherTypedTextMatches(
+        string s, string t, bool expected) =>
+        Assert.Equal(expected, BackspaceStringCompareSolution.BackspaceCompareByBclStack(s, t));
 
-        for (var i = chars.Length - 1; i >= 0; i--)
-        {
-            stack.TryPop(out chars[i]);
-        }
-
-        return new string(chars);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BackspaceCompareByStackReplay_LeetCodeExamples_ReturnsWhetherTypedTextMatches(
+        string s, string t, bool expected) =>
+        Assert.Equal(expected, BackspaceStringCompareSolution.BackspaceCompareByStackReplay(s, t));
 }
