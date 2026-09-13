@@ -1,51 +1,34 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.NRepeatedElementInSize2NArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NRepeatedElementInSize2NArray;
 
-// LeetCode 961. N-Repeated Element in Size 2N Array: a single pass with this
-// repo's own Set<int> - the first value TryAdd refuses (because it's already
-// present) is the one repeated N times. Same "have I seen this before" role
-// NumberOfProvincesTests already uses Set<int> for when counting distinct roots,
-// just checked on every element instead of only at the end.
-public sealed partial class NRepeatedElementInSize2NArrayTests
+// Harness only. Both strategies are NRepeatedElementInSize2NArraySolution's - the
+// pairwise baseline the benchmark used to hide, and the Set<int> single pass - so this
+// file just pins them to LeetCode's published examples plus the cases the original
+// test added: the repeat trailing the array, and the smallest valid n = 2 input.
+public sealed class NRepeatedElementInSize2NArrayTests
 {
-    [Fact]
-    public void FindRepeatedElement_ClassicExample_ReturnsTheRepeatedValue()
-    {
-        int[] nums = [1, 2, 3, 3];
-
-        Assert.Equal(3, FindRepeatedElement(nums));
-    }
-
-    [Fact]
-    public void FindRepeatedElement_RepeatedValueAppearsLast_StillFindsIt()
-    {
-        int[] nums = [5, 1, 5, 2, 5, 3, 5, 4];
-
-        Assert.Equal(5, FindRepeatedElement(nums));
-    }
-
-    [Fact]
-    public void FindRepeatedElement_SmallestValidInput_ReturnsTheRepeatedValue()
-    {
-        // n = 2: 4 elements, n + 1 = 3 unique values, one repeated exactly n times.
-        int[] nums = [4, 5, 4, 6];
-
-        Assert.Equal(4, FindRepeatedElement(nums));
-    }
-
-    private static int FindRepeatedElement(int[] nums)
-    {
-        var seen = new Set<int>();
-
-        foreach (var value in nums)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            if (!seen.TryAdd(value))
-            {
-                return value;
-            }
-        }
+            { [1, 2, 3, 3], 3 },
+            { [2, 1, 2, 5, 3, 2], 2 },
+            { [5, 1, 5, 2, 5, 3, 5, 4], 5 },
+            // n = 2: 4 elements, n + 1 = 3 unique values, one repeated exactly n times.
+            { [4, 5, 4, 6], 4 },
+            // The repeat is the very first pair, so neither strategy gets to scan far.
+            { [9, 9, 1, 2], 9 },
+        };
 
-        throw new InvalidOperationException("No repeated element found - input violates the problem's own precondition.");
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindRepeatedByPairwiseScan_LeetCodeExamples_ReturnsTheValueRepeatedNTimes(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, NRepeatedElementInSize2NArraySolution.FindRepeatedByPairwiseScan(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindRepeatedByTrackingSet_LeetCodeExamples_ReturnsTheValueRepeatedNTimes(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, NRepeatedElementInSize2NArraySolution.FindRepeatedByTrackingSet(nums));
 }

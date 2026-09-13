@@ -1,12 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.KClosestPointsToOrigin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// K Closest Points to Origin (LC 973): a full O(n log n) sort of every point's
-// squared distance vs. an O(n log k) size-k max-heap (this repo's own
-// Heap<Element,MaxHeapOrder<Element>> - KthLargestBenchmarks precedent) that only
-// ever holds k candidates, discarding the farthest whenever a closer point arrives.
+// Harness only: both arms are KClosestPointsToOriginSolution's, the same methods
+// KClosestPointsToOriginTests proves correct. The point cloud is generated once in
+// [GlobalSetup]; it is already LeetCode's own input shape, so each arm is handed it
+// directly and only the selection is measured - a full O(n log n) sort of every point
+// against an O(n log k) size-k max-heap that never orders more than k of them.
 [MemoryDiagnoser]
 public class KClosestPointsToOriginBenchmarks
 {
@@ -29,45 +30,10 @@ public class KClosestPointsToOriginBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long FullSort()
-    {
-        var withDistance = _points
-            .Select(p => ((long)(p[0] * p[0]) + (p[1] * p[1]), p))
-            .ToArray();
-
-        Array.Sort(withDistance, (a, b) => a.Item1.CompareTo(b.Item1));
-
-        var sum = 0L;
-        for (var i = 0; i < K; i++)
-        {
-            sum += withDistance[i].Item1;
-        }
-
-        return sum;
-    }
+    public int[][] FullSort() =>
+        KClosestPointsToOriginSolution.KClosestByFullSort(_points, K);
 
     [Benchmark]
-    public long SizeKMaxHeap()
-    {
-        var heap = new Heap<(int Distance, int X, int Y), MaxHeapOrder<(int, int, int)>>();
-
-        foreach (var point in _points)
-        {
-            var distance = (point[0] * point[0]) + (point[1] * point[1]);
-            heap.Push((distance, point[0], point[1]));
-
-            if (heap.Count > K)
-            {
-                heap.TryPop(out _);
-            }
-        }
-
-        var sum = 0L;
-        while (heap.TryPop(out var top))
-        {
-            sum += top.Distance;
-        }
-
-        return sum;
-    }
+    public int[][] SizeKMaxHeap() =>
+        KClosestPointsToOriginSolution.KClosestBySizeKMaxHeap(_points, K);
 }
