@@ -1,70 +1,41 @@
-using RepoTimeStack = DSAExperimentation.DataStructures.Stack.Stack<double>;
+using DSAExperimentation.LeetCode.CarFleet;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CarFleet;
 
-// LeetCode 853. Car Fleet: sort cars by starting position descending (closest to
-// target first), then a single left-to-right pass over this repo's own
-// Stack<double> of fleet arrival times (DailyTemperatures/AsteroidCollision
-// precedent for this repo's own Stack instead of the CLR's own
-// System.Collections.Generic.Stack). Each car's own arrival time only ever gets
-// compared against the current top - the slowest (largest) arrival time among
-// every fleet already ahead of it - so the stack only ever grows: a car whose
-// own time is <= the top merges into that fleet (never pushed), and a strictly
-// slower car starts a new one, leaving the final stack height as the fleet
-// count.
-public sealed partial class CarFleetTests
+// Harness only. Both strategies are CarFleetSolution's - this file just states
+// LeetCode's published examples once and asserts each strategy against them, so a
+// failure names the strategy that broke. The O(n^2) recompute-max-each-car arm used
+// to live only in the benchmark, unasserted; it is a first-class tested strategy now.
+public sealed class CarFleetTests
 {
-    [Fact]
-    public void CountFleets_ClassicExample_ReturnsThreeFleets()
-    {
-        int[] position = [10, 8, 0, 5, 3];
-        int[] speed = [2, 4, 1, 1, 3];
-
-        var fleets = CountFleets(target: 12, position, speed);
-
-        Assert.Equal(3, fleets);
-    }
-
-    [Fact]
-    public void CountFleets_EveryCarCatchesTheOneAhead_ReturnsOneFleet()
-    {
-        int[] position = [0, 2, 4];
-        int[] speed = [4, 2, 1];
-
-        var fleets = CountFleets(target: 100, position, speed);
-
-        Assert.Equal(1, fleets);
-    }
-
-    [Fact]
-    public void CountFleets_SameSpeedNeverCatchesUp_ReturnsOneFleetPerCar()
-    {
-        int[] position = [1, 2, 3];
-        int[] speed = [1, 1, 1];
-
-        var fleets = CountFleets(target: 10, position, speed);
-
-        Assert.Equal(3, fleets);
-    }
-
-    private static int CountFleets(int target, int[] position, int[] speed)
-    {
-        var order = Enumerable.Range(0, position.Length)
-            .OrderByDescending(i => position[i])
-            .ToArray();
-
-        var fleetArrivalTimes = new RepoTimeStack();
-
-        foreach (var i in order)
+    public static TheoryData<int, int[], int[], int> Examples =>
+        new()
         {
-            var time = (double)(target - position[i]) / speed[i];
+            // LeetCode example 1: the [0,3] and [5,8] pairs each merge, [10] arrives alone.
+            { 12, [10, 8, 0, 5, 3], [2, 4, 1, 1, 3], 3 },
 
-            if (!fleetArrivalTimes.TryPeek(out var slowestAhead) || time > slowestAhead)
-            {
-                fleetArrivalTimes.Push(time);
-            }
-        }
+            // LeetCode example 2: a lone car is a fleet of one.
+            { 10, [3], [3], 1 },
 
-        return fleetArrivalTimes.Count;
-    }
+            // LeetCode example 3 / every car catches the one ahead of it.
+            { 100, [0, 2, 4], [4, 2, 1], 1 },
+
+            // Equal speeds never close a gap, so no car ever merges.
+            { 10, [1, 2, 3], [1, 1, 1], 3 },
+
+            // Cars given in an order unrelated to position, to prove the sort is real.
+            { 10, [6, 8], [3, 2], 2 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountFleetsByRecomputeMaxEachCar_LeetCodeExamples_ReturnsFleetCount(
+        int target, int[] position, int[] speed, int expected) =>
+        Assert.Equal(expected, CarFleetSolution.CountFleetsByRecomputeMaxEachCar(target, position, speed));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountFleetsByMonotonicStackSweep_LeetCodeExamples_ReturnsFleetCount(
+        int target, int[] position, int[] speed, int expected) =>
+        Assert.Equal(expected, CarFleetSolution.CountFleetsByMonotonicStackSweep(target, position, speed));
 }

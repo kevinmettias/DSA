@@ -1,129 +1,38 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.PrimePalindrome;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimePalindrome;
 
-// LeetCode 866. Prime Palindrome: generate palindrome candidates directly from
-// their first half - digits collected front-to-back in this repo's own
-// DynamicArray<int>, then mirrored back onto the same array - instead of scanning
-// every integer >= n, so only palindromes are ever trial-divided for primality.
+// Harness only: both strategies live in PrimePalindromeSolution and answer the same
+// examples. The sequential scan was previously the benchmark's unasserted baseline -
+// it is asserted here, including on 9999, where the answer sits five digits up
+// because no four-digit palindrome is ever prime.
 public sealed class PrimePalindromeTests
 {
+    public static TheoryData<int, long> Examples =>
+        new()
+        {
+            { 1, 2L },
+            { 2, 2L },
+            { 3, 3L },
+            { 6, 7L },
+            { 8, 11L },
+            { 12, 101L },
+            { 13, 101L },
+            { 100, 101L },
+            { 9999, 10301L },
+        };
+
     [Theory]
-    [InlineData(1, 2L)]
-    [InlineData(6, 7L)]
-    [InlineData(8, 11L)]
-    [InlineData(13, 101L)]
-    [InlineData(100, 101L)]
-    public void SmallestPrimePalindrome_Examples_ReturnsSmallestPrimePalindromeAtLeastN(int n, long expected)
-        => Assert.Equal(expected, SmallestPrimePalindrome(n));
+    [MemberData(nameof(Examples))]
+    public void SmallestPrimePalindromeBySequentialScan_LeetCodeExamples_ReturnsSmallestPrimePalindromeAtLeastN(
+        int n,
+        long expected) =>
+        Assert.Equal(expected, PrimePalindromeSolution.SmallestPrimePalindromeBySequentialScan(n));
 
-    private static long SmallestPrimePalindrome(int n)
-    {
-        if (TrySmallCase(n, out var small))
-        {
-            return small;
-        }
-
-        var exponent = n.ToString().Length / 2;
-        var half = (int)Math.Pow(10, exponent);
-
-        while (true)
-        {
-            var candidate = BuildOddLengthPalindrome(half);
-
-            if (candidate >= n && IsPrime(candidate))
-            {
-                return candidate;
-            }
-
-            half++;
-        }
-    }
-
-    private static bool TrySmallCase(int n, out long result)
-    {
-        if (n <= 2)
-        {
-            result = 2;
-            return true;
-        }
-
-        if (n <= 3)
-        {
-            result = 3;
-            return true;
-        }
-
-        if (n <= 5)
-        {
-            result = 5;
-            return true;
-        }
-
-        if (n <= 7)
-        {
-            result = 7;
-            return true;
-        }
-
-        // Every even-length palindrome is a multiple of 11, so 11 is the only
-        // even-length prime palindrome - every candidate the loop below builds is
-        // odd-length, which would otherwise skip straight over it.
-        if (n <= 11)
-        {
-            result = 11;
-            return true;
-        }
-
-        result = 0;
-        return false;
-    }
-
-    private static long BuildOddLengthPalindrome(int half)
-    {
-        var digits = new DynamicArray<int>();
-        var remaining = half;
-
-        while (remaining > 0)
-        {
-            digits.Insert(0, remaining % 10);
-            remaining /= 10;
-        }
-
-        for (var i = digits.Count - 2; i >= 0; i--)
-        {
-            digits.Add(digits.Get(i));
-        }
-
-        var value = 0L;
-        for (var i = 0; i < digits.Count; i++)
-        {
-            value = value * 10 + digits.Get(i);
-        }
-
-        return value;
-    }
-
-    private static bool IsPrime(long value)
-    {
-        if (value < 2)
-        {
-            return false;
-        }
-
-        if (value % 2 == 0)
-        {
-            return value == 2;
-        }
-
-        for (var divisor = 3L; divisor * divisor <= value; divisor += 2)
-        {
-            if (value % divisor == 0)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SmallestPrimePalindromeByPalindromeGeneration_LeetCodeExamples_ReturnsSmallestPrimePalindromeAtLeastN(
+        int n,
+        long expected) =>
+        Assert.Equal(expected, PrimePalindromeSolution.SmallestPrimePalindromeByPalindromeGeneration(n));
 }

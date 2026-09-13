@@ -1,19 +1,17 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.TransposeMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Transpose Matrix (LC 867): direct row-major index-swap transpose vs. a
-// cache-blocked (tiled) transpose that processes fixed-size sub-blocks so both the
-// read and write working sets stay small enough to fit in cache - a real, well-
-// known transpose technique, not a repo primitive. No repo Representation/
-// Operations primitive applies to either shape, same reasoning SpiralMatrixBenchmarks
-// already states for GridChildren/GridTopology: those model unordered orthogonal
-// adjacency for graph walks, not a fixed diagonal-flip copy.
+// Harness only: both arms are TransposeMatrixSolution's. The square workload is built
+// once in [GlobalSetup] from a fixed seed, so only the flip itself is measured; at
+// Size=800 the source rows no longer fit in cache alongside the destination columns,
+// which is where the tiled arm is meant to pull ahead.
 [MemoryDiagnoser]
 public class TransposeMatrixBenchmarks
 {
-    private const int BlockSize = 32;
     private const int MatrixValueUpperBoundExclusive = 1_000;
+    private const int Seed = 1;
 
     [Params(100, 800)]
     public int Size;
@@ -23,7 +21,7 @@ public class TransposeMatrixBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
+        var random = new Random(Seed);
         _matrix = new int[Size][];
 
         for (var r = 0; r < Size; r++)
@@ -38,66 +36,8 @@ public class TransposeMatrixBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] DirectIndexSwap()
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var result = NewMatrix(cols, rows);
-
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                result[c][r] = _matrix[r][c];
-            }
-        }
-
-        return result;
-    }
+    public int[][] DirectIndexSwap() => TransposeMatrixSolution.TransposeByIndexSwap(_matrix);
 
     [Benchmark]
-    public int[][] CacheBlockedTranspose()
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var result = NewMatrix(cols, rows);
-
-        for (var blockRow = 0; blockRow < rows; blockRow += BlockSize)
-        {
-            for (var blockCol = 0; blockCol < cols; blockCol += BlockSize)
-            {
-                TransposeBlock(result, blockRow, blockCol);
-            }
-        }
-
-        return result;
-    }
-
-    private void TransposeBlock(int[][] result, int blockRow, int blockCol)
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var rowLimit = Math.Min(blockRow + BlockSize, rows);
-        var colLimit = Math.Min(blockCol + BlockSize, cols);
-
-        for (var r = blockRow; r < rowLimit; r++)
-        {
-            for (var c = blockCol; c < colLimit; c++)
-            {
-                result[c][r] = _matrix[r][c];
-            }
-        }
-    }
-
-    private static int[][] NewMatrix(int rows, int cols)
-    {
-        var matrix = new int[rows][];
-
-        for (var r = 0; r < rows; r++)
-        {
-            matrix[r] = new int[cols];
-        }
-
-        return matrix;
-    }
+    public int[][] CacheBlockedTranspose() => TransposeMatrixSolution.TransposeByCacheBlocking(_matrix);
 }
