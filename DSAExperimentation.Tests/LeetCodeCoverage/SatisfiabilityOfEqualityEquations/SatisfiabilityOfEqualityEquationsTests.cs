@@ -1,66 +1,35 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.SatisfiabilityOfEqualityEquations;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SatisfiabilityOfEqualityEquations;
 
-// LeetCode 990. Satisfiability of Equality Equations: DisjointSet over the 26
-// lowercase-letter variable ids (union on every "==" equation), then a single scan
-// of the "!=" equations checking IsConnected - the same union-then-scan shape
-// AccountsMergeTests already uses, applied to a fixed 26-slot alphabet instead of
-// account indices.
-public sealed partial class SatisfiabilityOfEqualityEquationsTests
+// LeetCode 990. Satisfiability of Equality Equations. See
+// SatisfiabilityOfEqualityEquationsSolution for the two strategies: a naive
+// adjacency-list BFS reachability query per inequality, and this repo's own
+// DisjointSet over the 26-letter alphabet. Harness only - the examples are stated
+// once and each strategy gets its own theory so a failure names the arm that broke.
+public sealed class SatisfiabilityOfEqualityEquationsTests
 {
-    [Fact]
-    public void IsSatisfiable_ContradictingEquations_ReturnsFalse()
-    {
-        string[] equations = ["a==b", "b!=a"];
-
-        Assert.False(IsSatisfiable(equations));
-    }
-
-    [Fact]
-    public void IsSatisfiable_TransitiveEquality_ReturnsTrue()
-    {
-        string[] equations = ["a==b", "b==c", "a==c"];
-
-        Assert.True(IsSatisfiable(equations));
-    }
-
-    [Fact]
-    public void IsSatisfiable_InequalityAcrossUnrelatedComponents_ReturnsTrue()
-    {
-        string[] equations = ["c==c", "b==d", "x!=z"];
-
-        Assert.True(IsSatisfiable(equations));
-    }
-
-    [Fact]
-    public void IsSatisfiable_InequalityAfterTransitiveEquality_ReturnsFalse()
-    {
-        string[] equations = ["a==b", "b!=c", "c==a"];
-
-        Assert.False(IsSatisfiable(equations));
-    }
-
-    private static bool IsSatisfiable(string[] equations)
-    {
-        var components = new DisjointSet(26);
-
-        foreach (var equation in equations)
+    public static TheoryData<string[], bool> Examples =>
+        new()
         {
-            if (equation[1] == '=')
-            {
-                components.Union(equation[0] - 'a', equation[3] - 'a');
-            }
-        }
+            { ["a==b", "b!=a"], false },
+            { ["b==a", "a==b"], true },
+            { ["a==b", "b==c", "a==c"], true },
+            { ["c==c", "b==d", "x!=z"], true },
+            { ["a==b", "b!=c", "c==a"], false },
+            { ["a!=a"], false },
+            { ["a!=b"], true },
+        };
 
-        foreach (var equation in equations)
-        {
-            if (equation[1] == '!' && components.IsConnected(equation[0] - 'a', equation[3] - 'a'))
-            {
-                return false;
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void EquationsPossibleByAdjacencyBfs_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
+        string[] equations, bool expected) =>
+        Assert.Equal(expected, SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByAdjacencyBfs(equations));
 
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void EquationsPossibleByDisjointSet_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
+        string[] equations, bool expected) =>
+        Assert.Equal(expected, SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByDisjointSet(equations));
 }

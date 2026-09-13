@@ -1,95 +1,80 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.TimeBasedKeyValueStore;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TimeBasedKeyValueStore;
 
-// LeetCode 981. Time Based Key-Value Store: HashMap<string,History> keyed by
-// `key`, each holding parallel DynamicArray<int>/DynamicArray<string> histories
-// (Timestamps/Values) appended in the (problem-guaranteed) strictly increasing
-// timestamp order Set is called in - the same parallel-array shape
-// OnlineElectionTests already uses for "leader at index i". Get floors to the
-// largest timestamp <= the query via this repo's own BinarySearch.UpperBound over
-// a DynamicArraySequence<int> witness, minus one - OnlineElectionTests' exact
-// "last vote at or before t" idiom, reused here for "last value set at or before
-// t".
-public sealed partial class TimeBasedKeyValueStoreTests
+// Harness only: both strategies live in TimeBasedKeyValueStoreSolution and are
+// replayed against the same call scripts - LeetCode's published Set/Get sequence
+// (including the two Gets that fall between stored timestamps), a Get before the
+// key's first Set, a Get for a key that was never set at all, and interleaved keys
+// whose histories must stay independent.
+//
+// A script step is one published call: IsSet steps call Set(Key, Value, Timestamp)
+// and assert nothing; the rest call Get(Key, Timestamp) and assert Value, which for
+// those steps is the answer LeetCode publishes.
+public sealed class TimeBasedKeyValueStoreTests
 {
-    [Fact]
-    public void SetThenGet_LeetCodeExampleSequence_ReturnsFloorTimestampValue()
-    {
-        var store = new TimeMap();
-
-        store.Set("foo", "bar", 1);
-
-        var valueAtTimestamp1 = store.Get("foo", 1);
-        Assert.Equal("bar", valueAtTimestamp1);
-
-        var valueAtTimestamp3 = store.Get("foo", 3);
-        Assert.Equal("bar", valueAtTimestamp3);
-
-        store.Set("foo", "bar2", 4);
-
-        var valueAtTimestamp4 = store.Get("foo", 4);
-        Assert.Equal("bar2", valueAtTimestamp4);
-
-        var valueAtTimestamp5 = store.Get("foo", 5);
-        Assert.Equal("bar2", valueAtTimestamp5);
-    }
-
-    [Fact]
-    public void Get_TimestampBeforeAnySet_ReturnsEmptyString()
-    {
-        var store = new TimeMap();
-        store.Set("foo", "bar", 5);
-
-        var valueBeforeAnySet = store.Get("foo", 1);
-        Assert.Equal(string.Empty, valueBeforeAnySet);
-    }
-
-    [Fact]
-    public void Get_UnknownKey_ReturnsEmptyString()
-    {
-        var store = new TimeMap();
-
-        var valueForUnknownKey = store.Get("missing", 10);
-        Assert.Equal(string.Empty, valueForUnknownKey);
-    }
-
-    private sealed class TimeMap
-    {
-        private readonly HashMap<string, History> _histories = new();
-
-        public void Set(string key, string value, int timestamp)
+    public static TheoryData<(bool IsSet, string Key, string Value, int Timestamp)[]> Examples =>
+        new()
         {
-            if (!_histories.TryGetValue(key, out var history))
             {
-                history = new History();
-                _histories.Set(key, history);
+                [
+                    (true, "foo", "bar", 1),
+                    (false, "foo", "bar", 1),
+                    (false, "foo", "bar", 3),
+                    (true, "foo", "bar2", 4),
+                    (false, "foo", "bar2", 4),
+                    (false, "foo", "bar2", 5),
+                ]
+            },
+            {
+                [
+                    (true, "foo", "bar", 5),
+                    (false, "foo", "", 1),
+                ]
+            },
+            {
+                [
+                    (false, "missing", "", 10),
+                ]
+            },
+            {
+                [
+                    (true, "a", "a1", 1),
+                    (true, "b", "b1", 2),
+                    (true, "a", "a2", 3),
+                    (false, "a", "a1", 2),
+                    (false, "b", "b1", 10),
+                    (false, "a", "a2", 3),
+                    (false, "b", "", 1),
+                ]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBinarySearchFloor_LeetCodeExamples_ReturnsFloorTimestampValue(
+        (bool IsSet, string Key, string Value, int Timestamp)[] calls) =>
+        AssertScript(TimeBasedKeyValueStoreSolution.CreateByBinarySearchFloor(), calls);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLinearFloorScan_LeetCodeExamples_ReturnsFloorTimestampValue(
+        (bool IsSet, string Key, string Value, int Timestamp)[] calls) =>
+        AssertScript(TimeBasedKeyValueStoreSolution.CreateByLinearFloorScan(), calls);
+
+    private static void AssertScript(
+        TimeBasedKeyValueStoreSolution.ITimeMap store,
+        (bool IsSet, string Key, string Value, int Timestamp)[] calls)
+    {
+        foreach (var (isSet, key, value, timestamp) in calls)
+        {
+            if (isSet)
+            {
+                store.Set(key, value, timestamp);
+                continue;
             }
 
-            history.Timestamps.Add(timestamp);
-            history.Values.Add(value);
-        }
-
-        public string Get(string key, int timestamp)
-        {
-            if (!_histories.TryGetValue(key, out var history) || history.Timestamps.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            var sequence = new DynamicArraySequence<int>(history.Timestamps);
-            var floorIndex = BinarySearch.UpperBound(sequence, timestamp) - 1;
-
-            return floorIndex < 0 ? string.Empty : history.Values.Get(floorIndex);
-        }
-
-        private sealed class History
-        {
-            public DynamicArray<int> Timestamps { get; } = new();
-            public DynamicArray<string> Values { get; } = new();
+            Assert.Equal(value, store.Get(key, timestamp));
         }
     }
 }

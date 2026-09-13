@@ -1,59 +1,31 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.LargestPerimeterTriangle;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestPerimeterTriangle;
 
-// LeetCode 976. Largest Perimeter Triangle: this repo's own
-// MergeSort.Sort<int,ArrayIndexedSequence<int>> (SortAnArray precedent) sorts the
-// side lengths ascending, then a single backward scan checks each consecutive
-// triple against the triangle inequality - the two largest remaining sides always
-// beat any smaller pair for a fixed third side, so the first triple (from the top)
-// that satisfies a[i-2] + a[i-1] > a[i] is provably the maximum-perimeter answer.
-public sealed partial class LargestPerimeterTriangleTests
+// Harness only. Both strategies are LargestPerimeterTriangleSolution's - this file
+// just pins them to LeetCode's published examples, the no-valid-triangle case, and a
+// case where the largest sides cannot form a triangle but a smaller triple can, so
+// the sorted scan has to keep walking down rather than stop at the top.
+public sealed class LargestPerimeterTriangleTests
 {
-    [Fact]
-    public void LargestPerimeter_ClassicExample_ReturnsSumOfValidTriple()
-    {
-        int[] nums = [2, 1, 2];
-
-        var result = LargestPerimeter(nums);
-
-        Assert.Equal(5, result);
-    }
-
-    [Fact]
-    public void LargestPerimeter_NoValidTriangleExists_ReturnsZero()
-    {
-        int[] nums = [1, 2, 1, 10];
-
-        var result = LargestPerimeter(nums);
-
-        Assert.Equal(0, result);
-    }
-
-    [Fact]
-    public void LargestPerimeter_PicksLargestValidTripleOverSmallerOnes()
-    {
-        int[] nums = [1, 2, 1, 10, 6, 5];
-
-        var result = LargestPerimeter(nums);
-
-        Assert.Equal(21, result);
-    }
-
-    private static int LargestPerimeter(int[] nums)
-    {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        for (var i = sorted.Length - 1; i >= 2; i--)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            if (sorted[i - 2] + sorted[i - 1] > sorted[i])
-            {
-                return sorted[i - 2] + sorted[i - 1] + sorted[i];
-            }
-        }
+            { [2, 1, 2], 5 },
+            { [1, 2, 1, 10], 0 },
+            { [1, 2, 1, 10, 6, 5], 21 },
+            { [3, 6, 2, 3], 8 },
+        };
 
-        return 0;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LargestPerimeterByBruteForceTriples_LeetCodeExamples_ReturnsSumOfBestValidTriple(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, LargestPerimeterTriangleSolution.LargestPerimeterByBruteForceTriples(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LargestPerimeterBySortedScan_LeetCodeExamples_ReturnsSumOfBestValidTriple(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, LargestPerimeterTriangleSolution.LargestPerimeterBySortedScan(nums));
 }
