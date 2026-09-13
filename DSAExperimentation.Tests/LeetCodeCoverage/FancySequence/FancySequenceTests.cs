@@ -1,111 +1,158 @@
-using DSAExperimentation.DataStructures.LazySegmentTree;
+using DSAExperimentation.LeetCode.FancySequence;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FancySequence;
 
-// LeetCode 1622. Fancy Sequence: append/addAll/multAll/getIndex is exactly the
-// lazy-propagated affine transform x -> mult*x + add that this repo's own
-// LazySegmentTree<Element,TUpdate,TOperation> already generalizes over via
-// IRangeUpdateOperation<Element,TUpdate> - RangeAddSumOperation/RangeAssignMax
-// Operation are its two existing witnesses (add-then-sum, assign-then-max);
-// AffineOperation below is a third, composing the same generic engine the way
-// NumberOfLongestIncreasingSubsequenceTests' LisAggregate composes SegmentTree's
-// own ICombineOperation. append plants a new leaf's raw value with a single-point
-// UpdateRange(size, size, (Mult:0, Add:val)) - Mult:0 (not the more obvious Mult:1)
-// specifically so the update can never collide with NoUpdate=(1,0), even when
-// val=0, which LazySegmentTree's own ValidateUpdate would otherwise reject as "no
-// pending update to apply." addAll/multAll range-update the live prefix
-// [0, size); getIndex reads a single leaf back, mod 1e9+7 as LeetCode requires.
-public sealed partial class FancySequenceTests
+// Harness only. Both strategies are FancySequenceSolution's - this file replays
+// LeetCode's published call sequences against each IFancySequence instance, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of append/addAll/multAll/getIndex calls rather than a single argument
+// tuple, the same shape AllOneDataStructureTests already uses for its own
+// instance-API problem. The pre-migration test only proved the lazy-segment-tree
+// strategy; CreateByArrayRescan (previously untested scaffolding inlined in the
+// benchmark, where it only ever produced a checksum sum rather than answering
+// getIndex at all) gets that same coverage here for the first time. FancyOp.Apply
+// is pure dispatch, no sequence logic of its own.
+public sealed class FancySequenceTests
 {
-    [Fact]
-    public void AppendAddAllMultAllGetIndex_LeetCodeExampleSequence_MatchesExpectedValues()
-    {
-        var fancy = new FancySequence(4);
+    private const int NeverAppended = -1;
 
-        fancy.Append(2); // [2]
-        fancy.AddAll(3); // [5]
-        fancy.Append(7); // [5, 7]
-        fancy.MultAll(2); // [10, 14]
-        Assert.Equal(10, fancy.GetIndex(0));
-
-        fancy.AddAll(4); // [14, 18]
-        fancy.MultAll(2); // [28, 36]
-        Assert.Equal(28, fancy.GetIndex(0));
-        Assert.Equal(36, fancy.GetIndex(1));
-    }
-
-    [Fact]
-    public void GetIndex_IndexNeverAppended_ReturnsNegativeOne()
-    {
-        var fancy = new FancySequence(2);
-        fancy.Append(5);
-
-        Assert.Equal(-1, fancy.GetIndex(1));
-    }
-
-    [Fact]
-    public void Append_ValueOfZero_DoesNotCollideWithTheNoUpdateSentinel()
-    {
-        var fancy = new FancySequence(1);
-
-        fancy.Append(0);
-
-        Assert.Equal(0, fancy.GetIndex(0));
-    }
-
-    private const long Modulo = 1_000_000_007;
-
-    private sealed class FancySequence(int capacity)
-    {
-        private readonly LazySegmentTree<long, (long Mult, long Add), AffineOperation> _tree = new(new long[capacity]);
-        private int _size;
-
-        public void Append(int val)
+    public static TheoryData<int, FancyOp[], int?[]> Examples =>
+        new()
         {
-            _tree.UpdateRange(_size, _size, (0L, val));
-            _size++;
-        }
-
-        public void AddAll(int inc)
-        {
-            if (_size > 0 && inc != 0)
             {
-                _tree.UpdateRange(0, _size - 1, (1L, inc));
-            }
-        }
-
-        public void MultAll(int m)
-        {
-            if (_size > 0 && m != 1)
+                // LeetCode's own published example: [2] -> [5] -> [5,7] -> [10,14],
+                // then -> [13,17] -> [26,34].
+                2,
+                [
+                    FancyOp.Append(2), FancyOp.AddAll(3), FancyOp.Append(7), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0),
+                    FancyOp.AddAll(3), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0), FancyOp.GetIndex(1),
+                ],
+                [null, null, null, null, 10, null, null, 26, 34]
+            },
             {
-                _tree.UpdateRange(0, _size - 1, (m, 0L));
-            }
-        }
+                // The same opening, then a larger addAll: [10,14] -> [14,18] -> [28,36].
+                4,
+                [
+                    FancyOp.Append(2), FancyOp.AddAll(3), FancyOp.Append(7), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0),
+                    FancyOp.AddAll(4), FancyOp.MultAll(2),
+                    FancyOp.GetIndex(0), FancyOp.GetIndex(1),
+                ],
+                [null, null, null, null, 10, null, null, 28, 36]
+            },
+            {
+                2,
+                [FancyOp.Append(5), FancyOp.GetIndex(1)],
+                [null, NeverAppended]
+            },
+            {
+                // An index can be out of range and then come into range as the
+                // sequence grows.
+                3,
+                [FancyOp.Append(1), FancyOp.Append(2), FancyOp.GetIndex(2), FancyOp.Append(3), FancyOp.GetIndex(2)],
+                [null, null, NeverAppended, null, 3]
+            },
+            {
+                // Appending 0 must not collide with the affine algebra's
+                // NoUpdate = (1, 0) sentinel.
+                1,
+                [FancyOp.Append(0), FancyOp.GetIndex(0)],
+                [null, 0]
+            },
+            {
+                // multAll(1) and addAll(0) are both the affine identity - the two
+                // operations the composed strategy skips rather than forwarding.
+                1,
+                [FancyOp.Append(7), FancyOp.MultAll(1), FancyOp.AddAll(0), FancyOp.GetIndex(0)],
+                [null, null, null, 7]
+            },
+            {
+                // addAll on an empty sequence applies to nothing, and must not leak
+                // onto a value appended afterwards.
+                1,
+                [FancyOp.AddAll(5), FancyOp.Append(3), FancyOp.GetIndex(0)],
+                [null, null, 3]
+            },
+            {
+                // 1e9 * 2 = 2e9, which wraps to 999,999,993 modulo 1e9+7.
+                1,
+                [FancyOp.Append(1_000_000_000), FancyOp.MultAll(2), FancyOp.GetIndex(0)],
+                [null, null, 999_999_993]
+            },
+        };
 
-        public int GetIndex(int idx) => idx >= _size ? -1 : (int)_tree.Query(idx, idx);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByArrayRescan_LeetCodeExamples_ReportsEachIndexModuloOneENine(
+        int capacity, FancyOp[] operations, int?[] expected) =>
+        RunScript(FancySequenceSolution.CreateByArrayRescan(capacity), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLazySegmentTreeAffine_LeetCodeExamples_ReportsEachIndexModuloOneENine(
+        int capacity, FancyOp[] operations, int?[] expected) =>
+        RunScript(FancySequenceSolution.CreateByLazySegmentTreeAffine(capacity), operations, expected);
+
+    private static void RunScript(
+        FancySequenceSolution.IFancySequence fancy, FancyOp[] operations, int?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(fancy));
+        }
+    }
+}
+
+// One call in a Fancy script: which method to invoke and with what argument. Pure
+// dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays. append/addAll/multAll return
+// null (no value to compare); getIndex returns the actual answer, including -1 for
+// an index that was never appended - the same null-means-"no return value"
+// convention AllOneOp.Apply uses for its own inc/dec split.
+public readonly record struct FancyOp
+{
+    private readonly Kind _kind;
+    private readonly int _value;
+
+    private FancyOp(Kind kind, int value)
+    {
+        _kind = kind;
+        _value = value;
     }
 
-    // Identity/Combine are never actually read back by a point-only Query
-    // (LazySegmentTree.Query's full-cover branch only returns a node's own
-    // _values for a query that spans the node's whole range, which for a
-    // single-leaf query only ever happens at the leaf itself), so any associative
-    // pairing satisfies the algebra - plain mod-sum mirrors RangeAddSumOperation's
-    // own choice. NoUpdate=(1,0) is the affine identity x -> x; ComposeUpdate folds
-    // a newly arriving affine transform on top of one already pending exactly the
-    // way function composition does: outer(inner(x)) = outer.Mult*inner.Mult*x +
-    // (outer.Mult*inner.Add + outer.Add).
-    private readonly struct AffineOperation : IRangeUpdateOperation<long, (long Mult, long Add)>
+    public static FancyOp Append(int val) => new(Kind.Append, val);
+
+    public static FancyOp AddAll(int inc) => new(Kind.AddAll, inc);
+
+    public static FancyOp MultAll(int m) => new(Kind.MultAll, m);
+
+    public static FancyOp GetIndex(int idx) => new(Kind.GetIndex, idx);
+
+    internal int? Apply(FancySequenceSolution.IFancySequence fancy)
     {
-        public static long Identity => 0L;
+        switch (_kind)
+        {
+            case Kind.Append:
+                fancy.Append(_value);
+                return null;
+            case Kind.AddAll:
+                fancy.AddAll(_value);
+                return null;
+            case Kind.MultAll:
+                fancy.MultAll(_value);
+                return null;
+            default:
+                return fancy.GetIndex(_value);
+        }
+    }
 
-        public static (long Mult, long Add) NoUpdate => (1L, 0L);
-
-        public static long Combine(long left, long right) => (left + right) % Modulo;
-
-        public static (long Mult, long Add) ComposeUpdate((long Mult, long Add) outer, (long Mult, long Add) inner)
-            => (outer.Mult * inner.Mult % Modulo, (outer.Mult * inner.Add + outer.Add) % Modulo);
-
-        public static long ApplyUpdate(long aggregate, (long Mult, long Add) update, int rangeLength)
-            => (update.Mult * aggregate + update.Add) % Modulo;
+    private enum Kind
+    {
+        Append,
+        AddAll,
+        MultAll,
+        GetIndex,
     }
 }
