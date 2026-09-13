@@ -1,62 +1,35 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.StoneGameIII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIII;
 
-// LeetCode 1406. Stone Game III: the player to move from stoneValue[index:]
-// picks a prefix of 1, 2, or 3 stones, scoring that prefix's sum minus
-// whatever the opponent can force from the state that follows - the same
-// minimax-recurrence shape StoneGameTests/StoneGameIITests already use, just
-// keyed on the single index (with a 3-way inner loop instead of a bound-M
-// window) and memoized by this repo's own Memoizer<TState,TResult>.
-public sealed partial class StoneGameIIITests
+// Harness only. Both strategies are StoneGameIIISolution's -
+// WinnerByUnmemoizedRecursion (previously untested scaffolding inlined in the
+// benchmark as its baseline arm, and reporting the raw score difference rather than
+// LC 1406's winner) now gets the same examples as WinnerByMemoizedRecursion
+// (previously the test's own private helper), so a failure names the strategy that
+// broke.
+public sealed class StoneGameIIITests
 {
-    [Fact]
-    public void StoneGameIII_LeetCodeExampleOne_ReturnsBob()
-        => Assert.Equal("Bob", Winner([1, 2, 3, 7]));
-
-    [Fact]
-    public void StoneGameIII_LeetCodeExampleTwo_ReturnsAlice()
-        => Assert.Equal("Alice", Winner([1, 2, 3, -9]));
-
-    [Fact]
-    public void StoneGameIII_LeetCodeExampleThree_ReturnsTie()
-        => Assert.Equal("Tie", Winner([1, 2, 3, 6]));
-
-    [Fact]
-    public void StoneGameIII_SinglePile_AliceTakesItAndWins()
-        => Assert.Equal("Alice", Winner([5]));
-
-    private static string Winner(int[] stoneValue)
-    {
-        var diff = Memoizer.Memoize<int, int>(0, (index, bestFrom) => Best(stoneValue, index, bestFrom));
-
-        return DetermineWinner(diff);
-    }
-
-    private static string DetermineWinner(int diff)
-        => diff switch
+    public static TheoryData<int[], string> Examples =>
+        new()
         {
-            > 0 => "Alice",
-            < 0 => "Bob",
-            _ => "Tie",
+            { [1, 2, 3, 7], "Bob" },
+            { [1, 2, 3, -9], "Alice" },
+            { [1, 2, 3, 6], "Tie" },
+            { [5], "Alice" },
+            { [2, 2], "Alice" },
+            { [-1, -2, -3], "Tie" },
         };
 
-    private static int Best(int[] stoneValue, int index, Func<int, int> bestFrom)
-    {
-        var n = stoneValue.Length;
-        if (index >= n)
-        {
-            return 0;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WinnerByUnmemoizedRecursion_LeetCodeExamples_ReturnsWinnerUnderOptimalPlay(
+        int[] stoneValue, string expected) =>
+        Assert.Equal(expected, StoneGameIIISolution.WinnerByUnmemoizedRecursion(stoneValue));
 
-        var result = int.MinValue;
-        var takenSum = 0;
-        for (var take = 1; take <= 3 && index + take <= n; take++)
-        {
-            takenSum += stoneValue[index + take - 1];
-            result = Math.Max(result, takenSum - bestFrom(index + take));
-        }
-
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WinnerByMemoizedRecursion_LeetCodeExamples_ReturnsWinnerUnderOptimalPlay(
+        int[] stoneValue, string expected) =>
+        Assert.Equal(expected, StoneGameIIISolution.WinnerByMemoizedRecursion(stoneValue));
 }

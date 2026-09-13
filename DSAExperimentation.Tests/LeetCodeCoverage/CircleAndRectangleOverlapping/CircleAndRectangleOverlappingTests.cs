@@ -1,52 +1,38 @@
+using DSAExperimentation.LeetCode.CircleAndRectangleOverlapping;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CircleAndRectangleOverlapping;
 
-// LeetCode 1401. Circle and Rectangle Overlapping: reduces to O(1) scalar
-// arithmetic - clamp the circle's center to the rectangle's bounds to find
-// the nearest point in the rectangle, then compare squared distance to
-// radius^2. Same "lighter repo-primitive fit" case RectangleOverlapTests
-// (LC 836) and RectangleAreaTests (LC 223) already document; no repo
-// container or algorithm primitive applies to a handful of coordinate
-// comparisons. See CircleAndRectangleOverlappingBenchmarks.cs for a
-// comparison against a brute-force lattice-point scan that DOES compose a
-// repo primitive (DynamicArray<bool>).
-public sealed partial class CircleAndRectangleOverlappingTests
+// Harness only. Both strategies are CircleAndRectangleOverlappingSolution's - the O(1)
+// clamp-and-distance check and the lattice-point scan that used to live untested as the
+// benchmark's baseline - pinned to LeetCode's published examples plus a centre inside
+// the rectangle, a tangent circle, and a corner just out of reach.
+public sealed class CircleAndRectangleOverlappingTests
 {
-    [Fact]
-    public void CheckOverlap_LeetCodeExampleOne_ReturnsTrue()
-    {
-        var overlaps = CheckOverlap(radius: 1, xCenter: 0, yCenter: 0, rectangle: new Rectangle(1, -1, 3, 1));
-        Assert.True(overlaps);
-    }
+    public static TheoryData<int, int, int, int, int, int, int, bool> Examples =>
+        new()
+        {
+            { 1, 0, 0, 1, -1, 3, 1, true },
+            { 1, 1, 1, 1, -3, 2, -1, false },
+            { 1, 0, 0, -1, 0, 0, 1, true },
+            { 1, 1, 1, -3, -3, 3, 3, true },
+            { 1, 0, 0, 1, -3, 3, 3, true },
+        };
 
-    [Fact]
-    public void CheckOverlap_CenterFullyInsideRectangle_ReturnsTrue()
-    {
-        var overlaps = CheckOverlap(radius: 1, xCenter: 1, yCenter: 1, rectangle: new Rectangle(-3, -3, 3, 3));
-        Assert.True(overlaps);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckOverlapByClampedDistance_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
+        int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2, bool expected) =>
+        Assert.Equal(
+            expected,
+            CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
+                radius, xCenter, yCenter, x1, y1, x2, y2));
 
-    [Fact]
-    public void CheckOverlap_NearestCornerFartherThanRadius_ReturnsFalse()
-    {
-        var overlaps = CheckOverlap(radius: 1, xCenter: 1, yCenter: 1, rectangle: new Rectangle(1, -3, 2, -1));
-        Assert.False(overlaps);
-    }
-
-    [Fact]
-    public void CheckOverlap_CircleTangentToRectangleEdge_ReturnsTrue()
-    {
-        var overlaps = CheckOverlap(radius: 1, xCenter: 0, yCenter: 0, rectangle: new Rectangle(1, -3, 3, 3));
-        Assert.True(overlaps);
-    }
-
-    private readonly record struct Rectangle(int X1, int Y1, int X2, int Y2);
-
-    private static bool CheckOverlap(int radius, int xCenter, int yCenter, Rectangle rectangle)
-    {
-        var closestX = Math.Clamp(xCenter, rectangle.X1, rectangle.X2);
-        var closestY = Math.Clamp(yCenter, rectangle.Y1, rectangle.Y2);
-        var dx = (long)(xCenter - closestX);
-        var dy = (long)(yCenter - closestY);
-        return (dx * dx) + (dy * dy) <= (long)radius * radius;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckOverlapByLatticePointScan_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
+        int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2, bool expected) =>
+        Assert.Equal(
+            expected,
+            CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
+                radius, xCenter, yCenter, x1, y1, x2, y2));
 }
