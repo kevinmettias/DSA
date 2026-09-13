@@ -1,15 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Traversal.TopDown;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.CountGoodNodesInBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Count Good Nodes in Binary Tree (LC 1448): a plain recursive DFS threading "max
-// value on the root-to-node path" through call-stack parameters vs. this repo's own
-// TopDownTraversal (FindElementsInAContaminatedBinaryTreeBenchmarks precedent,
-// LC 1261) threading the same inherited state through ITopDownHooks.Descend and
-// bumping a shared counter in Visit whenever a node's value is >= that max.
+// Harness only: both arms are CountGoodNodesInBinaryTreeSolution's, the same methods
+// CountGoodNodesInBinaryTreeTests proves correct - a plain recursive DFS threading
+// the running maximum through call-stack parameters against this repo's own
+// TopDownTraversal threading it through ITopDownHooks.Descend. The measured tree is
+// built once in [GlobalSetup] so only the counting walk is charged to either arm.
 [MemoryDiagnoser]
 public class CountGoodNodesInBinaryTreeBenchmarks
 {
@@ -29,34 +28,9 @@ public class CountGoodNodesInBinaryTreeBenchmarks
         _root = BuildCompleteTree(NodeCount, random);
     }
 
-    [Benchmark(Baseline = true)]
-    public int RecursiveDfs() => Count(_root, int.MinValue);
-
-    [Benchmark]
-    public int TopDownTraversalCount()
-    {
-        var counter = new Counter();
-
-        TopDownTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            GoodNodeHooks, (int MaxSoFar, Counter Good)>(_root, (int.MinValue, counter));
-
-        return counter.Count;
-    }
-
-    private static int Count(BinaryTreeNode<int>? node, int maxSoFar)
-    {
-        if (node is null)
-        {
-            return 0;
-        }
-
-        var good = node.Value >= maxSoFar ? 1 : 0;
-        var nextMax = Math.Max(maxSoFar, node.Value);
-        return good + Count(node.Left, nextMax) + Count(node.Right, nextMax);
-    }
-
+    // Workload sizing only: a complete tree of the requested size whose values are
+    // drawn from a fixed seed, so how many nodes turn out to be good is stable across
+    // runs without being trivially all of them.
     private static BinaryTreeNode<int> BuildCompleteTree(int nodeCount, Random random)
     {
         var nodes = new BinaryTreeNode<int>[nodeCount];
@@ -92,24 +66,10 @@ public class CountGoodNodesInBinaryTreeBenchmarks
         }
     }
 
-    private sealed class Counter
-    {
-        public int Count;
-    }
+    [Benchmark(Baseline = true)]
+    public int RecursiveDfs() => CountGoodNodesInBinaryTreeSolution.CountGoodNodesByRecursiveDfs(_root);
 
-    private readonly struct GoodNodeHooks : ITopDownHooks<BinaryTreeNode<int>, (int MaxSoFar, Counter Good)>
-    {
-        public static void Visit(
-            BinaryTreeNode<int> node, (int MaxSoFar, Counter Good) state, int depth, NodePosition position)
-        {
-            if (node.Value >= state.MaxSoFar)
-            {
-                state.Good.Count++;
-            }
-        }
-
-        public static (int MaxSoFar, Counter Good) Descend(
-            BinaryTreeNode<int> parent, (int MaxSoFar, Counter Good) parentState, BinaryTreeNode<int> child)
-            => (Math.Max(parentState.MaxSoFar, parent.Value), parentState.Good);
-    }
+    [Benchmark]
+    public int TopDownTraversalCount() =>
+        CountGoodNodesInBinaryTreeSolution.CountGoodNodesByTopDownTraversal(_root);
 }

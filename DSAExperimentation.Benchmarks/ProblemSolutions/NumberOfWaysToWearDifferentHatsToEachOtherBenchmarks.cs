@@ -1,109 +1,41 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Number of Ways to Wear Different Hats to Each Other (LC 1434): the textbook
-// unmemoized bitmask recursion over (hat, peopleAssignedMask) - the same
-// (hat, mask) pair re-explored from scratch down every branch, since many
-// different hat orderings reach the identical state - vs. the same recursion
-// routed through this repo's own Memoizer, using the tuple-state shape its own
-// doc comment names as the intended use case. Every person likes a growing
-// number of random hats from a small shared pool so the branching factor (and
-// therefore state-revisit count) actually grows with PeopleCount, forcing a
-// real gap between the two strategies - the same "force the real worst case"
-// convention CanIWinBenchmarks already uses.
+// Harness only: both arms are NumberOfWaysToWearDifferentHatsToEachOtherSolution's,
+// the same methods NumberOfWaysToWearDifferentHatsToEachOtherTests proves correct.
+// Each is handed the prepared HatPreferences its hoisted overload takes, so
+// inverting hats-per-person into people-per-hat is charged to [GlobalSetup] rather
+// than to the recursion being measured.
 [MemoryDiagnoser]
 public class NumberOfWaysToWearDifferentHatsToEachOtherBenchmarks
 {
-    private const int Modulo = 1_000_000_007;
-    private const int MaxHat = 8;
+    private const int HatPoolSize = 8;
     private const int LikedHatsPerPerson = 3;
+
+    // LC problem number, reused as the deterministic preference seed.
     private const int RandomSeed = 1434;
 
     [Params(5, 7)]
     public int PeopleCount;
 
-    private List<int>[] _hatToPeople = null!;
-    private int _fullMask;
+    private HatPreferences _preferences = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(RandomSeed);
-        _hatToPeople = new List<int>[MaxHat + 1];
-        for (var hat = 1; hat <= MaxHat; hat++)
-        {
-            _hatToPeople[hat] = [];
-        }
+        var likedHats = HatWorkloads.BuildLikedHats(PeopleCount, HatPoolSize, LikedHatsPerPerson, seed: RandomSeed);
 
-        for (var person = 0; person < PeopleCount; person++)
-        {
-            var liked = Enumerable.Range(1, MaxHat).OrderBy(_ => random.Next()).Take(LikedHatsPerPerson);
-            foreach (var hat in liked)
-            {
-                _hatToPeople[hat].Add(person);
-            }
-        }
-
-        _fullMask = (1 << PeopleCount) - 1;
+        _preferences = HatPreferences.Build(likedHats, HatPoolSize);
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceRecursion() => CountWays(MaxHat, _fullMask);
-
-    private long CountWays(int hat, int mask)
-    {
-        if (mask == 0)
-        {
-            return 1;
-        }
-
-        if (hat == 0)
-        {
-            return 0;
-        }
-
-        var total = CountWays(hat - 1, mask);
-
-        foreach (var person in _hatToPeople[hat])
-        {
-            var bit = 1 << person;
-            if ((mask & bit) != 0)
-            {
-                total = (total + CountWays(hat - 1, mask & ~bit)) % Modulo;
-            }
-        }
-
-        return total;
-    }
+    public int BruteForceRecursion() =>
+        NumberOfWaysToWearDifferentHatsToEachOtherSolution.NumberWaysByBruteForceRecursion(_preferences);
 
     [Benchmark]
-    public long MemoizedRecursion() => Memoizer.Memoize<(int Hat, int Mask), long>((MaxHat, _fullMask), (state, ways) =>
-    {
-        var (hat, mask) = state;
-
-        if (mask == 0)
-        {
-            return 1L;
-        }
-
-        if (hat == 0)
-        {
-            return 0L;
-        }
-
-        var total = ways((hat - 1, mask));
-
-        foreach (var person in _hatToPeople[hat])
-        {
-            var bit = 1 << person;
-            if ((mask & bit) != 0)
-            {
-                total = (total + ways((hat - 1, mask & ~bit))) % Modulo;
-            }
-        }
-
-        return total;
-    });
+    public int MemoizedRecursion() =>
+        NumberOfWaysToWearDifferentHatsToEachOtherSolution.NumberWaysByMemoizedBitmask(_preferences);
 }

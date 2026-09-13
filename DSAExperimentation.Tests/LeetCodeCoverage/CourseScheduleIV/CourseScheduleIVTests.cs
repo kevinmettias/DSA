@@ -1,93 +1,38 @@
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
+using DSAExperimentation.LeetCode.CourseScheduleIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CourseScheduleIV;
 
-// LeetCode 1462. Course Schedule IV: wire every prerequisite pair as a directed,
-// unit-weight edge (prerequisite -> dependent) onto this repo's own
-// WeightedNode/WeightedTopology fixtures (already established as reusable
-// across LeetCodeCoverage by
-// FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceTests.cs), then
-// answer every [u, v] query from a single
-// AllPairsShortestPaths.TryComputeDistances call (Floyd-Warshall): u is a
-// prerequisite of v exactly when (u, v) has ANY finite distance in the
-// resulting map - the actual number doesn't matter here, only reachability
-// does. One all-pairs matrix answers every query in O(1) instead of a fresh
-// traversal per query.
-public sealed partial class CourseScheduleIVTests
+// Harness only. The prerequisite network is CourseGraph and both reachability
+// strategies are CourseScheduleIVSolution's - this file just pins them to
+// LeetCode's published examples plus the longer-chain and branching cases that
+// separate a direct prerequisite from a transitive one.
+public sealed class CourseScheduleIVTests
 {
-    [Fact]
-    public void CheckIfPrerequisite_DirectPrerequisiteOnly_ReturnsExpectedAnswers()
-    {
-        var numCourses = 2;
-        int[][] prerequisites = [[1, 0]];
-        int[][] queries = [[0, 1], [1, 0]];
-
-        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
-
-        Assert.Equal([false, true], answers);
-    }
-
-    [Fact]
-    public void CheckIfPrerequisite_NoPrerequisitesAtAll_ReturnsAllFalse()
-    {
-        var numCourses = 2;
-        int[][] prerequisites = [];
-        int[][] queries = [[1, 0], [0, 1]];
-
-        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
-
-        Assert.Equal([false, false], answers);
-    }
-
-    [Fact]
-    public void CheckIfPrerequisite_TransitivePrerequisite_ReturnsTrue()
-    {
-        var numCourses = 3;
-        int[][] prerequisites = [[1, 2], [1, 0], [2, 0]];
-        int[][] queries = [[1, 0], [1, 2]];
-
-        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
-
-        Assert.Equal([true, true], answers);
-    }
-
-    [Fact]
-    public void CheckIfPrerequisite_UnreachableCourseInALongerChain_ReturnsFalse()
-    {
-        var numCourses = 5;
-        int[][] prerequisites = [[0, 1], [1, 2], [2, 3], [3, 4]];
-        int[][] queries = [[0, 4], [4, 0], [1, 3]];
-
-        var answers = CheckIfPrerequisite(numCourses, prerequisites, queries);
-
-        Assert.Equal([true, false, true], answers);
-    }
-
-    private static List<bool> CheckIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries)
-    {
-        var courses = new Dictionary<int, WeightedNode>();
-        for (var i = 0; i < numCourses; i++)
+    public static TheoryData<int, int[][], int[][], bool[]> Examples =>
+        new()
         {
-            courses[i] = new WeightedNode(i.ToString());
-        }
+            { 2, [[1, 0]], [[0, 1], [1, 0]], [false, true] },
+            { 2, [], [[1, 0], [0, 1]], [false, false] },
+            { 3, [[1, 2], [1, 0], [2, 0]], [[1, 0], [1, 2]], [true, true] },
+            { 5, [[0, 1], [1, 2], [2, 3], [3, 4]], [[0, 4], [4, 0], [1, 3]], [true, false, true] },
+            { 4, [[0, 1], [0, 2], [1, 3]], [[0, 3], [2, 3], [3, 0]], [true, false, false] },
+        };
 
-        foreach (var prerequisite in prerequisites)
-        {
-            var (from, to) = (prerequisite[0], prerequisite[1]);
-            courses[from].Edges.Add((1, courses[to]));
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckIfPrerequisiteByBreadthFirstSearchPerQuery_LeetCodeExamples_AnswersEveryQuery(
+        int numCourses, int[][] prerequisites, int[][] queries, bool[] expected) =>
+        Assert.Equal(
+            expected,
+            CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
+                numCourses, prerequisites, queries));
 
-        AllPairsShortestPaths.TryComputeDistances<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            courses.Values, out var distances);
-
-        var answers = new List<bool>();
-        foreach (var query in queries)
-        {
-            answers.Add(distances.ContainsKey((courses[query[0]], courses[query[1]])));
-        }
-
-        return answers;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckIfPrerequisiteByFloydWarshall_LeetCodeExamples_AnswersEveryQuery(
+        int numCourses, int[][] prerequisites, int[][] queries, bool[] expected) =>
+        Assert.Equal(
+            expected,
+            CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(
+                numCourses, prerequisites, queries));
 }

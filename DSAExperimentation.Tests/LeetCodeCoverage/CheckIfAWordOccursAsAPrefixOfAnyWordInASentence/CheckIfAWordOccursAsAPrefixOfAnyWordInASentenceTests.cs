@@ -1,61 +1,40 @@
-using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
 
-// LeetCode 1455. Check If a Word Occurs As a Prefix of Any Word in a Sentence: for
-// each sentence word in order, insert it alone into this repo's own Trie<bool> and
-// ask HasPrefix(searchWord) - exactly ImplementTrieTests' "insert 'apple', then
-// HasPrefix('app') is true" behavior (LC 208), just re-run per candidate word until
-// the first match. Returns the first 1-indexed word position, or -1.
-public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
+// Harness only. Both the StartsWith scan and the Trie<bool> insert-then-HasPrefix
+// round trip are CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution's; this
+// file pins them to LeetCode's published examples plus the boundary cases the two
+// have to agree on - a whole-word match, a first-word match, and a search word that
+// occurs inside words without ever starting one.
+public sealed class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
 {
-    [Fact]
-    public void IsPrefixOfWord_ClassicExampleOne_ReturnsFour()
-    {
-        var index = IsPrefixOfWord("i love eating burger", "burg");
-
-        Assert.Equal(4, index);
-    }
-
-    [Fact]
-    public void IsPrefixOfWord_ClassicExampleTwo_ReturnsTwo()
-    {
-        var index = IsPrefixOfWord("this problem is an easy problem", "pro");
-
-        Assert.Equal(2, index);
-    }
-
-    [Fact]
-    public void IsPrefixOfWord_NoWordHasThatPrefix_ReturnsMinusOne()
-    {
-        var index = IsPrefixOfWord("i am tired", "you");
-
-        Assert.Equal(-1, index);
-    }
-
-    [Fact]
-    public void IsPrefixOfWord_SearchWordEqualsWholeWord_ReturnsThatIndex()
-    {
-        var index = IsPrefixOfWord("i am tired", "tired");
-
-        Assert.Equal(3, index);
-    }
-
-    private static int IsPrefixOfWord(string sentence, string searchWord)
-    {
-        var words = sentence.Split(' ');
-
-        for (var i = 0; i < words.Length; i++)
+    public static TheoryData<string, string, int> Examples =>
+        new()
         {
-            var trie = new Trie<bool>();
-            trie.Set(words[i], true);
+            { "i love eating burger", "burg", 4 },
+            { "this problem is an easy problem", "pro", 2 },
+            { "i am tired", "you", -1 },
+            { "i am tired", "tired", 3 },
+            { "burger burg burgers", "burg", 1 },
+            { "hellohello hellohellohello", "ell", -1 },
+        };
 
-            if (trie.HasPrefix(searchWord))
-            {
-                return i + 1;
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IndexOfPrefixWordByStartsWithScan_LeetCodeExamples_ReturnsFirstMatchingWordPosition(
+        string sentence, string searchWord, int expected) =>
+        Assert.Equal(
+            expected,
+            CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByStartsWithScan(
+                sentence, searchWord));
 
-        return -1;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IndexOfPrefixWordByTriePerWord_LeetCodeExamples_ReturnsFirstMatchingWordPosition(
+        string sentence, string searchWord, int expected) =>
+        Assert.Equal(
+            expected,
+            CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByTriePerWord(
+                sentence, searchWord));
 }

@@ -1,74 +1,37 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.CheckIfAStringContainsAllBinaryCodesOfSizeK;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAStringContainsAllBinaryCodesOfSizeK;
 
-// LeetCode 1461. Check If a String Contains All Binary Codes of Size K: slide a
-// length-k window across s, folding each window into an int via bit-shifting
-// (drop the bit that falls out of range, append the new one, mask to k bits) -
-// the classic rolling-bitmask trick for a *binary* alphabet - and record every
-// distinct code seen in this repo's own Set<int> (HashMap<Element,bool>-backed,
-// DataStructures/Set/Set.cs). s contains every code of length k exactly when
-// the set ends up holding all 2^k of them.
-public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
+// Harness only. Both the per-code substring search and the sliding-bitmask pass over
+// this repo's own Set<int> are CheckIfAStringContainsAllBinaryCodesOfSizeKSolution's;
+// this file pins them to LeetCode's published examples plus the boundary cases - a
+// text exactly long enough to hold all 2^k windows, and one far too short to.
+public sealed class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
 {
-    [Fact]
-    public void HasAllCodes_ClassicExampleWithEveryTwoBitCode_ReturnsTrue()
-    {
-        var hasAllCodes = HasAllCodes("00110110", k: 2);
-
-        Assert.True(hasAllCodes);
-    }
-
-    [Fact]
-    public void HasAllCodes_EveryOneBitCodePresent_ReturnsTrue()
-    {
-        var hasAllCodes = HasAllCodes("0110", k: 1);
-
-        Assert.True(hasAllCodes);
-    }
-
-    [Fact]
-    public void HasAllCodes_MissingOneOfTheFourTwoBitCodes_ReturnsFalse()
-    {
-        var hasAllCodes = HasAllCodes("0110", k: 2);
-
-        Assert.False(hasAllCodes);
-    }
-
-    [Fact]
-    public void HasAllCodes_TooShortToPossiblyContainEveryCode_ReturnsFalse()
-    {
-        // Fewer than 2^k + k - 1 characters can never contain all 2^k
-        // length-k substrings, regardless of content - short-circuited before
-        // ever touching the sliding window/Set.
-        var hasAllCodes = HasAllCodes("111", k: 3);
-
-        Assert.False(hasAllCodes);
-    }
-
-    private static bool HasAllCodes(string s, int k)
-    {
-        var total = 1 << k;
-
-        if (s.Length < total + k - 1)
+    public static TheoryData<string, int, bool> Examples =>
+        new()
         {
-            return false;
-        }
+            { "00110110", 2, true },
+            { "0110", 1, true },
+            { "0110", 2, false },
+            { "111", 3, false },
+            { "00110", 2, true },
+            { "0000000", 3, false },
+        };
 
-        var seen = new Set<int>();
-        var mask = total - 1;
-        var code = 0;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void HasAllCodesByCodeSubstringSearch_LeetCodeExamples_ReportsWhetherEveryCodeOccurs(
+        string s, int k, bool expected) =>
+        Assert.Equal(
+            expected,
+            CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesByCodeSubstringSearch(s, k));
 
-        for (var i = 0; i < s.Length; i++)
-        {
-            code = ((code << 1) | (s[i] - '0')) & mask;
-
-            if (i >= k - 1)
-            {
-                seen.TryAdd(code);
-            }
-        }
-
-        return seen.Count == total;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void HasAllCodesBySlidingBitmask_LeetCodeExamples_ReportsWhetherEveryCodeOccurs(
+        string s, int k, bool expected) =>
+        Assert.Equal(
+            expected,
+            CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesBySlidingBitmask(s, k));
 }
