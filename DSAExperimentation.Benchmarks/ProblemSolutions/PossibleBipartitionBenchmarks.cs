@@ -1,19 +1,24 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using BipartiteCheckOperations = DSAExperimentation.Algorithms.Bipartiteness.BipartiteCheck;
+using DSAExperimentation.LeetCode.PossibleBipartition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Possible Bipartition (LC 886): a hand-rolled iterative DFS 2-coloring
-// directly over the problem's own dislikes pair list (a plain sbyte[] color
-// array keyed by person id, an explicit Stack<int>) against this repo's
-// BipartiteCheck.IsBipartite composed over PersonNode/PersonTopology - the
-// same IGraphTopology/ListChildren/NaturalChildOrder shape Is Graph
-// Bipartite? (LC 785) already benchmarks, just built from a 1-indexed
-// dislikes-pair input instead of an adjacency list. The generated dislikes
-// graph is bipartite by construction (a fixed A/B split, only cross-group
-// pairs) so neither strategy short-circuits on an early color conflict.
+// Harness only: both arms are PossibleBipartitionSolution's, the same methods
+// PossibleBipartitionTests proves correct - a hand-rolled iterative DFS
+// 2-coloring over a plain neighbour array (an sbyte[] group array keyed by
+// person id, an explicit Stack<int>) against this repo's
+// BipartiteCheck.IsBipartite, a multi-root BFS 2-coloring composed from
+// IGraphTopology/ListChildren/NaturalChildOrder with a Dictionary<TNode,bool>
+// group map. Both walk every person and dislike exactly once at O(V+E); the
+// split under [MemoryDiagnoser] is the dictionary/heap-object overhead the
+// composed primitive pays for its generality against the raw array baseline. The
+// generated dislikes graph is bipartite by construction (a fixed A/B split, only
+// cross-group pairs) so neither strategy short-circuits on an early conflict -
+// both are forced through their full worst-case walk.
+//
+// Preparing either input shape from the pair list is input construction, so both
+// are charged to [GlobalSetup] and handed to the strategies' prepared-input
+// overloads.
 [MemoryDiagnoser]
 public class PossibleBipartitionBenchmarks
 {
@@ -23,36 +28,39 @@ public class PossibleBipartitionBenchmarks
     [Params(200, 5_000)]
     public int PersonCount;
 
-    private int[][] _adjacency = null!;
-    private List<PersonNode> _people = null!;
+    private DislikeAdjacency _adjacency = null!;
+    private DislikeGraph _graph = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
         var half = PersonCount / HalfDivisor;
-        var dislikes = new List<(int A, int B)>();
+        var dislikes = new List<int[]>();
 
         AddConnectivityPairs(dislikes, random, half);
         AddDensityPairs(dislikes, random, half);
 
-        _adjacency = BuildAdjacency(PersonCount, dislikes);
-        _people = BuildPeople(PersonCount, dislikes);
+        var pairs = dislikes.ToArray();
+
+        _adjacency = DislikeAdjacency.Build(PersonCount, pairs);
+        _graph = DislikeGraph.Build(PersonCount, pairs);
     }
 
-    // Guarantee connectivity: every B-side person gets one cross pair back to
-    // a random A-side person.
-    private void AddConnectivityPairs(List<(int A, int B)> dislikes, Random random, int half)
+    // Guarantee connectivity: every B-side person gets one cross pair back to a
+    // random A-side person. People are numbered from 1, matching LeetCode's own
+    // input, so each generated index is shifted up by one.
+    private void AddConnectivityPairs(List<int[]> dislikes, Random random, int half)
     {
         for (var i = half; i < PersonCount; i++)
         {
-            dislikes.Add((random.Next(half), i));
+            dislikes.Add([random.Next(half) + 1, i + 1]);
         }
     }
 
-    // Extra cross-only pairs for density - still strictly A-to-B, so the
-    // dislikes graph stays bipartite by construction.
-    private void AddDensityPairs(List<(int A, int B)> dislikes, Random random, int half)
+    // Extra cross-only pairs for density - still strictly A-to-B, so the dislikes
+    // graph stays bipartite by construction.
+    private void AddDensityPairs(List<int[]> dislikes, Random random, int half)
     {
         for (var i = 0; i < PersonCount; i++)
         {
@@ -60,106 +68,16 @@ public class PossibleBipartitionBenchmarks
             {
                 var inA = i < half;
                 var target = inA ? half + random.Next(PersonCount - half) : random.Next(half);
-                dislikes.Add((i, target));
+                dislikes.Add([i + 1, target + 1]);
             }
         }
     }
 
     [Benchmark(Baseline = true)]
-    public bool ArrayAdjacencyIterativeDfs()
-    {
-        var color = new sbyte[_adjacency.Length];
-        var stack = new Stack<int>();
-
-        for (var start = 0; start < _adjacency.Length; start++)
-        {
-            if (color[start] != 0)
-            {
-                continue;
-            }
-
-            color[start] = 1;
-            stack.Push(start);
-
-            if (!Walk(stack, color))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    public bool ArrayAdjacencyIterativeDfs() =>
+        PossibleBipartitionSolution.PossibleBipartitionByColorArrayDfs(_adjacency);
 
     [Benchmark]
-    public bool BipartiteCheckBfs()
-        => BipartiteCheckOperations.IsBipartite<
-            PersonNode, PersonTopology, ListChildren<PersonNode>,
-            NaturalChildOrder<PersonNode, ListChildren<PersonNode>>, ListChildren<PersonNode>>(
-            _people);
-
-    private bool Walk(Stack<int> stack, sbyte[] color)
-    {
-        while (stack.Count > 0)
-        {
-            var person = stack.Pop();
-
-            foreach (var neighbor in _adjacency[person])
-            {
-                if (color[neighbor] == color[person])
-                {
-                    return false;
-                }
-
-                if (color[neighbor] == 0)
-                {
-                    color[neighbor] = (sbyte)-color[person];
-                    stack.Push(neighbor);
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private static int[][] BuildAdjacency(int personCount, List<(int A, int B)> dislikes)
-    {
-        var adjacency = Enumerable.Range(0, personCount).Select(_ => new List<int>()).ToArray();
-
-        foreach (var (a, b) in dislikes)
-        {
-            adjacency[a].Add(b);
-            adjacency[b].Add(a);
-        }
-
-        return adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
-    }
-
-    private static List<PersonNode> BuildPeople(int personCount, List<(int A, int B)> dislikes)
-    {
-        var people = Enumerable.Range(0, personCount).Select(id => new PersonNode(id)).ToList();
-
-        foreach (var (a, b) in dislikes)
-        {
-            people[a].Dislikes.Add(people[b]);
-            people[b].Dislikes.Add(people[a]);
-        }
-
-        return people;
-    }
-
-    // See PossibleBipartitionTests.Fixtures for the full explanation -
-    // repeated here rather than shared because TwoSumBenchmarks/
-    // MedianOfTwoSortedArraysBenchmarks establish this project keeps its own
-    // copy of the solution rather than depending on the Tests project.
-    private sealed class PersonNode(int id)
-    {
-        public int Id { get; } = id;
-
-        public List<PersonNode> Dislikes { get; } = [];
-    }
-
-    private readonly struct PersonTopology : IGraphTopology<PersonNode, ListChildren<PersonNode>>
-    {
-        public static ListChildren<PersonNode> GetChildren(PersonNode node) => new(node.Dislikes);
-    }
+    public bool BipartiteCheckBfs() =>
+        PossibleBipartitionSolution.PossibleBipartitionByBipartiteCheck(_graph);
 }

@@ -1,66 +1,33 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.BoatsToSavePeople;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BoatsToSavePeople;
 
-// LeetCode 881. Boats to Save People: sort weights ascending with this repo's own
-// MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence (AssignCookiesTests'
-// shape), then a single greedy two-pointer pass pairing the lightest remaining
-// person with the heaviest whenever they fit together - the heaviest person always
-// needs a boat, so pairing them with anyone light enough is never worse than
-// sending them alone.
-public sealed partial class BoatsToSavePeopleTests
+// Harness only: both strategies live in BoatsToSavePeopleSolution and are asserted
+// against the same examples - LeetCode's three published ones, a single passenger,
+// a set where every pair is exactly at the limit, and one where everyone pairs up.
+public sealed class BoatsToSavePeopleTests
 {
-    [Fact]
-    public void NumRescueBoats_LeetCodeExampleOne_PairsBothPeople()
-    {
-        int[] people = [1, 2];
-
-        var boats = NumRescueBoats(people, limit: 3);
-
-        Assert.Equal(1, boats);
-    }
-
-    [Fact]
-    public void NumRescueBoats_LeetCodeExampleTwo_ReturnsThreeBoats()
-    {
-        int[] people = [3, 2, 2, 1];
-
-        var boats = NumRescueBoats(people, limit: 3);
-
-        Assert.Equal(3, boats);
-    }
-
-    [Fact]
-    public void NumRescueBoats_LeetCodeExampleThree_NoOneFitsTogether()
-    {
-        int[] people = [3, 5, 3, 4];
-
-        var boats = NumRescueBoats(people, limit: 5);
-
-        Assert.Equal(4, boats);
-    }
-
-    private static int NumRescueBoats(int[] people, int limit)
-    {
-        var sorted = people.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        var light = 0;
-        var heavy = sorted.Length - 1;
-        var boats = 0;
-
-        while (light <= heavy)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            if (sorted[light] + sorted[heavy] <= limit)
-            {
-                light++;
-            }
+            { [1, 2], 3, 1 },
+            { [3, 2, 2, 1], 3, 3 },
+            { [3, 5, 3, 4], 5, 4 },
+            { [2], 3, 1 },
+            { [5, 1, 4, 2], 6, 2 },
+            { [1, 1, 1, 1], 2, 2 },
+        };
 
-            heavy--;
-            boats++;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumRescueBoatsByRepeatedScan_LeetCodeExamples_ReturnsFewestBoats(
+        int[] people, int limit, int expected) =>
+        Assert.Equal(expected, BoatsToSavePeopleSolution.NumRescueBoatsByRepeatedScan(people, limit));
 
-        return boats;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumRescueBoatsBySortThenTwoPointer_LeetCodeExamples_ReturnsFewestBoats(
+        int[] people, int limit, int expected) =>
+        Assert.Equal(
+            expected, BoatsToSavePeopleSolution.NumRescueBoatsBySortThenTwoPointer(people, limit));
 }

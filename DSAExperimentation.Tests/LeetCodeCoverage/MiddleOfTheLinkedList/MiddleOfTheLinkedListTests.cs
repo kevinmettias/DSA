@@ -1,54 +1,83 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MiddleOfTheLinkedList;
 
-// LeetCode 876. Middle of the Linked List: Floyd's slow/fast two-pointer walk
-// composed directly against this repo's own SinglyLinkedListNode<TValue>.Next -
-// the same node representation CycleDetection.cs's FindMeetingPoint walks
-// two-steps-per-one, applied here to land on the midpoint of an (always acyclic)
-// list instead of a cycle's meeting point. CycleDetection itself doesn't apply -
-// its ReferenceEquals check can only ever fire inside a real cycle - so the walk
-// is written directly here, the same "no algorithm primitive needed, just the
-// node representation" shape AddTwoNumbersTests' digit-wise walk already uses.
-public sealed partial class MiddleOfTheLinkedListTests
+// Harness only. Both strategies are MiddleOfTheLinkedListSolution's - this file
+// states LeetCode's examples once as the list's values plus the value of the node
+// the answer must land on, and asserts each strategy against them.
+public sealed class MiddleOfTheLinkedListTests
 {
-    [Fact]
-    public void MiddleNode_OddLength_ReturnsSingleMiddleNode()
-        => Assert.Equal(3, MiddleNode(Build([1, 2, 3, 4, 5]))!.Value);
+    private const int MidpointDivisor = 2;
 
-    [Fact]
-    public void MiddleNode_EvenLength_ReturnsSecondMiddleNode()
-        => Assert.Equal(4, MiddleNode(Build([1, 2, 3, 4, 5, 6]))!.Value);
-
-    [Fact]
-    public void MiddleNode_SingleNode_ReturnsThatNode()
-        => Assert.Equal(1, MiddleNode(Build([1]))!.Value);
-
-    private static SinglyLinkedListNode<int>? MiddleNode(SinglyLinkedListNode<int>? head)
-    {
-        var slow = head;
-        var fast = head;
-
-        while (fast?.Next is not null)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            slow = slow!.Next;
-            fast = fast.Next.Next;
-        }
+            { [1, 2, 3, 4, 5], 3 },
+            { [1, 2, 3, 4, 5, 6], 4 },
+            { [1], 1 },
+            { [1, 2], 2 },
+            { [7, 7, 7, 8, 9, 10, 11], 8 },
+        };
 
-        return slow;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MiddleNodeBySlowFastTwoPointer_LeetCodeExamples_ReturnsMiddleNode(int[] values, int expected) =>
+        Assert.Equal(
+            expected,
+            MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(BuildList(values))!.Value);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MiddleNodeByCountThenWalk_LeetCodeExamples_ReturnsMiddleNode(int[] values, int expected) =>
+        Assert.Equal(
+            expected,
+            MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(BuildList(values))!.Value);
+
+    // The answer is a node, not a value, so the tail beyond it is part of what was
+    // returned: asserting the remaining values pins that the strategies hand back
+    // the real node rather than a detached copy carrying the right value.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MiddleNodeBySlowFastTwoPointer_LeetCodeExamples_ReturnsNodeStillLinkedToItsTail(int[] values, int _)
+    {
+        var middle = MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(BuildList(values));
+
+        Assert.Equal(values[(values.Length / MidpointDivisor)..], ToArray(middle));
     }
 
-    private static SinglyLinkedListNode<int> Build(int[] values)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MiddleNodeByCountThenWalk_LeetCodeExamples_ReturnsNodeStillLinkedToItsTail(int[] values, int _)
     {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
+        var middle = MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(BuildList(values));
 
-        foreach (var value in values)
+        Assert.Equal(values[(values.Length / MidpointDivisor)..], ToArray(middle));
+    }
+
+    private static SinglyLinkedListNode<int> BuildList(int[] values)
+    {
+        var head = new SinglyLinkedListNode<int>(values[0]);
+        var tail = head;
+
+        foreach (var value in values[1..])
         {
             tail.Next = new SinglyLinkedListNode<int>(value);
             tail = tail.Next;
         }
 
-        return dummy.Next!;
+        return head;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
     }
 }
