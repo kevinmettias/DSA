@@ -1,13 +1,13 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MinimumNumberOfIncrementsOnSubarraysToFormTargetArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Number of Increments on Subarrays to Form a Target Array (LC 1526): a literal
-// layer-by-layer simulation of the increment operations (each pass extends one stroke as far
-// right as it can before starting the next, O(n * max(target)) total) vs. the O(n) single pass
-// that sums positive rises between consecutive elements. No repo primitive applies to either
-// side - both are pure array scans, the same category MaximumSubarrayBenchmarks already
-// established for this kind of greedy problem.
+// Harness only: both arms are
+// MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution's - the literal layer-by-layer
+// simulation of the increment operations (O(n * max(target))) against the O(n) single pass that
+// sums positive rises between consecutive elements. Random heights up to 50 give the simulation
+// enough layers to separate the two.
 [MemoryDiagnoser]
 public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
 {
@@ -27,72 +27,10 @@ public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LayerByLayerSimulation()
-    {
-        var current = new int[_target.Length];
-        var operations = 0;
-        var madeProgress = true;
-
-        while (madeProgress)
-        {
-            (madeProgress, operations) = RunSweep(current, _target, operations);
-        }
-
-        return operations;
-    }
-
-    private static (bool MadeProgress, int Operations) RunSweep(int[] current, int[] target, int operations)
-    {
-        var madeProgress = false;
-        var i = 0;
-
-        while (i < current.Length)
-        {
-            var (nextIndex, advancedStroke) = AdvanceFromIndex(current, target, i);
-            i = nextIndex;
-
-            if (advancedStroke)
-            {
-                madeProgress = true;
-                operations++;
-            }
-        }
-
-        return (madeProgress, operations);
-    }
-
-    private static (int Index, bool AdvancedStroke) AdvanceFromIndex(int[] current, int[] target, int index)
-    {
-        if (current[index] >= target[index])
-        {
-            return (index + 1, false);
-        }
-
-        while (index < current.Length && current[index] < target[index])
-        {
-            current[index]++;
-            index++;
-        }
-
-        return (index, true);
-    }
+    public int LayerByLayerSimulation() =>
+        MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution.MinNumberOperationsByLayerSimulation(_target);
 
     [Benchmark]
-    public int RunningDiffScan()
-    {
-        var operations = 0;
-        var previous = 0;
-
-        for (var i = 0; i < _target.Length; i++)
-        {
-            if (_target[i] > previous)
-            {
-                operations += _target[i] - previous;
-            }
-
-            previous = _target[i];
-        }
-
-        return operations;
-    }
+    public int RunningDiffScan() =>
+        MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution.MinNumberOperationsByRisingDiffScan(_target);
 }

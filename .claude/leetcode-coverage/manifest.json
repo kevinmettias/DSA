@@ -9054,8 +9054,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/StoneGameIV/StoneGameIVTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/StoneGameIVBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer<TState,TResult> memoizing AliceWins(n) = exists square s<=n with !AliceWins(n-s); same shape as the existing DivisorGame/StoneGameIII tests",
-      "notes": "Benchmark follows the DivisorGameBenchmarks/StoneGameIIIBenchmarks precedent: unmemoized exponential recursion vs. Memoizer-cached recursion, StoneCount kept modest (16, 20) since the branching factor (sqrt(n)) is wider than those two precedents'.",
-      "architectureTier": "pre-section-17"
+      "notes": "Two strategies were inventoried: the benchmark's [Benchmark(Baseline = true)] UnmemoizedRecursion (a private helper in the benchmark, never asserted by anything) and the memoized recurrence, which existed twice - once as the test's private AliceWins helper and once again as the benchmark's MemoizedRecursion arm. Both now live in StoneGameIVSolution; the baseline's internals stay pure BCL recursion (no Memoizer). No behaviour change: the baseline and memoized arms agree on every example. Test examples kept all four originals (1,2,4,7) and were widened from 4 to 11 cases (3,5,6,8,9,10,17 added) since the original was thin; each strategy gets its own [Theory]. Benchmark keeps [Params(16, 20)] and is now a two-line harness. No fixtures existed. No new DataStructures/Algorithms types, so no section 18 obligation. Naming AliceWinsBy<Strategy> matches the already-migrated StoneGame/DivisorGame precedent exactly (check-boolean-predicate fires on those two files identically - a standing tier-wide condition, not new debt).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/StoneGameIV/StoneGameIVSolution.cs",
+      "strategies": "StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(int n); StoneGameIVSolution.AliceWinsByMemoizedRecursion(int n)"
     },
     {
       "id": 1514,
@@ -9067,8 +9069,11 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/PathWithMaximumProbability/PathWithMaximumProbabilityTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/PathWithMaximumProbabilityBenchmarks.cs",
       "primitivesUsed": "Algorithms.ShortestPaths.ShortestPath.Dijkstra (unmodified) over a graph reweighted to -log(probability) per edge, plus DataStructures.Graph.Contracts.{Ordering.ListEdges, Topologies.IEdgeTopology} for the custom ProbabilityNode/ProbabilityTopology fixtures (mirrors NetworkDelayTime/CheapestFlightsWithinKStops's own fixture shape)",
-      "notes": "-log(probability) is >=0 for probabilities in (0,1], so maximizing a probability product becomes exactly Dijkstra's existing non-negative-sum-minimization precondition; the answer is Math.Exp(-distance). No changes to ShortestPath.cs needed. Benchmark compares this against an exhaustive DFS over every source-to-target path in a random forward-only (DAG) graph, mirroring RandomWeightedGraphs' 'back edge' connectivity trick.",
-      "architectureTier": "pre-section-17"
+      "notes": "Two strategies: the benchmark's [Benchmark(Baseline = true)] NaiveDfsOverEveryPath (a private helper, never asserted) and the Dijkstra-over--log-weights arm, which was written twice - once as the test's private MaxProbability helper, once again as the benchmark's DijkstraOverNegativeLogWeights - over two independent copies of ProbabilityNode/ProbabilityTopology. Two deliberate changes, both noted per the brief: (1) the baseline DFS gained a bool[] on-path guard. The benchmark's version had none, relying on its workload being a forward-edge DAG; on LeetCode's real (undirected, cyclic) input that version never terminates, so it could not have been promoted to a first-class asserted method without it. On the acyclic-by-construction workload the guard never fires, so the measurement character is unchanged. (2) the benchmark graph is now built by ProbabilityGraph.Build, which is honestly undirected as LC 1514 specifies; the old benchmark built its edges one-way only, so its Dijkstra arm was measuring a directed graph the problem does not have. The generated edge list, seed, [Params(10, 14)] and [GlobalSetup] hoisting are all preserved; the baseline's cost at NodeCount=14 is ~22 ms measured, so the comparison is still exponential-vs-Dijkstra. Both arms return the same answer on the workload (0.5551408520024639, verified). Test examples: all three original LC examples kept, plus two the original lacked (an edge that must be traversed backwards, which only the undirected build finds, and a certain-probability chain), one [Theory] per strategy. Remaining gate findings on the new files are the standing tier-wide ones the reference pairs also produce (check-parameter-count on the LeetCode-shaped 5-argument signature - 140 such findings already exist across DSAExperimentation.LeetCode; check-vertical-organization and check-sealed-classes on the benchmark, which OpenTheLockBenchmarks/DivisorGameBenchmarks fire identically; check-test-coverage on the workload fixture, which LockWorkloads and NetworkRecoveryWorkloads fire too). The new-to-me findings (check-nested-call, an over-wide private helper) were fixed rather than accepted. Full suite: 8322 passed, 0 failed.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/PathWithMaximumProbability/PathWithMaximumProbabilitySolution.cs",
+      "strategies": "PathWithMaximumProbabilitySolution.MaxProbabilityByExhaustiveDfs(int nodeCount, int[][] edges, double[] successProbabilities, int start, int end) + hoisted overload (ProbabilityGraph, int, int); PathWithMaximumProbabilitySolution.MaxProbabilityByDijkstra(int nodeCount, int[][] edges, double[] successProbabilities, int start, int end) + hoisted overload (ProbabilityGraph, int, int)",
+      "relocatedTypes": "ProbabilityNode and ProbabilityTopology moved from DSAExperimentation.Tests/LeetCodeCoverage/PathWithMaximumProbability/Fixtures/ to DSAExperimentation.LeetCode/PathWithMaximumProbability/ (witnesses used by this problem alone - the RecoveryNode/RecoveryTopology and AppleNode precedent, section 17.3); the benchmark's duplicate private copies of both were deleted. New problem-folder type DSAExperimentation.LeetCode/PathWithMaximumProbability/ProbabilityGraph.cs is the non-IEnumerable prepared-input container the hoisted overloads take (it holds both views the two strategies need: raw-probability adjacency for the walk, -log(probability) nodes for Dijkstra). New workload generator DSAExperimentation.Benchmarks/Fixtures/ProbabilityGraphWorkloads.cs holds only sizing/seeding (seed 1514, extra-edges-per-node, probability range), matching NetworkRecoveryWorkloads. The test's Fixtures/ subfolder is deleted. No DataStructures/ or Algorithms/ type was added, so no section 18 obligation."
     },
     {
       "id": 1515,
@@ -9092,8 +9097,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FindValueOfMysteriousFunctionClosestToTarget/FindValueOfMysteriousFunctionClosestToTargetTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FindValueOfMysteriousFunctionClosestToTargetBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.DataStructures.HashMap.HashMap<TKey,TValue> used as an ad hoc set via .Keys enumeration, tracking the O(log(max(arr))) set of distinct bitwise-AND values over subarrays ending at each index (AND only ever clears bits as the window extends). Used HashMap directly rather than Set<Element> because Set doesn't expose enumeration and this algorithm needs to walk every distinct value seen so far.",
-      "notes": "3 tests (LeetCode's 3 official examples), all pass. Benchmark: O(n^2) brute-force AND-every-subarray baseline vs O(n log(max(arr))) distinct-AND-values HashMap approach, Params(200, 5000). Full test suite 2177/2178 passed (1 pre-existing skip), no regressions.",
-      "architectureTier": "pre-section-17"
+      "notes": "Two distinct strategies existed: the benchmark's [Benchmark(Baseline = true)] BruteForceAllSubarrays (never asserted by anything before) and the O(n log max) distinct-AND-values scan, which was written twice - once as the test's private ClosestToTarget helper and again as the benchmark's DistinctAndValuesHashMap. Both arms already answered LeetCode's real shape (int gap), so no reconciliation of return shapes was needed; the benchmark's hard-coded Target const became a parameter. Baseline internals are BCL-only per 17.5; the composed arm keeps HashMap<int,bool> used as an ad hoc set via .Keys. No hoisted overload: the benchmark's [GlobalSetup] builds a plain int[], which is already LeetCode's own input shape, so there is no construction to charge elsewhere (and a second int[] overload would be ambiguous). No fixtures existed. Test kept all three original examples and added LeetCode's published example 3 ([1,2,4,8,16], target 0 -> 0); 8 assertions where there were 3. [Params(200, 5_000)], seed 1521 and the 20-bit value width preserved verbatim.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/FindValueOfMysteriousFunctionClosestToTarget/FindValueOfMysteriousFunctionClosestToTargetSolution.cs",
+      "strategies": "ClosestToTargetByBruteForce(int[] arr, int target); ClosestToTargetByDistinctAndValues(int[] arr, int target)"
     },
     {
       "id": 1526,
@@ -9105,8 +9112,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumNumberOfIncrementsOnSubarraysToFormTargetArray/MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks.cs",
       "primitivesUsed": "None - the answer is exactly the sum of positive rises between consecutive elements (target[0] counts as a rise from an implicit leading 0), a single running-previous-value scan with no data structure to reach for. Same 'no repo primitive applies' category already established by MaximumSubarrayBenchmarks/JumpGame for this kind of greedy single-pass array problem (confirmed via repo-wide check, not assumed).",
-      "notes": "3 tests (LeetCode's 3 official examples), all pass. Benchmark: O(n * max(target)) literal layer-by-layer stroke simulation baseline vs O(n) running-diff formula, Params(200, 2000). Full test suite 2177/2178 passed (1 pre-existing skip), no regressions.",
-      "architectureTier": "pre-section-17"
+      "notes": "Two distinct strategies: the benchmark's untested [Benchmark(Baseline = true)] LayerByLayerSimulation (with its RunSweep/AdvanceFromIndex helpers, now private statics on the solution class and finally under test) and the O(n) rising-diff scan, duplicated between the test's private MinNumberOperations helper and the benchmark's RunningDiffScan. Both already returned LeetCode's answer shape (int operation count), so nothing disagreed. Baseline stays BCL-only. No hoisted overload needed - [GlobalSetup] builds a plain int[], LeetCode's own input shape. No fixtures existed. Test kept all three original examples and added the flat [1,1,1,1] -> 1 case; 8 assertions where there were 3. [Params(200, 2_000)], seed 1526 and MaxTargetHeight 50 preserved verbatim.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumNumberOfIncrementsOnSubarraysToFormTargetArray/MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution.cs",
+      "strategies": "MinNumberOperationsByLayerSimulation(int[] target); MinNumberOperationsByRisingDiffScan(int[] target)"
     },
     {
       "id": 1541,
@@ -9118,8 +9127,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumInsertionsToBalanceAParenthesesString/MinimumInsertionsToBalanceAParenthesesStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumInsertionsToBalanceAParenthesesStringBenchmarks.cs",
       "primitivesUsed": "DataStructures.Stack.Stack<char> tracks unmatched '(' openers, exactly the LIFO composition MinimumAddToMakeParenthesesValid (LC 921) already uses; extended with a one-character lookahead since a balanced unit here is '(' matched by TWO consecutive ')'. Benchmark compares it against a scalar running-counter baseline (same shape as 921's own benchmark).",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Two distinct strategies across the pair, one of them duplicated: the test's private ParenScanner (repo Stack<char>) and the benchmark's StackOfOpeners were the same algorithm written twice; the benchmark's baseline running counter existed only in the benchmark and was never asserted - it is now a first-class method with 8 assertions. Both arms already agreed on LeetCode's answer shape (int insertions), so no reconciliation was needed and behaviour is unchanged: verified 1 for \"(()))\", 0 for \"())\", 3 for \"))())(\", 12 for \"((((((\", 5 for \")))))))\". Added 3 further examples (\"()\"->1, \"((\"->4, \"()))\"->2) since the original test was thin on the lone-trailing-closer case. No [GlobalSetup]-hoisted overload was needed: the prepared input is a string, which is already LeetCode's own shape. No fixture types existed for this problem. 16 assertions where there were 5 tests + 0 baseline coverage before.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumInsertionsToBalanceAParenthesesString/MinimumInsertionsToBalanceAParenthesesStringSolution.cs",
+      "strategies": "MinInsertionsByRunningCounter (was the benchmark's untested [Benchmark(Baseline = true)] RunningCounter arm; BCL-only scalar counter per §17.5), MinInsertionsByOpenerStack (was BOTH the test's private MinInsertions/ParenScanner helper and the benchmark's StackOfOpeners arm - one strategy written twice)"
     },
     {
       "id": 1545,
@@ -9131,8 +9142,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FindKthBitInNthBinaryString/FindKthBitInNthBinaryStringTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FindKthBitInNthBinaryStringBenchmarks.cs",
       "primitivesUsed": "No repo container/algorithm primitive applies - straight-line O(n) recursive bit-position bisection, one recursive call per level (never two), so there are no overlapping subproblems for the repo's Memoizer to help with. Same 'lighter repo-primitive fit' precedent already recorded for PowXn/Power of Two. Benchmark compares it against a brute-force O(2^n) full-string-construction baseline built from the problem's own literal recurrence.",
-      "notes": "Purely a design judgment call (not a blocker): every DataStructures/Algorithms primitive browsed (Stack, HashMap, Memoizer, Sequence, Heap, etc.) is either irrelevant or would add indirection with no complexity/clarity benefit over plain recursion, mirroring the already-accepted PowXn precedent in the manifest.",
-      "architectureTier": "pre-section-17"
+      "notes": "PROMOTED BASELINE (noted per instruction): the benchmark's BruteForceConstruction measured something weaker than LeetCode's answer - it was `BuildNthString(N)[^1]`, hardcoded to the LAST bit rather than the kth, so it could not have been asserted against the test's examples even if anyone had tried. It is now FindKthBitByStringConstruction(n, k) returning the real kth bit, and the benchmark passes k = (1 << N) - 1 to preserve the exact measurement (full-depth walk, last bit). The test helper and the benchmark's bisection arm were byte-identical duplicates. Behaviour unchanged on the original inputs; all 5 original examples kept, 4 added (n=3 k=4/k=5, n=4 k=9/k=15) to cover the middle-bit, left-of-middle and mirrored-inverted branches explicitly. The benchmark's k computation moved into [GlobalSetup] so the shift is not charged to the measured method; no second prepared-input overload was warranted since the inputs are two ints, not a container. No fixture types existed. No repo primitive applies to either strategy (each bisection call recurses exactly once, so there are no overlapping subproblems for Memoizer), and none was invented - §18 owes nothing new here. 18 assertions where there were 5 tests + 0 baseline coverage before.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/FindKthBitInNthBinaryString/FindKthBitInNthBinaryStringSolution.cs",
+      "strategies": "FindKthBitByStringConstruction (was the benchmark's untested [Benchmark(Baseline = true)] BruteForceConstruction arm; BCL-only, materializes S(n) per §17.5), FindKthBitByRecursiveBisection (was BOTH the test's private FindKthBit helper and the benchmark's RecursiveBisection arm)"
     },
     {
       "id": 1553,
@@ -9144,8 +9157,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumNumberOfDaysToEatNOranges/MinimumNumberOfDaysToEatNOrangesTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfDaysToEatNOrangesBenchmarks.cs",
       "primitivesUsed": "Algorithms.DynamicProgramming.Memoizer drives the top-down days(n) = 1 + min(n%2 + days(n/2), n%3 + days(n/3)) recurrence, the same composition IntegerReplacement/FibonacciNumber already use. Benchmark compares it against unmemoized recursion of the identical recurrence (heavy state reconvergence between the /2 and /3 branches makes memoization pay off).",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Two arms, no disagreement to reconcile: the test's private MinDays was the memoized arm, the benchmark carried both. The benchmark's EatOneAtATimeThenHalveDivisor/EatOneAtATimeThenThirdDivisor constants moved into the solution class. Params (100_000, 2_000_000_000) and MemoryDiagnoser preserved; no GlobalSetup existed, so no hoisted overload was needed. Test kept all four original cases (10/6/1/56) and added 2, 3 and 9 - the small values where the halve and third branches tie, which is exactly where an unasserted baseline could have drifted. Modelled on the already-migrated IntegerReplacementSolution, the same recurrence shape. No fixtures existed; no new DataStructures/ or Algorithms/ types, so §18 owes nothing.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumNumberOfDaysToEatNOranges/MinimumNumberOfDaysToEatNOrangesSolution.cs",
+      "strategies": "MinDaysByUnmemoizedRecursion (baseline, BCL-only recursion, promoted from the benchmark's private MinDays helper - it was never asserted before), MinDaysByMemoizedRecurrence (Algorithms.DynamicProgramming.Memoizer, the arm the test's private helper used)"
     },
     {
       "id": 1557,
@@ -9157,8 +9172,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumNumberOfVerticesToReachAllNodes/MinimumNumberOfVerticesToReachAllNodesTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfVerticesToReachAllNodesBenchmarks.cs",
       "primitivesUsed": "DataStructures.Set<int> (HashMap-backed) to mark nodes with an incoming edge in one pass; answer is the nodes never marked (in-degree 0). Benchmark: O(V*E) nested scan vs O(V+E) Set-based pass.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Signature drift reconciled onto LeetCode's real answer shape: the test's helper took (int n, int[][] edges) and returned List<int> while both benchmark arms took a hoisted (int From, int To)[] and returned int[]. Both strategies now take LeetCode's own (int n, int[][] edges) and return List<int>. No second hoisted overload was needed because the prepared input IS the LeetCode shape - [GlobalSetup] now materializes int[][] instead of a tuple array (same RandomSeed 1557, same EdgeCountUpperBoundExclusive, same lower-to-higher DAG generation, same Params 200/5_000), so edge construction is still charged to setup, not to the measured method. Two measurement deltas, both symmetric across arms and deliberate: edges are walked as int[] pairs rather than tuples, and the final [.. result] copy to int[] is gone. Test kept both original cases (n=6 classic, n=3 edgeless) and added LeetCode's published example 2 (n=5 -> [0,2,3]) and n=1. No fixtures existed; no new DataStructures/ or Algorithms/ types, so §18 owes nothing.",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumNumberOfVerticesToReachAllNodes/MinimumNumberOfVerticesToReachAllNodesSolution.cs",
+      "strategies": "FindSmallestSetOfVerticesByNestedScan (baseline, O(V*E) rescan, BCL-only - promoted from the benchmark's unasserted NestedScanForZeroInDegree arm), FindSmallestSetOfVerticesByInDegreeSet (one O(V+E) pass into DataStructures.Set.Set<int>, the arm the test's private helper used)"
     },
     {
       "id": 1559,
@@ -9170,8 +9187,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/DetectCyclesIn2DGrid/DetectCyclesIn2DGridTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/DetectCyclesIn2DGridBenchmarks.cs",
       "primitivesUsed": "DataStructures.DisjointSet (Union-Find): union each cell with its same-character right/down neighbor; already-connected-before-union signals a cycle, the same idiom RedundantConnectionTests/RegionsCutBySlashesTests already establish. Benchmark: parent-tracked iterative DFS baseline vs DisjointSet.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Input shape reconciled onto LeetCode's real signature char[][]: the old test solved over string[] while the benchmark's GlobalSetup already built char[][]; the solution takes char[][] and the test harness spells its examples as strings via a private Grid(params string[]) converter. The benchmark's two private helper families (HasCycleFrom/HasCycleAtNeighbor, HasCycleThroughNeighbor) moved into the solution class; the DFS helper's (row,col,parentRow,parentCol) tuple became a private Step record struct and the walk state a private CycleWalk record struct (the DisjointSet arm keeps the test's GridContext idea as GridComponents) so no helper exceeds four parameters once the grid is a parameter instead of a field. Baseline behaviour unchanged. Test kept all three original examples and added three minimal ones (2x2 all-'a' cycle -> true, checkerboard \"ab\"/\"ba\" -> false, 1x1 -> false); benchmark kept [Params(30,150)], seed 1559 and the 3-letter random grid workload. No fixtures existed, so nothing relocated and no section-18 work owed. 12 assertions now cover the pair (was 3, none of them touching the baseline).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/DetectCyclesIn2DGrid/DetectCyclesIn2DGridSolution.cs",
+      "strategies": "ContainsCycleByParentTrackedDepthFirstSearch (baseline, BCL Stack + bool[,] visited/parent bookkeeping, promoted out of the benchmark and now asserted), ContainsCycleByDisjointSetEdgeUnion (repo DisjointSet, right/down edge unions)"
     },
     {
       "id": 1561,
@@ -9183,8 +9202,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaximumNumberOfCoinsYouCanGet/MaximumNumberOfCoinsYouCanGetTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumNumberOfCoinsYouCanGetBenchmarks.cs",
       "primitivesUsed": "Algorithms.Sorting.MergeSort over DataStructures.Sequence.ArrayIndexedSequence<int>; sort ascending then sum indices n, n+2, ..., 3n-2 (provably optimal pick order). Benchmark: O(n^2) round-simulation baseline (linear max/min scans) vs O(n log n) MergeSort-then-sum.",
-      "notes": null,
-      "architectureTier": "pre-section-17"
+      "notes": "Both arms answered the same question already, so no signature conflict; the only behavioural difference is that MaxCoinsByMergeSort sorts a defensive copy instead of sorting the caller's array in place the way the old test helper did (the benchmark arm already copied with .ToArray(), and SortAnArraySolution sets the same precedent). Return values are unchanged on every original input. GroupSize/PickStride constants moved from the benchmark into the solution; the benchmark keeps only seeding and sizing ([Params(300, 3_000)], seed 1561, MaxPileValueExclusive). Test kept both original examples and added LeetCode's third published example [9,8,7,6,5,1,2,3,4] -> 18 and a minimal [1,2,3] -> 2. No fixtures existed, so nothing relocated and no section-18 work owed. 8 assertions now cover the pair (was 2, neither touching the baseline).",
+      "architectureTier": "section-17",
+      "solutionPath": "DSAExperimentation.LeetCode/MaximumNumberOfCoinsYouCanGet/MaximumNumberOfCoinsYouCanGetSolution.cs",
+      "strategies": "MaxCoinsByRoundSimulation (baseline, BCL List with a linear max/min scan per pick, promoted out of the benchmark and now asserted), MaxCoinsByMergeSort (repo MergeSort over ArrayIndexedSequence<int>, then sum of indices n, n+2, ..., 3n-2)"
     },
     {
       "id": 1563,

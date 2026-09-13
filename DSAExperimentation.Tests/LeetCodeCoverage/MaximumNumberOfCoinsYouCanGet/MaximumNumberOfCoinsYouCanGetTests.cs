@@ -1,44 +1,30 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MaximumNumberOfCoinsYouCanGet;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfCoinsYouCanGet;
 
-// LeetCode 1561. Maximum Number of Coins You Can Get: sort ascending, then the
-// provably optimal picking order (Alice always takes the current max, you take the
-// next-highest, Bob absorbs a low pile so it can never reach you) leaves you exactly
-// indices n, n+2, ..., 3n-2 of the sorted array. Purely this repo's own
-// Sorting.MergeSort over an ArrayIndexedSequence<int> - the same "problem *is*
-// MergeSort plus arithmetic" shape SortAnArrayTests already proves - with a
-// summation over the selected indices added on top.
-public sealed partial class MaximumNumberOfCoinsYouCanGetTests
+// Harness only. Both strategies live in MaximumNumberOfCoinsYouCanGetSolution;
+// this file pins them to LeetCode's published examples, which is also what finally
+// gets the round-simulating baseline - previously benchmark-only - under
+// assertion, so the index pattern the sorted arm relies on is checked against an
+// arm that actually plays the game.
+public sealed class MaximumNumberOfCoinsYouCanGetTests
 {
-    [Fact]
-    public void MaxCoins_ClassicSixPileExample_ReturnsNine()
-    {
-        int[] piles = [2, 4, 1, 2, 7, 8];
-
-        Assert.Equal(9, MaxCoins(piles));
-    }
-
-    [Fact]
-    public void MaxCoins_ThreePiles_ReturnsTheSecondLargest()
-    {
-        int[] piles = [2, 4, 5];
-
-        Assert.Equal(4, MaxCoins(piles));
-    }
-
-    private static int MaxCoins(int[] piles)
-    {
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(piles));
-
-        var n = piles.Length / 3;
-        var total = 0;
-        for (var i = 0; i < n; i++)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            total += piles[n + (2 * i)];
-        }
+            { [2, 4, 1, 2, 7, 8], 9 },
+            { [2, 4, 5], 4 },
+            { [9, 8, 7, 6, 5, 1, 2, 3, 4], 18 },
+            { [1, 2, 3], 2 },
+        };
 
-        return total;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxCoinsByRoundSimulation_LeetCodeExamples_ReturnsYourTotal(int[] piles, int expected) =>
+        Assert.Equal(expected, MaximumNumberOfCoinsYouCanGetSolution.MaxCoinsByRoundSimulation(piles));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxCoinsByMergeSort_LeetCodeExamples_ReturnsYourTotal(int[] piles, int expected) =>
+        Assert.Equal(expected, MaximumNumberOfCoinsYouCanGetSolution.MaxCoinsByMergeSort(piles));
 }

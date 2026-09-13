@@ -1,16 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.StoneGameIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Stone Game IV (LC 1510): plain un-memoized minimax recursion over the
-// remaining stone count - exponential, since the same remaining count recurs
-// through many different perfect-square-removal sequences reaching it - vs.
-// this repo's own Memoizer<TState,TResult> caching that count, the identical
-// shape DivisorGameBenchmarks/StoneGameIIIBenchmarks already use. StoneCount
-// is kept modest for the same reason those benchmarks document: the
-// un-memoized baseline's blowup is real (branching factor sqrt(StoneCount),
-// wider than DivisorGame's or StoneGameIII's own branching).
+// Harness only: both arms are StoneGameIVSolution's, the same methods StoneGameIVTests
+// proves correct. Plain un-memoized minimax recursion over the remaining stone count -
+// exponential, since the same remaining count recurs through many different perfect-
+// square-removal sequences reaching it - vs. the identical recurrence over this repo's
+// own Memoizer caching that count, the shape DivisorGameBenchmarks and
+// StoneGameIIIBenchmarks already use. StoneCount is kept modest for the same reason
+// those benchmarks document: the un-memoized baseline's blowup is real (branching
+// factor sqrt(StoneCount), wider than DivisorGame's or StoneGameIII's own branching).
 [MemoryDiagnoser]
 public class StoneGameIVBenchmarks
 {
@@ -18,33 +18,8 @@ public class StoneGameIVBenchmarks
     public int StoneCount;
 
     [Benchmark(Baseline = true)]
-    public bool UnmemoizedRecursion() => AliceWins(StoneCount);
-
-    private static bool AliceWins(int remaining)
-    {
-        for (var square = 1; square * square <= remaining; square++)
-        {
-            if (!AliceWins(remaining - square * square))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool UnmemoizedRecursion() => StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(StoneCount);
 
     [Benchmark]
-    public bool MemoizedRecursion()
-        => Memoizer.Memoize<int, bool>(StoneCount, (current, aliceWins) =>
-        {
-            for (var square = 1; square * square <= current; square++)
-            {
-                if (!aliceWins(current - square * square))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        });
+    public bool MemoizedRecursion() => StoneGameIVSolution.AliceWinsByMemoizedRecursion(StoneCount);
 }

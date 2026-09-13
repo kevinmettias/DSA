@@ -1,88 +1,40 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.DetectCyclesIn2DGrid;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DetectCyclesIn2DGrid;
 
-// LeetCode 1559. Detect Cycles in 2D Grid: union each cell with its same-character
-// right/down neighbor exactly once per edge - the same "already connected before
-// union means a cycle" shape RedundantConnectionTests/RegionsCutBySlashesTests
-// already prove over this repo's own DisjointSet, gated here on same-character
-// adjacency. Visiting only right/down per cell (never left/up) means every union
-// crosses a genuinely new edge, so IsConnected can only already be true when a path
-// of length >= 3 closes back into the same component - a cycle of length >= 4,
-// exactly this problem's own minimum, satisfied for free rather than checked
-// separately.
-public sealed partial class DetectCyclesIn2DGridTests
+// Harness only. Both strategies live in DetectCyclesIn2DGridSolution; this file
+// pins them to LeetCode's published examples plus the smallest grids that can and
+// cannot close a cycle, which is also what finally gets the parent-tracked DFS
+// baseline - previously benchmark-only - under assertion.
+public sealed class DetectCyclesIn2DGridTests
 {
-    [Fact]
-    public void ContainsCycle_RingOfAsAroundRingOfBs_ReturnsTrue()
-    {
-        string[] grid = ["aaaa", "abba", "abba", "aaaa"];
-
-        Assert.True(ContainsCycle(grid));
-    }
-
-    [Fact]
-    public void ContainsCycle_CRingAroundIsolatedCharacters_ReturnsTrue()
-    {
-        string[] grid = ["ccca", "cdcc", "ccec", "fccc"];
-
-        Assert.True(ContainsCycle(grid));
-    }
-
-    [Fact]
-    public void ContainsCycle_NoRepeatedComponentEdge_ReturnsFalse()
-    {
-        string[] grid = ["abb", "bzb", "bbb"];
-
-        Assert.False(ContainsCycle(grid));
-    }
-
-    private readonly record struct GridContext(string[] Grid, DisjointSet Components, int Cols);
-
-    private static bool ContainsCycle(string[] grid)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-        var components = new DisjointSet(rows * cols);
-        var context = new GridContext(grid, components, cols);
-
-        for (var row = 0; row < rows; row++)
+    public static TheoryData<char[][], bool> Examples =>
+        new()
         {
-            for (var col = 0; col < cols; col++)
-            {
-                if (HasCycleThroughNeighbor(context, (row, col), (row, col + 1)))
-                {
-                    return true;
-                }
+            { Grid("aaaa", "abba", "abba", "aaaa"), true },
+            { Grid("ccca", "cdcc", "ccec", "fccc"), true },
+            { Grid("abb", "bzb", "bbb"), false },
+            { Grid("aa", "aa"), true },
+            { Grid("ab", "ba"), false },
+            { Grid("a"), false },
+        };
 
-                if (HasCycleThroughNeighbor(context, (row, col), (row + 1, col)))
-                {
-                    return true;
-                }
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ContainsCycleByParentTrackedDepthFirstSearch_LeetCodeExamples_ReportsWhetherACycleExists(
+        char[][] grid, bool expected) =>
+        Assert.Equal(
+            expected,
+            DetectCyclesIn2DGridSolution.ContainsCycleByParentTrackedDepthFirstSearch(grid));
 
-        return false;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ContainsCycleByDisjointSetEdgeUnion_LeetCodeExamples_ReportsWhetherACycleExists(
+        char[][] grid, bool expected) =>
+        Assert.Equal(
+            expected,
+            DetectCyclesIn2DGridSolution.ContainsCycleByDisjointSetEdgeUnion(grid));
 
-    private static bool HasCycleThroughNeighbor(
-        GridContext context, (int Row, int Col) cell, (int Row, int Col) neighbor)
-    {
-        if (neighbor.Row >= context.Grid.Length || neighbor.Col >= context.Cols
-            || context.Grid[neighbor.Row][neighbor.Col] != context.Grid[cell.Row][cell.Col])
-        {
-            return false;
-        }
-
-        var id = (cell.Row * context.Cols) + cell.Col;
-        var neighborId = (neighbor.Row * context.Cols) + neighbor.Col;
-
-        if (context.Components.IsConnected(id, neighborId))
-        {
-            return true;
-        }
-
-        context.Components.Union(id, neighborId);
-        return false;
-    }
+    private static char[][] Grid(params string[] rows) =>
+        rows.Select(row => row.ToCharArray()).ToArray();
 }
