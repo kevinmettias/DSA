@@ -36,12 +36,12 @@ public sealed class LayeringTests
     [MemberData(nameof(SourceRoots))]
     public void EveryFile_ReferencesItsOwnTierOrALowerOne(string projectDirectory, string fixedTier)
     {
-        var root = RepositoryRoot();
+        var root = RepositoryFiles.Root();
         var offences = new List<string>();
 
-        foreach (var file in SourceFilesIn(Path.Combine(root, projectDirectory)))
+        foreach (var file in RepositoryFiles.SourceFilesIn(Path.Combine(root, projectDirectory)))
         {
-            var relative = Path.GetRelativePath(root, file).Replace(Path.DirectorySeparatorChar, '/');
+            var relative = RepositoryFiles.PathFromRoot(root, file);
             var tier = fixedTier.Length > 0 ? fixedTier : TierOf(relative, projectDirectory);
 
             if (tier is not null)
@@ -57,7 +57,7 @@ public sealed class LayeringTests
     public void AllowedInversions_AreAllStillPresent()
     {
         // A stale entry would silently widen the rule; delete it once the edge is gone.
-        var root = RepositoryRoot();
+        var root = RepositoryFiles.Root();
 
         foreach (var path in AllowedInversions.Keys)
         {
@@ -72,20 +72,11 @@ public sealed class LayeringTests
     {
         // The one boundary that IS compiler-enforced: nothing in the framework
         // project may depend on a LeetCode solution, because it cannot see one.
-        var root = RepositoryRoot();
+        var root = RepositoryFiles.Root();
 
         Assert.False(
             Directory.Exists(Path.Combine(root, "DSAExperimentation", "LeetCode")),
             "LeetCode solutions belong in DSAExperimentation.LeetCode, not the framework project.");
-    }
-
-    private static IEnumerable<string> SourceFilesIn(string project)
-    {
-        var obj = Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar;
-        var bin = Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar;
-
-        return Directory.EnumerateFiles(project, "*.cs", SearchOption.AllDirectories)
-            .Where(file => !file.Contains(obj) && !file.Contains(bin));
     }
 
     private static IEnumerable<string> InversionsIn(string file, string relative, string tier)
@@ -120,19 +111,5 @@ public sealed class LayeringTests
         var segments = relative[(projectDirectory.Length + 1)..].Split('/');
 
         return segments.Length > 1 && Tiers.Contains(segments[0]) ? segments[0] : null;
-    }
-
-    private static string RepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-
-        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "ARCHITECTURE.md")))
-        {
-            directory = directory.Parent;
-        }
-
-        Assert.NotNull(directory);
-
-        return directory!.FullName;
     }
 }
