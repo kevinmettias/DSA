@@ -1,0 +1,44 @@
+{
+  "QuestionId": 1286,
+  "FrontendId": 1425,
+  "Title": "Constrained Subsequence Sum",
+  "TitleSlug": "constrained-subsequence-sum",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Queue",
+    "Sliding Window",
+    "Heap (Priority Queue)",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 56.4,
+  "TotalAccepted": 96565,
+  "TotalSubmissions": 171100,
+  "Likes": 2285,
+  "Dislikes": 109,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, return the maximum sum of a \u003Cstrong\u003Enon-empty\u003C/strong\u003E subsequence of that array such that for every two \u003Cstrong\u003Econsecutive\u003C/strong\u003E integers in the subsequence, \u003Ccode\u003Enums[i]\u003C/code\u003E and \u003Ccode\u003Enums[j]\u003C/code\u003E, where \u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E, the condition \u003Ccode\u003Ej - i \u0026lt;= k\u003C/code\u003E is satisfied.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cem\u003Esubsequence\u003C/em\u003E of an array is obtained by deleting some number of elements (can be zero) from the array, leaving the remaining elements in their original order.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [10,2,-10,5,20], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 37\n\u003Cb\u003EExplanation:\u003C/b\u003E The subsequence is [10, 2, 5, 20].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,-2,-3], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cb\u003EExplanation:\u003C/b\u003E The subsequence must be non-empty, so we choose the largest number.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [10,-2,-10,-5,20], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 23\n\u003Cb\u003EExplanation:\u003C/b\u003E The subsequence is [10, -2, -5, 20].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming.",
+    "Let dp[i] be the solution for the prefix of the array that ends at index i, if the element at index i is in the subsequence.",
+    "dp[i] = nums[i] \u002B max(0, dp[i-k], dp[i-k\u002B1], ..., dp[i-1])",
+    "Use a heap with the sliding window technique to optimize the dp."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,2,-10,5,20]\n2",
+      "RawExpectedOutput": "37\n\u003Cb\u003EExplanation:\u003C/b\u003E The subsequence is [10, 2, 5, 20]."
+    },
+    {
+      "RawInput": "[-1,-2,-3]\n1",
+      "RawExpectedOutput": "-1\n\u003Cb\u003EExplanation:\u003C/b\u003E The subsequence must be non-empty, so we choose the largest number."
+    },
+    {
+      "RawInput": "[10,-2,-10,-5,20]\n2",
+      "RawExpectedOutput": "23\n\u003Cb\u003EExplanation:\u003C/b\u003E The subsequence is [10, -2, -5, 20]."
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8483704+00:00",
+  "Url": "https://leetcode.com/problems/constrained-subsequence-sum/"
+}

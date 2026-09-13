@@ -1,0 +1,36 @@
+{
+  "QuestionId": 2001,
+  "FrontendId": 1871,
+  "Title": "Jump Game VII",
+  "TitleSlug": "jump-game-vii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Sliding Window",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 35.7,
+  "TotalAccepted": 151518,
+  "TotalSubmissions": 424811,
+  "Likes": 2102,
+  "Dislikes": 131,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E binary string \u003Ccode\u003Es\u003C/code\u003E and two integers \u003Ccode\u003EminJump\u003C/code\u003E and \u003Ccode\u003EmaxJump\u003C/code\u003E. In the beginning, you are standing at index \u003Ccode\u003E0\u003C/code\u003E, which is equal to \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E. You can move from index \u003Ccode\u003Ei\u003C/code\u003E to index \u003Ccode\u003Ej\u003C/code\u003E if the following conditions are fulfilled:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei \u002B minJump \u0026lt;= j \u0026lt;= min(i \u002B maxJump, s.length - 1)\u003C/code\u003E, and\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[j] == \u0026#39;0\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Ci\u003E if you can reach index \u003C/i\u003E\u003Ccode\u003Es.length - 1\u003C/code\u003E\u003Ci\u003E in \u003C/i\u003E\u003Ccode\u003Es\u003C/code\u003E\u003Cem\u003E, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;\u003Cu\u003E0\u003C/u\u003E11\u003Cu\u003E0\u003C/u\u003E1\u003Cu\u003E0\u003C/u\u003E\u0026quot;, minJump = 2, maxJump = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nIn the first step, move from index 0 to index 3. \nIn the second step, move from index 3 to index 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;01101110\u0026quot;, minJump = 2, maxJump = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[0] == \u0026#39;0\u0026#39;\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= minJump \u0026lt;= maxJump \u0026lt; s.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider for each reachable index i the interval [i \u002B a, i \u002B b].",
+    "Use partial sums to mark the intervals as reachable."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022011010\u0022\n2\n3",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u002201101110\u0022\n2\n3",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.571057+00:00",
+  "Url": "https://leetcode.com/problems/jump-game-vii/"
+}

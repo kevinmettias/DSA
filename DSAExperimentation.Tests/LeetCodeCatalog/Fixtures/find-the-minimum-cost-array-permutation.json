@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3431,
+  "FrontendId": 3149,
+  "Title": "Find the Minimum Cost Array Permutation",
+  "TitleSlug": "find-the-minimum-cost-array-permutation",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 25.8,
+  "TotalAccepted": 7828,
+  "TotalSubmissions": 30344,
+  "Likes": 159,
+  "Dislikes": 8,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E which is a \u003Cspan data-keyword=\u0022permutation\u0022\u003Epermutation\u003C/span\u003E of \u003Ccode\u003E[0, 1, 2, ..., n - 1]\u003C/code\u003E. The \u003Cstrong\u003Escore\u003C/strong\u003E of any permutation of \u003Ccode\u003E[0, 1, 2, ..., n - 1]\u003C/code\u003E named \u003Ccode\u003Eperm\u003C/code\u003E is defined as:\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003Escore(perm) = |perm[0] - nums[perm[1]]| \u002B |perm[1] - nums[perm[2]]| \u002B ... \u002B |perm[n - 1] - nums[perm[0]]|\u003C/code\u003E\u003C/p\u003E\n\n\u003Cp\u003EReturn the permutation \u003Ccode\u003Eperm\u003C/code\u003E which has the \u003Cstrong\u003Eminimum\u003C/strong\u003E possible score. If \u003Cem\u003Emultiple\u003C/em\u003E permutations exist with this score, return the one that is \u003Cspan data-keyword=\u0022lexicographically-smaller-array\u0022\u003Elexicographically smallest\u003C/span\u003E among them.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,0,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[0,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/04/04/example0gif.gif\u0022 style=\u0022width: 235px; height: 235px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe lexicographically smallest permutation with minimum cost is \u003Ccode\u003E[0,1,2]\u003C/code\u003E. The cost of this permutation is \u003Ccode\u003E|0 - 0| \u002B |1 - 2| \u002B |2 - 1| = 2\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [0,2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[0,2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/04/04/example1gif.gif\u0022 style=\u0022width: 235px; height: 235px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe lexicographically smallest permutation with minimum cost is \u003Ccode\u003E[0,2,1]\u003C/code\u003E. The cost of this permutation is \u003Ccode\u003E|0 - 1| \u002B |2 - 2| \u002B |1 - 0| = 2\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n == nums.length \u0026lt;= 14\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is a permutation of \u003Ccode\u003E[0, 1, 2, ..., n - 1]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The score function is cyclic, so we can always set \u003Ccode\u003Eperm[0] = 0\u003C/code\u003E for the smallest lexical order.",
+    "It\u2019s similar to the Traveling Salesman Problem. Use Dynamic Programming.",
+    "Use a bitmask to track which elements have been assigned to \u003Ccode\u003Eperm\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,0,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[0,2,1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.299182+00:00",
+  "Url": "https://leetcode.com/problems/find-the-minimum-cost-array-permutation/"
+}

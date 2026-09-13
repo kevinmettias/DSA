@@ -1,0 +1,31 @@
+{
+  "QuestionId": 223,
+  "FrontendId": 223,
+  "Title": "Rectangle Area",
+  "TitleSlug": "rectangle-area",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 50.3,
+  "TotalAccepted": 303070,
+  "TotalSubmissions": 603084,
+  "Likes": 2176,
+  "Dislikes": 1669,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the coordinates of two \u003Cstrong\u003Erectilinear\u003C/strong\u003E rectangles in a 2D plane, return \u003Cem\u003Ethe total area covered by the two rectangles\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe first rectangle is defined by its \u003Cstrong\u003Ebottom-left\u003C/strong\u003E corner \u003Ccode\u003E(ax1, ay1)\u003C/code\u003E and its \u003Cstrong\u003Etop-right\u003C/strong\u003E corner \u003Ccode\u003E(ax2, ay2)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe second rectangle is defined by its \u003Cstrong\u003Ebottom-left\u003C/strong\u003E corner \u003Ccode\u003E(bx1, by1)\u003C/code\u003E and its \u003Cstrong\u003Etop-right\u003C/strong\u003E corner \u003Ccode\u003E(bx2, by2)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022Rectangle Area\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/05/08/rectangle-plane.png\u0022 style=\u0022width: 700px; height: 365px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E ax1 = -3, ay1 = 0, ax2 = 3, ay2 = 4, bx1 = 0, by1 = -1, bx2 = 9, by2 = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 45\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E ax1 = -2, ay1 = -2, ax2 = 2, ay2 = 2, bx1 = -2, by1 = -2, bx2 = 2, by2 = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 16\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= ax1 \u0026lt;= ax2 \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= ay1 \u0026lt;= ay2 \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= bx1 \u0026lt;= bx2 \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= by1 \u0026lt;= by2 \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "-3\n0\n3\n4\n0\n-1\n9\n2",
+      "RawExpectedOutput": "45"
+    },
+    {
+      "RawInput": "-2\n-2\n2\n2\n-2\n-2\n2\n2",
+      "RawExpectedOutput": "16"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6983087+00:00",
+  "Url": "https://leetcode.com/problems/rectangle-area/"
+}

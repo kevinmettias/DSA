@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1629,
+  "FrontendId": 1505,
+  "Title": "Minimum Possible Integer After at Most K Adjacent Swaps On Digits",
+  "TitleSlug": "minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Greedy",
+    "Binary Indexed Tree",
+    "Segment Tree"
+  ],
+  "AcceptanceRatePercent": 41.9,
+  "TotalAccepted": 13553,
+  "TotalSubmissions": 32318,
+  "Likes": 507,
+  "Dislikes": 28,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Enum\u003C/code\u003E representing \u003Cstrong\u003Ethe digits\u003C/strong\u003E of a very large integer and an integer \u003Ccode\u003Ek\u003C/code\u003E. You are allowed to swap any two adjacent digits of the integer \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum integer you can obtain also as a string\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/06/17/q4_1.jpg\u0022 style=\u0022width: 500px; height: 40px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = \u0026quot;4321\u0026quot;, k = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;1342\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The steps to obtain the minimum integer from 4321 with 4 adjacent swaps are shown.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = \u0026quot;100\u0026quot;, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;010\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It\u0026#39;s ok for the output to have leading zeros, but the input is guaranteed not to have any leading zeros.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = \u0026quot;36789\u0026quot;, k = 1000\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;36789\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can keep the number without any swaps.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= num.length \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enum\u003C/code\u003E consists of only \u003Cstrong\u003Edigits\u003C/strong\u003E and does not contain \u003Cstrong\u003Eleading zeros\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We want to make the smaller digits the most significant digits in the number.",
+    "For each index i, check the smallest digit in a window of size k and append it to the answer. Update the indices of all digits in this range accordingly."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u00224321\u0022\n4",
+      "RawExpectedOutput": "\u00221342\u0022"
+    },
+    {
+      "RawInput": "\u0022100\u0022\n1",
+      "RawExpectedOutput": "\u0022010\u0022"
+    },
+    {
+      "RawInput": "\u002236789\u0022\n1000",
+      "RawExpectedOutput": "\u002236789\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0849901+00:00",
+  "Url": "https://leetcode.com/problems/minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits/"
+}

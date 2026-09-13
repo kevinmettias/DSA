@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2307,
+  "FrontendId": 2197,
+  "Title": "Replace Non-Coprime Numbers in Array",
+  "TitleSlug": "replace-non-coprime-numbers-in-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Stack",
+    "Number Theory",
+    "Least Common Multiple",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 57.7,
+  "TotalAccepted": 116443,
+  "TotalSubmissions": 201964,
+  "Likes": 849,
+  "Dislikes": 33,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of integers \u003Ccode\u003Enums\u003C/code\u003E. Perform the following steps:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EFind \u003Cstrong\u003Eany\u003C/strong\u003E two \u003Cstrong\u003Eadjacent\u003C/strong\u003E numbers in \u003Ccode\u003Enums\u003C/code\u003E that are \u003Cstrong\u003Enon-coprime\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf no such numbers are found, \u003Cstrong\u003Estop\u003C/strong\u003E the process.\u003C/li\u003E\n\t\u003Cli\u003EOtherwise, delete the two numbers and \u003Cstrong\u003Ereplace\u003C/strong\u003E them with their \u003Cstrong\u003ELCM (Least Common Multiple)\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ERepeat\u003C/strong\u003E this process as long as you keep finding two adjacent non-coprime numbers.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Efinal\u003C/strong\u003E modified array.\u003C/em\u003E It can be shown that replacing adjacent non-coprime numbers in \u003Cstrong\u003Eany\u003C/strong\u003E arbitrary order will lead to the same result.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases are generated such that the values in the final array are \u003Cstrong\u003Eless than or equal\u003C/strong\u003E to \u003Ccode\u003E10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo values \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E are \u003Cstrong\u003Enon-coprime\u003C/strong\u003E if \u003Ccode\u003EGCD(x, y) \u0026gt; 1\u003C/code\u003E where \u003Ccode\u003EGCD(x, y)\u003C/code\u003E is the \u003Cstrong\u003EGreatest Common Divisor\u003C/strong\u003E of \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [6,4,3,2,7,6,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [12,7,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \n- (6, 4) are non-coprime with LCM(6, 4) = 12. Now, nums = [\u003Cstrong\u003E\u003Cu\u003E12\u003C/u\u003E\u003C/strong\u003E,3,2,7,6,2].\n- (12, 3) are non-coprime with LCM(12, 3) = 12. Now, nums = [\u003Cstrong\u003E\u003Cu\u003E12\u003C/u\u003E\u003C/strong\u003E,2,7,6,2].\n- (12, 2) are non-coprime with LCM(12, 2) = 12. Now, nums = [\u003Cstrong\u003E\u003Cu\u003E12\u003C/u\u003E\u003C/strong\u003E,7,6,2].\n- (6, 2) are non-coprime with LCM(6, 2) = 6. Now, nums = [12,7,\u003Cu\u003E\u003Cstrong\u003E6\u003C/strong\u003E\u003C/u\u003E].\nThere are no more adjacent non-coprime numbers in nums.\nThus, the final modified array is [12,7,6].\nNote that there are other ways to obtain the same resultant array.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,2,1,1,3,3,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,1,1,3]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \n- (3, 3) are non-coprime with LCM(3, 3) = 3. Now, nums = [2,2,1,1,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E,3].\n- (3, 3) are non-coprime with LCM(3, 3) = 3. Now, nums = [2,2,1,1,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E].\n- (2, 2) are non-coprime with LCM(2, 2) = 2. Now, nums = [\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E,1,1,3].\nThere are no more adjacent non-coprime numbers in nums.\nThus, the final modified array is [2,1,1,3].\nNote that there are other ways to obtain the same resultant array.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe test cases are generated such that the values in the final array are \u003Cstrong\u003Eless than or equal\u003C/strong\u003E to \u003Ccode\u003E10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Notice that the order of merging two numbers into their LCM does not matter so we can greedily merge elements to its left if possible.",
+    "If a new value is formed, we should recursively check if it can be merged with the value to its left.",
+    "To simulate the merge efficiently, we can maintain a stack that stores processed elements. When we iterate through the array, we only compare with the top of the stack (which is the value to its left)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,4,3,2,7,6,2]",
+      "RawExpectedOutput": "[12,7,6]"
+    },
+    {
+      "RawInput": "[2,2,1,1,3,3,3]",
+      "RawExpectedOutput": "[2,1,1,3]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8082943+00:00",
+  "Url": "https://leetcode.com/problems/replace-non-coprime-numbers-in-array/"
+}

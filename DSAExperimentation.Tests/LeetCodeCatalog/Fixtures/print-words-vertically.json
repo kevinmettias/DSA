@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1449,
+  "FrontendId": 1324,
+  "Title": "Print Words Vertically",
+  "TitleSlug": "print-words-vertically",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 68.1,
+  "TotalAccepted": 54671,
+  "TotalSubmissions": 80313,
+  "Likes": 831,
+  "Dislikes": 121,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E.\u0026nbsp;Return\u0026nbsp;all the words vertically in the same order in which they appear in \u003Ccode\u003Es\u003C/code\u003E.\u003Cbr /\u003E\r\nWords are returned as a list of strings, complete with\u0026nbsp;spaces when is necessary. (Trailing spaces are not allowed).\u003Cbr /\u003E\r\nEach word would be put on only one column and that in one column there will be only one word.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;HOW ARE YOU\u0026quot;\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;HAY\u0026quot;,\u0026quot;ORO\u0026quot;,\u0026quot;WEU\u0026quot;]\r\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EEach word is printed vertically. \r\n \u0026quot;HAY\u0026quot;\r\n\u0026nbsp;\u0026quot;ORO\u0026quot;\r\n\u0026nbsp;\u0026quot;WEU\u0026quot;\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;TO BE OR NOT TO BE\u0026quot;\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;TBONTB\u0026quot;,\u0026quot;OEROOE\u0026quot;,\u0026quot;   T\u0026quot;]\r\n\u003Cstrong\u003EExplanation: \u003C/strong\u003ETrailing spaces is not allowed. \r\n\u0026quot;TBONTB\u0026quot;\r\n\u0026quot;OEROOE\u0026quot;\r\n\u0026quot;   T\u0026quot;\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;CONTEST IS COMING\u0026quot;\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;CIC\u0026quot;,\u0026quot;OSO\u0026quot;,\u0026quot;N M\u0026quot;,\u0026quot;T I\u0026quot;,\u0026quot;E N\u0026quot;,\u0026quot;S G\u0026quot;,\u0026quot;T\u0026quot;]\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E\u0026nbsp;contains only upper case English letters.\u003C/li\u003E\r\n\t\u003Cli\u003EIt\u0026#39;s guaranteed that there is only one\u0026nbsp;space between 2 words.\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "Use the maximum length of words to determine the length of the returned answer. However, don\u0027t forget to remove trailing spaces."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022HOW ARE YOU\u0022",
+      "RawExpectedOutput": "[\u0022HAY\u0022,\u0022ORO\u0022,\u0022WEU\u0022]"
+    },
+    {
+      "RawInput": "\u0022TO BE OR NOT TO BE\u0022",
+      "RawExpectedOutput": "[\u0022TBONTB\u0022,\u0022OEROOE\u0022,\u0022   T\u0022]"
+    },
+    {
+      "RawInput": "\u0022CONTEST IS COMING\u0022",
+      "RawExpectedOutput": "[\u0022CIC\u0022,\u0022OSO\u0022,\u0022N M\u0022,\u0022T I\u0022,\u0022E N\u0022,\u0022S G\u0022,\u0022T\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.586443+00:00",
+  "Url": "https://leetcode.com/problems/print-words-vertically/"
+}

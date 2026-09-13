@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1989,
+  "FrontendId": 1879,
+  "Title": "Minimum XOR Sum of Two Arrays",
+  "TitleSlug": "minimum-xor-sum-of-two-arrays",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Bitmask",
+    "Hungarian Algorithm",
+    "Bipartite Graph",
+    "Successive Shortest Path Algorithm"
+  ],
+  "AcceptanceRatePercent": 52.2,
+  "TotalAccepted": 22821,
+  "TotalSubmissions": 43731,
+  "Likes": 731,
+  "Dislikes": 13,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integer arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003EXOR sum\u003C/strong\u003E of the two integer arrays is \u003Ccode\u003E(nums1[0] XOR nums2[0]) \u002B (nums1[1] XOR nums2[1]) \u002B ... \u002B (nums1[n - 1] XOR nums2[n - 1])\u003C/code\u003E (\u003Cstrong\u003E0-indexed\u003C/strong\u003E).\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, the \u003Cstrong\u003EXOR sum\u003C/strong\u003E of \u003Ccode\u003E[1,2,3]\u003C/code\u003E and \u003Ccode\u003E[3,2,1]\u003C/code\u003E is equal to \u003Ccode\u003E(1 XOR 3) \u002B (2 XOR 2) \u002B (3 XOR 1) = 2 \u002B 0 \u002B 2 = 4\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ERearrange the elements of \u003Ccode\u003Enums2\u003C/code\u003E such that the resulting \u003Cstrong\u003EXOR sum\u003C/strong\u003E is \u003Cb\u003Eminimized\u003C/b\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003EXOR sum\u003C/strong\u003E after the rearrangement\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,2], nums2 = [2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cb\u003EExplanation:\u003C/b\u003E Rearrange \u003Ccode\u003Enums2\u003C/code\u003E so that it becomes \u003Ccode\u003E[3,2]\u003C/code\u003E.\nThe XOR sum is (1 XOR 3) \u002B (2 XOR 2) = 2 \u002B 0 = 2.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,0,3], nums2 = [5,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 8\n\u003Cb\u003EExplanation:\u003C/b\u003E Rearrange \u003Ccode\u003Enums2\u003C/code\u003E so that it becomes \u003Ccode\u003E[5,4,3]\u003C/code\u003E. \nThe XOR sum is (1 XOR 5) \u002B (0 XOR 4) \u002B (3 XOR 3) = 4 \u002B 4 \u002B 0 = 8.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums1.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 14\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums1[i], nums2[i] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Since n \u003C= 14, we can consider every subset of nums2.",
+    "We can represent every subset of nums2 using bitmasks."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2]\n[2,3]",
+      "RawExpectedOutput": "2\n\u003Cb\u003EExplanation:\u003C/b\u003E Rearrange \u003Ccode\u003Enums2\u003C/code\u003E so that it becomes \u003Ccode\u003E[3,2]\u003C/code\u003E.\nThe XOR sum is (1 XOR 3) \u002B (2 XOR 2) = 2 \u002B 0 = 2."
+    },
+    {
+      "RawInput": "[1,0,3]\n[5,3,4]",
+      "RawExpectedOutput": "8\n\u003Cb\u003EExplanation:\u003C/b\u003E Rearrange \u003Ccode\u003Enums2\u003C/code\u003E so that it becomes \u003Ccode\u003E[5,4,3]\u003C/code\u003E. \nThe XOR sum is (1 XOR 5) \u002B (0 XOR 4) \u002B (3 XOR 3) = 4 \u002B 4 \u002B 0 = 8."
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1196807+00:00",
+  "Url": "https://leetcode.com/problems/minimum-xor-sum-of-two-arrays/"
+}

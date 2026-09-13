@@ -1,0 +1,32 @@
+{
+  "QuestionId": 1211,
+  "FrontendId": 1286,
+  "Title": "Iterator for Combination",
+  "TitleSlug": "iterator-for-combination",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Backtracking",
+    "Design",
+    "Iterator"
+  ],
+  "AcceptanceRatePercent": 72.7,
+  "TotalAccepted": 84162,
+  "TotalSubmissions": 115691,
+  "Likes": 1397,
+  "Dislikes": 109,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign the \u003Ccode\u003ECombinationIterator\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ECombinationIterator(string characters, int combinationLength)\u003C/code\u003E Initializes the object with a string \u003Ccode\u003Echaracters\u003C/code\u003E of \u003Cstrong\u003Esorted distinct\u003C/strong\u003E lowercase English letters and a number \u003Ccode\u003EcombinationLength\u003C/code\u003E as arguments.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enext()\u003C/code\u003E Returns the next combination of length \u003Ccode\u003EcombinationLength\u003C/code\u003E in \u003Cstrong\u003Elexicographical order\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EhasNext()\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if and only if there exists a next combination.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;CombinationIterator\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;]\n[[\u0026quot;abc\u0026quot;, 2], [], [], [], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, \u0026quot;ab\u0026quot;, true, \u0026quot;ac\u0026quot;, true, \u0026quot;bc\u0026quot;, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nCombinationIterator itr = new CombinationIterator(\u0026quot;abc\u0026quot;, 2);\nitr.next();    // return \u0026quot;ab\u0026quot;\nitr.hasNext(); // return True\nitr.next();    // return \u0026quot;ac\u0026quot;\nitr.hasNext(); // return True\nitr.next();    // return \u0026quot;bc\u0026quot;\nitr.hasNext(); // return False\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= combinationLength \u0026lt;= characters.length \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the characters of \u003Ccode\u003Echaracters\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Enext\u003C/code\u003E and \u003Ccode\u003EhasNext\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that all calls of the function \u003Ccode\u003Enext\u003C/code\u003E are valid.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Generate all combinations as a preprocessing.",
+    "Use bit masking to generate all the combinations."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022CombinationIterator\u0022,\u0022next\u0022,\u0022hasNext\u0022,\u0022next\u0022,\u0022hasNext\u0022,\u0022next\u0022,\u0022hasNext\u0022]\n[[\u0022abc\u0022,2],[],[],[],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5599183+00:00",
+  "Url": "https://leetcode.com/problems/iterator-for-combination/"
+}

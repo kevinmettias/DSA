@@ -1,0 +1,30 @@
+{
+  "QuestionId": 2512,
+  "FrontendId": 2424,
+  "Title": "Longest Uploaded Prefix",
+  "TitleSlug": "longest-uploaded-prefix",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Binary Search",
+    "Union-Find",
+    "Design",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Heap (Priority Queue)",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 55.5,
+  "TotalAccepted": 30398,
+  "TotalSubmissions": 54736,
+  "Likes": 391,
+  "Dislikes": 33,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a stream of \u003Ccode\u003En\u003C/code\u003E videos, each represented by a \u003Cstrong\u003Edistinct\u003C/strong\u003E number from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E that you need to \u0026quot;upload\u0026quot; to a server. You need to implement a data structure that calculates the length of the \u003Cstrong\u003Elongest uploaded prefix\u003C/strong\u003E at various points in the upload process.\u003C/p\u003E\n\n\u003Cp\u003EWe consider \u003Ccode\u003Ei\u003C/code\u003E to be an uploaded prefix if all videos in the range \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003Ei\u003C/code\u003E (\u003Cstrong\u003Einclusive\u003C/strong\u003E) have been uploaded to the server. The longest uploaded prefix is the \u003Cstrong\u003Emaximum \u003C/strong\u003Evalue of \u003Ccode\u003Ei\u003C/code\u003E that satisfies this definition.\u003Cbr /\u003E\n\u003Cbr /\u003E\nImplement the \u003Ccode\u003ELUPrefix \u003C/code\u003Eclass:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ELUPrefix(int n)\u003C/code\u003E Initializes the object for a stream of \u003Ccode\u003En\u003C/code\u003E videos.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid upload(int video)\u003C/code\u003E Uploads \u003Ccode\u003Evideo\u003C/code\u003E to the server.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint longest()\u003C/code\u003E Returns the length of the \u003Cstrong\u003Elongest uploaded prefix\u003C/strong\u003E defined above.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;LUPrefix\u0026quot;, \u0026quot;upload\u0026quot;, \u0026quot;longest\u0026quot;, \u0026quot;upload\u0026quot;, \u0026quot;longest\u0026quot;, \u0026quot;upload\u0026quot;, \u0026quot;longest\u0026quot;]\n[[4], [3], [], [1], [], [2], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, 0, null, 1, null, 3]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nLUPrefix server = new LUPrefix(4);   // Initialize a stream of 4 videos.\nserver.upload(3);                    // Upload video 3.\nserver.longest();                    // Since video 1 has not been uploaded yet, there is no prefix.\n                                     // So, we return 0.\nserver.upload(1);                    // Upload video 1.\nserver.longest();                    // The prefix [1] is the longest uploaded prefix, so we return 1.\nserver.upload(2);                    // Upload video 2.\nserver.longest();                    // The prefix [1,2,3] is the longest uploaded prefix, so we return 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= video \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll values of \u003Ccode\u003Evideo\u003C/code\u003E are \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls \u003Cstrong\u003Ein total\u003C/strong\u003E will be made to \u003Ccode\u003Eupload\u003C/code\u003E and \u003Ccode\u003Elongest\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt least one call will be made to \u003Ccode\u003Elongest\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Maintain an array keeping track of whether video \u201Ci\u201D has been uploaded yet."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7661686+00:00",
+  "Url": "https://leetcode.com/problems/longest-uploaded-prefix/"
+}

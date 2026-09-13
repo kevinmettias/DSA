@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3435,
+  "FrontendId": 3161,
+  "Title": "Block Placement Queries",
+  "TitleSlug": "block-placement-queries",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 41.1,
+  "TotalAccepted": 68242,
+  "TotalSubmissions": 166179,
+  "Likes": 342,
+  "Dislikes": 51,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere exists an infinite number line, with its origin at 0 and extending towards the \u003Cstrong\u003Epositive\u003C/strong\u003E x-axis.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a 2D array \u003Ccode\u003Equeries\u003C/code\u003E, which contains two types of queries:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EFor a query of type 1, \u003Ccode\u003Equeries[i] = [1, x]\u003C/code\u003E. Build an obstacle at distance \u003Ccode\u003Ex\u003C/code\u003E from the origin. It is guaranteed that there is \u003Cstrong\u003Eno\u003C/strong\u003E obstacle at distance \u003Ccode\u003Ex\u003C/code\u003E when the query is asked.\u003C/li\u003E\n\t\u003Cli\u003EFor a query of type 2, \u003Ccode\u003Equeries[i] = [2, x, sz]\u003C/code\u003E. Check if it is possible to place a block of size \u003Ccode\u003Esz\u003C/code\u003E \u003Cem\u003Eanywhere\u003C/em\u003E in the range \u003Ccode\u003E[0, x]\u003C/code\u003E on the line, such that the block \u003Cstrong\u003Eentirely\u003C/strong\u003E lies in the range \u003Ccode\u003E[0, x]\u003C/code\u003E. A block \u003Cstrong\u003Ecannot \u003C/strong\u003Ebe placed if it intersects with any obstacle, but it may touch it. Note that you do\u003Cstrong\u003E not\u003C/strong\u003E actually place the block. Queries are separate.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReturn a boolean array \u003Ccode\u003Eresults\u003C/code\u003E, where \u003Ccode\u003Eresults[i]\u003C/code\u003E is \u003Ccode\u003Etrue\u003C/code\u003E if you can place the block specified in the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query of type 2, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Equeries = [[1,2],[2,3,3],[2,3,1],[2,2,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[false,true,true]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/04/22/example0block.png\u0022 style=\u0022padding: 10px; background: rgb(255, 255, 255); border-radius: 0.5rem; width: 309px; height: 129px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EFor query 0, place an obstacle at \u003Ccode\u003Ex = 2\u003C/code\u003E. A block of size at most 2 can be placed before \u003Ccode\u003Ex = 3\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Equeries = \u003C/span\u003E[[1,7],[2,7,6],[1,2],[2,7,5],[2,7,6]]\u003C!-- notionvc: 4a471445-5af1-4d72-b11b-94d351a2c8e9 --\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E [true,true,false]\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/04/22/example1block.png\u0022 style=\u0022padding: 10px; background: rgb(255, 255, 255); border-radius: 0.5rem; width: 310px; height: 130px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPlace an obstacle at \u003Ccode\u003Ex = 7\u003C/code\u003E for query 0. A block of size at most 7 can be placed before \u003Ccode\u003Ex = 7\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EPlace an obstacle at \u003Ccode\u003Ex = 2\u003C/code\u003E for query 2. Now, a block of size at most 5 can be placed before \u003Ccode\u003Ex = 7\u003C/code\u003E, and a block of size at most 2 before \u003Ccode\u003Ex = 2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 15 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= queries[i].length \u0026lt;= 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries[i][0] \u0026lt;= 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x, sz \u0026lt;= min(5 * 10\u003Csup\u003E4\u003C/sup\u003E, 3 * queries.length)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that for queries of type 1, no obstacle exists at distance \u003Ccode\u003Ex\u003C/code\u003E when the query is asked.\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that there is at least one query of type 2.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Ed[x]\u003C/code\u003E be the distance of the next obstacle after \u003Ccode\u003Ex\u003C/code\u003E.",
+    "For each query of type 2, we just need to check if \u003Ccode\u003Emax(d[0], d[1], d[2], \u2026d[x - sz]) \u003E sz\u003C/code\u003E.",
+    "Use segment tree to maintain \u003Ccode\u003Ed[x]\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[2,3,3],[2,3,1],[2,2,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,7],[2,7,6],[1,2],[2,7,5],[2,7,6]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7082099+00:00",
+  "Url": "https://leetcode.com/problems/block-placement-queries/"
+}

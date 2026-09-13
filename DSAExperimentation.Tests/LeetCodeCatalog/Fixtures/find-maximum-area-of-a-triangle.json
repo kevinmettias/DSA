@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3868,
+  "FrontendId": 3588,
+  "Title": "Find Maximum Area of a Triangle",
+  "TitleSlug": "find-maximum-area-of-a-triangle",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Greedy",
+    "Geometry",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 29.4,
+  "TotalAccepted": 12795,
+  "TotalSubmissions": 43528,
+  "Likes": 56,
+  "Dislikes": 13,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D array \u003Ccode\u003Ecoords\u003C/code\u003E of size \u003Ccode\u003En x 2\u003C/code\u003E, representing the coordinates of \u003Ccode\u003En\u003C/code\u003E points in an infinite Cartesian plane.\u003C/p\u003E\n\n\u003Cp\u003EFind \u003Cstrong\u003Etwice\u003C/strong\u003E the \u003Cstrong\u003Emaximum\u003C/strong\u003E area of a triangle with its corners at \u003Cem\u003Eany\u003C/em\u003E three elements from \u003Ccode\u003Ecoords\u003C/code\u003E, such that at least one side of this triangle is \u003Cstrong\u003Eparallel\u003C/strong\u003E to the x-axis or y-axis. Formally, if the maximum area of such a triangle is \u003Ccode\u003EA\u003C/code\u003E, return \u003Ccode\u003E2 * A\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIf no such triangle exists, return -1.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that a triangle \u003Cem\u003Ecannot\u003C/em\u003E have zero area.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ecoords = [[1,1],[1,2],[3,2],[3,3]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2025/04/19/image-20250420010047-1.png\u0022 style=\u0022width: 300px; height: 289px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe triangle shown in the image has a base 1 and height 2. Hence its area is \u003Ccode\u003E1/2 * base * height = 1\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ecoords = [[1,1],[2,2],[3,3]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe only possible triangle has corners \u003Ccode\u003E(1, 1)\u003C/code\u003E, \u003Ccode\u003E(2, 2)\u003C/code\u003E, and \u003Ccode\u003E(3, 3)\u003C/code\u003E. None of its sides are parallel to the x-axis or the y-axis.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == coords.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= coords[i][0], coords[i][1] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003Ecoords[i]\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Ccode\u003Earea * 2 = base * height\u003C/code\u003E",
+    "Let the base be parallel to the x\u2011axis or y\u2011axis",
+    "Sort to find the maximum base for each fixed \u003Ccode\u003Ex\u003C/code\u003E (or \u003Ccode\u003Ey\u003C/code\u003E), then the maximum height comes from the extreme values of the other coordinate."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1],[1,2],[3,2],[3,3]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,1],[2,2],[3,3]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2408356+00:00",
+  "Url": "https://leetcode.com/problems/find-maximum-area-of-a-triangle/"
+}

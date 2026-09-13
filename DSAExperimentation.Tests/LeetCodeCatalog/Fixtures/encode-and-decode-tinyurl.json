@@ -1,0 +1,29 @@
+{
+  "QuestionId": 535,
+  "FrontendId": 535,
+  "Title": "Encode and Decode TinyURL",
+  "TitleSlug": "encode-and-decode-tinyurl",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Design",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 86.5,
+  "TotalAccepted": 319101,
+  "TotalSubmissions": 369041,
+  "Likes": 2154,
+  "Dislikes": 3822,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cblockquote\u003ENote: This is a companion problem to the \u003Ca href=\u0022https://leetcode.com/discuss/interview-question/system-design/\u0022 target=\u0022_blank\u0022\u003ESystem Design\u003C/a\u003E problem: \u003Ca href=\u0022https://leetcode.com/discuss/interview-question/124658/Design-a-URL-Shortener-(-TinyURL-)-System/\u0022 target=\u0022_blank\u0022\u003EDesign TinyURL\u003C/a\u003E.\u003C/blockquote\u003E\n\n\u003Cp\u003ETinyURL is a URL shortening service where you enter a URL such as \u003Ccode\u003Ehttps://leetcode.com/problems/design-tinyurl\u003C/code\u003E and it returns a short URL such as \u003Ccode\u003Ehttp://tinyurl.com/4e9iAk\u003C/code\u003E. Design a class to encode a URL and decode a tiny URL.\u003C/p\u003E\n\n\u003Cp\u003EThere is no restriction on how your encode/decode algorithm should work. You just need to ensure that a URL can be encoded to a tiny URL and the tiny URL can be decoded to the original URL.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESolution\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESolution()\u003C/code\u003E Initializes the object of the system.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EString encode(String longUrl)\u003C/code\u003E Returns a tiny URL for the given \u003Ccode\u003ElongUrl\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EString decode(String shortUrl)\u003C/code\u003E Returns the original long URL for the given \u003Ccode\u003EshortUrl\u003C/code\u003E. It is guaranteed that the given \u003Ccode\u003EshortUrl\u003C/code\u003E was encoded by the same object.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E url = \u0026quot;https://leetcode.com/problems/design-tinyurl\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;https://leetcode.com/problems/design-tinyurl\u0026quot;\n\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nSolution obj = new Solution();\nstring tiny = obj.encode(url); // returns the encoded tiny url.\nstring ans = obj.decode(tiny); // returns the original url after decoding it.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= url.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eurl\u003C/code\u003E is guranteed to be a valid URL.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022https://leetcode.com/problems/design-tinyurl\u0022",
+      "RawExpectedOutput": "\u0022https://leetcode.com/problems/design-tinyurl\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1693017+00:00",
+  "Url": "https://leetcode.com/problems/encode-and-decode-tinyurl/"
+}

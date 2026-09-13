@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3888,
+  "FrontendId": 3574,
+  "Title": "Maximize Subarray GCD Score",
+  "TitleSlug": "maximize-subarray-gcd-score",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Enumeration",
+    "Number Theory"
+  ],
+  "AcceptanceRatePercent": 25.1,
+  "TotalAccepted": 6654,
+  "TotalSubmissions": 26520,
+  "Likes": 50,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of positive integers \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou may perform at most \u003Ccode\u003Ek\u003C/code\u003E operations. In each operation, you can choose one element in the array and \u003Cstrong\u003Edouble\u003C/strong\u003E its value. Each element can be doubled \u003Cstrong\u003Eat most\u003C/strong\u003E once.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Escore\u003C/strong\u003E of a contiguous \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray\u0022\u003Esubarray\u003C/span\u003E\u003C/strong\u003E is defined as the \u003Cstrong\u003Eproduct\u003C/strong\u003E of its length and the \u003Cem\u003Egreatest common divisor (GCD)\u003C/em\u003E of all its elements.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to return the \u003Cstrong\u003Emaximum\u003C/strong\u003E \u003Cstrong\u003Escore\u003C/strong\u003E that can be achieved by selecting a contiguous subarray from the modified array.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Egreatest common divisor (GCD)\u003C/strong\u003E of an array is the largest integer that evenly divides all the array elements.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,4], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EDouble \u003Ccode\u003Enums[0]\u003C/code\u003E to 4 using one operation. The modified array becomes \u003Ccode\u003E[4, 4]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe GCD of the subarray \u003Ccode\u003E[4, 4]\u003C/code\u003E is 4, and the length is 2.\u003C/li\u003E\n\t\u003Cli\u003EThus, the maximum possible score is \u003Ccode\u003E2 \u0026times; 4 = 8\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,5,7], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E14\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EDouble \u003Ccode\u003Enums[2]\u003C/code\u003E to 14 using one operation. The modified array becomes \u003Ccode\u003E[3, 5, 14]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe GCD of the subarray \u003Ccode\u003E[14]\u003C/code\u003E is 14, and the length is 1.\u003C/li\u003E\n\t\u003Cli\u003EThus, the maximum possible score is \u003Ccode\u003E1 \u0026times; 14 = 14\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,5,5], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E15\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe subarray \u003Ccode\u003E[5, 5, 5]\u003C/code\u003E has a GCD of 5, and its length is 3.\u003C/li\u003E\n\t\u003Cli\u003ESince doubling any element doesn\u0026#39;t improve the score, the maximum score is \u003Ccode\u003E3 \u0026times; 5 = 15\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == nums.length \u0026lt;= 1500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try iterating over the subarrays",
+    "Handle the 2s in the factors of elements separately"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,4]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,5,7]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,5,5]\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8690464+00:00",
+  "Url": "https://leetcode.com/problems/maximize-subarray-gcd-score/"
+}

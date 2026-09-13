@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2149,
+  "FrontendId": 2038,
+  "Title": "Remove Colored Pieces if Both Neighbors are the Same Color",
+  "TitleSlug": "remove-colored-pieces-if-both-neighbors-are-the-same-color",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Greedy",
+    "Game Theory"
+  ],
+  "AcceptanceRatePercent": 63.2,
+  "TotalAccepted": 165030,
+  "TotalSubmissions": 261298,
+  "Likes": 1650,
+  "Dislikes": 127,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E pieces arranged in a line, and each piece is colored either by \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E or by \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E. You are given a string \u003Ccode\u003Ecolors\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E where \u003Ccode\u003Ecolors[i]\u003C/code\u003E is the color of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E piece.\u003C/p\u003E\n\n\u003Cp\u003EAlice and Bob are playing a game where they take \u003Cstrong\u003Ealternating turns\u003C/strong\u003E removing pieces from the line. In this game, Alice moves\u003Cstrong\u003E first\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice is only allowed to remove a piece colored \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E if \u003Cstrong\u003Eboth its neighbors\u003C/strong\u003E are also colored \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E. She is \u003Cstrong\u003Enot allowed\u003C/strong\u003E to remove pieces that are colored \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EBob is only allowed to remove a piece colored \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E if \u003Cstrong\u003Eboth its neighbors\u003C/strong\u003E are also colored \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E. He is \u003Cstrong\u003Enot allowed\u003C/strong\u003E to remove pieces that are colored \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAlice and Bob \u003Cstrong\u003Ecannot\u003C/strong\u003E remove pieces from the edge of the line.\u003C/li\u003E\n\t\u003Cli\u003EIf a player cannot make a move on their turn, that player \u003Cstrong\u003Eloses\u003C/strong\u003E and the other player \u003Cstrong\u003Ewins\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAssuming Alice and Bob play optimally, return \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if Alice wins, or return \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E if Bob wins\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E colors = \u0026quot;AAABABB\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nA\u003Cu\u003EA\u003C/u\u003EABABB -\u0026gt; AABABB\nAlice moves first.\nShe removes the second \u0026#39;A\u0026#39; from the left since that is the only \u0026#39;A\u0026#39; whose neighbors are both \u0026#39;A\u0026#39;.\n\nNow it\u0026#39;s Bob\u0026#39;s turn.\nBob cannot make a move on his turn since there are no \u0026#39;B\u0026#39;s whose neighbors are both \u0026#39;B\u0026#39;.\nThus, Alice wins, so return true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E colors = \u0026quot;AA\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nAlice has her turn first.\nThere are only two \u0026#39;A\u0026#39;s and both are on the edge of the line, so she cannot move on her turn.\nThus, Bob wins, so return false.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E colors = \u0026quot;ABBBBBBBAAA\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nABBBBBBBA\u003Cu\u003EA\u003C/u\u003EA -\u0026gt; ABBBBBBBAA\nAlice moves first.\nHer only option is to remove the second to last \u0026#39;A\u0026#39; from the right.\n\nABBBB\u003Cu\u003EB\u003C/u\u003EBBAA -\u0026gt; ABBBBBBAA\nNext is Bob\u0026#39;s turn.\nHe has many options for which \u0026#39;B\u0026#39; piece to remove. He can pick any.\n\nOn Alice\u0026#39;s second turn, she has no more pieces that she can remove.\nThus, Bob wins, so return false.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u0026nbsp;colors.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecolors\u003C/code\u003E\u0026nbsp;consists of only the letters\u0026nbsp;\u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E\u0026nbsp;and\u0026nbsp;\u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Does the number of moves a player can make depend on what the other player does? No",
+    "How many moves can Alice make if colors == \u0022AAAAAA\u0022",
+    "If a group of n consecutive pieces has the same color, the player can take n - 2 of those pieces if n is greater than or equal to 3"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022AAABABB\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022AA\u0022",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "\u0022ABBBBBBBAAA\u0022",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7334854+00:00",
+  "Url": "https://leetcode.com/problems/remove-colored-pieces-if-both-neighbors-are-the-same-color/"
+}

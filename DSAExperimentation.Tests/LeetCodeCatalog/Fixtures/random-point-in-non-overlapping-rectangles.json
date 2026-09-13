@@ -1,0 +1,32 @@
+{
+  "QuestionId": 914,
+  "FrontendId": 497,
+  "Title": "Random Point in Non-overlapping Rectangles",
+  "TitleSlug": "random-point-in-non-overlapping-rectangles",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Binary Search",
+    "Reservoir Sampling",
+    "Prefix Sum",
+    "Ordered Set",
+    "Randomized"
+  ],
+  "AcceptanceRatePercent": 40.6,
+  "TotalAccepted": 56475,
+  "TotalSubmissions": 139005,
+  "Likes": 531,
+  "Dislikes": 692,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of non-overlapping axis-aligned rectangles \u003Ccode\u003Erects\u003C/code\u003E where \u003Ccode\u003Erects[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E, x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that \u003Ccode\u003E(a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E is the bottom-left corner point of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E rectangle and \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E is the top-right corner point of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E rectangle. Design an algorithm to pick a random integer point inside the space covered by one of the given rectangles. A point on the perimeter of a rectangle is included in the space covered by the rectangle.\u003C/p\u003E\n\n\u003Cp\u003EAny integer point inside the space covered by one of the given rectangles should be equally likely to be returned.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that an integer point is a point that has integer coordinates.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESolution\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESolution(int[][] rects)\u003C/code\u003E Initializes the object with the given rectangles \u003Ccode\u003Erects\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint[] pick()\u003C/code\u003E Returns a random integer point \u003Ccode\u003E[u, v]\u003C/code\u003E inside the space covered by one of the given rectangles.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/07/24/lc-pickrandomrec.jpg\u0022 style=\u0022width: 419px; height: 539px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;Solution\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;]\n[[[[-2, -2, 1, 1], [2, 2, 4, 6]]], [], [], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, [1, -2], [1, -1], [-1, -2], [-2, -2], [0, 0]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSolution solution = new Solution([[-2, -2, 1, 1], [2, 2, 4, 6]]);\nsolution.pick(); // return [1, -2]\nsolution.pick(); // return [1, -1]\nsolution.pick(); // return [-1, -2]\nsolution.pick(); // return [-2, -2]\nsolution.pick(); // return [0, 0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rects.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erects[i].length == 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; x\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E - a\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ey\u003Csub\u003Ei\u003C/sub\u003E - b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the rectangles do not overlap.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Epick\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022Solution\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022]\n[[[[-2,-2,1,1],[2,2,4,6]]],[],[],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6423154+00:00",
+  "Url": "https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/"
+}

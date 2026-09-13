@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3209,
+  "FrontendId": 2944,
+  "Title": "Minimum Number of Coins for Fruits",
+  "TitleSlug": "minimum-number-of-coins-for-fruits",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Queue",
+    "Heap (Priority Queue)",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 49.4,
+  "TotalAccepted": 25812,
+  "TotalSubmissions": 52214,
+  "Likes": 325,
+  "Dislikes": 93,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Eprices\u003C/code\u003E where \u003Ccode\u003Eprices[i]\u003C/code\u003E denotes the number of coins needed to purchase the \u003Ccode\u003E(i \u002B 1)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E fruit.\u003C/p\u003E\n\n\u003Cp\u003EThe fruit market has the following reward for each fruit:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf you purchase the \u003Ccode\u003E(i \u002B 1)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E fruit at \u003Ccode\u003Eprices[i]\u003C/code\u003E coins, you can get any number of the next \u003Ccode\u003Ei\u003C/code\u003E fruits for free.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that even if you \u003Cstrong\u003Ecan\u003C/strong\u003E take fruit \u003Ccode\u003Ej\u003C/code\u003E for free, you can still purchase it for \u003Ccode\u003Eprices[j - 1]\u003C/code\u003E coins to receive its reward.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E number of coins needed to acquire all the fruits.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eprices = [3,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPurchase the 1\u003Csup\u003Est\u003C/sup\u003E fruit with \u003Ccode\u003Eprices[0] = 3\u003C/code\u003E coins, you are allowed to take the 2\u003Csup\u003End\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003EPurchase the 2\u003Csup\u003End\u003C/sup\u003E fruit with \u003Ccode\u003Eprices[1] = 1\u003C/code\u003E coin, you are allowed to take the 3\u003Csup\u003Erd\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 3\u003Csup\u003Erd\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENote that even though you could take the 2\u003Csup\u003End\u003C/sup\u003E fruit for free as a reward of buying 1\u003Csup\u003Est\u003C/sup\u003E fruit, you purchase it to receive its reward, which is more optimal.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eprices = [1,10,1,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPurchase the 1\u003Csup\u003Est\u003C/sup\u003E fruit with \u003Ccode\u003Eprices[0] = 1\u003C/code\u003E coin, you are allowed to take the 2\u003Csup\u003End\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 2\u003Csup\u003End\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003EPurchase the 3\u003Csup\u003Erd\u003C/sup\u003E fruit for \u003Ccode\u003Eprices[2] = 1\u003C/code\u003E coin, you are allowed to take the 4\u003Csup\u003Eth\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 4\u003Csup\u003Et\u003C/sup\u003E\u003Csup\u003Eh\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eprices = [26,18,6,12,49,7,45,45]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E39\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPurchase the 1\u003Csup\u003Est\u003C/sup\u003E fruit with \u003Ccode\u003Eprices[0] = 26\u003C/code\u003E coin, you are allowed to take the 2\u003Csup\u003End\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 2\u003Csup\u003End\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003EPurchase the 3\u003Csup\u003Erd\u003C/sup\u003E fruit for \u003Ccode\u003Eprices[2] = 6\u003C/code\u003E coin, you are allowed to take the 4\u003Csup\u003Eth\u003C/sup\u003E, 5\u003Csup\u003Eth\u003C/sup\u003E and 6\u003Csup\u003Eth\u003C/sup\u003E (the next three) fruits for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 4\u003Csup\u003Et\u003C/sup\u003E\u003Csup\u003Eh\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 5\u003Csup\u003Et\u003C/sup\u003E\u003Csup\u003Eh\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003EPurchase the 6\u003Csup\u003Eth\u003C/sup\u003E fruit with \u003Ccode\u003Eprices[5] = 7\u003C/code\u003E coin, you are allowed to take the 8\u003Csup\u003Eth\u003C/sup\u003E and 9\u003Csup\u003Eth\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 7\u003Csup\u003Et\u003C/sup\u003E\u003Csup\u003Eh\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\t\u003Cli\u003ETake the 8\u003Csup\u003Et\u003C/sup\u003E\u003Csup\u003Eh\u003C/sup\u003E fruit for free.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENote that even though you could take the 6\u003Csup\u003Eth\u003C/sup\u003E fruit for free as a reward of buying 3\u003Csup\u003Erd\u003C/sup\u003E fruit, you purchase it to receive its reward, which is more optimal.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= prices.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= prices[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The intended solution uses Dynamic Programming.",
+    "Let \u003Ccode\u003Edp[i]\u003C/code\u003E denote the minimum number of coins, such that we bought \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u00A0fruit and acquired all the fruits in the range \u003Ccode\u003E[i...n]\u003C/code\u003E.",
+    "\u003Ccode\u003Edp[i] = min(dp[i], dp[j] \u002B prices[i]) \u003C/code\u003E, where \u003Ccode\u003Ej\u003C/code\u003E is in the range \u003Ccode\u003E[i \u002B 1, i \u002B 1 \u002B i]\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,10,1,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[26,18,6,12,49,7,45,45]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.069131+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-coins-for-fruits/"
+}

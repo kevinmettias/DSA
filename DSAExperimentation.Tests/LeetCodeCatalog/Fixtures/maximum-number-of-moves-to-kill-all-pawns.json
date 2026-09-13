@@ -1,0 +1,43 @@
+{
+  "QuestionId": 3560,
+  "FrontendId": 3283,
+  "Title": "Maximum Number of Moves to Kill All Pawns",
+  "TitleSlug": "maximum-number-of-moves-to-kill-all-pawns",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Bit Manipulation",
+    "Breadth-First Search",
+    "Game Theory",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 33.8,
+  "TotalAccepted": 7807,
+  "TotalSubmissions": 23095,
+  "Likes": 153,
+  "Dislikes": 12,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a \u003Ccode\u003E50 x 50\u003C/code\u003E chessboard with \u003Cstrong\u003Eone\u003C/strong\u003E knight and some pawns on it. You are given two integers \u003Ccode\u003Ekx\u003C/code\u003E and \u003Ccode\u003Eky\u003C/code\u003E where \u003Ccode\u003E(kx, ky)\u003C/code\u003E denotes the position of the knight, and a 2D array \u003Ccode\u003Epositions\u003C/code\u003E where \u003Ccode\u003Epositions[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E denotes the position of the pawns on the chessboard.\u003C/p\u003E\n\n\u003Cp\u003EAlice and Bob play a \u003Cem\u003Eturn-based\u003C/em\u003E game, where Alice goes first. In each player\u0026#39;s turn:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe player \u003Cem\u003Eselects \u003C/em\u003Ea pawn that still exists on the board and captures it with the knight in the \u003Cstrong\u003Efewest\u003C/strong\u003E possible \u003Cstrong\u003Emoves\u003C/strong\u003E. \u003Cstrong\u003ENote\u003C/strong\u003E that the player can select \u003Cstrong\u003Eany\u003C/strong\u003E pawn, it \u003Cstrong\u003Emight not\u003C/strong\u003E be one that can be captured in the \u003Cstrong\u003Eleast\u003C/strong\u003E number of moves.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cspan\u003EIn the process of capturing the \u003Cem\u003Eselected\u003C/em\u003E pawn, the knight \u003Cstrong\u003Emay\u003C/strong\u003E pass other pawns \u003Cstrong\u003Ewithout\u003C/strong\u003E capturing them\u003C/span\u003E. \u003Cstrong\u003EOnly\u003C/strong\u003E the \u003Cem\u003Eselected\u003C/em\u003E pawn can be captured in \u003Cem\u003Ethis\u003C/em\u003E turn.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAlice is trying to \u003Cstrong\u003Emaximize\u003C/strong\u003E the \u003Cstrong\u003Esum\u003C/strong\u003E of the number of moves made by \u003Cem\u003Eboth\u003C/em\u003E players until there are no more pawns on the board, whereas Bob tries to \u003Cstrong\u003Eminimize\u003C/strong\u003E them.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E \u003Cem\u003Etotal\u003C/em\u003E number of moves made during the game that Alice can achieve, assuming both players play \u003Cstrong\u003Eoptimally\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that in one \u003Cstrong\u003Emove, \u003C/strong\u003Ea chess knight has eight possible positions it can move to, as illustrated below. Each move is two cells in a cardinal direction, then one cell in an orthogonal direction.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2024/08/01/chess_knight.jpg\u0022 style=\u0022width: 275px; height: 273px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ekx = 1, ky = 1, positions = [[0,0]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/08/16/gif3.gif\u0022 style=\u0022width: 275px; height: 275px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe knight takes 4 moves to reach the pawn at \u003Ccode\u003E(0, 0)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ekx = 0, ky = 2, positions = [[1,1],[2,2],[3,3]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/08/16/gif4.gif\u0022 style=\u0022width: 320px; height: 320px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice picks the pawn at \u003Ccode\u003E(2, 2)\u003C/code\u003E and captures it in two moves: \u003Ccode\u003E(0, 2) -\u0026gt; (1, 4) -\u0026gt; (2, 2)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EBob picks the pawn at \u003Ccode\u003E(3, 3)\u003C/code\u003E and captures it in two moves: \u003Ccode\u003E(2, 2) -\u0026gt; (4, 1) -\u0026gt; (3, 3)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAlice picks the pawn at \u003Ccode\u003E(1, 1)\u003C/code\u003E and captures it in four moves: \u003Ccode\u003E(3, 3) -\u0026gt; (4, 1) -\u0026gt; (2, 2) -\u0026gt; (0, 3) -\u0026gt; (1, 1)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ekx = 0, ky = 0, positions = [[1,2],[2,4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice picks the pawn at \u003Ccode\u003E(2, 4)\u003C/code\u003E and captures it in two moves: \u003Ccode\u003E(0, 0) -\u0026gt; (1, 2) -\u0026gt; (2, 4)\u003C/code\u003E. Note that the pawn at \u003Ccode\u003E(1, 2)\u003C/code\u003E is not captured.\u003C/li\u003E\n\t\u003Cli\u003EBob picks the pawn at \u003Ccode\u003E(1, 2)\u003C/code\u003E and captures it in one move: \u003Ccode\u003E(2, 4) -\u0026gt; (1, 2)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= kx, ky \u0026lt;= 49\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= positions.length \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epositions[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= positions[i][0], positions[i][1] \u0026lt;= 49\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003Epositions[i]\u003C/code\u003E are unique.\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that \u003Ccode\u003Epositions[i] != [kx, ky]\u003C/code\u003E for all \u003Ccode\u003E0 \u0026lt;= i \u0026lt; positions.length\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use BFS to preprocess the minimum number of moves to reach one pawn from the other pawns.",
+    "Consider the knight\u2019s original position as another pawn.",
+    "Use DP with a bitmask to store current pawns that have not been captured."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n1\n[[0,0]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "0\n2\n[[1,1],[2,2],[3,3]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "0\n0\n[[1,2],[2,4]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9117793+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-moves-to-kill-all-pawns/"
+}

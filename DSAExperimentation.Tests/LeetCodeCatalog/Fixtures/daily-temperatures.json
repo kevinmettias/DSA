@@ -1,0 +1,38 @@
+{
+  "QuestionId": 739,
+  "FrontendId": 739,
+  "Title": "Daily Temperatures",
+  "TitleSlug": "daily-temperatures",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 69.2,
+  "TotalAccepted": 1922281,
+  "TotalSubmissions": 2779123,
+  "Likes": 15019,
+  "Dislikes": 385,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers \u003Ccode\u003Etemperatures\u003C/code\u003E represents the daily temperatures, return \u003Cem\u003Ean array\u003C/em\u003E \u003Ccode\u003Eanswer\u003C/code\u003E \u003Cem\u003Esuch that\u003C/em\u003E \u003Ccode\u003Eanswer[i]\u003C/code\u003E \u003Cem\u003Eis the number of days you have to wait after the\u003C/em\u003E \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cem\u003Eday to get a warmer temperature\u003C/em\u003E. If there is no future day for which this is possible, keep \u003Ccode\u003Eanswer[i] == 0\u003C/code\u003E instead.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E temperatures = [73,74,75,71,69,72,76,73]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,4,2,1,1,0,0]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E temperatures = [30,40,50,60]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,1,0]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E temperatures = [30,60,90]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,0]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u0026nbsp;temperatures.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E30 \u0026lt;=\u0026nbsp;temperatures[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If the temperature is say, 70 today, then in the future a warmer temperature must be either 71, 72, 73, ..., 99, or 100.  We could remember when all of them occur next."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[73,74,75,71,69,72,76,73]",
+      "RawExpectedOutput": "[1,1,4,2,1,1,0,0]"
+    },
+    {
+      "RawInput": "[30,40,50,60]",
+      "RawExpectedOutput": "[1,1,1,0]"
+    },
+    {
+      "RawInput": "[30,60,90]",
+      "RawExpectedOutput": "[1,1,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.038419+00:00",
+  "Url": "https://leetcode.com/problems/daily-temperatures/"
+}

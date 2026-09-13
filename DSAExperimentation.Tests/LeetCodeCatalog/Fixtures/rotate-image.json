@@ -1,0 +1,32 @@
+{
+  "QuestionId": 48,
+  "FrontendId": 48,
+  "Title": "Rotate Image",
+  "TitleSlug": "rotate-image",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 80.7,
+  "TotalAccepted": 3138883,
+  "TotalSubmissions": 3889862,
+  "Likes": 20384,
+  "Dislikes": 989,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003En x n\u003C/code\u003E 2D \u003Ccode\u003Ematrix\u003C/code\u003E representing an image, rotate the image by \u003Cstrong\u003E90\u003C/strong\u003E degrees (clockwise).\u003C/p\u003E\n\n\u003Cp\u003EYou have to rotate the image \u003Ca href=\u0022https://en.wikipedia.org/wiki/In-place_algorithm\u0022 target=\u0022_blank\u0022\u003E\u003Cstrong\u003Ein-place\u003C/strong\u003E\u003C/a\u003E, which means you have to modify the input 2D matrix directly. \u003Cstrong\u003EDO NOT\u003C/strong\u003E allocate another 2D matrix and do the rotation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg\u0022 style=\u0022width: 500px; height: 188px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1,2,3],[4,5,6],[7,8,9]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[7,4,1],[8,5,2],[9,6,3]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg\u0022 style=\u0022width: 500px; height: 201px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix.length == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= matrix[i][j] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2,3],[4,5,6],[7,8,9]]",
+      "RawExpectedOutput": "[[7,4,1],[8,5,2],[9,6,3]]"
+    },
+    {
+      "RawInput": "[[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]",
+      "RawExpectedOutput": "[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8758377+00:00",
+  "Url": "https://leetcode.com/problems/rotate-image/"
+}

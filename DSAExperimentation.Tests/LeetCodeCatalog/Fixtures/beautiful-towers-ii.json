@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3113,
+  "FrontendId": 2866,
+  "Title": "Beautiful Towers II",
+  "TitleSlug": "beautiful-towers-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 36.8,
+  "TotalAccepted": 19884,
+  "TotalSubmissions": 54040,
+  "Likes": 493,
+  "Dislikes": 32,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array \u003Ccode\u003EmaxHeights\u003C/code\u003E of \u003Ccode\u003En\u003C/code\u003E integers.\u003C/p\u003E\n\n\u003Cp\u003EYou are tasked with building \u003Ccode\u003En\u003C/code\u003E towers in the coordinate line. The \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E tower is built at coordinate \u003Ccode\u003Ei\u003C/code\u003E and has a height of \u003Ccode\u003Eheights[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA configuration of towers is \u003Cstrong\u003Ebeautiful\u003C/strong\u003E if the following conditions hold:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= heights[i] \u0026lt;= maxHeights[i]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eheights\u003C/code\u003E is a \u003Cstrong\u003Emountain\u003C/strong\u003E array.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EArray \u003Ccode\u003Eheights\u003C/code\u003E is a \u003Cstrong\u003Emountain\u003C/strong\u003E if there exists an index \u003Ccode\u003Ei\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor all \u003Ccode\u003E0 \u0026lt; j \u0026lt;= i\u003C/code\u003E, \u003Ccode\u003Eheights[j - 1] \u0026lt;= heights[j]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EFor all \u003Ccode\u003Ei \u0026lt;= k \u0026lt; n - 1\u003C/code\u003E, \u003Ccode\u003Eheights[k \u002B 1] \u0026lt;= heights[k]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum possible sum of heights\u003C/strong\u003E of a beautiful configuration of towers\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E maxHeights = [5,3,4,1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One beautiful configuration with a maximum sum is heights = [5,3,3,1,1]. This configuration is beautiful since:\n- 1 \u0026lt;= heights[i] \u0026lt;= maxHeights[i]  \n- heights is a mountain of peak i = 0.\nIt can be shown that there exists no other beautiful configuration with a sum of heights greater than 13.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E maxHeights = [6,5,3,9,2,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 22\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One beautiful configuration with a maximum sum is heights = [3,3,3,9,2,2]. This configuration is beautiful since:\n- 1 \u0026lt;= heights[i] \u0026lt;= maxHeights[i]\n- heights is a mountain of peak i = 3.\nIt can be shown that there exists no other beautiful configuration with a sum of heights greater than 22.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E maxHeights = [3,2,5,5,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One beautiful configuration with a maximum sum is heights = [2,2,5,5,2,2]. This configuration is beautiful since:\n- 1 \u0026lt;= heights[i] \u0026lt;= maxHeights[i]\n- heights is a mountain of peak i = 2. \nNote that, for this configuration, i = 3 can also be considered a peak.\nIt can be shown that there exists no other beautiful configuration with a sum of heights greater than 18.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == maxHeights.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= maxHeights[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try all the possible indices \u003Ccode\u003Ei\u003C/code\u003E as the peak.",
+    "Let \u003Ccode\u003Eleft[i]\u003C/code\u003E be the maximum sum of heights for the prefix \u003Ccode\u003E0, \u2026, i\u003C/code\u003E when index \u003Ccode\u003Ei\u003C/code\u003E is the peak.",
+    "Let \u003Ccode\u003Eright[i]\u003C/code\u003E be the maximum sum of heights for suffix \u003Ccode\u003Ei, \u2026, (n - 1)\u003C/code\u003E when \u003Ccode\u003Ei\u003C/code\u003E is the peak",
+    "Compute values of \u003Ccode\u003Eleft[i]\u003C/code\u003E from left to right using DP.\r\nFor each \u003Ccode\u003Ei\u003C/code\u003E from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E, \u003Ccode\u003Eleft[i] = maxHeights * (i - j) \u002B answer[j]\u003C/code\u003E, where \u003Ccode\u003Ej\u003C/code\u003E is the rightmost index to the left of \u003Ccode\u003Ei\u003C/code\u003E such that \u003Ccode\u003EmaxHeights[j] \u003C maxHeights[i] \u003C/code\u003E.",
+    "For each \u003Ccode\u003Ei\u003C/code\u003E from \u003Ccode\u003En - 1\u003C/code\u003E to \u003Ccode\u003E0\u003C/code\u003E, \u003Ccode\u003Eright[i] = maxHeights * (j - i) \u002B answer[j]\u003C/code\u003E, where \u003Ccode\u003Ej\u003C/code\u003E is the leftmost index to the right of \u003Ccode\u003Ei\u003C/code\u003E such that \u003Ccode\u003EmaxHeights[j] \u003C maxHeights[i] \u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,3,4,1,1]",
+      "RawExpectedOutput": "13"
+    },
+    {
+      "RawInput": "[6,5,3,9,2,7]",
+      "RawExpectedOutput": "22"
+    },
+    {
+      "RawInput": "[3,2,5,5,2,3]",
+      "RawExpectedOutput": "18"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.6332747+00:00",
+  "Url": "https://leetcode.com/problems/beautiful-towers-ii/"
+}

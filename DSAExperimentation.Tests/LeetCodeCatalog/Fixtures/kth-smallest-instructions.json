@@ -1,0 +1,40 @@
+{
+  "QuestionId": 489,
+  "FrontendId": 1643,
+  "Title": "Kth Smallest Instructions",
+  "TitleSlug": "kth-smallest-instructions",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 44.8,
+  "TotalAccepted": 18719,
+  "TotalSubmissions": 41777,
+  "Likes": 573,
+  "Dislikes": 17,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EBob is standing at cell \u003Ccode\u003E(0, 0)\u003C/code\u003E, and he wants to reach \u003Ccode\u003Edestination\u003C/code\u003E: \u003Ccode\u003E(row, column)\u003C/code\u003E. He can only travel \u003Cstrong\u003Eright\u003C/strong\u003E and \u003Cstrong\u003Edown\u003C/strong\u003E. You are going to help Bob by providing \u003Cstrong\u003Einstructions\u003C/strong\u003E for him to reach \u003Ccode\u003Edestination\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Einstructions\u003C/strong\u003E are represented as a string, where each character is either:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;H\u0026#39;\u003C/code\u003E, meaning move horizontally (go \u003Cstrong\u003Eright\u003C/strong\u003E), or\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;V\u0026#39;\u003C/code\u003E, meaning move vertically (go \u003Cstrong\u003Edown\u003C/strong\u003E).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EMultiple \u003Cstrong\u003Einstructions\u003C/strong\u003E will lead Bob to \u003Ccode\u003Edestination\u003C/code\u003E. For example, if \u003Ccode\u003Edestination\u003C/code\u003E is \u003Ccode\u003E(2, 3)\u003C/code\u003E, both \u003Ccode\u003E\u0026quot;HHHVV\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;HVHVH\u0026quot;\u003C/code\u003E are valid \u003Cstrong\u003Einstructions\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EHowever, Bob is very picky. Bob has a lucky number \u003Ccode\u003Ek\u003C/code\u003E, and he wants the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cstrong\u003Elexicographically smallest instructions\u003C/strong\u003E that will lead him to \u003Ccode\u003Edestination\u003C/code\u003E. \u003Ccode\u003Ek\u003C/code\u003E is \u003Cstrong\u003E1-indexed\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer array \u003Ccode\u003Edestination\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe \u003C/em\u003E\u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E \u003Cstrong\u003Elexicographically smallest instructions\u003C/strong\u003E that will take Bob to \u003C/em\u003E\u003Ccode\u003Edestination\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/12/ex1.png\u0022 style=\u0022width: 300px; height: 229px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E destination = [2,3], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;HHHVV\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All the instructions that reach (2, 3) in lexicographic order are as follows:\n[\u0026quot;HHHVV\u0026quot;, \u0026quot;HHVHV\u0026quot;, \u0026quot;HHVVH\u0026quot;, \u0026quot;HVHHV\u0026quot;, \u0026quot;HVHVH\u0026quot;, \u0026quot;HVVHH\u0026quot;, \u0026quot;VHHHV\u0026quot;, \u0026quot;VHHVH\u0026quot;, \u0026quot;VHVHH\u0026quot;, \u0026quot;VVHHH\u0026quot;].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/12/ex2.png\u0022 style=\u0022width: 300px; height: 229px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E destination = [2,3], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;HHVHV\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/12/ex3.png\u0022 style=\u0022width: 300px; height: 229px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E destination = [2,3], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;HHVVH\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edestination.length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= row, column \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= nCr(row \u002B column, row)\u003C/code\u003E, where \u003Ccode\u003EnCr(a, b)\u003C/code\u003E denotes \u003Ccode\u003Ea\u003C/code\u003E choose \u003Ccode\u003Eb\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "There are nCr(row \u002B column, row) possible instructions to reach (row, column).",
+    "Try building the instructions one step at a time. How many instructions start with \u0022H\u0022, and how does this compare with k?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3]\n1",
+      "RawExpectedOutput": "\u0022HHHVV\u0022"
+    },
+    {
+      "RawInput": "[2,3]\n2",
+      "RawExpectedOutput": "\u0022HHVHV\u0022"
+    },
+    {
+      "RawInput": "[2,3]\n3",
+      "RawExpectedOutput": "\u0022HHVVH\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6143952+00:00",
+  "Url": "https://leetcode.com/problems/kth-smallest-instructions/"
+}

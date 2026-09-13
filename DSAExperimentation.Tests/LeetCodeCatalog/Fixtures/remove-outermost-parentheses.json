@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1078,
+  "FrontendId": 1021,
+  "Title": "Remove Outermost Parentheses",
+  "TitleSlug": "remove-outermost-parentheses",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 87.5,
+  "TotalAccepted": 749013,
+  "TotalSubmissions": 856344,
+  "Likes": 3889,
+  "Dislikes": 1738,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA valid parentheses string is either empty \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;(\u0026quot; \u002B A \u002B \u0026quot;)\u0026quot;\u003C/code\u003E, or \u003Ccode\u003EA \u002B B\u003C/code\u003E, where \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E are valid parentheses strings, and \u003Ccode\u003E\u002B\u003C/code\u003E represents string concatenation.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;()\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;(())()\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;(()(()))\u0026quot;\u003C/code\u003E are all valid parentheses strings.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA valid parentheses string \u003Ccode\u003Es\u003C/code\u003E is primitive if it is nonempty, and there does not exist a way to split it into \u003Ccode\u003Es = A \u002B B\u003C/code\u003E, with \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E nonempty valid parentheses strings.\u003C/p\u003E\n\n\u003Cp\u003EGiven a valid parentheses string \u003Ccode\u003Es\u003C/code\u003E, consider its primitive decomposition: \u003Ccode\u003Es = P\u003Csub\u003E1\u003C/sub\u003E \u002B P\u003Csub\u003E2\u003C/sub\u003E \u002B ... \u002B P\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E, where \u003Ccode\u003EP\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E are primitive valid parentheses strings.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003Eafter removing the outermost parentheses of every primitive string in the primitive decomposition of \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(()())(())\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;()()()\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThe input string is \u0026quot;(()())(())\u0026quot;, with primitive decomposition \u0026quot;(()())\u0026quot; \u002B \u0026quot;(())\u0026quot;.\nAfter removing outer parentheses of each part, this is \u0026quot;()()\u0026quot; \u002B \u0026quot;()\u0026quot; = \u0026quot;()()()\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(()())(())(()(()))\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;()()()()(())\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThe input string is \u0026quot;(()())(())(()(()))\u0026quot;, with primitive decomposition \u0026quot;(()())\u0026quot; \u002B \u0026quot;(())\u0026quot; \u002B \u0026quot;(()(()))\u0026quot;.\nAfter removing outer parentheses of each part, this is \u0026quot;()()\u0026quot; \u002B \u0026quot;()\u0026quot; \u002B \u0026quot;()(())\u0026quot; = \u0026quot;()()()()(())\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;()()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThe input string is \u0026quot;()()\u0026quot;, with primitive decomposition \u0026quot;()\u0026quot; \u002B \u0026quot;()\u0026quot;.\nAfter removing outer parentheses of each part, this is \u0026quot;\u0026quot; \u002B \u0026quot;\u0026quot; = \u0026quot;\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E is a valid parentheses string.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can you find the primitive decomposition?  The number of ( and ) characters must be equal."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022(()())(())\u0022",
+      "RawExpectedOutput": "\u0022()()()\u0022"
+    },
+    {
+      "RawInput": "\u0022(()())(())(()(()))\u0022",
+      "RawExpectedOutput": "\u0022()()()()(())\u0022"
+    },
+    {
+      "RawInput": "\u0022()()\u0022",
+      "RawExpectedOutput": "\u0022\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7822597+00:00",
+  "Url": "https://leetcode.com/problems/remove-outermost-parentheses/"
+}

@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1251,
+  "FrontendId": 1147,
+  "Title": "Longest Chunked Palindrome Decomposition",
+  "TitleSlug": "longest-chunked-palindrome-decomposition",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Dynamic Programming",
+    "Greedy",
+    "Rolling Hash",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 59,
+  "TotalAccepted": 33162,
+  "TotalSubmissions": 56187,
+  "Likes": 720,
+  "Dislikes": 35,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Etext\u003C/code\u003E. You should split it to k substrings \u003Ccode\u003E(subtext\u003Csub\u003E1\u003C/sub\u003E, subtext\u003Csub\u003E2\u003C/sub\u003E, ..., subtext\u003Csub\u003Ek\u003C/sub\u003E)\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esubtext\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is a \u003Cstrong\u003Enon-empty\u003C/strong\u003E string.\u003C/li\u003E\n\t\u003Cli\u003EThe concatenation of all the substrings is equal to \u003Ccode\u003Etext\u003C/code\u003E (i.e., \u003Ccode\u003Esubtext\u003Csub\u003E1\u003C/sub\u003E \u002B subtext\u003Csub\u003E2\u003C/sub\u003E \u002B ... \u002B subtext\u003Csub\u003Ek\u003C/sub\u003E == text\u003C/code\u003E).\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esubtext\u003Csub\u003Ei\u003C/sub\u003E == subtext\u003Csub\u003Ek - i \u002B 1\u003C/sub\u003E\u003C/code\u003E for all valid values of \u003Ccode\u003Ei\u003C/code\u003E (i.e., \u003Ccode\u003E1 \u0026lt;= i \u0026lt;= k\u003C/code\u003E).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the largest possible value of \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E text = \u0026quot;ghiabcdefhelloadamhelloabcdefghi\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can split the string on \u0026quot;(ghi)(abcdef)(hello)(adam)(hello)(abcdef)(ghi)\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E text = \u0026quot;merchant\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can split the string on \u0026quot;(merchant)\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E text = \u0026quot;antaprezatepzapreanta\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 11\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can split the string on \u0026quot;(a)(nt)(a)(pre)(za)(tep)(za)(pre)(a)(nt)(a)\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= text.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etext\u003C/code\u003E consists only of lowercase English characters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Using a rolling hash, we can quickly check whether two strings are equal.",
+    "Use that as the basis of a dp."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022ghiabcdefhelloadamhelloabcdefghi\u0022",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "\u0022merchant\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022antaprezatepzapreanta\u0022",
+      "RawExpectedOutput": "11"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7091187+00:00",
+  "Url": "https://leetcode.com/problems/longest-chunked-palindrome-decomposition/"
+}

@@ -1,0 +1,40 @@
+{
+  "QuestionId": 750,
+  "FrontendId": 749,
+  "Title": "Contain Virus",
+  "TitleSlug": "contain-virus",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 56,
+  "TotalAccepted": 20721,
+  "TotalSubmissions": 36978,
+  "Likes": 458,
+  "Dislikes": 468,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA virus is spreading rapidly, and your task is to quarantine the infected area by installing walls.\u003C/p\u003E\n\n\u003Cp\u003EThe world is modeled as an \u003Ccode\u003Em x n\u003C/code\u003E binary grid \u003Ccode\u003EisInfected\u003C/code\u003E, where \u003Ccode\u003EisInfected[i][j] == 0\u003C/code\u003E represents uninfected cells, and \u003Ccode\u003EisInfected[i][j] == 1\u003C/code\u003E represents cells contaminated with the virus. A wall (and only one wall) can be installed between any two \u003Cstrong\u003E4-directionally\u003C/strong\u003E adjacent cells, on the shared boundary.\u003C/p\u003E\n\n\u003Cp\u003EEvery night, the virus spreads to all neighboring cells in all four directions unless blocked by a wall. Resources are limited. Each day, you can install walls around only one region (i.e., the affected area (continuous block of infected cells) that threatens the most uninfected cells the following night). There \u003Cstrong\u003Ewill never be a tie\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of walls used to quarantine all the infected regions\u003C/em\u003E. If the world will become fully infected, return the number of walls used.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/01/virus11-grid.jpg\u0022 style=\u0022width: 500px; height: 255px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E isInfected = [[0,1,0,0,0,0,0,1],[0,1,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 2 contaminated regions.\nOn the first day, add 5 walls to quarantine the viral region on the left. The board after the virus spreads is:\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/01/virus12edited-grid.jpg\u0022 style=\u0022width: 500px; height: 257px;\u0022 /\u003E\nOn the second day, add 5 walls to quarantine the viral region on the right. The virus is fully contained.\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/01/virus13edited-grid.jpg\u0022 style=\u0022width: 500px; height: 261px;\u0022 /\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/01/virus2-grid.jpg\u0022 style=\u0022width: 653px; height: 253px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E isInfected = [[1,1,1],[1,0,1],[1,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Even though there is only one cell saved, there are 4 walls built.\nNotice that walls are only built on the shared boundary of two different cells.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E isInfected = [[1,1,1,0,0,0,0,0,0],[1,0,1,0,1,1,1,1,1],[1,1,1,0,0,0,0,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The region on the left only builds two new walls.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em ==\u0026nbsp;isInfected.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En ==\u0026nbsp;isInfected[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EisInfected[i][j]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere is always a contiguous viral region throughout the described process that will \u003Cstrong\u003Einfect strictly more uncontaminated squares\u003C/strong\u003E in the next round.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The implementation is long - we want to perfrom the following steps:\r\n\r\n* Find all viral regions (connected components), additionally for each region keeping track of the frontier (neighboring uncontaminated cells), and the perimeter of the region.\r\n\r\n* Disinfect the most viral region, adding it\u0027s perimeter to the answer.\r\n\r\n* Spread the virus in the remaining regions outward by 1 square."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,0,0,0,0,0,1],[0,1,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0]]",
+      "RawExpectedOutput": "10"
+    },
+    {
+      "RawInput": "[[1,1,1],[1,0,1],[1,1,1]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[1,1,1,0,0,0,0,0,0],[1,0,1,0,1,1,1,1,1],[1,1,1,0,0,0,0,0,0]]",
+      "RawExpectedOutput": "13"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8813357+00:00",
+  "Url": "https://leetcode.com/problems/contain-virus/"
+}

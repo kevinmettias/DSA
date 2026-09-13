@@ -1,0 +1,36 @@
+{
+  "QuestionId": 897,
+  "FrontendId": 866,
+  "Title": "Prime Palindrome",
+  "TitleSlug": "prime-palindrome",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Number Theory",
+    "Primality Test"
+  ],
+  "AcceptanceRatePercent": 28.6,
+  "TotalAccepted": 53774,
+  "TotalSubmissions": 187919,
+  "Likes": 537,
+  "Dislikes": 847,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer n, return \u003Cem\u003Ethe smallest \u003Cstrong\u003Eprime palindrome\u003C/strong\u003E greater than or equal to \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn integer is \u003Cstrong\u003Eprime\u003C/strong\u003E if it has exactly two divisors: \u003Ccode\u003E1\u003C/code\u003E and itself. Note that \u003Ccode\u003E1\u003C/code\u003E is not a prime number.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E2\u003C/code\u003E, \u003Ccode\u003E3\u003C/code\u003E, \u003Ccode\u003E5\u003C/code\u003E, \u003Ccode\u003E7\u003C/code\u003E, \u003Ccode\u003E11\u003C/code\u003E, and \u003Ccode\u003E13\u003C/code\u003E are all primes.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAn integer is a \u003Cstrong\u003Epalindrome\u003C/strong\u003E if it reads the same from left to right as it does from right to left.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E101\u003C/code\u003E and \u003Ccode\u003E12321\u003C/code\u003E are palindromes.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe test cases are generated so that the answer always exists and is in the range \u003Ccode\u003E[2, 2 * 10\u003Csup\u003E8\u003C/sup\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 8\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 11\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 13\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 101\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "6",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "8",
+      "RawExpectedOutput": "11"
+    },
+    {
+      "RawInput": "13",
+      "RawExpectedOutput": "101"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5852967+00:00",
+  "Url": "https://leetcode.com/problems/prime-palindrome/"
+}

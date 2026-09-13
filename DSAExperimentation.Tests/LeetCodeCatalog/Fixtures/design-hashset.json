@@ -1,0 +1,25 @@
+{
+  "QuestionId": 816,
+  "FrontendId": 705,
+  "Title": "Design HashSet",
+  "TitleSlug": "design-hashset",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Linked List",
+    "Design",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 68.4,
+  "TotalAccepted": 608173,
+  "TotalSubmissions": 889331,
+  "Likes": 4086,
+  "Dislikes": 330,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a HashSet without using any built-in hash table libraries.\u003C/p\u003E\n\n\u003Cp\u003EImplement \u003Ccode\u003EMyHashSet\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid add(key)\u003C/code\u003E Inserts the value \u003Ccode\u003Ekey\u003C/code\u003E into the HashSet.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool contains(key)\u003C/code\u003E Returns whether the value \u003Ccode\u003Ekey\u003C/code\u003E exists in the HashSet or not.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid remove(key)\u003C/code\u003E Removes the value \u003Ccode\u003Ekey\u003C/code\u003E in the HashSet. If \u003Ccode\u003Ekey\u003C/code\u003E does not exist in the HashSet, do nothing.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyHashSet\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;contains\u0026quot;, \u0026quot;contains\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;contains\u0026quot;, \u0026quot;remove\u0026quot;, \u0026quot;contains\u0026quot;]\n[[], [1], [2], [1], [3], [2], [2], [2], [2]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, true, false, null, true, null, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyHashSet myHashSet = new MyHashSet();\nmyHashSet.add(1);      // set = [1]\nmyHashSet.add(2);      // set = [1, 2]\nmyHashSet.contains(1); // return True\nmyHashSet.contains(3); // return False, (not found)\nmyHashSet.add(2);      // set = [1, 2]\nmyHashSet.contains(2); // return True\nmyHashSet.remove(2);   // set = [1]\nmyHashSet.contains(2); // return False, (already removed)\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= key \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eadd\u003C/code\u003E, \u003Ccode\u003Eremove\u003C/code\u003E, and \u003Ccode\u003Econtains\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0976658+00:00",
+  "Url": "https://leetcode.com/problems/design-hashset/"
+}

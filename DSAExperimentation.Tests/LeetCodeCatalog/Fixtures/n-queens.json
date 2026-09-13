@@ -1,0 +1,32 @@
+{
+  "QuestionId": 51,
+  "FrontendId": 51,
+  "Title": "N-Queens",
+  "TitleSlug": "n-queens",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Backtracking",
+    "Algorithm X"
+  ],
+  "AcceptanceRatePercent": 76.5,
+  "TotalAccepted": 1407461,
+  "TotalSubmissions": 1840854,
+  "Likes": 14713,
+  "Dislikes": 361,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe \u003Cstrong\u003En-queens\u003C/strong\u003E puzzle is the problem of placing \u003Ccode\u003En\u003C/code\u003E queens on an \u003Ccode\u003En x n\u003C/code\u003E chessboard such that no two queens attack each other.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E, return \u003Cem\u003Eall distinct solutions to the \u003Cstrong\u003En-queens puzzle\u003C/strong\u003E\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EEach solution contains a distinct board configuration of the n-queens\u0026#39; placement, where \u003Ccode\u003E\u0026#39;Q\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E both indicate a queen and an empty space, respectively.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/13/queens.jpg\u0022 style=\u0022width: 600px; height: 268px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[\u0026quot;.Q..\u0026quot;,\u0026quot;...Q\u0026quot;,\u0026quot;Q...\u0026quot;,\u0026quot;..Q.\u0026quot;],[\u0026quot;..Q.\u0026quot;,\u0026quot;Q...\u0026quot;,\u0026quot;...Q\u0026quot;,\u0026quot;.Q..\u0026quot;]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There exist two distinct solutions to the 4-queens puzzle as shown above\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[\u0026quot;Q\u0026quot;]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4",
+      "RawExpectedOutput": "[[\u0022.Q..\u0022,\u0022...Q\u0022,\u0022Q...\u0022,\u0022..Q.\u0022],[\u0022..Q.\u0022,\u0022Q...\u0022,\u0022...Q\u0022,\u0022.Q..\u0022]]"
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "[[\u0022Q\u0022]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1765336+00:00",
+  "Url": "https://leetcode.com/problems/n-queens/"
+}

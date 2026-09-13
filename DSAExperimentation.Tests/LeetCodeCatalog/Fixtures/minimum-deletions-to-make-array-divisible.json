@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2423,
+  "FrontendId": 2344,
+  "Title": "Minimum Deletions to Make Array Divisible",
+  "TitleSlug": "minimum-deletions-to-make-array-divisible",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Number Theory",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 61.7,
+  "TotalAccepted": 51471,
+  "TotalSubmissions": 83374,
+  "Likes": 596,
+  "Dislikes": 136,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two positive integer arrays \u003Ccode\u003Enums\u003C/code\u003E and \u003Ccode\u003EnumsDivide\u003C/code\u003E. You can delete any number of elements from \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of deletions such that the \u003Cstrong\u003Esmallest\u003C/strong\u003E element in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E \u003Cstrong\u003Edivides\u003C/strong\u003E all the elements of \u003C/em\u003E\u003Ccode\u003EnumsDivide\u003C/code\u003E. If this is not possible, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that an integer \u003Ccode\u003Ex\u003C/code\u003E divides \u003Ccode\u003Ey\u003C/code\u003E if \u003Ccode\u003Ey % x == 0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,3,2,4,3], numsDivide = [9,6,9,3,15]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThe smallest element in [2,3,2,4,3] is 2, which does not divide all the elements of numsDivide.\nWe use 2 deletions to delete the elements in nums that are equal to 2 which makes nums = [3,4,3].\nThe smallest element in [3,4,3] is 3, which divides all the elements of numsDivide.\nIt can be shown that 2 is the minimum number of deletions needed.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,3,6], numsDivide = [8,2,6,10]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nWe want the smallest element in nums to divide all the elements of numsDivide.\nThere is no way to delete elements from nums to allow this.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length, numsDivide.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i], numsDivide[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can we find an integer x that divides all the elements of numsDivide?",
+    "Will finding GCD (Greatest Common Divisor) help here?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,2,4,3]\n[9,6,9,3,15]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[4,3,6]\n[8,2,6,10]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0417896+00:00",
+  "Url": "https://leetcode.com/problems/minimum-deletions-to-make-array-divisible/"
+}

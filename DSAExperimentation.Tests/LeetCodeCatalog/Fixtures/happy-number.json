@@ -1,0 +1,33 @@
+{
+  "QuestionId": 202,
+  "FrontendId": 202,
+  "Title": "Happy Number",
+  "TitleSlug": "happy-number",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Hash Table",
+    "Math",
+    "Two Pointers",
+    "Floyd\u0027s Cycle Finding Algorithm"
+  ],
+  "AcceptanceRatePercent": 60.3,
+  "TotalAccepted": 2444082,
+  "TotalSubmissions": 4056194,
+  "Likes": 12201,
+  "Dislikes": 1656,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWrite an algorithm to determine if a number \u003Ccode\u003En\u003C/code\u003E is happy.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Ehappy number\u003C/strong\u003E is a number defined by the following process:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EStarting with any positive integer, replace the number by the sum of the squares of its digits.\u003C/li\u003E\n\t\u003Cli\u003ERepeat the process until the number equals 1 (where it will stay), or it \u003Cstrong\u003Eloops endlessly in a cycle\u003C/strong\u003E which does not include 1.\u003C/li\u003E\n\t\u003Cli\u003EThose numbers for which this process \u003Cstrong\u003Eends in 1\u003C/strong\u003E are happy.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif\u003C/em\u003E \u003Ccode\u003En\u003C/code\u003E \u003Cem\u003Eis a happy number, and\u003C/em\u003E \u003Ccode\u003Efalse\u003C/code\u003E \u003Cem\u003Eif not\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 19\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n1\u003Csup\u003E2\u003C/sup\u003E \u002B 9\u003Csup\u003E2\u003C/sup\u003E = 82\n8\u003Csup\u003E2\u003C/sup\u003E \u002B 2\u003Csup\u003E2\u003C/sup\u003E = 68\n6\u003Csup\u003E2\u003C/sup\u003E \u002B 8\u003Csup\u003E2\u003C/sup\u003E = 100\n1\u003Csup\u003E2\u003C/sup\u003E \u002B 0\u003Csup\u003E2\u003C/sup\u003E \u002B 0\u003Csup\u003E2\u003C/sup\u003E = 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "19",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4365694+00:00",
+  "Url": "https://leetcode.com/problems/happy-number/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2411,
+  "FrontendId": 2326,
+  "Title": "Spiral Matrix IV",
+  "TitleSlug": "spiral-matrix-iv",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Linked List",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 82.3,
+  "TotalAccepted": 188705,
+  "TotalSubmissions": 229163,
+  "Likes": 1330,
+  "Dislikes": 56,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integers \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E, which represent the dimensions of a matrix.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list of integers.\u003C/p\u003E\n\n\u003Cp\u003EGenerate an \u003Ccode\u003Em x n\u003C/code\u003E matrix that contains the integers in the linked list presented in \u003Cstrong\u003Espiral\u003C/strong\u003E order \u003Cstrong\u003E(clockwise)\u003C/strong\u003E, starting from the \u003Cstrong\u003Etop-left\u003C/strong\u003E of the matrix. If there are remaining empty spaces, fill them with \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe generated matrix\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/05/09/ex1new.jpg\u0022 style=\u0022width: 240px; height: 150px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 3, n = 5, head = [3,0,2,6,8,1,7,9,4,2,5,5,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[3,0,2,6,8],[5,0,-1,-1,1],[5,2,4,9,7]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows how the values are printed in the matrix.\nNote that the remaining spaces in the matrix are filled with -1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/05/11/ex2.jpg\u0022 style=\u0022width: 221px; height: 60px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 1, n = 4, head = [0,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1,2,-1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows how the values are printed from left to right in the matrix.\nThe last space in the matrix is set to -1.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[1, m * n]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "First, generate an m x n matrix filled with -1s.",
+    "Navigate within the matrix at (i, j) with the help of a direction vector \u27E8di, dj\u27E9. At (i, j), you need to decide if you can keep going in the current direction.",
+    "If you cannot keep going, rotate the direction vector clockwise by 90 degrees."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n5\n[3,0,2,6,8,1,7,9,4,2,5,5,0]",
+      "RawExpectedOutput": "[[3,0,2,6,8],[5,0,-1,-1,1],[5,2,4,9,7]]"
+    },
+    {
+      "RawInput": "1\n4\n[0,1,2]",
+      "RawExpectedOutput": "[[0,1,2,-1]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0976018+00:00",
+  "Url": "https://leetcode.com/problems/spiral-matrix-iv/"
+}

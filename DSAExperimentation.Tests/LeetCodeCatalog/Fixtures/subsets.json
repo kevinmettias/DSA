@@ -10,10 +10,10 @@
     "Bit Manipulation"
   ],
   "AcceptanceRatePercent": 82.8,
-  "TotalAccepted": 3230126,
-  "TotalSubmissions": 3903336,
-  "Likes": 19468,
-  "Dislikes": 347,
+  "TotalAccepted": 3257487,
+  "TotalSubmissions": 3933742,
+  "Likes": 19527,
+  "Dislikes": 351,
   "IsPaidOnly": false,
   "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E of \u003Cstrong\u003Eunique\u003C/strong\u003E elements, return \u003Cem\u003Eall possible\u003C/em\u003E \u003Cspan data-keyword=\u0022subset\u0022\u003E\u003Cem\u003Esubsets\u003C/em\u003E\u003C/span\u003E \u003Cem\u003E(the power set)\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe solution set \u003Cstrong\u003Emust not\u003C/strong\u003E contain duplicate subsets. Return the solution in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[],[0]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10 \u0026lt;= nums[i] \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the numbers of\u0026nbsp;\u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
   "Hints": [],
@@ -27,6 +27,6 @@
       "RawExpectedOutput": "[[],[0]]"
     }
   ],
-  "FetchedAtUtc": "2026-08-27T02:25:22.4680052+00:00",
+  "FetchedAtUtc": "2026-09-13T04:39:42.1689962+00:00",
   "Url": "https://leetcode.com/problems/subsets/"
 }

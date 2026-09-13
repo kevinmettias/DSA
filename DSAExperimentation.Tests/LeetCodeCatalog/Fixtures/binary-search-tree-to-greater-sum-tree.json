@@ -1,0 +1,35 @@
+{
+  "QuestionId": 1114,
+  "FrontendId": 1038,
+  "Title": "Binary Search Tree to Greater Sum Tree",
+  "TitleSlug": "binary-search-tree-to-greater-sum-tree",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 88.4,
+  "TotalAccepted": 356732,
+  "TotalSubmissions": 403438,
+  "Likes": 4604,
+  "Dislikes": 169,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a Binary Search Tree (BST), convert it to a Greater Tree such that every key of the original BST is changed to the original key plus the sum of all keys greater than the original key in BST.\u003C/p\u003E\n\n\u003Cp\u003EAs a reminder, a \u003Cem\u003Ebinary search tree\u003C/em\u003E is a tree that satisfies these constraints:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe left subtree of a node contains only nodes with keys \u003Cstrong\u003Eless than\u003C/strong\u003E the node\u0026#39;s key.\u003C/li\u003E\n\t\u003Cli\u003EThe right subtree of a node contains only nodes with keys \u003Cstrong\u003Egreater than\u003C/strong\u003E the node\u0026#39;s key.\u003C/li\u003E\n\t\u003Cli\u003EBoth the left and right subtrees must also be binary search trees.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/05/02/tree.png\u0022 style=\u0022width: 400px; height: 273px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [0,null,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,null,1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[1, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the values in the tree are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E This question is the same as 538: \u003Ca href=\u0022https://leetcode.com/problems/convert-bst-to-greater-tree/\u0022 target=\u0022_blank\u0022\u003Ehttps://leetcode.com/problems/convert-bst-to-greater-tree/\u003C/a\u003E\u003C/p\u003E\n",
+  "Hints": [
+    "What traversal method organizes all nodes in sorted order?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]",
+      "RawExpectedOutput": "[30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]"
+    },
+    {
+      "RawInput": "[0,null,1]",
+      "RawExpectedOutput": "[1,null,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.6813188+00:00",
+  "Url": "https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/"
+}

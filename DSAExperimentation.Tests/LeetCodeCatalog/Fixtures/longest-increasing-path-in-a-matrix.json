@@ -1,0 +1,42 @@
+{
+  "QuestionId": 329,
+  "FrontendId": 329,
+  "Title": "Longest Increasing Path in a Matrix",
+  "TitleSlug": "longest-increasing-path-in-a-matrix",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Topological Sort",
+    "Memoization",
+    "Matrix",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 57.1,
+  "TotalAccepted": 749617,
+  "TotalSubmissions": 1313962,
+  "Likes": 9634,
+  "Dislikes": 148,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an \u003Ccode\u003Em x n\u003C/code\u003E integers \u003Ccode\u003Ematrix\u003C/code\u003E, return \u003Cem\u003Ethe length of the longest increasing path in \u003C/em\u003E\u003Ccode\u003Ematrix\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFrom each cell, you can either move in four directions: left, right, up, or down. You \u003Cstrong\u003Emay not\u003C/strong\u003E move \u003Cstrong\u003Ediagonally\u003C/strong\u003E or move \u003Cstrong\u003Eoutside the boundary\u003C/strong\u003E (i.e., wrap-around is not allowed).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/05/grid1.jpg\u0022 style=\u0022width: 242px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[9,9,4],[6,6,8],[2,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The longest increasing path is \u003Ccode\u003E[1, 2, 6, 9]\u003C/code\u003E.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/27/tmp-grid.jpg\u0022 style=\u0022width: 253px; height: 253px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[3,4,5],[3,2,6],[2,2,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThe longest increasing path is \u003Ccode\u003E[3, 4, 5, 6]\u003C/code\u003E. Moving diagonally is not allowed.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= matrix[i][j] \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[9,9,4],[6,6,8],[2,1,1]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[3,4,5],[3,2,6],[2,2,1]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[1]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7356125+00:00",
+  "Url": "https://leetcode.com/problems/longest-increasing-path-in-a-matrix/"
+}

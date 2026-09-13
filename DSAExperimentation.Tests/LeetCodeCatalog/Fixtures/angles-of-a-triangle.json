@@ -1,0 +1,36 @@
+{
+  "QuestionId": 4266,
+  "FrontendId": 3899,
+  "Title": "Angles of a Triangle",
+  "TitleSlug": "angles-of-a-triangle",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 62.5,
+  "TotalAccepted": 35609,
+  "TotalSubmissions": 56980,
+  "Likes": 41,
+  "Dislikes": 36,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a positive integer array \u003Ccode\u003Esides\u003C/code\u003E of length 3.\u003C/p\u003E\n\n\u003Cp\u003EDetermine if there exists a triangle with \u003Cstrong\u003Epositive\u003C/strong\u003E area whose three side lengths are given by the elements of \u003Ccode\u003Esides\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIf such a triangle exists, return an array of three floating-point numbers representing its internal angles (in \u003Cstrong\u003Edegrees\u003C/strong\u003E), \u003Cstrong\u003Esorted\u003C/strong\u003E in \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E order. Otherwise, return an empty array.\u003C/p\u003E\n\n\u003Cp\u003EAnswers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esides = [3,4,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[36.86990,53.13010,90.00000]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EYou can form a right-angled triangle with side lengths 3, 4, and 5. The internal angles of this triangle are approximately 36.869897646, 53.130102354, and 90 degrees respectively.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esides = [2,4,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EYou cannot form a triangle with positive area using side lengths 2, 4, and 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esides.length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= sides[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the sides first, then check the triangle inequality: after sorting, it is enough to verify \u003Ccode\u003Ea \u002B b \u003E c\u003C/code\u003E.",
+    "If valid, use the law of cosines to compute each angle in radians, then convert to degrees.",
+    "Sort the three angles before returning; if the triangle is invalid, return an empty array."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,4,5]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,4,2]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5735759+00:00",
+  "Url": "https://leetcode.com/problems/angles-of-a-triangle/"
+}

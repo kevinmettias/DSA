@@ -1,0 +1,36 @@
+{
+  "QuestionId": 823,
+  "FrontendId": 805,
+  "Title": "Split Array With Same Average",
+  "TitleSlug": "split-array-with-same-average",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Meet in the Middle",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 27.6,
+  "TotalAccepted": 50762,
+  "TotalSubmissions": 184185,
+  "Likes": 1375,
+  "Dislikes": 143,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou should move each element of \u003Ccode\u003Enums\u003C/code\u003E into one of the two arrays \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E such that \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E are non-empty, and \u003Ccode\u003Eaverage(A) == average(B)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if it is possible to achieve that and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that for an array \u003Ccode\u003Earr\u003C/code\u003E, \u003Ccode\u003Eaverage(arr)\u003C/code\u003E is the sum of all the elements of \u003Ccode\u003Earr\u003C/code\u003E over the length of \u003Ccode\u003Earr\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4,5,6,7,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can split the array into [1,4,5,8] and [2,3,6,7], and both of them have an average of 4.5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5,6,7,8]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[3,1]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.111039+00:00",
+  "Url": "https://leetcode.com/problems/split-array-with-same-average/"
+}

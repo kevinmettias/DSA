@@ -8,11 +8,11 @@
     "Linked List",
     "Recursion"
   ],
-  "AcceptanceRatePercent": 68.8,
-  "TotalAccepted": 6604721,
-  "TotalSubmissions": 9600503,
-  "Likes": 25324,
-  "Dislikes": 2460,
+  "AcceptanceRatePercent": 68.9,
+  "TotalAccepted": 6655739,
+  "TotalSubmissions": 9664807,
+  "Likes": 25396,
+  "Dislikes": 2467,
   "IsPaidOnly": false,
   "ContentHtml": "\u003Cp\u003EYou are given the heads of two sorted linked lists \u003Ccode\u003Elist1\u003C/code\u003E and \u003Ccode\u003Elist2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EMerge the two lists into one \u003Cstrong\u003Esorted\u003C/strong\u003E list. The list should be made by splicing together the nodes of the first two lists.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe head of the merged linked list\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/03/merge_ex1.jpg\u0022 style=\u0022width: 662px; height: 302px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E list1 = [1,2,4], list2 = [1,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,2,3,4,4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E list1 = [], list2 = []\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E list1 = [], list2 = [0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in both lists is in the range \u003Ccode\u003E[0, 50]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-100 \u0026lt;= Node.val \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EBoth \u003Ccode\u003Elist1\u003C/code\u003E and \u003Ccode\u003Elist2\u003C/code\u003E are sorted in \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E order.\u003C/li\u003E\n\u003C/ul\u003E\n",
   "Hints": [],
@@ -30,6 +30,6 @@
       "RawExpectedOutput": "[0]"
     }
   ],
-  "FetchedAtUtc": "2026-08-27T02:25:13.5091824+00:00",
+  "FetchedAtUtc": "2026-09-13T04:39:40.9833177+00:00",
   "Url": "https://leetcode.com/problems/merge-two-sorted-lists/"
 }

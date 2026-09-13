@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2549,
+  "FrontendId": 2454,
+  "Title": "Next Greater Element IV",
+  "TitleSlug": "next-greater-element-iv",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Stack",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 43,
+  "TotalAccepted": 21094,
+  "TotalSubmissions": 49087,
+  "Likes": 770,
+  "Dislikes": 12,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array of non-negative integers \u003Ccode\u003Enums\u003C/code\u003E. For each integer in \u003Ccode\u003Enums\u003C/code\u003E, you must find its respective \u003Cstrong\u003Esecond greater\u003C/strong\u003E integer.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Esecond greater\u003C/strong\u003E integer of \u003Ccode\u003Enums[i]\u003C/code\u003E is \u003Ccode\u003Enums[j]\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ej \u0026gt; i\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[j] \u0026gt; nums[i]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere exists \u003Cstrong\u003Eexactly one\u003C/strong\u003E index \u003Ccode\u003Ek\u003C/code\u003E such that \u003Ccode\u003Enums[k] \u0026gt; nums[i]\u003C/code\u003E and \u003Ccode\u003Ei \u0026lt; k \u0026lt; j\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EIf there is no such \u003Ccode\u003Enums[j]\u003C/code\u003E, the second greater integer is considered to be \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, in the array \u003Ccode\u003E[1, 2, 4, 3]\u003C/code\u003E, the second greater integer of \u003Ccode\u003E1\u003C/code\u003E is \u003Ccode\u003E4\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E is \u003Ccode\u003E3\u003C/code\u003E,\u0026nbsp;and that of \u003Ccode\u003E3\u003C/code\u003E and \u003Ccode\u003E4\u003C/code\u003E is \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn\u003Cem\u003E an integer array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E, where \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the second greater integer of \u003C/em\u003E\u003Ccode\u003Enums[i]\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,4,0,9,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [9,6,6,-1,-1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n0th index: 4 is the first integer greater than 2, and 9 is the second integer greater than 2, to the right of 2.\n1st index: 9 is the first, and 6 is the second integer greater than 4, to the right of 4.\n2nd index: 9 is the first, and 6 is the second integer greater than 0, to the right of 0.\n3rd index: There is no integer greater than 9 to its right, so the second greater integer is considered to be -1.\n4th index: There is no integer greater than 6 to its right, so the second greater integer is considered to be -1.\nThus, we return [9,6,6,-1,-1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [-1,-1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe return [-1,-1] since neither integer has any integer greater than it.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Move forward in nums and store the value in a non-increasing stack for the first greater value.",
+    "Move the value in the stack to an ordered data structure for the second greater value.",
+    "Move value from the ordered data structure for the answer."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,4,0,9,6]",
+      "RawExpectedOutput": "[9,6,6,-1,-1]"
+    },
+    {
+      "RawInput": "[3,3]",
+      "RawExpectedOutput": "[-1,-1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2018888+00:00",
+  "Url": "https://leetcode.com/problems/next-greater-element-iv/"
+}

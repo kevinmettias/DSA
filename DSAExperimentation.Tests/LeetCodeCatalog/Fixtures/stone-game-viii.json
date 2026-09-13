@@ -1,0 +1,43 @@
+{
+  "QuestionId": 2002,
+  "FrontendId": 1872,
+  "Title": "Stone Game VIII",
+  "TitleSlug": "stone-game-viii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Minimax",
+    "Prefix Sum",
+    "Game Theory",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 74.9,
+  "TotalAccepted": 87646,
+  "TotalSubmissions": 117028,
+  "Likes": 709,
+  "Dislikes": 45,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob take turns playing a game, with \u003Cstrong\u003EAlice starting first\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E stones arranged in a row. On each player\u0026#39;s turn, while the number of stones is \u003Cstrong\u003Emore than one\u003C/strong\u003E, they will do the following:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EChoose an integer \u003Ccode\u003Ex \u0026gt; 1\u003C/code\u003E, and \u003Cstrong\u003Eremove\u003C/strong\u003E the leftmost \u003Ccode\u003Ex\u003C/code\u003E stones from the row.\u003C/li\u003E\n\t\u003Cli\u003EAdd the \u003Cstrong\u003Esum\u003C/strong\u003E of the \u003Cstrong\u003Eremoved\u003C/strong\u003E stones\u0026#39; values to the player\u0026#39;s score.\u003C/li\u003E\n\t\u003Cli\u003EPlace a \u003Cstrong\u003Enew stone\u003C/strong\u003E, whose value is equal to that sum, on the left side of the row.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EThe game stops when \u003Cstrong\u003Eonly\u003C/strong\u003E \u003Cstrong\u003Eone\u003C/strong\u003E stone is left in the row.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Escore difference\u003C/strong\u003E between Alice and Bob is \u003Ccode\u003E(Alice\u0026#39;s score - Bob\u0026#39;s score)\u003C/code\u003E. Alice\u0026#39;s goal is to \u003Cstrong\u003Emaximize\u003C/strong\u003E the score difference, and Bob\u0026#39;s goal is the \u003Cstrong\u003Eminimize\u003C/strong\u003E the score difference.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer array \u003Ccode\u003Estones\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E where \u003Ccode\u003Estones[i]\u003C/code\u003E represents the value of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E stone \u003Cstrong\u003Efrom the left\u003C/strong\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Escore difference\u003C/strong\u003E between Alice and Bob if they both play \u003Cstrong\u003Eoptimally\u003C/strong\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [-1,2,-3,4,-5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- Alice removes the first 4 stones, adds (-1) \u002B 2 \u002B (-3) \u002B 4 = 2 to her score, and places a stone of\n  value 2 on the left. stones = [2,-5].\n- Bob removes the first 2 stones, adds 2 \u002B (-5) = -3 to his score, and places a stone of value -3 on\n  the left. stones = [-3].\nThe difference between their scores is 2 - (-3) = 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [7,-6,5,10,5,-2,-6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- Alice removes all stones, adds 7 \u002B (-6) \u002B 5 \u002B 10 \u002B 5 \u002B (-2) \u002B (-6) = 13 to her score, and places a\n  stone of value 13 on the left. stones = [13].\nThe difference between their scores is 13 - 0 = 13.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [-10,-12]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -22\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- Alice can only make one move, which is to remove both stones. She adds (-10) \u002B (-12) = -22 to her\n  score and places a stone of value -22 on the left. stones = [-22].\nThe difference between their scores is (-22) - 0 = -22.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == stones.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= stones[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let\u0027s note that the only thing that matters is how many stones were removed so we can maintain dp[numberOfRemovedStones]",
+    "dp[x] = max(sum of all elements up to y - dp[y]) for all y \u003E x"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,2,-3,4,-5]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[7,-6,5,10,5,-2,-6]",
+      "RawExpectedOutput": "13"
+    },
+    {
+      "RawInput": "[-10,-12]",
+      "RawExpectedOutput": "-22"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1380817+00:00",
+  "Url": "https://leetcode.com/problems/stone-game-viii/"
+}

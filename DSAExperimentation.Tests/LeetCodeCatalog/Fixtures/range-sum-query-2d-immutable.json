@@ -1,0 +1,29 @@
+{
+  "QuestionId": 304,
+  "FrontendId": 304,
+  "Title": "Range Sum Query 2D - Immutable",
+  "TitleSlug": "range-sum-query-2d-immutable",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Design",
+    "Matrix",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 59,
+  "TotalAccepted": 509073,
+  "TotalSubmissions": 862777,
+  "Likes": 5479,
+  "Dislikes": 375,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a 2D matrix \u003Ccode\u003Ematrix\u003C/code\u003E, handle multiple queries of the following type:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECalculate the \u003Cstrong\u003Esum\u003C/strong\u003E of the elements of \u003Ccode\u003Ematrix\u003C/code\u003E inside the rectangle defined by its \u003Cstrong\u003Eupper left corner\u003C/strong\u003E \u003Ccode\u003E(row1, col1)\u003C/code\u003E and \u003Cstrong\u003Elower right corner\u003C/strong\u003E \u003Ccode\u003E(row2, col2)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ENumMatrix\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ENumMatrix(int[][] matrix)\u003C/code\u003E Initializes the object with the integer matrix \u003Ccode\u003Ematrix\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint sumRegion(int row1, int col1, int row2, int col2)\u003C/code\u003E Returns the \u003Cstrong\u003Esum\u003C/strong\u003E of the elements of \u003Ccode\u003Ematrix\u003C/code\u003E inside the rectangle defined by its \u003Cstrong\u003Eupper left corner\u003C/strong\u003E \u003Ccode\u003E(row1, col1)\u003C/code\u003E and \u003Cstrong\u003Elower right corner\u003C/strong\u003E \u003Ccode\u003E(row2, col2)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou must design an algorithm where \u003Ccode\u003EsumRegion\u003C/code\u003E works on \u003Ccode\u003EO(1)\u003C/code\u003E time complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/14/sum-grid.jpg\u0022 style=\u0022width: 415px; height: 415px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;NumMatrix\u0026quot;, \u0026quot;sumRegion\u0026quot;, \u0026quot;sumRegion\u0026quot;, \u0026quot;sumRegion\u0026quot;]\n[[[[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]], [2, 1, 4, 3], [1, 1, 2, 2], [1, 2, 2, 4]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 8, 11, 12]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nNumMatrix numMatrix = new NumMatrix([[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]);\nnumMatrix.sumRegion(2, 1, 4, 3); // return 8 (i.e sum of the red rectangle)\nnumMatrix.sumRegion(1, 1, 2, 2); // return 11 (i.e sum of the green rectangle)\nnumMatrix.sumRegion(1, 2, 2, 4); // return 12 (i.e sum of the blue rectangle)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= matrix[i][j] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= row1 \u0026lt;= row2 \u0026lt; m\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= col1 \u0026lt;= col2 \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003EsumRegion\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022NumMatrix\u0022,\u0022sumRegion\u0022,\u0022sumRegion\u0022,\u0022sumRegion\u0022]\n[[[[3,0,1,4,2],[5,6,3,2,1],[1,2,0,1,5],[4,1,0,1,7],[1,0,3,0,5]]],[2,1,4,3],[1,1,2,2],[1,2,2,4]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6583446+00:00",
+  "Url": "https://leetcode.com/problems/range-sum-query-2d-immutable/"
+}

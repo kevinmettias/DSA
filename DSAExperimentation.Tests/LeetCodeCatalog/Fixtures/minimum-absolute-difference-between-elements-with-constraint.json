@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3000,
+  "FrontendId": 2817,
+  "Title": "Minimum Absolute Difference Between Elements With Constraint",
+  "TitleSlug": "minimum-absolute-difference-between-elements-with-constraint",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 38.1,
+  "TotalAccepted": 43849,
+  "TotalSubmissions": 115075,
+  "Likes": 780,
+  "Dislikes": 78,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ex\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind the \u003Cstrong\u003Eminimum absolute difference\u003C/strong\u003E between two elements in the array that are at least \u003Ccode\u003Ex\u003C/code\u003E indices apart.\u003C/p\u003E\n\n\u003Cp\u003EIn other words, find two indices \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003Eabs(i - j) \u0026gt;= x\u003C/code\u003E and \u003Ccode\u003Eabs(nums[i] - nums[j])\u003C/code\u003E is minimized.\u003C/p\u003E\n\n\u003Cp\u003EReturn\u003Cem\u003E an integer denoting the \u003Cstrong\u003Eminimum\u003C/strong\u003E absolute difference between two elements that are at least\u003C/em\u003E \u003Ccode\u003Ex\u003C/code\u003E \u003Cem\u003Eindices apart\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,3,2,4], x = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can select nums[0] = 4 and nums[3] = 4. \nThey are at least 2 indices apart, and their absolute difference is the minimum, 0. \nIt can be shown that 0 is the optimal answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,3,2,10,15], x = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can select nums[1] = 3 and nums[2] = 2.\nThey are at least 1 index apart, and their absolute difference is the minimum, 1.\nIt can be shown that 1 is the optimal answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4], x = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can select nums[0] = 1 and nums[3] = 4.\nThey are at least 3 indices apart, and their absolute difference is the minimum, 3.\nIt can be shown that 3 is the optimal answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x \u0026lt; nums.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003ELet\u0027s only consider the cases where \u003Ccode\u003Ei \u003C j\u003C/code\u003E, as the problem is symmetric.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EFor an index \u003Ccode\u003Ej\u003C/code\u003E, we are interested in an index \u003Ccode\u003Ei\u003C/code\u003E in the range \u003Ccode\u003E[0, j - x]\u003C/code\u003E that minimizes \u003Ccode\u003Eabs(nums[i] - nums[j])\u003C/code\u003E.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EFor every index \u003Ccode\u003Ej\u003C/code\u003E, while going from left to right, add \u003Ccode\u003Enums[j - x]\u003C/code\u003E to a set (C\u002B\u002B set, Java TreeSet, and Python sorted set).\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EAfter inserting \u003Ccode\u003Enums[j - x]\u003C/code\u003E, we can calculate the closest value to \u003Ccode\u003Enums[j]\u003C/code\u003E in the set using binary search and store the absolute difference. In C\u002B\u002B, we can achieve this by using lower_bound and/or upper_bound.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003ECalculate the minimum absolute difference among all indices.\u003C/div\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,3,2,4]\n2",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[5,3,2,10,15]\n1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[1,2,3,4]\n3",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0086606+00:00",
+  "Url": "https://leetcode.com/problems/minimum-absolute-difference-between-elements-with-constraint/"
+}

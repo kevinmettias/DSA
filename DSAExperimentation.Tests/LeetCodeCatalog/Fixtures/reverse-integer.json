@@ -1,0 +1,34 @@
+{
+  "QuestionId": 7,
+  "FrontendId": 7,
+  "Title": "Reverse Integer",
+  "TitleSlug": "reverse-integer",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math"
+  ],
+  "AcceptanceRatePercent": 32.5,
+  "TotalAccepted": 5356286,
+  "TotalSubmissions": 16479615,
+  "Likes": 15849,
+  "Dislikes": 14039,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a signed 32-bit integer \u003Ccode\u003Ex\u003C/code\u003E, return \u003Ccode\u003Ex\u003C/code\u003E\u003Cem\u003E with its digits reversed\u003C/em\u003E. If reversing \u003Ccode\u003Ex\u003C/code\u003E causes the value to go outside the signed 32-bit integer range \u003Ccode\u003E[-2\u003Csup\u003E31\u003C/sup\u003E, 2\u003Csup\u003E31\u003C/sup\u003E - 1]\u003C/code\u003E, then return \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EAssume the environment does not allow you to store 64-bit integers (signed or unsigned).\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 123\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 321\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = -123\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -321\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 120\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 21\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-2\u003Csup\u003E31\u003C/sup\u003E \u0026lt;= x \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "123",
+      "RawExpectedOutput": "321"
+    },
+    {
+      "RawInput": "-123",
+      "RawExpectedOutput": "-321"
+    },
+    {
+      "RawInput": "120",
+      "RawExpectedOutput": "21"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8305859+00:00",
+  "Url": "https://leetcode.com/problems/reverse-integer/"
+}

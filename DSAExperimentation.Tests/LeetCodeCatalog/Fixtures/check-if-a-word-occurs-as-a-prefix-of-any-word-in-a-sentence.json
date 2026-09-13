@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1566,
+  "FrontendId": 1455,
+  "Title": "Check If a Word Occurs As a Prefix of Any Word in a Sentence",
+  "TitleSlug": "check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 68.8,
+  "TotalAccepted": 245054,
+  "TotalSubmissions": 356042,
+  "Likes": 1340,
+  "Dislikes": 60,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a \u003Ccode\u003Esentence\u003C/code\u003E that consists of some words separated by a \u003Cstrong\u003Esingle space\u003C/strong\u003E, and a \u003Ccode\u003EsearchWord\u003C/code\u003E, check if \u003Ccode\u003EsearchWord\u003C/code\u003E is a prefix of any word in \u003Ccode\u003Esentence\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe index of the word in \u003C/em\u003E\u003Ccode\u003Esentence\u003C/code\u003E\u003Cem\u003E (\u003Cstrong\u003E1-indexed\u003C/strong\u003E) where \u003C/em\u003E\u003Ccode\u003EsearchWord\u003C/code\u003E\u003Cem\u003E is a prefix of this word\u003C/em\u003E. If \u003Ccode\u003EsearchWord\u003C/code\u003E is a prefix of more than one word, return the index of the first word \u003Cstrong\u003E(minimum index)\u003C/strong\u003E. If there is no such word return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Eprefix\u003C/strong\u003E of a string \u003Ccode\u003Es\u003C/code\u003E is any leading contiguous substring of \u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E sentence = \u0026quot;i love eating burger\u0026quot;, searchWord = \u0026quot;burg\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;burg\u0026quot; is prefix of \u0026quot;burger\u0026quot; which is the 4th word in the sentence.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E sentence = \u0026quot;this problem is an easy problem\u0026quot;, searchWord = \u0026quot;pro\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;pro\u0026quot; is prefix of \u0026quot;problem\u0026quot; which is the 2nd and the 6th word in the sentence, but we return 2 as it\u0026#39;s the minimal index.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E sentence = \u0026quot;i am tired\u0026quot;, searchWord = \u0026quot;you\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;you\u0026quot; is not a prefix of any word in the sentence.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= sentence.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= searchWord.length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esentence\u003C/code\u003E consists of lowercase English letters and spaces.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EsearchWord\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "First extract the words of the sentence.",
+    "Check for each word if searchWord occurs at index 0, if so return the index of this word (1-indexed)",
+    "If searchWord doesn\u0027t exist as a prefix of any word return the default value (-1)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022i love eating burger\u0022\n\u0022burg\u0022",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "\u0022this problem is an easy problem\u0022\n\u0022pro\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022i am tired\u0022\n\u0022you\u0022",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7607394+00:00",
+  "Url": "https://leetcode.com/problems/check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence/"
+}

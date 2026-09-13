@@ -1,0 +1,36 @@
+{
+  "QuestionId": 415,
+  "FrontendId": 415,
+  "Title": "Add Strings",
+  "TitleSlug": "add-strings",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 52.2,
+  "TotalAccepted": 986163,
+  "TotalSubmissions": 1888086,
+  "Likes": 5525,
+  "Dislikes": 837,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two non-negative integers, \u003Ccode\u003Enum1\u003C/code\u003E and \u003Ccode\u003Enum2\u003C/code\u003E represented as string, return \u003Cem\u003Ethe sum of\u003C/em\u003E \u003Ccode\u003Enum1\u003C/code\u003E \u003Cem\u003Eand\u003C/em\u003E \u003Ccode\u003Enum2\u003C/code\u003E \u003Cem\u003Eas a string\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must solve the problem without using any built-in library for handling large integers (such as \u003Ccode\u003EBigInteger\u003C/code\u003E). You must also not convert the inputs to integers directly.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num1 = \u0026quot;11\u0026quot;, num2 = \u0026quot;123\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;134\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num1 = \u0026quot;456\u0026quot;, num2 = \u0026quot;77\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;533\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num1 = \u0026quot;0\u0026quot;, num2 = \u0026quot;0\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;0\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= num1.length, num2.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enum1\u003C/code\u003E and \u003Ccode\u003Enum2\u003C/code\u003E consist of only digits.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enum1\u003C/code\u003E and \u003Ccode\u003Enum2\u003C/code\u003E don\u0026#39;t have any leading zeros except for the zero itself.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u002211\u0022\n\u0022123\u0022",
+      "RawExpectedOutput": "\u0022134\u0022"
+    },
+    {
+      "RawInput": "\u0022456\u0022\n\u002277\u0022",
+      "RawExpectedOutput": "\u0022533\u0022"
+    },
+    {
+      "RawInput": "\u00220\u0022\n\u00220\u0022",
+      "RawExpectedOutput": "\u00220\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5211526+00:00",
+  "Url": "https://leetcode.com/problems/add-strings/"
+}

@@ -1,0 +1,38 @@
+{
+  "QuestionId": 795,
+  "FrontendId": 779,
+  "Title": "K-th Symbol in Grammar",
+  "TitleSlug": "k-th-symbol-in-grammar",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Bit Manipulation",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 48.7,
+  "TotalAccepted": 270610,
+  "TotalSubmissions": 555390,
+  "Likes": 4208,
+  "Dislikes": 430,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe build a table of \u003Ccode\u003En\u003C/code\u003E rows (\u003Cstrong\u003E1-indexed\u003C/strong\u003E). We start by writing \u003Ccode\u003E0\u003C/code\u003E in the \u003Ccode\u003E1\u003Csup\u003Est\u003C/sup\u003E\u003C/code\u003E row. Now in every subsequent row, we look at the previous row and replace each occurrence of \u003Ccode\u003E0\u003C/code\u003E with \u003Ccode\u003E01\u003C/code\u003E, and each occurrence of \u003Ccode\u003E1\u003C/code\u003E with \u003Ccode\u003E10\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, for \u003Ccode\u003En = 3\u003C/code\u003E, the \u003Ccode\u003E1\u003Csup\u003Est\u003C/sup\u003E\u003C/code\u003E row is \u003Ccode\u003E0\u003C/code\u003E, the \u003Ccode\u003E2\u003Csup\u003End\u003C/sup\u003E\u003C/code\u003E row is \u003Ccode\u003E01\u003C/code\u003E, and the \u003Ccode\u003E3\u003Csup\u003Erd\u003C/sup\u003E\u003C/code\u003E row is \u003Ccode\u003E0110\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven two integer \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E, return the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E (\u003Cstrong\u003E1-indexed\u003C/strong\u003E) symbol in the \u003Ccode\u003En\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E row of a table of \u003Ccode\u003En\u003C/code\u003E rows.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E row 1: \u003Cu\u003E0\u003C/u\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nrow 1: 0\nrow 2: \u003Cu\u003E0\u003C/u\u003E1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nrow 1: 0\nrow 2: 0\u003Cu\u003E1\u003C/u\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 2\u003Csup\u003En - 1\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try to represent the current (N, K) in terms of some (N-1, prevK).  What is prevK ?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n1",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "2\n1",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "2\n2",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5959945+00:00",
+  "Url": "https://leetcode.com/problems/k-th-symbol-in-grammar/"
+}

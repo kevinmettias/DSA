@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1946,
+  "FrontendId": 1818,
+  "Title": "Minimum Absolute Sum Difference",
+  "TitleSlug": "minimum-absolute-sum-difference",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Sorting",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 32.9,
+  "TotalAccepted": 34517,
+  "TotalSubmissions": 104978,
+  "Likes": 1115,
+  "Dislikes": 81,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two positive integer arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E, both of length \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Eabsolute sum difference\u003C/strong\u003E of arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E is defined as the \u003Cstrong\u003Esum\u003C/strong\u003E of \u003Ccode\u003E|nums1[i] - nums2[i]|\u003C/code\u003E for each \u003Ccode\u003E0 \u0026lt;= i \u0026lt; n\u003C/code\u003E (\u003Cstrong\u003E0-indexed\u003C/strong\u003E).\u003C/p\u003E\n\n\u003Cp\u003EYou can replace \u003Cstrong\u003Eat most one\u003C/strong\u003E element of \u003Ccode\u003Enums1\u003C/code\u003E with \u003Cstrong\u003Eany\u003C/strong\u003E other element in \u003Ccode\u003Enums1\u003C/code\u003E to \u003Cstrong\u003Eminimize\u003C/strong\u003E the absolute sum difference.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cem\u003Eminimum absolute sum difference \u003Cstrong\u003Eafter\u003C/strong\u003E replacing at most one\u003Cstrong\u003E \u003C/strong\u003Eelement in the array \u003Ccode\u003Enums1\u003C/code\u003E.\u003C/em\u003E Since the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003E|x|\u003C/code\u003E is defined as:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ex\u003C/code\u003E if \u003Ccode\u003Ex \u0026gt;= 0\u003C/code\u003E, or\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-x\u003C/code\u003E if \u003Ccode\u003Ex \u0026lt; 0\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,7,5], nums2 = [2,3,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThere are two possible optimal solutions:\n- Replace the second element with the first: [1,\u003Cu\u003E\u003Cstrong\u003E7\u003C/strong\u003E\u003C/u\u003E,5] =\u0026gt; [1,\u003Cu\u003E\u003Cstrong\u003E1\u003C/strong\u003E\u003C/u\u003E,5], or\n- Replace the second element with the third: [1,\u003Cu\u003E\u003Cstrong\u003E7\u003C/strong\u003E\u003C/u\u003E,5] =\u0026gt; [1,\u003Cu\u003E\u003Cstrong\u003E5\u003C/strong\u003E\u003C/u\u003E,5].\nBoth will yield an absolute sum difference of \u003Ccode\u003E|1-2| \u002B (|1-3| or |5-3|) \u002B |5-5| = \u003C/code\u003E3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [2,4,6,8,10], nums2 = [2,4,6,8,10]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation: \u003C/strong\u003Enums1 is equal to nums2 so no replacement is needed. This will result in an \nabsolute sum difference of 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,10,4,4,2,7], nums2 = [9,3,5,1,7,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 20\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EReplace the first element with the second: [\u003Cu\u003E\u003Cstrong\u003E1\u003C/strong\u003E\u003C/u\u003E,10,4,4,2,7] =\u0026gt; [\u003Cu\u003E\u003Cstrong\u003E10\u003C/strong\u003E\u003C/u\u003E,10,4,4,2,7].\nThis yields an absolute sum difference of \u003Ccode\u003E|10-9| \u002B |10-3| \u002B |4-5| \u002B |4-1| \u002B |2-7| \u002B |7-4| = 20\u003C/code\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums1.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums1[i], nums2[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Go through each element and test the optimal replacements.",
+    "There are only 2 possible replacements for each element (higher and lower) that are optimal."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,7,5]\n[2,3,5]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[2,4,6,8,10]\n[2,4,6,8,10]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[1,10,4,4,2,7]\n[9,3,5,1,7,4]",
+      "RawExpectedOutput": "20"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0142041+00:00",
+  "Url": "https://leetcode.com/problems/minimum-absolute-sum-difference/"
+}

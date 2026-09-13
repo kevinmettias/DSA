@@ -1,0 +1,34 @@
+{
+  "QuestionId": 587,
+  "FrontendId": 587,
+  "Title": "Erect the Fence",
+  "TitleSlug": "erect-the-fence",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Convex Hull",
+    "Polygons"
+  ],
+  "AcceptanceRatePercent": 53.4,
+  "TotalAccepted": 70055,
+  "TotalSubmissions": 131102,
+  "Likes": 1561,
+  "Dislikes": 649,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Etrees\u003C/code\u003E where \u003Ccode\u003Etrees[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the location of a tree in the garden.\u003C/p\u003E\n\n\u003Cp\u003EFence the entire garden using the minimum length of rope, as it is expensive. The garden is well-fenced only if \u003Cstrong\u003Eall the trees are enclosed\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe coordinates of trees that are exactly located on the fence perimeter\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/24/erect2-plane.jpg\u0022 style=\u0022width: 400px; height: 393px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E trees = [[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,1],[2,0],[4,2],[3,3],[2,4]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All the trees will be on the perimeter of the fence except the tree at [2, 2], which will be inside the fence.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/24/erect1-plane.jpg\u0022 style=\u0022width: 400px; height: 393px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E trees = [[1,2],[2,2],[4,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[4,2],[2,2],[1,2]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The fence forms a line that passes through all the trees.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= trees.length \u0026lt;= 3000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etrees[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the given positions are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]]",
+      "RawExpectedOutput": "[[1,1],[2,0],[4,2],[3,3],[2,4]]"
+    },
+    {
+      "RawInput": "[[1,2],[2,2],[4,2]]",
+      "RawExpectedOutput": "[[4,2],[2,2],[1,2]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1755391+00:00",
+  "Url": "https://leetcode.com/problems/erect-the-fence/"
+}

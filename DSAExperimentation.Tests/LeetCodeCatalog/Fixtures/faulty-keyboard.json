@@ -1,0 +1,33 @@
+{
+  "QuestionId": 2886,
+  "FrontendId": 2810,
+  "Title": "Faulty Keyboard",
+  "TitleSlug": "faulty-keyboard",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "String",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 80.7,
+  "TotalAccepted": 127199,
+  "TotalSubmissions": 157703,
+  "Likes": 523,
+  "Dislikes": 16,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYour laptop keyboard is faulty, and whenever you type a character \u003Ccode\u003E\u0026#39;i\u0026#39;\u003C/code\u003E on it, it reverses the string that you have written. Typing other characters works as expected.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E, and you type each character of \u003Ccode\u003Es\u003C/code\u003E using your faulty keyboard.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe final string that will be present on your laptop screen.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;string\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;rtsng\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nAfter typing first character, the text on the screen is \u0026quot;s\u0026quot;.\nAfter the second character, the text is \u0026quot;st\u0026quot;. \nAfter the third character, the text is \u0026quot;str\u0026quot;.\nSince the fourth character is an \u0026#39;i\u0026#39;, the text gets reversed and becomes \u0026quot;rts\u0026quot;.\nAfter the fifth character, the text is \u0026quot;rtsn\u0026quot;. \nAfter the sixth character, the text is \u0026quot;rtsng\u0026quot;. \nTherefore, we return \u0026quot;rtsng\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;poiinter\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;ponter\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nAfter the first character, the text on the screen is \u0026quot;p\u0026quot;.\nAfter the second character, the text is \u0026quot;po\u0026quot;. \nSince the third character you type is an \u0026#39;i\u0026#39;, the text gets reversed and becomes \u0026quot;op\u0026quot;. \nSince the fourth character you type is an \u0026#39;i\u0026#39;, the text gets reversed and becomes \u0026quot;po\u0026quot;.\nAfter the fifth character, the text is \u0026quot;pon\u0026quot;.\nAfter the sixth character, the text is \u0026quot;pont\u0026quot;. \nAfter the seventh character, the text is \u0026quot;ponte\u0026quot;. \nAfter the eighth character, the text is \u0026quot;ponter\u0026quot;. \nTherefore, we return \u0026quot;ponter\u0026quot;.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[0] != \u0026#39;i\u0026#39;\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try to build a new string by traversing the given string and reversing whenever you get the character \u2018i\u2019."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022string\u0022",
+      "RawExpectedOutput": "\u0022rtsng\u0022"
+    },
+    {
+      "RawInput": "\u0022poiinter\u0022",
+      "RawExpectedOutput": "\u0022ponter\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2048623+00:00",
+  "Url": "https://leetcode.com/problems/faulty-keyboard/"
+}

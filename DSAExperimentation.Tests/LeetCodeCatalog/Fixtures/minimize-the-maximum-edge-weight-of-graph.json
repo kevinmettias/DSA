@@ -1,0 +1,45 @@
+{
+  "QuestionId": 3720,
+  "FrontendId": 3419,
+  "Title": "Minimize the Maximum Edge Weight of Graph",
+  "TitleSlug": "minimize-the-maximum-edge-weight-of-graph",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Binary Search",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 44.9,
+  "TotalAccepted": 17410,
+  "TotalSubmissions": 38754,
+  "Likes": 262,
+  "Dislikes": 21,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integers, \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Ethreshold\u003C/code\u003E, as well as a \u003Cstrong\u003Edirected\u003C/strong\u003E weighted graph of \u003Ccode\u003En\u003C/code\u003E nodes numbered from 0 to \u003Ccode\u003En - 1\u003C/code\u003E. The graph is represented by a \u003Cstrong\u003E2D\u003C/strong\u003E integer array \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [A\u003Csub\u003Ei\u003C/sub\u003E, B\u003Csub\u003Ei\u003C/sub\u003E, W\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is an edge going from node \u003Ccode\u003EA\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E to node \u003Ccode\u003EB\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with weight \u003Ccode\u003EW\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou have to remove some edges from this graph (possibly \u003Cstrong\u003Enone\u003C/strong\u003E), so that it satisfies the following conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ENode 0 must be reachable from all other nodes.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Emaximum\u003C/strong\u003E edge weight in the resulting graph is \u003Cstrong\u003Eminimized\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EEach node has \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Ethreshold\u003C/code\u003E outgoing edges.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E possible value of the \u003Cstrong\u003Emaximum\u003C/strong\u003E edge weight after removing the necessary edges. If it is impossible for all conditions to be satisfied, return -1.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, edges = [[1,0,1],[2,0,2],[3,0,1],[4,3,1],[2,1,1]], threshold = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/09/s-1.png\u0022 style=\u0022width: 300px; height: 233px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ERemove the edge \u003Ccode\u003E2 -\u0026gt; 0\u003C/code\u003E. The maximum weight among the remaining edges is 1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, edges = [[0,1,1],[0,2,2],[0,3,1],[0,4,1],[1,2,1],[1,4,1]], threshold = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003EIt is impossible to reach node 0 from node 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, edges = [[1,2,1],[1,3,3],[1,4,5],[2,3,2],[3,4,2],[4,0,1]], threshold = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/09/s2-1.png\u0022 style=\u0022width: 300px; height: 267px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ERemove the edges \u003Ccode\u003E1 -\u0026gt; 3\u003C/code\u003E and \u003Ccode\u003E1 -\u0026gt; 4\u003C/code\u003E. The maximum weight among the remaining edges is 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, edges = [[1,2,1],[1,3,3],[1,4,5],[2,3,2],[4,0,1]], threshold = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= threshold \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edges.length \u0026lt;= min(10\u003Csup\u003E5\u003C/sup\u003E, n * (n - 1) / 2).\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= A\u003Csub\u003Ei\u003C/sub\u003E, B\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EA\u003Csub\u003Ei\u003C/sub\u003E != B\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= W\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere \u003Cstrong\u003Emay be\u003C/strong\u003E multiple edges between a pair of nodes, but they must have unique weights.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we use binary search?",
+    "Invert the edges in the graph."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n[[1,0,1],[2,0,2],[3,0,1],[4,3,1],[2,1,1]]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n[[0,1,1],[0,2,2],[0,3,1],[0,4,1],[1,2,1],[1,4,1]]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n[[1,2,1],[1,3,3],[1,4,5],[2,3,2],[3,4,2],[4,0,1]]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n[[1,2,1],[1,3,3],[1,4,5],[2,3,2],[4,0,1]]\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.007896+00:00",
+  "Url": "https://leetcode.com/problems/minimize-the-maximum-edge-weight-of-graph/"
+}

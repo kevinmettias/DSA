@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1219,
+  "FrontendId": 1124,
+  "Title": "Longest Well-Performing Interval",
+  "TitleSlug": "longest-well-performing-interval",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Stack",
+    "Monotonic Stack",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 38.3,
+  "TotalAccepted": 51549,
+  "TotalSubmissions": 134664,
+  "Likes": 1569,
+  "Dislikes": 127,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe are given \u003Ccode\u003Ehours\u003C/code\u003E, a list of the number of hours worked per day for a given employee.\u003C/p\u003E\n\n\u003Cp\u003EA day is considered to be a \u003Cem\u003Etiring day\u003C/em\u003E if and only if the number of hours worked is (strictly) greater than \u003Ccode\u003E8\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cem\u003Ewell-performing interval\u003C/em\u003E is an interval of days for which the number of tiring days is strictly larger than the number of non-tiring days.\u003C/p\u003E\n\n\u003Cp\u003EReturn the length of the longest well-performing interval.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hours = [9,9,6,0,6,6,9]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThe longest well-performing interval is [9,9,6].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hours = [6,6,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= hours.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= hours[i] \u0026lt;= 16\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Make a new array A of \u002B1/-1s corresponding to if hours[i] is \u003E 8 or not. The goal is to find the longest subarray with positive sum.",
+    "Using prefix sums (PrefixSum[i\u002B1] = A[0] \u002B A[1] \u002B ... \u002B A[i]), you need to find for each j, the smallest i \u003C j with PrefixSum[i] \u002B 1 == PrefixSum[j]."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[9,9,6,0,6,6,9]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[6,6,6]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7754049+00:00",
+  "Url": "https://leetcode.com/problems/longest-well-performing-interval/"
+}

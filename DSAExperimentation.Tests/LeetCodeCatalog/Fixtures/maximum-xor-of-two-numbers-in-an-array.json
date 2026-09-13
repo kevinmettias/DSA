@@ -1,0 +1,33 @@
+{
+  "QuestionId": 421,
+  "FrontendId": 421,
+  "Title": "Maximum XOR of Two Numbers in an Array",
+  "TitleSlug": "maximum-xor-of-two-numbers-in-an-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Bit Manipulation",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 53.8,
+  "TotalAccepted": 238831,
+  "TotalSubmissions": 444294,
+  "Likes": 6021,
+  "Dislikes": 427,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, return \u003Cem\u003Ethe maximum result of \u003C/em\u003E\u003Ccode\u003Enums[i] XOR nums[j]\u003C/code\u003E, where \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= j \u0026lt; n\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,10,5,25,2,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 28\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The maximum result is 5 XOR 25 = 28.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [14,70,53,83,49,91,36,80,92,51,66,70]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 127\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,10,5,25,2,8]",
+      "RawExpectedOutput": "28"
+    },
+    {
+      "RawInput": "[14,70,53,83,49,91,36,80,92,51,66,70]",
+      "RawExpectedOutput": "127"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9585977+00:00",
+  "Url": "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/"
+}

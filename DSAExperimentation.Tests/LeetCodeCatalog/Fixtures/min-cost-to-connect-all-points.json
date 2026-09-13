@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1706,
+  "FrontendId": 1584,
+  "Title": "Min Cost to Connect All Points",
+  "TitleSlug": "min-cost-to-connect-all-points",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Union-Find",
+    "Graph Theory",
+    "Minimum Spanning Tree",
+    "Prim\u0027s Algorithm",
+    "Kruskal\u0027s Algorithm",
+    "Bor\u016Fvka\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 71.7,
+  "TotalAccepted": 515399,
+  "TotalSubmissions": 718590,
+  "Likes": 5756,
+  "Dislikes": 149,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Epoints\u003C/code\u003E representing integer coordinates of some points on a 2D-plane, where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe cost of connecting two points \u003Ccode\u003E[x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E and \u003Ccode\u003E[x\u003Csub\u003Ej\u003C/sub\u003E, y\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E is the \u003Cstrong\u003Emanhattan distance\u003C/strong\u003E between them: \u003Ccode\u003E|x\u003Csub\u003Ei\u003C/sub\u003E - x\u003Csub\u003Ej\u003C/sub\u003E| \u002B |y\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ej\u003C/sub\u003E|\u003C/code\u003E, where \u003Ccode\u003E|val|\u003C/code\u003E denotes the absolute value of \u003Ccode\u003Eval\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum cost to make all points connected.\u003C/em\u003E All points are connected if there is \u003Cstrong\u003Eexactly one\u003C/strong\u003E simple path between any two points.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/26/d.png\u0022 style=\u0022width: 214px; height: 268px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[0,0],[2,2],[3,10],[5,2],[7,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 20\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/26/c.png\u0022 style=\u0022width: 214px; height: 268px;\u0022 /\u003E\nWe can connect the points as shown above to get the minimum cost of 20.\nNotice that there is a unique path between every pair of points.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[3,12],[-2,5],[-4,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= points.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E6\u003C/sup\u003E \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll pairs \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E are distinct.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Connect each pair of points with a weighted edge, the weight being the manhattan distance between those points.",
+    "The problem is now the cost of minimum spanning tree in graph with above edges."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0],[2,2],[3,10],[5,2],[7,0]]",
+      "RawExpectedOutput": "20"
+    },
+    {
+      "RawInput": "[[3,12],[-2,5],[-4,1]]",
+      "RawExpectedOutput": "18"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9928886+00:00",
+  "Url": "https://leetcode.com/problems/min-cost-to-connect-all-points/"
+}

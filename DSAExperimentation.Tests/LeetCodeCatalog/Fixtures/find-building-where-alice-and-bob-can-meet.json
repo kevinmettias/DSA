@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3181,
+  "FrontendId": 2940,
+  "Title": "Find Building Where Alice and Bob Can Meet",
+  "TitleSlug": "find-building-where-alice-and-bob-can-meet",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Stack",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Heap (Priority Queue)",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 52.3,
+  "TotalAccepted": 81123,
+  "TotalSubmissions": 154997,
+  "Likes": 887,
+  "Dislikes": 60,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array \u003Ccode\u003Eheights\u003C/code\u003E of positive integers, where \u003Ccode\u003Eheights[i]\u003C/code\u003E represents the height of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E building.\u003C/p\u003E\n\n\u003Cp\u003EIf a person is in building \u003Ccode\u003Ei\u003C/code\u003E, they can move to any other building \u003Ccode\u003Ej\u003C/code\u003E if and only if \u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E and \u003Ccode\u003Eheights[i] \u0026lt; heights[j]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given another array \u003Ccode\u003Equeries\u003C/code\u003E where \u003Ccode\u003Equeries[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. On the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query, Alice is in building \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E while Bob is in building \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array\u003C/em\u003E \u003Ccode\u003Eans\u003C/code\u003E \u003Cem\u003Ewhere\u003C/em\u003E \u003Ccode\u003Eans[i]\u003C/code\u003E \u003Cem\u003Eis \u003Cstrong\u003Ethe index of the leftmost building\u003C/strong\u003E where Alice and Bob can meet on the\u003C/em\u003E \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cem\u003Equery\u003C/em\u003E. \u003Cem\u003EIf Alice and Bob cannot move to a common building on query\u003C/em\u003E \u003Ccode\u003Ei\u003C/code\u003E, \u003Cem\u003Eset\u003C/em\u003E \u003Ccode\u003Eans[i]\u003C/code\u003E \u003Cem\u003Eto\u003C/em\u003E \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [6,4,8,5,2,7], queries = [[0,1],[0,3],[2,4],[3,4],[2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,5,-1,5,2]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In the first query, Alice and Bob can move to building 2 since heights[0] \u0026lt; heights[2] and heights[1] \u0026lt; heights[2]. \nIn the second query, Alice and Bob can move to building 5 since heights[0] \u0026lt; heights[5] and heights[3] \u0026lt; heights[5]. \nIn the third query, Alice cannot meet Bob since Alice cannot move to any other building.\nIn the fourth query, Alice and Bob can move to building 5 since heights[3] \u0026lt; heights[5] and heights[4] \u0026lt; heights[5].\nIn the fifth query, Alice and Bob are already in the same building.  \nFor ans[i] != -1, It can be shown that ans[i] is the leftmost building where Alice and Bob can meet.\nFor ans[i] == -1, It can be shown that there is no building where Alice and Bob can meet.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [5,3,8,2,6,1,4,6], queries = [[0,7],[3,5],[5,2],[3,0],[1,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [7,6,-1,4,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In the first query, Alice can directly move to Bob\u0026#39;s building since heights[0] \u0026lt; heights[7].\nIn the second query, Alice and Bob can move to building 6 since heights[3] \u0026lt; heights[6] and heights[5] \u0026lt; heights[6].\nIn the third query, Alice cannot meet Bob since Bob cannot move to any other building.\nIn the fourth query, Alice and Bob can move to building 4 since heights[3] \u0026lt; heights[4] and heights[0] \u0026lt; heights[4].\nIn the fifth query, Alice can directly move to Bob\u0026#39;s building since heights[1] \u0026lt; heights[6].\nFor ans[i] != -1, It can be shown that ans[i] is the leftmost building where Alice and Bob can meet.\nFor ans[i] == -1, It can be shown that there is no building where Alice and Bob can meet.\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= heights.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= heights[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= heights.length - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each query \u003Ccode\u003E[x, y]\u003C/code\u003E, if \u003Ccode\u003Ex \u003E y\u003C/code\u003E, swap \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E. Now, we can assume that \u003Ccode\u003Ex \u003C= y\u003C/code\u003E.",
+    "For each query \u003Ccode\u003E[x, y]\u003C/code\u003E, if \u003Ccode\u003Ex == y\u003C/code\u003E or \u003Ccode\u003Eheights[x] \u003C heights[y]\u003C/code\u003E, then the answer is \u003Ccode\u003Ey\u003C/code\u003E since \u003Ccode\u003Ex \u2264 y\u003C/code\u003E.",
+    "Otherwise, we need to find the smallest index \u003Ccode\u003Et\u003C/code\u003E such that \u003Ccode\u003Ey \u003C t\u003C/code\u003E and \u003Ccode\u003Eheights[x] \u003C heights[t]\u003C/code\u003E. Note that \u003Ccode\u003Eheights[y] \u003C= heights[x]\u003C/code\u003E, so \u003Ccode\u003Eheights[x] \u003C heights[t]\u003C/code\u003E is a sufficient condition.",
+    "To find index \u003Ccode\u003Et\u003C/code\u003E for each query, sort the queries in descending order of \u003Ccode\u003Ey\u003C/code\u003E. Iterate over the queries while maintaining a monotonic stack which we can binary search over to find index \u003Ccode\u003Et\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,4,8,5,2,7]\n[[0,1],[0,3],[2,4],[3,4],[2,2]]",
+      "RawExpectedOutput": "[2,5,-1,5,2]"
+    },
+    {
+      "RawInput": "[5,3,8,2,6,1,4,6]\n[[0,7],[3,5],[5,2],[3,0],[1,6]]",
+      "RawExpectedOutput": "[7,6,-1,4,6]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2178549+00:00",
+  "Url": "https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/"
+}

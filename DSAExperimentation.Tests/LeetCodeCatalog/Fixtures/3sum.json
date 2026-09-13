@@ -1,0 +1,40 @@
+{
+  "QuestionId": 15,
+  "FrontendId": 15,
+  "Title": "3Sum",
+  "TitleSlug": "3sum",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 39.9,
+  "TotalAccepted": 6484110,
+  "TotalSubmissions": 16268626,
+  "Likes": 36328,
+  "Dislikes": 3320,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array nums, return all the triplets \u003Ccode\u003E[nums[i], nums[j], nums[k]]\u003C/code\u003E such that \u003Ccode\u003Ei != j\u003C/code\u003E, \u003Ccode\u003Ei != k\u003C/code\u003E, and \u003Ccode\u003Ej != k\u003C/code\u003E, and \u003Ccode\u003Enums[i] \u002B nums[j] \u002B nums[k] == 0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENotice that the solution set must not contain duplicate triplets.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,0,1,2,-1,-4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[-1,-1,2],[-1,0,1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nnums[0] \u002B nums[1] \u002B nums[2] = (-1) \u002B 0 \u002B 1 = 0.\nnums[1] \u002B nums[2] \u002B nums[4] = 0 \u002B 1 \u002B (-1) = 0.\nnums[0] \u002B nums[3] \u002B nums[4] = (-1) \u002B 2 \u002B (-1) = 0.\nThe distinct triplets are [-1,0,1] and [-1,-1,2].\nNotice that the order of the output and the order of the triplets does not matter.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The only possible triplet does not sum up to 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,0,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,0,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The only possible triplet sums up to 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= nums.length \u0026lt;= 3000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "So, we essentially need to find three numbers x, y, and z such that they add up to the given value. If we fix one of the numbers say x, we are left with the two-sum problem at hand!",
+    "For the two-sum problem, if we fix one of the numbers, say x, we have to scan the entire array to find the next number y, which is value - x where value is the input parameter. Can we change our array somehow so that this search becomes faster?",
+    "The second train of thought for two-sum is, without changing the array, can we use additional space somehow? Like maybe a hash map to speed up the search?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,0,1,2,-1,-4]",
+      "RawExpectedOutput": "[[-1,-1,2],[-1,0,1]]"
+    },
+    {
+      "RawInput": "[0,1,1]",
+      "RawExpectedOutput": "[]"
+    },
+    {
+      "RawInput": "[0,0,0]",
+      "RawExpectedOutput": "[[0,0,0]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.4997152+00:00",
+  "Url": "https://leetcode.com/problems/3sum/"
+}

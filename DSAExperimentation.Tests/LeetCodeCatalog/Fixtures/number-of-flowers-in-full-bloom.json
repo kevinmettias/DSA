@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2334,
+  "FrontendId": 2251,
+  "Title": "Number of Flowers in Full Bloom",
+  "TitleSlug": "number-of-flowers-in-full-bloom",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Binary Search",
+    "Sorting",
+    "Prefix Sum",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 58.1,
+  "TotalAccepted": 114267,
+  "TotalSubmissions": 196745,
+  "Likes": 1839,
+  "Dislikes": 46,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer array \u003Ccode\u003Eflowers\u003C/code\u003E, where \u003Ccode\u003Eflowers[i] = [start\u003Csub\u003Ei\u003C/sub\u003E, end\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E means the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E flower will be in \u003Cstrong\u003Efull bloom\u003C/strong\u003E from \u003Ccode\u003Estart\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E to \u003Ccode\u003Eend\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E (\u003Cstrong\u003Einclusive\u003C/strong\u003E). You are also given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Epeople\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Epeople[i]\u003C/code\u003E is the time that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person will arrive to see the flowers.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E of size \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E\u003Cem\u003E, where \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the \u003Cstrong\u003Enumber\u003C/strong\u003E of flowers that are in full bloom when the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E person arrives.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/03/02/ex1new.jpg\u0022 style=\u0022width: 550px; height: 216px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E flowers = [[1,6],[3,7],[9,12],[4,13]], people = [2,3,7,11]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,2,2]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThe figure above shows the times when the flowers are in full bloom and when the people arrive.\nFor each person, we return the number of flowers in full bloom during their arrival.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/03/02/ex2new.jpg\u0022 style=\u0022width: 450px; height: 195px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E flowers = [[1,10],[3,3]], people = [3,3,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,2,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figure above shows the times when the flowers are in full bloom and when the people arrive.\nFor each person, we return the number of flowers in full bloom during their arrival.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= flowers.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eflowers[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= start\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= end\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= people.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= people[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Notice that for any given time t, the number of flowers blooming at time t is equal to the number of flowers that have started blooming minus the number of flowers that have already stopped blooming.",
+    "We can obtain these values efficiently using binary search.",
+    "We can store the starting times in sorted order, which then allows us to binary search to find how many flowers have started blooming for a given time t.",
+    "We do the same for the ending times to find how many flowers have stopped blooming at time t."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,6],[3,7],[9,12],[4,13]]\n[2,3,7,11]",
+      "RawExpectedOutput": "[1,2,2,2]"
+    },
+    {
+      "RawInput": "[[1,10],[3,3]]\n[3,3,2]",
+      "RawExpectedOutput": "[2,2,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2486733+00:00",
+  "Url": "https://leetcode.com/problems/number-of-flowers-in-full-bloom/"
+}

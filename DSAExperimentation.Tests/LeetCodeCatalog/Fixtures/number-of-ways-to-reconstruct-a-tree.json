@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1820,
+  "FrontendId": 1719,
+  "Title": "Number Of Ways To Reconstruct A Tree",
+  "TitleSlug": "number-of-ways-to-reconstruct-a-tree",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Tree",
+    "Graph Theory",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 46.4,
+  "TotalAccepted": 7500,
+  "TotalSubmissions": 16174,
+  "Likes": 242,
+  "Dislikes": 160,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Epairs\u003C/code\u003E, where \u003Ccode\u003Epairs[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, and:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere are no duplicates.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; y\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ELet \u003Ccode\u003Eways\u003C/code\u003E be the number of rooted trees that satisfy the following conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe tree consists of nodes whose values appeared in \u003Ccode\u003Epairs\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EA pair \u003Ccode\u003E[x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E exists in \u003Ccode\u003Epairs\u003C/code\u003E \u003Cstrong\u003Eif and only if\u003C/strong\u003E \u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is an ancestor of \u003Ccode\u003Ey\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E or \u003Ccode\u003Ey\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is an ancestor of \u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E the tree does not have to be a binary tree.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ETwo ways are considered to be different if there is at least one node that has different parents in both ways.\u003C/p\u003E\n\n\u003Cp\u003EReturn:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0\u003C/code\u003E if \u003Ccode\u003Eways == 0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1\u003C/code\u003E if \u003Ccode\u003Eways == 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2\u003C/code\u003E if \u003Ccode\u003Eways \u0026gt; 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Erooted tree\u003C/strong\u003E is a tree that has a single root node, and all edges are oriented to be outgoing from the root.\u003C/p\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Eancestor\u003C/strong\u003E of a node is any node on the path from the root to that node (excluding the node itself). The root has no ancestors.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2020/12/03/trees2.png\u0022 style=\u0022width: 208px; height: 221px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pairs = [[1,2],[2,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is exactly one valid rooted tree, which is shown in the above figure.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/03/tree.png\u0022 style=\u0022width: 234px; height: 241px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pairs = [[1,2],[2,3],[1,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are multiple valid rooted trees. Three of them are shown in the above figures.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pairs = [[1,2],[2,3],[2,4],[1,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are no valid rooted trees.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= pairs.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x\u003Csub\u003Ei \u003C/sub\u003E\u0026lt; y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe elements in \u003Ccode\u003Epairs\u003C/code\u003E are unique.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Think inductively. The first step is to get the root. Obviously, the root should be in pairs with all the nodes. If there isn\u0027t exactly one such node, then there are 0 ways.",
+    "The number of pairs involving a node must be less than or equal to that number of its parent.",
+    "Actually, if it\u0027s equal, then there is not exactly 1 way, because they can be swapped.",
+    "Recursively, given a set of nodes, get the node with the most pairs, then this must be a root and have no parents in the current set of nodes."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[2,3]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[1,2],[2,3],[1,3]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[1,2],[2,3],[2,4],[1,5]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3131809+00:00",
+  "Url": "https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree/"
+}

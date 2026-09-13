@@ -1,0 +1,36 @@
+{
+  "QuestionId": 882,
+  "FrontendId": 852,
+  "Title": "Peak Index in a Mountain Array",
+  "TitleSlug": "peak-index-in-a-mountain-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Ternary Search"
+  ],
+  "AcceptanceRatePercent": 66.6,
+  "TotalAccepted": 1290372,
+  "TotalSubmissions": 1936068,
+  "Likes": 8678,
+  "Dislikes": 1959,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Cstrong\u003Emountain\u003C/strong\u003E array \u003Ccode\u003Earr\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E where the values increase to a \u003Cstrong\u003Epeak element\u003C/strong\u003E and then decrease.\u003C/p\u003E\n\n\u003Cp\u003EReturn the index of the peak element.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to solve it in \u003Ccode\u003EO(log(n))\u003C/code\u003E time complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Earr = [0,1,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Earr = [0,2,1,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Earr = [0,10,5,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= arr.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= arr[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Earr\u003C/code\u003E is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E to be a mountain array.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,1,0]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[0,2,1,0]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[0,10,5,2]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4669241+00:00",
+  "Url": "https://leetcode.com/problems/peak-index-in-a-mountain-array/"
+}

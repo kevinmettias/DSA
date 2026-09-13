@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2472,
+  "FrontendId": 2392,
+  "Title": "Build a Matrix With Conditions",
+  "TitleSlug": "build-a-matrix-with-conditions",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Graph Theory",
+    "Topological Sort",
+    "Matrix",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 79.4,
+  "TotalAccepted": 110168,
+  "TotalSubmissions": 138773,
+  "Likes": 1533,
+  "Dislikes": 58,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003Epositive\u003C/strong\u003E integer \u003Ccode\u003Ek\u003C/code\u003E. You are also given:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003Ea 2D integer array \u003Ccode\u003ErowConditions\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E where \u003Ccode\u003ErowConditions[i] = [above\u003Csub\u003Ei\u003C/sub\u003E, below\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, and\u003C/li\u003E\n\t\u003Cli\u003Ea 2D integer array \u003Ccode\u003EcolConditions\u003C/code\u003E of size \u003Ccode\u003Em\u003C/code\u003E where \u003Ccode\u003EcolConditions[i] = [left\u003Csub\u003Ei\u003C/sub\u003E, right\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe two arrays contain integers from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou have to build a \u003Ccode\u003Ek x k\u003C/code\u003E matrix that contains each of the numbers from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003Ek\u003C/code\u003E \u003Cstrong\u003Eexactly once\u003C/strong\u003E. The remaining cells should have the value \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe matrix should also satisfy the following conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number \u003Ccode\u003Eabove\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E should appear in a \u003Cstrong\u003Erow\u003C/strong\u003E that is strictly \u003Cstrong\u003Eabove\u003C/strong\u003E the row at which the number \u003Ccode\u003Ebelow\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E appears for all \u003Ccode\u003Ei\u003C/code\u003E from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe number \u003Ccode\u003Eleft\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E should appear in a \u003Cstrong\u003Ecolumn\u003C/strong\u003E that is strictly \u003Cstrong\u003Eleft\u003C/strong\u003E of the column at which the number \u003Ccode\u003Eright\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E appears for all \u003Ccode\u003Ei\u003C/code\u003E from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003Em - 1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003E\u003Cstrong\u003Eany\u003C/strong\u003E matrix that satisfies the conditions\u003C/em\u003E. If no answer exists, return an empty matrix.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/07/06/gridosdrawio.png\u0022 style=\u0022width: 211px; height: 211px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E k = 3, rowConditions = [[1,2],[3,2]], colConditions = [[2,1],[3,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[3,0,0],[0,0,1],[0,2,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows a valid example of a matrix that satisfies all the conditions.\nThe row conditions are the following:\n- Number 1 is in row \u003Cu\u003E1\u003C/u\u003E, and number 2 is in row \u003Cu\u003E2\u003C/u\u003E, so 1 is above 2 in the matrix.\n- Number 3 is in row \u003Cu\u003E0\u003C/u\u003E, and number 2 is in row \u003Cu\u003E2\u003C/u\u003E, so 3 is above 2 in the matrix.\nThe column conditions are the following:\n- Number 2 is in column \u003Cu\u003E1\u003C/u\u003E, and number 1 is in column \u003Cu\u003E2\u003C/u\u003E, so 2 is left of 1 in the matrix.\n- Number 3 is in column \u003Cu\u003E0\u003C/u\u003E, and number 2 is in column \u003Cu\u003E1\u003C/u\u003E, so 3 is left of 2 in the matrix.\nNote that there may be multiple correct answers.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E k = 3, rowConditions = [[1,2],[2,3],[3,1],[2,3]], colConditions = [[2,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E From the first two conditions, 3 has to be below 1 but the third conditions needs 3 to be above 1 to be satisfied.\nNo matrix can satisfy all the conditions, so we return the empty matrix.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= k \u0026lt;= 400\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rowConditions.length, colConditions.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003ErowConditions[i].length == colConditions[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= above\u003Csub\u003Ei\u003C/sub\u003E, below\u003Csub\u003Ei\u003C/sub\u003E, left\u003Csub\u003Ei\u003C/sub\u003E, right\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= k\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eabove\u003Csub\u003Ei\u003C/sub\u003E != below\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eleft\u003Csub\u003Ei\u003C/sub\u003E != right\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can you think of the problem in terms of graphs?",
+    "What algorithm allows you to find the order of nodes in a graph?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[1,2],[3,2]]\n[[2,1],[3,2]]",
+      "RawExpectedOutput": "[[3,0,0],[0,0,1],[0,2,0]]"
+    },
+    {
+      "RawInput": "3\n[[1,2],[2,3],[3,1],[2,3]]\n[[2,1]]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7178248+00:00",
+  "Url": "https://leetcode.com/problems/build-a-matrix-with-conditions/"
+}

@@ -1,0 +1,33 @@
+{
+  "QuestionId": 234,
+  "FrontendId": 234,
+  "Title": "Palindrome Linked List",
+  "TitleSlug": "palindrome-linked-list",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Linked List",
+    "Two Pointers",
+    "Stack",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 58.8,
+  "TotalAccepted": 3114605,
+  "TotalSubmissions": 5299489,
+  "Likes": 18629,
+  "Dislikes": 995,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a singly linked list, return \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if it is a \u003C/em\u003E\u003Cspan data-keyword=\u0022palindrome-sequence\u0022\u003E\u003Cem\u003Epalindrome\u003C/em\u003E\u003C/span\u003E\u003Cem\u003E or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/03/pal1linked-list.jpg\u0022 style=\u0022width: 422px; height: 62px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/03/pal2linked-list.jpg\u0022 style=\u0022width: 182px; height: 62px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you do it in \u003Ccode\u003EO(n)\u003C/code\u003E time and \u003Ccode\u003EO(1)\u003C/code\u003E space?",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,2,1]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,2]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3646311+00:00",
+  "Url": "https://leetcode.com/problems/palindrome-linked-list/"
+}

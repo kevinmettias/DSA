@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1685,
+  "FrontendId": 1563,
+  "Title": "Stone Game V",
+  "TitleSlug": "stone-game-v",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Game Theory"
+  ],
+  "AcceptanceRatePercent": 59,
+  "TotalAccepted": 103685,
+  "TotalSubmissions": 175732,
+  "Likes": 895,
+  "Dislikes": 105,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are several stones \u003Cstrong\u003Earranged in a row\u003C/strong\u003E, and each stone has an associated value which is an integer given in the array \u003Ccode\u003EstoneValue\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIn each round of the game, Alice divides the row into \u003Cstrong\u003Etwo non-empty rows\u003C/strong\u003E (i.e. left row and right row), then Bob calculates the value of each row which is the sum of the values of all the stones in this row. Bob throws away the row which has the maximum value, and Alice\u0026#39;s score increases by the value of the remaining row. If the value of the two rows are equal, Bob lets Alice decide which row will be thrown away. The next round starts with the remaining row.\u003C/p\u003E\n\n\u003Cp\u003EThe game ends when there is only \u003Cstrong\u003Eone stone remaining\u003C/strong\u003E. Alice\u0026#39;s score is initially \u003Cstrong\u003Ezero\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ci\u003Ethe maximum score that Alice can obtain\u003C/i\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stoneValue = [6,2,3,4,5,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In the first round, Alice divides the row to [6,2,3], [4,5,5]. The left row has the value 11 and the right row has value 14. Bob throws away the right row and Alice\u0026#39;s score is now 11.\nIn the second round Alice divides the row to [6], [2,3]. This time Bob throws away the left row and Alice\u0026#39;s score becomes 16 (11 \u002B 5).\nThe last round Alice has only one choice to divide the row which is [2], [3]. Bob throws away the right row and Alice\u0026#39;s score is now 18 (16 \u002B 2). The game ends because only one stone is remaining in the row.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stoneValue = [7,7,7,7,7,7,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 28\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stoneValue = [4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stoneValue.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stoneValue[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We need to try all possible divisions for the current row to get the max score.",
+    "As calculating all possible divisions will lead us to calculate some sub-problems more than once, we need to think of dynamic programming."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,2,3,4,5,5]",
+      "RawExpectedOutput": "18"
+    },
+    {
+      "RawInput": "[7,7,7,7,7,7,7]",
+      "RawExpectedOutput": "28"
+    },
+    {
+      "RawInput": "[4]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1391243+00:00",
+  "Url": "https://leetcode.com/problems/stone-game-v/"
+}

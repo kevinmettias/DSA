@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3558,
+  "FrontendId": 3286,
+  "Title": "Find a Safe Walk Through a Grid",
+  "TitleSlug": "find-a-safe-walk-through-a-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 55.4,
+  "TotalAccepted": 138088,
+  "TotalSubmissions": 249366,
+  "Likes": 544,
+  "Dislikes": 22,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E binary matrix \u003Ccode\u003Egrid\u003C/code\u003E and an integer \u003Ccode\u003Ehealth\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou start on the upper-left corner \u003Ccode\u003E(0, 0)\u003C/code\u003E and would like to get to the lower-right corner \u003Ccode\u003E(m - 1, n - 1)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou can move up, down, left, or right from one cell to another adjacent cell as long as your health \u003Cem\u003Eremains\u003C/em\u003E \u003Cstrong\u003Epositive\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003ECells \u003Ccode\u003E(i, j)\u003C/code\u003E with \u003Ccode\u003Egrid[i][j] = 1\u003C/code\u003E are considered \u003Cstrong\u003Eunsafe\u003C/strong\u003E and reduce your health by 1.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if you can reach the final cell with a health value of 1 or more, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[0,1,0,0,0],[0,1,0,1,0],[0,0,0,1,0]], health = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe final cell can be reached safely by walking along the gray cells below.\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/08/04/3868_examples_1drawio.png\u0022 style=\u0022width: 301px; height: 121px;\u0022 /\u003E\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[0,1,1,0,0,0],[1,0,1,0,0,0],[0,1,1,1,0,1],[0,0,1,0,1,0]], health = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EA minimum of 4 health points is needed to reach the final cell safely.\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/08/04/3868_examples_2drawio.png\u0022 style=\u0022width: 361px; height: 161px;\u0022 /\u003E\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[1,1,1],[1,0,1],[1,1,1]], health = 5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe final cell can be reached safely by walking along the gray cells below.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/08/04/3868_examples_3drawio.png\u0022 style=\u0022width: 181px; height: 121px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAny path that does not go through the cell \u003Ccode\u003E(1, 1)\u003C/code\u003E is unsafe since your health will drop to 0 when reaching the final cell.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E2 \u0026lt;= m * n\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= health \u0026lt;= m \u002B n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is either 0 or 1.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use 01 BFS."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,0,0,0],[0,1,0,1,0],[0,0,0,1,0]]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[0,1,1,0,0,0],[1,0,1,0,0,0],[0,1,1,1,0,1],[0,0,1,0,1,0]]\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,1,1],[1,0,1],[1,1,1]]\n5",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2108+00:00",
+  "Url": "https://leetcode.com/problems/find-a-safe-walk-through-a-grid/"
+}

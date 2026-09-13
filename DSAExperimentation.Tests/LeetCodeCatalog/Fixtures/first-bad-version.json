@@ -1,0 +1,31 @@
+{
+  "QuestionId": 278,
+  "FrontendId": 278,
+  "Title": "First Bad Version",
+  "TitleSlug": "first-bad-version",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Binary Search",
+    "Interactive"
+  ],
+  "AcceptanceRatePercent": 47.6,
+  "TotalAccepted": 2254803,
+  "TotalSubmissions": 4732912,
+  "Likes": 9157,
+  "Dislikes": 3454,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.\u003C/p\u003E\n\n\u003Cp\u003ESuppose you have \u003Ccode\u003En\u003C/code\u003E versions \u003Ccode\u003E[1, 2, ..., n]\u003C/code\u003E and you want to find out the first bad one, which causes all the following ones to be bad.\u003C/p\u003E\n\n\u003Cp\u003EYou are given an API \u003Ccode\u003Ebool isBadVersion(version)\u003C/code\u003E which returns whether \u003Ccode\u003Eversion\u003C/code\u003E is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, bad = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\ncall isBadVersion(3) -\u0026gt; false\ncall isBadVersion(5)\u0026nbsp;-\u0026gt; true\ncall isBadVersion(4)\u0026nbsp;-\u0026gt; true\nThen 4 is the first bad version.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1, bad = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= bad \u0026lt;= n \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n4",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "1\n1",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3237795+00:00",
+  "Url": "https://leetcode.com/problems/first-bad-version/"
+}

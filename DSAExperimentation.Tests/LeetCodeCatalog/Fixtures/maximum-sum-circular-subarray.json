@@ -1,0 +1,42 @@
+{
+  "QuestionId": 954,
+  "FrontendId": 918,
+  "Title": "Maximum Sum Circular Subarray",
+  "TitleSlug": "maximum-sum-circular-subarray",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Dynamic Programming",
+    "Queue",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 51.4,
+  "TotalAccepted": 467161,
+  "TotalSubmissions": 908129,
+  "Likes": 7494,
+  "Dislikes": 354,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a \u003Cstrong\u003Ecircular integer array\u003C/strong\u003E \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, return \u003Cem\u003Ethe maximum possible sum of a non-empty \u003Cstrong\u003Esubarray\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Ecircular array\u003C/strong\u003E means the end of the array connects to the beginning of the array. Formally, the next element of \u003Ccode\u003Enums[i]\u003C/code\u003E is \u003Ccode\u003Enums[(i \u002B 1) % n]\u003C/code\u003E and the previous element of \u003Ccode\u003Enums[i]\u003C/code\u003E is \u003Ccode\u003Enums[(i - 1 \u002B n) % n]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E may only include each element of the fixed buffer \u003Ccode\u003Enums\u003C/code\u003E at most once. Formally, for a subarray \u003Ccode\u003Enums[i], nums[i \u002B 1], ..., nums[j]\u003C/code\u003E, there does not exist \u003Ccode\u003Ei \u0026lt;= k1\u003C/code\u003E, \u003Ccode\u003Ek2 \u0026lt;= j\u003C/code\u003E with \u003Ccode\u003Ek1 % n == k2 % n\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,-2,3,-2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Subarray [3] has maximum sum 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,-3,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Subarray [5,5] has maximum sum 5 \u002B 5 = 10.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-3,-2,-3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Subarray [-2] has maximum sum -2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-3 * 10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For those of you who are familiar with the \u003Cb\u003EKadane\u0027s algorithm\u003C/b\u003E, think in terms of that. For the newbies, Kadane\u0027s algorithm is used to finding the maximum sum subarray from a given array. This problem is a twist on that idea and it is advisable to read up on that algorithm first before starting this problem. Unless you already have a great algorithm brewing up in your mind in which case, go right ahead!",
+    "What is an alternate way of representing a circular array so that it appears to be a straight array?\r\nEssentially, there are two cases of this problem that we need to take care of. Let\u0027s look at the figure below to understand those two cases:\r\n\r\n\u003Cbr\u003E\r\n\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2019/10/20/circular_subarray_hint_1.png\u0022 width=\u0022700\u0022/\u003E",
+    "The first case can be handled by the good old Kadane\u0027s algorithm. However, is there a smarter way of going about handling the second case as well?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,-2,3,-2]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[5,-3,5]",
+      "RawExpectedOutput": "10"
+    },
+    {
+      "RawInput": "[-3,-2,-3]",
+      "RawExpectedOutput": "-2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9449336+00:00",
+  "Url": "https://leetcode.com/problems/maximum-sum-circular-subarray/"
+}

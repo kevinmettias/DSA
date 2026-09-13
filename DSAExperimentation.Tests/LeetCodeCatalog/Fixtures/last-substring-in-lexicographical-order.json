@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1133,
+  "FrontendId": 1163,
+  "Title": "Last Substring in Lexicographical Order",
+  "TitleSlug": "last-substring-in-lexicographical-order",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Lyndon Factorization"
+  ],
+  "AcceptanceRatePercent": 35.2,
+  "TotalAccepted": 44748,
+  "TotalSubmissions": 126976,
+  "Likes": 673,
+  "Dislikes": 459,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, return \u003Cem\u003Ethe last substring of\u003C/em\u003E \u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003Ein lexicographical order\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abab\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;bab\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The substrings are [\u0026quot;a\u0026quot;, \u0026quot;ab\u0026quot;, \u0026quot;aba\u0026quot;, \u0026quot;abab\u0026quot;, \u0026quot;b\u0026quot;, \u0026quot;ba\u0026quot;, \u0026quot;bab\u0026quot;]. The lexicographically maximum substring is \u0026quot;bab\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;leetcode\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;tcode\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 4 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E contains only lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Assume that the answer is a sub-string from index i to j. If you add the character at index j\u002B1 you get a better answer.",
+    "The answer is always a suffix of the given string.",
+    "Since the limits are high, we need an efficient data structure.",
+    "Use suffix array."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abab\u0022",
+      "RawExpectedOutput": "\u0022bab\u0022"
+    },
+    {
+      "RawInput": "\u0022leetcode\u0022",
+      "RawExpectedOutput": "\u0022tcode\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6478552+00:00",
+  "Url": "https://leetcode.com/problems/last-substring-in-lexicographical-order/"
+}

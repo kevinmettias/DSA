@@ -1,0 +1,35 @@
+{
+  "QuestionId": 69,
+  "FrontendId": 69,
+  "Title": "Sqrt(x)",
+  "TitleSlug": "sqrtx",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Binary Search",
+    "Newton\u0027s Method"
+  ],
+  "AcceptanceRatePercent": 42.3,
+  "TotalAccepted": 3440740,
+  "TotalSubmissions": 8137499,
+  "Likes": 9962,
+  "Dislikes": 4657,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a non-negative integer \u003Ccode\u003Ex\u003C/code\u003E, return \u003Cem\u003Ethe square root of \u003C/em\u003E\u003Ccode\u003Ex\u003C/code\u003E\u003Cem\u003E rounded down to the nearest integer\u003C/em\u003E. The returned integer should be \u003Cstrong\u003Enon-negative\u003C/strong\u003E as well.\u003C/p\u003E\n\n\u003Cp\u003EYou \u003Cstrong\u003Emust not use\u003C/strong\u003E any built-in exponent function or operator.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, do not use \u003Ccode\u003Epow(x, 0.5)\u003C/code\u003E in c\u002B\u002B or \u003Ccode\u003Ex ** 0.5\u003C/code\u003E in python.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The square root of 4 is 2, so we return 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 8\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try exploring all integers. (Credits: @annujoshi)",
+    "Use the sorted property of integers to reduced the search space. (Credits: @annujoshi)"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "8",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.120353+00:00",
+  "Url": "https://leetcode.com/problems/sqrtx/"
+}

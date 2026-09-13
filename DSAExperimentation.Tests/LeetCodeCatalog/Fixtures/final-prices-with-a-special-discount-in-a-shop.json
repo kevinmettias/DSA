@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1570,
+  "FrontendId": 1475,
+  "Title": "Final Prices With a Special Discount in a Shop",
+  "TitleSlug": "final-prices-with-a-special-discount-in-a-shop",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 84.3,
+  "TotalAccepted": 455430,
+  "TotalSubmissions": 539963,
+  "Likes": 3004,
+  "Dislikes": 159,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Eprices\u003C/code\u003E where \u003Ccode\u003Eprices[i]\u003C/code\u003E is the price of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E item in a shop.\u003C/p\u003E\n\n\u003Cp\u003EThere is a special discount for items in the shop. If you buy the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E item, then you will receive a discount equivalent to \u003Ccode\u003Eprices[j]\u003C/code\u003E where \u003Ccode\u003Ej\u003C/code\u003E is the minimum index such that \u003Ccode\u003Ej \u0026gt; i\u003C/code\u003E and \u003Ccode\u003Eprices[j] \u0026lt;= prices[i]\u003C/code\u003E. Otherwise, you will not receive any discount at all.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer array \u003Ccode\u003Eanswer\u003C/code\u003E where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the final price you will pay for the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E item of the shop, considering the special discount.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E prices = [8,4,6,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [4,2,4,2,3]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFor item 0 with price[0]=8 you will receive a discount equivalent to prices[1]=4, therefore, the final price you will pay is 8 - 4 = 4.\nFor item 1 with price[1]=4 you will receive a discount equivalent to prices[3]=2, therefore, the final price you will pay is 4 - 2 = 2.\nFor item 2 with price[2]=6 you will receive a discount equivalent to prices[3]=2, therefore, the final price you will pay is 6 - 2 = 4.\nFor items 3 and 4 you will not receive any discount at all.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E prices = [1,2,3,4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,4,5]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this case, for all items, you will not receive any discount at all.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E prices = [10,1,1,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [9,0,1,6]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= prices.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= prices[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use brute force: For the ith item in the shop with a loop find the first position j satisfying the conditions and apply the discount, otherwise, the discount is 0."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[8,4,6,2,3]",
+      "RawExpectedOutput": "[4,2,4,2,3]"
+    },
+    {
+      "RawInput": "[1,2,3,4,5]",
+      "RawExpectedOutput": "[1,2,3,4,5]"
+    },
+    {
+      "RawInput": "[10,1,1,6]",
+      "RawExpectedOutput": "[9,0,1,6]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2103586+00:00",
+  "Url": "https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/"
+}

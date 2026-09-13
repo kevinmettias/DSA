@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3375,
+  "FrontendId": 3116,
+  "Title": "Kth Smallest Amount With Single Denomination Combination",
+  "TitleSlug": "kth-smallest-amount-with-single-denomination-combination",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Binary Search",
+    "Bit Manipulation",
+    "Combinatorics",
+    "Number Theory"
+  ],
+  "AcceptanceRatePercent": 50.7,
+  "TotalAccepted": 82024,
+  "TotalSubmissions": 161935,
+  "Likes": 569,
+  "Dislikes": 34,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Ecoins\u003C/code\u003E representing coins of different denominations and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou have an infinite number of coins of each denomination. However, you are \u003Cstrong\u003Enot allowed\u003C/strong\u003E to combine coins of different denominations.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cstrong\u003Esmallest\u003C/strong\u003E amount that can be made using these coins.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022\n    border-color: var(--border-tertiary);\n    border-left-width: 2px;\n    color: var(--text-secondary);\n    font-size: .875rem;\n    margin-bottom: 1rem;\n    margin-top: 1rem;\n    overflow: visible;\n    padding-left: 1rem;\n\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003Ecoins = [3,6,9], k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003E 9\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E The given coins can make the following amounts:\u003Cbr /\u003E\nCoin 3 produces multiples of 3: 3, 6, 9, 12, 15, etc.\u003Cbr /\u003E\nCoin 6 produces multiples of 6: 6, 12, 18, 24, etc.\u003Cbr /\u003E\nCoin 9 produces multiples of 9: 9, 18, 27, 36, etc.\u003Cbr /\u003E\nAll of the coins combined produce: 3, 6, \u003Cu\u003E\u003Cstrong\u003E9\u003C/strong\u003E\u003C/u\u003E, 12, 15, etc.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022\n    border-color: var(--border-tertiary);\n    border-left-width: 2px;\n    color: var(--text-secondary);\n    font-size: .875rem;\n    margin-bottom: 1rem;\n    margin-top: 1rem;\n    overflow: visible;\n    padding-left: 1rem;\n\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E\u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003E coins = [5,2], k = 7\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E\u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003E 12 \u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E The given coins can make the following amounts:\u003Cbr /\u003E\nCoin 5 produces multiples of 5: 5, 10, 15, 20, etc.\u003Cbr /\u003E\nCoin 2 produces multiples of 2: 2, 4, 6, 8, 10, 12, etc.\u003Cbr /\u003E\nAll of the coins combined produce: 2, 4, 5, 6, 8, 10, \u003Cu\u003E\u003Cstrong\u003E12\u003C/strong\u003E\u003C/u\u003E, 14, 15, etc.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= coins.length \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= coins[i] \u0026lt;= 25\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 2 * 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecoins\u003C/code\u003E contains pairwise distinct integers.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Binary search the answer \u003Ccode\u003Ex\u003C/code\u003E.",
+    "Use the inclusion-exclusion principle to count the number of distinct amounts that can be made up to \u003Ccode\u003Ex\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,6,9]\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,2]\n7",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6095869+00:00",
+  "Url": "https://leetcode.com/problems/kth-smallest-amount-with-single-denomination-combination/"
+}

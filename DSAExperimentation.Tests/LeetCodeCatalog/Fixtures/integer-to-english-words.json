@@ -1,0 +1,40 @@
+{
+  "QuestionId": 273,
+  "FrontendId": 273,
+  "Title": "Integer to English Words",
+  "TitleSlug": "integer-to-english-words",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 35.2,
+  "TotalAccepted": 595568,
+  "TotalSubmissions": 1691269,
+  "Likes": 3887,
+  "Dislikes": 6848,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EConvert a non-negative integer \u003Ccode\u003Enum\u003C/code\u003E to its English words representation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = 123\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;One Hundred Twenty Three\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = 12345\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;Twelve Thousand Three Hundred Forty Five\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = 1234567\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= num \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Did you see a pattern in dividing the number into chunk of words? For example, 123 and 123000.",
+    "Group the number by thousands (3 digits). You can write a helper function that takes a number less than 1000 and convert just that chunk to words.",
+    "There are many edge cases. What are some good test cases? Does your code work with input such as 0? Or 1000010? (middle chunk is zero and should not be printed out)"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "123",
+      "RawExpectedOutput": "\u0022One Hundred Twenty Three\u0022"
+    },
+    {
+      "RawInput": "12345",
+      "RawExpectedOutput": "\u0022Twelve Thousand Three Hundred Forty Five\u0022"
+    },
+    {
+      "RawInput": "1234567",
+      "RawExpectedOutput": "\u0022One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5266118+00:00",
+  "Url": "https://leetcode.com/problems/integer-to-english-words/"
+}

@@ -1,0 +1,34 @@
+{
+  "QuestionId": 933,
+  "FrontendId": 897,
+  "Title": "Increasing Order Search Tree",
+  "TitleSlug": "increasing-order-search-tree",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Stack",
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 79.1,
+  "TotalAccepted": 349809,
+  "TotalSubmissions": 442138,
+  "Likes": 4513,
+  "Dislikes": 686,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary search tree, rearrange the tree in \u003Cstrong\u003Ein-order\u003C/strong\u003E so that the leftmost node in the tree is now the root of the tree, and every node has no left child and only one right child.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/17/ex1.jpg\u0022 style=\u0022width: 600px; height: 350px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [5,3,6,2,4,null,8,1,null,null,null,7,9]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/17/ex2.jpg\u0022 style=\u0022width: 300px; height: 114px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [5,1,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,null,5,null,7]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the given tree will be in the range \u003Ccode\u003E[1, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,3,6,2,4,null,8,1,null,null,null,7,9]",
+      "RawExpectedOutput": "[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]"
+    },
+    {
+      "RawInput": "[5,1,7]",
+      "RawExpectedOutput": "[1,null,5,null,7]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4906213+00:00",
+  "Url": "https://leetcode.com/problems/increasing-order-search-tree/"
+}

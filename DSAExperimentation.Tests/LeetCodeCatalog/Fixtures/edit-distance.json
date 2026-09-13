@@ -1,0 +1,31 @@
+{
+  "QuestionId": 72,
+  "FrontendId": 72,
+  "Title": "Edit Distance",
+  "TitleSlug": "edit-distance",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 61.3,
+  "TotalAccepted": 1587442,
+  "TotalSubmissions": 2591335,
+  "Likes": 16730,
+  "Dislikes": 339,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two strings \u003Ccode\u003Eword1\u003C/code\u003E and \u003Ccode\u003Eword2\u003C/code\u003E, return \u003Cem\u003Ethe minimum number of operations required to convert \u003Ccode\u003Eword1\u003C/code\u003E to \u003Ccode\u003Eword2\u003C/code\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou have the following three operations permitted on a word:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EInsert a character\u003C/li\u003E\n\t\u003Cli\u003EDelete a character\u003C/li\u003E\n\t\u003Cli\u003EReplace a character\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word1 = \u0026quot;horse\u0026quot;, word2 = \u0026quot;ros\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nhorse -\u0026gt; rorse (replace \u0026#39;h\u0026#39; with \u0026#39;r\u0026#39;)\nrorse -\u0026gt; rose (remove \u0026#39;r\u0026#39;)\nrose -\u0026gt; ros (remove \u0026#39;e\u0026#39;)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word1 = \u0026quot;intention\u0026quot;, word2 = \u0026quot;execution\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nintention -\u0026gt; inention (remove \u0026#39;t\u0026#39;)\ninention -\u0026gt; enention (replace \u0026#39;i\u0026#39; with \u0026#39;e\u0026#39;)\nenention -\u0026gt; exention (replace \u0026#39;n\u0026#39; with \u0026#39;x\u0026#39;)\nexention -\u0026gt; exection (replace \u0026#39;n\u0026#39; with \u0026#39;c\u0026#39;)\nexection -\u0026gt; execution (insert \u0026#39;u\u0026#39;)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= word1.length, word2.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eword1\u003C/code\u003E and \u003Ccode\u003Eword2\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022horse\u0022\n\u0022ros\u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "\u0022intention\u0022\n\u0022execution\u0022",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1570076+00:00",
+  "Url": "https://leetcode.com/problems/edit-distance/"
+}

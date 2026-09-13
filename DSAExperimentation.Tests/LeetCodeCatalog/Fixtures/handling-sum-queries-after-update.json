@@ -1,0 +1,33 @@
+{
+  "QuestionId": 2703,
+  "FrontendId": 2569,
+  "Title": "Handling Sum Queries After Update",
+  "TitleSlug": "handling-sum-queries-after-update",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Segment Tree"
+  ],
+  "AcceptanceRatePercent": 32,
+  "TotalAccepted": 8756,
+  "TotalSubmissions": 27339,
+  "Likes": 210,
+  "Dislikes": 25,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two \u003Cstrong\u003E0-indexed\u003C/strong\u003E arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E and a 2D array \u003Ccode\u003Equeries\u003C/code\u003E of queries. There are three types of queries:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EFor a query of type 1, \u003Ccode\u003Equeries[i]\u0026nbsp;= [1, l, r]\u003C/code\u003E. Flip the values from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003E1\u003C/code\u003E and from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003E0\u003C/code\u003E in \u003Ccode\u003Enums1\u003C/code\u003E\u0026nbsp;from index \u003Ccode\u003El\u003C/code\u003E to index \u003Ccode\u003Er\u003C/code\u003E. Both \u003Ccode\u003El\u003C/code\u003E and \u003Ccode\u003Er\u003C/code\u003E are \u003Cstrong\u003E0-indexed\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EFor a query of type 2, \u003Ccode\u003Equeries[i]\u0026nbsp;= [2, p, 0]\u003C/code\u003E. For every index \u003Ccode\u003E0 \u0026lt;= i \u0026lt; n\u003C/code\u003E, set\u0026nbsp;\u003Ccode\u003Enums2[i] =\u0026nbsp;nums2[i]\u0026nbsp;\u002B nums1[i]\u0026nbsp;* p\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EFor a query of type 3, \u003Ccode\u003Equeries[i]\u0026nbsp;= [3, 0, 0]\u003C/code\u003E. Find the sum of the elements in \u003Ccode\u003Enums2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array containing all the answers to the third type\u0026nbsp;queries.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,0,1], nums2 = [0,0,0], queries = [[1,1,1],[2,1,0],[3,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E After the first query nums1 becomes [1,1,1]. After the second query, nums2 becomes [1,1,1], so the answer to the third query is 3. Thus, [3] is returned.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1], nums2 = [5], queries = [[2,0,0],[3,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [5]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E After the first query, nums2 remains [5], so the answer to the second query is 5. Thus, [5] is returned.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums1.length,nums2.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums1.length = nums2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003Equeries[i].length = 3\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E0 \u0026lt;= l \u0026lt;= r \u0026lt;= nums1.length - 1\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E0 \u0026lt;= p \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums1[i] \u0026lt;= 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums2[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use the Lazy Segment Tree to process the queries quickly."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,0,1]\n[0,0,0]\n[[1,1,1],[2,1,0],[3,0,0]]",
+      "RawExpectedOutput": "[3]"
+    },
+    {
+      "RawInput": "[1]\n[5]\n[[2,0,0],[3,0,0]]",
+      "RawExpectedOutput": "[5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4321967+00:00",
+  "Url": "https://leetcode.com/problems/handling-sum-queries-after-update/"
+}

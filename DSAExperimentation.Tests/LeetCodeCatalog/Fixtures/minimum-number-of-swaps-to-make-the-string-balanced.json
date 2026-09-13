@@ -1,0 +1,42 @@
+{
+  "QuestionId": 2095,
+  "FrontendId": 1963,
+  "Title": "Minimum Number of Swaps to Make the String Balanced",
+  "TitleSlug": "minimum-number-of-swaps-to-make-the-string-balanced",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Stack",
+    "Greedy",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 78,
+  "TotalAccepted": 253911,
+  "TotalSubmissions": 325320,
+  "Likes": 2595,
+  "Dislikes": 152,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E of \u003Cstrong\u003Eeven\u003C/strong\u003E length \u003Ccode\u003En\u003C/code\u003E. The string consists of \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003En / 2\u003C/code\u003E opening brackets \u003Ccode\u003E\u0026#39;[\u0026#39;\u003C/code\u003E and \u003Ccode\u003En / 2\u003C/code\u003E closing brackets \u003Ccode\u003E\u0026#39;]\u0026#39;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA string is called \u003Cstrong\u003Ebalanced\u003C/strong\u003E if and only if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIt is the empty string, or\u003C/li\u003E\n\t\u003Cli\u003EIt can be written as \u003Ccode\u003EAB\u003C/code\u003E, where both \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E are \u003Cstrong\u003Ebalanced\u003C/strong\u003E strings, or\u003C/li\u003E\n\t\u003Cli\u003EIt can be written as \u003Ccode\u003E[C]\u003C/code\u003E, where \u003Ccode\u003EC\u003C/code\u003E is a \u003Cstrong\u003Ebalanced\u003C/strong\u003E string.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou may swap the brackets at \u003Cstrong\u003Eany\u003C/strong\u003E two indices \u003Cstrong\u003Eany\u003C/strong\u003E number of times.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of swaps to make \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003E\u003Cstrong\u003Ebalanced\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;][][\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can make the string balanced by swapping index 0 with index 3.\nThe resulting string is \u0026quot;[[]]\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;]]][[[\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can do the following to make the string balanced:\n- Swap index 0 with index 4. s = \u0026quot;[]][][\u0026quot;.\n- Swap index 1 with index 5. s = \u0026quot;[[][]]\u0026quot;.\nThe resulting string is \u0026quot;[[][]]\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;[]\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The string is already balanced.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == s.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En\u003C/code\u003E is even.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;[\u0026#39; \u003C/code\u003Eor \u003Ccode\u003E\u0026#39;]\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe number of opening brackets \u003Ccode\u003E\u0026#39;[\u0026#39;\u003C/code\u003E equals \u003Ccode\u003En / 2\u003C/code\u003E, and the number of closing brackets \u003Ccode\u003E\u0026#39;]\u0026#39;\u003C/code\u003E equals \u003Ccode\u003En / 2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Iterate over the string and keep track of the number of opening and closing brackets on each step.",
+    "If the number of closing brackets is ever larger, you need to make a swap.",
+    "Swap it with the opening bracket closest to the end of s."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022][][\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022]]][[[\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022[]\u0022",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0770515+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/"
+}

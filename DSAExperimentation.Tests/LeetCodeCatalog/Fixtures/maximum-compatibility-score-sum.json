@@ -1,0 +1,44 @@
+{
+  "QuestionId": 2078,
+  "FrontendId": 1947,
+  "Title": "Maximum Compatibility Score Sum",
+  "TitleSlug": "maximum-compatibility-score-sum",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Bitmask",
+    "Hungarian Algorithm",
+    "Bipartite Graph",
+    "Successive Shortest Path Algorithm",
+    "Matching (Graph)",
+    "Perfect Matching",
+    "Minimum-Cost Flow",
+    "Flow Network"
+  ],
+  "AcceptanceRatePercent": 65,
+  "TotalAccepted": 36125,
+  "TotalSubmissions": 55547,
+  "Likes": 841,
+  "Dislikes": 33,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a survey that consists of \u003Ccode\u003En\u003C/code\u003E questions where each question\u0026#39;s answer is either \u003Ccode\u003E0\u003C/code\u003E (no) or \u003Ccode\u003E1\u003C/code\u003E (yes).\u003C/p\u003E\n\n\u003Cp\u003EThe survey was given to \u003Ccode\u003Em\u003C/code\u003E students numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003Em - 1\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E mentors numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003Em - 1\u003C/code\u003E. The answers of the students are represented by a 2D integer array \u003Ccode\u003Estudents\u003C/code\u003E where \u003Ccode\u003Estudents[i]\u003C/code\u003E is an integer array that contains the answers of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E student (\u003Cstrong\u003E0-indexed\u003C/strong\u003E). The answers of the mentors are represented by a 2D integer array \u003Ccode\u003Ementors\u003C/code\u003E where \u003Ccode\u003Ementors[j]\u003C/code\u003E is an integer array that contains the answers of the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E mentor (\u003Cstrong\u003E0-indexed\u003C/strong\u003E).\u003C/p\u003E\n\n\u003Cp\u003EEach student will be assigned to \u003Cstrong\u003Eone\u003C/strong\u003E mentor, and each mentor will have \u003Cstrong\u003Eone\u003C/strong\u003E student assigned to them. The \u003Cstrong\u003Ecompatibility score\u003C/strong\u003E of a student-mentor pair is the number of answers that are the same for both the student and the mentor.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, if the student\u0026#39;s answers were \u003Ccode\u003E[1, \u003Cu\u003E0\u003C/u\u003E, \u003Cu\u003E1\u003C/u\u003E]\u003C/code\u003E and the mentor\u0026#39;s answers were \u003Ccode\u003E[0, \u003Cu\u003E0\u003C/u\u003E, \u003Cu\u003E1\u003C/u\u003E]\u003C/code\u003E, then their compatibility score is 2 because only the second and the third answers are the same.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are tasked with finding the optimal student-mentor pairings to \u003Cstrong\u003Emaximize\u003C/strong\u003E the\u003Cstrong\u003E sum of the compatibility scores\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven \u003Ccode\u003Estudents\u003C/code\u003E and \u003Ccode\u003Ementors\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Emaximum compatibility score sum\u003C/strong\u003E that can be achieved.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E students = [[1,1,0],[1,0,1],[0,0,1]], mentors = [[1,0,0],[0,0,1],[1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 8\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;We assign students to mentors in the following way:\n- student 0 to mentor 2 with a compatibility score of 3.\n- student 1 to mentor 0 with a compatibility score of 2.\n- student 2 to mentor 1 with a compatibility score of 3.\nThe compatibility score sum is 3 \u002B 2 \u002B 3 = 8.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E students = [[0,0],[0,0],[0,0]], mentors = [[1,1],[1,1],[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The compatibility score of any student-mentor pair is 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == students.length == mentors.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == students[i].length == mentors[j].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 8\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estudents[i][k]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ementors[j][k]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Calculate the compatibility score for each student-mentor pair.",
+    "Try every permutation of students with the original mentors array."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1,0],[1,0,1],[0,0,1]]\n[[1,0,0],[0,0,1],[1,1,0]]",
+      "RawExpectedOutput": "8"
+    },
+    {
+      "RawInput": "[[0,0],[0,0],[0,0]]\n[[1,1],[1,1],[1,1]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8805563+00:00",
+  "Url": "https://leetcode.com/problems/maximum-compatibility-score-sum/"
+}

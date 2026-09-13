@@ -1,0 +1,41 @@
+{
+  "QuestionId": 4251,
+  "FrontendId": 3881,
+  "Title": "Direction Assignments with Exactly K Visible People",
+  "TitleSlug": "direction-assignments-with-exactly-k-visible-people",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 35.7,
+  "TotalAccepted": 16201,
+  "TotalSubmissions": 45332,
+  "Likes": 64,
+  "Dislikes": 18,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given three integers \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003Epos\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E people standing in a line indexed from 0 to \u003Ccode\u003En - 1\u003C/code\u003E. Each person \u003Cstrong\u003Eindependently\u003C/strong\u003E chooses a direction:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E: \u003Cstrong\u003Evisible\u003C/strong\u003E only to people on their \u003Cstrong\u003Eright\u003C/strong\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E: \u003Cstrong\u003Evisible\u003C/strong\u003E only to people on their \u003Cstrong\u003Eleft\u003C/strong\u003E\u003C/li\u003E\n\u003C/ul\u003E\nA person at index \u003Ccode\u003Epos\u003C/code\u003E sees others as follows:\n\n\u003Cul\u003E\n\t\u003Cli\u003EA person \u003Ccode\u003Ei \u0026lt; pos\u003C/code\u003E is visible if and only if they choose \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EA person \u003Ccode\u003Ei \u0026gt; pos\u003C/code\u003E is visible if and only if they choose \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the number of possible direction assignments such that the person at index \u003Ccode\u003Epos\u003C/code\u003E sees \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E people.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, pos = 1, k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIndex 0 is to the left of \u003Ccode\u003Epos = 1\u003C/code\u003E, and index 2 is to the right of \u003Ccode\u003Epos = 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ETo see \u003Ccode\u003Ek = 0\u003C/code\u003E people, index 0 must choose \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E and index 2 must choose \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E, keeping both invisible.\u003C/li\u003E\n\t\u003Cli\u003EThe person at index 1 can choose \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E since it does not affect the count. Thus, the answer is 2.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, pos = 2, k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIndex 0 and index 1 are left of \u003Ccode\u003Epos = 2\u003C/code\u003E, and there is no index to the right.\u003C/li\u003E\n\t\u003Cli\u003ETo see \u003Ccode\u003Ek = 1\u003C/code\u003E person, exactly one of index 0 or index 1 must choose \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E, and the other must choose \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere are 2 ways to choose which index is visible from the left.\u003C/li\u003E\n\t\u003Cli\u003EThe person at index 2 can choose \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E since it does not affect the count. Thus, the answer is \u003Ccode\u003E2 \u002B 2 = 4\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 1, pos = 0, k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere are no indices to the left or right of \u003Ccode\u003Epos = 0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ETo see \u003Ccode\u003Ek = 0\u003C/code\u003E people, no additional condition is required.\u003C/li\u003E\n\t\u003Cli\u003EThe person at index 0 can choose \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E. Thus, the answer is 2.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= pos, k \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use combinatorics",
+    "Count the visible people on the left and right independently. Let \u003Ccode\u003Ea = pos\u003C/code\u003E and \u003Ccode\u003Eb = n - pos - 1\u003C/code\u003E.",
+    "To see exactly \u003Ccode\u003Ek\u003C/code\u003E people, choose \u003Ccode\u003Ei\u003C/code\u003E visible people from the left side and \u003Ccode\u003Ek - i\u003C/code\u003E from the right side.",
+    "Each chosen left person must pick \u003Ccode\u003EL\u003C/code\u003E, each chosen right person must pick \u003Ccode\u003ER\u003C/code\u003E, and every other person can pick either direction.",
+    "Sum over all valid \u003Ccode\u003Ei\u003C/code\u003E, multiplying the two binomial choices and the free choices for the remaining people."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n1\n0",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n2\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1\n0\n0",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1303165+00:00",
+  "Url": "https://leetcode.com/problems/direction-assignments-with-exactly-k-visible-people/"
+}

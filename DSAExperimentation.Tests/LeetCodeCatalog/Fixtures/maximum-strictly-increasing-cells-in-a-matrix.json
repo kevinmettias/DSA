@@ -1,0 +1,45 @@
+{
+  "QuestionId": 2818,
+  "FrontendId": 2713,
+  "Title": "Maximum Strictly Increasing Cells in a Matrix",
+  "TitleSlug": "maximum-strictly-increasing-cells-in-a-matrix",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Binary Search",
+    "Dynamic Programming",
+    "Memoization",
+    "Sorting",
+    "Matrix",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 31.5,
+  "TotalAccepted": 17192,
+  "TotalSubmissions": 54651,
+  "Likes": 643,
+  "Dislikes": 22,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a \u003Cstrong\u003E1-indexed\u003C/strong\u003E\u0026nbsp;\u003Ccode\u003Em x n\u003C/code\u003E integer matrix \u003Ccode\u003Emat\u003C/code\u003E, you can select any cell in the matrix as your \u003Cstrong\u003Estarting cell\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFrom the starting cell, you can move to any other cell \u003Cstrong\u003Ein the\u003C/strong\u003E \u003Cstrong\u003Esame row or column\u003C/strong\u003E, but only if the value of the destination cell is \u003Cstrong\u003Estrictly greater\u003C/strong\u003E than the value of the current cell. You can repeat this process as many times as possible, moving from cell to cell until you can no longer make any moves.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to find the \u003Cstrong\u003Emaximum number of cells\u003C/strong\u003E that you can visit in the matrix by starting from some cell.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer denoting the maximum number of cells that can be visited.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/04/23/diag1drawio.png\u0022 style=\u0022width: 200px; height: 176px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[3,1],[3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The image shows how we can visit 2 cells starting from row 1, column 2. It can be shown that we cannot visit more than 2 cells no matter where we start from, so the answer is 2. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/04/23/diag3drawio.png\u0022 style=\u0022width: 200px; height: 176px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[1,1],[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Since the cells must be strictly increasing, we can only visit one cell in this example. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/04/23/diag4drawio.png\u0022 style=\u0022width: 350px; height: 250px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[3,1,6],[-9,5,7]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The image above shows how we can visit 4 cells starting from row 2, column 1. It can be shown that we cannot visit more than 4 cells no matter where we start from, so the answer is 4. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == mat.length\u0026nbsp;\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == mat[i].length\u0026nbsp;\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E\u0026nbsp;\u0026lt;= mat[i][j] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can try to build the answer in a bottom-up fashion, starting from the smallest values and increasing to the larger values.",
+    "Going through the values in sorted order, we can store the maximum path we have seen so far for a row/column.",
+    "When we are at a cell, we check its row and column to find out the best previous smaller value that we\u2019ve got so far, and we use it to increment the current value of the row and column."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[3,1],[3,4]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[1,1],[1,1]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[3,1,6],[-9,5,7]]",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9321624+00:00",
+  "Url": "https://leetcode.com/problems/maximum-strictly-increasing-cells-in-a-matrix/"
+}

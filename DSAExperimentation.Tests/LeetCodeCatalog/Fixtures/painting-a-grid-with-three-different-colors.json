@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2061,
+  "FrontendId": 1931,
+  "Title": "Painting a Grid With Three Different Colors",
+  "TitleSlug": "painting-a-grid-with-three-different-colors",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Graph Coloring"
+  ],
+  "AcceptanceRatePercent": 76.9,
+  "TotalAccepted": 77507,
+  "TotalSubmissions": 100811,
+  "Likes": 947,
+  "Dislikes": 58,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integers \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E. Consider an \u003Ccode\u003Em x n\u003C/code\u003E grid where each cell is initially white. You can paint each cell \u003Cstrong\u003Ered\u003C/strong\u003E, \u003Cstrong\u003Egreen\u003C/strong\u003E, or \u003Cstrong\u003Eblue\u003C/strong\u003E. All cells \u003Cstrong\u003Emust\u003C/strong\u003E be painted.\u003C/p\u003E\n\n\u003Cp\u003EReturn\u003Cem\u003E the number of ways to color the grid with \u003Cstrong\u003Eno two adjacent cells having the same color\u003C/strong\u003E\u003C/em\u003E. Since the answer can be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/22/colorthegrid.png\u0022 style=\u0022width: 200px; height: 50px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 1, n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The three possible colorings are shown in the image above.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/22/copy-of-colorthegrid.png\u0022 style=\u0022width: 321px; height: 121px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 1, n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The six possible colorings are shown in the image above.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 5, n = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 580986\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Represent each colored column by a bitmask based on each cell color.",
+    "Use bitmasks DP with state (currentCell, prevColumn)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n1",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "1\n2",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "5\n5",
+      "RawExpectedOutput": "580986"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3589371+00:00",
+  "Url": "https://leetcode.com/problems/painting-a-grid-with-three-different-colors/"
+}

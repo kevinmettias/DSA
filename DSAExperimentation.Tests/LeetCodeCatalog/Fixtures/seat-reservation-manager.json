@@ -1,0 +1,26 @@
+{
+  "QuestionId": 1955,
+  "FrontendId": 1845,
+  "Title": "Seat Reservation Manager",
+  "TitleSlug": "seat-reservation-manager",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Design",
+    "Heap (Priority Queue)"
+  ],
+  "AcceptanceRatePercent": 67.4,
+  "TotalAccepted": 153907,
+  "TotalSubmissions": 228201,
+  "Likes": 1489,
+  "Dislikes": 92,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a system that manages the reservation state of \u003Ccode\u003En\u003C/code\u003E seats that are numbered from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESeatManager\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESeatManager(int n)\u003C/code\u003E Initializes a \u003Ccode\u003ESeatManager\u003C/code\u003E object that will manage \u003Ccode\u003En\u003C/code\u003E seats numbered from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E. All seats are initially available.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint reserve()\u003C/code\u003E Fetches the \u003Cstrong\u003Esmallest-numbered\u003C/strong\u003E unreserved seat, reserves it, and returns its number.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid unreserve(int seatNumber)\u003C/code\u003E Unreserves the seat with the given \u003Ccode\u003EseatNumber\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;SeatManager\u0026quot;, \u0026quot;reserve\u0026quot;, \u0026quot;reserve\u0026quot;, \u0026quot;unreserve\u0026quot;, \u0026quot;reserve\u0026quot;, \u0026quot;reserve\u0026quot;, \u0026quot;reserve\u0026quot;, \u0026quot;reserve\u0026quot;, \u0026quot;unreserve\u0026quot;]\n[[5], [], [], [2], [], [], [], [], [5]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, 2, null, 2, 3, 4, 5, null]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSeatManager seatManager = new SeatManager(5); // Initializes a SeatManager with 5 seats.\nseatManager.reserve();    // All seats are available, so return the lowest numbered seat, which is 1.\nseatManager.reserve();    // The available seats are [2,3,4,5], so return the lowest of them, which is 2.\nseatManager.unreserve(2); // Unreserve seat 2, so now the available seats are [2,3,4,5].\nseatManager.reserve();    // The available seats are [2,3,4,5], so return the lowest of them, which is 2.\nseatManager.reserve();    // The available seats are [3,4,5], so return the lowest of them, which is 3.\nseatManager.reserve();    // The available seats are [4,5], so return the lowest of them, which is 4.\nseatManager.reserve();    // The only available seat is seat 5, so return 5.\nseatManager.unreserve(5); // Unreserve seat 5, so now the available seats are [5].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= seatNumber \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EFor each call to \u003Ccode\u003Ereserve\u003C/code\u003E, it is guaranteed that there will be at least one unreserved seat.\u003C/li\u003E\n\t\u003Cli\u003EFor each call to \u003Ccode\u003Eunreserve\u003C/code\u003E, it is guaranteed that \u003Ccode\u003EseatNumber\u003C/code\u003E will be reserved.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls \u003Cstrong\u003Ein total\u003C/strong\u003E will be made to \u003Ccode\u003Ereserve\u003C/code\u003E and \u003Ccode\u003Eunreserve\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "You need a data structure that maintains the states of the seats. This data structure should also allow you to get the first available seat and flip the state of a seat in a reasonable time.",
+    "You can let the data structure contain the available seats. Then you want to be able to get the lowest element and erase an element, in a reasonable time.",
+    "Ordered sets support these operations."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9331802+00:00",
+  "Url": "https://leetcode.com/problems/seat-reservation-manager/"
+}

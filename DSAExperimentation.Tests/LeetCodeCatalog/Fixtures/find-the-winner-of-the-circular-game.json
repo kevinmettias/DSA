@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1951,
+  "FrontendId": 1823,
+  "Title": "Find the Winner of the Circular Game",
+  "TitleSlug": "find-the-winner-of-the-circular-game",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Recursion",
+    "Queue",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 82.3,
+  "TotalAccepted": 398783,
+  "TotalSubmissions": 484364,
+  "Likes": 4153,
+  "Dislikes": 132,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E friends that are playing a game. The friends are sitting in a circle and are numbered from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E in \u003Cstrong\u003Eclockwise order\u003C/strong\u003E. More formally, moving clockwise from the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E friend brings you to the \u003Ccode\u003E(i\u002B1)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E friend for \u003Ccode\u003E1 \u0026lt;= i \u0026lt; n\u003C/code\u003E, and moving clockwise from the \u003Ccode\u003En\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E friend brings you to the \u003Ccode\u003E1\u003Csup\u003Est\u003C/sup\u003E\u003C/code\u003E friend.\u003C/p\u003E\n\n\u003Cp\u003EThe rules of the game are as follows:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EStart\u003C/strong\u003E at the \u003Ccode\u003E1\u003Csup\u003Est\u003C/sup\u003E\u003C/code\u003E friend.\u003C/li\u003E\n\t\u003Cli\u003ECount the next \u003Ccode\u003Ek\u003C/code\u003E friends in the clockwise direction \u003Cstrong\u003Eincluding\u003C/strong\u003E the friend you started at. The counting wraps around the circle and may count some friends more than once.\u003C/li\u003E\n\t\u003Cli\u003EThe last friend you counted leaves the circle and loses the game.\u003C/li\u003E\n\t\u003Cli\u003EIf there is still more than one friend in the circle, go back to step \u003Ccode\u003E2\u003C/code\u003E \u003Cstrong\u003Estarting\u003C/strong\u003E from the friend \u003Cstrong\u003Eimmediately clockwise\u003C/strong\u003E of the friend who just lost and repeat.\u003C/li\u003E\n\t\u003Cli\u003EElse, the last friend in the circle wins the game.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EGiven the number of friends, \u003Ccode\u003En\u003C/code\u003E, and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe winner of the game\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/25/ic234-q2-ex11.png\u0022 style=\u0022width: 500px; height: 345px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Here are the steps of the game:\n1) Start at friend 1.\n2) Count 2 friends clockwise, which are friends 1 and 2.\n3) Friend 2 leaves the circle. Next start is friend 3.\n4) Count 2 friends clockwise, which are friends 3 and 4.\n5) Friend 4 leaves the circle. Next start is friend 5.\n6) Count 2 friends clockwise, which are friends 5 and 1.\n7) Friend 1 leaves the circle. Next start is friend 3.\n8) Count 2 friends clockwise, which are friends 3 and 5.\n9) Friend 5 leaves the circle. Only friend 3 is left, so they are the winner.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6, k = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The friends leave in this order: 5, 4, 6, 2, 3. The winner is friend 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ECould you solve this problem in linear time with constant space?\u003C/p\u003E\n",
+  "Hints": [
+    "Simulate the process.",
+    "Maintain in a circular list the people who are still in the circle and the current person you are standing at.",
+    "In each turn, count k people and remove the last person from the list."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n2",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "6\n5",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3113805+00:00",
+  "Url": "https://leetcode.com/problems/find-the-winner-of-the-circular-game/"
+}

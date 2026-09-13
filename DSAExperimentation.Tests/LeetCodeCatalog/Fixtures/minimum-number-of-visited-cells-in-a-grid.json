@@ -1,0 +1,45 @@
+{
+  "QuestionId": 2697,
+  "FrontendId": 2617,
+  "Title": "Minimum Number of Visited Cells in a Grid",
+  "TitleSlug": "minimum-number-of-visited-cells-in-a-grid",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Stack",
+    "Breadth-First Search",
+    "Union-Find",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 24.3,
+  "TotalAccepted": 12862,
+  "TotalSubmissions": 52898,
+  "Likes": 423,
+  "Dislikes": 39,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E \u003Ccode\u003Em x n\u003C/code\u003E integer matrix \u003Ccode\u003Egrid\u003C/code\u003E. Your initial position is at the \u003Cstrong\u003Etop-left\u003C/strong\u003E cell \u003Ccode\u003E(0, 0)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EStarting from the cell \u003Ccode\u003E(i, j)\u003C/code\u003E, you can move to one of the following cells:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECells \u003Ccode\u003E(i, k)\u003C/code\u003E with \u003Ccode\u003Ej \u0026lt; k \u0026lt;= grid[i][j] \u002B j\u003C/code\u003E (rightward movement), or\u003C/li\u003E\n\t\u003Cli\u003ECells \u003Ccode\u003E(k, j)\u003C/code\u003E with \u003Ccode\u003Ei \u0026lt; k \u0026lt;= grid[i][j] \u002B i\u003C/code\u003E (downward movement).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of cells you need to visit to reach the \u003Cstrong\u003Ebottom-right\u003C/strong\u003E cell\u003C/em\u003E \u003Ccode\u003E(m - 1, n - 1)\u003C/code\u003E. If there is no valid path, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/01/25/ex1.png\u0022 style=\u0022width: 271px; height: 171px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[3,4,2,1],[4,2,3,1],[2,1,0,0],[2,4,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The image above shows one of the paths that visits exactly 4 cells.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/01/25/ex2.png\u0022 style=\u0022width: 271px; height: 171px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[3,4,2,1],[4,2,1,1],[2,1,1,0],[3,4,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThe image above shows one of the paths that visits exactly 3 cells.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/01/26/ex3.png\u0022 style=\u0022width: 181px; height: 81px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[2,1,0],[1,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It can be proven that no path exists.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt; m * n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[m - 1][n - 1] == 0\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each cell (i,j), it is critical to find out the minimum number of steps to reach (i,j), denoted dis[i][j], quickly, given the tight constraint.",
+    "Calculate dis[i][j] going left to right, top to bottom.",
+    "Suppose we want to calculate dis[i][j], keep track of a priority queue that stores (dis[i][k], i, k) for all k \u2264 j, and another priority queue that stores (dis[k][j], k, j) for all k \u2264 i."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[3,4,2,1],[4,2,3,1],[2,1,0,0],[2,4,0,0]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[3,4,2,1],[4,2,1,1],[2,1,1,0],[3,4,1,0]]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[[2,1,0],[1,0,0]]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0793999+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-visited-cells-in-a-grid/"
+}

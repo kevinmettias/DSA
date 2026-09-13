@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1382,
+  "FrontendId": 2303,
+  "Title": "Calculate Amount Paid in Taxes",
+  "TitleSlug": "calculate-amount-paid-in-taxes",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 69.6,
+  "TotalAccepted": 60600,
+  "TotalSubmissions": 87120,
+  "Likes": 293,
+  "Dislikes": 297,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer array \u003Ccode\u003Ebrackets\u003C/code\u003E where \u003Ccode\u003Ebrackets[i] = [upper\u003Csub\u003Ei\u003C/sub\u003E, percent\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E means that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E tax bracket has an upper bound of \u003Ccode\u003Eupper\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and is taxed at a rate of \u003Ccode\u003Epercent\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. The brackets are \u003Cstrong\u003Esorted\u003C/strong\u003E by upper bound (i.e. \u003Ccode\u003Eupper\u003Csub\u003Ei-1\u003C/sub\u003E \u0026lt; upper\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E for \u003Ccode\u003E0 \u0026lt; i \u0026lt; brackets.length\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003ETax is calculated as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe first \u003Ccode\u003Eupper\u003Csub\u003E0\u003C/sub\u003E\u003C/code\u003E dollars earned are taxed at a rate of \u003Ccode\u003Epercent\u003Csub\u003E0\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe next \u003Ccode\u003Eupper\u003Csub\u003E1\u003C/sub\u003E - upper\u003Csub\u003E0\u003C/sub\u003E\u003C/code\u003E dollars earned are taxed at a rate of \u003Ccode\u003Epercent\u003Csub\u003E1\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe next \u003Ccode\u003Eupper\u003Csub\u003E2\u003C/sub\u003E - upper\u003Csub\u003E1\u003C/sub\u003E\u003C/code\u003E dollars earned are taxed at a rate of \u003Ccode\u003Epercent\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAnd so on.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are given an integer \u003Ccode\u003Eincome\u003C/code\u003E representing the amount of money you earned. Return \u003Cem\u003Ethe amount of money that you have to pay in taxes.\u003C/em\u003E Answers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E brackets = [[3,50],[7,10],[12,25]], income = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2.65000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nBased on your income, you have 3 dollars in the 1\u003Csup\u003Est\u003C/sup\u003E tax bracket, 4 dollars in the 2\u003Csup\u003End\u003C/sup\u003E tax bracket, and 3 dollars in the 3\u003Csup\u003Erd\u003C/sup\u003E tax bracket.\nThe tax rate for the three tax brackets is 50%, 10%, and 25%, respectively.\nIn total, you pay $3 * 50% \u002B $4 * 10% \u002B $3 * 25% = $2.65 in taxes.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E brackets = [[1,0],[4,25],[5,50]], income = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.25000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nBased on your income, you have 1 dollar in the 1\u003Csup\u003Est\u003C/sup\u003E tax bracket and 1 dollar in the 2\u003Csup\u003End\u003C/sup\u003E tax bracket.\nThe tax rate for the two tax brackets is 0% and 25%, respectively.\nIn total, you pay $1 * 0% \u002B $1 * 25% = $0.25 in taxes.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E brackets = [[2,50]], income = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nYou have no income to tax, so you have to pay a total of $0 in taxes.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= brackets.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= upper\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= percent\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= income \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eupper\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is sorted in ascending order.\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Eupper\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe upper bound of the last tax bracket is greater than or equal to \u003Ccode\u003Eincome\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "As you iterate through the tax brackets, keep track of the previous tax bracket\u2019s upper bound in a variable called prev. If there is no previous tax bracket, use 0 instead.",
+    "The amount of money in the ith tax bracket is min(income, upperi) - prev."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[3,50],[7,10],[12,25]]\n10",
+      "RawExpectedOutput": "2.65000"
+    },
+    {
+      "RawInput": "[[1,0],[4,25],[5,50]]\n2",
+      "RawExpectedOutput": "0.25000"
+    },
+    {
+      "RawInput": "[[2,50]]\n0",
+      "RawExpectedOutput": "0.00000"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7228421+00:00",
+  "Url": "https://leetcode.com/problems/calculate-amount-paid-in-taxes/"
+}

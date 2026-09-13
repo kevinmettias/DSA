@@ -1,0 +1,40 @@
+{
+  "QuestionId": 139,
+  "FrontendId": 139,
+  "Title": "Word Break",
+  "TitleSlug": "word-break",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Dynamic Programming",
+    "Trie",
+    "Memoization",
+    "Brute-Force Search"
+  ],
+  "AcceptanceRatePercent": 49.9,
+  "TotalAccepted": 2498579,
+  "TotalSubmissions": 5009354,
+  "Likes": 18908,
+  "Dislikes": 917,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E and a dictionary of strings \u003Ccode\u003EwordDict\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E if \u003Ccode\u003Es\u003C/code\u003E can be segmented into a space-separated sequence of one or more dictionary words.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that the same word in the dictionary may be reused multiple times in the segmentation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;leetcode\u0026quot;, wordDict = [\u0026quot;leet\u0026quot;,\u0026quot;code\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Return true because \u0026quot;leetcode\u0026quot; can be segmented as \u0026quot;leet code\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;applepenapple\u0026quot;, wordDict = [\u0026quot;apple\u0026quot;,\u0026quot;pen\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Return true because \u0026quot;applepenapple\u0026quot; can be segmented as \u0026quot;apple pen apple\u0026quot;.\nNote that you are allowed to reuse a dictionary word.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;catsandog\u0026quot;, wordDict = [\u0026quot;cats\u0026quot;,\u0026quot;dog\u0026quot;,\u0026quot;sand\u0026quot;,\u0026quot;and\u0026quot;,\u0026quot;cat\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= wordDict.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= wordDict[i].length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003EwordDict[i]\u003C/code\u003E consist of only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003EwordDict\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022leetcode\u0022\n[\u0022leet\u0022,\u0022code\u0022]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022applepenapple\u0022\n[\u0022apple\u0022,\u0022pen\u0022]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022catsandog\u0022\n[\u0022cats\u0022,\u0022dog\u0022,\u0022sand\u0022,\u0022and\u0022,\u0022cat\u0022]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.4028286+00:00",
+  "Url": "https://leetcode.com/problems/word-break/"
+}

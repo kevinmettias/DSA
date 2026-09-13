@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1941,
+  "FrontendId": 1830,
+  "Title": "Minimum Number of Operations to Make String Sorted",
+  "TitleSlug": "minimum-number-of-operations-to-make-string-sorted",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Hash Table",
+    "Math",
+    "String",
+    "Combinatorics",
+    "Counting",
+    "Fermat\u0027s Little Theorem"
+  ],
+  "AcceptanceRatePercent": 50.8,
+  "TotalAccepted": 6009,
+  "TotalSubmissions": 11838,
+  "Likes": 191,
+  "Dislikes": 132,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E (\u003Cstrong\u003E0-indexed\u003C/strong\u003E)\u200B\u200B\u200B\u200B\u200B\u200B. You are asked to perform the following operation on \u003Ccode\u003Es\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B until you get a sorted string:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EFind \u003Cstrong\u003Ethe largest index\u003C/strong\u003E \u003Ccode\u003Ei\u003C/code\u003E such that \u003Ccode\u003E1 \u0026lt;= i \u0026lt; s.length\u003C/code\u003E and \u003Ccode\u003Es[i] \u0026lt; s[i - 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EFind \u003Cstrong\u003Ethe largest index\u003C/strong\u003E \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003Ei \u0026lt;= j \u0026lt; s.length\u003C/code\u003E and \u003Ccode\u003Es[k] \u0026lt; s[i - 1]\u003C/code\u003E for all the possible values of \u003Ccode\u003Ek\u003C/code\u003E in the range \u003Ccode\u003E[i, j]\u003C/code\u003E inclusive.\u003C/li\u003E\n\t\u003Cli\u003ESwap the two characters at indices \u003Ccode\u003Ei - 1\u003C/code\u003E\u200B\u200B\u200B\u200B and \u003Ccode\u003Ej\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B.\u003C/li\u003E\n\t\u003Cli\u003EReverse the suffix starting at index \u003Ccode\u003Ei\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of operations needed to make the string sorted.\u003C/em\u003E Since the answer can be too large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;cba\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The simulation goes as follows:\nOperation 1: i=2, j=2. Swap s[1] and s[2] to get s=\u0026quot;cab\u0026quot;, then reverse the suffix starting at 2. Now, s=\u0026quot;cab\u0026quot;.\nOperation 2: i=1, j=2. Swap s[0] and s[2] to get s=\u0026quot;bac\u0026quot;, then reverse the suffix starting at 1. Now, s=\u0026quot;bca\u0026quot;.\nOperation 3: i=2, j=2. Swap s[1] and s[2] to get s=\u0026quot;bac\u0026quot;, then reverse the suffix starting at 2. Now, s=\u0026quot;bac\u0026quot;.\nOperation 4: i=1, j=1. Swap s[0] and s[1] to get s=\u0026quot;abc\u0026quot;, then reverse the suffix starting at 1. Now, s=\u0026quot;acb\u0026quot;.\nOperation 5: i=2, j=2. Swap s[1] and s[2] to get s=\u0026quot;abc\u0026quot;, then reverse the suffix starting at 2. Now, s=\u0026quot;abc\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aabaa\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The simulation goes as follows:\nOperation 1: i=3, j=4. Swap s[2] and s[4] to get s=\u0026quot;aaaab\u0026quot;, then reverse the substring starting at 3. Now, s=\u0026quot;aaaba\u0026quot;.\nOperation 2: i=4, j=4. Swap s[3] and s[4] to get s=\u0026quot;aaaab\u0026quot;, then reverse the substring starting at 4. Now, s=\u0026quot;aaaab\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 3000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Note that the operations given describe getting the previous permutation of s",
+    "To solve this problem you need to solve every suffix separately"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022cba\u0022",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "\u0022aabaa\u0022",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0763277+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-operations-to-make-string-sorted/"
+}

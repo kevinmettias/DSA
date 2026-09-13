@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2583,
+  "FrontendId": 2493,
+  "Title": "Divide Nodes Into the Maximum Number of Groups",
+  "TitleSlug": "divide-nodes-into-the-maximum-number-of-groups",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 66.8,
+  "TotalAccepted": 88335,
+  "TotalSubmissions": 132184,
+  "Likes": 1026,
+  "Dislikes": 77,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a positive integer \u003Ccode\u003En\u003C/code\u003E representing the number of nodes in an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph. The nodes are labeled from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a 2D integer array \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei, \u003C/sub\u003Eb\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is a \u003Cstrong\u003Ebidirectional\u003C/strong\u003E edge between nodes \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. \u003Cstrong\u003ENotice\u003C/strong\u003E that the given graph may be disconnected.\u003C/p\u003E\n\n\u003Cp\u003EDivide the nodes of the graph into \u003Ccode\u003Em\u003C/code\u003E groups (\u003Cstrong\u003E1-indexed\u003C/strong\u003E) such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach node in the graph belongs to exactly one group.\u003C/li\u003E\n\t\u003Cli\u003EFor every pair of nodes in the graph that are connected by an edge \u003Ccode\u003E[a\u003Csub\u003Ei, \u003C/sub\u003Eb\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, if \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E belongs to the group with index \u003Ccode\u003Ex\u003C/code\u003E, and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E belongs to the group with index \u003Ccode\u003Ey\u003C/code\u003E, then \u003Ccode\u003E|y - x| = 1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum number of groups (i.e., maximum \u003C/em\u003E\u003Ccode\u003Em\u003C/code\u003E\u003Cem\u003E) into which you can divide the nodes\u003C/em\u003E. Return \u003Ccode\u003E-1\u003C/code\u003E \u003Cem\u003Eif it is impossible to group the nodes with the given conditions\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/10/13/example1.png\u0022 style=\u0022width: 352px; height: 201px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6, edges = [[1,2],[1,4],[1,5],[2,6],[2,3],[4,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E As shown in the image we:\n- Add node 5 to the first group.\n- Add node 1 to the second group.\n- Add nodes 2 and 4 to the third group.\n- Add nodes 3 and 6 to the fourth group.\nWe can see that every edge is satisfied.\nIt can be shown that that if we create a fifth group and move any node from the third or fourth group to it, at least on of the edges will not be satisfied.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edges = [[1,2],[2,3],[3,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E If we add node 1 to the first group, node 2 to the second group, and node 3 to the third group to satisfy the first two edges, we can see that the third edge will not be satisfied.\nIt can be shown that no grouping is possible.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edges.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E != b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere is at most one edge between any pair of vertices.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If the graph is not bipartite, it is not possible to group the nodes.",
+    "Notice that we can solve the problem for each connected component independently, and the final answer will be just the sum of the maximum number of groups in each component.",
+    "Finally, to solve the problem for each connected component, we can notice that if for some node v we fix its position to be in the leftmost group, then we can also evaluate the position of every other node. That position is the depth of the node in a bfs tree after rooting at node v."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "6\n[[1,2],[1,4],[1,5],[2,6],[2,3],[4,6]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "3\n[[1,2],[2,3],[3,1]]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1385077+00:00",
+  "Url": "https://leetcode.com/problems/divide-nodes-into-the-maximum-number-of-groups/"
+}

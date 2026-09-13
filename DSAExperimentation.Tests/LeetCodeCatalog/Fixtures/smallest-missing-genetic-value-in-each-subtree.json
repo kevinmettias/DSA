@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2131,
+  "FrontendId": 2003,
+  "Title": "Smallest Missing Genetic Value in Each Subtree",
+  "TitleSlug": "smallest-missing-genetic-value-in-each-subtree",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Tree",
+    "Depth-First Search",
+    "Union-Find"
+  ],
+  "AcceptanceRatePercent": 48.5,
+  "TotalAccepted": 12217,
+  "TotalSubmissions": 25200,
+  "Likes": 492,
+  "Dislikes": 23,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a \u003Cstrong\u003Efamily tree\u003C/strong\u003E rooted at \u003Ccode\u003E0\u003C/code\u003E consisting of \u003Ccode\u003En\u003C/code\u003E nodes numbered \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. You are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Eparents\u003C/code\u003E, where \u003Ccode\u003Eparents[i]\u003C/code\u003E is the parent for node \u003Ccode\u003Ei\u003C/code\u003E. Since node \u003Ccode\u003E0\u003C/code\u003E is the \u003Cstrong\u003Eroot\u003C/strong\u003E, \u003Ccode\u003Eparents[0] == -1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E genetic values, each represented by an integer in the \u003Cstrong\u003Einclusive\u003C/strong\u003E range \u003Ccode\u003E[1, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E. You are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Enums\u003C/code\u003E, where \u003Ccode\u003Enums[i]\u003C/code\u003E is a \u003Cstrong\u003Edistinct \u003C/strong\u003Egenetic value for node \u003Ccode\u003Ei\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array \u003C/em\u003E\u003Ccode\u003Eans\u003C/code\u003E\u003Cem\u003E of length \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eans[i]\u003C/code\u003E\u003Cem\u003E is\u003C/em\u003E \u003Cem\u003Ethe \u003Cstrong\u003Esmallest\u003C/strong\u003E genetic value that is \u003Cstrong\u003Emissing\u003C/strong\u003E from the subtree rooted at node\u003C/em\u003E \u003Ccode\u003Ei\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Esubtree\u003C/strong\u003E rooted at a node \u003Ccode\u003Ex\u003C/code\u003E contains node \u003Ccode\u003Ex\u003C/code\u003E and all of its \u003Cstrong\u003Edescendant\u003C/strong\u003E nodes.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/23/case-1.png\u0022 style=\u0022width: 204px; height: 167px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E parents = [-1,0,0,2], nums = [1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [5,1,1,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer for each subtree is calculated as follows:\n- 0: The subtree contains nodes [0,1,2,3] with values [1,2,3,4]. 5 is the smallest missing value.\n- 1: The subtree contains only node 1 with value 2. 1 is the smallest missing value.\n- 2: The subtree contains nodes [2,3] with values [3,4]. 1 is the smallest missing value.\n- 3: The subtree contains only node 3 with value 4. 1 is the smallest missing value.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/23/case-2.png\u0022 style=\u0022width: 247px; height: 168px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E parents = [-1,0,1,0,3,3], nums = [5,4,6,2,1,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [7,1,1,4,2,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer for each subtree is calculated as follows:\n- 0: The subtree contains nodes [0,1,2,3,4,5] with values [5,4,6,2,1,3]. 7 is the smallest missing value.\n- 1: The subtree contains nodes [1,2] with values [4,6]. 1 is the smallest missing value.\n- 2: The subtree contains only node 2 with value 6. 1 is the smallest missing value.\n- 3: The subtree contains nodes [3,4,5] with values [2,1,3]. 4 is the smallest missing value.\n- 4: The subtree contains only node 4 with value 1. 2 is the smallest missing value.\n- 5: The subtree contains only node 5 with value 3. 1 is the smallest missing value.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E parents = [-1,2,3,0,2,4,1], nums = [2,3,4,5,6,7,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,1,1,1,1,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The value 1 is missing from all the subtrees.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == parents.length == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= parents[i] \u0026lt;= n - 1\u003C/code\u003E for \u003Ccode\u003Ei != 0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eparents[0] == -1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eparents\u003C/code\u003E represents a valid tree.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EEach \u003Ccode\u003Enums[i]\u003C/code\u003E is distinct.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If the subtree doesn\u0027t contain 1, then the missing value will always be 1.",
+    "What data structure allows us to dynamically update the values that are currently not present?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,0,0,2]\n[1,2,3,4]",
+      "RawExpectedOutput": "[5,1,1,1]"
+    },
+    {
+      "RawInput": "[-1,0,1,0,3,3]\n[5,4,6,2,1,3]",
+      "RawExpectedOutput": "[7,1,1,4,2,1]"
+    },
+    {
+      "RawInput": "[-1,2,3,0,2,4,1]\n[2,3,4,5,6,7,8]",
+      "RawExpectedOutput": "[1,1,1,1,1,1,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0228632+00:00",
+  "Url": "https://leetcode.com/problems/smallest-missing-genetic-value-in-each-subtree/"
+}

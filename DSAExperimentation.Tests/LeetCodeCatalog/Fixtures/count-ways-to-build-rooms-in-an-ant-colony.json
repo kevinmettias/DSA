@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1313,
+  "FrontendId": 1916,
+  "Title": "Count Ways to Build Rooms in an Ant Colony",
+  "TitleSlug": "count-ways-to-build-rooms-in-an-ant-colony",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Tree",
+    "Depth-First Search",
+    "Graph Theory",
+    "Topological Sort",
+    "Combinatorics",
+    "DP on Trees",
+    "Fermat\u0027s Little Theorem"
+  ],
+  "AcceptanceRatePercent": 52.1,
+  "TotalAccepted": 12206,
+  "TotalSubmissions": 23411,
+  "Likes": 531,
+  "Dislikes": 57,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are an ant tasked with adding \u003Ccode\u003En\u003C/code\u003E new rooms numbered \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En-1\u003C/code\u003E to your colony. You are given the expansion plan as a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array of length \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003EprevRoom\u003C/code\u003E, where \u003Ccode\u003EprevRoom[i]\u003C/code\u003E indicates that you must build room \u003Ccode\u003EprevRoom[i]\u003C/code\u003E before building room \u003Ccode\u003Ei\u003C/code\u003E, and these two rooms must be connected \u003Cstrong\u003Edirectly\u003C/strong\u003E. Room \u003Ccode\u003E0\u003C/code\u003E is already built, so \u003Ccode\u003EprevRoom[0] = -1\u003C/code\u003E. The expansion\u0026nbsp;plan is given such that once all the rooms are built, every room will be reachable from room \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003EYou can only build \u003Cstrong\u003Eone room\u003C/strong\u003E at a time, and you can travel freely between rooms you have \u003Cstrong\u003Ealready built\u003C/strong\u003E only if they are \u003Cstrong\u003Econnected\u003C/strong\u003E.\u0026nbsp;You can choose to build \u003Cstrong\u003Eany room\u003C/strong\u003E as long as its \u003Cstrong\u003Eprevious room\u003C/strong\u003E\u0026nbsp;is already built.\u003C/p\u003E\r\n\r\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Enumber of different orders\u003C/strong\u003E you can build all the rooms in\u003C/em\u003E. Since the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/19/d1.JPG\u0022 style=\u0022width: 200px; height: 212px;\u0022 /\u003E\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E prevRoom = [-1,0,1]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;There is only one way to build the additional rooms: 0 \u0026rarr; 1 \u0026rarr; 2\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/19/d2.JPG\u0022 style=\u0022width: 200px; height: 239px;\u0022 /\u003E\u003C/strong\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E prevRoom = [-1,0,0,1,2]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\r\n\u003Cstrong\u003EExplanation:\r\n\u003C/strong\u003EThe 6 ways are:\r\n0 \u0026rarr; 1 \u0026rarr; 3 \u0026rarr; 2 \u0026rarr; 4\r\n0 \u0026rarr; 2 \u0026rarr; 4 \u0026rarr; 1 \u0026rarr; 3\r\n0 \u0026rarr; 1 \u0026rarr; 2 \u0026rarr; 3 \u0026rarr; 4\r\n0 \u0026rarr; 1 \u0026rarr; 2 \u0026rarr; 4 \u0026rarr; 3\r\n0 \u0026rarr; 2 \u0026rarr; 1 \u0026rarr; 3 \u0026rarr; 4\r\n0 \u0026rarr; 2 \u0026rarr; 1 \u0026rarr; 4 \u0026rarr; 3\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003En == prevRoom.length\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003EprevRoom[0] == -1\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= prevRoom[i] \u0026lt; n\u003C/code\u003E for all \u003Ccode\u003E1 \u0026lt;= i \u0026lt; n\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003EEvery room is reachable from room \u003Ccode\u003E0\u003C/code\u003E once all the rooms are built.\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "Use dynamic programming.",
+    "Let dp[i] be the number of ways to solve the problem for the subtree of node i.",
+    "Imagine you are trying to fill an array with the order of traversal, dp[i] equals the multiplications of the number of ways to distribute the subtrees of the children of i on the array using combinatorics, multiplied bu their dp values."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,0,1]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[-1,0,0,1,2]",
+      "RawExpectedOutput": "6"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9947634+00:00",
+  "Url": "https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony/"
+}

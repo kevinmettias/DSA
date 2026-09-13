@@ -1,0 +1,43 @@
+{
+  "QuestionId": 4121,
+  "FrontendId": 3826,
+  "Title": "Minimum Partition Score",
+  "TitleSlug": "minimum-partition-score",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Dynamic Programming",
+    "Queue",
+    "Prefix Sum",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 32.6,
+  "TotalAccepted": 7363,
+  "TotalSubmissions": 22568,
+  "Likes": 57,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to partition \u003Ccode\u003Enums\u003C/code\u003E into \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarrays\u003C/span\u003E and return an integer denoting the \u003Cstrong\u003Eminimum possible score\u003C/strong\u003E among all valid partitions.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Escore\u003C/strong\u003E of a partition is the \u003Cstrong\u003Esum\u003C/strong\u003E of the \u003Cstrong\u003Evalues\u003C/strong\u003E of all its subarrays.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Evalue\u003C/strong\u003E of a subarray is defined as \u003Ccode\u003EsumArr * (sumArr \u002B 1) / 2\u003C/code\u003E, where \u003Ccode\u003EsumArr\u003C/code\u003E is the sum of its elements.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,1,2,1], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E25\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EWe must partition the array into \u003Ccode\u003Ek = 2\u003C/code\u003E subarrays. One optimal partition is \u003Ccode\u003E[5]\u003C/code\u003E and \u003Ccode\u003E[1, 2, 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe first subarray has \u003Ccode\u003EsumArr = 5\u003C/code\u003E and \u003Ccode\u003Evalue = 5 \u0026times; 6 / 2 = 15\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe second subarray has \u003Ccode\u003EsumArr = 1 \u002B 2 \u002B 1 = 4\u003C/code\u003E and \u003Ccode\u003Evalue = 4 \u0026times; 5 / 2 = 10\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe score of this partition is \u003Ccode\u003E15 \u002B 10 = 25\u003C/code\u003E, which is the minimum possible score.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3,4], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E55\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESince we must partition the array into \u003Ccode\u003Ek = 1\u003C/code\u003E subarray, all elements belong to the same subarray: \u003Ccode\u003E[1, 2, 3, 4]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThis subarray has \u003Ccode\u003EsumArr = 1 \u002B 2 \u002B 3 \u002B 4 = 10\u003C/code\u003E and \u003Ccode\u003Evalue = 10 \u0026times; 11 / 2 = 55\u003C/code\u003E.\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/li\u003E\n\t\u003Cli\u003EThe score of this partition is 55, which is the minimum possible score.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,1,1], k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EWe must partition the array into \u003Ccode\u003Ek = 3\u003C/code\u003E subarrays. The only valid partition is \u003Ccode\u003E[1], [1], [1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EEach subarray has \u003Ccode\u003EsumArr = 1\u003C/code\u003E and \u003Ccode\u003Evalue = 1 \u0026times; 2 / 2 = 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe score of this partition is \u003Ccode\u003E1 \u002B 1 \u002B 1 = 3\u003C/code\u003E, which is the minimum possible score.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= nums.length \u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Edp[k][i]\u003C/code\u003E be the minimum score to partition the first \u003Ccode\u003Ei\u003C/code\u003E elements into \u003Ccode\u003Ek\u003C/code\u003E subarrays. The transition is \u003Ccode\u003Edp[k][i] = min(dp[k-1][j] \u002B value(subarray nums[j...i-1]))\u003C/code\u003E for \u003Ccode\u003Ej \u003C i\u003C/code\u003E.",
+    "The naive DP approach takes \u003Ccode\u003EO(K*N\u003Csup\u003E2\u003C/sup\u003E)\u003C/code\u003E, which is too slow. Look for optimizations applicable to partitioning problems.",
+    "The cost function is convex. This suggests that the optimal splitting point satisfies the Quadrangle Inequality, enabling Divide and Conquer Optimization to reduce the complexity."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,1,2,1]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3,4]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,1,1]\n3",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0843923+00:00",
+  "Url": "https://leetcode.com/problems/minimum-partition-score/"
+}

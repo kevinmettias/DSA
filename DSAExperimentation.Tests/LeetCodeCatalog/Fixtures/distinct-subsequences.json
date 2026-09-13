@@ -1,0 +1,31 @@
+{
+  "QuestionId": 115,
+  "FrontendId": 115,
+  "Title": "Distinct Subsequences",
+  "TitleSlug": "distinct-subsequences",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 54.2,
+  "TotalAccepted": 859495,
+  "TotalSubmissions": 1585433,
+  "Likes": 7764,
+  "Dislikes": 327,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two strings s and t, return \u003Ci\u003Ethe number of distinct\u003C/i\u003E \u003Cb\u003E\u003Ci\u003Esubsequences\u003C/i\u003E\u003C/b\u003E\u003Ci\u003E of \u003C/i\u003Es\u003Ci\u003E which equals \u003C/i\u003Et.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases are generated so that the answer fits on a 32-bit signed integer.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;rabbbit\u0026quot;, t = \u0026quot;rabbit\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nAs shown below, there are 3 ways you can generate \u0026quot;rabbit\u0026quot; from s.\n\u003Ccode\u003E\u003Cstrong\u003E\u003Cu\u003Erabb\u003C/u\u003E\u003C/strong\u003Eb\u003Cstrong\u003E\u003Cu\u003Eit\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E\n\u003Ccode\u003E\u003Cstrong\u003E\u003Cu\u003Era\u003C/u\u003E\u003C/strong\u003Eb\u003Cstrong\u003E\u003Cu\u003Ebbit\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E\n\u003Ccode\u003E\u003Cstrong\u003E\u003Cu\u003Erab\u003C/u\u003E\u003C/strong\u003Eb\u003Cstrong\u003E\u003Cu\u003Ebit\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;babgbag\u0026quot;, t = \u0026quot;bag\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nAs shown below, there are 5 ways you can generate \u0026quot;bag\u0026quot; from s.\n\u003Ccode\u003E\u003Cstrong\u003E\u003Cu\u003Eba\u003C/u\u003E\u003C/strong\u003Eb\u003Cu\u003E\u003Cstrong\u003Eg\u003C/strong\u003E\u003C/u\u003Ebag\u003C/code\u003E\n\u003Ccode\u003E\u003Cstrong\u003E\u003Cu\u003Eba\u003C/u\u003E\u003C/strong\u003Ebgba\u003Cstrong\u003E\u003Cu\u003Eg\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E\n\u003Ccode\u003E\u003Cu\u003E\u003Cstrong\u003Eb\u003C/strong\u003E\u003C/u\u003Eabgb\u003Cstrong\u003E\u003Cu\u003Eag\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E\n\u003Ccode\u003Eba\u003Cu\u003E\u003Cstrong\u003Eb\u003C/strong\u003E\u003C/u\u003Egb\u003Cu\u003E\u003Cstrong\u003Eag\u003C/strong\u003E\u003C/u\u003E\u003C/code\u003E\n\u003Ccode\u003Ebabg\u003Cstrong\u003E\u003Cu\u003Ebag\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length, t.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Et\u003C/code\u003E consist of English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022rabbbit\u0022\n\u0022rabbit\u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "\u0022babgbag\u0022\n\u0022bag\u0022",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1367695+00:00",
+  "Url": "https://leetcode.com/problems/distinct-subsequences/"
+}

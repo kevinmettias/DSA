@@ -1,0 +1,33 @@
+{
+  "QuestionId": 1262,
+  "FrontendId": 1157,
+  "Title": "Online Majority Element In Subarray",
+  "TitleSlug": "online-majority-element-in-subarray",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Design",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Sqrt Decomposition",
+    "Boyer\u2013Moore Majority Vote Algorithm"
+  ],
+  "AcceptanceRatePercent": 41.1,
+  "TotalAccepted": 22755,
+  "TotalSubmissions": 55328,
+  "Likes": 673,
+  "Dislikes": 65,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure that efficiently finds the \u003Cstrong\u003Emajority element\u003C/strong\u003E of a given subarray.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Emajority element\u003C/strong\u003E of a subarray is an element that occurs \u003Ccode\u003Ethreshold\u003C/code\u003E times or more in the subarray.\u003C/p\u003E\n\n\u003Cp\u003EImplementing the \u003Ccode\u003EMajorityChecker\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMajorityChecker(int[] arr)\u003C/code\u003E Initializes the instance of the class with the given array \u003Ccode\u003Earr\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint query(int left, int right, int threshold)\u003C/code\u003E returns the element in the subarray \u003Ccode\u003Earr[left...right]\u003C/code\u003E that occurs at least \u003Ccode\u003Ethreshold\u003C/code\u003E times, or \u003Ccode\u003E-1\u003C/code\u003E if no such element exists.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MajorityChecker\u0026quot;, \u0026quot;query\u0026quot;, \u0026quot;query\u0026quot;, \u0026quot;query\u0026quot;]\n[[[1, 1, 2, 2, 1, 1]], [0, 5, 4], [0, 3, 3], [2, 3, 2]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, -1, 2]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMajorityChecker majorityChecker = new MajorityChecker([1, 1, 2, 2, 1, 1]);\nmajorityChecker.query(0, 5, 4); // return 1\nmajorityChecker.query(0, 3, 3); // return -1\nmajorityChecker.query(2, 3, 2); // return 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr[i] \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= left \u0026lt;= right \u0026lt; arr.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ethreshold \u0026lt;= right - left \u002B 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 * threshold \u0026gt; right - left \u002B 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Equery\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "What\u0027s special about a majority element ?",
+    "A majority element appears more than half the length of the array number of times.",
+    "If we tried a random index of the array, what\u0027s the probability that this index has a majority element ?",
+    "It\u0027s more than 50% if that array has a majority element.",
+    "Try a random index for a proper number of times so that the probability of not finding the answer tends to zero."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3356015+00:00",
+  "Url": "https://leetcode.com/problems/online-majority-element-in-subarray/"
+}

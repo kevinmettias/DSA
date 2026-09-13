@@ -1,0 +1,43 @@
+{
+  "QuestionId": 2609,
+  "FrontendId": 2521,
+  "Title": "Distinct Prime Factors of Product of Array",
+  "TitleSlug": "distinct-prime-factors-of-product-of-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Number Theory",
+    "Prime Factorization",
+    "Euclidean Algorithm",
+    "Primality Test",
+    "Greatest Common Divisor",
+    "Sieve Theory",
+    "Prime Number Sieve"
+  ],
+  "AcceptanceRatePercent": 55.4,
+  "TotalAccepted": 53156,
+  "TotalSubmissions": 95988,
+  "Likes": 560,
+  "Dislikes": 14,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of positive integers \u003Ccode\u003Enums\u003C/code\u003E, return \u003Cem\u003Ethe number of \u003Cstrong\u003Edistinct prime factors\u003C/strong\u003E in the product of the elements of\u003C/em\u003E \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EA number greater than \u003Ccode\u003E1\u003C/code\u003E is called \u003Cstrong\u003Eprime\u003C/strong\u003E if it is divisible by only \u003Ccode\u003E1\u003C/code\u003E and itself.\u003C/li\u003E\n\t\u003Cli\u003EAn integer \u003Ccode\u003Eval1\u003C/code\u003E is a factor of another integer \u003Ccode\u003Eval2\u003C/code\u003E if \u003Ccode\u003Eval2 / val1\u003C/code\u003E is an integer.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,4,3,7,10,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe product of all the elements in nums is: 2 * 4 * 3 * 7 * 10 * 6 = 10080 = 2\u003Csup\u003E5\u003C/sup\u003E * 3\u003Csup\u003E2\u003C/sup\u003E * 5 * 7.\nThere are 4 distinct prime factors so we return 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,4,8,16]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe product of all the elements in nums is: 2 * 4 * 8 * 16 = 1024 = 2\u003Csup\u003E10\u003C/sup\u003E.\nThere is 1 distinct prime factor so we return 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Do not multiply all the numbers together, as the product is too big to store.",
+    "Think about how each individual number\u0027s prime factors contribute to the prime factors of the product of the entire array.",
+    "Find the prime factors of each element in nums, and store all of them in a set to avoid duplicates."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,4,3,7,10,6]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[2,4,8,16]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1325475+00:00",
+  "Url": "https://leetcode.com/problems/distinct-prime-factors-of-product-of-array/"
+}

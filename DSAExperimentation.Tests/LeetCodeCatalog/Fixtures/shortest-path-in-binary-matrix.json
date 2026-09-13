@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1171,
+  "FrontendId": 1091,
+  "Title": "Shortest Path in Binary Matrix",
+  "TitleSlug": "shortest-path-in-binary-matrix",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Breadth-First Search",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 52.2,
+  "TotalAccepted": 913591,
+  "TotalSubmissions": 1751131,
+  "Likes": 7589,
+  "Dislikes": 278,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an \u003Ccode\u003En x n\u003C/code\u003E binary matrix \u003Ccode\u003Egrid\u003C/code\u003E, return \u003Cem\u003Ethe length of the shortest \u003Cstrong\u003Eclear path\u003C/strong\u003E in the matrix\u003C/em\u003E. If there is no clear path, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Eclear path\u003C/strong\u003E in a binary matrix is a path from the \u003Cstrong\u003Etop-left\u003C/strong\u003E cell (i.e., \u003Ccode\u003E(0, 0)\u003C/code\u003E) to the \u003Cstrong\u003Ebottom-right\u003C/strong\u003E cell (i.e., \u003Ccode\u003E(n - 1, n - 1)\u003C/code\u003E) such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAll the visited cells of the path are \u003Ccode\u003E0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAll the adjacent cells of the path are \u003Cstrong\u003E8-directionally\u003C/strong\u003E connected (i.e., they are different and they share an edge or a corner).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Elength of a clear path\u003C/strong\u003E is the number of visited cells of this path.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/02/18/example1_1.png\u0022 style=\u0022width: 500px; height: 234px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,1],[1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/02/18/example2_1.png\u0022 style=\u0022height: 216px; width: 500px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,0,0],[1,1,0],[1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,0,0],[1,1,0],[1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j] is 0 or 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Do a breadth first search to find the shortest path."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1],[1,0]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[0,0,0],[1,1,0],[1,1,0]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[1,0,0],[1,1,0],[1,1,0]]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9754047+00:00",
+  "Url": "https://leetcode.com/problems/shortest-path-in-binary-matrix/"
+}

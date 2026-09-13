@@ -1,0 +1,31 @@
+{
+  "QuestionId": 390,
+  "FrontendId": 390,
+  "Title": "Elimination Game",
+  "TitleSlug": "elimination-game",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 46.8,
+  "TotalAccepted": 116444,
+  "TotalSubmissions": 248928,
+  "Likes": 1777,
+  "Dislikes": 763,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have a list \u003Ccode\u003Earr\u003C/code\u003E of all integers in the range \u003Ccode\u003E[1, n]\u003C/code\u003E sorted in a strictly increasing order. Apply the following algorithm on \u003Ccode\u003Earr\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EStarting from left to right, remove the first number and every other number afterward until you reach the end of the list.\u003C/li\u003E\n\t\u003Cli\u003ERepeat the previous step again, but this time from right to left, remove the rightmost number and every other number from the remaining numbers.\u003C/li\u003E\n\t\u003Cli\u003EKeep repeating the steps again, alternating left to right and right to left, until a single number remains.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven the integer \u003Ccode\u003En\u003C/code\u003E, return \u003Cem\u003Ethe last number that remains in\u003C/em\u003E \u003Ccode\u003Earr\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 9\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\narr = [\u003Cu\u003E1\u003C/u\u003E, 2, \u003Cu\u003E3\u003C/u\u003E, 4, \u003Cu\u003E5\u003C/u\u003E, 6, \u003Cu\u003E7\u003C/u\u003E, 8, \u003Cu\u003E9\u003C/u\u003E]\narr = [2, \u003Cu\u003E4\u003C/u\u003E, 6, \u003Cu\u003E8\u003C/u\u003E]\narr = [\u003Cu\u003E2\u003C/u\u003E, 6]\narr = [6]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "9",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1625002+00:00",
+  "Url": "https://leetcode.com/problems/elimination-game/"
+}

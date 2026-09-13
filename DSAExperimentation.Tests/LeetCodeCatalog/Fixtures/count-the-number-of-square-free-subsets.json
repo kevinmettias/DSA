@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2709,
+  "FrontendId": 2572,
+  "Title": "Count the Number of Square-Free Subsets",
+  "TitleSlug": "count-the-number-of-square-free-subsets",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Number Theory",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 27,
+  "TotalAccepted": 14760,
+  "TotalSubmissions": 54658,
+  "Likes": 512,
+  "Dislikes": 125,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a positive integer \u003Cstrong\u003E0-indexed\u003C/strong\u003E\u0026nbsp;array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA subset of the array \u003Ccode\u003Enums\u003C/code\u003E is \u003Cstrong\u003Esquare-free\u003C/strong\u003E if the product of its elements is a \u003Cstrong\u003Esquare-free integer\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esquare-free integer\u003C/strong\u003E is an integer that is divisible by no square number other than \u003Ccode\u003E1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of square-free non-empty subsets of the array\u003C/em\u003E \u003Cstrong\u003Enums\u003C/strong\u003E. Since the answer may be too large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Enon-empty\u003C/strong\u003E\u0026nbsp;\u003Cstrong\u003Esubset\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E is an array that can be obtained by deleting some (possibly none but not all) elements from \u003Ccode\u003Enums\u003C/code\u003E. Two subsets are different if and only if the chosen indices to delete are different.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,4,4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 3 square-free subsets in this example:\n- The subset consisting of the 0\u003Csup\u003Eth\u003C/sup\u003E element [3]. The product of its elements is 3, which is a square-free integer.\n- The subset consisting of the 3\u003Csup\u003Erd\u003C/sup\u003E element [5]. The product of its elements is 5, which is a square-free integer.\n- The subset consisting of 0\u003Csup\u003Eth\u003C/sup\u003E and 3\u003Csup\u003Erd\u003C/sup\u003E elements [3,5]. The product of its elements is 15, which is a square-free integer.\nIt can be proven that there are no more than 3 square-free subsets in the given array.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is 1 square-free subset in this example:\n- The subset consisting of the 0\u003Csup\u003Eth\u003C/sup\u003E element [1]. The product of its elements is 1, which is a square-free integer.\nIt can be proven that there is no more than 1 square-free subset in the given array.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length\u0026nbsp;\u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "There are 10 primes before number 30.",
+    "Label primes from {2, 3, \u2026 29} with {0,1, \u2026 9} and let DP(i, mask) denote the number of subsets before index: i with the subset of taken primes: mask.",
+    "If the mask and prime factorization of nums[i] have a common prime, then it is impossible to add to the current subset, otherwise, it is possible."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,4,4,5]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9854204+00:00",
+  "Url": "https://leetcode.com/problems/count-the-number-of-square-free-subsets/"
+}

@@ -1,0 +1,44 @@
+{
+  "QuestionId": 204,
+  "FrontendId": 204,
+  "Title": "Count Primes",
+  "TitleSlug": "count-primes",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Enumeration",
+    "Number Theory",
+    "Primality Test",
+    "Sieve Theory",
+    "Prime Number Sieve"
+  ],
+  "AcceptanceRatePercent": 36.1,
+  "TotalAccepted": 1355948,
+  "TotalSubmissions": 3758034,
+  "Likes": 8981,
+  "Dislikes": 1618,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E, return \u003Cem\u003Ethe number of prime numbers that are strictly less than\u003C/em\u003E \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 4 prime numbers less than 10, they are 2, 3, 5, 7.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= n \u0026lt;= 5 * 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Checking all the integers in the range [1, n - 1] is not efficient. Think about a better approach.",
+    "Since most of the numbers are not primes, we need a fast approach to exclude the non-prime integers.",
+    "Use Sieve of Eratosthenes."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "0",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9615628+00:00",
+  "Url": "https://leetcode.com/problems/count-primes/"
+}

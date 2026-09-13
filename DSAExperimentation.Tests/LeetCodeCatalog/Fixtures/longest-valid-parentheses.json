@@ -1,0 +1,37 @@
+{
+  "QuestionId": 32,
+  "FrontendId": 32,
+  "Title": "Longest Valid Parentheses",
+  "TitleSlug": "longest-valid-parentheses",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Stack",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 39.7,
+  "TotalAccepted": 1186789,
+  "TotalSubmissions": 2988586,
+  "Likes": 13471,
+  "Dislikes": 470,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string containing just the characters \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E, return \u003Cem\u003Ethe length of the longest valid (well-formed) parentheses \u003C/em\u003E\u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003E\u003Cem\u003Esubstring\u003C/em\u003E\u003C/span\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The longest valid parentheses substring is \u0026quot;()\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;)()())\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The longest valid parentheses substring is \u0026quot;()()\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= s.length \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E, or \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022(()\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022)()())\u0022",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "\u0022\u0022",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7707877+00:00",
+  "Url": "https://leetcode.com/problems/longest-valid-parentheses/"
+}

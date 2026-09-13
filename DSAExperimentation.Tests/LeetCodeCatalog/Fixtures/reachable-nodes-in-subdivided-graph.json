@@ -1,0 +1,37 @@
+{
+  "QuestionId": 918,
+  "FrontendId": 882,
+  "Title": "Reachable Nodes In Subdivided Graph",
+  "TitleSlug": "reachable-nodes-in-subdivided-graph",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Shortest Path",
+    "Dijkstra\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 52.9,
+  "TotalAccepted": 40359,
+  "TotalSubmissions": 76347,
+  "Likes": 917,
+  "Dislikes": 230,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an undirected graph (the \u003Cstrong\u003E\u0026quot;original graph\u0026quot;\u003C/strong\u003E) with \u003Ccode\u003En\u003C/code\u003E nodes labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. You decide to \u003Cstrong\u003Esubdivide\u003C/strong\u003E each edge in the graph into a chain of nodes, with the number of new nodes varying between each edge.\u003C/p\u003E\n\n\u003Cp\u003EThe graph is given as a 2D array of \u003Ccode\u003Eedges\u003C/code\u003E where \u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, cnt\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is an edge between nodes \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E in the original graph, and \u003Ccode\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the total number of new nodes that you will \u003Cstrong\u003Esubdivide\u003C/strong\u003E the edge into. Note that \u003Ccode\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E == 0\u003C/code\u003E means you will not subdivide the edge.\u003C/p\u003E\n\n\u003Cp\u003ETo \u003Cstrong\u003Esubdivide\u003C/strong\u003E the edge \u003Ccode\u003E[u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, replace it with \u003Ccode\u003E(cnt\u003Csub\u003Ei\u003C/sub\u003E \u002B 1)\u003C/code\u003E new edges and \u003Ccode\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E new nodes. The new nodes are \u003Ccode\u003Ex\u003Csub\u003E1\u003C/sub\u003E\u003C/code\u003E, \u003Ccode\u003Ex\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E, ..., \u003Ccode\u003Ex\u003Csub\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E\u003C/sub\u003E\u003C/code\u003E, and the new edges are \u003Ccode\u003E[u\u003Csub\u003Ei\u003C/sub\u003E, x\u003Csub\u003E1\u003C/sub\u003E]\u003C/code\u003E, \u003Ccode\u003E[x\u003Csub\u003E1\u003C/sub\u003E, x\u003Csub\u003E2\u003C/sub\u003E]\u003C/code\u003E, \u003Ccode\u003E[x\u003Csub\u003E2\u003C/sub\u003E, x\u003Csub\u003E3\u003C/sub\u003E]\u003C/code\u003E, ..., \u003Ccode\u003E[x\u003Csub\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E-1\u003C/sub\u003E, x\u003Csub\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E\u003C/sub\u003E]\u003C/code\u003E, \u003Ccode\u003E[x\u003Csub\u003Ecnt\u003Csub\u003Ei\u003C/sub\u003E\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIn this \u003Cstrong\u003Enew graph\u003C/strong\u003E, you want to know how many nodes are \u003Cstrong\u003Ereachable\u003C/strong\u003E from the node \u003Ccode\u003E0\u003C/code\u003E, where a node is \u003Cstrong\u003Ereachable\u003C/strong\u003E if the distance is \u003Ccode\u003EmaxMoves\u003C/code\u003E or less.\u003C/p\u003E\n\n\u003Cp\u003EGiven the original graph and \u003Ccode\u003EmaxMoves\u003C/code\u003E, return \u003Cem\u003Ethe number of nodes that are \u003Cstrong\u003Ereachable\u003C/strong\u003E from node \u003C/em\u003E\u003Ccode\u003E0\u003C/code\u003E\u003Cem\u003E in the new graph\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://s3-lc-upload.s3.amazonaws.com/uploads/2018/08/01/origfinal.png\u0022 style=\u0022width: 600px; height: 247px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E edges = [[0,1,10],[0,2,1],[1,2,2]], maxMoves = 6, n = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The edge subdivisions are shown in the image above.\nThe nodes that are reachable are highlighted in yellow.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E edges = [[0,1,4],[1,2,6],[0,2,8],[1,3,1]], maxMoves = 10, n = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 23\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E edges = [[1,2,4],[1,4,5],[1,3,1],[2,3,4],[3,4,5]], maxMoves = 17, n = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Node 0 is disconnected from the rest of the graph, so only node 0 is reachable.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= edges.length \u0026lt;= min(n * (n - 1) / 2, 10\u003Csup\u003E4\u003C/sup\u003E)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are \u003Cstrong\u003Eno multiple edges\u003C/strong\u003E in the graph.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= cnt\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= maxMoves \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 3000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,10],[0,2,1],[1,2,2]]\n6\n3",
+      "RawExpectedOutput": "13"
+    },
+    {
+      "RawInput": "[[0,1,4],[1,2,6],[0,2,8],[1,3,1]]\n10\n4",
+      "RawExpectedOutput": "23"
+    },
+    {
+      "RawInput": "[[1,2,4],[1,4,5],[1,3,1],[2,3,4],[3,4,5]]\n17\n5",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6736092+00:00",
+  "Url": "https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/"
+}

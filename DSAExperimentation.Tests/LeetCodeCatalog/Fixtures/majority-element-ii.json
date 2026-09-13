@@ -1,0 +1,42 @@
+{
+  "QuestionId": 229,
+  "FrontendId": 229,
+  "Title": "Majority Element II",
+  "TitleSlug": "majority-element-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Sorting",
+    "Counting",
+    "Boyer\u2013Moore Majority Vote Algorithm"
+  ],
+  "AcceptanceRatePercent": 56.8,
+  "TotalAccepted": 1401097,
+  "TotalSubmissions": 2467682,
+  "Likes": 11232,
+  "Dislikes": 512,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array of size \u003Ccode\u003En\u003C/code\u003E, find all elements that appear more than \u003Ccode\u003E\u0026lfloor;n / 3\u0026rfloor;\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you solve the problem in linear time and in \u003Ccode\u003EO(1)\u003C/code\u003E space?\u003C/p\u003E\n",
+  "Hints": [
+    "Think about the possible number of elements that can appear more than \u230A n/3 \u230B times in the array.",
+    "It can be at most two. Why?",
+    "Consider using Boyer-Moore Voting Algorithm, which is efficient for finding elements that appear more than a certain threshold."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,2,3]",
+      "RawExpectedOutput": "[3]"
+    },
+    {
+      "RawInput": "[1]",
+      "RawExpectedOutput": "[1]"
+    },
+    {
+      "RawInput": "[1,2]",
+      "RawExpectedOutput": "[1,2]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8097461+00:00",
+  "Url": "https://leetcode.com/problems/majority-element-ii/"
+}

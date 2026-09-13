@@ -1,0 +1,45 @@
+{
+  "QuestionId": 3314,
+  "FrontendId": 3044,
+  "Title": "Most Frequent Prime",
+  "TitleSlug": "most-frequent-prime",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Matrix",
+    "Counting",
+    "Enumeration",
+    "Number Theory",
+    "Primality Test",
+    "Sieve Theory",
+    "Prime Number Sieve"
+  ],
+  "AcceptanceRatePercent": 45.5,
+  "TotalAccepted": 19798,
+  "TotalSubmissions": 43470,
+  "Likes": 105,
+  "Dislikes": 70,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Ccode\u003Em x n\u003C/code\u003E \u003Cstrong\u003E0-indexed \u003C/strong\u003E2D\u003Cstrong\u003E \u003C/strong\u003Ematrix \u003Ccode\u003Emat\u003C/code\u003E. From every cell, you can create numbers in the following way:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere could be at most \u003Ccode\u003E8\u003C/code\u003E paths from the cells namely: east, south-east, south, south-west, west, north-west, north, and north-east.\u003C/li\u003E\n\t\u003Cli\u003ESelect a path from them and append digits in this path to the number being formed by traveling in this direction.\u003C/li\u003E\n\t\u003Cli\u003ENote that numbers are generated at every step, for example, if the digits along the path are \u003Ccode\u003E1, 9, 1\u003C/code\u003E, then there will be three numbers generated along the way: \u003Ccode\u003E1, 19, 191\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe most frequent \u003Cspan data-keyword=\u0022prime-number\u0022\u003Eprime number\u003C/span\u003E \u003Cstrong\u003Egreater\u003C/strong\u003E than \u003C/em\u003E\u003Ccode\u003E10\u003C/code\u003E\u003Cem\u003E out of all the numbers created by traversing the matrix or \u003C/em\u003E\u003Ccode\u003E-1\u003C/code\u003E\u003Cem\u003E if no such prime number exists. If there are multiple prime numbers with the highest frequency, then return the \u003Cb\u003Elargest\u003C/b\u003E among them.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E It is invalid to change the direction during the move.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/02/15/south\u0022 style=\u0022width: 641px; height: 291px;\u0022 /\u003E \u003C/strong\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003E\nInput:\u003C/strong\u003E mat = [[1,1],[9,9],[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 19\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFrom cell (0,0) there are 3 possible directions and the numbers greater than 10 which can be created in those directions are:\nEast: [11], South-East: [19], South: [19,191].\nNumbers greater than 10 created from the cell (0,1) in all possible directions are: [19,191,19,11].\nNumbers greater than 10 created from the cell (1,0) in all possible directions are: [99,91,91,91,91].\nNumbers greater than 10 created from the cell (1,1) in all possible directions are: [91,91,99,91,91].\nNumbers greater than 10 created from the cell (2,0) in all possible directions are: [11,19,191,19].\nNumbers greater than 10 created from the cell (2,1) in all possible directions are: [11,19,19,191].\nThe most frequent prime number among all the created numbers is 19.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[7]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The only number which can be formed is 7. It is a prime number however it is not greater than 10, so return -1.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[9,7,8],[4,6,5],[2,8,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 97\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nNumbers greater than 10 created from the cell (0,0) in all possible directions are: [97,978,96,966,94,942].\nNumbers greater than 10 created from the cell (0,1) in all possible directions are: [78,75,76,768,74,79].\nNumbers greater than 10 created from the cell (0,2) in all possible directions are: [85,856,86,862,87,879].\nNumbers greater than 10 created from the cell (1,0) in all possible directions are: [46,465,48,42,49,47].\nNumbers greater than 10 created from the cell (1,1) in all possible directions are: [65,66,68,62,64,69,67,68].\nNumbers greater than 10 created from the cell (1,2) in all possible directions are: [56,58,56,564,57,58].\nNumbers greater than 10 created from the cell (2,0) in all possible directions are: [28,286,24,249,26,268].\nNumbers greater than 10 created from the cell (2,1) in all possible directions are: [86,82,84,86,867,85].\nNumbers greater than 10 created from the cell (2,2) in all possible directions are: [68,682,66,669,65,658].\nThe most frequent prime number among all the created numbers is 97.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == mat.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == mat[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 6\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= mat[i][j] \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use recursion to find all possible numbers for each cell and then check for prime."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1],[9,9],[1,1]]",
+      "RawExpectedOutput": "19"
+    },
+    {
+      "RawInput": "[[7]]",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "[[9,7,8],[4,6,5],[2,8,6]]",
+      "RawExpectedOutput": "97"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1359176+00:00",
+  "Url": "https://leetcode.com/problems/most-frequent-prime/"
+}

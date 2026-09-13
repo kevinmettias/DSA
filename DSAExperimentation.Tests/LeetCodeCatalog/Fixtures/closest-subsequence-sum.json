@@ -1,0 +1,45 @@
+{
+  "QuestionId": 1881,
+  "FrontendId": 1755,
+  "Title": "Closest Subsequence Sum",
+  "TitleSlug": "closest-subsequence-sum",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Meet in the Middle",
+    "Sorting",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 45.1,
+  "TotalAccepted": 31828,
+  "TotalSubmissions": 70645,
+  "Likes": 1050,
+  "Dislikes": 74,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Egoal\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou want to choose a subsequence of \u003Ccode\u003Enums\u003C/code\u003E such that the sum of its elements is the closest possible to \u003Ccode\u003Egoal\u003C/code\u003E. That is, if the sum of the subsequence\u0026#39;s elements is \u003Ccode\u003Esum\u003C/code\u003E, then you want to \u003Cstrong\u003Eminimize the absolute difference\u003C/strong\u003E \u003Ccode\u003Eabs(sum - goal)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E possible value of\u003C/em\u003E \u003Ccode\u003Eabs(sum - goal)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that a subsequence of an array is an array formed by removing some elements \u003Cstrong\u003E(possibly all or none)\u003C/strong\u003E of the original array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,-7,3,5], goal = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Choose the whole array as a subsequence, with a sum of 6.\nThis is equal to the goal, so the absolute difference is 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [7,-9,15,-2], goal = -5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Choose the subsequence [7,-9,-2], with a sum of -4.\nThe absolute difference is abs(-4 - (-5)) = abs(1) = 1, which is the minimum.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3], goal = -7\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 40\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E7\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= goal \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The naive solution is to check all possible subsequences. This works in O(2^n).",
+    "Divide the array into two parts of nearly is equal size.",
+    "Consider all subsets of one part and make a list of all possible subset sums and sort this list.",
+    "Consider all subsets of the other part, and for each one, let its sum = x, do binary search to get the nearest possible value to goal - x in the first part."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,-7,3,5]\n6",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[7,-9,15,-2]\n-5",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[1,2,3]\n-7",
+      "RawExpectedOutput": "7"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8055402+00:00",
+  "Url": "https://leetcode.com/problems/closest-subsequence-sum/"
+}

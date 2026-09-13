@@ -1,0 +1,28 @@
+{
+  "QuestionId": 1775,
+  "FrontendId": 1656,
+  "Title": "Design an Ordered Stream",
+  "TitleSlug": "design-an-ordered-stream",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Design",
+    "Data Stream"
+  ],
+  "AcceptanceRatePercent": 82.7,
+  "TotalAccepted": 114313,
+  "TotalSubmissions": 138161,
+  "Likes": 577,
+  "Dislikes": 3657,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a stream of \u003Ccode\u003En\u003C/code\u003E \u003Ccode\u003E(idKey, value)\u003C/code\u003E pairs arriving in an \u003Cstrong\u003Earbitrary\u003C/strong\u003E order, where \u003Ccode\u003EidKey\u003C/code\u003E is an integer between \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Evalue\u003C/code\u003E is a string. No two pairs have the same \u003Ccode\u003Eid\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EDesign a stream that returns the values in \u003Cstrong\u003Eincreasing order of their IDs\u003C/strong\u003E by returning a \u003Cstrong\u003Echunk\u003C/strong\u003E (list) of values after each insertion. The concatenation of all the \u003Cstrong\u003Echunks\u003C/strong\u003E should result in a list of the sorted values.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EOrderedStream\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EOrderedStream(int n)\u003C/code\u003E Constructs the stream to take \u003Ccode\u003En\u003C/code\u003E values.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EString[] insert(int idKey, String value)\u003C/code\u003E Inserts the pair \u003Ccode\u003E(idKey, value)\u003C/code\u003E into the stream, then returns the \u003Cstrong\u003Elargest possible chunk\u003C/strong\u003E of currently inserted values that appear next in the order.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/10/q1.gif\u0022 style=\u0022width: 682px; height: 240px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;OrderedStream\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;insert\u0026quot;]\n[[5], [3, \u0026quot;ccccc\u0026quot;], [1, \u0026quot;aaaaa\u0026quot;], [2, \u0026quot;bbbbb\u0026quot;], [5, \u0026quot;eeeee\u0026quot;], [4, \u0026quot;ddddd\u0026quot;]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, [], [\u0026quot;aaaaa\u0026quot;], [\u0026quot;bbbbb\u0026quot;, \u0026quot;ccccc\u0026quot;], [], [\u0026quot;ddddd\u0026quot;, \u0026quot;eeeee\u0026quot;]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\n// Note that the values ordered by ID is [\u0026quot;aaaaa\u0026quot;, \u0026quot;bbbbb\u0026quot;, \u0026quot;ccccc\u0026quot;, \u0026quot;ddddd\u0026quot;, \u0026quot;eeeee\u0026quot;].\nOrderedStream os = new OrderedStream(5);\nos.insert(3, \u0026quot;ccccc\u0026quot;); // Inserts (3, \u0026quot;ccccc\u0026quot;), returns [].\nos.insert(1, \u0026quot;aaaaa\u0026quot;); // Inserts (1, \u0026quot;aaaaa\u0026quot;), returns [\u0026quot;aaaaa\u0026quot;].\nos.insert(2, \u0026quot;bbbbb\u0026quot;); // Inserts (2, \u0026quot;bbbbb\u0026quot;), returns [\u0026quot;bbbbb\u0026quot;, \u0026quot;ccccc\u0026quot;].\nos.insert(5, \u0026quot;eeeee\u0026quot;); // Inserts (5, \u0026quot;eeeee\u0026quot;), returns [].\nos.insert(4, \u0026quot;ddddd\u0026quot;); // Inserts (4, \u0026quot;ddddd\u0026quot;), returns [\u0026quot;ddddd\u0026quot;, \u0026quot;eeeee\u0026quot;].\n// Concatentating all the chunks returned:\n// [] \u002B [\u0026quot;aaaaa\u0026quot;] \u002B [\u0026quot;bbbbb\u0026quot;, \u0026quot;ccccc\u0026quot;] \u002B [] \u002B [\u0026quot;ddddd\u0026quot;, \u0026quot;eeeee\u0026quot;] = [\u0026quot;aaaaa\u0026quot;, \u0026quot;bbbbb\u0026quot;, \u0026quot;ccccc\u0026quot;, \u0026quot;ddddd\u0026quot;, \u0026quot;eeeee\u0026quot;]\n// The resulting order is the same as the order above.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= id \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evalue.length == 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evalue\u003C/code\u003E\u0026nbsp;consists only of lowercase letters.\u003C/li\u003E\n\t\u003Cli\u003EEach call to \u003Ccode\u003Einsert\u003C/code\u003E\u0026nbsp;will have a unique \u003Ccode\u003Eid.\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EExactly \u003Ccode\u003En\u003C/code\u003E calls will be made to \u003Ccode\u003Einsert\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Maintain the next id that should be outputted.",
+    "Maintain the ids that were inserted in the stream.",
+    "Per each insert, make a loop where you check if the id that has the turn has been inserted, and if so increment the id that has the turn and continue the loop, else break."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0777522+00:00",
+  "Url": "https://leetcode.com/problems/design-an-ordered-stream/"
+}

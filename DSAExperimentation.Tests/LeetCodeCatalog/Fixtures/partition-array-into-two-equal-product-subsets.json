@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3843,
+  "FrontendId": 3566,
+  "Title": "Partition Array into Two Equal Product Subsets",
+  "TitleSlug": "partition-array-into-two-equal-product-subsets",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Bit Manipulation",
+    "Recursion",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 35.2,
+  "TotalAccepted": 36652,
+  "TotalSubmissions": 104248,
+  "Likes": 92,
+  "Dislikes": 21,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E containing \u003Cstrong\u003Edistinct\u003C/strong\u003E positive integers and an integer \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EDetermine if you can partition \u003Ccode\u003Enums\u003C/code\u003E into two \u003Cstrong\u003Enon-empty\u003C/strong\u003E \u003Cstrong\u003Edisjoint\u003C/strong\u003E \u003Cstrong\u003Esubsets\u003C/strong\u003E, with each element belonging to \u003Cstrong\u003Eexactly one\u003C/strong\u003E subset, such that the product of the elements in each subset is equal to \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if such a partition exists and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\nA \u003Cstrong\u003Esubset\u003C/strong\u003E of an array is a selection of elements of the array.\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,1,6,8,4], target = 24\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E The subsets \u003Ccode\u003E[3, 8]\u003C/code\u003E and \u003Ccode\u003E[1, 6, 4]\u003C/code\u003E each have a product of 24. Hence, the output is true.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,5,3,7], target = 15\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no way to partition \u003Ccode\u003Enums\u003C/code\u003E into two non-empty disjoint subsets such that both subsets have a product of 15. Hence, the output is false.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= nums.length \u0026lt;= 12\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target \u0026lt;= 10\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll elements of \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try iterating over all subsets",
+    "Use bitmasks"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,6,8,4]\n24",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,5,3,7]\n15",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4092007+00:00",
+  "Url": "https://leetcode.com/problems/partition-array-into-two-equal-product-subsets/"
+}

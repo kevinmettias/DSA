@@ -1,0 +1,37 @@
+{
+  "QuestionId": 692,
+  "FrontendId": 692,
+  "Title": "Top K Frequent Words",
+  "TitleSlug": "top-k-frequent-words",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Trie",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Bucket Sort",
+    "Counting"
+  ],
+  "AcceptanceRatePercent": 60.6,
+  "TotalAccepted": 828556,
+  "TotalSubmissions": 1367505,
+  "Likes": 8129,
+  "Dislikes": 376,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of strings \u003Ccode\u003Ewords\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E most frequent strings\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the answer \u003Cstrong\u003Esorted\u003C/strong\u003E by \u003Cstrong\u003Ethe frequency\u003C/strong\u003E from highest to lowest. Sort the words with the same frequency by their \u003Cstrong\u003Elexicographical order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;i\u0026quot;,\u0026quot;love\u0026quot;,\u0026quot;leetcode\u0026quot;,\u0026quot;i\u0026quot;,\u0026quot;love\u0026quot;,\u0026quot;coding\u0026quot;], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;i\u0026quot;,\u0026quot;love\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;i\u0026quot; and \u0026quot;love\u0026quot; are the two most frequent words.\nNote that \u0026quot;i\u0026quot; comes before \u0026quot;love\u0026quot; due to a lower alphabetical order.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;the\u0026quot;,\u0026quot;day\u0026quot;,\u0026quot;is\u0026quot;,\u0026quot;sunny\u0026quot;,\u0026quot;the\u0026quot;,\u0026quot;the\u0026quot;,\u0026quot;the\u0026quot;,\u0026quot;sunny\u0026quot;,\u0026quot;is\u0026quot;,\u0026quot;is\u0026quot;], k = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;the\u0026quot;,\u0026quot;is\u0026quot;,\u0026quot;sunny\u0026quot;,\u0026quot;day\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;the\u0026quot;, \u0026quot;is\u0026quot;, \u0026quot;sunny\u0026quot; and \u0026quot;day\u0026quot; are the four most frequent words, with the number of occurrence being 4, 3, 2 and 1 respectively.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ek\u003C/code\u003E is in the range \u003Ccode\u003E[1, The number of \u003Cstrong\u003Eunique\u003C/strong\u003E words[i]]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow-up:\u003C/strong\u003E Could you solve it in \u003Ccode\u003EO(n log(k))\u003C/code\u003E time and \u003Ccode\u003EO(n)\u003C/code\u003E extra space?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022i\u0022,\u0022love\u0022,\u0022leetcode\u0022,\u0022i\u0022,\u0022love\u0022,\u0022coding\u0022]\n2",
+      "RawExpectedOutput": "[\u0022i\u0022,\u0022love\u0022]"
+    },
+    {
+      "RawInput": "[\u0022the\u0022,\u0022day\u0022,\u0022is\u0022,\u0022sunny\u0022,\u0022the\u0022,\u0022the\u0022,\u0022the\u0022,\u0022sunny\u0022,\u0022is\u0022,\u0022is\u0022]\n4",
+      "RawExpectedOutput": "[\u0022the\u0022,\u0022is\u0022,\u0022sunny\u0022,\u0022day\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2661344+00:00",
+  "Url": "https://leetcode.com/problems/top-k-frequent-words/"
+}

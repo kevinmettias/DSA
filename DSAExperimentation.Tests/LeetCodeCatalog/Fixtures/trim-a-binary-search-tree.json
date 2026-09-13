@@ -1,0 +1,33 @@
+{
+  "QuestionId": 669,
+  "FrontendId": 669,
+  "Title": "Trim a Binary Search Tree",
+  "TitleSlug": "trim-a-binary-search-tree",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 66.8,
+  "TotalAccepted": 357739,
+  "TotalSubmissions": 535179,
+  "Likes": 6145,
+  "Dislikes": 267,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary search tree and the lowest and highest boundaries as \u003Ccode\u003Elow\u003C/code\u003E and \u003Ccode\u003Ehigh\u003C/code\u003E, trim the tree so that all its elements lies in \u003Ccode\u003E[low, high]\u003C/code\u003E. Trimming the tree should \u003Cstrong\u003Enot\u003C/strong\u003E change the relative structure of the elements that will remain in the tree (i.e., any node\u0026#39;s descendant should remain a descendant). It can be proven that there is a \u003Cstrong\u003Eunique answer\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe root of the trimmed binary search tree\u003C/em\u003E. Note that the root may change depending on the given bounds.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/09/trim1.jpg\u0022 style=\u0022width: 450px; height: 126px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [1,0,2], low = 1, high = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,null,2]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/09/trim2.jpg\u0022 style=\u0022width: 450px; height: 277px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [3,0,4,null,2,null,null,1], low = 1, high = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,2,null,1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E4\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe value of each node in the tree is \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eroot\u003C/code\u003E is guaranteed to be a valid binary search tree.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= low \u0026lt;= high \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,0,2]\n1\n2",
+      "RawExpectedOutput": "[1,null,2]"
+    },
+    {
+      "RawInput": "[3,0,4,null,2,null,null,1]\n1\n3",
+      "RawExpectedOutput": "[3,2,null,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2860359+00:00",
+  "Url": "https://leetcode.com/problems/trim-a-binary-search-tree/"
+}

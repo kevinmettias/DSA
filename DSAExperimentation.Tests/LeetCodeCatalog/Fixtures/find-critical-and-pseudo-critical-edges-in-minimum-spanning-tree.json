@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1613,
+  "FrontendId": 1489,
+  "Title": "Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree",
+  "TitleSlug": "find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Union-Find",
+    "Graph Theory",
+    "Sorting",
+    "Minimum Spanning Tree",
+    "Strongly Connected Component",
+    "Prim\u0027s Algorithm",
+    "Kruskal\u0027s Algorithm",
+    "Bor\u016Fvka\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 66.8,
+  "TotalAccepted": 79768,
+  "TotalSubmissions": 119468,
+  "Likes": 2063,
+  "Dislikes": 173,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a weighted undirected connected graph with \u003Ccode\u003En\u003C/code\u003E\u0026nbsp;vertices numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E,\u0026nbsp;and an array \u003Ccode\u003Eedges\u003C/code\u003E\u0026nbsp;where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E, weight\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents a bidirectional and weighted edge between nodes\u0026nbsp;\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u0026nbsp;and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. A minimum spanning tree (MST) is a subset of the graph\u0026#39;s edges that connects all vertices without cycles\u0026nbsp;and with the minimum possible total edge weight.\u003C/p\u003E\n\n\u003Cp\u003EFind \u003Cem\u003Eall the critical and pseudo-critical edges in the given graph\u0026#39;s minimum spanning tree (MST)\u003C/em\u003E. An MST edge whose deletion from the graph would cause the MST weight to increase is called a\u0026nbsp;\u003Cem\u003Ecritical edge\u003C/em\u003E. On\u0026nbsp;the other hand, a pseudo-critical edge is that which can appear in some MSTs but not all.\u003C/p\u003E\n\n\u003Cp\u003ENote that you can return the indices of the edges in any order.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/06/04/ex1.png\u0022 style=\u0022width: 259px; height: 262px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, edges = [[0,1,1],[1,2,1],[2,3,2],[0,3,2],[0,4,3],[3,4,3],[1,4,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[2,3,4,5]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figure above describes the graph.\nThe following figure shows all the possible MSTs:\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/06/04/msts.png\u0022 style=\u0022width: 540px; height: 553px;\u0022 /\u003E\nNotice that the two edges 0 and 1 appear in all MSTs, therefore they are critical edges, so we return them in the first list of the output.\nThe edges 2, 3, 4, and 5 are only part of some MSTs, therefore they are considered pseudo-critical edges. We add them to the second list of the output.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/06/04/ex2.png\u0022 style=\u0022width: 247px; height: 253px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, edges = [[0,1,1],[1,2,1],[2,3,1],[0,3,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[],[0,1,2,3]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can observe that since all 4 edges have equal weight, choosing any 3 edges from the given 4 will yield an MST. Therefore all 4 edges are pseudo-critical.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edges.length \u0026lt;= min(200, n * (n - 1) / 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= weight\u003Csub\u003Ei\u003C/sub\u003E\u0026nbsp;\u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll pairs \u003Ccode\u003E(a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E are \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use the Kruskal algorithm to find the minimum spanning tree by sorting the edges and picking edges from ones with smaller weights.",
+    "Use a disjoint set to avoid adding redundant edges that result in a cycle.",
+    "To find if one edge is critical, delete that edge and re-run the MST algorithm and see if the weight of the new MST increases.",
+    "To find if one edge is non-critical (in any MST), include that edge to the accepted edge list and continue the MST algorithm, then see if the resulting MST has the same weight of the initial MST of the entire graph."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n[[0,1,1],[1,2,1],[2,3,2],[0,3,2],[0,4,3],[3,4,3],[1,4,6]]",
+      "RawExpectedOutput": "[[0,1],[2,3,4,5]]"
+    },
+    {
+      "RawInput": "4\n[[0,1,1],[1,2,1],[2,3,1],[0,3,1]]",
+      "RawExpectedOutput": "[[],[0,1,2,3]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2186952+00:00",
+  "Url": "https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/"
+}

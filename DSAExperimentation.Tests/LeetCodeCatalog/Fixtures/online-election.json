@@ -1,0 +1,29 @@
+{
+  "QuestionId": 947,
+  "FrontendId": 911,
+  "Title": "Online Election",
+  "TitleSlug": "online-election",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Binary Search",
+    "Design"
+  ],
+  "AcceptanceRatePercent": 53.2,
+  "TotalAccepted": 81639,
+  "TotalSubmissions": 153557,
+  "Likes": 1100,
+  "Dislikes": 687,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integer arrays \u003Ccode\u003Epersons\u003C/code\u003E and \u003Ccode\u003Etimes\u003C/code\u003E. In an election, the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E vote was cast for \u003Ccode\u003Epersons[i]\u003C/code\u003E at time \u003Ccode\u003Etimes[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor each query at a time \u003Ccode\u003Et\u003C/code\u003E, find the person that was leading the election at time \u003Ccode\u003Et\u003C/code\u003E. Votes cast at time \u003Ccode\u003Et\u003C/code\u003E will count towards our query. In the case of a tie, the most recent vote (among tied candidates) wins.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ETopVotedCandidate\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ETopVotedCandidate(int[] persons, int[] times)\u003C/code\u003E Initializes the object with the \u003Ccode\u003Epersons\u003C/code\u003E and \u003Ccode\u003Etimes\u003C/code\u003E arrays.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint q(int t)\u003C/code\u003E Returns the number of the person that was leading the election at time \u003Ccode\u003Et\u003C/code\u003E according to the mentioned rules.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;TopVotedCandidate\u0026quot;, \u0026quot;q\u0026quot;, \u0026quot;q\u0026quot;, \u0026quot;q\u0026quot;, \u0026quot;q\u0026quot;, \u0026quot;q\u0026quot;, \u0026quot;q\u0026quot;]\n[[[0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]], [3], [12], [25], [15], [24], [8]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 0, 1, 1, 0, 0, 1]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nTopVotedCandidate topVotedCandidate = new TopVotedCandidate([0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]);\ntopVotedCandidate.q(3); // return 0, At time 3, the votes are [0], and 0 is leading.\ntopVotedCandidate.q(12); // return 1, At time 12, the votes are [0,1,1], and 1 is leading.\ntopVotedCandidate.q(25); // return 1, At time 25, the votes are [0,1,1,0,0,1], and 1 is leading (as ties go to the most recent vote.)\ntopVotedCandidate.q(15); // return 0\ntopVotedCandidate.q(24); // return 0\ntopVotedCandidate.q(8); // return 1\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= persons.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etimes.length == persons.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= persons[i] \u0026lt; persons.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= times[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etimes\u003C/code\u003E is sorted in a strictly increasing order.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etimes[0] \u0026lt;= t \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eq\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022TopVotedCandidate\u0022,\u0022q\u0022,\u0022q\u0022,\u0022q\u0022,\u0022q\u0022,\u0022q\u0022,\u0022q\u0022]\n[[[0,1,1,0,0,1,0],[0,5,10,15,20,25,30]],[3],[12],[25],[15],[24],[8]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3296985+00:00",
+  "Url": "https://leetcode.com/problems/online-election/"
+}

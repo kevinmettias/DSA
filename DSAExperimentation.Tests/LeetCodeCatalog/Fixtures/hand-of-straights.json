@@ -1,0 +1,33 @@
+{
+  "QuestionId": 876,
+  "FrontendId": 846,
+  "Title": "Hand of Straights",
+  "TitleSlug": "hand-of-straights",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Greedy",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 58.4,
+  "TotalAccepted": 488781,
+  "TotalSubmissions": 836932,
+  "Likes": 3830,
+  "Dislikes": 301,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice has some number of cards and she wants to rearrange the cards into groups so that each group is of size \u003Ccode\u003EgroupSize\u003C/code\u003E, and consists of \u003Ccode\u003EgroupSize\u003C/code\u003E consecutive cards.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer array \u003Ccode\u003Ehand\u003C/code\u003E where \u003Ccode\u003Ehand[i]\u003C/code\u003E is the value written on the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E card and an integer \u003Ccode\u003EgroupSize\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E if she can rearrange the cards, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hand = [1,2,3,6,2,3,4,7,8], groupSize = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice\u0026#39;s hand can be rearranged as [1,2,3],[2,3,4],[6,7,8]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hand = [1,2,3,4,5], groupSize = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice\u0026#39;s hand can not be rearranged into groups of 4.\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= hand.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= hand[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= groupSize \u0026lt;= hand.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E This question is the same as 1296: \u003Ca href=\u0022https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/\u0022 target=\u0022_blank\u0022\u003Ehttps://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/\u003C/a\u003E\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,6,2,3,4,7,8]\n3",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,2,3,4,5]\n4",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4313075+00:00",
+  "Url": "https://leetcode.com/problems/hand-of-straights/"
+}

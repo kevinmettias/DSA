@@ -1,0 +1,31 @@
+{
+  "QuestionId": 25,
+  "FrontendId": 25,
+  "Title": "Reverse Nodes in k-Group",
+  "TitleSlug": "reverse-nodes-in-k-group",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Linked List",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 67.2,
+  "TotalAccepted": 1681725,
+  "TotalSubmissions": 2502594,
+  "Likes": 15978,
+  "Dislikes": 819,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list, reverse the nodes of the list \u003Ccode\u003Ek\u003C/code\u003E at a time, and return \u003Cem\u003Ethe modified list\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003Ek\u003C/code\u003E is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of \u003Ccode\u003Ek\u003C/code\u003E then left-out nodes, in the end, should remain as it is.\u003C/p\u003E\n\n\u003Cp\u003EYou may not alter the values in the list\u0026#39;s nodes, only nodes themselves may be changed.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/03/reverse_ex1.jpg\u0022 style=\u0022width: 542px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,4,5], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,1,4,3,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/03/reverse_ex2.jpg\u0022 style=\u0022width: 542px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,4,5], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,2,1,4,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow-up:\u003C/strong\u003E Can you solve the problem in \u003Ccode\u003EO(1)\u003C/code\u003E extra memory space?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5]\n2",
+      "RawExpectedOutput": "[2,1,4,3,5]"
+    },
+    {
+      "RawInput": "[1,2,3,4,5]\n3",
+      "RawExpectedOutput": "[3,2,1,4,5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8452256+00:00",
+  "Url": "https://leetcode.com/problems/reverse-nodes-in-k-group/"
+}

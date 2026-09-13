@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1376,
+  "FrontendId": 2312,
+  "Title": "Selling Pieces of Wood",
+  "TitleSlug": "selling-pieces-of-wood",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 53.2,
+  "TotalAccepted": 16613,
+  "TotalSubmissions": 31240,
+  "Likes": 581,
+  "Dislikes": 13,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integers \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E that represent the height and width of a rectangular piece of wood. You are also given a 2D integer array \u003Ccode\u003Eprices\u003C/code\u003E, where \u003Ccode\u003Eprices[i] = [h\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E, price\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates you can sell a rectangular piece of wood of height \u003Ccode\u003Eh\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and width \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E for \u003Ccode\u003Eprice\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E dollars.\u003C/p\u003E\n\n\u003Cp\u003ETo cut a piece of wood, you must make a vertical or horizontal cut across the \u003Cstrong\u003Eentire\u003C/strong\u003E height or width of the piece to split it into two smaller pieces. After cutting a piece of wood into some number of smaller pieces, you can sell pieces according to \u003Ccode\u003Eprices\u003C/code\u003E. You may sell multiple pieces of the same shape, and you do not have to sell all the shapes. The grain of the wood makes a difference, so you \u003Cstrong\u003Ecannot\u003C/strong\u003E rotate a piece to swap its height and width.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E money you can earn after cutting an \u003C/em\u003E\u003Ccode\u003Em x n\u003C/code\u003E\u003Cem\u003E piece of wood\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that you can cut the piece of wood as many times as you want.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/04/27/ex1.png\u0022 style=\u0022width: 239px; height: 150px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 3, n = 5, prices = [[1,4,2],[2,2,7],[2,1,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 19\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows a possible scenario. It consists of:\n- 2 pieces of wood shaped 2 x 2, selling for a price of 2 * 7 = 14.\n- 1 piece of wood shaped 2 x 1, selling for a price of 1 * 3 = 3.\n- 1 piece of wood shaped 1 x 4, selling for a price of 1 * 2 = 2.\nThis obtains a total of 14 \u002B 3 \u002B 2 = 19 money earned.\nIt can be shown that 19 is the maximum amount of money that can be earned.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/04/27/ex2new.png\u0022 style=\u0022width: 250px; height: 175px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 4, n = 6, prices = [[3,2,10],[1,4,2],[4,1,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 32\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows a possible scenario. It consists of:\n- 3 pieces of wood shaped 3 x 2, selling for a price of 3 * 10 = 30.\n- 1 piece of wood shaped 1 x 4, selling for a price of 1 * 2 = 2.\nThis obtains a total of 30 \u002B 2 = 32 money earned.\nIt can be shown that 32 is the maximum amount of money that can be earned.\nNotice that we cannot rotate the 1 x 4 piece of wood to obtain a 4 x 1 piece of wood.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= prices.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eprices[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= h\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= m\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= w\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= price\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the shapes of wood \u003Ccode\u003E(h\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E are pairwise \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Note down the different actions that can be done on a piece of wood with dimensions m x n. What do you notice?",
+    "If possible, we could sell the m x n piece. We could also cut the piece vertically creating two pieces of size m x n1 and m x n2 where n1 \u002B n2 = n, or horizontally creating two pieces of size m1 x n and m2 x n where m1 \u002B m2 = m.",
+    "Notice that cutting a piece breaks the problem down into smaller subproblems, and selling the piece when available is also a case that terminates the process. Thus, we can use DP to efficiently solve this."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n5\n[[1,4,2],[2,2,7],[2,1,3]]",
+      "RawExpectedOutput": "19"
+    },
+    {
+      "RawInput": "4\n6\n[[3,2,10],[1,4,2],[4,1,3]]",
+      "RawExpectedOutput": "32"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9341736+00:00",
+  "Url": "https://leetcode.com/problems/selling-pieces-of-wood/"
+}

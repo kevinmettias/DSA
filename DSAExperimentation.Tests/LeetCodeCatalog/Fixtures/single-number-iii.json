@@ -1,0 +1,35 @@
+{
+  "QuestionId": 260,
+  "FrontendId": 260,
+  "Title": "Single Number III",
+  "TitleSlug": "single-number-iii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Bit Manipulation"
+  ],
+  "AcceptanceRatePercent": 70.1,
+  "TotalAccepted": 640228,
+  "TotalSubmissions": 912895,
+  "Likes": 6919,
+  "Dislikes": 280,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once. You can return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an\u0026nbsp;algorithm that runs in linear runtime complexity and uses\u0026nbsp;only constant extra space.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,1,3,2,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,5]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003E [5, 3] is also a valid answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [-1,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-2\u003Csup\u003E31\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EEach integer in \u003Ccode\u003Enums\u003C/code\u003E will appear twice, only two integers will appear once.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,1,3,2,5]",
+      "RawExpectedOutput": "[3,5]"
+    },
+    {
+      "RawInput": "[-1,0]",
+      "RawExpectedOutput": "[-1,0]"
+    },
+    {
+      "RawInput": "[0,1]",
+      "RawExpectedOutput": "[1,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0020777+00:00",
+  "Url": "https://leetcode.com/problems/single-number-iii/"
+}

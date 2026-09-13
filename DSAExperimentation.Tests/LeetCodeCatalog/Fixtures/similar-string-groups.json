@@ -1,0 +1,35 @@
+{
+  "QuestionId": 869,
+  "FrontendId": 839,
+  "Title": "Similar String Groups",
+  "TitleSlug": "similar-string-groups",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find"
+  ],
+  "AcceptanceRatePercent": 56.6,
+  "TotalAccepted": 147927,
+  "TotalSubmissions": 261296,
+  "Likes": 2483,
+  "Dislikes": 218,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003ETwo strings, \u003Ccode\u003EX\u003C/code\u003E and \u003Ccode\u003EY\u003C/code\u003E, are considered similar if either they are identical or we can make them equivalent by swapping at most two letters (in distinct positions) within the string \u003Ccode\u003EX\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor example, \u003Ccode\u003E\u0026quot;tars\u0026quot;\u003C/code\u003E\u0026nbsp;and \u003Ccode\u003E\u0026quot;rats\u0026quot;\u003C/code\u003E\u0026nbsp;are similar (swapping at positions \u003Ccode\u003E0\u003C/code\u003E and \u003Ccode\u003E2\u003C/code\u003E), and \u003Ccode\u003E\u0026quot;rats\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;arts\u0026quot;\u003C/code\u003E are similar, but \u003Ccode\u003E\u0026quot;star\u0026quot;\u003C/code\u003E is not similar to \u003Ccode\u003E\u0026quot;tars\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;rats\u0026quot;\u003C/code\u003E, or \u003Ccode\u003E\u0026quot;arts\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETogether, these form two connected groups by similarity: \u003Ccode\u003E{\u0026quot;tars\u0026quot;, \u0026quot;rats\u0026quot;, \u0026quot;arts\u0026quot;}\u003C/code\u003E and \u003Ccode\u003E{\u0026quot;star\u0026quot;}\u003C/code\u003E.\u0026nbsp; Notice that \u003Ccode\u003E\u0026quot;tars\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;arts\u0026quot;\u003C/code\u003E are in the same group even though they are not similar.\u0026nbsp; Formally, each group is such that a word is in the group if and only if it is similar to at least one other word in the group.\u003C/p\u003E\n\n\u003Cp\u003EWe are given a list \u003Ccode\u003Estrs\u003C/code\u003E of strings where every string in \u003Ccode\u003Estrs\u003C/code\u003E is an anagram of every other string in \u003Ccode\u003Estrs\u003C/code\u003E. How many groups are there?\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E strs = [\u0026quot;tars\u0026quot;,\u0026quot;rats\u0026quot;,\u0026quot;arts\u0026quot;,\u0026quot;star\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E strs = [\u0026quot;omv\u0026quot;,\u0026quot;ovm\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= strs.length \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= strs[i].length \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estrs[i]\u003C/code\u003E consists of lowercase letters only.\u003C/li\u003E\n\t\u003Cli\u003EAll words in \u003Ccode\u003Estrs\u003C/code\u003E have the same length and are anagrams of each other.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022tars\u0022,\u0022rats\u0022,\u0022arts\u0022,\u0022star\u0022]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[\u0022omv\u0022,\u0022ovm\u0022]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9978726+00:00",
+  "Url": "https://leetcode.com/problems/similar-string-groups/"
+}

@@ -1,0 +1,28 @@
+{
+  "QuestionId": 2620,
+  "FrontendId": 2526,
+  "Title": "Find Consecutive Integers from a Data Stream",
+  "TitleSlug": "find-consecutive-integers-from-a-data-stream",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Design",
+    "Queue",
+    "Counting",
+    "Data Stream"
+  ],
+  "AcceptanceRatePercent": 51.7,
+  "TotalAccepted": 39564,
+  "TotalSubmissions": 76488,
+  "Likes": 347,
+  "Dislikes": 41,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EFor a stream of integers, implement a data structure that checks if the last \u003Ccode\u003Ek\u003C/code\u003E integers parsed in the stream are \u003Cstrong\u003Eequal\u003C/strong\u003E to \u003Ccode\u003Evalue\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Cstrong\u003EDataStream\u003C/strong\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EDataStream(int value, int k)\u003C/code\u003E Initializes the object with an empty integer stream and the two integers \u003Ccode\u003Evalue\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean consec(int num)\u003C/code\u003E Adds \u003Ccode\u003Enum\u003C/code\u003E to the stream of integers. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the last \u003Ccode\u003Ek\u003C/code\u003E integers are equal to \u003Ccode\u003Evalue\u003C/code\u003E, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise. If there are less than \u003Ccode\u003Ek\u003C/code\u003E integers, the condition does not hold true, so returns \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;DataStream\u0026quot;, \u0026quot;consec\u0026quot;, \u0026quot;consec\u0026quot;, \u0026quot;consec\u0026quot;, \u0026quot;consec\u0026quot;]\n[[4, 3], [4], [4], [4], [3]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, false, false, true, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nDataStream dataStream = new DataStream(4, 3); //value = 4, k = 3 \ndataStream.consec(4); // Only 1 integer is parsed, so returns False. \ndataStream.consec(4); // Only 2 integers are parsed.\n                      // Since 2 is less than k, returns False. \ndataStream.consec(4); // The 3 integers parsed are all equal to value, so returns True. \ndataStream.consec(3); // The last k integers parsed in the stream are [4,4,3].\n                      // Since 3 is not equal to value, it returns False.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= value, num \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Econsec\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Keep track of the last integer which is not equal to \u003Ccode\u003Evalue\u003C/code\u003E.",
+    "Use a queue-type data structure to store the last \u003Ccode\u003Ek\u003C/code\u003E integers."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2181877+00:00",
+  "Url": "https://leetcode.com/problems/find-consecutive-integers-from-a-data-stream/"
+}

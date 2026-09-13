@@ -1,0 +1,49 @@
+{
+  "QuestionId": 3557,
+  "FrontendId": 3292,
+  "Title": "Minimum Number of Valid Strings to Form Target II",
+  "TitleSlug": "minimum-number-of-valid-strings-to-form-target-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Binary Search",
+    "Dynamic Programming",
+    "Greedy",
+    "Segment Tree",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 20.8,
+  "TotalAccepted": 6109,
+  "TotalSubmissions": 29368,
+  "Likes": 93,
+  "Dislikes": 10,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of strings \u003Ccode\u003Ewords\u003C/code\u003E and a string \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA string \u003Ccode\u003Ex\u003C/code\u003E is called \u003Cstrong\u003Evalid\u003C/strong\u003E if \u003Ccode\u003Ex\u003C/code\u003E is a \u003Cspan data-keyword=\u0022string-prefix\u0022\u003Eprefix\u003C/span\u003E of \u003Cstrong\u003Eany\u003C/strong\u003E string in \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E number of \u003Cstrong\u003Evalid\u003C/strong\u003E strings that can be \u003Cem\u003Econcatenated\u003C/em\u003E to form \u003Ccode\u003Etarget\u003C/code\u003E. If it is \u003Cstrong\u003Enot\u003C/strong\u003E possible to form \u003Ccode\u003Etarget\u003C/code\u003E, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ewords = [\u0026quot;abc\u0026quot;,\u0026quot;aaaaa\u0026quot;,\u0026quot;bcdef\u0026quot;], target = \u0026quot;aabcdabc\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe target string can be formed by concatenating:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPrefix of length 2 of \u003Ccode\u003Ewords[1]\u003C/code\u003E, i.e. \u003Ccode\u003E\u0026quot;aa\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EPrefix of length 3 of \u003Ccode\u003Ewords[2]\u003C/code\u003E, i.e. \u003Ccode\u003E\u0026quot;bcd\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EPrefix of length 3 of \u003Ccode\u003Ewords[0]\u003C/code\u003E, i.e. \u003Ccode\u003E\u0026quot;abc\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ewords = [\u0026quot;abababab\u0026quot;,\u0026quot;ab\u0026quot;], target = \u0026quot;ababaababa\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe target string can be formed by concatenating:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPrefix of length 5 of \u003Ccode\u003Ewords[0]\u003C/code\u003E, i.e. \u003Ccode\u003E\u0026quot;ababa\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EPrefix of length 5 of \u003Ccode\u003Ewords[0]\u003C/code\u003E, i.e. \u003Ccode\u003E\u0026quot;ababa\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ewords = [\u0026quot;abcdef\u0026quot;], target = \u0026quot;xyz\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that \u003Ccode\u003Esum(words[i].length) \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etarget\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Edp[i]\u003C/code\u003E be the minimum cost to form the prefix of length \u003Ccode\u003Ei\u003C/code\u003E of \u003Ccode\u003Etarget\u003C/code\u003E.",
+    "Use Rabin-Karp to hash every prefix and store it in a HashSet.",
+    "Use Binary search to find the longest substring starting at index \u003Ccode\u003Ei\u003C/code\u003E (\u003Ccode\u003Etarget[i..j]\u003C/code\u003E) that has a hash present in the HashSet.",
+    "Inverse Modulo precomputation can optimise hash calculation.",
+    "Use Lazy Segment Tree, or basic Segment Tree to update \u003Ccode\u003Edp[i..j]\u003C/code\u003E.",
+    "Is it possible to use two TreeSets to update \u003Ccode\u003Edp[i..j]\u003C/code\u003E?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022abc\u0022,\u0022aaaaa\u0022,\u0022bcdef\u0022]\n\u0022aabcdabc\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[\u0022abababab\u0022,\u0022ab\u0022]\n\u0022ababaababa\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[\u0022abcdef\u0022]\n\u0022xyz\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0776093+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-valid-strings-to-form-target-ii/"
+}

@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2330,
+  "FrontendId": 2234,
+  "Title": "Maximum Total Beauty of the Gardens",
+  "TitleSlug": "maximum-total-beauty-of-the-gardens",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Binary Search",
+    "Greedy",
+    "Sorting",
+    "Enumeration",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 30.5,
+  "TotalAccepted": 10250,
+  "TotalSubmissions": 33656,
+  "Likes": 458,
+  "Dislikes": 41,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice is a caretaker of \u003Ccode\u003En\u003C/code\u003E gardens and she wants to plant flowers to maximize the total beauty of all her gardens.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Eflowers\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Eflowers[i]\u003C/code\u003E is the number of flowers already planted in the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E garden. Flowers that are already planted \u003Cstrong\u003Ecannot\u003C/strong\u003E be removed. You are then given another integer \u003Ccode\u003EnewFlowers\u003C/code\u003E, which is the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of flowers that Alice can additionally plant. You are also given the integers \u003Ccode\u003Etarget\u003C/code\u003E, \u003Ccode\u003Efull\u003C/code\u003E, and \u003Ccode\u003Epartial\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA garden is considered \u003Cstrong\u003Ecomplete\u003C/strong\u003E if it has \u003Cstrong\u003Eat least\u003C/strong\u003E \u003Ccode\u003Etarget\u003C/code\u003E flowers. The \u003Cstrong\u003Etotal beauty\u003C/strong\u003E of the gardens is then determined as the \u003Cstrong\u003Esum\u003C/strong\u003E of the following:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of \u003Cstrong\u003Ecomplete\u003C/strong\u003E gardens multiplied by \u003Ccode\u003Efull\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of flowers in any of the \u003Cstrong\u003Eincomplete\u003C/strong\u003E gardens multiplied by \u003Ccode\u003Epartial\u003C/code\u003E. If there are no incomplete gardens, then this value will be \u003Ccode\u003E0\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E total beauty that Alice can obtain after planting at most \u003C/em\u003E\u003Ccode\u003EnewFlowers\u003C/code\u003E\u003Cem\u003E flowers.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E flowers = [1,3,1,1], newFlowers = 7, target = 6, full = 12, partial = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 14\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice can plant\n- 2 flowers in the 0\u003Csup\u003Eth\u003C/sup\u003E garden\n- 3 flowers in the 1\u003Csup\u003Est\u003C/sup\u003E garden\n- 1 flower in the 2\u003Csup\u003End\u003C/sup\u003E garden\n- 1 flower in the 3\u003Csup\u003Erd\u003C/sup\u003E garden\nThe gardens will then be [3,6,2,2]. She planted a total of 2 \u002B 3 \u002B 1 \u002B 1 = 7 flowers.\nThere is 1 garden that is complete.\nThe minimum number of flowers in the incomplete gardens is 2.\nThus, the total beauty is 1 * 12 \u002B 2 * 1 = 12 \u002B 2 = 14.\nNo other way of planting flowers can obtain a total beauty higher than 14.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E flowers = [2,4,5,3], newFlowers = 10, target = 5, full = 2, partial = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 30\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice can plant\n- 3 flowers in the 0\u003Csup\u003Eth\u003C/sup\u003E garden\n- 0 flowers in the 1\u003Csup\u003Est\u003C/sup\u003E garden\n- 0 flowers in the 2\u003Csup\u003End\u003C/sup\u003E garden\n- 2 flowers in the 3\u003Csup\u003Erd\u003C/sup\u003E garden\nThe gardens will then be [5,4,5,5]. She planted a total of 3 \u002B 0 \u002B 0 \u002B 2 = 5 flowers.\nThere are 3 gardens that are complete.\nThe minimum number of flowers in the incomplete gardens is 4.\nThus, the total beauty is 3 * 2 \u002B 4 * 6 = 6 \u002B 24 = 30.\nNo other way of planting flowers can obtain a total beauty higher than 30.\nNote that Alice could make all the gardens complete but in this case, she would obtain a lower total beauty.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= flowers.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= flowers[i], target \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= newFlowers \u0026lt;= 10\u003Csup\u003E10\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= full, partial \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Say we choose k gardens to be complete, is there an optimal way of choosing which gardens to plant more flowers to achieve this?",
+    "For a given k, we should greedily fill-up the k gardens with the most flowers planted already. This gives us the most remaining flowers to fill up the other gardens.",
+    "After sorting flowers, we can thus try every possible k and what is left is to find the highest minimum flowers we can obtain by planting the remaining flowers in the other gardens.",
+    "To find the highest minimum in the other gardens, we can use binary search to find the most optimal way of planting."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3,1,1]\n7\n6\n12\n1",
+      "RawExpectedOutput": "14"
+    },
+    {
+      "RawInput": "[2,4,5,3]\n10\n5\n2\n6",
+      "RawExpectedOutput": "30"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9475458+00:00",
+  "Url": "https://leetcode.com/problems/maximum-total-beauty-of-the-gardens/"
+}

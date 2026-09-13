@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2753,
+  "FrontendId": 2654,
+  "Title": "Minimum Number of Operations to Make All Array Elements Equal to 1",
+  "TitleSlug": "minimum-number-of-operations-to-make-all-array-elements-equal-to-1",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Number Theory",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 54.7,
+  "TotalAccepted": 90238,
+  "TotalSubmissions": 164929,
+  "Likes": 794,
+  "Dislikes": 50,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E\u0026nbsp;array \u003Ccode\u003Enums\u003C/code\u003E consisting of \u003Cstrong\u003Epositive\u003C/strong\u003E integers. You can do the following operation on the array \u003Cstrong\u003Eany\u003C/strong\u003E number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect an index \u003Ccode\u003Ei\u003C/code\u003E such that \u003Ccode\u003E0 \u0026lt;= i \u0026lt; n - 1\u003C/code\u003E and replace either of\u0026nbsp;\u003Ccode\u003Enums[i]\u003C/code\u003E or \u003Ccode\u003Enums[i\u002B1]\u003C/code\u003E with their gcd value.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of operations to make all elements of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E equal to \u003C/em\u003E\u003Ccode\u003E1\u003C/code\u003E. If it is impossible, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe gcd of two integers is the greatest common divisor of the two integers.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,6,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can do the following operations:\n- Choose index i = 2 and replace nums[2] with gcd(3,4) = 1. Now we have nums = [2,6,1,4].\n- Choose index i = 1 and replace nums[1] with gcd(6,1) = 1. Now we have nums = [2,1,1,4].\n- Choose index i = 0 and replace nums[0] with gcd(2,1) = 1. Now we have nums = [1,1,1,4].\n- Choose index i = 2 and replace nums[3] with gcd(1,4) = 1. Now we have nums = [1,1,1,1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,10,6,14]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It can be shown that it is impossible to make all the elements equal to 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Note that if you have at least one occurrence of 1 in the array, then you can make all the other elements equal to 1 with one operation each.",
+    "Try finding the shortest subarray with a gcd equal to 1."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,6,3,4]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[2,10,6,14]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0760491+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-operations-to-make-all-array-elements-equal-to-1/"
+}

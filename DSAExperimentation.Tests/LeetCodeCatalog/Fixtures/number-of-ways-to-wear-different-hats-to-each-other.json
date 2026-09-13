@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1531,
+  "FrontendId": 1434,
+  "Title": "Number of Ways to Wear Different Hats to Each Other",
+  "TitleSlug": "number-of-ways-to-wear-different-hats-to-each-other",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Bitmask",
+    "Bipartite Graph",
+    "Matching (Graph)",
+    "Perfect Matching"
+  ],
+  "AcceptanceRatePercent": 46.8,
+  "TotalAccepted": 24974,
+  "TotalSubmissions": 53331,
+  "Likes": 980,
+  "Dislikes": 12,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E people and \u003Ccode\u003E40\u003C/code\u003E types of hats labeled from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003E40\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven a 2D integer array \u003Ccode\u003Ehats\u003C/code\u003E, where \u003Ccode\u003Ehats[i]\u003C/code\u003E is a list of all hats preferred by the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of ways that \u003Ccode\u003En\u003C/code\u003E people can wear \u003Cstrong\u003Edifferent\u003C/strong\u003E hats from each other.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be too large, return it modulo \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hats = [[3,4],[4,5],[5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is only one way to choose hats given the conditions. \nFirst person chooses hat 3, Second person chooses hat 4 and last one hat 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hats = [[3,5,1],[3,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 4 ways to choose hats:\n(3,5), (5,3), (1,3) and (1,5)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E hats = [[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 24\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Each person can choose hats labeled from 1 to 4.\nNumber of Permutations of (1,2,3,4) = 24.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == hats.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= hats[i].length \u0026lt;= 40\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= hats[i][j] \u0026lt;= 40\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ehats[i]\u003C/code\u003E contains a list of \u003Cstrong\u003Eunique\u003C/strong\u003E integers.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Dynamic programming \u002B bitmask.",
+    "dp(peopleMask, idHat) number of ways to wear different hats given a bitmask (people visited) and used hats from 1 to idHat-1."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[3,4],[4,5],[5]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[3,5,1],[3,5]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[1,2,3,4],[1,2,3,4],[1,2,3,4],[1,2,3,4]]",
+      "RawExpectedOutput": "24"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3142611+00:00",
+  "Url": "https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/"
+}

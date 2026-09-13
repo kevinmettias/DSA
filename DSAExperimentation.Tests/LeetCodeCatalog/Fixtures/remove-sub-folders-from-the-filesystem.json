@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1350,
+  "FrontendId": 1233,
+  "Title": "Remove Sub-Folders from the Filesystem",
+  "TitleSlug": "remove-sub-folders-from-the-filesystem",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Depth-First Search",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 78.6,
+  "TotalAccepted": 269562,
+  "TotalSubmissions": 342934,
+  "Likes": 1672,
+  "Dislikes": 232,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a list of folders \u003Ccode\u003Efolder\u003C/code\u003E, return \u003Cem\u003Ethe folders after removing all \u003Cstrong\u003Esub-folders\u003C/strong\u003E in those folders\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIf a \u003Ccode\u003Efolder[i]\u003C/code\u003E is located within another \u003Ccode\u003Efolder[j]\u003C/code\u003E, it is called a \u003Cstrong\u003Esub-folder\u003C/strong\u003E of it. A sub-folder of \u003Ccode\u003Efolder[j]\u003C/code\u003E must start with \u003Ccode\u003Efolder[j]\u003C/code\u003E, followed by a \u003Ccode\u003E\u0026quot;/\u0026quot;\u003C/code\u003E. For example, \u003Ccode\u003E\u0026quot;/a/b\u0026quot;\u003C/code\u003E is a sub-folder of \u003Ccode\u003E\u0026quot;/a\u0026quot;\u003C/code\u003E, but \u003Ccode\u003E\u0026quot;/b\u0026quot;\u003C/code\u003E is not a sub-folder of \u003Ccode\u003E\u0026quot;/a/b/c\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe format of a path is one or more concatenated strings of the form: \u003Ccode\u003E\u0026#39;/\u0026#39;\u003C/code\u003E followed by one or more lowercase English letters.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E\u0026quot;/leetcode\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;/leetcode/problems\u0026quot;\u003C/code\u003E are valid paths while an empty string and \u003Ccode\u003E\u0026quot;/\u0026quot;\u003C/code\u003E are not.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E folder = [\u0026quot;/a\u0026quot;,\u0026quot;/a/b\u0026quot;,\u0026quot;/c/d\u0026quot;,\u0026quot;/c/d/e\u0026quot;,\u0026quot;/c/f\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;/a\u0026quot;,\u0026quot;/c/d\u0026quot;,\u0026quot;/c/f\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Folders \u0026quot;/a/b\u0026quot; is a subfolder of \u0026quot;/a\u0026quot; and \u0026quot;/c/d/e\u0026quot; is inside of folder \u0026quot;/c/d\u0026quot; in our filesystem.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E folder = [\u0026quot;/a\u0026quot;,\u0026quot;/a/b/c\u0026quot;,\u0026quot;/a/b/d\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;/a\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Folders \u0026quot;/a/b/c\u0026quot; and \u0026quot;/a/b/d\u0026quot; will be removed because they are subfolders of \u0026quot;/a\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E folder = [\u0026quot;/a/b/c\u0026quot;,\u0026quot;/a/b/ca\u0026quot;,\u0026quot;/a/b/d\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;/a/b/c\u0026quot;,\u0026quot;/a/b/ca\u0026quot;,\u0026quot;/a/b/d\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= folder.length \u0026lt;= 4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= folder[i].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Efolder[i]\u003C/code\u003E contains only lowercase letters and \u003Ccode\u003E\u0026#39;/\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Efolder[i]\u003C/code\u003E always starts with the character \u003Ccode\u003E\u0026#39;/\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EEach folder name is \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the folders lexicographically.",
+    "Insert the current element in an array and then loop until we get rid of all of their subfolders, repeat this until no element is left."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022/a\u0022,\u0022/a/b\u0022,\u0022/c/d\u0022,\u0022/c/d/e\u0022,\u0022/c/f\u0022]",
+      "RawExpectedOutput": "[\u0022/a\u0022,\u0022/c/d\u0022,\u0022/c/f\u0022]"
+    },
+    {
+      "RawInput": "[\u0022/a\u0022,\u0022/a/b/c\u0022,\u0022/a/b/d\u0022]",
+      "RawExpectedOutput": "[\u0022/a\u0022]"
+    },
+    {
+      "RawInput": "[\u0022/a/b/c\u0022,\u0022/a/b/ca\u0022,\u0022/a/b/d\u0022]",
+      "RawExpectedOutput": "[\u0022/a/b/c\u0022,\u0022/a/b/ca\u0022,\u0022/a/b/d\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.787073+00:00",
+  "Url": "https://leetcode.com/problems/remove-sub-folders-from-the-filesystem/"
+}

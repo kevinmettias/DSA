@@ -1,0 +1,30 @@
+{
+  "QuestionId": 1294,
+  "FrontendId": 2080,
+  "Title": "Range Frequency Queries",
+  "TitleSlug": "range-frequency-queries",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Binary Search",
+    "Design",
+    "Segment Tree"
+  ],
+  "AcceptanceRatePercent": 44.2,
+  "TotalAccepted": 39158,
+  "TotalSubmissions": 88535,
+  "Likes": 767,
+  "Dislikes": 29,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure to find the \u003Cstrong\u003Efrequency\u003C/strong\u003E of a given value in a given subarray.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Efrequency\u003C/strong\u003E of a value in a subarray is the number of occurrences of that value in the subarray.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ERangeFreqQuery\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ERangeFreqQuery(int[] arr)\u003C/code\u003E Constructs an instance of the class with the given \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Earr\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint query(int left, int right, int value)\u003C/code\u003E Returns the \u003Cstrong\u003Efrequency\u003C/strong\u003E of \u003Ccode\u003Evalue\u003C/code\u003E in the subarray \u003Ccode\u003Earr[left...right]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a contiguous sequence of elements within an array. \u003Ccode\u003Earr[left...right]\u003C/code\u003E denotes the subarray that contains the elements of \u003Ccode\u003Enums\u003C/code\u003E between indices \u003Ccode\u003Eleft\u003C/code\u003E and \u003Ccode\u003Eright\u003C/code\u003E (\u003Cstrong\u003Einclusive\u003C/strong\u003E).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;RangeFreqQuery\u0026quot;, \u0026quot;query\u0026quot;, \u0026quot;query\u0026quot;]\n[[[12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]], [1, 2, 4], [0, 11, 33]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, 2]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nRangeFreqQuery rangeFreqQuery = new RangeFreqQuery([12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]);\nrangeFreqQuery.query(1, 2, 4); // return 1. The value 4 occurs 1 time in the subarray [33, 4]\nrangeFreqQuery.query(0, 11, 33); // return 2. The value 33 occurs 2 times in the whole array.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr[i], value \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= left \u0026lt;= right \u0026lt; arr.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Equery\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The queries must be answered efficiently to avoid time limit exceeded verdict.",
+    "Store the elements of the array in a data structure that helps answering the queries efficiently.",
+    "Use a hash table that stored for each value, the indices where that value appeared.",
+    "Use binary search over the indices of a value to find its range frequency."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6429946+00:00",
+  "Url": "https://leetcode.com/problems/range-frequency-queries/"
+}

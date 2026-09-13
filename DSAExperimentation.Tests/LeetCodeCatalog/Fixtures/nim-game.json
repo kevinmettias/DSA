@@ -1,0 +1,41 @@
+{
+  "QuestionId": 292,
+  "FrontendId": 292,
+  "Title": "Nim Game",
+  "TitleSlug": "nim-game",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Brainteaser",
+    "Minimax",
+    "Game Theory",
+    "Nim Game",
+    "Impartial Game"
+  ],
+  "AcceptanceRatePercent": 60.5,
+  "TotalAccepted": 591852,
+  "TotalSubmissions": 978812,
+  "Likes": 2075,
+  "Dislikes": 2752,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are playing the following Nim Game with your friend:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EInitially, there is a heap of stones on the table.\u003C/li\u003E\n\t\u003Cli\u003EYou and your friend will alternate taking turns, and \u003Cstrong\u003Eyou go first\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EOn each turn, the person whose turn it is will remove 1 to 3 stones from the heap.\u003C/li\u003E\n\t\u003Cli\u003EThe one who removes the last stone is the winner.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven \u003Ccode\u003En\u003C/code\u003E, the number of stones in the heap, return \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if you can win the game assuming both you and your friend play optimally, otherwise return \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E These are the possible outcomes:\n1. You remove 1 stone. Your friend removes 3 stones, including the last stone. Your friend wins.\n2. You remove 2 stones. Your friend removes 2 stones, including the last stone. Your friend wins.\n3. You remove 3 stones. Your friend removes the last stone. Your friend wins.\nIn all outcomes, your friend wins.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If there are 5 stones in the heap, could you figure out a way to remove the stones such that you will always be the winner?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2162429+00:00",
+  "Url": "https://leetcode.com/problems/nim-game/"
+}

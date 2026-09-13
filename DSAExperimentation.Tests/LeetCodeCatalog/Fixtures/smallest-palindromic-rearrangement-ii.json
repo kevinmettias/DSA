@@ -1,0 +1,44 @@
+{
+  "QuestionId": 3813,
+  "FrontendId": 3518,
+  "Title": "Smallest Palindromic Rearrangement II",
+  "TitleSlug": "smallest-palindromic-rearrangement-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Hash Table",
+    "Math",
+    "String",
+    "Combinatorics",
+    "Counting"
+  ],
+  "AcceptanceRatePercent": 43.9,
+  "TotalAccepted": 74771,
+  "TotalSubmissions": 170369,
+  "Likes": 311,
+  "Dislikes": 28,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp data-end=\u0022332\u0022 data-start=\u002299\u0022\u003EYou are given a \u003Cstrong\u003E\u003Cspan data-keyword=\u0022palindrome-string\u0022\u003Epalindromic\u003C/span\u003E\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Ek-th\u003C/strong\u003E \u003Cstrong\u003E\u003Cspan data-keyword=\u0022lexicographically-smaller-string\u0022\u003Elexicographically smallest\u003C/span\u003E\u003C/strong\u003E palindromic \u003Cspan data-keyword=\u0022permutation-string\u0022\u003Epermutation\u003C/span\u003E of \u003Ccode\u003Es\u003C/code\u003E. If there are fewer than \u003Ccode\u003Ek\u003C/code\u003E distinct palindromic permutations, return an empty string.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E Different rearrangements that yield the same palindromic string are considered identical and are counted once.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;abba\u0026quot;, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;baab\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe two distinct palindromic rearrangements of \u003Ccode\u003E\u0026quot;abba\u0026quot;\u003C/code\u003E are \u003Ccode\u003E\u0026quot;abba\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;baab\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ELexicographically, \u003Ccode\u003E\u0026quot;abba\u0026quot;\u003C/code\u003E comes before \u003Ccode\u003E\u0026quot;baab\u0026quot;\u003C/code\u003E. Since \u003Ccode\u003Ek = 2\u003C/code\u003E, the output is \u003Ccode\u003E\u0026quot;baab\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;aa\u0026quot;, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere is only one palindromic rearrangement: \u003Ccode data-end=\u00221112\u0022 data-start=\u00221106\u0022\u003E\u0026quot;aa\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe output is an empty string since \u003Ccode\u003Ek = 2\u003C/code\u003E exceeds the number of possible rearrangements.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;bacab\u0026quot;, k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;abcba\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe two distinct palindromic rearrangements of \u003Ccode\u003E\u0026quot;bacab\u0026quot;\u003C/code\u003E are \u003Ccode\u003E\u0026quot;abcba\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;bacab\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ELexicographically, \u003Ccode\u003E\u0026quot;abcba\u0026quot;\u003C/code\u003E comes before \u003Ccode\u003E\u0026quot;bacab\u0026quot;\u003C/code\u003E. Since \u003Ccode\u003Ek = 1\u003C/code\u003E, the output is \u003Ccode\u003E\u0026quot;abcba\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E is guaranteed to be palindromic.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Only build \u003Ccode\u003Efloor(n / 2)\u003C/code\u003E characters (the rest are determined by symmetry).",
+    "Count character frequencies and use half the counts for construction.",
+    "Incrementally choose each character (from smallest to largest) and calculate how many valid arrangements result if that character is chosen at the current index.",
+    "If the count is at least \u003Ccode\u003Ek\u003C/code\u003E, fix that character; otherwise, subtract the count from \u003Ccode\u003Ek\u003C/code\u003E and try the next candidate.",
+    "Use combinatorics to compute the number of permutations at each step."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abba\u0022\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022aa\u0022\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022bacab\u0022\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0233842+00:00",
+  "Url": "https://leetcode.com/problems/smallest-palindromic-rearrangement-ii/"
+}

@@ -1,0 +1,26 @@
+{
+  "QuestionId": 352,
+  "FrontendId": 352,
+  "Title": "Data Stream as Disjoint Intervals",
+  "TitleSlug": "data-stream-as-disjoint-intervals",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Hash Table",
+    "Binary Search",
+    "Union-Find",
+    "Design",
+    "Data Stream",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 60.6,
+  "TotalAccepted": 142970,
+  "TotalSubmissions": 236044,
+  "Likes": 1834,
+  "Dislikes": 380,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a data stream input of non-negative integers \u003Ccode\u003Ea\u003Csub\u003E1\u003C/sub\u003E, a\u003Csub\u003E2\u003C/sub\u003E, ..., a\u003Csub\u003En\u003C/sub\u003E\u003C/code\u003E, summarize the numbers seen so far as a list of disjoint intervals.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESummaryRanges\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESummaryRanges()\u003C/code\u003E Initializes the object with an empty stream.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid addNum(int value)\u003C/code\u003E Adds the integer \u003Ccode\u003Evalue\u003C/code\u003E to the stream.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint[][] getIntervals()\u003C/code\u003E Returns a summary of the integers in the stream currently as a list of disjoint intervals \u003Ccode\u003E[start\u003Csub\u003Ei\u003C/sub\u003E, end\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. The answer should be sorted by \u003Ccode\u003Estart\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;SummaryRanges\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;getIntervals\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;getIntervals\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;getIntervals\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;getIntervals\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;getIntervals\u0026quot;]\n[[], [1], [], [3], [], [7], [], [2], [], [6], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, [[1, 1]], null, [[1, 1], [3, 3]], null, [[1, 1], [3, 3], [7, 7]], null, [[1, 3], [7, 7]], null, [[1, 3], [6, 7]]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSummaryRanges summaryRanges = new SummaryRanges();\nsummaryRanges.addNum(1);      // arr = [1]\nsummaryRanges.getIntervals(); // return [[1, 1]]\nsummaryRanges.addNum(3);      // arr = [1, 3]\nsummaryRanges.getIntervals(); // return [[1, 1], [3, 3]]\nsummaryRanges.addNum(7);      // arr = [1, 3, 7]\nsummaryRanges.getIntervals(); // return [[1, 1], [3, 3], [7, 7]]\nsummaryRanges.addNum(2);      // arr = [1, 2, 3, 7]\nsummaryRanges.getIntervals(); // return [[1, 3], [7, 7]]\nsummaryRanges.addNum(6);      // arr = [1, 2, 3, 6, 7]\nsummaryRanges.getIntervals(); // return [[1, 3], [6, 7]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= value \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003EaddNum\u003C/code\u003E and \u003Ccode\u003EgetIntervals\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E2\u003C/sup\u003E\u003C/code\u003E\u0026nbsp;calls will be made to\u0026nbsp;\u003Ccode\u003EgetIntervals\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E What if there are lots of merges and the number of disjoint intervals is small compared to the size of the data stream?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0434492+00:00",
+  "Url": "https://leetcode.com/problems/data-stream-as-disjoint-intervals/"
+}

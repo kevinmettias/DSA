@@ -1,0 +1,32 @@
+{
+  "QuestionId": 537,
+  "FrontendId": 537,
+  "Title": "Complex Number Multiplication",
+  "TitleSlug": "complex-number-multiplication",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 73.8,
+  "TotalAccepted": 119512,
+  "TotalSubmissions": 161917,
+  "Likes": 761,
+  "Dislikes": 1257,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Ca href=\u0022https://en.wikipedia.org/wiki/Complex_number\u0022 target=\u0022_blank\u0022\u003Ecomplex number\u003C/a\u003E can be represented as a string on the form \u003Ccode\u003E\u0026quot;\u003Cstrong\u003Ereal\u003C/strong\u003E\u002B\u003Cstrong\u003Eimaginary\u003C/strong\u003Ei\u0026quot;\u003C/code\u003E where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ereal\u003C/code\u003E is the real part and is an integer in the range \u003Ccode\u003E[-100, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eimaginary\u003C/code\u003E is the imaginary part and is an integer in the range \u003Ccode\u003E[-100, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei\u003Csup\u003E2\u003C/sup\u003E == -1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven two complex numbers \u003Ccode\u003Enum1\u003C/code\u003E and \u003Ccode\u003Enum2\u003C/code\u003E as strings, return \u003Cem\u003Ea string of the complex number that represents their multiplications\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num1 = \u0026quot;1\u002B1i\u0026quot;, num2 = \u0026quot;1\u002B1i\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;0\u002B2i\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E (1 \u002B i) * (1 \u002B i) = 1 \u002B i2 \u002B 2 * i = 2i, and you need convert it to the form of 0\u002B2i.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num1 = \u0026quot;1\u002B-1i\u0026quot;, num2 = \u0026quot;1\u002B-1i\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;0\u002B-2i\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E (1 - i) * (1 - i) = 1 \u002B i2 - 2 * i = -2i, and you need convert it to the form of 0\u002B-2i.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enum1\u003C/code\u003E and \u003Ccode\u003Enum2\u003C/code\u003E are valid complex numbers.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u00221\u002B1i\u0022\n\u00221\u002B1i\u0022",
+      "RawExpectedOutput": "\u00220\u002B2i\u0022"
+    },
+    {
+      "RawInput": "\u00221\u002B-1i\u0022\n\u00221\u002B-1i\u0022",
+      "RawExpectedOutput": "\u00220\u002B-2i\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8430502+00:00",
+  "Url": "https://leetcode.com/problems/complex-number-multiplication/"
+}

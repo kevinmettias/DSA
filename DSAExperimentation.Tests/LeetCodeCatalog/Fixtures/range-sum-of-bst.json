@@ -1,0 +1,33 @@
+{
+  "QuestionId": 975,
+  "FrontendId": 938,
+  "Title": "Range Sum of BST",
+  "TitleSlug": "range-sum-of-bst",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 87.6,
+  "TotalAccepted": 1380882,
+  "TotalSubmissions": 1575723,
+  "Likes": 7297,
+  "Dislikes": 389,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E node of a binary search tree and two integers \u003Ccode\u003Elow\u003C/code\u003E and \u003Ccode\u003Ehigh\u003C/code\u003E, return \u003Cem\u003Ethe sum of values of all nodes with a value in the \u003Cstrong\u003Einclusive\u003C/strong\u003E range \u003C/em\u003E\u003Ccode\u003E[low, high]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/05/bst1.jpg\u0022 style=\u0022width: 400px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [10,5,15,3,7,null,18], low = 7, high = 15\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 32\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Nodes 7, 10, and 15 are in the range [7, 15]. 7 \u002B 10 \u002B 15 = 32.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/05/bst2.jpg\u0022 style=\u0022width: 400px; height: 335px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [10,5,15,3,7,13,18,1,null,6], low = 6, high = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 23\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Nodes 6, 7, and 10 are in the range [6, 10]. 6 \u002B 7 \u002B 10 = 23.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[1, 2 * 10\u003Csup\u003E4\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= low \u0026lt;= high \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003ENode.val\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,5,15,3,7,null,18]\n7\n15",
+      "RawExpectedOutput": "32"
+    },
+    {
+      "RawInput": "[10,5,15,3,7,13,18,1,null,6]\n6\n10",
+      "RawExpectedOutput": "23"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6533235+00:00",
+  "Url": "https://leetcode.com/problems/range-sum-of-bst/"
+}

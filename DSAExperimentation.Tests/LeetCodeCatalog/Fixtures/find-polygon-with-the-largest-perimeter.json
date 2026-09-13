@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3262,
+  "FrontendId": 2971,
+  "Title": "Find Polygon With the Largest Perimeter",
+  "TitleSlug": "find-polygon-with-the-largest-perimeter",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Sorting",
+    "Prefix Sum",
+    "Polygons"
+  ],
+  "AcceptanceRatePercent": 65.3,
+  "TotalAccepted": 148062,
+  "TotalSubmissions": 226643,
+  "Likes": 846,
+  "Dislikes": 71,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of \u003Cstrong\u003Epositive\u003C/strong\u003E integers \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Epolygon\u003C/strong\u003E is a closed plane figure that has at least \u003Ccode\u003E3\u003C/code\u003E sides. The \u003Cstrong\u003Elongest side\u003C/strong\u003E of a polygon is \u003Cstrong\u003Esmaller\u003C/strong\u003E than the sum of its other sides.\u003C/p\u003E\n\n\u003Cp\u003EConversely, if you have \u003Ccode\u003Ek\u003C/code\u003E (\u003Ccode\u003Ek \u0026gt;= 3\u003C/code\u003E) \u003Cstrong\u003Epositive\u003C/strong\u003E real numbers \u003Ccode\u003Ea\u003Csub\u003E1\u003C/sub\u003E\u003C/code\u003E, \u003Ccode\u003Ea\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E, \u003Ccode\u003Ea\u003Csub\u003E3\u003C/sub\u003E\u003C/code\u003E, ..., \u003Ccode\u003Ea\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E where \u003Ccode\u003Ea\u003Csub\u003E1\u003C/sub\u003E \u0026lt;= a\u003Csub\u003E2\u003C/sub\u003E \u0026lt;= a\u003Csub\u003E3\u003C/sub\u003E \u0026lt;= ... \u0026lt;= a\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E \u003Cstrong\u003Eand\u003C/strong\u003E \u003Ccode\u003Ea\u003Csub\u003E1\u003C/sub\u003E \u002B a\u003Csub\u003E2\u003C/sub\u003E \u002B a\u003Csub\u003E3\u003C/sub\u003E \u002B ... \u002B a\u003Csub\u003Ek-1\u003C/sub\u003E \u0026gt; a\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E, then there \u003Cstrong\u003Ealways\u003C/strong\u003E exists a polygon with \u003Ccode\u003Ek\u003C/code\u003E sides whose lengths are \u003Ccode\u003Ea\u003Csub\u003E1\u003C/sub\u003E\u003C/code\u003E, \u003Ccode\u003Ea\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E, \u003Ccode\u003Ea\u003Csub\u003E3\u003C/sub\u003E\u003C/code\u003E, ..., \u003Ccode\u003Ea\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Eperimeter\u003C/strong\u003E of a polygon is the sum of lengths of its sides.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Elargest\u003C/strong\u003E possible \u003Cstrong\u003Eperimeter\u003C/strong\u003E of a \u003Cstrong\u003Epolygon\u003C/strong\u003E whose sides can be formed from\u003C/em\u003E \u003Ccode\u003Enums\u003C/code\u003E, \u003Cem\u003Eor\u003C/em\u003E \u003Ccode\u003E-1\u003C/code\u003E \u003Cem\u003Eif it is not possible to create a polygon\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,5,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 15\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The only possible polygon that can be made from nums has 3 sides: 5, 5, and 5. The perimeter is 5 \u002B 5 \u002B 5 = 15.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,12,1,2,5,50,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 12\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The polygon with the largest perimeter which can be made from nums has 5 sides: 1, 1, 2, 3, and 5. The perimeter is 1 \u002B 1 \u002B 2 \u002B 3 \u002B 5 = 12.\nWe cannot have a polygon with either 12 or 50 as the longest side because it is not possible to include 2 or more smaller sides that have a greater sum than either of them.\nIt can be shown that the largest possible perimeter is 12.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,5,50]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no possible way to form a polygon from nums, as a polygon has at least 3 sides and 50 \u0026gt; 5 \u002B 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the array.",
+    "Use greedy algorithm. If we select an edge as the longest side, it is always better to pick up all the edges with length no longer than this longest edge.",
+    "Note that the number of edges should not be less than 3."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,5,5]",
+      "RawExpectedOutput": "15"
+    },
+    {
+      "RawInput": "[1,12,1,2,5,50,3]",
+      "RawExpectedOutput": "12"
+    },
+    {
+      "RawInput": "[5,5,50]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2647072+00:00",
+  "Url": "https://leetcode.com/problems/find-polygon-with-the-largest-perimeter/"
+}

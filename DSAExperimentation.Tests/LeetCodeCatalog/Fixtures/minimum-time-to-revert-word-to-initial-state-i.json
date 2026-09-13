@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3297,
+  "FrontendId": 3029,
+  "Title": "Minimum Time to Revert Word to Initial State I",
+  "TitleSlug": "minimum-time-to-revert-word-to-initial-state-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 42.5,
+  "TotalAccepted": 25045,
+  "TotalSubmissions": 58987,
+  "Likes": 186,
+  "Dislikes": 34,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string \u003Ccode\u003Eword\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAt every second, you must perform the following operations:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ERemove the first \u003Ccode\u003Ek\u003C/code\u003E characters of \u003Ccode\u003Eword\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAdd any \u003Ccode\u003Ek\u003C/code\u003E characters to the end of \u003Ccode\u003Eword\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that you do not necessarily need to add the same characters that you removed. However, you must perform \u003Cstrong\u003Eboth\u003C/strong\u003E operations at every second.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E time greater than zero required for\u003C/em\u003E \u003Ccode\u003Eword\u003C/code\u003E \u003Cem\u003Eto revert to its \u003Cstrong\u003Einitial\u003C/strong\u003E state\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word = \u0026quot;abacaba\u0026quot;, k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E At the 1st second, we remove characters \u0026quot;aba\u0026quot; from the prefix of word, and add characters \u0026quot;bac\u0026quot; to the end of word. Thus, word becomes equal to \u0026quot;cababac\u0026quot;.\nAt the 2nd second, we remove characters \u0026quot;cab\u0026quot; from the prefix of word, and add \u0026quot;aba\u0026quot; to the end of word. Thus, word becomes equal to \u0026quot;abacaba\u0026quot; and reverts to its initial state.\nIt can be shown that 2 seconds is the minimum time greater than zero required for word to revert to its initial state.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word = \u0026quot;abacaba\u0026quot;, k = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E At the 1st second, we remove characters \u0026quot;abac\u0026quot; from the prefix of word, and add characters \u0026quot;caba\u0026quot; to the end of word. Thus, word becomes equal to \u0026quot;abacaba\u0026quot; and reverts to its initial state.\nIt can be shown that 1 second is the minimum time greater than zero required for word to revert to its initial state.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word = \u0026quot;abcbabcd\u0026quot;, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E At every second, we will remove the first 2 characters of word, and add the same characters to the end of word.\nAfter 4 seconds, word becomes equal to \u0026quot;abcbabcd\u0026quot; and reverts to its initial state.\nIt can be shown that 4 seconds is the minimum time greater than zero required for word to revert to its initial state.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= word.length \u0026lt;= 50 \u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= word.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eword\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Find the longest suffix which is also a prefix and the length is multiple of \u003Ccode\u003Ek\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abacaba\u0022\n3",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022abacaba\u0022\n4",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022abcbabcd\u0022\n2",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.107688+00:00",
+  "Url": "https://leetcode.com/problems/minimum-time-to-revert-word-to-initial-state-i/"
+}

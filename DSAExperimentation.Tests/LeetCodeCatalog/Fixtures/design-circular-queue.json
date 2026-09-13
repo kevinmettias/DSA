@@ -1,0 +1,24 @@
+{
+  "QuestionId": 860,
+  "FrontendId": 622,
+  "Title": "Design Circular Queue",
+  "TitleSlug": "design-circular-queue",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Linked List",
+    "Design",
+    "Queue"
+  ],
+  "AcceptanceRatePercent": 55.4,
+  "TotalAccepted": 519737,
+  "TotalSubmissions": 938082,
+  "Likes": 3911,
+  "Dislikes": 364,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign your implementation of the circular queue. The circular queue is a linear data structure in which the operations are performed based on FIFO (First In First Out) principle, and the last position is connected back to the first position to make a circle. It is also called \u0026quot;Ring Buffer\u0026quot;.\u003C/p\u003E\n\n\u003Cp\u003EOne of the benefits of the circular queue is that we can make use of the spaces in front of the queue. In a normal queue, once the queue becomes full, we cannot insert the next element even if there is a space in front of the queue. But using the circular queue, we can use the space to store new values.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMyCircularQueue\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMyCircularQueue(k)\u003C/code\u003E Initializes the object with the size of the queue to be \u003Ccode\u003Ek\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint Front()\u003C/code\u003E Gets the front item from the queue. If the queue is empty, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint Rear()\u003C/code\u003E Gets the last item from the queue. If the queue is empty, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean enQueue(int value)\u003C/code\u003E Inserts an element into the circular queue. Return \u003Ccode\u003Etrue\u003C/code\u003E if the operation is successful.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean deQueue()\u003C/code\u003E Deletes an element from the circular queue. Return \u003Ccode\u003Etrue\u003C/code\u003E if the operation is successful.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean isEmpty()\u003C/code\u003E Checks whether the circular queue is empty or not.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean isFull()\u003C/code\u003E Checks whether the circular queue is full or not.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou must solve the problem without using the built-in queue data structure in your programming language.\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyCircularQueue\u0026quot;, \u0026quot;enQueue\u0026quot;, \u0026quot;enQueue\u0026quot;, \u0026quot;enQueue\u0026quot;, \u0026quot;enQueue\u0026quot;, \u0026quot;Rear\u0026quot;, \u0026quot;isFull\u0026quot;, \u0026quot;deQueue\u0026quot;, \u0026quot;enQueue\u0026quot;, \u0026quot;Rear\u0026quot;]\n[[3], [1], [2], [3], [4], [], [], [], [4], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, true, true, true, false, 3, true, true, true, 4]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyCircularQueue myCircularQueue = new MyCircularQueue(3);\nmyCircularQueue.enQueue(1); // return True\nmyCircularQueue.enQueue(2); // return True\nmyCircularQueue.enQueue(3); // return True\nmyCircularQueue.enQueue(4); // return False\nmyCircularQueue.Rear();     // return 3\nmyCircularQueue.isFull();   // return True\nmyCircularQueue.deQueue();  // return True\nmyCircularQueue.enQueue(4); // return True\nmyCircularQueue.Rear();     // return 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= value \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E3000\u003C/code\u003E calls will be made to\u0026nbsp;\u003Ccode\u003EenQueue\u003C/code\u003E, \u003Ccode\u003EdeQueue\u003C/code\u003E,\u0026nbsp;\u003Ccode\u003EFront\u003C/code\u003E,\u0026nbsp;\u003Ccode\u003ERear\u003C/code\u003E,\u0026nbsp;\u003Ccode\u003EisEmpty\u003C/code\u003E, and\u0026nbsp;\u003Ccode\u003EisFull\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0878588+00:00",
+  "Url": "https://leetcode.com/problems/design-circular-queue/"
+}

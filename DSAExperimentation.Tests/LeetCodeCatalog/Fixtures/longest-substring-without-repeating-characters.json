@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3,
+  "FrontendId": 3,
+  "Title": "Longest Substring Without Repeating Characters",
+  "TitleSlug": "longest-substring-without-repeating-characters",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 40,
+  "TotalAccepted": 10293478,
+  "TotalSubmissions": 25744512,
+  "Likes": 45731,
+  "Dislikes": 2242,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, find the length of the \u003Cstrong\u003Elongest\u003C/strong\u003E \u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003E\u003Cstrong\u003Esubstring\u003C/strong\u003E\u003C/span\u003E without duplicate characters.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abcabcbb\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer is \u0026quot;abc\u0026quot;, with the length of 3. Note that \u003Ccode\u003E\u0026quot;bca\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;cab\u0026quot;\u003C/code\u003E are also correct answers.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;bbbbb\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer is \u0026quot;b\u0026quot;, with the length of 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;pwwkew\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer is \u0026quot;wke\u0026quot;, with the length of 3.\nNotice that the answer must be a substring, \u0026quot;pwke\u0026quot; is a subsequence and not a substring.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of English letters, digits, symbols and spaces.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "There are less than 100 unique characters. We can check all substrings with length at most 100 for example. This is a good enough approximation."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abcabcbb\u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "\u0022bbbbb\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022pwwkew\u0022",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7656245+00:00",
+  "Url": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"
+}

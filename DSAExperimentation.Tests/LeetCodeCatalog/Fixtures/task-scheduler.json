@@ -1,0 +1,43 @@
+{
+  "QuestionId": 621,
+  "FrontendId": 621,
+  "Title": "Task Scheduler",
+  "TitleSlug": "task-scheduler",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Greedy",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Counting"
+  ],
+  "AcceptanceRatePercent": 63.8,
+  "TotalAccepted": 1047896,
+  "TotalSubmissions": 1642137,
+  "Likes": 12127,
+  "Dislikes": 2245,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of CPU \u003Ccode\u003Etasks\u003C/code\u003E, each labeled with a letter from A to Z, and a number \u003Ccode\u003En\u003C/code\u003E. Each CPU interval can be idle or allow the completion of one task. Tasks can be completed in any order, but there\u0026#39;s a constraint: there has to be a gap of \u003Cstrong\u003Eat least\u003C/strong\u003E \u003Ccode\u003En\u003C/code\u003E intervals between two tasks with the same label.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E number of CPU intervals required to complete all tasks.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022\n    border-color: var(--border-tertiary);\n    border-left-width: 2px;\n    color: var(--text-secondary);\n    font-size: .875rem;\n    margin-bottom: 1rem;\n    margin-top: 1rem;\n    overflow: visible;\n    padding-left: 1rem;\n\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003Etasks = [\u0026quot;A\u0026quot;,\u0026quot;A\u0026quot;,\u0026quot;A\u0026quot;,\u0026quot;B\u0026quot;,\u0026quot;B\u0026quot;,\u0026quot;B\u0026quot;], n = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\nfont-family: Menlo,sans-serif;\nfont-size: 0.85rem;\n\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E A possible sequence is: A -\u0026gt; B -\u0026gt; idle -\u0026gt; A -\u0026gt; B -\u0026gt; idle -\u0026gt; A -\u0026gt; B.\u003C/p\u003E\n\n\u003Cp\u003EAfter completing task A, you must wait two intervals before doing A again. The same applies to task B. In the 3\u003Csup\u003Erd\u003C/sup\u003E interval, neither A nor B can be done, so you idle. By the 4\u003Csup\u003Eth\u003C/sup\u003E interval, you can do A again as 2 intervals have passed.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022\n    border-color: var(--border-tertiary);\n    border-left-width: 2px;\n    color: var(--text-secondary);\n    font-size: .875rem;\n    margin-bottom: 1rem;\n    margin-top: 1rem;\n    overflow: visible;\n    padding-left: 1rem;\n\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003Etasks = [\u0026quot;A\u0026quot;,\u0026quot;C\u0026quot;,\u0026quot;A\u0026quot;,\u0026quot;B\u0026quot;,\u0026quot;D\u0026quot;,\u0026quot;B\u0026quot;], n = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E A possible sequence is: A -\u0026gt; B -\u0026gt; C -\u0026gt; D -\u0026gt; A -\u0026gt; B.\u003C/p\u003E\n\n\u003Cp\u003EWith a cooling interval of 1, you can repeat a task after just one other task.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022\n    border-color: var(--border-tertiary);\n    border-left-width: 2px;\n    color: var(--text-secondary);\n    font-size: .875rem;\n    margin-bottom: 1rem;\n    margin-top: 1rem;\n    overflow: visible;\n    padding-left: 1rem;\n\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003Etasks = [\u0026quot;A\u0026quot;,\u0026quot;A\u0026quot;,\u0026quot;A\u0026quot;, \u0026quot;B\u0026quot;,\u0026quot;B\u0026quot;,\u0026quot;B\u0026quot;], n = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022\n    font-family: Menlo,sans-serif;\n    font-size: 0.85rem;\n\u0022\u003E10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E A possible sequence is: A -\u0026gt; B -\u0026gt; idle -\u0026gt; idle -\u0026gt; A -\u0026gt; B -\u0026gt; idle -\u0026gt; idle -\u0026gt; A -\u0026gt; B.\u003C/p\u003E\n\n\u003Cp\u003EThere are only two types of tasks, A and B, which need to be separated by 3 intervals. This leads to idling twice between repetitions of these tasks.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= tasks.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etasks[i]\u003C/code\u003E is an uppercase English letter.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "There are many different solutions for this problem, including a greedy algorithm.",
+    "For every cycle, find the most frequent letter that can be placed in this cycle. After placing, decrease the frequency of that letter by one.",
+    "Use Priority Queue."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022A\u0022,\u0022A\u0022,\u0022A\u0022,\u0022B\u0022,\u0022B\u0022,\u0022B\u0022]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[\u0022A\u0022,\u0022C\u0022,\u0022A\u0022,\u0022B\u0022,\u0022D\u0022,\u0022B\u0022]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[\u0022A\u0022,\u0022A\u0022,\u0022A\u0022, \u0022B\u0022,\u0022B\u0022,\u0022B\u0022]\n3",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2450672+00:00",
+  "Url": "https://leetcode.com/problems/task-scheduler/"
+}

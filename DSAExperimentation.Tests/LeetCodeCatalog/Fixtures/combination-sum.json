@@ -1,0 +1,35 @@
+{
+  "QuestionId": 39,
+  "FrontendId": 39,
+  "Title": "Combination Sum",
+  "TitleSlug": "combination-sum",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Backtracking"
+  ],
+  "AcceptanceRatePercent": 77.1,
+  "TotalAccepted": 3384001,
+  "TotalSubmissions": 4387408,
+  "Likes": 21355,
+  "Dislikes": 548,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of \u003Cstrong\u003Edistinct\u003C/strong\u003E integers \u003Ccode\u003Ecandidates\u003C/code\u003E and a target integer \u003Ccode\u003Etarget\u003C/code\u003E, return \u003Cem\u003Ea list of all \u003Cstrong\u003Eunique combinations\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Ecandidates\u003C/code\u003E\u003Cem\u003E where the chosen numbers sum to \u003C/em\u003E\u003Ccode\u003Etarget\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E You may return the combinations in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Esame\u003C/strong\u003E number may be chosen from \u003Ccode\u003Ecandidates\u003C/code\u003E an \u003Cstrong\u003Eunlimited number of times\u003C/strong\u003E. Two combinations are unique if the \u003Cspan data-keyword=\u0022frequency-array\u0022\u003Efrequency\u003C/span\u003E of at least one of the chosen numbers is different.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases are generated such that the number of unique combinations that sum up to \u003Ccode\u003Etarget\u003C/code\u003E is less than \u003Ccode\u003E150\u003C/code\u003E combinations for the given input.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E candidates = [2,3,6,7], target = 7\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[2,2,3],[7]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n2 and 3 are candidates, and 2 \u002B 2 \u002B 3 = 7. Note that 2 can be used multiple times.\n7 is a candidate, and 7 = 7.\nThese are the only two combinations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E candidates = [2,3,5], target = 8\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[2,2,2,2],[2,3,3],[3,5]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E candidates = [2], target = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= candidates.length \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= candidates[i] \u0026lt;= 40\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll elements of \u003Ccode\u003Ecandidates\u003C/code\u003E are \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target \u0026lt;= 40\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,6,7]\n7",
+      "RawExpectedOutput": "[[2,2,3],[7]]"
+    },
+    {
+      "RawInput": "[2,3,5]\n8",
+      "RawExpectedOutput": "[[2,2,2,2],[2,3,3],[3,5]]"
+    },
+    {
+      "RawInput": "[2]\n1",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.832615+00:00",
+  "Url": "https://leetcode.com/problems/combination-sum/"
+}

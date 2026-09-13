@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1228,
+  "FrontendId": 1130,
+  "Title": "Minimum Cost Tree From Leaf Values",
+  "TitleSlug": "minimum-cost-tree-from-leaf-values",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Stack",
+    "Greedy",
+    "Monotonic Stack",
+    "Cartesian Tree"
+  ],
+  "AcceptanceRatePercent": 68,
+  "TotalAccepted": 125754,
+  "TotalSubmissions": 185059,
+  "Likes": 4471,
+  "Dislikes": 284,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array \u003Ccode\u003Earr\u003C/code\u003E of positive integers, consider all binary trees such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach node has either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E2\u003C/code\u003E children;\u003C/li\u003E\n\t\u003Cli\u003EThe values of \u003Ccode\u003Earr\u003C/code\u003E correspond to the values of each \u003Cstrong\u003Eleaf\u003C/strong\u003E in an in-order traversal of the tree.\u003C/li\u003E\n\t\u003Cli\u003EThe value of each non-leaf node is equal to the product of the largest leaf value in its left and right subtree, respectively.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAmong all possible binary trees considered, return \u003Cem\u003Ethe smallest possible sum of the values of each non-leaf node\u003C/em\u003E. It is guaranteed this sum fits into a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/p\u003E\n\n\u003Cp\u003EA node is a \u003Cstrong\u003Eleaf\u003C/strong\u003E if and only if it has zero children.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/10/tree1.jpg\u0022 style=\u0022width: 500px; height: 169px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [6,2,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 32\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are two possible trees shown.\nThe first has a non-leaf node sum 36, and the second has non-leaf node sum 32.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/10/tree2.jpg\u0022 style=\u0022width: 224px; height: 145px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [4,11]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 44\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= arr.length \u0026lt;= 40\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr[i] \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that the answer fits into a \u003Cstrong\u003E32-bit\u003C/strong\u003E signed integer (i.e., it is less than 2\u003Csup\u003E31\u003C/sup\u003E).\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Do a DP, where dp(i, j) is the answer for the subarray arr[i]..arr[j].",
+    "For each possible way to partition the subarray i \u003C= k \u003C j, the answer is max(arr[i]..arr[k]) * max(arr[k\u002B1]..arr[j]) \u002B dp(i, k) \u002B dp(k\u002B1, j)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,2,4]",
+      "RawExpectedOutput": "32"
+    },
+    {
+      "RawInput": "[4,11]",
+      "RawExpectedOutput": "44"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0396974+00:00",
+  "Url": "https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2952,
+  "FrontendId": 2809,
+  "Title": "Minimum Time to Make Array Sum At Most x",
+  "TitleSlug": "minimum-time-to-make-array-sum-at-most-x",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 28.5,
+  "TotalAccepted": 7336,
+  "TotalSubmissions": 25707,
+  "Likes": 253,
+  "Dislikes": 16,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E of equal length. Every second, for all indices \u003Ccode\u003E0 \u0026lt;= i \u0026lt; nums1.length\u003C/code\u003E, value of \u003Ccode\u003Enums1[i]\u003C/code\u003E is incremented by \u003Ccode\u003Enums2[i]\u003C/code\u003E. \u003Cstrong\u003EAfter\u003C/strong\u003E this is done, you can do the following operation:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose an index \u003Ccode\u003E0 \u0026lt;= i \u0026lt; nums1.length\u003C/code\u003E and make \u003Ccode\u003Enums1[i] = 0\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are also given an integer \u003Ccode\u003Ex\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E time in which you can make the sum of all elements of \u003C/em\u003E\u003Ccode\u003Enums1\u003C/code\u003E\u003Cem\u003E to be\u003Cstrong\u003E less than or equal\u003C/strong\u003E to \u003C/em\u003E\u003Ccode\u003Ex\u003C/code\u003E, \u003Cem\u003Eor \u003C/em\u003E\u003Ccode\u003E-1\u003C/code\u003E\u003Cem\u003E if this is not possible.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,2,3], nums2 = [1,2,3], x = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFor the 1st second, we apply the operation on i = 0. Therefore nums1 = [0,2\u002B2,3\u002B3] = [0,4,6]. \nFor the 2nd second, we apply the operation on i = 1. Therefore nums1 = [0\u002B1,0,6\u002B3] = [1,0,9]. \nFor the 3rd second, we apply the operation on i = 2. Therefore nums1 = [1\u002B1,0\u002B2,0] = [2,2,0]. \nNow sum of nums1 = 4. It can be shown that these operations are optimal, so we return 3.\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,2,3], nums2 = [3,3,3], x = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It can be shown that the sum of nums1 will always be greater than x, no matter which operations are performed.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E1 \u0026lt;= nums1.length \u0026lt;= 10\u003Csup\u003E3\u003C/sup\u003E\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums1[i] \u0026lt;= 10\u003Csup\u003E3\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums2[i] \u0026lt;= 10\u003Csup\u003E3\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums1.length == nums2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EIt can be proven that in the optimal solution, for each index \u003Ccode\u003Ei\u003C/code\u003E, we only need to set \u003Ccode\u003Enums1[i]\u003C/code\u003E to \u003Ccode\u003E0\u003C/code\u003E at most once. (If we have to set it twice, we can simply remove the earlier set and all the operations \u201Cshift left\u201D by \u003Ccode\u003E1\u003C/code\u003E.)\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EIt can also be proven that if we select several indexes \u003Ccode\u003Ei\u003Csub\u003E1\u003C/sub\u003E, i\u003Csub\u003E2\u003C/sub\u003E, ..., i\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E and set \u003Ccode\u003Enums1[i\u003Csub\u003E1\u003C/sub\u003E], nums1[i\u003Csub\u003E2\u003C/sub\u003E], ..., nums1[i\u003Csub\u003Ek\u003C/sub\u003E]\u003C/code\u003E to \u003Ccode\u003E0\u003C/code\u003E, it\u2019s always optimal to set them in the order of \u003Ccode\u003Enums2[i\u003Csub\u003E1\u003C/sub\u003E] \u003C= nums2[i\u003Csub\u003E2\u003C/sub\u003E] \u003C= ... \u003C= nums2[i\u003Csub\u003Ek\u003C/sub\u003E]\u003C/code\u003E (the larger the increase is, the later we should set it to \u003Ccode\u003E0\u003C/code\u003E).\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003ELet\u2019s sort all the values by \u003Ccode\u003Enums2\u003C/code\u003E (in non-decreasing order). Let \u003Ccode\u003Edp[i][j]\u003C/code\u003E represent the maximum total value that can be reduced if we do \u003Ccode\u003Ej\u003C/code\u003E operations on the first \u003Ccode\u003Ei\u003C/code\u003E elements. Then we have \u003Ccode\u003Edp[i][0] = 0\u003C/code\u003E (for all \u003Ccode\u003Ei = 0, 1, ..., n\u003C/code\u003E) and \u003Ccode\u003Edp[i][j] = max(dp[i - 1][j], dp[i - 1][j - 1] \u002B nums2[i - 1] * j \u002B nums1[i - 1])\u003C/code\u003E (for \u003Ccode\u003E1 \u003C= i \u003C= n\u003C/code\u003E and \u003Ccode\u003E1 \u003C= j \u003C= i\u003C/code\u003E).\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EThe answer is the minimum value of \u003Ccode\u003Et\u003C/code\u003E, such that \u003Ccode\u003E0 \u003C= t \u003C= n\u003C/code\u003E and \u003Ccode\u003Esum(nums1) \u002B sum(nums2) * t - dp[n][t] \u003C= x\u003C/code\u003E, or \u003Ccode\u003E-1\u003C/code\u003E if it doesn\u2019t exist.\u003C/div\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]\n[1,2,3]\n4",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,2,3]\n[3,3,3]\n4",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1057653+00:00",
+  "Url": "https://leetcode.com/problems/minimum-time-to-make-array-sum-at-most-x/"
+}

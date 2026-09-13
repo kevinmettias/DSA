@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2326,
+  "FrontendId": 2223,
+  "Title": "Sum of Scores of Built Strings",
+  "TitleSlug": "sum-of-scores-of-built-strings",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Binary Search",
+    "Rolling Hash",
+    "Suffix Array",
+    "String Matching",
+    "Hash Function",
+    "Z Algorithm",
+    "Knuth\u2013Morris\u2013Pratt Algorithm"
+  ],
+  "AcceptanceRatePercent": 50.7,
+  "TotalAccepted": 18363,
+  "TotalSubmissions": 36207,
+  "Likes": 311,
+  "Dislikes": 191,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are \u003Cstrong\u003Ebuilding\u003C/strong\u003E a string \u003Ccode\u003Es\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E \u003Cstrong\u003Eone\u003C/strong\u003E character at a time, \u003Cstrong\u003Eprepending\u003C/strong\u003E each new character to the \u003Cstrong\u003Efront\u003C/strong\u003E of the string. The strings are labeled from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E, where the string with length \u003Ccode\u003Ei\u003C/code\u003E is labeled \u003Ccode\u003Es\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, for \u003Ccode\u003Es = \u0026quot;abaca\u0026quot;\u003C/code\u003E, \u003Ccode\u003Es\u003Csub\u003E1\u003C/sub\u003E == \u0026quot;a\u0026quot;\u003C/code\u003E, \u003Ccode\u003Es\u003Csub\u003E2\u003C/sub\u003E == \u0026quot;ca\u0026quot;\u003C/code\u003E, \u003Ccode\u003Es\u003Csub\u003E3\u003C/sub\u003E == \u0026quot;aca\u0026quot;\u003C/code\u003E, etc.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Escore\u003C/strong\u003E of \u003Ccode\u003Es\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the length of the \u003Cstrong\u003Elongest common prefix\u003C/strong\u003E between \u003Ccode\u003Es\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Es\u003Csub\u003En\u003C/sub\u003E\u003C/code\u003E (Note that \u003Ccode\u003Es == s\u003Csub\u003En\u003C/sub\u003E\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EGiven the final string \u003Ccode\u003Es\u003C/code\u003E, return\u003Cem\u003E the \u003Cstrong\u003Esum\u003C/strong\u003E of the \u003Cstrong\u003Escore\u003C/strong\u003E of every \u003C/em\u003E\u003Ccode\u003Es\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;babab\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 9\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nFor s\u003Csub\u003E1\u003C/sub\u003E == \u0026quot;b\u0026quot;, the longest common prefix is \u0026quot;b\u0026quot; which has a score of 1.\nFor s\u003Csub\u003E2\u003C/sub\u003E == \u0026quot;ab\u0026quot;, there is no common prefix so the score is 0.\nFor s\u003Csub\u003E3\u003C/sub\u003E == \u0026quot;bab\u0026quot;, the longest common prefix is \u0026quot;bab\u0026quot; which has a score of 3.\nFor s\u003Csub\u003E4\u003C/sub\u003E == \u0026quot;abab\u0026quot;, there is no common prefix so the score is 0.\nFor s\u003Csub\u003E5\u003C/sub\u003E == \u0026quot;babab\u0026quot;, the longest common prefix is \u0026quot;babab\u0026quot; which has a score of 5.\nThe sum of the scores is 1 \u002B 0 \u002B 3 \u002B 0 \u002B 5 = 9, so we return 9.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;azbazbzaz\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 14\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFor s\u003Csub\u003E2\u003C/sub\u003E == \u0026quot;az\u0026quot;, the longest common prefix is \u0026quot;az\u0026quot; which has a score of 2.\nFor s\u003Csub\u003E6\u003C/sub\u003E == \u0026quot;azbzaz\u0026quot;, the longest common prefix is \u0026quot;azb\u0026quot; which has a score of 3.\nFor s\u003Csub\u003E9\u003C/sub\u003E == \u0026quot;azbazbzaz\u0026quot;, the longest common prefix is \u0026quot;azbazbzaz\u0026quot; which has a score of 9.\nFor all other s\u003Csub\u003Ei\u003C/sub\u003E, the score is 0.\nThe sum of the scores is 2 \u002B 3 \u002B 9 = 14, so we return 14.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Each s_i is a suffix of the string s, so consider algorithms that can determine the longest prefix that is also a suffix.",
+    "Could you use the Z array from the Z algorithm to find the score of each s_i?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022babab\u0022",
+      "RawExpectedOutput": "9"
+    },
+    {
+      "RawInput": "\u0022azbazbzaz\u0022",
+      "RawExpectedOutput": "14"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1879148+00:00",
+  "Url": "https://leetcode.com/problems/sum-of-scores-of-built-strings/"
+}

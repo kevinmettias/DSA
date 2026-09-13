@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3024,
+  "FrontendId": 2851,
+  "Title": "String Transformation",
+  "TitleSlug": "string-transformation",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Dynamic Programming",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 27.2,
+  "TotalAccepted": 7542,
+  "TotalSubmissions": 27696,
+  "Likes": 189,
+  "Dislikes": 50,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two strings \u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Et\u003C/code\u003E of equal length \u003Ccode\u003En\u003C/code\u003E. You can perform the following operation on the string \u003Ccode\u003Es\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ERemove a \u003Cstrong\u003Esuffix\u003C/strong\u003E of \u003Ccode\u003Es\u003C/code\u003E of length \u003Ccode\u003El\u003C/code\u003E where \u003Ccode\u003E0 \u0026lt; l \u0026lt; n\u003C/code\u003E and append it at the start of \u003Ccode\u003Es\u003C/code\u003E.\u003Cbr /\u003E\n\tFor example, let \u003Ccode\u003Es = \u0026#39;abcd\u0026#39;\u003C/code\u003E then in one operation you can remove the suffix \u003Ccode\u003E\u0026#39;cd\u0026#39;\u003C/code\u003E and append it in front of \u003Ccode\u003Es\u003C/code\u003E making \u003Ccode\u003Es = \u0026#39;cdab\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are also given an integer \u003Ccode\u003Ek\u003C/code\u003E. Return \u003Cem\u003Ethe number of ways in which \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003Ecan be transformed into \u003C/em\u003E\u003Ccode\u003Et\u003C/code\u003E\u003Cem\u003E in \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E operations.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003ESince the answer can be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abcd\u0026quot;, t = \u0026quot;cdab\u0026quot;, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFirst way:\nIn first operation, choose suffix from index = 3, so resulting s = \u0026quot;dabc\u0026quot;.\nIn second operation, choose suffix from index = 3, so resulting s = \u0026quot;cdab\u0026quot;.\n\nSecond way:\nIn first operation, choose suffix from index = 1, so resulting s = \u0026quot;bcda\u0026quot;.\nIn second operation, choose suffix from index = 1, so resulting s = \u0026quot;cdab\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;ababab\u0026quot;, t = \u0026quot;ababab\u0026quot;, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFirst way:\nChoose suffix from index = 2, so resulting s = \u0026quot;ababab\u0026quot;.\n\nSecond way:\nChoose suffix from index = 4, so resulting s = \u0026quot;ababab\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= s.length \u0026lt;= 5 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es.length == t.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Et\u003C/code\u003E consist of only lowercase English alphabets.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "String \u003Ccode\u003Et\u003C/code\u003E can be only constructed if it is a rotated version of string \u003Ccode\u003Es\u003C/code\u003E.",
+    "Use KMP algorithm or Z algorithm to find the number of indices from where \u003Ccode\u003Es\u003C/code\u003E is equal to \u003Ccode\u003Et\u003C/code\u003E.",
+    "Use Dynamic Programming to count the number of ways."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abcd\u0022\n\u0022cdab\u0022\n2",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022ababab\u0022\n\u0022ababab\u0022\n1",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1496343+00:00",
+  "Url": "https://leetcode.com/problems/string-transformation/"
+}

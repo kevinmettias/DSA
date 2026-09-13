@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2217,
+  "FrontendId": 2096,
+  "Title": "Step-By-Step Directions From a Binary Tree Node to Another",
+  "TitleSlug": "step-by-step-directions-from-a-binary-tree-node-to-another",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Tree",
+    "Depth-First Search",
+    "Binary Tree",
+    "Binary Lifting",
+    "Lowest Common Ancestor"
+  ],
+  "AcceptanceRatePercent": 56.5,
+  "TotalAccepted": 245809,
+  "TotalSubmissions": 435104,
+  "Likes": 3303,
+  "Dislikes": 171,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given the \u003Ccode\u003Eroot\u003C/code\u003E of a \u003Cstrong\u003Ebinary tree\u003C/strong\u003E with \u003Ccode\u003En\u003C/code\u003E nodes. Each node is uniquely assigned a value from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E. You are also given an integer \u003Ccode\u003EstartValue\u003C/code\u003E representing the value of the start node \u003Ccode\u003Es\u003C/code\u003E, and a different integer \u003Ccode\u003EdestValue\u003C/code\u003E representing the value of the destination node \u003Ccode\u003Et\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind the \u003Cstrong\u003Eshortest path\u003C/strong\u003E starting from node \u003Ccode\u003Es\u003C/code\u003E and ending at node \u003Ccode\u003Et\u003C/code\u003E. Generate step-by-step directions of such path as a string consisting of only the \u003Cstrong\u003Euppercase\u003C/strong\u003E letters \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;U\u0026#39;\u003C/code\u003E. Each letter indicates a specific direction:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E means to go from a node to its \u003Cstrong\u003Eleft child\u003C/strong\u003E node.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E means to go from a node to its \u003Cstrong\u003Eright child\u003C/strong\u003E node.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;U\u0026#39;\u003C/code\u003E means to go from a node to its \u003Cstrong\u003Eparent\u003C/strong\u003E node.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe step-by-step directions of the \u003Cstrong\u003Eshortest path\u003C/strong\u003E from node \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E\u003Cem\u003E to node\u003C/em\u003E \u003Ccode\u003Et\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/15/eg1.png\u0022 style=\u0022width: 214px; height: 163px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [5,1,2,3,null,6,4], startValue = 3, destValue = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;UURL\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The shortest path is: 3 \u0026rarr; 1 \u0026rarr; 5 \u0026rarr; 2 \u0026rarr; 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/15/eg2.png\u0022 style=\u0022width: 74px; height: 102px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [2,1], startValue = 2, destValue = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;L\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The shortest path is: 2 \u0026rarr; 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the values in the tree are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= startValue, destValue \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EstartValue != destValue\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The shortest path between any two nodes in a tree must pass through their Lowest Common Ancestor (LCA). The path will travel upwards from node s to the LCA and then downwards from the LCA to node t.",
+    "Find the path strings from root \u2192 s, and root \u2192 t. Can you use these two strings to prepare the final answer?",
+    "Remove the longest common prefix of the two path strings to get the path LCA \u2192 s, and LCA \u2192 t. Each step in the path of LCA \u2192 s should be reversed as \u0027U\u0027."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,1,2,3,null,6,4]\n3\n6",
+      "RawExpectedOutput": "\u0022UURL\u0022"
+    },
+    {
+      "RawInput": "[2,1]\n2\n1",
+      "RawExpectedOutput": "\u0022L\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1297515+00:00",
+  "Url": "https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/"
+}

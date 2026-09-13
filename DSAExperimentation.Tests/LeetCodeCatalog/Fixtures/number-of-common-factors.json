@@ -1,0 +1,36 @@
+{
+  "QuestionId": 2507,
+  "FrontendId": 2427,
+  "Title": "Number of Common Factors",
+  "TitleSlug": "number-of-common-factors",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Enumeration",
+    "Number Theory",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 80.5,
+  "TotalAccepted": 183618,
+  "TotalSubmissions": 228126,
+  "Likes": 700,
+  "Dislikes": 14,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two positive integers \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E, return \u003Cem\u003Ethe number of \u003Cstrong\u003Ecommon\u003C/strong\u003E factors of \u003C/em\u003E\u003Ccode\u003Ea\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn integer \u003Ccode\u003Ex\u003C/code\u003E is a \u003Cstrong\u003Ecommon factor\u003C/strong\u003E of \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E if \u003Ccode\u003Ex\u003C/code\u003E divides both \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E a = 12, b = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The common factors of 12 and 6 are 1, 2, 3, 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E a = 25, b = 30\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The common factors of 25 and 30 are 1, 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a, b \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each integer in range [1,1000], check if it\u2019s divisible by both A and B."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "12\n6",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "25\n30",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2361859+00:00",
+  "Url": "https://leetcode.com/problems/number-of-common-factors/"
+}

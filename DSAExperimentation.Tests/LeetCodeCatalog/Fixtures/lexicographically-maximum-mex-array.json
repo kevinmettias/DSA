@@ -1,0 +1,42 @@
+{
+  "QuestionId": 4174,
+  "FrontendId": 3948,
+  "Title": "Lexicographically Maximum MEX Array",
+  "TitleSlug": "lexicographically-maximum-mex-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Greedy",
+    "Queue"
+  ],
+  "AcceptanceRatePercent": 53.6,
+  "TotalAccepted": 8262,
+  "TotalSubmissions": 15409,
+  "Likes": 54,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou want to construct an array \u003Ccode\u003Eresult\u003C/code\u003E by repeatedly performing the following operation until \u003Ccode\u003Enums\u003C/code\u003E becomes empty:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose an integer \u003Ccode\u003Ek\u003C/code\u003E such that \u003Ccode\u003E1 \u0026lt;= k \u0026lt;= len(nums)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ECompute the \u003Cstrong\u003EMEX\u003C/strong\u003E of the first \u003Ccode\u003Ek\u003C/code\u003E elements of \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAppend this \u003Cstrong\u003EMEX\u003C/strong\u003E to \u003Ccode\u003Eresult\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ERemove the first \u003Ccode\u003Ek\u003C/code\u003E elements from \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Elexicographically maximum\u003C/strong\u003E array \u003Ccode\u003Eresult\u003C/code\u003E that can be obtained after performing the operations.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003EMEX\u003C/strong\u003E of an array is the \u003Cstrong\u003Esmallest non-negative\u003C/strong\u003E integer not present in the array.\u003C/p\u003E\n\n\u003Cp\u003EAn array \u003Ccode\u003Ea\u003C/code\u003E is \u003Cstrong\u003Elexicographically greater\u003C/strong\u003E than an array \u003Ccode\u003Eb\u003C/code\u003E if in the first position where \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E differ, array \u003Ccode\u003Ea\u003C/code\u003E has an element that is greater than the corresponding element in \u003Ccode\u003Eb\u003C/code\u003E. If the first \u003Ccode\u003Emin(a.length, b.length)\u003C/code\u003E elements do not differ, then the longer array is the \u003Cstrong\u003Elexicographically greater\u003C/strong\u003E one.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [0,1,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ETake the first \u003Ccode\u003Ek = 2\u003C/code\u003E elements \u003Ccode\u003E[0, 1]\u003C/code\u003E which has MEX = 2. Current \u003Ccode\u003Eresult = [2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ERemaining array \u003Ccode\u003E[0]\u003C/code\u003E has MEX = 1. Thus, the final \u003Ccode\u003Eresult = [2, 1]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,0,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ETake the first \u003Ccode\u003Ek = 3\u003C/code\u003E elements \u003Ccode\u003E[1, 0, 2]\u003C/code\u003E which has MEX = 3.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cspan class=\u0022example-io\u0022\u003Enums\u003C/span\u003E\u003C/code\u003E is now empty. Thus, the final \u003Ccode\u003Eresult = [3]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[0,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ETake \u003Ccode\u003Ek = 1\u003C/code\u003E, first element \u003Ccode\u003E[3]\u003C/code\u003E has MEX = 0. Current \u003Ccode\u003Eresult = [0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ERemaining array \u003Ccode\u003E[1]\u003C/code\u003E has MEX = 0. Thus, the final \u003Ccode\u003Eresult = [0, 0]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "At any step, the best next value is the MEX of the entire remaining suffix. You cannot make the first result element larger than that.",
+    "If the current suffix MEX is \u003Ccode\u003Ex\u003C/code\u003E, you should take the shortest prefix that contains all values \u003Ccode\u003E0, 1, ..., x - 1\u003C/code\u003E. This appends \u003Ccode\u003Ex\u003C/code\u003E while leaving as many elements as possible for later.",
+    "If the current suffix MEX is 0, then no remaining element is 0, so taking one element at a time is optimal and appends many 0s.",
+    "Maintain remaining frequencies to know the current suffix MEX, and use a sliding process to find the shortest prefix containing all numbers below it."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,1,0]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,0,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.662494+00:00",
+  "Url": "https://leetcode.com/problems/lexicographically-maximum-mex-array/"
+}

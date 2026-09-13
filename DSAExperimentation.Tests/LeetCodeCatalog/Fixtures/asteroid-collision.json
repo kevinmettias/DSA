@@ -1,0 +1,42 @@
+{
+  "QuestionId": 735,
+  "FrontendId": 735,
+  "Title": "Asteroid Collision",
+  "TitleSlug": "asteroid-collision",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 49,
+  "TotalAccepted": 1131800,
+  "TotalSubmissions": 2308216,
+  "Likes": 9652,
+  "Dislikes": 1320,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe are given an array \u003Ccode\u003Easteroids\u003C/code\u003E of integers representing asteroids in a row. The indices of the asteroid in the array represent their relative position in space.\u003C/p\u003E\n\n\u003Cp\u003EFor each asteroid, the absolute value represents its size, and the sign represents its direction (positive meaning right, negative meaning left). Each asteroid moves at the same speed.\u003C/p\u003E\n\n\u003Cp\u003EFind out the state of the asteroids after all collisions. If two asteroids meet, the smaller one will explode. If both are the same size, both will explode. Two asteroids moving in the same direction will never meet.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E asteroids = [5,10,-5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [5,10]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 10 and -5 collide resulting in 10. The 5 and 10 never collide.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E asteroids = [8,-8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 8 and -8 collide exploding each other.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E asteroids = [10,2,-5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [10]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 2 and -5 collide resulting in -5. The 10 and -5 collide resulting in 10.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E asteroids = [3,5,-6,2,-1,4]\u200B\u200B\u200B\u200B\u200B\u200B\u200B\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [-6,2,4]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The asteroid -6 makes the asteroid 3 and 5 explode, and then continues going left. On the other side, the asteroid 2 destroys -1. Since 2 and 4 are both moving right, they never collide.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= asteroids.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= asteroids[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Easteroids[i] != 0\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Say a row of asteroids is stable.  What happens when a new asteroid is added on the right?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,10,-5]",
+      "RawExpectedOutput": "[5,10]"
+    },
+    {
+      "RawInput": "[8,-8]",
+      "RawExpectedOutput": "[]"
+    },
+    {
+      "RawInput": "[10,2,-5]",
+      "RawExpectedOutput": "[10]"
+    },
+    {
+      "RawInput": "[3,5,-6,2,-1,4]",
+      "RawExpectedOutput": "[-6,2,4]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5873424+00:00",
+  "Url": "https://leetcode.com/problems/asteroid-collision/"
+}

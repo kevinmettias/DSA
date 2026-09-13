@@ -1,0 +1,31 @@
+{
+  "QuestionId": 894,
+  "FrontendId": 710,
+  "Title": "Random Pick with Blacklist",
+  "TitleSlug": "random-pick-with-blacklist",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Binary Search",
+    "Sorting",
+    "Randomized"
+  ],
+  "AcceptanceRatePercent": 35.5,
+  "TotalAccepted": 55528,
+  "TotalSubmissions": 156476,
+  "Likes": 904,
+  "Dislikes": 121,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E and an array of \u003Cstrong\u003Eunique\u003C/strong\u003E integers \u003Ccode\u003Eblacklist\u003C/code\u003E. Design an algorithm to pick a random integer in the range \u003Ccode\u003E[0, n - 1]\u003C/code\u003E that is \u003Cstrong\u003Enot\u003C/strong\u003E in \u003Ccode\u003Eblacklist\u003C/code\u003E. Any integer that is in the mentioned range and not in \u003Ccode\u003Eblacklist\u003C/code\u003E should be \u003Cstrong\u003Eequally likely\u003C/strong\u003E to be returned.\u003C/p\u003E\n\n\u003Cp\u003EOptimize your algorithm such that it minimizes the number of calls to the \u003Cstrong\u003Ebuilt-in\u003C/strong\u003E random function of your language.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESolution\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESolution(int n, int[] blacklist)\u003C/code\u003E Initializes the object with the integer \u003Ccode\u003En\u003C/code\u003E and the blacklisted integers \u003Ccode\u003Eblacklist\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint pick()\u003C/code\u003E Returns a random integer in the range \u003Ccode\u003E[0, n - 1]\u003C/code\u003E and not in \u003Ccode\u003Eblacklist\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;Solution\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;, \u0026quot;pick\u0026quot;]\n[[7, [2, 3, 5]], [], [], [], [], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 0, 4, 1, 6, 1, 0, 4]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSolution solution = new Solution(7, [2, 3, 5]);\nsolution.pick(); // return 0, any integer from [0,1,4,6] should be ok. Note that for every call of pick,\n                 // 0, 1, 4, and 6 must be equally likely to be returned (i.e., with probability 1/4).\nsolution.pick(); // return 4\nsolution.pick(); // return 1\nsolution.pick(); // return 6\nsolution.pick(); // return 1\nsolution.pick(); // return 0\nsolution.pick(); // return 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= blacklist.length \u0026lt;= min(10\u003Csup\u003E5\u003C/sup\u003E, n - 1)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= blacklist[i] \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Eblacklist\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Epick\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022Solution\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022,\u0022pick\u0022]\n[[7,[2,3,5]],[],[],[],[],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6331044+00:00",
+  "Url": "https://leetcode.com/problems/random-pick-with-blacklist/"
+}

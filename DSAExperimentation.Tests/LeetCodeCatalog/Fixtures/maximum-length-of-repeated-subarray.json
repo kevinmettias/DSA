@@ -1,0 +1,38 @@
+{
+  "QuestionId": 718,
+  "FrontendId": 718,
+  "Title": "Maximum Length of Repeated Subarray",
+  "TitleSlug": "maximum-length-of-repeated-subarray",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Dynamic Programming",
+    "Sliding Window",
+    "Rolling Hash",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 51.6,
+  "TotalAccepted": 379410,
+  "TotalSubmissions": 735649,
+  "Likes": 7131,
+  "Dislikes": 182,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two integer arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E, return \u003Cem\u003Ethe maximum length of a subarray that appears in \u003Cstrong\u003Eboth\u003C/strong\u003E arrays\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,2,3,2,1], nums2 = [3,2,1,4,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The repeated subarray with maximum length is [3,2,1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [0,0,0,0,0], nums2 = [0,0,0,0,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The repeated subarray with maximum length is [0,0,0,0,0].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums1.length, nums2.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums1[i], nums2[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming.  dp[i][j] will be the longest common prefix of A[i:] and B[j:].",
+    "The answer is max(dp[i][j]) over all i, j."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,2,1]\n[3,2,1,4,7]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[0,0,0,0,0]\n[0,0,0,0,0]",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9033385+00:00",
+  "Url": "https://leetcode.com/problems/maximum-length-of-repeated-subarray/"
+}

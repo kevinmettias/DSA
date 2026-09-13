@@ -1,0 +1,33 @@
+{
+  "QuestionId": 416,
+  "FrontendId": 416,
+  "Title": "Partition Equal Subset Sum",
+  "TitleSlug": "partition-equal-subset-sum",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Knapsack Problem",
+    "0-1 Knapsack"
+  ],
+  "AcceptanceRatePercent": 50,
+  "TotalAccepted": 1637035,
+  "TotalSubmissions": 3274949,
+  "Likes": 14120,
+  "Dislikes": 304,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif you can partition the array into two subsets such that the sum of the elements in both subsets is equal or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,5,11,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The array can be partitioned as [1, 5, 5] and [11].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The array cannot be partitioned into equal sum subsets.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,5,11,5]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,2,3,5]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4136874+00:00",
+  "Url": "https://leetcode.com/problems/partition-equal-subset-sum/"
+}

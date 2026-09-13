@@ -1,0 +1,37 @@
+{
+  "QuestionId": 4122,
+  "FrontendId": 3828,
+  "Title": "Final Element After Subarray Deletions",
+  "TitleSlug": "final-element-after-subarray-deletions",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Brainteaser",
+    "Game Theory"
+  ],
+  "AcceptanceRatePercent": 41.4,
+  "TotalAccepted": 33882,
+  "TotalSubmissions": 81896,
+  "Likes": 122,
+  "Dislikes": 24,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo players, Alice and Bob, play a game in turns, with Alice playing first.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIn each turn, the current player chooses any \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E\u003C/strong\u003E \u003Ccode\u003Enums[l..r]\u003C/code\u003E such that \u003Ccode\u003Er - l \u002B 1 \u0026lt; m\u003C/code\u003E, where \u003Ccode\u003Em\u003C/code\u003E is the \u003Cstrong\u003Ecurrent length\u003C/strong\u003E of the array.\u003C/li\u003E\n\t\u003Cli\u003EThe selected \u003Cstrong\u003Esubarray is removed\u003C/strong\u003E, and the remaining elements are \u003Cstrong\u003Econcatenated\u003C/strong\u003E to form the new array.\u003C/li\u003E\n\t\u003Cli\u003EThe game continues until \u003Cstrong\u003Eonly one\u003C/strong\u003E element remains.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAlice aims to \u003Cstrong\u003Emaximize\u003C/strong\u003E the final element, while Bob aims to \u003Cstrong\u003Eminimize\u003C/strong\u003E it. Assuming both play optimally, return the value of the final remaining element.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,5,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EOne valid optimal strategy:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice removes \u003Ccode\u003E[1]\u003C/code\u003E, array becomes \u003Ccode\u003E[5, 2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EBob removes \u003Ccode\u003E[5]\u003C/code\u003E, array becomes \u003Ccode\u003E[2]\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B. Thus, the answer is 2.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,7]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E7\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EAlice removes \u003Ccode\u003E[3]\u003C/code\u003E, leaving the array \u003Ccode\u003E[7]\u003C/code\u003E. Since Bob cannot play a turn now, the answer is 7.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Observe which positions Alice can force to survive her first move so that Bob cannot remove them afterward.",
+    "Any middle element can always be removed by Bob, so only the endpoints can be protected.",
+    "Alice chooses the better endpoint: the answer is \u003Ccode\u003Emax(nums[0], nums[len(nums) - 1])\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,5,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,7]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2098641+00:00",
+  "Url": "https://leetcode.com/problems/final-element-after-subarray-deletions/"
+}

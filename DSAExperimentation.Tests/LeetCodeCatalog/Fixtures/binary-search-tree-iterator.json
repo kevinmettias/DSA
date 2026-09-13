@@ -1,0 +1,31 @@
+{
+  "QuestionId": 173,
+  "FrontendId": 173,
+  "Title": "Binary Search Tree Iterator",
+  "TitleSlug": "binary-search-tree-iterator",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Stack",
+    "Tree",
+    "Design",
+    "Binary Search Tree",
+    "Binary Tree",
+    "Iterator"
+  ],
+  "AcceptanceRatePercent": 77,
+  "TotalAccepted": 1150373,
+  "TotalSubmissions": 1494263,
+  "Likes": 9339,
+  "Dislikes": 600,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EImplement the \u003Ccode\u003EBSTIterator\u003C/code\u003E class that represents an iterator over the \u003Cstrong\u003E\u003Ca href=\u0022https://en.wikipedia.org/wiki/Tree_traversal#In-order_(LNR)\u0022 target=\u0022_blank\u0022\u003Ein-order traversal\u003C/a\u003E\u003C/strong\u003E of a binary search tree (BST):\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EBSTIterator(TreeNode root)\u003C/code\u003E Initializes an object of the \u003Ccode\u003EBSTIterator\u003C/code\u003E class. The \u003Ccode\u003Eroot\u003C/code\u003E of the BST is given as part of the constructor. The pointer should be initialized to a non-existent number smaller than any element in the BST.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean hasNext()\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if there exists a number in the traversal to the right of the pointer, otherwise returns \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint next()\u003C/code\u003E Moves the pointer to the right, then returns the number at the pointer.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENotice that by initializing the pointer to a non-existent smallest number, the first call to \u003Ccode\u003Enext()\u003C/code\u003E will return the smallest element in the BST.\u003C/p\u003E\n\n\u003Cp\u003EYou may assume that \u003Ccode\u003Enext()\u003C/code\u003E calls will always be valid. That is, there will be at least a next number in the in-order traversal when \u003Ccode\u003Enext()\u003C/code\u003E is called.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/25/bst-tree.png\u0022 style=\u0022width: 189px; height: 178px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;BSTIterator\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;]\n[[[7, 3, 15, null, null, 9, 20]], [], [], [], [], [], [], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 3, 7, true, 9, true, 15, true, 20, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nBSTIterator bSTIterator = new BSTIterator([7, 3, 15, null, null, 9, 20]);\nbSTIterator.next();    // return 3\nbSTIterator.next();    // return 7\nbSTIterator.hasNext(); // return True\nbSTIterator.next();    // return 9\nbSTIterator.hasNext(); // return True\nbSTIterator.next();    // return 15\nbSTIterator.hasNext(); // return True\nbSTIterator.next();    // return 20\nbSTIterator.hasNext(); // return False\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003EhasNext\u003C/code\u003E, and \u003Ccode\u003Enext\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECould you implement \u003Ccode\u003Enext()\u003C/code\u003E and \u003Ccode\u003EhasNext()\u003C/code\u003E to run in average \u003Ccode\u003EO(1)\u003C/code\u003E time and use\u0026nbsp;\u003Ccode\u003EO(h)\u003C/code\u003E memory, where \u003Ccode\u003Eh\u003C/code\u003E is the height of the tree?\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022BSTIterator\u0022,\u0022next\u0022,\u0022next\u0022,\u0022hasNext\u0022,\u0022next\u0022,\u0022hasNext\u0022,\u0022next\u0022,\u0022hasNext\u0022,\u0022next\u0022,\u0022hasNext\u0022]\n[[[7,3,15,null,null,9,20]],[],[],[],[],[],[],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.67549+00:00",
+  "Url": "https://leetcode.com/problems/binary-search-tree-iterator/"
+}

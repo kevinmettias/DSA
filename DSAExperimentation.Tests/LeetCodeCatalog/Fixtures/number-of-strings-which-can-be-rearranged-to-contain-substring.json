@@ -1,0 +1,35 @@
+{
+  "QuestionId": 3200,
+  "FrontendId": 2930,
+  "Title": "Number of Strings Which Can Be Rearranged to Contain Substring",
+  "TitleSlug": "number-of-strings-which-can-be-rearranged-to-contain-substring",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 57,
+  "TotalAccepted": 9574,
+  "TotalSubmissions": 16804,
+  "Likes": 193,
+  "Dislikes": 77,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA string \u003Ccode\u003Es\u003C/code\u003E is called \u003Cstrong\u003Egood \u003C/strong\u003Eif it contains only lowercase English characters \u003Cstrong\u003Eand\u003C/strong\u003E it is possible to rearrange the characters of \u003Ccode\u003Es\u003C/code\u003E such that the new string contains \u003Ccode\u003E\u0026quot;leet\u0026quot;\u003C/code\u003E as a \u003Cstrong\u003Esubstring\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor example:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe string \u003Ccode\u003E\u0026quot;lteer\u0026quot;\u003C/code\u003E is good because we can rearrange it to form \u003Ccode\u003E\u0026quot;leetr\u0026quot;\u003C/code\u003E .\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;letl\u0026quot;\u003C/code\u003E is not good because we cannot rearrange it to contain \u003Ccode\u003E\u0026quot;leet\u0026quot;\u003C/code\u003E as a substring.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Etotal\u003C/strong\u003E number of good strings of length \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be large, return it \u003Cstrong\u003Emodulo \u003C/strong\u003E\u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubstring\u003C/strong\u003E is a contiguous sequence of characters within a string.\u003C/p\u003E\n\n\u003Cdiv class=\u0022notranslate\u0022 style=\u0022all: initial;\u0022\u003E\u0026nbsp;\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 12\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 12 strings which can be rearranged to have \u0026quot;leet\u0026quot; as a substring are: \u0026quot;eelt\u0026quot;, \u0026quot;eetl\u0026quot;, \u0026quot;elet\u0026quot;, \u0026quot;elte\u0026quot;, \u0026quot;etel\u0026quot;, \u0026quot;etle\u0026quot;, \u0026quot;leet\u0026quot;, \u0026quot;lete\u0026quot;, \u0026quot;ltee\u0026quot;, \u0026quot;teel\u0026quot;, \u0026quot;tele\u0026quot;, and \u0026quot;tlee\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 83943898\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The number of strings with length 10 which can be rearranged to have \u0026quot;leet\u0026quot; as a substring is 526083947580. Hence the answer is 526083947580 % (10\u003Csup\u003E9\u003C/sup\u003E \u002B 7) = 83943898.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "A good string must contain at least one \u003Ccode\u003El\u003C/code\u003E, one \u003Ccode\u003Et\u003C/code\u003E, and two \u003Ccode\u003Ee\u003C/code\u003E.",
+    "Divide the problem into subproblems and use Dynamic Programming."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4",
+      "RawExpectedOutput": "12"
+    },
+    {
+      "RawInput": "10",
+      "RawExpectedOutput": "83943898"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3031065+00:00",
+  "Url": "https://leetcode.com/problems/number-of-strings-which-can-be-rearranged-to-contain-substring/"
+}

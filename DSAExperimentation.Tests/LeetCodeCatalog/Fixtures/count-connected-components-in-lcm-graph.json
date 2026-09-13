@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3680,
+  "FrontendId": 3378,
+  "Title": "Count Connected Components in LCM Graph",
+  "TitleSlug": "count-connected-components-in-lcm-graph",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Union-Find",
+    "Number Theory",
+    "Least Common Multiple",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 31.1,
+  "TotalAccepted": 6120,
+  "TotalSubmissions": 19700,
+  "Likes": 86,
+  "Dislikes": 2,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of integers \u003Ccode\u003Enums\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E and a \u003Cstrong\u003Epositive\u003C/strong\u003E integer \u003Ccode\u003Ethreshold\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere is a graph consisting of \u003Ccode\u003En\u003C/code\u003E nodes with the\u0026nbsp;\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u0026nbsp;node having a value of \u003Ccode\u003Enums[i]\u003C/code\u003E. Two nodes \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E in the graph are connected via an \u003Cstrong\u003Eundirected\u003C/strong\u003E edge if \u003Ccode\u003Elcm(nums[i], nums[j]) \u0026lt;= threshold\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of \u003Cstrong\u003Econnected components\u003C/strong\u003E in this graph.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Econnected component\u003C/strong\u003E is a subgraph of a graph in which there exists a path between any two vertices, and no vertex of the subgraph shares an edge with a vertex outside of the subgraph.\u003C/p\u003E\n\n\u003Cp\u003EThe term \u003Ccode\u003Elcm(a, b)\u003C/code\u003E denotes the \u003Cstrong\u003Eleast common multiple\u003C/strong\u003E of \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,4,8,3,9], threshold = 5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/10/31/example0.png\u0022 style=\u0022width: 250px; height: 251px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003EThe four connected components are \u003Ccode\u003E(2, 4)\u003C/code\u003E, \u003Ccode\u003E(3)\u003C/code\u003E, \u003Ccode\u003E(8)\u003C/code\u003E, \u003Ccode\u003E(9)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,4,8,3,9,12], threshold = 10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/10/31/example1.png\u0022 style=\u0022width: 250px; height: 252px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe two connected components are \u003Ccode\u003E(2, 3, 4, 8, 9)\u003C/code\u003E, and \u003Ccode\u003E(12)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll elements of \u003Ccode\u003Enums\u003C/code\u003E are unique.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= threshold \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use DSU",
+    "Connect a number to all its multiples less than threshold"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,4,8,3,9]\n5",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,4,8,3,9,12]\n10",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9364909+00:00",
+  "Url": "https://leetcode.com/problems/count-connected-components-in-lcm-graph/"
+}

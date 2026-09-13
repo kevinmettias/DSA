@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3571,
+  "FrontendId": 3288,
+  "Title": "Length of the Longest Increasing Path",
+  "TitleSlug": "length-of-the-longest-increasing-path",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Sorting",
+    "Longest Increasing Subsequence"
+  ],
+  "AcceptanceRatePercent": 19.7,
+  "TotalAccepted": 6429,
+  "TotalSubmissions": 32639,
+  "Likes": 106,
+  "Dislikes": 2,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D array of integers \u003Ccode\u003Ecoordinates\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, where \u003Ccode\u003E0 \u0026lt;= k \u0026lt; n\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003Ecoordinates[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates the point \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E in a 2D plane.\u003C/p\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Eincreasing path\u003C/strong\u003E of length \u003Ccode\u003Em\u003C/code\u003E is defined as a list of points \u003Ccode\u003E(x\u003Csub\u003E1\u003C/sub\u003E, y\u003Csub\u003E1\u003C/sub\u003E)\u003C/code\u003E, \u003Ccode\u003E(x\u003Csub\u003E2\u003C/sub\u003E, y\u003Csub\u003E2\u003C/sub\u003E)\u003C/code\u003E, \u003Ccode\u003E(x\u003Csub\u003E3\u003C/sub\u003E, y\u003Csub\u003E3\u003C/sub\u003E)\u003C/code\u003E, ..., \u003Ccode\u003E(x\u003Csub\u003Em\u003C/sub\u003E, y\u003Csub\u003Em\u003C/sub\u003E)\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; x\u003Csub\u003Ei \u002B 1\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ey\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; y\u003Csub\u003Ei \u002B 1\u003C/sub\u003E\u003C/code\u003E for all \u003Ccode\u003Ei\u003C/code\u003E where \u003Ccode\u003E1 \u0026lt;= i \u0026lt; m\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E is in the given coordinates for all \u003Ccode\u003Ei\u003C/code\u003E where \u003Ccode\u003E1 \u0026lt;= i \u0026lt;= m\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E length of an \u003Cstrong\u003Eincreasing path\u003C/strong\u003E that contains \u003Ccode\u003Ecoordinates[k]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ecoordinates = [[3,1],[2,2],[4,1],[0,0],[5,3]], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003E(0, 0)\u003C/code\u003E, \u003Ccode\u003E(2, 2)\u003C/code\u003E, \u003Ccode\u003E(5, 3)\u003C/code\u003E\u003C!-- notionvc: 082cee9e-4ce5-4ede-a09d-57001a72141d --\u003E is the longest increasing path that contains \u003Ccode\u003E(2, 2)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ecoordinates = [[2,1],[7,0],[5,6]], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003E(2, 1)\u003C/code\u003E, \u003Ccode\u003E(5, 6)\u003C/code\u003E is the longest increasing path that contains \u003Ccode\u003E(5, 6)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == coordinates.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecoordinates[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= coordinates[i][0], coordinates[i][1] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll elements in \u003Ccode\u003Ecoordinates\u003C/code\u003E are \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C!-- notionvc: 6e412fc2-f9dd-4ba2-b796-5e802a2b305a --\u003E\u003C!-- notionvc: c2cf5618-fe99-4909-9b4c-e6b068be22a6 --\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Only keep coordinates with both \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E being strictly less than \u003Ccode\u003Ecoordinates[k]\u003C/code\u003E.",
+    "Sort them by \u003Ccode\u003Ex\u003C/code\u003E\u2019s, in the case of equal, the \u003Ccode\u003Ey\u003C/code\u003E values should be decreasing.",
+    "Calculate LIS only using \u003Ccode\u003Ey\u003C/code\u003E values.",
+    "Do the same for coordinates with both \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E being strictly larger than \u003Ccode\u003Ecoordinates[k]\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[3,1],[2,2],[4,1],[0,0],[5,3]]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[2,1],[7,0],[5,6]]\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6534068+00:00",
+  "Url": "https://leetcode.com/problems/length-of-the-longest-increasing-path/"
+}

@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1428,
+  "FrontendId": 1306,
+  "Title": "Jump Game III",
+  "TitleSlug": "jump-game-iii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search"
+  ],
+  "AcceptanceRatePercent": 70.4,
+  "TotalAccepted": 404915,
+  "TotalSubmissions": 574819,
+  "Likes": 4593,
+  "Dislikes": 120,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of non-negative integers \u003Ccode\u003Earr\u003C/code\u003E, you are initially positioned at \u003Ccode\u003Estart\u003C/code\u003E\u0026nbsp;index of the array. When you are at index \u003Ccode\u003Ei\u003C/code\u003E, you can jump\u0026nbsp;to \u003Ccode\u003Ei \u002B arr[i]\u003C/code\u003E or \u003Ccode\u003Ei - arr[i]\u003C/code\u003E, check if you can reach\u0026nbsp;\u003Cstrong\u003Eany\u003C/strong\u003E index with value 0.\u003C/p\u003E\n\n\u003Cp\u003ENotice that you can not jump outside of the array at any time.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [4,2,3,0,3,1,2], start = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nAll possible ways to reach at index 3 with value 0 are: \nindex 5 -\u0026gt; index 4 -\u0026gt; index 1 -\u0026gt; index 3 \nindex 5 -\u0026gt; index 6 -\u0026gt; index 4 -\u0026gt; index 1 -\u0026gt; index 3 \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [4,2,3,0,3,1,2], start = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true \n\u003Cstrong\u003EExplanation: \n\u003C/strong\u003EOne possible way to reach at index 3 with value 0 is: \nindex 0 -\u0026gt; index 4 -\u0026gt; index 1 -\u0026gt; index 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [3,0,2,1,2], start = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThere is no way to reach at index 1 with value 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= arr[i] \u0026lt;\u0026nbsp;arr.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= start \u0026lt; arr.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Think of BFS to solve the problem.",
+    "When you reach a position with a value = 0 then return true."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,3,0,3,1,2]\n5",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[4,2,3,0,3,1,2]\n0",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[3,0,2,1,2]\n2",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5611867+00:00",
+  "Url": "https://leetcode.com/problems/jump-game-iii/"
+}

@@ -1,0 +1,40 @@
+{
+  "QuestionId": 753,
+  "FrontendId": 752,
+  "Title": "Open the Lock",
+  "TitleSlug": "open-the-lock",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Breadth-First Search",
+    "Bidirectional Search"
+  ],
+  "AcceptanceRatePercent": 61.6,
+  "TotalAccepted": 426177,
+  "TotalSubmissions": 692278,
+  "Likes": 5212,
+  "Dislikes": 242,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have a lock in front of you with 4 circular wheels. Each wheel has 10 slots: \u003Ccode\u003E\u0026#39;0\u0026#39;, \u0026#39;1\u0026#39;, \u0026#39;2\u0026#39;, \u0026#39;3\u0026#39;, \u0026#39;4\u0026#39;, \u0026#39;5\u0026#39;, \u0026#39;6\u0026#39;, \u0026#39;7\u0026#39;, \u0026#39;8\u0026#39;, \u0026#39;9\u0026#39;\u003C/code\u003E. The wheels can rotate freely and wrap around: for example we can turn \u003Ccode\u003E\u0026#39;9\u0026#39;\u003C/code\u003E to be \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E, or \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E to be \u003Ccode\u003E\u0026#39;9\u0026#39;\u003C/code\u003E. Each move consists of turning one wheel one slot.\u003C/p\u003E\n\n\u003Cp\u003EThe lock initially starts at \u003Ccode\u003E\u0026#39;0000\u0026#39;\u003C/code\u003E, a string representing the state of the 4 wheels.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a list of \u003Ccode\u003Edeadends\u003C/code\u003E dead ends, meaning if the lock displays any of these codes, the wheels of the lock will stop turning and you will be unable to open it.\u003C/p\u003E\n\n\u003Cp\u003EGiven a \u003Ccode\u003Etarget\u003C/code\u003E representing the value of the wheels that will unlock the lock, return the minimum total number of turns required to open the lock, or -1 if it is impossible.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E deadends = [\u0026quot;0201\u0026quot;,\u0026quot;0101\u0026quot;,\u0026quot;0102\u0026quot;,\u0026quot;1212\u0026quot;,\u0026quot;2002\u0026quot;], target = \u0026quot;0202\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nA sequence of valid moves would be \u0026quot;0000\u0026quot; -\u0026gt; \u0026quot;1000\u0026quot; -\u0026gt; \u0026quot;1100\u0026quot; -\u0026gt; \u0026quot;1200\u0026quot; -\u0026gt; \u0026quot;1201\u0026quot; -\u0026gt; \u0026quot;1202\u0026quot; -\u0026gt; \u0026quot;0202\u0026quot;.\nNote that a sequence like \u0026quot;0000\u0026quot; -\u0026gt; \u0026quot;0001\u0026quot; -\u0026gt; \u0026quot;0002\u0026quot; -\u0026gt; \u0026quot;0102\u0026quot; -\u0026gt; \u0026quot;0202\u0026quot; would be invalid,\nbecause the wheels of the lock become stuck after the display becomes the dead end \u0026quot;0102\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E deadends = [\u0026quot;8888\u0026quot;], target = \u0026quot;0009\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can turn the last wheel in reverse to move from \u0026quot;0000\u0026quot; -\u0026gt; \u0026quot;0009\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E deadends = [\u0026quot;8887\u0026quot;,\u0026quot;8889\u0026quot;,\u0026quot;8878\u0026quot;,\u0026quot;8898\u0026quot;,\u0026quot;8788\u0026quot;,\u0026quot;8988\u0026quot;,\u0026quot;7888\u0026quot;,\u0026quot;9888\u0026quot;], target = \u0026quot;8888\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We cannot reach the target without getting stuck.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= deadends.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edeadends[i].length == 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etarget.length == 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003Etarget \u003Cstrong\u003Ewill not be\u003C/strong\u003E in the list \u003Ccode\u003Edeadends\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etarget\u003C/code\u003E and \u003Ccode\u003Edeadends[i]\u003C/code\u003E consist of digits only.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can think of this problem as a shortest path problem on a graph: there are \u006010000\u0060 nodes (strings \u0060\u00270000\u0027\u0060 to \u0060\u00279999\u0027\u0060), and there is an edge between two nodes if they differ in one digit, that digit differs by 1 (wrapping around, so \u0060\u00270\u0027\u0060 and \u0060\u00279\u0027\u0060 differ by 1), and if *both* nodes are not in \u0060deadends\u0060."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u00220201\u0022,\u00220101\u0022,\u00220102\u0022,\u00221212\u0022,\u00222002\u0022]\n\u00220202\u0022",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[\u00228888\u0022]\n\u00220009\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[\u00228887\u0022,\u00228889\u0022,\u00228878\u0022,\u00228898\u0022,\u00228788\u0022,\u00228988\u0022,\u00227888\u0022,\u00229888\u0022]\n\u00228888\u0022",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.346621+00:00",
+  "Url": "https://leetcode.com/problems/open-the-lock/"
+}

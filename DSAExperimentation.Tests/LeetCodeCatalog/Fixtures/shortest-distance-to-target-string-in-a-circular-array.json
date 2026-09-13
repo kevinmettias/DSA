@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2598,
+  "FrontendId": 2515,
+  "Title": "Shortest Distance to Target String in a Circular Array",
+  "TitleSlug": "shortest-distance-to-target-string-in-a-circular-array",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "String"
+  ],
+  "AcceptanceRatePercent": 65.1,
+  "TotalAccepted": 143471,
+  "TotalSubmissions": 220526,
+  "Likes": 635,
+  "Dislikes": 37,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E \u003Cstrong\u003Ecircular\u003C/strong\u003E string array \u003Ccode\u003Ewords\u003C/code\u003E and a string \u003Ccode\u003Etarget\u003C/code\u003E. A \u003Cstrong\u003Ecircular array\u003C/strong\u003E means that the array\u0026#39;s end connects to the array\u0026#39;s beginning.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFormally, the next element of \u003Ccode\u003Ewords[i]\u003C/code\u003E is \u003Ccode\u003Ewords[(i \u002B 1) % n]\u003C/code\u003E and the previous element of \u003Ccode\u003Ewords[i]\u003C/code\u003E is \u003Ccode\u003Ewords[(i - 1 \u002B n) % n]\u003C/code\u003E, where \u003Ccode\u003En\u003C/code\u003E is the length of \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EStarting from \u003Ccode\u003EstartIndex\u003C/code\u003E, you can move to either the next word or the previous word with \u003Ccode\u003E1\u003C/code\u003E step at a time.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eshortest\u003C/strong\u003E distance needed to reach the string\u003C/em\u003E \u003Ccode\u003Etarget\u003C/code\u003E. If the string \u003Ccode\u003Etarget\u003C/code\u003E does not exist in \u003Ccode\u003Ewords\u003C/code\u003E, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;hello\u0026quot;,\u0026quot;i\u0026quot;,\u0026quot;am\u0026quot;,\u0026quot;leetcode\u0026quot;,\u0026quot;hello\u0026quot;], target = \u0026quot;hello\u0026quot;, startIndex = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We start from index 1 and can reach \u0026quot;hello\u0026quot; by\n- moving 3 units to the right to reach index 4.\n- moving 2 units to the left to reach index 4.\n- moving 4 units to the right to reach index 0.\n- moving 1 unit to the left to reach index 0.\nThe shortest distance to reach \u0026quot;hello\u0026quot; is 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;leetcode\u0026quot;], target = \u0026quot;leetcode\u0026quot;, startIndex = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We start from index 0 and can reach \u0026quot;leetcode\u0026quot; by\n- moving 2 units to the right to reach index 2.\n- moving 1 unit to the left to reach index 2.\nThe shortest distance to reach \u0026quot;leetcode\u0026quot; is 1.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;i\u0026quot;,\u0026quot;eat\u0026quot;,\u0026quot;leetcode\u0026quot;], target = \u0026quot;ate\u0026quot;, startIndex = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Since \u0026quot;ate\u0026quot; does not exist in \u003Ccode\u003Ewords\u003C/code\u003E, we return -1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E and \u003Ccode\u003Etarget\u003C/code\u003E consist of only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= startIndex \u0026lt; words.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "You have two options, either move straight to the left or move straight to the right.",
+    "Find the first target word and record the distance.",
+    "Choose the one with the minimum distance."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022hello\u0022,\u0022i\u0022,\u0022am\u0022,\u0022leetcode\u0022,\u0022hello\u0022]\n\u0022hello\u0022\n1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[\u0022a\u0022,\u0022b\u0022,\u0022leetcode\u0022]\n\u0022leetcode\u0022\n0",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[\u0022i\u0022,\u0022eat\u0022,\u0022leetcode\u0022]\n\u0022ate\u0022\n0",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9635368+00:00",
+  "Url": "https://leetcode.com/problems/shortest-distance-to-target-string-in-a-circular-array/"
+}

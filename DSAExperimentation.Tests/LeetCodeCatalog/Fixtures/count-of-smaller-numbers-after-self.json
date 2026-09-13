@@ -1,0 +1,41 @@
+{
+  "QuestionId": 315,
+  "FrontendId": 315,
+  "Title": "Count of Smaller Numbers After Self",
+  "TitleSlug": "count-of-smaller-numbers-after-self",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Divide and Conquer",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Merge Sort",
+    "Ordered Set",
+    "Treap"
+  ],
+  "AcceptanceRatePercent": 44,
+  "TotalAccepted": 409247,
+  "TotalSubmissions": 929493,
+  "Likes": 9351,
+  "Dislikes": 257,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, return\u003Cem\u003E an integer array \u003C/em\u003E\u003Ccode\u003Ecounts\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Ecounts[i]\u003C/code\u003E\u003Cem\u003E is the number of smaller elements to the right of \u003C/em\u003E\u003Ccode\u003Enums[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,2,6,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,1,1,0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nTo the right of 5 there are \u003Cb\u003E2\u003C/b\u003E smaller elements (2 and 1).\nTo the right of 2 there is only \u003Cb\u003E1\u003C/b\u003E smaller element (1).\nTo the right of 6 there is \u003Cb\u003E1\u003C/b\u003E smaller element (1).\nTo the right of 1 there is \u003Cb\u003E0\u003C/b\u003E smaller element.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,-1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,2,6,1]",
+      "RawExpectedOutput": "[2,1,1,0]"
+    },
+    {
+      "RawInput": "[-1]",
+      "RawExpectedOutput": "[0]"
+    },
+    {
+      "RawInput": "[-1,-1]",
+      "RawExpectedOutput": "[0,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9554311+00:00",
+  "Url": "https://leetcode.com/problems/count-of-smaller-numbers-after-self/"
+}

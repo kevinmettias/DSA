@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3544,
+  "FrontendId": 3267,
+  "Title": "Count Almost Equal Pairs II",
+  "TitleSlug": "count-almost-equal-pairs-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Sorting",
+    "Counting",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 27.5,
+  "TotalAccepted": 9757,
+  "TotalSubmissions": 35448,
+  "Likes": 81,
+  "Dislikes": 24,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003E\u003Cstrong\u003EAttention\u003C/strong\u003E: In this version, the number of operations that can be performed, has been increased to \u003Cstrong\u003Etwice\u003C/strong\u003E.\u003C!-- notionvc: 278e7cb2-3b05-42fa-8ae9-65f5fd6f7585 --\u003E\u003C/p\u003E\n\n\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E consisting of positive integers.\u003C/p\u003E\n\n\u003Cp\u003EWe call two integers \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E \u003Cstrong\u003Ealmost equal\u003C/strong\u003E if both integers can become equal after performing the following operation \u003Cstrong\u003Eat most \u003Cu\u003Etwice\u003C/u\u003E\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose \u003Cstrong\u003Eeither\u003C/strong\u003E \u003Ccode\u003Ex\u003C/code\u003E or \u003Ccode\u003Ey\u003C/code\u003E and swap any two digits within the chosen number.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the number of indices \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E in \u003Ccode\u003Enums\u003C/code\u003E where \u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E such that \u003Ccode\u003Enums[i]\u003C/code\u003E and \u003Ccode\u003Enums[j]\u003C/code\u003E are \u003Cstrong\u003Ealmost equal\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that it is allowed for an integer to have leading zeros after performing an operation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1023,2310,2130,213]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe almost equal pairs of elements are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E1023 and 2310. By swapping the digits 1 and 2, and then the digits 0 and 3 in 1023, you get 2310.\u003C/li\u003E\n\t\u003Cli\u003E1023 and 213. By swapping the digits 1 and 0, and then the digits 1 and 2 in 1023, you get 0213, which is 213.\u003C/li\u003E\n\t\u003Cli\u003E2310 and 213. By swapping the digits 2 and 0, and then the digits 3 and 2 in 2310, you get 0213, which is 213.\u003C/li\u003E\n\t\u003Cli\u003E2310 and 2130. By swapping the digits 3 and 1 in 2310, you get 2130.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,10,100]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe almost equal pairs of elements are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E1 and 10. By swapping the digits 1 and 0 in 10, you get 01 which is 1.\u003C/li\u003E\n\t\u003Cli\u003E1 and 100. By swapping the second 0 with the digit 1 in 100, you get 001, which is 1.\u003C/li\u003E\n\t\u003Cli\u003E10 and 100. By swapping the first 0 with the digit 1 in 100, you get 010, which is 10.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt; 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each element, find all possible integers we can get by applying the operations.",
+    "Store the frequencies of all the integers in a hashmap."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1023,2310,2130,213]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,10,100]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9337598+00:00",
+  "Url": "https://leetcode.com/problems/count-almost-equal-pairs-ii/"
+}

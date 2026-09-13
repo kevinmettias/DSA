@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3017,
+  "FrontendId": 2827,
+  "Title": "Number of Beautiful Integers in the Range",
+  "TitleSlug": "number-of-beautiful-integers-in-the-range",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 23.4,
+  "TotalAccepted": 15453,
+  "TotalSubmissions": 65981,
+  "Likes": 418,
+  "Dislikes": 37,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given positive integers \u003Ccode\u003Elow\u003C/code\u003E, \u003Ccode\u003Ehigh\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA number is \u003Cstrong\u003Ebeautiful\u003C/strong\u003E if it meets both of the following conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe count of even digits in the number is equal to the count of odd digits.\u003C/li\u003E\n\t\u003Cli\u003EThe number is divisible by \u003Ccode\u003Ek\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of beautiful integers in the range\u003C/em\u003E \u003Ccode\u003E[low, high]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E low = 10, high = 20, k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 2 beautiful integers in the given range: [12,18]. \n- 12 is beautiful because it contains 1 odd digit and 1 even digit, and is divisible by k = 3.\n- 18 is beautiful because it contains 1 odd digit and 1 even digit, and is divisible by k = 3.\nAdditionally we can see that:\n- 16 is not beautiful because it is not divisible by k = 3.\n- 15 is not beautiful because it does not contain equal counts even and odd digits.\nIt can be shown that there are only 2 beautiful integers in the given range.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E low = 1, high = 10, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is 1 beautiful integer in the given range: [10].\n- 10 is beautiful because it contains 1 odd digit and 1 even digit, and is divisible by k = 1.\nIt can be shown that there is only 1 beautiful integer in the given range.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E low = 5, high = 5, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 0 beautiful integers in the given range.\n- 5 is not beautiful because it is not divisible by k = 2 and it does not contain equal even and odd digits.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt; low \u0026lt;= high \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt; k \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EThe intended solution uses Dynamic Programming.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003ELet \u003Ccode\u003E f(n) \u003C/code\u003E denote number of beautiful integers in the range \u003Ccode\u003E [1\u2026n] \u003C/code\u003E, then the answer is \u003Ccode\u003E f(r) - f(l-1) \u003C/code\u003E.\u003C/div\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10\n20\n3",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "1\n10\n1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "5\n5\n2",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2310126+00:00",
+  "Url": "https://leetcode.com/problems/number-of-beautiful-integers-in-the-range/"
+}

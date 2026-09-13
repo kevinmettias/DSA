@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3278,
+  "FrontendId": 3025,
+  "Title": "Find the Number of Ways to Place People I",
+  "TitleSlug": "find-the-number-of-ways-to-place-people-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Sorting",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 63.7,
+  "TotalAccepted": 116602,
+  "TotalSubmissions": 183027,
+  "Likes": 485,
+  "Dislikes": 182,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D array \u003Ccode\u003Epoints\u003C/code\u003E of size \u003Ccode\u003En x 2\u003C/code\u003E representing integer coordinates of some points on a 2D plane, where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ECount the number of pairs of points \u003Ccode\u003E(A, B)\u003C/code\u003E, where\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EA\u003C/code\u003E is on the \u003Cstrong\u003Eupper left\u003C/strong\u003E side of \u003Ccode\u003EB\u003C/code\u003E, and\u003C/li\u003E\n\t\u003Cli\u003Ethere are no other points in the rectangle (or line) they make (\u003Cstrong\u003Eincluding the border\u003C/strong\u003E), except for the points \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the count.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[1,1],[2,2],[3,3]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2024/01/04/example1alicebob.png\u0022 style=\u0022width: 427px; height: 350px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is no way to choose \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E such that\u0026nbsp;\u003Ccode\u003EA\u003C/code\u003E is on the upper left side of \u003Ccode\u003EB\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[6,2],[4,4],[2,6]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg height=\u0022365\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/25/t2.jpg\u0022 width=\u00221321\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe left one is the pair \u003Ccode\u003E(points[1], points[0])\u003C/code\u003E, where \u003Ccode\u003Epoints[1]\u003C/code\u003E is on the upper left side of \u003Ccode\u003Epoints[0]\u003C/code\u003E and the rectangle is empty.\u003C/li\u003E\n\t\u003Cli\u003EThe middle one is the pair \u003Ccode\u003E(points[2], points[1])\u003C/code\u003E, same as the left one it is a valid pair.\u003C/li\u003E\n\t\u003Cli\u003EThe right one is the pair \u003Ccode\u003E(points[2], points[0])\u003C/code\u003E, where \u003Ccode\u003Epoints[2]\u003C/code\u003E is on the upper left side of \u003Ccode\u003Epoints[0]\u003C/code\u003E, but \u003Ccode\u003Epoints[1]\u003C/code\u003E is inside the rectangle so it\u0026#39;s not a valid pair.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[3,1],[1,3],[1,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2024/06/25/t3.jpg\u0022 style=\u0022width: 1269px; height: 350px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe left one is the pair \u003Ccode\u003E(points[2], points[0])\u003C/code\u003E, where \u003Ccode\u003Epoints[2]\u003C/code\u003E is on the upper left side of \u003Ccode\u003Epoints[0]\u003C/code\u003E and there are no other points on the line they form. Note that it is a valid state when the two points form a line.\u003C/li\u003E\n\t\u003Cli\u003EThe middle one is the pair \u003Ccode\u003E(points[1], points[2])\u003C/code\u003E, it is a valid pair same as the left one.\u003C/li\u003E\n\t\u003Cli\u003EThe right one is the pair \u003Ccode\u003E(points[1], points[0])\u003C/code\u003E, it is not a valid pair as \u003Ccode\u003Epoints[2]\u003C/code\u003E is on the border of the rectangle.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= points[i][0], points[i][1] \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003Epoints[i]\u003C/code\u003E are distinct.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can enumerate all the upper-left and lower-right corners.",
+    "If the upper-left corner is \u003Ccode\u003E(x1, y1)\u003C/code\u003E and lower-right corner is \u003Ccode\u003E(x2, y2)\u003C/code\u003E, check that there is no point \u003Ccode\u003E(x, y)\u003C/code\u003E such that \u003Ccode\u003Ex1 \u003C= x \u003C= x2\u003C/code\u003E and \u003Ccode\u003Ey2 \u003C= y \u003C= y1\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1],[2,2],[3,3]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[6,2],[4,4],[2,6]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[3,1],[1,3],[1,1]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3031563+00:00",
+  "Url": "https://leetcode.com/problems/find-the-number-of-ways-to-place-people-i/"
+}

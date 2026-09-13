@@ -1,0 +1,34 @@
+{
+  "QuestionId": 130,
+  "FrontendId": 130,
+  "Title": "Surrounded Regions",
+  "TitleSlug": "surrounded-regions",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 46.3,
+  "TotalAccepted": 1298208,
+  "TotalSubmissions": 2806423,
+  "Likes": 10115,
+  "Dislikes": 2263,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E matrix \u003Ccode\u003Eboard\u003C/code\u003E containing \u003Cstrong\u003Eletters\u003C/strong\u003E \u003Ccode\u003E\u0026#39;X\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003E, \u003Cstrong\u003Ecapture regions\u003C/strong\u003E that are \u003Cstrong\u003Esurrounded\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EConnect\u003C/strong\u003E: A cell is connected to adjacent cells horizontally or vertically.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ERegion\u003C/strong\u003E: To form a region \u003Cstrong\u003Econnect every\u003C/strong\u003E \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003E cell.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ESurround\u003C/strong\u003E: A region is surrounded if none of the \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003E cells in that region are on the edge of the board. Such regions are \u003Cstrong\u003Ecompletely enclosed \u003C/strong\u003Eby \u003Ccode\u003E\u0026#39;X\u0026#39;\u003C/code\u003E cells.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ETo capture a \u003Cstrong\u003Esurrounded region\u003C/strong\u003E, replace all \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003Es with \u003Ccode\u003E\u0026#39;X\u0026#39;\u003C/code\u003Es \u003Cstrong\u003Ein-place\u003C/strong\u003E within the original board. You do not need to return anything.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eboard = [[\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;],[\u0026quot;X\u0026quot;,\u0026quot;O\u0026quot;,\u0026quot;O\u0026quot;,\u0026quot;X\u0026quot;],[\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;O\u0026quot;,\u0026quot;X\u0026quot;],[\u0026quot;X\u0026quot;,\u0026quot;O\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[[\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;],[\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;],[\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;],[\u0026quot;X\u0026quot;,\u0026quot;O\u0026quot;,\u0026quot;X\u0026quot;,\u0026quot;X\u0026quot;]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/02/19/xogrid.jpg\u0022 style=\u0022width: 367px; height: 158px;\u0022 /\u003E\n\u003Cp\u003EIn the above diagram, the bottom region is not captured because it is on the edge of the board and cannot be surrounded.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eboard = [[\u0026quot;X\u0026quot;]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[[\u0026quot;X\u0026quot;]]\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == board.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == board[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboard[i][j]\u003C/code\u003E is \u003Ccode\u003E\u0026#39;X\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[\u0022X\u0022,\u0022X\u0022,\u0022X\u0022,\u0022X\u0022],[\u0022X\u0022,\u0022O\u0022,\u0022O\u0022,\u0022X\u0022],[\u0022X\u0022,\u0022X\u0022,\u0022O\u0022,\u0022X\u0022],[\u0022X\u0022,\u0022O\u0022,\u0022X\u0022,\u0022X\u0022]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[\u0022X\u0022]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2183486+00:00",
+  "Url": "https://leetcode.com/problems/surrounded-regions/"
+}

@@ -1,0 +1,31 @@
+{
+  "QuestionId": 812,
+  "FrontendId": 796,
+  "Title": "Rotate String",
+  "TitleSlug": "rotate-string",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "String",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 66.6,
+  "TotalAccepted": 1020985,
+  "TotalSubmissions": 1534077,
+  "Likes": 5122,
+  "Dislikes": 483,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two strings \u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Egoal\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif and only if\u003C/em\u003E \u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003Ecan become\u003C/em\u003E \u003Ccode\u003Egoal\u003C/code\u003E \u003Cem\u003Eafter some number of \u003Cstrong\u003Eshifts\u003C/strong\u003E on\u003C/em\u003E \u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Eshift\u003C/strong\u003E on \u003Ccode\u003Es\u003C/code\u003E consists of moving the leftmost character of \u003Ccode\u003Es\u003C/code\u003E to the rightmost position.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, if \u003Ccode\u003Es = \u0026quot;abcde\u0026quot;\u003C/code\u003E, then it will be \u003Ccode\u003E\u0026quot;bcdea\u0026quot;\u003C/code\u003E after one shift.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0022abcde\u0022, goal = \u0022cdeab\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0022abcde\u0022, goal = \u0022abced\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length, goal.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Egoal\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022m\u0022\n\u0022f\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022c\u0022\n\u0022w\u0022",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.884585+00:00",
+  "Url": "https://leetcode.com/problems/rotate-string/"
+}

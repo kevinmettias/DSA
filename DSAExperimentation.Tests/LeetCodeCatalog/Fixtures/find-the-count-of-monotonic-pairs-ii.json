@@ -1,0 +1,34 @@
+{
+  "QuestionId": 3536,
+  "FrontendId": 3251,
+  "Title": "Find the Count of Monotonic Pairs II",
+  "TitleSlug": "find-the-count-of-monotonic-pairs-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 24.9,
+  "TotalAccepted": 8782,
+  "TotalSubmissions": 35260,
+  "Likes": 109,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of \u003Cstrong\u003Epositive\u003C/strong\u003E integers \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EWe call a pair of \u003Cstrong\u003Enon-negative\u003C/strong\u003E integer arrays \u003Ccode\u003E(arr1, arr2)\u003C/code\u003E \u003Cstrong\u003Emonotonic\u003C/strong\u003E if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe lengths of both arrays are \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Earr1\u003C/code\u003E is monotonically \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E, in other words, \u003Ccode\u003Earr1[0] \u0026lt;= arr1[1] \u0026lt;= ... \u0026lt;= arr1[n - 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Earr2\u003C/code\u003E is monotonically \u003Cstrong\u003Enon-increasing\u003C/strong\u003E, in other words, \u003Ccode\u003Earr2[0] \u0026gt;= arr2[1] \u0026gt;= ... \u0026gt;= arr2[n - 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Earr1[i] \u002B arr2[i] == nums[i]\u003C/code\u003E for all \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= n - 1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the count of \u003Cstrong\u003Emonotonic\u003C/strong\u003E pairs.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,3,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe good pairs are:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003E\u003Ccode\u003E([0, 1, 1], [2, 2, 1])\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E([0, 1, 2], [2, 2, 0])\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E([0, 2, 2], [2, 1, 0])\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E([1, 2, 2], [1, 1, 0])\u003C/code\u003E\u003C/li\u003E\n\u003C/ol\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,5,5,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E126\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == nums.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,5,5,5]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2852499+00:00",
+  "Url": "https://leetcode.com/problems/find-the-count-of-monotonic-pairs-ii/"
+}

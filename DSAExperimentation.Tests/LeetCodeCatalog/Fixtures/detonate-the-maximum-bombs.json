@@ -1,0 +1,44 @@
+{
+  "QuestionId": 2206,
+  "FrontendId": 2101,
+  "Title": "Detonate the Maximum Bombs",
+  "TitleSlug": "detonate-the-maximum-bombs",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 50.4,
+  "TotalAccepted": 189627,
+  "TotalSubmissions": 375985,
+  "Likes": 3452,
+  "Dislikes": 163,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a list of bombs. The \u003Cstrong\u003Erange\u003C/strong\u003E of a bomb is defined as the area where its effect can be felt. This area is in the shape of a \u003Cstrong\u003Ecircle\u003C/strong\u003E with the center as the location of the bomb.\u003C/p\u003E\n\n\u003Cp\u003EThe bombs are represented by a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer array \u003Ccode\u003Ebombs\u003C/code\u003E where \u003Ccode\u003Ebombs[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E, r\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. \u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ey\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E denote the X-coordinate and Y-coordinate of the location of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E bomb, whereas \u003Ccode\u003Er\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E denotes the \u003Cstrong\u003Eradius\u003C/strong\u003E of its range.\u003C/p\u003E\n\n\u003Cp\u003EYou may choose to detonate a \u003Cstrong\u003Esingle\u003C/strong\u003E bomb. When a bomb is detonated, it will detonate \u003Cstrong\u003Eall bombs\u003C/strong\u003E that lie in its range. These bombs will further detonate the bombs that lie in their ranges.\u003C/p\u003E\n\n\u003Cp\u003EGiven the list of \u003Ccode\u003Ebombs\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E number of bombs that can be detonated if you are allowed to detonate \u003Cstrong\u003Eonly one\u003C/strong\u003E bomb\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/06/desmos-eg-3.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E bombs = [[2,1,3],[6,1,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe above figure shows the positions and ranges of the 2 bombs.\nIf we detonate the left bomb, the right bomb will not be affected.\nBut if we detonate the right bomb, both bombs will be detonated.\nSo the maximum bombs that can be detonated is max(1, 2) = 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/06/desmos-eg-2.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E bombs = [[1,1,5],[10,10,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\n\u003C/strong\u003EDetonating either bomb will not detonate the other bomb, so the maximum number of bombs that can be detonated is 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/07/desmos-eg1.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E bombs = [[1,2,3],[2,3,1],[3,4,2],[4,5,3],[5,6,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe best bomb to detonate is bomb 0 because:\n- Bomb 0 detonates bombs 1 and 2. The red circle denotes the range of bomb 0.\n- Bomb 2 detonates bomb 3. The blue circle denotes the range of bomb 2.\n- Bomb 3 detonates bomb 4. The green circle denotes the range of bomb 3.\nThus all 5 bombs are detonated.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= bombs.length\u0026nbsp;\u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebombs[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E, r\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can we model the relationship between different bombs? Can \u0022graphs\u0022 help us?",
+    "Bombs are nodes and are connected to other bombs in their range by directed edges.",
+    "If we know which bombs will be affected when any bomb is detonated, how can we find the total number of bombs that will be detonated if we start from a fixed bomb?",
+    "Run a Depth First Search (DFS) from every node, and all the nodes it reaches are the bombs that will be detonated."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,1,3],[6,1,4]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[1,1,5],[10,10,5]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[1,2,3],[2,3,1],[3,4,2],[4,5,3],[5,6,4]]",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1170219+00:00",
+  "Url": "https://leetcode.com/problems/detonate-the-maximum-bombs/"
+}

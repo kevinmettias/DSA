@@ -1,0 +1,34 @@
+{
+  "QuestionId": 3199,
+  "FrontendId": 2928,
+  "Title": "Distribute Candies Among Children I",
+  "TitleSlug": "distribute-candies-among-children-i",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Combinatorics",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 75.7,
+  "TotalAccepted": 44979,
+  "TotalSubmissions": 59396,
+  "Likes": 157,
+  "Dislikes": 75,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two positive integers \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Elimit\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Etotal number\u003C/strong\u003E of ways to distribute \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E \u003Cem\u003Ecandies among \u003C/em\u003E\u003Ccode\u003E3\u003C/code\u003E\u003Cem\u003E children such that no child gets more than \u003C/em\u003E\u003Ccode\u003Elimit\u003C/code\u003E\u003Cem\u003E candies.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, limit = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 3 ways to distribute 5 candies such that no child gets more than 2 candies: (1, 2, 2), (2, 1, 2) and (2, 2, 1).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, limit = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 10 ways to distribute 3 candies such that no child gets more than 3 candies: (0, 0, 3), (0, 1, 2), (0, 2, 1), (0, 3, 0), (1, 0, 2), (1, 1, 1), (1, 2, 0), (2, 0, 1), (2, 1, 0) and (3, 0, 0).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= limit \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use three nested for loops to check all the triplets."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n2",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "3\n3",
+      "RawExpectedOutput": "10"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1376061+00:00",
+  "Url": "https://leetcode.com/problems/distribute-candies-among-children-i/"
+}

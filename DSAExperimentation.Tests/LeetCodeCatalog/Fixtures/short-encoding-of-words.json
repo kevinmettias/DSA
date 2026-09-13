@@ -1,0 +1,33 @@
+{
+  "QuestionId": 839,
+  "FrontendId": 820,
+  "Title": "Short Encoding of Words",
+  "TitleSlug": "short-encoding-of-words",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 61,
+  "TotalAccepted": 108381,
+  "TotalSubmissions": 177694,
+  "Likes": 1791,
+  "Dislikes": 675,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Cstrong\u003Evalid encoding\u003C/strong\u003E of an array of \u003Ccode\u003Ewords\u003C/code\u003E is any reference string \u003Ccode\u003Es\u003C/code\u003E and array of indices \u003Ccode\u003Eindices\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords.length == indices.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe reference string \u003Ccode\u003Es\u003C/code\u003E ends with the \u003Ccode\u003E\u0026#39;#\u0026#39;\u003C/code\u003E character.\u003C/li\u003E\n\t\u003Cli\u003EFor each index \u003Ccode\u003Eindices[i]\u003C/code\u003E, the \u003Cstrong\u003Esubstring\u003C/strong\u003E of \u003Ccode\u003Es\u003C/code\u003E starting from \u003Ccode\u003Eindices[i]\u003C/code\u003E and up to (but not including) the next \u003Ccode\u003E\u0026#39;#\u0026#39;\u003C/code\u003E character is equal to \u003Ccode\u003Ewords[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven an array of \u003Ccode\u003Ewords\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Elength of the shortest reference string\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E\u003Cem\u003E possible of any \u003Cstrong\u003Evalid encoding\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Ewords\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;time\u0026quot;, \u0026quot;me\u0026quot;, \u0026quot;bell\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E A valid encoding would be s = \u003Ccode\u003E\u0026quot;time#bell#\u0026quot; and indices = [0, 2, 5\u003C/code\u003E].\nwords[0] = \u0026quot;time\u0026quot;, the substring of s starting from indices[0] = 0 to the next \u0026#39;#\u0026#39; is underlined in \u0026quot;\u003Cu\u003Etime\u003C/u\u003E#bell#\u0026quot;\nwords[1] = \u0026quot;me\u0026quot;, the substring of s starting from indices[1] = 2 to the next \u0026#39;#\u0026#39; is underlined in \u0026quot;ti\u003Cu\u003Eme\u003C/u\u003E#bell#\u0026quot;\nwords[2] = \u0026quot;bell\u0026quot;, the substring of s starting from indices[2] = 5 to the next \u0026#39;#\u0026#39; is underlined in \u0026quot;time#\u003Cu\u003Ebell\u003C/u\u003E#\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;t\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E A valid encoding would be s = \u0026quot;t#\u0026quot; and indices = [0].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 7\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists of only lowercase letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022time\u0022,\u0022me\u0022,\u0022bell\u0022]",
+      "RawExpectedOutput": "10"
+    },
+    {
+      "RawInput": "[\u0022t\u0022]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9624214+00:00",
+  "Url": "https://leetcode.com/problems/short-encoding-of-words/"
+}

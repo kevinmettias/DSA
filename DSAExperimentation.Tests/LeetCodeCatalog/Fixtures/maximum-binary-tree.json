@@ -1,0 +1,36 @@
+{
+  "QuestionId": 654,
+  "FrontendId": 654,
+  "Title": "Maximum Binary Tree",
+  "TitleSlug": "maximum-binary-tree",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Stack",
+    "Tree",
+    "Monotonic Stack",
+    "Binary Tree",
+    "Cartesian Tree"
+  ],
+  "AcceptanceRatePercent": 86.5,
+  "TotalAccepted": 376298,
+  "TotalSubmissions": 435147,
+  "Likes": 5467,
+  "Dislikes": 354,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E with no duplicates. A \u003Cstrong\u003Emaximum binary tree\u003C/strong\u003E can be built recursively from \u003Ccode\u003Enums\u003C/code\u003E using the following algorithm:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003ECreate a root node whose value is the maximum value in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ERecursively build the left subtree on the \u003Cstrong\u003Esubarray prefix\u003C/strong\u003E to the \u003Cstrong\u003Eleft\u003C/strong\u003E of the maximum value.\u003C/li\u003E\n\t\u003Cli\u003ERecursively build the right subtree on the \u003Cstrong\u003Esubarray suffix\u003C/strong\u003E to the \u003Cstrong\u003Eright\u003C/strong\u003E of the maximum value.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum binary tree\u003C/strong\u003E built from \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/24/tree1.jpg\u0022 style=\u0022width: 302px; height: 421px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,2,1,6,0,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [6,3,5,null,2,0,null,null,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The recursive calls are as follow:\n- The largest value in [3,2,1,6,0,5] is 6. Left prefix is [3,2,1] and right suffix is [0,5].\n    - The largest value in [3,2,1] is 3. Left prefix is [] and right suffix is [2,1].\n        - Empty array, so no child.\n        - The largest value in [2,1] is 2. Left prefix is [] and right suffix is [1].\n            - Empty array, so no child.\n            - Only one element, so child is a node with value 1.\n    - The largest value in [0,5] is 5. Left prefix is [0] and right suffix is [].\n        - Only one element, so child is a node with value 0.\n        - Empty array, so no child.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/24/tree2.jpg\u0022 style=\u0022width: 182px; height: 301px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,null,2,null,1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll integers in \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,2,1,6,0,5]",
+      "RawExpectedOutput": "[6,3,5,null,2,0,null,null,1]"
+    },
+    {
+      "RawInput": "[3,2,1]",
+      "RawExpectedOutput": "[3,null,2,null,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8800871+00:00",
+  "Url": "https://leetcode.com/problems/maximum-binary-tree/"
+}

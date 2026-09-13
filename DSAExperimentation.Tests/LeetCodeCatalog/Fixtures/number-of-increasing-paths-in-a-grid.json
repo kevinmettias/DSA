@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2409,
+  "FrontendId": 2328,
+  "Title": "Number of Increasing Paths in a Grid",
+  "TitleSlug": "number-of-increasing-paths-in-a-grid",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Topological Sort",
+    "Memoization",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 57.2,
+  "TotalAccepted": 86794,
+  "TotalSubmissions": 151632,
+  "Likes": 2143,
+  "Dislikes": 46,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E integer matrix \u003Ccode\u003Egrid\u003C/code\u003E, where you can move from a cell to any adjacent cell in all \u003Ccode\u003E4\u003C/code\u003E directions.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of \u003Cstrong\u003Estrictly\u003C/strong\u003E \u003Cstrong\u003Eincreasing\u003C/strong\u003E paths in the grid such that you can start from \u003Cstrong\u003Eany\u003C/strong\u003E cell and end at \u003Cstrong\u003Eany\u003C/strong\u003E cell. \u003C/em\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo paths are considered different if they do not have exactly the same sequence of visited cells.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/05/10/griddrawio-4.png\u0022 style=\u0022width: 181px; height: 121px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1],[3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 8\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The strictly increasing paths are:\n- Paths with length 1: [1], [1], [3], [4].\n- Paths with length 2: [1 -\u0026gt; 3], [1 -\u0026gt; 4], [3 -\u0026gt; 4].\n- Paths with length 3: [1 -\u0026gt; 3 -\u0026gt; 4].\nThe total number of paths is 4 \u002B 3 \u002B 1 = 8.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1],[2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The strictly increasing paths are:\n- Paths with length 1: [1], [2].\n- Paths with length 2: [1 -\u0026gt; 2].\nThe total number of paths is 2 \u002B 1 = 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= grid[i][j] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can you calculate the number of increasing paths that start from a cell (i, j)? Think about dynamic programming.",
+    "Define f(i, j) as the number of increasing paths starting from cell (i, j). Try to find how f(i, j) is related to each of f(i, j\u002B1), f(i, j-1), f(i\u002B1, j) and f(i-1, j)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1],[3,4]]",
+      "RawExpectedOutput": "8"
+    },
+    {
+      "RawInput": "[[1],[2]]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2495045+00:00",
+  "Url": "https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/"
+}

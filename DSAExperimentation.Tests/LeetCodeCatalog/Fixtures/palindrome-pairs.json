@@ -1,0 +1,42 @@
+{
+  "QuestionId": 336,
+  "FrontendId": 336,
+  "Title": "Palindrome Pairs",
+  "TitleSlug": "palindrome-pairs",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Trie",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 37.6,
+  "TotalAccepted": 248796,
+  "TotalSubmissions": 661738,
+  "Likes": 4664,
+  "Dislikes": 483,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array of \u003Cstrong\u003Eunique\u003C/strong\u003E strings \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Epalindrome pair\u003C/strong\u003E is a pair of integers \u003Ccode\u003E(i, j)\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= i, j \u0026lt; words.length\u003C/code\u003E,\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei != j\u003C/code\u003E, and\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i] \u002B words[j]\u003C/code\u003E (the concatenation of the two strings) is a \u003Cspan data-keyword=\u0022palindrome-string\u0022\u003Epalindrome\u003C/span\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array of all the \u003Cstrong\u003Epalindrome pairs\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Ewords\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an algorithm with\u0026nbsp;\u003Ccode\u003EO(sum of words[i].length)\u003C/code\u003E\u0026nbsp;runtime complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;abcd\u0026quot;,\u0026quot;dcba\u0026quot;,\u0026quot;lls\u0026quot;,\u0026quot;s\u0026quot;,\u0026quot;sssll\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[1,0],[3,2],[2,4]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The palindromes are [\u0026quot;abcddcba\u0026quot;,\u0026quot;dcbaabcd\u0026quot;,\u0026quot;slls\u0026quot;,\u0026quot;llssssll\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;bat\u0026quot;,\u0026quot;tab\u0026quot;,\u0026quot;cat\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[1,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The palindromes are [\u0026quot;battab\u0026quot;,\u0026quot;tabbat\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;a\u0026quot;,\u0026quot;\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[1,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The palindromes are [\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= words[i].length \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Checking every two pairs will exceed the time limit. It will be O(n^2 * k). We need a faster way.",
+    "If we hash every string in the array, how can we check if two pairs form a palindrome after the concatenation?",
+    "We can check every string in words and consider it as words[j] (i.e., the suffix of the target palindrome). We can check if there is a hash of string that can be the prefix to make it a palindrome."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022abcd\u0022,\u0022dcba\u0022,\u0022lls\u0022,\u0022s\u0022,\u0022sssll\u0022]",
+      "RawExpectedOutput": "[[0,1],[1,0],[3,2],[2,4]]"
+    },
+    {
+      "RawInput": "[\u0022bat\u0022,\u0022tab\u0022,\u0022cat\u0022]",
+      "RawExpectedOutput": "[[0,1],[1,0]]"
+    },
+    {
+      "RawInput": "[\u0022a\u0022,\u0022\u0022]",
+      "RawExpectedOutput": "[[0,1],[1,0]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3708593+00:00",
+  "Url": "https://leetcode.com/problems/palindrome-pairs/"
+}

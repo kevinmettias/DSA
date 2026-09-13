@@ -1,0 +1,37 @@
+{
+  "QuestionId": 372,
+  "FrontendId": 372,
+  "Title": "Super Pow",
+  "TitleSlug": "super-pow",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Divide and Conquer",
+    "Euler\u0027s Totient Function",
+    "Euler\u0027s Theorem"
+  ],
+  "AcceptanceRatePercent": 37.5,
+  "TotalAccepted": 111319,
+  "TotalSubmissions": 297099,
+  "Likes": 1117,
+  "Dislikes": 1491,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYour task is to calculate \u003Ccode\u003Ea\u003Csup\u003Eb\u003C/sup\u003E\u003C/code\u003E mod \u003Ccode\u003E1337\u003C/code\u003E where \u003Ccode\u003Ea\u003C/code\u003E is a positive integer and \u003Ccode\u003Eb\u003C/code\u003E is an extremely large positive integer given in the form of an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E a = 2, b = [3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 8\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E a = 2, b = [1,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1024\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E a = 1, b = [4,3,3,8,5,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= b.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= b[i] \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eb\u003C/code\u003E does not contain leading zeros.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2\n[3]",
+      "RawExpectedOutput": "8"
+    },
+    {
+      "RawInput": "2\n[1,0]",
+      "RawExpectedOutput": "1024"
+    },
+    {
+      "RawInput": "1\n[4,3,3,8,5,2]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2069423+00:00",
+  "Url": "https://leetcode.com/problems/super-pow/"
+}

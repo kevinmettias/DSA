@@ -1,0 +1,32 @@
+{
+  "QuestionId": 365,
+  "FrontendId": 365,
+  "Title": "Water and Jug Problem",
+  "TitleSlug": "water-and-jug-problem",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "B\u00E9zout\u0027s Lemma",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor",
+    "Extended Euclidean Algorithm"
+  ],
+  "AcceptanceRatePercent": 46.4,
+  "TotalAccepted": 158951,
+  "TotalSubmissions": 342751,
+  "Likes": 1739,
+  "Dislikes": 1523,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two jugs with capacities \u003Ccode\u003Ex\u003C/code\u003E liters and \u003Ccode\u003Ey\u003C/code\u003E liters. You have an infinite water supply. Return whether the total amount of water in both jugs may reach \u003Ccode\u003Etarget\u003C/code\u003E using the following operations:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFill either jug completely with water.\u003C/li\u003E\n\t\u003Cli\u003ECompletely empty either jug.\u003C/li\u003E\n\t\u003Cli\u003EPour water from one jug into another until the receiving jug is full, or the transferring jug is empty.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1: \u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022border-color: var(--border-tertiary); border-left-width: 2px; color: var(--text-secondary); font-size: .875rem; margin-bottom: 1rem; margin-top: 1rem; overflow: visible; padding-left: 1rem;\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput: \u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022font-family: Menlo,sans-serif; font-size: 0.85rem;\u0022\u003E x = 3, y = 5, target = 4 \u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput: \u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022font-family: Menlo,sans-serif; font-size: 0.85rem;\u0022\u003E true \u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EFollow these steps to reach a total of 4 liters:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EFill the 5-liter jug (0, 5).\u003C/li\u003E\n\t\u003Cli\u003EPour from the 5-liter jug into the 3-liter jug, leaving 2 liters (3, 2).\u003C/li\u003E\n\t\u003Cli\u003EEmpty the 3-liter jug (0, 2).\u003C/li\u003E\n\t\u003Cli\u003ETransfer the 2 liters from the 5-liter jug to the 3-liter jug (2, 0).\u003C/li\u003E\n\t\u003Cli\u003EFill the 5-liter jug again (2, 5).\u003C/li\u003E\n\t\u003Cli\u003EPour from the 5-liter jug into the 3-liter jug until the 3-liter jug is full. This leaves 4 liters in the 5-liter jug (3, 4).\u003C/li\u003E\n\t\u003Cli\u003EEmpty the 3-liter jug. Now, you have exactly 4 liters in the 5-liter jug (0, 4).\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReference: The \u003Ca href=\u0022https://www.youtube.com/watch?v=BVtQNK_ZUJg\u0026amp;ab_channel=notnek01\u0022 target=\u0022_blank\u0022\u003EDie Hard\u003C/a\u003E example.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2: \u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022border-color: var(--border-tertiary); border-left-width: 2px; color: var(--text-secondary); font-size: .875rem; margin-bottom: 1rem; margin-top: 1rem; overflow: visible; padding-left: 1rem;\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput: \u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022font-family: Menlo,sans-serif; font-size: 0.85rem;\u0022\u003E x = 2, y = 6, target = 5 \u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput: \u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022font-family: Menlo,sans-serif; font-size: 0.85rem;\u0022\u003E false \u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3: \u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022 style=\u0022border-color: var(--border-tertiary); border-left-width: 2px; color: var(--text-secondary); font-size: .875rem; margin-bottom: 1rem; margin-top: 1rem; overflow: visible; padding-left: 1rem;\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput: \u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022font-family: Menlo,sans-serif; font-size: 0.85rem;\u0022\u003E x = 1, y = 2, target = 3 \u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput: \u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022 style=\u0022font-family: Menlo,sans-serif; font-size: 0.85rem;\u0022\u003E true \u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E Fill both jugs. The total amount of water in both jugs is equal to 3 now.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x, y, target\u0026nbsp;\u0026lt;= 10\u003Csup\u003E3\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n5\n4",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3868415+00:00",
+  "Url": "https://leetcode.com/problems/water-and-jug-problem/"
+}

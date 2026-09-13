@@ -1,0 +1,28 @@
+{
+  "QuestionId": 2161,
+  "FrontendId": 2034,
+  "Title": "Stock Price Fluctuation ",
+  "TitleSlug": "stock-price-fluctuation",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Design",
+    "Heap (Priority Queue)",
+    "Data Stream",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 49.3,
+  "TotalAccepted": 103782,
+  "TotalSubmissions": 210333,
+  "Likes": 1301,
+  "Dislikes": 71,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a stream of \u003Cstrong\u003Erecords\u003C/strong\u003E about a particular stock. Each record contains a \u003Cstrong\u003Etimestamp\u003C/strong\u003E and the corresponding \u003Cstrong\u003Eprice\u003C/strong\u003E of the stock at that timestamp.\u003C/p\u003E\n\n\u003Cp\u003EUnfortunately due to the volatile nature of the stock market, the records do not come in order. Even worse, some records may be incorrect. Another record with the same timestamp may appear later in the stream \u003Cstrong\u003Ecorrecting\u003C/strong\u003E the price of the previous wrong record.\u003C/p\u003E\n\n\u003Cp\u003EDesign an algorithm that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EUpdates\u003C/strong\u003E the price of the stock at a particular timestamp, \u003Cstrong\u003Ecorrecting\u003C/strong\u003E the price from any previous records at the timestamp.\u003C/li\u003E\n\t\u003Cli\u003EFinds the \u003Cstrong\u003Elatest price\u003C/strong\u003E of the stock based on the current records. The \u003Cstrong\u003Elatest price\u003C/strong\u003E is the price at the latest timestamp recorded.\u003C/li\u003E\n\t\u003Cli\u003EFinds the \u003Cstrong\u003Emaximum price\u003C/strong\u003E the stock has been based on the current records.\u003C/li\u003E\n\t\u003Cli\u003EFinds the \u003Cstrong\u003Eminimum price\u003C/strong\u003E the stock has been based on the current records.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EStockPrice\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EStockPrice()\u003C/code\u003E Initializes the object with no price records.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid update(int timestamp, int price)\u003C/code\u003E Updates the \u003Ccode\u003Eprice\u003C/code\u003E of the stock at the given \u003Ccode\u003Etimestamp\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint current()\u003C/code\u003E Returns the \u003Cstrong\u003Elatest price\u003C/strong\u003E of the stock.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint maximum()\u003C/code\u003E Returns the \u003Cstrong\u003Emaximum price\u003C/strong\u003E of the stock.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint minimum()\u003C/code\u003E Returns the \u003Cstrong\u003Eminimum price\u003C/strong\u003E of the stock.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;StockPrice\u0026quot;, \u0026quot;update\u0026quot;, \u0026quot;update\u0026quot;, \u0026quot;current\u0026quot;, \u0026quot;maximum\u0026quot;, \u0026quot;update\u0026quot;, \u0026quot;maximum\u0026quot;, \u0026quot;update\u0026quot;, \u0026quot;minimum\u0026quot;]\n[[], [1, 10], [2, 5], [], [], [1, 3], [], [4, 2], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, 5, 10, null, 5, null, 2]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nStockPrice stockPrice = new StockPrice();\nstockPrice.update(1, 10); // Timestamps are [1] with corresponding prices [10].\nstockPrice.update(2, 5);  // Timestamps are [1,2] with corresponding prices [10,5].\nstockPrice.current();     // return 5, the latest timestamp is 2 with the price being 5.\nstockPrice.maximum();     // return 10, the maximum price is 10 at timestamp 1.\nstockPrice.update(1, 3);  // The previous timestamp 1 had the wrong price, so it is updated to 3.\n                          // Timestamps are [1,2] with corresponding prices [3,5].\nstockPrice.maximum();     // return 5, the maximum price is 5 after the correction.\nstockPrice.update(4, 2);  // Timestamps are [1,2,4] with corresponding prices [3,5,2].\nstockPrice.minimum();     // return 2, the minimum price is 2 at timestamp 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= timestamp, price \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made \u003Cstrong\u003Ein total\u003C/strong\u003E to \u003Ccode\u003Eupdate\u003C/code\u003E, \u003Ccode\u003Ecurrent\u003C/code\u003E, \u003Ccode\u003Emaximum\u003C/code\u003E, and \u003Ccode\u003Eminimum\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecurrent\u003C/code\u003E, \u003Ccode\u003Emaximum\u003C/code\u003E, and \u003Ccode\u003Eminimum\u003C/code\u003E will be called \u003Cstrong\u003Eonly after\u003C/strong\u003E \u003Ccode\u003Eupdate\u003C/code\u003E has been called \u003Cstrong\u003Eat least once\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How would you solve the problem for offline queries (all queries given at once)?",
+    "Think about which data structure can help insert and delete the most optimal way."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1349298+00:00",
+  "Url": "https://leetcode.com/problems/stock-price-fluctuation/"
+}

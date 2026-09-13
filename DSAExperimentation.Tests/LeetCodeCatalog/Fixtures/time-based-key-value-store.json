@@ -1,0 +1,24 @@
+{
+  "QuestionId": 1023,
+  "FrontendId": 981,
+  "Title": "Time Based Key-Value Store",
+  "TitleSlug": "time-based-key-value-store",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Binary Search",
+    "Design"
+  ],
+  "AcceptanceRatePercent": 50.2,
+  "TotalAccepted": 791091,
+  "TotalSubmissions": 1576407,
+  "Likes": 5368,
+  "Dislikes": 742,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key\u0026#39;s value at a certain timestamp.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ETimeMap\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ETimeMap()\u003C/code\u003E Initializes the object of the data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid set(String key, String value, int timestamp)\u003C/code\u003E Stores the key \u003Ccode\u003Ekey\u003C/code\u003E with the value \u003Ccode\u003Evalue\u003C/code\u003E at the given time \u003Ccode\u003Etimestamp\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EString get(String key, int timestamp)\u003C/code\u003E Returns a value such that \u003Ccode\u003Eset\u003C/code\u003E was called previously, with \u003Ccode\u003Etimestamp_prev \u0026lt;= timestamp\u003C/code\u003E. If there are multiple such values, it returns the value associated with the largest \u003Ccode\u003Etimestamp_prev\u003C/code\u003E. If there are no values, it returns \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;TimeMap\u0026quot;, \u0026quot;set\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;set\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;get\u0026quot;]\n[[], [\u0026quot;foo\u0026quot;, \u0026quot;bar\u0026quot;, 1], [\u0026quot;foo\u0026quot;, 1], [\u0026quot;foo\u0026quot;, 3], [\u0026quot;foo\u0026quot;, \u0026quot;bar2\u0026quot;, 4], [\u0026quot;foo\u0026quot;, 4], [\u0026quot;foo\u0026quot;, 5]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, \u0026quot;bar\u0026quot;, \u0026quot;bar\u0026quot;, null, \u0026quot;bar2\u0026quot;, \u0026quot;bar2\u0026quot;]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nTimeMap timeMap = new TimeMap();\ntimeMap.set(\u0026quot;foo\u0026quot;, \u0026quot;bar\u0026quot;, 1);  // store the key \u0026quot;foo\u0026quot; and value \u0026quot;bar\u0026quot; along with timestamp = 1.\ntimeMap.get(\u0026quot;foo\u0026quot;, 1);         // return \u0026quot;bar\u0026quot;\ntimeMap.get(\u0026quot;foo\u0026quot;, 3);         // return \u0026quot;bar\u0026quot;, since there is no value corresponding to foo at timestamp 3 and timestamp 2, then the only value is at timestamp 1 is \u0026quot;bar\u0026quot;.\ntimeMap.set(\u0026quot;foo\u0026quot;, \u0026quot;bar2\u0026quot;, 4); // store the key \u0026quot;foo\u0026quot; and value \u0026quot;bar2\u0026quot; along with timestamp = 4.\ntimeMap.get(\u0026quot;foo\u0026quot;, 4);         // return \u0026quot;bar2\u0026quot;\ntimeMap.get(\u0026quot;foo\u0026quot;, 5);         // return \u0026quot;bar2\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= key.length, value.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ekey\u003C/code\u003E and \u003Ccode\u003Evalue\u003C/code\u003E consist of lowercase English letters and digits.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= timestamp \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the timestamps \u003Ccode\u003Etimestamp\u003C/code\u003E of \u003Ccode\u003Eset\u003C/code\u003E are strictly increasing.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eset\u003C/code\u003E and \u003Ccode\u003Eget\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2575184+00:00",
+  "Url": "https://leetcode.com/problems/time-based-key-value-store/"
+}

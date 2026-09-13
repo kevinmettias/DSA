@@ -1,0 +1,35 @@
+{
+  "QuestionId": 33,
+  "FrontendId": 33,
+  "Title": "Search in Rotated Sorted Array",
+  "TitleSlug": "search-in-rotated-sorted-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search"
+  ],
+  "AcceptanceRatePercent": 45.6,
+  "TotalAccepted": 4923937,
+  "TotalSubmissions": 10795409,
+  "Likes": 30853,
+  "Dislikes": 1848,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an integer array \u003Ccode\u003Enums\u003C/code\u003E sorted in ascending order (with \u003Cstrong\u003Edistinct\u003C/strong\u003E values).\u003C/p\u003E\n\n\u003Cp\u003EPrior to being passed to your function, \u003Ccode\u003Enums\u003C/code\u003E is \u003Cstrong\u003Epossibly left rotated\u003C/strong\u003E at an unknown index \u003Ccode\u003Ek\u003C/code\u003E (\u003Ccode\u003E1 \u0026lt;= k \u0026lt; nums.length\u003C/code\u003E) such that the resulting array is \u003Ccode\u003E[nums[k], nums[k\u002B1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]\u003C/code\u003E (\u003Cstrong\u003E0-indexed\u003C/strong\u003E). For example, \u003Ccode\u003E[0,1,2,4,5,6,7]\u003C/code\u003E might be left rotated by\u0026nbsp;\u003Ccode\u003E3\u003C/code\u003E\u0026nbsp;indices and become \u003Ccode\u003E[4,5,6,7,0,1,2]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven the array \u003Ccode\u003Enums\u003C/code\u003E \u003Cstrong\u003Eafter\u003C/strong\u003E the possible rotation and an integer \u003Ccode\u003Etarget\u003C/code\u003E, return \u003Cem\u003Ethe index of \u003C/em\u003E\u003Ccode\u003Etarget\u003C/code\u003E\u003Cem\u003E if it is in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E, or \u003C/em\u003E\u003Ccode\u003E-1\u003C/code\u003E\u003Cem\u003E if it is not in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an algorithm with \u003Ccode\u003EO(log n)\u003C/code\u003E runtime complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,5,6,7,0,1,2], target = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,5,6,7,0,1,2], target = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1], target = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll values of \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is an ascending array that is possibly rotated.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= target \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,5,6,7,0,1,2]\n0",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[4,5,6,7,0,1,2]\n3",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "[1]\n0",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9251786+00:00",
+  "Url": "https://leetcode.com/problems/search-in-rotated-sorted-array/"
+}

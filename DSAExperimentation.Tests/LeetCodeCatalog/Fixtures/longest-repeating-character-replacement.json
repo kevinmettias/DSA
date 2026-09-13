@@ -1,0 +1,32 @@
+{
+  "QuestionId": 424,
+  "FrontendId": 424,
+  "Title": "Longest Repeating Character Replacement",
+  "TitleSlug": "longest-repeating-character-replacement",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 60.6,
+  "TotalAccepted": 1771650,
+  "TotalSubmissions": 2921521,
+  "Likes": 13537,
+  "Dislikes": 801,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most \u003Ccode\u003Ek\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe length of the longest substring containing the same letter you can get after performing the above operations\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;ABAB\u0026quot;, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Replace the two \u0026#39;A\u0026#39;s with two \u0026#39;B\u0026#39;s or vice versa.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;AABABBA\u0026quot;, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Replace the one \u0026#39;A\u0026#39; in the middle with \u0026#39;B\u0026#39; and form \u0026quot;AABBBBA\u0026quot;.\nThe substring \u0026quot;BBBB\u0026quot; has the longest repeating letters, which is 4.\nThere may exists other ways to achieve this answer too.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of only uppercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= s.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022ABAB\u0022\n2",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "\u0022AABABBA\u0022\n1",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.750577+00:00",
+  "Url": "https://leetcode.com/problems/longest-repeating-character-replacement/"
+}

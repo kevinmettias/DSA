@@ -1,0 +1,44 @@
+{
+  "QuestionId": 2156,
+  "FrontendId": 2029,
+  "Title": "Stone Game IX",
+  "TitleSlug": "stone-game-ix",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Greedy",
+    "Minimax",
+    "Counting",
+    "Game Theory",
+    "Nim Game",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 57.5,
+  "TotalAccepted": 93551,
+  "TotalSubmissions": 162788,
+  "Likes": 484,
+  "Dislikes": 341,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob continue their games with stones. There is a row of n stones, and each stone has an associated value. You are given an integer array \u003Ccode\u003Estones\u003C/code\u003E, where \u003Ccode\u003Estones[i]\u003C/code\u003E is the \u003Cstrong\u003Evalue\u003C/strong\u003E of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E stone.\u003C/p\u003E\n\n\u003Cp\u003EAlice and Bob take turns, with \u003Cstrong\u003EAlice\u003C/strong\u003E starting first. On each turn, the player may remove any stone from \u003Ccode\u003Estones\u003C/code\u003E. The player who removes a stone \u003Cstrong\u003Eloses\u003C/strong\u003E if the \u003Cstrong\u003Esum\u003C/strong\u003E of the values of \u003Cstrong\u003Eall removed stones\u003C/strong\u003E is divisible by \u003Ccode\u003E3\u003C/code\u003E. Bob will win automatically if there are no remaining stones (even if it is Alice\u0026#39;s turn).\u003C/p\u003E\n\n\u003Cp\u003EAssuming both players play \u003Cstrong\u003Eoptimally\u003C/strong\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif Alice wins and\u003C/em\u003E \u003Ccode\u003Efalse\u003C/code\u003E \u003Cem\u003Eif Bob wins\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;The game will be played as follows:\n- Turn 1: Alice can remove either stone.\n- Turn 2: Bob removes the remaining stone. \nThe sum of the removed stones is 1 \u002B 2 = 3 and is divisible by 3. Therefore, Bob loses and Alice wins the game.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;Alice will remove the only stone, and the sum of the values on the removed stones is 2. \nSince all the stones are removed and the sum of values is not divisible by 3, Bob wins the game.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [5,1,2,4,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Bob will always win. One possible way for Bob to win is shown below:\n- Turn 1: Alice can remove the second stone with value 1. Sum of removed stones = 1.\n- Turn 2: Bob removes the fifth stone with value 3. Sum of removed stones = 1 \u002B 3 = 4.\n- Turn 3: Alices removes the fourth stone with value 4. Sum of removed stones = 1 \u002B 3 \u002B 4 = 8.\n- Turn 4: Bob removes the third stone with value 2. Sum of removed stones = 1 \u002B 3 \u002B 4 \u002B 2 = 10.\n- Turn 5: Alice removes the first stone with value 5. Sum of removed stones = 1 \u002B 3 \u002B 4 \u002B 2 \u002B 5 = 15.\nAlice loses the game because the sum of the removed stones (15) is divisible by 3. Bob wins the game.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stones.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stones[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "There are limited outcomes given the current sum and the stones remaining.",
+    "Can we greedily simulate starting with taking a stone with remainder 1 or 2 divided by 3?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,1]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[2]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[5,1,2,4,3]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1378002+00:00",
+  "Url": "https://leetcode.com/problems/stone-game-ix/"
+}

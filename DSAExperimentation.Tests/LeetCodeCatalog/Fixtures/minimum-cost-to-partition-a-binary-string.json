@@ -1,0 +1,41 @@
+{
+  "QuestionId": 4192,
+  "FrontendId": 3864,
+  "Title": "Minimum Cost to Partition a Binary String",
+  "TitleSlug": "minimum-cost-to-partition-a-binary-string",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Divide and Conquer",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 52.7,
+  "TotalAccepted": 12065,
+  "TotalSubmissions": 22896,
+  "Likes": 55,
+  "Dislikes": 11,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a binary string \u003Ccode\u003Es\u003C/code\u003E and two integers \u003Ccode\u003EencCost\u003C/code\u003E and \u003Ccode\u003EflatCost\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor each index \u003Ccode\u003Ei\u003C/code\u003E, \u003Ccode\u003Es[i] = \u0026#39;1\u0026#39;\u003C/code\u003E indicates that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E element is sensitive, and \u003Ccode\u003Es[i] = \u0026#39;0\u0026#39;\u003C/code\u003E indicates that it is not.\u003C/p\u003E\n\n\u003Cp\u003EThe string must be partitioned into \u003Cstrong\u003Esegments\u003C/strong\u003E. Initially, the entire string forms a single segment.\u003C/p\u003E\n\n\u003Cp\u003EFor a segment of length \u003Ccode\u003EL\u003C/code\u003E containing \u003Ccode\u003EX\u003C/code\u003E sensitive elements:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003EX = 0\u003C/code\u003E, the cost is \u003Ccode\u003EflatCost\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003EX \u0026gt; 0\u003C/code\u003E, the cost is \u003Ccode\u003EL * X * encCost\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EIf a segment has \u003Cstrong\u003Eeven length\u003C/strong\u003E, you may split it into \u003Cstrong\u003Etwo contiguous segments\u003C/strong\u003E of \u003Cstrong\u003Eequal\u003C/strong\u003E length and the cost of this split is the \u003Cstrong\u003Esum\u003C/strong\u003E of \u003Cstrong\u003Ecosts\u003C/strong\u003E of the resulting segments.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the \u003Cstrong\u003Eminimum possible total cost\u003C/strong\u003E over all valid partitions.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;1010\u0026quot;, encCost = 2, flatCost = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe entire string \u003Ccode\u003Es = \u0026quot;1010\u0026quot;\u003C/code\u003E has length 4 and contains 2 sensitive elements, giving a cost of \u003Ccode\u003E4 * 2 * 2 = 16\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESince the length is even, it can be split into \u003Ccode\u003E\u0026quot;10\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;10\u0026quot;\u003C/code\u003E. Each segment has length 2 and contains 1 sensitive element, so each costs \u003Ccode\u003E2 * 1 * 2 = 4\u003C/code\u003E, giving a total of 8.\u003C/li\u003E\n\t\u003Cli\u003ESplitting both segments into four single-character segments yields the segments \u003Ccode\u003E\u0026quot;1\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;0\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;1\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;0\u0026quot;\u003C/code\u003E. A segment containing \u003Ccode\u003E\u0026quot;1\u0026quot;\u003C/code\u003E has length 1 and exactly one sensitive element, giving a cost of \u003Ccode\u003E1 * 1 * 2 = 2\u003C/code\u003E, while a segment containing \u003Ccode\u003E\u0026quot;0\u0026quot;\u003C/code\u003E has no sensitive elements and therefore costs \u003Ccode\u003EflatCost = 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200BThe total cost is thus \u003Ccode\u003E2 \u002B 1 \u002B 2 \u002B 1 = 6\u003C/code\u003E, which is the minimum possible total cost.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;1010\u0026quot;, encCost = 3, flatCost = 10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E12\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe entire string \u003Ccode\u003Es = \u0026quot;1010\u0026quot;\u003C/code\u003E has length 4 and contains 2 sensitive elements, giving a cost of \u003Ccode\u003E4 * 2 * 3 = 24\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESince the length is even, it can be split into two segments \u003Ccode\u003E\u0026quot;10\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;10\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EEach segment has length 2 and contains one sensitive element, so each costs \u003Ccode\u003E2 * 1 * 3 = 6\u003C/code\u003E, giving a total of 12, which is the minimum possible total cost.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;00\u0026quot;, encCost = 1, flatCost = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe string \u003Ccode\u003Es = \u0026quot;00\u0026quot;\u003C/code\u003E has length 2 and contains no sensitive elements, so storing it as a single segment costs \u003Ccode\u003EflatCost = 2\u003C/code\u003E, which is the minimum possible total cost.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists only of \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= encCost, flatCost \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use divide and conquer: recursively evaluate each segment; if its length is even you may split it into two equal halves.",
+    "For a segment, let \u003Ccode\u003Ecost_no_split = (X == 0 ? flatCost : L * X * encCost)\u003C/code\u003E. If length is even, compute \u003Ccode\u003Ecost_split = cost(left) \u002B cost(right)\u003C/code\u003E and take the minimum.",
+    "Precompute prefix sums of ones so \u003Ccode\u003EX\u003C/code\u003E (number of \u00271\u0027s) for any segment is O(1).",
+    "Memoize results for segments."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u00221010\u0022\n2\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u00221010\u0022\n3\n10",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u002200\u0022\n1\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0346924+00:00",
+  "Url": "https://leetcode.com/problems/minimum-cost-to-partition-a-binary-string/"
+}

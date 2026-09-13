@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1557,
+  "FrontendId": 1461,
+  "Title": "Check If a String Contains All Binary Codes of Size K",
+  "TitleSlug": "check-if-a-string-contains-all-binary-codes-of-size-k",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Bit Manipulation",
+    "Rolling Hash",
+    "Hash Function",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 61.6,
+  "TotalAccepted": 271143,
+  "TotalSubmissions": 439859,
+  "Likes": 2741,
+  "Dislikes": 116,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a binary string \u003Ccode\u003Es\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif every binary code of length\u003C/em\u003E \u003Ccode\u003Ek\u003C/code\u003E \u003Cem\u003Eis a substring of\u003C/em\u003E \u003Ccode\u003Es\u003C/code\u003E. Otherwise, return \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;00110110\u0026quot;, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The binary codes of length 2 are \u0026quot;00\u0026quot;, \u0026quot;01\u0026quot;, \u0026quot;10\u0026quot; and \u0026quot;11\u0026quot;. They can be all found as substrings at indices 0, 1, 3 and 2 respectively.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;0110\u0026quot;, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The binary codes of length 1 are \u0026quot;0\u0026quot; and \u0026quot;1\u0026quot;, it is clear that both exist as a substring. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;0110\u0026quot;, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The binary code \u0026quot;00\u0026quot; is of length 2 and does not exist in the array.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 5 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We need only to check all sub-strings of length k.",
+    "The number of distinct sub-strings should be exactly 2^k."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u002200110110\u0022\n2",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u00220110\u0022\n1",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u00220110\u0022\n2",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.760208+00:00",
+  "Url": "https://leetcode.com/problems/check-if-a-string-contains-all-binary-codes-of-size-k/"
+}

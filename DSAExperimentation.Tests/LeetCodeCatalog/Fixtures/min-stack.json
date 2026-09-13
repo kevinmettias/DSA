@@ -8,17 +8,17 @@
     "Stack",
     "Design"
   ],
-  "AcceptanceRatePercent": 58.6,
-  "TotalAccepted": 2919767,
-  "TotalSubmissions": 4983061,
-  "Likes": 16237,
-  "Dislikes": 1003,
+  "AcceptanceRatePercent": 58.7,
+  "TotalAccepted": 2948708,
+  "TotalSubmissions": 5027429,
+  "Likes": 16290,
+  "Dislikes": 1006,
   "IsPaidOnly": false,
   "ContentHtml": "\u003Cp\u003EDesign a stack that supports push, pop, top, and retrieving the minimum element in constant time.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMinStack\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMinStack()\u003C/code\u003E initializes the stack object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid push(int value)\u003C/code\u003E pushes the element \u003Ccode\u003Evalue\u003C/code\u003E onto the stack.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid pop()\u003C/code\u003E removes the element on the top of the stack.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint top()\u003C/code\u003E gets the top element of the stack.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint getMin()\u003C/code\u003E retrieves the minimum element in the stack.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou must implement a solution with \u003Ccode\u003EO(1)\u003C/code\u003E time complexity for each function.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MinStack\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;getMin\u0026quot;,\u0026quot;pop\u0026quot;,\u0026quot;top\u0026quot;,\u0026quot;getMin\u0026quot;]\n[[],[-2],[0],[-3],[],[],[],[]]\n\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null,null,null,null,-3,null,0,-2]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMinStack minStack = new MinStack();\nminStack.push(-2);\nminStack.push(0);\nminStack.push(-3);\nminStack.getMin(); // return -3\nminStack.pop();\nminStack.top();    // return 0\nminStack.getMin(); // return -2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-2\u003Csup\u003E31\u003C/sup\u003E \u0026lt;= val \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EMethods \u003Ccode\u003Epop\u003C/code\u003E, \u003Ccode\u003Etop\u003C/code\u003E and \u003Ccode\u003EgetMin\u003C/code\u003E operations will always be called on \u003Cstrong\u003Enon-empty\u003C/strong\u003E stacks.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Epush\u003C/code\u003E, \u003Ccode\u003Epop\u003C/code\u003E, \u003Ccode\u003Etop\u003C/code\u003E, and \u003Ccode\u003EgetMin\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
   "Hints": [
     "Consider each node in the stack having a minimum value. (Credits to @aakarshmadhavan)"
   ],
   "ExampleTestCases": [],
-  "FetchedAtUtc": "2026-08-27T02:25:12.3793276+00:00",
+  "FetchedAtUtc": "2026-09-13T04:39:40.9975287+00:00",
   "Url": "https://leetcode.com/problems/min-stack/"
 }

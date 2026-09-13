@@ -1,0 +1,33 @@
+{
+  "QuestionId": 67,
+  "FrontendId": 67,
+  "Title": "Add Binary",
+  "TitleSlug": "add-binary",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Bit Manipulation",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 58.6,
+  "TotalAccepted": 2481755,
+  "TotalSubmissions": 4233357,
+  "Likes": 10943,
+  "Dislikes": 1127,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two binary strings \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E, return \u003Cem\u003Etheir sum as a binary string\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E a = \u002211\u0022, b = \u00221\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0022100\u0022\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E a = \u00221010\u0022, b = \u00221011\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u002210101\u0022\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a.length, b.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E consist\u0026nbsp;only of \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E characters.\u003C/li\u003E\n\t\u003Cli\u003EEach string does not contain leading zeros except for the zero itself.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u002211\u0022\n\u00221\u0022",
+      "RawExpectedOutput": "\u0022100\u0022"
+    },
+    {
+      "RawInput": "\u00221010\u0022\n\u00221011\u0022",
+      "RawExpectedOutput": "\u002210101\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5102512+00:00",
+  "Url": "https://leetcode.com/problems/add-binary/"
+}

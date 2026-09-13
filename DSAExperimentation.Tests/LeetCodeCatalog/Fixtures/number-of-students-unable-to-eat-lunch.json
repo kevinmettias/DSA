@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1802,
+  "FrontendId": 1700,
+  "Title": "Number of Students Unable to Eat Lunch",
+  "TitleSlug": "number-of-students-unable-to-eat-lunch",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Queue",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 80,
+  "TotalAccepted": 404202,
+  "TotalSubmissions": 505237,
+  "Likes": 2796,
+  "Dislikes": 301,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe school cafeteria offers circular and square sandwiches at lunch break, referred to by numbers \u003Ccode\u003E0\u003C/code\u003E and \u003Ccode\u003E1\u003C/code\u003E respectively. All students stand in a queue. Each student either prefers square or circular sandwiches.\u003C/p\u003E\n\n\u003Cp\u003EThe number of sandwiches in the cafeteria is equal to the number of students. The sandwiches are placed in a \u003Cstrong\u003Estack\u003C/strong\u003E. At each step:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf the student at the front of the queue \u003Cstrong\u003Eprefers\u003C/strong\u003E the sandwich on the top of the stack, they will \u003Cstrong\u003Etake it\u003C/strong\u003E and leave the queue.\u003C/li\u003E\n\t\u003Cli\u003EOtherwise, they will \u003Cstrong\u003Eleave it\u003C/strong\u003E and go to the queue\u0026#39;s end.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThis continues until none of the queue students want to take the top sandwich and are thus unable to eat.\u003C/p\u003E\n\n\u003Cp\u003EYou are given two integer arrays \u003Ccode\u003Estudents\u003C/code\u003E and \u003Ccode\u003Esandwiches\u003C/code\u003E where \u003Ccode\u003Esandwiches[i]\u003C/code\u003E is the type of the \u003Ccode\u003Ei\u003Csup\u003E\u200B\u200B\u200B\u200B\u200B\u200Bth\u003C/sup\u003E\u003C/code\u003E sandwich in the stack (\u003Ccode\u003Ei = 0\u003C/code\u003E is the top of the stack) and \u003Ccode\u003Estudents[j]\u003C/code\u003E is the preference of the \u003Ccode\u003Ej\u003Csup\u003E\u200B\u200B\u200B\u200B\u200B\u200Bth\u003C/sup\u003E\u003C/code\u003E student in the initial queue (\u003Ccode\u003Ej = 0\u003C/code\u003E is the front of the queue). Return \u003Cem\u003Ethe number of students that are unable to eat.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E students = [1,1,0,0], sandwiches = [0,1,0,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\u003Cstrong\u003E \nExplanation:\u003C/strong\u003E\n- Front student leaves the top sandwich and returns to the end of the line making students = [1,0,0,1].\n- Front student leaves the top sandwich and returns to the end of the line making students = [0,0,1,1].\n- Front student takes the top sandwich and leaves the line making students = [0,1,1] and sandwiches = [1,0,1].\n- Front student leaves the top sandwich and returns to the end of the line making students = [1,1,0].\n- Front student takes the top sandwich and leaves the line making students = [1,0] and sandwiches = [0,1].\n- Front student leaves the top sandwich and returns to the end of the line making students = [0,1].\n- Front student takes the top sandwich and leaves the line making students = [1] and sandwiches = [1].\n- Front student takes the top sandwich and leaves the line making students = [] and sandwiches = [].\nHence all students are able to eat.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E students = [1,1,1,0,0,1], sandwiches = [1,0,0,0,1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= students.length, sandwiches.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estudents.length == sandwiches.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esandwiches[i]\u003C/code\u003E is \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estudents[i]\u003C/code\u003E is \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Simulate the given in the statement",
+    "Calculate those who will eat instead of those who will not."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,1,0,0]\n[0,1,0,1]",
+      "RawExpectedOutput": "0\u003Cstrong\u003E \nExplanation:\u003C/strong\u003E\n- Front student leaves the top sandwich and returns to the end of the line making students = [1,0,0,1].\n- Front student leaves the top sandwich and returns to the end of the line making students = [0,0,1,1].\n- Front student takes the top sandwich and leaves the line making students = [0,1,1] and sandwiches = [1,0,1].\n- Front student leaves the top sandwich and returns to the end of the line making students = [1,1,0].\n- Front student takes the top sandwich and leaves the line making students = [1,0] and sandwiches = [0,1].\n- Front student leaves the top sandwich and returns to the end of the line making students = [0,1].\n- Front student takes the top sandwich and leaves the line making students = [1] and sandwiches = [1].\n- Front student takes the top sandwich and leaves the line making students = [] and sandwiches = [].\nHence all students are able to eat."
+    },
+    {
+      "RawInput": "[1,1,1,0,0,1]\n[1,0,0,0,1,1]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3034644+00:00",
+  "Url": "https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/"
+}

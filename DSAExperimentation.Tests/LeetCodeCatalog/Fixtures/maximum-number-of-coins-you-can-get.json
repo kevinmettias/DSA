@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1683,
+  "FrontendId": 1561,
+  "Title": "Maximum Number of Coins You Can Get",
+  "TitleSlug": "maximum-number-of-coins-you-can-get",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Greedy",
+    "Sorting",
+    "Game Theory"
+  ],
+  "AcceptanceRatePercent": 84.9,
+  "TotalAccepted": 207966,
+  "TotalSubmissions": 245045,
+  "Likes": 1999,
+  "Dislikes": 224,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003E3n\u003C/code\u003E piles of coins of varying size, you and your friends will take piles of coins as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIn each step, you will choose \u003Cstrong\u003Eany \u003C/strong\u003E\u003Ccode\u003E3\u003C/code\u003E piles of coins (not necessarily consecutive).\u003C/li\u003E\n\t\u003Cli\u003EOf your choice, Alice will pick the pile with the maximum number of coins.\u003C/li\u003E\n\t\u003Cli\u003EYou will pick the next pile with the maximum number of coins.\u003C/li\u003E\n\t\u003Cli\u003EYour friend Bob will pick the last pile.\u003C/li\u003E\n\t\u003Cli\u003ERepeat until there are no more piles of coins.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven an array of integers \u003Ccode\u003Epiles\u003C/code\u003E where \u003Ccode\u003Epiles[i]\u003C/code\u003E is the number of coins in the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E pile.\u003C/p\u003E\n\n\u003Cp\u003EReturn the maximum number of coins that you can have.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E piles = [2,4,1,2,7,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 9\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EChoose the triplet (2, 7, 8), Alice Pick the pile with 8 coins, you the pile with \u003Cstrong\u003E7\u003C/strong\u003E coins and Bob the last one.\nChoose the triplet (1, 2, 4), Alice Pick the pile with 4 coins, you the pile with \u003Cstrong\u003E2\u003C/strong\u003E coins and Bob the last one.\nThe maximum number of coins which you can have are: 7 \u002B 2 = 9.\nOn the other hand if we choose this arrangement (1, \u003Cstrong\u003E2\u003C/strong\u003E, 8), (2, \u003Cstrong\u003E4\u003C/strong\u003E, 7) you only get 2 \u002B 4 = 6 coins which is not optimal.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E piles = [2,4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E piles = [9,8,7,6,5,1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= piles.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epiles.length % 3 == 0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= piles[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Which pile of coins will you never be able to pick up?",
+    "Bob is forced to take the last pile of coins, no matter what it is. Which pile should you give to him?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,4,1,2,7,8]",
+      "RawExpectedOutput": "9"
+    },
+    {
+      "RawInput": "[2,4,5]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[9,8,7,6,5,1,2,3,4]",
+      "RawExpectedOutput": "18"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9095384+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-coins-you-can-get/"
+}

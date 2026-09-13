@@ -1,0 +1,31 @@
+{
+  "QuestionId": 135,
+  "FrontendId": 135,
+  "Title": "Candy",
+  "TitleSlug": "candy",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Greedy"
+  ],
+  "AcceptanceRatePercent": 49.2,
+  "TotalAccepted": 1133178,
+  "TotalSubmissions": 2302598,
+  "Likes": 9532,
+  "Dislikes": 869,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E children standing in a line.\u003C/p\u003E\n\n\u003Cp\u003EEach child is assigned a rating value given in the integer array \u003Ccode\u003Eratings\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are giving candies to these children subjected to the following requirements:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach child must have \u003Cstrong\u003Eat least\u003C/strong\u003E one candy.\u003C/li\u003E\n\t\u003Cli\u003EChildren with a \u003Cstrong\u003Ehigher\u003C/strong\u003E rating get more candies than their neighbors.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E number of candies you need to have to distribute the candies to the children.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E ratings = [1,0,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can allocate to the first, second and third child with 2, 1, 2 candies respectively.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E ratings = [1,2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can allocate to the first, second and third child with 1, 2, 1 candies respectively.\nThe third child gets 1 candy because it satisfies the above two conditions.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == ratings.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= ratings[i] \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,0,2]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[1,2,2]",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7360783+00:00",
+  "Url": "https://leetcode.com/problems/candy/"
+}

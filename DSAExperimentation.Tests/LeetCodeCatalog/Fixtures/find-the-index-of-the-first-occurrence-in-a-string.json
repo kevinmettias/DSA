@@ -1,0 +1,35 @@
+{
+  "QuestionId": 28,
+  "FrontendId": 28,
+  "Title": "Find the Index of the First Occurrence in a String",
+  "TitleSlug": "find-the-index-of-the-first-occurrence-in-a-string",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "String Matching",
+    "Z Algorithm",
+    "Knuth\u2013Morris\u2013Pratt Algorithm",
+    "Boyer\u2013Moore String-Search Algorithm"
+  ],
+  "AcceptanceRatePercent": 47.3,
+  "TotalAccepted": 4353267,
+  "TotalSubmissions": 9202273,
+  "Likes": 7860,
+  "Dislikes": 599,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two strings \u003Ccode\u003Eneedle\u003C/code\u003E and \u003Ccode\u003Ehaystack\u003C/code\u003E, return the index of the first occurrence of \u003Ccode\u003Eneedle\u003C/code\u003E in \u003Ccode\u003Ehaystack\u003C/code\u003E, or \u003Ccode\u003E-1\u003C/code\u003E if \u003Ccode\u003Eneedle\u003C/code\u003E is not part of \u003Ccode\u003Ehaystack\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E haystack = \u0026quot;sadbutsad\u0026quot;, needle = \u0026quot;sad\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;sad\u0026quot; occurs at index 0 and 6.\nThe first occurrence is at index 0, so we return 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E haystack = \u0026quot;leetcode\u0026quot;, needle = \u0026quot;leeto\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;leeto\u0026quot; did not occur in \u0026quot;leetcode\u0026quot;, so we return -1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= haystack.length, needle.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ehaystack\u003C/code\u003E and \u003Ccode\u003Eneedle\u003C/code\u003E consist of only lowercase English characters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022sadbutsad\u0022\n\u0022sad\u0022",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "\u0022leetcode\u0022\n\u0022leeto\u0022",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2953953+00:00",
+  "Url": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/"
+}

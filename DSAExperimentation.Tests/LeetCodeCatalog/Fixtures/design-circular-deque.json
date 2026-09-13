@@ -1,0 +1,24 @@
+{
+  "QuestionId": 859,
+  "FrontendId": 641,
+  "Title": "Design Circular Deque",
+  "TitleSlug": "design-circular-deque",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Linked List",
+    "Design",
+    "Queue"
+  ],
+  "AcceptanceRatePercent": 65,
+  "TotalAccepted": 218989,
+  "TotalSubmissions": 336858,
+  "Likes": 1714,
+  "Dislikes": 110,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign your implementation of the circular double-ended queue (deque).\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMyCircularDeque\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMyCircularDeque(int k)\u003C/code\u003E Initializes the deque with a maximum size of \u003Ccode\u003Ek\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean insertFront()\u003C/code\u003E Adds an item at the front of Deque. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the operation is successful, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean insertLast()\u003C/code\u003E Adds an item at the rear of Deque. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the operation is successful, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean deleteFront()\u003C/code\u003E Deletes an item from the front of Deque. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the operation is successful, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean deleteLast()\u003C/code\u003E Deletes an item from the rear of Deque. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the operation is successful, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint getFront()\u003C/code\u003E Returns the front item from the Deque. Returns \u003Ccode\u003E-1\u003C/code\u003E if the deque is empty.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint getRear()\u003C/code\u003E Returns the last item from Deque. Returns \u003Ccode\u003E-1\u003C/code\u003E if the deque is empty.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean isEmpty()\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if the deque is empty, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean isFull()\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if the deque is full, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyCircularDeque\u0026quot;, \u0026quot;insertLast\u0026quot;, \u0026quot;insertLast\u0026quot;, \u0026quot;insertFront\u0026quot;, \u0026quot;insertFront\u0026quot;, \u0026quot;getRear\u0026quot;, \u0026quot;isFull\u0026quot;, \u0026quot;deleteLast\u0026quot;, \u0026quot;insertFront\u0026quot;, \u0026quot;getFront\u0026quot;]\n[[3], [1], [2], [3], [4], [], [], [], [4], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, true, true, true, false, 2, true, true, true, 4]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyCircularDeque myCircularDeque = new MyCircularDeque(3);\nmyCircularDeque.insertLast(1);  // return True\nmyCircularDeque.insertLast(2);  // return True\nmyCircularDeque.insertFront(3); // return True\nmyCircularDeque.insertFront(4); // return False, the queue is full.\nmyCircularDeque.getRear();      // return 2\nmyCircularDeque.isFull();       // return True\nmyCircularDeque.deleteLast();   // return True\nmyCircularDeque.insertFront(4); // return True\nmyCircularDeque.getFront();     // return 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= value \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E2000\u003C/code\u003E calls will be made to \u003Ccode\u003EinsertFront\u003C/code\u003E, \u003Ccode\u003EinsertLast\u003C/code\u003E, \u003Ccode\u003EdeleteFront\u003C/code\u003E, \u003Ccode\u003EdeleteLast\u003C/code\u003E, \u003Ccode\u003EgetFront\u003C/code\u003E, \u003Ccode\u003EgetRear\u003C/code\u003E, \u003Ccode\u003EisEmpty\u003C/code\u003E, \u003Ccode\u003EisFull\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0834924+00:00",
+  "Url": "https://leetcode.com/problems/design-circular-deque/"
+}

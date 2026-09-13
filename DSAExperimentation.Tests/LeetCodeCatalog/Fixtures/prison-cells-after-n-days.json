@@ -1,0 +1,34 @@
+{
+  "QuestionId": 994,
+  "FrontendId": 957,
+  "Title": "Prison Cells After N Days",
+  "TitleSlug": "prison-cells-after-n-days",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Bit Manipulation",
+    "Floyd\u0027s Cycle Finding Algorithm"
+  ],
+  "AcceptanceRatePercent": 39.3,
+  "TotalAccepted": 179697,
+  "TotalSubmissions": 456900,
+  "Likes": 1573,
+  "Dislikes": 1783,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003E8\u003C/code\u003E prison cells in a row and each cell is either occupied or vacant.\u003C/p\u003E\n\n\u003Cp\u003EEach day, whether the cell is occupied or vacant changes according to the following rules:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf a cell has two adjacent neighbors that are both occupied or both vacant, then the cell becomes occupied.\u003C/li\u003E\n\t\u003Cli\u003EOtherwise, it becomes vacant.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that because the prison is a row, the first and the last cells in the row can\u0026#39;t have two adjacent neighbors.\u003C/p\u003E\n\n\u003Cp\u003EYou are given an integer array \u003Ccode\u003Ecells\u003C/code\u003E where \u003Ccode\u003Ecells[i] == 1\u003C/code\u003E if the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E cell is occupied and \u003Ccode\u003Ecells[i] == 0\u003C/code\u003E if the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E cell is vacant, and you are given an integer \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the state of the prison after \u003Ccode\u003En\u003C/code\u003E days (i.e., \u003Ccode\u003En\u003C/code\u003E such changes described above).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E cells = [0,1,0,1,1,0,0,1], n = 7\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0,1,1,0,0,0,0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The following table summarizes the state of the prison on each day:\nDay 0: [0, 1, 0, 1, 1, 0, 0, 1]\nDay 1: [0, 1, 1, 0, 0, 0, 0, 0]\nDay 2: [0, 0, 0, 0, 1, 1, 1, 0]\nDay 3: [0, 1, 1, 0, 0, 1, 0, 0]\nDay 4: [0, 0, 0, 0, 0, 1, 0, 0]\nDay 5: [0, 1, 1, 1, 0, 1, 0, 0]\nDay 6: [0, 0, 1, 0, 1, 1, 0, 0]\nDay 7: [0, 0, 1, 1, 0, 0, 0, 0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E cells = [1,0,0,1,0,0,1,0], n = 1000000000\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0,1,1,1,1,1,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecells.length == 8\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecells[i]\u003C/code\u003E\u0026nbsp;is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,1,0,1,1,0,0,1]\n7",
+      "RawExpectedOutput": "[0,0,1,1,0,0,0,0]"
+    },
+    {
+      "RawInput": "[1,0,0,1,0,0,1,0]\n1000000000",
+      "RawExpectedOutput": "[0,0,1,1,1,1,1,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5909653+00:00",
+  "Url": "https://leetcode.com/problems/prison-cells-after-n-days/"
+}

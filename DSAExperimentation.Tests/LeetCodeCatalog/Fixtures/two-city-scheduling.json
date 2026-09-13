@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1095,
+  "FrontendId": 1029,
+  "Title": "Two City Scheduling",
+  "TitleSlug": "two-city-scheduling",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Sorting",
+    "Hungarian Algorithm",
+    "Successive Shortest Path Algorithm"
+  ],
+  "AcceptanceRatePercent": 68.9,
+  "TotalAccepted": 297908,
+  "TotalSubmissions": 432064,
+  "Likes": 4922,
+  "Dislikes": 368,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA company is planning to interview \u003Ccode\u003E2n\u003C/code\u003E people. Given the array \u003Ccode\u003Ecosts\u003C/code\u003E where \u003Ccode\u003Ecosts[i] = [aCost\u003Csub\u003Ei\u003C/sub\u003E, bCost\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E,\u0026nbsp;the cost of flying the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person to city \u003Ccode\u003Ea\u003C/code\u003E is \u003Ccode\u003EaCost\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E, and the cost of flying the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person to city \u003Ccode\u003Eb\u003C/code\u003E is \u003Ccode\u003EbCost\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum cost to fly every person to a city\u003C/em\u003E such that exactly \u003Ccode\u003En\u003C/code\u003E people arrive in each city.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E costs = [[10,20],[30,200],[400,50],[30,20]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 110\n\u003Cstrong\u003EExplanation: \u003C/strong\u003E\nThe first person goes to city A for a cost of 10.\nThe second person goes to city A for a cost of 30.\nThe third person goes to city B for a cost of 50.\nThe fourth person goes to city B for a cost of 20.\n\nThe total minimum cost is 10 \u002B 30 \u002B 50 \u002B 20 = 110 to have half the people interviewing in each city.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E costs = [[259,770],[448,54],[926,667],[184,139],[840,118],[577,469]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1859\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E costs = [[515,563],[451,713],[537,709],[343,819],[855,779],[457,60],[650,359],[631,42]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3086\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 * n == costs.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= costs.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecosts.length\u003C/code\u003E is even.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= aCost\u003Csub\u003Ei\u003C/sub\u003E, bCost\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[10,20],[30,200],[400,50],[30,20]]",
+      "RawExpectedOutput": "110"
+    },
+    {
+      "RawInput": "[[259,770],[448,54],[926,667],[184,139],[840,118],[577,469]]",
+      "RawExpectedOutput": "1859"
+    },
+    {
+      "RawInput": "[[515,563],[451,713],[537,709],[343,819],[855,779],[457,60],[650,359],[631,42]]",
+      "RawExpectedOutput": "3086"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2907785+00:00",
+  "Url": "https://leetcode.com/problems/two-city-scheduling/"
+}

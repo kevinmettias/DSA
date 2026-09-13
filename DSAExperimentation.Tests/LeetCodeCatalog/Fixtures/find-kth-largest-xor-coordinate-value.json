@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1860,
+  "FrontendId": 1738,
+  "Title": "Find Kth Largest XOR Coordinate Value",
+  "TitleSlug": "find-kth-largest-xor-coordinate-value",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Bit Manipulation",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Prefix Sum",
+    "Quickselect"
+  ],
+  "AcceptanceRatePercent": 64.7,
+  "TotalAccepted": 32243,
+  "TotalSubmissions": 49828,
+  "Likes": 542,
+  "Dislikes": 86,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D \u003Ccode\u003Ematrix\u003C/code\u003E of size \u003Ccode\u003Em x n\u003C/code\u003E, consisting of non-negative integers. You are also given an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Evalue\u003C/strong\u003E of coordinate \u003Ccode\u003E(a, b)\u003C/code\u003E of the matrix is the XOR of all \u003Ccode\u003Ematrix[i][j]\u003C/code\u003E where \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= a \u0026lt; m\u003C/code\u003E and \u003Ccode\u003E0 \u0026lt;= j \u0026lt;= b \u0026lt; n\u003C/code\u003E \u003Cstrong\u003E(0-indexed)\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E largest value \u003Cstrong\u003E(1-indexed)\u003C/strong\u003E of all the coordinates of \u003Ccode\u003Ematrix\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[5,2],[1,6]], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The value of coordinate (0,1) is 5 XOR 2 = 7, which is the largest value.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[5,2],[1,6]], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The value of coordinate (0,0) is 5 = 5, which is the 2nd largest value.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[5,2],[1,6]], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The value of coordinate (1,0) is 5 XOR 1 = 4, which is the 3rd largest value.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= matrix[i][j] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= m * n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a 2D prefix sum to precalculate the xor-sum of the upper left submatrix."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[5,2],[1,6]]\n1",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "[[5,2],[1,6]]\n2",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[[5,2],[1,6]]\n3",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2404173+00:00",
+  "Url": "https://leetcode.com/problems/find-kth-largest-xor-coordinate-value/"
+}

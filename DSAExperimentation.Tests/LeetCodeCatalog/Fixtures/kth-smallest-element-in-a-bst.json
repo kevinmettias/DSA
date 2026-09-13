@@ -1,0 +1,38 @@
+{
+  "QuestionId": 230,
+  "FrontendId": 230,
+  "Title": "Kth Smallest Element in a BST",
+  "TitleSlug": "kth-smallest-element-in-a-bst",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 77.3,
+  "TotalAccepted": 2415397,
+  "TotalSubmissions": 3124131,
+  "Likes": 12930,
+  "Dislikes": 269,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary search tree, and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe\u003C/em\u003E \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cem\u003Esmallest value (\u003Cstrong\u003E1-indexed\u003C/strong\u003E) of all the values of the nodes in the tree\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/28/kthtree1.jpg\u0022 style=\u0022width: 212px; height: 301px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [3,1,4,null,2], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/28/kthtree2.jpg\u0022 style=\u0022width: 382px; height: 302px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [5,3,6,2,4,null,null,1], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E If the BST is modified often (i.e., we can do insert and delete operations) and you need to find the kth smallest frequently, how would you optimize?\u003C/p\u003E\n",
+  "Hints": [
+    "Try to utilize the property of a BST.",
+    "Try in-order traversal. (Credits to @chan13)",
+    "What if you could modify the BST node\u0027s structure?",
+    "The optimal runtime complexity is O(height of BST)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,4,null,2]\n1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[5,3,6,2,4,null,null,1]\n3",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6139673+00:00",
+  "Url": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"
+}

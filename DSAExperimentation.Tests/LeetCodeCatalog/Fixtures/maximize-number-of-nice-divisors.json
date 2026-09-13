@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1936,
+  "FrontendId": 1808,
+  "Title": "Maximize Number of Nice Divisors",
+  "TitleSlug": "maximize-number-of-nice-divisors",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Recursion",
+    "Number Theory"
+  ],
+  "AcceptanceRatePercent": 37.2,
+  "TotalAccepted": 11277,
+  "TotalSubmissions": 30327,
+  "Likes": 237,
+  "Dislikes": 173,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a positive integer \u003Ccode\u003EprimeFactors\u003C/code\u003E. You are asked to construct a positive integer \u003Ccode\u003En\u003C/code\u003E that satisfies the following conditions:\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n  \u003Cli\u003EThe number of prime factors of \u003Ccode\u003En\u003C/code\u003E (not necessarily distinct) is \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003EprimeFactors\u003C/code\u003E.\u003C/li\u003E\r\n  \u003Cli\u003EThe number of nice divisors of \u003Ccode\u003En\u003C/code\u003E is maximized. Note that a divisor of \u003Ccode\u003En\u003C/code\u003E is \u003Cstrong\u003Enice\u003C/strong\u003E if it is divisible by every prime factor of \u003Ccode\u003En\u003C/code\u003E. For example, if \u003Ccode\u003En = 12\u003C/code\u003E, then its prime factors are \u003Ccode\u003E[2,2,3]\u003C/code\u003E, then \u003Ccode\u003E6\u003C/code\u003E and \u003Ccode\u003E12\u003C/code\u003E are nice divisors, while \u003Ccode\u003E3\u003C/code\u003E and \u003Ccode\u003E4\u003C/code\u003E are not.\u003C/li\u003E\r\n\u003C/ul\u003E\r\n\r\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of nice divisors of\u003C/em\u003E \u003Ccode\u003En\u003C/code\u003E. Since that number can be too large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003ENote that a prime number is a natural number greater than \u003Ccode\u003E1\u003C/code\u003E that is not a product of two smaller natural numbers. The prime factors of a number \u003Ccode\u003En\u003C/code\u003E is a list of prime numbers such that their product equals \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E primeFactors = 5\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 200 is a valid value of n.\r\nIt has 5 prime factors: [2,2,2,5,5], and it has 6 nice divisors: [10,20,40,50,100,200].\r\nThere is not other value of n that has at most 5 prime factors and more nice divisors.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E primeFactors = 8\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= primeFactors \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "The number of nice divisors is equal to the product of the count of each prime factor. Then the problem is reduced to: given n, find a sequence of numbers whose sum equals n and whose product is maximized.",
+    "This sequence can have no numbers that are larger than 4. Proof: if it contains a number x that is larger than 4, then you can replace x with floor(x/2) and ceil(x/2), and floor(x/2) * ceil(x/2) \u003E x. You can also replace 4s with two 2s. Hence, there will always be optimal solutions with only 2s and 3s.",
+    "If there are three 2s, you can replace them with two 3s to get a better product. Hence, you\u0027ll never have more than two 2s.",
+    "Keep adding 3s as long as n \u2265 5."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "8",
+      "RawExpectedOutput": "18"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8681889+00:00",
+  "Url": "https://leetcode.com/problems/maximize-number-of-nice-divisors/"
+}

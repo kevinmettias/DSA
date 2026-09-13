@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1947,
+  "FrontendId": 1819,
+  "Title": "Number of Different Subsequences GCDs",
+  "TitleSlug": "number-of-different-subsequences-gcds",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Counting",
+    "Number Theory",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 47.2,
+  "TotalAccepted": 14892,
+  "TotalSubmissions": 31533,
+  "Likes": 447,
+  "Dislikes": 49,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E that consists of positive integers.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003EGCD\u003C/strong\u003E of a sequence of numbers is defined as the greatest integer that divides \u003Cstrong\u003Eall\u003C/strong\u003E the numbers in the sequence evenly.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, the GCD of the sequence \u003Ccode\u003E[4,6,16]\u003C/code\u003E is \u003Ccode\u003E2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubsequence\u003C/strong\u003E of an array is a sequence that can be formed by removing some elements (possibly none) of the array.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E[2,5,10]\u003C/code\u003E is a subsequence of \u003Ccode\u003E[1,2,1,\u003Cstrong\u003E\u003Cu\u003E2\u003C/u\u003E\u003C/strong\u003E,4,1,\u003Cu\u003E\u003Cstrong\u003E5\u003C/strong\u003E\u003C/u\u003E,\u003Cu\u003E\u003Cstrong\u003E10\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Enumber\u003C/strong\u003E of \u003Cstrong\u003Edifferent\u003C/strong\u003E GCDs among all \u003Cstrong\u003Enon-empty\u003C/strong\u003E subsequences of\u003C/em\u003E \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/17/image-1.png\u0022 style=\u0022width: 149px; height: 309px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [6,10,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figure shows all the non-empty subsequences and their GCDs.\nThe different GCDs are 6, 10, 3, 2, and 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,15,40,5,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Think of how to check if a number x is a gcd of a subsequence.",
+    "If there is such subsequence, then all of it will be divisible by x. Moreover, if you divide each number in the subsequence by x , then the gcd of the resulting numbers will be 1.",
+    "Adding a number to a subsequence cannot increase its gcd. So, if there is a valid subsequence for x , then the subsequence that contains all multiples of x is a valid one too.",
+    "Iterate on all possiblex from 1 to 10^5, and check if there is a valid subsequence for x."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,10,3]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[5,15,40,5,6]",
+      "RawExpectedOutput": "7"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2365651+00:00",
+  "Url": "https://leetcode.com/problems/number-of-different-subsequences-gcds/"
+}

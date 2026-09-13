@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3886,
+  "FrontendId": 3623,
+  "Title": "Count Number of Trapezoids I",
+  "TitleSlug": "count-number-of-trapezoids-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 48.1,
+  "TotalAccepted": 119852,
+  "TotalSubmissions": 249157,
+  "Likes": 401,
+  "Dislikes": 51,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp data-end=\u0022189\u0022 data-start=\u0022146\u0022\u003EYou are given a 2D integer array \u003Ccode\u003Epoints\u003C/code\u003E, where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the coordinates of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E point on the Cartesian plane.\u003C/p\u003E\n\n\u003Cp data-end=\u0022579\u0022 data-start=\u0022405\u0022\u003EA \u003Cstrong\u003Ehorizontal\u003C/strong\u003E \u003Cstrong\u003Etrapezoid\u003C/strong\u003E is a convex quadrilateral with \u003Cstrong data-end=\u0022496\u0022 data-start=\u0022475\u0022\u003Eat least one pair\u003C/strong\u003E of horizontal sides (i.e. parallel to the x-axis). Two lines are parallel if and only if they have the same slope.\u003C/p\u003E\n\n\u003Cp data-end=\u0022579\u0022 data-start=\u0022405\u0022\u003EReturn the \u003Cem data-end=\u0022330\u0022 data-start=\u0022297\u0022\u003E number of unique \u003C/em\u003E\u003Cstrong\u003E\u003Cem\u003Ehorizontal\u003C/em\u003E \u003Cem\u003Etrapezoids\u003C/em\u003E\u003C/strong\u003E that can be formed by choosing any four distinct points from \u003Ccode\u003Epoints\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[1,0],[2,0],[3,0],[2,2],[3,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/05/01/desmos-graph-6.png\u0022 style=\u0022width: 250px; height: 250px;\u0022 /\u003E \u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/05/01/desmos-graph-7.png\u0022 style=\u0022width: 250px; height: 250px;\u0022 /\u003E \u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/05/01/desmos-graph-8.png\u0022 style=\u0022width: 250px; height: 250px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are three distinct ways to pick four points that form a horizontal trapezoid:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli data-end=\u0022247\u0022 data-start=\u0022193\u0022\u003EUsing points \u003Ccode data-end=\u0022213\u0022 data-start=\u0022206\u0022\u003E[1,0]\u003C/code\u003E, \u003Ccode data-end=\u0022222\u0022 data-start=\u0022215\u0022\u003E[2,0]\u003C/code\u003E, \u003Ccode data-end=\u0022231\u0022 data-start=\u0022224\u0022\u003E[3,2]\u003C/code\u003E, and \u003Ccode data-end=\u0022244\u0022 data-start=\u0022237\u0022\u003E[2,2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli data-end=\u0022305\u0022 data-start=\u0022251\u0022\u003EUsing points \u003Ccode data-end=\u0022271\u0022 data-start=\u0022264\u0022\u003E[2,0]\u003C/code\u003E, \u003Ccode data-end=\u0022280\u0022 data-start=\u0022273\u0022\u003E[3,0]\u003C/code\u003E, \u003Ccode data-end=\u0022289\u0022 data-start=\u0022282\u0022\u003E[3,2]\u003C/code\u003E, and \u003Ccode data-end=\u0022302\u0022 data-start=\u0022295\u0022\u003E[2,2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli data-end=\u0022361\u0022 data-start=\u0022309\u0022\u003EUsing points \u003Ccode data-end=\u0022329\u0022 data-start=\u0022322\u0022\u003E[1,0]\u003C/code\u003E, \u003Ccode data-end=\u0022338\u0022 data-start=\u0022331\u0022\u003E[3,0]\u003C/code\u003E, \u003Ccode data-end=\u0022347\u0022 data-start=\u0022340\u0022\u003E[3,2]\u003C/code\u003E, and \u003Ccode data-end=\u0022360\u0022 data-start=\u0022353\u0022\u003E[2,2]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[0,0],[1,0],[0,1],[2,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/04/29/desmos-graph-5.png\u0022 style=\u0022width: 250px; height: 250px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is only one horizontal trapezoid that can be formed.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E4 \u0026lt;= points.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026ndash;10\u003Csup\u003E8\u003C/sup\u003E \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll points are pairwise distinct.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For a line parallel to the x\u2011axis, all its points must share the same y\u2011coordinate.",
+    "Group the points by their y\u2011coordinate.",
+    "Choose two distinct groups (two horizontal lines), and from each group select two points to form a trapezoid."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,0],[2,0],[3,0],[2,2],[3,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[0,0],[1,0],[0,1],[2,1]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9463667+00:00",
+  "Url": "https://leetcode.com/problems/count-number-of-trapezoids-i/"
+}

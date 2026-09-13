@@ -1,0 +1,31 @@
+{
+  "QuestionId": 371,
+  "FrontendId": 371,
+  "Title": "Sum of Two Integers",
+  "TitleSlug": "sum-of-two-integers",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Bit Manipulation"
+  ],
+  "AcceptanceRatePercent": 55.8,
+  "TotalAccepted": 748303,
+  "TotalSubmissions": 1340933,
+  "Likes": 4784,
+  "Dislikes": 5915,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two integers \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E, return \u003Cem\u003Ethe sum of the two integers without using the operators\u003C/em\u003E \u003Ccode\u003E\u002B\u003C/code\u003E \u003Cem\u003Eand\u003C/em\u003E \u003Ccode\u003E-\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E a = 1, b = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E a = 2, b = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= a, b \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "2\n3",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.197286+00:00",
+  "Url": "https://leetcode.com/problems/sum-of-two-integers/"
+}

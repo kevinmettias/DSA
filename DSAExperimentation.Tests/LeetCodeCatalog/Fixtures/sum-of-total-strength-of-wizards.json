@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2368,
+  "FrontendId": 2281,
+  "Title": "Sum of Total Strength of Wizards",
+  "TitleSlug": "sum-of-total-strength-of-wizards",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 30,
+  "TotalAccepted": 27550,
+  "TotalSubmissions": 91890,
+  "Likes": 1301,
+  "Dislikes": 115,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAs the ruler of a kingdom, you have an army of wizards at your command.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Estrength\u003C/code\u003E, where \u003Ccode\u003Estrength[i]\u003C/code\u003E denotes the strength of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E wizard. For a \u003Cstrong\u003Econtiguous\u003C/strong\u003E group of wizards (i.e. the wizards\u0026#39; strengths form a \u003Cstrong\u003Esubarray\u003C/strong\u003E of \u003Ccode\u003Estrength\u003C/code\u003E), the \u003Cstrong\u003Etotal strength\u003C/strong\u003E is defined as the \u003Cstrong\u003Eproduct\u003C/strong\u003E of the following two values:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe strength of the \u003Cstrong\u003Eweakest\u003C/strong\u003E wizard in the group.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Etotal\u003C/strong\u003E of all the individual strengths of the wizards in the group.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Esum\u003C/strong\u003E of the total strengths of \u003Cstrong\u003Eall\u003C/strong\u003E contiguous groups of wizards\u003C/em\u003E. Since the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a contiguous \u003Cstrong\u003Enon-empty\u003C/strong\u003E sequence of elements within an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E strength = [1,3,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 44\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The following are all the contiguous groups of wizards:\n- [1] from [\u003Cu\u003E\u003Cstrong\u003E1\u003C/strong\u003E\u003C/u\u003E,3,1,2] has a total strength of min([1]) * sum([1]) = 1 * 1 = 1\n- [3] from [1,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E,1,2] has a total strength of min([3]) * sum([3]) = 3 * 3 = 9\n- [1] from [1,3,\u003Cu\u003E\u003Cstrong\u003E1\u003C/strong\u003E\u003C/u\u003E,2] has a total strength of min([1]) * sum([1]) = 1 * 1 = 1\n- [2] from [1,3,1,\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([2]) * sum([2]) = 2 * 2 = 4\n- [1,3] from [\u003Cu\u003E\u003Cstrong\u003E1,3\u003C/strong\u003E\u003C/u\u003E,1,2] has a total strength of min([1,3]) * sum([1,3]) = 1 * 4 = 4\n- [3,1] from [1,\u003Cu\u003E\u003Cstrong\u003E3,1\u003C/strong\u003E\u003C/u\u003E,2] has a total strength of min([3,1]) * sum([3,1]) = 1 * 4 = 4\n- [1,2] from [1,3,\u003Cu\u003E\u003Cstrong\u003E1,2\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([1,2]) * sum([1,2]) = 1 * 3 = 3\n- [1,3,1] from [\u003Cu\u003E\u003Cstrong\u003E1,3,1\u003C/strong\u003E\u003C/u\u003E,2] has a total strength of min([1,3,1]) * sum([1,3,1]) = 1 * 5 = 5\n- [3,1,2] from [1,\u003Cu\u003E\u003Cstrong\u003E3,1,2\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([3,1,2]) * sum([3,1,2]) = 1 * 6 = 6\n- [1,3,1,2] from [\u003Cu\u003E\u003Cstrong\u003E1,3,1,2\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([1,3,1,2]) * sum([1,3,1,2]) = 1 * 7 = 7\nThe sum of all the total strengths is 1 \u002B 9 \u002B 1 \u002B 4 \u002B 4 \u002B 4 \u002B 3 \u002B 5 \u002B 6 \u002B 7 = 44.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E strength = [5,4,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 213\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The following are all the contiguous groups of wizards: \n- [5] from [\u003Cu\u003E\u003Cstrong\u003E5\u003C/strong\u003E\u003C/u\u003E,4,6] has a total strength of min([5]) * sum([5]) = 5 * 5 = 25\n- [4] from [5,\u003Cu\u003E\u003Cstrong\u003E4\u003C/strong\u003E\u003C/u\u003E,6] has a total strength of min([4]) * sum([4]) = 4 * 4 = 16\n- [6] from [5,4,\u003Cu\u003E\u003Cstrong\u003E6\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([6]) * sum([6]) = 6 * 6 = 36\n- [5,4] from [\u003Cu\u003E\u003Cstrong\u003E5,4\u003C/strong\u003E\u003C/u\u003E,6] has a total strength of min([5,4]) * sum([5,4]) = 4 * 9 = 36\n- [4,6] from [5,\u003Cu\u003E\u003Cstrong\u003E4,6\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([4,6]) * sum([4,6]) = 4 * 10 = 40\n- [5,4,6] from [\u003Cu\u003E\u003Cstrong\u003E5,4,6\u003C/strong\u003E\u003C/u\u003E] has a total strength of min([5,4,6]) * sum([5,4,6]) = 4 * 15 = 60\nThe sum of all the total strengths is 25 \u002B 16 \u002B 36 \u002B 36 \u002B 40 \u002B 60 = 213.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= strength.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= strength[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider the contribution of each wizard to the answer.",
+    "Can you efficiently calculate the total contribution to the answer for all subarrays that end at each index?",
+    "Denote the total contribution of all subarrays ending at index i as solve[i]. Can you express solve[i] in terms of solve[m] for some m \u003C i?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3,1,2]",
+      "RawExpectedOutput": "44"
+    },
+    {
+      "RawInput": "[5,4,6]",
+      "RawExpectedOutput": "213"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1929627+00:00",
+  "Url": "https://leetcode.com/problems/sum-of-total-strength-of-wizards/"
+}

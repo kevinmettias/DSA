@@ -1,0 +1,39 @@
+{
+  "QuestionId": 803,
+  "FrontendId": 787,
+  "Title": "Cheapest Flights Within K Stops",
+  "TitleSlug": "cheapest-flights-within-k-stops",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 42.6,
+  "TotalAccepted": 1009251,
+  "TotalSubmissions": 2371703,
+  "Likes": 11491,
+  "Dislikes": 479,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E cities connected by some number of flights. You are given an array \u003Ccode\u003Eflights\u003C/code\u003E where \u003Ccode\u003Eflights[i] = [from\u003Csub\u003Ei\u003C/sub\u003E, to\u003Csub\u003Ei\u003C/sub\u003E, price\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is a flight from city \u003Ccode\u003Efrom\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E to city \u003Ccode\u003Eto\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with cost \u003Ccode\u003Eprice\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given three integers \u003Ccode\u003Esrc\u003C/code\u003E, \u003Ccode\u003Edst\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003E\u003Cstrong\u003Ethe cheapest price\u003C/strong\u003E from \u003C/em\u003E\u003Ccode\u003Esrc\u003C/code\u003E\u003Cem\u003E to \u003C/em\u003E\u003Ccode\u003Edst\u003C/code\u003E\u003Cem\u003E with at most \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E stops. \u003C/em\u003EIf there is no such route, return\u003Cem\u003E \u003C/em\u003E\u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/03/18/cheapest-flights-within-k-stops-3drawio.png\u0022 style=\u0022width: 332px; height: 392px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, flights = [[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]], src = 0, dst = 3, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 700\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe graph is shown above.\nThe optimal path with at most 1 stop from city 0 to 3 is marked in red and has cost 100 \u002B 600 = 700.\nNote that the path through cities [0,1,2,3] is cheaper but is invalid because it uses 2 stops.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/03/18/cheapest-flights-within-k-stops-1drawio.png\u0022 style=\u0022width: 332px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, flights = [[0,1,100],[1,2,100],[0,2,500]], src = 0, dst = 2, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 200\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe graph is shown above.\nThe optimal path with at most 1 stop from city 0 to 2 is marked in red and has cost 100 \u002B 100 = 200.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/03/18/cheapest-flights-within-k-stops-2drawio.png\u0022 style=\u0022width: 332px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, flights = [[0,1,100],[1,2,100],[0,2,500]], src = 0, dst = 2, k = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 500\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe graph is shown above.\nThe optimal path with no stops from city 0 to 2 is marked in red and has cost 500.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= flights.length \u0026lt;= (n * (n - 1) / 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eflights[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= from\u003Csub\u003Ei\u003C/sub\u003E, to\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Efrom\u003Csub\u003Ei\u003C/sub\u003E != to\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= price\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere will not be any multiple flights between two cities.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= src, dst, k \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esrc != dst\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n[[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]]\n0\n3\n1",
+      "RawExpectedOutput": "700"
+    },
+    {
+      "RawInput": "3\n[[0,1,100],[1,2,100],[0,2,500]]\n0\n2\n1",
+      "RawExpectedOutput": "200"
+    },
+    {
+      "RawInput": "3\n[[0,1,100],[1,2,100],[0,2,500]]\n0\n2\n0",
+      "RawExpectedOutput": "500"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7592407+00:00",
+  "Url": "https://leetcode.com/problems/cheapest-flights-within-k-stops/"
+}

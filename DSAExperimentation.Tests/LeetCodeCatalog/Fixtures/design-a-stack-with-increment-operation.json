@@ -1,0 +1,26 @@
+{
+  "QuestionId": 1497,
+  "FrontendId": 1381,
+  "Title": "Design a Stack With Increment Operation",
+  "TitleSlug": "design-a-stack-with-increment-operation",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Design"
+  ],
+  "AcceptanceRatePercent": 79.9,
+  "TotalAccepted": 270642,
+  "TotalSubmissions": 338633,
+  "Likes": 2398,
+  "Dislikes": 112,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a stack that supports increment operations on its elements.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ECustomStack\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ECustomStack(int maxSize)\u003C/code\u003E Initializes the object with \u003Ccode\u003EmaxSize\u003C/code\u003E which is the maximum number of elements in the stack.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid push(int x)\u003C/code\u003E Adds \u003Ccode\u003Ex\u003C/code\u003E to the top of the stack if the stack has not reached the \u003Ccode\u003EmaxSize\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint pop()\u003C/code\u003E Pops and returns the top of the stack or \u003Ccode\u003E-1\u003C/code\u003E if the stack is empty.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid inc(int k, int val)\u003C/code\u003E Increments the bottom \u003Ccode\u003Ek\u003C/code\u003E elements of the stack by \u003Ccode\u003Eval\u003C/code\u003E. If there are less than \u003Ccode\u003Ek\u003C/code\u003E elements in the stack, increment all the elements in the stack.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;CustomStack\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;pop\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;push\u0026quot;,\u0026quot;increment\u0026quot;,\u0026quot;increment\u0026quot;,\u0026quot;pop\u0026quot;,\u0026quot;pop\u0026quot;,\u0026quot;pop\u0026quot;,\u0026quot;pop\u0026quot;]\n[[3],[1],[2],[],[2],[3],[4],[5,100],[2,100],[],[],[],[]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null,null,null,2,null,null,null,null,null,103,202,201,-1]\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nCustomStack stk = new CustomStack(3); // Stack is Empty []\nstk.push(1);                          // stack becomes [1]\nstk.push(2);                          // stack becomes [1, 2]\nstk.pop();                            // return 2 --\u0026gt; Return top of the stack 2, stack becomes [1]\nstk.push(2);                          // stack becomes [1, 2]\nstk.push(3);                          // stack becomes [1, 2, 3]\nstk.push(4);                          // stack still [1, 2, 3], Do not add another elements as size is 4\nstk.increment(5, 100);                // stack becomes [101, 102, 103]\nstk.increment(2, 100);                // stack becomes [201, 202, 103]\nstk.pop();                            // return 103 --\u0026gt; Return top of the stack 103, stack becomes [201, 202]\nstk.pop();                            // return 202 --\u0026gt; Return top of the stack 202, stack becomes [201]\nstk.pop();                            // return 201 --\u0026gt; Return top of the stack 201, stack becomes []\nstk.pop();                            // return -1 --\u0026gt; Stack is empty return -1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= maxSize, x, k \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= val \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made to each method of \u003Ccode\u003Eincrement\u003C/code\u003E, \u003Ccode\u003Epush\u003C/code\u003E and \u003Ccode\u003Epop\u003C/code\u003E each separately.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use an array to represent the stack. Push will add new integer to the array. Pop removes the last element in the array and increment will add val to the first k elements of the array.",
+    "This solution run in O(1) per push and pop and O(k) per increment."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0717459+00:00",
+  "Url": "https://leetcode.com/problems/design-a-stack-with-increment-operation/"
+}

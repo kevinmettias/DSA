@@ -1,0 +1,31 @@
+{
+  "QuestionId": 154,
+  "FrontendId": 154,
+  "Title": "Find Minimum in Rotated Sorted Array II",
+  "TitleSlug": "find-minimum-in-rotated-sorted-array-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search"
+  ],
+  "AcceptanceRatePercent": 47,
+  "TotalAccepted": 749590,
+  "TotalSubmissions": 1595766,
+  "Likes": 5374,
+  "Dislikes": 533,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003ESuppose an array of length \u003Ccode\u003En\u003C/code\u003E sorted in ascending order is \u003Cstrong\u003Erotated\u003C/strong\u003E between \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E times. For example, the array \u003Ccode\u003Enums = [0,1,4,4,5,6,7]\u003C/code\u003E might become:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[4,5,6,7,0,1,4]\u003C/code\u003E if it was rotated \u003Ccode\u003E4\u003C/code\u003E times.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[0,1,4,4,5,6,7]\u003C/code\u003E if it was rotated \u003Ccode\u003E7\u003C/code\u003E times.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENotice that \u003Cstrong\u003Erotating\u003C/strong\u003E an array \u003Ccode\u003E[a[0], a[1], a[2], ..., a[n-1]]\u003C/code\u003E 1 time results in the array \u003Ccode\u003E[a[n-1], a[0], a[1], a[2], ..., a[n-2]]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven the sorted rotated array \u003Ccode\u003Enums\u003C/code\u003E that may contain \u003Cstrong\u003Eduplicates\u003C/strong\u003E, return \u003Cem\u003Ethe minimum element of this array\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must decrease the overall operation steps as much as possible.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,3,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,2,2,0,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-5000 \u0026lt;= nums[i] \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is sorted and rotated between \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E times.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E This problem is similar to\u0026nbsp;\u003Ca href=\u0022https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/\u0022 target=\u0022_blank\u0022\u003EFind Minimum in Rotated Sorted Array\u003C/a\u003E, but\u0026nbsp;\u003Ccode\u003Enums\u003C/code\u003E may contain \u003Cstrong\u003Eduplicates\u003C/strong\u003E. Would this affect the runtime complexity? How and why?\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3,5]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[2,2,2,0,1]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2506562+00:00",
+  "Url": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/"
+}

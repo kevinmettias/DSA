@@ -1,0 +1,34 @@
+{
+  "QuestionId": 4384,
+  "FrontendId": 4020,
+  "Title": "Elevator Requests I",
+  "TitleSlug": "elevator-requests-i",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 84.1,
+  "TotalAccepted": 51176,
+  "TotalSubmissions": 60843,
+  "Likes": 36,
+  "Dislikes": 1,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E denoting the number of floors in a building, where the floors are numbered from 0 to \u003Ccode\u003En - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given an integer array \u003Ccode\u003Erequests\u003C/code\u003E, where \u003Ccode\u003Erequests\u003C/code\u003E represents the sequence of floor requests.\u003C/p\u003E\n\n\u003Cp\u003EAn elevator starts at floor 0 and follows these rules:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe elevator moves one floor per second.\u003C/li\u003E\n\t\u003Cli\u003EThe elevator serves requests in the given order.\u003C/li\u003E\n\t\u003Cli\u003EIf the elevator is already on the requested floor, no movement is needed.\u003C/li\u003E\n\t\u003Cli\u003EAfter serving a request, the elevator immediately starts moving toward the next request.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Etotal time\u003C/strong\u003E in seconds required to serve all requests.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, requests = [2,1,4,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E7\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[0] = 2\u003C/code\u003E: Moving from floor 0 to floor 2 takes 2 seconds.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[1] = 1\u003C/code\u003E: Moving from floor 2 to floor 1 takes 1 second.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[2] = 4\u003C/code\u003E: Moving from floor 1 to floor 4 takes 3 seconds.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[3] = 3\u003C/code\u003E: Moving from floor 4 to floor 3 takes 1 second.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe total time required is \u003Ccode\u003E2 \u002B 1 \u002B 3 \u002B 1 = 7\u003C/code\u003E seconds.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, requests = [2,0,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[0] = 2\u003C/code\u003E: Moving from floor 0 to floor 2 takes 2 seconds.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[1] = 0\u003C/code\u003E: Moving from floor 2 to floor 0 takes 2 seconds.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erequests[2] = 0\u003C/code\u003E: No movement is needed.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe total time required is \u003Ccode\u003E2 \u002B 2 \u002B 0 = 4\u003C/code\u003E seconds.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= requests.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= requests[i] \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cp\u003EKeep track of the elevator\u0027s current floor, starting from floor 0.\u003C/p\u003E",
+    "\u003Cp\u003EFor each requested floor, add the absolute difference between it and the current floor to the answer, then update the current floor.\u003C/p\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n[2,1,4,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[2,0,0]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1576756+00:00",
+  "Url": "https://leetcode.com/problems/elevator-requests-i/"
+}

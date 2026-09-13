@@ -1,0 +1,42 @@
+{
+  "QuestionId": 2919,
+  "FrontendId": 2790,
+  "Title": "Maximum Number of Groups With Increasing Length",
+  "TitleSlug": "maximum-number-of-groups-with-increasing-length",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Binary Search",
+    "Greedy",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 23.4,
+  "TotalAccepted": 14232,
+  "TotalSubmissions": 60712,
+  "Likes": 425,
+  "Dislikes": 44,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array \u003Ccode\u003EusageLimits\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to create \u003Cstrong\u003Egroups\u003C/strong\u003E using numbers from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E, ensuring that each number, \u003Ccode\u003Ei\u003C/code\u003E, is used no more than \u003Ccode\u003EusageLimits[i]\u003C/code\u003E times in total \u003Cstrong\u003Eacross all groups\u003C/strong\u003E. You must also satisfy the following conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach group must consist of \u003Cstrong\u003Edistinct \u003C/strong\u003Enumbers, meaning that no duplicate numbers are allowed within a single group.\u003C/li\u003E\n\t\u003Cli\u003EEach group (except the first one) must have a length \u003Cstrong\u003Estrictly greater\u003C/strong\u003E than the previous group.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer denoting the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of groups you can create while satisfying these conditions.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Ccode\u003EusageLimits\u003C/code\u003E = [1,2,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, we can use 0 at most once, 1 at most twice, and 2 at most five times.\nOne way of creating the maximum number of groups while satisfying the conditions is: \nGroup 1 contains the number [2].\nGroup 2 contains the numbers [1,2].\nGroup 3 contains the numbers [0,1,2]. \nIt can be shown that the maximum number of groups is 3. \nSo, the output is 3. \u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Ccode\u003EusageLimits\u003C/code\u003E = [2,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, we can use 0 at most twice, 1 at most once, and 2 at most twice.\nOne way of creating the maximum number of groups while satisfying the conditions is:\nGroup 1 contains the number [0].\nGroup 2 contains the numbers [1,2].\nIt can be shown that the maximum number of groups is 2.\nSo, the output is 2. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Ccode\u003EusageLimits\u003C/code\u003E = [1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, we can use both 0 and 1 at most once.\nOne way of creating the maximum number of groups while satisfying the conditions is:\nGroup 1 contains the number [0].\nIt can be shown that the maximum number of groups is 1.\nSo, the output is 1. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= usageLimits.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= usageLimits[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we solve this problem using sorting and binary search?",
+    "Sort the array in increasing order and run a binary search on the number of groups, x.",
+    "To determine if a value x is feasible, greedily distribute the numbers such that each group receives 1, 2, 3, ..., x numbers."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,5]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[2,1,2]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[1,1]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9112832+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-groups-with-increasing-length/"
+}

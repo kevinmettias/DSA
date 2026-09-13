@@ -1,0 +1,34 @@
+{
+  "QuestionId": 354,
+  "FrontendId": 354,
+  "Title": "Russian Doll Envelopes",
+  "TitleSlug": "russian-doll-envelopes",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Dynamic Programming",
+    "Sorting",
+    "Longest Increasing Subsequence"
+  ],
+  "AcceptanceRatePercent": 38.2,
+  "TotalAccepted": 310049,
+  "TotalSubmissions": 811482,
+  "Likes": 6565,
+  "Dislikes": 173,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D array of integers \u003Ccode\u003Eenvelopes\u003C/code\u003E where \u003Ccode\u003Eenvelopes[i] = [w\u003Csub\u003Ei\u003C/sub\u003E, h\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the width and the height of an envelope.\u003C/p\u003E\n\n\u003Cp\u003EOne envelope can fit into another if and only if both the width and height of one envelope are greater than the other envelope\u0026#39;s width and height.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum number of envelopes you can Russian doll (i.e., put one inside the other)\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E You cannot rotate an envelope.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E envelopes = [[5,4],[6,4],[6,7],[2,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The maximum number of envelopes you can Russian doll is \u003Ccode\u003E3\u003C/code\u003E ([2,3] =\u0026gt; [5,4] =\u0026gt; [6,7]).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E envelopes = [[1,1],[1,1],[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= envelopes.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eenvelopes[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= w\u003Csub\u003Ei\u003C/sub\u003E, h\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[5,4],[6,4],[6,7],[2,3]]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[[1,1],[1,1],[1,1]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8932423+00:00",
+  "Url": "https://leetcode.com/problems/russian-doll-envelopes/"
+}

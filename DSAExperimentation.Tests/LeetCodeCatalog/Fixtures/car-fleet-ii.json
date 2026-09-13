@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1902,
+  "FrontendId": 1776,
+  "Title": "Car Fleet II",
+  "TitleSlug": "car-fleet-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Stack",
+    "Heap (Priority Queue)",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 58.4,
+  "TotalAccepted": 35062,
+  "TotalSubmissions": 60015,
+  "Likes": 984,
+  "Dislikes": 41,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E cars traveling at different speeds in the same direction along a one-lane road. You are given an array \u003Ccode\u003Ecars\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Ecars[i] = [position\u003Csub\u003Ei\u003C/sub\u003E, speed\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eposition\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the distance between the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E car and the beginning of the road in meters. It is guaranteed that \u003Ccode\u003Eposition\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; position\u003Csub\u003Ei\u002B1\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Espeed\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the initial speed of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E car in meters per second.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor simplicity, cars can be considered as points moving along the number line. Two cars collide when they occupy the same position. Once a car collides with another car, they unite and form a single car fleet. The cars in the formed fleet will have the same position and the same speed, which is the initial speed of the \u003Cstrong\u003Eslowest\u003C/strong\u003E car in the fleet.\u003C/p\u003E\n\n\u003Cp\u003EReturn an array \u003Ccode\u003Eanswer\u003C/code\u003E, where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the time, in seconds, at which the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E car collides with the next car, or \u003Ccode\u003E-1\u003C/code\u003E if the car does not collide with the next car. Answers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answers are accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E cars = [[1,2],[2,1],[4,3],[7,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1.00000,-1.00000,3.00000,-1.00000]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E After exactly one second, the first car will collide with the second car, and form a car fleet with speed 1 m/s. After exactly 3 seconds, the third car will collide with the fourth car, and form a car fleet with speed 2 m/s.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E cars = [[3,4],[5,4],[6,3],[9,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2.00000,1.00000,1.50000,-1.00000]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= cars.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= position\u003Csub\u003Ei\u003C/sub\u003E, speed\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eposition\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; position\u003Csub\u003Ei\u002B1\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can simply ignore the merging of any car fleet, simply assume they cross each other. Now the aim is to find the first car to the right, which intersects with the current car before any other.",
+    "Assume we have already considered all cars to the right already, now the current car is to be considered. Let\u2019s ignore all cars with speeds higher than the current car since the current car cannot intersect with those ones. Now, all cars to the right having speed strictly less than current car are to be considered. Now, for two cars c1 and c2 with positions p1 and p2 (p1 \u003C p2) and speed s1 and s2 (s1 \u003E s2), if c1 and c2 intersect before the current car and c2, then c1 can never be the first car of intersection for any car to the left of current car including current car. So we can remove that car from our consideration.",
+    "We can see that we can maintain candidate cars in this way using a stack, removing cars with speed greater than or equal to current car, and then removing cars which can never be first point of intersection. The first car after this process (if any) would be first point of intersection."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[2,1],[4,3],[7,2]]",
+      "RawExpectedOutput": "[1.00000,-1.00000,3.00000,-1.00000]"
+    },
+    {
+      "RawInput": "[[3,4],[5,4],[6,3],[9,1]]",
+      "RawExpectedOutput": "[2.00000,1.00000,1.50000,-1.00000]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7430016+00:00",
+  "Url": "https://leetcode.com/problems/car-fleet-ii/"
+}

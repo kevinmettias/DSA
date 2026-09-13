@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1696,
+  "FrontendId": 1591,
+  "Title": "Strange Printer II",
+  "TitleSlug": "strange-printer-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Graph Theory",
+    "Topological Sort",
+    "Matrix",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 61.3,
+  "TotalAccepted": 17938,
+  "TotalSubmissions": 29268,
+  "Likes": 706,
+  "Dislikes": 24,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a strange printer with the following two special requirements:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EOn each turn, the printer will print a solid rectangular pattern of a single color on the grid. This will cover up the existing colors in the rectangle.\u003C/li\u003E\n\t\u003Cli\u003EOnce the printer has used a color for the above operation, \u003Cstrong\u003Ethe same color cannot be used again\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are given a \u003Ccode\u003Em x n\u003C/code\u003E matrix \u003Ccode\u003EtargetGrid\u003C/code\u003E, where \u003Ccode\u003EtargetGrid[row][col]\u003C/code\u003E is the color in the position \u003Ccode\u003E(row, col)\u003C/code\u003E of the grid.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if it is possible to print the matrix \u003C/em\u003E\u003Ccode\u003EtargetGrid\u003C/code\u003E\u003Cem\u003E,\u003C/em\u003E\u003Cem\u003E otherwise, return \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/23/print1.jpg\u0022 style=\u0022width: 600px; height: 175px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E targetGrid = [[1,1,1,1],[1,2,2,1],[1,2,2,1],[1,1,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/23/print2.jpg\u0022 style=\u0022width: 600px; height: 367px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E targetGrid = [[1,1,1,1],[1,1,3,3],[1,1,3,4],[5,5,1,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E targetGrid = [[1,2,1],[2,1,2],[1,2,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It is impossible to form targetGrid because it is not allowed to print the same color in different turns.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == targetGrid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == targetGrid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 60\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= targetGrid[row][col] \u0026lt;= 60\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try thinking in reverse. Given the grid, how can you tell if a colour was painted last?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1,1,1],[1,2,2,1],[1,2,2,1],[1,1,1,1]]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[1,1,1,1],[1,1,3,3],[1,1,3,4],[5,5,1,4]]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[1,2,1],[2,1,2],[1,2,1]]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1439951+00:00",
+  "Url": "https://leetcode.com/problems/strange-printer-ii/"
+}

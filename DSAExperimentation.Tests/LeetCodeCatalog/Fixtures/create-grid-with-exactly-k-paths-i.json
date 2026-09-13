@@ -1,0 +1,44 @@
+{
+  "QuestionId": 4343,
+  "FrontendId": 3988,
+  "Title": "Create Grid With Exactly K Paths I",
+  "TitleSlug": "create-grid-with-exactly-k-paths-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Matrix",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 33.1,
+  "TotalAccepted": 9106,
+  "TotalSubmissions": 27518,
+  "Likes": 54,
+  "Dislikes": 15,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given three integers \u003Ccode\u003Em\u003C/code\u003E, \u003Ccode\u003En\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EConstruct \u003Cstrong\u003Eany\u003C/strong\u003E \u003Ccode\u003Em x n\u003C/code\u003E grid consisting only of the characters \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;#\u0026#39;\u003C/code\u003E, where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E represents a free cell.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;#\u0026#39;\u003C/code\u003E represents an obstacle cell.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Evalid path\u003C/strong\u003E is a sequence of free cells that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EStarts at the top-left cell \u003Ccode\u003E(0, 0)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EEnds at the bottom-right cell \u003Ccode\u003E(m - 1, n - 1)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EMoves only:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003ERight, from \u003Ccode\u003E(i, j)\u003C/code\u003E to \u003Ccode\u003E(i, j \u002B 1)\u003C/code\u003E, or\u003C/li\u003E\n\t\t\u003Cli\u003EDown, from \u003Ccode\u003E(i, j)\u003C/code\u003E to \u003Ccode\u003E(i \u002B 1, j)\u003C/code\u003E.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn any grid such that there are \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E \u003Cstrong\u003Evalid paths\u003C/strong\u003E from the top-left cell to the bottom-right cell. If no such grid exists, return an empty array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 2, n = 3, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[\u0026quot;...\u0026quot;,\u0026quot;#..\u0026quot;]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2026/05/26/screenshot-2026-05-27-at-113554am.png\u0022 style=\u0022width: 200px; height: 90px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are exactly \u003Ccode\u003Ek = 2\u003C/code\u003E valid paths from \u003Ccode\u003E(0, 0)\u003C/code\u003E to \u003Ccode\u003E(1, 2)\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(0, 0) \u0026rarr; (0, 1) \u0026rarr; (0, 2) \u0026rarr; (1, 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(0, 0) \u0026rarr; (0, 1) \u0026rarr; (1, 1) \u0026rarr; (1, 2)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 3, n = 3, k = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[\u0026quot;..#\u0026quot;,\u0026quot;...\u0026quot;,\u0026quot;#..\u0026quot;]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2026/05/26/screenshot-2026-05-27-at-113452am.png\u0022 style=\u0022width: 250px; height: 178px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are exactly \u003Ccode\u003Ek = 4\u003C/code\u003E valid paths from \u003Ccode\u003E(0, 0)\u003C/code\u003E to \u003Ccode\u003E(2, 2)\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(0, 0) \u0026rarr; (0, 1) \u0026rarr; (1, 1) \u0026rarr; (1, 2) \u0026rarr; (2, 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(0, 0) \u0026rarr; (0, 1) \u0026rarr; (1, 1) \u0026rarr; (2, 1) \u0026rarr; (2, 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(0, 0) \u0026rarr; (1, 0) \u0026rarr; (1, 1) \u0026rarr; (1, 2) \u0026rarr; (2, 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(0, 0) \u0026rarr; (1, 0) \u0026rarr; (1, 1) \u0026rarr; (2, 1) \u0026rarr; (2, 2)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 1, n = 4, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u200B\u003C/p\u003E\n\n\u003Cp\u003ENo grid exists with exactly \u003Ccode\u003Ek = 2\u003C/code\u003E valid paths for a \u003Ccode\u003E1 x 4\u003C/code\u003E grid, so the answer is an empty array.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 4\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cp\u003EIf \u003Ccode\u003Em == 1\u003C/code\u003E or \u003Ccode\u003En == 1\u003C/code\u003E, the only possible positive number of valid paths is \u003Ccode\u003E1\u003C/code\u003E.\u003C/p\u003E",
+    "\u003Cp\u003EFor \u003Ccode\u003Em, n \u0026gt; 1\u003C/code\u003E, construct a small grid pattern with exactly \u003Ccode\u003Ek\u003C/code\u003E paths for each \u003Ccode\u003Ek\u003C/code\u003E from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003E4\u003C/code\u003E.\u003C/p\u003E",
+    "\u003Cp\u003EFor \u003Ccode\u003Ek = 2\u003C/code\u003E, use a \u003Ccode\u003E2 x 2\u003C/code\u003E open block. It has exactly two paths: right then down, or down then right.\u003C/p\u003E",
+    "\u003Cp\u003EFor \u003Ccode\u003Ek = 3\u003C/code\u003E, use a \u003Ccode\u003E2 x 3\u003C/code\u003E open block, or a \u003Ccode\u003E3 x 2\u003C/code\u003E open block. An empty \u003Ccode\u003E2 x 3\u003C/code\u003E grid has exactly three paths.\u003C/p\u003E",
+    "\u003Cp\u003EFor \u003Ccode\u003Ek = 4\u003C/code\u003E, use either a fully open \u003Ccode\u003E2 x 4\u003C/code\u003E block, a fully open \u003Ccode\u003E4 x 2\u003C/code\u003E block, or a \u003Ccode\u003E3 x 3\u003C/code\u003E block with the top-right and bottom-left cells blocked.\u003C/p\u003E",
+    "\u003Cp\u003EAfter building the small block, connect its bottom-right cell to \u003Ccode\u003E(m - 1, n - 1)\u003C/code\u003E using a single corridor, and fill all other cells with obstacles. If the required block cannot fit in either orientation, return an empty array.\u003C/p\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2\n3\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n3\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1\n4\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0229206+00:00",
+  "Url": "https://leetcode.com/problems/create-grid-with-exactly-k-paths-i/"
+}

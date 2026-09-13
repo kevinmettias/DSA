@@ -1,0 +1,43 @@
+{
+  "QuestionId": 3770,
+  "FrontendId": 3474,
+  "Title": "Lexicographically Smallest Generated String",
+  "TitleSlug": "lexicographically-smallest-generated-string",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Greedy",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 53.4,
+  "TotalAccepted": 66292,
+  "TotalSubmissions": 124053,
+  "Likes": 277,
+  "Dislikes": 40,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two strings, \u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E, of lengths \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E, respectively.\u003C/p\u003E\n\n\u003Cp\u003EA string \u003Ccode\u003Eword\u003C/code\u003E of length \u003Ccode\u003En \u002B m - 1\u003C/code\u003E is defined to be \u003Cstrong\u003Egenerated\u003C/strong\u003E by \u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E if it satisfies the following conditions for \u003Cstrong\u003Eeach\u003C/strong\u003E index \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= n - 1\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Estr1[i] == \u0026#39;T\u0026#39;\u003C/code\u003E, the \u003Cstrong\u003E\u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003Esubstring\u003C/span\u003E\u003C/strong\u003E of \u003Ccode\u003Eword\u003C/code\u003E with size \u003Ccode\u003Em\u003C/code\u003E starting at index \u003Ccode\u003Ei\u003C/code\u003E is \u003Cstrong\u003Eequal\u003C/strong\u003E to \u003Ccode\u003Estr2\u003C/code\u003E, i.e., \u003Ccode\u003Eword[i..(i \u002B m - 1)] == str2\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Estr1[i] == \u0026#39;F\u0026#39;\u003C/code\u003E, the \u003Cstrong\u003E\u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003Esubstring\u003C/span\u003E\u003C/strong\u003E of \u003Ccode\u003Eword\u003C/code\u003E with size \u003Ccode\u003Em\u003C/code\u003E starting at index \u003Ccode\u003Ei\u003C/code\u003E is \u003Cstrong\u003Enot equal\u003C/strong\u003E to \u003Ccode\u003Estr2\u003C/code\u003E, i.e., \u003Ccode\u003Eword[i..(i \u002B m - 1)] != str2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003E\u003Cspan data-keyword=\u0022lexicographically-smaller-string\u0022\u003Elexicographically smallest\u003C/span\u003E\u003C/strong\u003E possible string that can be \u003Cstrong\u003Egenerated\u003C/strong\u003E by \u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E. If no string can be generated, return an empty string \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;TFTF\u0026quot;, str2 = \u0026quot;ab\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;ababa\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Ch4\u003EThe table below represents the string \u003Ccode\u003E\u0026quot;ababa\u0026quot;\u003C/code\u003E\u003C/h4\u003E\n\n\u003Ctable\u003E\n\t\u003Ctbody\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Cth style=\u0022border: 1px solid black;\u0022\u003EIndex\u003C/th\u003E\n\t\t\t\u003Cth style=\u0022border: 1px solid black;\u0022\u003ET/F\u003C/th\u003E\n\t\t\t\u003Cth style=\u0022border: 1px solid black;\u0022\u003ESubstring of length \u003Ccode\u003Em\u003C/code\u003E\u003C/th\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E0\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E\u0026#39;T\u0026#39;\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u0026quot;ab\u0026quot;\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E1\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E\u0026#39;F\u0026#39;\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u0026quot;ba\u0026quot;\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E2\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E\u0026#39;T\u0026#39;\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u0026quot;ab\u0026quot;\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E3\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E\u0026#39;F\u0026#39;\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u0026quot;ba\u0026quot;\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\u003C/tbody\u003E\n\u003C/table\u003E\n\n\u003Cp\u003EThe strings \u003Ccode\u003E\u0026quot;ababa\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;ababb\u0026quot;\u003C/code\u003E can be generated by \u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003E\u0026quot;ababa\u0026quot;\u003C/code\u003E since it is the lexicographically smaller string.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;TFTF\u0026quot;, str2 = \u0026quot;abc\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo string that satisfies the conditions can be generated.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;F\u0026quot;, str2 = \u0026quot;d\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;a\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == str1.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m == str2.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estr1\u003C/code\u003E consists only of \u003Ccode\u003E\u0026#39;T\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;F\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estr2\u003C/code\u003E consists only of lowercase English characters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming.",
+    "Fill the fixed part.",
+    "Use KMP\u0027s next table for DP.",
+    "The state is the prefix length and the longest suffix length that matches the pattern.",
+    "Each unknown character can be selected from \u003Ccode\u003E[\u0027a\u0027, \u0027b\u0027]\u003C/code\u003E.",
+    "Can you think of a greedy approach?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022TFTF\u0022\n\u0022ab\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022TFTF\u0022\n\u0022abc\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022FT\u0022\n\u0022aa\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6678034+00:00",
+  "Url": "https://leetcode.com/problems/lexicographically-smallest-generated-string/"
+}

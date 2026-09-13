@@ -1,0 +1,36 @@
+{
+  "QuestionId": 394,
+  "FrontendId": 394,
+  "Title": "Decode String",
+  "TitleSlug": "decode-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 63.2,
+  "TotalAccepted": 1277616,
+  "TotalSubmissions": 2021393,
+  "Likes": 14219,
+  "Dislikes": 714,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an encoded string, return its decoded string.\u003C/p\u003E\n\n\u003Cp\u003EThe encoding rule is: \u003Ccode\u003Ek[encoded_string]\u003C/code\u003E, where the \u003Ccode\u003Eencoded_string\u003C/code\u003E inside the square brackets is being repeated exactly \u003Ccode\u003Ek\u003C/code\u003E times. Note that \u003Ccode\u003Ek\u003C/code\u003E is guaranteed to be a positive integer.\u003C/p\u003E\n\n\u003Cp\u003EYou may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, \u003Ccode\u003Ek\u003C/code\u003E. For example, there will not be input like \u003Ccode\u003E3a\u003C/code\u003E or \u003Ccode\u003E2[4]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases are generated so that the length of the output will never exceed \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;3[a]2[bc]\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;aaabcbc\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;3[a2[c]]\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;accaccacc\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;2[abc]3[cd]ef\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;abcabccdcdcdef\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters, digits, and square brackets \u003Ccode\u003E\u0026#39;[]\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E is guaranteed to be \u003Cstrong\u003Ea valid\u003C/strong\u003E input.\u003C/li\u003E\n\t\u003Cli\u003EAll the integers in \u003Ccode\u003Es\u003C/code\u003E are in the range \u003Ccode\u003E[1, 300]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u00223[a]2[bc]\u0022",
+      "RawExpectedOutput": "\u0022aaabcbc\u0022"
+    },
+    {
+      "RawInput": "\u00223[a2[c]]\u0022",
+      "RawExpectedOutput": "\u0022accaccacc\u0022"
+    },
+    {
+      "RawInput": "\u00222[abc]3[cd]ef\u0022",
+      "RawExpectedOutput": "\u0022abcabccdcdcdef\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0475926+00:00",
+  "Url": "https://leetcode.com/problems/decode-string/"
+}

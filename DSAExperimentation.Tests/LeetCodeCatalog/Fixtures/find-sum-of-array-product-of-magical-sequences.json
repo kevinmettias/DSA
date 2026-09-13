@@ -1,0 +1,46 @@
+{
+  "QuestionId": 3851,
+  "FrontendId": 3539,
+  "Title": "Find Sum of Array Product of Magical Sequences",
+  "TitleSlug": "find-sum-of-array-product-of-magical-sequences",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Combinatorics",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 61.4,
+  "TotalAccepted": 53267,
+  "TotalSubmissions": 86794,
+  "Likes": 224,
+  "Dislikes": 158,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integers, \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E, and an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\nA sequence of integers \u003Ccode\u003Eseq\u003C/code\u003E is called \u003Cstrong\u003Emagical\u003C/strong\u003E if:\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eseq\u003C/code\u003E has a size of \u003Ccode\u003Em\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= seq[i] \u0026lt; nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Ebinary representation\u003C/strong\u003E of \u003Ccode\u003E2\u003Csup\u003Eseq[0]\u003C/sup\u003E \u002B 2\u003Csup\u003Eseq[1]\u003C/sup\u003E \u002B ... \u002B 2\u003Csup\u003Eseq[m - 1]\u003C/sup\u003E\u003C/code\u003E has \u003Ccode\u003Ek\u003C/code\u003E \u003Cstrong\u003Eset bits\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Earray product\u003C/strong\u003E of this sequence is defined as \u003Ccode\u003Eprod(seq) = (nums[seq[0]] * nums[seq[1]] * ... * nums[seq[m - 1]])\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Esum\u003C/strong\u003E of the \u003Cstrong\u003Earray products\u003C/strong\u003E for all valid \u003Cstrong\u003Emagical\u003C/strong\u003E sequences.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Eset bit\u003C/strong\u003E refers to a bit in the binary representation of a number that has a value of 1.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 5, k = 5, nums = [1,10,100,10000,1000000]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E991600007\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EAll permutations of \u003Ccode\u003E[0, 1, 2, 3, 4]\u003C/code\u003E are magical sequences, each with an array product of 10\u003Csup\u003E13\u003C/sup\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 2, k = 2, nums = [5,4,3,2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E170\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe magical sequences are \u003Ccode\u003E[0, 1]\u003C/code\u003E, \u003Ccode\u003E[0, 2]\u003C/code\u003E, \u003Ccode\u003E[0, 3]\u003C/code\u003E, \u003Ccode\u003E[0, 4]\u003C/code\u003E, \u003Ccode\u003E[1, 0]\u003C/code\u003E, \u003Ccode\u003E[1, 2]\u003C/code\u003E, \u003Ccode\u003E[1, 3]\u003C/code\u003E, \u003Ccode\u003E[1, 4]\u003C/code\u003E, \u003Ccode\u003E[2, 0]\u003C/code\u003E, \u003Ccode\u003E[2, 1]\u003C/code\u003E, \u003Ccode\u003E[2, 3]\u003C/code\u003E, \u003Ccode\u003E[2, 4]\u003C/code\u003E, \u003Ccode\u003E[3, 0]\u003C/code\u003E, \u003Ccode\u003E[3, 1]\u003C/code\u003E, \u003Ccode\u003E[3, 2]\u003C/code\u003E, \u003Ccode\u003E[3, 4]\u003C/code\u003E, \u003Ccode\u003E[4, 0]\u003C/code\u003E, \u003Ccode\u003E[4, 1]\u003C/code\u003E, \u003Ccode\u003E[4, 2]\u003C/code\u003E, and \u003Ccode\u003E[4, 3]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 1, k = 1, nums = [28]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E28\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe only magical sequence is \u003Ccode\u003E[0]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= m \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use Dynamic Programming",
+    "Let \u003Ccode\u003Edp[i][j][mask]\u003C/code\u003E be the state after choosing \u003Ccode\u003Ei\u003C/code\u003E numbers (indices)",
+    "The partial sum \u003Ccode\u003ES = 2^(seq[0]) \u002B 2^(seq[1]) \u002B ... \u002B 2^(seq[i - 1])\u003C/code\u003E has produced exactly \u003Ccode\u003Ej\u003C/code\u003E set bits once you\u2019ve fully propagated any carries",
+    "The \u003Ccode\u003Emask\u003C/code\u003E represents the \u0022window\u0022 of lower-order bits from \u003Ccode\u003ES\u003C/code\u003E that have not yet been fully processed (i.e. bits that might later create new set bits when additional terms are added)",
+    "Use combinatorics",
+    "How many ways are there to permute a sequence of entities where some are repetitive?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n5\n[1,10,100,10000,1000000]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "2\n2\n[5,4,3,2,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1\n1\n[28]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2720799+00:00",
+  "Url": "https://leetcode.com/problems/find-sum-of-array-product-of-magical-sequences/"
+}

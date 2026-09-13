@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3217,
+  "FrontendId": 2959,
+  "Title": "Number of Possible Sets of Closing Branches",
+  "TitleSlug": "number-of-possible-sets-of-closing-branches",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Bit Manipulation",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Enumeration",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 51,
+  "TotalAccepted": 12093,
+  "TotalSubmissions": 23708,
+  "Likes": 215,
+  "Dislikes": 17,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a company with \u003Ccode\u003En\u003C/code\u003E branches across the country, some of which are connected by roads. Initially, all branches are reachable from each other by traveling some roads.\u003C/p\u003E\n\n\u003Cp\u003EThe company has realized that they are spending an excessive amount of time traveling between their branches. As a result, they have decided to close down some of these branches (\u003Cstrong\u003Epossibly none\u003C/strong\u003E). However, they want to ensure that the remaining branches have a distance of at most \u003Ccode\u003EmaxDistance\u003C/code\u003E from each other.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Edistance\u003C/strong\u003E between two branches is the \u003Cstrong\u003Eminimum\u003C/strong\u003E total traveled length needed to reach one branch from another.\u003C/p\u003E\n\n\u003Cp\u003EYou are given integers \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003EmaxDistance\u003C/code\u003E, and a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D array \u003Ccode\u003Eroads\u003C/code\u003E, where \u003Ccode\u003Eroads[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the \u003Cstrong\u003Eundirected\u003C/strong\u003E road between branches \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with length \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of possible sets of closing branches, so that any branch has a distance of at most \u003C/em\u003E\u003Ccode\u003EmaxDistance\u003C/code\u003E\u003Cem\u003E from any other\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that, after closing a branch, the company will no longer have access to any roads connected to it.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that, multiple roads are allowed.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/11/08/example11.png\u0022 style=\u0022width: 221px; height: 191px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, maxDistance = 5, roads = [[0,1,2],[1,2,10],[0,2,10]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The possible sets of closing branches are:\n- The set [2], after closing, active branches are [0,1] and they are reachable to each other within distance 2.\n- The set [0,1], after closing, the active branch is [2].\n- The set [1,2], after closing, the active branch is [0].\n- The set [0,2], after closing, the active branch is [1].\n- The set [0,1,2], after closing, there are no active branches.\nIt can be proven, that there are only 5 possible sets of closing branches.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/11/08/example22.png\u0022 style=\u0022width: 221px; height: 241px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, maxDistance = 5, roads = [[0,1,20],[0,1,10],[1,2,2],[0,2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The possible sets of closing branches are:\n- The set [], after closing, active branches are [0,1,2] and they are reachable to each other within distance 4.\n- The set [0], after closing, active branches are [1,2] and they are reachable to each other within distance 2.\n- The set [1], after closing, active branches are [0,2] and they are reachable to each other within distance 2.\n- The set [0,1], after closing, the active branch is [2].\n- The set [1,2], after closing, the active branch is [0].\n- The set [0,2], after closing, the active branch is [1].\n- The set [0,1,2], after closing, there are no active branches.\nIt can be proven, that there are only 7 possible sets of closing branches.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1, maxDistance = 10, roads = []\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The possible sets of closing branches are:\n- The set [], after closing, the active branch is [0].\n- The set [0], after closing, there are no active branches.\nIt can be proven, that there are only 2 possible sets of closing branches.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= maxDistance \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= roads.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eroads[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E != v\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= w\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll branches are reachable from each other by traveling some roads.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try all the possibilities of closing branches.",
+    "On the vertices that are not closed, use Floyd-Warshall algorithm to find the shortest paths."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n5\n[[0,1,2],[1,2,10],[0,2,10]]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "3\n5\n[[0,1,20],[0,1,10],[1,2,2],[0,2,2]]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "1\n10\n[]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2853455+00:00",
+  "Url": "https://leetcode.com/problems/number-of-possible-sets-of-closing-branches/"
+}

@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2148,
+  "FrontendId": 2037,
+  "Title": "Minimum Number of Moves to Seat Everyone",
+  "TitleSlug": "minimum-number-of-moves-to-seat-everyone",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Sorting",
+    "Counting Sort"
+  ],
+  "AcceptanceRatePercent": 87.1,
+  "TotalAccepted": 294266,
+  "TotalSubmissions": 337780,
+  "Likes": 1472,
+  "Dislikes": 348,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E \u003Cstrong\u003Eavailabe \u003C/strong\u003Eseats and \u003Ccode\u003En\u003C/code\u003E students \u003Cstrong\u003Estanding\u003C/strong\u003E in a room. You are given an array \u003Ccode\u003Eseats\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Eseats[i]\u003C/code\u003E is the position of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E seat. You are also given the array \u003Ccode\u003Estudents\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Estudents[j]\u003C/code\u003E is the position of the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E student.\u003C/p\u003E\n\n\u003Cp\u003EYou may perform the following move any number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIncrease or decrease the position of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E student by \u003Ccode\u003E1\u003C/code\u003E (i.e., moving the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E student from position\u0026nbsp;\u003Ccode\u003Ex\u003C/code\u003E\u0026nbsp;to \u003Ccode\u003Ex \u002B 1\u003C/code\u003E or \u003Ccode\u003Ex - 1\u003C/code\u003E)\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum number of moves\u003C/strong\u003E required to move each student to a seat\u003C/em\u003E\u003Cem\u003E such that no two students are in the same seat.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003ENote that there may be \u003Cstrong\u003Emultiple\u003C/strong\u003E seats or students in the \u003Cstrong\u003Esame \u003C/strong\u003Eposition at the beginning.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E seats = [3,1,5], students = [2,7,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The students are moved as follows:\n- The first student is moved from position 2 to position 1 using 1 move.\n- The second student is moved from position 7 to position 5 using 2 moves.\n- The third student is moved from position 4 to position 3 using 1 move.\nIn total, 1 \u002B 2 \u002B 1 = 4 moves were used.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E seats = [4,1,5,9], students = [1,3,2,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The students are moved as follows:\n- The first student is not moved.\n- The second student is moved from position 3 to position 4 using 1 move.\n- The third student is moved from position 2 to position 5 using 3 moves.\n- The fourth student is moved from position 6 to position 9 using 3 moves.\nIn total, 0 \u002B 1 \u002B 3 \u002B 3 = 7 moves were used.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E seats = [2,2,6,6], students = [1,3,2,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Note that there are two seats at position 2 and two seats at position 6.\nThe students are moved as follows:\n- The first student is moved from position 1 to position 2 using 1 move.\n- The second student is moved from position 3 to position 6 using 3 moves.\n- The third student is not moved.\n- The fourth student is not moved.\nIn total, 1 \u002B 3 \u002B 0 \u002B 0 = 4 moves were used.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == seats.length == students.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= seats[i], students[j] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we sort the arrays to help solve the problem?",
+    "Can we greedily match each student to a seat?",
+    "The smallest positioned student will go to the smallest positioned chair, and then the next smallest positioned student will go to the next smallest positioned chair, and so on."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,5]\n[2,7,4]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[4,1,5,9]\n[1,3,2,6]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "[2,2,6,6]\n[1,3,2,6]",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.075762+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-moves-to-seat-everyone/"
+}

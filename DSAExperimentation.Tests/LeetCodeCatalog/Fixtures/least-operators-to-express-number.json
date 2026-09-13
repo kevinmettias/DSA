@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1004,
+  "FrontendId": 964,
+  "Title": "Least Operators to Express Number",
+  "TitleSlug": "least-operators-to-express-number",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 48.5,
+  "TotalAccepted": 13453,
+  "TotalSubmissions": 27716,
+  "Likes": 331,
+  "Dislikes": 72,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a single positive integer \u003Ccode\u003Ex\u003C/code\u003E, we will write an expression of the form \u003Ccode\u003Ex (op1) x (op2) x (op3) x ...\u003C/code\u003E where each operator \u003Ccode\u003Eop1\u003C/code\u003E, \u003Ccode\u003Eop2\u003C/code\u003E, etc. is either addition, subtraction, multiplication, or division (\u003Ccode\u003E\u002B\u003C/code\u003E, \u003Ccode\u003E-\u003C/code\u003E, \u003Ccode\u003E*\u003C/code\u003E, or \u003Ccode\u003E/)\u003C/code\u003E. For example, with \u003Ccode\u003Ex = 3\u003C/code\u003E, we might write \u003Ccode\u003E3 * 3 / 3 \u002B 3 - 3\u003C/code\u003E which is a value of \u003Cfont face=\u0022monospace\u0022\u003E3\u003C/font\u003E.\u003C/p\u003E\n\n\u003Cp\u003EWhen writing such an expression, we adhere to the following conventions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe division operator (\u003Ccode\u003E/\u003C/code\u003E) returns rational numbers.\u003C/li\u003E\n\t\u003Cli\u003EThere are no parentheses placed anywhere.\u003C/li\u003E\n\t\u003Cli\u003EWe use the usual order of operations: multiplication and division happen before addition and subtraction.\u003C/li\u003E\n\t\u003Cli\u003EIt is not allowed to use the unary negation operator (\u003Ccode\u003E-\u003C/code\u003E). For example, \u0026quot;\u003Ccode\u003Ex - x\u003C/code\u003E\u0026quot; is a valid expression as it only uses subtraction, but \u0026quot;\u003Ccode\u003E-x \u002B x\u003C/code\u003E\u0026quot; is not because it uses negation.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EWe would like to write an expression with the least number of operators such that the expression equals the given \u003Ccode\u003Etarget\u003C/code\u003E. Return the least number of operators used.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 3, target = 19\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 3 * 3 \u002B 3 * 3 \u002B 3 / 3.\nThe expression contains 5 operations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 5, target = 501\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 8\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 5 * 5 * 5 * 5 - 5 * 5 * 5 \u002B 5 / 5.\nThe expression contains 8 operations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 100, target = 100000000\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 100 * 100 * 100 * 100.\nThe expression contains 3 operations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= x \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target \u0026lt;= 2 * 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n19",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "5\n501",
+      "RawExpectedOutput": "8"
+    },
+    {
+      "RawInput": "100\n100000000",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6522879+00:00",
+  "Url": "https://leetcode.com/problems/least-operators-to-express-number/"
+}

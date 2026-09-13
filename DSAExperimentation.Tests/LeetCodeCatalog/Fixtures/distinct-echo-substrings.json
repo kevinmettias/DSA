@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1244,
+  "FrontendId": 1316,
+  "Title": "Distinct Echo Substrings",
+  "TitleSlug": "distinct-echo-substrings",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Trie",
+    "Rolling Hash",
+    "Suffix Array",
+    "Hash Function",
+    "Suffix Automaton",
+    "Suffix Tree"
+  ],
+  "AcceptanceRatePercent": 53.8,
+  "TotalAccepted": 24148,
+  "TotalSubmissions": 44919,
+  "Likes": 344,
+  "Dislikes": 208,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EReturn the number of \u003Cstrong\u003Edistinct\u003C/strong\u003E non-empty substrings of \u003Ccode\u003Etext\u003C/code\u003E\u0026nbsp;that can be written as the concatenation of some string with itself (i.e. it can be written as \u003Ccode\u003Ea \u002B a\u003C/code\u003E\u0026nbsp;where \u003Ccode\u003Ea\u003C/code\u003E is some string).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E text = \u0026quot;abcabcabc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cb\u003EExplanation: \u003C/b\u003EThe 3 substrings are \u0026quot;abcabc\u0026quot;, \u0026quot;bcabca\u0026quot; and \u0026quot;cabcab\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E text = \u0026quot;leetcodeleetcode\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cb\u003EExplanation: \u003C/b\u003EThe 2 substrings are \u0026quot;ee\u0026quot; and \u0026quot;leetcodeleetcode\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= text.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etext\u003C/code\u003E\u0026nbsp;has only lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Given a substring of the text, how to check if it can be written as the concatenation of a string with itself ?",
+    "We can do that in linear time, a faster way is to use hashing.",
+    "Try all substrings and use hashing to check them."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abcabcabc\u0022",
+      "RawExpectedOutput": "3\n\u003Cb\u003EExplanation: \u003C/b\u003EThe 3 substrings are \u0022abcabc\u0022, \u0022bcabca\u0022 and \u0022cabcab\u0022."
+    },
+    {
+      "RawInput": "\u0022leetcodeleetcode\u0022",
+      "RawExpectedOutput": "2\n\u003Cb\u003EExplanation: \u003C/b\u003EThe 2 substrings are \u0022ee\u0022 and \u0022leetcodeleetcode\u0022."
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1322127+00:00",
+  "Url": "https://leetcode.com/problems/distinct-echo-substrings/"
+}

@@ -1,0 +1,31 @@
+{
+  "QuestionId": 147,
+  "FrontendId": 147,
+  "Title": "Insertion Sort List",
+  "TitleSlug": "insertion-sort-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 60.2,
+  "TotalAccepted": 522929,
+  "TotalSubmissions": 868802,
+  "Likes": 3471,
+  "Dislikes": 888,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a singly linked list, sort the list using \u003Cstrong\u003Einsertion sort\u003C/strong\u003E, and return \u003Cem\u003Ethe sorted list\u0026#39;s head\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe steps of the \u003Cstrong\u003Einsertion sort\u003C/strong\u003E algorithm:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EInsertion sort iterates, consuming one input element each repetition and growing a sorted output list.\u003C/li\u003E\n\t\u003Cli\u003EAt each iteration, insertion sort removes one element from the input data, finds the location it belongs within the sorted list and inserts it there.\u003C/li\u003E\n\t\u003Cli\u003EIt repeats until no input elements remain.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EThe following is a graphical example of the insertion sort algorithm. The partially sorted list (black) initially contains only the first element in the list. One element (red) is removed from the input data and inserted in-place into the sorted list with each iteration.\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif\u0022 style=\u0022height:180px; width:300px\u0022 /\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/04/sort1linked-list.jpg\u0022 style=\u0022width: 422px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [4,2,1,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/04/sort2linked-list.jpg\u0022 style=\u0022width: 542px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [-1,5,3,4,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [-1,0,3,4,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[1, 5000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-5000 \u0026lt;= Node.val \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,1,3]",
+      "RawExpectedOutput": "[1,2,3,4]"
+    },
+    {
+      "RawInput": "[-1,5,3,4,0]",
+      "RawExpectedOutput": "[-1,0,3,4,5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5176692+00:00",
+  "Url": "https://leetcode.com/problems/insertion-sort-list/"
+}

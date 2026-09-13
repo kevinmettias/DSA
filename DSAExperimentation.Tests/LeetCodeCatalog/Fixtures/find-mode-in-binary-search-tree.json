@@ -1,0 +1,33 @@
+{
+  "QuestionId": 501,
+  "FrontendId": 501,
+  "Title": "Find Mode in Binary Search Tree",
+  "TitleSlug": "find-mode-in-binary-search-tree",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 59.4,
+  "TotalAccepted": 413014,
+  "TotalSubmissions": 695629,
+  "Likes": 4157,
+  "Dislikes": 819,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary search tree (BST) with duplicates, return \u003Cem\u003Eall the \u003Ca href=\u0022https://en.wikipedia.org/wiki/Mode_(statistics)\u0022 target=\u0022_blank\u0022\u003Emode(s)\u003C/a\u003E (i.e., the most frequently occurred element) in it\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIf the tree has more than one mode, return them in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAssume a BST is defined as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe left subtree of a node contains only nodes with keys \u003Cstrong\u003Eless than or equal to\u003C/strong\u003E the node\u0026#39;s key.\u003C/li\u003E\n\t\u003Cli\u003EThe right subtree of a node contains only nodes with keys \u003Cstrong\u003Egreater than or equal to\u003C/strong\u003E the node\u0026#39;s key.\u003C/li\u003E\n\t\u003Cli\u003EBoth the left and right subtrees must also be binary search trees.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/11/mode-tree.jpg\u0022 style=\u0022width: 142px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [1,null,2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E4\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,null,2,2]",
+      "RawExpectedOutput": "[2]"
+    },
+    {
+      "RawInput": "[0]",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2635539+00:00",
+  "Url": "https://leetcode.com/problems/find-mode-in-binary-search-tree/"
+}

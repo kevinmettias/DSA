@@ -1,0 +1,35 @@
+{
+  "QuestionId": 593,
+  "FrontendId": 593,
+  "Title": "Valid Square",
+  "TitleSlug": "valid-square",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 45.5,
+  "TotalAccepted": 136385,
+  "TotalSubmissions": 299609,
+  "Likes": 1133,
+  "Dislikes": 914,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the coordinates of four points in 2D space \u003Ccode\u003Ep1\u003C/code\u003E, \u003Ccode\u003Ep2\u003C/code\u003E, \u003Ccode\u003Ep3\u003C/code\u003E and \u003Ccode\u003Ep4\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif the four points construct a square\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe coordinate of a point \u003Ccode\u003Ep\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is represented as \u003Ccode\u003E[x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. The input is \u003Cstrong\u003Enot\u003C/strong\u003E given in any order.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Evalid square\u003C/strong\u003E has four equal sides with positive length and four equal angles (90-degree angles).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E p1 = [0,0], p2 = [1,1], p3 = [1,0], p4 = [0,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E p1 = [0,0], p2 = [1,1], p3 = [1,0], p4 = [0,12]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E p1 = [1,0], p2 = [-1,0], p3 = [0,1], p4 = [0,-1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ep1.length == p2.length == p3.length == p4.length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,0]\n[1,1]\n[1,0]\n[0,1]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[0,0]\n[1,1]\n[1,0]\n[0,12]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[1,0]\n[-1,0]\n[0,1]\n[0,-1]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3611715+00:00",
+  "Url": "https://leetcode.com/problems/valid-square/"
+}

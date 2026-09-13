@@ -1,0 +1,36 @@
+{
+  "QuestionId": 458,
+  "FrontendId": 458,
+  "Title": "Poor Pigs",
+  "TitleSlug": "poor-pigs",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 59.2,
+  "TotalAccepted": 137729,
+  "TotalSubmissions": 232555,
+  "Likes": 1896,
+  "Dislikes": 3372,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003Ebuckets\u003C/code\u003E buckets of liquid, where \u003Cstrong\u003Eexactly one\u003C/strong\u003E of the buckets is poisonous. To figure out which one is poisonous, you feed some number of (poor) pigs the liquid to see whether they will die or not. Unfortunately, you only have \u003Ccode\u003EminutesToTest\u003C/code\u003E minutes to determine which bucket is poisonous.\u003C/p\u003E\n\n\u003Cp\u003EYou can feed the pigs according to these steps:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EChoose some live pigs to feed.\u003C/li\u003E\n\t\u003Cli\u003EFor each pig, choose which buckets to feed it. The pig will consume all the chosen buckets simultaneously and will take no time. Each pig can feed from any number of buckets, and each bucket can be fed from by any number of pigs.\u003C/li\u003E\n\t\u003Cli\u003EWait for \u003Ccode\u003EminutesToDie\u003C/code\u003E minutes. You may \u003Cstrong\u003Enot\u003C/strong\u003E feed any other pigs during this time.\u003C/li\u003E\n\t\u003Cli\u003EAfter \u003Ccode\u003EminutesToDie\u003C/code\u003E minutes have passed, any pigs that have been fed the poisonous bucket will die, and all others will survive.\u003C/li\u003E\n\t\u003Cli\u003ERepeat this process until you run out of time.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EGiven \u003Ccode\u003Ebuckets\u003C/code\u003E, \u003Ccode\u003EminutesToDie\u003C/code\u003E, and \u003Ccode\u003EminutesToTest\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of pigs needed to figure out which bucket is poisonous within the allotted time\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E buckets = 4, minutesToDie = 15, minutesToTest = 15\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can determine the poisonous bucket as follows:\nAt time 0, feed the first pig buckets 1 and 2, and feed the second pig buckets 2 and 3.\nAt time 15, there are 4 possible outcomes:\n- If only the first pig dies, then bucket 1 must be poisonous.\n- If only the second pig dies, then bucket 3 must be poisonous.\n- If both pigs die, then bucket 2 must be poisonous.\n- If neither pig dies, then bucket 4 must be poisonous.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E buckets = 4, minutesToDie = 15, minutesToTest = 30\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can determine the poisonous bucket as follows:\nAt time 0, feed the first pig bucket 1, and feed the second pig bucket 2.\nAt time 15, there are 2 possible outcomes:\n- If either pig dies, then the poisonous bucket is the one it was fed.\n- If neither pig dies, then feed the first pig bucket 3, and feed the second pig bucket 4.\nAt time 30, one of the two pigs must die, and the poisonous bucket is the one it was fed.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= buckets \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u0026nbsp;minutesToDie \u0026lt;=\u0026nbsp;minutesToTest \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "What if you only have one shot? Eg. 4 buckets, 15 mins to die, and 15 mins to test.",
+    "How many states can we generate with x pigs and T tests?",
+    "Find minimum \u003Ccode\u003Ex\u003C/code\u003E such that \u003Ccode\u003E(T\u002B1)^x \u003E= N\u003C/code\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n15\n15",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "4\n15\n30",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5190957+00:00",
+  "Url": "https://leetcode.com/problems/poor-pigs/"
+}

@@ -1,0 +1,35 @@
+{
+  "QuestionId": 528,
+  "FrontendId": 1721,
+  "Title": "Swapping Nodes in a Linked List",
+  "TitleSlug": "swapping-nodes-in-a-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Two Pointers"
+  ],
+  "AcceptanceRatePercent": 69.8,
+  "TotalAccepted": 489041,
+  "TotalSubmissions": 700791,
+  "Likes": 5788,
+  "Dislikes": 216,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list, and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe head of the linked list after \u003Cstrong\u003Eswapping\u003C/strong\u003E the values of the \u003C/em\u003E\u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cem\u003Enode from the beginning and the \u003C/em\u003E\u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cem\u003Enode from the end (the list is \u003Cstrong\u003E1-indexed\u003C/strong\u003E).\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/21/linked1.jpg\u0022 style=\u0022width: 400px; height: 112px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,4,5], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,4,3,2,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [7,9,6,6,7,8,3,0,9,5], k = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [7,9,6,6,8,7,3,0,9,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can traverse the linked list and store the elements in an array.",
+    "Upon conversion to an array, we can swap the required elements by indexing the array.",
+    "We can rebuild the linked list using the order of the elements in the array."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5]\n2",
+      "RawExpectedOutput": "[1,4,3,2,5]"
+    },
+    {
+      "RawInput": "[7,9,6,6,7,8,3,0,9,5]\n5",
+      "RawExpectedOutput": "[7,9,6,6,8,7,3,0,9,5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2239171+00:00",
+  "Url": "https://leetcode.com/problems/swapping-nodes-in-a-linked-list/"
+}

@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1778,
+  "FrontendId": 1659,
+  "Title": "Maximize Grid Happiness",
+  "TitleSlug": "maximize-grid-happiness",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Memoization",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 41.6,
+  "TotalAccepted": 8048,
+  "TotalSubmissions": 19360,
+  "Likes": 347,
+  "Dislikes": 56,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given four integers, \u003Ccode\u003Em\u003C/code\u003E, \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003EintrovertsCount\u003C/code\u003E, and \u003Ccode\u003EextrovertsCount\u003C/code\u003E. You have an \u003Ccode\u003Em x n\u003C/code\u003E grid, and there are two types of people: introverts and extroverts. There are \u003Ccode\u003EintrovertsCount\u003C/code\u003E introverts and \u003Ccode\u003EextrovertsCount\u003C/code\u003E extroverts.\u003C/p\u003E\n\n\u003Cp\u003EYou should decide how many people you want to live in the grid and assign each of them one grid cell. Note that you \u003Cstrong\u003Edo not\u003C/strong\u003E have to have all the people living in the grid.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Ehappiness\u003C/strong\u003E of each person is calculated as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIntroverts \u003Cstrong\u003Estart\u003C/strong\u003E with \u003Ccode\u003E120\u003C/code\u003E happiness and \u003Cstrong\u003Elose\u003C/strong\u003E \u003Ccode\u003E30\u003C/code\u003E happiness for each neighbor (introvert or extrovert).\u003C/li\u003E\n\t\u003Cli\u003EExtroverts \u003Cstrong\u003Estart\u003C/strong\u003E with \u003Ccode\u003E40\u003C/code\u003E happiness and \u003Cstrong\u003Egain\u003C/strong\u003E \u003Ccode\u003E20\u003C/code\u003E happiness for each neighbor (introvert or extrovert).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENeighbors live in the directly adjacent cells north, east, south, and west of a person\u0026#39;s cell.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Egrid happiness\u003C/strong\u003E is the \u003Cstrong\u003Esum\u003C/strong\u003E of each person\u0026#39;s happiness. Return\u003Cem\u003E the \u003Cstrong\u003Emaximum possible grid happiness\u003C/strong\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/05/grid_happiness.png\u0022 style=\u0022width: 261px; height: 121px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 2, n = 3, introvertsCount = 1, extrovertsCount = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 240\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Assume the grid is 1-indexed with coordinates (row, column).\nWe can put the introvert in cell (1,1) and put the extroverts in cells (1,3) and (2,3).\n- Introvert at (1,1) happiness: 120 (starting happiness) - (0 * 30) (0 neighbors) = 120\n- Extrovert at (1,3) happiness: 40 (starting happiness) \u002B (1 * 20) (1 neighbor) = 60\n- Extrovert at (2,3) happiness: 40 (starting happiness) \u002B (1 * 20) (1 neighbor) = 60\nThe grid happiness is 120 \u002B 60 \u002B 60 = 240.\nThe above figure shows the grid in this example with each person\u0026#39;s happiness. The introvert stays in the light green cell while the extroverts live on the light purple cells.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 3, n = 1, introvertsCount = 2, extrovertsCount = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 260\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Place the two introverts in (1,1) and (3,1) and the extrovert at (2,1).\n- Introvert at (1,1) happiness: 120 (starting happiness) - (1 * 30) (1 neighbor) = 90\n- Extrovert at (2,1) happiness: 40 (starting happiness) \u002B (2 * 20) (2 neighbors) = 80\n- Introvert at (3,1) happiness: 120 (starting happiness) - (1 * 30) (1 neighbor) = 90\nThe grid happiness is 90 \u002B 80 \u002B 90 = 260.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E m = 2, n = 2, introvertsCount = 4, extrovertsCount = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 240\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= introvertsCount, extrovertsCount \u0026lt;= min(m * n, 6)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each cell, it has 3 options, either it is empty, or contains an introvert, or an extrovert.",
+    "You can do DP where you maintain the state of the previous row, the number of remaining introverts and extroverts, the current row and column, and try the 3 options for each cell.",
+    "Assume that the previous columns in the current row already belong to the previous row."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2\n3\n1\n2",
+      "RawExpectedOutput": "240"
+    },
+    {
+      "RawInput": "3\n1\n2\n1",
+      "RawExpectedOutput": "260"
+    },
+    {
+      "RawInput": "2\n2\n4\n0",
+      "RawExpectedOutput": "240"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8678528+00:00",
+  "Url": "https://leetcode.com/problems/maximize-grid-happiness/"
+}

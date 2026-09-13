@@ -1,0 +1,34 @@
+{
+  "QuestionId": 238,
+  "FrontendId": 238,
+  "Title": "Product of Array Except Self",
+  "TitleSlug": "product-of-array-except-self",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 69.3,
+  "TotalAccepted": 4924972,
+  "TotalSubmissions": 7111156,
+  "Likes": 26454,
+  "Dislikes": 1722,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, return \u003Cem\u003Ean array\u003C/em\u003E \u003Ccode\u003Eanswer\u003C/code\u003E \u003Cem\u003Esuch that\u003C/em\u003E \u003Ccode\u003Eanswer[i]\u003C/code\u003E \u003Cem\u003Eis equal to the product of all the elements of\u003C/em\u003E \u003Ccode\u003Enums\u003C/code\u003E \u003Cem\u003Eexcept\u003C/em\u003E \u003Ccode\u003Enums[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe product of any prefix or suffix of \u003Ccode\u003Enums\u003C/code\u003E is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E to fit in a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an algorithm that runs in\u0026nbsp;\u003Ccode\u003EO(n)\u003C/code\u003E\u0026nbsp;time and without using the division operation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [24,12,8,6]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,1,0,-3,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0,9,0,0]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-30 \u0026lt;= nums[i] \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that \u003Ccode\u003Eanswer[i]\u003C/code\u003E is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E to fit in a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u0026nbsp;Can you solve the problem in \u003Ccode\u003EO(1)\u003C/code\u003E\u0026nbsp;extra\u0026nbsp;space complexity? (The output array \u003Cstrong\u003Edoes not\u003C/strong\u003E count as extra space for space complexity analysis.)\u003C/p\u003E\n",
+  "Hints": [
+    "Think how you can efficiently utilize prefix and suffix products to calculate the product of all elements except self for each index. Can you pre-compute the prefix and suffix products in linear time to avoid redundant calculations?",
+    "Can you minimize additional space usage by reusing memory or modifying the input array to store intermediate results?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4]",
+      "RawExpectedOutput": "[24,12,8,6]"
+    },
+    {
+      "RawInput": "[-1,1,0,-3,3]",
+      "RawExpectedOutput": "[0,0,9,0,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.59679+00:00",
+  "Url": "https://leetcode.com/problems/product-of-array-except-self/"
+}

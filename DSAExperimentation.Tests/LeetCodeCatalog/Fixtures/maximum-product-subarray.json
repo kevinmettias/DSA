@@ -1,0 +1,31 @@
+{
+  "QuestionId": 152,
+  "FrontendId": 152,
+  "Title": "Maximum Product Subarray",
+  "TitleSlug": "maximum-product-subarray",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 37,
+  "TotalAccepted": 2207224,
+  "TotalSubmissions": 5959221,
+  "Likes": 20824,
+  "Dislikes": 844,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, find a \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E that has the largest product, and return \u003Cem\u003Ethe product\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases are generated so that the answer will fit in a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that the product of an array with a single element is the value of that element.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,3,-2,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E [2,3] has the largest product 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-2,0,-1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The result cannot be 2, because [-2,-1] is not a subarray.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10 \u0026lt;= nums[i] \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe product of any subarray of \u003Ccode\u003Enums\u003C/code\u003E is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E to fit in a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,-2,4]",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[-2,0,-1]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9249478+00:00",
+  "Url": "https://leetcode.com/problems/maximum-product-subarray/"
+}

@@ -1,0 +1,35 @@
+{
+  "QuestionId": 3269,
+  "FrontendId": 3034,
+  "Title": "Number of Subarrays That Match a Pattern I",
+  "TitleSlug": "number-of-subarrays-that-match-a-pattern-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 68,
+  "TotalAccepted": 37862,
+  "TotalSubmissions": 55681,
+  "Likes": 133,
+  "Dislikes": 21,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Enums\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E, and a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Epattern\u003C/code\u003E of size \u003Ccode\u003Em\u003C/code\u003E consisting of integers \u003Ccode\u003E-1\u003C/code\u003E, \u003Ccode\u003E0\u003C/code\u003E, and \u003Ccode\u003E1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cspan data-keyword=\u0022subarray\u0022\u003Esubarray\u003C/span\u003E \u003Ccode\u003Enums[i..j]\u003C/code\u003E of size \u003Ccode\u003Em \u002B 1\u003C/code\u003E is said to match the \u003Ccode\u003Epattern\u003C/code\u003E if the following conditions hold for each element \u003Ccode\u003Epattern[k]\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i \u002B k \u002B 1] \u0026gt; nums[i \u002B k]\u003C/code\u003E if \u003Ccode\u003Epattern[k] == 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i \u002B k \u002B 1] == nums[i \u002B k]\u003C/code\u003E if \u003Ccode\u003Epattern[k] == 0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i \u002B k \u002B 1] \u0026lt; nums[i \u002B k]\u003C/code\u003E if \u003Ccode\u003Epattern[k] == -1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe\u003Cstrong\u003E count\u003C/strong\u003E of subarrays in\u003C/em\u003E \u003Ccode\u003Enums\u003C/code\u003E \u003Cem\u003Ethat match the\u003C/em\u003E \u003Ccode\u003Epattern\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4,5,6], pattern = [1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The pattern [1,1] indicates that we are looking for strictly increasing subarrays of size 3. In the array nums, the subarrays [1,2,3], [2,3,4], [3,4,5], and [4,5,6] match this pattern.\nHence, there are 4 subarrays in nums that match the pattern.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,4,4,1,3,5,5,3], pattern = [1,0,-1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EHere, the pattern [1,0,-1] indicates that we are looking for a sequence where the first number is smaller than the second, the second is equal to the third, and the third is greater than the fourth. In the array nums, the subarrays [1,4,4,1], and [3,5,5,3] match this pattern.\nHence, there are 2 subarrays in nums that match the pattern.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n == nums.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m == pattern.length \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1 \u0026lt;= pattern[i] \u0026lt;= 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Iterate over all indices \u003Ccode\u003Ei\u003C/code\u003E then, using a second loop, check if the subarray starting at index \u003Ccode\u003Ei\u003C/code\u003E matches the pattern."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5,6]\n[1,1]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[1,4,4,1,3,5,5,3]\n[1,0,-1]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.304163+00:00",
+  "Url": "https://leetcode.com/problems/number-of-subarrays-that-match-a-pattern-i/"
+}

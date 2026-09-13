@@ -1,0 +1,24 @@
+{
+  "QuestionId": 432,
+  "FrontendId": 432,
+  "Title": "All O\u0060one Data Structure",
+  "TitleSlug": "all-oone-data-structure",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Hash Table",
+    "Linked List",
+    "Design",
+    "Doubly-Linked List"
+  ],
+  "AcceptanceRatePercent": 44.5,
+  "TotalAccepted": 214965,
+  "TotalSubmissions": 482853,
+  "Likes": 2263,
+  "Dislikes": 224,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure to store the strings\u0026#39; count with the ability to return the strings with minimum and maximum counts.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EAllOne\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EAllOne()\u003C/code\u003E Initializes the object of the data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Einc(String key)\u003C/code\u003E Increments the count of the string \u003Ccode\u003Ekey\u003C/code\u003E by \u003Ccode\u003E1\u003C/code\u003E. If \u003Ccode\u003Ekey\u003C/code\u003E does not exist in the data structure, insert it with count \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edec(String key)\u003C/code\u003E Decrements the count of the string \u003Ccode\u003Ekey\u003C/code\u003E by \u003Ccode\u003E1\u003C/code\u003E. If the count of \u003Ccode\u003Ekey\u003C/code\u003E is \u003Ccode\u003E0\u003C/code\u003E after the decrement, remove it from the data structure. It is guaranteed that \u003Ccode\u003Ekey\u003C/code\u003E exists in the data structure before the decrement.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EgetMaxKey()\u003C/code\u003E Returns one of the keys with the maximal count. If no element exists, return an empty string \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EgetMinKey()\u003C/code\u003E Returns one of the keys with the minimum count. If no element exists, return an empty string \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that each function must run in \u003Ccode\u003EO(1)\u003C/code\u003E average time complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;AllOne\u0026quot;, \u0026quot;inc\u0026quot;, \u0026quot;inc\u0026quot;, \u0026quot;getMaxKey\u0026quot;, \u0026quot;getMinKey\u0026quot;, \u0026quot;inc\u0026quot;, \u0026quot;getMaxKey\u0026quot;, \u0026quot;getMinKey\u0026quot;]\n[[], [\u0026quot;hello\u0026quot;], [\u0026quot;hello\u0026quot;], [], [], [\u0026quot;leet\u0026quot;], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, \u0026quot;hello\u0026quot;, \u0026quot;hello\u0026quot;, null, \u0026quot;hello\u0026quot;, \u0026quot;leet\u0026quot;]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nAllOne allOne = new AllOne();\nallOne.inc(\u0026quot;hello\u0026quot;);\nallOne.inc(\u0026quot;hello\u0026quot;);\nallOne.getMaxKey(); // return \u0026quot;hello\u0026quot;\nallOne.getMinKey(); // return \u0026quot;hello\u0026quot;\nallOne.inc(\u0026quot;leet\u0026quot;);\nallOne.getMaxKey(); // return \u0026quot;hello\u0026quot;\nallOne.getMinKey(); // return \u0026quot;leet\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= key.length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ekey\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that for each call to \u003Ccode\u003Edec\u003C/code\u003E, \u003Ccode\u003Ekey\u003C/code\u003E is existing in the data structure.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u0026nbsp;calls will be made to \u003Ccode\u003Einc\u003C/code\u003E, \u003Ccode\u003Edec\u003C/code\u003E, \u003Ccode\u003EgetMaxKey\u003C/code\u003E, and \u003Ccode\u003EgetMinKey\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5523989+00:00",
+  "Url": "https://leetcode.com/problems/all-oone-data-structure/"
+}

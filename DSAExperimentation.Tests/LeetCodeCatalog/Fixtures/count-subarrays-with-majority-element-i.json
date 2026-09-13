@@ -1,0 +1,43 @@
+{
+  "QuestionId": 4074,
+  "FrontendId": 3737,
+  "Title": "Count Subarrays With Majority Element I",
+  "TitleSlug": "count-subarrays-with-majority-element-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Divide and Conquer",
+    "Segment Tree",
+    "Merge Sort",
+    "Counting",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 75.7,
+  "TotalAccepted": 139269,
+  "TotalSubmissions": 184068,
+  "Likes": 327,
+  "Dislikes": 13,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarrays\u003C/span\u003E\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E in which \u003Ccode\u003Etarget\u003C/code\u003E is the \u003Cstrong\u003Emajority element\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Emajority element\u003C/strong\u003E of a subarray is the element that appears \u003Cstrong\u003Estrictly\u003C/strong\u003E \u003Cstrong\u003Emore than half\u003C/strong\u003E of the times in that subarray.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,2,3], target = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EValid subarrays with \u003Ccode\u003Etarget = 2\u003C/code\u003E as the majority element:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[1..1] = [2]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[2..2] = [2]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[1..2] = [2,2]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[0..2] = [1,2,2]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[1..3] = [2,2,3]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ESo there are 5 such subarrays.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,1,1,1], target = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation: \u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/strong\u003EAll 10 subarrays have 1 as the majority element.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3], target = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003Etarget = 4\u003C/code\u003E does not appear in \u003Ccode\u003Enums\u003C/code\u003E at all. Therefore, there cannot be any subarray where 4 is the majority element. Hence the answer is 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use brute force",
+    "Count all subarrays where \u003Ccode\u003E2 * count(target) \u003E length\u003C/code\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,2,3]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,1,1,1]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3]\n4",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9721017+00:00",
+  "Url": "https://leetcode.com/problems/count-subarrays-with-majority-element-i/"
+}

@@ -1,0 +1,29 @@
+{
+  "QuestionId": 1767,
+  "FrontendId": 1670,
+  "Title": "Design Front Middle Back Queue",
+  "TitleSlug": "design-front-middle-back-queue",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Linked List",
+    "Design",
+    "Queue",
+    "Doubly-Linked List",
+    "Data Stream"
+  ],
+  "AcceptanceRatePercent": 58.7,
+  "TotalAccepted": 50208,
+  "TotalSubmissions": 85572,
+  "Likes": 839,
+  "Dislikes": 116,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a queue that supports \u003Ccode\u003Epush\u003C/code\u003E and \u003Ccode\u003Epop\u003C/code\u003E operations in the front, middle, and back.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EFrontMiddleBack\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EFrontMiddleBack()\u003C/code\u003E Initializes the queue.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid pushFront(int val)\u003C/code\u003E Adds \u003Ccode\u003Eval\u003C/code\u003E to the \u003Cstrong\u003Efront\u003C/strong\u003E of the queue.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid pushMiddle(int val)\u003C/code\u003E Adds \u003Ccode\u003Eval\u003C/code\u003E to the \u003Cstrong\u003Emiddle\u003C/strong\u003E of the queue.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid pushBack(int val)\u003C/code\u003E Adds \u003Ccode\u003Eval\u003C/code\u003E to the \u003Cstrong\u003Eback\u003C/strong\u003E of the queue.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint popFront()\u003C/code\u003E Removes the \u003Cstrong\u003Efront\u003C/strong\u003E element of the queue and returns it. If the queue is empty, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint popMiddle()\u003C/code\u003E Removes the \u003Cstrong\u003Emiddle\u003C/strong\u003E element of the queue and returns it. If the queue is empty, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint popBack()\u003C/code\u003E Removes the \u003Cstrong\u003Eback\u003C/strong\u003E element of the queue and returns it. If the queue is empty, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENotice\u003C/strong\u003E that when there are \u003Cb\u003Etwo\u003C/b\u003E middle position choices, the operation is performed on the \u003Cstrong\u003Efrontmost\u003C/strong\u003E middle position choice. For example:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPushing \u003Ccode\u003E6\u003C/code\u003E into the middle of \u003Ccode\u003E[1, 2, 3, 4, 5]\u003C/code\u003E results in \u003Ccode\u003E[1, 2, \u003Cu\u003E6\u003C/u\u003E, 3, 4, 5]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EPopping the middle from \u003Ccode\u003E[1, 2, \u003Cu\u003E3\u003C/u\u003E, 4, 5, 6]\u003C/code\u003E returns \u003Ccode\u003E3\u003C/code\u003E and results in \u003Ccode\u003E[1, 2, 4, 5, 6]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E\n[\u0026quot;FrontMiddleBackQueue\u0026quot;, \u0026quot;pushFront\u0026quot;, \u0026quot;pushBack\u0026quot;, \u0026quot;pushMiddle\u0026quot;, \u0026quot;pushMiddle\u0026quot;, \u0026quot;popFront\u0026quot;, \u0026quot;popMiddle\u0026quot;, \u0026quot;popMiddle\u0026quot;, \u0026quot;popBack\u0026quot;, \u0026quot;popFront\u0026quot;]\n[[], [1], [2], [3], [4], [], [], [], [], []]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E\n[null, null, null, null, null, 1, 3, 4, 2, -1]\n\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nFrontMiddleBackQueue q = new FrontMiddleBackQueue();\nq.pushFront(1);   // [\u003Cu\u003E1\u003C/u\u003E]\nq.pushBack(2);    // [1, \u003Cu\u003E2\u003C/u\u003E]\nq.pushMiddle(3);  // [1, \u003Cu\u003E3\u003C/u\u003E, 2]\nq.pushMiddle(4);  // [1, \u003Cu\u003E4\u003C/u\u003E, 3, 2]\nq.popFront();     // return 1 -\u0026gt; [4, 3, 2]\nq.popMiddle();    // return 3 -\u0026gt; [4, 2]\nq.popMiddle();    // return 4 -\u0026gt; [2]\nq.popBack();      // return 2 -\u0026gt; []\nq.popFront();     // return -1 -\u0026gt; [] (The queue is empty)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= val \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most\u0026nbsp;\u003Ccode\u003E1000\u003C/code\u003E\u0026nbsp;calls will be made to\u0026nbsp;\u003Ccode\u003EpushFront\u003C/code\u003E,\u0026nbsp;\u003Ccode\u003EpushMiddle\u003C/code\u003E,\u0026nbsp;\u003Ccode\u003EpushBack\u003C/code\u003E, \u003Ccode\u003EpopFront\u003C/code\u003E, \u003Ccode\u003EpopMiddle\u003C/code\u003E, and \u003Ccode\u003EpopBack\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The constraints are low enough for a brute force, single array approach.",
+    "For an O(1) per method approach, use 2 double-ended queues: one for the first half and one for the second half."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0886755+00:00",
+  "Url": "https://leetcode.com/problems/design-front-middle-back-queue/"
+}

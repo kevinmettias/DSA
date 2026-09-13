@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1427,
+  "FrontendId": 1305,
+  "Title": "All Elements in Two Binary Search Trees",
+  "TitleSlug": "all-elements-in-two-binary-search-trees",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Sorting",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 80.4,
+  "TotalAccepted": 272721,
+  "TotalSubmissions": 339185,
+  "Likes": 3209,
+  "Dislikes": 99,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two binary search trees \u003Ccode\u003Eroot1\u003C/code\u003E and \u003Ccode\u003Eroot2\u003C/code\u003E, return \u003Cem\u003Ea list containing all the integers from both trees sorted in \u003Cstrong\u003Eascending\u003C/strong\u003E order\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/12/18/q2-e1.png\u0022 style=\u0022width: 457px; height: 207px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root1 = [2,1,4], root2 = [1,0,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,1,1,2,3,4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/12/18/q2-e5-.png\u0022 style=\u0022width: 352px; height: 197px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root1 = [1,null,8], root2 = [8,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,8,8]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in each tree is in the range \u003Ccode\u003E[0, 5000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Traverse the first tree in list1 and the second tree in list2.",
+    "Merge the two trees in one list and sort it."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,1,4]\n[1,0,3]",
+      "RawExpectedOutput": "[0,1,1,2,3,4]"
+    },
+    {
+      "RawInput": "[1,null,8]\n[8,1]",
+      "RawExpectedOutput": "[1,1,8,8]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5453026+00:00",
+  "Url": "https://leetcode.com/problems/all-elements-in-two-binary-search-trees/"
+}

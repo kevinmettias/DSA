@@ -1,0 +1,33 @@
+{
+  "QuestionId": 1032,
+  "FrontendId": 990,
+  "Title": "Satisfiability of Equality Equations",
+  "TitleSlug": "satisfiability-of-equality-equations",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 52.2,
+  "TotalAccepted": 178653,
+  "TotalSubmissions": 342284,
+  "Likes": 4103,
+  "Dislikes": 69,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of strings \u003Ccode\u003Eequations\u003C/code\u003E that represent relationships between variables where each string \u003Ccode\u003Eequations[i]\u003C/code\u003E is of length \u003Ccode\u003E4\u003C/code\u003E and takes one of two different forms: \u003Ccode\u003E\u0026quot;x\u003Csub\u003Ei\u003C/sub\u003E==y\u003Csub\u003Ei\u003C/sub\u003E\u0026quot;\u003C/code\u003E or \u003Ccode\u003E\u0026quot;x\u003Csub\u003Ei\u003C/sub\u003E!=y\u003Csub\u003Ei\u003C/sub\u003E\u0026quot;\u003C/code\u003E.Here, \u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ey\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E are lowercase letters (not necessarily different) that represent one-letter variable names.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if it is possible to assign integers to variable names so as to satisfy all the given equations, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E equations = [\u0026quot;a==b\u0026quot;,\u0026quot;b!=a\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E If we assign say, a = 1 and b = 1, then the first equation is satisfied, but not the second.\nThere is no way to assign the variables to satisfy both equations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E equations = [\u0026quot;b==a\u0026quot;,\u0026quot;a==b\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We could assign a = 1 and b = 1 to satisfy both equations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= equations.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eequations[i].length == 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eequations[i][0]\u003C/code\u003E is a lowercase letter.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eequations[i][1]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;=\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;!\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eequations[i][2]\u003C/code\u003E is \u003Ccode\u003E\u0026#39;=\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eequations[i][3]\u003C/code\u003E is a lowercase letter.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022a==b\u0022,\u0022b!=a\u0022]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[\u0022b==a\u0022,\u0022a==b\u0022]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.901725+00:00",
+  "Url": "https://leetcode.com/problems/satisfiability-of-equality-equations/"
+}

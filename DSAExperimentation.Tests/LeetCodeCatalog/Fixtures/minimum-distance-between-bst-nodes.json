@@ -1,0 +1,34 @@
+{
+  "QuestionId": 799,
+  "FrontendId": 783,
+  "Title": "Minimum Distance Between BST Nodes",
+  "TitleSlug": "minimum-distance-between-bst-nodes",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 61.9,
+  "TotalAccepted": 348128,
+  "TotalSubmissions": 562770,
+  "Likes": 3715,
+  "Dislikes": 437,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a Binary Search Tree (BST), return \u003Cem\u003Ethe minimum difference between the values of any two different nodes in the tree\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/02/05/bst1.jpg\u0022 style=\u0022width: 292px; height: 301px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [4,2,6,1,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/02/05/bst2.jpg\u0022 style=\u0022width: 282px; height: 301px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [1,0,48,null,null,12,49]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[2, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E This question is the same as 530: \u003Ca href=\u0022https://leetcode.com/problems/minimum-absolute-difference-in-bst/\u0022 target=\u0022_blank\u0022\u003Ehttps://leetcode.com/problems/minimum-absolute-difference-in-bst/\u003C/a\u003E\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,6,1,3]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[1,0,48,null,null,12,49]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.050862+00:00",
+  "Url": "https://leetcode.com/problems/minimum-distance-between-bst-nodes/"
+}

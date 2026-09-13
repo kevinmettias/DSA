@@ -1,0 +1,32 @@
+{
+  "QuestionId": 741,
+  "FrontendId": 741,
+  "Title": "Cherry Pickup",
+  "TitleSlug": "cherry-pickup",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 40.5,
+  "TotalAccepted": 122784,
+  "TotalSubmissions": 303400,
+  "Likes": 4762,
+  "Dislikes": 174,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003En x n\u003C/code\u003E \u003Ccode\u003Egrid\u003C/code\u003E representing a field of cherries, each cell is one of three possible integers.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0\u003C/code\u003E means the cell is empty, so you can pass through,\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1\u003C/code\u003E means the cell contains a cherry that you can pick up and pass through, or\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1\u003C/code\u003E means the cell contains a thorn that blocks your way.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum number of cherries you can collect by following the rules below\u003C/em\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EStarting at the position \u003Ccode\u003E(0, 0)\u003C/code\u003E and reaching \u003Ccode\u003E(n - 1, n - 1)\u003C/code\u003E by moving right or down through valid path cells (cells with value \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E).\u003C/li\u003E\n\t\u003Cli\u003EAfter reaching \u003Ccode\u003E(n - 1, n - 1)\u003C/code\u003E, returning to \u003Ccode\u003E(0, 0)\u003C/code\u003E by moving left or up through valid path cells.\u003C/li\u003E\n\t\u003Cli\u003EWhen passing through a path cell containing a cherry, you pick it up, and the cell becomes an empty cell \u003Ccode\u003E0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf there is no valid path between \u003Ccode\u003E(0, 0)\u003C/code\u003E and \u003Ccode\u003E(n - 1, n - 1)\u003C/code\u003E, then no cherries can be collected.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/14/grid.jpg\u0022 style=\u0022width: 242px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,1,-1],[1,0,-1],[1,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The player started at (0, 0) and went down, down, right right to reach (2, 2).\n4 cherries were picked up during this single trip, and the matrix becomes [[0,1,-1],[0,0,-1],[0,0,0]].\nThen, the player went left, up, up, left to return home, picking up one more cherry.\nThe total number of cherries picked up is 5, and this is the maximum possible.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1,-1],[1,-1,1],[-1,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is \u003Ccode\u003E-1\u003C/code\u003E, \u003Ccode\u003E0\u003C/code\u003E, or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[0][0] != -1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[n - 1][n - 1] != -1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,-1],[1,0,-1],[1,1,1]]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[[1,1,-1],[1,-1,1],[-1,1,1]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7867578+00:00",
+  "Url": "https://leetcode.com/problems/cherry-pickup/"
+}

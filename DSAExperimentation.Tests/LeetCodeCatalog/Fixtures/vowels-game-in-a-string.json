@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3462,
+  "FrontendId": 3227,
+  "Title": "Vowels Game in a String",
+  "TitleSlug": "vowels-game-in-a-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Brainteaser",
+    "Game Theory"
+  ],
+  "AcceptanceRatePercent": 76.9,
+  "TotalAccepted": 197103,
+  "TotalSubmissions": 256170,
+  "Likes": 561,
+  "Dislikes": 117,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob are playing a game on a string.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E, Alice and Bob will take turns playing the following game where Alice starts \u003Cstrong\u003Efirst\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EOn Alice\u0026#39;s turn, she has to remove any \u003Cstrong\u003Enon-empty\u003C/strong\u003E \u003Cspan data-keyword=\u0022substring\u0022\u003Esubstring\u003C/span\u003E from \u003Ccode\u003Es\u003C/code\u003E that contains an \u003Cstrong\u003Eodd\u003C/strong\u003E number of vowels.\u003C/li\u003E\n\t\u003Cli\u003EOn Bob\u0026#39;s turn, he has to remove any \u003Cstrong\u003Enon-empty\u003C/strong\u003E \u003Cspan data-keyword=\u0022substring\u0022\u003Esubstring\u003C/span\u003E from \u003Ccode\u003Es\u003C/code\u003E that contains an \u003Cstrong\u003Eeven\u003C/strong\u003E number of vowels.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe first player who cannot make a move on their turn loses the game. We assume that both Alice and Bob play \u003Cstrong\u003Eoptimally\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if Alice wins the game, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003EThe English vowels are: \u003Ccode\u003Ea\u003C/code\u003E, \u003Ccode\u003Ee\u003C/code\u003E, \u003Ccode\u003Ei\u003C/code\u003E, \u003Ccode\u003Eo\u003C/code\u003E, and \u003Ccode\u003Eu\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;leetcoder\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003Cbr /\u003E\nAlice can win the game as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice plays first, she can delete the underlined substring in \u003Ccode\u003Es = \u0026quot;\u003Cu\u003E\u003Cstrong\u003Eleetco\u003C/strong\u003E\u003C/u\u003Eder\u0026quot;\u003C/code\u003E which contains 3 vowels. The resulting string is \u003Ccode\u003Es = \u0026quot;der\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EBob plays second, he can delete the underlined substring in \u003Ccode\u003Es = \u0026quot;\u003Cu\u003E\u003Cstrong\u003Ed\u003C/strong\u003E\u003C/u\u003Eer\u0026quot;\u003C/code\u003E which contains 0 vowels. The resulting string is \u003Ccode\u003Es = \u0026quot;er\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAlice plays third, she can delete the whole string \u003Ccode\u003Es = \u0026quot;\u003Cstrong\u003E\u003Cu\u003Eer\u003C/u\u003E\u003C/strong\u003E\u0026quot;\u003C/code\u003E which contains 1 vowel.\u003C/li\u003E\n\t\u003Cli\u003EBob plays fourth, since the string is empty, there is no valid play for Bob. So Alice wins the game.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;bbcd\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003Cbr /\u003E\nThere is no valid play for Alice in her first turn, so Alice loses the game.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If there are no vowels in the initial string, then Bob wins.",
+    "If the number of vowels in the initial string is odd, then Alice can remove the whole string on her first turn and win.",
+    "What if the number of vowels in the initial string is even? What\u2019s the optimal play for Alice\u2019s first turn?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022leetcoder\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022bbcd\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.375508+00:00",
+  "Url": "https://leetcode.com/problems/vowels-game-in-a-string/"
+}

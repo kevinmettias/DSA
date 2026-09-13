@@ -1,0 +1,33 @@
+{
+  "QuestionId": 3651,
+  "FrontendId": 3379,
+  "Title": "Transformed Array",
+  "TitleSlug": "transformed-array",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 70.4,
+  "TotalAccepted": 179525,
+  "TotalSubmissions": 254843,
+  "Likes": 460,
+  "Dislikes": 49,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E that represents a circular array. Your task is to create a new array \u003Ccode\u003Eresult\u003C/code\u003E of the \u003Cstrong\u003Esame\u003C/strong\u003E size, following these rules:\u003C/p\u003E\nFor each index \u003Ccode\u003Ei\u003C/code\u003E (where \u003Ccode\u003E0 \u0026lt;= i \u0026lt; nums.length\u003C/code\u003E), perform the following \u003Cstrong\u003Eindependent\u003C/strong\u003E actions:\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Enums[i] \u0026gt; 0\u003C/code\u003E: Start at index \u003Ccode\u003Ei\u003C/code\u003E and move \u003Ccode\u003Enums[i]\u003C/code\u003E steps to the \u003Cstrong\u003Eright\u003C/strong\u003E in the circular array. Set \u003Ccode\u003Eresult[i]\u003C/code\u003E to the value at the index where you land.\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Enums[i] \u0026lt; 0\u003C/code\u003E: Start at index \u003Ccode\u003Ei\u003C/code\u003E and move \u003Ccode\u003Eabs(nums[i])\u003C/code\u003E steps to the \u003Cstrong\u003Eleft\u003C/strong\u003E in the circular array. Set \u003Ccode\u003Eresult[i]\u003C/code\u003E to the value at\u0026nbsp;the index where you land.\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Enums[i] == 0\u003C/code\u003E: Set \u003Ccode\u003Eresult[i]\u003C/code\u003E to \u003Ccode\u003Enums[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the new array \u003Ccode\u003Eresult\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E Since \u003Ccode\u003Enums\u003C/code\u003E is circular, moving past the last element wraps around to the beginning, and moving before the first element wraps back to the end.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,-2,1,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[1,1,1,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[0]\u003C/code\u003E that is equal to 3, If we move 3 steps to right, we reach \u003Ccode\u003Enums[3]\u003C/code\u003E. So \u003Ccode\u003Eresult[0]\u003C/code\u003E should be 1.\u003C/li\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[1]\u003C/code\u003E that is equal to -2, If we move 2 steps to left, we reach \u003Ccode\u003Enums[3]\u003C/code\u003E. So \u003Ccode\u003Eresult[1]\u003C/code\u003E should be 1.\u003C/li\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[2]\u003C/code\u003E that is equal to 1, If we move 1 step to right, we reach \u003Ccode\u003Enums[3]\u003C/code\u003E. So \u003Ccode\u003Eresult[2]\u003C/code\u003E should be 1.\u003C/li\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[3]\u003C/code\u003E that is equal to 1, If we move 1 step to right, we reach \u003Ccode\u003Enums[0]\u003C/code\u003E. So \u003Ccode\u003Eresult[3]\u003C/code\u003E should be 3.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [-1,4,-1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[-1,-1,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[0]\u003C/code\u003E that is equal to -1, If we move 1 step to left, we reach \u003Ccode\u003Enums[2]\u003C/code\u003E. So \u003Ccode\u003Eresult[0]\u003C/code\u003E should be -1.\u003C/li\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[1]\u003C/code\u003E that is equal to 4, If we move 4 steps to right, we reach \u003Ccode\u003Enums[2]\u003C/code\u003E. So \u003Ccode\u003Eresult[1]\u003C/code\u003E should be -1.\u003C/li\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003Enums[2]\u003C/code\u003E that is equal to -1, If we move 1 step to left, we reach \u003Ccode\u003Enums[1]\u003C/code\u003E. So \u003Ccode\u003Eresult[2]\u003C/code\u003E should be 4.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-100 \u0026lt;= nums[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Simulate the operations as described in the statement"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,-2,1,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[-1,4,-1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2670818+00:00",
+  "Url": "https://leetcode.com/problems/transformed-array/"
+}

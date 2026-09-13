@@ -1,0 +1,36 @@
+{
+  "QuestionId": 445,
+  "FrontendId": 445,
+  "Title": "Add Two Numbers II",
+  "TitleSlug": "add-two-numbers-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Math",
+    "Stack"
+  ],
+  "AcceptanceRatePercent": 63,
+  "TotalAccepted": 605469,
+  "TotalSubmissions": 960606,
+  "Likes": 6230,
+  "Dislikes": 303,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two \u003Cstrong\u003Enon-empty\u003C/strong\u003E linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.\u003C/p\u003E\n\n\u003Cp\u003EYou may assume the two numbers do not contain any leading zero, except the number 0 itself.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/09/sumii-linked-list.jpg\u0022 style=\u0022width: 523px; height: 342px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E l1 = [7,2,4,3], l2 = [5,6,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [7,8,0,7]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E l1 = [2,4,3], l2 = [5,6,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [8,0,7]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E l1 = [0], l2 = [0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in each linked list is in the range \u003Ccode\u003E[1, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that the list represents a number that does not have leading zeros.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u0026nbsp;Could you solve it without reversing the input lists?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[7,2,4,3]\n[5,6,4]",
+      "RawExpectedOutput": "[7,8,0,7]"
+    },
+    {
+      "RawInput": "[2,4,3]\n[5,6,4]",
+      "RawExpectedOutput": "[8,0,7]"
+    },
+    {
+      "RawInput": "[0]\n[0]",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5264559+00:00",
+  "Url": "https://leetcode.com/problems/add-two-numbers-ii/"
+}

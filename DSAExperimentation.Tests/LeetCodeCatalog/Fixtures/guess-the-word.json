@@ -1,0 +1,35 @@
+{
+  "QuestionId": 873,
+  "FrontendId": 843,
+  "Title": "Guess the Word",
+  "TitleSlug": "guess-the-word",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "String",
+    "Minimax",
+    "Interactive",
+    "Game Theory"
+  ],
+  "AcceptanceRatePercent": 36.6,
+  "TotalAccepted": 173297,
+  "TotalSubmissions": 473819,
+  "Likes": 1647,
+  "Dislikes": 1878,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of unique strings \u003Ccode\u003Ewords\u003C/code\u003E where \u003Ccode\u003Ewords[i]\u003C/code\u003E is six letters long. One word of \u003Ccode\u003Ewords\u003C/code\u003E was chosen as a secret word.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given the helper object \u003Ccode\u003EMaster\u003C/code\u003E. You may call \u003Ccode\u003EMaster.guess(word)\u003C/code\u003E where \u003Ccode\u003Eword\u003C/code\u003E is a six-letter-long string, and it must be from \u003Ccode\u003Ewords\u003C/code\u003E. \u003Ccode\u003EMaster.guess(word)\u003C/code\u003E returns:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1\u003C/code\u003E if \u003Ccode\u003Eword\u003C/code\u003E is not from \u003Ccode\u003Ewords\u003C/code\u003E, or\u003C/li\u003E\n\t\u003Cli\u003Ean integer representing the number of exact matches (value and position) of your guess to the secret word.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThere is a parameter \u003Ccode\u003EallowedGuesses\u003C/code\u003E for each test case where \u003Ccode\u003EallowedGuesses\u003C/code\u003E is the maximum number of times you can call \u003Ccode\u003EMaster.guess(word)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor each test case, you should call \u003Ccode\u003EMaster.guess\u003C/code\u003E with the secret word without exceeding the maximum number of allowed guesses. You will get:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003E\u003Ccode\u003E\u0026quot;Either you took too many guesses, or you did not find the secret word.\u0026quot;\u003C/code\u003E\u003C/strong\u003E if you called \u003Ccode\u003EMaster.guess\u003C/code\u003E more than \u003Ccode\u003EallowedGuesses\u003C/code\u003E times or if you did not call \u003Ccode\u003EMaster.guess\u003C/code\u003E with the secret word, or\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003E\u003Ccode\u003E\u0026quot;You guessed the secret word correctly.\u0026quot;\u003C/code\u003E\u003C/strong\u003E if you called \u003Ccode\u003EMaster.guess\u003C/code\u003E with the secret word with the number of calls to \u003Ccode\u003EMaster.guess\u003C/code\u003E less than or equal to \u003Ccode\u003EallowedGuesses\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe test cases are generated such that you can guess the secret word with a reasonable strategy (other than using the bruteforce method).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E secret = \u0026quot;acckzz\u0026quot;, words = [\u0026quot;acckzz\u0026quot;,\u0026quot;ccbazz\u0026quot;,\u0026quot;eiowzz\u0026quot;,\u0026quot;abcczz\u0026quot;], allowedGuesses = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E You guessed the secret word correctly.\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nmaster.guess(\u0026quot;aaaaaa\u0026quot;) returns -1, because \u0026quot;aaaaaa\u0026quot; is not in words.\nmaster.guess(\u0026quot;acckzz\u0026quot;) returns 6, because \u0026quot;acckzz\u0026quot; is secret and has all 6 matches.\nmaster.guess(\u0026quot;ccbazz\u0026quot;) returns 3, because \u0026quot;ccbazz\u0026quot; has 3 matches.\nmaster.guess(\u0026quot;eiowzz\u0026quot;) returns 2, because \u0026quot;eiowzz\u0026quot; has 2 matches.\nmaster.guess(\u0026quot;abcczz\u0026quot;) returns 4, because \u0026quot;abcczz\u0026quot; has 4 matches.\nWe made 5 calls to master.guess, and one of them was the secret, so we pass the test case.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E secret = \u0026quot;hamada\u0026quot;, words = [\u0026quot;hamada\u0026quot;,\u0026quot;khaled\u0026quot;], allowedGuesses = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E You guessed the secret word correctly.\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Since there are two words, you can guess both.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i].length == 6\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003Ewords\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esecret\u003C/code\u003E exists in \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E10 \u0026lt;= allowedGuesses \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022acckzz\u0022\n[\u0022acckzz\u0022,\u0022ccbazz\u0022,\u0022eiowzz\u0022,\u0022abcczz\u0022]\n10",
+      "RawExpectedOutput": "You guessed the secret word correctly."
+    },
+    {
+      "RawInput": "\u0022hamada\u0022\n[\u0022hamada\u0022,\u0022khaled\u0022]\n10",
+      "RawExpectedOutput": "You guessed the secret word correctly."
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4211484+00:00",
+  "Url": "https://leetcode.com/problems/guess-the-word/"
+}

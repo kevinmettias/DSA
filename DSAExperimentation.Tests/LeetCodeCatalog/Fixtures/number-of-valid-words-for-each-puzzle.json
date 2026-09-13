@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1282,
+  "FrontendId": 1178,
+  "Title": "Number of Valid Words for Each Puzzle",
+  "TitleSlug": "number-of-valid-words-for-each-puzzle",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Bit Manipulation",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 48.2,
+  "TotalAccepted": 36106,
+  "TotalSubmissions": 74925,
+  "Likes": 1306,
+  "Dislikes": 89,
+  "IsPaidOnly": false,
+  "ContentHtml": "With respect to a given \u003Ccode\u003Epuzzle\u003C/code\u003E string, a \u003Ccode\u003Eword\u003C/code\u003E is \u003Cem\u003Evalid\u003C/em\u003E if both the following conditions are satisfied:\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eword\u003C/code\u003E contains the first letter of \u003Ccode\u003Epuzzle\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EFor each letter in \u003Ccode\u003Eword\u003C/code\u003E, that letter is in \u003Ccode\u003Epuzzle\u003C/code\u003E.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EFor example, if the puzzle is \u003Ccode\u003E\u0026quot;abcdefg\u0026quot;\u003C/code\u003E, then valid words are \u003Ccode\u003E\u0026quot;faced\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;cabbage\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;baggage\u0026quot;\u003C/code\u003E, while\u003C/li\u003E\n\t\t\u003Cli\u003Einvalid words are \u003Ccode\u003E\u0026quot;beefed\u0026quot;\u003C/code\u003E (does not include \u003Ccode\u003E\u0026#39;a\u0026#39;\u003C/code\u003E) and \u003Ccode\u003E\u0026quot;based\u0026quot;\u003C/code\u003E (includes \u003Ccode\u003E\u0026#39;s\u0026#39;\u003C/code\u003E which is not in the puzzle).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\nReturn \u003Cem\u003Ean array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E, where \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the number of words in the given word list \u003C/em\u003E\u003Ccode\u003Ewords\u003C/code\u003E\u003Cem\u003E that is valid with respect to the puzzle \u003C/em\u003E\u003Ccode\u003Epuzzles[i]\u003C/code\u003E.\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;aaaa\u0026quot;,\u0026quot;asas\u0026quot;,\u0026quot;able\u0026quot;,\u0026quot;ability\u0026quot;,\u0026quot;actt\u0026quot;,\u0026quot;actor\u0026quot;,\u0026quot;access\u0026quot;], puzzles = [\u0026quot;aboveyz\u0026quot;,\u0026quot;abrodyz\u0026quot;,\u0026quot;abslute\u0026quot;,\u0026quot;absoryz\u0026quot;,\u0026quot;actresz\u0026quot;,\u0026quot;gaswxyz\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,1,3,2,4,0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \n1 valid word for \u0026quot;aboveyz\u0026quot; : \u0026quot;aaaa\u0026quot; \n1 valid word for \u0026quot;abrodyz\u0026quot; : \u0026quot;aaaa\u0026quot;\n3 valid words for \u0026quot;abslute\u0026quot; : \u0026quot;aaaa\u0026quot;, \u0026quot;asas\u0026quot;, \u0026quot;able\u0026quot;\n2 valid words for \u0026quot;absoryz\u0026quot; : \u0026quot;aaaa\u0026quot;, \u0026quot;asas\u0026quot;\n4 valid words for \u0026quot;actresz\u0026quot; : \u0026quot;aaaa\u0026quot;, \u0026quot;asas\u0026quot;, \u0026quot;actt\u0026quot;, \u0026quot;access\u0026quot;\nThere are no valid words for \u0026quot;gaswxyz\u0026quot; cause none of the words in the list contains letter \u0026#39;g\u0026#39;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;apple\u0026quot;,\u0026quot;pleas\u0026quot;,\u0026quot;please\u0026quot;], puzzles = [\u0026quot;aelwxyz\u0026quot;,\u0026quot;aelpxyz\u0026quot;,\u0026quot;aelpsxy\u0026quot;,\u0026quot;saelpxy\u0026quot;,\u0026quot;xaelpsy\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,1,3,2,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E4 \u0026lt;= words[i].length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= puzzles.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epuzzles[i].length == 7\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E and \u003Ccode\u003Epuzzles[i]\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EEach \u003Ccode\u003Epuzzles[i] \u003C/code\u003Edoes not contain repeated characters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Exploit the fact that the length of the puzzle is only 7.",
+    "Use bit-masks to represent the word and puzzle strings.",
+    "For each puzzle, count the number of words whose bit-mask is a sub-mask of the puzzle\u0027s bit-mask."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022aaaa\u0022,\u0022asas\u0022,\u0022able\u0022,\u0022ability\u0022,\u0022actt\u0022,\u0022actor\u0022,\u0022access\u0022]\n[\u0022aboveyz\u0022,\u0022abrodyz\u0022,\u0022abslute\u0022,\u0022absoryz\u0022,\u0022actresz\u0022,\u0022gaswxyz\u0022]",
+      "RawExpectedOutput": "[1,1,3,2,4,0]"
+    },
+    {
+      "RawInput": "[\u0022apple\u0022,\u0022pleas\u0022,\u0022please\u0022]\n[\u0022aelwxyz\u0022,\u0022aelpxyz\u0022,\u0022aelpsxy\u0022,\u0022saelpxy\u0022,\u0022xaelpsy\u0022]",
+      "RawExpectedOutput": "[0,1,3,2,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3097754+00:00",
+  "Url": "https://leetcode.com/problems/number-of-valid-words-for-each-puzzle/"
+}

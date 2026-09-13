@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1386,
+  "FrontendId": 1260,
+  "Title": "Shift 2D Grid",
+  "TitleSlug": "shift-2d-grid",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 74.5,
+  "TotalAccepted": 252848,
+  "TotalSubmissions": 339332,
+  "Likes": 2048,
+  "Dislikes": 373,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a 2D \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003Em x n\u003C/code\u003E\u0026nbsp;and an integer \u003Ccode\u003Ek\u003C/code\u003E. You need to shift the \u003Ccode\u003Egrid\u003C/code\u003E\u0026nbsp;\u003Ccode\u003Ek\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cp\u003EIn one shift operation:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EElement at \u003Ccode\u003Egrid[i][j]\u003C/code\u003E moves to \u003Ccode\u003Egrid[i][j \u002B 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EElement at \u003Ccode\u003Egrid[i][n - 1]\u003C/code\u003E moves to \u003Ccode\u003Egrid[i \u002B 1][0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EElement at \u003Ccode\u003Egrid[m\u0026nbsp;- 1][n - 1]\u003C/code\u003E moves to \u003Ccode\u003Egrid[0][0]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cem\u003E2D grid\u003C/em\u003E after applying shift operation \u003Ccode\u003Ek\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/11/05/e1.png\u0022 style=\u0022width: 400px; height: 178px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Ccode\u003Egrid\u003C/code\u003E = [[1,2,3],[4,5,6],[7,8,9]], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[9,1,2],[3,4,5],[6,7,8]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/11/05/e2.png\u0022 style=\u0022width: 400px; height: 166px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Ccode\u003Egrid\u003C/code\u003E = [[3,8,1,9],[19,7,2,5],[4,6,11,10],[12,0,21,13]], k = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[12,0,21,13],[3,8,1,9],[19,7,2,5],[4,6,11,10]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Ccode\u003Egrid\u003C/code\u003E = [[1,2,3],[4,5,6],[7,8,9]], k = 9\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2,3],[4,5,6],[7,8,9]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em ==\u0026nbsp;grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En ==\u0026nbsp;grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= grid[i][j] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Simulate step by step. move grid[i][j] to grid[i][j\u002B1]. handle last column of the grid.",
+    "Put the matrix row by row to a vector. take k % vector.length and move last k of the vector to the beginning. put the vector to the matrix back the same way."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2,3],[4,5,6],[7,8,9]]\n1",
+      "RawExpectedOutput": "[[9,1,2],[3,4,5],[6,7,8]]"
+    },
+    {
+      "RawInput": "[[3,8,1,9],[19,7,2,5],[4,6,11,10],[12,0,21,13]]\n4",
+      "RawExpectedOutput": "[[12,0,21,13],[3,8,1,9],[19,7,2,5],[4,6,11,10]]"
+    },
+    {
+      "RawInput": "[[1,2,3],[4,5,6],[7,8,9]]\n9",
+      "RawExpectedOutput": "[[1,2,3],[4,5,6],[7,8,9]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9538546+00:00",
+  "Url": "https://leetcode.com/problems/shift-2d-grid/"
+}

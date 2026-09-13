@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1826,
+  "FrontendId": 1707,
+  "Title": "Maximum XOR With an Element From Array",
+  "TitleSlug": "maximum-xor-with-an-element-from-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Bit Manipulation",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 59.5,
+  "TotalAccepted": 53197,
+  "TotalSubmissions": 89415,
+  "Likes": 1469,
+  "Dislikes": 41,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E consisting of non-negative integers. You are also given a \u003Ccode\u003Equeries\u003C/code\u003E array, where \u003Ccode\u003Equeries[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, m\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe answer to the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query is the maximum bitwise \u003Ccode\u003EXOR\u003C/code\u003E value of \u003Ccode\u003Ex\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and any element of \u003Ccode\u003Enums\u003C/code\u003E that does not exceed \u003Ccode\u003Em\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. In other words, the answer is \u003Ccode\u003Emax(nums[j] XOR x\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E for all \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003Enums[j] \u0026lt;= m\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. If all elements in \u003Ccode\u003Enums\u003C/code\u003E are larger than \u003Ccode\u003Em\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E, then the answer is \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer.length == queries.length\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the answer to the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E query.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,1,2,3,4], queries = [[3,1],[1,3],[5,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,3,7]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n1) 0 and 1 are the only two integers not greater than 1. 0 XOR 3 = 3 and 1 XOR 3 = 2. The larger of the two is 3.\n2) 1 XOR 2 = 3.\n3) 5 XOR 2 = 7.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,2,4,6,6,3], queries = [[12,4],[8,1],[6,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [15,-1,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length, queries.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[j], x\u003Csub\u003Ei\u003C/sub\u003E, m\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "In problems involving bitwise operations, we often think on the bits level. In this problem, we can think that to maximize the result of an xor operation, we need to maximize the most significant bit, then the next one, and so on.",
+    "If there\u0027s some number in the array that is less than m and whose the most significant bit is different than that of x, then xoring with this number maximizes the most significant bit, so I know this bit in the answer is 1.",
+    "To check the existence of such numbers and narrow your scope for further bits based on your choice, you can use trie.",
+    "You can sort the array and the queries, and maintain the trie such that in each query the trie consists exactly of the valid elements."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,1,2,3,4]\n[[3,1],[1,3],[5,6]]",
+      "RawExpectedOutput": "[3,3,7]"
+    },
+    {
+      "RawInput": "[5,2,4,6,6,3]\n[[12,4],[8,1],[6,3]]",
+      "RawExpectedOutput": "[15,-1,5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9591178+00:00",
+  "Url": "https://leetcode.com/problems/maximum-xor-with-an-element-from-array/"
+}

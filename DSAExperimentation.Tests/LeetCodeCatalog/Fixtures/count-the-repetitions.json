@@ -1,0 +1,32 @@
+{
+  "QuestionId": 466,
+  "FrontendId": 466,
+  "Title": "Count The Repetitions",
+  "TitleSlug": "count-the-repetitions",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 36,
+  "TotalAccepted": 32482,
+  "TotalSubmissions": 90307,
+  "Likes": 453,
+  "Dislikes": 371,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe define \u003Ccode\u003Estr = [s, n]\u003C/code\u003E as the string \u003Ccode\u003Estr\u003C/code\u003E which consists of the string \u003Ccode\u003Es\u003C/code\u003E concatenated \u003Ccode\u003En\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003Estr == [\u0026quot;abc\u0026quot;, 3] ==\u0026quot;abcabcabc\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EWe define that string \u003Ccode\u003Es1\u003C/code\u003E can be obtained from string \u003Ccode\u003Es2\u003C/code\u003E if we can remove some characters from \u003Ccode\u003Es2\u003C/code\u003E such that it becomes \u003Ccode\u003Es1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003Es1 = \u0026quot;abc\u0026quot;\u003C/code\u003E can be obtained from \u003Ccode\u003Es2 = \u0026quot;ab\u003Cstrong\u003E\u003Cu\u003Edbe\u003C/u\u003E\u003C/strong\u003Ec\u0026quot;\u003C/code\u003E based on our definition by removing the bolded underlined characters.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are given two strings \u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E and two integers \u003Ccode\u003En1\u003C/code\u003E and \u003Ccode\u003En2\u003C/code\u003E. You have the two strings \u003Ccode\u003Estr1 = [s1, n1]\u003C/code\u003E and \u003Ccode\u003Estr2 = [s2, n2]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum integer \u003C/em\u003E\u003Ccode\u003Em\u003C/code\u003E\u003Cem\u003E such that \u003C/em\u003E\u003Ccode\u003Estr = [str2, m]\u003C/code\u003E\u003Cem\u003E can be obtained from \u003C/em\u003E\u003Ccode\u003Estr1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0022acb\u0022, n1 = 4, s2 = \u0022ab\u0022, n2 = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0022acb\u0022, n1 = 1, s2 = \u0022acb\u0022, n2 = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s1.length, s2.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n1, n2 \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022acb\u0022\n4\n\u0022ab\u0022\n2",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022acb\u0022\n1\n\u0022acb\u0022\n1",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9902761+00:00",
+  "Url": "https://leetcode.com/problems/count-the-repetitions/"
+}

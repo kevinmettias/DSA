@@ -1,0 +1,36 @@
+{
+  "QuestionId": 956,
+  "FrontendId": 920,
+  "Title": "Number of Music Playlists",
+  "TitleSlug": "number-of-music-playlists",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 60.1,
+  "TotalAccepted": 81477,
+  "TotalSubmissions": 135522,
+  "Likes": 2497,
+  "Dislikes": 213,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYour music player contains \u003Ccode\u003En\u003C/code\u003E different songs. You want to listen to \u003Ccode\u003Egoal\u003C/code\u003E songs (not necessarily different) during your trip. To avoid boredom, you will create a playlist so that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEvery song is played \u003Cstrong\u003Eat least once\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EA song can only be played again only if \u003Ccode\u003Ek\u003C/code\u003E other songs have been played.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003Egoal\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe number of possible playlists that you can create\u003C/em\u003E. Since the answer can be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, goal = 3, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 6 possible playlists: [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], and [3, 2, 1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, goal = 3, k = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 6 possible playlists: [1, 1, 2], [1, 2, 1], [2, 1, 1], [2, 2, 1], [2, 1, 2], and [1, 2, 2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, goal = 3, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 2 possible playlists: [1, 2, 1] and [2, 1, 2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt; n \u0026lt;= goal \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n3\n1",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "2\n3\n0",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "2\n3\n1",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2766292+00:00",
+  "Url": "https://leetcode.com/problems/number-of-music-playlists/"
+}

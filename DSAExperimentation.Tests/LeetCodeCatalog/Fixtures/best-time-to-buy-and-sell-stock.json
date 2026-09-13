@@ -1,0 +1,31 @@
+{
+  "QuestionId": 121,
+  "FrontendId": 121,
+  "Title": "Best Time to Buy and Sell Stock",
+  "TitleSlug": "best-time-to-buy-and-sell-stock",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 57.4,
+  "TotalAccepted": 8608791,
+  "TotalSubmissions": 15003278,
+  "Likes": 36344,
+  "Dislikes": 1433,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Eprices\u003C/code\u003E where \u003Ccode\u003Eprices[i]\u003C/code\u003E is the price of a given stock on the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E day.\u003C/p\u003E\n\n\u003Cp\u003EYou want to maximize your profit by choosing a \u003Cstrong\u003Esingle day\u003C/strong\u003E to buy one stock and choosing a \u003Cstrong\u003Edifferent day in the future\u003C/strong\u003E to sell that stock.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum profit you can achieve from this transaction\u003C/em\u003E. If you cannot achieve any profit, return \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E prices = [7,1,5,3,6,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.\nNote that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E prices = [7,6,4,3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this case, no transactions are done and the max profit = 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= prices.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= prices[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[7,1,5,3,6,4]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[7,6,4,3,1]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.6685412+00:00",
+  "Url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"
+}

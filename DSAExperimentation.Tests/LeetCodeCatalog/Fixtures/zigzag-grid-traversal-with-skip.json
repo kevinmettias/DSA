@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3708,
+  "FrontendId": 3417,
+  "Title": "Zigzag Grid Traversal With Skip",
+  "TitleSlug": "zigzag-grid-traversal-with-skip",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 64.9,
+  "TotalAccepted": 41532,
+  "TotalSubmissions": 63957,
+  "Likes": 94,
+  "Dislikes": 12,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E 2D array \u003Ccode\u003Egrid\u003C/code\u003E of \u003Cstrong\u003Epositive\u003C/strong\u003E integers.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to traverse \u003Ccode\u003Egrid\u003C/code\u003E in a \u003Cstrong\u003Ezigzag\u003C/strong\u003E pattern while skipping every \u003Cstrong\u003Ealternate\u003C/strong\u003E cell.\u003C/p\u003E\n\n\u003Cp\u003EZigzag pattern traversal is defined as following the below actions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EStart at the top-left cell \u003Ccode\u003E(0, 0)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EMove \u003Cem\u003Eright\u003C/em\u003E within a row until the end of the row is reached.\u003C/li\u003E\n\t\u003Cli\u003EDrop down to the next row, then traverse \u003Cem\u003Eleft\u003C/em\u003E until the beginning of the row is reached.\u003C/li\u003E\n\t\u003Cli\u003EContinue \u003Cstrong\u003Ealternating\u003C/strong\u003E between right and left traversal until every row has been traversed.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote \u003C/strong\u003Ethat you \u003Cstrong\u003Emust skip\u003C/strong\u003E every \u003Cem\u003Ealternate\u003C/em\u003E cell during the traversal.\u003C/p\u003E\n\n\u003Cp\u003EReturn an array of integers \u003Ccode\u003Eresult\u003C/code\u003E containing, \u003Cstrong\u003Ein order\u003C/strong\u003E, the value of the cells visited during the zigzag traversal with skips.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[1,2],[3,4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[1,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/11/23/4012_example0.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[2,1],[2,1],[2,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[2,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/11/23/4012_example1.png\u0022 style=\u0022width: 200px; height: 240px;\u0022 /\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[1,2,3],[4,5,6],[7,8,9]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[1,3,5,7,9]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/11/23/4012_example2.png\u0022 style=\u0022width: 260px; height: 250px;\u0022 /\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n == grid.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m == grid[i].length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= grid[i][j] \u0026lt;= 2500\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[3,4]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[2,1],[2,1],[2,1]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,2,3],[4,5,6],[7,8,9]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.4251795+00:00",
+  "Url": "https://leetcode.com/problems/zigzag-grid-traversal-with-skip/"
+}

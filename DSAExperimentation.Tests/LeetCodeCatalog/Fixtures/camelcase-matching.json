@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1080,
+  "FrontendId": 1023,
+  "Title": "Camelcase Matching",
+  "TitleSlug": "camelcase-matching",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "String",
+    "Trie",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 66,
+  "TotalAccepted": 68894,
+  "TotalSubmissions": 104390,
+  "Likes": 994,
+  "Dislikes": 352,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of strings \u003Ccode\u003Equeries\u003C/code\u003E and a string \u003Ccode\u003Epattern\u003C/code\u003E, return a boolean array \u003Ccode\u003Eanswer\u003C/code\u003E where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is \u003Ccode\u003Etrue\u003C/code\u003E if \u003Ccode\u003Equeries[i]\u003C/code\u003E matches \u003Ccode\u003Epattern\u003C/code\u003E, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003EA query word \u003Ccode\u003Equeries[i]\u003C/code\u003E matches \u003Ccode\u003Epattern\u003C/code\u003E if you can insert lowercase English letters into the pattern so that it equals the query. You may insert a character at any position in pattern or you may choose not to insert any characters \u003Cstrong\u003Eat all\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [\u0026quot;FooBar\u0026quot;,\u0026quot;FooBarTest\u0026quot;,\u0026quot;FootBall\u0026quot;,\u0026quot;FrameBuffer\u0026quot;,\u0026quot;ForceFeedBack\u0026quot;], pattern = \u0026quot;FB\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [true,false,true,true,false]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;FooBar\u0026quot; can be generated like this \u0026quot;F\u0026quot; \u002B \u0026quot;oo\u0026quot; \u002B \u0026quot;B\u0026quot; \u002B \u0026quot;ar\u0026quot;.\n\u0026quot;FootBall\u0026quot; can be generated like this \u0026quot;F\u0026quot; \u002B \u0026quot;oot\u0026quot; \u002B \u0026quot;B\u0026quot; \u002B \u0026quot;all\u0026quot;.\n\u0026quot;FrameBuffer\u0026quot; can be generated like this \u0026quot;F\u0026quot; \u002B \u0026quot;rame\u0026quot; \u002B \u0026quot;B\u0026quot; \u002B \u0026quot;uffer\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [\u0026quot;FooBar\u0026quot;,\u0026quot;FooBarTest\u0026quot;,\u0026quot;FootBall\u0026quot;,\u0026quot;FrameBuffer\u0026quot;,\u0026quot;ForceFeedBack\u0026quot;], pattern = \u0026quot;FoBa\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [true,false,true,false,false]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;FooBar\u0026quot; can be generated like this \u0026quot;Fo\u0026quot; \u002B \u0026quot;o\u0026quot; \u002B \u0026quot;Ba\u0026quot; \u002B \u0026quot;r\u0026quot;.\n\u0026quot;FootBall\u0026quot; can be generated like this \u0026quot;Fo\u0026quot; \u002B \u0026quot;ot\u0026quot; \u002B \u0026quot;Ba\u0026quot; \u002B \u0026quot;ll\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [\u0026quot;FooBar\u0026quot;,\u0026quot;FooBarTest\u0026quot;,\u0026quot;FootBall\u0026quot;,\u0026quot;FrameBuffer\u0026quot;,\u0026quot;ForceFeedBack\u0026quot;], pattern = \u0026quot;FoBaT\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [false,true,false,false,false]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;FooBarTest\u0026quot; can be generated like this \u0026quot;Fo\u0026quot; \u002B \u0026quot;o\u0026quot; \u002B \u0026quot;Ba\u0026quot; \u002B \u0026quot;r\u0026quot; \u002B \u0026quot;T\u0026quot; \u002B \u0026quot;est\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= pattern.length, queries.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries[i].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[i]\u003C/code\u003E and \u003Ccode\u003Epattern\u003C/code\u003E consist of English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Given a single pattern and word, how can we solve it?",
+    "One way to do it is using a DP (pos1, pos2) where pos1 is a pointer to the word and pos2 to the pattern and returns true if we can match the pattern with the given word.",
+    "We have two scenarios: The first one is when \u0060word[pos1] == pattern[pos2]\u0060, then the transition will be just DP(pos1 \u002B 1, pos2 \u002B 1). The second scenario is when \u0060word[pos1]\u0060 is lowercase then we can add this character to the pattern so that the transition is just DP(pos1 \u002B 1, pos2)\r\nThe case base is \u0060if (pos1 == n \u0026\u0026 pos2 == m) return true;\u0060 Where n and m are the sizes of the strings word and pattern respectively."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022FooBar\u0022,\u0022FooBarTest\u0022,\u0022FootBall\u0022,\u0022FrameBuffer\u0022,\u0022ForceFeedBack\u0022]\n\u0022FB\u0022",
+      "RawExpectedOutput": "[true,false,true,true,false]"
+    },
+    {
+      "RawInput": "[\u0022FooBar\u0022,\u0022FooBarTest\u0022,\u0022FootBall\u0022,\u0022FrameBuffer\u0022,\u0022ForceFeedBack\u0022]\n\u0022FoBa\u0022",
+      "RawExpectedOutput": "[true,false,true,false,false]"
+    },
+    {
+      "RawInput": "[\u0022FooBar\u0022,\u0022FooBarTest\u0022,\u0022FootBall\u0022,\u0022FrameBuffer\u0022,\u0022ForceFeedBack\u0022]\n\u0022FoBaT\u0022",
+      "RawExpectedOutput": "[false,true,false,false,false]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7276022+00:00",
+  "Url": "https://leetcode.com/problems/camelcase-matching/"
+}

@@ -1,0 +1,44 @@
+{
+  "QuestionId": 3902,
+  "FrontendId": 3600,
+  "Title": "Maximize Spanning Tree Stability with Upgrades",
+  "TitleSlug": "maximize-spanning-tree-stability-with-upgrades",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Binary Search",
+    "Greedy",
+    "Union-Find",
+    "Graph Theory",
+    "Minimum Spanning Tree"
+  ],
+  "AcceptanceRatePercent": 65.7,
+  "TotalAccepted": 72548,
+  "TotalSubmissions": 110403,
+  "Likes": 381,
+  "Dislikes": 18,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E, representing \u003Ccode\u003En\u003C/code\u003E nodes numbered from 0 to \u003Ccode\u003En - 1\u003C/code\u003E and a list of \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, s\u003Csub\u003Ei\u003C/sub\u003E, must\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E indicates an undirected edge between nodes \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the strength of the edge.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emust\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is an integer (0 or 1). If \u003Ccode\u003Emust\u003Csub\u003Ei\u003C/sub\u003E == 1\u003C/code\u003E, the edge \u003Cstrong\u003Emust\u003C/strong\u003E be included in the\u003Cstrong\u003E \u003C/strong\u003E\u003Cstrong\u003Espanning tree\u003C/strong\u003E. These edges \u003Cstrong\u003Ecannot\u003C/strong\u003E be \u003Cstrong\u003Eupgraded\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are also given an integer \u003Ccode\u003Ek\u003C/code\u003E, the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of upgrades you can perform. Each upgrade \u003Cstrong\u003Edoubles\u003C/strong\u003E the strength of an edge, and each eligible edge (with \u003Ccode\u003Emust\u003Csub\u003Ei\u003C/sub\u003E == 0\u003C/code\u003E) can be upgraded \u003Cstrong\u003Eat most\u003C/strong\u003E once.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Estability\u003C/strong\u003E of a spanning tree is defined as the \u003Cstrong\u003Eminimum\u003C/strong\u003E strength score among all edges included in it.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible stability of any valid spanning tree. If it is impossible to connect all nodes, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E: A \u003Cstrong\u003Espanning tree\u003C/strong\u003E of a graph with \u003Ccode\u003En\u003C/code\u003E nodes is a subset of the edges that connects all nodes together (i.e. the graph is \u003Cstrong\u003Econnected\u003C/strong\u003E) \u003Cem\u003Ewithout\u003C/em\u003E forming any cycles, and uses \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003En - 1\u003C/code\u003E edges.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,2,1],[1,2,3,0]], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEdge \u003Ccode\u003E[0,1]\u003C/code\u003E with strength = 2 must be included in the spanning tree.\u003C/li\u003E\n\t\u003Cli\u003EEdge \u003Ccode\u003E[1,2]\u003C/code\u003E is optional and can be upgraded from 3 to 6 using one upgrade.\u003C/li\u003E\n\t\u003Cli\u003EThe resulting spanning tree includes these two edges with strengths 2 and 6.\u003C/li\u003E\n\t\u003Cli\u003EThe minimum strength in the spanning tree is 2, which is the maximum possible stability.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,4,0],[1,2,3,0],[0,2,1,0]], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESince all edges are optional and up to \u003Ccode\u003Ek = 2\u003C/code\u003E upgrades are allowed.\u003C/li\u003E\n\t\u003Cli\u003EUpgrade edges \u003Ccode\u003E[0,1]\u003C/code\u003E from 4 to 8 and \u003Ccode\u003E[1,2]\u003C/code\u003E from 3 to 6.\u003C/li\u003E\n\t\u003Cli\u003EThe resulting spanning tree includes these two edges with strengths 8 and 6.\u003C/li\u003E\n\t\u003Cli\u003EThe minimum strength in the tree is 6, which is the maximum possible stability.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,1,1],[1,2,1,1],[2,0,1,1]], k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAll edges are mandatory and form a cycle, which violates the spanning tree property of acyclicity. Thus, the answer is -1.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edges.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, s\u003Csub\u003Ei\u003C/sub\u003E, must\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E != v\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emust\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are no duplicate edges.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the \u003Ccode\u003Eedges\u003C/code\u003E array in descending order of weights.",
+    "Try using binary search on \u003Ccode\u003Eans\u003C/code\u003E.",
+    "Implement a \u003Ccode\u003Echk\u003C/code\u003E function which first adds all the edges with \u003Ccode\u003Emust = 1\u003C/code\u003E, and then adds the edges with \u003Ccode\u003Emust = 0\u003C/code\u003E, using any remaining upgrades greedily.",
+    "Use a \u003Ccode\u003EDSU\u003C/code\u003E with path compression and union by size/rank to maintain connected components.",
+    "Don\u0027t forget the case where you cannot form an MST because more than one component remains after processing all edges."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1,2,1],[1,2,3,0]]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[[0,1,4,0],[1,2,3,0],[0,2,1,0]]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[[0,1,1,1],[1,2,1,1],[2,0,1,1]]\n0",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8684887+00:00",
+  "Url": "https://leetcode.com/problems/maximize-spanning-tree-stability-with-upgrades/"
+}

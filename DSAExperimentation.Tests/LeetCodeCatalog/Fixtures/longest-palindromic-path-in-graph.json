@@ -1,0 +1,43 @@
+{
+  "QuestionId": 3930,
+  "FrontendId": 3615,
+  "Title": "Longest Palindromic Path in Graph",
+  "TitleSlug": "longest-palindromic-path-in-graph",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Graph Theory",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 22.5,
+  "TotalAccepted": 7958,
+  "TotalSubmissions": 35374,
+  "Likes": 61,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E and an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph with \u003Ccode\u003En\u003C/code\u003E nodes labeled from 0 to \u003Ccode\u003En - 1\u003C/code\u003E and a 2D array \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates an edge between nodes \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a string \u003Ccode\u003Elabel\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Elabel[i]\u003C/code\u003E is the character associated with node \u003Ccode\u003Ei\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou may start at any node and move to any adjacent node, visiting each node \u003Cstrong\u003Eat most\u003C/strong\u003E once.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible length of a \u003Cstrong\u003E\u003Cspan data-keyword=\u0022palindrome-string\u0022\u003Epalindrome\u003C/span\u003E\u003C/strong\u003E that can be formed by visiting a set of \u003Cstrong\u003Eunique\u003C/strong\u003E nodes along a valid path.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1],[1,2]], label = \u0026quot;aba\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExp\u003C/strong\u003E\u003Cstrong\u003Elanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2025/06/13/screenshot-2025-06-13-at-230714.png\u0022 style=\u0022width: 250px; height: 85px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe longest palindromic path is from node 0 to node 2 via node 1, following the path \u003Ccode\u003E0 \u0026rarr; 1 \u0026rarr; 2\u003C/code\u003E forming string \u003Ccode\u003E\u0026quot;aba\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThis is a valid palindrome of length 3.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1],[0,2]], label = \u0026quot;abc\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2025/06/13/screenshot-2025-06-13-at-230017.png\u0022 style=\u0022width: 200px; height: 150px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ENo path with more than one node forms a palindrome.\u003C/li\u003E\n\t\u003Cli\u003EThe best option is any single node, giving a palindrome of length 1.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, edges = [[0,2],[0,3],[3,1]], label = \u0026quot;bbac\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2025/06/13/screenshot-2025-06-13-at-230508.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe longest palindromic path is from node 0 to node 1, following the path \u003Ccode\u003E0 \u0026rarr; 3 \u0026rarr; 1\u003C/code\u003E, forming string \u003Ccode\u003E\u0026quot;bcb\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThis is a valid palindrome of length 3.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 14\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En - 1 \u0026lt;= edges.length \u0026lt;= n * (n - 1) / 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i] == [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E != v\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Elabel.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Elabel\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EThere are no duplicate edges.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use bitmask dynamic programming.",
+    "Build the palindrome by expanding from both endpoints: you can include a new pair of nodes as endpoints if neither is already in the current bitmask \u003Ccode\u003Emask\u003C/code\u003E.",
+    "Before adding new endpoints to the current palindrome, ensure their labels match the labels at the previous endpoints \u003Ccode\u003Eprev_l\u003C/code\u003E and \u003Ccode\u003Eprev_r\u003C/code\u003E.",
+    "Memoize each state as \u003Ccode\u003Edp[mask][prev_l][prev_r]\u003C/code\u003E, representing the maximum palindrome length achievable using the set of visited nodes in \u003Ccode\u003Emask\u003C/code\u003E with current endpoints at \u003Ccode\u003Eprev_l\u003C/code\u003E and \u003Ccode\u003Eprev_r\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1],[1,2]]\n\u0022aba\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[[0,1],[0,2]]\n\u0022abc\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4\n[[0,2],[0,3],[3,1]]\n\u0022bbac\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.741016+00:00",
+  "Url": "https://leetcode.com/problems/longest-palindromic-path-in-graph/"
+}

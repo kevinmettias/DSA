@@ -1,0 +1,36 @@
+{
+  "QuestionId": 647,
+  "FrontendId": 647,
+  "Title": "Palindromic Substrings",
+  "TitleSlug": "palindromic-substrings",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 73.2,
+  "TotalAccepted": 1251557,
+  "TotalSubmissions": 1709283,
+  "Likes": 11703,
+  "Dislikes": 258,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, return \u003Cem\u003Ethe number of \u003Cstrong\u003Epalindromic substrings\u003C/strong\u003E in it\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA string is a \u003Cstrong\u003Epalindrome\u003C/strong\u003E when it reads the same backward as forward.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubstring\u003C/strong\u003E is a contiguous sequence of characters within the string.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Three palindromic strings: \u0026quot;a\u0026quot;, \u0026quot;b\u0026quot;, \u0026quot;c\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aaa\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Six palindromic strings: \u0026quot;a\u0026quot;, \u0026quot;a\u0026quot;, \u0026quot;a\u0026quot;, \u0026quot;aa\u0026quot;, \u0026quot;aa\u0026quot;, \u0026quot;aaa\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can we reuse a previously computed palindrome to compute a larger palindrome?",
+    "If \u201Caba\u201D is a palindrome, is \u201Cxabax\u201D a palindrome? Similarly is \u201Cxabay\u201D a palindrome?",
+    "Complexity based hint:\u003C/br\u003E\r\nIf we use brute force and check whether for every start and end position a substring is a palindrome we have O(n^2) start - end pairs and O(n) palindromic checks. Can we reduce the time for palindromic checks to O(1) by reusing some previous computation?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abc\u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "\u0022aaa\u0022",
+      "RawExpectedOutput": "6"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3969403+00:00",
+  "Url": "https://leetcode.com/problems/palindromic-substrings/"
+}

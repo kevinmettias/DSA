@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3684,
+  "FrontendId": 3407,
+  "Title": "Substring Matching Pattern",
+  "TitleSlug": "substring-matching-pattern",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "String",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 29.2,
+  "TotalAccepted": 41790,
+  "TotalSubmissions": 143219,
+  "Likes": 128,
+  "Dislikes": 52,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E and a pattern string \u003Ccode\u003Ep\u003C/code\u003E, where \u003Ccode\u003Ep\u003C/code\u003E contains \u003Cstrong\u003Eexactly one\u003C/strong\u003E \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E character.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E in \u003Ccode\u003Ep\u003C/code\u003E can be replaced with any sequence of zero or more characters.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if \u003Ccode\u003Ep\u003C/code\u003E can be made a \u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003Esubstring\u003C/span\u003E of \u003Ccode\u003Es\u003C/code\u003E, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;leetcode\u0026quot;, p = \u0026quot;ee*e\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EBy replacing the \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E with \u003Ccode\u003E\u0026quot;tcod\u0026quot;\u003C/code\u003E, the substring \u003Ccode\u003E\u0026quot;eetcode\u0026quot;\u003C/code\u003E matches the pattern.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;car\u0026quot;, p = \u0026quot;c*v\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is no substring matching the pattern.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;luck\u0026quot;, p = \u0026quot;u*\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe substrings \u003Ccode\u003E\u0026quot;u\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;uc\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;uck\u0026quot;\u003C/code\u003E match the pattern.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= p.length \u0026lt;= 50 \u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E contains only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ep\u003C/code\u003E contains only lowercase English letters and exactly one \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Divide the pattern in two strings and search in the string."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022leetcode\u0022\n\u0022ee*e\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022car\u0022\n\u0022c*v\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022luck\u0022\n\u0022u*\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1694424+00:00",
+  "Url": "https://leetcode.com/problems/substring-matching-pattern/"
+}

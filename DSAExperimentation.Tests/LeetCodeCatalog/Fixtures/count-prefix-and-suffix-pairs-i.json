@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3309,
+  "FrontendId": 3042,
+  "Title": "Count Prefix and Suffix Pairs I",
+  "TitleSlug": "count-prefix-and-suffix-pairs-i",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Trie",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 77.7,
+  "TotalAccepted": 219191,
+  "TotalSubmissions": 282164,
+  "Likes": 618,
+  "Dislikes": 47,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string array \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ELet\u0026#39;s define a \u003Cstrong\u003Eboolean\u003C/strong\u003E function \u003Ccode\u003EisPrefixAndSuffix\u003C/code\u003E that takes two strings, \u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EisPrefixAndSuffix(str1, str2)\u003C/code\u003E returns \u003Ccode\u003Etrue\u003C/code\u003E if \u003Ccode\u003Estr1\u003C/code\u003E is \u003Cstrong\u003Eboth\u003C/strong\u003E a \u003Cspan data-keyword=\u0022string-prefix\u0022\u003Eprefix\u003C/span\u003E and a \u003Cspan data-keyword=\u0022string-suffix\u0022\u003Esuffix\u003C/span\u003E of \u003Ccode\u003Estr2\u003C/code\u003E, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, \u003Ccode\u003EisPrefixAndSuffix(\u0026quot;aba\u0026quot;, \u0026quot;ababa\u0026quot;)\u003C/code\u003E is \u003Ccode\u003Etrue\u003C/code\u003E because \u003Ccode\u003E\u0026quot;aba\u0026quot;\u003C/code\u003E is a prefix of \u003Ccode\u003E\u0026quot;ababa\u0026quot;\u003C/code\u003E and also a suffix, but \u003Ccode\u003EisPrefixAndSuffix(\u0026quot;abc\u0026quot;, \u0026quot;abcd\u0026quot;)\u003C/code\u003E is \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer denoting the \u003Cstrong\u003Enumber\u003C/strong\u003E of index pairs \u003C/em\u003E\u003Ccode\u003E(i, j)\u003C/code\u003E\u003Cem\u003E such that \u003C/em\u003E\u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E\u003Cem\u003E, and \u003C/em\u003E\u003Ccode\u003EisPrefixAndSuffix(words[i], words[j])\u003C/code\u003E\u003Cem\u003E is \u003C/em\u003E\u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;a\u0026quot;,\u0026quot;aba\u0026quot;,\u0026quot;ababa\u0026quot;,\u0026quot;aa\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, the counted index pairs are:\ni = 0 and j = 1 because isPrefixAndSuffix(\u0026quot;a\u0026quot;, \u0026quot;aba\u0026quot;) is true.\ni = 0 and j = 2 because isPrefixAndSuffix(\u0026quot;a\u0026quot;, \u0026quot;ababa\u0026quot;) is true.\ni = 0 and j = 3 because isPrefixAndSuffix(\u0026quot;a\u0026quot;, \u0026quot;aa\u0026quot;) is true.\ni = 1 and j = 2 because isPrefixAndSuffix(\u0026quot;aba\u0026quot;, \u0026quot;ababa\u0026quot;) is true.\nTherefore, the answer is 4.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;pa\u0026quot;,\u0026quot;papa\u0026quot;,\u0026quot;ma\u0026quot;,\u0026quot;mama\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, the counted index pairs are:\ni = 0 and j = 1 because isPrefixAndSuffix(\u0026quot;pa\u0026quot;, \u0026quot;papa\u0026quot;) is true.\ni = 2 and j = 3 because isPrefixAndSuffix(\u0026quot;ma\u0026quot;, \u0026quot;mama\u0026quot;) is true.\nTherefore, the answer is 2.  \u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;abab\u0026quot;,\u0026quot;ab\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EIn this example, the only valid index pair is i = 0 and j = 1, and isPrefixAndSuffix(\u0026quot;abab\u0026quot;, \u0026quot;ab\u0026quot;) is false.\nTherefore, the answer is 0.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Iterate through all index pairs \u003Ccode\u003E(i, j)\u003C/code\u003E, such that \u003Ccode\u003Ei \u003C j\u003C/code\u003E, and check \u003Ccode\u003EisPrefixAndSuffix(words[i], words[j])\u003C/code\u003E.",
+    "The answer is the total number of pairs where \u003Ccode\u003EisPrefixAndSuffix(words[i], words[j]) == true\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022a\u0022,\u0022aba\u0022,\u0022ababa\u0022,\u0022aa\u0022]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[\u0022pa\u0022,\u0022papa\u0022,\u0022ma\u0022,\u0022mama\u0022]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[\u0022abab\u0022,\u0022ab\u0022]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9571295+00:00",
+  "Url": "https://leetcode.com/problems/count-prefix-and-suffix-pairs-i/"
+}

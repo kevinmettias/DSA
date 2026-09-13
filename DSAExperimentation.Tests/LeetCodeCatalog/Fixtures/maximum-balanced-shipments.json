@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3954,
+  "FrontendId": 3638,
+  "Title": "Maximum Balanced Shipments",
+  "TitleSlug": "maximum-balanced-shipments",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Stack",
+    "Greedy",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 61.1,
+  "TotalAccepted": 54706,
+  "TotalSubmissions": 89483,
+  "Likes": 88,
+  "Dislikes": 11,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp data-end=\u0022365\u0022 data-start=\u002223\u0022\u003EYou are given an integer array \u003Ccode data-end=\u002262\u0022 data-start=\u002254\u0022\u003Eweight\u003C/code\u003E of length \u003Ccode data-end=\u002276\u0022 data-start=\u002273\u0022\u003En\u003C/code\u003E, representing the weights of \u003Ccode data-end=\u0022109\u0022 data-start=\u0022106\u0022\u003En\u003C/code\u003E parcels arranged in a straight line. A \u003Cstrong data-end=\u0022161\u0022 data-start=\u0022149\u0022\u003Eshipment\u003C/strong\u003E is defined as a contiguous subarray of parcels. A shipment is considered \u003Cstrong data-end=\u0022247\u0022 data-start=\u0022235\u0022\u003Ebalanced\u003C/strong\u003E if the weight of the \u003Cstrong data-end=\u0022284\u0022 data-start=\u0022269\u0022\u003Elast parcel\u003C/strong\u003E is \u003Cstrong\u003Estrictly less\u003C/strong\u003E than the \u003Cstrong data-end=\u0022329\u0022 data-start=\u0022311\u0022\u003Emaximum weight\u003C/strong\u003E among all parcels in that shipment.\u003C/p\u003E\n\n\u003Cp data-end=\u0022528\u0022 data-start=\u0022371\u0022\u003ESelect a set of \u003Cstrong data-end=\u0022406\u0022 data-start=\u0022387\u0022\u003Enon-overlapping\u003C/strong\u003E, contiguous, balanced shipments such that \u003Cstrong data-end=\u0022496\u0022 data-start=\u0022449\u0022\u003Eeach parcel appears in at most one shipment\u003C/strong\u003E (parcels may remain unshipped).\u003C/p\u003E\n\n\u003Cp data-end=\u0022587\u0022 data-start=\u0022507\u0022\u003EReturn the \u003Cstrong data-end=\u0022545\u0022 data-start=\u0022518\u0022\u003Emaximum possible number\u003C/strong\u003E of balanced shipments that can be formed.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eweight = [2,5,1,4,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp data-end=\u0022136\u0022 data-start=\u002262\u0022\u003EWe can form the maximum of two balanced shipments as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli data-end=\u0022163\u0022 data-start=\u0022140\u0022\u003EShipment 1: \u003Ccode\u003E[2, 5, 1]\u003C/code\u003E\n\n\t\u003Cul\u003E\n\t\t\u003Cli data-end=\u0022195\u0022 data-start=\u0022168\u0022\u003EMaximum parcel weight = 5\u003C/li\u003E\n\t\t\u003Cli data-end=\u0022275\u0022 data-start=\u0022200\u0022\u003ELast parcel weight = 1, which is strictly less than 5. Thus, it\u0026#39;s balanced.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli data-end=\u0022299\u0022 data-start=\u0022279\u0022\u003EShipment 2: \u003Ccode\u003E[4, 3]\u003C/code\u003E\n\t\u003Cul\u003E\n\t\t\u003Cli data-end=\u0022331\u0022 data-start=\u0022304\u0022\u003EMaximum parcel weight = 4\u003C/li\u003E\n\t\t\u003Cli data-end=\u0022411\u0022 data-start=\u0022336\u0022\u003ELast parcel weight = 3, which is strictly less than 4. Thus, it\u0026#39;s balanced.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp data-end=\u0022519\u0022 data-start=\u0022413\u0022\u003EIt is impossible to partition the parcels to achieve more than two balanced shipments, so the answer is 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eweight = [4,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp data-end=\u0022635\u0022 data-start=\u0022574\u0022\u003ENo balanced shipment can be formed in this case:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli data-end=\u0022772\u0022 data-start=\u0022639\u0022\u003EA shipment \u003Ccode\u003E[4, 4]\u003C/code\u003E has maximum weight 4 and the last parcel\u0026#39;s weight is also 4, which is not strictly less. Thus, it\u0026#39;s not balanced.\u003C/li\u003E\n\t\u003Cli data-end=\u0022885\u0022 data-start=\u0022775\u0022\u003ESingle-parcel shipments \u003Ccode\u003E[4]\u003C/code\u003E have the last parcel weight equal to the maximum parcel weight, thus not balanced.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp data-end=\u0022958\u0022 data-is-last-node=\u0022\u0022 data-is-only-node=\u0022\u0022 data-start=\u0022887\u0022\u003EAs there is no way to form even one balanced shipment, the answer is 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli data-end=\u00228706\u0022 data-start=\u00228671\u0022\u003E\u003Ccode data-end=\u00228704\u0022 data-start=\u00228671\u0022\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli data-end=\u00228733\u0022 data-start=\u00228709\u0022\u003E\u003Ccode data-end=\u00228733\u0022 data-start=\u00228709\u0022\u003E1 \u0026lt;= weight[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a monotonic stack to find for each end index \u003Ccode\u003Ei\u003C/code\u003E the nearest previous index \u003Ccode\u003Ej\u003C/code\u003E with \u003Ccode\u003Eweight[j] \u003E weight[i]\u003C/code\u003E (set \u003Ccode\u003Ej = -1\u003C/code\u003E if none).",
+    "Then set \u003Ccode\u003Edp[i] = best[j] \u002B 1\u003C/code\u003E (using \u003Ccode\u003Ebest[-1] = 0\u003C/code\u003E), and update \u003Ccode\u003Ebest[i] = max(best[i-1], dp[i])\u003C/code\u003E; the result is \u003Ccode\u003Ebest[n-1]\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,5,1,4,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[4,4]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8739018+00:00",
+  "Url": "https://leetcode.com/problems/maximum-balanced-shipments/"
+}

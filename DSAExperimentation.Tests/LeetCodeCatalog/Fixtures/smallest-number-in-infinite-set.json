@@ -1,0 +1,27 @@
+{
+  "QuestionId": 2413,
+  "FrontendId": 2336,
+  "Title": "Smallest Number in Infinite Set",
+  "TitleSlug": "smallest-number-in-infinite-set",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Design",
+    "Heap (Priority Queue)",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 70.7,
+  "TotalAccepted": 245939,
+  "TotalSubmissions": 347995,
+  "Likes": 1870,
+  "Dislikes": 234,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have a set which contains all positive integers \u003Ccode\u003E[1, 2, 3, 4, 5, ...]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESmallestInfiniteSet\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESmallestInfiniteSet()\u003C/code\u003E Initializes the \u003Cstrong\u003ESmallestInfiniteSet\u003C/strong\u003E object to contain \u003Cstrong\u003Eall\u003C/strong\u003E positive integers.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint popSmallest()\u003C/code\u003E \u003Cstrong\u003ERemoves\u003C/strong\u003E and returns the smallest integer contained in the infinite set.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid addBack(int num)\u003C/code\u003E \u003Cstrong\u003EAdds\u003C/strong\u003E a positive integer \u003Ccode\u003Enum\u003C/code\u003E back into the infinite set, if it is \u003Cstrong\u003Enot\u003C/strong\u003E already in the infinite set.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;SmallestInfiniteSet\u0026quot;, \u0026quot;addBack\u0026quot;, \u0026quot;popSmallest\u0026quot;, \u0026quot;popSmallest\u0026quot;, \u0026quot;popSmallest\u0026quot;, \u0026quot;addBack\u0026quot;, \u0026quot;popSmallest\u0026quot;, \u0026quot;popSmallest\u0026quot;, \u0026quot;popSmallest\u0026quot;]\n[[], [2], [], [], [], [1], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, 1, 2, 3, null, 1, 4, 5]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSmallestInfiniteSet smallestInfiniteSet = new SmallestInfiniteSet();\nsmallestInfiniteSet.addBack(2);    // 2 is already in the set, so no change is made.\nsmallestInfiniteSet.popSmallest(); // return 1, since 1 is the smallest number, and remove it from the set.\nsmallestInfiniteSet.popSmallest(); // return 2, and remove it from the set.\nsmallestInfiniteSet.popSmallest(); // return 3, and remove it from the set.\nsmallestInfiniteSet.addBack(1);    // 1 is added back to the set.\nsmallestInfiniteSet.popSmallest(); // return 1, since 1 was added back to the set and\n                                   // is the smallest number, and remove it from the set.\nsmallestInfiniteSet.popSmallest(); // return 4, and remove it from the set.\nsmallestInfiniteSet.popSmallest(); // return 5, and remove it from the set.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= num \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made \u003Cstrong\u003Ein total\u003C/strong\u003E to \u003Ccode\u003EpopSmallest\u003C/code\u003E and \u003Ccode\u003EaddBack\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Based on the constraints, what is the maximum element that can possibly be popped?",
+    "Maintain whether elements are in or not in the set. How many elements do we consider?"
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0231396+00:00",
+  "Url": "https://leetcode.com/problems/smallest-number-in-infinite-set/"
+}

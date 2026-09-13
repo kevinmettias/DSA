@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2276,
+  "FrontendId": 2157,
+  "Title": "Groups of Strings",
+  "TitleSlug": "groups-of-strings",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Bit Manipulation",
+    "Union-Find"
+  ],
+  "AcceptanceRatePercent": 28.3,
+  "TotalAccepted": 12773,
+  "TotalSubmissions": 45128,
+  "Likes": 511,
+  "Dislikes": 63,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array of strings \u003Ccode\u003Ewords\u003C/code\u003E. Each string consists of \u003Cstrong\u003Elowercase English letters\u003C/strong\u003E only. No letter occurs more than once in any string of \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo strings \u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E are said to be \u003Cstrong\u003Econnected\u003C/strong\u003E if the set of letters of \u003Ccode\u003Es2\u003C/code\u003E can be obtained from the set of letters of \u003Ccode\u003Es1\u003C/code\u003E by any \u003Cstrong\u003Eone\u003C/strong\u003E of the following operations:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAdding exactly one letter to the set of the letters of \u003Ccode\u003Es1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EDeleting exactly one letter from the set of the letters of \u003Ccode\u003Es1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EReplacing exactly one letter from the set of the letters of \u003Ccode\u003Es1\u003C/code\u003E with any letter, \u003Cstrong\u003Eincluding\u003C/strong\u003E itself.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe array \u003Ccode\u003Ewords\u003C/code\u003E can be divided into one or more non-intersecting \u003Cstrong\u003Egroups\u003C/strong\u003E. A string belongs to a group if any \u003Cstrong\u003Eone\u003C/strong\u003E of the following is true:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIt is connected to \u003Cstrong\u003Eat least one\u003C/strong\u003E other string of the group.\u003C/li\u003E\n\t\u003Cli\u003EIt is the \u003Cstrong\u003Eonly\u003C/strong\u003E string present in the group.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENote that the strings in \u003Ccode\u003Ewords\u003C/code\u003E should be grouped in such a manner that a string belonging to a group cannot be connected to a string present in any other group. It can be proved that such an arrangement is always unique.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array\u003C/em\u003E \u003Ccode\u003Eans\u003C/code\u003E \u003Cem\u003Eof size\u003C/em\u003E \u003Ccode\u003E2\u003C/code\u003E \u003Cem\u003Ewhere:\u003C/em\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eans[0]\u003C/code\u003E \u003Cem\u003Eis the \u003Cstrong\u003Emaximum number\u003C/strong\u003E of groups\u003C/em\u003E \u003Ccode\u003Ewords\u003C/code\u003E \u003Cem\u003Ecan be divided into, and\u003C/em\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eans[1]\u003C/code\u003E \u003Cem\u003Eis the \u003Cstrong\u003Esize of the largest\u003C/strong\u003E group\u003C/em\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;ab\u0026quot;,\u0026quot;cde\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,3]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- words[0] can be used to obtain words[1] (by replacing \u0026#39;a\u0026#39; with \u0026#39;b\u0026#39;), and words[2] (by adding \u0026#39;b\u0026#39;). So words[0] is connected to words[1] and words[2].\n- words[1] can be used to obtain words[0] (by replacing \u0026#39;b\u0026#39; with \u0026#39;a\u0026#39;), and words[2] (by adding \u0026#39;a\u0026#39;). So words[1] is connected to words[0] and words[2].\n- words[2] can be used to obtain words[0] (by deleting \u0026#39;b\u0026#39;), and words[1] (by deleting \u0026#39;a\u0026#39;). So words[2] is connected to words[0] and words[1].\n- words[3] is not connected to any string in words.\nThus, words can be divided into 2 groups [\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;ab\u0026quot;] and [\u0026quot;cde\u0026quot;]. The size of the largest group is 3.  \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;a\u0026quot;,\u0026quot;ab\u0026quot;,\u0026quot;abc\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,3]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- words[0] is connected to words[1].\n- words[1] is connected to words[0] and words[2].\n- words[2] is connected to words[1].\nSince all strings are connected to each other, they should be grouped together.\nThus, the size of the largest group is 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 26\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists of lowercase English letters only.\u003C/li\u003E\n\t\u003Cli\u003ENo letter occurs more than once in \u003Ccode\u003Ewords[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we build a graph from words, where there exists an edge between nodes i and j if words[i] and words[j] are connected?",
+    "The problem now boils down to finding the total number of components and the size of the largest component in the graph.",
+    "How can we use bit masking to reduce the search space while adding edges to node i?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022a\u0022,\u0022b\u0022,\u0022ab\u0022,\u0022cde\u0022]",
+      "RawExpectedOutput": "[2,3]"
+    },
+    {
+      "RawInput": "[\u0022a\u0022,\u0022ab\u0022,\u0022abc\u0022]",
+      "RawExpectedOutput": "[1,3]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4046504+00:00",
+  "Url": "https://leetcode.com/problems/groups-of-strings/"
+}

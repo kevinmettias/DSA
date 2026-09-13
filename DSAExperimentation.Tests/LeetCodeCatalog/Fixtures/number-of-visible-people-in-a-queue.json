@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1305,
+  "FrontendId": 1944,
+  "Title": "Number of Visible People in a Queue",
+  "TitleSlug": "number-of-visible-people-in-a-queue",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 73.6,
+  "TotalAccepted": 145014,
+  "TotalSubmissions": 197051,
+  "Likes": 2311,
+  "Dislikes": 69,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E people standing in a queue, and they numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E in \u003Cstrong\u003Eleft to right\u003C/strong\u003E order. You are given an array \u003Ccode\u003Eheights\u003C/code\u003E of \u003Cstrong\u003Edistinct\u003C/strong\u003E integers where \u003Ccode\u003Eheights[i]\u003C/code\u003E represents the height of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person.\u003C/p\u003E\n\n\u003Cp\u003EA person can \u003Cstrong\u003Esee\u003C/strong\u003E another person to their right in the queue if everybody in between is \u003Cstrong\u003Eshorter\u003C/strong\u003E than both of them. More formally, the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person can see the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person if \u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E and \u003Ccode\u003Emin(heights[i], heights[j]) \u0026gt; max(heights[i\u002B1], heights[i\u002B2], ..., heights[j-1])\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E of length \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the \u003Cstrong\u003Enumber of people\u003C/strong\u003E the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E person can \u003Cstrong\u003Esee\u003C/strong\u003E to their right in the queue\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/05/29/queue-plane.jpg\u0022 style=\u0022width: 600px; height: 247px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [10,6,8,5,11,9]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,1,2,1,1,0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nPerson 0 can see person 1, 2, and 4.\nPerson 1 can see person 2.\nPerson 2 can see person 3 and 4.\nPerson 3 can see person 4.\nPerson 4 can see person 5.\nPerson 5 can see no one since nobody is to the right of them.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [5,1,2,3,10]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [4,1,1,1,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == heights.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= heights[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Eheights\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How to solve this problem in quadratic complexity ?",
+    "For every subarray start at index i, keep finding new maximum values until a value larger than arr[i] is found.",
+    "Since the limits are high, you need a linear solution.",
+    "Use a stack to keep the values of the array sorted as you iterate the array from the end to the start.",
+    "Keep popping from the stack the elements in sorted order until a value larger than arr[i] is found, these are the ones that person i can see."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,6,8,5,11,9]",
+      "RawExpectedOutput": "[3,1,2,1,1,0]"
+    },
+    {
+      "RawInput": "[5,1,2,3,10]",
+      "RawExpectedOutput": "[4,1,1,1,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3104166+00:00",
+  "Url": "https://leetcode.com/problems/number-of-visible-people-in-a-queue/"
+}

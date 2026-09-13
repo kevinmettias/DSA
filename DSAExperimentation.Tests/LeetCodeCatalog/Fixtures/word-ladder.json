@@ -1,0 +1,33 @@
+{
+  "QuestionId": 127,
+  "FrontendId": 127,
+  "Title": "Word Ladder",
+  "TitleSlug": "word-ladder",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Breadth-First Search",
+    "Bidirectional Search"
+  ],
+  "AcceptanceRatePercent": 46.5,
+  "TotalAccepted": 1732116,
+  "TotalSubmissions": 3722007,
+  "Likes": 13745,
+  "Dislikes": 1973,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Cstrong\u003Etransformation sequence\u003C/strong\u003E from word \u003Ccode\u003EbeginWord\u003C/code\u003E to word \u003Ccode\u003EendWord\u003C/code\u003E using a dictionary \u003Ccode\u003EwordList\u003C/code\u003E is a sequence of words \u003Ccode\u003EbeginWord -\u0026gt; s\u003Csub\u003E1\u003C/sub\u003E -\u0026gt; s\u003Csub\u003E2\u003C/sub\u003E -\u0026gt; ... -\u0026gt; s\u003Csub\u003Ek\u003C/sub\u003E\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEvery adjacent pair of words differs by a single letter.\u003C/li\u003E\n\t\u003Cli\u003EEvery \u003Ccode\u003Es\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E for \u003Ccode\u003E1 \u0026lt;= i \u0026lt;= k\u003C/code\u003E is in \u003Ccode\u003EwordList\u003C/code\u003E. Note that \u003Ccode\u003EbeginWord\u003C/code\u003E does not need to be in \u003Ccode\u003EwordList\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003Csub\u003Ek\u003C/sub\u003E == endWord\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven two words, \u003Ccode\u003EbeginWord\u003C/code\u003E and \u003Ccode\u003EendWord\u003C/code\u003E, and a dictionary \u003Ccode\u003EwordList\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Enumber of words\u003C/strong\u003E in the \u003Cstrong\u003Eshortest transformation sequence\u003C/strong\u003E from\u003C/em\u003E \u003Ccode\u003EbeginWord\u003C/code\u003E \u003Cem\u003Eto\u003C/em\u003E \u003Ccode\u003EendWord\u003C/code\u003E\u003Cem\u003E, or \u003C/em\u003E\u003Ccode\u003E0\u003C/code\u003E\u003Cem\u003E if no such sequence exists.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E beginWord = \u0026quot;hit\u0026quot;, endWord = \u0026quot;cog\u0026quot;, wordList = [\u0026quot;hot\u0026quot;,\u0026quot;dot\u0026quot;,\u0026quot;dog\u0026quot;,\u0026quot;lot\u0026quot;,\u0026quot;log\u0026quot;,\u0026quot;cog\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One shortest transformation sequence is \u0026quot;hit\u0026quot; -\u0026gt; \u0026quot;hot\u0026quot; -\u0026gt; \u0026quot;dot\u0026quot; -\u0026gt; \u0026quot;dog\u0026quot; -\u0026gt; cog\u0026quot;, which is 5 words long.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E beginWord = \u0026quot;hit\u0026quot;, endWord = \u0026quot;cog\u0026quot;, wordList = [\u0026quot;hot\u0026quot;,\u0026quot;dot\u0026quot;,\u0026quot;dog\u0026quot;,\u0026quot;lot\u0026quot;,\u0026quot;log\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The endWord \u0026quot;cog\u0026quot; is not in wordList, therefore there is no valid transformation sequence.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= beginWord.length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EendWord.length == beginWord.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= wordList.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EwordList[i].length == beginWord.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EbeginWord\u003C/code\u003E, \u003Ccode\u003EendWord\u003C/code\u003E, and \u003Ccode\u003EwordList[i]\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EbeginWord != endWord\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the words in \u003Ccode\u003EwordList\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022hit\u0022\n\u0022cog\u0022\n[\u0022hot\u0022,\u0022dot\u0022,\u0022dog\u0022,\u0022lot\u0022,\u0022log\u0022,\u0022cog\u0022]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "\u0022hit\u0022\n\u0022cog\u0022\n[\u0022hot\u0022,\u0022dot\u0022,\u0022dog\u0022,\u0022lot\u0022,\u0022log\u0022]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.4100617+00:00",
+  "Url": "https://leetcode.com/problems/word-ladder/"
+}

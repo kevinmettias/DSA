@@ -1,0 +1,33 @@
+{
+  "QuestionId": 22,
+  "FrontendId": 22,
+  "Title": "Generate Parentheses",
+  "TitleSlug": "generate-parentheses",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 79.2,
+  "TotalAccepted": 3096656,
+  "TotalSubmissions": 3911385,
+  "Likes": 23596,
+  "Dislikes": 1097,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven \u003Ccode\u003En\u003C/code\u003E pairs of parentheses, write a function to \u003Cem\u003Egenerate all combinations of well-formed parentheses\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0022((()))\u0022,\u0022(()())\u0022,\u0022(())()\u0022,\u0022()(())\u0022,\u0022()()()\u0022]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0022()\u0022]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 8\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "[\u0022((()))\u0022,\u0022(()())\u0022,\u0022(())()\u0022,\u0022()(())\u0022,\u0022()()()\u0022]"
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "[\u0022()\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3850841+00:00",
+  "Url": "https://leetcode.com/problems/generate-parentheses/"
+}

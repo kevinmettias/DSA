@@ -1,0 +1,32 @@
+{
+  "QuestionId": 725,
+  "FrontendId": 725,
+  "Title": "Split Linked List in Parts",
+  "TitleSlug": "split-linked-list-in-parts",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List"
+  ],
+  "AcceptanceRatePercent": 70.7,
+  "TotalAccepted": 366786,
+  "TotalSubmissions": 518513,
+  "Likes": 4788,
+  "Dislikes": 379,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a singly linked list and an integer \u003Ccode\u003Ek\u003C/code\u003E, split the linked list into \u003Ccode\u003Ek\u003C/code\u003E consecutive linked list parts.\u003C/p\u003E\n\n\u003Cp\u003EThe length of each part should be as equal as possible: no two parts should have a size differing by more than one. This may lead to some parts being null.\u003C/p\u003E\n\n\u003Cp\u003EThe parts should be in the order of occurrence in the input list, and parts occurring earlier should always have a size greater than or equal to parts occurring later.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array of the \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E parts\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/13/split1-lc.jpg\u0022 style=\u0022width: 400px; height: 134px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3], k = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1],[2],[3],[],[]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe first element output[0] has output[0].val = 1, output[0].next = null.\nThe last element output[4] is null, but its string representation as a ListNode is [].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/13/split2-lc.jpg\u0022 style=\u0022width: 600px; height: 60px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,4,5,6,7,8,9,10], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2,3,4],[5,6,7],[8,9,10]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe input has been split into consecutive parts with size difference at most 1, and earlier parts are a larger size than the later parts.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[0, 1000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If there are N nodes in the list, and k parts, then every part has N/k elements, except the first N%k parts have an extra one."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]\n5",
+      "RawExpectedOutput": "[[1],[2],[3],[],[]]"
+    },
+    {
+      "RawInput": "[1,2,3,4,5,6,7,8,9,10]\n3",
+      "RawExpectedOutput": "[[1,2,3,4],[5,6,7],[8,9,10]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1157227+00:00",
+  "Url": "https://leetcode.com/problems/split-linked-list-in-parts/"
+}

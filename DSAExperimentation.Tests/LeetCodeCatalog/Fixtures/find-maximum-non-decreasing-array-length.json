@@ -1,0 +1,45 @@
+{
+  "QuestionId": 3211,
+  "FrontendId": 2945,
+  "Title": "Find Maximum Non-decreasing Array Length",
+  "TitleSlug": "find-maximum-non-decreasing-array-length",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Dynamic Programming",
+    "Stack",
+    "Queue",
+    "Monotonic Stack",
+    "Prefix Sum",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 19.2,
+  "TotalAccepted": 7269,
+  "TotalSubmissions": 37833,
+  "Likes": 217,
+  "Dislikes": 25,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou can perform any number of operations, where each operation involves selecting a \u003Cstrong\u003Esubarray\u003C/strong\u003E of the array and replacing it with the \u003Cstrong\u003Esum\u003C/strong\u003E of its elements. For example, if the given array is \u003Ccode\u003E[1,3,5,6]\u003C/code\u003E and you select subarray \u003Ccode\u003E[3,5]\u003C/code\u003E the array will convert to \u003Ccode\u003E[1,8,6]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003C/em\u003E\u003Cstrong\u003E\u003Cem\u003Emaximum\u003C/em\u003E\u003C/strong\u003E\u003Cem\u003E length of a \u003C/em\u003E\u003Cstrong\u003E\u003Cem\u003Enon-decreasing\u003C/em\u003E\u003C/strong\u003E\u003Cem\u003E array that can be made after applying operations.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a contiguous \u003Cstrong\u003Enon-empty\u003C/strong\u003E sequence of elements within an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E This array with length 3 is not non-decreasing.\nWe have two ways to make the array length two.\nFirst, choosing subarray [2,2] converts the array to [5,4].\nSecond, choosing subarray [5,2] converts the array to [7,2].\nIn these two ways the array is not non-decreasing.\nAnd if we choose subarray [5,2,2] and replace it with [9] it becomes non-decreasing. \nSo the answer is 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The array is non-decreasing. So the answer is 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,3,2,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Replacing [3,2] with [5] converts the given array to [4,5,6] that is non-decreasing.\nBecause the given array is not non-decreasing, the maximum\u003C!-- notionvc: 3447a505-d1ee-4411-8cae-e52162f53a55 --\u003E possible answer is 3.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Edp[i]\u003C/code\u003E be the maximum number of elements in the increasing sequence after processing the first \u003Ccode\u003Ei\u003C/code\u003E elements of the original array.",
+    "We have \u003Ccode\u003Edp[0] = 0\u003C/code\u003E. \u003Ccode\u003Edp[i \u002B 1] \u003E= dp[i]\u003C/code\u003E (since if we have the solution for the first \u003Ccode\u003Ei\u003C/code\u003E elements, we can always merge the last one of the first \u003Ccode\u003Ei \u002B 1\u003C/code\u003E elements which is \u003Ccode\u003Enums[i]\u003C/code\u003E into the solution of the first \u003Ccode\u003Ei\u003C/code\u003E elements.",
+    "For \u003Ccode\u003Ei \u003E 0\u003C/code\u003E, we want to \u003Ccode\u003Edp[i] = max(dp[j] \u002B 1)\u003C/code\u003E where \u003Ccode\u003Esum(nums[i - 1] \u002B nums[i - 2] \u002B\u2026 \u002B nums[j]) \u003E= v[j]\u003C/code\u003E and \u003Ccode\u003Ev[j]\u003C/code\u003E is the last element of the solution ending with \u003Ccode\u003Enums[j - 1]\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,2,2]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[1,2,3,4]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[4,3,2,6]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2411716+00:00",
+  "Url": "https://leetcode.com/problems/find-maximum-non-decreasing-array-length/"
+}

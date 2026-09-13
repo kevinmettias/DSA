@@ -1,0 +1,44 @@
+{
+  "QuestionId": 2914,
+  "FrontendId": 2812,
+  "Title": "Find the Safest Path in a Grid",
+  "TitleSlug": "find-the-safest-path-in-a-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Heap (Priority Queue)",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 57.4,
+  "TotalAccepted": 207561,
+  "TotalSubmissions": 361855,
+  "Likes": 2306,
+  "Dislikes": 355,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D matrix \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003En x n\u003C/code\u003E, where \u003Ccode\u003E(r, c)\u003C/code\u003E represents:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EA cell containing a thief if \u003Ccode\u003Egrid[r][c] = 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAn empty cell if \u003Ccode\u003Egrid[r][c] = 0\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are initially positioned at cell \u003Ccode\u003E(0, 0)\u003C/code\u003E. In one move, you can move to any adjacent cell in the grid, including cells containing thieves.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Esafeness factor\u003C/strong\u003E of a path on the grid is defined as the \u003Cstrong\u003Eminimum\u003C/strong\u003E manhattan distance from any cell in the path to any thief in the grid.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum safeness factor\u003C/strong\u003E of all paths leading to cell \u003C/em\u003E\u003Ccode\u003E(n - 1, n - 1)\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Eadjacent\u003C/strong\u003E cell of cell \u003Ccode\u003E(r, c)\u003C/code\u003E, is one of the cells \u003Ccode\u003E(r, c \u002B 1)\u003C/code\u003E, \u003Ccode\u003E(r, c - 1)\u003C/code\u003E, \u003Ccode\u003E(r \u002B 1, c)\u003C/code\u003E and \u003Ccode\u003E(r - 1, c)\u003C/code\u003E if it exists.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003EManhattan distance\u003C/strong\u003E between two cells \u003Ccode\u003E(a, b)\u003C/code\u003E and \u003Ccode\u003E(x, y)\u003C/code\u003E is equal to \u003Ccode\u003E|a - x| \u002B |b - y|\u003C/code\u003E, where \u003Ccode\u003E|val|\u003C/code\u003E denotes the absolute value of val.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/07/02/example1.png\u0022 style=\u0022width: 362px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,0,0],[0,0,0],[0,0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All paths from (0, 0) to (n - 1, n - 1) go through the thieves in cells (0, 0) and (n - 1, n - 1).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/07/02/example2.png\u0022 style=\u0022width: 362px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,0,1],[0,0,0],[0,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The path depicted in the picture above has a safeness factor of 2 since:\n- The closest cell of the path to the thief at cell (0, 2) is cell (0, 0). The distance between them is | 0 - 0 | \u002B | 0 - 2 | = 2.\nIt can be shown that there are no other paths with a higher safeness factor.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/07/02/example3.png\u0022 style=\u0022width: 362px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,0,0,1],[0,0,0,0],[0,0,0,0],[1,0,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The path depicted in the picture above has a safeness factor of 2 since:\n- The closest cell of the path to the thief at cell (0, 3) is cell (1, 2). The distance between them is | 0 - 1 | \u002B | 3 - 2 | = 2.\n- The closest cell of the path to the thief at cell (3, 0) is cell (3, 2). The distance between them is | 3 - 3 | \u002B | 0 - 2 | = 2.\nIt can be shown that there are no other paths with a higher safeness factor.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= grid.length == n \u0026lt;= 400\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i].length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere is at least one thief in the \u003Ccode\u003Egrid\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider using both BFS and binary search together.",
+    "Launch a BFS starting from all the cells containing thieves to calculate d[x][y] which is the smallest Manhattan distance from (x, y) to the nearest grid that contains thieves.",
+    "To check if the bottom-right cell of the grid can be reached through a path of safeness factor v, eliminate all cells (x, y) such that grid[x][y]  \u003C v. if (0, 0) and (n - 1, n - 1) are still connected, there exists a path between (0, 0) and (n - 1, n - 1) of safeness factor v.",
+    "Binary search over the final safeness factor v."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,0,0],[0,0,0],[0,0,1]]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[[0,0,1],[0,0,0],[0,0,0]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[0,0,0,1],[0,0,0,0],[0,0,0,0],[1,0,0,0]]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3042658+00:00",
+  "Url": "https://leetcode.com/problems/find-the-safest-path-in-a-grid/"
+}

@@ -1,0 +1,31 @@
+{
+  "QuestionId": 792,
+  "FrontendId": 704,
+  "Title": "Binary Search",
+  "TitleSlug": "binary-search",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Binary Search"
+  ],
+  "AcceptanceRatePercent": 61.4,
+  "TotalAccepted": 4281826,
+  "TotalSubmissions": 6977135,
+  "Likes": 13771,
+  "Dislikes": 309,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers \u003Ccode\u003Enums\u003C/code\u003E which is sorted in ascending order, and an integer \u003Ccode\u003Etarget\u003C/code\u003E, write a function to search \u003Ccode\u003Etarget\u003C/code\u003E in \u003Ccode\u003Enums\u003C/code\u003E. If \u003Ccode\u003Etarget\u003C/code\u003E exists, then return its index. Otherwise, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an algorithm with \u003Ccode\u003EO(log n)\u003C/code\u003E runtime complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,0,3,5,9,12], target = 9\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 9 exists in nums and its index is 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,0,3,5,9,12], target = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 2 does not exist in nums so return -1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt; nums[i], target \u0026lt; 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the integers in \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is sorted in ascending order.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,0,3,5,9,12]\n9",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[-1,0,3,5,9,12]\n2",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.6867347+00:00",
+  "Url": "https://leetcode.com/problems/binary-search/"
+}

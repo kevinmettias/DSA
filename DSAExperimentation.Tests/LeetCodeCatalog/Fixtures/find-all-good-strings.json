@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1513,
+  "FrontendId": 1397,
+  "Title": "Find All Good Strings",
+  "TitleSlug": "find-all-good-strings",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 46.3,
+  "TotalAccepted": 10356,
+  "TotalSubmissions": 22378,
+  "Likes": 543,
+  "Dislikes": 131,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the strings \u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E and the string \u003Ccode\u003Eevil\u003C/code\u003E, return \u003Cem\u003Ethe number of \u003Cstrong\u003Egood\u003C/strong\u003E strings\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Egood\u003C/strong\u003E string has size \u003Ccode\u003En\u003C/code\u003E, it is alphabetically greater than or equal to \u003Ccode\u003Es1\u003C/code\u003E, it is alphabetically smaller than or equal to \u003Ccode\u003Es2\u003C/code\u003E, and it does not contain the string \u003Ccode\u003Eevil\u003C/code\u003E as a substring. Since the answer can be a huge number, return this \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, s1 = \u0026quot;aa\u0026quot;, s2 = \u0026quot;da\u0026quot;, evil = \u0026quot;b\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 51 \n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 25 good strings starting with \u0026#39;a\u0026#39;: \u0026quot;aa\u0026quot;,\u0026quot;ac\u0026quot;,\u0026quot;ad\u0026quot;,...,\u0026quot;az\u0026quot;. Then there are 25 good strings starting with \u0026#39;c\u0026#39;: \u0026quot;ca\u0026quot;,\u0026quot;cc\u0026quot;,\u0026quot;cd\u0026quot;,...,\u0026quot;cz\u0026quot; and finally there is one good string starting with \u0026#39;d\u0026#39;: \u0026quot;da\u0026quot;.\u0026nbsp;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 8, s1 = \u0026quot;leetcode\u0026quot;, s2 = \u0026quot;leetgoes\u0026quot;, evil = \u0026quot;leet\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0 \n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All strings greater than or equal to s1 and smaller than or equal to s2 start with the prefix \u0026quot;leet\u0026quot;, therefore, there is not any good string.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, s1 = \u0026quot;gx\u0026quot;, s2 = \u0026quot;gz\u0026quot;, evil = \u0026quot;x\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es2.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1 \u0026lt;= s2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= evil.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll strings consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use DP with 4 states (pos: Int, posEvil: Int, equalToS1: Bool, equalToS2: Bool) which compute the number of valid strings of size \u0022pos\u0022 where the maximum common suffix with string \u0022evil\u0022 has size \u0022posEvil\u0022. When \u0022equalToS1\u0022 is \u0022true\u0022, the current valid string is equal to \u0022S1\u0022 otherwise it is greater. In a similar way when equalToS2 is \u0022true\u0022 the current valid string is equal to \u0022S2\u0022 otherwise it is smaller.",
+    "To update the maximum common suffix with string \u0022evil\u0022 use KMP preprocessing."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2\n\u0022aa\u0022\n\u0022da\u0022\n\u0022b\u0022",
+      "RawExpectedOutput": "51"
+    },
+    {
+      "RawInput": "8\n\u0022leetcode\u0022\n\u0022leetgoes\u0022\n\u0022leet\u0022",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "2\n\u0022gx\u0022\n\u0022gz\u0022\n\u0022x\u0022",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2161527+00:00",
+  "Url": "https://leetcode.com/problems/find-all-good-strings/"
+}

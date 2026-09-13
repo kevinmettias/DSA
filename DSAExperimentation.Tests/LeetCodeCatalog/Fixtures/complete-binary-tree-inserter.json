@@ -1,0 +1,29 @@
+{
+  "QuestionId": 955,
+  "FrontendId": 919,
+  "Title": "Complete Binary Tree Inserter",
+  "TitleSlug": "complete-binary-tree-inserter",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Breadth-First Search",
+    "Design",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 65.3,
+  "TotalAccepted": 68802,
+  "TotalSubmissions": 105407,
+  "Likes": 1162,
+  "Dislikes": 120,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Cstrong\u003Ecomplete binary tree\u003C/strong\u003E is a binary tree in which every level, except possibly the last, is completely filled, and all nodes are as far left as possible.\u003C/p\u003E\n\n\u003Cp\u003EDesign an algorithm to insert a new node to a complete binary tree keeping it complete after the insertion.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ECBTInserter\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ECBTInserter(TreeNode root)\u003C/code\u003E Initializes the data structure with the \u003Ccode\u003Eroot\u003C/code\u003E of the complete binary tree.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint insert(int v)\u003C/code\u003E Inserts a \u003Ccode\u003ETreeNode\u003C/code\u003E into the tree with value \u003Ccode\u003ENode.val == val\u003C/code\u003E so that the tree remains complete, and returns the value of the parent of the inserted \u003Ccode\u003ETreeNode\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003ETreeNode get_root()\u003C/code\u003E Returns the root node of the tree.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/03/lc-treeinsert.jpg\u0022 style=\u0022width: 500px; height: 143px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;CBTInserter\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;get_root\u0026quot;]\n[[[1, 2]], [3], [4], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, 2, [1, 2, 3, 4]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nCBTInserter cBTInserter = new CBTInserter([1, 2]);\ncBTInserter.insert(3);  // return 1\ncBTInserter.insert(4);  // return 2\ncBTInserter.get_root(); // return [1, 2, 3, 4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree will be in the range \u003Ccode\u003E[1, 1000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eroot\u003C/code\u003E is a complete binary tree.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= val \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Einsert\u003C/code\u003E and \u003Ccode\u003Eget_root\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022CBTInserter\u0022,\u0022insert\u0022,\u0022insert\u0022,\u0022get_root\u0022]\n[[[1,2]],[3],[4],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8383748+00:00",
+  "Url": "https://leetcode.com/problems/complete-binary-tree-inserter/"
+}

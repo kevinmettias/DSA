@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3789,
+  "FrontendId": 3480,
+  "Title": "Maximize Subarrays After Removing One Conflicting Pair",
+  "TitleSlug": "maximize-subarrays-after-removing-one-conflicting-pair",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Segment Tree",
+    "Enumeration",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 64.1,
+  "TotalAccepted": 57953,
+  "TotalSubmissions": 90450,
+  "Likes": 312,
+  "Dislikes": 57,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E which represents an array \u003Ccode\u003Enums\u003C/code\u003E containing the numbers from 1 to \u003Ccode\u003En\u003C/code\u003E in order. Additionally, you are given a 2D array \u003Ccode\u003EconflictingPairs\u003C/code\u003E, where \u003Ccode\u003EconflictingPairs[i] = [a, b]\u003C/code\u003E indicates that \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E form a conflicting pair.\u003C/p\u003E\n\n\u003Cp\u003ERemove \u003Cstrong\u003Eexactly\u003C/strong\u003E one element from \u003Ccode\u003EconflictingPairs\u003C/code\u003E. Afterward, count the number of \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Enon-empty subarrays\u003C/span\u003E of \u003Ccode\u003Enums\u003C/code\u003E which do not contain both \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E for any remaining conflicting pair \u003Ccode\u003E[a, b]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of subarrays possible after removing \u003Cstrong\u003Eexactly\u003C/strong\u003E one conflicting pair.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, conflictingPairs = [[2,3],[1,4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E9\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ERemove \u003Ccode\u003E[2, 3]\u003C/code\u003E from \u003Ccode\u003EconflictingPairs\u003C/code\u003E. Now, \u003Ccode\u003EconflictingPairs = [[1, 4]]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere are 9 subarrays in \u003Ccode\u003Enums\u003C/code\u003E where \u003Ccode\u003E[1, 4]\u003C/code\u003E do not appear together. They are \u003Ccode\u003E[1]\u003C/code\u003E, \u003Ccode\u003E[2]\u003C/code\u003E, \u003Ccode\u003E[3]\u003C/code\u003E, \u003Ccode\u003E[4]\u003C/code\u003E, \u003Ccode\u003E[1, 2]\u003C/code\u003E, \u003Ccode\u003E[2, 3]\u003C/code\u003E, \u003Ccode\u003E[3, 4]\u003C/code\u003E, \u003Ccode\u003E[1, 2, 3]\u003C/code\u003E and \u003Ccode\u003E[2, 3, 4]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe maximum number of subarrays we can achieve after removing one element from \u003Ccode\u003EconflictingPairs\u003C/code\u003E is 9.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, conflictingPairs = [[1,2],[2,5],[3,5]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E12\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ERemove \u003Ccode\u003E[1, 2]\u003C/code\u003E from \u003Ccode\u003EconflictingPairs\u003C/code\u003E. Now, \u003Ccode\u003EconflictingPairs = [[2, 5], [3, 5]]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere are 12 subarrays in \u003Ccode\u003Enums\u003C/code\u003E where \u003Ccode\u003E[2, 5]\u003C/code\u003E and \u003Ccode\u003E[3, 5]\u003C/code\u003E do not appear together.\u003C/li\u003E\n\t\u003Cli\u003EThe maximum number of subarrays we can achieve after removing one element from \u003Ccode\u003EconflictingPairs\u003C/code\u003E is 12.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= conflictingPairs.length \u0026lt;= 2 * n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EconflictingPairs[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= conflictingPairs[i][j] \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EconflictingPairs[i][0] != conflictingPairs[i][1]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Ef[i]\u003C/code\u003E (where \u003Ccode\u003Ei = 1, 2, 3, ..., n\u003C/code\u003E) be the end index of the longest valid subarray (without any conflicting pair) starting at index \u003Ccode\u003Ei\u003C/code\u003E.",
+    "The answer is: \u003Ccode\u003Esigma(f[i] - i \u002B 1) for i in [1..n]\u003C/code\u003E, which simplifies to: \u003Ccode\u003Esigma(f[i]) - n * (n \u002B 1) / 2 \u002B n\u003C/code\u003E.",
+    "Focus on maintaining \u003Ccode\u003Ef[i]\u003C/code\u003E.",
+    "If we have a conflicting pair \u003Ccode\u003E(x, y)\u003C/code\u003E with \u003Ccode\u003Ex \u003C y\u003C/code\u003E: 1. Sort the conflicting pairs by \u003Ccode\u003Ey\u003C/code\u003E values in non-increasing order.  2. Update each prefix of the \u003Ccode\u003Ef\u003C/code\u003E array accordingly.",
+    "Use a segment tree or another suitable data structure to maintain the range update and sum query efficiently."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n[[2,3],[1,4]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n[[1,2],[2,5],[3,5]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8693897+00:00",
+  "Url": "https://leetcode.com/problems/maximize-subarrays-after-removing-one-conflicting-pair/"
+}

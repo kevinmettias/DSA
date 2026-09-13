@@ -1,0 +1,34 @@
+{
+  "QuestionId": 1765,
+  "FrontendId": 1669,
+  "Title": "Merge In Between Linked Lists",
+  "TitleSlug": "merge-in-between-linked-lists",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List"
+  ],
+  "AcceptanceRatePercent": 83.2,
+  "TotalAccepted": 291474,
+  "TotalSubmissions": 350405,
+  "Likes": 2302,
+  "Dislikes": 227,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two linked lists: \u003Ccode\u003Elist1\u003C/code\u003E and \u003Ccode\u003Elist2\u003C/code\u003E of sizes \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E respectively.\u003C/p\u003E\n\n\u003Cp\u003ERemove \u003Ccode\u003Elist1\u003C/code\u003E\u0026#39;s nodes from the \u003Ccode\u003Ea\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node to the \u003Ccode\u003Eb\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node, and put \u003Ccode\u003Elist2\u003C/code\u003E in their place.\u003C/p\u003E\n\n\u003Cp\u003EThe blue edges and nodes in the following figure indicate the result:\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/05/fig1.png\u0022 style=\u0022height: 130px; width: 504px;\u0022 /\u003E\n\u003Cp\u003E\u003Cem\u003EBuild the result list and return its head.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/03/01/ll.png\u0022 style=\u0022width: 609px; height: 210px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E list1 = [10,1,13,6,9,5], a = 3, b = 4, list2 = [1000000,1000001,1000002]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [10,1,13,1000000,1000001,1000002,5]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We remove the nodes 3 and 4 and put the entire list2 in their place. The blue edges and nodes in the above figure indicate the result.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/05/merge_linked_list_ex2.png\u0022 style=\u0022width: 463px; height: 140px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E list1 = [0,1,2,3,4,5,6], a = 2, b = 5, list2 = [1000000,1000001,1000002,1000003,1000004]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,1,1000000,1000001,1000002,1000003,1000004,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The blue edges and nodes in the above figure indicate the result.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= list1.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a \u0026lt;= b \u0026lt; list1.length - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= list2.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Check which edges need to be changed.",
+    "Let the next node of the (a-1)th node of list1 be the 0-th node in list 2.",
+    "Let the next node of the last node of list2 be the (b\u002B1)-th node in list 1."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,1,13,6,9,5]\n3\n4\n[1000000,1000001,1000002]",
+      "RawExpectedOutput": "[10,1,13,1000000,1000001,1000002,5]"
+    },
+    {
+      "RawInput": "[0,1,2,3,4,5,6]\n2\n5\n[1000000,1000001,1000002,1000003,1000004]",
+      "RawExpectedOutput": "[0,1,1000000,1000001,1000002,1000003,1000004,6]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.965275+00:00",
+  "Url": "https://leetcode.com/problems/merge-in-between-linked-lists/"
+}

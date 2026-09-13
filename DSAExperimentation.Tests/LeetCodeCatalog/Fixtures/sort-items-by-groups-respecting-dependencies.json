@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1309,
+  "FrontendId": 1203,
+  "Title": "Sort Items by Groups Respecting Dependencies",
+  "TitleSlug": "sort-items-by-groups-respecting-dependencies",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Topological Sort",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 66.1,
+  "TotalAccepted": 70529,
+  "TotalSubmissions": 106699,
+  "Likes": 1939,
+  "Dislikes": 324,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are\u0026nbsp;\u003Ccode\u003En\u003C/code\u003E\u0026nbsp;items each\u0026nbsp;belonging to zero or one of\u0026nbsp;\u003Ccode\u003Em\u003C/code\u003E\u0026nbsp;groups where \u003Ccode\u003Egroup[i]\u003C/code\u003E\u0026nbsp;is the group that the \u003Ccode\u003Ei\u003C/code\u003E-th item belongs to and it\u0026#39;s equal to \u003Ccode\u003E-1\u003C/code\u003E\u0026nbsp;if the \u003Ccode\u003Ei\u003C/code\u003E-th item belongs to no group. The items and the groups are zero indexed. A group can have no item belonging to it.\u003C/p\u003E\n\n\u003Cp\u003EReturn a sorted list of the items such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe items that belong to the same group are next to each other in the sorted list.\u003C/li\u003E\n\t\u003Cli\u003EThere are some\u0026nbsp;relations\u0026nbsp;between these items where\u0026nbsp;\u003Ccode\u003EbeforeItems[i]\u003C/code\u003E\u0026nbsp;is a list containing all the items that should come before the\u0026nbsp;\u003Ccode\u003Ei\u003C/code\u003E-th item in the sorted array (to the left of the\u0026nbsp;\u003Ccode\u003Ei\u003C/code\u003E-th item).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn any solution if there is more than one solution and return an \u003Cstrong\u003Eempty list\u003C/strong\u003E\u0026nbsp;if there is no solution.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/09/11/1359_ex1.png\u0022 style=\u0022width: 191px; height: 181px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 8, m = 2, group = [-1,-1,1,0,0,1,0,-1], beforeItems = [[],[6],[5],[6],[3,6],[],[],[]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [6,3,4,1,5,2,0,7]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 8, m = 2, group = [-1,-1,1,0,0,1,0,-1], beforeItems = [[],[6],[5],[6],[3],[],[4],[]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;This is the same as example 1 except that 4 needs to be before 6 in the sorted list.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= n \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egroup.length == beforeItems.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1 \u0026lt;= group[i] \u0026lt;= m - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= beforeItems[i].length \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= beforeItems[i][j] \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei != beforeItems[i][j]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EbeforeItems[i]\u0026nbsp;\u003C/code\u003Edoes not contain\u0026nbsp;duplicates elements.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Think of it as a graph problem.",
+    "We need to find a topological order on the dependency graph.",
+    "Build two graphs, one for the groups and another for the items."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "8\n2\n[-1,-1,1,0,0,1,0,-1]\n[[],[6],[5],[6],[3,6],[],[],[]]",
+      "RawExpectedOutput": "[6,3,4,1,5,2,0,7]"
+    },
+    {
+      "RawInput": "8\n2\n[-1,-1,1,0,0,1,0,-1]\n[[],[6],[5],[6],[3],[],[4],[]]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0713633+00:00",
+  "Url": "https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/"
+}

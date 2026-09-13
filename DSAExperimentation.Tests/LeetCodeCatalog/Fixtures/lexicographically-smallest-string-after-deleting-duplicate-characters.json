@@ -1,0 +1,41 @@
+{
+  "QuestionId": 4086,
+  "FrontendId": 3816,
+  "Title": "Lexicographically Smallest String After Deleting Duplicate Characters",
+  "TitleSlug": "lexicographically-smallest-string-after-deleting-duplicate-characters",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Stack",
+    "Greedy",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 21.6,
+  "TotalAccepted": 6398,
+  "TotalSubmissions": 29688,
+  "Likes": 48,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E that consists of lowercase English letters.\u003C/p\u003E\n\n\u003Cp\u003EYou can perform the following operation any number of times (possibly zero times):\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose any letter that appears \u003Cstrong\u003Eat least twice\u003C/strong\u003E in the current string \u003Ccode\u003Es\u003C/code\u003E and delete any \u003Cstrong\u003Eone\u003C/strong\u003E occurrence.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003E\u003Cspan data-keyword=\u0022lexicographically-smaller-string\u0022\u003Elexicographically smallest\u003C/span\u003E\u003C/strong\u003E resulting string that can be formed this way.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;aaccb\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;aacb\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EWe can form the strings \u003Ccode\u003E\u0026quot;acb\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;aacb\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;accb\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;aaccb\u0026quot;\u003C/code\u003E. \u003Ccode\u003E\u0026quot;aacb\u0026quot;\u003C/code\u003E is the lexicographically smallest one.\u003C/p\u003E\n\n\u003Cp\u003EFor example, we can obtain \u003Ccode\u003E\u0026quot;aacb\u0026quot;\u003C/code\u003E by choosing \u003Ccode\u003E\u0026#39;c\u0026#39;\u003C/code\u003E and deleting its first occurrence.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;z\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;z\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EWe cannot perform any operations. The only string we can form is \u003Ccode\u003E\u0026quot;z\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E contains lowercase English letters only.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Solve greedily.",
+    "Each distinct letter must appear at least once in the final string.",
+    "For each letter, maintain a deque of its positions.",
+    "At each step, try letters from \u003Ccode\u003E\u0027a\u0027\u003C/code\u003E to \u003Ccode\u003E\u0027z\u0027\u003C/code\u003E and pick the smallest letter whose earliest position lies within a safe window.",
+    "Do not pick an occurrence if choosing it would make some other letter impossible to keep.",
+    "Mark positions as used and repeat, always minimizing the next chosen character."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aaccb\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022z\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6682188+00:00",
+  "Url": "https://leetcode.com/problems/lexicographically-smallest-string-after-deleting-duplicate-characters/"
+}

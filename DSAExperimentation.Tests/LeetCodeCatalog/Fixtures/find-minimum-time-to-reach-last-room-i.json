@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3627,
+  "FrontendId": 3341,
+  "Title": "Find Minimum Time to Reach Last Room I",
+  "TitleSlug": "find-minimum-time-to-reach-last-room-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 55.3,
+  "TotalAccepted": 119291,
+  "TotalSubmissions": 215731,
+  "Likes": 557,
+  "Dislikes": 177,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a dungeon with \u003Ccode\u003En x m\u003C/code\u003E rooms arranged as a grid.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a 2D array \u003Ccode\u003EmoveTime\u003C/code\u003E of size \u003Ccode\u003En x m\u003C/code\u003E, where \u003Ccode\u003EmoveTime[i][j]\u003C/code\u003E represents the \u003Cstrong\u003Eminimum\u003C/strong\u003E time in seconds \u003Cstrong\u003Eafter\u003C/strong\u003E which the room opens and can be moved to. You start from the room \u003Ccode\u003E(0, 0)\u003C/code\u003E at time \u003Ccode\u003Et = 0\u003C/code\u003E and can move to an \u003Cstrong\u003Eadjacent\u003C/strong\u003E room. Moving between adjacent rooms takes \u003Cem\u003Eexactly\u003C/em\u003E one second.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E time to reach the room \u003Ccode\u003E(n - 1, m - 1)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo rooms are \u003Cstrong\u003Eadjacent\u003C/strong\u003E if they share a common wall, either \u003Cem\u003Ehorizontally\u003C/em\u003E or \u003Cem\u003Evertically\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003EmoveTime = [[0,4],[4,4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe minimum time required is 6 seconds.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAt time \u003Ccode\u003Et == 4\u003C/code\u003E, move from room \u003Ccode\u003E(0, 0)\u003C/code\u003E to room \u003Ccode\u003E(1, 0)\u003C/code\u003E in one second.\u003C/li\u003E\n\t\u003Cli\u003EAt time \u003Ccode\u003Et == 5\u003C/code\u003E, move from room \u003Ccode\u003E(1, 0)\u003C/code\u003E to room \u003Ccode\u003E(1, 1)\u003C/code\u003E in one second.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003EmoveTime = [[0,0,0],[0,0,0]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe minimum time required is 3 seconds.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAt time \u003Ccode\u003Et == 0\u003C/code\u003E, move from room \u003Ccode\u003E(0, 0)\u003C/code\u003E to room \u003Ccode\u003E(1, 0)\u003C/code\u003E in one second.\u003C/li\u003E\n\t\u003Cli\u003EAt time \u003Ccode\u003Et == 1\u003C/code\u003E, move from room \u003Ccode\u003E(1, 0)\u003C/code\u003E to room \u003Ccode\u003E(1, 1)\u003C/code\u003E in one second.\u003C/li\u003E\n\t\u003Cli\u003EAt time \u003Ccode\u003Et == 2\u003C/code\u003E, move from room \u003Ccode\u003E(1, 1)\u003C/code\u003E to room \u003Ccode\u003E(1, 2)\u003C/code\u003E in one second.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003EmoveTime = [[0,1],[1,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n == moveTime.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m == moveTime[i].length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= moveTime[i][j] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use shortest path algorithms."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,4],[4,4]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[0,0,0],[0,0,0]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[0,1],[1,2]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2569081+00:00",
+  "Url": "https://leetcode.com/problems/find-minimum-time-to-reach-last-room-i/"
+}

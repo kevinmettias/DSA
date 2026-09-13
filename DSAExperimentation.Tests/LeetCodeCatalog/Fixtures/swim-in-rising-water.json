@@ -1,0 +1,40 @@
+{
+  "QuestionId": 794,
+  "FrontendId": 778,
+  "Title": "Swim in Rising Water",
+  "TitleSlug": "swim-in-rising-water",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Minimax",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Dijkstra\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 68.3,
+  "TotalAccepted": 416607,
+  "TotalSubmissions": 610285,
+  "Likes": 4714,
+  "Dislikes": 321,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003En x n\u003C/code\u003E integer matrix \u003Ccode\u003Egrid\u003C/code\u003E where each value \u003Ccode\u003Egrid[i][j]\u003C/code\u003E represents the elevation at that point \u003Ccode\u003E(i, j)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIt starts raining, and water gradually rises over time. At time \u003Ccode\u003Et\u003C/code\u003E, the water level is \u003Ccode\u003Et\u003C/code\u003E, meaning \u003Cstrong\u003Eany\u003C/strong\u003E cell with elevation less than equal to \u003Ccode\u003Et\u003C/code\u003E is submerged or reachable.\u003C/p\u003E\n\n\u003Cp\u003EYou can swim from a square to another 4-directionally adjacent square if and only if the elevation of both squares individually are at most \u003Ccode\u003Et\u003C/code\u003E. You can swim infinite distances in zero time. Of course, you must stay within the boundaries of the grid during your swim.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum time until you can reach the bottom right square \u003C/em\u003E\u003Ccode\u003E(n - 1, n - 1)\u003C/code\u003E\u003Cem\u003E if you start at the top left square \u003C/em\u003E\u003Ccode\u003E(0, 0)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/29/swim1-grid.jpg\u0022 style=\u0022width: 164px; height: 165px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,2],[1,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\nExplanation:\nAt time 0, you are in grid location (0, 0).\nYou cannot go anywhere else because 4-directionally adjacent neighbors have a higher elevation than t = 0.\nYou cannot reach point (1, 1) until time 3.\nWhen the depth of water is 3, we can swim anywhere inside the grid.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/29/swim2-grid-1.jpg\u0022 style=\u0022width: 404px; height: 405px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 16\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The final route is shown.\nWe need to wait until time 16 so that (0, 0) and (4, 4) are connected.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt;\u0026nbsp;n\u003Csup\u003E2\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EEach value \u003Ccode\u003Egrid[i][j]\u003C/code\u003E is \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use either Dijkstra\u0027s, or binary search for the best time T for which you can reach the end if you only step on squares at most T."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,2],[1,3]]",
+      "RawExpectedOutput": "3\nExplanation:\nAt time 0, you are in grid location (0, 0).\nYou cannot go anywhere else because 4-directionally adjacent neighbors have a higher elevation than t = 0.\nYou cannot reach point (1, 1) until time 3.\nWhen the depth of water is 3, we can swim anywhere inside the grid."
+    },
+    {
+      "RawInput": "[[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]",
+      "RawExpectedOutput": "16"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2292273+00:00",
+  "Url": "https://leetcode.com/problems/swim-in-rising-water/"
+}

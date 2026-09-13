@@ -1,0 +1,39 @@
+{
+  "QuestionId": 451,
+  "FrontendId": 451,
+  "Title": "Sort Characters By Frequency",
+  "TitleSlug": "sort-characters-by-frequency",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Bucket Sort",
+    "Counting"
+  ],
+  "AcceptanceRatePercent": 75.8,
+  "TotalAccepted": 1207576,
+  "TotalSubmissions": 1593206,
+  "Likes": 9427,
+  "Dislikes": 339,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, sort it in \u003Cstrong\u003Edecreasing order\u003C/strong\u003E based on the \u003Cstrong\u003Efrequency\u003C/strong\u003E of the characters. The \u003Cstrong\u003Efrequency\u003C/strong\u003E of a character is the number of times it appears in the string.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe sorted string\u003C/em\u003E. If there are multiple answers, return \u003Cem\u003Eany of them\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;tree\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;eert\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026#39;e\u0026#39; appears twice while \u0026#39;r\u0026#39; and \u0026#39;t\u0026#39; both appear once.\nSo \u0026#39;e\u0026#39; must appear before both \u0026#39;r\u0026#39; and \u0026#39;t\u0026#39;. Therefore \u0026quot;eetr\u0026quot; is also a valid answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;cccaaa\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;aaaccc\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Both \u0026#39;c\u0026#39; and \u0026#39;a\u0026#39; appear three times, so both \u0026quot;cccaaa\u0026quot; and \u0026quot;aaaccc\u0026quot; are valid answers.\nNote that \u0026quot;cacaca\u0026quot; is incorrect, as the same characters must be together.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;Aabb\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;bbAa\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;bbaA\u0026quot; is also a valid answer, but \u0026quot;Aabb\u0026quot; is incorrect.\nNote that \u0026#39;A\u0026#39; and \u0026#39;a\u0026#39; are treated as two different characters.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 5 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of uppercase and lowercase English letters and digits.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022tree\u0022",
+      "RawExpectedOutput": "\u0022eert\u0022"
+    },
+    {
+      "RawInput": "\u0022cccaaa\u0022",
+      "RawExpectedOutput": "\u0022aaaccc\u0022"
+    },
+    {
+      "RawInput": "\u0022Aabb\u0022",
+      "RawExpectedOutput": "\u0022bbAa\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0594532+00:00",
+  "Url": "https://leetcode.com/problems/sort-characters-by-frequency/"
+}

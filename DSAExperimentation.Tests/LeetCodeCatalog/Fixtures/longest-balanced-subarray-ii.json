@@ -1,0 +1,44 @@
+{
+  "QuestionId": 4047,
+  "FrontendId": 3721,
+  "Title": "Longest Balanced Subarray II",
+  "TitleSlug": "longest-balanced-subarray-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Divide and Conquer",
+    "Segment Tree",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 33.7,
+  "TotalAccepted": 61909,
+  "TotalSubmissions": 183945,
+  "Likes": 363,
+  "Dislikes": 65,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E\u003C/strong\u003E is called \u003Cstrong\u003Ebalanced\u003C/strong\u003E if the number of \u003Cstrong\u003Edistinct even\u003C/strong\u003E numbers in the subarray is equal to the number of \u003Cstrong\u003Edistinct odd\u003C/strong\u003E numbers.\u003C/p\u003E\n\n\u003Cp\u003EReturn the length of the \u003Cstrong\u003Elongest\u003C/strong\u003E balanced subarray.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,5,4,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe longest balanced subarray is \u003Ccode\u003E[2, 5, 4, 3]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt has 2 distinct even numbers \u003Ccode\u003E[2, 4]\u003C/code\u003E and 2 distinct odd numbers \u003Ccode\u003E[5, 3]\u003C/code\u003E. Thus, the answer is 4.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,2,2,5,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe longest balanced subarray is \u003Ccode\u003E[3, 2, 2, 5, 4]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt has 2 distinct even numbers \u003Ccode\u003E[2, 4]\u003C/code\u003E and 2 distinct odd numbers \u003Ccode\u003E[3, 5]\u003C/code\u003E. Thus, the answer is 5.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe longest balanced subarray is \u003Ccode\u003E[2, 3, 2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt has 1 distinct even number \u003Ccode\u003E[2]\u003C/code\u003E and 1 distinct odd number \u003Ccode\u003E[3]\u003C/code\u003E. Thus, the answer is 3.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Store the first (or all) occurrences for each value in \u003Ccode\u003Epos[val]\u003C/code\u003E.",
+    "Build a lazy segment tree over start indices \u003Ccode\u003El in [0..n-1]\u003C/code\u003E that supports range add and can tell if any index has value \u003Ccode\u003E0\u003C/code\u003E (keep \u003Ccode\u003Emn\u003C/code\u003E/\u003Ccode\u003Emx\u003C/code\u003E).",
+    "Use \u003Ccode\u003Esign = \u002B1\u003C/code\u003E for odd values and \u003Ccode\u003Esign = -1\u003C/code\u003E for even values.",
+    "Initialize by adding each value\u0027s contribution with \u003Ccode\u003Eupdate(p, n-1, sign)\u003C/code\u003E where \u003Ccode\u003Ep\u003C/code\u003E is its current first occurrence.",
+    "Slide left \u003Ccode\u003El\u003C/code\u003E: pop \u003Ccode\u003Epos[nums[l]]\u003C/code\u003E, let \u003Ccode\u003Enext\u003C/code\u003E = next occurrence or \u003Ccode\u003En\u003C/code\u003E, do \u003Ccode\u003Eupdate(0, next-1, -sign)\u003C/code\u003E, then query for any \u003Ccode\u003Er \u003E= l\u003C/code\u003E with value \u003Ccode\u003E0\u003C/code\u003E and update \u003Ccode\u003Eans = max(ans, r-l\u002B1)\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,5,4,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,2,2,5,4]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3,2]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7029061+00:00",
+  "Url": "https://leetcode.com/problems/longest-balanced-subarray-ii/"
+}

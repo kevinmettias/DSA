@@ -1,0 +1,36 @@
+{
+  "QuestionId": 2275,
+  "FrontendId": 2156,
+  "Title": "Find Substring With Given Hash Value",
+  "TitleSlug": "find-substring-with-given-hash-value",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Sliding Window",
+    "Rolling Hash",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 27.2,
+  "TotalAccepted": 18080,
+  "TotalSubmissions": 66528,
+  "Likes": 449,
+  "Dislikes": 386,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe hash of a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E of length \u003Ccode\u003Ek\u003C/code\u003E, given integers \u003Ccode\u003Ep\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E, is computed using the following function:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ehash(s, p, m) = (val(s[0]) * p\u003Csup\u003E0\u003C/sup\u003E \u002B val(s[1]) * p\u003Csup\u003E1\u003C/sup\u003E \u002B ... \u002B val(s[k-1]) * p\u003Csup\u003Ek-1\u003C/sup\u003E) mod m\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EWhere \u003Ccode\u003Eval(s[i])\u003C/code\u003E represents the index of \u003Ccode\u003Es[i]\u003C/code\u003E in the alphabet from \u003Ccode\u003Eval(\u0026#39;a\u0026#39;) = 1\u003C/code\u003E to \u003Ccode\u003Eval(\u0026#39;z\u0026#39;) = 26\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E and the integers \u003Ccode\u003Epower\u003C/code\u003E, \u003Ccode\u003Emodulo\u003C/code\u003E, \u003Ccode\u003Ek\u003C/code\u003E, and \u003Ccode\u003EhashValue.\u003C/code\u003E Return \u003Ccode\u003Esub\u003C/code\u003E,\u003Cem\u003E the \u003Cstrong\u003Efirst\u003C/strong\u003E \u003Cstrong\u003Esubstring\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E\u003Cem\u003E of length \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E such that \u003C/em\u003E\u003Ccode\u003Ehash(sub, power, modulo) == hashValue\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases will be generated such that an answer always \u003Cstrong\u003Eexists\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cb\u003Esubstring\u003C/b\u003E is a contiguous non-empty sequence of characters within a string.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;leetcode\u0026quot;, power = 7, modulo = 20, k = 2, hashValue = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;ee\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The hash of \u0026quot;ee\u0026quot; can be computed to be hash(\u0026quot;ee\u0026quot;, 7, 20) = (5 * 1 \u002B 5 * 7) mod 20 = 40 mod 20 = 0. \n\u0026quot;ee\u0026quot; is the first substring of length 2 with hashValue 0. Hence, we return \u0026quot;ee\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;fbxzaad\u0026quot;, power = 31, modulo = 100, k = 3, hashValue = 32\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;fbx\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The hash of \u0026quot;fbx\u0026quot; can be computed to be hash(\u0026quot;fbx\u0026quot;, 31, 100) = (6 * 1 \u002B 2 * 31 \u002B 24 * 31\u003Csup\u003E2\u003C/sup\u003E) mod 100 = 23132 mod 100 = 32. \nThe hash of \u0026quot;bxz\u0026quot; can be computed to be hash(\u0026quot;bxz\u0026quot;, 31, 100) = (2 * 1 \u002B 24 * 31 \u002B 26 * 31\u003Csup\u003E2\u003C/sup\u003E) mod 100 = 25732 mod 100 = 32. \n\u0026quot;fbx\u0026quot; is the first substring of length 3 with hashValue 32. Hence, we return \u0026quot;fbx\u0026quot;.\nNote that \u0026quot;bxz\u0026quot; also has a hash of 32 but it appears later than \u0026quot;fbx\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= s.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= power, modulo \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= hashValue \u0026lt; modulo\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters only.\u003C/li\u003E\n\t\u003Cli\u003EThe test cases are generated such that an answer always \u003Cstrong\u003Eexists\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can we update the hash value efficiently while iterating instead of recalculating it each time?",
+    "Use the rolling hash method."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022leetcode\u0022\n7\n20\n2\n0",
+      "RawExpectedOutput": "\u0022ee\u0022"
+    },
+    {
+      "RawInput": "\u0022fbxzaad\u0022\n31\n100\n3\n32",
+      "RawExpectedOutput": "\u0022fbx\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2716773+00:00",
+  "Url": "https://leetcode.com/problems/find-substring-with-given-hash-value/"
+}

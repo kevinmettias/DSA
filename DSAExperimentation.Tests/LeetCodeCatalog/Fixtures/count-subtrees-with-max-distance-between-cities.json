@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1740,
+  "FrontendId": 1617,
+  "Title": "Count Subtrees With Max Distance Between Cities",
+  "TitleSlug": "count-subtrees-with-max-distance-between-cities",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Tree",
+    "Enumeration",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 67.7,
+  "TotalAccepted": 15806,
+  "TotalSubmissions": 23359,
+  "Likes": 582,
+  "Dislikes": 44,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E cities numbered from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E. You are given an array \u003Ccode\u003Eedges\u003C/code\u003E of size \u003Ccode\u003En-1\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents a bidirectional edge between cities \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. There exists a unique path between each pair of cities. In other words, the cities form a \u003Cstrong\u003Etree\u003C/strong\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003EA \u003Cstrong\u003Esubtree\u003C/strong\u003E is a subset of cities where every city is reachable from every other city in the subset, where the path between each pair passes through only the cities from the subset. Two subtrees are different if there is a city in one subtree that is not present in the other.\u003C/p\u003E\r\n\r\n\u003Cp\u003EFor each \u003Ccode\u003Ed\u003C/code\u003E from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En-1\u003C/code\u003E, find the number of subtrees in which the \u003Cstrong\u003Emaximum distance\u003C/strong\u003E between any two cities in the subtree is equal to \u003Ccode\u003Ed\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003EReturn \u003Cem\u003Ean array of size\u003C/em\u003E \u003Ccode\u003En-1\u003C/code\u003E \u003Cem\u003Ewhere the \u003C/em\u003E\u003Ccode\u003Ed\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E \u003C/em\u003E\u003Cem\u003Eelement \u003Cstrong\u003E(1-indexed)\u003C/strong\u003E is the number of subtrees in which the \u003Cstrong\u003Emaximum distance\u003C/strong\u003E between any two cities is equal to \u003C/em\u003E\u003Ccode\u003Ed\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong\u003ENotice\u003C/strong\u003E\u0026nbsp;that\u0026nbsp;the \u003Cstrong\u003Edistance\u003C/strong\u003E between the two cities is the number of edges in the path between them.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/21/p1.png\u0022 style=\u0022width: 161px; height: 181px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, edges = [[1,2],[2,3],[2,4]]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,4,0]\r\n\u003Cstrong\u003EExplanation:\r\n\u003C/strong\u003EThe subtrees with subsets {1,2}, {2,3} and {2,4} have a max distance of 1.\r\nThe subtrees with subsets {1,2,3}, {1,2,4}, {2,3,4} and {1,2,3,4} have a max distance of 2.\r\nNo subtree has two nodes where the max distance between them is 3.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, edges = [[1,2]]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1]\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edges = [[1,2],[2,3]]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,1]\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003Eedges.length == n-1\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 2\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003EAll pairs \u003Ccode\u003E(u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E are distinct.\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "Iterate through every possible subtree by doing a bitmask on which vertices to include. How can you determine if a subtree is valid (all vertices are connected)?",
+    "To determine connectivity, count the number of reachable vertices starting from any included vertex and only traveling on edges connecting 2 vertices in the subtree. The count should be the same as the number of 1s in the bitmask.",
+    "The diameter is basically the maximum distance between any two nodes. Root the tree at a vertex. The answer is the max of the heights of the two largest subtrees or the longest diameter in any of the subtrees."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n[[1,2],[2,3],[2,4]]",
+      "RawExpectedOutput": "[3,4,0]"
+    },
+    {
+      "RawInput": "2\n[[1,2]]",
+      "RawExpectedOutput": "[1]"
+    },
+    {
+      "RawInput": "3\n[[1,2],[2,3]]",
+      "RawExpectedOutput": "[2,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9805452+00:00",
+  "Url": "https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/"
+}

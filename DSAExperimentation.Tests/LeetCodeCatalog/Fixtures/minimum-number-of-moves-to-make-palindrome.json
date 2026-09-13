@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1356,
+  "FrontendId": 2193,
+  "Title": "Minimum Number of Moves to Make Palindrome",
+  "TitleSlug": "minimum-number-of-moves-to-make-palindrome",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Greedy",
+    "Binary Indexed Tree"
+  ],
+  "AcceptanceRatePercent": 53.1,
+  "TotalAccepted": 37457,
+  "TotalSubmissions": 70549,
+  "Likes": 1067,
+  "Dislikes": 79,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E consisting only of lowercase English letters.\u003C/p\u003E\n\n\u003Cp\u003EIn one \u003Cstrong\u003Emove\u003C/strong\u003E, you can select any two \u003Cstrong\u003Eadjacent\u003C/strong\u003E characters of \u003Ccode\u003Es\u003C/code\u003E and swap them.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum number of moves\u003C/strong\u003E needed to make\u003C/em\u003E \u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003Ea palindrome\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that the input will be generated such that \u003Ccode\u003Es\u003C/code\u003E can always be converted to a palindrome.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aabb\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe can obtain two palindromes from s, \u0026quot;abba\u0026quot; and \u0026quot;baab\u0026quot;. \n- We can obtain \u0026quot;abba\u0026quot; from s in 2 moves: \u0026quot;a\u003Cu\u003E\u003Cstrong\u003Eab\u003C/strong\u003E\u003C/u\u003Eb\u0026quot; -\u0026gt; \u0026quot;ab\u003Cu\u003E\u003Cstrong\u003Eab\u003C/strong\u003E\u003C/u\u003E\u0026quot; -\u0026gt; \u0026quot;abba\u0026quot;.\n- We can obtain \u0026quot;baab\u0026quot; from s in 2 moves: \u0026quot;a\u003Cu\u003E\u003Cstrong\u003Eab\u003C/strong\u003E\u003C/u\u003Eb\u0026quot; -\u0026gt; \u0026quot;\u003Cu\u003E\u003Cstrong\u003Eab\u003C/strong\u003E\u003C/u\u003Eab\u0026quot; -\u0026gt; \u0026quot;baab\u0026quot;.\nThus, the minimum number of moves needed to make s a palindrome is 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;letelt\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nOne of the palindromes we can obtain from s in 2 moves is \u0026quot;lettel\u0026quot;.\nOne of the ways we can obtain it is \u0026quot;lete\u003Cu\u003E\u003Cstrong\u003Elt\u003C/strong\u003E\u003C/u\u003E\u0026quot; -\u0026gt; \u0026quot;let\u003Cu\u003E\u003Cstrong\u003Eet\u003C/strong\u003E\u003C/u\u003El\u0026quot; -\u0026gt; \u0026quot;lettel\u0026quot;.\nOther palindromes such as \u0026quot;tleelt\u0026quot; can also be obtained in 2 moves.\nIt can be shown that it is not possible to obtain a palindrome in less than 2 moves.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E can be converted to a palindrome using a finite number of moves.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider a greedy strategy.",
+    "Let\u2019s start by making the leftmost and rightmost characters match with some number of swaps.",
+    "If we figure out how to do that using the minimum number of swaps, then we can delete the leftmost and rightmost characters and solve the problem recursively."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aabb\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022letelt\u0022",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0754501+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-moves-to-make-palindrome/"
+}
