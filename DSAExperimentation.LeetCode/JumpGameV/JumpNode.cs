@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameV.Fixtures;
+namespace DSAExperimentation.LeetCode.JumpGameV;
 
 // Edges point i -> j only for indices actually reachable by a single valid jump
 // (arr[i] strictly greater than arr[j] and every value strictly between them) -

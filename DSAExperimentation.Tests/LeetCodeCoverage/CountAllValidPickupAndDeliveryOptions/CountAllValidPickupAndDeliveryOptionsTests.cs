@@ -1,27 +1,31 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.CountAllValidPickupAndDeliveryOptions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountAllValidPickupAndDeliveryOptions;
 
-// LeetCode 1359. Count All Valid Pickup and Delivery Options: inserting order i's
-// P_i/D_i pair into an already-valid sequence of length 2(i-1) has exactly
-// i * (2i - 1) valid placements (i slots for P_i among the 2i-1 new positions,
-// since D_i must land somewhere after wherever P_i lands - LeetCode's own editorial
-// derivation), giving the recurrence f(i) = f(i-1) * i * (2i-1). Memoized via this
-// repo's own Memoizer the same way UniqueBinarySearchTreesTests memoizes its Catalan
-// recurrence, with every running product reduced mod 1e9+7 as LeetCode requires.
-public sealed partial class CountAllValidPickupAndDeliveryOptionsTests
+// Harness only. Both strategies are CountAllValidPickupAndDeliveryOptionsSolution's -
+// this file pins them to LeetCode's published examples (n = 1, 2, 3), two more terms
+// of the closed form (2n)! / 2^n that the recurrence generates (n = 4, 5), and n = 100,
+// which is past the point where the running product must be reduced mod 1e9+7.
+public sealed class CountAllValidPickupAndDeliveryOptionsTests
 {
-    private const long Mod = 1_000_000_007;
+    public static TheoryData<int, long> Examples =>
+        new()
+        {
+            { 1, 1L },
+            { 2, 6L },
+            { 3, 90L },
+            { 4, 2_520L },
+            { 5, 113_400L },
+            { 100, 14_159_051L },
+        };
 
     [Theory]
-    [InlineData(1, 1)]
-    [InlineData(2, 6)]
-    [InlineData(3, 90)]
-    public void CountOrders_LeetCodeExamples_ReturnsValidSequenceCount(int n, long expected)
-        => Assert.Equal(expected, CountOrders(n));
+    [MemberData(nameof(Examples))]
+    public void CountOrdersByTabulation_LeetCodeExamples_ReturnsValidSequenceCount(int n, long expected) =>
+        Assert.Equal(expected, CountAllValidPickupAndDeliveryOptionsSolution.CountOrdersByTabulation(n));
 
-    private static long CountOrders(int n) => Memoizer.Memoize<int, long>(n, Ways);
-
-    private static long Ways(int orders, Func<int, long> ways)
-        => orders == 0 ? 1L : ways(orders - 1) * orders % Mod * (2 * orders - 1) % Mod;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountOrdersByMemoizedRecurrence_LeetCodeExamples_ReturnsValidSequenceCount(int n, long expected) =>
+        Assert.Equal(expected, CountAllValidPickupAndDeliveryOptionsSolution.CountOrdersByMemoizedRecurrence(n));
 }

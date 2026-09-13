@@ -1,130 +1,44 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistance;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find the City With the Smallest Number of Neighbors at a Threshold Distance
-// (LC 1334): running this repo's own ShortestPath.Dijkstra once per city
-// (baseline - the single-source primitive most shortest-path problems in this
-// repo reach for, called n times here) vs. a single
-// AllPairsShortestPaths.TryComputeDistances call (Floyd-Warshall,
-// ShortestPathAlgorithmBenchmarks' own precedent) that computes every pair at
-// once - the mirror image of that benchmark's own point about picking the
-// wrong tool for an all-pairs question: here Floyd-Warshall is the one
-// actually suited to what this problem asks. Roads are wired both directions
-// on the shared WeightedGraphNode/WeightedGraphTopology fixtures since LC
-// 1334's roads are undirected.
+// Harness only: both arms are
+// FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution's, the
+// same methods its test proves correct. Each is handed the prepared CityGraph its
+// hoisted overload takes, so building the road network is charged to
+// [GlobalSetup] rather than to the search being measured - leaving the comparison
+// where it belongs: this repo's single-source Dijkstra run once per city against
+// one Floyd-Warshall call, the mirror image of ShortestPathAlgorithmBenchmarks'
+// own point about picking the wrong tool for an all-pairs question.
 [MemoryDiagnoser]
 public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenchmarks
 {
     private const int DistanceThreshold = 50;
     private const int RandomSeed = 1334; // LC problem number
     private const int ExtraRoadsPerCity = 2;
-    private const int MaxRoadWeight = 20;
 
     [Params(30, 120)]
     public int CityCount;
 
-    private List<WeightedGraphNode> _vertices = null!;
+    private CityGraph _graph = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(RandomSeed);
-        _vertices = [.. Enumerable.Range(0, CityCount).Select(id => new WeightedGraphNode(id))];
+        var roads = CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, seed: RandomSeed);
 
-        for (var i = 1; i < CityCount; i++)
-        {
-            var j = random.Next(i);
-            AddRoad(_vertices[i], _vertices[j], random);
-        }
-
-        for (var i = 0; i < CityCount; i++)
-        {
-            for (var e = 0; e < ExtraRoadsPerCity; e++)
-            {
-                var target = random.Next(CityCount);
-
-                if (target != i)
-                {
-                    AddRoad(_vertices[i], _vertices[target], random);
-                }
-            }
-        }
-    }
-
-    private static void AddRoad(WeightedGraphNode a, WeightedGraphNode b, Random random)
-    {
-        var weight = random.Next(1, MaxRoadWeight);
-        a.Edges.Add((weight, b));
-        b.Edges.Add((weight, a));
+        _graph = CityGraph.Build(CityCount, roads);
     }
 
     [Benchmark(Baseline = true)]
-    public int DijkstraPerSource()
-    {
-        var bestCity = -1;
-        var bestCount = int.MaxValue;
-
-        for (var city = 0; city < _vertices.Count; city++)
-        {
-            var source = _vertices[city];
-            var distances = ShortestPath.Dijkstra<
-                WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(source);
-
-            var count = distances.Count(pair => pair.Key != source && pair.Value <= DistanceThreshold);
-
-            if (count <= bestCount)
-            {
-                bestCount = count;
-                bestCity = city;
-            }
-        }
-
-        return bestCity;
-    }
+    public int DijkstraPerSource() =>
+        FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
+            .FindCityByDijkstraPerSource(_graph, DistanceThreshold);
 
     [Benchmark]
-    public int FloydWarshallAllPairs()
-    {
-        AllPairsShortestPaths.TryComputeDistances<
-            WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(
-            _vertices, out var distances);
-
-        var bestCity = -1;
-        var bestCount = int.MaxValue;
-
-        for (var city = 0; city < _vertices.Count; city++)
-        {
-            var count = CountNeighborsWithinThreshold(city, distances);
-
-            if (count <= bestCount)
-            {
-                bestCount = count;
-                bestCity = city;
-            }
-        }
-
-        return bestCity;
-    }
-
-    private int CountNeighborsWithinThreshold(
-        int city, Dictionary<(WeightedGraphNode From, WeightedGraphNode To), int> distances)
-    {
-        var count = 0;
-
-        for (var other = 0; other < _vertices.Count; other++)
-        {
-            if (other != city
-                && distances.TryGetValue((_vertices[city], _vertices[other]), out var distance)
-                && distance <= DistanceThreshold)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+    public int FloydWarshallAllPairs() =>
+        FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
+            .FindCityByFloydWarshall(_graph, DistanceThreshold);
 }
