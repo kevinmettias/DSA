@@ -1,58 +1,30 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.LastStoneWeight;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LastStoneWeight;
 
-// LeetCode 1046. Last Stone Weight: repeatedly smash the two heaviest stones
-// together, using this repo's own Heap<int,MaxHeapOrder<int>> to always offer up
-// the two heaviest remaining stones in O(log n) instead of an O(n) full rescan
-// every smash.
-public sealed partial class LastStoneWeightTests
+// Harness only: both strategies live in LastStoneWeightSolution and are asserted
+// against the same examples - LeetCode's own, the mutual-annihilation case, a
+// single stone, and two smash sequences where a difference stone has to be smashed
+// again after being put back.
+public sealed class LastStoneWeightTests
 {
-    [Fact]
-    public void LastStoneWeight_ClassicExample_ReturnsOne()
-    {
-        int[] stones = [2, 7, 4, 1, 8, 1];
-
-        Assert.Equal(1, LastStoneWeight(stones));
-    }
-
-    [Fact]
-    public void LastStoneWeight_AllStonesCancelOut_ReturnsZero()
-    {
-        int[] stones = [2, 2];
-
-        Assert.Equal(0, LastStoneWeight(stones));
-    }
-
-    [Fact]
-    public void LastStoneWeight_SingleStone_ReturnsItsWeight()
-    {
-        int[] stones = [5];
-
-        Assert.Equal(5, LastStoneWeight(stones));
-    }
-
-    private static int LastStoneWeight(int[] stones)
-    {
-        var heap = new Heap<int, MaxHeapOrder<int>>();
-
-        foreach (var stone in stones)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            heap.Push(stone);
-        }
+            { [2, 7, 4, 1, 8, 1], 1 },
+            { [2, 2], 0 },
+            { [5], 5 },
+            { [3, 7, 2], 2 },
+            { [10, 4, 2, 10], 2 },
+        };
 
-        while (heap.Count > 1)
-        {
-            heap.TryPop(out var heaviest);
-            heap.TryPop(out var second);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LastStoneWeightByLinearRescan_LeetCodeExamples_ReturnsLastStoneWeight(int[] stones, int expected) =>
+        Assert.Equal(expected, LastStoneWeightSolution.LastStoneWeightByLinearRescan(stones));
 
-            if (heaviest != second)
-            {
-                heap.Push(heaviest - second);
-            }
-        }
-
-        heap.TryPeek(out var remaining);
-        return heap.Count == 0 ? 0 : remaining;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LastStoneWeightByMaxHeap_LeetCodeExamples_ReturnsLastStoneWeight(int[] stones, int expected) =>
+        Assert.Equal(expected, LastStoneWeightSolution.LastStoneWeightByMaxHeap(stones));
 }

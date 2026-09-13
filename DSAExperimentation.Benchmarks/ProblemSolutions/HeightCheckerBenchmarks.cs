@@ -1,13 +1,10 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.HeightChecker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Height Checker (LC 1051): the textbook O(n^2) insertion sort of a copy vs.
-// this repo's own MergeSort over ArrayIndexedSequence (O(n log n)) - both
-// compute the same "expected" non-decreasing order and count where it differs
-// from the original.
+// Harness only: both arms are HeightCheckerSolution's - the textbook O(n^2)
+// insertion sort of a copy against this repo's MergeSort over ArrayIndexedSequence.
 [MemoryDiagnoser]
 public class HeightCheckerBenchmarks
 {
@@ -30,53 +27,8 @@ public class HeightCheckerBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int InsertionSort()
-    {
-        var expected = _heights.ToArray();
-
-        for (var i = 1; i < expected.Length; i++)
-        {
-            InsertOne(expected, i);
-        }
-
-        return CountMismatches(expected);
-    }
+    public int InsertionSort() => HeightCheckerSolution.CountMismatchesByInsertionSort(_heights);
 
     [Benchmark]
-    public int MergeSortComparison()
-    {
-        var expected = _heights.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(expected));
-
-        return CountMismatches(expected);
-    }
-
-    private static void InsertOne(int[] expected, int i)
-    {
-        var current = expected[i];
-        var j = i - 1;
-
-        while (j >= 0 && expected[j] > current)
-        {
-            expected[j + 1] = expected[j];
-            j--;
-        }
-
-        expected[j + 1] = current;
-    }
-
-    private int CountMismatches(int[] expected)
-    {
-        var mismatches = 0;
-
-        for (var i = 0; i < _heights.Length; i++)
-        {
-            if (_heights[i] != expected[i])
-            {
-                mismatches++;
-            }
-        }
-
-        return mismatches;
-    }
+    public int MergeSortComparison() => HeightCheckerSolution.CountMismatchesByMergeSort(_heights);
 }
