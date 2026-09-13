@@ -1,79 +1,63 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.UglyNumberIII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.UglyNumberIII;
 
-// LeetCode 1201. Ugly Number III: count(x) = x/a + x/b + x/c - x/lcm(a,b) -
-// x/lcm(a,c) - x/lcm(b,c) + x/lcm(a,b,c) (three-set inclusion-exclusion over
-// multiples of a, b, c) is non-decreasing in x, so the nth ugly number is
-// BinarySearch.LowerBound's first index whose count reaches n - the same
-// "monotone virtual sequence" shape NthMagicalNumberTests already uses for two
-// factors, extended to three. lcm(a, b, c) is computed via a capped Lcm so that
-// combining two already-huge pairwise LCMs never overflows long: once one operand
-// already exceeds the search's upperBound, every further multiple of it does too,
-// so the exact value stops mattering and it can be clamped instead of multiplied.
-public sealed partial class UglyNumberIIITests
+// Harness only: both strategies live in UglyNumberIIISolution and are asserted
+// against the same examples - LeetCode's first three published ones, the case
+// where one factor divides another (inclusion-exclusion subtracts the whole
+// overlap), the case where all three coincide, the first-element case where the
+// answer is just the smallest factor, and the (a, b, c) triple the benchmark
+// measures.
+public sealed class UglyNumberIIITests
 {
-    [Fact]
-    public void NthUglyNumber_LeetCodeExampleOne_ReturnsFourthCombinedMultiple()
-    {
-        var result = NthUglyNumber(n: 3, a: 2, b: 3, c: 5);
-
-        Assert.Equal(4, result);
-    }
-
-    [Fact]
-    public void NthUglyNumber_LeetCodeExampleTwo_ReturnsSixthCombinedMultiple()
-    {
-        var result = NthUglyNumber(n: 4, a: 2, b: 3, c: 4);
-
-        Assert.Equal(6, result);
-    }
-
-    [Fact]
-    public void NthUglyNumber_FirstRequestedNumber_ReturnsSmallestFactor()
-    {
-        var result = NthUglyNumber(n: 1, a: 4, b: 6, c: 9);
-
-        Assert.Equal(4, result);
-    }
-
-    private static int NthUglyNumber(int n, int a, int b, int c)
-    {
-        var lcmAb = Lcm(a, b);
-        var lcmAc = Lcm(a, c);
-        var lcmBc = Lcm(b, c);
-        var minBc = Math.Min(b, c);
-        var upperBound = checked((int)((long)n * Math.Min(a, minBc)));
-        var lcmAbc = LcmCapped(lcmAb, c, upperBound);
-
-        var sequence = new UglyCountSequence(n, a, b, c, lcmAb, lcmAc, lcmBc, lcmAbc, upperBound);
-
-        return BinarySearch.LowerBound<int, UglyCountSequence>(sequence, 1);
-    }
-
-    private static long Gcd(long x, long y) => y == 0 ? x : Gcd(y, x % y);
-
-    private static long Lcm(long x, long y) => x / Gcd(x, y) * y;
-
-    // x is only ever multiplied once it is already within cap, so the product
-    // never exceeds cap * y - safely inside long's range for this problem's
-    // 10^9-bounded factors.
-    private static long LcmCapped(long x, long y, long cap) => x > cap ? cap + 1 : Lcm(x, y);
-
-    // Get(index) treats index itself as the candidate ugly number x, the same
-    // "value doubles as index" shape MagicalCountSequence already uses.
-    private readonly struct UglyCountSequence(
-        int n, int a, int b, int c, long lcmAb, long lcmAc, long lcmBc, long lcmAbc, int upperBound)
-        : IRandomAccessSequence<int>
-    {
-        public int Length => upperBound + 1;
-
-        public int Get(int index)
+    public static TheoryData<int, int, int, int, int> Examples =>
+        new()
         {
-            long x = index;
-            var count = (x / a) + (x / b) + (x / c) - (x / lcmAb) - (x / lcmAc) - (x / lcmBc) + (x / lcmAbc);
-            return count >= n ? 1 : 0;
-        }
-    }
+            // LC example 1.
+            { 3, 2, 3, 5, 4 },
+
+            // LC example 2: 4 is a multiple of 2, so the third set adds nothing.
+            { 4, 2, 3, 4, 6 },
+
+            // LC example 3.
+            { 5, 2, 11, 13, 10 },
+
+            // The first requested number is always the smallest factor - and here
+            // lcm(4, 6) already exceeds the search window, the case the capped
+            // three-way LCM exists for.
+            { 1, 4, 6, 9, 4 },
+
+            // All three factors equal: every LCM collapses onto the same set.
+            { 6, 3, 3, 3, 18 },
+
+            // The (a, b, c) triple the benchmark measures.
+            { 10, 2, 3, 5, 14 },
+        };
+
+    // LeetCode's fourth published example. Its answer is close to 2e9, so only the
+    // binary search is asserted against it - the counting walk is O(answer) and
+    // would spend two billion steps arriving at the same number.
+    public static TheoryData<int, int, int, int, int> LargeExamples =>
+        new()
+        {
+            { 1_000_000_000, 2, 217_983_653, 336_916_467, 1_999_999_984 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NthUglyNumberByCountScan_LeetCodeExamples_ReturnsNthMultipleOfAnyFactor(
+        int n, int a, int b, int c, int expected) =>
+        Assert.Equal(expected, UglyNumberIIISolution.NthUglyNumberByCountScan(n, a, b, c));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NthUglyNumberByBinarySearch_LeetCodeExamples_ReturnsNthMultipleOfAnyFactor(
+        int n, int a, int b, int c, int expected) =>
+        Assert.Equal(expected, UglyNumberIIISolution.NthUglyNumberByBinarySearch(n, a, b, c));
+
+    [Theory]
+    [MemberData(nameof(LargeExamples))]
+    public void NthUglyNumberByBinarySearch_BillionthUglyNumber_CountsWithoutOverflowingTheLcm(
+        int n, int a, int b, int c, int expected) =>
+        Assert.Equal(expected, UglyNumberIIISolution.NthUglyNumberByBinarySearch(n, a, b, c));
 }

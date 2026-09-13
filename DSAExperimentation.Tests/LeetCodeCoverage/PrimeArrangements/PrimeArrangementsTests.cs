@@ -1,90 +1,32 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.PrimeArrangements;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimeArrangements;
 
-// LeetCode 1175. Prime Arrangements: a Sieve of Eratosthenes over this repo's own
-// DynamicArray<bool> (the same composite-tracking array CountPrimesTests uses)
-// counts the primes in [1, n]; primes must fill the prime index slots and
-// composites the rest, so the answer is primeCount! * compositeCount! mod 1e9+7.
-public sealed partial class PrimeArrangementsTests
+// Harness only. Both strategies are PrimeArrangementsSolution's - this file pins
+// them to LeetCode's published examples plus the small-n boundaries where the
+// prime count is zero or one and the factorials collapse to 1.
+public sealed class PrimeArrangementsTests
 {
-    private const int Modulo = 1_000_000_007;
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 5, 12 }, // LC's example 1: 3 primes, 2 others - 3! * 2!
+            { 100, 682289015 }, // LC's example 2
+            { 1, 1 }, // no primes at all
+            { 2, 1 }, // 1! * 1!
+            { 3, 2 }, // 2! * 1!
+            { 10, 17280 }, // 4! * 6!
+        };
 
     [Theory]
-    [InlineData(5, 12)]
-    [InlineData(100, 682289015)]
-    public void NumPrimeArrangements_Examples_ReturnsExpectedCount(int n, int expected)
-        => Assert.Equal(expected, NumPrimeArrangements(n));
+    [MemberData(nameof(Examples))]
+    public void NumPrimeArrangementsByTrialDivision_LeetCodeExamples_ReturnsArrangementCount(
+        int n, int expected) =>
+        Assert.Equal(expected, PrimeArrangementsSolution.NumPrimeArrangementsByTrialDivision(n));
 
-    private static int NumPrimeArrangements(int n)
-    {
-        var primeCount = CountPrimesUpTo(n);
-        var compositeCount = n - primeCount;
-
-        return (int)(Factorial(primeCount) * Factorial(compositeCount) % Modulo);
-    }
-
-    private static long Factorial(int n)
-    {
-        var result = 1L;
-        for (var i = 2; i <= n; i++)
-        {
-            result = result * i % Modulo;
-        }
-
-        return result;
-    }
-
-    private static int CountPrimesUpTo(int n)
-    {
-        if (n < 2)
-        {
-            return 0;
-        }
-
-        var isComposite = BuildCompositeTracker(n);
-        SieveComposites(isComposite, n);
-        return CountUnmarked(isComposite, n);
-    }
-
-    private static DynamicArray<bool> BuildCompositeTracker(int n)
-    {
-        var isComposite = new DynamicArray<bool>();
-        for (var i = 0; i <= n; i++)
-        {
-            isComposite.Add(false);
-        }
-
-        return isComposite;
-    }
-
-    private static void SieveComposites(DynamicArray<bool> isComposite, int n)
-    {
-        for (var i = 2; i * i <= n; i++)
-        {
-            if (isComposite.Get(i))
-            {
-                continue;
-            }
-
-            for (var multiple = i * i; multiple <= n; multiple += i)
-            {
-                isComposite.Set(multiple, true);
-            }
-        }
-    }
-
-    private static int CountUnmarked(DynamicArray<bool> isComposite, int n)
-    {
-        var count = 0;
-        for (var i = 2; i <= n; i++)
-        {
-            if (!isComposite.Get(i))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumPrimeArrangementsBySieveOfEratosthenes_LeetCodeExamples_ReturnsArrangementCount(
+        int n, int expected) =>
+        Assert.Equal(expected, PrimeArrangementsSolution.NumPrimeArrangementsBySieveOfEratosthenes(n));
 }

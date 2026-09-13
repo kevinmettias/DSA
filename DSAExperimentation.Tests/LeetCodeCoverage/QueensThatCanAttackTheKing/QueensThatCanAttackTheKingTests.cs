@@ -1,99 +1,70 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.QueensThatCanAttackTheKing;
 
-// LeetCode 1222. Queens That Can Attack the King: ray-walk each of the 8 queen-move
-// directions outward from the king until the edge or the first queen is reached - the
-// same Set<(int Row, int Col)> O(1)-membership primitive MinimumAreaRectangleTests
-// uses for corner bookkeeping, applied here so each ray step is an O(1) lookup instead
-// of a linear rescan of the queens array. No repo Topology primitive fits the ray-cast
-// shape itself: Grid/GridChildren model unordered single-step 4-directional adjacency
-// for graph walks, not an 8-directional stop-at-first-blocker ray cast - the same
-// reasoning AvailableCapturesForRookTests already gives for its own 4-direction rook
-// version of this shape, extended here to the queen's 8 directions.
+// Harness only. Both strategies are QueensThatCanAttackTheKingSolution's - this file
+// pins them to LeetCode's published examples on the problem's own 8x8 board.
+// LeetCode does not fix the order of the returned coordinates, so both arms are
+// compared after sorting by row then column.
 public sealed class QueensThatCanAttackTheKingTests
 {
-    private static readonly (int DRow, int DCol)[] Directions =
-    [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1), (0, 1),
-        (1, -1), (1, 0), (1, 1),
-    ];
-
-    [Fact]
-    public void QueensAttackTheKing_LeetCodeExampleOne_ReturnsThreeAttackingQueens()
-    {
-        int[][] queens = [[0, 1], [1, 0], [4, 0], [0, 4], [3, 3], [2, 4]];
-        int[] king = [0, 0];
-
-        var attackers = QueensAttackTheKing(queens, boardSize: 8, king);
-
-        AssertSameCoordinates([[0, 1], [1, 0], [3, 3]], attackers);
-    }
-
-    [Fact]
-    public void QueensAttackTheKing_LeetCodeExampleTwo_ReturnsThreeAttackingQueens()
-    {
-        int[][] queens = [[0, 0], [1, 1], [2, 2], [3, 4], [3, 5], [4, 4], [4, 5]];
-        int[] king = [3, 3];
-
-        var attackers = QueensAttackTheKing(queens, boardSize: 8, king);
-
-        AssertSameCoordinates([[2, 2], [3, 4], [4, 4]], attackers);
-    }
-
-    [Fact]
-    public void QueensAttackTheKing_NoQueenAlignedWithKing_ReturnsEmpty()
-    {
-        int[][] queens = [[7, 0], [0, 7]];
-        int[] king = [3, 3];
-
-        var attackers = QueensAttackTheKing(queens, boardSize: 8, king);
-
-        Assert.Empty(attackers);
-    }
-
-    private static List<(int Row, int Col)> QueensAttackTheKing(int[][] queens, int boardSize, int[] king)
-    {
-        var occupied = new Set<(int Row, int Col)>();
-
-        foreach (var queen in queens)
+    public static TheoryData<int[][], int[], int[][]> Examples =>
+        new()
         {
-            occupied.TryAdd((queen[0], queen[1]));
-        }
-
-        var attackers = new List<(int Row, int Col)>();
-
-        foreach (var direction in Directions)
-        {
-            var attacker = FindAttackerAlongRay(king, direction, boardSize, occupied);
-
-            if (attacker is not null)
+            // LeetCode example 1: the king in the corner, attacked along the rank,
+            // the file and the diagonal - the queens at [0,4] and [2,4] are shadowed.
             {
-                attackers.Add(attacker.Value);
-            }
-        }
+                [[0, 1], [1, 0], [4, 0], [0, 4], [3, 3], [2, 4]],
+                [0, 0],
+                [[0, 1], [1, 0], [3, 3]]
+            },
 
-        return attackers;
-    }
+            // LeetCode example 2: [1,1] is shadowed by [2,2] on the diagonal, and
+            // [3,5]/[4,5] by [3,4]/[4,4].
+            {
+                [[0, 0], [1, 1], [2, 2], [3, 4], [3, 5], [4, 4], [4, 5]],
+                [3, 3],
+                [[2, 2], [3, 4], [4, 4]]
+            },
 
-    private static (int Row, int Col)? FindAttackerAlongRay(
-        int[] king, (int DRow, int DCol) direction, int boardSize, Set<(int Row, int Col)> occupied)
-    {
-        var row = king[0] + direction.DRow;
-        var col = king[1] + direction.DCol;
+            // No queen shares a rank, file or diagonal with the king: every ray runs
+            // off the edge.
+            {
+                [[7, 0], [0, 7]],
+                [3, 3],
+                []
+            },
 
-        while (IsInBounds(row, col, boardSize) && !occupied.Has((row, col)))
-        {
-            row += direction.DRow;
-            col += direction.DCol;
-        }
+            // A single adjacent queen, reached on the first step of one ray.
+            {
+                [[0, 0]],
+                [0, 1],
+                [[0, 0]]
+            },
 
-        return IsInBounds(row, col, boardSize) ? (row, col) : null;
-    }
+            // Every direction answered at once: the king boxed in by eight queens.
+            {
+                [[2, 2], [2, 3], [2, 4], [3, 2], [3, 4], [4, 2], [4, 3], [4, 4]],
+                [3, 3],
+                [[2, 2], [2, 3], [2, 4], [3, 2], [3, 4], [4, 2], [4, 3], [4, 4]]
+            },
+        };
 
-    private static bool IsInBounds(int row, int col, int boardSize) =>
-        row >= 0 && row < boardSize && col >= 0 && col < boardSize;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void QueensAttackTheKingByLinearScan_LeetCodeExamples_ReturnsAttackingQueens(
+        int[][] queens, int[] king, int[][] expected) =>
+        AssertSameCoordinates(
+            expected,
+            QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(queens, king));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void QueensAttackTheKingBySetLookup_LeetCodeExamples_ReturnsAttackingQueens(
+        int[][] queens, int[] king, int[][] expected) =>
+        AssertSameCoordinates(
+            expected,
+            QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(queens, king));
 
     private static void AssertSameCoordinates(int[][] expected, List<(int Row, int Col)> actual)
     {

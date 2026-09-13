@@ -1,76 +1,49 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.NumberOfValidWordsForEachPuzzle;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfValidWordsForEachPuzzle;
 
-// LeetCode 1178. Number of Valid Words for Each Puzzle: each word/puzzle collapses
-// to a 26-bit letter-presence mask; this repo's own HashMap<int,int> counts words by
-// mask, then each puzzle's answer sums the counts of every submask of its own mask
-// that still contains the puzzle's first letter (the standard submask-enumeration
-// trick: subset = (subset - 1) & mask).
-public sealed partial class NumberOfValidWordsForEachPuzzleTests
+// Harness only. Both strategies are NumberOfValidWordsForEachPuzzleSolution's -
+// this file just pins them to LeetCode's published examples, plus the degenerate
+// cases the mask encoding has to get right (a puzzle matching nothing, and a word
+// whose letters are all present but which still misses the first letter).
+public sealed class NumberOfValidWordsForEachPuzzleTests
 {
-    [Fact]
-    public void FindNumOfValidWords_ClassicExample_ReturnsMatchingWordCountsPerPuzzle()
-    {
-        string[] words = ["aaaa", "asas", "able", "ability", "actt", "actor", "access"];
-        string[] puzzles = ["aboveyz", "abrodyz", "abslute", "absoryz", "actresz", "gaswxyz"];
-
-        var counts = FindNumOfValidWords(words, puzzles);
-
-        Assert.Equal([1, 1, 3, 2, 4, 0], counts);
-    }
-
-    private static List<int> FindNumOfValidWords(string[] words, string[] puzzles)
-    {
-        var wordCountsByMask = new HashMap<int, int>();
-        foreach (var word in words)
+    public static TheoryData<string[], string[], int[]> Examples =>
+        new()
         {
-            var mask = LetterMask(word);
-            wordCountsByMask.TryGetValue(mask, out var existing);
-            wordCountsByMask.Set(mask, existing + 1);
-        }
-
-        var result = new List<int>(puzzles.Length);
-        foreach (var puzzle in puzzles)
-        {
-            var validCount = CountValidWords(wordCountsByMask, LetterMask(puzzle), 1 << (puzzle[0] - 'a'));
-            result.Add(validCount);
-        }
-
-        return result;
-    }
-
-    private static int CountValidWords(HashMap<int, int> wordCountsByMask, int puzzleMask, int firstLetterBit)
-    {
-        var total = 0;
-        var submask = puzzleMask;
-
-        while (true)
-        {
-            if ((submask & firstLetterBit) != 0 && wordCountsByMask.TryGetValue(submask, out var wordCount))
             {
-                total += wordCount;
-            }
-
-            if (submask == 0)
+                ["aaaa", "asas", "able", "ability", "actt", "actor", "access"],
+                ["aboveyz", "abrodyz", "abslute", "absoryz", "actresz", "gaswxyz"],
+                [1, 1, 3, 2, 4, 0]
+            },
             {
-                break;
-            }
+                ["apple", "pleas", "please"],
+                ["aelwxyz", "aelpxyz", "aelpsxy", "saelpxy", "xaelpsy"],
+                [0, 1, 3, 2, 0]
+            },
+            {
+                ["bc"],
+                ["abcdefg"],
+                [0]
+            },
+            {
+                ["a"],
+                ["abcdefg"],
+                [1]
+            },
+        };
 
-            submask = (submask - 1) & puzzleMask;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountValidWordsByMaskComparison_LeetCodeExamples_ReturnsValidWordCountPerPuzzle(
+        string[] words, string[] puzzles, int[] expected) =>
+        Assert.Equal(expected, NumberOfValidWordsForEachPuzzleSolution.CountValidWordsByMaskComparison(words, puzzles));
 
-        return total;
-    }
-
-    private static int LetterMask(string value)
-    {
-        var mask = 0;
-        foreach (var ch in value)
-        {
-            mask |= 1 << (ch - 'a');
-        }
-
-        return mask;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountValidWordsByMaskSubsetEnumeration_LeetCodeExamples_ReturnsValidWordCountPerPuzzle(
+        string[] words, string[] puzzles, int[] expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfValidWordsForEachPuzzleSolution.CountValidWordsByMaskSubsetEnumeration(words, puzzles));
 }
