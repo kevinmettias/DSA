@@ -1,49 +1,50 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.ConvertBinaryNumberInALinkedListToInteger;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ConvertBinaryNumberInALinkedListToInteger;
 
-// LeetCode 1290. Convert Binary Number in a Linked List to Integer: a single
-// left-to-right walk over this repo's own SinglyLinkedListNode<int>.Next,
-// accumulating value = (value << 1) | bit as it goes - no algorithm primitive
-// needed beyond the node representation itself, the same "just the
-// representation" shape MiddleOfTheLinkedListTests' walk already uses.
-public sealed partial class ConvertBinaryNumberInALinkedListToIntegerTests
+// Harness only. Both strategies are ConvertBinaryNumberInALinkedListToIntegerSolution's -
+// this file states LeetCode's examples once as the list's bits plus the decimal
+// value they encode, and asserts each strategy against them.
+public sealed class ConvertBinaryNumberInALinkedListToIntegerTests
 {
-    [Fact]
-    public void GetDecimalValue_ClassicExample_ReturnsFive()
-        => Assert.Equal(5, GetDecimalValue(Build([1, 0, 1])));
-
-    [Fact]
-    public void GetDecimalValue_SingleZeroNode_ReturnsZero()
-        => Assert.Equal(0, GetDecimalValue(Build([0])));
-
-    [Fact]
-    public void GetDecimalValue_AllOnes_ReturnsFullBitPattern()
-        => Assert.Equal(31, GetDecimalValue(Build([1, 1, 1, 1, 1])));
-
-    private static int GetDecimalValue(SinglyLinkedListNode<int>? head)
-    {
-        var value = 0;
-
-        for (var node = head; node is not null; node = node.Next)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            value = (value << 1) | node.Value;
-        }
+            { [1, 0, 1], 5 },
+            { [0], 0 },
+            { [1], 1 },
+            { [1, 1, 1, 1, 1], 31 },
+            { [1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0], 18_880 },
+            { [0, 0], 0 },
+            { [0, 1, 1], 3 },
+        };
 
-        return value;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetDecimalValueBySinglePassShift_LeetCodeExamples_ReturnsDecimalValue(int[] bits, int expected) =>
+        Assert.Equal(
+            expected,
+            ConvertBinaryNumberInALinkedListToIntegerSolution.GetDecimalValueBySinglePassShift(BuildList(bits)));
 
-    private static SinglyLinkedListNode<int> Build(int[] values)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetDecimalValueByCollectThenFold_LeetCodeExamples_ReturnsDecimalValue(int[] bits, int expected) =>
+        Assert.Equal(
+            expected,
+            ConvertBinaryNumberInALinkedListToIntegerSolution.GetDecimalValueByCollectThenFold(BuildList(bits)));
+
+    private static SinglyLinkedListNode<int> BuildList(int[] bits)
     {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
+        var head = new SinglyLinkedListNode<int>(bits[0]);
+        var tail = head;
 
-        foreach (var value in values)
+        foreach (var bit in bits[1..])
         {
-            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail.Next = new SinglyLinkedListNode<int>(bit);
             tail = tail.Next;
         }
 
-        return dummy.Next!;
+        return head;
     }
 }

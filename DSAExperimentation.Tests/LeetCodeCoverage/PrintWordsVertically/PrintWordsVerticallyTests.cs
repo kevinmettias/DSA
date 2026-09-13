@@ -1,68 +1,30 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.PrintWordsVertically;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PrintWordsVertically;
 
-// LeetCode 1324. Print Words Vertically: build each output row (one per
-// character column) in this repo's own DynamicArray<char> - the same growable
-// char buffer StreamOfCharactersTests uses to stand in for a running stream -
-// then trim trailing spaces by popping from the tail via RemoveAt(Count - 1).
-// DynamicArray earns its place over a plain List<char> here specifically
-// because trimming needs both indexed Get (to read the last char) and O(1)
-// removal from the end, the same "grow at the back, trim from the back" shape
-// as a stack, but keyed by column index rather than push order.
-public sealed partial class PrintWordsVerticallyTests
+// Harness only. Both column builders are PrintWordsVerticallySolution's; this file
+// pins them to LeetCode's three published examples plus a single-word sentence,
+// which is where a trim that ran one character too far would show up first.
+public sealed class PrintWordsVerticallyTests
 {
-    [Fact]
-    public void PrintVertically_ClassicExample_ReturnsColumnsWithNoTrailingSpaces()
-    {
-        var result = PrintVertically("HOW ARE YOU");
-
-        Assert.Equal(["HAY", "ORO", "WEU"], result);
-    }
-
-    [Fact]
-    public void PrintVertically_UnevenWordLengths_TrimsTrailingSpacesButKeepsInterior()
-    {
-        var result = PrintVertically("TO BE OR NOT TO BE");
-
-        Assert.Equal(["TBONTB", "OEROOE", "   T"], result);
-    }
-
-    private static IList<string> PrintVertically(string s)
-    {
-        var words = s.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var maxLength = words.Max(word => word.Length);
-        var result = new List<string>();
-
-        for (var column = 0; column < maxLength; column++)
+    public static TheoryData<string, string[]> Examples =>
+        new()
         {
-            var columnText = BuildColumn(words, column);
-            result.Add(columnText);
-        }
+            { "HOW ARE YOU", ["HAY", "ORO", "WEU"] },
+            { "TO BE OR NOT TO BE", ["TBONTB", "OEROOE", "   T"] },
+            { "CONTEST IS COMING", ["CIC", "OSO", "N M", "T I", "E N", "S G", "T"] },
+            { "ALONE", ["A", "L", "O", "N", "E"] },
+        };
 
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PrintVerticallyByListTrimEnd_LeetCodeExamples_ReturnsColumnsWithoutTrailingSpaces(
+        string s, string[] expected) =>
+        Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(s));
 
-    private static string BuildColumn(string[] words, int column)
-    {
-        var buffer = new DynamicArray<char>();
-
-        foreach (var word in words)
-        {
-            buffer.Add(column < word.Length ? word[column] : ' ');
-        }
-
-        while (buffer.Count > 0 && buffer.Get(buffer.Count - 1) == ' ')
-        {
-            buffer.RemoveAt(buffer.Count - 1);
-        }
-
-        var chars = new char[buffer.Count];
-        for (var i = 0; i < buffer.Count; i++)
-        {
-            chars[i] = buffer.Get(i);
-        }
-
-        return new string(chars);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PrintVerticallyByDynamicArrayColumns_LeetCodeExamples_ReturnsColumnsWithoutTrailingSpaces(
+        string s, string[] expected) =>
+        Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(s));
 }

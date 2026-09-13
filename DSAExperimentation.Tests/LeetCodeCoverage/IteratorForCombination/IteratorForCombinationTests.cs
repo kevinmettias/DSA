@@ -1,90 +1,51 @@
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.IteratorForCombination;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.IteratorForCombination;
 
-// LeetCode 1286. Iterator for Combination: this repo's Backtrack.Search
-// (CombinationSumIII/PalindromePartitioning precedent) enumerates every
-// length-combinationLength combination of characters' indices in strictly
-// increasing order - which is already lexicographic order since characters
-// is given sorted - so the iterator itself is just a cursor over that
-// precomputed, already-ordered list, the same "no algorithm primitive
-// beyond a cursor" shape BinarySearchTreeIteratorTests' stack-backed
-// iterator already uses.
-public sealed partial class IteratorForCombinationTests
+// Harness only: both strategies live in IteratorForCombinationSolution. LeetCode's
+// shape here is a stateful object driven by next()/hasNext(), so an example states
+// the whole sequence the judge would observe and each [Theory] replays it - asserting
+// HasNext before every Next and exhaustion at the end. The bitmask enumeration was
+// previously only a benchmark's baseline arm and went unasserted; it is under test
+// here for the first time.
+public sealed class IteratorForCombinationTests
 {
-    [Fact]
-    public void CombinationIterator_ClassicExample_YieldsInLexicographicalOrder()
-    {
-        var iterator = new CombinationIterator("abc", 2);
+    public static TheoryData<string, int, string[]> Examples =>
+        new()
+        {
+            { "abc", 2, ["ab", "ac", "bc"] },
+            { "wxyz", 4, ["wxyz"] },
+            { "abc", 1, ["a", "b", "c"] },
+            { "abcd", 3, ["abc", "abd", "acd", "bcd"] },
+            { "ab", 2, ["ab"] },
+        };
 
-        Assert.Equal("ab", iterator.Next());
-        Assert.True(iterator.HasNext());
-        Assert.Equal("ac", iterator.Next());
-        Assert.True(iterator.HasNext());
-        Assert.Equal("bc", iterator.Next());
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBitmaskEnumeration_LeetCodeExamples_YieldsInLexicographicalOrder(
+        string characters, int combinationLength, string[] expected) =>
+        AssertYields(
+            expected,
+            IteratorForCombinationSolution.CreateByBitmaskEnumeration(characters, combinationLength));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBacktrackEngine_LeetCodeExamples_YieldsInLexicographicalOrder(
+        string characters, int combinationLength, string[] expected) =>
+        AssertYields(
+            expected,
+            IteratorForCombinationSolution.CreateByBacktrackEngine(characters, combinationLength));
+
+    private static void AssertYields(
+        string[] expected,
+        IteratorForCombinationSolution.CombinationIterator iterator)
+    {
+        foreach (var combination in expected)
+        {
+            Assert.True(iterator.HasNext());
+            Assert.Equal(combination, iterator.Next());
+        }
+
         Assert.False(iterator.HasNext());
-    }
-
-    [Fact]
-    public void CombinationIterator_CombinationLengthEqualsCharacterCount_YieldsSingleCombination()
-    {
-        var iterator = new CombinationIterator("wxyz", 4);
-
-        Assert.Equal("wxyz", iterator.Next());
-        Assert.False(iterator.HasNext());
-    }
-
-    private sealed class CombinationIterator
-    {
-        private readonly List<string> _combinations;
-        private int _index;
-
-        public CombinationIterator(string characters, int combinationLength)
-            => _combinations = GenerateCombinations(characters, combinationLength);
-
-        public bool HasNext() => _index < _combinations.Count;
-
-        public string Next() => _combinations[_index++];
-
-        private static List<string> GenerateCombinations(string characters, int combinationLength)
-        {
-            var results = new List<string>();
-            var state = new State();
-
-            Backtrack.Search<State, int>(
-                state,
-                isSolution: x => IsSolution(x, combinationLength),
-                candidates: x => Candidates(x, combinationLength, characters.Length),
-                choose: (x, index) => Choose(x, index, characters),
-                unchoose: (x, _) => Unchoose(x),
-                onSolution: x => results.Add(new string([.. x.Chosen])));
-
-            return results;
-        }
-
-        private static bool IsSolution(State x, int combinationLength) => x.Chosen.Count == combinationLength;
-
-        private static IEnumerable<int> Candidates(State x, int combinationLength, int characterCount)
-            => x.Chosen.Count == combinationLength ? [] : Enumerable.Range(x.Start, characterCount - x.Start);
-
-        private static void Choose(State x, int index, string characters)
-        {
-            x.Starts.Push(x.Start);
-            x.Chosen.Add(characters[index]);
-            x.Start = index + 1;
-        }
-
-        private static void Unchoose(State x)
-        {
-            x.Start = x.Starts.Pop();
-            x.Chosen.RemoveAt(x.Chosen.Count - 1);
-        }
-
-        private sealed class State
-        {
-            public List<char> Chosen { get; } = [];
-            public Stack<int> Starts { get; } = new();
-            public int Start { get; set; }
-        }
     }
 }

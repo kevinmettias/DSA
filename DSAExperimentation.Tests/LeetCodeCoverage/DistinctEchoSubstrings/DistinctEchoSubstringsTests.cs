@@ -1,55 +1,35 @@
-using DSAExperimentation.DataStructures.RollingHash;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.DistinctEchoSubstrings;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DistinctEchoSubstrings;
 
-// LeetCode 1316. Distinct Echo Substrings: an echo substring is text[start..start+2L)
-// whose first half text[start..start+L) equals its second half
-// text[start+L..start+2L). Every (start, halfLength) pair is screened with this
-// repo's own RollingHash for an O(1) equality check before paying for a real
-// SequenceEqual verification - the same screen-then-verify shape
-// RollingHashSearch.FindAll/LongestChunkedPalindromeDecompositionTests already use
-// (a hash match is "probably equal," not "definitely equal") - and every substring
-// that verifies as an echo is deduplicated through this repo's own Set<string>
-// (HashMap-backed), not a hand-rolled dictionary.
-public sealed partial class DistinctEchoSubstringsTests
+// Harness only. Both counting strategies are DistinctEchoSubstringsSolution's - the
+// naive substring comparison that used to live untested as the benchmark baseline,
+// and the RollingHash-screened sweep - pinned here to LeetCode's published examples
+// plus the cases that separate "counts echoes" from "counts distinct echoes"
+// ("aaaa", "abababab", where the same echo is found at several starts).
+public sealed class DistinctEchoSubstringsTests
 {
+    public static TheoryData<string, int> Examples =>
+        new()
+        {
+            { "abcabcabc", 3 },
+            { "leetcodeleetcode", 2 },
+            { "bbb", 1 },
+            { "a", 0 },
+            { "abcdef", 0 },
+            { "aaaa", 2 },
+            { "abababab", 3 },
+        };
+
     [Theory]
-    [InlineData("abcabcabc", 3)]
-    [InlineData("leetcodeleetcode", 2)]
-    [InlineData("bbb", 1)]
-    public void CountDistinctEchoSubstrings_LeetCodeExamples_ReturnsExpectedCount(string text, int expected)
-        => Assert.Equal(expected, CountDistinctEchoSubstrings(text));
+    [MemberData(nameof(Examples))]
+    public void CountDistinctEchoesByNaiveSubstringComparison_LeetCodeExamples_ReturnsExpectedCount(
+        string text, int expected) =>
+        Assert.Equal(expected, DistinctEchoSubstringsSolution.CountDistinctEchoesByNaiveSubstringComparison(text));
 
-    private static int CountDistinctEchoSubstrings(string text)
-    {
-        var hash = new RollingHash(text);
-        var echoes = new Set<string>();
-
-        for (var halfLength = 1; halfLength * 2 <= text.Length; halfLength++)
-        {
-            for (var start = 0; start + (2 * halfLength) <= text.Length; start++)
-            {
-                if (IsEcho(text, hash, start, halfLength))
-                {
-                    var echoSubstring = text.Substring(start, halfLength * 2);
-                    echoes.TryAdd(echoSubstring);
-                }
-            }
-        }
-
-        return echoes.Count;
-    }
-
-    private static bool IsEcho(string text, RollingHash hash, int start, int halfLength)
-    {
-        if (hash.Hash(start, halfLength) != hash.Hash(start + halfLength, halfLength))
-        {
-            return false;
-        }
-
-        var firstHalf = text.AsSpan(start, halfLength);
-        var secondHalf = text.AsSpan(start + halfLength, halfLength);
-        return firstHalf.SequenceEqual(secondHalf);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDistinctEchoesByRollingHashScreen_LeetCodeExamples_ReturnsExpectedCount(
+        string text, int expected) =>
+        Assert.Equal(expected, DistinctEchoSubstringsSolution.CountDistinctEchoesByRollingHashScreen(text));
 }

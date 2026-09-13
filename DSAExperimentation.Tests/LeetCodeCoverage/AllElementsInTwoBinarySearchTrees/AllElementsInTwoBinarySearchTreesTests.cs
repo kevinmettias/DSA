@@ -1,97 +1,70 @@
-using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.AllElementsInTwoBinarySearchTrees;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AllElementsInTwoBinarySearchTrees;
 
-// LeetCode 1305. All Elements in Two Binary Search Trees: an in-order walk of a BST
-// visits values in ascending order, so collecting each tree's in-order sequence
-// (this repo's own InOrderTraversal/IInOrderHooks over BinaryTreeNode<int>, the same
-// composition KthSmallestElementInABSTTests/FindModeInBinarySearchTreeTests use,
-// buffered into a DynamicArray<int>) and merging the two already-sorted sequences
-// with a plain two-pointer merge is O(n+m) - no full sort needed, unlike the
-// textbook "dump everything into one list and sort it" approach.
-public sealed partial class AllElementsInTwoBinarySearchTreesTests
+// Harness only. Both strategies are AllElementsInTwoBinarySearchTreesSolution's -
+// this file states LeetCode's examples once and asserts each strategy against them.
+// Each tree is given as its BST insertion order rather than as a node graph:
+// BinaryTreeNode<TValue> is internal, so a public MemberData member cannot name it,
+// and the insertion order pins the same shape LeetCode draws.
+public sealed class AllElementsInTwoBinarySearchTreesTests
 {
-    [Fact]
-    public void GetAllElements_TwoSmallTrees_ReturnsMergedAscendingValues()
-    {
-        // root1 = [2,1,4], root2 = [1,0,3] -> [0,1,1,2,3,4]
-        var root1 = new BinaryTreeNode<int>(2) { Left = new(1), Right = new(4) };
-        var root2 = new BinaryTreeNode<int>(1) { Left = new(0), Right = new(3) };
-
-        var actual = GetAllElements(root1, root2);
-
-        Assert.Equal([0, 1, 1, 2, 3, 4], actual);
-    }
-
-    [Fact]
-    public void GetAllElements_TreesSharingDuplicateValues_KeepsEveryOccurrence()
-    {
-        // root1 = [1,null,8], root2 = [8,1] -> [1,1,8,8]
-        var root1 = new BinaryTreeNode<int>(1) { Right = new(8) };
-        var root2 = new BinaryTreeNode<int>(8) { Left = new(1) };
-
-        var actual = GetAllElements(root1, root2);
-
-        Assert.Equal([1, 1, 8, 8], actual);
-    }
-
-    [Fact]
-    public void GetAllElements_OneTreeEmpty_ReturnsOtherTreesElementsInOrder()
-    {
-        var root2 = new BinaryTreeNode<int>(5) { Left = new(2), Right = new(9) };
-
-        var actual = GetAllElements(null, root2);
-
-        Assert.Equal([2, 5, 9], actual);
-    }
-
-    private static int[] GetAllElements(BinaryTreeNode<int>? root1, BinaryTreeNode<int>? root2)
-    {
-        var first = CollectInOrder(root1);
-        var second = CollectInOrder(root2);
-        return MergeSortedLists(first, second);
-    }
-
-    private static DynamicArray<int> CollectInOrder(BinaryTreeNode<int>? root)
-    {
-        State.Values.Value = new DynamicArray<int>();
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-        return State.Values.Value;
-    }
-
-    private static int[] MergeSortedLists(DynamicArray<int> first, DynamicArray<int> second)
-    {
-        var result = new int[first.Count + second.Count];
-        var i = 0;
-        var j = 0;
-        var k = 0;
-
-        while (i < first.Count && j < second.Count)
+    public static TheoryData<int[], int[], int[]> Examples =>
+        new()
         {
-            result[k++] = first.Get(i) <= second.Get(j) ? first.Get(i++) : second.Get(j++);
+            // root1 = [2,1,4], root2 = [1,0,3] -> [0,1,1,2,3,4]
+            { [2, 1, 4], [1, 0, 3], [0, 1, 1, 2, 3, 4] },
+
+            // root1 = [1,null,8], root2 = [8,1] -> [1,1,8,8]
+            { [1, 8], [8, 1], [1, 1, 8, 8] },
+
+            // Either tree may be empty.
+            { [], [5, 2, 9], [2, 5, 9] },
+            { [5, 2, 9], [], [2, 5, 9] },
+            { [], [], [] },
+
+            // A right-skewed chain against a left-skewed one, so the merge has to
+            // alternate sources rather than drain one and then the other.
+            { [1, 3, 5], [6, 4, 2], [1, 2, 3, 4, 5, 6] },
+
+            // Disjoint ranges: one sequence is fully consumed before the other starts.
+            { [1, 0, 2], [11, 10, 12], [0, 1, 2, 10, 11, 12] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetAllElementsByInOrderMerge_LeetCodeExamples_ReturnsMergedAscendingValues(
+        int[] tree1,
+        int[] tree2,
+        int[] expected) =>
+        Assert.Equal(
+            expected,
+            AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByInOrderMerge(
+                BuildTree(tree1),
+                BuildTree(tree2)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetAllElementsByCollectThenSort_LeetCodeExamples_ReturnsMergedAscendingValues(
+        int[] tree1,
+        int[] tree2,
+        int[] expected) =>
+        Assert.Equal(
+            expected,
+            AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByCollectThenSort(
+                BuildTree(tree1),
+                BuildTree(tree2)));
+
+    private static BinaryTreeNode<int>? BuildTree(int[] insertionOrder)
+    {
+        var tree = new BinarySearchTree<int>();
+
+        foreach (var value in insertionOrder)
+        {
+            tree.Insert(value);
         }
 
-        while (i < first.Count)
-        {
-            result[k++] = first.Get(i++);
-        }
-
-        while (j < second.Count)
-        {
-            result[k++] = second.Get(j++);
-        }
-
-        return result;
-    }
-
-    private readonly struct CollectHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Values = new();
+        return tree.Root;
     }
 }
