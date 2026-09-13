@@ -1,69 +1,33 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.MinimumSwapsToMakeSequencesIncreasing;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumSwapsToMakeSequencesIncreasing;
 
-// LeetCode 801. Minimum Swaps To Make Sequences Increasing: at each index, either
-// keep or swap nums1[i]/nums2[i] so both arrays end up strictly increasing, for the
-// minimum total swaps. Two-state DP - state (index, wasSwapped) -> minimum swaps for
-// that prefix - via this repo's own Memoizer, the same HouseRobberII/DecodeWays
-// shape, not the textbook flat dp[i][0]/dp[i][1] table.
-public sealed partial class MinimumSwapsToMakeSequencesIncreasingTests
+// Harness only. Both strategies are MinimumSwapsToMakeSequencesIncreasingSolution's -
+// this file pins them to LeetCode's published examples plus the degenerate shapes the
+// recurrence's base case has to survive: a single index, a pair already increasing in
+// both arrays, and a pair that only becomes increasing by swapping the last index.
+public sealed class MinimumSwapsToMakeSequencesIncreasingTests
 {
+    public static TheoryData<int[], int[], int> Examples =>
+        new()
+        {
+            { [1, 3, 5, 4], [1, 2, 3, 7], 1 },
+            { [0, 3, 5, 8, 9], [2, 1, 4, 6, 9], 1 },
+            { [1], [1], 0 },
+            { [1, 2, 3], [4, 5, 6], 0 },
+            { [1, 2, 3, 4, 5], [0, 1, 2, 3, 4], 0 },
+            { [1, 1], [0, 2], 1 },
+        };
+
     [Theory]
-    [InlineData(new[] { 1, 3, 5, 4 }, new[] { 1, 2, 3, 7 }, 1)]
-    [InlineData(new[] { 0, 3, 5, 8, 9 }, new[] { 2, 1, 4, 6, 9 }, 1)]
-    public void MinSwap_LeetCodeExamples_ReturnsMinimumSwapCount(int[] nums1, int[] nums2, int expected)
-    {
-        var actual = MinSwap(nums1, nums2);
-        Assert.Equal(expected, actual);
-    }
+    [MemberData(nameof(Examples))]
+    public void MinSwapByTabulation_LeetCodeExamples_ReturnsMinimumSwapCount(
+        int[] nums1, int[] nums2, int expected) =>
+        Assert.Equal(expected, MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByTabulation(nums1, nums2));
 
-    // Precondition (guaranteed by LeetCode 801's own constraints): at least one valid
-    // keep/swap assignment exists, so Cost below always finds a valid transition and
-    // never has to reason about an all-invalid state.
-    private static int MinSwap(int[] nums1, int[] nums2)
-    {
-        var arrays = new SwapArrays(nums1, nums2);
-        var last = nums1.Length - 1;
-
-        var keepCost = Memoizer.Memoize<(int Index, bool Swapped), int>((last, false), (state, cost) => Cost(arrays, state, cost));
-        var swapCost = Memoizer.Memoize<(int Index, bool Swapped), int>((last, true), (state, cost) => Cost(arrays, state, cost));
-
-        return Math.Min(keepCost, swapCost);
-    }
-
-    private static int Cost(SwapArrays arrays, (int Index, bool Swapped) state, Func<(int Index, bool Swapped), int> cost)
-    {
-        var (i, swapped) = state;
-
-        if (i == 0)
-        {
-            return swapped ? 1 : 0;
-        }
-
-        var curA = swapped ? arrays.Nums2[i] : arrays.Nums1[i];
-        var curB = swapped ? arrays.Nums1[i] : arrays.Nums2[i];
-        var best = BestSwapChoice(arrays, i, (curA, curB), cost);
-
-        return best + (swapped ? 1 : 0);
-    }
-
-    private static int BestSwapChoice(SwapArrays arrays, int i, (int CurA, int CurB) current, Func<(int Index, bool Swapped), int> cost)
-    {
-        var best = int.MaxValue;
-
-        if (current.CurA > arrays.Nums1[i - 1] && current.CurB > arrays.Nums2[i - 1])
-        {
-            best = Math.Min(best, cost((i - 1, false)));
-        }
-
-        if (current.CurA > arrays.Nums2[i - 1] && current.CurB > arrays.Nums1[i - 1])
-        {
-            best = Math.Min(best, cost((i - 1, true)));
-        }
-
-        return best;
-    }
-
-    private readonly record struct SwapArrays(int[] Nums1, int[] Nums2);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinSwapByMemoizedTwoState_LeetCodeExamples_ReturnsMinimumSwapCount(
+        int[] nums1, int[] nums2, int expected) =>
+        Assert.Equal(expected, MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByMemoizedTwoState(nums1, nums2));
 }

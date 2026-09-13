@@ -1,55 +1,50 @@
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.LeetCodeCoverage.IsGraphBipartite.Fixtures;
-using BipartiteCheckOperations = DSAExperimentation.Algorithms.Bipartiteness.BipartiteCheck;
+using DSAExperimentation.LeetCode.IsGraphBipartite;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.IsGraphBipartite;
 
-// LeetCode 785. Is Graph Bipartite?: exactly this repo's own BipartiteCheck -
-// multi-root BFS 2-coloring over the graph's own (already-symmetric) adjacency
-// list, returning false the moment an edge connects two same-colored nodes.
-public sealed partial class IsGraphBipartiteTests
+// Harness only. Both strategies are IsGraphBipartiteSolution's - this file pins
+// them to LeetCode's published examples plus the shapes the composed arm has to
+// answer without a single connected component to walk: isolated vertices and a
+// graph that is bipartite only because its components are considered separately.
+public sealed class IsGraphBipartiteTests
 {
-    [Fact]
-    public void IsBipartite_ClassicOddCycleThroughNodeZero_ReturnsFalse()
-    {
-        // graph = [[1,2,3],[0,2],[0,1,3],[0,2]] - 1-2 and 0's other edges force an
-        // odd cycle (0-1-2-0).
-        var nodes = BuildGraph([[1, 2, 3], [0, 2], [0, 1, 3], [0, 2]]);
-
-        var result = Check(nodes);
-
-        Assert.False(result);
-    }
-
-    [Fact]
-    public void IsBipartite_EvenCycle_ReturnsTrue()
-    {
-        // graph = [[1,3],[0,2],[1,3],[0,2]] - a clean 4-cycle, 2-colorable.
-        var nodes = BuildGraph([[1, 3], [0, 2], [1, 3], [0, 2]]);
-
-        var result = Check(nodes);
-
-        Assert.True(result);
-    }
-
-    private static List<GraphNode> BuildGraph(int[][] adjacency)
-    {
-        var nodes = Enumerable.Range(0, adjacency.Length).Select(id => new GraphNode(id)).ToList();
-
-        for (var i = 0; i < adjacency.Length; i++)
+    public static TheoryData<int[][], bool> Examples =>
+        new()
         {
-            foreach (var neighbor in adjacency[i])
-            {
-                nodes[i].Neighbors.Add(nodes[neighbor]);
-            }
-        }
+            // LC example 1: 0-1-2-0 is an odd cycle.
+            { [[1, 2, 3], [0, 2], [0, 1, 3], [0, 2]], false },
 
-        return nodes;
-    }
+            // LC example 2: a clean 4-cycle.
+            { [[1, 3], [0, 2], [1, 3], [0, 2]], true },
 
-    private static bool Check(List<GraphNode> nodes)
-        => BipartiteCheckOperations.IsBipartite<
-            GraphNode, GraphNodeTopology, ListChildren<GraphNode>,
-            NaturalChildOrder<GraphNode, ListChildren<GraphNode>>, ListChildren<GraphNode>>(
-            nodes);
+            // A single vertex with no edges.
+            { [[]], true },
+
+            // Two isolated vertices - two components, neither with an edge.
+            { [[], []], true },
+
+            // Two disjoint edges: bipartite across more than one component.
+            { [[1], [0], [3], [2]], true },
+
+            // A triangle is the smallest odd cycle.
+            { [[1, 2], [0, 2], [0, 1]], false },
+
+            // A star: every edge crosses from the center to a leaf.
+            { [[1, 2], [0], [0]], true },
+
+            // One bipartite component and one odd-cycle component.
+            { [[1], [0], [3, 4], [2, 4], [2, 3]], false },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsBipartiteByColorArrayDfs_LeetCodeExamples_ReturnsWhetherGraphIsTwoColorable(
+        int[][] graph, bool expected) =>
+        Assert.Equal(expected, IsGraphBipartiteSolution.IsBipartiteByColorArrayDfs(graph));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsBipartiteByBipartiteCheck_LeetCodeExamples_ReturnsWhetherGraphIsTwoColorable(
+        int[][] graph, bool expected) =>
+        Assert.Equal(expected, IsGraphBipartiteSolution.IsBipartiteByBipartiteCheck(graph));
 }

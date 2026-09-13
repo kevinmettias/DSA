@@ -1,13 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.RotateString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Rotate String (LC 796): the naive O(n*m) substring scan for goal inside s+s vs.
-// this repo's KMP-based PrefixFunctionSearch, which never re-scans from the start
-// of goal on a mismatch. _s/_goal are both runs of 'a' with one differing trailing
-// character, so nearly every scan position is a long near-miss - the worst case
-// for the naive scan and exactly what KMP's failure function is built to skip.
+// Harness only: both arms are RotateStringSolution's, the same methods
+// RotateStringTests proves correct. _s/_goal are both runs of 'a' with one
+// differing trailing character, so nearly every scan position inside s+s is a long
+// near-miss - the worst case for the restart-on-mismatch scan and exactly what
+// KMP's failure function is built to skip.
 [MemoryDiagnoser]
 public class RotateStringBenchmarks
 {
@@ -25,32 +25,8 @@ public class RotateStringBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveSubstringScan() => Contains(_s + _s, _goal);
+    public bool NaiveSubstringScan() => RotateStringSolution.CanRotateByNaiveScan(_s, _goal);
 
     [Benchmark]
-    public bool KmpSearch() => PrefixFunctionSearch.FindAll(_s + _s, _goal).Count > 0;
-
-    private static bool Contains(string text, string pattern)
-    {
-        for (var i = 0; i + pattern.Length <= text.Length; i++)
-        {
-            var matched = true;
-
-            for (var j = 0; j < pattern.Length; j++)
-            {
-                if (text[i + j] != pattern[j])
-                {
-                    matched = false;
-                    break;
-                }
-            }
-
-            if (matched)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool KmpSearch() => RotateStringSolution.CanRotateByPrefixFunction(_s, _goal);
 }

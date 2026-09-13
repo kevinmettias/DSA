@@ -1,14 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.MinimumSwapsToMakeSequencesIncreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Swaps To Make Sequences Increasing (LC 801): the textbook flat
-// keep[i]/swap[i] tabulation vs. this repo's own Memoizer closing over a two-state
-// (index, wasSwapped) recurrence. Values at index i are always {2i, 2i+1} in random
-// order, so both keep and swap stay valid transitions at every step regardless of
-// prior choices - both strategies run their full real workload instead of one
-// branch getting pruned away immediately.
+// Harness only: both arms are MinimumSwapsToMakeSequencesIncreasingSolution's, the
+// same methods MinimumSwapsToMakeSequencesIncreasingTests proves correct - the
+// textbook flat keep[i]/swap[i] tabulation against this repo's own Memoizer closing
+// over a two-state (index, wasSwapped) recurrence. Values at index i are always
+// {2i, 2i+1} in random order, so both keep and swap stay valid transitions at every
+// step regardless of prior choices - both strategies run their full real workload
+// instead of one branch getting pruned away immediately.
 [MemoryDiagnoser]
 public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
 {
@@ -53,73 +54,10 @@ public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int Tabulation()
-    {
-        var n = _nums1.Length;
-        var keep = new int[n];
-        var swap = new int[n];
-        swap[0] = 1;
-
-        for (var i = 1; i < n; i++)
-        {
-            UpdateTabulationStep(keep, swap, i);
-        }
-
-        return Math.Min(keep[n - 1], swap[n - 1]);
-    }
-
-    private void UpdateTabulationStep(int[] keep, int[] swap, int i)
-    {
-        keep[i] = int.MaxValue;
-        swap[i] = int.MaxValue;
-
-        if (_nums1[i] > _nums1[i - 1] && _nums2[i] > _nums2[i - 1])
-        {
-            keep[i] = Math.Min(keep[i], keep[i - 1]);
-            swap[i] = Math.Min(swap[i], swap[i - 1] + 1);
-        }
-
-        if (_nums1[i] > _nums2[i - 1] && _nums2[i] > _nums1[i - 1])
-        {
-            keep[i] = Math.Min(keep[i], swap[i - 1]);
-            swap[i] = Math.Min(swap[i], keep[i - 1] + 1);
-        }
-    }
+    public int Tabulation() =>
+        MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByTabulation(_nums1, _nums2);
 
     [Benchmark]
-    public int MemoizedTwoState()
-    {
-        var last = _nums1.Length - 1;
-
-        var costWithoutSwap = Memoizer.Memoize<(int Index, bool Swapped), int>((last, false), Cost);
-        var costWithSwap = Memoizer.Memoize<(int Index, bool Swapped), int>((last, true), Cost);
-
-        return Math.Min(costWithoutSwap, costWithSwap);
-    }
-
-    private int Cost((int Index, bool Swapped) state, Func<(int Index, bool Swapped), int> cost)
-    {
-        var (i, swapped) = state;
-
-        if (i == 0)
-        {
-            return swapped ? 1 : 0;
-        }
-
-        var curA = swapped ? _nums2[i] : _nums1[i];
-        var curB = swapped ? _nums1[i] : _nums2[i];
-        var best = int.MaxValue;
-
-        if (curA > _nums1[i - 1] && curB > _nums2[i - 1])
-        {
-            best = Math.Min(best, cost((i - 1, false)));
-        }
-
-        if (curA > _nums2[i - 1] && curB > _nums1[i - 1])
-        {
-            best = Math.Min(best, cost((i - 1, true)));
-        }
-
-        return best + (swapped ? 1 : 0);
-    }
+    public int MemoizedTwoState() =>
+        MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByMemoizedTwoState(_nums1, _nums2);
 }
