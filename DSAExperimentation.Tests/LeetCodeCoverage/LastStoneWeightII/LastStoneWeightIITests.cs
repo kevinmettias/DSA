@@ -1,49 +1,31 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.LastStoneWeightII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LastStoneWeightII;
 
-// LeetCode 1049. Last Stone Weight II: the smashing process always reduces to
-// picking a subset whose sum is as close as possible to half the total weight
-// (one pile keeps that subset, the other keeps the rest) - the same 0/1-knapsack
-// subset-sum recurrence PartitionEqualSubsetSumTests uses, generalized from
-// "can we hit half exactly" to "what's the closest achievable sum to half," via
-// this repo's own Memoizer instead of the textbook un-memoized exponential
-// recursion.
-public sealed partial class LastStoneWeightIITests
+// Harness only: both strategies live in LastStoneWeightIISolution, so the bottom-up
+// tabulation that used to be the benchmark's unasserted baseline is now held to the
+// same examples as the memoized recursion.
+public sealed class LastStoneWeightIITests
 {
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [2, 7, 4, 1, 8, 1], 1 },
+            { [31, 26, 33, 21, 40], 5 },
+            { [1], 1 },
+            { [2, 2], 0 },
+            { [1, 3], 2 },
+            { [10, 10, 10, 10], 0 },
+            { [1, 2, 4, 8, 16], 1 },
+        };
+
     [Theory]
-    [InlineData(new[] { 2, 7, 4, 1, 8, 1 }, 1)]
-    [InlineData(new[] { 31, 26, 33, 21, 40 }, 5)]
-    [InlineData(new[] { 1 }, 1)]
-    public void LastStoneWeightII_LeetCodeExamples_ReturnsMinimumPossibleWeight(int[] stones, int expected)
-        => Assert.Equal(expected, LastStoneWeightII(stones));
+    [MemberData(nameof(Examples))]
+    public void MinWeightByTabulation_LeetCodeExamples_ReturnsMinimumPossibleWeight(int[] stones, int expected) =>
+        Assert.Equal(expected, LastStoneWeightIISolution.MinWeightByTabulation(stones));
 
-    private static int LastStoneWeightII(int[] stones)
-    {
-        var total = stones.Sum();
-        var half = total / 2;
-
-        var closestToHalf = Memoizer.Memoize<(int Index, int Capacity), int>(
-            (0, half), (state, bestReachableSum) => BestReachableSum(state, bestReachableSum, stones));
-        return total - 2 * closestToHalf;
-    }
-
-    private static int BestReachableSum(
-        (int Index, int Capacity) state, Func<(int Index, int Capacity), int> bestReachableSum, int[] stones)
-    {
-        if (state.Index == stones.Length)
-        {
-            return 0;
-        }
-
-        var skip = bestReachableSum((state.Index + 1, state.Capacity));
-
-        if (stones[state.Index] > state.Capacity)
-        {
-            return skip;
-        }
-
-        var take = stones[state.Index] + bestReachableSum((state.Index + 1, state.Capacity - stones[state.Index]));
-        return Math.Max(skip, take);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinWeightByMemoizer_LeetCodeExamples_ReturnsMinimumPossibleWeight(int[] stones, int expected) =>
+        Assert.Equal(expected, LastStoneWeightIISolution.MinWeightByMemoizer(stones));
 }

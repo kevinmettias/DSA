@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.FlowerPlantingWithNoAdjacent.Fixtures;
+namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 
 internal readonly struct GardenTopology : IGraphTopology<GardenNode, ListChildren<GardenNode>>
 {

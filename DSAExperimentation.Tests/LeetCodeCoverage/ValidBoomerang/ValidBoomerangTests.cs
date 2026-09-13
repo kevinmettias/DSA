@@ -1,44 +1,45 @@
+using DSAExperimentation.LeetCode.ValidBoomerang;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidBoomerang;
 
-// LeetCode 1037. Valid Boomerang: three points form a boomerang exactly when they
-// are not collinear, decided by a single O(1) 2D cross product over the two edge
-// vectors from the first point. No repo container or algorithm primitive applies -
-// there is nothing to compose over three fixed (x,y) pairs and one closed-form sign
-// check, the same "lighter repo-primitive fit" case ComplexNumberMultiplication and
-// MirrorReflection already establish.
-public sealed partial class ValidBoomerangTests
+// Harness only. Both strategies are ValidBoomerangSolution's - the floating-point
+// Heron area and the exact integer cross product - pinned to the same examples so
+// the tolerance-based arm is held to the exact one's answers, including the
+// collinear and duplicate-point cases where its epsilon is doing the work.
+public sealed class ValidBoomerangTests
 {
-    [Fact]
-    public void IsBoomerang_NonCollinearPoints_ReturnsTrue()
-    {
-        int[][] points = [[1, 1], [2, 3], [3, 2]];
+    public static TheoryData<int[][], bool> Examples =>
+        new()
+        {
+            // LC example 1.
+            { [[1, 1], [2, 3], [3, 2]], true },
 
-        Assert.True(IsBoomerang(points));
-    }
+            // LC example 2: the three points sit on the line y = x.
+            { [[1, 1], [2, 2], [3, 3]], false },
 
-    [Fact]
-    public void IsBoomerang_CollinearPoints_ReturnsFalse()
-    {
-        int[][] points = [[1, 1], [2, 2], [3, 3]];
+            // A repeated point degenerates the triangle to a segment.
+            { [[0, 0], [0, 0], [1, 1]], false },
 
-        Assert.False(IsBoomerang(points));
-    }
+            // Collinear vertically, where the two edge vectors share a direction.
+            { [[1, 1], [1, 2], [1, 3]], false },
 
-    [Fact]
-    public void IsBoomerang_DuplicatePoints_ReturnsFalse()
-    {
-        int[][] points = [[0, 0], [0, 0], [1, 1]];
+            // Collinear horizontally, with the middle point given last.
+            { [[0, 4], [8, 4], [3, 4]], false },
 
-        Assert.False(IsBoomerang(points));
-    }
+            // A boomerang whose points are given in clockwise order, so the cross
+            // product is negative rather than positive.
+            { [[0, 0], [1, 2], [2, 1]], true },
+        };
 
-    private static bool IsBoomerang(int[][] points)
-    {
-        var (x1, y1) = (points[0][0], points[0][1]);
-        var (x2, y2) = (points[1][0], points[1][1]);
-        var (x3, y3) = (points[2][0], points[2][1]);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsBoomerangByCrossProduct_LeetCodeExamples_ReturnsWhetherThePointsAreNonCollinear(
+        int[][] points, bool expected) =>
+        Assert.Equal(expected, ValidBoomerangSolution.IsBoomerangByCrossProduct(points));
 
-        var cross = ((long)(x2 - x1) * (y3 - y1)) - ((long)(x3 - x1) * (y2 - y1));
-        return cross != 0;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsBoomerangByHeronArea_LeetCodeExamples_ReturnsWhetherThePointsAreNonCollinear(
+        int[][] points, bool expected) =>
+        Assert.Equal(expected, ValidBoomerangSolution.IsBoomerangByHeronArea(points));
 }
