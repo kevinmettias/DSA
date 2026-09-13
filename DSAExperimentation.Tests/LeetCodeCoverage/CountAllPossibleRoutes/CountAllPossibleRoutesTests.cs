@@ -1,58 +1,36 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.CountAllPossibleRoutes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountAllPossibleRoutes;
 
-// LeetCode 1575. Count All Possible Routes: the recurrence
-// ways(city, fuel) = [city == finish] + sum over every other city j reachable with
-// the fuel remaining of ways(j, fuel - cost) - via this repo's own Memoizer keyed on
-// a (City, Fuel) tuple state, the same 2-D tuple-state shape CoinChangeIITests'
-// (Index, Remaining) and ParallelCoursesIITests' bitmask state already establish for
-// this exact "Memoizer over a value-tuple state" idiom.
-public sealed partial class CountAllPossibleRoutesTests
+// Harness only. Both strategies are CountAllPossibleRoutesSolution's - this file pins
+// them to LeetCode's three published examples plus two cases the original coverage
+// left untested: a start that equals the finish (the route of length zero counts on
+// its own), and a fuel budget large enough to force real back-and-forth revisiting.
+public sealed class CountAllPossibleRoutesTests
 {
-    private const int Mod = 1_000_000_007;
-
-    public static TheoryData<int[], RouteQuery, int> LocationsAndQueryToExpectedRouteCount => new()
-    {
-        { new[] { 2, 3, 6, 8, 4 }, new RouteQuery(1, 3, 5), 4 },
-        { new[] { 4, 3, 1 }, new RouteQuery(1, 0, 6), 5 },
-        { new[] { 5, 2, 1 }, new RouteQuery(0, 2, 3), 0 },
-    };
+    public static TheoryData<int[], int, int, int, int> Examples =>
+        new()
+        {
+            { new[] { 2, 3, 6, 8, 4 }, 1, 3, 5, 4 },
+            { new[] { 4, 3, 1 }, 1, 0, 6, 5 },
+            { new[] { 5, 2, 1 }, 0, 2, 3, 0 },
+            { new[] { 1, 2, 3 }, 0, 0, 0, 1 },
+            { new[] { 1, 2, 3 }, 0, 2, 5, 6 },
+        };
 
     [Theory]
-    [MemberData(nameof(LocationsAndQueryToExpectedRouteCount))]
-    public void CountRoutes_LeetCodeExamples_ReturnsRouteCount(int[] locations, RouteQuery query, int expected)
-    {
-        var actual = CountRoutes(locations, query.Start, query.Finish, query.Fuel);
-        Assert.Equal(expected, actual);
-    }
+    [MemberData(nameof(Examples))]
+    public void CountRoutesByNaiveRecursion_LeetCodeExamples_ReturnsRouteCount(
+        int[] locations, int start, int finish, int fuel, int expected) =>
+        Assert.Equal(
+            expected,
+            CountAllPossibleRoutesSolution.CountRoutesByNaiveRecursion(locations, start, finish, fuel));
 
-    public readonly record struct RouteQuery(int Start, int Finish, int Fuel);
-
-    private static int CountRoutes(int[] locations, int start, int finish, int fuel)
-    {
-        return Memoizer.Memoize<(int City, int Fuel), int>((start, fuel), WaysFrom);
-
-        int WaysFrom((int City, int Fuel) state, Func<(int City, int Fuel), int> ways)
-        {
-            var (city, remaining) = state;
-            var total = city == finish ? 1 : 0;
-
-            for (var next = 0; next < locations.Length; next++)
-            {
-                if (next == city)
-                {
-                    continue;
-                }
-
-                var cost = Math.Abs(locations[city] - locations[next]);
-                if (cost <= remaining)
-                {
-                    total = (total + ways((next, remaining - cost))) % Mod;
-                }
-            }
-
-            return total;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountRoutesByMemoizedRecurrence_LeetCodeExamples_ReturnsRouteCount(
+        int[] locations, int start, int finish, int fuel, int expected) =>
+        Assert.Equal(
+            expected,
+            CountAllPossibleRoutesSolution.CountRoutesByMemoizedRecurrence(locations, start, finish, fuel));
 }

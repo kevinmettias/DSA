@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.StrangePrinterII.Fixtures;
+namespace DSAExperimentation.LeetCode.StrangePrinterII;
 
 internal readonly struct ColorTopology : IGraphTopology<ColorNode, ListChildren<ColorNode>>
 {
