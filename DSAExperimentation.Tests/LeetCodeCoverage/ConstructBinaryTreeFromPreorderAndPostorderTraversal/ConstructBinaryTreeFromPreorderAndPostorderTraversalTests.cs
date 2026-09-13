@@ -1,65 +1,50 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.ConstructBinaryTreeFromPreorderAndPostorderTraversal;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinaryTreeFromPreorderAndPostorderTraversal;
 
-// LeetCode 889. Construct Binary Tree from Preorder and Postorder Traversal: the
-// same HashMap<TValue,TIndex>-indexed range-split shape
-// ConstructBinaryTreeFromPreorderAndInorderTraversal/
-// ConstructBinaryTreeFromInorderAndPostorderTraversal already use, just keyed off a
-// postorder-position lookup instead of an inorder one. preorder[pre] right after a
-// subtree's own root is that subtree's left child's root (when one exists), so
-// looking its postorder index up locates the left/right split boundary directly.
-public sealed partial class ConstructBinaryTreeFromPreorderAndPostorderTraversalTests
+// Harness only: both strategies are
+// ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution's. LC 889 accepts
+// any tree matching both traversals, so each example is checked by re-flattening
+// the reconstructed tree and requiring it to round-trip to the two inputs - which
+// also pins the leaf cases, since any spurious child would show up in the walks.
+public sealed class ConstructBinaryTreeFromPreorderAndPostorderTraversalTests
 {
-    [Fact]
-    public void BuildTree_ClassicExample_ReconstructsBinaryTree()
-    {
-        var root = Build([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1]);
-
-        Assert.Equal([1, 2, 4, 5, 3, 6, 7], PreOrder(root));
-        Assert.Equal([4, 5, 2, 6, 7, 3, 1], PostOrder(root));
-    }
-
-    [Fact]
-    public void BuildTree_SingleNode_ReturnsLeaf()
-    {
-        var root = Build([1], [1]);
-
-        Assert.NotNull(root);
-        Assert.Equal(1, root.Value);
-        Assert.Null(root.Left);
-        Assert.Null(root.Right);
-    }
-
-    private static BinaryTreeNode<int>? Build(int[] preorder, int[] postorder)
-    {
-        var postIndexOf = new HashMap<int, int>();
-        for (var i = 0; i < postorder.Length; i++) postIndexOf.Set(postorder[i], i);
-
-        var pre = 0;
-
-        BinaryTreeNode<int>? BuildRange(int postLow, int postHigh)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            if (postLow > postHigh) return null;
+            { [1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1] },
+            { [1], [1] },
+            { [1, 2], [2, 1] },
+            { [4, 3, 2, 1], [1, 2, 3, 4] },
+            { [1, 2, 3, 4, 5], [4, 5, 3, 2, 1] },
+        };
 
-            var node = new BinaryTreeNode<int>(preorder[pre++]);
-            if (postLow == postHigh) return node;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildByPostorderScan_LeetCodeExamples_ReconstructsBinaryTree(int[] preorder, int[] postorder)
+    {
+        var root = ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderScan(
+            preorder, postorder);
 
-            postIndexOf.TryGetValue(preorder[pre], out var leftRootPostIndex);
-            var leftSize = leftRootPostIndex - postLow + 1;
-
-            node.Left = BuildRange(postLow, postLow + leftSize - 1);
-            node.Right = BuildRange(postLow + leftSize, postHigh - 1);
-            return node;
-        }
-
-        return BuildRange(0, postorder.Length - 1);
+        Assert.Equal(preorder, PreOrder(root));
+        Assert.Equal(postorder, PostOrder(root));
     }
 
-    private static int[] PreOrder(BinaryTreeNode<int>? root)
-        => root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildByPostorderIndexMap_LeetCodeExamples_ReconstructsBinaryTree(int[] preorder, int[] postorder)
+    {
+        var root = ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(
+            preorder, postorder);
 
-    private static int[] PostOrder(BinaryTreeNode<int>? root)
-        => root is null ? [] : [.. PostOrder(root.Left), .. PostOrder(root.Right), root.Value];
+        Assert.Equal(preorder, PreOrder(root));
+        Assert.Equal(postorder, PostOrder(root));
+    }
+
+    private static int[] PreOrder(BinaryTreeNode<int>? root) =>
+        root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+
+    private static int[] PostOrder(BinaryTreeNode<int>? root) =>
+        root is null ? [] : [.. PostOrder(root.Left), .. PostOrder(root.Right), root.Value];
 }

@@ -1,96 +1,24 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.SuperEggDrop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Super Egg Drop (LC 887): the textbook memoized DP that exhaustively scans every
-// candidate trial floor at each (eggs, floors) state - O(eggs * floors^2) - vs.
-// binary-searching for the trial floor that balances the "breaks" and "survives"
-// branches at each state, since WorstCaseMoves(trial) is monotonic in trial -
-// O(eggs * floors * log(floors)). Both share this repo's own
-// Memoizer<TState,TResult> for the (eggs, floors) cache (GuessNumberHigherOrLowerII
-// Benchmarks' own shape); only how the next trial floor is chosen differs.
+// Harness only: both arms are SuperEggDropSolution's, the same methods
+// SuperEggDropTests proves correct. The comparison is how the next trial floor is
+// chosen at each (eggs, floors) state - an exhaustive scan of every candidate,
+// O(eggs * floors^2), against a bisection on the monotonic worst-case curve,
+// O(eggs * floors * log(floors)).
 [MemoryDiagnoser]
 public class SuperEggDropBenchmarks
 {
     private const int Eggs = 2;
-    private const int MidpointDivisor = 2;
 
     [Params(50, 400)]
     public int Floors;
 
     [Benchmark(Baseline = true)]
-    public int LinearScanDp()
-        => Memoizer.Memoize<(int Eggs, int Floors), int>((Eggs, Floors), LinearScanMoves);
-
-    private static int LinearScanMoves((int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-        if (floors == 0)
-        {
-            return 0;
-        }
-
-        if (eggs == 1)
-        {
-            return floors;
-        }
-
-        var best = int.MaxValue;
-
-        for (var trial = 1; trial <= floors; trial++)
-        {
-            var breaks = movesFor((eggs - 1, trial - 1));
-            var survives = movesFor((eggs, floors - trial));
-            best = Math.Min(best, 1 + Math.Max(breaks, survives));
-        }
-
-        return best;
-    }
+    public int LinearScanDp() => SuperEggDropSolution.MinMovesByLinearScan(Eggs, Floors);
 
     [Benchmark]
-    public int BinarySearchDp()
-        => Memoizer.Memoize<(int Eggs, int Floors), int>((Eggs, Floors), BinarySearchMoves);
-
-    private static int BinarySearchMoves((int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-        if (floors == 0)
-        {
-            return 0;
-        }
-
-        if (eggs == 1)
-        {
-            return floors;
-        }
-
-        var range = new TrialRange(1, floors);
-        var best = int.MaxValue;
-
-        while (range.Low <= range.High)
-        {
-            (range, best) = NarrowTrialRange(range, best, state, movesFor);
-        }
-
-        return best;
-    }
-
-    private static (TrialRange Range, int Best) NarrowTrialRange(
-        TrialRange range, int best, (int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-        var trial = (range.Low + range.High) / MidpointDivisor;
-        var breaks = movesFor((eggs - 1, trial - 1));
-        var survives = movesFor((eggs, floors - trial));
-        best = Math.Min(best, 1 + Math.Max(breaks, survives));
-
-        return breaks < survives
-            ? (range with { Low = trial + 1 }, best)
-            : (range with { High = trial - 1 }, best);
-    }
-
-    // The [low, high] search window BinarySearchMoves bisects each step - bundled
-    // so NarrowTrialRange stays within the 4 value-parameter limit.
-    private readonly record struct TrialRange(int Low, int High);
+    public int BinarySearchDp() => SuperEggDropSolution.MinMovesByBinarySearch(Eggs, Floors);
 }

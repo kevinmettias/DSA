@@ -1,19 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
-
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.MaximumFrequencyStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Maximum Frequency Stack (LC 895): a naive List<int>-backed stack that finds the
-// value to pop by rescanning the whole list every time (recount every value's
-// frequency, then walk back from the top for the most-recent max-frequency entry -
-// O(n) per pop, O(n^2) over a full push/pop sequence) vs. this repo's own
+// Harness only: both arms are MaximumFrequencyStackSolution's factories, the same ones
+// MaximumFrequencyStackTests proves correct. A naive List<int>-backed stack that finds
+// the value to pop by rescanning the whole list every time (recount every value's
+// frequency, then walk back from the top for the most-recent max-frequency entry - O(n)
+// per pop, O(n^2) over a full push/pop sequence) vs. this repo's own
 // HashMap<TKey,TValue> tracking each value's running push frequency plus a second
 // HashMap of frequency -> Stack<int> holding the values pushed at that frequency, so
-// Pop is O(1) amortized - the same HashMap-plus-Stack composition
-// MaximumFrequencyStackTests uses, exercised here over a longer, mixed push/pop
-// workload instead of one fixed example sequence.
+// Pop is O(1) amortized. [GlobalSetup] builds the whole push/pop script so script
+// construction is charged to setup and only the replay is measured.
 [MemoryDiagnoser]
 public class MaximumFrequencyStackBenchmarks
 {
@@ -25,8 +23,6 @@ public class MaximumFrequencyStackBenchmarks
     public int OperationCount;
 
     private (bool IsPush, int Value)[] _operations = null!;
-
-    private readonly record struct FrequencyTracking(HashMap<int, int> Frequencies, HashMap<int, RepoStack> ByFrequency);
 
     [GlobalSetup]
     public void Setup()
@@ -50,118 +46,27 @@ public class MaximumFrequencyStackBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long RescanListOnEveryPop()
-    {
-        var values = new List<int>();
-        long sum = 0;
-
-        foreach (var (isPush, value) in _operations)
-        {
-            sum += ApplyRescanOperation(values, isPush, value);
-        }
-
-        return sum;
-    }
-
-    private static int ApplyRescanOperation(List<int> values, bool isPush, int value)
-    {
-        if (isPush)
-        {
-            values.Add(value);
-            return 0;
-        }
-
-        var counts = CountFrequencies(values);
-        var popIndex = FindMostRecentMaxFrequencyIndex(values, counts);
-        var popped = values[popIndex];
-        values.RemoveAt(popIndex);
-        return popped;
-    }
-
-    private static Dictionary<int, int> CountFrequencies(List<int> values)
-    {
-        var counts = new Dictionary<int, int>();
-
-        foreach (var v in values)
-        {
-            counts[v] = counts.GetValueOrDefault(v) + 1;
-        }
-
-        return counts;
-    }
-
-    private static int FindMostRecentMaxFrequencyIndex(List<int> values, Dictionary<int, int> counts)
-    {
-        var maxFrequency = counts.Values.Max();
-        var popIndex = values.Count - 1;
-
-        while (counts[values[popIndex]] != maxFrequency)
-        {
-            popIndex--;
-        }
-
-        return popIndex;
-    }
+    public long RescanListOnEveryPop() => Replay(MaximumFrequencyStackSolution.CreateByListRescan());
 
     [Benchmark]
-    public long HashMapAndStackByFrequency()
+    public long HashMapAndStackByFrequency() => Replay(MaximumFrequencyStackSolution.CreateByHashMapAndStack());
+
+    private long Replay(MaximumFrequencyStackSolution.IFreqStack freqStack)
     {
-        var frequencies = new HashMap<int, int>();
-        var byFrequency = new HashMap<int, RepoStack>();
-        var tracking = new FrequencyTracking(frequencies, byFrequency);
-        var maxFrequency = 0;
         long sum = 0;
 
         foreach (var (isPush, value) in _operations)
         {
-            sum += ApplyFrequencyStackOperation(tracking, isPush, value, ref maxFrequency);
+            if (isPush)
+            {
+                freqStack.Push(value);
+            }
+            else
+            {
+                sum += freqStack.Pop();
+            }
         }
 
         return sum;
-    }
-
-    private static long ApplyFrequencyStackOperation(FrequencyTracking tracking, bool isPush, int value, ref int maxFrequency)
-    {
-        var (frequencies, byFrequency) = tracking;
-
-        if (isPush)
-        {
-            ApplyPush(frequencies, byFrequency, value, ref maxFrequency);
-            return 0;
-        }
-
-        return ApplyPop(frequencies, byFrequency, ref maxFrequency);
-    }
-
-    private static void ApplyPush(HashMap<int, int> frequencies, HashMap<int, RepoStack> byFrequency, int value, ref int maxFrequency)
-    {
-        frequencies.TryGetValue(value, out var frequency);
-        frequency++;
-        frequencies.Set(value, frequency);
-        maxFrequency = Math.Max(maxFrequency, frequency);
-
-        if (!byFrequency.TryGetValue(frequency, out var group))
-        {
-            group = new RepoStack();
-            byFrequency.Set(frequency, group);
-        }
-
-        group.Push(value);
-    }
-
-    private static int ApplyPop(HashMap<int, int> frequencies, HashMap<int, RepoStack> byFrequency, ref int maxFrequency)
-    {
-        byFrequency.TryGetValue(maxFrequency, out var top);
-        top!.TryPop(out var popped);
-
-        frequencies.TryGetValue(popped, out var poppedFrequency);
-        frequencies.Set(popped, poppedFrequency - 1);
-
-        if (top.Count == 0)
-        {
-            maxFrequency--;
-        }
-
-        return popped;
     }
 }

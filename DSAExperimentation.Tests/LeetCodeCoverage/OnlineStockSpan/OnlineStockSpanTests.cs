@@ -1,60 +1,31 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<(int Price, int Span)>;
+using DSAExperimentation.LeetCode.OnlineStockSpan;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineStockSpan;
 
-// LeetCode 901. Online Stock Span: a monotonic non-increasing Stack<(Price, Span)> of
-// this repo's own Stack<T> - the same "pop everything the new value dominates" move
-// DailyTemperatures/NextGreaterElementI already make with a plain Stack<int>, just
-// carrying each popped run's already-accumulated span forward instead of an index
-// gap, so every earlier day is visited at most once across the whole stream.
-public sealed partial class OnlineStockSpanTests
+// Harness only: both strategies live in OnlineStockSpanSolution and are asserted
+// against the same examples - LeetCode's published next() stream, the strictly
+// increasing stream the old test drove by hand, a single day, a strictly
+// decreasing stream where no day ever spans another, and a flat stream where
+// every day spans all of them (prices are compared with <=, not <).
+public sealed class OnlineStockSpanTests
 {
-    [Fact]
-    public void Next_LeetCodeExample_ReturnsExpectedSpans()
-    {
-        var spanner = new StockSpannerOperations();
-
-        AssertNextSpan(spanner, 100, 1);
-        AssertNextSpan(spanner, 80, 1);
-        AssertNextSpan(spanner, 60, 1);
-        AssertNextSpan(spanner, 70, 2);
-        AssertNextSpan(spanner, 60, 1);
-        AssertNextSpan(spanner, 75, 4);
-        AssertNextSpan(spanner, 85, 6);
-    }
-
-    [Fact]
-    public void Next_StrictlyIncreasingPrices_SpanGrowsEveryCall()
-    {
-        var spanner = new StockSpannerOperations();
-
-        AssertNextSpan(spanner, 10, 1);
-        AssertNextSpan(spanner, 20, 2);
-        AssertNextSpan(spanner, 30, 3);
-    }
-
-    private static void AssertNextSpan(StockSpannerOperations spanner, int price, int expectedSpan)
-    {
-        var actual = spanner.Next(price);
-        Assert.Equal(expectedSpan, actual);
-    }
-
-    private sealed class StockSpannerOperations
-    {
-        private readonly RepoStack _prices = new();
-
-        public int Next(int price)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            var span = 1;
+            { [100, 80, 60, 70, 60, 75, 85], [1, 1, 1, 2, 1, 4, 6] },
+            { [10, 20, 30], [1, 2, 3] },
+            { [7], [1] },
+            { [30, 20, 10], [1, 1, 1] },
+            { [5, 5, 5, 5], [1, 2, 3, 4] },
+        };
 
-            while (_prices.TryPeek(out var top) && top.Price <= price)
-            {
-                _prices.TryPop(out _);
-                span += top.Span;
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SpansByBackwardScan_LeetCodeExamples_ReturnsSpanPerDay(int[] prices, int[] expected) =>
+        Assert.Equal(expected, OnlineStockSpanSolution.SpansByBackwardScan(prices));
 
-            _prices.Push((price, span));
-            return span;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SpansByMonotonicStack_LeetCodeExamples_ReturnsSpanPerDay(int[] prices, int[] expected) =>
+        Assert.Equal(expected, OnlineStockSpanSolution.SpansByMonotonicStack(prices));
 }

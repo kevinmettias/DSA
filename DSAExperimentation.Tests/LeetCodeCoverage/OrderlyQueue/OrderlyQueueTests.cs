@@ -1,63 +1,41 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.DataStructures.SuffixArray;
+using static DSAExperimentation.LeetCode.OrderlyQueue.OrderlyQueueSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OrderlyQueue;
 
-// LeetCode 899. Orderly Queue: k == 1 only allows rotating the string (moving the
-// front character to the back), so the reachable set is exactly its n rotations -
-// found here via this repo's own SuffixArray over s+s (the smallest suffix starting
-// below n) instead of comparing all n rotations by hand. k > 1 is known to make
-// every permutation reachable (two adjacent characters can always be swapped via a
-// rotate-forward/rotate-back pair), so the answer there is simply s sorted - done
-// with this repo's own MergeSort over ArrayIndexedSequence, the same primitive
-// HIndex/ThreeSum already use for character/number sorting.
-public sealed partial class OrderlyQueueTests
+// Harness only. Both strategies are OrderlyQueueSolution's - one example table,
+// one theory per strategy, so a failure names the strategy that broke.
+public sealed class OrderlyQueueTests
 {
-    [Fact]
-    public void OrderlyQueue_KEqualsOne_ReturnsSmallestRotation()
-    {
-        var smallest = OrderlyQueue("cba", 1);
-
-        Assert.Equal("acb", smallest);
-    }
-
-    [Fact]
-    public void OrderlyQueue_KGreaterThanOne_ReturnsSortedString()
-    {
-        var smallest = OrderlyQueue("baaca", 3);
-
-        Assert.Equal("aaabc", smallest);
-    }
-
-    [Fact]
-    public void OrderlyQueue_SingleCharacter_ReturnsSameString()
-    {
-        var smallest = OrderlyQueue("z", 1);
-
-        Assert.Equal("z", smallest);
-    }
-
-    private static string OrderlyQueue(string s, int k)
-    {
-        if (k > 1)
+    public static TheoryData<string, int, string> Examples =>
+        new()
         {
-            var chars = s.ToCharArray();
-            MergeSort.Sort<char, ArrayIndexedSequence<char>>(new ArrayIndexedSequence<char>(chars));
-            return new string(chars);
-        }
+            // LeetCode example 1: k == 1, so only rotations are reachable.
+            { "cba", 1, "acb" },
+            // LeetCode example 2: k > 1 reaches every permutation, so s sorted.
+            { "baaca", 3, "aaabc" },
+            // A single character has one rotation and one permutation.
+            { "z", 1, "z" },
+            // k == 1 on a two-character string: "ba" -> "ab".
+            { "ba", 1, "ab" },
+            // The same string as example 1, now with k > 1: the full sort wins.
+            { "cba", 3, "abc" },
+            // k == 1 where the best rotation is neither first nor last.
+            { "bca", 1, "abc" },
+            // Repeated characters: every rotation is identical.
+            { "aaa", 1, "aaa" },
+            // k == 2 is already the "every permutation" case, not a rotation case.
+            { "dcab", 2, "abcd" },
+        };
 
-        var doubled = s + s;
-        var suffixArray = new SuffixArray(doubled);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SmallestStringByBruteForceRotations_LeetCodeExamples_ReturnsSmallestReachableString(
+        string s, int k, string expected) =>
+        Assert.Equal(expected, SmallestStringByBruteForceRotations(s, k));
 
-        foreach (var start in suffixArray.Suffixes)
-        {
-            if (start < s.Length)
-            {
-                return doubled.Substring(start, s.Length);
-            }
-        }
-
-        return s;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SmallestStringBySuffixArray_LeetCodeExamples_ReturnsSmallestReachableString(
+        string s, int k, string expected) =>
+        Assert.Equal(expected, SmallestStringBySuffixArray(s, k));
 }
