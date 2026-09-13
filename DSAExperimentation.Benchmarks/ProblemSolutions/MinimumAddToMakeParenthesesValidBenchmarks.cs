@@ -1,12 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.MinimumAddToMakeParenthesesValid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Add to Make Parentheses Valid (LC 921): a plain running-counter balance
-// walk (baseline - no unmatched opener is ever stored, just its count) vs. this
-// repo's Stack<char> holding each unmatched opener explicitly, the same LIFO
-// primitive ValidParenthesesTests/ReverseIntegerBenchmarks already use.
+// Harness only: both arms are MinimumAddToMakeParenthesesValidSolution's, the same
+// methods MinimumAddToMakeParenthesesValidTests proves correct - a running-counter
+// balance walk that stores nothing vs. this repo's Stack<char> holding each
+// unmatched opener explicitly. The random bracket string is built once in
+// [GlobalSetup], so only the walk itself is measured.
 [MemoryDiagnoser]
 public class MinimumAddToMakeParenthesesValidBenchmarks
 {
@@ -33,48 +34,10 @@ public class MinimumAddToMakeParenthesesValidBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RunningCounter()
-    {
-        var openBalance = 0;
-        var insertions = 0;
-
-        foreach (var ch in _brackets)
-        {
-            if (ch == '(')
-            {
-                openBalance++;
-            }
-            else if (openBalance > 0)
-            {
-                openBalance--;
-            }
-            else
-            {
-                insertions++;
-            }
-        }
-
-        return insertions + openBalance;
-    }
+    public int RunningCounter() =>
+        MinimumAddToMakeParenthesesValidSolution.MinAddToMakeValidByRunningCounter(_brackets);
 
     [Benchmark]
-    public int StackOfOpeners()
-    {
-        var openers = new RepoCharStack();
-        var unmatchedClosers = 0;
-
-        foreach (var ch in _brackets)
-        {
-            if (ch == '(')
-            {
-                openers.Push(ch);
-            }
-            else if (!openers.TryPop(out _))
-            {
-                unmatchedClosers++;
-            }
-        }
-
-        return unmatchedClosers + openers.Count;
-    }
+    public int StackOfOpeners() =>
+        MinimumAddToMakeParenthesesValidSolution.MinAddToMakeValidByOpenerStack(_brackets);
 }

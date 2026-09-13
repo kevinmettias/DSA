@@ -1,79 +1,38 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.OnlineElection;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineElection;
 
-// LeetCode 911. Online Election: the constructor preprocesses once into a parallel
-// "leader at index i" array using this repo's own HashMap<int,int> for running vote
-// counts (a tie is won by whichever candidate just voted, so >= - not > - decides
-// the new leader). Query(t) then only needs the index of the last vote cast at or
-// before t, found via this repo's own BinarySearch.UpperBound over an
-// ArraySequence<int> of the times array minus one - O(log n) per query instead of a
-// fresh O(n) rescan of every vote up to t.
-public sealed partial class OnlineElectionTests
+// Harness only: both strategies live in OnlineElectionSolution and are asserted
+// against the same examples - LeetCode's published vote log with its six queries
+// (including ones that land exactly on a vote time and ones that fall between
+// two), the two-vote tie the old test drove by hand, a lead that changes hands
+// only when the challenger draws level, and a single-candidate log queried after
+// the last vote.
+public sealed class OnlineElectionTests
 {
-    [Fact]
-    public void Query_LeetCodeExampleSequence_ReturnsLeaderAtEachQueriedTime()
-    {
-        var election = new TopVotedCandidate([0, 1, 1, 0, 0, 1, 0], [0, 5, 10, 15, 20, 25, 30]);
-
-        AssertLeaderAt(election, 3, 0);
-        AssertLeaderAt(election, 12, 1);
-        AssertLeaderAt(election, 25, 1);
-        AssertLeaderAt(election, 15, 0);
-        AssertLeaderAt(election, 24, 0);
-        AssertLeaderAt(election, 8, 1);
-    }
-
-    [Fact]
-    public void Query_TieGoesToTheJustCastVote()
-    {
-        var election = new TopVotedCandidate([0, 1], [0, 1]);
-
-        AssertLeaderAt(election, 1, 1);
-    }
-
-    private static void AssertLeaderAt(TopVotedCandidate election, int time, int expectedLeader)
-    {
-        var actual = election.Query(time);
-        Assert.Equal(expectedLeader, actual);
-    }
-
-    private sealed class TopVotedCandidate
-    {
-        private readonly int[] _leaders;
-        private readonly ArraySequence<int> _times;
-
-        public TopVotedCandidate(int[] persons, int[] times)
+    public static TheoryData<int[], int[], int[], int[]> Examples =>
+        new()
         {
-            _times = new ArraySequence<int>(times);
-            _leaders = new int[persons.Length];
-
-            var votes = new HashMap<int, int>();
-            var leader = -1;
-            var leaderVotes = 0;
-
-            for (var i = 0; i < persons.Length; i++)
             {
-                votes.TryGetValue(persons[i], out var count);
-                count++;
-                votes.Set(persons[i], count);
+                [0, 1, 1, 0, 0, 1, 0],
+                [0, 5, 10, 15, 20, 25, 30],
+                [3, 12, 25, 15, 24, 8],
+                [0, 1, 1, 0, 0, 1]
+            },
+            { [0, 1], [0, 1], [0, 1], [0, 1] },
+            { [0, 0, 1, 1], [0, 1, 2, 3], [0, 1, 2, 3], [0, 0, 0, 1] },
+            { [5], [0], [0, 7], [5, 5] },
+        };
 
-                if (count >= leaderVotes)
-                {
-                    leader = persons[i];
-                    leaderVotes = count;
-                }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LeadersByPerQueryRescan_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
+        int[] persons, int[] times, int[] queries, int[] expected) =>
+        Assert.Equal(expected, OnlineElectionSolution.LeadersByPerQueryRescan(persons, times, queries));
 
-                _leaders[i] = leader;
-            }
-        }
-
-        public int Query(int t)
-        {
-            var index = BinarySearch.UpperBound(_times, t) - 1;
-            return _leaders[index];
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LeadersByPrecomputedBinarySearch_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
+        int[] persons, int[] times, int[] queries, int[] expected) =>
+        Assert.Equal(expected, OnlineElectionSolution.LeadersByPrecomputedBinarySearch(persons, times, queries));
 }

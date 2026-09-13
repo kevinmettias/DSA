@@ -1,14 +1,11 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MaximumSumCircularSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Maximum Sum Circular Subarray (LC 918): the O(n^2) brute force that tries every
-// circular subarray (every start index, every length 1..n, wrapping via modulo)
-// vs. the O(n) two-Kadane-pass trick (MaximumSubarrayBenchmarks' own
-// KadaneSinglePass, run twice - once for the max, once for the min - combined via
-// total - minSum). No repo primitive applies here either, the same "no stronger
-// reusable primitive" shape MaximumSubarrayBenchmarks already established for this
-// technique family.
+// Harness only: both arms are MaximumSumCircularSubarraySolution's, the same
+// methods MaximumSumCircularSubarrayTests proves correct - the O(n^2) brute force
+// over every circular subarray vs. the O(n) two-Kadane-pass complement trick.
 [MemoryDiagnoser]
 public class MaximumSumCircularSubarrayBenchmarks
 {
@@ -28,45 +25,10 @@ public class MaximumSumCircularSubarrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceAllCircularSubarrays()
-    {
-        var n = _values.Length;
-        var best = _values[0];
-
-        for (var start = 0; start < n; start++)
-        {
-            var sum = 0;
-
-            for (var length = 1; length <= n; length++)
-            {
-                sum += _values[(start + length - 1) % n];
-                best = Math.Max(best, sum);
-            }
-        }
-
-        return best;
-    }
+    public int BruteForceAllCircularSubarrays() =>
+        MaximumSumCircularSubarraySolution.MaxSubarraySumCircularByBruteForce(_values);
 
     [Benchmark]
-    public int TwoPassKadane()
-    {
-        var total = 0;
-        var maxSum = _values[0];
-        var currentMax = 0;
-        var minSum = _values[0];
-        var currentMin = 0;
-
-        foreach (var n in _values)
-        {
-            currentMax = Math.Max(n, currentMax + n);
-            maxSum = Math.Max(maxSum, currentMax);
-
-            currentMin = Math.Min(n, currentMin + n);
-            minSum = Math.Min(minSum, currentMin);
-
-            total += n;
-        }
-
-        return maxSum < 0 ? maxSum : Math.Max(maxSum, total - minSum);
-    }
+    public int TwoPassKadane() =>
+        MaximumSumCircularSubarraySolution.MaxSubarraySumCircularByTwoPassKadane(_values);
 }
