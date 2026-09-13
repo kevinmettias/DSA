@@ -1,81 +1,48 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.ApplyDiscountEveryNOrders;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Apply Discount Every n Orders (LC 1357): TwoSumBenchmarks' exact "O(n) linear scan
-// vs. O(1) HashMap<TKey,TValue> lookup" contrast, applied to Cashier's own per-line-
-// item price lookup instead of a pair-sum check. Setup builds ProductCount catalog
-// entries and one bill that requests every product id, in reverse catalog order, so
-// the linear scan is forced through its full worst-case pass per lookup instead of an
-// early exit making it look artificially competitive. Only the repeated price-lookup
-// pass is measured - both benchmarks reuse a pre-built catalog the same way
-// TimeBasedKeyValueStoreBenchmarks reuses a pre-built history instead of re-timing
-// construction.
+// Harness only: both arms are ApplyDiscountEveryNOrdersSolution's, the same strategies
+// ApplyDiscountEveryNOrdersTests proves correct. Setup builds ProductCount catalogue
+// entries, hands each strategy its own cashier - charging catalogue construction to
+// [GlobalSetup] the way TimeBasedKeyValueStoreBenchmarks charges its history - and
+// builds one bill that requests every product id in reverse catalogue order, so the
+// linear scan is forced through its full worst-case pass per lookup instead of an
+// early exit making it look artificially competitive.
 [MemoryDiagnoser]
 public class ApplyDiscountEveryNOrdersBenchmarks
 {
     private const int PricePerUnit = 10;
+    private const int DiscountEvery = 3;
+    private const int DiscountPercent = 50;
 
     [Params(200, 5_000)]
     public int ProductCount;
 
-    private int[] _catalogProductIds = null!;
-    private int[] _catalogPrices = null!;
-    private HashMap<int, int> _priceByProduct = null!;
+    private ApplyDiscountEveryNOrdersSolution.ICashier _linearCatalogScan = null!;
+    private ApplyDiscountEveryNOrdersSolution.ICashier _hashMapLookup = null!;
     private int[] _billProductIds = null!;
     private int[] _billAmounts = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        _catalogProductIds = Enumerable.Range(1, ProductCount).ToArray();
-        _catalogPrices = Enumerable.Range(1, ProductCount).Select(i => i * PricePerUnit).ToArray();
+        var catalogProductIds = Enumerable.Range(1, ProductCount).ToArray();
+        var catalogPrices = Enumerable.Range(1, ProductCount).Select(i => i * PricePerUnit).ToArray();
 
-        _priceByProduct = new HashMap<int, int>();
-        for (var i = 0; i < _catalogProductIds.Length; i++)
-        {
-            _priceByProduct.Set(_catalogProductIds[i], _catalogPrices[i]);
-        }
+        _linearCatalogScan = ApplyDiscountEveryNOrdersSolution.CreateByLinearCatalogScan(
+            DiscountEvery, DiscountPercent, catalogProductIds, catalogPrices);
+        _hashMapLookup = ApplyDiscountEveryNOrdersSolution.CreateByHashMapLookup(
+            DiscountEvery, DiscountPercent, catalogProductIds, catalogPrices);
 
-        _billProductIds = [.. _catalogProductIds.Reverse()];
+        _billProductIds = [.. catalogProductIds.Reverse()];
         _billAmounts = Enumerable.Repeat(1, ProductCount).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public double LinearScanLookup()
-    {
-        double total = 0;
-
-        for (var i = 0; i < _billProductIds.Length; i++)
-        {
-            var productId = _billProductIds[i];
-            for (var p = 0; p < _catalogProductIds.Length; p++)
-            {
-                if (_catalogProductIds[p] == productId)
-                {
-                    total += _catalogPrices[p] * _billAmounts[i];
-                    break;
-                }
-            }
-        }
-
-        return total;
-    }
+    public double LinearScanLookup() => _linearCatalogScan.GetBill(_billProductIds, _billAmounts);
 
     [Benchmark]
-    public double HashMapLookup()
-    {
-        double total = 0;
-
-        for (var i = 0; i < _billProductIds.Length; i++)
-        {
-            if (_priceByProduct.TryGetValue(_billProductIds[i], out var price))
-            {
-                total += price * _billAmounts[i];
-            }
-        }
-
-        return total;
-    }
+    public double HashMapLookup() => _hashMapLookup.GetBill(_billProductIds, _billAmounts);
 }

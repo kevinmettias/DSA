@@ -1,105 +1,120 @@
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.TweetCountsPerFrequency.TweetCountsPerFrequencySolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TweetCountsPerFrequency;
 
-// LeetCode 1348. Tweet Counts Per Frequency: each tweet name's recorded times live in
-// their own DynamicArray inside a HashMap<string,DynamicArray<int>> - the same
-// per-key-bucket shape DesignTwitter's _tweetsByUser already uses - so a query only
-// ever scans that one name's own times instead of every tweet ever recorded, then
-// buckets each in-range time by straight division into the requested chunk size.
-public sealed partial class TweetCountsPerFrequencyTests
+// Harness only. Both strategies are TweetCountsPerFrequencySolution's - this file
+// replays LeetCode's published call sequence, plus the edge cases the original
+// test covered (a name with no recorded tweets) and two more (a window that starts
+// after the first tweet, and two names recorded interleaved so a query has to
+// filter by name), against each ITweetCountsStrategy implementation via a small
+// operation script, so a failure still names the strategy that broke.
+// TweetOp.Apply is pure dispatch - no bucketing logic of its own.
+public sealed class TweetCountsPerFrequencyTests
 {
-    [Fact]
-    public void GetTweetCountsPerFrequency_LeetCodeExample_BucketsByRequestedFrequency()
+    public static TheoryData<TweetOp[], List<int>?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    TweetOp.Record("tweet3", 0),
+                    TweetOp.Record("tweet3", 60),
+                    TweetOp.Record("tweet3", 10),
+                    TweetOp.Query(Minute, "tweet3", 0, 59),
+                    TweetOp.Query(Minute, "tweet3", 0, 60),
+                    TweetOp.Record("tweet3", 120),
+                    TweetOp.Query(Hour, "tweet3", 0, 210),
+                ],
+                [null, null, null, [2], [2, 1], null, [4]]
+            },
+            {
+                [
+                    TweetOp.Record("tweet1", 5),
+                    TweetOp.Query(Day, "tweet2", 0, 86_400),
+                ],
+                [null, [0, 0]]
+            },
+            {
+                [
+                    TweetOp.Record("tweet5", 0),
+                    TweetOp.Record("tweet5", 100),
+                    TweetOp.Record("tweet5", 200),
+                    TweetOp.Query(Minute, "tweet5", 100, 200),
+                ],
+                [null, null, null, [1, 1]]
+            },
+            {
+                [
+                    TweetOp.Record("a", 0),
+                    TweetOp.Record("b", 0),
+                    TweetOp.Record("a", 3_600),
+                    TweetOp.Record("b", 3_600),
+                    TweetOp.Record("b", 5_000),
+                    TweetOp.Query(Hour, "a", 0, 7_199),
+                    TweetOp.Query(Hour, "b", 0, 7_199),
+                ],
+                [null, null, null, null, null, [1, 1], [1, 2]]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TweetCountsByFlatListFilter_LeetCodeExamples_BucketsByRequestedFrequency(
+        TweetOp[] operations, List<int>?[] expected) =>
+        RunScript(new TweetCountsByFlatListFilter(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TweetCountsByHashMapGroupedByName_LeetCodeExamples_BucketsByRequestedFrequency(
+        TweetOp[] operations, List<int>?[] expected) =>
+        RunScript(new TweetCountsByHashMapGroupedByName(), operations, expected);
+
+    private static void RunScript(ITweetCountsStrategy strategy, TweetOp[] operations, List<int>?[] expected)
     {
-        var tweetCounts = new TweetCounts();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(strategy));
+        }
+    }
+}
 
-        tweetCounts.RecordTweet("tweet3", 0);
-        tweetCounts.RecordTweet("tweet3", 60);
-        tweetCounts.RecordTweet("tweet3", 10);
+// One call in a TweetCounts script: which method to invoke and with what
+// arguments. Pure dispatch, built via the two named factories below so a script
+// (like Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct TweetOp
+{
+    private readonly string _freq;
+    private readonly string _tweetName;
+    private readonly int _startTime;
+    private readonly int _endTime;
+    private readonly bool _isQuery;
 
-        var minuteBucketsNarrowWindow = tweetCounts.GetTweetCountsPerFrequency("minute", "tweet3", 0, 59);
-        Assert.Equal([2], minuteBucketsNarrowWindow);
-
-        var minuteBucketsWiderWindow = tweetCounts.GetTweetCountsPerFrequency("minute", "tweet3", 0, 60);
-        Assert.Equal([2, 1], minuteBucketsWiderWindow);
-
-        tweetCounts.RecordTweet("tweet3", 120);
-
-        var hourBuckets = tweetCounts.GetTweetCountsPerFrequency("hour", "tweet3", 0, 210);
-        Assert.Equal([4], hourBuckets);
+    private TweetOp(string freq, string tweetName, int startTime, int endTime, bool isQuery)
+    {
+        _freq = freq;
+        _tweetName = tweetName;
+        _startTime = startTime;
+        _endTime = endTime;
+        _isQuery = isQuery;
     }
 
-    [Fact]
-    public void GetTweetCountsPerFrequency_NameWithNoRecordedTweets_ReturnsAllZeroBuckets()
+    public static TweetOp Record(string tweetName, int time) => new(Minute, tweetName, time, time, false);
+
+    public static TweetOp Query(string freq, string tweetName, int startTime, int endTime) =>
+        new(freq, tweetName, startTime, endTime, true);
+
+    // null for the void recordTweet call, the returned buckets for a query - so a
+    // script runner can assert against one expected value per operation uniformly.
+    // Internal, not public: ITweetCountsStrategy is internal to
+    // TweetCountsPerFrequencySolution, and only this same assembly's RunScript
+    // ever calls Apply.
+    internal List<int>? Apply(ITweetCountsStrategy strategy)
     {
-        var tweetCounts = new TweetCounts();
-
-        tweetCounts.RecordTweet("tweet1", 5);
-
-        var dayBucketsForUnrecordedName = tweetCounts.GetTweetCountsPerFrequency("day", "tweet2", 0, 86_400);
-        Assert.Equal([0, 0], dayBucketsForUnrecordedName);
-    }
-
-    private sealed class TweetCounts
-    {
-        private const int SecondsPerMinute = 60;
-        private const int SecondsPerHour = 3_600;
-        private const int SecondsPerDay = 86_400;
-
-        private readonly HashMap<string, DynamicArray<int>> _timesByName = new();
-
-        public void RecordTweet(string tweetName, int time)
+        if (_isQuery)
         {
-            if (!_timesByName.TryGetValue(tweetName, out var times))
-            {
-                times = new DynamicArray<int>();
-                _timesByName.Set(tweetName, times);
-            }
-
-            times.Add(time);
+            return strategy.GetTweetCountsPerFrequency(_freq, _tweetName, _startTime, _endTime);
         }
 
-        public List<int> GetTweetCountsPerFrequency(string freq, string tweetName, int startTime, int endTime)
-        {
-            var window = new TimeWindow(startTime, endTime);
-            var chunkSeconds = ResolveChunkSeconds(freq);
-            var buckets = CreateEmptyBuckets(window, chunkSeconds);
-
-            if (!_timesByName.TryGetValue(tweetName, out var times))
-            {
-                return buckets;
-            }
-
-            BucketTweetTimes(times, window, chunkSeconds, buckets);
-
-            return buckets;
-        }
-
-        private static int ResolveChunkSeconds(string freq)
-            => freq switch
-            {
-                "minute" => SecondsPerMinute,
-                "hour" => SecondsPerHour,
-                _ => SecondsPerDay,
-            };
-
-        private static List<int> CreateEmptyBuckets(TimeWindow window, int chunkSeconds)
-            => new(new int[(window.EndTime - window.StartTime) / chunkSeconds + 1]);
-
-        private static void BucketTweetTimes(DynamicArray<int> times, TimeWindow window, int chunkSeconds, List<int> buckets)
-        {
-            for (var i = 0; i < times.Count; i++)
-            {
-                var time = times.Get(i);
-                if (time >= window.StartTime && time <= window.EndTime)
-                {
-                    buckets[(time - window.StartTime) / chunkSeconds]++;
-                }
-            }
-        }
-
-        private readonly record struct TimeWindow(int StartTime, int EndTime);
+        strategy.RecordTweet(_tweetName, _startTime);
+        return null;
     }
 }

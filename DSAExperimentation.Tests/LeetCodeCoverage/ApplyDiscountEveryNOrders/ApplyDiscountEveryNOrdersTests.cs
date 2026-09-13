@@ -1,80 +1,85 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.ApplyDiscountEveryNOrders;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ApplyDiscountEveryNOrders;
 
-// LeetCode 1357. Apply Discount Every n Orders: this repo's own HashMap<int,int>
-// mapping product id to price - the exact TwoSumTests "one HashMap, O(1) lookup
-// per line item" shape - built once from the constructor's products/prices arrays.
-// GetBill sums looked-up-price * amount per line item, then applies the discount
-// whenever this is the n-th customer since construction (or since the last
-// discounted one).
+// Harness only: both strategies live in ApplyDiscountEveryNOrdersSolution and are
+// replayed against the same call scripts - LeetCode's published seven-call sequence
+// (whose third and sixth calls are the discounted ones), an n = 1 cashier that
+// discounts every call, and an n = 2 cashier with a 100% discount so every
+// discounted bill is free.
+//
+// A row is one cashier: the arguments its constructor is published with, plus the
+// script of GetBill(Product, Amount) calls and the totals LeetCode says they return.
 public sealed class ApplyDiscountEveryNOrdersTests
 {
-    [Fact]
-    public void GetBill_LeetCodeExampleSequence_ReturnsExpectedTotalsWithDiscountEveryThirdCall()
-    {
-        var cashier = new Cashier(3, 50, [1, 2, 3, 4, 5, 6, 7], [100, 200, 300, 400, 300, 200, 100]);
-
-        AssertBill(cashier, [1, 2], [1, 2], 500.0);
-        AssertBill(cashier, [3, 7], [10, 10], 4000.0);
-        AssertBill(cashier, [1, 2, 3, 4, 5, 6, 7], [1, 1, 1, 1, 1, 1, 1], 800.0);
-        AssertBill(cashier, [4], [10], 4000.0);
-        AssertBill(cashier, [7, 3], [10, 10], 4000.0);
-        AssertBill(cashier, [7, 5, 3, 1, 6, 4, 2], [10, 10, 10, 9, 9, 9, 7], 7350.0);
-        AssertBill(cashier, [2, 3, 5], [5, 3, 2], 2500.0);
-    }
-
-    [Fact]
-    public void GetBill_NEqualsOne_AppliesDiscountToEveryCall()
-    {
-        var cashier = new Cashier(1, 25, [1, 2], [100, 200]);
-
-        AssertBill(cashier, [1], [1], 75.0);
-        AssertBill(cashier, [2], [1], 150.0);
-    }
-
-    private static void AssertBill(Cashier cashier, int[] product, int[] amount, double expected)
-    {
-        var actual = cashier.GetBill(product, amount);
-        Assert.Equal(expected, actual);
-    }
-
-    private sealed class Cashier
-    {
-        private readonly int _n;
-        private readonly int _discount;
-        private readonly HashMap<int, int> _priceByProduct = new();
-        private int _customerCount;
-
-        public Cashier(int n, int discount, int[] products, int[] prices)
+    public static TheoryData<
+        (int N, int Discount, int[] Products, int[] Prices),
+        (int[] Product, int[] Amount, double Expected)[]> Examples =>
+        new()
         {
-            _n = n;
-            _discount = discount;
-
-            for (var i = 0; i < products.Length; i++)
             {
-                _priceByProduct.Set(products[i], prices[i]);
-            }
-        }
+                (3, 50, [1, 2, 3, 4, 5, 6, 7], [100, 200, 300, 400, 300, 200, 100]),
+                [
+                    ([1, 2], [1, 2], 500.0),
+                    ([3, 7], [10, 10], 4000.0),
+                    ([1, 2, 3, 4, 5, 6, 7], [1, 1, 1, 1, 1, 1, 1], 800.0),
+                    ([4], [10], 4000.0),
+                    ([7, 3], [10, 10], 4000.0),
+                    ([7, 5, 3, 1, 6, 4, 2], [10, 10, 10, 9, 9, 9, 7], 7350.0),
+                    ([2, 3, 5], [5, 3, 2], 2500.0),
+                ]
+            },
+            {
+                (1, 25, [1, 2], [100, 200]),
+                [
+                    ([1], [1], 75.0),
+                    ([2], [1], 150.0),
+                ]
+            },
+            {
+                (2, 100, [1, 2], [100, 200]),
+                [
+                    ([1], [1], 100.0),
+                    ([2], [2], 0.0),
+                    ([1, 2], [1, 1], 300.0),
+                    ([2], [1], 0.0),
+                ]
+            },
+        };
 
-        public double GetBill(int[] product, int[] amount)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByHashMapLookup_LeetCodeExamples_ReturnsBillWithDiscountEveryNthCall(
+        (int N, int Discount, int[] Products, int[] Prices) catalog,
+        (int[] Product, int[] Amount, double Expected)[] calls)
+    {
+        var cashier = ApplyDiscountEveryNOrdersSolution.CreateByHashMapLookup(
+            catalog.N, catalog.Discount, catalog.Products, catalog.Prices);
+
+        AssertScript(cashier, calls);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLinearCatalogScan_LeetCodeExamples_ReturnsBillWithDiscountEveryNthCall(
+        (int N, int Discount, int[] Products, int[] Prices) catalog,
+        (int[] Product, int[] Amount, double Expected)[] calls)
+    {
+        var cashier = ApplyDiscountEveryNOrdersSolution.CreateByLinearCatalogScan(
+            catalog.N, catalog.Discount, catalog.Products, catalog.Prices);
+
+        AssertScript(cashier, calls);
+    }
+
+    private static void AssertScript(
+        ApplyDiscountEveryNOrdersSolution.ICashier cashier,
+        (int[] Product, int[] Amount, double Expected)[] calls)
+    {
+        foreach (var (product, amount, expected) in calls)
         {
-            double total = 0;
-            for (var i = 0; i < product.Length; i++)
-            {
-                if (_priceByProduct.TryGetValue(product[i], out var price))
-                {
-                    total += price * amount[i];
-                }
-            }
+            var bill = cashier.GetBill(product, amount);
 
-            _customerCount++;
-            if (_customerCount % _n == 0)
-            {
-                total -= total * _discount / 100.0;
-            }
-
-            return total;
+            Assert.Equal(expected, bill);
         }
     }
 }

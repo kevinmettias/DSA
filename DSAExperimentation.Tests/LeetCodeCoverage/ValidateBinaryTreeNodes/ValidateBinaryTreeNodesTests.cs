@@ -1,96 +1,34 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.ValidateBinaryTreeNodes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateBinaryTreeNodes;
 
-// LeetCode 1361. Validate Binary Tree Nodes: reuses this repo's own DisjointSet the
-// same way RedundantConnectionIITests does - every leftChild[i]/rightChild[i] edge
-// must land on a node with no parent yet (indegree check) and must not already share
-// a component with i (RedundantConnectionTests' own cycle check), and the structure
-// is a single rooted tree only if exactly one node ends up parentless and every node
-// lands in one shared component.
-public sealed partial class ValidateBinaryTreeNodesTests
+// Harness only. Both strategies are ValidateBinaryTreeNodesSolution's - the
+// DisjointSet one-pass check and the naive per-root re-traversal that used to live
+// untested in the benchmark - pinned here to LeetCode's published examples plus the
+// two failure shapes the union-find arm exists to catch (a node with two parents,
+// and a cycle among non-root nodes).
+public sealed class ValidateBinaryTreeNodesTests
 {
-    [Fact]
-    public void ValidateBinaryTreeNodes_ClassicValidTree_ReturnsTrue()
-    {
-        var isValid = ValidateBinaryTreeNodes(4, [1, -1, 3, -1], [2, -1, -1, -1]);
-
-        Assert.True(isValid);
-    }
-
-    [Fact]
-    public void ValidateBinaryTreeNodes_TwoRoots_ReturnsFalse()
-    {
-        var isValid = ValidateBinaryTreeNodes(4, [1, -1, 3, -1], [-1, -1, -1, -1]);
-
-        Assert.False(isValid);
-    }
-
-    [Fact]
-    public void ValidateBinaryTreeNodes_NodeHasTwoParents_ReturnsFalse()
-    {
-        var isValid = ValidateBinaryTreeNodes(3, [2, 2, -1], [-1, -1, -1]);
-
-        Assert.False(isValid);
-    }
-
-    [Fact]
-    public void ValidateBinaryTreeNodes_CycleAmongNonRootNodes_ReturnsFalse()
-    {
-        var isValid = ValidateBinaryTreeNodes(3, [1, 2, 0], [-1, -1, -1]);
-
-        Assert.False(isValid);
-    }
-
-    private static bool ValidateBinaryTreeNodes(int n, int[] leftChild, int[] rightChild)
-    {
-        var hasParent = new bool[n];
-        var components = new DisjointSet(n);
-
-        for (var node = 0; node < n; node++)
+    public static TheoryData<int, int[], int[], bool> Examples =>
+        new()
         {
-            foreach (var child in new[] { leftChild[node], rightChild[node] })
-            {
-                if (child == -1)
-                {
-                    continue;
-                }
+            { 4, [1, -1, 3, -1], [2, -1, -1, -1], true },
+            { 4, [1, -1, 3, -1], [-1, -1, -1, -1], false },
+            { 2, [1, 0], [-1, -1], false },
+            { 3, [2, 2, -1], [-1, -1, -1], false },
+            { 3, [1, 2, 0], [-1, -1, -1], false },
+            { 1, [-1], [-1], true },
+        };
 
-                if (!TryLinkChild(node, child, hasParent, components))
-                {
-                    return false;
-                }
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ValidateByDisjointSet_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(
+        int n, int[] leftChild, int[] rightChild, bool expected) =>
+        Assert.Equal(expected, ValidateBinaryTreeNodesSolution.ValidateByDisjointSet(n, leftChild, rightChild));
 
-        return HasExactlyOneRoot(hasParent) && AllNodesShareOneComponent(components, n);
-    }
-
-    private static bool TryLinkChild(int node, int child, bool[] hasParent, DisjointSet components)
-    {
-        if (hasParent[child] || components.IsConnected(node, child))
-        {
-            return false;
-        }
-
-        hasParent[child] = true;
-        components.Union(node, child);
-
-        return true;
-    }
-
-    private static bool HasExactlyOneRoot(bool[] hasParent) => hasParent.Count(parented => !parented) == 1;
-
-    private static bool AllNodesShareOneComponent(DisjointSet components, int n)
-    {
-        for (var node = 1; node < n; node++)
-        {
-            if (!components.IsConnected(0, node))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ValidateByRootScan_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(
+        int n, int[] leftChild, int[] rightChild, bool expected) =>
+        Assert.Equal(expected, ValidateBinaryTreeNodesSolution.ValidateByRootScan(n, leftChild, rightChild));
 }
