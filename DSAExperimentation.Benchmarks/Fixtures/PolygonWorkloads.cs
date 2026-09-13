@@ -1,10 +1,13 @@
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 2971 - kept small (ArrayLength 16/20) so
-// the O(2^n) brute-force subset arm stays tractable while still exercising
-// the sorted-running-sum arm's O(n log n) path on the same input, the same
-// small-n convention CountTheNumberOfGoodPartitionsBenchmarks uses for its
-// own exponential baseline.
+// Benchmark workload sizing for the two "pick sides, maximize perimeter"
+// problems, LC 2971 and LC 976, whose inputs are the same thing: a bag of
+// random side lengths. Each caller picks its own sizes off its own baseline's
+// cost - LC 2971 stays tiny (16/20) because its brute-force arm enumerates
+// subsets, the same small-n convention CountTheNumberOfGoodPartitionsBenchmarks
+// uses for its own exponential baseline, while LC 976's merely-cubic
+// every-triple arm affords 80/300 - and both still exercise the sorted arm's
+// O(n log n) path on the same input.
 internal static class PolygonWorkloads
 {
     public static int[] BuildSides(int count, int seed)

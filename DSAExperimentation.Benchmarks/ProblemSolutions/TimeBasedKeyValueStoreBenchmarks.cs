@@ -1,69 +1,48 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.TimeBasedKeyValueStore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Time Based Key-Value Store (LC 981): a linear floor-scan over one key's recorded
-// timestamp history vs. this repo's own BinarySearch.UpperBound over a
-// DynamicArraySequence<int> witness (TimeBasedKeyValueStoreTests' exact "floor
-// lookup" composition, OnlineElectionBenchmarks' precedent for benchmarking that
-// idiom). Setup seeds one key's history with Length strictly increasing
-// timestamps (the problem's own guarantee); _queryTimestamp sits just past the
-// final entry so both strategies are forced through their full worst-case scan,
-// the same "force the real worst case" convention TwoSumBenchmarks uses.
+// Harness only: both arms are TimeBasedKeyValueStoreSolution's, the same strategies
+// TimeBasedKeyValueStoreTests proves correct. Setup seeds each store with one key's
+// Length strictly increasing timestamps (the problem's own guarantee), charging that
+// construction to [GlobalSetup]; _queryTimestamp sits just past the final entry so
+// both strategies are forced through their full worst-case floor lookup, the same
+// "force the real worst case" convention OnlineElectionBenchmarks uses.
 [MemoryDiagnoser]
 public class TimeBasedKeyValueStoreBenchmarks
 {
     private const int TimestampStep = 2;
+    private const string Key = "foo";
 
     [Params(200, 5_000)]
     public int Length;
 
-    private DynamicArray<int> _timestamps = null!;
-    private DynamicArray<string> _values = null!;
+    private TimeBasedKeyValueStoreSolution.ITimeMap _linearFloorScan = null!;
+    private TimeBasedKeyValueStoreSolution.ITimeMap _binarySearchFloor = null!;
     private int _queryTimestamp;
 
     [GlobalSetup]
     public void Setup()
     {
-        _timestamps = new DynamicArray<int>();
-        _values = new DynamicArray<string>();
-
-        for (var i = 0; i < Length; i++)
-        {
-            _timestamps.Add(i * TimestampStep);
-            _values.Add($"v{i}");
-        }
-
+        _linearFloorScan = Seed(TimeBasedKeyValueStoreSolution.CreateByLinearFloorScan());
+        _binarySearchFloor = Seed(TimeBasedKeyValueStoreSolution.CreateByBinarySearchFloor());
         _queryTimestamp = (Length * TimestampStep) + 1;
     }
 
     [Benchmark(Baseline = true)]
-    public string LinearFloorScan()
-    {
-        var result = string.Empty;
-
-        for (var i = 0; i < _timestamps.Count; i++)
-        {
-            if (_timestamps.Get(i) > _queryTimestamp)
-            {
-                break;
-            }
-
-            result = _values.Get(i);
-        }
-
-        return result;
-    }
+    public string LinearFloorScan() => _linearFloorScan.Get(Key, _queryTimestamp);
 
     [Benchmark]
-    public string BinarySearchFloor()
-    {
-        var sequence = new DynamicArraySequence<int>(_timestamps);
-        var floorIndex = BinarySearch.UpperBound(sequence, _queryTimestamp) - 1;
+    public string BinarySearchFloor() => _binarySearchFloor.Get(Key, _queryTimestamp);
 
-        return floorIndex < 0 ? string.Empty : _values.Get(floorIndex);
+    private TimeBasedKeyValueStoreSolution.ITimeMap Seed(TimeBasedKeyValueStoreSolution.ITimeMap store)
+    {
+        for (var i = 0; i < Length; i++)
+        {
+            store.Set(Key, $"v{i}", i * TimestampStep);
+        }
+
+        return store;
     }
 }

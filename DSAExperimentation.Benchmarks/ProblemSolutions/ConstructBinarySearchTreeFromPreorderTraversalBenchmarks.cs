@@ -1,16 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.ConstructBinarySearchTreeFromPreorderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Construct Binary Search Tree from Preorder Traversal (LC 1008): this repo's own
-// BinarySearchTree<int>.Insert, called once per value (a real compare-and-descend
-// walk from the root every time - O(n) per insert on an unbalanced/ascending
-// preorder, O(n^2) total) vs. the classic O(n) upper-bound recursion that reads
-// preorder once and builds BinaryTreeNode<int> directly with no repeated
-// root-to-leaf walk. Both produce this repo's own BinaryTreeNode<int> as the
-// output Representation - the difference is purely which Operations approach
-// gets there.
+// Harness only: both arms are
+// ConstructBinarySearchTreeFromPreorderTraversalSolution's, the same methods the
+// coverage test proves correct - repeated BinarySearchTree<int>.Insert (a fresh
+// compare-and-descend walk per value, O(n^2) on this workload) against the
+// upper-bound recursion that reads preorder once, O(n). LeetCode's answer is the
+// built tree; each arm returns the root's value purely so the built tree cannot be
+// optimized away, which costs both arms the same O(1).
 [MemoryDiagnoser]
 public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
 {
@@ -29,41 +28,12 @@ public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RepeatedTreeInsert()
-    {
-        var tree = new BinarySearchTree<int>();
-
-        foreach (var value in _ascendingPreorder)
-        {
-            tree.Insert(value);
-        }
-
-        return tree.Count;
-    }
+    public int RepeatedTreeInsert() =>
+        ConstructBinarySearchTreeFromPreorderTraversalSolution
+            .BstFromPreorderByRepeatedInsert(_ascendingPreorder)?.Value ?? 0;
 
     [Benchmark]
-    public int BoundedRecursion() => CountNodes(BuildBounded(_ascendingPreorder));
-
-    private static BinaryTreeNode<int>? BuildBounded(int[] preorder)
-    {
-        var index = 0;
-
-        BinaryTreeNode<int>? Build(int bound)
-        {
-            if (index == preorder.Length || preorder[index] >= bound)
-            {
-                return null;
-            }
-
-            var node = new BinaryTreeNode<int>(preorder[index++]);
-            node.Left = Build(node.Value);
-            node.Right = Build(bound);
-            return node;
-        }
-
-        return Build(int.MaxValue);
-    }
-
-    private static int CountNodes(BinaryTreeNode<int>? root) =>
-        root is null ? 0 : 1 + CountNodes(root.Left) + CountNodes(root.Right);
+    public int BoundedRecursion() =>
+        ConstructBinarySearchTreeFromPreorderTraversalSolution
+            .BstFromPreorderByUpperBoundRecursion(_ascendingPreorder)?.Value ?? 0;
 }
