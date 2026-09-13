@@ -1,63 +1,86 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.IncreasingOrderSearchTree;
 
-// LeetCode 897. Increasing Order Search Tree: an in-order walk of a BST visits
-// values in ascending order, so relinking each visited node's Left to null and
-// chaining it onto the previously-visited node's Right builds the right-only
-// increasing chain in a single pass - this repo's own InOrderTraversal/IInOrderHooks
-// over BinaryTreeNode<int>, the same rewrite-during-walk composition
-// ConvertBSTToGreaterTreeTests and KthSmallestElementInABSTTests already use.
-public sealed partial class IncreasingOrderSearchTreeTests
+// Harness only: both strategies live in IncreasingOrderSearchTreeSolution. The
+// pre-migration test only exercised the InOrderTraversal/IInOrderHooks composition;
+// the recursive baseline (previously untested scaffolding inlined in
+// IncreasingOrderSearchTreeBenchmarks as its [Benchmark(Baseline = true)] arm) gets
+// the identical assertions here for the first time.
+//
+// BinaryTreeNode<int> is internal, so it cannot appear in a public TheoryData<...>
+// member (CS0053). Each example therefore states its tree as a BST insertion order -
+// this repo's own BinarySearchTree<int> builds the same shape the pre-migration test
+// spelled out with node literals - plus the ascending right-only chain expected out.
+public sealed class IncreasingOrderSearchTreeTests
 {
-    [Fact]
-    public void IncreasingBst_ClassicExample_ReturnsRightOnlyChainInSortedOrder()
-    {
-        // [5,3,8,2,4,7,9] -> 1,2,3,4,5,7,8,9 chained right-only
-        var root = new BinaryTreeNode<int>(5)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            Left = new(3) { Left = new(2) { Left = new(1) }, Right = new(4) },
-            Right = new(8) { Left = new(7), Right = new(9) },
+            {
+                // LeetCode example 1: [5,3,6,2,4,null,8,1,null,null,null,7,9].
+                [5, 3, 6, 2, 4, 8, 1, 7, 9],
+                [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            },
+            {
+                // LeetCode example 2: [5,1,7].
+                [5, 1, 7],
+                [1, 5, 7]
+            },
+            {
+                //       5
+                //      / \        the pre-migration test's tree, unchanged
+                //     3   8
+                //    / \ / \
+                //   2  4 7  9
+                //  /
+                // 1
+                [5, 3, 8, 2, 4, 7, 9, 1],
+                [1, 2, 3, 4, 5, 7, 8, 9]
+            },
+            {
+                [1],
+                [1]
+            },
+            {
+                // Already a right-only chain, so the relink has nothing to move.
+                [1, 2, 3, 4],
+                [1, 2, 3, 4]
+            },
+            {
+                // Left-only chain: every node becomes the tail's new right child.
+                [4, 3, 2, 1],
+                [1, 2, 3, 4]
+            },
         };
 
-        var result = IncreasingBst(root);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IncreasingBstByRecursiveRelink_LeetCodeExamples_ReturnsRightOnlyChainInSortedOrder(
+        int[] insertionOrder, int[] expected) =>
+        Assert.Equal(
+            expected,
+            RightChain(IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(BuildTree(insertionOrder))));
 
-        Assert.Equal([1, 2, 3, 4, 5, 7, 8, 9], RightChain(result));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IncreasingBstByInOrderHooks_LeetCodeExamples_ReturnsRightOnlyChainInSortedOrder(
+        int[] insertionOrder, int[] expected) =>
+        Assert.Equal(
+            expected,
+            RightChain(IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(BuildTree(insertionOrder))));
 
-    [Fact]
-    public void IncreasingBst_SingleNode_ReturnsThatNode()
+    private static BinaryTreeNode<int> BuildTree(int[] insertionOrder)
     {
-        var root = new BinaryTreeNode<int>(1);
+        var tree = new BinarySearchTree<int>();
 
-        var result = IncreasingBst(root);
-
-        Assert.Equal([1], RightChain(result));
-    }
-
-    private static BinaryTreeNode<int>? IncreasingBst(BinaryTreeNode<int>? root)
-    {
-        var dummy = new BinaryTreeNode<int>(0);
-        State.Tail.Value = dummy;
-
-        InOrderTraversal.Walk<int, RelinkHooks>(root);
-
-        return dummy.Right;
-    }
-
-    private readonly struct RelinkHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        foreach (var value in insertionOrder)
         {
-            node.Left = null;
-            State.Tail.Value!.Right = node;
-            State.Tail.Value = node;
+            tree.Insert(value);
         }
-    }
 
-    private static class State
-    {
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Tail = new();
+        return tree.Root!;
     }
 
     private static int[] RightChain(BinaryTreeNode<int>? root)

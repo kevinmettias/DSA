@@ -1,70 +1,53 @@
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Count, int Value)>;
+using DSAExperimentation.LeetCode.RLEIterator;
+using static DSAExperimentation.LeetCode.RLEIterator.RLEIteratorSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RLEIterator;
 
-// LeetCode 900. RLE Iterator: the (count, value) run pairs are only ever consumed in
-// order, front to back, so they compose this repo's own FIFO Queue<T> directly - the
-// same "queue holds a struct payload" move ImplementStackUsingQueuesTests already
-// makes with Queue<int>. A partially-consumed run is tracked as instance state
-// instead, since Queue<T> deliberately offers no push-to-front (MinStack/DailyTemperatures'
-// Stack<T> precedent: this repo's collection types expose exactly the access pattern
-// their name promises, nothing more).
-public sealed partial class RLEIteratorTests
+// Harness only. Both strategies are RLEIteratorSolution's - this file replays
+// LeetCode's published next(n) call sequences against each IRleIterator
+// implementation, one theory per strategy, so a failure names the strategy that
+// broke even though the "input" here is a sequence of calls rather than a single
+// argument tuple.
+public sealed class RLEIteratorTests
 {
-    [Fact]
-    public void Next_LeetCodeExample_ReturnsExpectedSequence()
-    {
-        var iterator = new RLEIteratorOperations([3, 8, 0, 9, 2, 5]);
-
-        Assert.Equal(8, iterator.Next(2));
-        Assert.Equal(8, iterator.Next(1));
-        Assert.Equal(5, iterator.Next(1));
-        Assert.Equal(-1, iterator.Next(2));
-    }
-
-    [Fact]
-    public void Next_RequestMoreThanEncodingHolds_ReturnsNegativeOne()
-    {
-        var iterator = new RLEIteratorOperations([1, 4]);
-
-        Assert.Equal(-1, iterator.Next(5));
-    }
-
-    private sealed class RLEIteratorOperations
-    {
-        private readonly RepoQueue _runs = new();
-        private int _remaining;
-        private int _value;
-
-        public RLEIteratorOperations(int[] encoding)
+    public static TheoryData<int[], int[], int[]> Examples =>
+        new()
         {
-            for (var i = 0; i < encoding.Length; i += 2)
-            {
-                _runs.Enqueue((encoding[i], encoding[i + 1]));
-            }
-        }
+            // LeetCode's own example: encoding [3,8,0,9,2,5] decodes to
+            // 8,8,8,5,5; next(2), next(1), next(1), next(2) exhausts it and then
+            // asks for more than remains.
+            { [3, 8, 0, 9, 2, 5], [2, 1, 1, 2], [8, 8, 5, -1] },
+            // One element short of what the encoding holds.
+            { [1, 4], [5], [-1] },
+            // Single-element draws across the whole decoded sequence, including
+            // the zero-length (0, 9) run, and one draw past the end.
+            { [3, 8, 0, 9, 2, 5], [1, 1, 1, 1, 1, 1], [8, 8, 8, 5, 5, -1] },
+            // Exact exhaustion in one call: no -1 anywhere.
+            { [2, 7], [2], [7] },
+            // Exact exhaustion one element at a time, then past the end twice -
+            // a spent iterator keeps reporting -1.
+            { [2, 7], [1, 1, 1, 1], [7, 7, -1, -1] },
+            // A draw that spans a run boundary returns the last element consumed.
+            { [2, 3, 2, 6], [3], [6] },
+        };
 
-        public int Next(int n)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByDecompressedArray_LeetCodeExamples_ReturnsExpectedSequence(
+        int[] encoding, int[] queries, int[] expected) =>
+        AssertReplay(CreateByDecompressedArray(encoding), queries, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByRunLengthQueue_LeetCodeExamples_ReturnsExpectedSequence(
+        int[] encoding, int[] queries, int[] expected) =>
+        AssertReplay(CreateByRunLengthQueue(encoding), queries, expected);
+
+    private static void AssertReplay(IRleIterator iterator, int[] queries, int[] expected)
+    {
+        for (var i = 0; i < queries.Length; i++)
         {
-            while (n > 0)
-            {
-                if (_remaining == 0)
-                {
-                    if (!_runs.TryDequeue(out var run))
-                    {
-                        return -1;
-                    }
-
-                    _remaining = run.Count;
-                    _value = run.Value;
-                }
-
-                var consumed = Math.Min(n, _remaining);
-                _remaining -= consumed;
-                n -= consumed;
-            }
-
-            return _value;
+            Assert.Equal(expected[i], iterator.Next(queries[i]));
         }
     }
 }

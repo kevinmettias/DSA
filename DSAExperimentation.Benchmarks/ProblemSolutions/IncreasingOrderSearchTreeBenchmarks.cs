@@ -1,17 +1,21 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Increasing Order Search Tree (LC 897): a hand-rolled recursive in-order walk (no
-// repo primitive) threading a running tail node through recursive parameters and
-// return values, vs. this repo's own InOrderTraversal/IInOrderHooks doing the
-// identical Left=null/Right=tail relink through AsyncLocal-threaded state - the same
+// Harness only: both arms are IncreasingOrderSearchTreeSolution's, the same methods
+// IncreasingOrderSearchTreeTests proves correct. A hand-rolled recursive in-order walk
+// (no repo primitive) threading a running tail node through recursive parameters and
+// return values, vs. this repo's own InOrderTraversal/IInOrderHooks doing the identical
+// Left=null/Right=tail relink through AsyncLocal-threaded state - the same
 // genuinely-distinct-walk-mechanics comparison KthSmallestElementInABSTBenchmarks
-// already makes for LC 230, not an asymptotic win (both are O(n)). Each [Benchmark]
-// rebuilds a fresh, shuffle-inserted BST from the same source values every
-// invocation via this repo's own BinarySearchTree<int>, since both walks mutate the
-// tree's Left/Right pointers in place and would otherwise corrupt a later iteration.
+// already makes for LC 230, not an asymptotic win (both are O(n)). [GlobalSetup] fixes
+// the shuffled source values, but each [Benchmark] still rebuilds a fresh
+// shuffle-inserted BST from them via this repo's own BinarySearchTree<int>, because
+// both walks mutate the tree's Left/Right pointers in place and would otherwise
+// corrupt a later iteration - the same per-invocation restore ConvertBSTToGreaterTree-
+// Benchmarks does with its Clone.
 [MemoryDiagnoser]
 public class IncreasingOrderSearchTreeBenchmarks
 {
@@ -36,21 +40,12 @@ public class IncreasingOrderSearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RecursiveRelink()
-    {
-        var dummy = new BinaryTreeNode<int>(0);
-        Visit(BuildTree(), dummy);
-        return dummy.Right!.Value;
-    }
+    public int RecursiveRelink() =>
+        IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(BuildTree())!.Value;
 
     [Benchmark]
-    public int InOrderTraversalHooks()
-    {
-        var dummy = new BinaryTreeNode<int>(0);
-        State.Tail.Value = dummy;
-        InOrderTraversal.Walk<int, RelinkHooks>(BuildTree());
-        return dummy.Right!.Value;
-    }
+    public int InOrderTraversalHooks() =>
+        IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(BuildTree())!.Value;
 
     private BinaryTreeNode<int> BuildTree()
     {
@@ -62,36 +57,5 @@ public class IncreasingOrderSearchTreeBenchmarks
         }
 
         return tree.Root!;
-    }
-
-    private static BinaryTreeNode<int> Visit(BinaryTreeNode<int>? node, BinaryTreeNode<int> tail)
-    {
-        if (node is null)
-        {
-            return tail;
-        }
-
-        tail = Visit(node.Left, tail);
-
-        var right = node.Right;
-        node.Left = null;
-        tail.Right = node;
-
-        return Visit(right, node);
-    }
-
-    private readonly struct RelinkHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
-        {
-            node.Left = null;
-            State.Tail.Value!.Right = node;
-            State.Tail.Value = node;
-        }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Tail = new();
     }
 }

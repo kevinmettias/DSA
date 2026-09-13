@@ -1,71 +1,36 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.SuperEggDrop;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SuperEggDrop;
 
-// LeetCode 887. Super Egg Drop: minimize the worst-case number of trial drops
-// needed to find the critical floor with a fixed number of eggs. Memoized minimax
-// over an (eggs, floors) state - the same pair-state shape
-// GuessNumberHigherOrLowerII already uses for (low, high) via this repo's own
-// Memoizer<TState,TResult> - except the next trial floor is found by binary search
-// instead of an exhaustive scan, since WorstCaseMoves(trial) is monotonic: raising
-// trial can only help the "breaks" branch and hurt the "survives" branch, so the
-// two curves cross at (or straddle) the optimal trial floor.
-public sealed partial class SuperEggDropTests
+// Harness only: both strategies are SuperEggDropSolution's. This file pins them to
+// LeetCode's published examples plus the small hand-checkable cases that fix the
+// recurrence's boundaries - one egg (the answer is the floor count), one floor, and
+// the two classic "maximum floors coverable in d drops" points (2 eggs / 10 floors
+// = 1+2+3+4, 3 eggs / 25 floors = C(5,1)+C(5,2)+C(5,3)).
+public sealed class SuperEggDropTests
 {
+    public static TheoryData<int, int, int> Examples =>
+        new()
+        {
+            { 1, 2, 2 },
+            { 2, 6, 3 },
+            { 3, 14, 4 },
+            { 1, 1, 1 },
+            { 2, 1, 1 },
+            { 2, 2, 2 },
+            { 2, 10, 4 },
+            { 3, 25, 5 },
+        };
+
     [Theory]
-    [InlineData(1, 2, 2)]
-    [InlineData(2, 6, 3)]
-    [InlineData(3, 14, 4)]
-    public void SuperEggDrop_LeetCodeExamples_ReturnsMinimumWorstCaseMoves(int eggs, int floors, int expected)
-    {
-        var moves = MinMoves(eggs, floors);
-        Assert.Equal(expected, moves);
-    }
+    [MemberData(nameof(Examples))]
+    public void MinMovesByLinearScan_LeetCodeExamples_ReturnsMinimumWorstCaseMoves(
+        int eggs, int floors, int expected) =>
+        Assert.Equal(expected, SuperEggDropSolution.MinMovesByLinearScan(eggs, floors));
 
-    private static int MinMoves(int eggs, int floors)
-        => Memoizer.Memoize<(int Eggs, int Floors), int>((eggs, floors), WorstCaseMoves);
-
-    private static int WorstCaseMoves((int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-        if (floors == 0) return 0;
-        if (eggs == 1) return floors;
-
-        var low = 1;
-        var high = floors;
-        var best = int.MaxValue;
-
-        while (low <= high)
-        {
-            var trial = (low + high) / 2;
-            (low, high, best) = EvaluateTrial(state, trial, (low, high, best), movesFor);
-        }
-
-        return best;
-    }
-
-    // One binary-search probe: score `trial` as the next drop floor, then narrow
-    // toward whichever side (breaks vs. survives) currently costs more moves - the
-    // block WorstCaseMoves' while loop repeats once per probe.
-    private static (int Low, int High, int Best) EvaluateTrial(
-        (int Eggs, int Floors) state, int trial, (int Low, int High, int Best) search, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-        var (low, high, best) = search;
-
-        var breaks = movesFor((eggs - 1, trial - 1));
-        var survives = movesFor((eggs, floors - trial));
-        best = Math.Min(best, 1 + Math.Max(breaks, survives));
-
-        if (breaks < survives)
-        {
-            low = trial + 1;
-        }
-        else
-        {
-            high = trial - 1;
-        }
-
-        return (low, high, best);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinMovesByBinarySearch_LeetCodeExamples_ReturnsMinimumWorstCaseMoves(
+        int eggs, int floors, int expected) =>
+        Assert.Equal(expected, SuperEggDropSolution.MinMovesByBinarySearch(eggs, floors));
 }
