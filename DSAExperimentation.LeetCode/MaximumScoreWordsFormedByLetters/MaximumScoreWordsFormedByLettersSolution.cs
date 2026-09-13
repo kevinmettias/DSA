@@ -1,0 +1,176 @@
+using DSAExperimentation.Algorithms.Backtracking;
+
+namespace DSAExperimentation.LeetCode.MaximumScoreWordsFormedByLetters;
+
+// LeetCode 1255. Maximum Score Words Formed by Letters: pick any subset of words
+// that the shared letter pool can spell, and report the best total letter score.
+//
+// words.length <= 14 makes this a small enough choose/explore/unchoose search over
+// "include this word or skip it" - the same include/skip decision tree
+// Backtrack.Search's own doc comment names for Subsets/Combination Sum, except
+// every leaf (not just IsSolution ones) is a candidate answer, so OnSolution just
+// tracks the running best instead of materializing a result list.
+//
+// Both strategies gate the "include" choice on the word's own letters still fitting
+// the shared, mutated budget - the same shrinking-resource-pool shape
+// PartitionToKEqualSumSubsetsSolution's bucket capacity already uses, per letter
+// instead of per sum. They differ only in whether the recursion is hand-written or
+// closed over this repo's Backtrack primitive.
+internal static class MaximumScoreWordsFormedByLettersSolution
+{
+    private const int AlphabetSize = 26;
+
+    // The textbook recursion: a hand-written include/skip DFS that undoes its own
+    // letter spend on the way back up. Deliberately written without this repo's
+    // Backtrack primitive - it is the arm the composed solution below has to
+    // justify itself against.
+    public static int MaxScoreWordsByNaiveRecursion(string[] words, char[] letters, int[] score)
+    {
+        var remaining = LetterCounts(letters);
+        var wordCounts = words.Select(LetterCounts).ToArray();
+        var wordScores = words.Select(word => WordScore(word, score)).ToArray();
+
+        return SearchByInclusion(0, remaining, 0, new WordData(wordCounts, wordScores));
+    }
+
+    private static int SearchByInclusion(int index, int[] remaining, int currentScore, WordData words)
+    {
+        if (index == words.Scores.Length)
+        {
+            return currentScore;
+        }
+
+        var skipped = SearchByInclusion(index + 1, remaining, currentScore, words);
+        var counts = words.Counts[index];
+
+        if (!Fits(counts, remaining))
+        {
+            return skipped;
+        }
+
+        ApplyCounts(remaining, counts, subtract: true);
+        var included = SearchByInclusion(index + 1, remaining, currentScore + words.Scores[index], words);
+        ApplyCounts(remaining, counts, subtract: false);
+
+        return Math.Max(skipped, included);
+    }
+
+    private static bool Fits(int[] counts, int[] remaining)
+    {
+        for (var c = 0; c < AlphabetSize; c++)
+        {
+            if (counts[c] > remaining[c])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static void ApplyCounts(int[] remaining, int[] counts, bool subtract)
+    {
+        var sign = subtract ? -1 : 1;
+
+        for (var c = 0; c < AlphabetSize; c++)
+        {
+            remaining[c] += sign * counts[c];
+        }
+    }
+
+    private readonly record struct WordData(int[][] Counts, int[] Scores);
+
+    // This repo's own Backtrack.Search, closed over the identical choose/explore/
+    // unchoose steps the naive recursion writes out by hand: the shared letter
+    // budget is the mutated state, "include this word" is the choice, and every
+    // leaf reports its running score so OnSolution can keep the maximum.
+    public static int MaxScoreWordsByBacktrackSearch(string[] words, char[] letters, int[] score)
+    {
+        var state = new WordChoiceState(words, score, LetterCounts(letters));
+        var best = 0;
+
+        Backtrack.Search<WordChoiceState, bool>(
+            state,
+            isSolution: s => s.Index == words.Length,
+            candidates: s => s.Index == words.Length ? [] : s.CanInclude ? [true, false] : [false],
+            choose: (s, include) => s.Choose(include),
+            unchoose: (s, include) => s.Unchoose(include),
+            onSolution: s => best = Math.Max(best, s.CurrentScore));
+
+        return best;
+    }
+
+    private static int[] LetterCounts(IEnumerable<char> chars)
+    {
+        var counts = new int[AlphabetSize];
+
+        foreach (var c in chars)
+        {
+            counts[c - 'a']++;
+        }
+
+        return counts;
+    }
+
+    private static int WordScore(string word, int[] score)
+    {
+        var total = 0;
+
+        foreach (var c in word)
+        {
+            total += score[c - 'a'];
+        }
+
+        return total;
+    }
+
+    // One word index plus the shared, mutated letter budget. Unchoose is Choose's
+    // exact inverse, which is what lets Candidates re-read CanInclude lazily.
+    private sealed class WordChoiceState
+    {
+        private readonly int[][] _wordCounts;
+        private readonly int[] _wordScores;
+        private readonly int[] _available;
+
+        public WordChoiceState(string[] words, int[] score, int[] available)
+        {
+            _available = available;
+            _wordCounts = new int[words.Length][];
+            _wordScores = new int[words.Length];
+
+            for (var i = 0; i < words.Length; i++)
+            {
+                _wordCounts[i] = LetterCounts(words[i]);
+                _wordScores[i] = WordScore(words[i], score);
+            }
+        }
+
+        public int Index { get; private set; }
+
+        public int CurrentScore { get; private set; }
+
+        public bool CanInclude => Fits(_wordCounts[Index], _available);
+
+        public void Choose(bool include)
+        {
+            if (include)
+            {
+                ApplyCounts(_available, _wordCounts[Index], subtract: true);
+                CurrentScore += _wordScores[Index];
+            }
+
+            Index++;
+        }
+
+        public void Unchoose(bool include)
+        {
+            Index--;
+
+            if (include)
+            {
+                ApplyCounts(_available, _wordCounts[Index], subtract: false);
+                CurrentScore -= _wordScores[Index];
+            }
+        }
+    }
+}

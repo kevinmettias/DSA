@@ -1,25 +1,30 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FindPositiveIntegerSolutionForAGivenEquation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find Positive Integer Solution for a Given Equation (LC 1237): three genuinely
-// distinct strategies over the same "f increasing in both x and y" black box
-// (ShortestPathAlgorithmBenchmarks precedent for benchmarking every real tier
-// instead of just winner-vs-brute-force) - the O(n^2) check-every-pair brute force,
-// the classic O(n) two-pointer walk that exploits monotonicity on both axes, and an
-// O(n log n) per-row BinarySearch.Find over this repo's own IRandomAccessSequence
-// (KokoEatingBananasBenchmarks/CapacityToShipPackagesWithinDDaysBenchmarks precedent
-// for "binary search over a computed sequence"). BinarySearchPerRow is expected to
-// lose to TwoPointer here - the point of including it is showing the reusable
-// primitive is *available* and correct, not that it's the asymptotically best tool
-// for this particular monotone-on-both-axes shape.
+// Harness only: all three arms are
+// FindPositiveIntegerSolutionForAGivenEquationSolution's, the same methods
+// FindPositiveIntegerSolutionForAGivenEquationTests proves correct - the O(n^2)
+// check-every-pair brute force, the O(n) two-pointer walk, and the O(n log n) per-row
+// BinarySearch.Find over this repo's own IRandomAccessSequence
+// (ShortestPathAlgorithmBenchmarks precedent for measuring every real tier instead of
+// just winner-vs-brute-force). BinarySearchPerRow is expected to lose to TwoPointer;
+// the point of including it is that the reusable primitive is available and correct.
+//
+// Each arm takes the explicit-bound overload so the measured search space is the
+// [Params] value, and .Count so the three return the same comparable measurement
+// while still building LeetCode's real answer (the pre-migration arms only counted).
 [MemoryDiagnoser]
 public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
 {
     // Doubling factor for the largest reachable sum (Bound + Bound).
     private const int MaxSumFactor = 2;
+
+    // Hoisted so the delegate allocation is not charged to any measured method - and
+    // all three arms pay the same one call-through-delegate cost the hidden
+    // CustomFunction imposes.
+    private static readonly Func<int, int, int> Sum = (x, y) => x + y;
 
     [Params(300, 1_000)]
     public int Bound;
@@ -36,92 +41,18 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
         _z = (MaxSumFactor * Bound) - 1;
     }
 
-    private static int Function(int x, int y) => x + y;
-
     [Benchmark(Baseline = true)]
-    public int BruteForceEveryPair()
-    {
-        var count = 0;
-
-        for (var x = 1; x <= Bound; x++)
-        {
-            for (var y = 1; y <= Bound; y++)
-            {
-                if (Function(x, y) == _z)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    public int BruteForceEveryPair() =>
+        FindPositiveIntegerSolutionForAGivenEquationSolution
+            .FindSolutionsByBruteForce(Sum, _z, Bound).Count;
 
     [Benchmark]
-    public int TwoPointer()
-    {
-        var (x, y) = InitializeTwoPointerBounds();
-        return CountSolutionsTwoPointer(x, y);
-    }
-
-    private (int X, int Y) InitializeTwoPointerBounds() => (1, Bound);
-
-    private int CountSolutionsTwoPointer(int x, int y)
-    {
-        var count = 0;
-
-        while (x <= Bound && y >= 1)
-        {
-            (x, y, count) = StepTwoPointer(x, y, count);
-        }
-
-        return count;
-    }
-
-    private (int X, int Y, int Count) StepTwoPointer(int x, int y, int count)
-    {
-        var value = Function(x, y);
-
-        if (value == _z)
-        {
-            count++;
-            x++;
-            y--;
-        }
-        else if (value < _z)
-        {
-            x++;
-        }
-        else
-        {
-            y--;
-        }
-
-        return (x, y, count);
-    }
+    public int TwoPointer() =>
+        FindPositiveIntegerSolutionForAGivenEquationSolution
+            .FindSolutionsByTwoPointer(Sum, _z, Bound).Count;
 
     [Benchmark]
-    public int BinarySearchPerRow()
-    {
-        var count = 0;
-
-        for (var x = 1; x <= Bound; x++)
-        {
-            var row = new FunctionRowSequence(x, Bound);
-
-            if (BinarySearch.Find(row, _z) is not null)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private readonly struct FunctionRowSequence(int x, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-
-        public int Get(int index) => Function(x, index + 1);
-    }
+    public int BinarySearchPerRow() =>
+        FindPositiveIntegerSolutionForAGivenEquationSolution
+            .FindSolutionsByBinarySearchPerRow(Sum, _z, Bound).Count;
 }

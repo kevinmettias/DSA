@@ -1,65 +1,56 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FindPositiveIntegerSolutionForAGivenEquation;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindPositiveIntegerSolutionForAGivenEquation;
 
-// LeetCode 1237. Find Positive Integer Solution for a Given Equation: the hidden
-// CustomFunction is strictly increasing in both x and y, so for any fixed x the row
-// f(x, 1..1000) is itself sorted ascending - the same "binary search over a
-// computed sequence" shape KokoEatingBananasTests/CapacityToShipPackagesWithinDDaysTests
-// already use, just applied per row (BinarySearch.Find for an exact z, not
-// LowerBound for a feasibility boundary) instead of over a single monotone
-// predicate.
-public sealed partial class FindPositiveIntegerSolutionForAGivenEquationTests
+// Harness only: all three strategies live in
+// FindPositiveIntegerSolutionForAGivenEquationSolution. Each example supplies a
+// stand-in for LeetCode's hidden CustomFunction - strictly increasing in both x and y,
+// which is all any strategy is allowed to assume - and every strategy emits its pairs
+// with x ascending, so the expectations are stated that way once for all three.
+public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
 {
-    private const int Bound = 1000;
+    private const int Bound = FindPositiveIntegerSolutionForAGivenEquationSolution.Bound;
 
-    [Fact]
-    public void FindSolution_AdditionFunction_ReturnsEveryPairSummingToZ()
-    {
-        var solutions = FindSolution((x, y) => x + y, z: 5);
-
-        Assert.Equal([(1, 4), (2, 3), (3, 2), (4, 1)], solutions);
-    }
-
-    [Fact]
-    public void FindSolution_MultiplicationFunction_ReturnsEveryPairMultiplyingToZ()
-    {
-        var solutions = FindSolution((x, y) => x * y, z: 5);
-
-        Assert.Equal([(1, 5), (5, 1)], solutions);
-    }
-
-    [Fact]
-    public void FindSolution_NoPairSatisfiesTheEquation_ReturnsEmpty()
-    {
-        var solutions = FindSolution((x, y) => x + y, z: 2 * Bound + 1);
-
-        Assert.Empty(solutions);
-    }
-
-    private static List<(int X, int Y)> FindSolution(Func<int, int, int> function, int z)
-    {
-        var results = new List<(int X, int Y)>();
-
-        for (var x = 1; x <= Bound; x++)
+    public static TheoryData<Func<int, int, int>, int, (int X, int Y)[]> Examples =>
+        new()
         {
-            var row = new FunctionRowSequence(function, x);
-            var index = BinarySearch.Find(row, z);
+            // LeetCode example 1: function_id = 1 (x + y), z = 5.
+            { (x, y) => x + y, 5, [(1, 4), (2, 3), (3, 2), (4, 1)] },
+            // LeetCode example 2: function_id = 2 (x * y), z = 5.
+            { (x, y) => x * y, 5, [(1, 5), (5, 1)] },
+            // No reachable pair: the largest sum in range is Bound + Bound.
+            { (x, y) => x + y, (2 * Bound) + 1, [] },
+            // The extremes of the search space: the single largest sum, and the
+            // single smallest product.
+            { (x, y) => x + y, 2 * Bound, [(Bound, Bound)] },
+            { (x, y) => x * y, 1, [(1, 1)] },
+            // A function that is neither of LeetCode's first two, to keep the
+            // strategies honest about only using monotonicity.
+            { (x, y) => (2 * x) + (3 * y), 20, [(1, 6), (4, 4), (7, 2)] },
+        };
 
-            if (index is not null)
-            {
-                results.Add((x, index.Value + 1));
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindSolutionsByBruteForce_LeetCodeExamples_ReturnsEveryPairSatisfyingTheEquation(
+        Func<int, int, int> function, int z, (int X, int Y)[] expected) =>
+        Assert.Equal(
+            expected,
+            FindPositiveIntegerSolutionForAGivenEquationSolution.FindSolutionsByBruteForce(function, z));
 
-        return results;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindSolutionsByTwoPointer_LeetCodeExamples_ReturnsEveryPairSatisfyingTheEquation(
+        Func<int, int, int> function, int z, (int X, int Y)[] expected) =>
+        Assert.Equal(
+            expected,
+            FindPositiveIntegerSolutionForAGivenEquationSolution.FindSolutionsByTwoPointer(function, z));
 
-    private readonly struct FunctionRowSequence(Func<int, int, int> function, int x) : IRandomAccessSequence<int>
-    {
-        public int Length => Bound;
-
-        public int Get(int index) => function(x, index + 1);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindSolutionsByBinarySearchPerRow_LeetCodeExamples_ReturnsEveryPairSatisfyingTheEquation(
+        Func<int, int, int> function, int z, (int X, int Y)[] expected) =>
+        Assert.Equal(
+            expected,
+            FindPositiveIntegerSolutionForAGivenEquationSolution
+                .FindSolutionsByBinarySearchPerRow(function, z));
 }

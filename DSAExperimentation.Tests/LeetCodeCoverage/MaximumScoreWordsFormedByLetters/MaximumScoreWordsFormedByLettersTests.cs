@@ -1,157 +1,98 @@
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.MaximumScoreWordsFormedByLetters;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumScoreWordsFormedByLetters;
 
-// LeetCode 1255. Maximum Score Words Formed by Letters: words.length <= 14 makes
-// this a small enough choose/explore/unchoose search over "include this word or
-// skip it" - the same include/skip decision tree Backtrack.Search's own doc
-// comment names for Subsets/Combination Sum, except every leaf (not just
-// IsSolution ones) is a candidate answer, so OnSolution just tracks the running
-// best instead of materializing a result list. CanInclude gates the "include"
-// choice on the word's own letters still fitting the shared, mutated budget -
-// the same shrinking-resource-pool shape PartitionToKEqualSumSubsetsTests'
-// CanPlace already uses for bucket capacity, just per-letter instead of per-sum.
-public sealed partial class MaximumScoreWordsFormedByLettersTests
+// Harness only: both strategies live in MaximumScoreWordsFormedByLettersSolution and
+// are asserted against the same examples - including the two cases where taking the
+// locally obvious word is wrong, which is what makes the backtracking necessary.
+public sealed class MaximumScoreWordsFormedByLettersTests
 {
-    [Fact]
-    public void MaxScoreWords_MissingLetterExcludesWordAndBudgetForcesAChoice_ReturnsBestReachableSubset()
-    {
-        // Available letters give a:2, c:1, d:3, g:1, o:2 and no 't' at all, so
-        // "cat" can never be formed - only "dog" (5+0+3=8), "dad" (5+1+5=11) and
-        // "good" (3+0+0+5=8) are ever reachable, and the d-budget (3) rules out
-        // taking all three together (1+2+1=4 d's needed). The best reachable
-        // pair is "dad"+"good" (equivalently "dog"+"dad"), both summing to 19.
-        string[] words = ["dog", "cat", "dad", "good"];
-        char[] letters = ['a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'];
-        int[] score = [1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    private const int AlphabetSize = 26;
 
-        var result = MaxScoreWords(words, letters, score);
-
-        Assert.Equal(19, result);
-    }
-
-    [Fact]
-    public void MaxScoreWords_LettersExactlyCoverEveryWord_TakesEveryWord()
-    {
-        string[] words = ["cat", "dog"];
-        char[] letters = ['c', 'a', 't', 'd', 'o', 'g'];
-        var score = new int[26];
-
-        foreach (var c in letters)
+    public static TheoryData<string[], char[], int[], int> Examples =>
+        new()
         {
-            score[c - 'a'] = 1;
-        }
-
-        var result = MaxScoreWords(words, letters, score);
-
-        Assert.Equal(6, result);
-    }
-
-    private static int MaxScoreWords(string[] words, char[] letters, int[] score)
-    {
-        var available = new int[26];
-
-        foreach (var c in letters)
-        {
-            available[c - 'a']++;
-        }
-
-        var state = new State(words, score, available);
-        var best = 0;
-
-        Backtrack.Search<State, bool>(
-            state,
-            isSolution: s => s.Index == words.Length,
-            candidates: s => s.Index == words.Length ? [] : s.CanInclude ? [true, false] : [false],
-            choose: (s, include) => s.Choose(include),
-            unchoose: (s, include) => s.Unchoose(include),
-            onSolution: s => best = Math.Max(best, s.CurrentScore));
-
-        return best;
-    }
-
-    private sealed class State
-    {
-        private readonly int[][] _wordCounts;
-        private readonly int[] _wordScores;
-        private readonly int[] _available;
-
-        public State(string[] words, int[] score, int[] available)
-        {
-            _available = available;
-            _wordCounts = new int[words.Length][];
-            _wordScores = new int[words.Length];
-
-            for (var i = 0; i < words.Length; i++)
+            // Available letters give a:2, c:1, d:3, g:1, o:2 and no 't' at all, so
+            // "cat" can never be formed - only "dog" (5+0+3=8), "dad" (5+1+5=11) and
+            // "good" (3+0+0+5=8) are ever reachable, and the d-budget (3) rules out
+            // taking all three together (1+2+1=4 d's needed). The best reachable
+            // pair is "dad"+"good" (equivalently "dog"+"dad"), both summing to 19.
             {
-                var counts = new int[26];
-                var wordScore = 0;
+                ["dog", "cat", "dad", "good"],
+                ['a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'],
+                LetterScores(('a', 1), ('c', 9), ('d', 5), ('g', 3)),
+                19
+            },
 
-                foreach (var c in words[i])
-                {
-                    counts[c - 'a']++;
-                    wordScore += score[c - 'a'];
-                }
-
-                _wordCounts[i] = counts;
-                _wordScores[i] = wordScore;
-            }
-        }
-
-        public int Index { get; private set; }
-
-        public int CurrentScore { get; private set; }
-
-        public bool CanInclude
-        {
-            get
+            // Letters exactly cover every word, so every word is taken.
             {
-                var counts = _wordCounts[Index];
+                ["cat", "dog"],
+                ['c', 'a', 't', 'd', 'o', 'g'],
+                LetterScores(('c', 1), ('a', 1), ('t', 1), ('d', 1), ('o', 1), ('g', 1)),
+                6
+            },
 
-                for (var c = 0; c < 26; c++)
-                {
-                    if (counts[c] > _available[c])
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        public void Choose(bool include)
-        {
-            if (include)
+            // Nothing is formable: the pool has no 'b'.
             {
-                var counts = _wordCounts[Index];
+                ["ab"],
+                ['a'],
+                LetterScores(('a', 1), ('b', 2)),
+                0
+            },
 
-                for (var c = 0; c < 26; c++)
-                {
-                    _available[c] -= counts[c];
-                }
-
-                CurrentScore += _wordScores[Index];
-            }
-
-            Index++;
-        }
-
-        public void Unchoose(bool include)
-        {
-            Index--;
-
-            if (include)
+            // Skipping the first word is the winning move: "aab" (1+1+10=12) and
+            // "bb" (20) both fit individually but need three b's together, and only
+            // two are available.
             {
-                var counts = _wordCounts[Index];
+                ["aab", "bb"],
+                ['a', 'a', 'b', 'b'],
+                LetterScores(('a', 1), ('b', 10)),
+                20
+            },
 
-                for (var c = 0; c < 26; c++)
-                {
-                    _available[c] += counts[c];
-                }
+            // Two identical words competing for one shared pool: three a's spell
+            // "aa" once, not twice.
+            {
+                ["aa", "aa"],
+                ['a', 'a', 'a'],
+                LetterScores(('a', 1)),
+                2
+            },
+        };
 
-                CurrentScore -= _wordScores[Index];
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxScoreWordsByNaiveRecursion_LeetCodeExamples_ReturnsBestReachableSubsetScore(
+        string[] words,
+        char[] letters,
+        int[] score,
+        int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumScoreWordsFormedByLettersSolution.MaxScoreWordsByNaiveRecursion(words, letters, score));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxScoreWordsByBacktrackSearch_LeetCodeExamples_ReturnsBestReachableSubsetScore(
+        string[] words,
+        char[] letters,
+        int[] score,
+        int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumScoreWordsFormedByLettersSolution.MaxScoreWordsByBacktrackSearch(words, letters, score));
+
+    // LeetCode states score as a dense 26-entry vector; naming only the non-zero
+    // letters keeps the examples above readable.
+    private static int[] LetterScores(params (char Letter, int Value)[] scores)
+    {
+        var score = new int[AlphabetSize];
+
+        foreach (var (letter, value) in scores)
+        {
+            score[letter - 'a'] = value;
         }
+
+        return score;
     }
 }
