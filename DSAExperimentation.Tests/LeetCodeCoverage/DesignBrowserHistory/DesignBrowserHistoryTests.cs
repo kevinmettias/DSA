@@ -1,78 +1,136 @@
-using RepoDynamicArray = DSAExperimentation.DataStructures.DynamicArray.DynamicArray<string>;
+using static DSAExperimentation.LeetCode.DesignBrowserHistory.DesignBrowserHistorySolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignBrowserHistory;
 
-// LeetCode 1472. Design Browser History: a cursor into a growable sequence that
-// truncates everything past the cursor on a new Visit - exactly this repo's own
-// DynamicArray<string> (RemoveAt/Add/Get), the same "sequence + access constraint"
-// composition Stack<T> already makes over DynamicArray<T> (ARCHITECTURE.md §4.1),
-// just with the truncate-on-write behavior layered on top instead of a LIFO one.
-public sealed partial class DesignBrowserHistoryTests
+// Harness only: both strategies live in DesignBrowserHistorySolution. LeetCode's
+// own shape here is a stateful object across a sequence of calls, so Examples
+// encodes a call script instead of a single argument tuple - the same shape
+// DesignCircularQueueTests already uses for its own instance-API problem. A Visit
+// returns null in LeetCode's judge output, so BrowserHistoryOp.Apply returns null
+// for it too and the expected sequence reads exactly like the published one.
+public sealed class DesignBrowserHistoryTests
 {
-    [Fact]
-    public void VisitBackForward_LeetCodeExample_MatchesExpectedSequence()
-    {
-        var history = new BrowserHistory("leetcode.com");
-
-        history.Visit("google.com");
-        history.Visit("facebook.com");
-        history.Visit("youtube.com");
-
-        Assert.Equal("facebook.com", history.Back(1));
-        Assert.Equal("google.com", history.Back(1));
-        Assert.Equal("facebook.com", history.Forward(1));
-
-        history.Visit("linkedin.com");
-
-        Assert.Equal("linkedin.com", history.Forward(2));
-        Assert.Equal("google.com", history.Back(2));
-        Assert.Equal("leetcode.com", history.Back(7));
-    }
-
-    [Fact]
-    public void Visit_AfterMovingBack_TruncatesTheDiscardedForwardHistory()
-    {
-        var history = new BrowserHistory("home.com");
-
-        history.Visit("a.com");
-        history.Visit("b.com");
-        history.Back(2);
-        history.Visit("c.com");
-
-        // "b.com" was discarded by the intervening Visit, so Forward has nowhere
-        // left to go past the newly-visited page.
-        Assert.Equal("c.com", history.Forward(1));
-        Assert.Equal("home.com", history.Back(2));
-    }
-
-    private sealed class BrowserHistory
-    {
-        private readonly RepoDynamicArray _history = new();
-        private int _current;
-
-        public BrowserHistory(string homepage) => _history.Add(homepage);
-
-        public void Visit(string url)
+    public static TheoryData<string, BrowserHistoryOp[], string?[]> Examples =>
+        new()
         {
-            while (_history.Count > _current + 1)
             {
-                _history.RemoveAt(_history.Count - 1);
-            }
+                "leetcode.com",
+                [
+                    BrowserHistoryOp.Visit("google.com"),
+                    BrowserHistoryOp.Visit("facebook.com"),
+                    BrowserHistoryOp.Visit("youtube.com"),
+                    BrowserHistoryOp.Back(1),
+                    BrowserHistoryOp.Back(1),
+                    BrowserHistoryOp.Forward(1),
+                    BrowserHistoryOp.Visit("linkedin.com"),
+                    BrowserHistoryOp.Forward(2),
+                    BrowserHistoryOp.Back(2),
+                    BrowserHistoryOp.Back(7),
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    "facebook.com",
+                    "google.com",
+                    "facebook.com",
+                    null,
+                    "linkedin.com",
+                    "google.com",
+                    "leetcode.com",
+                ]
+            },
+            {
+                // A Visit after moving back discards the forward history, so
+                // Forward has nowhere left to go past the newly-visited page.
+                "home.com",
+                [
+                    BrowserHistoryOp.Visit("a.com"),
+                    BrowserHistoryOp.Visit("b.com"),
+                    BrowserHistoryOp.Back(2),
+                    BrowserHistoryOp.Visit("c.com"),
+                    BrowserHistoryOp.Forward(1),
+                    BrowserHistoryOp.Back(2),
+                ],
+                [null, null, "home.com", null, "c.com", "home.com"]
+            },
+            {
+                // Nothing has been visited, so both directions clamp to the
+                // homepage however many steps are asked for.
+                "only.com",
+                [
+                    BrowserHistoryOp.Back(3),
+                    BrowserHistoryOp.Forward(3),
+                ],
+                ["only.com", "only.com"]
+            },
+        };
 
-            _history.Add(url);
-            _current++;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BrowserHistoryByListBacked_LeetCodeExamples_MatchesExpectedSequence(
+        string homepage, BrowserHistoryOp[] operations, string?[] expected) =>
+        RunScript(new BrowserHistoryByListBacked(homepage), operations, expected);
 
-        public string Back(int steps)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BrowserHistoryByDynamicArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
+        string homepage, BrowserHistoryOp[] operations, string?[] expected) =>
+        RunScript(new BrowserHistoryByDynamicArrayBacked(homepage), operations, expected);
+
+    private static void RunScript(
+        IBrowserHistory history, BrowserHistoryOp[] operations, string?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
         {
-            _current = Math.Max(0, _current - steps);
-            return _history.Get(_current);
+            Assert.Equal(expected[i], operations[i].Apply(history));
         }
+    }
+}
 
-        public string Forward(int steps)
+// One call in a BrowserHistory script: which operation to invoke, and with what
+// url or step count. Pure dispatch, built via the named factories below so a
+// script reads like the LeetCode call sequence it replays.
+public readonly record struct BrowserHistoryOp
+{
+    private readonly Kind _kind;
+    private readonly string _url;
+    private readonly int _steps;
+
+    private BrowserHistoryOp(Kind kind, string url, int steps)
+    {
+        _kind = kind;
+        _url = url;
+        _steps = steps;
+    }
+
+    public static BrowserHistoryOp Visit(string url) => new(Kind.Visit, url, 0);
+
+    public static BrowserHistoryOp Back(int steps) => new(Kind.Back, string.Empty, steps);
+
+    public static BrowserHistoryOp Forward(int steps) => new(Kind.Forward, string.Empty, steps);
+
+    // null for Visit, matching LeetCode's own judge output for a void operation;
+    // the landed url for the two navigations - so a script runner can assert
+    // against one expected value per operation uniformly.
+    internal string? Apply(IBrowserHistory history)
+    {
+        switch (_kind)
         {
-            _current = Math.Min(_history.Count - 1, _current + steps);
-            return _history.Get(_current);
+            case Kind.Visit:
+                history.Visit(_url);
+                return null;
+            case Kind.Back:
+                return history.Back(_steps);
+            default:
+                return history.Forward(_steps);
         }
+    }
+
+    private enum Kind
+    {
+        Visit,
+        Back,
+        Forward,
     }
 }

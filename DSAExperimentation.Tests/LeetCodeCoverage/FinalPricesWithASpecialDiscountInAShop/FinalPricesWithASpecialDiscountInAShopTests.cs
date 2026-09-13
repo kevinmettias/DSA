@@ -1,49 +1,34 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FinalPricesWithASpecialDiscountInAShop;
 
-// LeetCode 1475. Final Prices With a Special Discount in a Shop: the classic
-// "next not-greater element" pattern via a monotonic stack of pending indices -
-// this repo's own Stack<int> (LIFO over DynamicArray<int>, ARCHITECTURE.md §4.1),
-// popped whenever the current price undercuts (or matches) the price on top.
-public sealed partial class FinalPricesWithASpecialDiscountInAShopTests
+// Harness only: both strategies are FinalPricesWithASpecialDiscountInAShopSolution's
+// - the forward-scanning baseline and the monotonic-stack pass - pinned here to
+// LeetCode's three published examples plus the degenerate single-item shop.
+public sealed class FinalPricesWithASpecialDiscountInAShopTests
 {
-    [Fact]
-    public void FinalPrices_LeetCodeExample_AppliesNextNotGreaterDiscount()
-    {
-        int[] prices = [8, 4, 6, 2, 3];
-
-        var result = FinalPrices(prices);
-
-        Assert.Equal([4, 2, 4, 2, 3], result);
-    }
-
-    [Fact]
-    public void FinalPrices_StrictlyIncreasingPrices_NoDiscountApplies()
-    {
-        int[] prices = [1, 2, 3, 4, 5];
-
-        var result = FinalPrices(prices);
-
-        Assert.Equal([1, 2, 3, 4, 5], result);
-    }
-
-    private static int[] FinalPrices(int[] prices)
-    {
-        var result = (int[])prices.Clone();
-        var pendingIndices = new RepoStack();
-
-        for (var i = 0; i < prices.Length; i++)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            while (pendingIndices.TryPeek(out var top) && prices[i] <= prices[top])
-            {
-                pendingIndices.TryPop(out _);
-                result[top] -= prices[i];
-            }
+            { [8, 4, 6, 2, 3], [4, 2, 4, 2, 3] },
+            { [1, 2, 3, 4, 5], [1, 2, 3, 4, 5] },
+            { [10, 1, 1, 6], [9, 0, 1, 6] },
+            { [5], [5] },
+        };
 
-            pendingIndices.Push(i);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FinalPricesByBruteForce_LeetCodeExamples_AppliesNextNotGreaterDiscount(
+        int[] prices, int[] expected) =>
+        Assert.Equal(
+            expected,
+            FinalPricesWithASpecialDiscountInAShopSolution.FinalPricesByBruteForce(prices));
 
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FinalPricesByMonotonicStack_LeetCodeExamples_AppliesNextNotGreaterDiscount(
+        int[] prices, int[] expected) =>
+        Assert.Equal(
+            expected,
+            FinalPricesWithASpecialDiscountInAShopSolution.FinalPricesByMonotonicStack(prices));
 }

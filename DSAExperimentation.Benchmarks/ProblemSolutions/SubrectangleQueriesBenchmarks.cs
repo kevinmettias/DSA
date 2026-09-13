@@ -1,32 +1,31 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
+using static DSAExperimentation.LeetCode.SubrectangleQueries.SubrectangleQueriesSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Subrectangle Queries (LC 1476): a plain jagged int[][] backing store vs. this
-// repo's own DynamicArray<T>, nested once for the row list and once per row - the
-// same "compose the array Representation primitive directly" move Stack<T> and
-// DesignCircularQueueBenchmarks's DequeBacked already make. Both variants run the
-// identical brute-force nested-loop overwrite LeetCode's own constraints are sized
-// for (<=100x100 grid, <=500 queries); there is no faster algorithm to compare here,
-// only the backing-store choice.
+// Harness only: both arms are SubrectangleQueriesSolution's, the same classes
+// SubrectangleQueriesTests proves correct. [GlobalSetup] builds one fixed,
+// deterministic script of overlapping subrectangle overwrites; each arm then
+// replays it against a freshly constructed backing store, because the store's
+// construction cost is itself half of what this comparison is about (a jagged
+// int[][] versus a DynamicArray<T> of DynamicArray<T>) and because a store reused
+// across invocations would carry the previous invocation's mutations forward.
 [MemoryDiagnoser]
 public class SubrectangleQueriesBenchmarks
 {
     private const int QueryCount = 200;
+    private const int UpdateSeed = 1;
 
     [Params(20, 100)]
     public int Size;
 
-    private (int Row1, int Col1, int Row2, int Col2, int Value)[] _updates = null!;
-
-    private readonly record struct Rectangle(int Row1, int Col1, int Row2, int Col2);
+    private (SubrectangleBounds Bounds, int Value)[] _updates = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        _updates = new (int, int, int, int, int)[QueryCount];
+        var random = new Random(UpdateSeed);
+        _updates = new (SubrectangleBounds, int)[QueryCount];
 
         for (var i = 0; i < QueryCount; i++)
         {
@@ -34,89 +33,25 @@ public class SubrectangleQueriesBenchmarks
             var col1 = random.Next(0, Size);
             var row2 = random.Next(row1, Size);
             var col2 = random.Next(col1, Size);
-            _updates[i] = (row1, col1, row2, col2, i);
+            _updates[i] = (new SubrectangleBounds(row1, col1, row2, col2), i);
         }
     }
 
     [Benchmark(Baseline = true)]
-    public int ArrayBacked()
-    {
-        var queries = new ArraySubrectangleQueries(Size);
-
-        foreach (var (row1, col1, row2, col2, value) in _updates)
-        {
-            queries.UpdateSubrectangle(new Rectangle(row1, col1, row2, col2), value);
-        }
-
-        return queries.GetValue(Size - 1, Size - 1);
-    }
+    public int ArrayBacked() => Replay(new SubrectangleQueriesByArrayBacked(Size, Size));
 
     [Benchmark]
-    public int DynamicArrayBacked()
-    {
-        var queries = new DynamicArraySubrectangleQueries(Size);
+    public int DynamicArrayBacked() => Replay(new SubrectangleQueriesByDynamicArrayBacked(Size, Size));
 
-        foreach (var (row1, col1, row2, col2, value) in _updates)
+    // Returns the far-corner cell rather than discarding the result, so the JIT
+    // cannot eliminate the replay as dead code.
+    private int Replay(ISubrectangleQueries queries)
+    {
+        foreach (var (bounds, value) in _updates)
         {
-            queries.UpdateSubrectangle(new Rectangle(row1, col1, row2, col2), value);
+            queries.UpdateSubrectangle(bounds, value);
         }
 
         return queries.GetValue(Size - 1, Size - 1);
-    }
-
-    private sealed class ArraySubrectangleQueries
-    {
-        private readonly int[][] _rectangle;
-
-        public ArraySubrectangleQueries(int size)
-            => _rectangle = Enumerable.Range(0, size).Select(_ => new int[size]).ToArray();
-
-        public void UpdateSubrectangle(Rectangle rect, int newValue)
-        {
-            for (var r = rect.Row1; r <= rect.Row2; r++)
-            {
-                for (var c = rect.Col1; c <= rect.Col2; c++)
-                {
-                    _rectangle[r][c] = newValue;
-                }
-            }
-        }
-
-        public int GetValue(int row, int col) => _rectangle[row][col];
-    }
-
-    private sealed class DynamicArraySubrectangleQueries
-    {
-        private readonly DynamicArray<DynamicArray<int>> _rectangle = new();
-
-        public DynamicArraySubrectangleQueries(int size)
-        {
-            for (var r = 0; r < size; r++)
-            {
-                var row = new DynamicArray<int>();
-
-                for (var c = 0; c < size; c++)
-                {
-                    row.Add(0);
-                }
-
-                _rectangle.Add(row);
-            }
-        }
-
-        public void UpdateSubrectangle(Rectangle rect, int newValue)
-        {
-            for (var r = rect.Row1; r <= rect.Row2; r++)
-            {
-                var row = _rectangle.Get(r);
-
-                for (var c = rect.Col1; c <= rect.Col2; c++)
-                {
-                    row.Set(c, newValue);
-                }
-            }
-        }
-
-        public int GetValue(int row, int col) => _rectangle.Get(row).Get(col);
     }
 }

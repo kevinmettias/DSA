@@ -1,142 +1,71 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree;
 
-// LeetCode 1489. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree:
-// runs Kruskal's algorithm - via this repo's own DisjointSet union-find, the same
-// primitive Algorithms.MinimumSpanningTrees.MinimumSpanningTree.Kruskal composes
-// internally - three ways per edge: once to get the baseline MST weight, once with
-// that edge excluded (critical if the MST weight rises or the graph disconnects),
-// and once with that edge forced in first (pseudo-critical if the resulting weight
-// still matches the baseline). MinimumSpanningTree.Kruskal itself isn't reused
-// directly because its IEdgeTopology-based edge discovery has no notion of "skip
-// edge #i" or "force edge #i in" - both need per-edge index identity (weights can
-// tie), which a direct DisjointSet-based Kruskal loop gives for free.
-public sealed partial class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeTests
+// Harness only. Both strategies live in
+// FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution - this file pins
+// them to LeetCode's published examples plus the shapes the three-probe classification
+// has to get right: a lone bridge, a chain where every edge is critical, a triangle
+// with no ties (where the heaviest edge is neither critical nor pseudo-critical), and
+// two parallel edges of equal weight that are interchangeable.
+//
+// Both lists are reported in ascending edge index, which is the order the scan
+// discovers them in.
+public sealed class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeTests
 {
-    [Fact]
-    public void Classify_LeetCodeExampleWithTies_SplitsCriticalFromPseudoCritical()
-    {
-        int[][] edges =
-        [
-            [0, 1, 1], [1, 2, 1], [2, 3, 2], [0, 3, 2], [0, 4, 3], [3, 4, 3], [1, 4, 6],
-        ];
-
-        var (critical, pseudoCritical) = Classify(5, edges);
-
-        Assert.Equal([0, 1], critical);
-        Assert.Equal([2, 3, 4, 5], pseudoCritical);
-    }
-
-    [Fact]
-    public void Classify_FourWayTieAroundASquare_EveryEdgeIsPseudoCriticalNoneCritical()
-    {
-        int[][] edges = [[0, 1, 1], [1, 2, 1], [2, 3, 1], [0, 3, 1]];
-
-        var (critical, pseudoCritical) = Classify(4, edges);
-
-        Assert.Empty(critical);
-        Assert.Equal([0, 1, 2, 3], pseudoCritical);
-    }
-
-    private static (List<int> Critical, List<int> PseudoCritical) Classify(int n, int[][] edges)
-    {
-        var mst = new MstInput(n, edges, SortEdgesByWeight(edges));
-
-        var baselineWeight = BaselineWeight(mst);
-
-        return ClassifyEdges(mst, baselineWeight);
-    }
-
-    private static int[] SortEdgesByWeight(int[][] edges)
-        => Enumerable.Range(0, edges.Length).OrderBy(i => edges[i][2]).ToArray();
-
-    private static int BaselineWeight(MstInput mst)
-        => MstWeight(mst, new EdgeOverride(SkipIndex: -1, ForceIndex: -1))
-            ?? throw new InvalidOperationException("LeetCode 1489 guarantees a connected input graph.");
-
-    private static (List<int> Critical, List<int> PseudoCritical) ClassifyEdges(MstInput mst, int baselineWeight)
-    {
-        var critical = new List<int>();
-        var pseudoCritical = new List<int>();
-
-        for (var i = 0; i < mst.Edges.Length; i++)
+    public static TheoryData<int, int[][], int[], int[]> Examples =>
+        new()
         {
-            var withoutEdge = MstWeight(mst, new EdgeOverride(SkipIndex: i, ForceIndex: -1));
-
-            if (withoutEdge is null || withoutEdge > baselineWeight)
+            // LC example 1: the two weight-1 edges are in every MST; the weight-2 and
+            // weight-3 edges tie in pairs, so each is optional but usable.
             {
-                critical.Add(i);
-                continue;
-            }
+                5,
+                [[0, 1, 1], [1, 2, 1], [2, 3, 2], [0, 3, 2], [0, 4, 3], [3, 4, 3], [1, 4, 6]],
+                [0, 1],
+                [2, 3, 4, 5]
+            },
 
-            if (MstWeight(mst, new EdgeOverride(SkipIndex: -1, ForceIndex: i)) == baselineWeight)
-            {
-                pseudoCritical.Add(i);
-            }
-        }
+            // LC example 2: a four-way tie around a square - any three of the four edges
+            // form an MST, so none is critical and all are pseudo-critical.
+            { 4, [[0, 1, 1], [1, 2, 1], [2, 3, 1], [0, 3, 1]], [], [0, 1, 2, 3] },
 
-        return (critical, pseudoCritical);
-    }
+            // A lone edge is the only way to connect the graph.
+            { 2, [[0, 1, 5]], [0], [] },
 
-    private static int? MstWeight(MstInput mst, EdgeOverride overrideEdge)
+            // A chain has no alternative anywhere, so every edge is critical.
+            { 4, [[0, 1, 1], [1, 2, 2], [2, 3, 3]], [0, 1, 2], [] },
+
+            // A triangle with distinct weights: the two light edges are forced, and the
+            // heaviest is neither critical nor pseudo-critical - no MST contains it.
+            { 3, [[0, 1, 1], [1, 2, 2], [0, 2, 3]], [0, 1], [] },
+
+            // Two parallel edges of equal weight are interchangeable.
+            { 2, [[0, 1, 1], [0, 1, 1]], [], [0, 1] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ClassifyEdgesByBfsConnectivity_LeetCodeExamples_SplitsCriticalFromPseudoCritical(
+        int nodeCount, int[][] edges, int[] expectedCritical, int[] expectedPseudoCritical)
     {
-        var components = new DisjointSet(mst.N);
-        var totalWeight = 0;
-        var edgesUsed = 0;
+        var (critical, pseudoCritical) =
+            FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution
+                .ClassifyEdgesByBfsConnectivity(nodeCount, edges);
 
-        if (overrideEdge.ForceIndex >= 0)
-        {
-            var forcedWeight = ForceEdge(mst, overrideEdge.ForceIndex, components);
-            Accumulate(forcedWeight, ref totalWeight, ref edgesUsed);
-        }
-
-        foreach (var index in mst.EdgesByWeight)
-        {
-            var addedWeight = TryUnionEdge(mst, overrideEdge, components, index);
-            Accumulate(addedWeight, ref totalWeight, ref edgesUsed);
-        }
-
-        return edgesUsed == mst.N - 1 ? totalWeight : null;
+        Assert.Equal(expectedCritical, critical);
+        Assert.Equal(expectedPseudoCritical, pseudoCritical);
     }
 
-    private static void Accumulate(int? addedWeight, ref int totalWeight, ref int edgesUsed)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ClassifyEdgesByDisjointSet_LeetCodeExamples_SplitsCriticalFromPseudoCritical(
+        int nodeCount, int[][] edges, int[] expectedCritical, int[] expectedPseudoCritical)
     {
-        if (addedWeight is null)
-        {
-            return;
-        }
+        var (critical, pseudoCritical) =
+            FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution
+                .ClassifyEdgesByDisjointSet(nodeCount, edges);
 
-        totalWeight += addedWeight.Value;
-        edgesUsed++;
+        Assert.Equal(expectedCritical, critical);
+        Assert.Equal(expectedPseudoCritical, pseudoCritical);
     }
-
-    private static int ForceEdge(MstInput mst, int forceIndex, DisjointSet components)
-    {
-        var forced = mst.Edges[forceIndex];
-        components.Union(forced[0], forced[1]);
-        return forced[2];
-    }
-
-    private static int? TryUnionEdge(MstInput mst, EdgeOverride overrideEdge, DisjointSet components, int index)
-    {
-        if (index == overrideEdge.SkipIndex || index == overrideEdge.ForceIndex)
-        {
-            return null;
-        }
-
-        var edge = mst.Edges[index];
-
-        if (components.IsConnected(edge[0], edge[1]))
-        {
-            return null;
-        }
-
-        components.Union(edge[0], edge[1]);
-        return edge[2];
-    }
-
-    private readonly record struct MstInput(int N, int[][] Edges, int[] EdgesByWeight);
-
-    private readonly record struct EdgeOverride(int SkipIndex, int ForceIndex);
 }

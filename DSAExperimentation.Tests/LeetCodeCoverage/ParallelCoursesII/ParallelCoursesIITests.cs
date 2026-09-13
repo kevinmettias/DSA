@@ -1,113 +1,53 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.ParallelCoursesII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ParallelCoursesII;
 
-// LeetCode 1494. Parallel Courses II: bitmask DP over "which courses are already
-// completed," via this repo's own Memoizer - the same CanIWin/PartitionToKEqualSumSubsets
-// shape, keyed on an int bitmask (one bit per course) instead of a bare integer. At each
-// state, "ready" is every not-yet-taken course whose prerequisites are already all
-// completed; every subset of at most k ready courses is a candidate next semester, and
-// the recurrence picks whichever subset leads to the fewest remaining semesters -
-// submask enumeration (`sub = (sub - 1) & ready`) is the one piece of glue code this
-// composition needs, the same bit trick CanIWin's own SumChosen/bit-scan already uses.
+// Harness only. Both strategies are ParallelCoursesIISolution's - LeetCode's
+// published examples are stated once and replayed against each, so a failure names
+// the strategy that broke rather than reporting a disagreement between an anonymous
+// test helper and an anonymous benchmark arm. The no-prerequisites cases are the
+// shape the benchmark measures, so they are asserted here too.
 public sealed class ParallelCoursesIITests
 {
-    [Fact]
-    public void MinNumberOfSemesters_DiamondPrerequisites_ReturnsThree()
-    {
-        int[][] relations = [[2, 1], [3, 1], [1, 4]];
-
-        var actual = MinNumberOfSemesters(n: 4, relations, k: 2);
-        Assert.Equal(3, actual);
-    }
-
-    [Fact]
-    public void MinNumberOfSemesters_ThreeCoursesGateOneFollowUp_ReturnsFour()
-    {
-        int[][] relations = [[2, 1], [3, 1], [4, 1], [1, 5]];
-
-        var actual = MinNumberOfSemesters(n: 5, relations, k: 2);
-        Assert.Equal(4, actual);
-    }
-
-    [Fact]
-    public void MinNumberOfSemesters_NoPrerequisites_PacksExactlyKPerSemester()
-    {
-        var actual = MinNumberOfSemesters(n: 11, relations: [], k: 2);
-        Assert.Equal(6, actual);
-    }
-
-    private static int MinNumberOfSemesters(int n, int[][] relations, int k)
-    {
-        var prereqMask = BuildPrereqMasks(n, relations);
-        var fullMask = (1 << n) - 1;
-
-        return Memoizer.Memoize<int, int>(0, (completedMask, semestersFrom) =>
+    // Cases both arms are checked at. The unmemoized arm re-explores a
+    // completed-course mask once per semester order that reaches it (n = 11 with no
+    // prerequisites already costs ~9.7e8 calls), so the shared set stops at n = 8
+    // and the memoized arm gets the larger case below.
+    public static TheoryData<int, int[][], int, int> Examples =>
+        new()
         {
-            if (completedMask == fullMask)
-            {
-                return 0;
-            }
+            { 4, [[2, 1], [3, 1], [1, 4]], 2, 3 },
+            { 5, [[2, 1], [3, 1], [4, 1], [1, 5]], 2, 4 },
+            { 1, [], 1, 1 },
+            { 3, [[1, 2], [2, 3]], 3, 3 },
+            { 6, [], 3, 2 },
+            { 6, [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6]], 2, 4 },
+            { 8, [], 2, 4 },
+        };
 
-            var ready = ComputeReadyMask(prereqMask, completedMask, n);
-            var best = BestSemestersOverSubsets(ready, k, completedMask, semestersFrom);
-
-            return 1 + best;
-        });
-    }
-
-    private static int[] BuildPrereqMasks(int n, int[][] relations)
-    {
-        var prereqMask = new int[n];
-        foreach (var relation in relations)
+    // The pre-migration test's own packing case, kept at the size it was written
+    // at - only the memoized arm reaches it in test time.
+    public static TheoryData<int, int[][], int, int> LargeExamples =>
+        new()
         {
-            var next = relation[1] - 1;
-            prereqMask[next] |= 1 << (relation[0] - 1);
-        }
+            { 11, [], 2, 6 },
+        };
 
-        return prereqMask;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinNumberOfSemestersByBruteForceRecursion_LeetCodeExamples_ReturnsFewestSemesters(
+        int n, int[][] relations, int k, int expected) =>
+        Assert.Equal(expected, ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(n, relations, k));
 
-    private static int ComputeReadyMask(int[] prereqMask, int completedMask, int n)
-    {
-        var ready = 0;
-        for (var course = 0; course < n; course++)
-        {
-            var bit = 1 << course;
-            if ((completedMask & bit) == 0 && (prereqMask[course] & completedMask) == prereqMask[course])
-            {
-                ready |= bit;
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinNumberOfSemestersByMemoizedRecursion_LeetCodeExamples_ReturnsFewestSemesters(
+        int n, int[][] relations, int k, int expected) =>
+        Assert.Equal(expected, ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k));
 
-        return ready;
-    }
-
-    private static int BestSemestersOverSubsets(int ready, int k, int completedMask, Func<int, int> semestersFrom)
-    {
-        var best = int.MaxValue;
-        for (var subset = ready; subset > 0; subset = (subset - 1) & ready)
-        {
-            if (PopCount(subset) > k)
-            {
-                continue;
-            }
-
-            best = Math.Min(best, semestersFrom(completedMask | subset));
-        }
-
-        return best;
-    }
-
-    private static int PopCount(int value)
-    {
-        var count = 0;
-        while (value != 0)
-        {
-            value &= value - 1;
-            count++;
-        }
-
-        return count;
-    }
+    [Theory]
+    [MemberData(nameof(LargeExamples))]
+    public void MinNumberOfSemestersByMemoizedRecursion_LargeCourseCounts_ReturnsFewestSemesters(
+        int n, int[][] relations, int k, int expected) =>
+        Assert.Equal(expected, ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k));
 }
