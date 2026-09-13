@@ -1,0 +1,38 @@
+{
+  "QuestionId": 148,
+  "FrontendId": 148,
+  "Title": "Sort List",
+  "TitleSlug": "sort-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Two Pointers",
+    "Divide and Conquer",
+    "Sorting",
+    "Merge Sort"
+  ],
+  "AcceptanceRatePercent": 65.4,
+  "TotalAccepted": 1381555,
+  "TotalSubmissions": 2113130,
+  "Likes": 13245,
+  "Dislikes": 421,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list, return \u003Cem\u003Ethe list after sorting it in \u003Cstrong\u003Eascending order\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/14/sort_list_1.jpg\u0022 style=\u0022width: 450px; height: 194px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [4,2,1,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/14/sort_list_2.jpg\u0022 style=\u0022width: 550px; height: 184px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [-1,5,3,4,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [-1,0,3,4,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = []\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[0, 5 * 10\u003Csup\u003E4\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E Can you sort the linked list in \u003Ccode\u003EO(n logn)\u003C/code\u003E time and \u003Ccode\u003EO(1)\u003C/code\u003E memory (i.e. constant space)?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,1,3]",
+      "RawExpectedOutput": "[1,2,3,4]"
+    },
+    {
+      "RawInput": "[-1,5,3,4,0]",
+      "RawExpectedOutput": "[-1,0,3,4,5]"
+    },
+    {
+      "RawInput": "[]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0766567+00:00",
+  "Url": "https://leetcode.com/problems/sort-list/"
+}

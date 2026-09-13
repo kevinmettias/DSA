@@ -1,0 +1,29 @@
+{
+  "QuestionId": 146,
+  "FrontendId": 146,
+  "Title": "LRU Cache",
+  "TitleSlug": "lru-cache",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Linked List",
+    "Design",
+    "Doubly-Linked List"
+  ],
+  "AcceptanceRatePercent": 48,
+  "TotalAccepted": 2764610,
+  "TotalSubmissions": 5756545,
+  "Likes": 23476,
+  "Dislikes": 1261,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure that follows the constraints of a \u003Cstrong\u003E\u003Ca href=\u0022https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU\u0022 target=\u0022_blank\u0022\u003ELeast Recently Used (LRU) cache\u003C/a\u003E\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ELRUCache\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ELRUCache(int capacity)\u003C/code\u003E Initialize the LRU cache with \u003Cstrong\u003Epositive\u003C/strong\u003E size \u003Ccode\u003Ecapacity\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint get(int key)\u003C/code\u003E Return the value of the \u003Ccode\u003Ekey\u003C/code\u003E if the key exists, otherwise return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid put(int key, int value)\u003C/code\u003E Update the value of the \u003Ccode\u003Ekey\u003C/code\u003E if the \u003Ccode\u003Ekey\u003C/code\u003E exists. Otherwise, add the \u003Ccode\u003Ekey-value\u003C/code\u003E pair to the cache. If the number of keys exceeds the \u003Ccode\u003Ecapacity\u003C/code\u003E from this operation, \u003Cstrong\u003Eevict\u003C/strong\u003E the least recently used key.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe functions \u003Ccode\u003Eget\u003C/code\u003E and \u003Ccode\u003Eput\u003C/code\u003E must each run in \u003Ccode\u003EO(1)\u003C/code\u003E average time complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;LRUCache\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;get\u0026quot;]\n[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, 1, null, -1, null, -1, 3, 4]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nLRUCache lRUCache = new LRUCache(2);\nlRUCache.put(1, 1); // cache is {1=1}\nlRUCache.put(2, 2); // cache is {1=1, 2=2}\nlRUCache.get(1);    // return 1\nlRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}\nlRUCache.get(2);    // returns -1 (not found)\nlRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}\nlRUCache.get(1);    // return -1 (not found)\nlRUCache.get(3);    // return 3\nlRUCache.get(4);    // return 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= capacity \u0026lt;= 3000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= key \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= value \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eget\u003C/code\u003E and \u003Ccode\u003Eput\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022LRUCache\u0022,\u0022put\u0022,\u0022put\u0022,\u0022get\u0022,\u0022put\u0022,\u0022get\u0022,\u0022put\u0022,\u0022get\u0022,\u0022get\u0022,\u0022get\u0022]\n[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8045882+00:00",
+  "Url": "https://leetcode.com/problems/lru-cache/"
+}

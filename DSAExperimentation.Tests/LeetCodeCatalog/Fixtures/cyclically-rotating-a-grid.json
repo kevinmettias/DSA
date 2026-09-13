@@ -1,0 +1,35 @@
+{
+  "QuestionId": 2043,
+  "FrontendId": 1914,
+  "Title": "Cyclically Rotating a Grid",
+  "TitleSlug": "cyclically-rotating-a-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 74,
+  "TotalAccepted": 85263,
+  "TotalSubmissions": 115235,
+  "Likes": 466,
+  "Dislikes": 306,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E integer matrix \u003Ccode\u003Egrid\u003C/code\u003E\u200B\u200B\u200B, where \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E are both \u003Cstrong\u003Eeven\u003C/strong\u003E integers, and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003EThe matrix is composed of several layers, which is shown in the below image, where each color is its own layer:\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/10/ringofgrid.png\u0022 style=\u0022width: 231px; height: 258px;\u0022 /\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003EA cyclic rotation of the matrix is done by cyclically rotating \u003Cstrong\u003Eeach layer\u003C/strong\u003E in the matrix. To cyclically rotate a layer once, each element in the layer will take the place of the adjacent element in the \u003Cstrong\u003Ecounter-clockwise\u003C/strong\u003E direction. An example rotation is shown below:\u003C/p\u003E\r\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/22/explanation_grid.jpg\u0022 style=\u0022width: 500px; height: 268px;\u0022 /\u003E\r\n\u003Cp\u003EReturn \u003Cem\u003Ethe matrix after applying \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E \u003Cem\u003Ecyclic rotations to it\u003C/em\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/19/rod2.png\u0022 style=\u0022width: 421px; height: 191px;\u0022 /\u003E\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[40,10],[30,20]], k = 1\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[10,20],[40,30]]\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figures above represent the grid at every state.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/10/ringofgrid5.png\u0022 style=\u0022width: 231px; height: 262px;\u0022 /\u003E\u003C/strong\u003E \u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/10/ringofgrid6.png\u0022 style=\u0022width: 231px; height: 262px;\u0022 /\u003E\u003C/strong\u003E \u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/10/ringofgrid7.png\u0022 style=\u0022width: 231px; height: 262px;\u0022 /\u003E\u003C/strong\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]], k = 2\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[3,4,8,12],[2,11,10,16],[1,7,6,15],[5,9,13,14]]\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figures above represent the grid at every state.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m, n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003EBoth \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E are \u003Cstrong\u003Eeven\u003C/strong\u003E integers.\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= grid[i][j] \u0026lt;=\u003Csup\u003E \u003C/sup\u003E5000\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "First, you need to consider each layer separately as an array.",
+    "Just cycle this array and then re-assign it."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[40,10],[30,20]]\n1",
+      "RawExpectedOutput": "[[10,20],[40,30]]"
+    },
+    {
+      "RawInput": "[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]\n2",
+      "RawExpectedOutput": "[[3,4,8,12],[2,11,10,16],[1,7,6,15],[5,9,13,14]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0343173+00:00",
+  "Url": "https://leetcode.com/problems/cyclically-rotating-a-grid/"
+}

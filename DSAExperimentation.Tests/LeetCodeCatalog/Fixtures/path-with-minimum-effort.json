@@ -1,0 +1,45 @@
+{
+  "QuestionId": 1753,
+  "FrontendId": 1631,
+  "Title": "Path With Minimum Effort",
+  "TitleSlug": "path-with-minimum-effort",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Dijkstra\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 64,
+  "TotalAccepted": 523748,
+  "TotalSubmissions": 817900,
+  "Likes": 7051,
+  "Dislikes": 243,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are a hiker preparing for an upcoming hike. You are given \u003Ccode\u003Eheights\u003C/code\u003E, a 2D array of size \u003Ccode\u003Erows x columns\u003C/code\u003E, where \u003Ccode\u003Eheights[row][col]\u003C/code\u003E represents the height of cell \u003Ccode\u003E(row, col)\u003C/code\u003E. You are situated in the top-left cell, \u003Ccode\u003E(0, 0)\u003C/code\u003E, and you hope to travel to the bottom-right cell, \u003Ccode\u003E(rows-1, columns-1)\u003C/code\u003E (i.e.,\u0026nbsp;\u003Cstrong\u003E0-indexed\u003C/strong\u003E). You can move \u003Cstrong\u003Eup\u003C/strong\u003E, \u003Cstrong\u003Edown\u003C/strong\u003E, \u003Cstrong\u003Eleft\u003C/strong\u003E, or \u003Cstrong\u003Eright\u003C/strong\u003E, and you wish to find a route that requires the minimum \u003Cstrong\u003Eeffort\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA route\u0026#39;s \u003Cstrong\u003Eeffort\u003C/strong\u003E is the \u003Cstrong\u003Emaximum absolute difference\u003C/strong\u003E\u003Cstrong\u003E \u003C/strong\u003Ein heights between two consecutive cells of the route.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum \u003Cstrong\u003Eeffort\u003C/strong\u003E required to travel from the top-left cell to the bottom-right cell.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/04/ex1.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [[1,2,2],[3,8,2],[5,3,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The route of [1,3,5,3,5] has a maximum absolute difference of 2 in consecutive cells.\nThis is better than the route of [1,2,2,2,5], where the maximum absolute difference is 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/04/ex2.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [[1,2,3],[3,8,4],[5,3,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The route of [1,2,3,4,5] has a maximum absolute difference of 1 in consecutive cells, which is better than route [1,3,5,3,5].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/04/ex3.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E heights = [[1,2,1,1,1],[1,2,1,2,1],[1,2,1,2,1],[1,2,1,2,1],[1,1,1,2,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E This route does not require any effort.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erows == heights.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecolumns == heights[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rows, columns \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= heights[i][j] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider the grid as a graph, where adjacent cells have an edge with cost of the difference between the cells.",
+    "If you are given threshold k, check if it is possible to go from (0, 0) to (n-1, m-1) using only edges of \u2264 k cost.",
+    "Binary search the k value."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2,2],[3,8,2],[5,3,5]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[1,2,3],[3,8,4],[5,3,5]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[1,2,1,1,1],[1,2,1,2,1],[1,2,1,2,1],[1,2,1,2,1],[1,1,1,2,1]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4593073+00:00",
+  "Url": "https://leetcode.com/problems/path-with-minimum-effort/"
+}

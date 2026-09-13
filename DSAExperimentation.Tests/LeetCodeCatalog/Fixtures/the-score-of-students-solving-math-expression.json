@@ -1,0 +1,44 @@
+{
+  "QuestionId": 2147,
+  "FrontendId": 2019,
+  "Title": "The Score of Students Solving Math Expression",
+  "TitleSlug": "the-score-of-students-solving-math-expression",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "String",
+    "Dynamic Programming",
+    "Stack",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 34.7,
+  "TotalAccepted": 10020,
+  "TotalSubmissions": 28849,
+  "Likes": 284,
+  "Dislikes": 86,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E that contains digits \u003Ccode\u003E0-9\u003C/code\u003E, addition symbols \u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E, and multiplication symbols \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E \u003Cstrong\u003Eonly\u003C/strong\u003E, representing a \u003Cstrong\u003Evalid\u003C/strong\u003E math expression of \u003Cstrong\u003Esingle digit numbers\u003C/strong\u003E (e.g., \u003Ccode\u003E3\u002B5*2\u003C/code\u003E). This expression was given to \u003Ccode\u003En\u003C/code\u003E elementary school students. The students were instructed to get the answer of the expression by following this \u003Cstrong\u003Eorder of operations\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003ECompute \u003Cstrong\u003Emultiplication\u003C/strong\u003E, reading from \u003Cstrong\u003Eleft to right\u003C/strong\u003E; Then,\u003C/li\u003E\n\t\u003Cli\u003ECompute \u003Cstrong\u003Eaddition\u003C/strong\u003E, reading from \u003Cstrong\u003Eleft to right\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EYou are given an integer array \u003Ccode\u003Eanswers\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, which are the submitted answers of the students in no particular order. You are asked to grade the \u003Ccode\u003Eanswers\u003C/code\u003E, by following these \u003Cstrong\u003Erules\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf an answer \u003Cstrong\u003Eequals\u003C/strong\u003E the correct answer of the expression, this student will be rewarded \u003Ccode\u003E5\u003C/code\u003E points;\u003C/li\u003E\n\t\u003Cli\u003EOtherwise, if the answer \u003Cstrong\u003Ecould be interpreted\u003C/strong\u003E as if the student applied the operators \u003Cstrong\u003Ein the wrong order\u003C/strong\u003E but had \u003Cstrong\u003Ecorrect arithmetic\u003C/strong\u003E, this student will be rewarded \u003Ccode\u003E2\u003C/code\u003E points;\u003C/li\u003E\n\t\u003Cli\u003EOtherwise, this student will be rewarded \u003Ccode\u003E0\u003C/code\u003E points.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe sum of the points of the students\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/17/student_solving_math.png\u0022 style=\u0022width: 678px; height: 109px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;7\u002B3*1*2\u0026quot;, answers = [20,13,42]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E As illustrated above, the correct answer of the expression is 13, therefore one student is rewarded 5 points: [20,\u003Cu\u003E\u003Cstrong\u003E13\u003C/strong\u003E\u003C/u\u003E,42]\nA student might have applied the operators in this wrong order: ((7\u002B3)*1)*2 = 20. Therefore one student is rewarded 2 points: [\u003Cu\u003E\u003Cstrong\u003E20\u003C/strong\u003E\u003C/u\u003E,13,42]\nThe points for the students are: [2,5,0]. The sum of the points is 2\u002B5\u002B0=7.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;3\u002B5*2\u0026quot;, answers = [13,0,10,13,13,16,16]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 19\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The correct answer of the expression is 13, therefore three students are rewarded 5 points each: [\u003Cstrong\u003E\u003Cu\u003E13\u003C/u\u003E\u003C/strong\u003E,0,10,\u003Cstrong\u003E\u003Cu\u003E13\u003C/u\u003E\u003C/strong\u003E,\u003Cstrong\u003E\u003Cu\u003E13\u003C/u\u003E\u003C/strong\u003E,16,16]\nA student might have applied the operators in this wrong order: ((3\u002B5)*2 = 16. Therefore two students are rewarded 2 points: [13,0,10,13,13,\u003Cstrong\u003E\u003Cu\u003E16\u003C/u\u003E\u003C/strong\u003E,\u003Cstrong\u003E\u003Cu\u003E16\u003C/u\u003E\u003C/strong\u003E]\nThe points for the students are: [5,0,0,5,5,2,2]. The sum of the points is 5\u002B0\u002B0\u002B5\u002B5\u002B2\u002B2=19.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;6\u002B0*1\u0026quot;, answers = [12,9,6,4,8,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The correct answer of the expression is 6.\nIf a student had incorrectly done (6\u002B0)*1, the answer would also be 6.\nBy the rules of grading, the students will still be rewarded 5 points (as they got the correct answer), not 2 points.\nThe points for the students are: [0,0,5,0,0,5]. The sum of the points is 10.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= s.length \u0026lt;= 31\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E represents a valid expression that contains only digits \u003Ccode\u003E0-9\u003C/code\u003E, \u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E only.\u003C/li\u003E\n\t\u003Cli\u003EAll the integer operands in the expression are in the \u003Cstrong\u003Einclusive\u003C/strong\u003E range \u003Ccode\u003E[0, 9]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u003C/code\u003E The count of all operators (\u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E) in the math expression \u003Ccode\u003E\u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003ETest data are generated such that the correct answer of the expression is in the range of \u003Ccode\u003E[0, 1000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ETest data are generated such that value never exceeds 10\u003Csup\u003E9\u003C/sup\u003E in intermediate steps of multiplication.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == answers.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= answers[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The number of operators in the equation is less. Could you find the right answer then generate all possible answers using different orders of operations?",
+    "Divide the equation into blocks separated by the operators, and use memoization on the results of blocks for optimization.",
+    "Use set and the max limit of the answer for further optimization."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u00227\u002B3*1*2\u0022\n[20,13,42]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "\u00223\u002B5*2\u0022\n[13,0,10,13,13,16,16]",
+      "RawExpectedOutput": "19"
+    },
+    {
+      "RawInput": "\u00226\u002B0*1\u0022\n[12,9,6,4,8,6]",
+      "RawExpectedOutput": "10"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2473785+00:00",
+  "Url": "https://leetcode.com/problems/the-score-of-students-solving-math-expression/"
+}

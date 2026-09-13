@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1257,
+  "FrontendId": 1632,
+  "Title": "Rank Transform of a Matrix",
+  "TitleSlug": "rank-transform-of-a-matrix",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Union-Find",
+    "Graph Theory",
+    "Topological Sort",
+    "Sorting",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 42.6,
+  "TotalAccepted": 28880,
+  "TotalSubmissions": 67777,
+  "Likes": 952,
+  "Dislikes": 60,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an \u003Ccode\u003Em x n\u003C/code\u003E \u003Ccode\u003Ematrix\u003C/code\u003E, return \u003Cem\u003Ea new matrix \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer[row][col]\u003C/code\u003E\u003Cem\u003E is the \u003C/em\u003E\u003Cem\u003E\u003Cstrong\u003Erank\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Ematrix[row][col]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Erank\u003C/strong\u003E is an \u003Cstrong\u003Einteger\u003C/strong\u003E that represents how large an element is compared to other elements. It is calculated using the following rules:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe rank is an integer starting from \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf two elements \u003Ccode\u003Ep\u003C/code\u003E and \u003Ccode\u003Eq\u003C/code\u003E are in the \u003Cstrong\u003Esame row or column\u003C/strong\u003E, then:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EIf \u003Ccode\u003Ep \u0026lt; q\u003C/code\u003E then \u003Ccode\u003Erank(p) \u0026lt; rank(q)\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003EIf \u003Ccode\u003Ep == q\u003C/code\u003E then \u003Ccode\u003Erank(p) == rank(q)\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003EIf \u003Ccode\u003Ep \u0026gt; q\u003C/code\u003E then \u003Ccode\u003Erank(p) \u0026gt; rank(q)\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Erank\u003C/strong\u003E should be as \u003Cstrong\u003Esmall\u003C/strong\u003E as possible.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe test cases are generated so that \u003Ccode\u003Eanswer\u003C/code\u003E is unique under the given rules.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/18/rank1.jpg\u0022 style=\u0022width: 442px; height: 162px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1,2],[3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2],[2,3]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe rank of matrix[0][0] is 1 because it is the smallest integer in its row and column.\nThe rank of matrix[0][1] is 2 because matrix[0][1] \u0026gt; matrix[0][0] and matrix[0][0] is rank 1.\nThe rank of matrix[1][0] is 2 because matrix[1][0] \u0026gt; matrix[0][0] and matrix[0][0] is rank 1.\nThe rank of matrix[1][1] is 3 because matrix[1][1] \u0026gt; matrix[0][1], matrix[1][1] \u0026gt; matrix[1][0], and both matrix[0][1] and matrix[1][0] are rank 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/18/rank2.jpg\u0022 style=\u0022width: 442px; height: 162px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[7,7],[7,7]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,1],[1,1]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/18/rank3.jpg\u0022 style=\u0022width: 601px; height: 322px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[20,-21,14],[-19,4,19],[22,-47,24],[-19,4,19]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[4,2,3],[1,3,4],[5,1,6],[1,3,4]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= matrix[row][col] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the cells by value and process them in increasing order.",
+    "The rank of a cell is the maximum rank in its row and column plus one.",
+    "Handle the equal cells by treating them as components using a union-find data structure."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[3,4]]",
+      "RawExpectedOutput": "[[1,2],[2,3]]"
+    },
+    {
+      "RawInput": "[[7,7],[7,7]]",
+      "RawExpectedOutput": "[[1,1],[1,1]]"
+    },
+    {
+      "RawInput": "[[20,-21,14],[-19,4,19],[22,-47,24],[-19,4,19]]",
+      "RawExpectedOutput": "[[4,2,3],[1,3,4],[5,1,6],[1,3,4]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6680281+00:00",
+  "Url": "https://leetcode.com/problems/rank-transform-of-a-matrix/"
+}

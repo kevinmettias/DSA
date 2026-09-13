@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1725,
+  "FrontendId": 1621,
+  "Title": "Number of Sets of K Non-Overlapping Line Segments",
+  "TitleSlug": "number-of-sets-of-k-non-overlapping-line-segments",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 46.6,
+  "TotalAccepted": 14274,
+  "TotalSubmissions": 30629,
+  "Likes": 496,
+  "Dislikes": 50,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven \u003Ccode\u003En\u003C/code\u003E points on a 1-D plane, where the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E point (from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En-1\u003C/code\u003E) is at \u003Ccode\u003Ex = i\u003C/code\u003E, find the number of ways we can draw \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E \u003Cstrong\u003Enon-overlapping\u003C/strong\u003E line segments such that each segment covers two or more points. The endpoints of each segment must have \u003Cstrong\u003Eintegral coordinates\u003C/strong\u003E. The \u003Ccode\u003Ek\u003C/code\u003E line segments \u003Cstrong\u003Edo not\u003C/strong\u003E have to cover all \u003Ccode\u003En\u003C/code\u003E points, and they are \u003Cstrong\u003Eallowed\u003C/strong\u003E to share endpoints.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of ways we can draw \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E non-overlapping line segments\u003C/em\u003E\u003Cem\u003E.\u003C/em\u003E Since this number can be huge, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/07/ex1.png\u0022 style=\u0022width: 179px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The two line segments are shown in red and blue.\nThe image above shows the 5 different ways {(0,2),(2,3)}, {(0,1),(1,3)}, {(0,1),(2,3)}, {(1,2),(2,3)}, {(0,1),(1,2)}.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 3 ways are {(0,1)}, {(0,2)}, {(1,2)}.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 30, k = 7\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 796297179\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The total number of possible ways to draw 7 line segments is 3796297200. Taking this number modulo 10\u003Csup\u003E9\u003C/sup\u003E \u002B 7 gives us 796297179.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n-1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try to use dynamic programming where the current index and remaining number of line segments to form can describe any intermediate state.",
+    "To make the computation of each state in constant time, we could add another flag to the state that indicates whether or not we are in the middle of placing a line (placed start point but no endpoint)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n2",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "3\n1",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "30\n7",
+      "RawExpectedOutput": "796297179"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2963841+00:00",
+  "Url": "https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/"
+}

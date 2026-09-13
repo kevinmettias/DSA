@@ -1,0 +1,48 @@
+{
+  "QuestionId": 3478,
+  "FrontendId": 3235,
+  "Title": "Check if the Rectangle Corner Is Reachable",
+  "TitleSlug": "check-if-the-rectangle-corner-is-reachable",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 24.5,
+  "TotalAccepted": 8405,
+  "TotalSubmissions": 34364,
+  "Likes": 123,
+  "Dislikes": 42,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two positive integers \u003Ccode\u003ExCorner\u003C/code\u003E and \u003Ccode\u003EyCorner\u003C/code\u003E, and a 2D array \u003Ccode\u003Ecircles\u003C/code\u003E, where \u003Ccode\u003Ecircles[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E, r\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E denotes a circle with center at \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E and radius \u003Ccode\u003Er\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere is a rectangle in the coordinate plane with its bottom left corner at the origin and top right corner at the coordinate \u003Ccode\u003E(xCorner, yCorner)\u003C/code\u003E. You need to check whether there is a path from the bottom left corner to the top right corner such that the \u003Cstrong\u003Eentire path\u003C/strong\u003E lies inside the rectangle, \u003Cstrong\u003Edoes not\u003C/strong\u003E touch or lie inside \u003Cstrong\u003Eany\u003C/strong\u003E circle, and touches the rectangle \u003Cstrong\u003Eonly\u003C/strong\u003E at the two corners.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if such a path exists, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003ExCorner = 3, yCorner = 4, circles = [[2,1,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/05/18/example2circle1.png\u0022 style=\u0022width: 346px; height: 264px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe black curve shows a possible path between \u003Ccode\u003E(0, 0)\u003C/code\u003E and \u003Ccode\u003E(3, 4)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003ExCorner = 3, yCorner = 3, circles = [[1,1,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/05/18/example1circle.png\u0022 style=\u0022width: 346px; height: 264px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo path exists from \u003Ccode\u003E(0, 0)\u003C/code\u003E to \u003Ccode\u003E(3, 3)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003ExCorner = 3, yCorner = 3, circles = [[2,1,1],[1,2,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/05/18/example0circle.png\u0022 style=\u0022width: 346px; height: 264px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo path exists from \u003Ccode\u003E(0, 0)\u003C/code\u003E to \u003Ccode\u003E(3, 3)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003ExCorner = 4, yCorner = 4, circles = [[5,5,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/08/04/rectangles.png\u0022 style=\u0022width: 346px; height: 264px;\u0022 /\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= xCorner, yCorner \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= circles.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecircles[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E, r\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Create a graph with \u003Ccode\u003En \u002B 4\u003C/code\u003E vertices.",
+    "Vertices 0 to \u003Ccode\u003En - 1\u003C/code\u003E represent the circles, vertex \u003Ccode\u003En\u003C/code\u003E represents upper edge, vertex \u003Ccode\u003En \u002B 1\u003C/code\u003E represents right edge, vertex \u003Ccode\u003En \u002B 2\u003C/code\u003E represents lower edge, and vertex \u003Ccode\u003En \u002B 3\u003C/code\u003E represents left edge.",
+    "Add an edge between these vertices if they intersect or touch.",
+    "Answer will be \u003Ccode\u003Efalse\u003C/code\u003E when any of two sides left-right, left-bottom, right-top or top-bottom are reachable using the edges."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n4\n[[2,1,1]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n3\n[[1,1,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n3\n[[2,1,1],[1,2,1]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4\n4\n[[5,5,1]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7779608+00:00",
+  "Url": "https://leetcode.com/problems/check-if-the-rectangle-corner-is-reachable/"
+}

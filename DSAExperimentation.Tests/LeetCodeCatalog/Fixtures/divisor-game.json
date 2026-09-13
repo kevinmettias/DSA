@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1086,
+  "FrontendId": 1025,
+  "Title": "Divisor Game",
+  "TitleSlug": "divisor-game",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Brainteaser",
+    "Game Theory",
+    "Impartial Game"
+  ],
+  "AcceptanceRatePercent": 72.6,
+  "TotalAccepted": 412572,
+  "TotalSubmissions": 568136,
+  "Likes": 2487,
+  "Dislikes": 4214,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob take turns playing a game, with Alice starting first.\u003C/p\u003E\n\n\u003Cp\u003EInitially, there is a number \u003Ccode\u003En\u003C/code\u003E on the chalkboard. On each player\u0026#39;s turn, that player makes a move consisting of:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoosing any integer \u003Ccode\u003Ex\u003C/code\u003E with \u003Ccode\u003E0 \u0026lt; x \u0026lt; n\u003C/code\u003E and \u003Ccode\u003En % x == 0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EReplacing the number \u003Ccode\u003En\u003C/code\u003E on the chalkboard with \u003Ccode\u003En - x\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAlso, if a player cannot make a move, they lose the game.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif and only if Alice wins the game, assuming both players play optimally\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice chooses 1, and Bob has no more moves.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice chooses 1, Bob chooses 1, and Alice has no more moves.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If the current number is even, we can always subtract a 1 to make it odd.  If the current number is odd, we must subtract an odd number to make it even."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1477403+00:00",
+  "Url": "https://leetcode.com/problems/divisor-game/"
+}

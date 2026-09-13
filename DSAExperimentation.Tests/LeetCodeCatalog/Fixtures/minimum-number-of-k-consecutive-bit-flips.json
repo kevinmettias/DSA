@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1037,
+  "FrontendId": 995,
+  "Title": "Minimum Number of K Consecutive Bit Flips",
+  "TitleSlug": "minimum-number-of-k-consecutive-bit-flips",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Bit Manipulation",
+    "Queue",
+    "Sliding Window",
+    "Prefix Sum",
+    "Brute-Force Search"
+  ],
+  "AcceptanceRatePercent": 62.4,
+  "TotalAccepted": 147472,
+  "TotalSubmissions": 236190,
+  "Likes": 2102,
+  "Dislikes": 92,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a binary array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Ek-bit flip\u003C/strong\u003E is choosing a \u003Cstrong\u003Esubarray\u003C/strong\u003E of length \u003Ccode\u003Ek\u003C/code\u003E from \u003Ccode\u003Enums\u003C/code\u003E and simultaneously changing every \u003Ccode\u003E0\u003C/code\u003E in the subarray to \u003Ccode\u003E1\u003C/code\u003E, and every \u003Ccode\u003E1\u003C/code\u003E in the subarray to \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of \u003Cstrong\u003Ek-bit flips\u003C/strong\u003E required so that there is no \u003C/em\u003E\u003Ccode\u003E0\u003C/code\u003E\u003Cem\u003E in the array\u003C/em\u003E. If it is not possible, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a \u003Cstrong\u003Econtiguous\u003C/strong\u003E part of an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,1,0], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Flip nums[0], then flip nums[2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,1,0], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E No matter how we flip subarrays of size 2, we cannot make the array become [1,1,1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,0,0,1,0,1,1,0], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFlip nums[0],nums[1],nums[2]: nums becomes [1,1,1,1,0,1,1,0]\nFlip nums[4],nums[5],nums[6]: nums becomes [1,1,1,1,1,0,0,0]\nFlip nums[5],nums[6],nums[7]: nums becomes [1,1,1,1,1,1,1,1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= nums.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,1,0]\n1",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[1,1,0]\n2",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "[0,0,0,1,0,1,1,0]\n3",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0749467+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-k-consecutive-bit-flips/"
+}

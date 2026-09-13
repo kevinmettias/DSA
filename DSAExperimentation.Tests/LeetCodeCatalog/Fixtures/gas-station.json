@@ -1,0 +1,31 @@
+{
+  "QuestionId": 134,
+  "FrontendId": 134,
+  "Title": "Gas Station",
+  "TitleSlug": "gas-station",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Greedy"
+  ],
+  "AcceptanceRatePercent": 48.7,
+  "TotalAccepted": 1459212,
+  "TotalSubmissions": 2996395,
+  "Likes": 13771,
+  "Dislikes": 1409,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E gas stations along a circular route, where the amount of gas at the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E station is \u003Ccode\u003Egas[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou have a car with an unlimited gas tank and it costs \u003Ccode\u003Ecost[i]\u003C/code\u003E of gas to travel from the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E station to its next \u003Ccode\u003E(i \u002B 1)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E station. You begin the journey with an empty tank at one of the gas stations.\u003C/p\u003E\n\n\u003Cp\u003EGiven two integer arrays \u003Ccode\u003Egas\u003C/code\u003E and \u003Ccode\u003Ecost\u003C/code\u003E, return \u003Cem\u003Ethe starting gas station\u0026#39;s index if you can travel around the circuit once in the clockwise direction, otherwise return\u003C/em\u003E \u003Ccode\u003E-1\u003C/code\u003E. If there exists a solution, it is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E to be \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E gas = [1,2,3,4,5], cost = [3,4,5,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nStart at station 3 (index 3) and fill up with 4 unit of gas. Your tank = 0 \u002B 4 = 4\nTravel to station 4. Your tank = 4 - 1 \u002B 5 = 8\nTravel to station 0. Your tank = 8 - 2 \u002B 1 = 7\nTravel to station 1. Your tank = 7 - 3 \u002B 2 = 6\nTravel to station 2. Your tank = 6 - 4 \u002B 3 = 5\nTravel to station 3. The cost is 5. Your gas is just enough to travel back to station 3.\nTherefore, return 3 as the starting index.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E gas = [2,3,4], cost = [3,4,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nYou can\u0026#39;t start at station 0 or 1, as there is not enough gas to travel to the next station.\nLet\u0026#39;s start at station 2 and fill up with 4 unit of gas. Your tank = 0 \u002B 4 = 4\nTravel to station 0. Your tank = 4 - 3 \u002B 2 = 3\nTravel to station 1. Your tank = 3 - 3 \u002B 3 = 3\nYou cannot travel back to station 2, as it requires 4 unit of gas but you only have 3.\nTherefore, you can\u0026#39;t travel around the circuit once no matter where you start.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == gas.length == cost.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= gas[i], cost[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that the answer is unique.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5]\n[3,4,5,1,2]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[2,3,4]\n[3,4,3]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3793295+00:00",
+  "Url": "https://leetcode.com/problems/gas-station/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 218,
+  "FrontendId": 218,
+  "Title": "The Skyline Problem",
+  "TitleSlug": "the-skyline-problem",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Sweep Line",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 45.9,
+  "TotalAccepted": 366769,
+  "TotalSubmissions": 799023,
+  "Likes": 6281,
+  "Dislikes": 287,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA city\u0026#39;s \u003Cstrong\u003Eskyline\u003C/strong\u003E is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. Given the locations and heights of all the buildings, return \u003Cem\u003Ethe \u003Cstrong\u003Eskyline\u003C/strong\u003E formed by these buildings collectively\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe geometric information of each building is given in the array \u003Ccode\u003Ebuildings\u003C/code\u003E where \u003Ccode\u003Ebuildings[i] = [left\u003Csub\u003Ei\u003C/sub\u003E, right\u003Csub\u003Ei\u003C/sub\u003E, height\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eleft\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the x coordinate of the left edge of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E building.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eright\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the x coordinate of the right edge of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E building.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eheight\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the height of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E building.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou may assume all buildings are perfect rectangles grounded on an absolutely flat surface at height \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Eskyline\u003C/strong\u003E should be represented as a list of \u0026quot;key points\u0026quot; \u003Cstrong\u003Esorted by their x-coordinate\u003C/strong\u003E in the form \u003Ccode\u003E[[x\u003Csub\u003E1\u003C/sub\u003E,y\u003Csub\u003E1\u003C/sub\u003E],[x\u003Csub\u003E2\u003C/sub\u003E,y\u003Csub\u003E2\u003C/sub\u003E],...]\u003C/code\u003E. Each key point is the left endpoint of some horizontal segment in the skyline except the last point in the list, which always has a y-coordinate \u003Ccode\u003E0\u003C/code\u003E and is used to mark the skyline\u0026#39;s termination where the rightmost building ends. Any ground between the leftmost and rightmost buildings should be part of the skyline\u0026#39;s contour.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cb\u003ENote:\u003C/b\u003E There must be no consecutive horizontal lines of equal height in the output skyline. For instance, \u003Ccode\u003E[...,[2 3],[4 5],[7 5],[11 5],[12 7],...]\u003C/code\u003E is not acceptable; the three lines of height 5 should be merged into one in the final output as such: \u003Ccode\u003E[...,[2 3],[4 5],[12 7],...]\u003C/code\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/01/merged.jpg\u0022 style=\u0022width: 800px; height: 331px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E buildings = [[2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[2,10],[3,15],[7,12],[12,0],[15,10],[20,8],[24,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nFigure A shows the buildings of the input.\nFigure B shows the skyline formed by those buildings. The red points in figure B represent the key points in the output list.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E buildings = [[0,2,3],[2,5,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,3],[5,0]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= buildings.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= left\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; right\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= height\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebuildings\u003C/code\u003E is sorted by \u003Ccode\u003Eleft\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E in\u0026nbsp;non-decreasing order.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]]",
+      "RawExpectedOutput": "[[2,10],[3,15],[7,12],[12,0],[15,10],[20,8],[24,0]]"
+    },
+    {
+      "RawInput": "[[0,2,3],[2,5,3]]",
+      "RawExpectedOutput": "[[0,3],[5,0]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2520703+00:00",
+  "Url": "https://leetcode.com/problems/the-skyline-problem/"
+}

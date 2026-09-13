@@ -1,0 +1,38 @@
+{
+  "QuestionId": 75,
+  "FrontendId": 75,
+  "Title": "Sort Colors",
+  "TitleSlug": "sort-colors",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Sorting",
+    "Quicksort",
+    "Bubble Sort"
+  ],
+  "AcceptanceRatePercent": 70.2,
+  "TotalAccepted": 4120199,
+  "TotalSubmissions": 5867715,
+  "Likes": 22142,
+  "Dislikes": 782,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E with \u003Ccode\u003En\u003C/code\u003E objects colored red, white, or blue, sort them \u003Cstrong\u003E\u003Ca href=\u0022https://en.wikipedia.org/wiki/In-place_algorithm\u0022 target=\u0022_blank\u0022\u003Ein-place\u003C/a\u003E \u003C/strong\u003Eso that objects of the same color are adjacent, with the colors in the order red, white, and blue.\u003C/p\u003E\n\n\u003Cp\u003EWe will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.\u003C/p\u003E\n\n\u003Cp\u003EYou must solve this problem without using the library\u0026#39;s sort function.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,0,2,1,1,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[0,0,1,1,2,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe array has two 0s, two 1s, and two 2s. Sorting them in-place places all 0s first, then all 1s, then all 2s.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,0,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[0,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe array has one each of 0, 1, and 2, arranged in-place in the order 0, 1, 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i]\u003C/code\u003E is either 0, 1, or 2.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u0026nbsp;Could you come up with a one-pass algorithm using only\u0026nbsp;constant extra space?\u003C/p\u003E\n",
+  "Hints": [
+    "A rather straight forward solution is a two-pass algorithm using counting sort.",
+    "Iterate the array counting number of 0\u0027s, 1\u0027s, and 2\u0027s.",
+    "Overwrite array with the total number of 0\u0027s, then 1\u0027s and followed by 2\u0027s."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,0,2,1,1,0]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,0,1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.065186+00:00",
+  "Url": "https://leetcode.com/problems/sort-colors/"
+}

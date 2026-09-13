@@ -1,0 +1,36 @@
+{
+  "QuestionId": 720,
+  "FrontendId": 720,
+  "Title": "Longest Word in Dictionary",
+  "TitleSlug": "longest-word-in-dictionary",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Trie",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 55.4,
+  "TotalAccepted": 202239,
+  "TotalSubmissions": 364861,
+  "Likes": 2112,
+  "Dislikes": 1511,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of strings \u003Ccode\u003Ewords\u003C/code\u003E representing an English Dictionary, return \u003Cem\u003Ethe longest word in\u003C/em\u003E \u003Ccode\u003Ewords\u003C/code\u003E \u003Cem\u003Ethat can be built one character at a time by other words in\u003C/em\u003E \u003Ccode\u003Ewords\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIf there is more than one possible answer, return the longest word with the smallest lexicographical order. If there is no answer, return the empty string.\u003C/p\u003E\n\n\u003Cp\u003ENote that the word should be built from left to right with each additional character being added to the end of a previous word.\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;w\u0026quot;,\u0026quot;wo\u0026quot;,\u0026quot;wor\u0026quot;,\u0026quot;worl\u0026quot;,\u0026quot;world\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;world\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The word \u0026quot;world\u0026quot; can be built one character at a time by \u0026quot;w\u0026quot;, \u0026quot;wo\u0026quot;, \u0026quot;wor\u0026quot;, and \u0026quot;worl\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;a\u0026quot;,\u0026quot;banana\u0026quot;,\u0026quot;app\u0026quot;,\u0026quot;appl\u0026quot;,\u0026quot;ap\u0026quot;,\u0026quot;apply\u0026quot;,\u0026quot;apple\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;apple\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Both \u0026quot;apply\u0026quot; and \u0026quot;apple\u0026quot; can be built from other words in the dictionary. However, \u0026quot;apple\u0026quot; is lexicographically smaller than \u0026quot;apply\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For every word in the input list, we can check whether all prefixes of that word are in the input list by using a Set."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022w\u0022,\u0022wo\u0022,\u0022wor\u0022,\u0022worl\u0022,\u0022world\u0022]",
+      "RawExpectedOutput": "\u0022world\u0022"
+    },
+    {
+      "RawInput": "[\u0022a\u0022,\u0022banana\u0022,\u0022app\u0022,\u0022appl\u0022,\u0022ap\u0022,\u0022apply\u0022,\u0022apple\u0022]",
+      "RawExpectedOutput": "\u0022apple\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7794721+00:00",
+  "Url": "https://leetcode.com/problems/longest-word-in-dictionary/"
+}

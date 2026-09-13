@@ -1,0 +1,33 @@
+{
+  "QuestionId": 880,
+  "FrontendId": 850,
+  "Title": "Rectangle Area II",
+  "TitleSlug": "rectangle-area-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Segment Tree",
+    "Sweep Line",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 56.7,
+  "TotalAccepted": 46223,
+  "TotalSubmissions": 81505,
+  "Likes": 1058,
+  "Dislikes": 66,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D array of axis-aligned \u003Ccode\u003Erectangles\u003C/code\u003E. Each \u003Ccode\u003Erectangle[i] = [x\u003Csub\u003Ei1\u003C/sub\u003E, y\u003Csub\u003Ei1\u003C/sub\u003E, x\u003Csub\u003Ei2\u003C/sub\u003E, y\u003Csub\u003Ei2\u003C/sub\u003E]\u003C/code\u003E denotes the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E rectangle where \u003Ccode\u003E(x\u003Csub\u003Ei1\u003C/sub\u003E, y\u003Csub\u003Ei1\u003C/sub\u003E)\u003C/code\u003E are the coordinates of the \u003Cstrong\u003Ebottom-left corner\u003C/strong\u003E, and \u003Ccode\u003E(x\u003Csub\u003Ei2\u003C/sub\u003E, y\u003Csub\u003Ei2\u003C/sub\u003E)\u003C/code\u003E are the coordinates of the \u003Cstrong\u003Etop-right corner\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003ECalculate the \u003Cstrong\u003Etotal area\u003C/strong\u003E covered by all \u003Ccode\u003Erectangles\u003C/code\u003E in the plane. Any area covered by two or more rectangles should only be counted \u003Cstrong\u003Eonce\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Etotal area\u003C/strong\u003E\u003C/em\u003E. Since the answer may be too large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://s3-lc-upload.s3.amazonaws.com/uploads/2018/06/06/rectangle_area_ii_pic.png\u0022 style=\u0022width: 600px; height: 450px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rectangles = [[0,0,2,2],[1,0,2,3],[1,0,3,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E A total area of 6 is covered by all three rectangles, as illustrated in the picture.\nFrom (1,1) to (2,2), the green and red rectangles overlap.\nFrom (1,0) to (2,3), all three rectangles overlap.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rectangles = [[0,0,1000000000,1000000000]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 49\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer is 10\u003Csup\u003E18\u003C/sup\u003E modulo (10\u003Csup\u003E9\u003C/sup\u003E \u002B 7), which is 49.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rectangles.length \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erectanges[i].length == 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x\u003Csub\u003Ei1\u003C/sub\u003E, y\u003Csub\u003Ei1\u003C/sub\u003E, x\u003Csub\u003Ei2\u003C/sub\u003E, y\u003Csub\u003Ei2\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ex\u003Csub\u003Ei1 \u0026lt;= \u003C/sub\u003Ex\u003Csub\u003Ei2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ey\u003Csub\u003Ei1 \u0026lt;=\u003C/sub\u003E y\u003Csub\u003Ei2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll rectangles have non zero area.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0,2,2],[1,0,2,3],[1,0,3,1]]",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[[0,0,1000000000,1000000000]]",
+      "RawExpectedOutput": "49"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6938878+00:00",
+  "Url": "https://leetcode.com/problems/rectangle-area-ii/"
+}

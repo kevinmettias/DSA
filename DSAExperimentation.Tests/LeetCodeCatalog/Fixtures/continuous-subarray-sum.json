@@ -1,0 +1,38 @@
+{
+  "QuestionId": 523,
+  "FrontendId": 523,
+  "Title": "Continuous Subarray Sum",
+  "TitleSlug": "continuous-subarray-sum",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Prefix Sum",
+    "Pigeonhole Principle"
+  ],
+  "AcceptanceRatePercent": 31.7,
+  "TotalAccepted": 826369,
+  "TotalSubmissions": 2610100,
+  "Likes": 7110,
+  "Dislikes": 724,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array nums and an integer k, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E has a \u003Cstrong\u003Egood subarray\u003C/strong\u003E or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Egood subarray\u003C/strong\u003E is a subarray where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003Eits length is \u003Cstrong\u003Eat least two\u003C/strong\u003E, and\u003C/li\u003E\n\t\u003Cli\u003Ethe sum of the elements of the subarray is a multiple of \u003Ccode\u003Ek\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a contiguous part of the array.\u003C/li\u003E\n\t\u003Cli\u003EAn integer \u003Ccode\u003Ex\u003C/code\u003E is a multiple of \u003Ccode\u003Ek\u003C/code\u003E if there exists an integer \u003Ccode\u003En\u003C/code\u003E such that \u003Ccode\u003Ex = n * k\u003C/code\u003E. \u003Ccode\u003E0\u003C/code\u003E is \u003Cstrong\u003Ealways\u003C/strong\u003E a multiple of \u003Ccode\u003Ek\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [23,\u003Cu\u003E2,4\u003C/u\u003E,6,7], k = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E [2, 4] is a continuous subarray of size 2 whose elements sum up to 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [\u003Cu\u003E23,2,6,4,7\u003C/u\u003E], k = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements sum up to 42.\n42 is a multiple of 6 because 42 = 7 * 6 and 7 is an integer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [23,2,6,4,7], k = 13\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= sum(nums[i]) \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[23,2,4,6,7]\n6",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[23,2,6,4,7]\n6",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[23,2,6,4,7]\n13",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9002819+00:00",
+  "Url": "https://leetcode.com/problems/continuous-subarray-sum/"
+}

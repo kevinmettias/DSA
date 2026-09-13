@@ -1,0 +1,37 @@
+{
+  "QuestionId": 867,
+  "FrontendId": 837,
+  "Title": "New 21 Game",
+  "TitleSlug": "new-21-game",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Sliding Window",
+    "Probability and Statistics"
+  ],
+  "AcceptanceRatePercent": 51.9,
+  "TotalAccepted": 163928,
+  "TotalSubmissions": 315576,
+  "Likes": 2517,
+  "Dislikes": 2011,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice plays the following game, loosely based on the card game \u003Cstrong\u003E\u0026quot;21\u0026quot;\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAlice starts with \u003Ccode\u003E0\u003C/code\u003E points and draws numbers while she has less than \u003Ccode\u003Ek\u003C/code\u003E points. During each draw, she gains an integer number of points randomly from the range \u003Ccode\u003E[1, maxPts]\u003C/code\u003E, where \u003Ccode\u003EmaxPts\u003C/code\u003E is an integer. Each draw is independent and the outcomes have equal probabilities.\u003C/p\u003E\n\n\u003Cp\u003EAlice stops drawing numbers when she gets \u003Ccode\u003Ek\u003C/code\u003E \u003Cstrong\u003Eor more points\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the probability that Alice has \u003Ccode\u003En\u003C/code\u003E or fewer points.\u003C/p\u003E\n\n\u003Cp\u003EAnswers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer are considered accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 10, k = 1, maxPts = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice gets a single card, then stops.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6, k = 1, maxPts = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.60000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice gets a single card, then stops.\nIn 6 out of 10 possibilities, she is at or below 6 points.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 21, k = 17, maxPts = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.73278\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= maxPts \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10\n1\n10",
+      "RawExpectedOutput": "1.00000"
+    },
+    {
+      "RawInput": "6\n1\n10",
+      "RawExpectedOutput": "0.60000"
+    },
+    {
+      "RawInput": "21\n17\n10",
+      "RawExpectedOutput": "0.73278"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1971102+00:00",
+  "Url": "https://leetcode.com/problems/new-21-game/"
+}

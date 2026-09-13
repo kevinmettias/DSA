@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3344,
+  "FrontendId": 3102,
+  "Title": "Minimize Manhattan Distances",
+  "TitleSlug": "minimize-manhattan-distances",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Sorting",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 33,
+  "TotalAccepted": 11227,
+  "TotalSubmissions": 33993,
+  "Likes": 189,
+  "Dislikes": 15,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Epoints\u003C/code\u003E representing integer coordinates of some points on a 2D plane, where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe distance between two points is defined as their \u003Cspan data-keyword=\u0022manhattan-distance\u0022\u003EManhattan distance\u003C/span\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E possible value for \u003Cstrong\u003Emaximum\u003C/strong\u003E distance between any two points by removing exactly one point\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[3,10],[5,15],[10,2],[4,4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E12\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe maximum distance after removing each point is the following:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAfter removing the 0\u003Csup\u003Eth\u003C/sup\u003E point the maximum distance is between points (5, 15) and (10, 2), which is \u003Ccode\u003E|5 - 10| \u002B |15 - 2| = 18\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAfter removing the 1\u003Csup\u003Est\u003C/sup\u003E point the maximum distance is between points (3, 10) and (10, 2), which is \u003Ccode\u003E|3 - 10| \u002B |10 - 2| = 15\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAfter removing the 2\u003Csup\u003End\u003C/sup\u003E point the maximum distance is between points (5, 15) and (4, 4), which is \u003Ccode\u003E|5 - 4| \u002B |15 - 4| = 12\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAfter removing the 3\u003Csup\u003Erd\u003C/sup\u003E point the maximum distance is between points (5, 15) and (10, 2), which is \u003Ccode\u003E|5 - 10| \u002B |15 - 2| = 18\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E12 is the minimum possible maximum distance between any two points after removing exactly one point.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epoints = [[1,1],[1,1],[1,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ERemoving any of the points results in the maximum distance between any two points of 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= points.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= points[i][0], points[i][1] \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Notice that the Manhattan distance between two points \u003Ccode\u003E[x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E and \u003Ccode\u003E[x\u003Csub\u003Ej\u003C/sub\u003E, y\u003Csub\u003Ej\u003C/sub\u003E] is \u003Ccode\u003E max({x\u003Csub\u003Ei\u003C/sub\u003E - x\u003Csub\u003Ej\u003C/sub\u003E \u002B y\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ej\u003C/sub\u003E, x\u003Csub\u003Ei\u003C/sub\u003E - x\u003Csub\u003Ej\u003C/sub\u003E - y\u003Csub\u003Ei\u003C/sub\u003E \u002B y\u003Csub\u003Ej\u003C/sub\u003E, - x\u003Csub\u003Ei\u003C/sub\u003E \u002B x\u003Csub\u003Ej\u003C/sub\u003E \u002B y\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ej\u003C/sub\u003E, - x\u003Csub\u003Ei\u003C/sub\u003E \u002B x\u003Csub\u003Ej\u003C/sub\u003E - y\u003Csub\u003Ei\u003C/sub\u003E \u002B y\u003Csub\u003Ej\u003C/sub\u003E})\u003C/code\u003E\u003C/code\u003E.",
+    "If you replace points as \u003Ccode\u003E[x\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ei\u003C/sub\u003E, x\u003Csub\u003Ei\u003C/sub\u003E \u002B y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E then the Manhattan distance is \u003Ccode\u003Emax(max(x\u003Csub\u003Ei\u003C/sub\u003E) - min(x\u003Csub\u003Ei\u003C/sub\u003E), max(y\u003Csub\u003Ei\u003C/sub\u003E) - min(y\u003Csub\u003Ei\u003C/sub\u003E))\u003C/code\u003E over all \u003Ccode\u003Ei\u003C/code\u003E.",
+    "After those observations, the problem just becomes a simulation. Create multiset of points \u003Ccode\u003E[x\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ei\u003C/sub\u003E, x\u003Csub\u003Ei\u003C/sub\u003E \u002B y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, you can iterate on a point you might remove and get the maximum Manhattan distance over all other points."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[3,10],[5,15],[10,2],[4,4]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,1],[1,1],[1,1]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0071806+00:00",
+  "Url": "https://leetcode.com/problems/minimize-manhattan-distances/"
+}

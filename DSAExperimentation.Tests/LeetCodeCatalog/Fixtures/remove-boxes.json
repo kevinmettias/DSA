@@ -1,0 +1,36 @@
+{
+  "QuestionId": 546,
+  "FrontendId": 546,
+  "Title": "Remove Boxes",
+  "TitleSlug": "remove-boxes",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 49.8,
+  "TotalAccepted": 67009,
+  "TotalSubmissions": 134658,
+  "Likes": 2507,
+  "Dislikes": 138,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given several \u003Ccode\u003Eboxes\u003C/code\u003E with different colors represented by different positive numbers.\u003C/p\u003E\n\n\u003Cp\u003EYou may experience several rounds to remove boxes until there is no box left. Each time you can choose some continuous boxes with the same color (i.e., composed of \u003Ccode\u003Ek\u003C/code\u003E boxes, \u003Ccode\u003Ek \u0026gt;= 1\u003C/code\u003E), remove them and get \u003Ccode\u003Ek * k\u003C/code\u003E points.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum points you can get\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E boxes = [1,3,2,2,2,3,4,3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 23\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n[1, 3, 2, 2, 2, 3, 4, 3, 1] \n----\u0026gt; [1, 3, 3, 4, 3, 1] (3*3=9 points) \n----\u0026gt; [1, 3, 3, 3, 1] (1*1=1 points) \n----\u0026gt; [1, 1] (3*3=9 points) \n----\u0026gt; [] (2*2=4 points)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E boxes = [1,1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 9\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E boxes = [1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= boxes.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= boxes[i]\u0026nbsp;\u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3,2,2,2,3,4,3,1]",
+      "RawExpectedOutput": "23"
+    },
+    {
+      "RawInput": "[1,1,1]",
+      "RawExpectedOutput": "9"
+    },
+    {
+      "RawInput": "[1]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7329473+00:00",
+  "Url": "https://leetcode.com/problems/remove-boxes/"
+}

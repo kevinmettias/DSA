@@ -1,0 +1,32 @@
+{
+  "QuestionId": 732,
+  "FrontendId": 732,
+  "Title": "My Calendar III",
+  "TitleSlug": "my-calendar-iii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Binary Search",
+    "Design",
+    "Segment Tree",
+    "Prefix Sum",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 72.3,
+  "TotalAccepted": 118625,
+  "TotalSubmissions": 164102,
+  "Likes": 2109,
+  "Dislikes": 278,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Ccode\u003Ek\u003C/code\u003E-booking happens when \u003Ccode\u003Ek\u003C/code\u003E events have some non-empty intersection (i.e., there is some time that is common to all \u003Ccode\u003Ek\u003C/code\u003E events.)\u003C/p\u003E\n\n\u003Cp\u003EYou are given some events \u003Ccode\u003E[startTime, endTime)\u003C/code\u003E, after each given event, return an integer \u003Ccode\u003Ek\u003C/code\u003E representing the maximum \u003Ccode\u003Ek\u003C/code\u003E-booking between all the previous events.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMyCalendarThree\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMyCalendarThree()\u003C/code\u003E Initializes the object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint book(int startTime, int endTime)\u003C/code\u003E Returns an integer \u003Ccode\u003Ek\u003C/code\u003E representing the largest integer such that there exists a \u003Ccode\u003Ek\u003C/code\u003E-booking in the calendar.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyCalendarThree\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;]\n[[], [10, 20], [50, 60], [10, 40], [5, 15], [5, 10], [25, 55]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, 1, 2, 3, 3, 3]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyCalendarThree myCalendarThree = new MyCalendarThree();\nmyCalendarThree.book(10, 20); // return 1\nmyCalendarThree.book(50, 60); // return 1\nmyCalendarThree.book(10, 40); // return 2\nmyCalendarThree.book(5, 15); // return 3\nmyCalendarThree.book(5, 10); // return 3\nmyCalendarThree.book(25, 55); // return 3\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= startTime \u0026lt; endTime \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E400\u003C/code\u003E calls will be made to \u003Ccode\u003Ebook\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Treat each interval [start, end) as two events \u0022start\u0022 and \u0022end\u0022, and process them in sorted order."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022MyCalendarThree\u0022,\u0022book\u0022,\u0022book\u0022,\u0022book\u0022,\u0022book\u0022,\u0022book\u0022,\u0022book\u0022]\n[[],[10,20],[50,60],[10,40],[5,15],[5,10],[25,55]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1547291+00:00",
+  "Url": "https://leetcode.com/problems/my-calendar-iii/"
+}

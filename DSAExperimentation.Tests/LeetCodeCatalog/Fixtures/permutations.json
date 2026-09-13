@@ -1,0 +1,35 @@
+{
+  "QuestionId": 46,
+  "FrontendId": 46,
+  "Title": "Permutations",
+  "TitleSlug": "permutations",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Backtracking"
+  ],
+  "AcceptanceRatePercent": 82.3,
+  "TotalAccepted": 3286849,
+  "TotalSubmissions": 3992018,
+  "Likes": 21152,
+  "Dislikes": 390,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array \u003Ccode\u003Enums\u003C/code\u003E of distinct integers, return all the possible \u003Cspan data-keyword=\u0022permutation-array\u0022\u003Epermutations\u003C/span\u003E. You can return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[1,0]]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1]]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 6\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10 \u0026lt;= nums[i] \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the integers of \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]",
+      "RawExpectedOutput": "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]"
+    },
+    {
+      "RawInput": "[0,1]",
+      "RawExpectedOutput": "[[0,1],[1,0]]"
+    },
+    {
+      "RawInput": "[1]",
+      "RawExpectedOutput": "[[1]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5085188+00:00",
+  "Url": "https://leetcode.com/problems/permutations/"
+}

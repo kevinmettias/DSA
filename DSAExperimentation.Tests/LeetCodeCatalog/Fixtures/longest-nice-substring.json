@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1873,
+  "FrontendId": 1763,
+  "Title": "Longest Nice Substring",
+  "TitleSlug": "longest-nice-substring",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Divide and Conquer",
+    "Bit Manipulation",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 64.8,
+  "TotalAccepted": 104151,
+  "TotalSubmissions": 160833,
+  "Likes": 1535,
+  "Dislikes": 990,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA string \u003Ccode\u003Es\u003C/code\u003E is \u003Cstrong\u003Enice\u003C/strong\u003E if, for every letter of the alphabet that \u003Ccode\u003Es\u003C/code\u003E contains, it appears \u003Cstrong\u003Eboth\u003C/strong\u003E in uppercase and lowercase. For example, \u003Ccode\u003E\u0026quot;abABB\u0026quot;\u003C/code\u003E is nice because \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;a\u0026#39;\u003C/code\u003E appear, and \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;b\u0026#39;\u003C/code\u003E appear. However, \u003Ccode\u003E\u0026quot;abA\u0026quot;\u003C/code\u003E is not because \u003Ccode\u003E\u0026#39;b\u0026#39;\u003C/code\u003E appears, but \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E does not.\u003C/p\u003E\n\n\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, return \u003Cem\u003Ethe longest \u003Cstrong\u003Esubstring\u003C/strong\u003E of \u003Ccode\u003Es\u003C/code\u003E that is \u003Cstrong\u003Enice\u003C/strong\u003E. If there are multiple, return the substring of the \u003Cstrong\u003Eearliest\u003C/strong\u003E occurrence. If there are none, return an empty string\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;YazaAay\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;aAa\u0026quot;\n\u003Cstrong\u003EExplanation: \u003C/strong\u003E\u0026quot;aAa\u0026quot; is a nice string because \u0026#39;A/a\u0026#39; is the only letter of the alphabet in s, and both \u0026#39;A\u0026#39; and \u0026#39;a\u0026#39; appear.\n\u0026quot;aAa\u0026quot; is the longest nice substring.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;Bb\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;Bb\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;Bb\u0026quot; is a nice string because both \u0026#39;B\u0026#39; and \u0026#39;b\u0026#39; appear. The whole string is a substring.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;c\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are no nice substrings.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of uppercase and lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Brute force and check each substring to see if it is nice."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022YazaAay\u0022",
+      "RawExpectedOutput": "\u0022aAa\u0022"
+    },
+    {
+      "RawInput": "\u0022Bb\u0022",
+      "RawExpectedOutput": "\u0022Bb\u0022"
+    },
+    {
+      "RawInput": "\u0022c\u0022",
+      "RawExpectedOutput": "\u0022\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7406297+00:00",
+  "Url": "https://leetcode.com/problems/longest-nice-substring/"
+}

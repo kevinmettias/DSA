@@ -1,0 +1,31 @@
+{
+  "QuestionId": 386,
+  "FrontendId": 386,
+  "Title": "Lexicographical Numbers",
+  "TitleSlug": "lexicographical-numbers",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 76.4,
+  "TotalAccepted": 395603,
+  "TotalSubmissions": 518040,
+  "Likes": 3171,
+  "Dislikes": 214,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E, return all the numbers in the range \u003Ccode\u003E[1, n]\u003C/code\u003E sorted in lexicographical order.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an algorithm that runs in\u0026nbsp;\u003Ccode\u003EO(n)\u003C/code\u003E\u0026nbsp;time and uses \u003Ccode\u003EO(1)\u003C/code\u003E extra space.\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 13\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,10,11,12,13,2,3,4,5,6,7,8,9]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "13",
+      "RawExpectedOutput": "[1,10,11,12,13,2,3,4,5,6,7,8,9]"
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "[1,2]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6620771+00:00",
+  "Url": "https://leetcode.com/problems/lexicographical-numbers/"
+}

@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2567,
+  "FrontendId": 2476,
+  "Title": "Closest Nodes Queries in a Binary Search Tree",
+  "TitleSlug": "closest-nodes-queries-in-a-binary-search-tree",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Tree",
+    "Depth-First Search",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 44.9,
+  "TotalAccepted": 42156,
+  "TotalSubmissions": 93862,
+  "Likes": 549,
+  "Dislikes": 145,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given the \u003Ccode\u003Eroot\u003C/code\u003E of a \u003Cstrong\u003Ebinary search tree \u003C/strong\u003Eand an array \u003Ccode\u003Equeries\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E consisting of positive integers.\u003C/p\u003E\n\n\u003Cp\u003EFind a \u003Cstrong\u003E2D\u003C/strong\u003E array \u003Ccode\u003Eanswer\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E where \u003Ccode\u003Eanswer[i] = [min\u003Csub\u003Ei\u003C/sub\u003E, max\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emin\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the \u003Cstrong\u003Elargest\u003C/strong\u003E value in the tree that is smaller than or equal to \u003Ccode\u003Equeries[i]\u003C/code\u003E. If a such value does not exist, add \u003Ccode\u003E-1\u003C/code\u003E instead.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emax\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is the \u003Cstrong\u003Esmallest\u003C/strong\u003E value in the tree that is greater than or equal to \u003Ccode\u003Equeries[i]\u003C/code\u003E. If a such value does not exist, add \u003Ccode\u003E-1\u003C/code\u003E instead.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe array\u003C/em\u003E \u003Ccode\u003Eanswer\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/09/28/bstreeedrawioo.png\u0022 style=\u0022width: 261px; height: 281px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [6,2,13,1,4,9,15,null,null,null,null,null,null,14], queries = [2,5,16]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[2,2],[4,6],[15,-1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We answer the queries in the following way:\n- The largest number that is smaller or equal than 2 in the tree is 2, and the smallest number that is greater or equal than 2 is still 2. So the answer for the first query is [2,2].\n- The largest number that is smaller or equal than 5 in the tree is 4, and the smallest number that is greater or equal than 5 is 6. So the answer for the second query is [4,6].\n- The largest number that is smaller or equal than 16 in the tree is 15, and the smallest number that is greater or equal than 16 does not exist. So the answer for the third query is [15,-1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/09/28/bstttreee.png\u0022 style=\u0022width: 101px; height: 121px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [4,null,9], queries = [3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[-1,4]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The largest number that is smaller or equal to 3 in the tree does not exist, and the smallest number that is greater or equal to 3 is 4. So the answer for the query is [-1,4].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[2, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == queries.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try to first convert the tree into a sorted array.",
+    "How do you solve each query in O(log(n)) time using the array of the tree?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,2,13,1,4,9,15,null,null,null,null,null,null,14]\n[2,5,16]",
+      "RawExpectedOutput": "[[2,2],[4,6],[15,-1]]"
+    },
+    {
+      "RawInput": "[4,null,9]\n[3]",
+      "RawExpectedOutput": "[[-1,4]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8045564+00:00",
+  "Url": "https://leetcode.com/problems/closest-nodes-queries-in-a-binary-search-tree/"
+}

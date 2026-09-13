@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1014,
+  "FrontendId": 973,
+  "Title": "K Closest Points to Origin",
+  "TitleSlug": "k-closest-points-to-origin",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Divide and Conquer",
+    "Geometry",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Quickselect",
+    "K-D Tree"
+  ],
+  "AcceptanceRatePercent": 69.4,
+  "TotalAccepted": 1817076,
+  "TotalSubmissions": 2619344,
+  "Likes": 9220,
+  "Dislikes": 340,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of \u003Ccode\u003Epoints\u003C/code\u003E where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents a point on the \u003Cstrong\u003EX-Y\u003C/strong\u003E plane and an integer \u003Ccode\u003Ek\u003C/code\u003E, return the \u003Ccode\u003Ek\u003C/code\u003E closest points to the origin \u003Ccode\u003E(0, 0)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe distance between two points on the \u003Cstrong\u003EX-Y\u003C/strong\u003E plane is the Euclidean distance (i.e., \u003Ccode\u003E\u0026radic;(x\u003Csub\u003E1\u003C/sub\u003E - x\u003Csub\u003E2\u003C/sub\u003E)\u003Csup\u003E2\u003C/sup\u003E \u002B (y\u003Csub\u003E1\u003C/sub\u003E - y\u003Csub\u003E2\u003C/sub\u003E)\u003Csup\u003E2\u003C/sup\u003E\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EYou may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E. The answer is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E to be \u003Cstrong\u003Eunique\u003C/strong\u003E (except for the order that it is in).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/03/03/closestplane1.jpg\u0022 style=\u0022width: 400px; height: 400px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,3],[-2,2]], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[-2,2]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe distance between (1, 3) and the origin is sqrt(10).\nThe distance between (-2, 2) and the origin is sqrt(8).\nSince sqrt(8) \u0026lt; sqrt(10), (-2, 2) is closer to the origin.\nWe only want the closest k = 1 points from the origin, so the answer is just [[-2,2]].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[3,3],[5,-1],[-2,4]], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[3,3],[-2,4]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The answer [[-2,4],[3,3]] would also be accepted.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= points.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,3],[-2,2]]\n1",
+      "RawExpectedOutput": "[[-2,2]]"
+    },
+    {
+      "RawInput": "[[3,3],[5,-1],[-2,4]]\n2",
+      "RawExpectedOutput": "[[3,3],[-2,4]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5838356+00:00",
+  "Url": "https://leetcode.com/problems/k-closest-points-to-origin/"
+}

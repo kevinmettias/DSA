@@ -1,0 +1,37 @@
+{
+  "QuestionId": 224,
+  "FrontendId": 224,
+  "Title": "Basic Calculator",
+  "TitleSlug": "basic-calculator",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Stack",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 47.2,
+  "TotalAccepted": 743653,
+  "TotalSubmissions": 1576131,
+  "Likes": 7057,
+  "Dislikes": 565,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E representing a valid expression, implement a basic calculator to evaluate it, and return \u003Cem\u003Ethe result of the evaluation\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E You are \u003Cstrong\u003Enot\u003C/strong\u003E allowed to use any built-in function which evaluates strings as mathematical expressions, such as \u003Ccode\u003Eeval()\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;1 \u002B 1\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot; 2-1 \u002B 2 \u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(1\u002B(4\u002B5\u002B2)-3)\u002B(6\u002B8)\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 23\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 3 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of digits, \u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;-\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39; \u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E represents a valid expression.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E is \u003Cstrong\u003Enot\u003C/strong\u003E used as a unary operation (i.e., \u003Ccode\u003E\u0026quot;\u002B1\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;\u002B(2 \u002B 3)\u0026quot;\u003C/code\u003E is invalid).\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;-\u0026#39;\u003C/code\u003E could be used as a unary operation (i.e., \u003Ccode\u003E\u0026quot;-1\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;-(2 \u002B 3)\u0026quot;\u003C/code\u003E is valid).\u003C/li\u003E\n\t\u003Cli\u003EThere will be no two consecutive operators in the input.\u003C/li\u003E\n\t\u003Cli\u003EEvery number and running calculation will fit in a signed 32-bit integer.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u00221 \u002B 1\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022 2-1 \u002B 2 \u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "\u0022(1\u002B(4\u002B5\u002B2)-3)\u002B(6\u002B8)\u0022",
+      "RawExpectedOutput": "23"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.6216925+00:00",
+  "Url": "https://leetcode.com/problems/basic-calculator/"
+}

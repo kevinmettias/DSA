@@ -1,0 +1,44 @@
+{
+  "QuestionId": 1788,
+  "FrontendId": 1686,
+  "Title": "Stone Game VI",
+  "TitleSlug": "stone-game-vi",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Greedy",
+    "Minimax",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Game Theory",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 61.9,
+  "TotalAccepted": 32238,
+  "TotalSubmissions": 52120,
+  "Likes": 924,
+  "Dislikes": 80,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob take turns playing a game, with Alice starting first.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E stones in a pile. On each player\u0026#39;s turn, they can \u003Cstrong\u003Eremove\u003C/strong\u003E a stone from the pile and receive points based on the stone\u0026#39;s value. Alice and Bob may \u003Cstrong\u003Evalue the stones differently\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are given two integer arrays of length \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003EaliceValues\u003C/code\u003E and \u003Ccode\u003EbobValues\u003C/code\u003E. Each \u003Ccode\u003EaliceValues[i]\u003C/code\u003E and \u003Ccode\u003EbobValues[i]\u003C/code\u003E represents how Alice and Bob, respectively, value the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E stone.\u003C/p\u003E\n\n\u003Cp\u003EThe winner is the person with the most points after all the stones are chosen. If both players have the same amount of points, the game results in a draw. Both players will play \u003Cstrong\u003Eoptimally\u003C/strong\u003E.\u0026nbsp;Both players know the other\u0026#39;s values.\u003C/p\u003E\n\n\u003Cp\u003EDetermine the result of the game, and:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf Alice wins, return \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf Bob wins, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf the game results in a draw, return \u003Ccode\u003E0\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E aliceValues = [1,3], bobValues = [2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nIf Alice takes stone 1 (0-indexed) first, Alice will receive 3 points.\nBob can only choose stone 0, and will only receive 2 points.\nAlice wins.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E aliceValues = [1,2], bobValues = [3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nIf Alice takes stone 0, and Bob takes stone 1, they will both have 1 point.\nDraw.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E aliceValues = [2,4,3], bobValues = [1,6,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nRegardless of how Alice plays, Bob will be able to have more points than Alice.\nFor example, if Alice takes stone 1, Bob can take stone 2, and Alice takes stone 0, Alice will have 6 points to Bob\u0026#39;s 7.\nBob wins.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == aliceValues.length == bobValues.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= aliceValues[i], bobValues[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "When one takes the stone, they not only get the points, but they take them away from the other player too.",
+    "Greedily choose the stone with the maximum aliceValues[i] \u002B bobValues[i]."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3]\n[2,1]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[1,2]\n[3,1]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[2,4,3]\n[1,6,7]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1387028+00:00",
+  "Url": "https://leetcode.com/problems/stone-game-vi/"
+}

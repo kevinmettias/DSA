@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1691,
+  "FrontendId": 1568,
+  "Title": "Minimum Number of Days to Disconnect Island",
+  "TitleSlug": "minimum-number-of-days-to-disconnect-island",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Matrix",
+    "Strongly Connected Component",
+    "Articulation Point"
+  ],
+  "AcceptanceRatePercent": 58.7,
+  "TotalAccepted": 101874,
+  "TotalSubmissions": 173628,
+  "Likes": 1321,
+  "Dislikes": 224,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E binary grid \u003Ccode\u003Egrid\u003C/code\u003E where \u003Ccode\u003E1\u003C/code\u003E represents land and \u003Ccode\u003E0\u003C/code\u003E represents water. An \u003Cstrong\u003Eisland\u003C/strong\u003E is a maximal \u003Cstrong\u003E4-directionally\u003C/strong\u003E (horizontal or vertical) connected group of \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s.\u003C/p\u003E\n\n\u003Cp\u003EThe grid is said to be \u003Cstrong\u003Econnected\u003C/strong\u003E if we have \u003Cstrong\u003Eexactly one island\u003C/strong\u003E, otherwise is said \u003Cstrong\u003Edisconnected\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIn one day, we are allowed to change \u003Cstrong\u003Eany \u003C/strong\u003Esingle land cell \u003Ccode\u003E(1)\u003C/code\u003E into a water cell \u003Ccode\u003E(0)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of days to disconnect the grid\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/24/land1.jpg\u0022 style=\u0022width: 500px; height: 169px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,1,1,0],[0,1,1,0],[0,0,0,0]]\n\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We need at least 2 days to get a disconnected grid.\nChange land grid[1][1] and grid[0][2] to water and get 2 disconnected island.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/24/land2.jpg\u0022 style=\u0022width: 404px; height: 85px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Grid of full water is also disconnected ([[1,1]] -\u0026gt; [[0,0]]), 0 islands.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Return 0 if the grid is already disconnected.",
+    "Return 1 if changing a single land to water disconnect the island.",
+    "Otherwise return 2.",
+    "We can disconnect the grid within at most 2 days."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,1,0],[0,1,1,0],[0,0,0,0]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[1,1]]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0696902+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/"
+}

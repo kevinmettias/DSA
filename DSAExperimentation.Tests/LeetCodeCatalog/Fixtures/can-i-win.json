@@ -1,0 +1,39 @@
+{
+  "QuestionId": 464,
+  "FrontendId": 464,
+  "Title": "Can I Win",
+  "TitleSlug": "can-i-win",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Memoization",
+    "Game Theory",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 31.8,
+  "TotalAccepted": 129899,
+  "TotalSubmissions": 408847,
+  "Likes": 2874,
+  "Dislikes": 434,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EIn the \u0026quot;100 game\u0026quot; two players take turns adding, to a running total, any integer from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003E10\u003C/code\u003E. The player who first causes the running total to \u003Cstrong\u003Ereach or exceed\u003C/strong\u003E 100 wins.\u003C/p\u003E\n\n\u003Cp\u003EWhat if we change the game so that players \u003Cstrong\u003Ecannot\u003C/strong\u003E re-use integers?\u003C/p\u003E\n\n\u003Cp\u003EFor example, two players might take turns drawing from a common pool of numbers from 1 to 15 without replacement until they reach a total \u0026gt;= 100.\u003C/p\u003E\n\n\u003Cp\u003EGiven two integers \u003Ccode\u003EmaxChoosableInteger\u003C/code\u003E and \u003Ccode\u003EdesiredTotal\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E if the first player to move can force a win, otherwise, return \u003Ccode\u003Efalse\u003C/code\u003E. Assume both players play \u003Cstrong\u003Eoptimally\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E maxChoosableInteger = 10, desiredTotal = 11\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nNo matter which integer the first player choose, the first player will lose.\nThe first player can choose an integer from 1 up to 10.\nIf the first player choose 1, the second player can only choose integers from 2 up to 10.\nThe second player will win by choosing 10 and get a total = 11, which is \u0026gt;= desiredTotal.\nSame with other integers chosen by the first player, the second player will always win.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E maxChoosableInteger = 10, desiredTotal = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E maxChoosableInteger = 10, desiredTotal = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= maxChoosableInteger \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= desiredTotal \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10\n11",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "10\n0",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "10\n1",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7317797+00:00",
+  "Url": "https://leetcode.com/problems/can-i-win/"
+}

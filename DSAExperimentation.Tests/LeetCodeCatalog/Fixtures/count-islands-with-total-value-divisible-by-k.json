@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3823,
+  "FrontendId": 3619,
+  "Title": "Count Islands With Total Value Divisible by K",
+  "TitleSlug": "count-islands-with-total-value-divisible-by-k",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 55.5,
+  "TotalAccepted": 34093,
+  "TotalSubmissions": 61442,
+  "Likes": 76,
+  "Dislikes": 2,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E matrix \u003Ccode\u003Egrid\u003C/code\u003E and a positive integer \u003Ccode\u003Ek\u003C/code\u003E. An \u003Cstrong\u003Eisland\u003C/strong\u003E is a group of \u003Cstrong\u003Epositive\u003C/strong\u003E integers (representing land) that are \u003Cstrong\u003E4-directionally\u003C/strong\u003E connected (horizontally or vertically).\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Etotal value\u003C/strong\u003E of an island is the sum of the values of all cells in the island.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of islands with a total value \u003Cstrong\u003Edivisible by\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/03/06/example1griddrawio-1.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[0,2,1,0,0],[0,5,0,0,5],[0,0,1,0,0],[0,1,4,7,0],[0,2,0,0,8]], k = 5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe grid contains four islands. The islands highlighted in blue have a total value that is divisible by 5, while the islands highlighted in red do not.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/03/06/example2griddrawio.png\u0022 style=\u0022width: 200px; height: 150px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[3,0,3,0], [0,3,0,3], [3,0,3,0]], k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe grid contains six islands, each with a total value that is divisible by 3.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a BFS/DFS to find connected components."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,2,1,0,0],[0,5,0,0,5],[0,0,1,0,0],[0,1,4,7,0],[0,2,0,0,8]]\n5",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[3,0,3,0],[0,3,0,3],[3,0,3,0]]\n3",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9409819+00:00",
+  "Url": "https://leetcode.com/problems/count-islands-with-total-value-divisible-by-k/"
+}

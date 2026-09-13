@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3655,
+  "FrontendId": 3377,
+  "Title": "Digit Operations to Make Two Integers Equal",
+  "TitleSlug": "digit-operations-to-make-two-integers-equal",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Number Theory",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 31.2,
+  "TotalAccepted": 11033,
+  "TotalSubmissions": 35325,
+  "Likes": 141,
+  "Dislikes": 43,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integers \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E that consist of the \u003Cstrong\u003Esame\u003C/strong\u003E number of digits.\u003C/p\u003E\n\n\u003Cp\u003EYou can perform the following operations \u003Cstrong\u003Eany\u003C/strong\u003E number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose \u003Cstrong\u003Eany\u003C/strong\u003E digit from \u003Ccode\u003En\u003C/code\u003E that is not 9 and \u003Cstrong\u003Eincrease\u003C/strong\u003E it by 1.\u003C/li\u003E\n\t\u003Cli\u003EChoose \u003Cstrong\u003Eany\u003C/strong\u003E digit from \u003Ccode\u003En\u003C/code\u003E that is not 0 and \u003Cstrong\u003Edecrease\u003C/strong\u003E it by 1.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe integer \u003Ccode\u003En\u003C/code\u003E must not be a \u003Cspan data-keyword=\u0022prime-number\u0022\u003Eprime\u003C/span\u003E number at any point, including its original value and after each operation.\u003C/p\u003E\n\n\u003Cp\u003EThe cost of a transformation is the sum of \u003Cstrong\u003Eall\u003C/strong\u003E values that \u003Ccode\u003En\u003C/code\u003E takes throughout the operations performed.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E cost to transform \u003Ccode\u003En\u003C/code\u003E into \u003Ccode\u003Em\u003C/code\u003E. If it is impossible, return -1.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 10, m = 12\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E85\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EWe perform the following operations:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIncrease the first digit, now \u003Ccode\u003En = \u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIncrease the second digit, now \u003Ccode\u003En = 2\u003Cstrong\u003E\u003Cu\u003E1\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIncrease the second digit, now \u003Ccode\u003En = 2\u003Cstrong\u003E\u003Cu\u003E2\u003C/u\u003E\u003C/strong\u003E\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EDecrease the first digit, now \u003Ccode\u003En = \u003Cstrong\u003E\u003Cu\u003E1\u003C/u\u003E\u003C/strong\u003E2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, m = 8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EIt is impossible to make \u003Ccode\u003En\u003C/code\u003E equal to \u003Ccode\u003Em\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 6, m = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003ESince 2 is already a prime, we can\u0026#39;t make \u003Ccode\u003En\u003C/code\u003E equal to \u003Ccode\u003Em\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n, m \u0026lt; 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E consist of the same number of digits.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider a directed, weighted graph where an edge exists from a node \u003Ccode\u003Ex\u003C/code\u003E to a node \u003Ccode\u003Ey\u003C/code\u003E if and only if \u003Ccode\u003Ex\u003C/code\u003E can be transformed into \u003Ccode\u003Ey\u003C/code\u003E through a single operation.",
+    "Apply a shortest path algorithm on this graph to find the shortest path from \u003Ccode\u003En\u003C/code\u003E to \u003Ccode\u003Em\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10\n12",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4\n8",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "6\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.129967+00:00",
+  "Url": "https://leetcode.com/problems/digit-operations-to-make-two-integers-equal/"
+}

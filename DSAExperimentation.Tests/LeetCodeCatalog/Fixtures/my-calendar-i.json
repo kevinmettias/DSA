@@ -1,0 +1,32 @@
+{
+  "QuestionId": 729,
+  "FrontendId": 729,
+  "Title": "My Calendar I",
+  "TitleSlug": "my-calendar-i",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Design",
+    "Segment Tree",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 58.4,
+  "TotalAccepted": 473975,
+  "TotalSubmissions": 811673,
+  "Likes": 4855,
+  "Dislikes": 143,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a \u003Cstrong\u003Edouble booking\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Edouble booking\u003C/strong\u003E happens when two events have some non-empty intersection (i.e., some moment is common to both events.).\u003C/p\u003E\n\n\u003Cp\u003EThe event can be represented as a pair of integers \u003Ccode\u003EstartTime\u003C/code\u003E and \u003Ccode\u003EendTime\u003C/code\u003E that represents a booking on the half-open interval \u003Ccode\u003E[startTime, endTime)\u003C/code\u003E, the range of real numbers \u003Ccode\u003Ex\u003C/code\u003E such that \u003Ccode\u003EstartTime \u0026lt;= x \u0026lt; endTime\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMyCalendar\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMyCalendar()\u003C/code\u003E Initializes the calendar object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean book(int startTime, int endTime)\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if the event can be added to the calendar successfully without causing a \u003Cstrong\u003Edouble booking\u003C/strong\u003E. Otherwise, return \u003Ccode\u003Efalse\u003C/code\u003E and do not add the event to the calendar.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyCalendar\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;, \u0026quot;book\u0026quot;]\n[[], [10, 20], [15, 25], [20, 30]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, true, false, true]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyCalendar myCalendar = new MyCalendar();\nmyCalendar.book(10, 20); // return True\nmyCalendar.book(15, 25); // return False, It can not be booked because time 15 is already booked by another event.\nmyCalendar.book(20, 30); // return True, The event can be booked, as the first event takes every time less than 20, but not including 20.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= start \u0026lt; end \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made to \u003Ccode\u003Ebook\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Store the events as a sorted list of intervals.  If none of the events conflict, then the new event can be added."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022MyCalendar\u0022,\u0022book\u0022,\u0022book\u0022,\u0022book\u0022]\n[[],[10,20],[15,25],[20,30]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1642696+00:00",
+  "Url": "https://leetcode.com/problems/my-calendar-i/"
+}

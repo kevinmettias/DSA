@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2035,
+  "FrontendId": 1905,
+  "Title": "Count Sub Islands",
+  "TitleSlug": "count-sub-islands",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 73.1,
+  "TotalAccepted": 228977,
+  "TotalSubmissions": 313224,
+  "Likes": 2684,
+  "Dislikes": 92,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two \u003Ccode\u003Em x n\u003C/code\u003E binary matrices \u003Ccode\u003Egrid1\u003C/code\u003E and \u003Ccode\u003Egrid2\u003C/code\u003E containing only \u003Ccode\u003E0\u003C/code\u003E\u0026#39;s (representing water) and \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s (representing land). An \u003Cstrong\u003Eisland\u003C/strong\u003E is a group of \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s connected \u003Cstrong\u003E4-directionally\u003C/strong\u003E (horizontal or vertical). Any cells outside of the grid are considered water cells.\u003C/p\u003E\n\n\u003Cp\u003EAn island in \u003Ccode\u003Egrid2\u003C/code\u003E is considered a \u003Cstrong\u003Esub-island \u003C/strong\u003Eif there is an island in \u003Ccode\u003Egrid1\u003C/code\u003E that contains \u003Cstrong\u003Eall\u003C/strong\u003E the cells that make up \u003Cstrong\u003Ethis\u003C/strong\u003E island in \u003Ccode\u003Egrid2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cem\u003E\u003Cstrong\u003Enumber\u003C/strong\u003E of islands in \u003C/em\u003E\u003Ccode\u003Egrid2\u003C/code\u003E \u003Cem\u003Ethat are considered \u003Cstrong\u003Esub-islands\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/10/test1.png\u0022 style=\u0022width: 493px; height: 205px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid1 = [[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]], grid2 = [[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EIn the picture above, the grid on the left is grid1 and the grid on the right is grid2.\nThe 1s colored red in grid2 are those considered to be part of a sub-island. There are three sub-islands.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/06/03/testcasex2.png\u0022 style=\u0022width: 491px; height: 201px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid1 = [[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]], grid2 = [[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2 \n\u003Cstrong\u003EExplanation: \u003C/strong\u003EIn the picture above, the grid on the left is grid1 and the grid on the right is grid2.\nThe 1s colored red in grid2 are those considered to be part of a sub-island. There are two sub-islands.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid1.length == grid2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid1[i].length == grid2[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid1[i][j]\u003C/code\u003E and \u003Ccode\u003Egrid2[i][j]\u003C/code\u003E are either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let\u0027s use floodfill to iterate over the islands of the second grid",
+    "Let\u0027s note that if all the cells in an island in the second grid if they are represented by land in the first grid then they are connected hence making that island a sub-island"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]]\n[[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]\n[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9688918+00:00",
+  "Url": "https://leetcode.com/problems/count-sub-islands/"
+}

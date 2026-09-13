@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1737,
+  "FrontendId": 1614,
+  "Title": "Maximum Nesting Depth of the Parentheses",
+  "TitleSlug": "maximum-nesting-depth-of-the-parentheses",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 85.1,
+  "TotalAccepted": 605674,
+  "TotalSubmissions": 711760,
+  "Likes": 2902,
+  "Dislikes": 526,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a \u003Cstrong\u003Evalid parentheses string\u003C/strong\u003E \u003Ccode\u003Es\u003C/code\u003E, return the \u003Cstrong\u003Enesting depth\u003C/strong\u003E of\u003Cem\u003E \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E. The nesting depth is the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of nested parentheses.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;(1\u002B(2*3)\u002B((8)/4))\u002B1\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EDigit 8 is inside of 3 nested parentheses in the string.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;(1)\u002B((2))\u002B(((3)))\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EDigit 3 is inside of 3 nested parentheses in the string.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;()(())((()()))\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of digits \u003Ccode\u003E0-9\u003C/code\u003E and characters \u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;-\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;/\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that parentheses expression \u003Ccode\u003Es\u003C/code\u003E is a VPS.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The depth of any character in the VPS is the ( number of left brackets before it ) - ( number of right brackets before it )"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022(1\u002B(2*3)\u002B((8)/4))\u002B1\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022(1)\u002B((2))\u002B(((3)))\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022()(())((()()))\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9044278+00:00",
+  "Url": "https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/"
+}

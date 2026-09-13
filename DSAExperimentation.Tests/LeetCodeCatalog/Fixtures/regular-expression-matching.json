@@ -1,0 +1,36 @@
+{
+  "QuestionId": 10,
+  "FrontendId": 10,
+  "Title": "Regular Expression Matching",
+  "TitleSlug": "regular-expression-matching",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 31.7,
+  "TotalAccepted": 1492797,
+  "TotalSubmissions": 4703068,
+  "Likes": 13520,
+  "Dislikes": 2421,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an input string \u003Ccode\u003Es\u003C/code\u003E\u0026nbsp;and a pattern \u003Ccode\u003Ep\u003C/code\u003E, implement regular expression matching with support for \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E Matches any single character.\u200B\u200B\u200B\u200B\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E Matches zero or more of the preceding element.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn a boolean indicating whether the matching covers the entire input string (not partial).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aa\u0026quot;, p = \u0026quot;a\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;a\u0026quot; does not match the entire string \u0026quot;aa\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aa\u0026quot;, p = \u0026quot;a*\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026#39;*\u0026#39; means zero or more of the preceding element, \u0026#39;a\u0026#39;. Therefore, by repeating \u0026#39;a\u0026#39; once, it becomes \u0026quot;aa\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;ab\u0026quot;, p = \u0026quot;.*\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;.*\u0026quot; means \u0026quot;zero or more (*) of any character (.)\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length\u0026nbsp;\u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= p.length\u0026nbsp;\u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E contains only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ep\u003C/code\u003E contains only lowercase English letters, \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E, and\u0026nbsp;\u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed for each appearance of the character \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E, there will be a previous valid character to match.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aa\u0022\n\u0022a\u0022",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "\u0022aa\u0022\n\u0022a*\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022ab\u0022\n\u0022.*\u0022",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7234662+00:00",
+  "Url": "https://leetcode.com/problems/regular-expression-matching/"
+}

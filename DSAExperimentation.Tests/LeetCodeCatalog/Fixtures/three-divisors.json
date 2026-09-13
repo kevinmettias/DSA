@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2083,
+  "FrontendId": 1952,
+  "Title": "Three Divisors",
+  "TitleSlug": "three-divisors",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Enumeration",
+    "Number Theory",
+    "Prime Factorization",
+    "Sieve Theory"
+  ],
+  "AcceptanceRatePercent": 64.9,
+  "TotalAccepted": 152765,
+  "TotalSubmissions": 235471,
+  "Likes": 649,
+  "Dislikes": 37,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E\u003Cem\u003E has \u003Cstrong\u003Eexactly three positive divisors\u003C/strong\u003E. Otherwise, return \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn integer \u003Ccode\u003Em\u003C/code\u003E is a \u003Cstrong\u003Edivisor\u003C/strong\u003E of \u003Ccode\u003En\u003C/code\u003E if there exists an integer \u003Ccode\u003Ek\u003C/code\u003E such that \u003Ccode\u003En = k * m\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplantion:\u003C/strong\u003E 2 has only two divisors: 1 and 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplantion:\u003C/strong\u003E 4 has three divisors: 1, 2, and 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "You can count the number of divisors and just check that they are 3",
+    "Beware of the case of n equal 1 as some solutions might fail in it"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "4",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2524934+00:00",
+  "Url": "https://leetcode.com/problems/three-divisors/"
+}

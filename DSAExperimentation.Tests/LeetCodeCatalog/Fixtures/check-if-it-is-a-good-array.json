@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1372,
+  "FrontendId": 1250,
+  "Title": "Check If It Is a Good Array",
+  "TitleSlug": "check-if-it-is-a-good-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Number Theory",
+    "B\u00E9zout\u0027s Lemma",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor",
+    "Extended Euclidean Algorithm"
+  ],
+  "AcceptanceRatePercent": 65.9,
+  "TotalAccepted": 46175,
+  "TotalSubmissions": 70119,
+  "Likes": 597,
+  "Dislikes": 387,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array \u003Ccode\u003Enums\u003C/code\u003E of\u0026nbsp;positive integers. Your task is to select some subset of \u003Ccode\u003Enums\u003C/code\u003E, multiply each element by an integer and add all these numbers.\u0026nbsp;The array is said to be\u0026nbsp;\u003Cstrong\u003Egood\u0026nbsp;\u003C/strong\u003Eif you can obtain a sum of\u0026nbsp;\u003Ccode\u003E1\u003C/code\u003E\u0026nbsp;from the array by any possible subset and multiplicand.\u003C/p\u003E\n\n\u003Cp\u003EReturn\u0026nbsp;\u003Ccode\u003ETrue\u003C/code\u003E\u0026nbsp;if the array is \u003Cstrong\u003Egood\u0026nbsp;\u003C/strong\u003Eotherwise\u0026nbsp;return\u0026nbsp;\u003Ccode\u003EFalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [12,5,7,23]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Pick numbers 5 and 7.\n5*3 \u002B 7*(-2) = 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [29,6,10]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Pick numbers 29, 6 and 10.\n29*1 \u002B 6*(-3) \u002B 10*(-1) = 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10^5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10^9\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Eq.  ax\u002Bby=1 has solution x, y if gcd(a,b) = 1.",
+    "Can you generalize the formula?.  Check B\u00E9zout\u0027s lemma."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[12,5,7,23]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[29,6,10]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[3,6]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7717812+00:00",
+  "Url": "https://leetcode.com/problems/check-if-it-is-a-good-array/"
+}

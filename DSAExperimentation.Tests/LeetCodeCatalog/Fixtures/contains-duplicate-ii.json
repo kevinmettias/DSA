@@ -1,0 +1,36 @@
+{
+  "QuestionId": 219,
+  "FrontendId": 219,
+  "Title": "Contains Duplicate II",
+  "TitleSlug": "contains-duplicate-ii",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 51.9,
+  "TotalAccepted": 1947749,
+  "TotalSubmissions": 3751619,
+  "Likes": 7744,
+  "Dislikes": 3342,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif there are two \u003Cstrong\u003Edistinct indices\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003Ei\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Ej\u003C/code\u003E\u003Cem\u003E in the array such that \u003C/em\u003E\u003Ccode\u003Enums[i] == nums[j]\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Eabs(i - j) \u0026lt;= k\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,1], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,0,1,1], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,1,2,3], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,1]\n3",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,0,1,1]\n1",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,2,3,1,2,3]\n2",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8895854+00:00",
+  "Url": "https://leetcode.com/problems/contains-duplicate-ii/"
+}

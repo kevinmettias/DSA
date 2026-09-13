@@ -1,0 +1,34 @@
+{
+  "QuestionId": 763,
+  "FrontendId": 761,
+  "Title": "Special Binary String",
+  "TitleSlug": "special-binary-string",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Divide and Conquer",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 79.4,
+  "TotalAccepted": 103091,
+  "TotalSubmissions": 129839,
+  "Likes": 1182,
+  "Dislikes": 303,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003E\u003Cstrong\u003ESpecial binary strings\u003C/strong\u003E are binary strings with the following two properties:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of \u003Ccode\u003E0\u003C/code\u003E\u0026#39;s is equal to the number of \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s.\u003C/li\u003E\n\t\u003Cli\u003EEvery prefix of the binary string has at least as many \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s as \u003Ccode\u003E0\u003C/code\u003E\u0026#39;s.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are given a \u003Cstrong\u003Especial binary\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA move consists of choosing two consecutive, non-empty, special substrings of \u003Ccode\u003Es\u003C/code\u003E, and swapping them. Two strings are consecutive if the last character of the first string is exactly one index before the first character of the second string.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe lexicographically largest resulting string possible after applying the mentioned operations on the string\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;11011000\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;11100100\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The strings \u0026quot;10\u0026quot; [occuring at s[1]] and \u0026quot;1100\u0026quot; [at s[3]] are swapped.\nThis is the lexicographically largest string possible after some number of swaps.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;10\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;10\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E is a special binary string.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Draw a line from (x, y) to (x\u002B1, y\u002B1) if we see a \u00221\u0022, else to (x\u002B1, y-1).\r\nA special substring is just a line that starts and ends at the same y-coordinate, and that is the lowest y-coordinate reached.\r\nCall a mountain a special substring with no special prefixes - ie. only at the beginning and end is the lowest y-coordinate reached.\r\nIf F is the answer function, and S has mountain decomposition M1,M2,M3,...,Mk,  then the answer is:\r\nreverse_sorted(F(M1), F(M2), ..., F(Mk)).\r\nHowever, you\u0027ll also need to deal with the case that S is a mountain, such as 11011000 -\u003E 11100100."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u002211011000\u0022",
+      "RawExpectedOutput": "\u002211100100\u0022"
+    },
+    {
+      "RawInput": "\u002210\u0022",
+      "RawExpectedOutput": "\u002210\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0864139+00:00",
+  "Url": "https://leetcode.com/problems/special-binary-string/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 4141,
+  "FrontendId": 3759,
+  "Title": "Count Elements With at Least K Greater Values",
+  "TitleSlug": "count-elements-with-at-least-k-greater-values",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Divide and Conquer",
+    "Sorting",
+    "Quickselect"
+  ],
+  "AcceptanceRatePercent": 31.8,
+  "TotalAccepted": 34660,
+  "TotalSubmissions": 109031,
+  "Likes": 79,
+  "Dislikes": 7,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn element in \u003Ccode\u003Enums\u003C/code\u003E is said to be \u003Cstrong\u003Equalified\u003C/strong\u003E if there exist \u003Cstrong\u003Eat least\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E elements in the array that are \u003Cstrong\u003Estrictly greater\u003C/strong\u003E than it.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the total number of qualified elements in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,1,2], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe elements 1 and 2 each have at least \u003Ccode\u003Ek = 1\u003C/code\u003E element greater than themselves.\u003Cbr /\u003E\n\u200B\u200B\u200B\u200B\u200B\u200B\u200BNo element is greater than 3. Therefore, the answer is 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,5,5], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ESince all elements are equal to 5, no element is greater than the other. Therefore, the answer is 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort \u003Ccode\u003Enums\u003C/code\u003E, build distinct \u003Ccode\u003Evalues\u003C/code\u003E and \u003Ccode\u003Ecount\u003C/code\u003E.",
+    "For each \u003Ccode\u003Eval\u003C/code\u003E: find \u003Ccode\u003Eupper_bound\u003C/code\u003E, compute \u003Ccode\u003Egreater = n - upper_bound_idx\u003C/code\u003E; if \u003Ccode\u003Egreater \u003E= k\u003C/code\u003E add \u003Ccode\u003Ecount[val]\u003C/code\u003E to \u003Ccode\u003Eans\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,2]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,5,5]\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.937267+00:00",
+  "Url": "https://leetcode.com/problems/count-elements-with-at-least-k-greater-values/"
+}

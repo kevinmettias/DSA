@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1663,
+  "FrontendId": 1559,
+  "Title": "Detect Cycles in 2D Grid",
+  "TitleSlug": "detect-cycles-in-2d-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 63.6,
+  "TotalAccepted": 148541,
+  "TotalSubmissions": 233606,
+  "Likes": 1548,
+  "Dislikes": 33,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a 2D array of characters \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003Em x n\u003C/code\u003E, you need to find if there exists any cycle consisting of the \u003Cstrong\u003Esame value\u003C/strong\u003E in \u003Ccode\u003Egrid\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA cycle is a path of \u003Cstrong\u003Elength 4 or more\u003C/strong\u003E in the grid that starts and ends at the same cell. From a given cell, you can move to one of the cells adjacent to it - in one of the four directions (up, down, left, or right), if it has the \u003Cstrong\u003Esame value\u003C/strong\u003E of the current cell.\u003C/p\u003E\n\n\u003Cp\u003EAlso, you cannot move to the cell that you visited in your last move. For example, the cycle \u003Ccode\u003E(1, 1) -\u0026gt; (1, 2) -\u0026gt; (1, 1)\u003C/code\u003E is invalid because from \u003Ccode\u003E(1, 2)\u003C/code\u003E we visited \u003Ccode\u003E(1, 1)\u003C/code\u003E which was the last visited cell.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if any cycle of the same value exists in \u003Ccode\u003Egrid\u003C/code\u003E, otherwise, return \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/07/15/1.png\u0022 style=\u0022width: 231px; height: 152px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThere are two valid cycles shown in different colors in the image below:\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/07/15/11.png\u0022 style=\u0022width: 225px; height: 163px;\u0022 /\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/07/15/22.png\u0022 style=\u0022width: 236px; height: 154px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;c\u0026quot;,\u0026quot;d\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;e\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;f\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThere is only one valid cycle highlighted in the image below:\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/07/15/2.png\u0022 style=\u0022width: 229px; height: 157px;\u0022 /\u003E\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/07/15/3.png\u0022 style=\u0022width: 183px; height: 120px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;z\u0026quot;,\u0026quot;b\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Keep track of the parent (previous position) to avoid considering an invalid path.",
+    "Use DFS or BFS and keep track of visited cells to see if there is a cycle."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[\u0022a\u0022,\u0022a\u0022,\u0022a\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022b\u0022,\u0022b\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022b\u0022,\u0022b\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022a\u0022,\u0022a\u0022,\u0022a\u0022]]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[\u0022c\u0022,\u0022c\u0022,\u0022c\u0022,\u0022a\u0022],[\u0022c\u0022,\u0022d\u0022,\u0022c\u0022,\u0022c\u0022],[\u0022c\u0022,\u0022c\u0022,\u0022e\u0022,\u0022c\u0022],[\u0022f\u0022,\u0022c\u0022,\u0022c\u0022,\u0022c\u0022]]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[\u0022a\u0022,\u0022b\u0022,\u0022b\u0022],[\u0022b\u0022,\u0022z\u0022,\u0022b\u0022],[\u0022b\u0022,\u0022b\u0022,\u0022a\u0022]]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1161894+00:00",
+  "Url": "https://leetcode.com/problems/detect-cycles-in-2d-grid/"
+}

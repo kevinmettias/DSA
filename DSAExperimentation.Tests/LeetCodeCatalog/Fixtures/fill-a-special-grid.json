@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3822,
+  "FrontendId": 3537,
+  "Title": "Fill a Special Grid",
+  "TitleSlug": "fill-a-special-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 71,
+  "TotalAccepted": 22067,
+  "TotalSubmissions": 31060,
+  "Likes": 122,
+  "Dislikes": 9,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a non-negative integer \u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003En\u003C/font\u003E\u003C/code\u003E representing a \u003Ccode\u003E2\u003Csup\u003En\u003C/sup\u003E x 2\u003Csup\u003En\u003C/sup\u003E\u003C/code\u003E grid. You must fill the grid with integers from 0 to \u003Ccode\u003E2\u003Csup\u003E2n\u003C/sup\u003E - 1\u003C/code\u003E to make it \u003Cstrong\u003Especial\u003C/strong\u003E. A grid is \u003Cstrong\u003Especial\u003C/strong\u003E if it satisfies \u003Cstrong\u003Eall\u003C/strong\u003E the following conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAll numbers in the top-right quadrant are smaller than those in the bottom-right quadrant.\u003C/li\u003E\n\t\u003Cli\u003EAll numbers in the bottom-right quadrant are smaller than those in the bottom-left quadrant.\u003C/li\u003E\n\t\u003Cli\u003EAll numbers in the bottom-left quadrant are smaller than those in the top-left quadrant.\u003C/li\u003E\n\t\u003Cli\u003EEach of its quadrants is also a special grid.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Especial\u003C/strong\u003E \u003Ccode\u003E2\u003Csup\u003En\u003C/sup\u003E x 2\u003Csup\u003En\u003C/sup\u003E\u003C/code\u003E grid.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E: Any 1x1 grid is special.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[[0]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe only number that can be placed is 0, and there is only one possible position in the grid.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[[3,0],[2,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe numbers in each quadrant are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ETop-right: 0\u003C/li\u003E\n\t\u003Cli\u003EBottom-right: 1\u003C/li\u003E\n\t\u003Cli\u003EBottom-left: 2\u003C/li\u003E\n\t\u003Cli\u003ETop-left: 3\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ESince \u003Ccode\u003E0 \u0026lt; 1 \u0026lt; 2 \u0026lt; 3\u003C/code\u003E, this satisfies the given constraints.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[[15,12,3,0],[14,13,2,1],[11,8,7,4],[10,9,6,5]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/03/05/4123example3p1drawio.png\u0022 style=\u0022width: 161px; height: 161px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe numbers in each quadrant are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ETop-right: 3, 0, 2, 1\u003C/li\u003E\n\t\u003Cli\u003EBottom-right: 7, 4, 6, 5\u003C/li\u003E\n\t\u003Cli\u003EBottom-left: 11, 8, 10, 9\u003C/li\u003E\n\t\u003Cli\u003ETop-left: 15, 12, 14, 13\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emax(3, 0, 2, 1) \u0026lt; min(7, 4, 6, 5)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emax(7, 4, 6, 5) \u0026lt; min(11, 8, 10, 9)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emax(11, 8, 10, 9) \u0026lt; min(15, 12, 14, 13)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThis satisfies the first three requirements. Additionally, each quadrant is also a special grid. Thus, this is a special grid.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Solve the problem recursively."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "0",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2094612+00:00",
+  "Url": "https://leetcode.com/problems/fill-a-special-grid/"
+}

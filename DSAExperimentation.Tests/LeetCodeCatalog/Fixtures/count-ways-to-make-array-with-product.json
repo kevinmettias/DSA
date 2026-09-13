@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1836,
+  "FrontendId": 1735,
+  "Title": "Count Ways to Make Array With Product",
+  "TitleSlug": "count-ways-to-make-array-with-product",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics",
+    "Number Theory",
+    "Prime Factorization",
+    "Fermat\u0027s Little Theorem"
+  ],
+  "AcceptanceRatePercent": 55.8,
+  "TotalAccepted": 10485,
+  "TotalSubmissions": 18795,
+  "Likes": 326,
+  "Dislikes": 36,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer array, \u003Ccode\u003Equeries\u003C/code\u003E. For each \u003Ccode\u003Equeries[i]\u003C/code\u003E, where \u003Ccode\u003Equeries[i] = [n\u003Csub\u003Ei\u003C/sub\u003E, k\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, find the number of different ways you can place positive integers into an array of size \u003Ccode\u003En\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E such that the product of the integers is \u003Ccode\u003Ek\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. As the number of ways may be too large, the answer to the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query is the number of ways \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer.length == queries.length\u003C/code\u003E\u003Cem\u003E, and \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the answer to the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E query.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [[2,6],[5,1],[73,660]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [4,1,50734910]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;Each query is independent.\n[2,6]: There are 4 ways to fill an array of size 2 that multiply to 6: [1,6], [2,3], [3,2], [6,1].\n[5,1]: There is 1 way to fill an array of size 5 that multiply to 1: [1,1,1,1,1].\n[73,660]: There are 1050734917 ways to fill an array of size 73 that multiply to 660. 1050734917 modulo 10\u003Csup\u003E9\u003C/sup\u003E \u002B 7 = 50734910.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [[1,1],[2,2],[3,3],[4,4],[5,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,10,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E \u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n\u003Csub\u003Ei\u003C/sub\u003E, k\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Prime-factorize ki and count how many ways you can distribute the primes among the ni positions.",
+    "After prime factorizing ki, suppose there are x amount of prime factor. There are (x \u002B n - 1) choose (n - 1) ways to distribute the x prime factors into n positions, allowing repetitions."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,6],[5,1],[73,660]]",
+      "RawExpectedOutput": "[4,1,50734910]"
+    },
+    {
+      "RawInput": "[[1,1],[2,2],[3,3],[4,4],[5,5]]",
+      "RawExpectedOutput": "[1,2,3,10,5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9954999+00:00",
+  "Url": "https://leetcode.com/problems/count-ways-to-make-array-with-product/"
+}

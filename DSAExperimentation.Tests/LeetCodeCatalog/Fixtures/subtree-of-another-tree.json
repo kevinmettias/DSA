@@ -1,0 +1,39 @@
+{
+  "QuestionId": 572,
+  "FrontendId": 572,
+  "Title": "Subtree of Another Tree",
+  "TitleSlug": "subtree-of-another-tree",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "String Matching",
+    "Binary Tree",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 52.2,
+  "TotalAccepted": 1339704,
+  "TotalSubmissions": 2567666,
+  "Likes": 9047,
+  "Dislikes": 611,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the roots of two binary trees \u003Ccode\u003Eroot\u003C/code\u003E and \u003Ccode\u003EsubRoot\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E if there is a subtree of \u003Ccode\u003Eroot\u003C/code\u003E with the same structure and node values of\u003Ccode\u003E subRoot\u003C/code\u003E and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003EA subtree of a binary tree \u003Ccode\u003Etree\u003C/code\u003E is a tree that consists of a node in \u003Ccode\u003Etree\u003C/code\u003E and all of this node\u0026#39;s descendants. The tree \u003Ccode\u003Etree\u003C/code\u003E could also be considered as a subtree of itself.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/28/subtree1-tree.jpg\u0022 style=\u0022width: 532px; height: 400px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [3,4,5,1,2], subRoot = [4,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/28/subtree2-tree.jpg\u0022 style=\u0022width: 502px; height: 458px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the \u003Ccode\u003Eroot\u003C/code\u003E tree is in the range \u003Ccode\u003E[1, 2000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe number of nodes in the \u003Ccode\u003EsubRoot\u003C/code\u003E tree is in the range \u003Ccode\u003E[1, 1000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= root.val \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= subRoot.val \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Which approach is better here- recursive or iterative?",
+    "If recursive approach is better, can you write recursive function with its parameters?",
+    "Two trees \u003Cb\u003Es\u003C/b\u003E and \u003Cb\u003Et\u003C/b\u003E are said to be identical if their root values are same and their left and right subtrees are identical. Can you write this in form of recursive formulae?",
+    "Recursive formulae can be: \r\nisIdentical(s,t)= s.val==t.val AND isIdentical(s.left,t.left) AND isIdentical(s.right,t.right)"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,4,5,1,2]\n[4,1,2]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[3,4,5,1,2,null,null,null,null,0]\n[4,1,2]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1750971+00:00",
+  "Url": "https://leetcode.com/problems/subtree-of-another-tree/"
+}

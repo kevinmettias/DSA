@@ -1,0 +1,37 @@
+{
+  "QuestionId": 754,
+  "FrontendId": 753,
+  "Title": "Cracking the Safe",
+  "TitleSlug": "cracking-the-safe",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Depth-First Search",
+    "Graph Theory",
+    "Eulerian Circuit",
+    "Eulerian Path",
+    "Eulerian Graph"
+  ],
+  "AcceptanceRatePercent": 58.8,
+  "TotalAccepted": 74322,
+  "TotalSubmissions": 126475,
+  "Likes": 681,
+  "Dislikes": 133,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a safe protected by a password. The password is a sequence of \u003Ccode\u003En\u003C/code\u003E digits where each digit can be in the range \u003Ccode\u003E[0, k - 1]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe safe has a peculiar way of checking the password. When you enter in a sequence, it checks the \u003Cstrong\u003Emost recent \u003C/strong\u003E\u003Ccode\u003En\u003C/code\u003E\u003Cstrong\u003E digits\u003C/strong\u003E that were entered each time you type a digit.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, the correct password is \u003Ccode\u003E\u0026quot;345\u0026quot;\u003C/code\u003E and you enter in \u003Ccode\u003E\u0026quot;012345\u0026quot;\u003C/code\u003E:\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EAfter typing \u003Ccode\u003E0\u003C/code\u003E, the most recent \u003Ccode\u003E3\u003C/code\u003E digits is \u003Ccode\u003E\u0026quot;0\u0026quot;\u003C/code\u003E, which is incorrect.\u003C/li\u003E\n\t\t\u003Cli\u003EAfter typing \u003Ccode\u003E1\u003C/code\u003E, the most recent \u003Ccode\u003E3\u003C/code\u003E digits is \u003Ccode\u003E\u0026quot;01\u0026quot;\u003C/code\u003E, which is incorrect.\u003C/li\u003E\n\t\t\u003Cli\u003EAfter typing \u003Ccode\u003E2\u003C/code\u003E, the most recent \u003Ccode\u003E3\u003C/code\u003E digits is \u003Ccode\u003E\u0026quot;012\u0026quot;\u003C/code\u003E, which is incorrect.\u003C/li\u003E\n\t\t\u003Cli\u003EAfter typing \u003Ccode\u003E3\u003C/code\u003E, the most recent \u003Ccode\u003E3\u003C/code\u003E digits is \u003Ccode\u003E\u0026quot;123\u0026quot;\u003C/code\u003E, which is incorrect.\u003C/li\u003E\n\t\t\u003Cli\u003EAfter typing \u003Ccode\u003E4\u003C/code\u003E, the most recent \u003Ccode\u003E3\u003C/code\u003E digits is \u003Ccode\u003E\u0026quot;234\u0026quot;\u003C/code\u003E, which is incorrect.\u003C/li\u003E\n\t\t\u003Cli\u003EAfter typing \u003Ccode\u003E5\u003C/code\u003E, the most recent \u003Ccode\u003E3\u003C/code\u003E digits is \u003Ccode\u003E\u0026quot;345\u0026quot;\u003C/code\u003E, which is correct and the safe unlocks.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Eany string of \u003Cstrong\u003Eminimum length\u003C/strong\u003E that will unlock the safe \u003Cstrong\u003Eat some point\u003C/strong\u003E of entering it\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;10\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The password is a single digit, so enter each digit. \u0026quot;01\u0026quot; would also unlock the safe.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;01100\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E For each possible password:\n- \u0026quot;00\u0026quot; is typed in starting from the 4\u003Csup\u003Eth\u003C/sup\u003E digit.\n- \u0026quot;01\u0026quot; is typed in starting from the 1\u003Csup\u003Est\u003C/sup\u003E digit.\n- \u0026quot;10\u0026quot; is typed in starting from the 3\u003Csup\u003Erd\u003C/sup\u003E digit.\n- \u0026quot;11\u0026quot; is typed in starting from the 2\u003Csup\u003End\u003C/sup\u003E digit.\nThus \u0026quot;01100\u0026quot; will unlock the safe. \u0026quot;10011\u0026quot;, and \u0026quot;11001\u0026quot; would also unlock the safe.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k\u003Csup\u003En\u003C/sup\u003E \u0026lt;= 4096\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can think of this problem as the problem of finding an Euler path (a path visiting every edge exactly once) on the following graph: there are \u003Ccode\u003Ek\u003Csup\u003En-1\u003C/sup\u003E\u003C/code\u003E nodes with each node having \u003Ccode\u003Ek\u003C/code\u003E edges.  It turns out this graph always has an Eulerian circuit (path starting where it ends.)\r\n\r\nWe should visit each node in \u0022post-order\u0022 so as to not get stuck in the graph prematurely."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2",
+      "RawExpectedOutput": "\u002210\u0022"
+    },
+    {
+      "RawInput": "2\n2",
+      "RawExpectedOutput": "\u002201100\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0224661+00:00",
+  "Url": "https://leetcode.com/problems/cracking-the-safe/"
+}

@@ -1,0 +1,33 @@
+{
+  "QuestionId": 2680,
+  "FrontendId": 2550,
+  "Title": "Count Collisions of Monkeys on a Polygon",
+  "TitleSlug": "count-collisions-of-monkeys-on-a-polygon",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 30.5,
+  "TotalAccepted": 28474,
+  "TotalSubmissions": 93403,
+  "Likes": 271,
+  "Dislikes": 531,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a regular convex polygon with \u003Ccode\u003En\u003C/code\u003E vertices. The vertices are labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E in a clockwise direction, and each vertex has \u003Cstrong\u003Eexactly one monkey\u003C/strong\u003E. The following figure shows a convex polygon of \u003Ccode\u003E6\u003C/code\u003E vertices.\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/01/22/hexagon.jpg\u0022 style=\u0022width: 300px; height: 293px;\u0022 /\u003E\n\u003Cp\u003ESimultaneously, each monkey moves to a neighboring vertex. A \u003Cstrong\u003Ecollision\u003C/strong\u003E happens if at least two monkeys reside on the same vertex after the movement or intersect on an edge.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of ways the monkeys can move so that at least \u003Cstrong\u003Eone collision\u003C/strong\u003E happens. Since the answer may be very large, return it modulo \u003Ccode\u003E10\u003Csup\u003E9 \u003C/sup\u003E\u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 8 total possible movements.\u003Cbr /\u003E\nTwo ways such that they collide at some point are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EMonkey 1 moves in a clockwise direction; monkey 2 moves in an anticlockwise direction; monkey 3 moves in a clockwise direction. Monkeys 1 and 2 collide.\u003C/li\u003E\n\t\u003Cli\u003EMonkey 1 moves in an anticlockwise direction; monkey 2 moves in an anticlockwise direction; monkey 3 moves in a clockwise direction. Monkeys 1 and 3 collide.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E14\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try counting the number of ways in which the monkeys will not collide."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9359201+00:00",
+  "Url": "https://leetcode.com/problems/count-collisions-of-monkeys-on-a-polygon/"
+}

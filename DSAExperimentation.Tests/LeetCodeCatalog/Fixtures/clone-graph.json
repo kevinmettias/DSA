@@ -1,0 +1,37 @@
+{
+  "QuestionId": 133,
+  "FrontendId": 133,
+  "Title": "Clone Graph",
+  "TitleSlug": "clone-graph",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 66.2,
+  "TotalAccepted": 2015805,
+  "TotalSubmissions": 3046567,
+  "Likes": 10784,
+  "Dislikes": 4227,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a reference of a node in a \u003Cstrong\u003E\u003Ca href=\u0022https://en.wikipedia.org/wiki/Connectivity_(graph_theory)#Connected_graph\u0022 target=\u0022_blank\u0022\u003Econnected\u003C/a\u003E\u003C/strong\u003E undirected graph.\u003C/p\u003E\n\n\u003Cp\u003EReturn a \u003Ca href=\u0022https://en.wikipedia.org/wiki/Object_copying#Deep_copy\u0022 target=\u0022_blank\u0022\u003E\u003Cstrong\u003Edeep copy\u003C/strong\u003E\u003C/a\u003E (clone) of the graph.\u003C/p\u003E\n\n\u003Cp\u003EEach node in the graph contains a value (\u003Ccode\u003Eint\u003C/code\u003E) and a list (\u003Ccode\u003EList[Node]\u003C/code\u003E) of its neighbors.\u003C/p\u003E\n\n\u003Cpre\u003E\nclass Node {\n    public int val;\n    public List\u0026lt;Node\u0026gt; neighbors;\n}\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ETest case format:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EFor simplicity, each node\u0026#39;s value is the same as the node\u0026#39;s index (1-indexed). For example, the first node with \u003Ccode\u003Eval == 1\u003C/code\u003E, the second node with \u003Ccode\u003Eval == 2\u003C/code\u003E, and so on. The graph is represented in the test case using an adjacency list.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cb\u003EAn adjacency list\u003C/b\u003E is a collection of unordered \u003Cb\u003Elists\u003C/b\u003E used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.\u003C/p\u003E\n\n\u003Cp\u003EThe given node will always be the first node with \u003Ccode\u003Eval = 1\u003C/code\u003E. You must return the \u003Cstrong\u003Ecopy of the given node\u003C/strong\u003E as a reference to the cloned graph.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/11/04/133_clone_graph_question.png\u0022 style=\u0022width: 454px; height: 500px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E adjList = [[2,4],[1,3],[2,4],[1,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[2,4],[1,3],[2,4],[1,3]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 4 nodes in the graph.\n1st node (val = 1)\u0026#39;s neighbors are 2nd node (val = 2) and 4th node (val = 4).\n2nd node (val = 2)\u0026#39;s neighbors are 1st node (val = 1) and 3rd node (val = 3).\n3rd node (val = 3)\u0026#39;s neighbors are 2nd node (val = 2) and 4th node (val = 4).\n4th node (val = 4)\u0026#39;s neighbors are 1st node (val = 1) and 3rd node (val = 3).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/01/07/graph.png\u0022 style=\u0022width: 163px; height: 148px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E adjList = [[]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Note that the input contains one empty list. The graph consists of only one node with val = 1 and it does not have any neighbors.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E adjList = []\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E This an empty graph, it does not have any nodes.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the graph is in the range \u003Ccode\u003E[0, 100]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003ENode.val\u003C/code\u003E is unique for each node.\u003C/li\u003E\n\t\u003Cli\u003EThere are no repeated edges and no self-loops in the graph.\u003C/li\u003E\n\t\u003Cli\u003EThe Graph is connected and all nodes can be visited starting from the given node.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,4],[1,3],[2,4],[1,3]]",
+      "RawExpectedOutput": "[[2,4],[1,3],[2,4],[1,3]]"
+    },
+    {
+      "RawInput": "[[]]",
+      "RawExpectedOutput": "[[]]"
+    },
+    {
+      "RawInput": "[]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8032333+00:00",
+  "Url": "https://leetcode.com/problems/clone-graph/"
+}

@@ -1,0 +1,51 @@
+{
+  "QuestionId": 4125,
+  "FrontendId": 3957,
+  "Title": "Maximum Sum of M Non-Overlapping Subarrays II",
+  "TitleSlug": "maximum-sum-of-m-non-overlapping-subarrays-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Dynamic Programming",
+    "Queue",
+    "Sliding Window",
+    "Prefix Sum",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 17.3,
+  "TotalAccepted": 2394,
+  "TotalSubmissions": 13856,
+  "Likes": 14,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, and three integers \u003Ccode\u003Em\u003C/code\u003E, \u003Ccode\u003El\u003C/code\u003E, and \u003Ccode\u003Er\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to select \u003Cstrong\u003Eat least\u003C/strong\u003E one and \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Em\u003C/code\u003E \u003Cstrong\u003Enon-overlapping \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarrays\u003C/span\u003E\u003C/strong\u003E from \u003Ccode\u003Enums\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach selected \u003Cstrong\u003Esubarray\u003C/strong\u003E has a length between \u003Ccode\u003E[l, r]\u003C/code\u003E (inclusive).\u003C/li\u003E\n\t\u003Cli\u003EThe total sum of all selected \u003Cstrong\u003Esubarrays\u003C/strong\u003E is \u003Cstrong\u003Emaximized\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E total sum you can achieve.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,1,-5,2], m = 2, l = 1, r = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E7\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EOne optimal strategy is to:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the subarray \u003Ccode\u003E[4, 1]\u003C/code\u003E with sum \u003Ccode\u003E4 \u002B 1 = 5\u003C/code\u003E and the subarray \u003Ccode\u003E[2]\u003C/code\u003E with sum 2. Both subarrays have length between \u003Ccode\u003E[l, r]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum of these subarrays is \u003Ccode\u003E5 \u002B 2 = 7\u003C/code\u003E, which is the maximum achievable sum with at most \u003Ccode\u003Em = 2\u003C/code\u003E subarrays.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,0,3,4], m = 2, l = 1, r = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EOne optimal strategy is to:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the subarray \u003Ccode\u003E[1]\u003C/code\u003E with sum \u003Ccode\u003E1\u003C/code\u003E and the subarray \u003Ccode\u003E[3, 4]\u003C/code\u003E with sum \u003Ccode\u003E3 \u002B 4 = 7\u003C/code\u003E. Both subarrays have length between \u003Ccode\u003E[l, r]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum of these subarrays is \u003Ccode\u003E1 \u002B 7 = 8\u003C/code\u003E, which is the maximum achievable sum with at most \u003Ccode\u003Em = 2\u003C/code\u003E subarrays.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [-1,7,-4], m = 1, l = 2, r = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the subarray \u003Ccode\u003E[-1, 7]\u003C/code\u003E from \u003Ccode\u003Enums\u003C/code\u003E which has length between \u003Ccode\u003E[l, r]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum of this subarray is \u003Ccode\u003E-1 \u002B 7 = 6\u003C/code\u003E, which is the maximum achievable sum with at most \u003Ccode\u003Em = 1\u003C/code\u003E subarray.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [-3,-4,-1], m = 2, l = 1, r = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAll subarrays of \u003Ccode\u003Enums\u003C/code\u003E have negative sums. The optimal strategy is to select the subarray \u003Ccode\u003E[-1]\u003C/code\u003E, which has length between \u003Ccode\u003E[l, r]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum of this subarray is -1, which is the maximum achievable sum with at most \u003Ccode\u003Em = 2\u003C/code\u003E subarrays.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= l \u0026lt;= r \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "WQS Binary Search",
+    "Instead of directly limiting the number of selected subarrays, assign a penalty \u003Ccode\u003Ex\u003C/code\u003E for choosing each subarray.",
+    "For a fixed penalty \u003Ccode\u003Ex\u003C/code\u003E, maximize the adjusted value \u003Ccode\u003Esum - x * count\u003C/code\u003E, while also tracking how many subarrays are chosen.",
+    "For each fixed penalty, use a deque to optimize transitions over previous split points whose distance is between \u003Ccode\u003El\u003C/code\u003E and \u003Ccode\u003Er\u003C/code\u003E.",
+    "As \u003Ccode\u003Ex\u003C/code\u003E increases, the optimal number of selected subarrays decreases, so binary search the penalty.",
+    "Convert the adjusted answer back by adding \u003Ccode\u003Ex * m\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,1,-5,2]\n2\n1\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,0,3,4]\n2\n1\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[-1,7,-4]\n1\n2\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[-3,-4,-1]\n2\n1\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9459566+00:00",
+  "Url": "https://leetcode.com/problems/maximum-sum-of-m-non-overlapping-subarrays-ii/"
+}

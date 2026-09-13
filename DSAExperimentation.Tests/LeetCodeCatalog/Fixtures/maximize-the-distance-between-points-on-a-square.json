@@ -1,0 +1,44 @@
+{
+  "QuestionId": 3781,
+  "FrontendId": 3464,
+  "Title": "Maximize the Distance Between Points on a Square",
+  "TitleSlug": "maximize-the-distance-between-points-on-a-square",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Binary Search",
+    "Geometry",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 50.9,
+  "TotalAccepted": 56043,
+  "TotalSubmissions": 110136,
+  "Likes": 157,
+  "Dislikes": 20,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003Eside\u003C/font\u003E\u003C/code\u003E, representing the edge length of a square with corners at \u003Ccode\u003E(0, 0)\u003C/code\u003E, \u003Ccode\u003E(0, side)\u003C/code\u003E, \u003Ccode\u003E(side, 0)\u003C/code\u003E, and \u003Ccode\u003E(side, side)\u003C/code\u003E on a Cartesian plane.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a \u003Cstrong\u003Epositive\u003C/strong\u003E integer \u003Ccode\u003Ek\u003C/code\u003E and a 2D integer array \u003Ccode\u003Epoints\u003C/code\u003E, where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the coordinate of a point lying on the \u003Cstrong\u003Eboundary\u003C/strong\u003E of the square.\u003C/p\u003E\n\n\u003Cp\u003EYou need to select \u003Ccode\u003Ek\u003C/code\u003E elements among \u003Ccode\u003Epoints\u003C/code\u003E such that the \u003Cstrong\u003Eminimum\u003C/strong\u003E Manhattan distance between any two points is \u003Cstrong\u003Emaximized\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible \u003Cstrong\u003Eminimum\u003C/strong\u003E Manhattan distance between the selected \u003Ccode\u003Ek\u003C/code\u003E points.\u003C/p\u003E\n\n\u003Cp\u003EThe Manhattan Distance between two cells \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E and \u003Ccode\u003E(x\u003Csub\u003Ej\u003C/sub\u003E, y\u003Csub\u003Ej\u003C/sub\u003E)\u003C/code\u003E is \u003Ccode\u003E|x\u003Csub\u003Ei\u003C/sub\u003E - x\u003Csub\u003Ej\u003C/sub\u003E| \u002B |y\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ej\u003C/sub\u003E|\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eside = 2, points = [[0,2],[2,0],[2,2],[0,0]], k = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/01/28/4080_example0_revised.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ESelect all four points.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eside = 2, points = [[0,0],[1,2],[2,0],[2,2],[2,1]], k = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/01/28/4080_example1_revised.png\u0022 style=\u0022width: 211px; height: 200px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ESelect the points \u003Ccode\u003E(0, 0)\u003C/code\u003E, \u003Ccode\u003E(2, 0)\u003C/code\u003E, \u003Ccode\u003E(2, 2)\u003C/code\u003E, and \u003Ccode\u003E(2, 1)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eside = 2, points = [[0,0],[0,1],[0,2],[1,2],[2,0],[2,2],[2,1]], k = 5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/01/28/4080_example2_revised.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ESelect the points \u003Ccode\u003E(0, 0)\u003C/code\u003E, \u003Ccode\u003E(0, 1)\u003C/code\u003E, \u003Ccode\u003E(0, 2)\u003C/code\u003E, \u003Ccode\u003E(1, 2)\u003C/code\u003E, and \u003Ccode\u003E(2, 2)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= side \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E4 \u0026lt;= points.length \u0026lt;= min(4 * side, 15 * 10\u003Csup\u003E3\u003C/sup\u003E)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i] == [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Epoints[i]\u003C/code\u003E lies on the boundary of the square.\u003C/li\u003E\n\t\t\u003Cli\u003EAll \u003Ccode\u003Epoints[i]\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E4 \u0026lt;= k \u0026lt;= min(25, points.length)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we use binary search for this problem?",
+    "Think of the coordinates on a straight line in clockwise order.",
+    "Binary search on the minimum Manhattan distance \u003Ccode\u003Ex\u003C/code\u003E.",
+    "During the binary search, for each coordinate, find the immediate next coordinate with distance \u003E= \u003Ccode\u003Ex\u003C/code\u003E.",
+    "Greedily select up to \u003Ccode\u003Ek\u003C/code\u003E coordinates."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2\n[[0,2],[2,0],[2,2],[0,0]]\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "2\n[[0,0],[1,2],[2,0],[2,2],[2,1]]\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "2\n[[0,0],[0,1],[0,2],[1,2],[2,0],[2,2],[2,1]]\n5",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.869742+00:00",
+  "Url": "https://leetcode.com/problems/maximize-the-distance-between-points-on-a-square/"
+}

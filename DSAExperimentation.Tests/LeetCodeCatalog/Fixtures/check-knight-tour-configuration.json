@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2662,
+  "FrontendId": 2596,
+  "Title": "Check Knight Tour Configuration",
+  "TitleSlug": "check-knight-tour-configuration",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 62.1,
+  "TotalAccepted": 63122,
+  "TotalSubmissions": 101684,
+  "Likes": 563,
+  "Dislikes": 70,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a knight on an \u003Ccode\u003En x n\u003C/code\u003E chessboard. In a valid configuration, the knight starts \u003Cstrong\u003Eat the top-left cell\u003C/strong\u003E of the board and visits every cell on the board \u003Cstrong\u003Eexactly once\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are given an \u003Ccode\u003En x n\u003C/code\u003E integer matrix \u003Ccode\u003Egrid\u003C/code\u003E consisting of distinct integers from the range \u003Ccode\u003E[0, n * n - 1]\u003C/code\u003E where \u003Ccode\u003Egrid[row][col]\u003C/code\u003E indicates that the cell \u003Ccode\u003E(row, col)\u003C/code\u003E is the \u003Ccode\u003Egrid[row][col]\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E cell that the knight visited. The moves are \u003Cstrong\u003E0-indexed\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif\u003C/em\u003E \u003Ccode\u003Egrid\u003C/code\u003E \u003Cem\u003Erepresents a valid configuration of the knight\u0026#39;s movements or\u003C/em\u003E \u003Ccode\u003Efalse\u003C/code\u003E \u003Cem\u003Eotherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that a valid knight move consists of moving two squares vertically and one square horizontally, or two squares horizontally and one square vertically. The figure below illustrates all the possible eight moves of a knight from some cell.\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/10/12/knight.png\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/12/28/yetgriddrawio-5.png\u0022 style=\u0022width: 251px; height: 251px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,11,16,5,20],[17,4,19,10,15],[12,1,8,21,6],[3,18,23,14,9],[24,13,2,7,22]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The above diagram represents the grid. It can be shown that it is a valid configuration.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/12/28/yetgriddrawio-6.png\u0022 style=\u0022width: 151px; height: 151px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,3,6],[5,8,1],[2,7,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The above diagram represents the grid. The 8\u003Csup\u003Eth\u003C/sup\u003E move of the knight is not valid considering its position after the 7\u003Csup\u003Eth\u003C/sup\u003E move.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= n \u0026lt;= 7\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[row][col] \u0026lt; n * n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll integers in \u003Ccode\u003Egrid\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "It is enough to check if each move of the knight is valid.",
+    "Try all cases of the knight\u0027s movements to check if a move is valid."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,11,16,5,20],[17,4,19,10,15],[12,1,8,21,6],[3,18,23,14,9],[24,13,2,7,22]]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[0,3,6],[5,8,1],[2,7,4]]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7799489+00:00",
+  "Url": "https://leetcode.com/problems/check-knight-tour-configuration/"
+}

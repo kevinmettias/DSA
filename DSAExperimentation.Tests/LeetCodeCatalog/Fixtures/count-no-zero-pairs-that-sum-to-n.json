@@ -1,0 +1,40 @@
+{
+  "QuestionId": 4049,
+  "FrontendId": 3704,
+  "Title": "Count No-Zero Pairs That Sum to N",
+  "TitleSlug": "count-no-zero-pairs-that-sum-to-n",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 15.5,
+  "TotalAccepted": 5923,
+  "TotalSubmissions": 38107,
+  "Likes": 65,
+  "Dislikes": 3,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Cstrong\u003Eno-zero\u003C/strong\u003E integer is a \u003Cstrong\u003Epositive\u003C/strong\u003E integer that \u003Cstrong\u003Edoes not contain the digit\u003C/strong\u003E 0 in its decimal representation.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E, count the number of pairs \u003Ccode\u003E(a, b)\u003C/code\u003E where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E are \u003Cstrong\u003Eno-zero\u003C/strong\u003E integers.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea \u002B b = n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn an integer denoting the number of such pairs.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe only pair is \u003Ccode\u003E(1, 1)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe pairs are \u003Ccode\u003E(1, 2)\u003C/code\u003E and \u003Ccode\u003E(2, 1)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 11\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe pairs are \u003Ccode\u003E(2, 9)\u003C/code\u003E, \u003Ccode\u003E(3, 8)\u003C/code\u003E, \u003Ccode\u003E(4, 7)\u003C/code\u003E, \u003Ccode\u003E(5, 6)\u003C/code\u003E, \u003Ccode\u003E(6, 5)\u003C/code\u003E, \u003Ccode\u003E(7, 4)\u003C/code\u003E, \u003Ccode\u003E(8, 3)\u003C/code\u003E, and \u003Ccode\u003E(9, 2)\u003C/code\u003E. Note that \u003Ccode\u003E(1, 10)\u003C/code\u003E and \u003Ccode\u003E(10, 1)\u003C/code\u003E do not satisfy the conditions because 10 contains 0 in its decimal representation.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use digit DP over the decimal representation of \u003Ccode\u003En\u003C/code\u003E.",
+    "At each digit, track whether a carry is present and whether \u003Ccode\u003Ea\u003C/code\u003E or \u003Ccode\u003Eb\u003C/code\u003E has used a zero so far.",
+    "Transition by choosing digits for \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E that add up (with carry) to the current digit of \u003Ccode\u003En\u003C/code\u003E.",
+    "Subtract the cases where either number ends up being zero-containing when \u003Ccode\u003En\u003C/code\u003E itself is no-zero."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "11",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9429005+00:00",
+  "Url": "https://leetcode.com/problems/count-no-zero-pairs-that-sum-to-n/"
+}

@@ -1,0 +1,33 @@
+{
+  "QuestionId": 433,
+  "FrontendId": 433,
+  "Title": "Minimum Genetic Mutation",
+  "TitleSlug": "minimum-genetic-mutation",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Breadth-First Search",
+    "Bidirectional Search"
+  ],
+  "AcceptanceRatePercent": 57.2,
+  "TotalAccepted": 299742,
+  "TotalSubmissions": 524383,
+  "Likes": 3386,
+  "Dislikes": 348,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA gene string can be represented by an 8-character long string, with choices from \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;C\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;G\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;T\u0026#39;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESuppose we need to investigate a mutation from a gene string \u003Ccode\u003EstartGene\u003C/code\u003E to a gene string \u003Ccode\u003EendGene\u003C/code\u003E where one mutation is defined as one single character changed in the gene string.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E\u0026quot;AACCGGTT\u0026quot; --\u0026gt; \u0026quot;AACCGGTA\u0026quot;\u003C/code\u003E is one mutation.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThere is also a gene bank \u003Ccode\u003Ebank\u003C/code\u003E that records all the valid gene mutations. A gene must be in \u003Ccode\u003Ebank\u003C/code\u003E to make it a valid gene string.\u003C/p\u003E\n\n\u003Cp\u003EGiven the two gene strings \u003Ccode\u003EstartGene\u003C/code\u003E and \u003Ccode\u003EendGene\u003C/code\u003E and the gene bank \u003Ccode\u003Ebank\u003C/code\u003E, return \u003Cem\u003Ethe minimum number of mutations needed to mutate from \u003C/em\u003E\u003Ccode\u003EstartGene\u003C/code\u003E\u003Cem\u003E to \u003C/em\u003E\u003Ccode\u003EendGene\u003C/code\u003E. If there is no such a mutation, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that the starting point is assumed to be valid, so it might not be included in the bank.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E startGene = \u0026quot;AACCGGTT\u0026quot;, endGene = \u0026quot;AACCGGTA\u0026quot;, bank = [\u0026quot;AACCGGTA\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E startGene = \u0026quot;AACCGGTT\u0026quot;, endGene = \u0026quot;AAACGGTA\u0026quot;, bank = [\u0026quot;AACCGGTA\u0026quot;,\u0026quot;AACCGCTA\u0026quot;,\u0026quot;AAACGGTA\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= bank.length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EstartGene.length == endGene.length == bank[i].length == 8\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EstartGene\u003C/code\u003E, \u003Ccode\u003EendGene\u003C/code\u003E, and \u003Ccode\u003Ebank[i]\u003C/code\u003E consist of only the characters \u003Ccode\u003E[\u0026#39;A\u0026#39;, \u0026#39;C\u0026#39;, \u0026#39;G\u0026#39;, \u0026#39;T\u0026#39;]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022AACCGGTT\u0022\n\u0022AACCGGTA\u0022\n[\u0022AACCGGTA\u0022]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022AACCGGTT\u0022\n\u0022AAACGGTA\u0022\n[\u0022AACCGGTA\u0022,\u0022AACCGCTA\u0022,\u0022AAACGGTA\u0022]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0552526+00:00",
+  "Url": "https://leetcode.com/problems/minimum-genetic-mutation/"
+}

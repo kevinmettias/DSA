@@ -1,0 +1,34 @@
+{
+  "QuestionId": 767,
+  "FrontendId": 762,
+  "Title": "Prime Number of Set Bits in Binary Representation",
+  "TitleSlug": "prime-number-of-set-bits-in-binary-representation",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Bit Manipulation",
+    "Primality Test"
+  ],
+  "AcceptanceRatePercent": 79,
+  "TotalAccepted": 270417,
+  "TotalSubmissions": 342255,
+  "Likes": 1043,
+  "Dislikes": 526,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two integers \u003Ccode\u003Eleft\u003C/code\u003E and \u003Ccode\u003Eright\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Ecount\u003C/strong\u003E of numbers in the \u003Cstrong\u003Einclusive\u003C/strong\u003E range \u003C/em\u003E\u003Ccode\u003E[left, right]\u003C/code\u003E\u003Cem\u003E having a \u003Cstrong\u003Eprime number of set bits\u003C/strong\u003E in their binary representation\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003ERecall that the \u003Cstrong\u003Enumber of set bits\u003C/strong\u003E an integer has is the number of \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s present when written in binary.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E21\u003C/code\u003E written in binary is \u003Ccode\u003E10101\u003C/code\u003E, which has \u003Ccode\u003E3\u003C/code\u003E set bits.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E left = 6, right = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n6  -\u0026gt; 110 (2 set bits, 2 is prime)\n7  -\u0026gt; 111 (3 set bits, 3 is prime)\n8  -\u0026gt; 1000 (1 set bit, 1 is not prime)\n9  -\u0026gt; 1001 (2 set bits, 2 is prime)\n10 -\u0026gt; 1010 (2 set bits, 2 is prime)\n4 numbers have a prime number of set bits.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E left = 10, right = 15\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n10 -\u0026gt; 1010 (2 set bits, 2 is prime)\n11 -\u0026gt; 1011 (3 set bits, 3 is prime)\n12 -\u0026gt; 1100 (2 set bits, 2 is prime)\n13 -\u0026gt; 1101 (3 set bits, 3 is prime)\n14 -\u0026gt; 1110 (3 set bits, 3 is prime)\n15 -\u0026gt; 1111 (4 set bits, 4 is not prime)\n5 numbers have a prime number of set bits.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= left \u0026lt;= right \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= right - left \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Write a helper function to count the number of set bits in a number, then check whether the number of set bits is 2, 3, 5, 7, 11, 13, 17 or 19."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "6\n10",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "10\n15",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5804932+00:00",
+  "Url": "https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/"
+}

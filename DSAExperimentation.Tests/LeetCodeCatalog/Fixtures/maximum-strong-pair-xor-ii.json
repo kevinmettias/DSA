@@ -1,0 +1,43 @@
+{
+  "QuestionId": 3197,
+  "FrontendId": 2935,
+  "Title": "Maximum Strong Pair XOR II",
+  "TitleSlug": "maximum-strong-pair-xor-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Bit Manipulation",
+    "Trie",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 33.1,
+  "TotalAccepted": 9590,
+  "TotalSubmissions": 29004,
+  "Likes": 214,
+  "Dislikes": 2,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Enums\u003C/code\u003E. A pair of integers \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E is called a \u003Cstrong\u003Estrong\u003C/strong\u003E pair if it satisfies the condition:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E|x - y| \u0026lt;= min(x, y)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou need to select two integers from \u003Ccode\u003Enums\u003C/code\u003E such that they form a strong pair and their bitwise \u003Ccode\u003EXOR\u003C/code\u003E is the \u003Cstrong\u003Emaximum\u003C/strong\u003E among all strong pairs in the array.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003EXOR\u003C/code\u003E\u003Cem\u003E value out of all possible strong pairs in the array\u003C/em\u003E \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that you can pick the same integer twice to form a pair.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 11 strong pairs in the array \u003Ccode\u003Enums\u003C/code\u003E: (1, 1), (1, 2), (2, 2), (2, 3), (2, 4), (3, 3), (3, 4), (3, 5), (4, 4), (4, 5) and (5, 5).\nThe maximum XOR possible from these pairs is 3 XOR 4 = 7.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [10,100]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 2 strong pairs in the array nums: (10, 10) and (100, 100).\nThe maximum XOR possible from these pairs is 10 XOR 10 = 0 since the pair (100, 100) also gives 100 XOR 100 = 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [500,520,2500,3000]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1020\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 6 strong pairs in the array nums: (500, 500), (500, 520), (520, 520), (2500, 2500), (2500, 3000) and (3000, 3000).\nThe maximum XOR possible from these pairs is 500 XOR 520 = 1020 since the only other non-zero XOR value is 2500 XOR 3000 = 636.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 2\u003Csup\u003E20\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the array, now let \u003Ccode\u003Ex \u003C= y\u003C/code\u003E which means \u003Ccode\u003E|x - y| \u003C= min(x, y)\u003C/code\u003E can now be written as \u003Ccode\u003Ey - x \u003C= x\u003C/code\u003E or in other words, \u003Ccode\u003Ey \u003C= 2 * x\u003C/code\u003E.",
+    "If \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E have the same number of bits, try making\u003Ccode\u003Ey\u003C/code\u003E\u2019s bits different from x if possible for each bit starting from the second most significant bit.",
+    "If \u003Ccode\u003Ey\u003C/code\u003E has 1 more bit than \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey \u003C= 2 * x\u003C/code\u003E use the idea about Digit DP to make \u003Ccode\u003Ey\u003C/code\u003E\u2019s prefix smaller than \u003Ccode\u003E2 * x \u002B 1\u003C/code\u003E as well as trying to make each bit different from \u003Ccode\u003Ex\u003C/code\u003E using a Hashmap.",
+    "Alternatively, use Trie data structure to find the pair with maximum \u003Ccode\u003EXOR\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "[10,100]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[500,520,2500,3000]",
+      "RawExpectedOutput": "1020"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9324513+00:00",
+  "Url": "https://leetcode.com/problems/maximum-strong-pair-xor-ii/"
+}

@@ -1,0 +1,47 @@
+{
+  "QuestionId": 3184,
+  "FrontendId": 2926,
+  "Title": "Maximum Balanced Subsequence Sum",
+  "TitleSlug": "maximum-balanced-subsequence-sum",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Dynamic Programming",
+    "Binary Indexed Tree",
+    "Segment Tree"
+  ],
+  "AcceptanceRatePercent": 26.2,
+  "TotalAccepted": 11307,
+  "TotalSubmissions": 43141,
+  "Likes": 314,
+  "Dislikes": 12,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubsequence\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E having length \u003Ccode\u003Ek\u003C/code\u003E and consisting of \u003Cstrong\u003Eindices\u003C/strong\u003E \u003Ccode\u003Ei\u003Csub\u003E0\u003C/sub\u003E\u0026nbsp;\u0026lt;\u0026nbsp;i\u003Csub\u003E1\u003C/sub\u003E \u0026lt;\u0026nbsp;... \u0026lt; i\u003Csub\u003Ek-1\u003C/sub\u003E\u003C/code\u003E is \u003Cstrong\u003Ebalanced\u003C/strong\u003E if the following holds:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i\u003Csub\u003Ej\u003C/sub\u003E] - nums[i\u003Csub\u003Ej-1\u003C/sub\u003E] \u0026gt;= i\u003Csub\u003Ej\u003C/sub\u003E - i\u003Csub\u003Ej-1\u003C/sub\u003E\u003C/code\u003E, for every \u003Ccode\u003Ej\u003C/code\u003E in the range \u003Ccode\u003E[1, k - 1]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubsequence\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E having length \u003Ccode\u003E1\u003C/code\u003E is considered balanced.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer denoting the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible \u003Cstrong\u003Esum of elements\u003C/strong\u003E in a \u003Cstrong\u003Ebalanced\u003C/strong\u003E subsequence of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubsequence\u003C/strong\u003E of an array is a new \u003Cstrong\u003Enon-empty\u003C/strong\u003E array that is formed from the original array by deleting some (\u003Cstrong\u003Epossibly none\u003C/strong\u003E) of the elements without disturbing the relative positions of the remaining elements.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,3,5,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 14\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, the subsequence [3,5,6] consisting of indices 0, 2, and 3 can be selected.\nnums[2] - nums[0] \u0026gt;= 2 - 0.\nnums[3] - nums[2] \u0026gt;= 3 - 2.\nHence, it is a balanced subsequence, and its sum is the maximum among the balanced subsequences of nums.\nThe subsequence consisting of indices 1, 2, and 3 is also valid.\nIt can be shown that it is not possible to get a balanced subsequence with a sum greater than 14.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,-1,-3,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, the subsequence [5,8] consisting of indices 0 and 3 can be selected.\nnums[3] - nums[0] \u0026gt;= 3 - 0.\nHence, it is a balanced subsequence, and its sum is the maximum among the balanced subsequences of nums.\nIt can be shown that it is not possible to get a balanced subsequence with a sum greater than 13.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-2,-1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In this example, the subsequence [-1] can be selected.\nIt is a balanced subsequence, and its sum is the maximum among the balanced subsequences of nums.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Edp[x]\u003C/code\u003E represent the maximum sum of a balanced subsequence ending at \u003Ccode\u003Ex\u003C/code\u003E.",
+    "Rewriting the formula \u003Ccode\u003Enums[i\u003Csub\u003Ej\u003C/sub\u003E] - nums[i\u003Csub\u003Ej-1\u003C/sub\u003E] \u003E= i\u003Csub\u003Ej\u003C/sub\u003E - i\u003Csub\u003Ej-1\u003C/sub\u003E\u003C/code\u003E gives \u003Ccode\u003Enums[i\u003Csub\u003Ej\u003C/sub\u003E] - i\u003Csub\u003Ej\u003C/sub\u003E \u003E= nums[i\u003Csub\u003Ej-1\u003C/sub\u003E] - i\u003Csub\u003Ej-1\u003C/sub\u003E\u003C/code\u003E.",
+    "So, for some index \u003Ccode\u003Ex\u003C/code\u003E, we need to find an index \u003Ccode\u003Ey\u003C/code\u003E, \u003Ccode\u003Ey \u003C x\u003C/code\u003E, such that \u003Ccode\u003Edp[x] = nums[x] \u002B dp[y]\u003C/code\u003E is maximized, and \u003Ccode\u003Enums[x] - x \u003E= nums[y] - y\u003C/code\u003E.",
+    "There are many ways to achieve this. One method involves sorting the values of \u003Ccode\u003Enums[x] - x\u003C/code\u003E for all indices \u003Ccode\u003Ex\u003C/code\u003E and using a segment/Fenwick tree with coordinate compression.",
+    "Hence, using a dictionary or map, let\u0027s call it \u003Ccode\u003Edict\u003C/code\u003E, where \u003Ccode\u003Edict[nums[x] - x]\u003C/code\u003E represents the position of the value, \u003Ccode\u003Enums[x] - x\u003C/code\u003E, in the segment tree.",
+    "The tree is initialized with zeros initially.",
+    "For indices \u003Ccode\u003Ex\u003C/code\u003E in order from \u003Ccode\u003E[0, n - 1]\u003C/code\u003E, \u003Ccode\u003Edp[x] = max(nums[x]\u003C/code\u003E, \u003Ccode\u003Enums[x]\u003C/code\u003E \u002B the maximum query from the tree in the range \u003Ccode\u003E[0, dict[nums[x] - x]])\u003C/code\u003E, and if \u003Ccode\u003Edp[x]\u003C/code\u003E is greater than the value in the tree at position \u003Ccode\u003Edict[nums[x] - x]\u003C/code\u003E, we update the value in the tree.",
+    "The answer to the problem is the maximum value in \u003Ccode\u003Edp\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,3,5,6]",
+      "RawExpectedOutput": "14"
+    },
+    {
+      "RawInput": "[5,-1,-3,8]",
+      "RawExpectedOutput": "13"
+    },
+    {
+      "RawInput": "[-2,-1]",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8744079+00:00",
+  "Url": "https://leetcode.com/problems/maximum-balanced-subsequence-sum/"
+}

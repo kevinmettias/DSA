@@ -1,0 +1,35 @@
+{
+  "QuestionId": 26,
+  "FrontendId": 26,
+  "Title": "Remove Duplicates from Sorted Array",
+  "TitleSlug": "remove-duplicates-from-sorted-array",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Two Pointers"
+  ],
+  "AcceptanceRatePercent": 63.8,
+  "TotalAccepted": 8525679,
+  "TotalSubmissions": 13372581,
+  "Likes": 19769,
+  "Dislikes": 20634,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E sorted in \u003Cstrong\u003Enon-decreasing order\u003C/strong\u003E, remove the duplicates \u003Ca href=\u0022https://en.wikipedia.org/wiki/In-place_algorithm\u0022 target=\u0022_blank\u0022\u003E\u003Cstrong\u003Ein-place\u003C/strong\u003E\u003C/a\u003E such that each unique element appears only \u003Cstrong\u003Eonce\u003C/strong\u003E. The \u003Cstrong\u003Erelative order\u003C/strong\u003E of the elements should be kept the \u003Cstrong\u003Esame\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EConsider the number of \u003Cem\u003Eunique elements\u003C/em\u003E in\u0026nbsp;\u003Ccode\u003Enums\u003C/code\u003E to be \u003Ccode\u003Ek\u003Cstrong\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/strong\u003E\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B. \u003Cmeta charset=\u0022UTF-8\u0022 /\u003EAfter removing duplicates, return the number of unique elements\u0026nbsp;\u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cmeta charset=\u0022UTF-8\u0022 /\u003EThe first\u0026nbsp;\u003Ccode\u003Ek\u003C/code\u003E\u0026nbsp;elements of\u0026nbsp;\u003Ccode\u003Enums\u003C/code\u003E\u0026nbsp;should contain the unique numbers in \u003Cstrong\u003Esorted order\u003C/strong\u003E. The remaining elements beyond index\u0026nbsp;\u003Ccode\u003Ek - 1\u003C/code\u003E\u0026nbsp;can be ignored.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ECustom Judge:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe judge will test your solution with the following code:\u003C/p\u003E\n\n\u003Cpre\u003E\nint[] nums = [...]; // Input array\nint[] expectedNums = [...]; // The expected answer with correct length\n\nint k = removeDuplicates(nums); // Calls your implementation\n\nassert k == expectedNums.length;\nfor (int i = 0; i \u0026lt; k; i\u002B\u002B) {\n    assert nums[i] == expectedNums[i];\n}\n\u003C/pre\u003E\n\n\u003Cp\u003EIf all assertions pass, then your solution will be \u003Cstrong\u003Eaccepted\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2, nums = [1,2,_]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.\nIt does not matter what you leave beyond the returned k (hence they are underscores).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,0,1,1,1,2,2,3,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5, nums = [0,1,2,3,4,_,_,_,_,_]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.\nIt does not matter what you leave beyond the returned k (hence they are underscores).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-100 \u0026lt;= nums[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is sorted in \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E order.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "In this problem, the key point to focus on is the input array being sorted. As far as duplicate elements are concerned, what is their positioning in the array when the given array is sorted? Look at the image below for the answer. If we know the position of one of the elements, do we also know the positioning of all the duplicate elements?\r\n\r\n\u003Cbr\u003E\r\n\u003Cimg src=\u0022https://assets.leetcode.com/uploads/2019/10/20/hint_rem_dup.png\u0022 width=\u0022500\u0022/\u003E",
+    "We need to modify the array in-place and the size of the final array would potentially be smaller than the size of the input array. So, we ought to use a two-pointer approach here. One, that would keep track of the current element in the original array and another one for just the unique elements.",
+    "Essentially, once an element is encountered, you simply need to \u003Cb\u003Ebypass\u003C/b\u003E its duplicates and move on to the next unique element."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,1,2]",
+      "RawExpectedOutput": "2, nums = [1,2,_]"
+    },
+    {
+      "RawInput": "[0,0,1,1,1,2,2,3,3,4]",
+      "RawExpectedOutput": "5, nums = [0,1,2,3,4,_,_,_,_,_]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7502881+00:00",
+  "Url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"
+}

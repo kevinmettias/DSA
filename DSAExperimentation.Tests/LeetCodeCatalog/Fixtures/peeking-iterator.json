@@ -1,0 +1,33 @@
+{
+  "QuestionId": 284,
+  "FrontendId": 284,
+  "Title": "Peeking Iterator",
+  "TitleSlug": "peeking-iterator",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Design",
+    "Iterator"
+  ],
+  "AcceptanceRatePercent": 61.9,
+  "TotalAccepted": 264959,
+  "TotalSubmissions": 427782,
+  "Likes": 1923,
+  "Dislikes": 1053,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign an iterator that supports the \u003Ccode\u003Epeek\u003C/code\u003E operation on an existing iterator in addition to the \u003Ccode\u003EhasNext\u003C/code\u003E and the \u003Ccode\u003Enext\u003C/code\u003E operations.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EPeekingIterator\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EPeekingIterator(Iterator\u0026lt;int\u0026gt; nums)\u003C/code\u003E Initializes the object with the given integer iterator \u003Ccode\u003Eiterator\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint next()\u003C/code\u003E Returns the next element in the array and moves the pointer to the next element.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean hasNext()\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if there are still elements in the array.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint peek()\u003C/code\u003E Returns the next element in the array \u003Cstrong\u003Ewithout\u003C/strong\u003E moving the pointer.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E Each language may have a different implementation of the constructor and \u003Ccode\u003EIterator\u003C/code\u003E, but they all support the \u003Ccode\u003Eint next()\u003C/code\u003E and \u003Ccode\u003Eboolean hasNext()\u003C/code\u003E functions.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;PeekingIterator\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;peek\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;hasNext\u0026quot;]\n[[[1, 2, 3]], [], [], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, 2, 2, 3, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nPeekingIterator peekingIterator = new PeekingIterator([1, 2, 3]); // [\u003Cu\u003E\u003Cstrong\u003E1\u003C/strong\u003E\u003C/u\u003E,2,3]\npeekingIterator.next();    // return 1, the pointer moves to the next element [1,\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E,3].\npeekingIterator.peek();    // return 2, the pointer does not move [1,\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E,3].\npeekingIterator.next();    // return 2, the pointer moves to the next element [1,2,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E]\npeekingIterator.next();    // return 3, the pointer moves to the next element [1,2,3]\npeekingIterator.hasNext(); // return False\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the calls to \u003Ccode\u003Enext\u003C/code\u003E and \u003Ccode\u003Epeek\u003C/code\u003E are valid.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made to \u003Ccode\u003Enext\u003C/code\u003E, \u003Ccode\u003EhasNext\u003C/code\u003E, and \u003Ccode\u003Epeek\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cstrong\u003EFollow up:\u003C/strong\u003E How would you extend your design to be generic and work with all types, not just integer?",
+  "Hints": [
+    "Think of \u0022looking ahead\u0022. You want to cache the next element.",
+    "Is one variable sufficient? Why or why not?",
+    "Test your design with call order of \u003Ccode\u003Epeek()\u003C/code\u003E before \u003Ccode\u003Enext()\u003C/code\u003E vs \u003Ccode\u003Enext()\u003C/code\u003E before \u003Ccode\u003Epeek()\u003C/code\u003E.",
+    "For a clean implementation, check out \u003Ca href=\u0022https://github.com/google/guava/blob/703ef758b8621cfbab16814f01ddcc5324bdea33/guava-gwt/src-super/com/google/common/collect/super/com/google/common/collect/Iterators.java#L1125\u0022 target=\u0022_blank\u0022\u003EGoogle\u0027s guava library source code\u003C/a\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022PeekingIterator\u0022,\u0022next\u0022,\u0022peek\u0022,\u0022next\u0022,\u0022next\u0022,\u0022hasNext\u0022]\n[[[1,2,3]],[],[],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.477453+00:00",
+  "Url": "https://leetcode.com/problems/peeking-iterator/"
+}

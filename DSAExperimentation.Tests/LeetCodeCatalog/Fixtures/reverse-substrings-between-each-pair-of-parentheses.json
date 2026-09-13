@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1298,
+  "FrontendId": 1190,
+  "Title": "Reverse Substrings Between Each Pair of Parentheses",
+  "TitleSlug": "reverse-substrings-between-each-pair-of-parentheses",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 72.1,
+  "TotalAccepted": 250761,
+  "TotalSubmissions": 347766,
+  "Likes": 2963,
+  "Dislikes": 132,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E that consists of lower case English letters and brackets.\u003C/p\u003E\n\n\u003Cp\u003EReverse the strings in each pair of matching parentheses, starting from the innermost one.\u003C/p\u003E\n\n\u003Cp\u003EYour result should \u003Cstrong\u003Enot\u003C/strong\u003E contain any brackets.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(abcd)\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;dcba\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(u(love)i)\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;iloveu\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The substring \u0026quot;love\u0026quot; is reversed first, then the whole string is reversed.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(ed(et(oc))el)\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;leetcode\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E First, we reverse the substring \u0026quot;oc\u0026quot;, then \u0026quot;etco\u0026quot;, and finally, the whole string.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E only contains lower case English characters and parentheses.\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that all parentheses are balanced.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Find all brackets in the string.",
+    "Does the order of the reverse matter ?",
+    "The order does not matter."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022(abcd)\u0022",
+      "RawExpectedOutput": "\u0022dcba\u0022"
+    },
+    {
+      "RawInput": "\u0022(u(love)i)\u0022",
+      "RawExpectedOutput": "\u0022iloveu\u0022"
+    },
+    {
+      "RawInput": "\u0022(ed(et(oc))el)\u0022",
+      "RawExpectedOutput": "\u0022leetcode\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8561202+00:00",
+  "Url": "https://leetcode.com/problems/reverse-substrings-between-each-pair-of-parentheses/"
+}

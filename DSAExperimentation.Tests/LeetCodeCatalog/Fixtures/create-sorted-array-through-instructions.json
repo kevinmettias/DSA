@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1772,
+  "FrontendId": 1649,
+  "Title": "Create Sorted Array through Instructions",
+  "TitleSlug": "create-sorted-array-through-instructions",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Divide and Conquer",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Merge Sort",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 42.5,
+  "TotalAccepted": 34534,
+  "TotalSubmissions": 81232,
+  "Likes": 707,
+  "Dislikes": 83,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Einstructions\u003C/code\u003E, you are asked to create a sorted array from the elements in \u003Ccode\u003Einstructions\u003C/code\u003E. You start with an empty container \u003Ccode\u003Enums\u003C/code\u003E. For each element from \u003Cstrong\u003Eleft to right\u003C/strong\u003E in \u003Ccode\u003Einstructions\u003C/code\u003E, insert it into \u003Ccode\u003Enums\u003C/code\u003E. The \u003Cstrong\u003Ecost\u003C/strong\u003E of each insertion is the \u003Cb\u003Eminimum\u003C/b\u003E of the following:\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003EThe number of elements currently in \u003Ccode\u003Enums\u003C/code\u003E that are \u003Cstrong\u003Estrictly less than\u003C/strong\u003E \u003Ccode\u003Einstructions[i]\u003C/code\u003E.\u003C/li\u003E\r\n\t\u003Cli\u003EThe number of elements currently in \u003Ccode\u003Enums\u003C/code\u003E that are \u003Cstrong\u003Estrictly greater than\u003C/strong\u003E \u003Ccode\u003Einstructions[i]\u003C/code\u003E.\u003C/li\u003E\r\n\u003C/ul\u003E\r\n\r\n\u003Cp\u003EFor example, if inserting element \u003Ccode\u003E3\u003C/code\u003E into \u003Ccode\u003Enums = [1,2,3,5]\u003C/code\u003E, the \u003Cstrong\u003Ecost\u003C/strong\u003E of insertion is \u003Ccode\u003Emin(2, 1)\u003C/code\u003E (elements \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003E2\u003C/code\u003E are less than \u003Ccode\u003E3\u003C/code\u003E, element \u003Ccode\u003E5\u003C/code\u003E is greater than \u003Ccode\u003E3\u003C/code\u003E) and \u003Ccode\u003Enums\u003C/code\u003E will become \u003Ccode\u003E[1,2,3,3,5]\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Etotal cost\u003C/strong\u003E to insert all elements from \u003C/em\u003E\u003Ccode\u003Einstructions\u003C/code\u003E\u003Cem\u003E into \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E. Since the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E instructions = [1,5,6,2]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Begin with nums = [].\r\nInsert 1 with cost min(0, 0) = 0, now nums = [1].\r\nInsert 5 with cost min(1, 0) = 0, now nums = [1,5].\r\nInsert 6 with cost min(2, 0) = 0, now nums = [1,5,6].\r\nInsert 2 with cost min(1, 2) = 1, now nums = [1,2,5,6].\r\nThe total cost is 0 \u002B 0 \u002B 0 \u002B 1 = 1.\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E instructions = [1,2,3,6,5,4]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Begin with nums = [].\r\nInsert 1 with cost min(0, 0) = 0, now nums = [1].\r\nInsert 2 with cost min(1, 0) = 0, now nums = [1,2].\r\nInsert 3 with cost min(2, 0) = 0, now nums = [1,2,3].\r\nInsert 6 with cost min(3, 0) = 0, now nums = [1,2,3,6].\r\nInsert 5 with cost min(3, 1) = 1, now nums = [1,2,3,5,6].\r\nInsert 4 with cost min(3, 2) = 2, now nums = [1,2,3,4,5,6].\r\nThe total cost is 0 \u002B 0 \u002B 0 \u002B 0 \u002B 1 \u002B 2 = 3.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E instructions = [1,3,3,3,2,4,2,1,2]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Begin with nums = [].\r\nInsert 1 with cost min(0, 0) = 0, now nums = [1].\r\nInsert 3 with cost min(1, 0) = 0, now nums = [1,3].\r\nInsert 3 with cost min(1, 0) = 0, now nums = [1,3,3].\r\nInsert 3 with cost min(1, 0) = 0, now nums = [1,3,3,3].\r\nInsert 2 with cost min(1, 3) = 1, now nums = [1,2,3,3,3].\r\nInsert 4 with cost min(5, 0) = 0, now nums = [1,2,3,3,3,4].\r\n\u200B\u200B\u200B\u200B\u200B\u200B\u200BInsert 2 with cost min(1, 4) = 1, now nums = [1,2,2,3,3,3,4].\r\n\u200B\u200B\u200B\u200B\u200B\u200B\u200BInsert 1 with cost min(0, 6) = 0, now nums = [1,1,2,2,3,3,3,4].\r\n\u200B\u200B\u200B\u200B\u200B\u200B\u200BInsert 2 with cost min(2, 4) = 2, now nums = [1,1,2,2,2,3,3,3,4].\r\nThe total cost is 0 \u002B 0 \u002B 0 \u002B 0 \u002B 1 \u002B 0 \u002B 1 \u002B 0 \u002B 2 = 4.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= instructions.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= instructions[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "This problem is closely related to finding the number of inversions in an array",
+    "if i know the position in which i will insert the i-th element in I can find the minimum cost to insert it"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,5,6,2]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[1,2,3,6,5,4]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,3,3,3,2,4,2,1,2]",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0273834+00:00",
+  "Url": "https://leetcode.com/problems/create-sorted-array-through-instructions/"
+}

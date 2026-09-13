@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3809,
+  "FrontendId": 3493,
+  "Title": "Properties Graph",
+  "TitleSlug": "properties-graph",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 48.8,
+  "TotalAccepted": 27347,
+  "TotalSubmissions": 56044,
+  "Likes": 105,
+  "Dislikes": 18,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Eproperties\u003C/code\u003E having dimensions \u003Ccode\u003En x m\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EDefine a function \u003Ccode\u003Eintersect(a, b)\u003C/code\u003E that returns the \u003Cstrong\u003Enumber of distinct integers\u003C/strong\u003E common to both arrays \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EConstruct an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph where each index \u003Ccode\u003Ei\u003C/code\u003E corresponds to \u003Ccode\u003Eproperties[i]\u003C/code\u003E. There is an edge between node \u003Ccode\u003Ei\u003C/code\u003E and node \u003Ccode\u003Ej\u003C/code\u003E if and only if \u003Ccode\u003Eintersect(properties[i], properties[j]) \u0026gt;= k\u003C/code\u003E, where \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E are in the range \u003Ccode\u003E[0, n - 1]\u003C/code\u003E and \u003Ccode\u003Ei != j\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of \u003Cstrong\u003Econnected components\u003C/strong\u003E in the resulting graph.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eproperties = [[1,2],[1,1],[3,4],[4,5],[5,6],[7,7]], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe graph formed has 3 connected components:\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg height=\u0022171\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/02/27/image.png\u0022 width=\u0022279\u0022 /\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eproperties = [[1,2,3],[2,3,4],[4,3,5]], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe graph formed has 1 connected component:\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/02/27/screenshot-from-2025-02-27-23-58-34.png\u0022 style=\u0022width: 219px; height: 171px;\u0022 /\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eproperties = [[1,1],[1,1]], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003Eintersect(properties[0], properties[1]) = 1\u003C/code\u003E, which is less than \u003Ccode\u003Ek\u003C/code\u003E. This means there is no edge between \u003Ccode\u003Eproperties[0]\u003C/code\u003E and \u003Ccode\u003Eproperties[1]\u003C/code\u003E in the graph.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == properties.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m == properties[i].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= properties[i][j] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= m\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can we optimally find the intersection of two arrays? One way is to use \u003Ccode\u003Elen(set(a) \u0026 set(b))\u003C/code\u003E.",
+    "For connected components, think about using DFS, BFS, or DSU."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[1,1],[3,4],[4,5],[5,6],[7,7]]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,2,3],[2,3,4],[4,3,5]]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,1],[1,1]]\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6028742+00:00",
+  "Url": "https://leetcode.com/problems/properties-graph/"
+}

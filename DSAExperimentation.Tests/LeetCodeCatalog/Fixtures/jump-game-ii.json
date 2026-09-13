@@ -1,0 +1,32 @@
+{
+  "QuestionId": 45,
+  "FrontendId": 45,
+  "Title": "Jump Game II",
+  "TitleSlug": "jump-game-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Greedy"
+  ],
+  "AcceptanceRatePercent": 43.5,
+  "TotalAccepted": 2318439,
+  "TotalSubmissions": 5331586,
+  "Likes": 16805,
+  "Dislikes": 713,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array of integers \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E. You are initially positioned at\u0026nbsp;index 0.\u003C/p\u003E\n\n\u003Cp\u003EEach element \u003Ccode\u003Enums[i]\u003C/code\u003E represents the maximum length of a forward jump from index \u003Ccode\u003Ei\u003C/code\u003E. In other words, if you are at index \u003Ccode\u003Ei\u003C/code\u003E, you can jump to any index \u003Ccode\u003E(i \u002B j)\u003C/code\u003E\u0026nbsp;where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= j \u0026lt;= nums[i]\u003C/code\u003E and\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei \u002B j \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of jumps to reach index \u003C/em\u003E\u003Ccode\u003En - 1\u003C/code\u003E. The test cases are generated such that you can reach index\u0026nbsp;\u003Ccode\u003En - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,3,1,1,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,3,0,1,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt\u0026#39;s guaranteed that you can reach \u003Ccode\u003Enums[n - 1]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,1,1,4]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[2,3,0,1,4]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5653569+00:00",
+  "Url": "https://leetcode.com/problems/jump-game-ii/"
+}

@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1524,
+  "FrontendId": 1408,
+  "Title": "String Matching in an Array",
+  "TitleSlug": "string-matching-in-an-array",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "String",
+    "String Matching"
+  ],
+  "AcceptanceRatePercent": 69.9,
+  "TotalAccepted": 304435,
+  "TotalSubmissions": 435758,
+  "Likes": 1518,
+  "Dislikes": 131,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of string \u003Ccode\u003Ewords\u003C/code\u003E, return all strings in\u003Cem\u003E \u003C/em\u003E\u003Ccode\u003Ewords\u003C/code\u003E\u003Cem\u003E \u003C/em\u003Ethat are a \u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003Esubstring\u003C/span\u003E of another word. You can return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;mass\u0026quot;,\u0026quot;as\u0026quot;,\u0026quot;hero\u0026quot;,\u0026quot;superhero\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;as\u0026quot;,\u0026quot;hero\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;as\u0026quot; is substring of \u0026quot;mass\u0026quot; and \u0026quot;hero\u0026quot; is substring of \u0026quot;superhero\u0026quot;.\n[\u0026quot;hero\u0026quot;,\u0026quot;as\u0026quot;] is also a valid answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;leetcode\u0026quot;,\u0026quot;et\u0026quot;,\u0026quot;code\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;et\u0026quot;,\u0026quot;code\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;et\u0026quot;, \u0026quot;code\u0026quot; are substring of \u0026quot;leetcode\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;blue\u0026quot;,\u0026quot;green\u0026quot;,\u0026quot;bu\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E No string of words is substring of another string.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E contains only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003Ewords\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Bruteforce to find if one string is substring of another or use KMP algorithm."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022mass\u0022,\u0022as\u0022,\u0022hero\u0022,\u0022superhero\u0022]",
+      "RawExpectedOutput": "[\u0022as\u0022,\u0022hero\u0022]"
+    },
+    {
+      "RawInput": "[\u0022leetcode\u0022,\u0022et\u0022,\u0022code\u0022]",
+      "RawExpectedOutput": "[\u0022et\u0022,\u0022code\u0022]"
+    },
+    {
+      "RawInput": "[\u0022blue\u0022,\u0022green\u0022,\u0022bu\u0022]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1491982+00:00",
+  "Url": "https://leetcode.com/problems/string-matching-in-an-array/"
+}

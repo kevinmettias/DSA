@@ -1,0 +1,34 @@
+{
+  "QuestionId": 881,
+  "FrontendId": 851,
+  "Title": "Loud and Rich",
+  "TitleSlug": "loud-and-rich",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Graph Theory",
+    "Topological Sort",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 64.1,
+  "TotalAccepted": 84223,
+  "TotalSubmissions": 131293,
+  "Likes": 1521,
+  "Dislikes": 884,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a group of \u003Ccode\u003En\u003C/code\u003E people labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E where each person has a different amount of money and a different level of quietness.\u003C/p\u003E\n\n\u003Cp\u003EYou are given an array \u003Ccode\u003Ericher\u003C/code\u003E where \u003Ccode\u003Ericher[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E has more money than \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and an integer array \u003Ccode\u003Equiet\u003C/code\u003E where \u003Ccode\u003Equiet[i]\u003C/code\u003E is the quietness of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person. All the given data in richer are \u003Cstrong\u003Elogically correct\u003C/strong\u003E (i.e., the data will not lead you to a situation where \u003Ccode\u003Ex\u003C/code\u003E is richer than \u003Ccode\u003Ey\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E is richer than \u003Ccode\u003Ex\u003C/code\u003E at the same time).\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer[x] = y\u003C/code\u003E\u003Cem\u003E if \u003C/em\u003E\u003Ccode\u003Ey\u003C/code\u003E\u003Cem\u003E is the least quiet person (that is, the person \u003C/em\u003E\u003Ccode\u003Ey\u003C/code\u003E\u003Cem\u003E with the smallest value of \u003C/em\u003E\u003Ccode\u003Equiet[y]\u003C/code\u003E\u003Cem\u003E) among all people who definitely have equal to or more money than the person \u003C/em\u003E\u003Ccode\u003Ex\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]], quiet = [3,2,5,4,6,1,7,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [5,5,2,5,4,5,6,7]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nanswer[0] = 5.\nPerson 5 has more money than 3, which has more money than 1, which has more money than 0.\nThe only person who is quieter (has lower quiet[x]) is person 7, but it is not clear if they have more money than person 0.\nanswer[7] = 7.\nAmong all people that definitely have equal to or more money than person 7 (which could be persons 3, 4, 5, 6, or 7), the person who is the quietest (has lower quiet[x]) is person 7.\nThe other answers can be filled out with similar reasoning.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E richer = [], quiet = [0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == quiet.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= quiet[i] \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Equiet\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= richer.length \u0026lt;= n * (n - 1) / 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei \u003C/sub\u003E!= b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the pairs of \u003Ccode\u003Ericher\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe observations in \u003Ccode\u003Ericher\u003C/code\u003E are all logically consistent.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]]\n[3,2,5,4,6,1,7,0]",
+      "RawExpectedOutput": "[5,5,2,5,4,5,6,7]"
+    },
+    {
+      "RawInput": "[]\n[0]",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.783529+00:00",
+  "Url": "https://leetcode.com/problems/loud-and-rich/"
+}

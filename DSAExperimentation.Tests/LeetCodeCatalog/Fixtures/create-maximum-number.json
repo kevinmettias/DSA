@@ -1,0 +1,38 @@
+{
+  "QuestionId": 321,
+  "FrontendId": 321,
+  "Title": "Create Maximum Number",
+  "TitleSlug": "create-maximum-number",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Stack",
+    "Greedy",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 36.9,
+  "TotalAccepted": 94547,
+  "TotalSubmissions": 255961,
+  "Likes": 2183,
+  "Dislikes": 378,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two integer arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E of lengths \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E respectively. \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E represent the digits of two numbers. You are also given an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ECreate the maximum number of length \u003Ccode\u003Ek \u0026lt;= m \u002B n\u003C/code\u003E from digits of the two numbers. The relative order of the digits from the same array must be preserved.\u003C/p\u003E\n\n\u003Cp\u003EReturn an array of the \u003Ccode\u003Ek\u003C/code\u003E digits representing the answer.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [3,4,6,5], nums2 = [9,1,2,5,8,3], k = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [9,8,6,5,3]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [6,7], nums2 = [6,0,4], k = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [6,7,6,0,4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [3,9], nums2 = [8,9], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [9,8,9]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == nums1.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums1[i], nums2[i] \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= m \u002B n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E do not have leading zeros.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,4,6,5]\n[9,1,2,5,8,3]\n5",
+      "RawExpectedOutput": "[9,8,6,5,3]"
+    },
+    {
+      "RawInput": "[6,7]\n[6,0,4]\n5",
+      "RawExpectedOutput": "[6,7,6,0,4]"
+    },
+    {
+      "RawInput": "[3,9]\n[8,9]\n3",
+      "RawExpectedOutput": "[9,8,9]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0269156+00:00",
+  "Url": "https://leetcode.com/problems/create-maximum-number/"
+}

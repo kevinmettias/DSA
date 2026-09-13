@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3356,
+  "FrontendId": 3076,
+  "Title": "Shortest Uncommon Substring in an Array",
+  "TitleSlug": "shortest-uncommon-substring-in-an-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 51,
+  "TotalAccepted": 39768,
+  "TotalSubmissions": 77944,
+  "Likes": 178,
+  "Dislikes": 32,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Earr\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E consisting of \u003Cstrong\u003Enon-empty\u003C/strong\u003E strings.\u003C/p\u003E\n\n\u003Cp\u003EFind a string array \u003Ccode\u003Eanswer\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E is the \u003Cstrong\u003Eshortest\u003C/strong\u003E \u003Cspan data-keyword=\u0022substring\u0022\u003Esubstring\u003C/span\u003E of \u003Ccode\u003Earr[i]\u003C/code\u003E that does \u003Cstrong\u003Enot\u003C/strong\u003E occur as a substring in any other string in \u003Ccode\u003Earr\u003C/code\u003E. If multiple such substrings exist, \u003Ccode\u003Eanswer[i]\u003C/code\u003E should be the \u003Cspan data-keyword=\u0022lexicographically-smaller-string\u0022\u003Elexicographically smallest\u003C/span\u003E. And if no such substring exists, \u003Ccode\u003Eanswer[i]\u003C/code\u003E should be an empty string.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [\u0026quot;cab\u0026quot;,\u0026quot;ad\u0026quot;,\u0026quot;bad\u0026quot;,\u0026quot;c\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;ab\u0026quot;,\u0026quot;\u0026quot;,\u0026quot;ba\u0026quot;,\u0026quot;\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We have the following:\n- For the string \u0026quot;cab\u0026quot;, the shortest substring that does not occur in any other string is either \u0026quot;ca\u0026quot; or \u0026quot;ab\u0026quot;, we choose the lexicographically smaller substring, which is \u0026quot;ab\u0026quot;.\n- For the string \u0026quot;ad\u0026quot;, there is no substring that does not occur in any other string.\n- For the string \u0026quot;bad\u0026quot;, the shortest substring that does not occur in any other string is \u0026quot;ba\u0026quot;.\n- For the string \u0026quot;c\u0026quot;, there is no substring that does not occur in any other string.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [\u0026quot;abc\u0026quot;,\u0026quot;bcd\u0026quot;,\u0026quot;abcd\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;\u0026quot;,\u0026quot;\u0026quot;,\u0026quot;abcd\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We have the following:\n- For the string \u0026quot;abc\u0026quot;, there is no substring that does not occur in any other string.\n- For the string \u0026quot;bcd\u0026quot;, there is no substring that does not occur in any other string.\n- For the string \u0026quot;abcd\u0026quot;, the shortest substring that does not occur in any other string is \u0026quot;abcd\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == arr.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr[i].length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Earr[i]\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try a brute force solution where you check every substring.",
+    "Use a Hash map to keep track of the substrings."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022cab\u0022,\u0022ad\u0022,\u0022bad\u0022,\u0022c\u0022]",
+      "RawExpectedOutput": "[\u0022ab\u0022,\u0022\u0022,\u0022ba\u0022,\u0022\u0022]"
+    },
+    {
+      "RawInput": "[\u0022abc\u0022,\u0022bcd\u0022,\u0022abcd\u0022]",
+      "RawExpectedOutput": "[\u0022\u0022,\u0022\u0022,\u0022abcd\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9863262+00:00",
+  "Url": "https://leetcode.com/problems/shortest-uncommon-substring-in-an-array/"
+}

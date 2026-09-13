@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1058,
+  "FrontendId": 1061,
+  "Title": "Lexicographically Smallest Equivalent String",
+  "TitleSlug": "lexicographically-smallest-equivalent-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Union-Find"
+  ],
+  "AcceptanceRatePercent": 81.1,
+  "TotalAccepted": 186789,
+  "TotalSubmissions": 230294,
+  "Likes": 2909,
+  "Dislikes": 186,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two strings of the same length \u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E and a string \u003Ccode\u003EbaseStr\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EWe say \u003Ccode\u003Es1[i]\u003C/code\u003E and \u003Ccode\u003Es2[i]\u003C/code\u003E are equivalent characters.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, if \u003Ccode\u003Es1 = \u0026quot;abc\u0026quot;\u003C/code\u003E and \u003Ccode\u003Es2 = \u0026quot;cde\u0026quot;\u003C/code\u003E, then we have \u003Ccode\u003E\u0026#39;a\u0026#39; == \u0026#39;c\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;b\u0026#39; == \u0026#39;d\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;c\u0026#39; == \u0026#39;e\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EEquivalent characters follow the usual rules of any equivalence relation:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EReflexivity:\u003C/strong\u003E \u003Ccode\u003E\u0026#39;a\u0026#39; == \u0026#39;a\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ESymmetry:\u003C/strong\u003E \u003Ccode\u003E\u0026#39;a\u0026#39; == \u0026#39;b\u0026#39;\u003C/code\u003E implies \u003Ccode\u003E\u0026#39;b\u0026#39; == \u0026#39;a\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ETransitivity:\u003C/strong\u003E \u003Ccode\u003E\u0026#39;a\u0026#39; == \u0026#39;b\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;b\u0026#39; == \u0026#39;c\u0026#39;\u003C/code\u003E implies \u003Ccode\u003E\u0026#39;a\u0026#39; == \u0026#39;c\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, given the equivalency information from \u003Ccode\u003Es1 = \u0026quot;abc\u0026quot;\u003C/code\u003E and \u003Ccode\u003Es2 = \u0026quot;cde\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;acd\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;aab\u0026quot;\u003C/code\u003E are equivalent strings of \u003Ccode\u003EbaseStr = \u0026quot;eed\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;aab\u0026quot;\u003C/code\u003E is the lexicographically smallest equivalent string of \u003Ccode\u003EbaseStr\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe lexicographically smallest equivalent string of \u003C/em\u003E\u003Ccode\u003EbaseStr\u003C/code\u003E\u003Cem\u003E by using the equivalency information from \u003C/em\u003E\u003Ccode\u003Es1\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Es2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;parker\u0026quot;, s2 = \u0026quot;morris\u0026quot;, baseStr = \u0026quot;parser\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;makkek\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Based on the equivalency information in s1 and s2, we can group their characters as [m,p], [a,o], [k,r,s], [e,i].\nThe characters in each group are equivalent and sorted in lexicographical order.\nSo the answer is \u0026quot;makkek\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;hello\u0026quot;, s2 = \u0026quot;world\u0026quot;, baseStr = \u0026quot;hold\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;hdld\u0026quot;\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EBased on the equivalency information in s1 and s2, we can group their characters as [h,w], [d,e,o], [l,r].\nSo only the second letter \u0026#39;o\u0026#39; in baseStr is changed to \u0026#39;d\u0026#39;, the answer is \u0026quot;hdld\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;leetcode\u0026quot;, s2 = \u0026quot;programs\u0026quot;, baseStr = \u0026quot;sourcecode\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;aauaaaaada\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We group the equivalent characters in s1 and s2 as [a,o,e,r,s,c], [l,p], [g,t] and [d,m], thus all letters in baseStr except \u0026#39;u\u0026#39; and \u0026#39;d\u0026#39; are transformed to \u0026#39;a\u0026#39;, the answer is \u0026quot;aauaaaaada\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s1.length, s2.length, baseStr \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1.length == s2.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1\u003C/code\u003E, \u003Ccode\u003Es2\u003C/code\u003E, and \u003Ccode\u003EbaseStr\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Model these equalities as edges of a graph.",
+    "Group each connected component of the graph and assign each node of this component to the node with the lowest lexicographically character.",
+    "Finally convert the string with the precalculated information."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022parker\u0022\n\u0022morris\u0022\n\u0022parser\u0022",
+      "RawExpectedOutput": "\u0022makkek\u0022"
+    },
+    {
+      "RawInput": "\u0022hello\u0022\n\u0022world\u0022\n\u0022hold\u0022",
+      "RawExpectedOutput": "\u0022hdld\u0022"
+    },
+    {
+      "RawInput": "\u0022leetcode\u0022\n\u0022programs\u0022\n\u0022sourcecode\u0022",
+      "RawExpectedOutput": "\u0022aauaaaaada\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6673648+00:00",
+  "Url": "https://leetcode.com/problems/lexicographically-smallest-equivalent-string/"
+}

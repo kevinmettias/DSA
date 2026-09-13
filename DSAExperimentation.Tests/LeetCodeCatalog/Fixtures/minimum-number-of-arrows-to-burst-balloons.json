@@ -1,0 +1,36 @@
+{
+  "QuestionId": 452,
+  "FrontendId": 452,
+  "Title": "Minimum Number of Arrows to Burst Balloons",
+  "TitleSlug": "minimum-number-of-arrows-to-burst-balloons",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 61.9,
+  "TotalAccepted": 837899,
+  "TotalSubmissions": 1353657,
+  "Likes": 8221,
+  "Dislikes": 278,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array \u003Ccode\u003Epoints\u003C/code\u003E where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Estart\u003C/sub\u003E, x\u003Csub\u003Eend\u003C/sub\u003E]\u003C/code\u003E denotes a balloon whose \u003Cstrong\u003Ehorizontal diameter\u003C/strong\u003E stretches between \u003Ccode\u003Ex\u003Csub\u003Estart\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ex\u003Csub\u003Eend\u003C/sub\u003E\u003C/code\u003E. You do not know the exact y-coordinates of the balloons.\u003C/p\u003E\n\n\u003Cp\u003EArrows can be shot up \u003Cstrong\u003Edirectly vertically\u003C/strong\u003E (in the positive y-direction) from different points along the x-axis. A balloon with \u003Ccode\u003Ex\u003Csub\u003Estart\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ex\u003Csub\u003Eend\u003C/sub\u003E\u003C/code\u003E is \u003Cstrong\u003Eburst\u003C/strong\u003E by an arrow shot at \u003Ccode\u003Ex\u003C/code\u003E if \u003Ccode\u003Ex\u003Csub\u003Estart\u003C/sub\u003E \u0026lt;= x \u0026lt;= x\u003Csub\u003Eend\u003C/sub\u003E\u003C/code\u003E. There is \u003Cstrong\u003Eno limit\u003C/strong\u003E to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.\u003C/p\u003E\n\n\u003Cp\u003EGiven the array \u003Ccode\u003Epoints\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of arrows that must be shot to burst all balloons\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[10,16],[2,8],[1,6],[7,12]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The balloons can be burst by 2 arrows:\n- Shoot an arrow at x = 6, bursting the balloons [2,8] and [1,6].\n- Shoot an arrow at x = 11, bursting the balloons [10,16] and [7,12].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,2],[3,4],[5,6],[7,8]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One arrow needs to be shot for each balloon for a total of 4 arrows.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,2],[2,3],[3,4],[4,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The balloons can be burst by 2 arrows:\n- Shoot an arrow at x = 2, bursting the balloons [1,2] and [2,3].\n- Shoot an arrow at x = 4, bursting the balloons [3,4] and [4,5].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= points.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-2\u003Csup\u003E31\u003C/sup\u003E \u0026lt;= x\u003Csub\u003Estart\u003C/sub\u003E \u0026lt; x\u003Csub\u003Eend\u003C/sub\u003E \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[10,16],[2,8],[1,6],[7,12]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[1,2],[3,4],[5,6],[7,8]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[1,2],[2,3],[3,4],[4,5]]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0685819+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/"
+}

@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1119,
+  "FrontendId": 1041,
+  "Title": "Robot Bounded In Circle",
+  "TitleSlug": "robot-bounded-in-circle",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 56.6,
+  "TotalAccepted": 278765,
+  "TotalSubmissions": 492215,
+  "Likes": 3883,
+  "Dislikes": 718,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EOn an infinite plane, a robot initially stands at \u003Ccode\u003E(0, 0)\u003C/code\u003E and faces north. Note that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Enorth direction\u003C/strong\u003E is the positive direction of the y-axis.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Esouth direction\u003C/strong\u003E is the negative direction of the y-axis.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Eeast direction\u003C/strong\u003E is the positive direction of the x-axis.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Ewest direction\u003C/strong\u003E is the negative direction of the x-axis.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe robot can receive one of three instructions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;G\u0026quot;\u003C/code\u003E: go straight 1 unit.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;L\u0026quot;\u003C/code\u003E: turn 90 degrees to the left (i.e., anti-clockwise direction).\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;R\u0026quot;\u003C/code\u003E: turn 90 degrees to the right (i.e., clockwise direction).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe robot performs the \u003Ccode\u003Einstructions\u003C/code\u003E given in order, and repeats them forever.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if and only if there exists a circle in the plane such that the robot never leaves the circle.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E instructions = \u0026quot;GGLLGG\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The robot is initially at (0, 0) facing the north direction.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 1). Direction: North.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 2). Direction: North.\n\u0026quot;L\u0026quot;: turn 90 degrees anti-clockwise. Position: (0, 2). Direction: West.\n\u0026quot;L\u0026quot;: turn 90 degrees anti-clockwise. Position: (0, 2). Direction: South.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 1). Direction: South.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 0). Direction: South.\nRepeating the instructions, the robot goes into the cycle: (0, 0) --\u0026gt; (0, 1) --\u0026gt; (0, 2) --\u0026gt; (0, 1) --\u0026gt; (0, 0).\nBased on that, we return true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E instructions = \u0026quot;GG\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The robot is initially at (0, 0) facing the north direction.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 1). Direction: North.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 2). Direction: North.\nRepeating the instructions, keeps advancing in the north direction and does not go into cycles.\nBased on that, we return false.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E instructions = \u0026quot;GL\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The robot is initially at (0, 0) facing the north direction.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 1). Direction: North.\n\u0026quot;L\u0026quot;: turn 90 degrees anti-clockwise. Position: (0, 1). Direction: West.\n\u0026quot;G\u0026quot;: move one step. Position: (-1, 1). Direction: West.\n\u0026quot;L\u0026quot;: turn 90 degrees anti-clockwise. Position: (-1, 1). Direction: South.\n\u0026quot;G\u0026quot;: move one step. Position: (-1, 0). Direction: South.\n\u0026quot;L\u0026quot;: turn 90 degrees anti-clockwise. Position: (-1, 0). Direction: East.\n\u0026quot;G\u0026quot;: move one step. Position: (0, 0). Direction: East.\n\u0026quot;L\u0026quot;: turn 90 degrees anti-clockwise. Position: (0, 0). Direction: North.\nRepeating the instructions, the robot goes into the cycle: (0, 0) --\u0026gt; (0, 1) --\u0026gt; (-1, 1) --\u0026gt; (-1, 0) --\u0026gt; (0, 0).\nBased on that, we return true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= instructions.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Einstructions[i]\u003C/code\u003E is \u003Ccode\u003E\u0026#39;G\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;L\u0026#39;\u003C/code\u003E or, \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Calculate the final vector of how the robot travels after executing all instructions once - it consists of a change in position plus a change in direction.",
+    "The robot stays in the circle if and only if (looking at the final vector) it changes direction (ie. doesn\u0027t stay pointing north), or it moves 0."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022GGLLGG\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022GG\u0022",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "\u0022GL\u0022",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8665112+00:00",
+  "Url": "https://leetcode.com/problems/robot-bounded-in-circle/"
+}

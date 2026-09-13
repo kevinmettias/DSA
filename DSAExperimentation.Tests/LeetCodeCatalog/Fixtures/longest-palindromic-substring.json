@@ -1,0 +1,37 @@
+{
+  "QuestionId": 5,
+  "FrontendId": 5,
+  "Title": "Longest Palindromic Substring",
+  "TitleSlug": "longest-palindromic-substring",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Dynamic Programming",
+    "Manacher"
+  ],
+  "AcceptanceRatePercent": 38.6,
+  "TotalAccepted": 5084002,
+  "TotalSubmissions": 13155761,
+  "Likes": 33153,
+  "Dislikes": 2035,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, return \u003Cem\u003Ethe longest\u003C/em\u003E \u003Cspan data-keyword=\u0022palindromic-string\u0022\u003E\u003Cem\u003Epalindromic\u003C/em\u003E\u003C/span\u003E \u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003E\u003Cem\u003Esubstring\u003C/em\u003E\u003C/span\u003E in \u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;babad\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;bab\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u0026quot;aba\u0026quot; is also a valid answer.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;cbbd\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;bb\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consist of only digits and English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can we reuse a previously computed palindrome to compute a larger palindrome?",
+    "If \u201Caba\u201D is a palindrome, is \u201Cxabax\u201D a palindrome? Similarly is \u201Cxabay\u201D a palindrome?",
+    "Complexity based hint:\u003C/br\u003E\r\nIf we use brute-force and check whether for every start and end position a substring is a palindrome we have O(n^2) start - end pairs and O(n) palindromic checks. Can we reduce the time for palindromic checks to O(1) by reusing some previous computation."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022babad\u0022",
+      "RawExpectedOutput": "\u0022bab\u0022"
+    },
+    {
+      "RawInput": "\u0022cbbd\u0022",
+      "RawExpectedOutput": "\u0022bb\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7449929+00:00",
+  "Url": "https://leetcode.com/problems/longest-palindromic-substring/"
+}

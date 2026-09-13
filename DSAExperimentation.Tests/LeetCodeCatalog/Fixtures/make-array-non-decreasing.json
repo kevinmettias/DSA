@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3738,
+  "FrontendId": 3523,
+  "Title": "Make Array Non-decreasing",
+  "TitleSlug": "make-array-non-decreasing",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Greedy",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 57.3,
+  "TotalAccepted": 35244,
+  "TotalSubmissions": 61536,
+  "Likes": 97,
+  "Dislikes": 9,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E. In one operation, you can select a \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E and replace it with a single element equal to its \u003Cstrong\u003Emaximum\u003C/strong\u003E value.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum possible size\u003C/strong\u003E of the array after performing zero or more operations such that the resulting array is \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,2,5,3,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EOne way to achieve the maximum size is:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EReplace subarray \u003Ccode\u003Enums[1..2] = [2, 5]\u003C/code\u003E with \u003Ccode\u003E5\u003C/code\u003E \u0026rarr; \u003Ccode\u003E[4, 5, 3, 5]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EReplace subarray \u003Ccode\u003Enums[2..3] = [3, 5]\u003C/code\u003E with \u003Ccode\u003E5\u003C/code\u003E \u0026rarr; \u003Ccode\u003E[4, 5, 5]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EThe final array \u003Ccode\u003E[4, 5, 5]\u003C/code\u003E is non-decreasing with size \u003Cfont face=\u0022monospace\u0022\u003E3.\u003C/font\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo operation is needed as the array \u003Ccode\u003E[1,2,3]\u003C/code\u003E is already non-decreasing.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Iterate backwards.",
+    "Can you remove the largest element in the array? Is that ever helpful?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,5,3,5]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8160702+00:00",
+  "Url": "https://leetcode.com/problems/make-array-non-decreasing/"
+}

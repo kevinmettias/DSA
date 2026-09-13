@@ -1,0 +1,35 @@
+{
+  "QuestionId": 97,
+  "FrontendId": 97,
+  "Title": "Interleaving String",
+  "TitleSlug": "interleaving-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 44.8,
+  "TotalAccepted": 839796,
+  "TotalSubmissions": 1876529,
+  "Likes": 8956,
+  "Dislikes": 560,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven strings \u003Ccode\u003Es1\u003C/code\u003E, \u003Ccode\u003Es2\u003C/code\u003E, and \u003Ccode\u003Es3\u003C/code\u003E, find whether \u003Ccode\u003Es3\u003C/code\u003E is formed by an \u003Cstrong\u003Einterleaving\u003C/strong\u003E of \u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Einterleaving\u003C/strong\u003E of two strings \u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Et\u003C/code\u003E is a configuration where \u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Et\u003C/code\u003E are divided into \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Em\u003C/code\u003E \u003Cspan data-keyword=\u0022substring-nonempty\u0022\u003Esubstrings\u003C/span\u003E respectively, such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es = s\u003Csub\u003E1\u003C/sub\u003E \u002B s\u003Csub\u003E2\u003C/sub\u003E \u002B ... \u002B s\u003Csub\u003En\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Et = t\u003Csub\u003E1\u003C/sub\u003E \u002B t\u003Csub\u003E2\u003C/sub\u003E \u002B ... \u002B t\u003Csub\u003Em\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E|n - m| \u0026lt;= 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Cstrong\u003Einterleaving\u003C/strong\u003E is \u003Ccode\u003Es\u003Csub\u003E1\u003C/sub\u003E \u002B t\u003Csub\u003E1\u003C/sub\u003E \u002B s\u003Csub\u003E2\u003C/sub\u003E \u002B t\u003Csub\u003E2\u003C/sub\u003E \u002B s\u003Csub\u003E3\u003C/sub\u003E \u002B t\u003Csub\u003E3\u003C/sub\u003E \u002B ...\u003C/code\u003E or \u003Ccode\u003Et\u003Csub\u003E1\u003C/sub\u003E \u002B s\u003Csub\u003E1\u003C/sub\u003E \u002B t\u003Csub\u003E2\u003C/sub\u003E \u002B s\u003Csub\u003E2\u003C/sub\u003E \u002B t\u003Csub\u003E3\u003C/sub\u003E \u002B s\u003Csub\u003E3\u003C/sub\u003E \u002B ...\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E \u003Ccode\u003Ea \u002B b\u003C/code\u003E is the concatenation of strings \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/02/interleave.jpg\u0022 style=\u0022width: 561px; height: 203px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;aabcc\u0026quot;, s2 = \u0026quot;dbbca\u0026quot;, s3 = \u0026quot;aadbbcbcac\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One way to obtain s3 is:\nSplit s1 into s1 = \u0026quot;aa\u0026quot; \u002B \u0026quot;bc\u0026quot; \u002B \u0026quot;c\u0026quot;, and s2 into s2 = \u0026quot;dbbc\u0026quot; \u002B \u0026quot;a\u0026quot;.\nInterleaving the two splits, we get \u0026quot;aa\u0026quot; \u002B \u0026quot;dbbc\u0026quot; \u002B \u0026quot;bc\u0026quot; \u002B \u0026quot;a\u0026quot; \u002B \u0026quot;c\u0026quot; = \u0026quot;aadbbcbcac\u0026quot;.\nSince s3 can be obtained by interleaving s1 and s2, we return true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;aabcc\u0026quot;, s2 = \u0026quot;dbbca\u0026quot;, s3 = \u0026quot;aadbbbaccc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Notice how it is impossible to interleave s2 with any other string to obtain s3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;\u0026quot;, s2 = \u0026quot;\u0026quot;, s3 = \u0026quot;\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= s1.length, s2.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= s3.length \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1\u003C/code\u003E, \u003Ccode\u003Es2\u003C/code\u003E, and \u003Ccode\u003Es3\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you solve it using only \u003Ccode\u003EO(s2.length)\u003C/code\u003E additional memory space?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aabcc\u0022\n\u0022dbbca\u0022\n\u0022aadbbcbcac\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022aabcc\u0022\n\u0022dbbca\u0022\n\u0022aadbbbaccc\u0022",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "\u0022\u0022\n\u0022\u0022\n\u0022\u0022",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5317277+00:00",
+  "Url": "https://leetcode.com/problems/interleaving-string/"
+}

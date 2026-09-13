@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3631,
+  "FrontendId": 3352,
+  "Title": "Count K-Reducible Numbers Less Than N",
+  "TitleSlug": "count-k-reducible-numbers-less-than-n",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 27.9,
+  "TotalAccepted": 4992,
+  "TotalSubmissions": 17865,
+  "Likes": 65,
+  "Dislikes": 3,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003Ebinary\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E representing a number \u003Ccode\u003En\u003C/code\u003E in its binary form.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn integer \u003Ccode\u003Ex\u003C/code\u003E is called \u003Cstrong\u003Ek-reducible\u003C/strong\u003E if performing the following operation \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E times reduces it to 1:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EReplace \u003Ccode\u003Ex\u003C/code\u003E with the \u003Cstrong\u003Ecount\u003C/strong\u003E of \u003Cspan data-keyword=\u0022set-bit\u0022\u003Eset bits\u003C/span\u003E in its binary representation.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, the binary representation of 6 is \u003Ccode\u003E\u0026quot;110\u0026quot;\u003C/code\u003E. Applying the operation once reduces it to 2 (since \u003Ccode\u003E\u0026quot;110\u0026quot;\u003C/code\u003E has two set bits). Applying the operation again to 2 (binary \u003Ccode\u003E\u0026quot;10\u0026quot;\u003C/code\u003E) reduces it to 1 (since \u003Ccode\u003E\u0026quot;10\u0026quot;\u003C/code\u003E has one set bit).\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the number of positive integers \u003Cstrong\u003Eless\u003C/strong\u003E than \u003Ccode\u003En\u003C/code\u003E that are \u003Cstrong\u003Ek-reducible\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be too large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;111\u0026quot;, k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation: \u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003En = 7\u003C/code\u003E. The 1-reducible integers less than 7 are 1, 2, and 4.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;1000\u0026quot;, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003En = 8\u003C/code\u003E. The 2-reducible integers less than 8 are 1, 2, 3, 4, 5, and 6.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;1\u0026quot;, k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are no positive integers less than \u003Ccode\u003En = 1\u003C/code\u003E, so the answer is 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 800\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E has no leading zeros.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists only of the characters \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "You can precompute number of operations required to convert a number with \u003Ccode\u003Ex\u003C/code\u003E bits to 1.",
+    "Use digit dp."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022111\u0022\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u00221000\u0022\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u00221\u0022\n3",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9414514+00:00",
+  "Url": "https://leetcode.com/problems/count-k-reducible-numbers-less-than-n/"
+}

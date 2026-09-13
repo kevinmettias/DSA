@@ -1,0 +1,41 @@
+{
+  "QuestionId": 4010,
+  "FrontendId": 3695,
+  "Title": "Maximize Alternating Sum Using Swaps",
+  "TitleSlug": "maximize-alternating-sum-using-swaps",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Union-Find",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 62.7,
+  "TotalAccepted": 9964,
+  "TotalSubmissions": 15890,
+  "Likes": 61,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou want to maximize the \u003Cstrong\u003Ealternating sum\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E, which is defined as the value obtained by \u003Cstrong\u003Eadding\u003C/strong\u003E elements at even indices and \u003Cstrong\u003Esubtracting\u003C/strong\u003E elements at odd indices. That is, \u003Ccode\u003Enums[0] - nums[1] \u002B nums[2] - nums[3]...\u003C/code\u003E\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a 2D integer array \u003Ccode\u003Eswaps\u003C/code\u003E where \u003Ccode\u003Eswaps[i] = [p\u003Csub\u003Ei\u003C/sub\u003E, q\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. For each pair \u003Ccode\u003E[p\u003Csub\u003Ei\u003C/sub\u003E, q\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E in \u003Ccode\u003Eswaps\u003C/code\u003E, you are allowed to swap the elements at indices \u003Ccode\u003Ep\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eq\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. These swaps can be performed any number of times and in any order.\u003C/p\u003E\n\n\u003Cp\u003EReturn the maximum possible \u003Cstrong\u003Ealternating sum\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3], swaps = [[0,2],[1,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe maximum alternating sum is achieved when \u003Ccode\u003Enums\u003C/code\u003E is \u003Ccode\u003E[2, 1, 3]\u003C/code\u003E or \u003Ccode\u003E[3, 1, 2]\u003C/code\u003E. As an example, you can obtain \u003Ccode\u003Enums = [2, 1, 3]\u003C/code\u003E as follows.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESwap \u003Ccode\u003Enums[0]\u003C/code\u003E and \u003Ccode\u003Enums[2]\u003C/code\u003E. \u003Ccode\u003Enums\u003C/code\u003E is now \u003Ccode\u003E[3, 2, 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESwap \u003Ccode\u003Enums[1]\u003C/code\u003E and \u003Ccode\u003Enums[2]\u003C/code\u003E. \u003Ccode\u003Enums\u003C/code\u003E is now \u003Ccode\u003E[3, 1, 2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESwap \u003Ccode\u003Enums[0]\u003C/code\u003E and \u003Ccode\u003Enums[2]\u003C/code\u003E. \u003Ccode\u003Enums\u003C/code\u003E is now \u003Ccode\u003E[2, 1, 3]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3], swaps = [[1,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe maximum alternating sum is achieved by not performing any swaps.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,1000000000,1,1000000000,1,1000000000], swaps = []\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-2999999997\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ESince we cannot perform any swaps, the maximum alternating sum is achieved by not performing any swaps.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= swaps.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eswaps[i] = [p\u003Csub\u003Ei\u003C/sub\u003E, q\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= p\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; q\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= nums.length - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[p\u003Csub\u003Ei\u003C/sub\u003E, q\u003Csub\u003Ei\u003C/sub\u003E] != [p\u003Csub\u003Ej\u003C/sub\u003E, q\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Build connected components using a DSU (disjoint-set union).",
+    "Let \u003Ccode\u003EE\u003C/code\u003E be the count of even indices inside that component. In each component, place the largest \u003Ccode\u003EE\u003C/code\u003E values on the component\u0027s even indices.",
+    "The component\u0027s contribution to the alternating sum is \u003Ccode\u003E2 * sumTopE - sumAll\u003C/code\u003E, where \u003Ccode\u003EsumTopE\u003C/code\u003E is the sum of the largest \u003Ccode\u003EE\u003C/code\u003E values and \u003Ccode\u003EsumAll\u003C/code\u003E is the sum of all values in the component."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]\n[[0,2],[1,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3]\n[[1,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,1000000000,1,1000000000,1,1000000000]\n[]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8668445+00:00",
+  "Url": "https://leetcode.com/problems/maximize-alternating-sum-using-swaps/"
+}

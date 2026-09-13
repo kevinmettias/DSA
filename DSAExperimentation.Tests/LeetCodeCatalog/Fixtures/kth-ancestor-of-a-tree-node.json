@@ -1,0 +1,31 @@
+{
+  "QuestionId": 1296,
+  "FrontendId": 1483,
+  "Title": "Kth Ancestor of a Tree Node",
+  "TitleSlug": "kth-ancestor-of-a-tree-node",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Binary Search",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Tree",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Design",
+    "Binary Lifting"
+  ],
+  "AcceptanceRatePercent": 39.6,
+  "TotalAccepted": 62019,
+  "TotalSubmissions": 156493,
+  "Likes": 2186,
+  "Dislikes": 127,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a tree with \u003Ccode\u003En\u003C/code\u003E nodes numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E in the form of a parent array \u003Ccode\u003Eparent\u003C/code\u003E where \u003Ccode\u003Eparent[i]\u003C/code\u003E is the parent of \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node. The root of the tree is node \u003Ccode\u003E0\u003C/code\u003E. Find the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E ancestor of a given node.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E ancestor of a tree node is the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node in the path from that node to the root node.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ETreeAncestor\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ETreeAncestor(int n, int[] parent)\u003C/code\u003E Initializes the object with the number of nodes in the tree and the parent array.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint getKthAncestor(int node, int k)\u003C/code\u003E return the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E ancestor of the given node \u003Ccode\u003Enode\u003C/code\u003E. If there is no such ancestor, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/08/28/1528_ex1.png\u0022 style=\u0022width: 396px; height: 262px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;TreeAncestor\u0026quot;, \u0026quot;getKthAncestor\u0026quot;, \u0026quot;getKthAncestor\u0026quot;, \u0026quot;getKthAncestor\u0026quot;]\n[[7, [-1, 0, 0, 1, 1, 2, 2]], [3, 1], [5, 2], [6, 3]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 1, 0, -1]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nTreeAncestor treeAncestor = new TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2]);\ntreeAncestor.getKthAncestor(3, 1); // returns 1 which is the parent of 3\ntreeAncestor.getKthAncestor(5, 2); // returns 0 which is the grandparent of 5\ntreeAncestor.getKthAncestor(6, 3); // returns -1 because there is no such ancestor\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eparent.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eparent[0] == -1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= parent[i] \u0026lt; n\u003C/code\u003E for all \u003Ccode\u003E0 \u0026lt; i \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= node \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere will be at most \u003Ccode\u003E5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E queries.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The queries must be answered efficiently to avoid time limit exceeded verdict.",
+    "Use sparse table (dynamic programming application) to travel the tree upwards in a fast way."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6006059+00:00",
+  "Url": "https://leetcode.com/problems/kth-ancestor-of-a-tree-node/"
+}

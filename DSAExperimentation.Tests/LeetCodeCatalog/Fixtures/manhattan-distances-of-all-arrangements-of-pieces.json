@@ -1,0 +1,34 @@
+{
+  "QuestionId": 3739,
+  "FrontendId": 3426,
+  "Title": "Manhattan Distances of All Arrangements of Pieces",
+  "TitleSlug": "manhattan-distances-of-all-arrangements-of-pieces",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 33.6,
+  "TotalAccepted": 4205,
+  "TotalSubmissions": 12506,
+  "Likes": 42,
+  "Dislikes": 11,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given three integers \u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003Em\u003C/font\u003E\u003C/code\u003E, \u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003En\u003C/font\u003E\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere is a rectangular grid of size \u003Ccode\u003Em \u0026times; n\u003C/code\u003E containing \u003Ccode\u003Ek\u003C/code\u003E identical pieces. Return the sum of Manhattan distances between every pair of pieces over all \u003Cstrong\u003Evalid arrangements\u003C/strong\u003E of pieces.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Evalid arrangement\u003C/strong\u003E is a placement of all \u003Ccode\u003Ek\u003C/code\u003E pieces on the grid with \u003Cstrong\u003Eat most\u003C/strong\u003E one piece per cell.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe Manhattan Distance between two cells \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E and \u003Ccode\u003E(x\u003Csub\u003Ej\u003C/sub\u003E, y\u003Csub\u003Ej\u003C/sub\u003E)\u003C/code\u003E is \u003Ccode\u003E|x\u003Csub\u003Ei\u003C/sub\u003E - x\u003Csub\u003Ej\u003C/sub\u003E| \u002B |y\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ej\u003C/sub\u003E|\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 2, n = 2, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe valid arrangements of pieces on the board are:\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/25/4040example1.drawio\u0022 /\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/25/untitled-diagramdrawio.png\u0022 style=\u0022width: 441px; height: 204px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIn the first 4 arrangements, the Manhattan distance between the two pieces is 1.\u003C/li\u003E\n\t\u003Cli\u003EIn the last 2 arrangements, the Manhattan distance between the two pieces is 2.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThus, the total Manhattan distance across all valid arrangements is \u003Ccode\u003E1 \u002B 1 \u002B 1 \u002B 1 \u002B 2 \u002B 2 = 8\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Em = 1, n = 4, k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E20\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe valid arrangements of pieces on the board are:\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/25/4040example2drawio.png\u0022 style=\u0022width: 762px; height: 41px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe first and last arrangements have a total Manhattan distance of \u003Ccode\u003E1 \u002B 1 \u002B 2 = 4\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe middle two arrangements have a total Manhattan distance of \u003Ccode\u003E1 \u002B 2 \u002B 3 = 6\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe total Manhattan distance between all pairs of pieces across all arrangements is \u003Ccode\u003E4 \u002B 6 \u002B 6 \u002B 4 = 20\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E2 \u0026lt;= k \u0026lt;= m * n\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Fix two pieces in two specific locations and find the number of boards where this can happen.",
+    "A particular pair of positions will be counted exactly \u003Ccode\u003EC(m * n - 2, k - 2)\u003C/code\u003E times. Calculate the total distance for all pairs of positions and multiply it with \u003Ccode\u003EC(m * n - 2, k - 2)\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "2\n2\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1\n4\n3",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8219044+00:00",
+  "Url": "https://leetcode.com/problems/manhattan-distances-of-all-arrangements-of-pieces/"
+}

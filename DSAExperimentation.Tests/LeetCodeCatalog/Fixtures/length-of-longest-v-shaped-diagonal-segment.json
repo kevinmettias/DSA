@@ -1,0 +1,44 @@
+{
+  "QuestionId": 3733,
+  "FrontendId": 3459,
+  "Title": "Length of Longest V-Shaped Diagonal Segment",
+  "TitleSlug": "length-of-longest-v-shaped-diagonal-segment",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Memoization",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 55.9,
+  "TotalAccepted": 74652,
+  "TotalSubmissions": 133557,
+  "Likes": 376,
+  "Dislikes": 67,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer matrix \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003En x m\u003C/code\u003E, where each element is either \u003Ccode\u003E0\u003C/code\u003E, \u003Ccode\u003E1\u003C/code\u003E, or \u003Ccode\u003E2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003EV-shaped diagonal segment\u003C/strong\u003E is defined as:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe segment starts with \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe subsequent elements follow this infinite sequence: \u003Ccode\u003E2, 0, 2, 0, ...\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe segment:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EStarts \u003Cstrong\u003Ealong\u003C/strong\u003E a diagonal direction (top-left to bottom-right, bottom-right to top-left, top-right to bottom-left, or bottom-left to top-right).\u003C/li\u003E\n\t\t\u003Cli\u003EContinues the\u003Cstrong\u003E sequence\u003C/strong\u003E in the same diagonal direction.\u003C/li\u003E\n\t\t\u003Cli\u003EMakes\u003Cstrong\u003E at most one clockwise 90-degree\u003C/strong\u003E\u003Cstrong\u003E turn\u003C/strong\u003E to another diagonal direction while \u003Cstrong\u003Emaintaining\u003C/strong\u003E the sequence.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Elength\u003C/strong\u003E of the \u003Cstrong\u003Elongest\u003C/strong\u003E \u003Cstrong\u003EV-shaped diagonal segment\u003C/strong\u003E. If no valid segment \u003Cem\u003Eexists\u003C/em\u003E, return 0.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[2,2,1,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/09/matrix_1-2.jpg\u0022 style=\u0022width: 201px; height: 192px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: \u003Ccode\u003E(0,2) \u0026rarr; (1,3) \u0026rarr; (2,4)\u003C/code\u003E, takes a \u003Cstrong\u003E90-degree clockwise turn\u003C/strong\u003E at \u003Ccode\u003E(2,4)\u003C/code\u003E, and continues as \u003Ccode\u003E(3,3) \u0026rarr; (4,2)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[2,2,2,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/09/matrix_2.jpg\u0022 style=\u0022width: 201px; height: 201px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe longest V-shaped diagonal segment has a length of 4 and follows these coordinates: \u003Ccode\u003E(2,3) \u0026rarr; (3,2)\u003C/code\u003E, takes a \u003Cstrong\u003E90-degree clockwise turn\u003C/strong\u003E at \u003Ccode\u003E(3,2)\u003C/code\u003E, and continues as \u003Ccode\u003E(2,1) \u0026rarr; (1,0)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[1,2,2,2,2],[2,2,2,2,0],[2,0,0,0,0],[0,0,2,2,2],[2,0,0,2,0]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/12/09/matrix_3.jpg\u0022 style=\u0022width: 201px; height: 201px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe longest V-shaped diagonal segment has a length of 5 and follows these coordinates: \u003Ccode\u003E(0,0) \u0026rarr; (1,1) \u0026rarr; (2,2) \u0026rarr; (3,3) \u0026rarr; (4,4)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe longest V-shaped diagonal segment has a length of 1 and follows these coordinates: \u003Ccode\u003E(0,0)\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n, m \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E, \u003Ccode\u003E1\u003C/code\u003E or \u003Ccode\u003E2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming to determine the best point to make a 90-degree rotation in the diagonal path while maintaining the required sequence.",
+    "Represent dynamic programming states as \u003Ccode\u003E(row, col, currentDirection, hasMadeTurnYet)\u003C/code\u003E. Track the current position, direction of traversal, and whether a turn has already been made, and take transitions accordingly to find the longest V-shaped diagonal segment."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,2,1,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[2,2,2,2,2],[2,0,2,2,0],[2,0,1,1,0],[1,0,2,2,2],[2,0,0,2,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1,2,2,2,2],[2,2,2,2,0],[2,0,0,0,0],[0,0,2,2,2],[2,0,0,2,0]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[1]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6528239+00:00",
+  "Url": "https://leetcode.com/problems/length-of-longest-v-shaped-diagonal-segment/"
+}

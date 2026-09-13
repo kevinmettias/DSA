@@ -1,0 +1,40 @@
+{
+  "QuestionId": 4145,
+  "FrontendId": 3768,
+  "Title": "Minimum Inversion Count in Subarrays of Fixed Length",
+  "TitleSlug": "minimum-inversion-count-in-subarrays-of-fixed-length",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Segment Tree",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 40.4,
+  "TotalAccepted": 5616,
+  "TotalSubmissions": 13916,
+  "Likes": 57,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Einversion\u003C/strong\u003E is a pair of indices \u003Ccode\u003E(i, j)\u003C/code\u003E from \u003Ccode\u003Enums\u003C/code\u003E such that \u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E and \u003Ccode\u003Enums[i] \u0026gt; nums[j]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Einversion count\u003C/strong\u003E of a \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E\u003C/strong\u003E is the number of inversions within it.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E inversion count among all \u003Cstrong\u003Esubarrays\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E with length \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,1,2,5,4], k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EWe consider all subarrays of length \u003Ccode\u003Ek = 3\u003C/code\u003E (indices below are relative to each subarray):\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[3, 1, 2]\u003C/code\u003E has 2 inversions: \u003Ccode\u003E(0, 1)\u003C/code\u003E and \u003Ccode\u003E(0, 2)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 2, 5]\u003C/code\u003E has 0 inversions.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[2, 5, 4]\u003C/code\u003E has 1 inversion: \u003Ccode\u003E(1, 2)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe minimum inversion count among all subarrays of length \u003Ccode\u003E3\u003C/code\u003E is 0, achieved by subarray \u003Ccode\u003E[1, 2, 5]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,3,2,1], k = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is only one subarray of length \u003Ccode\u003Ek = 4\u003C/code\u003E: \u003Ccode\u003E[5, 3, 2, 1]\u003C/code\u003E.\u003Cbr /\u003E\nWithin this subarray, the inversions are: \u003Ccode\u003E(0, 1)\u003C/code\u003E, \u003Ccode\u003E(0, 2)\u003C/code\u003E, \u003Ccode\u003E(0, 3)\u003C/code\u003E, \u003Ccode\u003E(1, 2)\u003C/code\u003E, \u003Ccode\u003E(1, 3)\u003C/code\u003E, and \u003Ccode\u003E(2, 3)\u003C/code\u003E.\u003Cbr /\u003E\nTotal inversions is 6, so the minimum inversion count is 6.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,1], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EAll subarrays of length \u003Ccode\u003Ek = 1\u003C/code\u003E contain only one element, so no inversions are possible.\u003Cbr /\u003E\nThe minimum inversion count is therefore 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Compress all numbers to integers in the range \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E.",
+    "Use a Fenwick tree (BIT) to maintain counts of the numbers.",
+    "When adding an element at the back, query how many elements are larger than it; when deleting an element from the front, query how many elements are smaller and update the tree accordingly."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,2,5,4]\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,3,2,1]\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,1]\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0620722+00:00",
+  "Url": "https://leetcode.com/problems/minimum-inversion-count-in-subarrays-of-fixed-length/"
+}

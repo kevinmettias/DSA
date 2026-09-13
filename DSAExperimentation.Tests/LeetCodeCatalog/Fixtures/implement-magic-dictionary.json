@@ -1,0 +1,25 @@
+{
+  "QuestionId": 676,
+  "FrontendId": 676,
+  "Title": "Implement Magic Dictionary",
+  "TitleSlug": "implement-magic-dictionary",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Depth-First Search",
+    "Design",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 58.2,
+  "TotalAccepted": 110788,
+  "TotalSubmissions": 190394,
+  "Likes": 1487,
+  "Dislikes": 216,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure that is initialized with a list of \u003Cstrong\u003Edifferent\u003C/strong\u003E words. Provided a string, you should determine if you can change exactly one character in this string to match any word in the data structure.\u003C/p\u003E\n\n\u003Cp\u003EImplement the\u0026nbsp;\u003Ccode\u003EMagicDictionary\u003C/code\u003E\u0026nbsp;class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMagicDictionary()\u003C/code\u003E\u0026nbsp;Initializes the object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid buildDict(String[]\u0026nbsp;dictionary)\u003C/code\u003E\u0026nbsp;Sets the data structure\u0026nbsp;with an array of distinct strings \u003Ccode\u003Edictionary\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool search(String searchWord)\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if you can change \u003Cstrong\u003Eexactly one character\u003C/strong\u003E in \u003Ccode\u003EsearchWord\u003C/code\u003E to match any string in the data structure, otherwise returns \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MagicDictionary\u0026quot;, \u0026quot;buildDict\u0026quot;, \u0026quot;search\u0026quot;, \u0026quot;search\u0026quot;, \u0026quot;search\u0026quot;, \u0026quot;search\u0026quot;]\n[[], [[\u0026quot;hello\u0026quot;, \u0026quot;leetcode\u0026quot;]], [\u0026quot;hello\u0026quot;], [\u0026quot;hhllo\u0026quot;], [\u0026quot;hell\u0026quot;], [\u0026quot;leetcoded\u0026quot;]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, false, true, false, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMagicDictionary magicDictionary = new MagicDictionary();\nmagicDictionary.buildDict([\u0026quot;hello\u0026quot;, \u0026quot;leetcode\u0026quot;]);\nmagicDictionary.search(\u0026quot;hello\u0026quot;); // return False\nmagicDictionary.search(\u0026quot;hhllo\u0026quot;); // We can change the second \u0026#39;h\u0026#39; to \u0026#39;e\u0026#39; to match \u0026quot;hello\u0026quot; so we return True\nmagicDictionary.search(\u0026quot;hell\u0026quot;); // return False\nmagicDictionary.search(\u0026quot;leetcoded\u0026quot;); // return False\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u0026nbsp;dictionary.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u0026nbsp;dictionary[i].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edictionary[i]\u003C/code\u003E consists of only lower-case English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings in\u0026nbsp;\u003Ccode\u003Edictionary\u003C/code\u003E\u0026nbsp;are \u003Cstrong\u003Edistinct\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;=\u0026nbsp;searchWord.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EsearchWord\u003C/code\u003E\u0026nbsp;consists of only lower-case English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EbuildDict\u003C/code\u003E\u0026nbsp;will be called only once before \u003Ccode\u003Esearch\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E100\u003C/code\u003E calls will be made to \u003Ccode\u003Esearch\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4635797+00:00",
+  "Url": "https://leetcode.com/problems/implement-magic-dictionary/"
+}

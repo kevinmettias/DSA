@@ -1,0 +1,35 @@
+{
+  "QuestionId": 1358,
+  "FrontendId": 1237,
+  "Title": "Find Positive Integer Solution for a Given Equation",
+  "TitleSlug": "find-positive-integer-solution-for-a-given-equation",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Two Pointers",
+    "Binary Search",
+    "Interactive"
+  ],
+  "AcceptanceRatePercent": 70.2,
+  "TotalAccepted": 85435,
+  "TotalSubmissions": 121715,
+  "Likes": 550,
+  "Dislikes": 1448,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a callable function \u003Ccode\u003Ef(x, y)\u003C/code\u003E \u003Cstrong\u003Ewith a hidden formula\u003C/strong\u003E and a value \u003Ccode\u003Ez\u003C/code\u003E, reverse engineer the formula and return \u003Cem\u003Eall positive integer pairs \u003C/em\u003E\u003Ccode\u003Ex\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Ey\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Ef(x,y) == z\u003C/code\u003E. You may return the pairs in any order.\u003C/p\u003E\n\n\u003Cp\u003EWhile the exact formula is hidden, the function is monotonically increasing, i.e.:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ef(x, y) \u0026lt; f(x \u002B 1, y)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ef(x, y) \u0026lt; f(x, y \u002B 1)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe function interface is defined like this:\u003C/p\u003E\n\n\u003Cpre\u003E\ninterface CustomFunction {\npublic:\n  // Returns some positive integer f(x, y) for two positive integers x and y based on a formula.\n  int f(int x, int y);\n};\n\u003C/pre\u003E\n\n\u003Cp\u003EWe will judge your solution as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe judge has a list of \u003Ccode\u003E9\u003C/code\u003E hidden implementations of \u003Ccode\u003ECustomFunction\u003C/code\u003E, along with a way to generate an \u003Cstrong\u003Eanswer key\u003C/strong\u003E of all valid pairs for a specific \u003Ccode\u003Ez\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe judge will receive two inputs: a \u003Ccode\u003Efunction_id\u003C/code\u003E (to determine which implementation to test your code with), and the target \u003Ccode\u003Ez\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe judge will call your \u003Ccode\u003EfindSolution\u003C/code\u003E and compare your results with the \u003Cstrong\u003Eanswer key\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf your results match the \u003Cstrong\u003Eanswer key\u003C/strong\u003E, your solution will be \u003Ccode\u003EAccepted\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E function_id = 1, z = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,4],[2,3],[3,2],[4,1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The hidden formula for function_id = 1 is f(x, y) = x \u002B y.\nThe following positive integer values of x and y make f(x, y) equal to 5:\nx=1, y=4 -\u0026gt; f(1, 4) = 1 \u002B 4 = 5.\nx=2, y=3 -\u0026gt; f(2, 3) = 2 \u002B 3 = 5.\nx=3, y=2 -\u0026gt; f(3, 2) = 3 \u002B 2 = 5.\nx=4, y=1 -\u0026gt; f(4, 1) = 4 \u002B 1 = 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E function_id = 2, z = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,5],[5,1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The hidden formula for function_id = 2 is f(x, y) = x * y.\nThe following positive integer values of x and y make f(x, y) equal to 5:\nx=1, y=5 -\u0026gt; f(1, 5) = 1 * 5 = 5.\nx=5, y=1 -\u0026gt; f(5, 1) = 5 * 1 = 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= function_id \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= z \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that the solutions of \u003Ccode\u003Ef(x, y) == z\u003C/code\u003E will be in the range \u003Ccode\u003E1 \u0026lt;= x, y \u0026lt;= 1000\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt is also guaranteed that \u003Ccode\u003Ef(x, y)\u003C/code\u003E will fit in 32 bit signed integer if \u003Ccode\u003E1 \u0026lt;= x, y \u0026lt;= 1000\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Loop over 1 \u2264 x,y \u2264 1000 and check if f(x,y) == z."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n5",
+      "RawExpectedOutput": "[[1,4],[2,3],[3,2],[4,1]]"
+    },
+    {
+      "RawInput": "2\n5",
+      "RawExpectedOutput": "[[1,5],[5,1]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2703845+00:00",
+  "Url": "https://leetcode.com/problems/find-positive-integer-solution-for-a-given-equation/"
+}

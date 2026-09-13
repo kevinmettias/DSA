@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2422,
+  "FrontendId": 2343,
+  "Title": "Query Kth Smallest Trimmed Number",
+  "TitleSlug": "query-kth-smallest-trimmed-number",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Divide and Conquer",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Radix Sort",
+    "Quickselect"
+  ],
+  "AcceptanceRatePercent": 48.2,
+  "TotalAccepted": 42912,
+  "TotalSubmissions": 89019,
+  "Likes": 355,
+  "Dislikes": 444,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array of strings \u003Ccode\u003Enums\u003C/code\u003E, where each string is of \u003Cstrong\u003Eequal length\u003C/strong\u003E and consists of only digits.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer array \u003Ccode\u003Equeries\u003C/code\u003E where \u003Ccode\u003Equeries[i] = [k\u003Csub\u003Ei\u003C/sub\u003E, trim\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. For each \u003Ccode\u003Equeries[i]\u003C/code\u003E, you need to:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ETrim\u003C/strong\u003E each number in \u003Ccode\u003Enums\u003C/code\u003E to its \u003Cstrong\u003Erightmost\u003C/strong\u003E \u003Ccode\u003Etrim\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E digits.\u003C/li\u003E\n\t\u003Cli\u003EDetermine the \u003Cstrong\u003Eindex\u003C/strong\u003E of the \u003Ccode\u003Ek\u003Csub\u003Ei\u003C/sub\u003E\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E smallest trimmed number in \u003Ccode\u003Enums\u003C/code\u003E. If two trimmed numbers are equal, the number with the \u003Cstrong\u003Elower\u003C/strong\u003E index is considered to be smaller.\u003C/li\u003E\n\t\u003Cli\u003EReset each number in \u003Ccode\u003Enums\u003C/code\u003E to its original length.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E of the same length as \u003C/em\u003E\u003Ccode\u003Equeries\u003C/code\u003E,\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the answer to the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E query.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ETo trim to the rightmost \u003Ccode\u003Ex\u003C/code\u003E digits means to keep removing the leftmost digit, until only \u003Ccode\u003Ex\u003C/code\u003E digits remain.\u003C/li\u003E\n\t\u003Cli\u003EStrings in \u003Ccode\u003Enums\u003C/code\u003E may contain leading zeros.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [\u0026quot;102\u0026quot;,\u0026quot;473\u0026quot;,\u0026quot;251\u0026quot;,\u0026quot;814\u0026quot;], queries = [[1,1],[2,3],[4,2],[1,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,2,1,0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n1. After trimming to the last digit, nums = [\u0026quot;2\u0026quot;,\u0026quot;3\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;4\u0026quot;]. The smallest number is 1 at index 2.\n2. Trimmed to the last 3 digits, nums is unchanged. The 2\u003Csup\u003End\u003C/sup\u003E smallest number is 251 at index 2.\n3. Trimmed to the last 2 digits, nums = [\u0026quot;02\u0026quot;,\u0026quot;73\u0026quot;,\u0026quot;51\u0026quot;,\u0026quot;14\u0026quot;]. The 4\u003Csup\u003Eth\u003C/sup\u003E smallest number is 73.\n4. Trimmed to the last 2 digits, the smallest number is 2 at index 0.\n   Note that the trimmed number \u0026quot;02\u0026quot; is evaluated as 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [\u0026quot;24\u0026quot;,\u0026quot;37\u0026quot;,\u0026quot;96\u0026quot;,\u0026quot;04\u0026quot;], queries = [[2,1],[2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n1. Trimmed to the last digit, nums = [\u0026quot;4\u0026quot;,\u0026quot;7\u0026quot;,\u0026quot;6\u0026quot;,\u0026quot;4\u0026quot;]. The 2\u003Csup\u003End\u003C/sup\u003E smallest number is 4 at index 3.\n   There are two occurrences of 4, but the one at index 0 is considered smaller than the one at index 3.\n2. Trimmed to the last 2 digits, nums is unchanged. The 2\u003Csup\u003End\u003C/sup\u003E smallest number is 24.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i]\u003C/code\u003E consists of only digits.\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003Enums[i].length\u003C/code\u003E are \u003Cstrong\u003Eequal\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= trim\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= nums[i].length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you use the \u003Cstrong\u003ERadix Sort Algorithm\u003C/strong\u003E to solve this problem? What will be the complexity of that solution?\u003C/p\u003E\n",
+  "Hints": [
+    "Run a simulation to follow the requirement of each query."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022102\u0022,\u0022473\u0022,\u0022251\u0022,\u0022814\u0022]\n[[1,1],[2,3],[4,2],[1,2]]",
+      "RawExpectedOutput": "[2,2,1,0]"
+    },
+    {
+      "RawInput": "[\u002224\u0022,\u002237\u0022,\u002296\u0022,\u002204\u0022]\n[[2,1],[2,2]]",
+      "RawExpectedOutput": "[3,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6099248+00:00",
+  "Url": "https://leetcode.com/problems/query-kth-smallest-trimmed-number/"
+}

@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1017,
+  "FrontendId": 975,
+  "Title": "Odd Even Jump",
+  "TitleSlug": "odd-even-jump",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Stack",
+    "Sorting",
+    "Monotonic Stack",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 41.6,
+  "TotalAccepted": 107323,
+  "TotalSubmissions": 258258,
+  "Likes": 2130,
+  "Dislikes": 534,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Earr\u003C/code\u003E. From some starting index, you can make a series of jumps. The (1\u003Csup\u003Est\u003C/sup\u003E, 3\u003Csup\u003Erd\u003C/sup\u003E, 5\u003Csup\u003Eth\u003C/sup\u003E, ...) jumps in the series are called \u003Cstrong\u003Eodd-numbered jumps\u003C/strong\u003E, and the (2\u003Csup\u003End\u003C/sup\u003E, 4\u003Csup\u003Eth\u003C/sup\u003E, 6\u003Csup\u003Eth\u003C/sup\u003E, ...) jumps in the series are called \u003Cstrong\u003Eeven-numbered jumps\u003C/strong\u003E. Note that the \u003Cstrong\u003Ejumps\u003C/strong\u003E are numbered, not the indices.\u003C/p\u003E\n\n\u003Cp\u003EYou may jump forward from index \u003Ccode\u003Ei\u003C/code\u003E to index \u003Ccode\u003Ej\u003C/code\u003E (with \u003Ccode\u003Ei \u0026lt; j\u003C/code\u003E) in the following way:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EDuring \u003Cstrong\u003Eodd-numbered jumps\u003C/strong\u003E (i.e., jumps 1, 3, 5, ...), you jump to the index \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003Earr[i] \u0026lt;= arr[j]\u003C/code\u003E and \u003Ccode\u003Earr[j]\u003C/code\u003E is the smallest possible value. If there are multiple such indices \u003Ccode\u003Ej\u003C/code\u003E, you can only jump to the \u003Cstrong\u003Esmallest\u003C/strong\u003E such index \u003Ccode\u003Ej\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EDuring \u003Cstrong\u003Eeven-numbered jumps\u003C/strong\u003E (i.e., jumps 2, 4, 6, ...), you jump to the index \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003Earr[i] \u0026gt;= arr[j]\u003C/code\u003E and \u003Ccode\u003Earr[j]\u003C/code\u003E is the largest possible value. If there are multiple such indices \u003Ccode\u003Ej\u003C/code\u003E, you can only jump to the \u003Cstrong\u003Esmallest\u003C/strong\u003E such index \u003Ccode\u003Ej\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt may be the case that for some index \u003Ccode\u003Ei\u003C/code\u003E, there are no legal jumps.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA starting index is \u003Cstrong\u003Egood\u003C/strong\u003E if, starting from that index, you can reach the end of the array (index \u003Ccode\u003Earr.length - 1\u003C/code\u003E) by jumping some number of times (possibly 0 or more than once).\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of \u003Cstrong\u003Egood\u003C/strong\u003E starting indices\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [10,13,12,14,15]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFrom starting index i = 0, we can make our 1st jump to i = 2 (since arr[2] is the smallest among arr[1], arr[2], arr[3], arr[4] that is greater or equal to arr[0]), then we cannot jump any more.\nFrom starting index i = 1 and i = 2, we can make our 1st jump to i = 3, then we cannot jump any more.\nFrom starting index i = 3, we can make our 1st jump to i = 4, so we have reached the end.\nFrom starting index i = 4, we have reached the end already.\nIn total, there are 2 different starting indices i = 3 and i = 4, where we can reach the end with some number of\njumps.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [2,3,1,1,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFrom starting index i = 0, we make jumps to i = 1, i = 2, i = 3:\nDuring our 1st jump (odd-numbered), we first jump to i = 1 because arr[1] is the smallest value in [arr[1], arr[2], arr[3], arr[4]] that is greater than or equal to arr[0].\nDuring our 2nd jump (even-numbered), we jump from i = 1 to i = 2 because arr[2] is the largest value in [arr[2], arr[3], arr[4]] that is less than or equal to arr[1]. arr[3] is also the largest value, but 2 is a smaller index, so we can only jump to i = 2 and not i = 3\nDuring our 3rd jump (odd-numbered), we jump from i = 2 to i = 3 because arr[3] is the smallest value in [arr[3], arr[4]] that is greater than or equal to arr[2].\nWe can\u0026#39;t jump from i = 3 to i = 4, so the starting index i = 0 is not good.\nIn a similar manner, we can deduce that:\nFrom starting index i = 1, we jump to i = 4, so we reach the end.\nFrom starting index i = 2, we jump to i = 3, and then we can\u0026#39;t jump anymore.\nFrom starting index i = 3, we jump to i = 4, so we reach the end.\nFrom starting index i = 4, we are already at the end.\nIn total, there are 3 different starting indices i = 1, i = 3, and i = 4, where we can reach the end with some\nnumber of jumps.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [5,1,3,4,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can reach the end from starting indices 1, 2, and 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= arr[i] \u0026lt; 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,13,12,14,15]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[2,3,1,1,4]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[5,1,3,4,2]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3194014+00:00",
+  "Url": "https://leetcode.com/problems/odd-even-jump/"
+}

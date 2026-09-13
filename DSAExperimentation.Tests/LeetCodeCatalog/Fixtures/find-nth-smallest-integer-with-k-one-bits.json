@@ -1,0 +1,36 @@
+{
+  "QuestionId": 4189,
+  "FrontendId": 3821,
+  "Title": "Find Nth Smallest Integer With K One Bits",
+  "TitleSlug": "find-nth-smallest-integer-with-k-one-bits",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Bit Manipulation",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 35.6,
+  "TotalAccepted": 10355,
+  "TotalSubmissions": 29090,
+  "Likes": 72,
+  "Dislikes": 2,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two positive integers \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the \u003Ccode\u003En\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E smallest positive integer that has \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E ones in its binary representation. It is guaranteed that the answer is \u003Cstrong\u003Estrictly less\u003C/strong\u003E than \u003Ccode\u003E2\u003Csup\u003E50\u003C/sup\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E9\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe 4 smallest positive integers that have exactly \u003Ccode\u003Ek = 2\u003C/code\u003E ones in their binary representations are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 = 11\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E5 = 101\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E6 = 110\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E9 = 1001\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe 3 smallest positive integers that have exactly \u003Ccode\u003Ek = 1\u003C/code\u003E one in their binary representations are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 = 1\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 = 10\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E4 = 100\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2\u003Csup\u003E50\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe answer is strictly less than \u003Ccode\u003E2\u003Csup\u003E50\u003C/sup\u003E\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Since the answer is strictly less than \u003Ccode\u003E2\u003Csup\u003E50\u003C/sup\u003E\u003C/code\u003E, we can iterate over the number of bits (the length) of the result.",
+    "Precompute binomial coefficients \u003Ccode\u003EC(n, k)\u003C/code\u003E to count how many numbers with exactly \u003Ccode\u003Ek\u003C/code\u003E set bits exist for a given length.",
+    "Determine the position of the most significant bit first, then greedily determine the remaining bits from MSB to LSB based on the remaining count \u003Ccode\u003En\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2639955+00:00",
+  "Url": "https://leetcode.com/problems/find-nth-smallest-integer-with-k-one-bits/"
+}

@@ -1,0 +1,47 @@
+{
+  "QuestionId": 678,
+  "FrontendId": 678,
+  "Title": "Valid Parenthesis String",
+  "TitleSlug": "valid-parenthesis-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Stack",
+    "Greedy",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 40.5,
+  "TotalAccepted": 643668,
+  "TotalSubmissions": 1589723,
+  "Likes": 7172,
+  "Dislikes": 229,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E containing only three types of characters: \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif\u003C/em\u003E \u003Ccode\u003Es\u003C/code\u003E \u003Cem\u003Eis \u003Cstrong\u003Evalid\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe following rules define a \u003Cstrong\u003Evalid\u003C/strong\u003E string:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAny left parenthesis \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E must have a corresponding right parenthesis \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAny right parenthesis \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E must have a corresponding left parenthesis \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ELeft parenthesis \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E must go before the corresponding right parenthesis \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E could be treated as a single right parenthesis \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E or a single left parenthesis \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E or an empty string \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(*)\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(*))\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use backtracking to explore all possible combinations of treating \u0027*\u0027 as either \u0027(\u0027, \u0027)\u0027, or an empty string. If any combination leads to a valid string, return true.",
+    "DP[i][j] represents whether the substring s[i:j] is valid.",
+    "Keep track of the count of open parentheses encountered so far. If you encounter a close parenthesis, it should balance with an open parenthesis. Utilize a stack to handle this effectively.",
+    "How about using 2 stacks instead of 1? Think about it."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022()\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022(*)\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022(*))\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022(\u0022",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3569846+00:00",
+  "Url": "https://leetcode.com/problems/valid-parenthesis-string/"
+}

@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3784,
+  "FrontendId": 3485,
+  "Title": "Longest Common Prefix of K Strings After Removal",
+  "TitleSlug": "longest-common-prefix-of-k-strings-after-removal",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 24.1,
+  "TotalAccepted": 6997,
+  "TotalSubmissions": 28985,
+  "Likes": 66,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of strings \u003Ccode\u003Ewords\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor each index \u003Ccode\u003Ei\u003C/code\u003E in the range \u003Ccode\u003E[0, words.length - 1]\u003C/code\u003E, find the \u003Cstrong\u003Elength\u003C/strong\u003E of the \u003Cstrong\u003Elongest common \u003Cspan data-keyword=\u0022string-prefix\u0022\u003Eprefix\u003C/span\u003E\u003C/strong\u003E among any \u003Ccode\u003Ek\u003C/code\u003E strings (selected at \u003Cstrong\u003Edistinct indices\u003C/strong\u003E) from the remaining array after removing the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E element.\u003C/p\u003E\n\n\u003Cp\u003EReturn an array \u003Ccode\u003Eanswer\u003C/code\u003E, where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the answer for \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E element. If removing the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E element leaves the array with fewer than \u003Ccode\u003Ek\u003C/code\u003E strings, \u003Ccode\u003Eanswer[i]\u003C/code\u003E is 0.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ewords = [\u0026quot;jump\u0026quot;,\u0026quot;run\u0026quot;,\u0026quot;run\u0026quot;,\u0026quot;jump\u0026quot;,\u0026quot;run\u0026quot;], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[3,4,4,3,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ERemoving index 0 (\u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E):\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Ewords\u003C/code\u003E becomes: \u003Ccode\u003E[\u0026quot;run\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;]\u003C/code\u003E. \u003Ccode\u003E\u0026quot;run\u0026quot;\u003C/code\u003E occurs 3 times. Choosing any two gives the longest common prefix \u003Ccode\u003E\u0026quot;run\u0026quot;\u003C/code\u003E (length 3).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003ERemoving index 1 (\u003Ccode\u003E\u0026quot;run\u0026quot;\u003C/code\u003E):\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Ewords\u003C/code\u003E becomes: \u003Ccode\u003E[\u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;]\u003C/code\u003E. \u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E occurs twice. Choosing these two gives the longest common prefix \u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E (length 4).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003ERemoving index 2 (\u003Ccode\u003E\u0026quot;run\u0026quot;\u003C/code\u003E):\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Ewords\u003C/code\u003E becomes: \u003Ccode\u003E[\u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;]\u003C/code\u003E. \u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E occurs twice. Choosing these two gives the longest common prefix \u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E (length 4).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003ERemoving index 3 (\u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E):\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Ewords\u003C/code\u003E becomes: \u003Ccode\u003E[\u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;run\u0026quot;]\u003C/code\u003E. \u003Ccode\u003E\u0026quot;run\u0026quot;\u003C/code\u003E occurs 3 times. Choosing any two gives the longest common prefix \u003Ccode\u003E\u0026quot;run\u0026quot;\u003C/code\u003E (length 3).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003ERemoving index 4 (\u0026quot;run\u0026quot;):\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Ewords\u003C/code\u003E becomes: \u003Ccode\u003E[\u0026quot;jump\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;run\u0026quot;, \u0026quot;jump\u0026quot;]\u003C/code\u003E. \u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E occurs twice. Choosing these two gives the longest common prefix \u003Ccode\u003E\u0026quot;jump\u0026quot;\u003C/code\u003E (length 4).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ewords = [\u0026quot;dog\u0026quot;,\u0026quot;racer\u0026quot;,\u0026quot;car\u0026quot;], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[0,0,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ERemoving any index results in an answer of 0.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= words.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EThe sum of \u003Ccode\u003Ewords[i].length\u003C/code\u003E is smaller than or equal \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a trie to store all the strings initially.",
+    "For each node in the trie, maintain the count of paths ending there.",
+    "For each \u003Ccode\u003Earr[i]\u003C/code\u003E, remove it from the trie and update the counts.",
+    "During evaluation, find the innermost node with at least \u003Ccode\u003Ek\u003C/code\u003E paths ending there.",
+    "Use a multiset or similar structure to handle updates efficiently."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022jump\u0022,\u0022run\u0022,\u0022run\u0022,\u0022jump\u0022,\u0022run\u0022]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[\u0022dog\u0022,\u0022racer\u0022,\u0022car\u0022]\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7096343+00:00",
+  "Url": "https://leetcode.com/problems/longest-common-prefix-of-k-strings-after-removal/"
+}

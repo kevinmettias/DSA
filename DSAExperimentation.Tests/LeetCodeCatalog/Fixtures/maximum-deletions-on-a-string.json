@@ -1,0 +1,43 @@
+{
+  "QuestionId": 2510,
+  "FrontendId": 2430,
+  "Title": "Maximum Deletions on a String",
+  "TitleSlug": "maximum-deletions-on-a-string",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 36.4,
+  "TotalAccepted": 18259,
+  "TotalSubmissions": 50156,
+  "Likes": 529,
+  "Dislikes": 61,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E consisting of only lowercase English letters. In one operation, you can:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EDelete \u003Cstrong\u003Ethe entire string\u003C/strong\u003E \u003Ccode\u003Es\u003C/code\u003E, or\u003C/li\u003E\n\t\u003Cli\u003EDelete the \u003Cstrong\u003Efirst\u003C/strong\u003E \u003Ccode\u003Ei\u003C/code\u003E letters of \u003Ccode\u003Es\u003C/code\u003E if the first \u003Ccode\u003Ei\u003C/code\u003E letters of \u003Ccode\u003Es\u003C/code\u003E are \u003Cstrong\u003Eequal\u003C/strong\u003E to the following \u003Ccode\u003Ei\u003C/code\u003E letters in \u003Ccode\u003Es\u003C/code\u003E, for any \u003Ccode\u003Ei\u003C/code\u003E in the range \u003Ccode\u003E1 \u0026lt;= i \u0026lt;= s.length / 2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, if \u003Ccode\u003Es = \u0026quot;ababc\u0026quot;\u003C/code\u003E, then in one operation, you could delete the first two letters of \u003Ccode\u003Es\u003C/code\u003E to get \u003Ccode\u003E\u0026quot;abc\u0026quot;\u003C/code\u003E, since the first two letters of \u003Ccode\u003Es\u003C/code\u003E and the following two letters of \u003Ccode\u003Es\u003C/code\u003E are both equal to \u003Ccode\u003E\u0026quot;ab\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E number of operations needed to delete all of \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abcabcdabc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- Delete the first 3 letters (\u0026quot;abc\u0026quot;) since the next 3 letters are equal. Now, s = \u0026quot;abcdabc\u0026quot;.\n- Delete all the letters.\nWe used 2 operations so return 2. It can be proven that 2 is the maximum number of operations needed.\nNote that in the second operation we cannot delete \u0026quot;abc\u0026quot; again because the next occurrence of \u0026quot;abc\u0026quot; does not happen in the next 3 letters.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aaabaab\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- Delete the first letter (\u0026quot;a\u0026quot;) since the next letter is equal. Now, s = \u0026quot;aabaab\u0026quot;.\n- Delete the first 3 letters (\u0026quot;aab\u0026quot;) since the next 3 letters are equal. Now, s = \u0026quot;aab\u0026quot;.\n- Delete the first letter (\u0026quot;a\u0026quot;) since the next letter is equal. Now, s = \u0026quot;ab\u0026quot;.\n- Delete all the letters.\nWe used 4 operations so return 4. It can be proven that 4 is the maximum number of operations needed.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aaaaa\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E In each operation, we can delete the first letter of s.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 4000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can use dynamic programming to find the answer. Create a 0-indexed dp array where dp[i] represents the maximum number of moves needed to remove the first i \u002B 1 letters from s.",
+    "What should we do if there is an i where it is impossible to remove the first i \u002B 1 letters?",
+    "Use a sentinel value such as -1 to show that it is impossible.",
+    "How can we quickly determine if two substrings of s are equal? We can use hashing."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abcabcdabc\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022aaabaab\u0022",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "\u0022aaaaa\u0022",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8808658+00:00",
+  "Url": "https://leetcode.com/problems/maximum-deletions-on-a-string/"
+}

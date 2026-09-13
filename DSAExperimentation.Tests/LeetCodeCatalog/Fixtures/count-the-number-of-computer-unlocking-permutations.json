@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3864,
+  "FrontendId": 3577,
+  "Title": "Count the Number of Computer Unlocking Permutations",
+  "TitleSlug": "count-the-number-of-computer-unlocking-permutations",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Brainteaser",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 58.7,
+  "TotalAccepted": 95474,
+  "TotalSubmissions": 162731,
+  "Likes": 360,
+  "Dislikes": 133,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Ecomplexity\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E \u003Cstrong\u003Elocked\u003C/strong\u003E computers in a room with labels from 0 to \u003Ccode\u003En - 1\u003C/code\u003E, each with its own \u003Cstrong\u003Eunique\u003C/strong\u003E password. The password of the computer \u003Ccode\u003Ei\u003C/code\u003E has a complexity \u003Ccode\u003Ecomplexity[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe password for the computer labeled 0 is \u003Cstrong\u003Ealready\u003C/strong\u003E decrypted and serves as the root. All other computers must be unlocked using it or another previously unlocked computer, following this information:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EYou can decrypt the password for the computer \u003Ccode\u003Ei\u003C/code\u003E using the password for computer \u003Ccode\u003Ej\u003C/code\u003E, where \u003Ccode\u003Ej\u003C/code\u003E is \u003Cstrong\u003Eany\u003C/strong\u003E integer less than \u003Ccode\u003Ei\u003C/code\u003E with a lower complexity. (i.e. \u003Ccode\u003Ej \u0026lt; i\u003C/code\u003E and \u003Ccode\u003Ecomplexity[j] \u0026lt; complexity[i]\u003C/code\u003E)\u003C/li\u003E\n\t\u003Cli\u003ETo decrypt the password for computer \u003Ccode\u003Ei\u003C/code\u003E, you must have already unlocked a computer \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003Ej \u0026lt; i\u003C/code\u003E and \u003Ccode\u003Ecomplexity[j] \u0026lt; complexity[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFind the number of \u003Cspan data-keyword=\u0022permutation-array\u0022\u003Epermutations\u003C/span\u003E of \u003Ccode\u003E[0, 1, 2, ..., (n - 1)]\u003C/code\u003E that represent a valid order in which the computers can be unlocked, starting from computer 0 as the only initially unlocked one.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E 10\u003Csup\u003E9\u003C/sup\u003E \u002B 7.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that the password for the computer \u003Cstrong\u003Ewith label\u003C/strong\u003E 0 is decrypted, and \u003Cem\u003Enot\u003C/em\u003E the computer with the first position in the permutation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ecomplexity = [1,2,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe valid permutations are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E[0, 1, 2]\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUnlock computer 0 first with root password.\u003C/li\u003E\n\t\t\u003Cli\u003EUnlock computer 1 with password of computer 0 since \u003Ccode\u003Ecomplexity[0] \u0026lt; complexity[1]\u003C/code\u003E.\u003C/li\u003E\n\t\t\u003Cli\u003EUnlock computer 2 with password of computer 1 since \u003Ccode\u003Ecomplexity[1] \u0026lt; complexity[2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003E[0, 2, 1]\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUnlock computer 0 first with root password.\u003C/li\u003E\n\t\t\u003Cli\u003EUnlock computer 2 with password of computer 0 since \u003Ccode\u003Ecomplexity[0] \u0026lt; complexity[2]\u003C/code\u003E.\u003C/li\u003E\n\t\t\u003Cli\u003EUnlock computer 1 with password of computer 0 since \u003Ccode\u003Ecomplexity[0] \u0026lt; complexity[1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ecomplexity = [3,3,3,4,4,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are no possible permutations which can unlock all computers.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= complexity.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= complexity[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Ensure that the element at index 0 has the unique minimum complexity (no other element can match its value).",
+    "Fix index 0 as the first in the unlocking order.",
+    "The remaining indices from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E can then be arranged arbitrarily, yielding \u003Ccode\u003Efactorial(n - 1)\u003C/code\u003E possible orders."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,3,3,4,4,4]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9822356+00:00",
+  "Url": "https://leetcode.com/problems/count-the-number-of-computer-unlocking-permutations/"
+}

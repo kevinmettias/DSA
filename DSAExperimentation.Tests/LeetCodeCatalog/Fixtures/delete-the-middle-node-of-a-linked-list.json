@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2216,
+  "FrontendId": 2095,
+  "Title": "Delete the Middle Node of a Linked List",
+  "TitleSlug": "delete-the-middle-node-of-a-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Two Pointers"
+  ],
+  "AcceptanceRatePercent": 60.9,
+  "TotalAccepted": 1173296,
+  "TotalSubmissions": 1926420,
+  "Likes": 5247,
+  "Dislikes": 111,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list. \u003Cstrong\u003EDelete\u003C/strong\u003E the \u003Cstrong\u003Emiddle node\u003C/strong\u003E, and return \u003Cem\u003Ethe\u003C/em\u003E \u003Ccode\u003Ehead\u003C/code\u003E \u003Cem\u003Eof the modified linked list\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Emiddle node\u003C/strong\u003E of a linked list of size \u003Ccode\u003En\u003C/code\u003E is the \u003Ccode\u003E\u0026lfloor;n / 2\u0026rfloor;\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node from the \u003Cb\u003Estart\u003C/b\u003E using \u003Cstrong\u003E0-based indexing\u003C/strong\u003E, where \u003Ccode\u003E\u0026lfloor;x\u0026rfloor;\u003C/code\u003E denotes the largest integer less than or equal to \u003Ccode\u003Ex\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor \u003Ccode\u003En\u003C/code\u003E = \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E, \u003Ccode\u003E3\u003C/code\u003E, \u003Ccode\u003E4\u003C/code\u003E, and \u003Ccode\u003E5\u003C/code\u003E, the middle nodes are \u003Ccode\u003E0\u003C/code\u003E, \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E, and \u003Ccode\u003E2\u003C/code\u003E, respectively.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/16/eg1drawio.png\u0022 style=\u0022width: 500px; height: 77px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,3,4,7,1,2,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,3,4,1,2,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe above figure represents the given linked list. The indices of the nodes are written below.\nSince n = 7, node 3 with value 7 is the middle node, which is marked in red.\nWe return the new list after removing this node. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/16/eg2drawio.png\u0022 style=\u0022width: 250px; height: 43px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,4]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe above figure represents the given linked list.\nFor n = 4, node 2 with value 3 is the middle node, which is marked in red.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/11/16/eg3drawio.png\u0022 style=\u0022width: 150px; height: 58px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe above figure represents the given linked list.\nFor n = 2, node 1 with value 1 is the middle node, which is marked in red.\nNode 0 with value 2 is the only node remaining after removing node 1.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If a point with a speed s moves n units in a given time, a point with speed 2 * s will move 2 * n units at the same time. Can you use this to find the middle node of a linked list?",
+    "If you are given the middle node, the node before it, and the node after it, how can you modify the linked list?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3,4,7,1,2,6]",
+      "RawExpectedOutput": "[1,3,4,1,2,6]"
+    },
+    {
+      "RawInput": "[1,2,3,4]",
+      "RawExpectedOutput": "[1,2,4]"
+    },
+    {
+      "RawInput": "[2,1]",
+      "RawExpectedOutput": "[2]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0700112+00:00",
+  "Url": "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/"
+}

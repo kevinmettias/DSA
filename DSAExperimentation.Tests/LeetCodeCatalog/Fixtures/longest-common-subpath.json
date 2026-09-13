@@ -1,0 +1,44 @@
+{
+  "QuestionId": 2051,
+  "FrontendId": 1923,
+  "Title": "Longest Common Subpath",
+  "TitleSlug": "longest-common-subpath",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Rolling Hash",
+    "Suffix Array",
+    "Hash Function",
+    "Suffix Automaton",
+    "Suffix Tree"
+  ],
+  "AcceptanceRatePercent": 30.5,
+  "TotalAccepted": 11211,
+  "TotalSubmissions": 36796,
+  "Likes": 522,
+  "Dislikes": 39,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a country of \u003Ccode\u003En\u003C/code\u003E cities numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. In this country, there is a road connecting \u003Cb\u003Eevery pair\u003C/b\u003E of cities.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003Em\u003C/code\u003E friends numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003Em - 1\u003C/code\u003E who are traveling through the country. Each one of them will take a path consisting of some cities. Each path is represented by an integer array that contains the visited cities in order. The path may contain a city \u003Cstrong\u003Emore than once\u003C/strong\u003E, but the same city will not be listed consecutively.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E and a 2D integer array \u003Ccode\u003Epaths\u003C/code\u003E where \u003Ccode\u003Epaths[i]\u003C/code\u003E is an integer array representing the path of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E friend, return \u003Cem\u003Ethe length of the \u003Cstrong\u003Elongest common subpath\u003C/strong\u003E that is shared by \u003Cstrong\u003Eevery\u003C/strong\u003E friend\u0026#39;s path, or \u003C/em\u003E\u003Ccode\u003E0\u003C/code\u003E\u003Cem\u003E if there is no common subpath at all\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubpath\u003C/strong\u003E of a path is a contiguous sequence of cities within that path.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, paths = [[0,1,\u003Cu\u003E2,3\u003C/u\u003E,4],\n                       [\u003Cu\u003E2,3\u003C/u\u003E,4],\n                       [4,0,1,\u003Cu\u003E2,3\u003C/u\u003E]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The longest common subpath is [2,3].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, paths = [[0],[1],[2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no common subpath shared by the three paths.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, paths = [[\u003Cu\u003E0\u003C/u\u003E,1,2,3,4],\n                       [4,3,2,1,\u003Cu\u003E0\u003C/u\u003E]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The possible longest common subpaths are [0], [1], [2], [3], and [4]. All have a length of 1.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == paths.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esum(paths[i].length) \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= paths[i][j] \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe same city is not listed multiple times consecutively in \u003Ccode\u003Epaths[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If there is a common path with length x, there is for sure a common path of length y where y \u003C x.",
+    "We can use binary search over the answer with the range [0, min(path[i].length)].",
+    "Using binary search, we want to verify if we have a common path of length m. We can achieve this using hashing."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n[[0,1,2,3,4],[2,3,4],[4,0,1,2,3]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "3\n[[0],[1],[2]]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "5\n[[0,1,2,3,4],[4,3,2,1,0]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7142327+00:00",
+  "Url": "https://leetcode.com/problems/longest-common-subpath/"
+}

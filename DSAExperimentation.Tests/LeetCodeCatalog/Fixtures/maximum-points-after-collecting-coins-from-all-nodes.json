@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3179,
+  "FrontendId": 2920,
+  "Title": "Maximum Points After Collecting Coins From All Nodes",
+  "TitleSlug": "maximum-points-after-collecting-coins-from-all-nodes",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Tree",
+    "Depth-First Search",
+    "Memoization",
+    "DP on Trees"
+  ],
+  "AcceptanceRatePercent": 36.8,
+  "TotalAccepted": 12359,
+  "TotalSubmissions": 33558,
+  "Likes": 256,
+  "Dislikes": 20,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere exists an undirected tree rooted at node \u003Ccode\u003E0\u003C/code\u003E with \u003Ccode\u003En\u003C/code\u003E nodes labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. You are given a 2D \u003Cstrong\u003Einteger\u003C/strong\u003E array \u003Ccode\u003Eedges\u003C/code\u003E of length \u003Ccode\u003En - 1\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is an edge between nodes \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E in the tree. You are also given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E array \u003Ccode\u003Ecoins\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E where \u003Ccode\u003Ecoins[i]\u003C/code\u003E indicates the number of coins in the vertex \u003Ccode\u003Ei\u003C/code\u003E, and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EStarting from the root, you have to collect all the coins such that the coins at a node can only be collected if the coins of its ancestors have been already collected.\u003C/p\u003E\n\n\u003Cp\u003ECoins at \u003Ccode\u003Enode\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E can be collected in one of the following ways:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECollect all the coins, but you will get \u003Ccode\u003Ecoins[i] - k\u003C/code\u003E points. If \u003Ccode\u003Ecoins[i] - k\u003C/code\u003E is negative then you will lose \u003Ccode\u003Eabs(coins[i] - k)\u003C/code\u003E points.\u003C/li\u003E\n\t\u003Cli\u003ECollect all the coins, but you will get \u003Ccode\u003Efloor(coins[i] / 2)\u003C/code\u003E points. If this way is used, then for all the \u003Ccode\u003Enode\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E present in the subtree of \u003Ccode\u003Enode\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E, \u003Ccode\u003Ecoins[j]\u003C/code\u003E will get reduced to \u003Ccode\u003Efloor(coins[j] / 2)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum points\u003C/strong\u003E you can get after collecting the coins from \u003Cstrong\u003Eall\u003C/strong\u003E the tree nodes.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/09/18/ex1-copy.png\u0022 style=\u0022width: 60px; height: 316px; padding: 10px; background: rgb(255, 255, 255); border-radius: 0.5rem;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E edges = [[0,1],[1,2],[2,3]], coins = [10,10,3,3], k = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 11                        \n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nCollect all the coins from node 0 using the first way. Total points = 10 - 5 = 5.\nCollect all the coins from node 1 using the first way. Total points = 5 \u002B (10 - 5) = 10.\nCollect all the coins from node 2 using the second way so coins left at node 3 will be floor(3 / 2) = 1. Total points = 10 \u002B floor(3 / 2) = 11.\nCollect all the coins from node 3 using the second way. Total points = 11 \u002B floor(1 / 2) = 11.\nIt can be shown that the maximum points we can get after collecting coins from all the nodes is 11. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cstrong class=\u0022example\u0022\u003E \u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/09/18/ex2.png\u0022 style=\u0022width: 140px; height: 147px; padding: 10px; background: #fff; border-radius: .5rem;\u0022 /\u003E\u003C/strong\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E edges = [[0,1],[0,2]], coins = [8,4,4], k = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 16\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nCoins will be collected from all the nodes using the first way. Therefore, total points = (8 - 0) \u002B (4 - 0) \u002B (4 - 0) = 16.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == coins.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E0 \u0026lt;= coins[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges.length == n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E0 \u0026lt;= edges[i][0], edges[i][1] \u0026lt; n\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E0 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/font\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Let \u003Ccode\u003Edp[x][t]\u003C/code\u003E be the maximum points we can get from the subtree rooted at node \u003Ccode\u003Ex\u003C/code\u003E and the second operation has been used \u003Ccode\u003Et\u003C/code\u003E times in its ancestors.",
+    "Note that the value of each \u003Ccode\u003Enode \u003C= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E, so when \u003Ccode\u003Et \u003E= 14\u003C/code\u003E \u003Ccode\u003Edp[x][t]\u003C/code\u003E is always \u003Ccode\u003E0\u003C/code\u003E.",
+    "General equation will be: \u003Ccode\u003Edp[x][t] = max((coins[x] \u003E\u003E t) - k \u002B sigma(dp[y][t]), (coins[x] \u003E\u003E (t \u002B 1)) \u002B sigma(dp[y][t \u002B 1]))\u003C/code\u003E where nodes denoted by \u003Ccode\u003Ey\u003C/code\u003E in the sigma, are the direct children of node \u003Ccode\u003Ex\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1],[1,2],[2,3]]\n[10,10,3,3]\n5",
+      "RawExpectedOutput": "11"
+    },
+    {
+      "RawInput": "[[0,1],[0,2]]\n[8,4,4]\n0",
+      "RawExpectedOutput": "16"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9146862+00:00",
+  "Url": "https://leetcode.com/problems/maximum-points-after-collecting-coins-from-all-nodes/"
+}

@@ -1,0 +1,39 @@
+{
+  "QuestionId": 268,
+  "FrontendId": 268,
+  "Title": "Missing Number",
+  "TitleSlug": "missing-number",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Binary Search",
+    "Bit Manipulation",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 72.7,
+  "TotalAccepted": 4191794,
+  "TotalSubmissions": 5769057,
+  "Likes": 14599,
+  "Dislikes": 3485,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array \u003Ccode\u003Enums\u003C/code\u003E containing \u003Ccode\u003En\u003C/code\u003E distinct numbers in the range \u003Ccode\u003E[0, n]\u003C/code\u003E, return \u003Cem\u003Ethe only number in the range that is missing from the array.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,0,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003En = 3\u003C/code\u003E since there are 3 numbers, so all numbers are in the range \u003Ccode\u003E[0,3]\u003C/code\u003E. 2 is the missing number in the range since it does not appear in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [0,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003En = 2\u003C/code\u003E since there are 2 numbers, so all numbers are in the range \u003Ccode\u003E[0,2]\u003C/code\u003E. 2 is the missing number in the range since it does not appear in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [9,6,4,2,3,5,7,0,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003En = 9\u003C/code\u003E since there are 9 numbers, so all numbers are in the range \u003Ccode\u003E[0,9]\u003C/code\u003E. 8 is the missing number in the range since it does not appear in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cdiv class=\u0022simple-translate-system-theme\u0022 id=\u0022simple-translate\u0022\u003E\n\u003Cdiv\u003E\n\u003Cdiv class=\u0022simple-translate-button isShow\u0022 style=\u0022background-image: url(\u0026quot;moz-extension://8a9ffb6b-7e69-4e93-aae1-436a1448eff6/icons/512.png\u0026quot;); height: 22px; width: 22px; top: 318px; left: 36px;\u0022\u003E\u0026nbsp;\u003C/div\u003E\n\n\u003Cdiv class=\u0022simple-translate-panel \u0022 style=\u0022width: 300px; height: 200px; top: 0px; left: 0px; font-size: 13px;\u0022\u003E\n\u003Cdiv class=\u0022simple-translate-result-wrapper\u0022 style=\u0022overflow: hidden;\u0022\u003E\n\u003Cdiv class=\u0022simple-translate-move\u0022 draggable=\u0022true\u0022\u003E\u0026nbsp;\u003C/div\u003E\n\n\u003Cdiv class=\u0022simple-translate-result-contents\u0022\u003E\n\u003Cp class=\u0022simple-translate-result\u0022 dir=\u0022auto\u0022\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp class=\u0022simple-translate-candidate\u0022 dir=\u0022auto\u0022\u003E\u0026nbsp;\u003C/p\u003E\n\u003C/div\u003E\n\u003C/div\u003E\n\u003C/div\u003E\n\u003C/div\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the numbers of \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you implement a solution using only \u003Ccode\u003EO(1)\u003C/code\u003E extra space complexity and \u003Ccode\u003EO(n)\u003C/code\u003E runtime complexity?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,0,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[0,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[9,6,4,2,3,5,7,0,1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1298456+00:00",
+  "Url": "https://leetcode.com/problems/missing-number/"
+}

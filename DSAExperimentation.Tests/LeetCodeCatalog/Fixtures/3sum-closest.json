@@ -1,0 +1,32 @@
+{
+  "QuestionId": 16,
+  "FrontendId": 16,
+  "Title": "3Sum Closest",
+  "TitleSlug": "3sum-closest",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 49.4,
+  "TotalAccepted": 2004452,
+  "TotalSubmissions": 4059304,
+  "Likes": 11879,
+  "Dislikes": 638,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E and an integer \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind three integers at \u003Cstrong\u003Edistinct indices\u003C/strong\u003E in \u003Ccode\u003Enums\u003C/code\u003E such that the sum is \u003Cstrong\u003Eclosest\u003C/strong\u003E to \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the sum of the three integers.\u003C/p\u003E\n\n\u003Cp\u003EYou may assume that each input would have \u003Cstrong\u003Eexactly\u003C/strong\u003E one solution.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,2,1,-4], target = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The sum that is closest to the target is 2. (-1 \u002B 2 \u002B 1 = 2).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [0,0,0], target = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The sum that is closest to the target is 0. (0 \u002B 0 \u002B 0 = 0).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= nums.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= target \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,2,1,-4]\n1",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[0,0,0]\n1",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.4890319+00:00",
+  "Url": "https://leetcode.com/problems/3sum-closest/"
+}

@@ -1,0 +1,35 @@
+{
+  "QuestionId": 1342,
+  "FrontendId": 1222,
+  "Title": "Queens That Can Attack the King",
+  "TitleSlug": "queens-that-can-attack-the-king",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 72.9,
+  "TotalAccepted": 53509,
+  "TotalSubmissions": 73408,
+  "Likes": 1009,
+  "Dislikes": 154,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EOn a \u003Cstrong\u003E0-indexed\u003C/strong\u003E \u003Ccode\u003E8 x 8\u003C/code\u003E chessboard, there can be multiple black queens and one white king.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Equeens\u003C/code\u003E where \u003Ccode\u003Equeens[i] = [xQueen\u003Csub\u003Ei\u003C/sub\u003E, yQueen\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the position of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E black queen on the chessboard. You are also given an integer array \u003Ccode\u003Eking\u003C/code\u003E of length \u003Ccode\u003E2\u003C/code\u003E where \u003Ccode\u003Eking = [xKing, yKing]\u003C/code\u003E represents the position of the white king.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe coordinates of the black queens that can directly attack the king\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/12/21/chess1.jpg\u0022 style=\u0022width: 400px; height: 400px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queens = [[0,1],[1,0],[4,0],[0,4],[3,3],[2,4]], king = [0,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[1,0],[3,3]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows the three queens that can directly attack the king and the three queens that cannot attack the king (i.e., marked with red dashes).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/12/21/chess2.jpg\u0022 style=\u0022width: 400px; height: 400px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queens = [[0,0],[1,1],[2,2],[3,4],[3,5],[4,4],[4,5]], king = [3,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[2,2],[3,4],[4,4]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows the three queens that can directly attack the king and the three queens that cannot attack the king (i.e., marked with red dashes).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queens.length \u0026lt; 64\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeens[i].length == king.length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= xQueen\u003Csub\u003Ei\u003C/sub\u003E, yQueen\u003Csub\u003Ei\u003C/sub\u003E, xKing, yKing \u0026lt; 8\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the given positions are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Check 8 directions around the King.",
+    "Find the nearest queen in each direction."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1],[1,0],[4,0],[0,4],[3,3],[2,4]]\n[0,0]",
+      "RawExpectedOutput": "[[0,1],[1,0],[3,3]]"
+    },
+    {
+      "RawInput": "[[0,0],[1,1],[2,2],[3,4],[3,5],[4,4],[4,5]]\n[3,3]",
+      "RawExpectedOutput": "[[2,2],[3,4],[4,4]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6084068+00:00",
+  "Url": "https://leetcode.com/problems/queens-that-can-attack-the-king/"
+}

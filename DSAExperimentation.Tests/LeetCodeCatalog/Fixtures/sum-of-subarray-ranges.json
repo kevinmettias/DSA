@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2227,
+  "FrontendId": 2104,
+  "Title": "Sum of Subarray Ranges",
+  "TitleSlug": "sum-of-subarray-ranges",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 61.9,
+  "TotalAccepted": 260733,
+  "TotalSubmissions": 421019,
+  "Likes": 3126,
+  "Dislikes": 148,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E. The \u003Cstrong\u003Erange\u003C/strong\u003E of a subarray of \u003Ccode\u003Enums\u003C/code\u003E is the difference between the largest and smallest element in the subarray.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Esum of all\u003C/strong\u003E subarray ranges of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003EA subarray is a contiguous \u003Cstrong\u003Enon-empty\u003C/strong\u003E sequence of elements within an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 6 subarrays of nums are the following:\n[1], range = largest - smallest = 1 - 1 = 0 \n[2], range = 2 - 2 = 0\n[3], range = 3 - 3 = 0\n[1,2], range = 2 - 1 = 1\n[2,3], range = 3 - 2 = 1\n[1,2,3], range = 3 - 1 = 2\nSo the sum of all ranges is 0 \u002B 0 \u002B 0 \u002B 1 \u002B 1 \u002B 2 = 4.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,3,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 6 subarrays of nums are the following:\n[1], range = largest - smallest = 1 - 1 = 0\n[3], range = 3 - 3 = 0\n[3], range = 3 - 3 = 0\n[1,3], range = 3 - 1 = 2\n[3,3], range = 3 - 3 = 0\n[1,3,3], range = 3 - 1 = 2\nSo the sum of all ranges is 0 \u002B 0 \u002B 0 \u002B 2 \u002B 0 \u002B 2 = 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,-2,-3,4,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 59\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The sum of all subarray ranges of nums is 59.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow-up:\u003C/strong\u003E Could you find a solution with \u003Ccode\u003EO(n)\u003C/code\u003E time complexity?\u003C/p\u003E\n",
+  "Hints": [
+    "Can you get the max/min of a certain subarray by using the max/min of a smaller subarray within it?",
+    "Notice that the max of the subarray from index i to j is equal to max of (max of the subarray from index i to j-1) and nums[j]."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[1,3,3]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[4,-2,-3,4,1]",
+      "RawExpectedOutput": "59"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1925859+00:00",
+  "Url": "https://leetcode.com/problems/sum-of-subarray-ranges/"
+}

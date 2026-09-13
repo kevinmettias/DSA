@@ -1,0 +1,38 @@
+{
+  "QuestionId": 561,
+  "FrontendId": 561,
+  "Title": "Array Partition",
+  "TitleSlug": "array-partition",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Sorting",
+    "Counting Sort"
+  ],
+  "AcceptanceRatePercent": 82.2,
+  "TotalAccepted": 719690,
+  "TotalSubmissions": 875788,
+  "Likes": 2461,
+  "Dislikes": 306,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E of \u003Ccode\u003E2n\u003C/code\u003E integers, group these integers into \u003Ccode\u003En\u003C/code\u003E pairs \u003Ccode\u003E(a\u003Csub\u003E1\u003C/sub\u003E, b\u003Csub\u003E1\u003C/sub\u003E), (a\u003Csub\u003E2\u003C/sub\u003E, b\u003Csub\u003E2\u003C/sub\u003E), ..., (a\u003Csub\u003En\u003C/sub\u003E, b\u003Csub\u003En\u003C/sub\u003E)\u003C/code\u003E such that the sum of \u003Ccode\u003Emin(a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E for all \u003Ccode\u003Ei\u003C/code\u003E is \u003Cstrong\u003Emaximized\u003C/strong\u003E. Return\u003Cem\u003E the maximized sum\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,4,3,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All possible pairings (ignoring the ordering of elements) are:\n1. (1, 4), (2, 3) -\u0026gt; min(1, 4) \u002B min(2, 3) = 1 \u002B 2 = 3\n2. (1, 3), (2, 4) -\u0026gt; min(1, 3) \u002B min(2, 4) = 1 \u002B 2 = 3\n3. (1, 2), (3, 4) -\u0026gt; min(1, 2) \u002B min(3, 4) = 1 \u002B 3 = 4\nSo the maximum possible sum is 4.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [6,2,6,5,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 9\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The optimal pairing is (2, 1), (2, 5), (6, 6). min(2, 1) \u002B min(2, 5) \u002B min(6, 6) = 1 \u002B 2 \u002B 6 = 9.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums.length == 2 * n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Obviously, brute force won\u0027t help here. Think of something else, take some example like 1,2,3,4.",
+    "How will you make pairs to get the result? There must be some pattern.",
+    "Did you observe that- Minimum element gets add into the result in sacrifice of maximum element.",
+    "Still won\u0027t able to find pairs? Sort the array and try to find the pattern."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,4,3,2]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[6,2,6,5,1,2]",
+      "RawExpectedOutput": "9"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5789399+00:00",
+  "Url": "https://leetcode.com/problems/array-partition/"
+}

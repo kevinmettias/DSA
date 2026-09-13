@@ -1,0 +1,37 @@
+{
+  "QuestionId": 113,
+  "FrontendId": 113,
+  "Title": "Path Sum II",
+  "TitleSlug": "path-sum-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Backtracking",
+    "Tree",
+    "Depth-First Search",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 62.9,
+  "TotalAccepted": 1245331,
+  "TotalSubmissions": 1979657,
+  "Likes": 8767,
+  "Dislikes": 174,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary tree and an integer \u003Ccode\u003EtargetSum\u003C/code\u003E, return \u003Cem\u003Eall \u003Cstrong\u003Eroot-to-leaf\u003C/strong\u003E paths where the sum of the node values in the path equals \u003C/em\u003E\u003Ccode\u003EtargetSum\u003C/code\u003E\u003Cem\u003E. Each path should be returned as a list of the node \u003Cstrong\u003Evalues\u003C/strong\u003E, not node references\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Eroot-to-leaf\u003C/strong\u003E path is a path starting from the root and ending at any leaf node. A \u003Cstrong\u003Eleaf\u003C/strong\u003E is a node with no children.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/18/pathsumii1.jpg\u0022 style=\u0022width: 500px; height: 356px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[5,4,11,2],[5,8,4,5]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are two paths whose sum equals targetSum:\n5 \u002B 4 \u002B 11 \u002B 2 = 22\n5 \u002B 8 \u002B 4 \u002B 5 = 22\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg\u0022 style=\u0022width: 212px; height: 181px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [1,2,3], targetSum = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [1,2], targetSum = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[0, 5000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= targetSum \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,4,8,11,null,13,4,7,2,null,null,5,1]\n22",
+      "RawExpectedOutput": "[[5,4,11,2],[5,8,4,5]]"
+    },
+    {
+      "RawInput": "[1,2,3]\n5",
+      "RawExpectedOutput": "[]"
+    },
+    {
+      "RawInput": "[1,2]\n0",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4507595+00:00",
+  "Url": "https://leetcode.com/problems/path-sum-ii/"
+}

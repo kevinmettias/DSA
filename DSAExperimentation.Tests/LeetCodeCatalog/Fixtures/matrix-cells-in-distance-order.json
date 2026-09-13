@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1094,
+  "FrontendId": 1030,
+  "Title": "Matrix Cells in Distance Order",
+  "TitleSlug": "matrix-cells-in-distance-order",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Sorting",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 74.6,
+  "TotalAccepted": 83134,
+  "TotalSubmissions": 111374,
+  "Likes": 828,
+  "Dislikes": 346,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given four integers \u003Ccode\u003Erow\u003C/code\u003E, \u003Ccode\u003Ecols\u003C/code\u003E, \u003Ccode\u003ErCenter\u003C/code\u003E, and \u003Ccode\u003EcCenter\u003C/code\u003E. There is a \u003Ccode\u003Erows x cols\u003C/code\u003E matrix and you are on the cell with the coordinates \u003Ccode\u003E(rCenter, cCenter)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe coordinates of all cells in the matrix, sorted by their \u003Cstrong\u003Edistance\u003C/strong\u003E from \u003C/em\u003E\u003Ccode\u003E(rCenter, cCenter)\u003C/code\u003E\u003Cem\u003E from the smallest distance to the largest distance\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E that satisfies this condition.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Edistance\u003C/strong\u003E between two cells \u003Ccode\u003E(r\u003Csub\u003E1\u003C/sub\u003E, c\u003Csub\u003E1\u003C/sub\u003E)\u003C/code\u003E and \u003Ccode\u003E(r\u003Csub\u003E2\u003C/sub\u003E, c\u003Csub\u003E2\u003C/sub\u003E)\u003C/code\u003E is \u003Ccode\u003E|r\u003Csub\u003E1\u003C/sub\u003E - r\u003Csub\u003E2\u003C/sub\u003E| \u002B |c\u003Csub\u003E1\u003C/sub\u003E - c\u003Csub\u003E2\u003C/sub\u003E|\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rows = 1, cols = 2, rCenter = 0, cCenter = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,0],[0,1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The distances from (0, 0) to other cells are: [0,1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rows = 2, cols = 2, rCenter = 0, cCenter = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,1],[0,0],[1,1],[1,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The distances from (0, 1) to other cells are: [0,1,1,2]\nThe answer [[0,1],[1,1],[0,0],[1,0]] would also be accepted as correct.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rows = 2, cols = 3, rCenter = 1, cCenter = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2],[0,2],[1,1],[0,1],[1,0],[0,0]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The distances from (1, 2) to other cells are: [0,1,1,2,2,3]\nThere are other answers that would also be accepted as correct, such as [[1,2],[1,1],[0,2],[1,0],[0,1],[0,0]].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rows, cols \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= rCenter \u0026lt; rows\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= cCenter \u0026lt; cols\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2\n0\n0",
+      "RawExpectedOutput": "[[0,0],[0,1]]"
+    },
+    {
+      "RawInput": "2\n2\n0\n1",
+      "RawExpectedOutput": "[[0,1],[0,0],[1,1],[1,0]]"
+    },
+    {
+      "RawInput": "2\n3\n1\n2",
+      "RawExpectedOutput": "[[1,2],[0,2],[1,1],[0,1],[1,0],[0,0]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8378729+00:00",
+  "Url": "https://leetcode.com/problems/matrix-cells-in-distance-order/"
+}

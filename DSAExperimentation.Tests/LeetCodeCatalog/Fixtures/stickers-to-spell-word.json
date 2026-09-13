@@ -1,0 +1,39 @@
+{
+  "QuestionId": 691,
+  "FrontendId": 691,
+  "Title": "Stickers to Spell Word",
+  "TitleSlug": "stickers-to-spell-word",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Memoization",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 51.2,
+  "TotalAccepted": 99560,
+  "TotalSubmissions": 194473,
+  "Likes": 1346,
+  "Dislikes": 131,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe are given \u003Ccode\u003En\u003C/code\u003E different types of \u003Ccode\u003Estickers\u003C/code\u003E. Each sticker has a lowercase English word on it.\u003C/p\u003E\n\n\u003Cp\u003EYou would like to spell out the given string \u003Ccode\u003Etarget\u003C/code\u003E by cutting individual letters from your collection of stickers and rearranging them. You can use each sticker more than once if you want, and you have infinite quantities of each sticker.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of stickers that you need to spell out \u003C/em\u003E\u003Ccode\u003Etarget\u003C/code\u003E. If the task is impossible, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E In all test cases, all words were chosen randomly from the \u003Ccode\u003E1000\u003C/code\u003E most common US English words, and \u003Ccode\u003Etarget\u003C/code\u003E was chosen as a concatenation of two random words.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stickers = [\u0026quot;with\u0026quot;,\u0026quot;example\u0026quot;,\u0026quot;science\u0026quot;], target = \u0026quot;thehat\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe can use 2 \u0026quot;with\u0026quot; stickers, and 1 \u0026quot;example\u0026quot; sticker.\nAfter cutting and rearrange the letters of those stickers, we can form the target \u0026quot;thehat\u0026quot;.\nAlso, this is the minimum number of stickers necessary to form the target string.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stickers = [\u0026quot;notice\u0026quot;,\u0026quot;possible\u0026quot;], target = \u0026quot;basicbasic\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\nExplanation:\nWe cannot form the target \u0026quot;basicbasic\u0026quot; from cutting letters from the given stickers.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == stickers.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stickers[i].length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target.length \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estickers[i]\u003C/code\u003E and \u003Ccode\u003Etarget\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We want to perform an exhaustive search, but we need to speed it up based on the input data being random.  \r\n\r\nFor all stickers, we can ignore any letters that are not in the target word.  \r\n\r\nWhen our candidate answer won\u0027t be smaller than an answer we have already found, we can stop searching this path.  \r\n\r\nWhen a sticker dominates another, we shouldn\u0027t include the dominated sticker in our sticker collection.  [Here, we say a sticker \u0060A\u0060 dominates \u0060B\u0060 if \u0060A.count(letter) \u003E= B.count(letter)\u0060 for all letters.]"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022with\u0022,\u0022example\u0022,\u0022science\u0022]\n\u0022thehat\u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[\u0022notice\u0022,\u0022possible\u0022]\n\u0022basicbasic\u0022",
+      "RawExpectedOutput": "-1\nExplanation:\nWe cannot form the target \u0022basicbasic\u0022 from cutting letters from the given stickers."
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1343125+00:00",
+  "Url": "https://leetcode.com/problems/stickers-to-spell-word/"
+}

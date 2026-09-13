@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3922,
+  "FrontendId": 3609,
+  "Title": "Minimum Moves to Reach Target in Grid",
+  "TitleSlug": "minimum-moves-to-reach-target-in-grid",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math"
+  ],
+  "AcceptanceRatePercent": 15.2,
+  "TotalAccepted": 5598,
+  "TotalSubmissions": 36817,
+  "Likes": 58,
+  "Dislikes": 3,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given four integers \u003Ccode\u003Esx\u003C/code\u003E, \u003Ccode\u003Esy\u003C/code\u003E, \u003Ccode\u003Etx\u003C/code\u003E, and \u003Ccode\u003Ety\u003C/code\u003E, representing two points \u003Ccode\u003E(sx, sy)\u003C/code\u003E and \u003Ccode\u003E(tx, ty)\u003C/code\u003E on an infinitely large 2D grid.\u003C/p\u003E\n\n\u003Cp\u003EYou start at \u003Ccode\u003E(sx, sy)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAt any point \u003Ccode\u003E(x, y)\u003C/code\u003E, define \u003Ccode\u003Em = max(x, y)\u003C/code\u003E. You can either:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EMove to \u003Ccode\u003E(x \u002B m, y)\u003C/code\u003E, or\u003C/li\u003E\n\t\u003Cli\u003EMove to \u003Ccode\u003E(x, y \u002B m)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E number of moves required to reach \u003Ccode\u003E(tx, ty)\u003C/code\u003E. If it is impossible to reach the target, return -1.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esx = 1, sy = 2, tx = 5, ty = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe optimal path is:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EMove 1: \u003Ccode\u003Emax(1, 2) = 2\u003C/code\u003E. Increase the y-coordinate by 2, moving from \u003Ccode\u003E(1, 2)\u003C/code\u003E to \u003Ccode\u003E(1, 2 \u002B 2) = (1, 4)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EMove 2: \u003Ccode\u003Emax(1, 4) = 4\u003C/code\u003E. Increase the x-coordinate by 4, moving from \u003Ccode\u003E(1, 4)\u003C/code\u003E to \u003Ccode\u003E(1 \u002B 4, 4) = (5, 4)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThus, the minimum number of moves to reach \u003Ccode\u003E(5, 4)\u003C/code\u003E is 2.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esx = 0, sy = 1, tx = 2, ty = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe optimal path is:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EMove 1: \u003Ccode\u003Emax(0, 1) = 1\u003C/code\u003E. Increase the x-coordinate by 1, moving from \u003Ccode\u003E(0, 1)\u003C/code\u003E to \u003Ccode\u003E(0 \u002B 1, 1) = (1, 1)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EMove 2: \u003Ccode\u003Emax(1, 1) = 1\u003C/code\u003E. Increase the x-coordinate by 1, moving from \u003Ccode\u003E(1, 1)\u003C/code\u003E to \u003Ccode\u003E(1 \u002B 1, 1) = (2, 1)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EMove 3: \u003Ccode\u003Emax(2, 1) = 2\u003C/code\u003E. Increase the y-coordinate by 2, moving from \u003Ccode\u003E(2, 1)\u003C/code\u003E to \u003Ccode\u003E(2, 1 \u002B 2) = (2, 3)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThus, the minimum number of moves to reach \u003Ccode\u003E(2, 3)\u003C/code\u003E is 3.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esx = 1, sy = 1, tx = 2, ty = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIt is impossible to reach \u003Ccode\u003E(2, 2)\u003C/code\u003E from \u003Ccode\u003E(1, 1)\u003C/code\u003E using the allowed moves. Thus, the answer is -1.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= sx \u0026lt;= tx \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= sy \u0026lt;= ty \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Work backwards from \u003Ccode\u003E(tx, ty)\u003C/code\u003E to \u003Ccode\u003E(sx, sy)\u003C/code\u003E, undoing one move at each step.",
+    "If the larger coordinate \u003E= 2 \u00D7 (the smaller), undo by halving the larger; otherwise undo by subtracting the smaller from the larger.",
+    "Count these undo-steps until you hit \u003Ccode\u003E(sx, sy)\u003C/code\u003E (return the count), or return -1 if you drop below or get stuck."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2\n5\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "0\n1\n2\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1\n1\n2\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0630338+00:00",
+  "Url": "https://leetcode.com/problems/minimum-moves-to-reach-target-in-grid/"
+}

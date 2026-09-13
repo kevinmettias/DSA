@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2130,
+  "FrontendId": 2002,
+  "Title": "Maximum Product of the Length of Two Palindromic Subsequences",
+  "TitleSlug": "maximum-product-of-the-length-of-two-palindromic-subsequences",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 62.8,
+  "TotalAccepted": 41080,
+  "TotalSubmissions": 65389,
+  "Likes": 1023,
+  "Dislikes": 91,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, find two \u003Cstrong\u003Edisjoint palindromic subsequences\u003C/strong\u003E of \u003Ccode\u003Es\u003C/code\u003E such that the \u003Cstrong\u003Eproduct\u003C/strong\u003E of their lengths is \u003Cstrong\u003Emaximized\u003C/strong\u003E. The two subsequences are \u003Cstrong\u003Edisjoint\u003C/strong\u003E if they do not both pick a character at the same index.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E possible \u003Cstrong\u003Eproduct\u003C/strong\u003E of the lengths of the two palindromic subsequences\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubsequence\u003C/strong\u003E is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters. A string is \u003Cstrong\u003Epalindromic\u003C/strong\u003E if it reads the same forward and backward.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022example-1\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/24/two-palindromic-subsequences.png\u0022 style=\u0022width: 550px; height: 124px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;leetcodecom\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 9\n\u003Cstrong\u003EExplanation\u003C/strong\u003E: An optimal solution is to choose \u0026quot;ete\u0026quot; for the 1\u003Csup\u003Est\u003C/sup\u003E subsequence and \u0026quot;cdc\u0026quot; for the 2\u003Csup\u003End\u003C/sup\u003E subsequence.\nThe product of their lengths is: 3 * 3 = 9.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;bb\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation\u003C/strong\u003E: An optimal solution is to choose \u0026quot;b\u0026quot; (the first character) for the 1\u003Csup\u003Est\u003C/sup\u003E subsequence and \u0026quot;b\u0026quot; (the second character) for the 2\u003Csup\u003End\u003C/sup\u003E subsequence.\nThe product of their lengths is: 1 * 1 = 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;accbcaxxcxx\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 25\n\u003Cstrong\u003EExplanation\u003C/strong\u003E: An optimal solution is to choose \u0026quot;accca\u0026quot; for the 1\u003Csup\u003Est\u003C/sup\u003E subsequence and \u0026quot;xxcxx\u0026quot; for the 2\u003Csup\u003End\u003C/sup\u003E subsequence.\nThe product of their lengths is: 5 * 5 = 25.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= s.length \u0026lt;= 12\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters only.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Could you generate all possible pairs of disjoint subsequences?",
+    "Could you find the maximum length palindrome in each subsequence for a pair of disjoint subsequences?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022leetcodecom\u0022",
+      "RawExpectedOutput": "9"
+    },
+    {
+      "RawInput": "\u0022bb\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022accbcaxxcxx\u0022",
+      "RawExpectedOutput": "25"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9156114+00:00",
+  "Url": "https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/"
+}

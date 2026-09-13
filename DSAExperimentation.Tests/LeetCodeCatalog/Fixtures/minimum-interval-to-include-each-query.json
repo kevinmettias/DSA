@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1977,
+  "FrontendId": 1851,
+  "Title": "Minimum Interval to Include Each Query",
+  "TitleSlug": "minimum-interval-to-include-each-query",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Sweep Line",
+    "Sorting",
+    "Heap (Priority Queue)"
+  ],
+  "AcceptanceRatePercent": 55.2,
+  "TotalAccepted": 79991,
+  "TotalSubmissions": 144920,
+  "Likes": 1197,
+  "Dislikes": 51,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Eintervals\u003C/code\u003E, where \u003Ccode\u003Eintervals[i] = [left\u003Csub\u003Ei\u003C/sub\u003E, right\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E describes the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E interval starting at \u003Ccode\u003Eleft\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and ending at \u003Ccode\u003Eright\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E \u003Cstrong\u003E(inclusive)\u003C/strong\u003E. The \u003Cstrong\u003Esize\u003C/strong\u003E of an interval is defined as the number of integers it contains, or more formally \u003Ccode\u003Eright\u003Csub\u003Ei\u003C/sub\u003E - left\u003Csub\u003Ei\u003C/sub\u003E \u002B 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given an integer array \u003Ccode\u003Equeries\u003C/code\u003E. The answer to the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query is the \u003Cstrong\u003Esize of the smallest interval\u003C/strong\u003E \u003Ccode\u003Ei\u003C/code\u003E such that \u003Ccode\u003Eleft\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= queries[j] \u0026lt;= right\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. If no such interval exists, the answer is \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array containing the answers to the queries\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E intervals = [[1,4],[2,4],[3,6],[4,4]], queries = [2,3,4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,3,1,4]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The queries are processed as follows:\n- Query = 2: The interval [2,4] is the smallest interval containing 2. The answer is 4 - 2 \u002B 1 = 3.\n- Query = 3: The interval [2,4] is the smallest interval containing 3. The answer is 4 - 2 \u002B 1 = 3.\n- Query = 4: The interval [4,4] is the smallest interval containing 4. The answer is 4 - 4 \u002B 1 = 1.\n- Query = 5: The interval [3,6] is the smallest interval containing 5. The answer is 6 - 3 \u002B 1 = 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E intervals = [[2,3],[2,5],[1,8],[20,25]], queries = [2,19,5,22]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,-1,4,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The queries are processed as follows:\n- Query = 2: The interval [2,3] is the smallest interval containing 2. The answer is 3 - 2 \u002B 1 = 2.\n- Query = 19: None of the intervals contain 19. The answer is -1.\n- Query = 5: The interval [2,5] is the smallest interval containing 5. The answer is 5 - 2 \u002B 1 = 4.\n- Query = 22: The interval [20,25] is the smallest interval containing 22. The answer is 25 - 20 \u002B 1 = 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= intervals.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eintervals[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= left\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= right\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries[j] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Is there a way to order the intervals and queries such that it takes less time to query?",
+    "Is there a way to add and remove intervals by going from the smallest query to the largest query to find the minimum size?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,4],[2,4],[3,6],[4,4]]\n[2,3,4,5]",
+      "RawExpectedOutput": "[3,3,1,4]"
+    },
+    {
+      "RawInput": "[[2,3],[2,5],[1,8],[20,25]]\n[2,19,5,22]",
+      "RawExpectedOutput": "[2,-1,4,6]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0616378+00:00",
+  "Url": "https://leetcode.com/problems/minimum-interval-to-include-each-query/"
+}

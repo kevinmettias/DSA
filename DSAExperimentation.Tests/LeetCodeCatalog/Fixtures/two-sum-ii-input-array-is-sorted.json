@@ -1,0 +1,36 @@
+{
+  "QuestionId": 167,
+  "FrontendId": 167,
+  "Title": "Two Sum II - Input Array Is Sorted",
+  "TitleSlug": "two-sum-ii-input-array-is-sorted",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Binary Search"
+  ],
+  "AcceptanceRatePercent": 65.9,
+  "TotalAccepted": 3749731,
+  "TotalSubmissions": 5693700,
+  "Likes": 13848,
+  "Dislikes": 1546,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a \u003Cstrong\u003E1-indexed\u003C/strong\u003E array of integers \u003Ccode\u003Enumbers\u003C/code\u003E that is already \u003Cstrong\u003E\u003Cem\u003Esorted in non-decreasing order\u003C/em\u003E\u003C/strong\u003E, find two numbers such that they add up to a specific \u003Ccode\u003Etarget\u003C/code\u003E number. Let these two numbers be \u003Ccode\u003Enumbers[index\u003Csub\u003E1\u003C/sub\u003E]\u003C/code\u003E and \u003Ccode\u003Enumbers[index\u003Csub\u003E2\u003C/sub\u003E]\u003C/code\u003E where \u003Ccode\u003E1 \u0026lt;= index\u003Csub\u003E1\u003C/sub\u003E \u0026lt; index\u003Csub\u003E2\u003C/sub\u003E \u0026lt;= numbers.length\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn\u003Cem\u003E the indices of the two numbers\u0026nbsp;\u003C/em\u003E\u003Ccode\u003Eindex\u003Csub\u003E1\u003C/sub\u003E\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Eindex\u003Csub\u003E2\u003C/sub\u003E\u003C/code\u003E\u003Cem\u003E, \u003Cstrong\u003Eeach incremented by one,\u003C/strong\u003E as an integer array \u003C/em\u003E\u003Ccode\u003E[index\u003Csub\u003E1\u003C/sub\u003E, index\u003Csub\u003E2\u003C/sub\u003E]\u003C/code\u003E\u003Cem\u003E of length 2.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe tests are generated such that there is \u003Cstrong\u003Eexactly one solution\u003C/strong\u003E. You \u003Cstrong\u003Emay not\u003C/strong\u003E use the same element twice.\u003C/p\u003E\n\n\u003Cp\u003EYour solution must use only constant extra space.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E numbers = [\u003Cu\u003E2\u003C/u\u003E,\u003Cu\u003E7\u003C/u\u003E,11,15], target = 9\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The sum of 2 and 7 is 9. Therefore, index\u003Csub\u003E1\u003C/sub\u003E = 1, index\u003Csub\u003E2\u003C/sub\u003E = 2. We return [1, 2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E numbers = [\u003Cu\u003E2\u003C/u\u003E,3,\u003Cu\u003E4\u003C/u\u003E], target = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,3]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The sum of 2 and 4 is 6. Therefore index\u003Csub\u003E1\u003C/sub\u003E = 1, index\u003Csub\u003E2\u003C/sub\u003E = 3. We return [1, 3].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E numbers = [\u003Cu\u003E-1\u003C/u\u003E,\u003Cu\u003E0\u003C/u\u003E], target = -1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The sum of -1 and 0 is -1. Therefore index\u003Csub\u003E1\u003C/sub\u003E = 1, index\u003Csub\u003E2\u003C/sub\u003E = 2. We return [1, 2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= numbers.length \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= numbers[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enumbers\u003C/code\u003E is sorted in \u003Cstrong\u003Enon-decreasing order\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= target \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe tests are generated such that there is \u003Cstrong\u003Eexactly one solution\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,7,11,15]\n9",
+      "RawExpectedOutput": "[1,2]"
+    },
+    {
+      "RawInput": "[2,3,4]\n6",
+      "RawExpectedOutput": "[1,3]"
+    },
+    {
+      "RawInput": "[-1,0]\n-1",
+      "RawExpectedOutput": "[1,2]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2946194+00:00",
+  "Url": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/"
+}

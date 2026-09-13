@@ -1,0 +1,53 @@
+{
+  "QuestionId": 4031,
+  "FrontendId": 3985,
+  "Title": "Palindromic Subarray Sum",
+  "TitleSlug": "palindromic-subarray-sum",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Hash Function",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 34.4,
+  "TotalAccepted": 6455,
+  "TotalSubmissions": 18741,
+  "Likes": 43,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the maximum possible sum of a \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E of \u003Ccode\u003Enums\u003C/code\u003E that is a \u003Cspan data-keyword=\u0022palindrome-array\u0022\u003Epalindrome\u003C/span\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [10,10]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E20\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe whole array \u003Ccode\u003E[10,10]\u003C/code\u003E is a palindrome. Therefore, the maximum sum is \u003Ccode\u003E10 \u002B 10 = 20\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3,2,1,5,6]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E9\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe contiguous subarray \u003Ccode\u003E[1,2,3,2,1]\u003C/code\u003E is a palindrome. Its sum is \u003Ccode\u003E1 \u002B 2 \u002B 3 \u002B 2 \u002B 1 = 9\u003C/code\u003E and it is the maximum sum.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [7,1,2,1,7,3,4,3,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E18\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe contiguous subarray \u003Ccode\u003E[7,1,2,1,7]\u003C/code\u003E is a palindrome. Its sum is \u003Ccode\u003E7 \u002B 1 \u002B 2 \u002B 1 \u002B 7 = 18\u003C/code\u003E and it is the maximum sum.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3,4,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo subarray with length greater than 1 is a palindrome. The largest element in the array is 5. Therefore, the answer is 5.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 5:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1000]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1000\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe subarray with only one element is a palindrome. Therefore, the answer is 1000.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cp\u003E\u003Cstrong\u003E1a (Manacher).\u003C/strong\u003E Since all elements are positive, for any fixed center, the best palindromic subarray is the longest one around that center.\u003C/p\u003E",
+    "\u003Cp\u003E\u003Cstrong\u003E1b (Manacher).\u003C/strong\u003E Use Manacher\u0027s algorithm adapted to arrays to compute the maximum odd-length and even-length palindrome radius for every center.\u003C/p\u003E",
+    "\u003Cp\u003E\u003Cstrong\u003E1c (Manacher).\u003C/strong\u003E Use prefix sums to compute the sum of each longest palindromic subarray in constant time, and take the maximum.\u003C/p\u003E",
+    "\u003Cp\u003E\u003Cstrong\u003E2a (Binary Search \u002B Hashing).\u003C/strong\u003E Build rolling hashes for \u003Ccode\u003Enums\u003C/code\u003E and for the reversed array. A subarray \u003Ccode\u003Enums[l..r]\u003C/code\u003E is a palindrome if its hash equals the hash of the corresponding segment in the reversed array.\u003C/p\u003E",
+    "\u003Cp\u003E\u003Cstrong\u003E2b (Binary Search \u002B Hashing).\u003C/strong\u003E For each odd and even center, binary search the largest palindrome radius around that center. The check is monotonic because if a larger radius is a palindrome, then every smaller radius around the same center is also a palindrome.\u003C/p\u003E",
+    "\u003Cp\u003E\u003Cstrong\u003E2c (Binary Search \u002B Hashing).\u003C/strong\u003E After finding the largest radius for a center, use prefix sums to get the sum of that palindromic subarray in constant time.\u003C/p\u003E",
+    "\u003Cp\u003E\u003Cstrong\u003E2d (Binary Search \u002B Hashing).\u003C/strong\u003E Take the maximum sum over all centers.\u003C/p\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,10]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3,2,1,5,6]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[7,1,2,1,7,3,4,3,4]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3,4,5]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1000]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3920335+00:00",
+  "Url": "https://leetcode.com/problems/palindromic-subarray-sum/"
+}

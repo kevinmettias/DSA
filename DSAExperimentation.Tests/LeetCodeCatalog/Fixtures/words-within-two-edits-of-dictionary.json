@@ -1,0 +1,36 @@
+{
+  "QuestionId": 2550,
+  "FrontendId": 2452,
+  "Title": "Words Within Two Edits of Dictionary",
+  "TitleSlug": "words-within-two-edits-of-dictionary",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 73.3,
+  "TotalAccepted": 126448,
+  "TotalSubmissions": 172468,
+  "Likes": 589,
+  "Dislikes": 43,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two string arrays, \u003Ccode\u003Equeries\u003C/code\u003E and \u003Ccode\u003Edictionary\u003C/code\u003E. All words in each array comprise of lowercase English letters and have the same length.\u003C/p\u003E\n\n\u003Cp\u003EIn one \u003Cstrong\u003Eedit\u003C/strong\u003E you can take a word from \u003Ccode\u003Equeries\u003C/code\u003E, and change any letter in it to any other letter. Find all words from \u003Ccode\u003Equeries\u003C/code\u003E that, after a \u003Cstrong\u003Emaximum\u003C/strong\u003E of two edits, equal some word from \u003Ccode\u003Edictionary\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn\u003Cem\u003E a list of all words from \u003C/em\u003E\u003Ccode\u003Equeries\u003C/code\u003E\u003Cem\u003E, \u003C/em\u003E\u003Cem\u003Ethat match with some word from \u003C/em\u003E\u003Ccode\u003Edictionary\u003C/code\u003E\u003Cem\u003E after a maximum of \u003Cstrong\u003Etwo edits\u003C/strong\u003E\u003C/em\u003E. Return the words in the \u003Cstrong\u003Esame order\u003C/strong\u003E they appear in \u003Ccode\u003Equeries\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [\u0026quot;word\u0026quot;,\u0026quot;note\u0026quot;,\u0026quot;ants\u0026quot;,\u0026quot;wood\u0026quot;], dictionary = [\u0026quot;wood\u0026quot;,\u0026quot;joke\u0026quot;,\u0026quot;moat\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;word\u0026quot;,\u0026quot;note\u0026quot;,\u0026quot;wood\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\n- Changing the \u0026#39;r\u0026#39; in \u0026quot;word\u0026quot; to \u0026#39;o\u0026#39; allows it to equal the dictionary word \u0026quot;wood\u0026quot;.\n- Changing the \u0026#39;n\u0026#39; to \u0026#39;j\u0026#39; and the \u0026#39;t\u0026#39; to \u0026#39;k\u0026#39; in \u0026quot;note\u0026quot; changes it to \u0026quot;joke\u0026quot;.\n- It would take more than 2 edits for \u0026quot;ants\u0026quot; to equal a dictionary word.\n- \u0026quot;wood\u0026quot; can remain unchanged (0 edits) and match the corresponding dictionary word.\nThus, we return [\u0026quot;word\u0026quot;,\u0026quot;note\u0026quot;,\u0026quot;wood\u0026quot;].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E queries = [\u0026quot;yes\u0026quot;], dictionary = [\u0026quot;not\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nApplying any two edits to \u0026quot;yes\u0026quot; cannot make it equal to \u0026quot;not\u0026quot;. Thus, we return an empty array.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length, dictionary.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == queries[i].length == dictionary[j].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003Equeries[i]\u003C/code\u003E and \u003Ccode\u003Edictionary[j]\u003C/code\u003E are composed of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try brute-forcing the problem.",
+    "For each word in queries, try comparing to each word in dictionary.",
+    "If there is a maximum of two edit differences, the word should be present in answer."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022word\u0022,\u0022note\u0022,\u0022ants\u0022,\u0022wood\u0022]\n[\u0022wood\u0022,\u0022joke\u0022,\u0022moat\u0022]",
+      "RawExpectedOutput": "[\u0022word\u0022,\u0022note\u0022,\u0022wood\u0022]"
+    },
+    {
+      "RawInput": "[\u0022yes\u0022]\n[\u0022not\u0022]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.4194099+00:00",
+  "Url": "https://leetcode.com/problems/words-within-two-edits-of-dictionary/"
+}

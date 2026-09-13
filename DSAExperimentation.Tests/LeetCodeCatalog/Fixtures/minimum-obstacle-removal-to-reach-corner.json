@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2375,
+  "FrontendId": 2290,
+  "Title": "Minimum Obstacle Removal to Reach Corner",
+  "TitleSlug": "minimum-obstacle-removal-to-reach-corner",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Matrix",
+    "Shortest Path",
+    "0-1 BFS",
+    "Dijkstra\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 71.1,
+  "TotalAccepted": 131053,
+  "TotalSubmissions": 184265,
+  "Likes": 1726,
+  "Dislikes": 29,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer array \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003Em x n\u003C/code\u003E. Each cell has one of two values:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0\u003C/code\u003E represents an \u003Cstrong\u003Eempty\u003C/strong\u003E cell,\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1\u003C/code\u003E represents an \u003Cstrong\u003Eobstacle\u003C/strong\u003E that may be removed.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou can move up, down, left, or right from and to an empty cell.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of \u003Cstrong\u003Eobstacles\u003C/strong\u003E to \u003Cstrong\u003Eremove\u003C/strong\u003E so you can move from the upper left corner \u003C/em\u003E\u003Ccode\u003E(0, 0)\u003C/code\u003E\u003Cem\u003E to the lower right corner \u003C/em\u003E\u003Ccode\u003E(m - 1, n - 1)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/04/06/example1drawio-1.png\u0022 style=\u0022width: 605px; height: 246px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,1,1],[1,1,0],[1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can remove the obstacles at (0, 1) and (0, 2) to create a path from (0, 0) to (2, 2).\nIt can be shown that we need to remove at least 2 obstacles, so we return 2.\nNote that there may be other ways to remove 2 obstacles to create a path.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/04/06/example1drawio.png\u0022 style=\u0022width: 405px; height: 246px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,1,0,0,0],[0,1,0,1,0],[0,0,0,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can move from (0, 0) to (2, 4) without removing any obstacles, so we return 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E \u003Cstrong\u003Eor\u003C/strong\u003E \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[0][0] == grid[m - 1][n - 1] == 0\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Model the grid as a graph where cells are nodes and edges are between adjacent cells. Edges to cells with obstacles have a cost of 1 and all other edges have a cost of 0.",
+    "Could you use 0-1 Breadth-First Search or Dijkstra\u2019s algorithm?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,1],[1,1,0],[1,1,0]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[0,1,0,0,0],[0,1,0,1,0],[0,0,0,1,0]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0800654+00:00",
+  "Url": "https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/"
+}

@@ -1,0 +1,32 @@
+{
+  "QuestionId": 438,
+  "FrontendId": 438,
+  "Title": "Find All Anagrams in a String",
+  "TitleSlug": "find-all-anagrams-in-a-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 54.5,
+  "TotalAccepted": 1298366,
+  "TotalSubmissions": 2381973,
+  "Likes": 13416,
+  "Dislikes": 383,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two strings \u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Ep\u003C/code\u003E, return an array of all the start indices of \u003Ccode\u003Ep\u003C/code\u003E\u0026#39;s \u003Cspan data-keyword=\u0022anagram\u0022\u003Eanagrams\u003C/span\u003E in \u003Ccode\u003Es\u003C/code\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;cbaebabacd\u0026quot;, p = \u0026quot;abc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe substring with start index = 0 is \u0026quot;cba\u0026quot;, which is an anagram of \u0026quot;abc\u0026quot;.\nThe substring with start index = 6 is \u0026quot;bac\u0026quot;, which is an anagram of \u0026quot;abc\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abab\u0026quot;, p = \u0026quot;ab\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,1,2]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe substring with start index = 0 is \u0026quot;ab\u0026quot;, which is an anagram of \u0026quot;ab\u0026quot;.\nThe substring with start index = 1 is \u0026quot;ba\u0026quot;, which is an anagram of \u0026quot;ab\u0026quot;.\nThe substring with start index = 2 is \u0026quot;ab\u0026quot;, which is an anagram of \u0026quot;ab\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length, p.length \u0026lt;= 3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Ep\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022cbaebabacd\u0022\n\u0022abc\u0022",
+      "RawExpectedOutput": "[0,6]"
+    },
+    {
+      "RawInput": "\u0022abab\u0022\n\u0022ab\u0022",
+      "RawExpectedOutput": "[0,1,2]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2156132+00:00",
+  "Url": "https://leetcode.com/problems/find-all-anagrams-in-a-string/"
+}

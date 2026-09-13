@@ -1,0 +1,35 @@
+{
+  "QuestionId": 2195,
+  "FrontendId": 2073,
+  "Title": "Time Needed to Buy Tickets",
+  "TitleSlug": "time-needed-to-buy-tickets",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Queue",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 73.3,
+  "TotalAccepted": 348927,
+  "TotalSubmissions": 476076,
+  "Likes": 1975,
+  "Dislikes": 173,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E people in a line queuing to buy tickets, where the \u003Ccode\u003E0\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person is at the \u003Cstrong\u003Efront\u003C/strong\u003E of the line and the \u003Ccode\u003E(n - 1)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person is at the \u003Cstrong\u003Eback\u003C/strong\u003E of the line.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Etickets\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E where the number of tickets that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person would like to buy is \u003Ccode\u003Etickets[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EEach person takes \u003Cstrong\u003Eexactly 1 second\u003C/strong\u003E to buy a ticket. A person can only buy \u003Cstrong\u003E1 ticket at a time\u003C/strong\u003E and has to go back to \u003Cstrong\u003Ethe end\u003C/strong\u003E of the line (which happens \u003Cstrong\u003Einstantaneously\u003C/strong\u003E) in order to buy more tickets. If a person does not have any tickets left to buy, the person will \u003Cstrong\u003Eleave \u003C/strong\u003Ethe line.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Etime taken\u003C/strong\u003E for the person \u003Cstrong\u003Einitially\u003C/strong\u003E at position \u003Cstrong\u003Ek\u003C/strong\u003E\u003Cstrong\u003E \u003C/strong\u003E(0-indexed) to finish buying tickets.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etickets = [2,3,2], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe queue starts as [2,3,\u003Cu\u003E2\u003C/u\u003E], where the kth person is underlined.\u003C/li\u003E\n\t\u003Cli\u003EAfter the person at the front has bought a ticket, the queue becomes [3,\u003Cu\u003E2\u003C/u\u003E,1] at 1 second.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process, the queue becomes [\u003Cu\u003E2\u003C/u\u003E,1,2] at 2 seconds.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process, the queue becomes [1,2,\u003Cu\u003E1\u003C/u\u003E] at 3 seconds.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process, the queue becomes [2,\u003Cu\u003E1\u003C/u\u003E] at 4 seconds. Note: the person at the front left the queue.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process, the queue becomes [\u003Cu\u003E1\u003C/u\u003E,1] at 5 seconds.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process, the queue becomes [1] at 6 seconds. The kth person has bought all their tickets, so return 6.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etickets = [5,1,1,1], k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E8\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe queue starts as [\u003Cu\u003E5\u003C/u\u003E,1,1,1], where the kth person is underlined.\u003C/li\u003E\n\t\u003Cli\u003EAfter the person at the front has bought a ticket, the queue becomes [1,1,1,\u003Cu\u003E4\u003C/u\u003E] at 1 second.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process for 3 seconds, the queue becomes [\u003Cu\u003E4]\u003C/u\u003E at 4 seconds.\u003C/li\u003E\n\t\u003Cli\u003EContinuing this process for 4 seconds, the queue becomes [] at 8 seconds. The kth person has bought all their tickets, so return 8.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == tickets.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= tickets[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Loop through the line of people and decrement the number of tickets for each to buy one at a time as if simulating the line moving forward. Keep track of how many tickets have been sold up until person k has no more tickets to buy.",
+    "Remember that those who have no more tickets to buy will leave the line."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,2]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,1,1,1]\n0",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2578919+00:00",
+  "Url": "https://leetcode.com/problems/time-needed-to-buy-tickets/"
+}

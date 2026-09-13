@@ -1,0 +1,40 @@
+{
+  "QuestionId": 4204,
+  "FrontendId": 3845,
+  "Title": "Maximum Subarray XOR with Bounded Range",
+  "TitleSlug": "maximum-subarray-xor-with-bounded-range",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Bit Manipulation",
+    "Trie",
+    "Queue",
+    "Sliding Window",
+    "Prefix Sum",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 33.6,
+  "TotalAccepted": 5801,
+  "TotalSubmissions": 17246,
+  "Likes": 71,
+  "Dislikes": 3,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a non-negative integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must select a \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E\u003C/strong\u003E of \u003Ccode\u003Enums\u003C/code\u003E such that the \u003Cstrong\u003Edifference\u003C/strong\u003E between its \u003Cstrong\u003Emaximum\u003C/strong\u003E and \u003Cstrong\u003Eminimum\u003C/strong\u003E elements is at most \u003Ccode\u003Ek\u003C/code\u003E. The \u003Cstrong\u003Evalue\u003C/strong\u003E of this subarray is the bitwise XOR of all elements in the subarray.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible \u003Cstrong\u003Evalue\u003C/strong\u003E of the selected subarray.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,4,5,6], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E7\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the subarray \u003Ccode\u003E[5, \u003Cu\u003E\u003Cstrong\u003E4, 5, 6\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe difference between its maximum and minimum elements is \u003Ccode\u003E6 - 4 = 2 \u0026lt;= k\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe value is \u003Ccode\u003E4 XOR 5 XOR 6 = 7\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,4,5,6], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the subarray \u003Ccode\u003E[5, 4, 5, \u003Cu\u003E\u003Cstrong\u003E6\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe difference between its maximum and minimum elements is \u003Ccode\u003E6 - 6 = 0 \u0026lt;= k\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe value is 6.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt; 2\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt; 2\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Maintain an active window such that the difference between its maximum and minimum is at most \u003Ccode\u003Ek\u003C/code\u003E",
+    "For all valid subarray-start indices \u003Ccode\u003Ei\u003C/code\u003E, insert their prefix xors \u003Ccode\u003Epref[i]\u003C/code\u003E into a trie (use \u003Ccode\u003Epref[0] = 0\u003C/code\u003E, \u003Ccode\u003Epref[i \u002B 1] = pref[i] ^ nums[i]\u003C/code\u003E); keep counts per node to support deletions as \u003Ccode\u003EL\u003C/code\u003E moves",
+    "For each right index \u003Ccode\u003Er\u003C/code\u003E, query the trie with \u003Ccode\u003Epref[r \u002B 1]\u003C/code\u003E to get the maximum \u003Ccode\u003Epref[r \u002B 1] ^ pref[l]\u003C/code\u003E for \u003Ccode\u003El in [L, r]\u003C/code\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,4,5,6]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5,4,5,6]\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9343577+00:00",
+  "Url": "https://leetcode.com/problems/maximum-subarray-xor-with-bounded-range/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2403,
+  "FrontendId": 2316,
+  "Title": "Count Unreachable Pairs of Nodes in an Undirected Graph",
+  "TitleSlug": "count-unreachable-pairs-of-nodes-in-an-undirected-graph",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 50.3,
+  "TotalAccepted": 127506,
+  "TotalSubmissions": 253665,
+  "Likes": 2314,
+  "Dislikes": 56,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E. There is an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph with \u003Ccode\u003En\u003C/code\u003E nodes, numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. You are given a 2D integer array \u003Ccode\u003Eedges\u003C/code\u003E where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E denotes that there exists an \u003Cstrong\u003Eundirected\u003C/strong\u003E edge connecting nodes \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Enumber of pairs\u003C/strong\u003E of different nodes that are \u003Cstrong\u003Eunreachable\u003C/strong\u003E from each other\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/05/05/tc-3.png\u0022 style=\u0022width: 267px; height: 169px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edges = [[0,1],[0,2],[1,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are no pairs of nodes that are unreachable from each other. Therefore, we return 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/05/05/tc-2.png\u0022 style=\u0022width: 295px; height: 269px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 7, edges = [[0,2],[0,5],[2,4],[1,6],[5,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 14\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 14 pairs of nodes that are unreachable from each other:\n[[0,1],[0,3],[0,6],[1,2],[1,3],[1,4],[1,5],[2,3],[2,6],[3,4],[3,5],[3,6],[4,6],[5,6]].\nTherefore, we return 14.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= edges.length \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E != b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are no repeated edges.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Find the connected components of the graph. To find connected components, you can use Union Find (Disjoint Sets), BFS, or DFS.",
+    "For a node u, the number of nodes that are unreachable from u is the number of nodes that are not in the same connected component as u.",
+    "The number of unreachable nodes from node u will be the same for the number of nodes that are unreachable from node v if nodes u and v belong to the same connected component."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1],[0,2],[1,2]]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "7\n[[0,2],[0,5],[2,4],[1,6],[5,4]]",
+      "RawExpectedOutput": "14"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9931393+00:00",
+  "Url": "https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/"
+}

@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1397,
+  "FrontendId": 1268,
+  "Title": "Search Suggestions System",
+  "TitleSlug": "search-suggestions-system",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Binary Search",
+    "Trie",
+    "Sorting",
+    "Heap (Priority Queue)"
+  ],
+  "AcceptanceRatePercent": 65.2,
+  "TotalAccepted": 460253,
+  "TotalSubmissions": 705505,
+  "Likes": 5181,
+  "Dislikes": 269,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of strings \u003Ccode\u003Eproducts\u003C/code\u003E and a string \u003Ccode\u003EsearchWord\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EDesign a system that suggests at most three product names from \u003Ccode\u003Eproducts\u003C/code\u003E after each character of \u003Ccode\u003EsearchWord\u003C/code\u003E is typed. Suggested products should have common prefix with \u003Ccode\u003EsearchWord\u003C/code\u003E. If there are more than three products with a common prefix return the three lexicographically minimums products.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ea list of lists of the suggested products after each character of \u003C/em\u003E\u003Ccode\u003EsearchWord\u003C/code\u003E\u003Cem\u003E is typed\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E products = [\u0026quot;mobile\u0026quot;,\u0026quot;mouse\u0026quot;,\u0026quot;moneypot\u0026quot;,\u0026quot;monitor\u0026quot;,\u0026quot;mousepad\u0026quot;], searchWord = \u0026quot;mouse\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[\u0026quot;mobile\u0026quot;,\u0026quot;moneypot\u0026quot;,\u0026quot;monitor\u0026quot;],[\u0026quot;mobile\u0026quot;,\u0026quot;moneypot\u0026quot;,\u0026quot;monitor\u0026quot;],[\u0026quot;mouse\u0026quot;,\u0026quot;mousepad\u0026quot;],[\u0026quot;mouse\u0026quot;,\u0026quot;mousepad\u0026quot;],[\u0026quot;mouse\u0026quot;,\u0026quot;mousepad\u0026quot;]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E products sorted lexicographically = [\u0026quot;mobile\u0026quot;,\u0026quot;moneypot\u0026quot;,\u0026quot;monitor\u0026quot;,\u0026quot;mouse\u0026quot;,\u0026quot;mousepad\u0026quot;].\nAfter typing m and mo all products match and we show user [\u0026quot;mobile\u0026quot;,\u0026quot;moneypot\u0026quot;,\u0026quot;monitor\u0026quot;].\nAfter typing mou, mous and mouse the system suggests [\u0026quot;mouse\u0026quot;,\u0026quot;mousepad\u0026quot;].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E products = [\u0026quot;havana\u0026quot;], searchWord = \u0026quot;havana\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[\u0026quot;havana\u0026quot;],[\u0026quot;havana\u0026quot;],[\u0026quot;havana\u0026quot;],[\u0026quot;havana\u0026quot;],[\u0026quot;havana\u0026quot;],[\u0026quot;havana\u0026quot;]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The only word \u0026quot;havana\u0026quot; will be always suggested while typing the search word.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= products.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= products[i].length \u0026lt;= 3000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= sum(products[i].length) \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003Eproducts\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eproducts[i]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= searchWord.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EsearchWord\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Brute force is a good choice because length of the string is \u2264 1000.",
+    "Binary search the answer.",
+    "Use Trie data structure to store the best three matching. Traverse the Trie."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022mobile\u0022,\u0022mouse\u0022,\u0022moneypot\u0022,\u0022monitor\u0022,\u0022mousepad\u0022]\n\u0022mouse\u0022",
+      "RawExpectedOutput": "[[\u0022mobile\u0022,\u0022moneypot\u0022,\u0022monitor\u0022],[\u0022mobile\u0022,\u0022moneypot\u0022,\u0022monitor\u0022],[\u0022mouse\u0022,\u0022mousepad\u0022],[\u0022mouse\u0022,\u0022mousepad\u0022],[\u0022mouse\u0022,\u0022mousepad\u0022]]"
+    },
+    {
+      "RawInput": "[\u0022havana\u0022]\n\u0022havana\u0022",
+      "RawExpectedOutput": "[[\u0022havana\u0022],[\u0022havana\u0022],[\u0022havana\u0022],[\u0022havana\u0022],[\u0022havana\u0022],[\u0022havana\u0022]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9327792+00:00",
+  "Url": "https://leetcode.com/problems/search-suggestions-system/"
+}

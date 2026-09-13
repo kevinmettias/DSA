@@ -1,0 +1,34 @@
+{
+  "QuestionId": 1527,
+  "FrontendId": 1411,
+  "Title": "Number of Ways to Paint N \u00D7 3 Grid",
+  "TitleSlug": "number-of-ways-to-paint-n-3-grid",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Graph Coloring"
+  ],
+  "AcceptanceRatePercent": 80.6,
+  "TotalAccepted": 138748,
+  "TotalSubmissions": 172184,
+  "Likes": 1687,
+  "Dislikes": 92,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have a \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003En x 3\u003C/code\u003E and you want to paint each cell of the grid with exactly one of the three colors: \u003Cstrong\u003ERed\u003C/strong\u003E, \u003Cstrong\u003EYellow,\u003C/strong\u003E or \u003Cstrong\u003EGreen\u003C/strong\u003E while making sure that no two adjacent cells have the same color (i.e., no two cells that share vertical or horizontal sides have the same color).\u003C/p\u003E\n\n\u003Cp\u003EGiven \u003Ccode\u003En\u003C/code\u003E the number of rows of the grid, return \u003Cem\u003Ethe number of ways\u003C/em\u003E you can paint this \u003Ccode\u003Egrid\u003C/code\u003E. As the answer may grow large, the answer \u003Cstrong\u003Emust be\u003C/strong\u003E computed modulo \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/03/26/e1.png\u0022 style=\u0022width: 400px; height: 257px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 12\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 12 possible way to paint the grid as shown.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5000\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 30228214\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We will use Dynamic programming approach. we will try all possible configuration.",
+    "Let dp[idx][prev1col][prev2col][prev3col] be the number of ways to color the rows of the grid from idx to n-1 keeping in mind that the previous row (idx - 1) has colors prev1col, prev2col and prev3col. Build the dp array to get the answer."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "12"
+    },
+    {
+      "RawInput": "5000",
+      "RawExpectedOutput": "30228214"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3119597+00:00",
+  "Url": "https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/"
+}

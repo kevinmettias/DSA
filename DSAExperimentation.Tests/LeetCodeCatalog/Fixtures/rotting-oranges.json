@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1036,
+  "FrontendId": 994,
+  "Title": "Rotting Oranges",
+  "TitleSlug": "rotting-oranges",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Breadth-First Search",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 59.4,
+  "TotalAccepted": 1839410,
+  "TotalSubmissions": 3095086,
+  "Likes": 15596,
+  "Dislikes": 487,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E \u003Ccode\u003Egrid\u003C/code\u003E where each cell can have one of three values:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0\u003C/code\u003E representing an empty cell,\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1\u003C/code\u003E representing a fresh orange, or\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2\u003C/code\u003E representing a rotten orange.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EEvery minute, any fresh orange that is \u003Cstrong\u003E4-directionally adjacent\u003C/strong\u003E to a rotten orange becomes rotten.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of minutes that must elapse until no cell has a fresh orange\u003C/em\u003E. If \u003Cem\u003Ethis is impossible, return\u003C/em\u003E \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/02/16/oranges.png\u0022 style=\u0022width: 650px; height: 137px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[2,1,1],[1,1,0],[0,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[2,1,1],[0,1,1],[1,0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Since there are already no fresh oranges at minute 0, the answer is just 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is \u003Ccode\u003E0\u003C/code\u003E, \u003Ccode\u003E1\u003C/code\u003E, or \u003Ccode\u003E2\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,1,1],[1,1,0],[0,1,1]]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[2,1,1],[0,1,1],[1,0,1]]",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "[[0,2]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8888901+00:00",
+  "Url": "https://leetcode.com/problems/rotting-oranges/"
+}

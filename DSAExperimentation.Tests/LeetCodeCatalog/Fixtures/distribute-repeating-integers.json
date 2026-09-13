@@ -1,0 +1,44 @@
+{
+  "QuestionId": 1758,
+  "FrontendId": 1655,
+  "Title": "Distribute Repeating Integers",
+  "TitleSlug": "distribute-repeating-integers",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Counting",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 41.1,
+  "TotalAccepted": 23000,
+  "TotalSubmissions": 55894,
+  "Likes": 481,
+  "Dislikes": 31,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of \u003Ccode\u003En\u003C/code\u003E integers, \u003Ccode\u003Enums\u003C/code\u003E, where there are at most \u003Ccode\u003E50\u003C/code\u003E unique values in the array. You are also given an array of \u003Ccode\u003Em\u003C/code\u003E customer order quantities, \u003Ccode\u003Equantity\u003C/code\u003E, where \u003Ccode\u003Equantity[i]\u003C/code\u003E is the amount of integers the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E customer ordered. Determine if it is possible to distribute \u003Ccode\u003Enums\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E customer gets \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Equantity[i]\u003C/code\u003E integers,\u003C/li\u003E\n\t\u003Cli\u003EThe integers the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E customer gets are \u003Cstrong\u003Eall equal\u003C/strong\u003E, and\u003C/li\u003E\n\t\u003Cli\u003EEvery customer is satisfied.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if it is possible to distribute \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E according to the above conditions\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4], quantity = [2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 0\u003Csup\u003Eth\u003C/sup\u003E customer cannot be given two different integers.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,3], quantity = [2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 0\u003Csup\u003Eth\u003C/sup\u003E customer is given [3,3]. The integers [1,2] are not used.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,1,2,2], quantity = [2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The 0\u003Csup\u003Eth\u003C/sup\u003E customer is given [1,1], and the 1st customer is given [2,2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == quantity.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= quantity[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are at most \u003Ccode\u003E50\u003C/code\u003E unique values in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Count the frequencies of each number. For example, if nums = [4,4,5,5,5], frequencies = [2,3].",
+    "Each customer wants all of their numbers to be the same. This means that each customer will be assigned to one number.",
+    "Use dynamic programming. Iterate through the numbers\u0027 frequencies, and choose some subset of customers to be assigned to this number."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4]\n[2]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[1,2,3,3]\n[2]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,1,2,2]\n[2,2]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1382248+00:00",
+  "Url": "https://leetcode.com/problems/distribute-repeating-integers/"
+}

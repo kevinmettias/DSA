@@ -1,0 +1,40 @@
+{
+  "QuestionId": 4035,
+  "FrontendId": 3710,
+  "Title": "Maximum Partition Factor",
+  "TitleSlug": "maximum-partition-factor",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 31.6,
+  "TotalAccepted": 7524,
+  "TotalSubmissions": 23842,
+  "Likes": 84,
+  "Dislikes": 7,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Epoints\u003C/code\u003E, where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the coordinates of the \u003Ccode\u003E\u003Cfont\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/font\u003E\u003C/code\u003E point on the Cartesian plane.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003EManhattan distance\u003C/strong\u003E between two points \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E and \u003Ccode\u003Epoints[j] = [x\u003Csub\u003Ej\u003C/sub\u003E, y\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E is \u003Ccode\u003E|x\u003Csub\u003Ei\u003C/sub\u003E - x\u003Csub\u003Ej\u003C/sub\u003E| \u002B |y\u003Csub\u003Ei\u003C/sub\u003E - y\u003Csub\u003Ej\u003C/sub\u003E|\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESplit the \u003Ccode\u003En\u003C/code\u003E points into \u003Cstrong\u003Eexactly two non-empty\u003C/strong\u003E groups. The \u003Cstrong\u003Epartition factor\u003C/strong\u003E of a split is the \u003Cstrong\u003Eminimum\u003C/strong\u003E Manhattan distance among all unordered pairs of points that lie in the same group.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible \u003Cstrong\u003Epartition factor\u003C/strong\u003E over all valid splits.\u003C/p\u003E\n\n\u003Cp\u003ENote: A group of size 1 contributes no intra-group pairs. When \u003Ccode\u003En = 2\u003C/code\u003E (both groups size 1), there are no intra-group pairs, so define the partition factor as 0.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan\u003Epoints = [[0,0],[0,2],[2,0],[2,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EWe split the points into two groups: \u003Ccode\u003E{[0, 0], [2, 2]}\u003C/code\u003E and \u003Ccode\u003E{[0, 2], [2, 0]}\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\n\t\u003Cp\u003EIn the first group, the only pair has Manhattan distance \u003Ccode\u003E|0 - 2| \u002B |0 - 2| = 4\u003C/code\u003E.\u003C/p\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003E\n\t\u003Cp\u003EIn the second group, the only pair also has Manhattan distance \u003Ccode\u003E|0 - 2| \u002B |2 - 0| = 4\u003C/code\u003E.\u003C/p\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe partition factor of this split is \u003Ccode\u003Emin(4, 4) = 4\u003C/code\u003E, which is maximal.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan\u003Epoints = [[0,0],[0,1],[10,0]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan\u003E11\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EWe split the points into two groups: \u003Ccode\u003E{[0, 1], [10, 0]}\u003C/code\u003E and \u003Ccode\u003E{[0, 0]}\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\n\t\u003Cp\u003EIn the first group, the only pair has Manhattan distance \u003Ccode\u003E|0 - 10| \u002B |1 - 0| = 11\u003C/code\u003E.\u003C/p\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003E\n\t\u003Cp\u003EThe second group is a singleton, so it contributes no pairs.\u003C/p\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe partition factor of this split is \u003Ccode\u003E11\u003C/code\u003E, which is maximal.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= points.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E8\u003C/sup\u003E \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use binary search",
+    "Binary-search the partition factor \u003Ccode\u003ED\u003C/code\u003E to maximize it",
+    "For a candidate \u003Ccode\u003ED\u003C/code\u003E, add an edge between points \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E iff \u003Ccode\u003EManhattan(i,j) \u003C D\u003C/code\u003E (they must be in different groups)",
+    "Check whether the resulting graph is bipartite"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0],[0,2],[2,0],[2,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[0,0],[0,1],[10,0]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9137556+00:00",
+  "Url": "https://leetcode.com/problems/maximum-partition-factor/"
+}

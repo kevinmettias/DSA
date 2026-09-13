@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1558,
+  "FrontendId": 1462,
+  "Title": "Course Schedule IV",
+  "TitleSlug": "course-schedule-iv",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Topological Sort"
+  ],
+  "AcceptanceRatePercent": 60.3,
+  "TotalAccepted": 217342,
+  "TotalSubmissions": 360238,
+  "Likes": 2182,
+  "Dislikes": 95,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are a total of \u003Ccode\u003EnumCourses\u003C/code\u003E courses you have to take, labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003EnumCourses - 1\u003C/code\u003E. You are given an array \u003Ccode\u003Eprerequisites\u003C/code\u003E where \u003Ccode\u003Eprerequisites[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that you \u003Cstrong\u003Emust\u003C/strong\u003E take course \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E first if you want to take course \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, the pair \u003Ccode\u003E[0, 1]\u003C/code\u003E indicates that you have to take course \u003Ccode\u003E0\u003C/code\u003E before you can take course \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EPrerequisites can also be \u003Cstrong\u003Eindirect\u003C/strong\u003E. If course \u003Ccode\u003Ea\u003C/code\u003E is a prerequisite of course \u003Ccode\u003Eb\u003C/code\u003E, and course \u003Ccode\u003Eb\u003C/code\u003E is a prerequisite of course \u003Ccode\u003Ec\u003C/code\u003E, then course \u003Ccode\u003Ea\u003C/code\u003E is a prerequisite of course \u003Ccode\u003Ec\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given an array \u003Ccode\u003Equeries\u003C/code\u003E where \u003Ccode\u003Equeries[j] = [u\u003Csub\u003Ej\u003C/sub\u003E, v\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E. For the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query, you should answer whether course \u003Ccode\u003Eu\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E is a prerequisite of course \u003Ccode\u003Ev\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E or not.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ci\u003Ea boolean array \u003C/i\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Ci\u003E, where \u003C/i\u003E\u003Ccode\u003Eanswer[j]\u003C/code\u003E\u003Ci\u003E is the answer to the \u003C/i\u003E\u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Ci\u003E query.\u003C/i\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/05/01/courses4-1-graph.jpg\u0022 style=\u0022width: 222px; height: 62px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E numCourses = 2, prerequisites = [[1,0]], queries = [[0,1],[1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [false,true]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The pair [1, 0] indicates that you have to take course 1 before you can take course 0.\nCourse 0 is not a prerequisite of course 1, but the opposite is true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E numCourses = 2, prerequisites = [], queries = [[1,0],[0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [false,false]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are no prerequisites, and each course is independent.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/05/01/courses4-3-graph.jpg\u0022 style=\u0022width: 222px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E numCourses = 3, prerequisites = [[1,2],[1,0],[2,0]], queries = [[1,0],[1,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [true,true]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= numCourses \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= prerequisites.length \u0026lt;= (numCourses * (numCourses - 1) / 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eprerequisites[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= numCourses - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E != b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the pairs \u003Ccode\u003E[a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe prerequisites graph has no cycles.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= numCourses - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E != v\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Imagine if the courses are nodes of a graph. We need to build an array isReachable[i][j].",
+    "Start a bfs from each course i and assign for each course j you visit isReachable[i][j] = True.",
+    "Answer the queries from the isReachable array."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "6\n[[4,5],[3,4],[2,3],[1,2],[0,1]]\n[[0,5]]",
+      "RawExpectedOutput": "[false,true]"
+    },
+    {
+      "RawInput": "3\n[[0,1],[1,2]]\n[[0,2]]",
+      "RawExpectedOutput": "[false,false]"
+    },
+    {
+      "RawInput": "4\n[[0,1],[2,3]]\n[[0,3]]",
+      "RawExpectedOutput": "[true,true]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0126402+00:00",
+  "Url": "https://leetcode.com/problems/course-schedule-iv/"
+}

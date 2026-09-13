@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2236,
+  "FrontendId": 2130,
+  "Title": "Maximum Twin Sum of a Linked List",
+  "TitleSlug": "maximum-twin-sum-of-a-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Two Pointers",
+    "Stack"
+  ],
+  "AcceptanceRatePercent": 83.3,
+  "TotalAccepted": 646943,
+  "TotalSubmissions": 776964,
+  "Likes": 4182,
+  "Dislikes": 132,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EIn a linked list of size \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003En\u003C/code\u003E is \u003Cstrong\u003Eeven\u003C/strong\u003E, the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node (\u003Cstrong\u003E0-indexed\u003C/strong\u003E) of the linked list is known as the \u003Cstrong\u003Etwin\u003C/strong\u003E of the \u003Ccode\u003E(n-1-i)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node, if \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= (n / 2) - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, if \u003Ccode\u003En = 4\u003C/code\u003E, then node \u003Ccode\u003E0\u003C/code\u003E is the twin of node \u003Ccode\u003E3\u003C/code\u003E, and node \u003Ccode\u003E1\u003C/code\u003E is the twin of node \u003Ccode\u003E2\u003C/code\u003E. These are the only nodes with twins for \u003Ccode\u003En = 4\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Etwin sum \u003C/strong\u003Eis defined as the sum of a node and its twin.\u003C/p\u003E\n\n\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list with even length, return \u003Cem\u003Ethe \u003Cstrong\u003Emaximum twin sum\u003C/strong\u003E of the linked list\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/03/eg1drawio.png\u0022 style=\u0022width: 250px; height: 70px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [5,4,2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nNodes 0 and 1 are the twins of nodes 3 and 2, respectively. All have twin sum = 6.\nThere are no other nodes with twins in the linked list.\nThus, the maximum twin sum of the linked list is 6. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/03/eg2drawio.png\u0022 style=\u0022width: 250px; height: 70px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [4,2,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe nodes with twins present in this linked list are:\n- Node 0 is the twin of node 3 having a twin sum of 4 \u002B 3 = 7.\n- Node 1 is the twin of node 2 having a twin sum of 2 \u002B 2 = 4.\nThus, the maximum twin sum of the linked list is max(7, 4) = 7. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/12/03/eg3drawio.png\u0022 style=\u0022width: 200px; height: 88px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,100000]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 100001\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThere is only one node with a twin in the linked list having twin sum of 1 \u002B 100000 = 100001.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is an \u003Cstrong\u003Eeven\u003C/strong\u003E integer in the range \u003Ccode\u003E[2, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can \u0022reversing\u0022 a part of the linked list help find the answer?",
+    "We know that the nodes of the first half are twins of nodes in the second half, so try dividing the linked list in half and reverse the second half.",
+    "How can two pointers be used to find every twin sum optimally?",
+    "Use two different pointers pointing to the first nodes of the two halves of the linked list. The second pointer will point to the first node of the reversed half, which is the (n-1-i)th node in the original linked list. By moving both pointers forward at the same time, we find all twin sums."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,4,2,1]",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[4,2,2,3]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "[1,100000]",
+      "RawExpectedOutput": "100001"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9483092+00:00",
+  "Url": "https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/"
+}

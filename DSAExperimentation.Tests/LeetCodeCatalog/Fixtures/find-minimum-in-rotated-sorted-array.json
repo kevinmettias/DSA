@@ -1,0 +1,39 @@
+{
+  "QuestionId": 153,
+  "FrontendId": 153,
+  "Title": "Find Minimum in Rotated Sorted Array",
+  "TitleSlug": "find-minimum-in-rotated-sorted-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search"
+  ],
+  "AcceptanceRatePercent": 55.3,
+  "TotalAccepted": 3375697,
+  "TotalSubmissions": 6103963,
+  "Likes": 15789,
+  "Dislikes": 682,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003ESuppose an array of length \u003Ccode\u003En\u003C/code\u003E sorted in ascending order is \u003Cstrong\u003Erotated\u003C/strong\u003E between \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E times. For example, the array \u003Ccode\u003Enums = [0,1,2,4,5,6,7]\u003C/code\u003E might become:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[4,5,6,7,0,1,2]\u003C/code\u003E if it was rotated \u003Ccode\u003E4\u003C/code\u003E times.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[0,1,2,4,5,6,7]\u003C/code\u003E if it was rotated \u003Ccode\u003E7\u003C/code\u003E times.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENotice that \u003Cstrong\u003Erotating\u003C/strong\u003E an array \u003Ccode\u003E[a[0], a[1], a[2], ..., a[n-1]]\u003C/code\u003E 1 time results in the array \u003Ccode\u003E[a[n-1], a[0], a[1], a[2], ..., a[n-2]]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven the sorted rotated array \u003Ccode\u003Enums\u003C/code\u003E of \u003Cstrong\u003Eunique\u003C/strong\u003E elements, return \u003Cem\u003Ethe minimum element of this array\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou must write an algorithm that runs in\u0026nbsp;\u003Ccode\u003EO(log n) time\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,4,5,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The original array was [1,2,3,4,5] rotated 3 times.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,5,6,7,0,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The original array was [0,1,2,4,5,6,7] and it was rotated 4 times.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [11,13,15,17]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 11\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The original array was [11,13,15,17] and it was rotated 4 times. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-5000 \u0026lt;= nums[i] \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the integers of \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is sorted and rotated between \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E times.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Array was originally in ascending order. Now that the array is rotated, there would be a point in the array where there is a small deflection from the increasing sequence. eg. The array would be something like [4, 5, 6, 7, 0, 1, 2].",
+    "You can divide the search space into two and see which direction to go.\r\nCan you think of an algorithm which has O(logN) search complexity?",
+    "\u003Col\u003E\r\n\u003Cli\u003EAll the elements to the left of inflection point \u003E first element of the array.\u003C/li\u003E\r\n\u003Cli\u003EAll the elements to the right of inflection point \u003C first element of the array.\u003C/li\u003E\r\n\u003Col\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,4,5,1,2]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[4,5,6,7,0,1,2]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[11,13,15,17]",
+      "RawExpectedOutput": "11"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2558303+00:00",
+  "Url": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/"
+}

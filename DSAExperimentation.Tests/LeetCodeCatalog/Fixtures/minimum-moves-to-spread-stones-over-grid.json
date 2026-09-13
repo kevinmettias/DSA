@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3092,
+  "FrontendId": 2850,
+  "Title": "Minimum Moves to Spread Stones Over Grid",
+  "TitleSlug": "minimum-moves-to-spread-stones-over-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Matrix",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 46,
+  "TotalAccepted": 31976,
+  "TotalSubmissions": 69468,
+  "Likes": 568,
+  "Dislikes": 78,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer matrix \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003E3 * 3\u003C/code\u003E, representing the number of stones in each cell. The grid contains exactly \u003Ccode\u003E9\u003C/code\u003E stones, and there can be \u003Cstrong\u003Emultiple\u003C/strong\u003E stones in a single cell.\u003C/p\u003E\n\n\u003Cp\u003EIn one move, you can move a single stone from its current cell to any other cell if the two cells share a side.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum number of moves\u003C/strong\u003E required to place one stone in each cell\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/08/23/example1-3.svg\u0022 style=\u0022width: 401px; height: 281px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1,0],[1,1,1],[1,2,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One possible sequence of moves to place one stone in each cell is: \n1- Move one stone from cell (2,1) to cell (2,2).\n2- Move one stone from cell (2,2) to cell (1,2).\n3- Move one stone from cell (1,2) to cell (0,2).\nIn total, it takes 3 moves to place one stone in each cell of the grid.\nIt can be shown that 3 is the minimum number of moves required to place one stone in each cell.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/08/23/example2-2.svg\u0022 style=\u0022width: 401px; height: 281px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,3,0],[1,0,0],[1,0,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One possible sequence of moves to place one stone in each cell is:\n1- Move one stone from cell (0,1) to cell (0,2).\n2- Move one stone from cell (0,1) to cell (1,1).\n3- Move one stone from cell (2,2) to cell (1,2).\n4- Move one stone from cell (2,2) to cell (2,1).\nIn total, it takes 4 moves to place one stone in each cell of the grid.\nIt can be shown that 4 is the minimum number of moves required to place one stone in each cell.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid.length == grid[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003ESum of \u003Ccode\u003Egrid\u003C/code\u003E is equal to \u003Ccode\u003E9\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "There are at most \u003Ccode\u003E4\u003C/code\u003E cells with more than one stone.",
+    "Let \u003Ccode\u003Ea\u003C/code\u003E be the number of cells containing more than one stone, and \u003Ccode\u003Eb\u003C/code\u003E be the number of cells containing no stones. \u003Ccode\u003E\u003C/code\u003E. \u003Ccode\u003Eb^a \u2264 6561\u003C/code\u003E. Use this fact to come up with a bruteforce.",
+    "For all empty cells, bruteforce over all possible cells from which a stone can come. Note that a stone will always come from a cell containing at least 2 stones."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1,0],[1,1,1],[1,2,1]]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[[1,3,0],[1,0,0],[1,0,3]]",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0635167+00:00",
+  "Url": "https://leetcode.com/problems/minimum-moves-to-spread-stones-over-grid/"
+}

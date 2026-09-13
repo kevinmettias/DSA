@@ -1,0 +1,36 @@
+{
+  "QuestionId": 2871,
+  "FrontendId": 2816,
+  "Title": "Double a Number Represented as a Linked List",
+  "TitleSlug": "double-a-number-represented-as-a-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Math",
+    "Stack"
+  ],
+  "AcceptanceRatePercent": 61.3,
+  "TotalAccepted": 209665,
+  "TotalSubmissions": 341805,
+  "Likes": 1303,
+  "Dislikes": 32,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given the \u003Ccode\u003Ehead\u003C/code\u003E of a \u003Cstrong\u003Enon-empty\u003C/strong\u003E linked list representing a non-negative integer without leading zeroes.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003C/em\u003E\u003Ccode\u003Ehead\u003C/code\u003E\u003Cem\u003E of the linked list after \u003Cstrong\u003Edoubling\u003C/strong\u003E it\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/05/28/example.png\u0022 style=\u0022width: 401px; height: 81px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,8,9]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,7,8]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figure above corresponds to the given linked list which represents the number 189. Hence, the returned linked list represents the number 189 * 2 = 378.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/05/28/example2.png\u0022 style=\u0022width: 401px; height: 81px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [9,9,9]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,9,9,8]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figure above corresponds to the given linked list which represents the number 999. Hence, the returned linked list reprersents the number 999 * 2 = 1998. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E4\u003C/sup\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Cfont face=\u0022monospace\u0022\u003E\u003Ccode\u003E0 \u0026lt;= Node.val \u0026lt;= 9\u003C/code\u003E\u003C/font\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that the list represents a number that does not have leading zeros, except the number \u003Ccode\u003E0\u003C/code\u003E itself.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Traverse the linked list from the least significant digit to the most significant digit and multiply each node\u0027s value by 2",
+    "Handle any carry-over digits that may arise during the doubling process.",
+    "If there is a carry-over digit on the most significant digit, create a new node with that value and point it to the start of the given linked list and return it."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,8,9]",
+      "RawExpectedOutput": "[3,7,8]"
+    },
+    {
+      "RawInput": "[9,9,9]",
+      "RawExpectedOutput": "[1,9,9,8]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1524712+00:00",
+  "Url": "https://leetcode.com/problems/double-a-number-represented-as-a-linked-list/"
+}

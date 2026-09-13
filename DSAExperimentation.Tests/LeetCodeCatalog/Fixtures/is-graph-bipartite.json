@@ -1,0 +1,35 @@
+{
+  "QuestionId": 801,
+  "FrontendId": 785,
+  "Title": "Is Graph Bipartite?",
+  "TitleSlug": "is-graph-bipartite",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory",
+    "Graph Coloring",
+    "Bipartite Graph"
+  ],
+  "AcceptanceRatePercent": 59.9,
+  "TotalAccepted": 950176,
+  "TotalSubmissions": 1586493,
+  "Likes": 9438,
+  "Dislikes": 421,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph with \u003Ccode\u003En\u003C/code\u003E nodes, where each node is numbered between \u003Ccode\u003E0\u003C/code\u003E and \u003Ccode\u003En - 1\u003C/code\u003E. You are given a 2D array \u003Ccode\u003Egraph\u003C/code\u003E, where \u003Ccode\u003Egraph[u]\u003C/code\u003E is an array of nodes that node \u003Ccode\u003Eu\u003C/code\u003E is adjacent to. More formally, for each \u003Ccode\u003Ev\u003C/code\u003E in \u003Ccode\u003Egraph[u]\u003C/code\u003E, there is an undirected edge between node \u003Ccode\u003Eu\u003C/code\u003E and node \u003Ccode\u003Ev\u003C/code\u003E. The graph has the following properties:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere are no self-edges (\u003Ccode\u003Egraph[u]\u003C/code\u003E does not contain \u003Ccode\u003Eu\u003C/code\u003E).\u003C/li\u003E\n\t\u003Cli\u003EThere are no parallel edges (\u003Ccode\u003Egraph[u]\u003C/code\u003E does not contain duplicate values).\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Ev\u003C/code\u003E is in \u003Ccode\u003Egraph[u]\u003C/code\u003E, then \u003Ccode\u003Eu\u003C/code\u003E is in \u003Ccode\u003Egraph[v]\u003C/code\u003E (the graph is undirected).\u003C/li\u003E\n\t\u003Cli\u003EThe graph may not be connected, meaning there may be two nodes \u003Ccode\u003Eu\u003C/code\u003E and \u003Ccode\u003Ev\u003C/code\u003E such that there is no path between them.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA graph is \u003Cstrong\u003Ebipartite\u003C/strong\u003E if the nodes can be partitioned into two independent sets \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E such that \u003Cstrong\u003Eevery\u003C/strong\u003E edge in the graph connects a node in set \u003Ccode\u003EA\u003C/code\u003E and a node in set \u003Ccode\u003EB\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if and only if it is \u003Cstrong\u003Ebipartite\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/21/bi2.jpg\u0022 style=\u0022width: 222px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E graph = [[1,2,3],[0,2],[0,1,3],[0,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no way to partition the nodes into two independent sets such that every edge connects a node in one and a node in the other.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/21/bi1.jpg\u0022 style=\u0022width: 222px; height: 222px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E graph = [[1,3],[0,2],[1,3],[0,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can partition the nodes into two sets: {0, 2} and {1, 3}.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egraph.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= graph[u].length \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= graph[u][i] \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egraph[u]\u003C/code\u003E\u0026nbsp;does not contain\u0026nbsp;\u003Ccode\u003Eu\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Egraph[u]\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Egraph[u]\u003C/code\u003E contains \u003Ccode\u003Ev\u003C/code\u003E, then \u003Ccode\u003Egraph[v]\u003C/code\u003E contains \u003Ccode\u003Eu\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2,3],[0,2],[0,1,3],[0,2]]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[[1,3],[0,2],[1,3],[0,2]]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5512262+00:00",
+  "Url": "https://leetcode.com/problems/is-graph-bipartite/"
+}

@@ -1,0 +1,25 @@
+{
+  "QuestionId": 817,
+  "FrontendId": 706,
+  "Title": "Design HashMap",
+  "TitleSlug": "design-hashmap",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Linked List",
+    "Design",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 66.8,
+  "TotalAccepted": 802918,
+  "TotalSubmissions": 1202150,
+  "Likes": 5473,
+  "Dislikes": 504,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a HashMap without using any built-in hash table libraries.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMyHashMap\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMyHashMap()\u003C/code\u003E initializes the object with an empty map.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid put(int key, int value)\u003C/code\u003E inserts a \u003Ccode\u003E(key, value)\u003C/code\u003E pair into the HashMap. If the \u003Ccode\u003Ekey\u003C/code\u003E already exists in the map, update the corresponding \u003Ccode\u003Evalue\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint get(int key)\u003C/code\u003E returns the \u003Ccode\u003Evalue\u003C/code\u003E to which the specified \u003Ccode\u003Ekey\u003C/code\u003E is mapped, or \u003Ccode\u003E-1\u003C/code\u003E if this map contains no mapping for the \u003Ccode\u003Ekey\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid remove(key)\u003C/code\u003E removes the \u003Ccode\u003Ekey\u003C/code\u003E and its corresponding \u003Ccode\u003Evalue\u003C/code\u003E if the map contains the mapping for the \u003Ccode\u003Ekey\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyHashMap\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;put\u0026quot;, \u0026quot;get\u0026quot;, \u0026quot;remove\u0026quot;, \u0026quot;get\u0026quot;]\n[[], [1, 1], [2, 2], [1], [3], [2, 1], [2], [2], [2]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, 1, -1, null, 1, null, -1]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyHashMap myHashMap = new MyHashMap();\nmyHashMap.put(1, 1); // The map is now [[1,1]]\nmyHashMap.put(2, 2); // The map is now [[1,1], [2,2]]\nmyHashMap.get(1);    // return 1, The map is now [[1,1], [2,2]]\nmyHashMap.get(3);    // return -1 (i.e., not found), The map is now [[1,1], [2,2]]\nmyHashMap.put(2, 1); // The map is now [[1,1], [2,1]] (i.e., update the existing value)\nmyHashMap.get(2);    // return 1, The map is now [[1,1], [2,1]]\nmyHashMap.remove(2); // remove the mapping for 2, The map is now [[1,1]]\nmyHashMap.get(2);    // return -1 (i.e., not found), The map is now [[1,1]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= key, value \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eput\u003C/code\u003E, \u003Ccode\u003Eget\u003C/code\u003E, and \u003Ccode\u003Eremove\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0932752+00:00",
+  "Url": "https://leetcode.com/problems/design-hashmap/"
+}

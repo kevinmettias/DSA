@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1701,
+  "FrontendId": 1579,
+  "Title": "Remove Max Number of Edges to Keep Graph Fully Traversable",
+  "TitleSlug": "remove-max-number-of-edges-to-keep-graph-fully-traversable",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 70.1,
+  "TotalAccepted": 149001,
+  "TotalSubmissions": 212629,
+  "Likes": 2730,
+  "Dislikes": 46,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob have an undirected graph of \u003Ccode\u003En\u003C/code\u003E nodes and three types of edges:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EType 1: Can be traversed by Alice only.\u003C/li\u003E\n\t\u003Cli\u003EType 2: Can be traversed by Bob only.\u003C/li\u003E\n\t\u003Cli\u003EType 3: Can be traversed by both Alice and Bob.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven an array \u003Ccode\u003Eedges\u003C/code\u003E where \u003Ccode\u003Eedges[i] = [type\u003Csub\u003Ei\u003C/sub\u003E, u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents a bidirectional edge of type \u003Ccode\u003Etype\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E between nodes \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E, find the maximum number of edges you can remove so that after removing the edges, the graph can still be fully traversed by both Alice and Bob. The graph is fully traversed by Alice and Bob if starting from any node, they can reach all other nodes.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum number of edges you can remove, or return\u003C/em\u003E \u003Ccode\u003E-1\u003C/code\u003E \u003Cem\u003Eif Alice and Bob cannot fully traverse the graph.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/19/ex1.png\u0022 style=\u0022width: 179px; height: 191px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, edges = [[3,1,2],[3,2,3],[1,1,3],[1,2,4],[1,1,2],[2,3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EIf we remove the 2 edges [1,1,2] and [1,1,3]. The graph will still be fully traversable by Alice and Bob. Removing any additional edge will not make it so. So the maximum number of edges we can remove is 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/19/ex2.png\u0022 style=\u0022width: 178px; height: 190px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, edges = [[3,1,2],[3,2,3],[1,1,4],[2,1,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation: \u003C/strong\u003ENotice that removing any edge will not make the graph fully traversable by Alice and Bob.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/08/19/ex3.png\u0022 style=\u0022width: 178px; height: 190px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, edges = [[3,2,3],[1,1,2],[2,3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cb\u003EExplanation: \u003C/b\u003EIn the current graph, Alice cannot reach node 4 from the other nodes. Likewise, Bob cannot reach 1. Therefore it\u0026#39;s impossible to make the graph fully traversable.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edges.length \u0026lt;= min(10\u003Csup\u003E5\u003C/sup\u003E, 3 * n * (n - 1) / 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= type\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll tuples \u003Ccode\u003E(type\u003Csub\u003Ei\u003C/sub\u003E, u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E are distinct.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Build the network instead of removing extra edges.",
+    "Suppose you have the final graph (after removing extra edges). Consider the subgraph with only the edges that Alice can traverse. What structure does this subgraph have? How many edges are there?",
+    "Use disjoint set union data structure for both Alice and Bob.",
+    "Always use Type 3 edges first, and connect the still isolated ones using other edges."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n[[3,1,2],[3,2,3],[1,1,3],[1,2,4],[1,1,2],[2,3,4]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "4\n[[3,1,2],[3,2,3],[1,1,4],[2,1,4]]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "4\n[[3,2,3],[1,1,2],[2,3,4]]",
+      "RawExpectedOutput": "-1\n\u003Cb\u003EExplanation: \u003C/b\u003EIn the current graph, Alice cannot reach node 4 from the other nodes. Likewise, Bob cannot reach 1. Therefore it\u0027s impossible to make the graph fully traversable."
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7724386+00:00",
+  "Url": "https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/"
+}

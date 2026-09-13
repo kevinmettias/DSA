@@ -1,0 +1,37 @@
+{
+  "QuestionId": 213,
+  "FrontendId": 213,
+  "Title": "House Robber II",
+  "TitleSlug": "house-robber-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 45.5,
+  "TotalAccepted": 1378636,
+  "TotalSubmissions": 3027565,
+  "Likes": 11311,
+  "Dislikes": 197,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed. All houses at this place are \u003Cstrong\u003Earranged in a circle.\u003C/strong\u003E That means the first house is the neighbor of the last one. Meanwhile, adjacent houses have a security system connected, and\u0026nbsp;\u003Cb\u003Eit will automatically contact the police if two adjacent houses were broken into on the same night\u003C/b\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E representing the amount of money of each house, return \u003Cem\u003Ethe maximum amount of money you can rob tonight \u003Cstrong\u003Ewithout alerting the police\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,3,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You cannot rob house 1 (money = 2) and then rob house 3 (money = 2), because they are adjacent houses.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Rob house 1 (money = 1) and then rob house 3 (money = 3).\nTotal amount you can rob = 1 \u002B 3 = 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Since House[1] and House[n] are adjacent, they cannot be robbed together. Therefore, the problem becomes to rob either House[1]-House[n-1] or House[2]-House[n], depending on which choice offers more money. Now the problem has degenerated to the \u003Ca href =\u0022https://leetcode.com/problems/house-robber/description/\u0022\u003EHouse Robber\u003C/a\u003E, which is already been solved."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,2]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,2,3,1]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[1,2,3]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4523361+00:00",
+  "Url": "https://leetcode.com/problems/house-robber-ii/"
+}

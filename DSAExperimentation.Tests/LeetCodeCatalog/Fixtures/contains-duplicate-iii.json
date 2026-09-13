@@ -1,0 +1,37 @@
+{
+  "QuestionId": 220,
+  "FrontendId": 220,
+  "Title": "Contains Duplicate III",
+  "TitleSlug": "contains-duplicate-iii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Sliding Window",
+    "Sorting",
+    "Bucket Sort",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 25.2,
+  "TotalAccepted": 332741,
+  "TotalSubmissions": 1321070,
+  "Likes": 1351,
+  "Dislikes": 158,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and two integers \u003Ccode\u003EindexDiff\u003C/code\u003E and \u003Ccode\u003EvalueDiff\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind a pair of indices \u003Ccode\u003E(i, j)\u003C/code\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei != j\u003C/code\u003E,\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eabs(i - j) \u0026lt;= indexDiff\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eabs(nums[i] - nums[j]) \u0026lt;= valueDiff\u003C/code\u003E, and\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if such pair exists or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,1], indexDiff = 3, valueDiff = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can choose (i, j) = (0, 3).\nWe satisfy the three conditions:\ni != j --\u0026gt; 0 != 3\nabs(i - j) \u0026lt;= indexDiff --\u0026gt; abs(0 - 3) \u0026lt;= 3\nabs(nums[i] - nums[j]) \u0026lt;= valueDiff --\u0026gt; abs(1 - 1) \u0026lt;= 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,5,9,1,5,9], indexDiff = 2, valueDiff = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E After trying all the possible pairs (i, j), we cannot satisfy the three conditions, so we return false.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= indexDiff \u0026lt;= nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= valueDiff \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Time complexity O(n logk)  - This will give an indication that sorting is involved for k elements.",
+    "Use already existing state to evaluate next state  -  Like, a set of k sorted numbers are only needed to be tracked. When we are processing the next number in array, then we can utilize the existing sorted state and it is not necessary to sort next overlapping set of k numbers again."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,1]\n3\n0",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,5,9,1,5,9]\n2\n3",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8855698+00:00",
+  "Url": "https://leetcode.com/problems/contains-duplicate-iii/"
+}

@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2166,
+  "FrontendId": 2056,
+  "Title": "Number of Valid Move Combinations On Chessboard",
+  "TitleSlug": "number-of-valid-move-combinations-on-chessboard",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Backtracking",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 48.5,
+  "TotalAccepted": 6157,
+  "TotalSubmissions": 12684,
+  "Likes": 80,
+  "Dislikes": 298,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an \u003Ccode\u003E8 x 8\u003C/code\u003E chessboard containing \u003Ccode\u003En\u003C/code\u003E pieces (rooks, queens, or bishops). You are given a string array \u003Ccode\u003Epieces\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Epieces[i]\u003C/code\u003E describes the type (rook, queen, or bishop) of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E piece. In addition, you are given a 2D integer array \u003Ccode\u003Epositions\u003C/code\u003E also of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Epositions[i] = [r\u003Csub\u003Ei\u003C/sub\u003E, c\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E piece is currently at the \u003Cstrong\u003E1-based\u003C/strong\u003E coordinate \u003Ccode\u003E(r\u003Csub\u003Ei\u003C/sub\u003E, c\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E on the chessboard.\u003C/p\u003E\n\n\u003Cp\u003EWhen making a \u003Cstrong\u003Emove\u003C/strong\u003E for a piece, you choose a \u003Cstrong\u003Edestination\u003C/strong\u003E square that the piece will travel toward and stop on.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EA rook can only travel \u003Cstrong\u003Ehorizontally or vertically\u003C/strong\u003E from \u003Ccode\u003E(r, c)\u003C/code\u003E to the direction of \u003Ccode\u003E(r\u002B1, c)\u003C/code\u003E, \u003Ccode\u003E(r-1, c)\u003C/code\u003E, \u003Ccode\u003E(r, c\u002B1)\u003C/code\u003E, or \u003Ccode\u003E(r, c-1)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EA queen can only travel \u003Cstrong\u003Ehorizontally, vertically, or diagonally\u003C/strong\u003E from \u003Ccode\u003E(r, c)\u003C/code\u003E to the direction of \u003Ccode\u003E(r\u002B1, c)\u003C/code\u003E, \u003Ccode\u003E(r-1, c)\u003C/code\u003E, \u003Ccode\u003E(r, c\u002B1)\u003C/code\u003E, \u003Ccode\u003E(r, c-1)\u003C/code\u003E, \u003Ccode\u003E(r\u002B1, c\u002B1)\u003C/code\u003E, \u003Ccode\u003E(r\u002B1, c-1)\u003C/code\u003E, \u003Ccode\u003E(r-1, c\u002B1)\u003C/code\u003E, \u003Ccode\u003E(r-1, c-1)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EA bishop can only travel \u003Cstrong\u003Ediagonally\u003C/strong\u003E from \u003Ccode\u003E(r, c)\u003C/code\u003E to the direction of \u003Ccode\u003E(r\u002B1, c\u002B1)\u003C/code\u003E, \u003Ccode\u003E(r\u002B1, c-1)\u003C/code\u003E, \u003Ccode\u003E(r-1, c\u002B1)\u003C/code\u003E, \u003Ccode\u003E(r-1, c-1)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou must make a \u003Cstrong\u003Emove\u003C/strong\u003E for every piece on the board simultaneously. A \u003Cstrong\u003Emove combination\u003C/strong\u003E consists of all the \u003Cstrong\u003Emoves\u003C/strong\u003E performed on all the given pieces. Every second, each piece will instantaneously travel \u003Cstrong\u003Eone square\u003C/strong\u003E towards their destination if they are not already at it. All pieces start traveling at the \u003Ccode\u003E0\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E second. A move combination is \u003Cstrong\u003Einvalid\u003C/strong\u003E if, at a given time, \u003Cstrong\u003Etwo or more\u003C/strong\u003E pieces occupy the same square.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of \u003Cstrong\u003Evalid\u003C/strong\u003E move combinations\u003C/em\u003E\u200B\u200B\u200B\u200B\u200B.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENotes:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ENo two pieces\u003C/strong\u003E will start in the\u003Cstrong\u003E same\u003C/strong\u003E square.\u003C/li\u003E\n\t\u003Cli\u003EYou may choose the square a piece is already on as its \u003Cstrong\u003Edestination\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf two pieces are \u003Cstrong\u003Edirectly adjacent\u003C/strong\u003E to each other, it is valid for them to \u003Cstrong\u003Emove past each other\u003C/strong\u003E and swap positions in one second.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/23/a1.png\u0022 style=\u0022width: 215px; height: 215px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pieces = [\u0026quot;rook\u0026quot;], positions = [[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 15\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The image above shows the possible squares the piece can move to.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/23/a2.png\u0022 style=\u0022width: 215px; height: 215px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pieces = [\u0026quot;queen\u0026quot;], positions = [[1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 22\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The image above shows the possible squares the piece can move to.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/23/a3.png\u0022 style=\u0022width: 214px; height: 215px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pieces = [\u0026quot;bishop\u0026quot;], positions = [[4,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 12\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The image above shows the possible squares the piece can move to.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == pieces.length \u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == positions.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epieces\u003C/code\u003E only contains the strings \u003Ccode\u003E\u0026quot;rook\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;queen\u0026quot;\u003C/code\u003E, and \u003Ccode\u003E\u0026quot;bishop\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere will be at most one queen on the chessboard.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= r\u003Csub\u003Ei\u003C/sub\u003E, c\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 8\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EEach \u003Ccode\u003Epositions[i]\u003C/code\u003E is distinct.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "N is small, we can generate all possible move combinations.",
+    "For each possible move combination, determine which ones are valid."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022rook\u0022]\n[[1,1]]",
+      "RawExpectedOutput": "15"
+    },
+    {
+      "RawInput": "[\u0022queen\u0022]\n[[1,1]]",
+      "RawExpectedOutput": "22"
+    },
+    {
+      "RawInput": "[\u0022bishop\u0022]\n[[4,3]]",
+      "RawExpectedOutput": "12"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3047599+00:00",
+  "Url": "https://leetcode.com/problems/number-of-valid-move-combinations-on-chessboard/"
+}

@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1815,
+  "FrontendId": 1697,
+  "Title": "Checking Existence of Edge Length Limited Paths",
+  "TitleSlug": "checking-existence-of-edge-length-limited-paths",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Union-Find",
+    "Graph Theory",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 63.6,
+  "TotalAccepted": 65183,
+  "TotalSubmissions": 102431,
+  "Likes": 2169,
+  "Dislikes": 49,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAn undirected graph of \u003Ccode\u003En\u003C/code\u003E nodes is defined by \u003Ccode\u003EedgeList\u003C/code\u003E, where \u003Ccode\u003EedgeList[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, dis\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E denotes an edge between nodes \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with distance \u003Ccode\u003Edis\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. Note that there may be \u003Cstrong\u003Emultiple\u003C/strong\u003E edges between two nodes.\u003C/p\u003E\n\n\u003Cp\u003EGiven an array \u003Ccode\u003Equeries\u003C/code\u003E, where \u003Ccode\u003Equeries[j] = [p\u003Csub\u003Ej\u003C/sub\u003E, q\u003Csub\u003Ej\u003C/sub\u003E, limit\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E, your task is to determine for each \u003Ccode\u003Equeries[j]\u003C/code\u003E whether there is a path between \u003Ccode\u003Ep\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eq\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E\u003Csub\u003E \u003C/sub\u003Esuch that each edge on the path has a distance \u003Cstrong\u003Estrictly less than\u003C/strong\u003E \u003Ccode\u003Elimit\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E .\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ea \u003Cstrong\u003Eboolean array\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E, where \u003C/em\u003E\u003Ccode\u003Eanswer.length == queries.length\u003C/code\u003E \u003Cem\u003Eand the \u003C/em\u003E\u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cem\u003Evalue of \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E \u003Cem\u003Eis \u003C/em\u003E\u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if there is a path for \u003C/em\u003E\u003Ccode\u003Equeries[j]\u003C/code\u003E\u003Cem\u003E is \u003C/em\u003E\u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E, and \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/08/h.png\u0022 style=\u0022width: 267px; height: 262px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edgeList = [[0,1,2],[1,2,4],[2,0,8],[1,0,16]], queries = [[0,1,2],[0,2,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [false,true]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The above figure shows the given graph. Note that there are two overlapping edges between 0 and 1 with distances 2 and 16.\nFor the first query, between 0 and 1 there is no path where each distance is less than 2, thus we return false for this query.\nFor the second query, there is a path (0 -\u0026gt; 1 -\u0026gt; 2) of two edges with distances less than 5, thus we return true for this query.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/08/q.png\u0022 style=\u0022width: 390px; height: 358px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, edgeList = [[0,1,10],[1,2,5],[2,3,9],[3,4,13]], queries = [[0,4,14],[1,4,13]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [true,false]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The above figure shows the given graph.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edgeList.length, queries.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EedgeList[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[j].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, p\u003Csub\u003Ej\u003C/sub\u003E, q\u003Csub\u003Ej\u003C/sub\u003E \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E != v\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ep\u003Csub\u003Ej\u003C/sub\u003E != q\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= dis\u003Csub\u003Ei\u003C/sub\u003E, limit\u003Csub\u003Ej\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere may be \u003Cstrong\u003Emultiple\u003C/strong\u003E edges between two nodes.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "All the queries are given in advance. Is there a way you can reorder the queries to avoid repeated computations?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1,2],[1,2,4],[2,0,8],[1,0,16]]\n[[0,1,2],[0,2,5]]",
+      "RawExpectedOutput": "[false,true]"
+    },
+    {
+      "RawInput": "5\n[[0,1,10],[1,2,5],[2,3,9],[3,4,13]]\n[[0,4,14],[1,4,13]]",
+      "RawExpectedOutput": "[true,false]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7805446+00:00",
+  "Url": "https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/"
+}

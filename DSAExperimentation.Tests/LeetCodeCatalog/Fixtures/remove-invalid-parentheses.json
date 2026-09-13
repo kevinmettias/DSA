@@ -1,0 +1,41 @@
+{
+  "QuestionId": 301,
+  "FrontendId": 301,
+  "Title": "Remove Invalid Parentheses",
+  "TitleSlug": "remove-invalid-parentheses",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Backtracking",
+    "Breadth-First Search"
+  ],
+  "AcceptanceRatePercent": 50.1,
+  "TotalAccepted": 516482,
+  "TotalSubmissions": 1030049,
+  "Likes": 6095,
+  "Dislikes": 303,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E that contains parentheses and letters, remove the minimum number of invalid parentheses to make the input string valid.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ea list of \u003Cstrong\u003Eunique strings\u003C/strong\u003E that are valid with the minimum number of removals\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;()())()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;(())()\u0026quot;,\u0026quot;()()()\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(a)())()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;(a())()\u0026quot;,\u0026quot;(a)()()\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;)(\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 25\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters and parentheses \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere will be at most \u003Ccode\u003E20\u003C/code\u003E parentheses in \u003Ccode\u003Es\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Since we do not know which brackets can be removed, we try all the options! We can use recursion.",
+    "In the recursion, for each bracket, we can either use it or remove it.",
+    "Recursion will generate all the valid parentheses strings but we want the ones with the least number of parentheses deleted.",
+    "We can count the number of invalid brackets to be deleted and only generate the valid strings in the recusrion."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022()())()\u0022",
+      "RawExpectedOutput": "[\u0022(())()\u0022,\u0022()()()\u0022]"
+    },
+    {
+      "RawInput": "\u0022(a)())()\u0022",
+      "RawExpectedOutput": "[\u0022(a())()\u0022,\u0022(a)()()\u0022]"
+    },
+    {
+      "RawInput": "\u0022)(\u0022",
+      "RawExpectedOutput": "[\u0022\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7635498+00:00",
+  "Url": "https://leetcode.com/problems/remove-invalid-parentheses/"
+}

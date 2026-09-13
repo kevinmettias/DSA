@@ -1,0 +1,38 @@
+{
+  "QuestionId": 984,
+  "FrontendId": 947,
+  "Title": "Most Stones Removed with Same Row or Column",
+  "TitleSlug": "most-stones-removed-with-same-row-or-column",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Depth-First Search",
+    "Union-Find",
+    "Graph Theory",
+    "Bipartite Graph"
+  ],
+  "AcceptanceRatePercent": 63.5,
+  "TotalAccepted": 435714,
+  "TotalSubmissions": 686512,
+  "Likes": 6583,
+  "Dislikes": 711,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EOn a 2D plane, we place \u003Ccode\u003En\u003C/code\u003E stones at some integer coordinate points. Each coordinate point may have at most one stone.\u003C/p\u003E\n\n\u003Cp\u003EA stone can be removed if it shares either \u003Cstrong\u003Ethe same row or the same column\u003C/strong\u003E as another stone that has not been removed.\u003C/p\u003E\n\n\u003Cp\u003EGiven an array \u003Ccode\u003Estones\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E where \u003Ccode\u003Estones[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the location of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E stone, return \u003Cem\u003Ethe largest possible number of stones that can be removed\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One way to remove 5 stones is as follows:\n1. Remove stone [2,2] because it shares the same row as [2,1].\n2. Remove stone [2,1] because it shares the same column as [0,1].\n3. Remove stone [1,2] because it shares the same row as [1,0].\n4. Remove stone [1,0] because it shares the same column as [0,0].\n5. Remove stone [0,1] because it shares the same row as [0,0].\nStone [0,0] cannot be removed since it does not share a row/column with another stone still on the plane.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [[0,0],[0,2],[1,1],[2,0],[2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E One way to make 3 moves is as follows:\n1. Remove stone [2,2] because it shares the same row as [2,0].\n2. Remove stone [2,0] because it shares the same column as [0,0].\n3. Remove stone [0,2] because it shares the same row as [0,0].\nStones [0,0] and [1,1] cannot be removed since they do not share a row/column with another stone still on the plane.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [[0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E [0,0] is the only stone on the plane, so you cannot remove it.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stones.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003ENo two stones are at the same coordinate point.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[[0,0],[0,2],[1,1],[2,0],[2,2]]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[[0,0]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.140197+00:00",
+  "Url": "https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/"
+}

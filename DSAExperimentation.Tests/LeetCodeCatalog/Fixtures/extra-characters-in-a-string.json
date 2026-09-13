@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2755,
+  "FrontendId": 2707,
+  "Title": "Extra Characters in a String",
+  "TitleSlug": "extra-characters-in-a-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Dynamic Programming",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 57.2,
+  "TotalAccepted": 204126,
+  "TotalSubmissions": 356773,
+  "Likes": 2662,
+  "Dislikes": 139,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E and a dictionary of words \u003Ccode\u003Edictionary\u003C/code\u003E. You have to break \u003Ccode\u003Es\u003C/code\u003E into one or more \u003Cstrong\u003Enon-overlapping\u003C/strong\u003E substrings such that each substring is present in \u003Ccode\u003Edictionary\u003C/code\u003E. There may be some \u003Cstrong\u003Eextra characters\u003C/strong\u003E in \u003Ccode\u003Es\u003C/code\u003E which are not present in any of the substrings.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of extra characters left over if you break up \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E\u003Cem\u003E optimally.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;leetscode\u0026quot;, dictionary = [\u0026quot;leet\u0026quot;,\u0026quot;code\u0026quot;,\u0026quot;leetcode\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can break s in two substrings: \u0026quot;leet\u0026quot; from index 0 to 3 and \u0026quot;code\u0026quot; from index 5 to 8. There is only 1 unused character (at index 4), so we return 1.\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;sayhelloworld\u0026quot;, dictionary = [\u0026quot;hello\u0026quot;,\u0026quot;world\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can break s in two substrings: \u0026quot;hello\u0026quot; from index 3 to 7 and \u0026quot;world\u0026quot; from index 8 to 12. The characters at indices 0, 1, 2 are not used in any substring and thus are considered as extra characters. Hence, we return 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= dictionary.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= dictionary[i].length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edictionary[i]\u003C/code\u003E\u0026nbsp;and \u003Ccode\u003Es\u003C/code\u003E consists of only lowercase English letters\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edictionary\u003C/code\u003E contains distinct words\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we use Dynamic Programming here?",
+    "Define DP[i] as the min extra character if breaking up s[0:i] optimally."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022leetscode\u0022\n[\u0022leet\u0022,\u0022code\u0022,\u0022leetcode\u0022]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022sayhelloworld\u0022\n[\u0022hello\u0022,\u0022world\u0022]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1989226+00:00",
+  "Url": "https://leetcode.com/problems/extra-characters-in-a-string/"
+}

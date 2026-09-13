@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3373,
+  "FrontendId": 3115,
+  "Title": "Maximum Prime Difference",
+  "TitleSlug": "maximum-prime-difference",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Number Theory",
+    "Primality Test"
+  ],
+  "AcceptanceRatePercent": 59.1,
+  "TotalAccepted": 55239,
+  "TotalSubmissions": 93464,
+  "Likes": 136,
+  "Dislikes": 17,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer that is the \u003Cstrong\u003Emaximum\u003C/strong\u003E distance between the \u003Cstrong\u003Eindices\u003C/strong\u003E of two (not necessarily different) prime numbers in \u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,2,9,5,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u003Ccode\u003Enums[1]\u003C/code\u003E, \u003Ccode\u003Enums[3]\u003C/code\u003E, and \u003Ccode\u003Enums[4]\u003C/code\u003E are prime. So the answer is \u003Ccode\u003E|4 - 1| = 3\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,8,2,8]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E \u003Ccode\u003Enums[2]\u003C/code\u003E is prime. Because there is just one prime number, the answer is \u003Ccode\u003E|2 - 2| = 0\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 3 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that the number of prime numbers in the \u003Ccode\u003Enums\u003C/code\u003E is at least one.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Find all prime numbers in the \u003Ccode\u003Enums\u003C/code\u003E.",
+    "Find the first and the last prime number in the \u003Ccode\u003Enums\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,9,5,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[4,8,2,8]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9150471+00:00",
+  "Url": "https://leetcode.com/problems/maximum-prime-difference/"
+}

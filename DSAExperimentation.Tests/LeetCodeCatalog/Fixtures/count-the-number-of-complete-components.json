@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2793,
+  "FrontendId": 2685,
+  "Title": "Count the Number of Complete Components",
+  "TitleSlug": "count-the-number-of-complete-components",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 80.8,
+  "TotalAccepted": 256468,
+  "TotalSubmissions": 317265,
+  "Likes": 1528,
+  "Dislikes": 34,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E. There is an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph with \u003Ccode\u003En\u003C/code\u003E vertices, numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. You are given a 2D integer array \u003Ccode\u003Eedges\u003C/code\u003E where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E denotes that there exists an \u003Cstrong\u003Eundirected\u003C/strong\u003E edge connecting vertices \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of \u003Cstrong\u003Ecomplete connected components\u003C/strong\u003E of the graph\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Econnected component\u003C/strong\u003E is a subgraph of a graph in which there exists a path between any two vertices, and no vertex of the subgraph shares an edge with a vertex outside of the subgraph.\u003C/p\u003E\n\n\u003Cp\u003EA connected component is said to be \u003Cb\u003Ecomplete\u003C/b\u003E if there exists an edge between every pair of its vertices.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/04/11/screenshot-from-2023-04-11-23-31-23.png\u0022 style=\u0022width: 671px; height: 270px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6, edges = [[0,1],[0,2],[1,2],[3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E From the picture above, one can see that all of the components of this graph are complete.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/04/11/screenshot-from-2023-04-11-23-32-00.png\u0022 style=\u0022width: 671px; height: 270px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6, edges = [[0,1],[0,2],[1,2],[3,4],[3,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The component containing vertices 0, 1, and 2 is complete since there is an edge between every pair of two vertices. On the other hand, the component containing vertices 3, 4, and 5 is not complete since there is no edge between vertices 4 and 5. Thus, the number of complete components in this graph is 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= edges.length \u0026lt;= n * (n - 1) / 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E != b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are no repeated edges.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Find the connected components of an undirected graph using depth-first search (DFS) or breadth-first search (BFS).",
+    "For each connected component, count the number of nodes and edges in the component.",
+    "A connected component is complete if and only if the number of edges in the component is equal to m*(m-1)/2, where m is the number of nodes in the component."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "6\n[[0,1],[0,2],[1,2],[3,4]]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "6\n[[0,1],[0,2],[1,2],[3,4],[3,5]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9818613+00:00",
+  "Url": "https://leetcode.com/problems/count-the-number-of-complete-components/"
+}

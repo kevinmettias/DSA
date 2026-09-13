@@ -1,0 +1,32 @@
+{
+  "QuestionId": 821,
+  "FrontendId": 803,
+  "Title": "Bricks Falling When Hit",
+  "TitleSlug": "bricks-falling-when-hit",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 37.9,
+  "TotalAccepted": 40545,
+  "TotalSubmissions": 106945,
+  "Likes": 1224,
+  "Dislikes": 194,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E binary \u003Ccode\u003Egrid\u003C/code\u003E, where each \u003Ccode\u003E1\u003C/code\u003E represents a brick and \u003Ccode\u003E0\u003C/code\u003E represents an empty space. A brick is \u003Cstrong\u003Estable\u003C/strong\u003E if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIt is directly connected to the top of the grid, or\u003C/li\u003E\n\t\u003Cli\u003EAt least one other brick in its four adjacent cells is \u003Cstrong\u003Estable\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou are also given an array \u003Ccode\u003Ehits\u003C/code\u003E, which is a sequence of erasures we want to apply. Each time we want to erase the brick at the location \u003Ccode\u003Ehits[i] = (row\u003Csub\u003Ei\u003C/sub\u003E, col\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E. The brick on that location\u0026nbsp;(if it exists) will disappear. Some other bricks may no longer be stable because of that erasure and will \u003Cstrong\u003Efall\u003C/strong\u003E. Once a brick falls, it is \u003Cstrong\u003Eimmediately\u003C/strong\u003E erased from the \u003Ccode\u003Egrid\u003C/code\u003E (i.e., it does not land on other stable bricks).\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array \u003C/em\u003E\u003Ccode\u003Eresult\u003C/code\u003E\u003Cem\u003E, where each \u003C/em\u003E\u003Ccode\u003Eresult[i]\u003C/code\u003E\u003Cem\u003E is the number of bricks that will \u003Cstrong\u003Efall\u003C/strong\u003E after the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E erasure is applied.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that an erasure may refer to a location with no brick, and if it does, no bricks drop.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,0,0,0],[1,1,1,0]], hits = [[1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EStarting with the grid:\n[[1,0,0,0],\n [\u003Cu\u003E1\u003C/u\u003E,1,1,0]]\nWe erase the underlined brick at (1,0), resulting in the grid:\n[[1,0,0,0],\n [0,\u003Cu\u003E1\u003C/u\u003E,\u003Cu\u003E1\u003C/u\u003E,0]]\nThe two underlined bricks are no longer stable as they are no longer connected to the top nor adjacent to another stable brick, so they will fall. The resulting grid is:\n[[1,0,0,0],\n [0,0,0,0]]\nHence the result is [2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,0,0,0],[1,1,0,0]], hits = [[1,1],[1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EStarting with the grid:\n[[1,0,0,0],\n [1,\u003Cu\u003E1\u003C/u\u003E,0,0]]\nWe erase the underlined brick at (1,1), resulting in the grid:\n[[1,0,0,0],\n [1,0,0,0]]\nAll remaining bricks are still stable, so no bricks fall. The grid remains the same:\n[[1,0,0,0],\n [\u003Cu\u003E1\u003C/u\u003E,0,0,0]]\nNext, we erase the underlined brick at (1,0), resulting in the grid:\n[[1,0,0,0],\n [0,0,0,0]]\nOnce again, all remaining bricks are still stable, so no bricks fall.\nHence the result is [0,0].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= hits.length \u0026lt;= 4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ehits[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x\u003Csub\u003Ei\u0026nbsp;\u003C/sub\u003E\u0026lt;= m - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;=\u0026nbsp;y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E are unique.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,0,0,0],[1,1,1,0]]\n[[1,0]]",
+      "RawExpectedOutput": "[2]"
+    },
+    {
+      "RawInput": "[[1,0,0,0],[1,1,0,0]]\n[[1,1],[1,0]]",
+      "RawExpectedOutput": "[0,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7173412+00:00",
+  "Url": "https://leetcode.com/problems/bricks-falling-when-hit/"
+}

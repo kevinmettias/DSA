@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3501,
+  "FrontendId": 3217,
+  "Title": "Delete Nodes From Linked List Present in Array",
+  "TitleSlug": "delete-nodes-from-linked-list-present-in-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Linked List"
+  ],
+  "AcceptanceRatePercent": 69.2,
+  "TotalAccepted": 348738,
+  "TotalSubmissions": 503925,
+  "Likes": 1109,
+  "Dislikes": 50,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of integers \u003Ccode\u003Enums\u003C/code\u003E and the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list. Return the \u003Ccode\u003Ehead\u003C/code\u003E of the modified linked list after \u003Cstrong\u003Eremoving\u003C/strong\u003E all nodes from the linked list that have a value that exists in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3], head = [1,2,3,4,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[4,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/11/linkedlistexample0.png\u0022 style=\u0022width: 400px; height: 66px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ERemove the nodes with values 1, 2, and 3.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1], head = [1,2,1,2,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[2,2,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/11/linkedlistexample1.png\u0022 style=\u0022height: 62px; width: 450px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ERemove the nodes with value 1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5], head = [1,2,3,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[1,2,3,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/11/linkedlistexample2.png\u0022 style=\u0022width: 400px; height: 83px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo node has value 5.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll elements in \u003Ccode\u003Enums\u003C/code\u003E are unique.\u003C/li\u003E\n\t\u003Cli\u003EThe number of nodes in the given list is in the range \u003Ccode\u003E[1, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe input is generated such that there is at least one node in the linked list that has a value not present in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Add all elements of \u003Ccode\u003Enums\u003C/code\u003E into a Set.",
+    "Scan the list to check if the current element should be deleted by checking the Set."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]\n[1,2,3,4,5]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1]\n[1,2,1,2,1,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[5]\n[1,2,3,4]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0696361+00:00",
+  "Url": "https://leetcode.com/problems/delete-nodes-from-linked-list-present-in-array/"
+}

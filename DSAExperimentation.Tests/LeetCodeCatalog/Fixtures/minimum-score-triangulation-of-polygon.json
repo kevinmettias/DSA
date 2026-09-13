@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1111,
+  "FrontendId": 1039,
+  "Title": "Minimum Score Triangulation of Polygon",
+  "TitleSlug": "minimum-score-triangulation-of-polygon",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Triangulation",
+    "Polygons"
+  ],
+  "AcceptanceRatePercent": 67.7,
+  "TotalAccepted": 146099,
+  "TotalSubmissions": 215881,
+  "Likes": 2354,
+  "Dislikes": 304,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have a convex \u003Ccode\u003En\u003C/code\u003E-sided polygon where each vertex has an integer value. You are given an integer array \u003Ccode\u003Evalues\u003C/code\u003E where \u003Ccode\u003Evalues[i]\u003C/code\u003E is the value of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E vertex in \u003Cstrong\u003Eclockwise order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EPolygon\u003C/strong\u003E \u003Cstrong\u003Etriangulation\u003C/strong\u003E is a process where you divide a polygon into a set of triangles and the vertices of each triangle must also be vertices of the original polygon. Note that no other shapes other than triangles are allowed in the division. This process will result in \u003Ccode\u003En - 2\u003C/code\u003E triangles.\u003C/p\u003E\n\n\u003Cp\u003EYou will \u003Cstrong\u003Etriangulate\u003C/strong\u003E the polygon. For each triangle, the \u003Cem\u003Eweight\u003C/em\u003E of that triangle is the product of the values at its vertices. The total score of the triangulation is the sum of these \u003Cem\u003Eweights\u003C/em\u003E over all \u003Ccode\u003En - 2\u003C/code\u003E triangles.\u003C/p\u003E\n\n\u003Cp\u003EReturn the\u003Cem\u003E minimum possible score \u003C/em\u003Ethat you can achieve with some\u003Cem\u003E \u003C/em\u003E\u003Cstrong\u003Etriangulation\u003C/strong\u003E\u003Cem\u003E \u003C/em\u003Eof the polygon.\u003C/p\u003E\n\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/10/23/ex0-2.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Evalues = [1,2,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E The polygon is already triangulated, and the score of the only triangle is 6.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/10/23/ex1-2.png\u0022 style=\u0022width: 432px; height: 200px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Evalues = [3,7,4,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E144\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are two triangulations, with possible scores: 3*7*5 \u002B 4*5*7 = 245, or 3*4*5 \u002B 3*4*7 = 144.\u003Cbr /\u003E\nThe minimum score is 144.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/10/23/ex2.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Evalues = [1,3,1,4,1,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E13\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E The minimum score triangulation is 1*1*3 \u002B 1*1*4 \u002B 1*1*5 \u002B 1*1*1 = 13.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == values.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= values[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Without loss of generality, there is a triangle that uses adjacent vertices A[0] and A[N-1] (where N = A.length).  Depending on your choice K of it, this breaks down the triangulation into two subproblems A[1:K] and A[K\u002B1:N-1]."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,7,4,5]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,3,1,4,1,5]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0922154+00:00",
+  "Url": "https://leetcode.com/problems/minimum-score-triangulation-of-polygon/"
+}

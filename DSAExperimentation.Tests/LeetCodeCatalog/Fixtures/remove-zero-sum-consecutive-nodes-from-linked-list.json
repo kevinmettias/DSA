@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1267,
+  "FrontendId": 1171,
+  "Title": "Remove Zero Sum Consecutive Nodes from Linked List",
+  "TitleSlug": "remove-zero-sum-consecutive-nodes-from-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Linked List"
+  ],
+  "AcceptanceRatePercent": 53.3,
+  "TotalAccepted": 192714,
+  "TotalSubmissions": 361417,
+  "Likes": 3548,
+  "Dislikes": 226,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list, we repeatedly delete consecutive sequences of nodes that sum to \u003Ccode\u003E0\u003C/code\u003E until there are no such sequences.\u003C/p\u003E\r\n\r\n\u003Cp\u003EAfter doing so, return the head of the final linked list.\u0026nbsp; You may return any such answer.\u003C/p\u003E\r\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E(Note that in the examples below, all sequences are serializations of \u003Ccode\u003EListNode\u003C/code\u003E objects.)\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,-3,3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,1]\n\u003Cstrong\u003ENote:\u003C/strong\u003E The answer [1,2,1] would also be accepted.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,-3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,4]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [1,2,3,-3,-2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe given linked list will contain between \u003Ccode\u003E1\u003C/code\u003E and \u003Ccode\u003E1000\u003C/code\u003E nodes.\u003C/li\u003E\n\t\u003Cli\u003EEach node in the linked list has \u003Ccode\u003E-1000 \u0026lt;= node.val \u0026lt;= 1000\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Convert the linked list into an array.",
+    "While you can find a non-empty subarray with sum = 0, erase it.",
+    "Convert the array into a linked list."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,-3,3,1]",
+      "RawExpectedOutput": "[3,1]"
+    },
+    {
+      "RawInput": "[1,2,3,-3,4]",
+      "RawExpectedOutput": "[1,2,4]"
+    },
+    {
+      "RawInput": "[1,2,3,-3,-2]",
+      "RawExpectedOutput": "[1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.791007+00:00",
+  "Url": "https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/"
+}

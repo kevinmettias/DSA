@@ -1,0 +1,35 @@
+{
+  "QuestionId": 374,
+  "FrontendId": 374,
+  "Title": "Guess Number Higher or Lower",
+  "TitleSlug": "guess-number-higher-or-lower",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Binary Search",
+    "Interactive"
+  ],
+  "AcceptanceRatePercent": 58.3,
+  "TotalAccepted": 1092336,
+  "TotalSubmissions": 1873446,
+  "Likes": 4349,
+  "Dislikes": 703,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe are playing the Guess Game. The game is as follows:\u003C/p\u003E\n\n\u003Cp\u003EI pick a number from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E. You have to guess which number I picked (the number I picked stays the same throughout the game).\u003C/p\u003E\n\n\u003Cp\u003EEvery time you guess wrong, I will tell you whether the number I picked is higher or lower than your guess.\u003C/p\u003E\n\n\u003Cp\u003EYou call a pre-defined API \u003Ccode\u003Eint guess(int num)\u003C/code\u003E, which returns three possible results:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1\u003C/code\u003E: Your guess is higher than the number I picked (i.e. \u003Ccode\u003Enum \u0026gt; pick\u003C/code\u003E).\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1\u003C/code\u003E: Your guess is lower than the number I picked (i.e. \u003Ccode\u003Enum \u0026lt; pick\u003C/code\u003E).\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0\u003C/code\u003E: your guess is equal to the number I picked (i.e. \u003Ccode\u003Enum == pick\u003C/code\u003E).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number that I picked\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 10, pick = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1, pick = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2, pick = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= pick \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10\n6",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "1\n1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "2\n1",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4167839+00:00",
+  "Url": "https://leetcode.com/problems/guess-number-higher-or-lower/"
+}

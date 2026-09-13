@@ -1,0 +1,36 @@
+{
+  "QuestionId": 274,
+  "FrontendId": 274,
+  "Title": "H-Index",
+  "TitleSlug": "h-index",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Sorting",
+    "Counting Sort"
+  ],
+  "AcceptanceRatePercent": 41.9,
+  "TotalAccepted": 922910,
+  "TotalSubmissions": 2204401,
+  "Likes": 1957,
+  "Dislikes": 932,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers \u003Ccode\u003Ecitations\u003C/code\u003E where \u003Ccode\u003Ecitations[i]\u003C/code\u003E is the number of citations a researcher received for their \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E paper, return \u003Cem\u003Ethe researcher\u0026#39;s h-index\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAccording to the \u003Ca href=\u0022https://en.wikipedia.org/wiki/H-index\u0022 target=\u0022_blank\u0022\u003Edefinition of h-index on Wikipedia\u003C/a\u003E: The h-index is defined as the maximum value of \u003Ccode\u003Eh\u003C/code\u003E such that the given researcher has published at least \u003Ccode\u003Eh\u003C/code\u003E papers that have each been cited at least \u003Ccode\u003Eh\u003C/code\u003E times.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E citations = [3,0,6,1,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E [3,0,6,1,5] means the researcher has 5 papers in total and each of them had received 3, 0, 6, 1, 5 citations respectively.\nSince the researcher has 3 papers with at least 3 citations each and the remaining two with no more than 3 citations each, their h-index is 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E citations = [1,3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == citations.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= citations[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "An easy approach is to sort the array first.",
+    "What are the possible values of h-index?",
+    "A faster approach is to use extra space."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,0,6,1,5]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,3,1]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4257762+00:00",
+  "Url": "https://leetcode.com/problems/h-index/"
+}

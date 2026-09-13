@@ -1,0 +1,36 @@
+{
+  "QuestionId": 406,
+  "FrontendId": 406,
+  "Title": "Queue Reconstruction by Height",
+  "TitleSlug": "queue-reconstruction-by-height",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Indexed Tree",
+    "Segment Tree",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 75,
+  "TotalAccepted": 355748,
+  "TotalSubmissions": 474146,
+  "Likes": 7290,
+  "Dislikes": 759,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of people, \u003Ccode\u003Epeople\u003C/code\u003E, which are the attributes of some people in a queue (not necessarily in order). Each \u003Ccode\u003Epeople[i] = [h\u003Csub\u003Ei\u003C/sub\u003E, k\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person of height \u003Ccode\u003Eh\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E other people in front who have a height greater than or equal to \u003Ccode\u003Eh\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReconstruct and return \u003Cem\u003Ethe queue that is represented by the input array \u003C/em\u003E\u003Ccode\u003Epeople\u003C/code\u003E. The returned queue should be formatted as an array \u003Ccode\u003Equeue\u003C/code\u003E, where \u003Ccode\u003Equeue[j] = [h\u003Csub\u003Ej\u003C/sub\u003E, k\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E is the attributes of the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person in the queue (\u003Ccode\u003Equeue[0]\u003C/code\u003E is the person at the front of the queue).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nPerson 0 has height 5 with no other people taller or the same height in front.\nPerson 1 has height 7 with no other people taller or the same height in front.\nPerson 2 has height 5 with two persons taller or the same height in front, which is person 0 and 1.\nPerson 3 has height 6 with one person taller or the same height in front, which is person 1.\nPerson 4 has height 4 with four people taller or the same height in front, which are people 0, 1, 2, and 3.\nPerson 5 has height 7 with one person taller or the same height in front, which is person 1.\nHence [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]] is the reconstructed queue.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E people = [[6,0],[5,0],[4,0],[3,2],[2,2],[1,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[4,0],[5,0],[2,2],[3,2],[1,4],[6,0]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= people.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= h\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; people.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that the queue can be reconstructed.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "What can you say about the position of the shortest person? \u003C/br\u003E\r\nIf the position of the shortest person is \u003Ci\u003Ei\u003C/i\u003E, how many people would be in front of the shortest person?",
+    "Once you fix the position of the shortest person, what can you say about the position of the second shortest person?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]",
+      "RawExpectedOutput": "[[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]"
+    },
+    {
+      "RawInput": "[[6,0],[5,0],[4,0],[3,2],[2,2],[1,4]]",
+      "RawExpectedOutput": "[[4,0],[5,0],[2,2],[3,2],[1,4],[6,0]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6147902+00:00",
+  "Url": "https://leetcode.com/problems/queue-reconstruction-by-height/"
+}

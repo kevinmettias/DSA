@@ -1,0 +1,35 @@
+{
+  "QuestionId": 4114,
+  "FrontendId": 3887,
+  "Title": "Incremental Even-Weighted Cycle Queries",
+  "TitleSlug": "incremental-even-weighted-cycle-queries",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 52.1,
+  "TotalAccepted": 8446,
+  "TotalSubmissions": 16218,
+  "Likes": 81,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a positive integer \u003Ccode\u003En\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere is an \u003Cstrong\u003Eundirected\u003C/strong\u003E graph with \u003Ccode\u003En\u003C/code\u003E nodes labeled from 0 to \u003Ccode\u003En - 1\u003C/code\u003E. Initially, the graph has no edges.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a 2D integer array \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents an edge between nodes \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. The weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is either 0 or 1.\u003C/p\u003E\n\n\u003Cp\u003EProcess the edges in \u003Ccode\u003Eedges\u003C/code\u003E in the given order. For each edge, add it to the graph only if, after adding it, the sum of the weights of the edges in \u003Cstrong\u003Eevery\u003C/strong\u003E cycle in the resulting graph is \u003Cstrong\u003Eeven\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the number of edges that are successfully added to the graph.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,1],[1,2,1],[0,2,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2026/03/21/hmadizgovu.png\u0022 style=\u0022width: 168px; height: 150px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[0, 1, 1]\u003C/code\u003E: We add the edge between vertex 0 and vertex 1 with weight 1.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 2, 1]\u003C/code\u003E: We add the edge between vertex 1 and vertex 2 with weight 1.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[0, 2, 1]\u003C/code\u003E: The edge between vertex 0 and vertex 2 (the dashed edge in the diagram) is not added because the cycle \u003Ccode\u003E0 - 1 - 2 - 0\u003C/code\u003E has total edge weight \u003Ccode\u003E1 \u002B 1 \u002B 1 = 3\u003C/code\u003E, which is an odd number.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,1],[1,2,1],[0,2,0]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2026/03/21/rbdgrefwok.png\u0022 style=\u0022width: 179px; height: 160px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[0, 1, 1]\u003C/code\u003E: We add the edge between vertex 0 and vertex 1 with weight 1.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 2, 1]\u003C/code\u003E: We add the edge between vertex 1 and vertex 2 with weight 1.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[0, 2, 0]\u003C/code\u003E: We add the edge between vertex 0 and vertex 2 with weight 0.\u003C/li\u003E\n\t\u003Cli\u003ENote that the cycle \u003Ccode\u003E0 - 1 - 2 - 0\u003C/code\u003E has total edge weight \u003Ccode\u003E1 \u002B 1 \u002B 0 = 2\u003C/code\u003E, which is an even number.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= n \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= edges.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll edges are distinct.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E = 0 or w\u003Csub\u003Ei\u003C/sub\u003E = 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Model as parity constraints: assign bits to nodes, 0-edge requires same bit, 1-edge different.",
+    "Use DSU to track connected components and relative parities; reject if contradiction on add.",
+    "Adding edge merges or checks existing path parity matches new edge weight."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1,1],[1,2,1],[0,2,1]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[[0,1,1],[1,2,1],[0,2,0]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4910385+00:00",
+  "Url": "https://leetcode.com/problems/incremental-even-weighted-cycle-queries/"
+}

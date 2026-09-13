@@ -1,0 +1,31 @@
+{
+  "QuestionId": 403,
+  "FrontendId": 403,
+  "Title": "Frog Jump",
+  "TitleSlug": "frog-jump",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 47.6,
+  "TotalAccepted": 359435,
+  "TotalSubmissions": 754682,
+  "Likes": 6085,
+  "Dislikes": 280,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA frog is crossing a river. The river is divided into some number of units, and at each unit, there may or may not exist a stone. The frog can jump on a stone, but it must not jump into the water.\u003C/p\u003E\n\n\u003Cp\u003EGiven a list of \u003Ccode\u003Estones\u003C/code\u003E\u0026nbsp;positions (in units) in sorted \u003Cstrong\u003Eascending order\u003C/strong\u003E, determine if the frog can cross the river by landing on the last stone. Initially, the frog is on the first stone and assumes the first jump must be \u003Ccode\u003E1\u003C/code\u003E unit.\u003C/p\u003E\n\n\u003Cp\u003EIf the frog\u0026#39;s last jump was \u003Ccode\u003Ek\u003C/code\u003E units, its next jump must be either \u003Ccode\u003Ek - 1\u003C/code\u003E, \u003Ccode\u003Ek\u003C/code\u003E, or \u003Ccode\u003Ek \u002B 1\u003C/code\u003E units. The frog can only jump in the forward direction.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [0,1,3,5,6,8,12,17]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The frog can jump to the last stone by jumping 1 unit to the 2nd stone, then 2 units to the 3rd stone, then 2 units to the 4th stone, then 3 units to the 6th stone, 4 units to the 7th stone, and 5 units to the 8th stone.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [0,1,2,3,4,8,9,11]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no way to jump to the last stone as the gap between the 5th and 6th stone is too large.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= stones.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= stones[i] \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estones[0] == 0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estones\u003C/code\u003E\u0026nbsp;is sorted in a strictly increasing order.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,1,3,5,6,8,12,17]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[0,1,2,3,4,8,9,11]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3630013+00:00",
+  "Url": "https://leetcode.com/problems/frog-jump/"
+}

@@ -1,0 +1,26 @@
+{
+  "QuestionId": 211,
+  "FrontendId": 211,
+  "Title": "Design Add and Search Words Data Structure",
+  "TitleSlug": "design-add-and-search-words-data-structure",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Depth-First Search",
+    "Design",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 49,
+  "TotalAccepted": 929630,
+  "TotalSubmissions": 1897039,
+  "Likes": 8174,
+  "Dislikes": 496,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure that supports adding new words and finding if a string matches any previously added string.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EWordDictionary\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EWordDictionary()\u003C/code\u003E\u0026nbsp;Initializes the object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid addWord(word)\u003C/code\u003E Adds \u003Ccode\u003Eword\u003C/code\u003E to the data structure, it can be matched later.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool search(word)\u003C/code\u003E\u0026nbsp;Returns \u003Ccode\u003Etrue\u003C/code\u003E if there is any string in the data structure that matches \u003Ccode\u003Eword\u003C/code\u003E\u0026nbsp;or \u003Ccode\u003Efalse\u003C/code\u003E otherwise. \u003Ccode\u003Eword\u003C/code\u003E may contain dots \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E where dots can be matched with any letter.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;WordDictionary\u0026quot;,\u0026quot;addWord\u0026quot;,\u0026quot;addWord\u0026quot;,\u0026quot;addWord\u0026quot;,\u0026quot;search\u0026quot;,\u0026quot;search\u0026quot;,\u0026quot;search\u0026quot;,\u0026quot;search\u0026quot;]\n[[],[\u0026quot;bad\u0026quot;],[\u0026quot;dad\u0026quot;],[\u0026quot;mad\u0026quot;],[\u0026quot;pad\u0026quot;],[\u0026quot;bad\u0026quot;],[\u0026quot;.ad\u0026quot;],[\u0026quot;b..\u0026quot;]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null,null,null,null,false,true,true,true]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nWordDictionary wordDictionary = new WordDictionary();\nwordDictionary.addWord(\u0026quot;bad\u0026quot;);\nwordDictionary.addWord(\u0026quot;dad\u0026quot;);\nwordDictionary.addWord(\u0026quot;mad\u0026quot;);\nwordDictionary.search(\u0026quot;pad\u0026quot;); // return False\nwordDictionary.search(\u0026quot;bad\u0026quot;); // return True\nwordDictionary.search(\u0026quot;.ad\u0026quot;); // return True\nwordDictionary.search(\u0026quot;b..\u0026quot;); // return True\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= word.length \u0026lt;= 25\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eword\u003C/code\u003E in \u003Ccode\u003EaddWord\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eword\u003C/code\u003E in \u003Ccode\u003Esearch\u003C/code\u003E consist of \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E or lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EThere will be at most \u003Ccode\u003E2\u003C/code\u003E dots in \u003Ccode\u003Eword\u003C/code\u003E for \u003Ccode\u003Esearch\u003C/code\u003E queries.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003EaddWord\u003C/code\u003E and \u003Ccode\u003Esearch\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "You should be familiar with how a Trie works. If not, please work on this problem: \u003Ca href=\u0022https://leetcode.com/problems/implement-trie-prefix-tree/\u0022\u003EImplement Trie (Prefix Tree)\u003C/a\u003E first."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0767788+00:00",
+  "Url": "https://leetcode.com/problems/design-add-and-search-words-data-structure/"
+}

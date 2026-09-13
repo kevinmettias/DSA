@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1628,
+  "FrontendId": 1504,
+  "Title": "Count Submatrices With All Ones",
+  "TitleSlug": "count-submatrices-with-all-ones",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Stack",
+    "Matrix",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 71,
+  "TotalAccepted": 151519,
+  "TotalSubmissions": 213412,
+  "Likes": 2702,
+  "Dislikes": 222,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an \u003Ccode\u003Em x n\u003C/code\u003E binary matrix \u003Ccode\u003Emat\u003C/code\u003E, \u003Cem\u003Ereturn the number of \u003Cstrong\u003Esubmatrices\u003C/strong\u003E that have all ones\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/10/27/ones1-grid.jpg\u0022 style=\u0022width: 244px; height: 245px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[1,0,1],[1,1,0],[1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThere are 6 rectangles of side 1x1.\nThere are 2 rectangles of side 1x2.\nThere are 3 rectangles of side 2x1.\nThere is 1 rectangle of side 2x2. \nThere is 1 rectangle of side 3x1.\nTotal number of rectangles = 6 \u002B 2 \u002B 3 \u002B 1 \u002B 1 = 13.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/10/27/ones2-grid.jpg\u0022 style=\u0022width: 324px; height: 245px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[0,1,1,0],[0,1,1,1],[1,1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 24\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThere are 8 rectangles of side 1x1.\nThere are 5 rectangles of side 1x2.\nThere are 2 rectangles of side 1x3. \nThere are 4 rectangles of side 2x1.\nThere are 2 rectangles of side 2x2. \nThere are 2 rectangles of side 3x1. \nThere is 1 rectangle of side 3x2. \nTotal number of rectangles = 8 \u002B 5 \u002B 2 \u002B 4 \u002B 2 \u002B 2 \u002B 1 = 24.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 150\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emat[i][j]\u003C/code\u003E is either \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each row i, create an array nums where:  if mat[i][j] == 0 then nums[j] = 0 else nums[j] = nums[j-1] \u002B1.",
+    "In the row i, number of rectangles between column j and k(inclusive) and ends in row i, is equal to SUM(min(nums[j, .. idx])) where idx go from j to k.  Expected solution is O(n^3)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,0,1],[1,1,0],[1,1,0]]",
+      "RawExpectedOutput": "13"
+    },
+    {
+      "RawInput": "[[0,1,1,0],[0,1,1,1],[1,1,1,0]]",
+      "RawExpectedOutput": "24"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9726384+00:00",
+  "Url": "https://leetcode.com/problems/count-submatrices-with-all-ones/"
+}

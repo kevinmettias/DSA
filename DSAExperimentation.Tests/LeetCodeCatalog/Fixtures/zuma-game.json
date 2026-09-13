@@ -1,0 +1,38 @@
+{
+  "QuestionId": 488,
+  "FrontendId": 488,
+  "Title": "Zuma Game",
+  "TitleSlug": "zuma-game",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming",
+    "Stack",
+    "Breadth-First Search",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 29.2,
+  "TotalAccepted": 31569,
+  "TotalSubmissions": 108202,
+  "Likes": 500,
+  "Dislikes": 516,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are playing a variation of the game Zuma.\u003C/p\u003E\n\n\u003Cp\u003EIn this variation of Zuma, there is a \u003Cstrong\u003Esingle row\u003C/strong\u003E of colored balls on a board, where each ball can be colored red \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E, yellow \u003Ccode\u003E\u0026#39;Y\u0026#39;\u003C/code\u003E, blue \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E, green \u003Ccode\u003E\u0026#39;G\u0026#39;\u003C/code\u003E, or white \u003Ccode\u003E\u0026#39;W\u0026#39;\u003C/code\u003E. You also have several colored balls in your hand.\u003C/p\u003E\n\n\u003Cp\u003EYour goal is to \u003Cstrong\u003Eclear all\u003C/strong\u003E of the balls from the board. On each turn:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPick \u003Cstrong\u003Eany\u003C/strong\u003E ball from your hand and insert it in between two balls in the row or on either end of the row.\u003C/li\u003E\n\t\u003Cli\u003EIf there is a group of \u003Cstrong\u003Ethree or more consecutive balls\u003C/strong\u003E of the \u003Cstrong\u003Esame color\u003C/strong\u003E, remove the group of balls from the board.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EIf this removal causes more groups of three or more of the same color to form, then continue removing each group until there are none left.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EIf there are no more balls on the board, then you win the game.\u003C/li\u003E\n\t\u003Cli\u003ERepeat this process until you either win or do not have any more balls in your hand.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven a string \u003Ccode\u003Eboard\u003C/code\u003E, representing the row of balls on the board, and a string \u003Ccode\u003Ehand\u003C/code\u003E, representing the balls in your hand, return \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of balls you have to insert to clear all the balls from the board. If you cannot clear all the balls from the board using the balls in your hand, return \u003C/em\u003E\u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E board = \u0026quot;WRRBBW\u0026quot;, hand = \u0026quot;RB\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It is impossible to clear all the balls. The best you can do is:\n- Insert \u0026#39;R\u0026#39; so the board becomes WRR\u003Cu\u003ER\u003C/u\u003EBBW. W\u003Cu\u003ERRR\u003C/u\u003EBBW -\u0026gt; WBBW.\n- Insert \u0026#39;B\u0026#39; so the board becomes WBB\u003Cu\u003EB\u003C/u\u003EW. W\u003Cu\u003EBBB\u003C/u\u003EW -\u0026gt; WW.\nThere are still balls remaining on the board, and you are out of balls to insert.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E board = \u0026quot;WWRRBBWW\u0026quot;, hand = \u0026quot;WRBRW\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E To make the board empty:\n- Insert \u0026#39;R\u0026#39; so the board becomes WWRR\u003Cu\u003ER\u003C/u\u003EBBWW. WW\u003Cu\u003ERRR\u003C/u\u003EBBWW -\u0026gt; WWBBWW.\n- Insert \u0026#39;B\u0026#39; so the board becomes WWBB\u003Cu\u003EB\u003C/u\u003EWW. WW\u003Cu\u003EBBB\u003C/u\u003EWW -\u0026gt; \u003Cu\u003EWWWW\u003C/u\u003E -\u0026gt; empty.\n2 balls from your hand were needed to clear the board.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E board = \u0026quot;G\u0026quot;, hand = \u0026quot;GGGGG\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E To make the board empty:\n- Insert \u0026#39;G\u0026#39; so the board becomes G\u003Cu\u003EG\u003C/u\u003E.\n- Insert \u0026#39;G\u0026#39; so the board becomes GG\u003Cu\u003EG\u003C/u\u003E. \u003Cu\u003EGGG\u003C/u\u003E -\u0026gt; empty.\n2 balls from your hand were needed to clear the board.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= board.length \u0026lt;= 16\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= hand.length \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboard\u003C/code\u003E and \u003Ccode\u003Ehand\u003C/code\u003E consist of the characters \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;Y\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;B\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;G\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;W\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe initial row of balls on the board will \u003Cstrong\u003Enot\u003C/strong\u003E have any groups of three or more consecutive balls of the same color.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022WRRBBW\u0022\n\u0022RB\u0022",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "\u0022WWRRBBWW\u0022\n\u0022WRBRW\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022G\u0022\n\u0022GGGGG\u0022",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.4296824+00:00",
+  "Url": "https://leetcode.com/problems/zuma-game/"
+}

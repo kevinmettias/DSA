@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3674,
+  "FrontendId": 3420,
+  "Title": "Count Non-Decreasing Subarrays After K Operations",
+  "TitleSlug": "count-non-decreasing-subarrays-after-k-operations",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Segment Tree",
+    "Queue",
+    "Sliding Window",
+    "Monotonic Stack",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 25,
+  "TotalAccepted": 4834,
+  "TotalSubmissions": 19363,
+  "Likes": 88,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E of \u003Ccode\u003En\u003C/code\u003E integers and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor each subarray of \u003Ccode\u003Enums\u003C/code\u003E, you can apply \u003Cstrong\u003Eup to\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E operations on it. In each operation, you increment any element of the subarray by 1.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that each subarray is considered independently, meaning changes made to one subarray do not persist to another.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of subarrays that you can make \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E \u200B\u200B\u200B\u200B\u200Bafter performing at most \u003Ccode\u003Ek\u003C/code\u003E operations.\u003C/p\u003E\n\n\u003Cp\u003EAn array is said to be \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E if each element is greater than or equal to its previous element, if it exists.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [6,3,1,2,4,4], k = 7\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E17\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EOut of all 21 possible subarrays of \u003Ccode\u003Enums\u003C/code\u003E, only the subarrays \u003Ccode\u003E[6, 3, 1]\u003C/code\u003E, \u003Ccode\u003E[6, 3, 1, 2]\u003C/code\u003E, \u003Ccode\u003E[6, 3, 1, 2, 4]\u003C/code\u003E and \u003Ccode\u003E[6, 3, 1, 2, 4, 4]\u003C/code\u003E cannot be made non-decreasing after applying up to k = 7 operations. Thus, the number of non-decreasing subarrays is \u003Ccode\u003E21 - 4 = 17\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [6,3,1,3,6], k = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E12\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe subarray \u003Ccode\u003E[3, 1, 3, 6]\u003C/code\u003E along with all subarrays of \u003Ccode\u003Enums\u003C/code\u003E with three or fewer elements, except \u003Ccode\u003E[6, 3, 1]\u003C/code\u003E, can be made non-decreasing after \u003Ccode\u003Ek\u003C/code\u003E operations. There are 5 subarrays of a single element, 4 subarrays of two elements, and 2 subarrays of three elements except \u003Ccode\u003E[6, 3, 1]\u003C/code\u003E, so there are \u003Ccode\u003E1 \u002B 5 \u002B 4 \u002B 2 = 12\u003C/code\u003E subarrays that can be made non-decreasing.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a sparse table.",
+    "Compute \u003Ccode\u003Esp[e][i] = [lastElement, operations]\u003C/code\u003E where \u003Ccode\u003Eoperations\u003C/code\u003E is the number of \u003Ccode\u003Eoperations\u003C/code\u003E required to make the subarray \u003Ccode\u003Enums[i...i \u002B 2^e - 1]\u003C/code\u003E non-decreasing, and \u003Ccode\u003ElastElement\u003C/code\u003E be the value of the last element after the operations were applied on it.",
+    "How can we combine \u003Ccode\u003Esp[a][i]\u003C/code\u003E with \u003Ccode\u003Esp[b][i \u002B 2^a]\u003C/code\u003E to find the answer for the subarray \u003Ccode\u003Enums[i...i \u002B 2^a \u002B 2^b - 1]\u003C/code\u003E?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,3,1,2,4,4]\n7",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[6,3,1,3,6]\n4",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9433145+00:00",
+  "Url": "https://leetcode.com/problems/count-non-decreasing-subarrays-after-k-operations/"
+}

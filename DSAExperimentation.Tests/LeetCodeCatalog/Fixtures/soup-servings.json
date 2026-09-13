@@ -1,0 +1,35 @@
+{
+  "QuestionId": 826,
+  "FrontendId": 808,
+  "Title": "Soup Servings",
+  "TitleSlug": "soup-servings",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Probability and Statistics"
+  ],
+  "AcceptanceRatePercent": 59.6,
+  "TotalAccepted": 153854,
+  "TotalSubmissions": 258354,
+  "Likes": 1478,
+  "Dislikes": 3979,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have two soups, \u003Cstrong\u003EA\u003C/strong\u003E and \u003Cstrong\u003EB\u003C/strong\u003E, each starting with \u003Ccode\u003En\u003C/code\u003E mL. On every turn, one of the following four serving operations is chosen \u003Cem\u003Eat random\u003C/em\u003E, each with probability \u003Ccode\u003E0.25\u003C/code\u003E \u003Cstrong\u003Eindependent\u003C/strong\u003E of all previous turns:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003Epour 100 mL from type A and 0 mL from type B\u003C/li\u003E\n\t\u003Cli\u003Epour 75 mL from type A and 25 mL from type B\u003C/li\u003E\n\t\u003Cli\u003Epour 50 mL from type A and 50 mL from type B\u003C/li\u003E\n\t\u003Cli\u003Epour 25 mL from type A and 75 mL from type B\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere is no operation that pours 0 mL from A and 100 mL from B.\u003C/li\u003E\n\t\u003Cli\u003EThe amounts from A and B are poured \u003Cem\u003Esimultaneously\u003C/em\u003E during the turn.\u003C/li\u003E\n\t\u003Cli\u003EIf an operation asks you to pour \u003Cstrong\u003Emore than\u003C/strong\u003E you have left of a soup, pour all that remains of that soup.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe process stops immediately after any turn in which \u003Cem\u003Eone of the soups\u003C/em\u003E is used up.\u003C/p\u003E\n\n\u003Cp\u003EReturn the probability that A is used up \u003Cem\u003Ebefore\u003C/em\u003E B, plus half the probability that both soups are used up in the\u003Cstrong\u003E same turn\u003C/strong\u003E. Answers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 50\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.62500\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nIf we perform either of the first two serving operations, soup A will become empty first.\nIf we perform the third operation, A and B will become empty at the same time.\nIf we perform the fourth operation, B will become empty first.\nSo the total probability of A becoming empty first plus half the probability that A and B become empty at the same time, is 0.25 * (1 \u002B 1 \u002B 0.5 \u002B 0) = 0.625.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 100\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.71875\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nIf we perform the first serving operation, soup A will become empty first.\nIf we perform the second serving operations, A will become empty on performing operation [1, 2, 3], and both A and B become empty on performing operation 4.\nIf we perform the third operation, A will become empty on performing operation [1, 2], and both A and B become empty on performing operation 3.\nIf we perform the fourth operation, A will become empty on performing operation 1, and both A and B become empty on performing operation 2.\nSo the total probability of A becoming empty first plus half the probability that A and B become empty at the same time, is 0.71875.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For large \u003Ccode\u003En\u003C/code\u003E, the answer approaches a constant value.",
+    "Which soup is more likely to deplete first if we are allowed to perform many operations without bias?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "50",
+      "RawExpectedOutput": "0.62500"
+    },
+    {
+      "RawInput": "100",
+      "RawExpectedOutput": "0.71875"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0820467+00:00",
+  "Url": "https://leetcode.com/problems/soup-servings/"
+}

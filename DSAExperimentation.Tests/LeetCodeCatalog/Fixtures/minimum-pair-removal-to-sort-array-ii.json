@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3772,
+  "FrontendId": 3510,
+  "Title": "Minimum Pair Removal to Sort Array II",
+  "TitleSlug": "minimum-pair-removal-to-sort-array-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Linked List",
+    "Heap (Priority Queue)",
+    "Simulation",
+    "Doubly-Linked List",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 38.8,
+  "TotalAccepted": 67515,
+  "TotalSubmissions": 174041,
+  "Likes": 418,
+  "Dislikes": 39,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array \u003Ccode\u003Enums\u003C/code\u003E, you can perform the following operation any number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the \u003Cstrong\u003Eadjacent\u003C/strong\u003E pair with the \u003Cstrong\u003Eminimum\u003C/strong\u003E sum in \u003Ccode\u003Enums\u003C/code\u003E. If multiple such pairs exist, choose the leftmost one.\u003C/li\u003E\n\t\u003Cli\u003EReplace the pair with their sum.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum number of operations\u003C/strong\u003E needed to make the array \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn array is said to be \u003Cstrong\u003Enon-decreasing\u003C/strong\u003E if each element is greater than or equal to its previous element (if it exists).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [5,2,3,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe pair \u003Ccode\u003E(3,1)\u003C/code\u003E has the minimum sum of 4. After replacement, \u003Ccode\u003Enums = [5,2,4]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe pair \u003Ccode\u003E(2,4)\u003C/code\u003E has the minimum sum of 6. After replacement, \u003Ccode\u003Enums = [5,6]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe array \u003Ccode\u003Enums\u003C/code\u003E became non-decreasing in two operations.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe array \u003Ccode\u003Enums\u003C/code\u003E is already sorted.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can perform the simulation using data structures.",
+    "Maintain an array index and value using a map since we need to find the next and previous ones.",
+    "Maintain the indices to be removed using a hash set.",
+    "Maintain the neighbor sums with the smaller indices (set or priority queue).",
+    "Keep the 3 structures in sync during the removals."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,2,3,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,2]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0832937+00:00",
+  "Url": "https://leetcode.com/problems/minimum-pair-removal-to-sort-array-ii/"
+}

@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3834,
+  "FrontendId": 3542,
+  "Title": "Minimum Operations to Convert All Elements to Zero",
+  "TitleSlug": "minimum-operations-to-convert-all-elements-to-zero",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Stack",
+    "Greedy",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 52.8,
+  "TotalAccepted": 89750,
+  "TotalSubmissions": 169939,
+  "Likes": 629,
+  "Dislikes": 64,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E, consisting of \u003Cstrong\u003Enon-negative\u003C/strong\u003E integers. Your task is to apply some (possibly zero) operations on the array so that \u003Cstrong\u003Eall\u003C/strong\u003E elements become 0.\u003C/p\u003E\n\n\u003Cp\u003EIn one operation, you can select a \u003Cspan data-keyword=\u0022subarray\u0022\u003Esubarray\u003C/span\u003E \u003Ccode\u003E[i, j]\u003C/code\u003E (where \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= j \u0026lt; n\u003C/code\u003E) and set all occurrences of the \u003Cstrong\u003Eminimum\u003C/strong\u003E \u003Cstrong\u003Enon-negative\u003C/strong\u003E integer in that subarray to 0.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E number of operations required to make all elements in the array 0.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [0,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect the subarray \u003Ccode\u003E[1,1]\u003C/code\u003E (which is \u003Ccode\u003E[2]\u003C/code\u003E), where the minimum non-negative integer is 2. Setting all occurrences of 2 to 0 results in \u003Ccode\u003E[0,0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThus, the minimum number of operations required is 1.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,1,2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[1,3]\u003C/code\u003E (which is \u003Ccode\u003E[1,2,1]\u003C/code\u003E), where the minimum non-negative integer is 1. Setting all occurrences of 1 to 0 results in \u003Ccode\u003E[3,0,2,0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[2,2]\u003C/code\u003E (which is \u003Ccode\u003E[2]\u003C/code\u003E), where the minimum non-negative integer is 2. Setting all occurrences of 2 to 0 results in \u003Ccode\u003E[3,0,0,0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[0,0]\u003C/code\u003E (which is \u003Ccode\u003E[3]\u003C/code\u003E), where the minimum non-negative integer is 3. Setting all occurrences of 3 to 0 results in \u003Ccode\u003E[0,0,0,0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThus, the minimum number of operations required is 3.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,1,2,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[0,5]\u003C/code\u003E (which is \u003Ccode\u003E[1,2,1,2,1,2]\u003C/code\u003E), where the minimum non-negative integer is 1. Setting all occurrences of 1 to 0 results in \u003Ccode\u003E[0,2,0,2,0,2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[1,1]\u003C/code\u003E (which is \u003Ccode\u003E[2]\u003C/code\u003E), where the minimum non-negative integer is 2. Setting all occurrences of 2 to 0 results in \u003Ccode\u003E[0,0,0,2,0,2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[3,3]\u003C/code\u003E (which is \u003Ccode\u003E[2]\u003C/code\u003E), where the minimum non-negative integer is 2. Setting all occurrences of 2 to 0 results in \u003Ccode\u003E[0,0,0,0,0,2]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESelect subarray \u003Ccode\u003E[5,5]\u003C/code\u003E (which is \u003Ccode\u003E[2]\u003C/code\u003E), where the minimum non-negative integer is 2. Setting all occurrences of 2 to 0 results in \u003Ccode\u003E[0,0,0,0,0,0]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThus, the minimum number of operations required is 4.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Process the values in nums from smallest to largest (excluding 0).",
+    "For each target value v, identify its maximal contiguous segments (subarrays where nums[i] == v); each segment can be zeroed out in one operation.",
+    "After setting those segments to zero, dynamically update the remaining array and repeat with the next value."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[0,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,1,2,1]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,1,2,1,2]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0806966+00:00",
+  "Url": "https://leetcode.com/problems/minimum-operations-to-convert-all-elements-to-zero/"
+}

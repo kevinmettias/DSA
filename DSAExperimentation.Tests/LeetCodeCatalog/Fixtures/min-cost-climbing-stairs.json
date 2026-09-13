@@ -1,0 +1,35 @@
+{
+  "QuestionId": 747,
+  "FrontendId": 746,
+  "Title": "Min Cost Climbing Stairs",
+  "TitleSlug": "min-cost-climbing-stairs",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 68.7,
+  "TotalAccepted": 1872483,
+  "TotalSubmissions": 2724428,
+  "Likes": 12525,
+  "Dislikes": 1911,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Ecost\u003C/code\u003E where \u003Ccode\u003Ecost[i]\u003C/code\u003E is the cost of \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E step on a staircase.\u003C/p\u003E\n\n\u003Cp\u003EOnce you pay the cost, you can either climb \u003Cstrong\u003Eone\u003C/strong\u003E or \u003Cstrong\u003Etwo\u003C/strong\u003E steps.\u003C/p\u003E\n\n\u003Cp\u003EYou can either start from the step with index 0, or the step with index 1.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E cost to reach the top of the staircase, which is the position just past the last step (index \u003Ccode\u003Ecost.length\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E cost = [10,\u003Cu\u003E15\u003C/u\u003E,20]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 15\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You will start at index 1.\n- Pay 15 and climb two steps to reach the top.\nThe total cost is 15.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E cost = [\u003Cu\u003E1\u003C/u\u003E,100,\u003Cu\u003E1\u003C/u\u003E,1,\u003Cu\u003E1\u003C/u\u003E,100,\u003Cu\u003E1\u003C/u\u003E,\u003Cu\u003E1\u003C/u\u003E,100,\u003Cu\u003E1\u003C/u\u003E]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You will start at index 0.\n- Pay 1 and climb two steps to reach index 2.\n- Pay 1 and climb two steps to reach index 4.\n- Pay 1 and climb two steps to reach index 6.\n- Pay 1 and climb one step to reach index 7.\n- Pay 1 and climb two steps to reach index 9.\n- Pay 1 and climb one step to reach the top.\nThe total cost is 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= cost.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= cost[i] \u0026lt;= 999\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Build an array dp where dp[i] is the minimum cost to climb to the top starting from the ith staircase.",
+    "Assuming we have n staircase labeled from 0 to n - 1 and assuming the top is n, then dp[n] = 0, marking that if you are at the top, the cost is 0.",
+    "Now, looping from n - 1 to 0, the dp[i] = cost[i] \u002B min(dp[i \u002B 1], dp[i \u002B 2]). The answer will be the minimum of dp[0] and dp[1]"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,15,20]",
+      "RawExpectedOutput": "15"
+    },
+    {
+      "RawInput": "[1,100,1,1,1,100,1,1,100,1]",
+      "RawExpectedOutput": "6"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9921984+00:00",
+  "Url": "https://leetcode.com/problems/min-cost-climbing-stairs/"
+}

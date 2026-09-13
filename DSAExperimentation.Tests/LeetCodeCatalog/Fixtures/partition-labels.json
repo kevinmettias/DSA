@@ -1,0 +1,35 @@
+{
+  "QuestionId": 768,
+  "FrontendId": 763,
+  "Title": "Partition Labels",
+  "TitleSlug": "partition-labels",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Two Pointers",
+    "String",
+    "Greedy"
+  ],
+  "AcceptanceRatePercent": 82,
+  "TotalAccepted": 835901,
+  "TotalSubmissions": 1018878,
+  "Likes": 11358,
+  "Dislikes": 446,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E. We want to partition the string into as many parts as possible so that each letter appears in at most one part. For example, the string \u003Ccode\u003E\u0026quot;ababcc\u0026quot;\u003C/code\u003E can be partitioned into \u003Ccode\u003E[\u0026quot;abab\u0026quot;, \u0026quot;cc\u0026quot;]\u003C/code\u003E, but partitions such as \u003Ccode\u003E[\u0026quot;aba\u0026quot;, \u0026quot;bcc\u0026quot;]\u003C/code\u003E or \u003Ccode\u003E[\u0026quot;ab\u0026quot;, \u0026quot;ab\u0026quot;, \u0026quot;cc\u0026quot;]\u003C/code\u003E are invalid.\u003C/p\u003E\n\n\u003Cp\u003ENote that the partition is done so that after concatenating all the parts in order, the resultant string should be \u003Ccode\u003Es\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ea list of integers representing the size of these parts\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;ababcbacadefegdehijhklij\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [9,7,8]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe partition is \u0026quot;ababcbaca\u0026quot;, \u0026quot;defegde\u0026quot;, \u0026quot;hijhklij\u0026quot;.\nThis is a partition so that each letter appears in at most one part.\nA partition like \u0026quot;ababcbacadefegde\u0026quot;, \u0026quot;hijhklij\u0026quot; is incorrect, because it splits s into less parts.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;eccbbbbdec\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [10]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try to greedily choose the smallest partition that includes the first letter.  If you have something like \u0022abaccbdeffed\u0022, then you might need to add b.  You can use an map like \u0022last[\u0027b\u0027] = 5\u0022 to help you expand the width of your partition."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022ababcbacadefegdehijhklij\u0022",
+      "RawExpectedOutput": "[9,7,8]"
+    },
+    {
+      "RawInput": "\u0022eccbbbbdec\u0022",
+      "RawExpectedOutput": "[10]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4187611+00:00",
+  "Url": "https://leetcode.com/problems/partition-labels/"
+}

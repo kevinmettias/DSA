@@ -1,0 +1,46 @@
+{
+  "QuestionId": 3583,
+  "FrontendId": 3312,
+  "Title": "Sorted GCD Pair Queries",
+  "TitleSlug": "sorted-gcd-pair-queries",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Binary Search",
+    "Combinatorics",
+    "Counting",
+    "Number Theory",
+    "Prefix Sum",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 58.3,
+  "TotalAccepted": 74940,
+  "TotalSubmissions": 128639,
+  "Likes": 353,
+  "Dislikes": 24,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E and an integer array \u003Ccode\u003Equeries\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ELet \u003Ccode\u003EgcdPairs\u003C/code\u003E denote an array obtained by calculating the \u003Cspan data-keyword=\u0022gcd-function\u0022\u003EGCD\u003C/span\u003E of all possible pairs \u003Ccode\u003E(nums[i], nums[j])\u003C/code\u003E, where \u003Ccode\u003E0 \u0026lt;= i \u0026lt; j \u0026lt; n\u003C/code\u003E, and then sorting these values in \u003Cstrong\u003Eascending\u003C/strong\u003E order.\u003C/p\u003E\n\n\u003Cp\u003EFor each query \u003Ccode\u003Equeries[i]\u003C/code\u003E, you need to find the element at index \u003Ccode\u003Equeries[i]\u003C/code\u003E in \u003Ccode\u003EgcdPairs\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer array \u003Ccode\u003Eanswer\u003C/code\u003E, where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the value at \u003Ccode\u003EgcdPairs[queries[i]]\u003C/code\u003E for each query.\u003C/p\u003E\n\n\u003Cp\u003EThe term \u003Ccode\u003Egcd(a, b)\u003C/code\u003E denotes the \u003Cstrong\u003Egreatest common divisor\u003C/strong\u003E of \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,3,4], queries = [0,2,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[1,2,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003EgcdPairs = [gcd(nums[0], nums[1]), gcd(nums[0], nums[2]), gcd(nums[1], nums[2])] = [1, 2, 1]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAfter sorting in ascending order, \u003Ccode\u003EgcdPairs = [1, 1, 2]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESo, the answer is \u003Ccode\u003E[gcdPairs[queries[0]], gcdPairs[queries[1]], gcdPairs[queries[2]]] = [1, 2, 2]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,4,2,1], queries = [5,3,1,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[4,2,1,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003EgcdPairs\u003C/code\u003E sorted in ascending order is \u003Ccode\u003E[1, 1, 1, 2, 2, 4]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,2], queries = [0,0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[2,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003EgcdPairs = [2]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n == nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= queries[i] \u0026lt; n * (n - 1) / 2\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try counting the number of pairs that have a GCD of \u003Ccode\u003Eg\u003C/code.",
+    "Use inclusion-exclusion."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,4]\n[0,2,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[4,4,2,1]\n[5,3,1,0]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,2]\n[0,0]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0770817+00:00",
+  "Url": "https://leetcode.com/problems/sorted-gcd-pair-queries/"
+}

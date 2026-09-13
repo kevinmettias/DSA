@@ -1,0 +1,34 @@
+{
+  "QuestionId": 95,
+  "FrontendId": 95,
+  "Title": "Unique Binary Search Trees II",
+  "TitleSlug": "unique-binary-search-trees-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Backtracking",
+    "Tree",
+    "Binary Search Tree",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 63.3,
+  "TotalAccepted": 613057,
+  "TotalSubmissions": 968311,
+  "Likes": 8009,
+  "Dislikes": 585,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer \u003Ccode\u003En\u003C/code\u003E, return \u003Cem\u003Eall the structurally unique \u003Cstrong\u003EBST\u0026#39;\u003C/strong\u003Es (binary search trees), which has exactly \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E\u003Cem\u003E nodes of unique values from\u003C/em\u003E \u003Ccode\u003E1\u003C/code\u003E \u003Cem\u003Eto\u003C/em\u003E \u003Ccode\u003En\u003C/code\u003E. Return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/18/uniquebstn3.jpg\u0022 style=\u0022width: 600px; height: 148px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,null,2,null,3],[1,null,3,2],[2,1,3],[3,1,null,null,2],[3,2,null,1]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 8\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "[[1,null,2,null,3],[1,null,3,2],[2,1,3],[3,1,null,null,2],[3,2,null,1]]"
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "[[1]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3138745+00:00",
+  "Url": "https://leetcode.com/problems/unique-binary-search-trees-ii/"
+}

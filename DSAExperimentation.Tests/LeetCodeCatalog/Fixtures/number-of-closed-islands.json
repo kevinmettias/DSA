@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1380,
+  "FrontendId": 1254,
+  "Title": "Number of Closed Islands",
+  "TitleSlug": "number-of-closed-islands",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 67.3,
+  "TotalAccepted": 292858,
+  "TotalSubmissions": 435133,
+  "Likes": 4806,
+  "Dislikes": 192,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a 2D\u0026nbsp;\u003Ccode\u003Egrid\u003C/code\u003E consists of \u003Ccode\u003E0s\u003C/code\u003E (land)\u0026nbsp;and \u003Ccode\u003E1s\u003C/code\u003E (water).\u0026nbsp; An \u003Cem\u003Eisland\u003C/em\u003E is a maximal 4-directionally connected group of \u003Ccode\u003E\u003Cfont face=\u0022monospace\u0022\u003E0\u003C/font\u003Es\u003C/code\u003E and a \u003Cem\u003Eclosed island\u003C/em\u003E\u0026nbsp;is an island \u003Cstrong\u003Etotally\u003C/strong\u003E\u0026nbsp;(all left, top, right, bottom) surrounded by \u003Ccode\u003E1s.\u003C/code\u003E\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of \u003Cem\u003Eclosed islands\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/10/31/sample_3_1610.png\u0022 style=\u0022width: 240px; height: 120px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nIslands in gray are closed because they are completely surrounded by water (group of 1s).\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/10/31/sample_4_1610.png\u0022 style=\u0022width: 160px; height: 80px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1,1,1,1,1,1],\n\u0026nbsp;              [1,0,0,0,0,0,1],\n\u0026nbsp;              [1,0,1,1,1,0,1],\n\u0026nbsp;              [1,0,1,0,1,0,1],\n\u0026nbsp;              [1,0,1,1,1,0,1],\n\u0026nbsp;              [1,0,0,0,0,0,1],\n               [1,1,1,1,1,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= grid.length, grid[0].length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt;=1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Exclude connected group of 0s on the corners because they are not closed island.",
+    "Return number of connected component of 0s on the grid."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[1,1,1,1,1,1,1],[1,0,0,0,0,0,1],[1,0,1,1,1,0,1],[1,0,1,0,1,0,1],[1,0,1,1,1,0,1],[1,0,0,0,0,0,1],[1,1,1,1,1,1,1]]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2356421+00:00",
+  "Url": "https://leetcode.com/problems/number-of-closed-islands/"
+}

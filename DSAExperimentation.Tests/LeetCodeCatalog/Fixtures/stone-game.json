@@ -1,0 +1,35 @@
+{
+  "QuestionId": 909,
+  "FrontendId": 877,
+  "Title": "Stone Game",
+  "TitleSlug": "stone-game",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Minimax",
+    "Game Theory",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 77.1,
+  "TotalAccepted": 531839,
+  "TotalSubmissions": 690054,
+  "Likes": 3901,
+  "Dislikes": 2991,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob play a game with piles of stones. There are an \u003Cstrong\u003Eeven\u003C/strong\u003E number of piles arranged in a row, and each pile has a \u003Cstrong\u003Epositive\u003C/strong\u003E integer number of stones \u003Ccode\u003Epiles[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe objective of the game is to end with the most stones. The \u003Cstrong\u003Etotal\u003C/strong\u003E number of stones across all the piles is \u003Cstrong\u003Eodd\u003C/strong\u003E, so there are no ties.\u003C/p\u003E\n\n\u003Cp\u003EAlice and Bob take turns, with \u003Cstrong\u003EAlice starting first\u003C/strong\u003E. Each turn, a player takes the entire pile of stones either from the \u003Cstrong\u003Ebeginning\u003C/strong\u003E or from the \u003Cstrong\u003Eend\u003C/strong\u003E of the row. This continues until there are no more piles left, at which point the person with the \u003Cstrong\u003Emost stones wins\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAssuming Alice and Bob play optimally, return \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if Alice wins the game, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E if Bob wins\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E piles = [5,3,4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nAlice starts first, and can only take the first 5 or the last 5.\nSay she takes the first 5, so that the row becomes [3, 4, 5].\nIf Bob takes 3, then the board is [4, 5], and Alice takes 5 to win with 10 points.\nIf Bob takes the last 5, then the board is [3, 4], and Alice takes 4 to win with 9 points.\nThis demonstrated that taking the first 5 was a winning move for Alice, so we return true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E piles = [3,7,2,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= piles.length \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epiles.length\u003C/code\u003E is \u003Cstrong\u003Eeven\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= piles[i] \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esum(piles[i])\u003C/code\u003E is \u003Cstrong\u003Eodd\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,3,4,5]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[3,7,2,3]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1434024+00:00",
+  "Url": "https://leetcode.com/problems/stone-game/"
+}

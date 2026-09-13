@@ -1,0 +1,32 @@
+{
+  "QuestionId": 4,
+  "FrontendId": 4,
+  "Title": "Median of Two Sorted Arrays",
+  "TitleSlug": "median-of-two-sorted-arrays",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Divide and Conquer"
+  ],
+  "AcceptanceRatePercent": 47.6,
+  "TotalAccepted": 4595044,
+  "TotalSubmissions": 9657630,
+  "Likes": 32721,
+  "Dislikes": 3621,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two sorted arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E of size \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E respectively, return \u003Cstrong\u003Ethe median\u003C/strong\u003E of the two sorted arrays.\u003C/p\u003E\n\n\u003Cp\u003EThe overall run time complexity should be \u003Ccode\u003EO(log (m\u002Bn))\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,3], nums2 = [2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E merged array = [1,2,3] and median is 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums1 = [1,2], nums2 = [3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2.50000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E merged array = [1,2,3,4] and median is (2 \u002B 3) / 2 = 2.5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums1.length == m\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums2.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= m \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u002B n \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E6\u003C/sup\u003E \u0026lt;= nums1[i], nums2[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,3]\n[2]",
+      "RawExpectedOutput": "2.00000"
+    },
+    {
+      "RawInput": "[1,2]\n[3,4]",
+      "RawExpectedOutput": "2.50000"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9639409+00:00",
+  "Url": "https://leetcode.com/problems/median-of-two-sorted-arrays/"
+}

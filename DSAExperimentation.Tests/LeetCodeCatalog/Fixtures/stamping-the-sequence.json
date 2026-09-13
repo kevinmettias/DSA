@@ -1,0 +1,33 @@
+{
+  "QuestionId": 973,
+  "FrontendId": 936,
+  "Title": "Stamping The Sequence",
+  "TitleSlug": "stamping-the-sequence",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Greedy",
+    "Queue"
+  ],
+  "AcceptanceRatePercent": 62.4,
+  "TotalAccepted": 66151,
+  "TotalSubmissions": 106087,
+  "Likes": 1584,
+  "Dislikes": 222,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two strings \u003Ccode\u003Estamp\u003C/code\u003E and \u003Ccode\u003Etarget\u003C/code\u003E. Initially, there is a string \u003Ccode\u003Es\u003C/code\u003E of length \u003Ccode\u003Etarget.length\u003C/code\u003E with all \u003Ccode\u003Es[i] == \u0026#39;?\u0026#39;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIn one turn, you can place \u003Ccode\u003Estamp\u003C/code\u003E over \u003Ccode\u003Es\u003C/code\u003E and replace every letter in the \u003Ccode\u003Es\u003C/code\u003E with the corresponding letter from \u003Ccode\u003Estamp\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, if \u003Ccode\u003Estamp = \u0026quot;abc\u0026quot;\u003C/code\u003E and \u003Ccode\u003Etarget = \u0026quot;abcba\u0026quot;\u003C/code\u003E, then \u003Ccode\u003Es\u003C/code\u003E is \u003Ccode\u003E\u0026quot;?????\u0026quot;\u003C/code\u003E initially. In one turn you can:\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003Eplace \u003Ccode\u003Estamp\u003C/code\u003E at index \u003Ccode\u003E0\u003C/code\u003E of \u003Ccode\u003Es\u003C/code\u003E to obtain \u003Ccode\u003E\u0026quot;abc??\u0026quot;\u003C/code\u003E,\u003C/li\u003E\n\t\t\u003Cli\u003Eplace \u003Ccode\u003Estamp\u003C/code\u003E at index \u003Ccode\u003E1\u003C/code\u003E of \u003Ccode\u003Es\u003C/code\u003E to obtain \u003Ccode\u003E\u0026quot;?abc?\u0026quot;\u003C/code\u003E, or\u003C/li\u003E\n\t\t\u003Cli\u003Eplace \u003Ccode\u003Estamp\u003C/code\u003E at index \u003Ccode\u003E2\u003C/code\u003E of \u003Ccode\u003Es\u003C/code\u003E to obtain \u003Ccode\u003E\u0026quot;??abc\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003C/ul\u003E\n\tNote that \u003Ccode\u003Estamp\u003C/code\u003E must be fully contained in the boundaries of \u003Ccode\u003Es\u003C/code\u003E in order to stamp (i.e., you cannot place \u003Ccode\u003Estamp\u003C/code\u003E at index \u003Ccode\u003E3\u003C/code\u003E of \u003Ccode\u003Es\u003C/code\u003E).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EWe want to convert \u003Ccode\u003Es\u003C/code\u003E to \u003Ccode\u003Etarget\u003C/code\u003E using \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003E10 * target.length\u003C/code\u003E turns.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array of the index of the left-most letter being stamped at each turn\u003C/em\u003E. If we cannot obtain \u003Ccode\u003Etarget\u003C/code\u003E from \u003Ccode\u003Es\u003C/code\u003E within \u003Ccode\u003E10 * target.length\u003C/code\u003E turns, return an empty array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stamp = \u0026quot;abc\u0026quot;, target = \u0026quot;ababc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,2]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Initially s = \u0026quot;?????\u0026quot;.\n- Place stamp at index 0 to get \u0026quot;abc??\u0026quot;.\n- Place stamp at index 2 to get \u0026quot;ababc\u0026quot;.\n[1,0,2] would also be accepted as an answer, as well as some other answers.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stamp = \u0026quot;abca\u0026quot;, target = \u0026quot;aabcaca\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,0,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Initially s = \u0026quot;???????\u0026quot;.\n- Place stamp at index 3 to get \u0026quot;???abca\u0026quot;.\n- Place stamp at index 0 to get \u0026quot;abcabca\u0026quot;.\n- Place stamp at index 1 to get \u0026quot;aabcaca\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stamp.length \u0026lt;= target.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estamp\u003C/code\u003E and \u003Ccode\u003Etarget\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022abc\u0022\n\u0022ababc\u0022",
+      "RawExpectedOutput": "[0,2]"
+    },
+    {
+      "RawInput": "\u0022abca\u0022\n\u0022aabcaca\u0022",
+      "RawExpectedOutput": "[3,0,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1246837+00:00",
+  "Url": "https://leetcode.com/problems/stamping-the-sequence/"
+}

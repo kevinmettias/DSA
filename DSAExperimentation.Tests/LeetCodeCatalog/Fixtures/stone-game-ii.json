@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1240,
+  "FrontendId": 1140,
+  "Title": "Stone Game II",
+  "TitleSlug": "stone-game-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Minimax",
+    "Prefix Sum",
+    "Game Theory",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 75.7,
+  "TotalAccepted": 289285,
+  "TotalSubmissions": 382179,
+  "Likes": 3733,
+  "Dislikes": 969,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob continue their games with piles of stones. There are a number of piles \u003Cstrong\u003Earranged in a row\u003C/strong\u003E, and each pile has a positive integer number of stones \u003Ccode\u003Epiles[i]\u003C/code\u003E. The objective of the game is to end with the most stones.\u003C/p\u003E\n\n\u003Cp\u003EAlice and Bob take turns, with Alice starting first.\u003C/p\u003E\n\n\u003Cp\u003EOn each player\u0026#39;s turn, that player can take \u003Cstrong\u003Eall the stones\u003C/strong\u003E in the \u003Cstrong\u003Efirst\u003C/strong\u003E \u003Ccode\u003EX\u003C/code\u003E remaining piles, where \u003Ccode\u003E1 \u0026lt;= X \u0026lt;= 2M\u003C/code\u003E. Then, we set \u003Ccode\u003EM = max(M, X)\u003C/code\u003E. Initially, M = 1.\u003C/p\u003E\n\n\u003Cp\u003EThe game continues until all the stones have been taken.\u003C/p\u003E\n\n\u003Cp\u003EAssuming Alice and Bob play optimally, return the maximum number of stones Alice can get.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epiles = [2,7,9,4,4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf Alice takes one pile at the beginning, Bob takes two piles, then Alice takes 2 piles again. Alice can get \u003Ccode\u003E2 \u002B 4 \u002B 4 = 10\u003C/code\u003E stones in total.\u003C/li\u003E\n\t\u003Cli\u003EIf Alice takes two piles at the beginning, then Bob can take all three piles left. In this case, Alice get \u003Ccode\u003E2 \u002B 7 = 9\u003C/code\u003E stones in total.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ESo we return 10 since it\u0026#39;s larger.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Epiles = [1,2,3,4,5,100]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E104\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= piles.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= piles[i]\u0026nbsp;\u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming: the states are (i, m) for the answer of piles[i:] and that given m."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,7,9,4,4]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3,4,5,100]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1369144+00:00",
+  "Url": "https://leetcode.com/problems/stone-game-ii/"
+}

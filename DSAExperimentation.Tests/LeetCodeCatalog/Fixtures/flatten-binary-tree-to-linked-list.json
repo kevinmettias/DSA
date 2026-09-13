@@ -1,0 +1,40 @@
+{
+  "QuestionId": 114,
+  "FrontendId": 114,
+  "Title": "Flatten Binary Tree to Linked List",
+  "TitleSlug": "flatten-binary-tree-to-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List",
+    "Stack",
+    "Tree",
+    "Depth-First Search",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 71.5,
+  "TotalAccepted": 1490161,
+  "TotalSubmissions": 2084706,
+  "Likes": 13936,
+  "Dislikes": 606,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary tree, flatten the tree into a \u0026quot;linked list\u0026quot;:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe \u0026quot;linked list\u0026quot; should use the same \u003Ccode\u003ETreeNode\u003C/code\u003E class where the \u003Ccode\u003Eright\u003C/code\u003E child pointer points to the next node in the list and the \u003Ccode\u003Eleft\u003C/code\u003E child pointer is always \u003Ccode\u003Enull\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe \u0026quot;linked list\u0026quot; should be in the same order as a \u003Ca href=\u0022https://en.wikipedia.org/wiki/Tree_traversal#Pre-order,_NLR\u0022 target=\u0022_blank\u0022\u003E\u003Cstrong\u003Epre-order\u003C/strong\u003E\u003Cstrong\u003E traversal\u003C/strong\u003E\u003C/a\u003E of the binary tree.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/14/flaten.jpg\u0022 style=\u0022width: 500px; height: 226px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [1,2,5,3,4,null,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,null,2,null,3,null,4,null,5,null,6]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = []\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[0, 2000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-100 \u0026lt;= Node.val \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cstrong\u003EFollow up:\u003C/strong\u003E Can you flatten the tree in-place (with \u003Ccode\u003EO(1)\u003C/code\u003E extra space)?",
+  "Hints": [
+    "If you notice carefully in the flattened tree, each node\u0027s right child points to the next node of a pre-order traversal."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,5,3,4,null,6]",
+      "RawExpectedOutput": "[1,null,2,null,3,null,4,null,5,null,6]"
+    },
+    {
+      "RawInput": "[]",
+      "RawExpectedOutput": "[]"
+    },
+    {
+      "RawInput": "[0]",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3404487+00:00",
+  "Url": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/"
+}

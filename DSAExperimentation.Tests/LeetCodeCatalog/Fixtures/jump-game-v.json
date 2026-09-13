@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1466,
+  "FrontendId": 1340,
+  "Title": "Jump Game V",
+  "TitleSlug": "jump-game-v",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 75.8,
+  "TotalAccepted": 117170,
+  "TotalSubmissions": 154529,
+  "Likes": 1442,
+  "Dislikes": 59,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of\u0026nbsp;integers \u003Ccode\u003Earr\u003C/code\u003E and an integer \u003Ccode\u003Ed\u003C/code\u003E. In one step you can jump from index \u003Ccode\u003Ei\u003C/code\u003E to index:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei \u002B x\u003C/code\u003E where:\u0026nbsp;\u003Ccode\u003Ei \u002B x \u0026lt; arr.length\u003C/code\u003E and \u003Ccode\u003E 0 \u0026lt;\u0026nbsp;x \u0026lt;= d\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ei - x\u003C/code\u003E where:\u0026nbsp;\u003Ccode\u003Ei - x \u0026gt;= 0\u003C/code\u003E and \u003Ccode\u003E 0 \u0026lt;\u0026nbsp;x \u0026lt;= d\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EIn addition, you can only jump from index \u003Ccode\u003Ei\u003C/code\u003E to index \u003Ccode\u003Ej\u003C/code\u003E\u0026nbsp;if \u003Ccode\u003Earr[i] \u0026gt; arr[j]\u003C/code\u003E and \u003Ccode\u003Earr[i] \u0026gt; arr[k]\u003C/code\u003E for all indices \u003Ccode\u003Ek\u003C/code\u003E between \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E (More formally \u003Ccode\u003Emin(i,\u0026nbsp;j) \u0026lt; k \u0026lt; max(i, j)\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EYou can choose any index of the array and start jumping. Return \u003Cem\u003Ethe maximum number of indices\u003C/em\u003E\u0026nbsp;you can visit.\u003C/p\u003E\n\n\u003Cp\u003ENotice that you can not jump outside of the array at any time.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/01/23/meta-chart.jpeg\u0022 style=\u0022width: 633px; height: 419px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [6,4,14,6,8,13,9,7,10,6,12], d = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can start at index 10. You can jump 10 --\u0026gt; 8 --\u0026gt; 6 --\u0026gt; 7 as shown.\nNote that if you start at index 6 you can only jump to index 7. You cannot jump to index 5 because 13 \u0026gt; 9. You cannot jump to index 4 because index 5 is between index 4 and 6 and 13 \u0026gt; 9.\nSimilarly You cannot jump from index 3 to index 2 or index 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [3,3,3,3,3], d = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can start at any index. You always cannot jump to any index.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr = [7,6,5,4,3,2,1], d = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Start at index 0. You can visit all the indicies. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= d \u0026lt;= arr.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming. dp[i] is max jumps you can do starting from index i. Answer is max(dp[i]).",
+    "dp[i] = 1 \u002B max (dp[j]) where j is all indices you can reach from i."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[6,4,14,6,8,13,9,7,10,6,12]\n2",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[3,3,3,3,3]\n3",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[7,6,5,4,3,2,1]\n1",
+      "RawExpectedOutput": "7"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5755874+00:00",
+  "Url": "https://leetcode.com/problems/jump-game-v/"
+}

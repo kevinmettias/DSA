@@ -1,0 +1,28 @@
+{
+  "QuestionId": 2139,
+  "FrontendId": 2013,
+  "Title": "Detect Squares",
+  "TitleSlug": "detect-squares",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Design",
+    "Counting",
+    "Data Stream"
+  ],
+  "AcceptanceRatePercent": 53,
+  "TotalAccepted": 116041,
+  "TotalSubmissions": 219042,
+  "Likes": 1032,
+  "Dislikes": 259,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a stream of points on the X-Y plane. Design an algorithm that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EAdds\u003C/strong\u003E new points from the stream into a data structure. \u003Cstrong\u003EDuplicate\u003C/strong\u003E points are allowed and should be treated as different points.\u003C/li\u003E\n\t\u003Cli\u003EGiven a query point, \u003Cstrong\u003Ecounts\u003C/strong\u003E the number of ways to choose three points from the data structure such that the three points and the query point form an \u003Cstrong\u003Eaxis-aligned square\u003C/strong\u003E with \u003Cstrong\u003Epositive area\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Eaxis-aligned square\u003C/strong\u003E is a square whose edges are all the same length and are either parallel or perpendicular to the x-axis and y-axis.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EDetectSquares\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EDetectSquares()\u003C/code\u003E Initializes the object with an empty data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid add(int[] point)\u003C/code\u003E Adds a new point \u003Ccode\u003Epoint = [x, y]\u003C/code\u003E to the data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint count(int[] point)\u003C/code\u003E Counts the number of ways to form \u003Cstrong\u003Eaxis-aligned squares\u003C/strong\u003E with point \u003Ccode\u003Epoint = [x, y]\u003C/code\u003E as described above.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/01/image.png\u0022 style=\u0022width: 869px; height: 504px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;DetectSquares\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;count\u0026quot;, \u0026quot;count\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;count\u0026quot;]\n[[], [[3, 10]], [[11, 2]], [[3, 2]], [[11, 10]], [[14, 8]], [[11, 2]], [[11, 10]]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, null, 1, 0, null, 2]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nDetectSquares detectSquares = new DetectSquares();\ndetectSquares.add([3, 10]);\ndetectSquares.add([11, 2]);\ndetectSquares.add([3, 2]);\ndetectSquares.count([11, 10]); // return 1. You can choose:\n                               //   - The first, second, and third points\ndetectSquares.count([14, 8]);  // return 0. The query point cannot form a square with any points in the data structure.\ndetectSquares.add([11, 2]);    // Adding duplicate points is allowed.\ndetectSquares.count([11, 10]); // return 2. You can choose:\n                               //   - The first, second, and third points\n                               //   - The first, third, and fourth points\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoint.length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x, y \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E3000\u003C/code\u003E calls \u003Cstrong\u003Ein total\u003C/strong\u003E will be made to \u003Ccode\u003Eadd\u003C/code\u003E and \u003Ccode\u003Ecount\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Maintain the frequency of all the points in a hash map.",
+    "Traverse the hash map and if any point has the same y-coordinate as the query point, consider this point and the query point to form one of the horizontal lines of the square."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1166551+00:00",
+  "Url": "https://leetcode.com/problems/detect-squares/"
+}

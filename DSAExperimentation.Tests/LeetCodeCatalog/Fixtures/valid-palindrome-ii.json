@@ -1,0 +1,36 @@
+{
+  "QuestionId": 680,
+  "FrontendId": 680,
+  "Title": "Valid Palindrome II",
+  "TitleSlug": "valid-palindrome-ii",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Greedy"
+  ],
+  "AcceptanceRatePercent": 44.7,
+  "TotalAccepted": 1215373,
+  "TotalSubmissions": 2716674,
+  "Likes": 9158,
+  "Dislikes": 523,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif the \u003C/em\u003E\u003Ccode\u003Es\u003C/code\u003E\u003Cem\u003E can be palindrome after deleting \u003Cstrong\u003Eat most one\u003C/strong\u003E character from it\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;aba\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abca\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You could delete the character \u0026#39;c\u0026#39;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aba\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022abca\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022abc\u0022",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3437493+00:00",
+  "Url": "https://leetcode.com/problems/valid-palindrome-ii/"
+}

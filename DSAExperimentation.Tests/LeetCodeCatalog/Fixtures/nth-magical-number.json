@@ -1,0 +1,33 @@
+{
+  "QuestionId": 910,
+  "FrontendId": 878,
+  "Title": "Nth Magical Number",
+  "TitleSlug": "nth-magical-number",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Binary Search",
+    "Least Common Multiple",
+    "Inclusion-Exclusion Principle"
+  ],
+  "AcceptanceRatePercent": 37.2,
+  "TotalAccepted": 53792,
+  "TotalSubmissions": 144702,
+  "Likes": 1356,
+  "Dislikes": 171,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA positive integer is \u003Cem\u003Emagical\u003C/em\u003E if it is divisible by either \u003Ccode\u003Ea\u003C/code\u003E or \u003Ccode\u003Eb\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven the three integers \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003Ea\u003C/code\u003E, and \u003Ccode\u003Eb\u003C/code\u003E, return the \u003Ccode\u003En\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E magical number. Since the answer may be very large, \u003Cstrong\u003Ereturn it modulo \u003C/strong\u003E\u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1, a = 2, b = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, a = 2, b = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= a, b \u0026lt;= 4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2\n3",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "4\n2\n3",
+      "RawExpectedOutput": "6"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2256373+00:00",
+  "Url": "https://leetcode.com/problems/nth-magical-number/"
+}

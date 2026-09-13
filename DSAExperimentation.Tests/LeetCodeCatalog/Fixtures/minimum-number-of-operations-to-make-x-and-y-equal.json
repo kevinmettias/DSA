@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3239,
+  "FrontendId": 2998,
+  "Title": "Minimum Number of Operations to Make X and Y Equal",
+  "TitleSlug": "minimum-number-of-operations-to-make-x-and-y-equal",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Breadth-First Search",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 48.4,
+  "TotalAccepted": 30342,
+  "TotalSubmissions": 62645,
+  "Likes": 295,
+  "Dislikes": 23,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two positive integers \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIn one operation, you can do one of the four following operations:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EDivide \u003Ccode\u003Ex\u003C/code\u003E by \u003Ccode\u003E11\u003C/code\u003E if \u003Ccode\u003Ex\u003C/code\u003E is a multiple of \u003Ccode\u003E11\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EDivide \u003Ccode\u003Ex\u003C/code\u003E by \u003Ccode\u003E5\u003C/code\u003E if \u003Ccode\u003Ex\u003C/code\u003E is a multiple of \u003Ccode\u003E5\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EDecrement \u003Ccode\u003Ex\u003C/code\u003E by \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIncrement \u003Ccode\u003Ex\u003C/code\u003E by \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum\u003C/strong\u003E number of operations required to make \u003C/em\u003E \u003Ccode\u003Ex\u003C/code\u003E \u003Ci\u003Eand\u003C/i\u003E \u003Ccode\u003Ey\u003C/code\u003E equal.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 26, y = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can make 26 equal to 1 by applying the following operations: \n1. Decrement x by 1\n2. Divide x by 5\n3. Divide x by 5\nIt can be shown that 3 is the minimum number of operations required to make 26 equal to 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 54, y = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can make 54 equal to 2 by applying the following operations: \n1. Increment x by 1\n2. Divide x by 11 \n3. Divide x by 5\n4. Increment x by 1\nIt can be shown that 4 is the minimum number of operations required to make 54 equal to 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E x = 25, y = 30\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can make 25 equal to 30 by applying the following operations: \n1. Increment x by 1\n2. Increment x by 1\n3. Increment x by 1\n4. Increment x by 1\n5. Increment x by 1\nIt can be shown that 5 is the minimum number of operations required to make 25 equal to 30.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x, y \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The only way to make \u003Ccode\u003Ex\u003C/code\u003E larger is to increase it by \u003Ccode\u003E1\u003C/code\u003E so if \u003Ccode\u003Ey \u003E= x\u003C/code\u003E the answer is \u003Ccode\u003Ey - x\u003C/code\u003E.",
+    "For \u003Ccode\u003Ey \u003C x\u003C/code\u003E, \u003Ccode\u003Ex - y\u003C/code\u003E is always a candidate answer since we can repeatedly decrease \u003Ccode\u003Ex\u003C/code\u003E by one to reach \u003Ccode\u003Ey\u003C/code\u003E.",
+    "We can also increase \u003Ccode\u003Ex\u003C/code\u003E and then use the division operations. For example, if \u003Ccode\u003Ex = 10\u003C/code\u003E and \u003Ccode\u003Ey = 1\u003C/code\u003E, we can increment \u003Ccode\u003Ex\u003C/code\u003E by \u003Ccode\u003E1\u003C/code\u003E then divide it by \u003Ccode\u003E11\u003C/code\u003E.",
+    "Find an upper bound \u003Ccode\u003EU\u003C/code\u003E on the maximum value of \u003Ccode\u003Ex\u003C/code\u003E we will reach an optimal solution. Since all values of \u003Ccode\u003Ex\u003C/code\u003E will be in the range \u003Ccode\u003E[1, U]\u003C/code\u003E, we can use BFS to find the answer.",
+    "One possible upper bound on \u003Ccode\u003Ex\u003C/code\u003E is \u003Ccode\u003EU = x \u002B (x - y) \u003C/code\u003E. To reach any number strictly greater than \u003Ccode\u003EU\u003C/code\u003E from \u003Ccode\u003Ex\u003C/code\u003E, we will need more than \u003Ccode\u003Ex - y\u003C/code\u003E operations which is not optimal since we can always reach \u003Ccode\u003Ey\u003C/code\u003E in \u003Ccode\u003Ex - y\u003C/code\u003E operations."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "26\n1",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "54\n2",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "25\n30",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0767276+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-operations-to-make-x-and-y-equal/"
+}

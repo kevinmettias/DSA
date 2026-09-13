@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1874,
+  "FrontendId": 1764,
+  "Title": "Form Array by Concatenating Subarrays of Another Array",
+  "TitleSlug": "form-array-by-concatenating-subarrays-of-another-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Greedy",
+    "String Matching",
+    "Knuth\u2013Morris\u2013Pratt Algorithm"
+  ],
+  "AcceptanceRatePercent": 55.1,
+  "TotalAccepted": 21942,
+  "TotalSubmissions": 39809,
+  "Likes": 351,
+  "Dislikes": 45,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Egroups\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E. You are also given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are asked if you can choose \u003Ccode\u003En\u003C/code\u003E \u003Cstrong\u003Edisjoint \u003C/strong\u003Esubarrays from the array \u003Ccode\u003Enums\u003C/code\u003E such that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E subarray is equal to \u003Ccode\u003Egroups[i]\u003C/code\u003E (\u003Cb\u003E0-indexed\u003C/b\u003E), and if \u003Ccode\u003Ei \u0026gt; 0\u003C/code\u003E, the \u003Ccode\u003E(i-1)\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E subarray appears \u003Cstrong\u003Ebefore\u003C/strong\u003E the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E subarray in \u003Ccode\u003Enums\u003C/code\u003E (i.e. the subarrays must be in the same order as \u003Ccode\u003Egroups\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif you can do this task, and\u003C/em\u003E \u003Ccode\u003Efalse\u003C/code\u003E \u003Cem\u003Eotherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that the subarrays are \u003Cstrong\u003Edisjoint\u003C/strong\u003E if and only if there is no index \u003Ccode\u003Ek\u003C/code\u003E such that \u003Ccode\u003Enums[k]\u003C/code\u003E belongs to more than one subarray. A subarray is a contiguous sequence of elements within an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E groups = [[1,-1,-1],[3,-2,0]], nums = [1,-1,0,1,-1,-1,3,-2,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can choose the 0\u003Csup\u003Eth\u003C/sup\u003E subarray as [1,-1,0,\u003Cu\u003E\u003Cstrong\u003E1,-1,-1\u003C/strong\u003E\u003C/u\u003E,3,-2,0] and the 1\u003Csup\u003Est\u003C/sup\u003E one as [1,-1,0,1,-1,-1,\u003Cu\u003E\u003Cstrong\u003E3,-2,0\u003C/strong\u003E\u003C/u\u003E].\nThese subarrays are disjoint as they share no common nums[k] element.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E groups = [[10,-2],[1,2,3,4]], nums = [1,2,3,4,10,-2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation: \u003C/strong\u003ENote that choosing the subarrays [\u003Cu\u003E\u003Cstrong\u003E1,2,3,4\u003C/strong\u003E\u003C/u\u003E,10,-2] and [1,2,3,4,\u003Cu\u003E\u003Cstrong\u003E10,-2\u003C/strong\u003E\u003C/u\u003E] is incorrect because they are not in the same order as in groups.\n[10,-2] must come before [1,2,3,4].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E groups = [[1,2,3],[3,4]], nums = [7,7,1,2,3,4,7,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation: \u003C/strong\u003ENote that choosing the subarrays [7,7,\u003Cu\u003E\u003Cstrong\u003E1,2,3\u003C/strong\u003E\u003C/u\u003E,4,7,7] and [7,7,1,2,\u003Cu\u003E\u003Cstrong\u003E3,4\u003C/strong\u003E\u003C/u\u003E,7,7] is invalid because they are not disjoint.\nThey share a common elements nums[4] (0-indexed).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egroups.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E3\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= groups[i].length, sum(groups[i].length) \u0026lt;= 10\u003Csup\u003E\u003Cspan style=\u0022font-size: 10.8333px;\u0022\u003E3\u003C/span\u003E\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E3\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E7\u003C/sup\u003E \u0026lt;= groups[i][j], nums[k] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "When we use a subarray, the room for the next subarrays will be the suffix after the used subarray.",
+    "If we can match a group with multiple subarrays, we should choose the first one, as this will just leave the largest room for the next subarrays."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,-1,-1],[3,-2,0]]\n[1,-1,0,1,-1,-1,3,-2,0]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[10,-2],[1,2,3,4]]\n[1,2,3,4,10,-2]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[[1,2,3],[3,4]]\n[7,7,1,2,3,4,7,7]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3572306+00:00",
+  "Url": "https://leetcode.com/problems/form-array-by-concatenating-subarrays-of-another-array/"
+}

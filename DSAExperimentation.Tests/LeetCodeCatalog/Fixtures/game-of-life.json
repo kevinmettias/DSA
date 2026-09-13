@@ -1,0 +1,32 @@
+{
+  "QuestionId": 289,
+  "FrontendId": 289,
+  "Title": "Game of Life",
+  "TitleSlug": "game-of-life",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 73,
+  "TotalAccepted": 666053,
+  "TotalSubmissions": 912006,
+  "Likes": 6888,
+  "Dislikes": 621,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAccording to \u003Ca href=\u0022https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life\u0022 target=\u0022_blank\u0022\u003EWikipedia\u0026#39;s article\u003C/a\u003E: \u0026quot;The \u003Cb\u003EGame of Life\u003C/b\u003E, also known simply as \u003Cb\u003ELife\u003C/b\u003E, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.\u0026quot;\u003C/p\u003E\n\n\u003Cp\u003EThe board is made up of an \u003Ccode\u003Em x n\u003C/code\u003E grid of cells, where each cell has an initial state: \u003Cb\u003Elive\u003C/b\u003E (represented by a \u003Ccode\u003E1\u003C/code\u003E) or \u003Cb\u003Edead\u003C/b\u003E (represented by a \u003Ccode\u003E0\u003C/code\u003E). Each cell interacts with its \u003Ca href=\u0022https://en.wikipedia.org/wiki/Moore_neighborhood\u0022 target=\u0022_blank\u0022\u003Eeight neighbors\u003C/a\u003E (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003EAny live cell with fewer than two live neighbors dies as if caused by under-population.\u003C/li\u003E\n\t\u003Cli\u003EAny live cell with two or three live neighbors lives on to the next generation.\u003C/li\u003E\n\t\u003Cli\u003EAny live cell with more than three live neighbors dies, as if by over-population.\u003C/li\u003E\n\t\u003Cli\u003EAny dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003E\u003Cspan\u003EThe next state of the board is determined by applying the above rules simultaneously to every cell in the current state of the \u003Ccode\u003Em x n\u003C/code\u003E grid \u003Ccode\u003Eboard\u003C/code\u003E. In this process, births and deaths occur \u003Cstrong\u003Esimultaneously\u003C/strong\u003E.\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cspan\u003EGiven the current state of the \u003Ccode\u003Eboard\u003C/code\u003E, \u003Cstrong\u003Eupdate\u003C/strong\u003E the \u003Ccode\u003Eboard\u003C/code\u003E to reflect its next state.\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that you do not need to return anything.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/26/grid1.jpg\u0022 style=\u0022width: 562px; height: 322px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E board = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[0,0,0],[1,0,1],[0,1,1],[0,1,0]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/12/26/grid2.jpg\u0022 style=\u0022width: 402px; height: 162px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E board = [[1,1],[1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,1],[1,1]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == board.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == board[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 25\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboard[i][j]\u003C/code\u003E is \u003Ccode\u003E0\u003C/code\u003E or \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECould you solve it in-place? Remember that the board needs to be updated simultaneously: You cannot update some cells first and then use their updated values to update other cells.\u003C/li\u003E\n\t\u003Cli\u003EIn this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]",
+      "RawExpectedOutput": "[[0,0,0],[1,0,1],[0,1,1],[0,1,0]]"
+    },
+    {
+      "RawInput": "[[1,1],[1,0]]",
+      "RawExpectedOutput": "[[1,1],[1,1]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3744622+00:00",
+  "Url": "https://leetcode.com/problems/game-of-life/"
+}

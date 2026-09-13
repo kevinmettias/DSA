@@ -1,0 +1,35 @@
+{
+  "QuestionId": 789,
+  "FrontendId": 703,
+  "Title": "Kth Largest Element in a Stream",
+  "TitleSlug": "kth-largest-element-in-a-stream",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Tree",
+    "Design",
+    "Binary Search Tree",
+    "Heap (Priority Queue)",
+    "Binary Tree",
+    "Data Stream"
+  ],
+  "AcceptanceRatePercent": 61.6,
+  "TotalAccepted": 1064167,
+  "TotalSubmissions": 1728265,
+  "Likes": 6545,
+  "Dislikes": 4112,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are part of a university admissions office and need to keep track of the \u003Ccode\u003Ekth\u003C/code\u003E highest test score from applicants in real-time. This helps to determine cut-off marks for interviews and admissions dynamically as new applicants submit their scores.\u003C/p\u003E\n\n\u003Cp\u003EYou are tasked to implement a class which, for a given integer\u0026nbsp;\u003Ccode\u003Ek\u003C/code\u003E, maintains a stream of test scores and continuously returns the\u0026nbsp;\u003Ccode\u003Ek\u003C/code\u003Eth highest test score\u0026nbsp;\u003Cstrong\u003Eafter\u003C/strong\u003E\u0026nbsp;a new score has been submitted. More specifically, we are looking for the \u003Ccode\u003Ek\u003C/code\u003Eth highest score in the sorted list of all scores.\u003C/p\u003E\n\n\u003Cp\u003EImplement the\u0026nbsp;\u003Ccode\u003EKthLargest\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EKthLargest(int k, int[] nums)\u003C/code\u003E Initializes the object with the integer \u003Ccode\u003Ek\u003C/code\u003E and the stream of test scores\u0026nbsp;\u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint add(int val)\u003C/code\u003E Adds a new test score\u0026nbsp;\u003Ccode\u003Eval\u003C/code\u003E to the stream and returns the element representing the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E largest element in the pool of test scores so far.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E\u003Cbr /\u003E\n\u003Cspan class=\u0022example-io\u0022\u003E[\u0026quot;KthLargest\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;]\u003Cbr /\u003E\n[[3, [4, 5, 8, 2]], [3], [5], [10], [9], [4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[null, 4, 5, 5, 8, 8]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EKthLargest kthLargest = new KthLargest(3, [4, 5, 8, 2]);\u003Cbr /\u003E\nkthLargest.add(3); // return 4\u003Cbr /\u003E\nkthLargest.add(5); // return 5\u003Cbr /\u003E\nkthLargest.add(10); // return 5\u003Cbr /\u003E\nkthLargest.add(9); // return 8\u003Cbr /\u003E\nkthLargest.add(4); // return 8\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E\u003Cbr /\u003E\n\u003Cspan class=\u0022example-io\u0022\u003E[\u0026quot;KthLargest\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;]\u003Cbr /\u003E\n[[4, [7, 7, 7, 7, 8, 3]], [2], [10], [9], [9]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[null, 7, 7, 7, 8]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\nKthLargest kthLargest = new KthLargest(4, [7, 7, 7, 7, 8, 3]);\u003Cbr /\u003E\nkthLargest.add(2); // return 7\u003Cbr /\u003E\nkthLargest.add(10); // return 7\u003Cbr /\u003E\nkthLargest.add(9); // return 7\u003Cbr /\u003E\nkthLargest.add(9); // return 8\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= nums.length \u002B 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= val \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eadd\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022KthLargest\u0022,\u0022add\u0022,\u0022add\u0022,\u0022add\u0022,\u0022add\u0022,\u0022add\u0022]\n[[3,[4,5,8,2]],[3],[5],[10],[9],[4]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[\u0022KthLargest\u0022,\u0022add\u0022,\u0022add\u0022,\u0022add\u0022,\u0022add\u0022]\n[[4,[7,7,7,7,8,3]],[2],[10],[9],[9]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6053724+00:00",
+  "Url": "https://leetcode.com/problems/kth-largest-element-in-a-stream/"
+}

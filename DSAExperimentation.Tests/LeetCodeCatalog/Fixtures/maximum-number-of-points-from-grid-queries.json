@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2588,
+  "FrontendId": 2503,
+  "Title": "Maximum Number of Points From Grid Queries",
+  "TitleSlug": "maximum-number-of-points-from-grid-queries",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Two Pointers",
+    "Breadth-First Search",
+    "Union-Find",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 59.2,
+  "TotalAccepted": 100046,
+  "TotalSubmissions": 168923,
+  "Likes": 1116,
+  "Dislikes": 51,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E integer matrix \u003Ccode\u003Egrid\u003C/code\u003E and an array \u003Ccode\u003Equeries\u003C/code\u003E of size \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind an array \u003Ccode\u003Eanswer\u003C/code\u003E of size \u003Ccode\u003Ek\u003C/code\u003E such that for each integer \u003Ccode\u003Equeries[i]\u003C/code\u003E you start in the \u003Cstrong\u003Etop left\u003C/strong\u003E cell of the matrix and repeat the following process:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Equeries[i]\u003C/code\u003E is \u003Cstrong\u003Estrictly\u003C/strong\u003E greater than the value of the current cell that you are in, then you get one point if it is your first time visiting this cell, and you can move to any \u003Cstrong\u003Eadjacent\u003C/strong\u003E cell in all \u003Ccode\u003E4\u003C/code\u003E directions: up, down, left, and right.\u003C/li\u003E\n\t\u003Cli\u003EOtherwise, you do not get any points, and you end this process.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAfter the process, \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of points you can get. \u003Cstrong\u003ENote\u003C/strong\u003E that for each query you are allowed to visit the same cell \u003Cstrong\u003Emultiple\u003C/strong\u003E times.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe resulting array\u003C/em\u003E \u003Ccode\u003Eanswer\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/03/15/image1.png\u0022 style=\u0022width: 571px; height: 152px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,2,3],[2,5,7],[3,5,1]], queries = [5,6,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [5,8,1]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagrams above show which cells we visit to get points for each query.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/10/20/yetgriddrawio-2.png\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[5,2,1],[1,1,2]], queries = [3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can not get any points because the value of the top left cell is already greater than or equal to 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= m, n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E4 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ek == queries.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= grid[i][j], queries[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The queries are all given to you beforehand so you can answer them in any order you want.",
+    "Sort the queries knowing their original order to be able to build the answer array.",
+    "Run a BFS on the graph and answer the queries in increasing order."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2,3],[2,5,7],[3,5,1]]\n[5,6,2]",
+      "RawExpectedOutput": "[5,8,1]"
+    },
+    {
+      "RawInput": "[[5,2,1],[1,1,2]]\n[3]",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9124592+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-points-from-grid-queries/"
+}

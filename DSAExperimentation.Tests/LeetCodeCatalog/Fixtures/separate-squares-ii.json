@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3775,
+  "FrontendId": 3454,
+  "Title": "Separate Squares II",
+  "TitleSlug": "separate-squares-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Segment Tree",
+    "Sweep Line"
+  ],
+  "AcceptanceRatePercent": 58.8,
+  "TotalAccepted": 61701,
+  "TotalSubmissions": 104934,
+  "Likes": 278,
+  "Dislikes": 66,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Esquares\u003C/code\u003E. Each \u003Ccode\u003Esquares[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E, l\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the coordinates of the bottom-left point and the side length of a square parallel to the x-axis.\u003C/p\u003E\n\n\u003Cp\u003EFind the \u003Cstrong\u003Eminimum\u003C/strong\u003E y-coordinate value of a horizontal line such that the total area covered by squares above the line \u003Cem\u003Eequals\u003C/em\u003E the total area covered by squares below the line.\u003C/p\u003E\n\n\u003Cp\u003EAnswers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E: Squares \u003Cstrong\u003Emay\u003C/strong\u003E overlap. Overlapping areas should be counted \u003Cstrong\u003Eonly once\u003C/strong\u003E in this version.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esquares = [[0,0,1],[2,2,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1.00000\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/01/15/4065example1drawio.png\u0022 style=\u0022width: 269px; height: 203px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAny horizontal line between \u003Ccode\u003Ey = 1\u003C/code\u003E and \u003Ccode\u003Ey = 2\u003C/code\u003E results in an equal split, with 1 square unit above and 1 square unit below. The minimum y-value is 1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Esquares = [[0,0,2],[1,1,1]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1.00000\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/01/15/4065example2drawio.png\u0022 style=\u0022width: 269px; height: 203px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003ESince the blue square overlaps with the red square, it will not be counted again. Thus, the line \u003Ccode\u003Ey = 1\u003C/code\u003E splits the squares into two equal parts.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= squares.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esquares[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E, l\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esquares[i].length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= l\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe total area of all the squares will not exceed \u003Ccode\u003E10\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a line sweep and a segment tree.",
+    "The line must lie in one of the squares."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0,1],[2,2,1]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[0,0,2],[1,1,1]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9346367+00:00",
+  "Url": "https://leetcode.com/problems/separate-squares-ii/"
+}

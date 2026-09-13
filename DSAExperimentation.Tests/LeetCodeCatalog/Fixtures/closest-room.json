@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1957,
+  "FrontendId": 1847,
+  "Title": "Closest Room",
+  "TitleSlug": "closest-room",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Sorting",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 42.1,
+  "TotalAccepted": 13189,
+  "TotalSubmissions": 31337,
+  "Likes": 543,
+  "Dislikes": 21,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a hotel with \u003Ccode\u003En\u003C/code\u003E rooms. The rooms are represented by a 2D integer array \u003Ccode\u003Erooms\u003C/code\u003E where \u003Ccode\u003Erooms[i] = [roomId\u003Csub\u003Ei\u003C/sub\u003E, size\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E denotes that there is a room with room number \u003Ccode\u003EroomId\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and size equal to \u003Ccode\u003Esize\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. Each \u003Ccode\u003EroomId\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is guaranteed to be \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given \u003Ccode\u003Ek\u003C/code\u003E queries in a 2D array \u003Ccode\u003Equeries\u003C/code\u003E where \u003Ccode\u003Equeries[j] = [preferred\u003Csub\u003Ej\u003C/sub\u003E, minSize\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E. The answer to the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query is the room number \u003Ccode\u003Eid\u003C/code\u003E of a room such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe room has a size of \u003Cstrong\u003Eat least\u003C/strong\u003E \u003Ccode\u003EminSize\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E, and\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eabs(id - preferred\u003Csub\u003Ej\u003C/sub\u003E)\u003C/code\u003E is \u003Cstrong\u003Eminimized\u003C/strong\u003E, where \u003Ccode\u003Eabs(x)\u003C/code\u003E is the absolute value of \u003Ccode\u003Ex\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EIf there is a \u003Cstrong\u003Etie\u003C/strong\u003E in the absolute difference, then use the room with the \u003Cstrong\u003Esmallest\u003C/strong\u003E such \u003Ccode\u003Eid\u003C/code\u003E. If there is \u003Cstrong\u003Eno such room\u003C/strong\u003E, the answer is \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E of length \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer[j]\u003C/code\u003E\u003Cem\u003E contains the answer to the \u003C/em\u003E\u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E query\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rooms = [[2,2],[1,2],[3,2]], queries = [[3,1],[3,3],[5,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,-1,3]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThe answers to the queries are as follows:\nQuery = [3,1]: Room number 3 is the closest as abs(3 - 3) = 0, and its size of 2 is at least 1. The answer is 3.\nQuery = [3,3]: There are no rooms with a size of at least 3, so the answer is -1.\nQuery = [5,2]: Room number 3 is the closest as abs(3 - 5) = 2, and its size of 2 is at least 2. The answer is 3.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rooms = [[1,4],[2,3],[3,5],[4,1],[5,2]], queries = [[2,3],[2,4],[2,5]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,1,3]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EThe answers to the queries are as follows:\nQuery = [2,3]: Room number 2 is the closest as abs(2 - 2) = 0, and its size of 3 is at least 3. The answer is 2.\nQuery = [2,4]: Room numbers 1 and 3 both have sizes of at least 4. The answer is 1 since it is smaller.\nQuery = [2,5]: Room number 3 is the only room with a size of at least 5. The answer is 3.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == rooms.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ek == queries.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= roomId\u003Csub\u003Ei\u003C/sub\u003E, preferred\u003Csub\u003Ej\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= size\u003Csub\u003Ei\u003C/sub\u003E, minSize\u003Csub\u003Ej\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Is there a way to sort the queries so it\u0027s easier to search the closest room larger than the size?",
+    "Use binary search to speed up the search time."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,2],[1,2],[3,2]]\n[[3,1],[3,3],[5,2]]",
+      "RawExpectedOutput": "[3,-1,3]"
+    },
+    {
+      "RawInput": "[[1,4],[2,3],[3,5],[4,1],[5,2]]\n[[2,3],[2,4],[2,5]]",
+      "RawExpectedOutput": "[2,1,3]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8052455+00:00",
+  "Url": "https://leetcode.com/problems/closest-room/"
+}

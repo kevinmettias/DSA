@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2339,
+  "FrontendId": 2261,
+  "Title": "K Divisible Elements Subarrays",
+  "TitleSlug": "k-divisible-elements-subarrays",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Trie",
+    "Rolling Hash",
+    "Hash Function",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 55.3,
+  "TotalAccepted": 50981,
+  "TotalSubmissions": 92227,
+  "Likes": 747,
+  "Dislikes": 163,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E and two integers \u003Ccode\u003Ek\u003C/code\u003E and \u003Ccode\u003Ep\u003C/code\u003E, return \u003Cem\u003Ethe number of \u003Cstrong\u003Edistinct subarrays,\u003C/strong\u003E which have \u003Cstrong\u003Eat most\u003C/strong\u003E\u003C/em\u003E \u003Ccode\u003Ek\u003C/code\u003E \u003Cem\u003Eelements \u003C/em\u003Ethat are \u003Cem\u003Edivisible by\u003C/em\u003E \u003Ccode\u003Ep\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo arrays \u003Ccode\u003Enums1\u003C/code\u003E and \u003Ccode\u003Enums2\u003C/code\u003E are said to be \u003Cstrong\u003Edistinct\u003C/strong\u003E if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThey are of \u003Cstrong\u003Edifferent\u003C/strong\u003E lengths, or\u003C/li\u003E\n\t\u003Cli\u003EThere exists \u003Cstrong\u003Eat least\u003C/strong\u003E one index \u003Ccode\u003Ei\u003C/code\u003E where \u003Ccode\u003Enums1[i] != nums2[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is defined as a \u003Cstrong\u003Enon-empty\u003C/strong\u003E contiguous sequence of elements in an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E,3,3,\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E,\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E], k = 2, p = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 11\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nThe elements at indices 0, 3, and 4 are divisible by p = 2.\nThe 11 distinct subarrays which have at most k = 2 elements divisible by 2 are:\n[2], [2,3], [2,3,3], [2,3,3,2], [3], [3,3], [3,3,2], [3,3,2,2], [3,2], [3,2,2], and [2,2].\nNote that the subarrays [2] and [3] occur more than once in nums, but they should each be counted only once.\nThe subarray [2,3,3,2,2] should not be counted because it has 3 elements that are divisible by 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4], k = 4, p = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nAll element of nums are divisible by p = 1.\nAlso, every subarray of nums will have at most 4 elements that are divisible by 1.\nSince all subarrays are distinct, the total number of subarrays satisfying all the constraints is 10.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i], p \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= nums.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ECan you solve this problem in O(n\u003Csup\u003E2\u003C/sup\u003E) time complexity?\u003C/p\u003E\n",
+  "Hints": [
+    "Enumerate all subarrays and find the ones that satisfy all the conditions.",
+    "Use any suitable method to hash the subarrays to avoid duplicates."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,3,3,2,2]\n2\n2",
+      "RawExpectedOutput": "11"
+    },
+    {
+      "RawInput": "[1,2,3,4]\n4\n1",
+      "RawExpectedOutput": "10"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5843015+00:00",
+  "Url": "https://leetcode.com/problems/k-divisible-elements-subarrays/"
+}

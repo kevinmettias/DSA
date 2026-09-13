@@ -1,0 +1,41 @@
+{
+  "QuestionId": 4239,
+  "FrontendId": 3855,
+  "Title": "Sum of K-Digit Numbers in a Range",
+  "TitleSlug": "sum-of-k-digit-numbers-in-a-range",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Divide and Conquer",
+    "Combinatorics",
+    "Number Theory"
+  ],
+  "AcceptanceRatePercent": 50.9,
+  "TotalAccepted": 7324,
+  "TotalSubmissions": 14378,
+  "Likes": 51,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given three integers \u003Ccode\u003El\u003C/code\u003E, \u003Ccode\u003Er\u003C/code\u003E, and \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EConsider all possible integers consisting of \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E digits, where each digit is chosen independently from the integer range \u003Ccode\u003E[l, r]\u003C/code\u003E (inclusive). If 0 is included in the range, leading zeros are allowed.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer representing the \u003Cb\u003Esum of all such numbers.\u003C/b\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B Since the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003El = 1, r = 2, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E66\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAll numbers formed using \u003Ccode\u003Ek = 2\u003C/code\u003E digits in the range \u003Ccode\u003E[1, 2]\u003C/code\u003E are \u003Ccode\u003E11, 12, 21, 22\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum is \u003Ccode\u003E11 \u002B 12 \u002B 21 \u002B 22 = 66\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003El = 0, r = 1, k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E444\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAll numbers formed using \u003Ccode\u003Ek = 3\u003C/code\u003E digits in the range \u003Ccode\u003E[0, 1]\u003C/code\u003E are \u003Ccode\u003E000, 001, 010, 011, 100, 101, 110, 111\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B.\u003C/li\u003E\n\t\u003Cli\u003EThese numbers without leading zeros are \u003Ccode\u003E0, 1, 10, 11, 100, 101, 110, 111\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum is 444.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003El = 5, r = 5, k = 10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E555555520\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E5555555555 is the only valid number consisting of \u003Ccode\u003Ek = 10\u003C/code\u003E digits in the range \u003Ccode\u003E[5, 5]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe total sum is \u003Ccode\u003E5555555555 % (10\u003Csup\u003E9\u003C/sup\u003E \u002B 7) = 555555520\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= l \u0026lt;= r \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use combinatorics.",
+    "For some position \u003Ccode\u003Ep\u003C/code\u003E among the \u003Ccode\u003Ek\u003C/code\u003E digits, the sum is \u003Ccode\u003E10^p * (l \u002B (l\u002B1) \u002B ... \u002B r) * (r - l \u002B 1)^(k-1)\u003C/code\u003E.",
+    "Summing \u003Ccode\u003Ep\u003C/code\u003E over \u003Ccode\u003E[0, k-1]\u003C/code\u003E gives \u003Ccode\u003E(l \u002B (l\u002B1) \u002B ... \u002B r) * (r - l \u002B 1)^(k-1) * (10^k - 1) / 9\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "0\n1\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n5\n10",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1871862+00:00",
+  "Url": "https://leetcode.com/problems/sum-of-k-digit-numbers-in-a-range/"
+}

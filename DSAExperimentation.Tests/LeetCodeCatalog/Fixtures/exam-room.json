@@ -1,0 +1,28 @@
+{
+  "QuestionId": 885,
+  "FrontendId": 855,
+  "Title": "Exam Room",
+  "TitleSlug": "exam-room",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Design",
+    "Heap (Priority Queue)",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 43.8,
+  "TotalAccepted": 78485,
+  "TotalSubmissions": 179217,
+  "Likes": 1444,
+  "Dislikes": 535,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an exam room with \u003Ccode\u003En\u003C/code\u003E seats in a single row labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EWhen a student enters the room, they must sit in the seat that maximizes the distance to the closest person. If there are multiple such seats, they sit in the seat with the lowest number. If no one is in the room, then the student sits at seat number \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EDesign a class that simulates the mentioned exam room.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EExamRoom\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EExamRoom(int n)\u003C/code\u003E Initializes the object of the exam room with the number of the seats \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint seat()\u003C/code\u003E Returns the label of the seat at which the next student will set.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid leave(int p)\u003C/code\u003E Indicates that the student sitting at seat \u003Ccode\u003Ep\u003C/code\u003E will leave the room. It is guaranteed that there will be a student sitting at seat \u003Ccode\u003Ep\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;ExamRoom\u0026quot;, \u0026quot;seat\u0026quot;, \u0026quot;seat\u0026quot;, \u0026quot;seat\u0026quot;, \u0026quot;seat\u0026quot;, \u0026quot;leave\u0026quot;, \u0026quot;seat\u0026quot;]\n[[10], [], [], [], [], [4], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 0, 9, 4, 2, null, 5]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nExamRoom examRoom = new ExamRoom(10);\nexamRoom.seat(); // return 0, no one is in the room, then the student sits at seat number 0.\nexamRoom.seat(); // return 9, the student sits at the last seat number 9.\nexamRoom.seat(); // return 4, the student sits at the last seat number 4.\nexamRoom.seat(); // return 2, the student sits at the last seat number 2.\nexamRoom.leave(4);\nexamRoom.seat(); // return 5, the student sits at the last seat number 5.\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that there is a student sitting at seat \u003Ccode\u003Ep\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eseat\u003C/code\u003E and \u003Ccode\u003Eleave\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022ExamRoom\u0022,\u0022seat\u0022,\u0022seat\u0022,\u0022seat\u0022,\u0022seat\u0022,\u0022leave\u0022,\u0022seat\u0022]\n[[10],[],[],[],[],[4],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1931503+00:00",
+  "Url": "https://leetcode.com/problems/exam-room/"
+}

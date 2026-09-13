@@ -1,0 +1,29 @@
+{
+  "QuestionId": 913,
+  "FrontendId": 519,
+  "Title": "Random Flip Matrix",
+  "TitleSlug": "random-flip-matrix",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Math",
+    "Reservoir Sampling",
+    "Randomized"
+  ],
+  "AcceptanceRatePercent": 46.9,
+  "TotalAccepted": 33496,
+  "TotalSubmissions": 71349,
+  "Likes": 462,
+  "Dislikes": 135,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an \u003Ccode\u003Em x n\u003C/code\u003E binary grid \u003Ccode\u003Ematrix\u003C/code\u003E with all the values set \u003Ccode\u003E0\u003C/code\u003E initially. Design an algorithm to randomly pick an index \u003Ccode\u003E(i, j)\u003C/code\u003E where \u003Ccode\u003Ematrix[i][j] == 0\u003C/code\u003E and flips it to \u003Ccode\u003E1\u003C/code\u003E. All the indices \u003Ccode\u003E(i, j)\u003C/code\u003E where \u003Ccode\u003Ematrix[i][j] == 0\u003C/code\u003E should be equally likely to be returned.\u003C/p\u003E\n\n\u003Cp\u003EOptimize your algorithm to minimize the number of calls made to the \u003Cstrong\u003Ebuilt-in\u003C/strong\u003E random function of your language and optimize the time and space complexity.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESolution\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESolution(int m, int n)\u003C/code\u003E Initializes the object with the size of the binary matrix \u003Ccode\u003Em\u003C/code\u003E and \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint[] flip()\u003C/code\u003E Returns a random index \u003Ccode\u003E[i, j]\u003C/code\u003E of the matrix where \u003Ccode\u003Ematrix[i][j] == 0\u003C/code\u003E and flips it to \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid reset()\u003C/code\u003E Resets all the values of the matrix to be \u003Ccode\u003E0\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;Solution\u0026quot;, \u0026quot;flip\u0026quot;, \u0026quot;flip\u0026quot;, \u0026quot;flip\u0026quot;, \u0026quot;reset\u0026quot;, \u0026quot;flip\u0026quot;]\n[[3, 1], [], [], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, [1, 0], [2, 0], [0, 0], null, [2, 0]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSolution solution = new Solution(3, 1);\nsolution.flip();  // return [1, 0], [0,0], [1,0], and [2,0] should be equally likely to be returned.\nsolution.flip();  // return [2, 0], Since [1,0] was returned, [2,0] and [0,0]\nsolution.flip();  // return [0, 0], Based on the previously returned indices, only [0,0] can be returned.\nsolution.reset(); // All the values are reset to 0 and can be returned.\nsolution.flip();  // return [2, 0], [0,0], [1,0], and [2,0] should be equally likely to be returned.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere will be at least one free cell for each call to \u003Ccode\u003Eflip\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made to \u003Ccode\u003Eflip\u003C/code\u003E and \u003Ccode\u003Ereset\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022Solution\u0022,\u0022flip\u0022,\u0022flip\u0022,\u0022flip\u0022,\u0022reset\u0022,\u0022flip\u0022]\n[[3,1],[],[],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6232102+00:00",
+  "Url": "https://leetcode.com/problems/random-flip-matrix/"
+}

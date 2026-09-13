@@ -1,0 +1,40 @@
+{
+  "QuestionId": 140,
+  "FrontendId": 140,
+  "Title": "Word Break II",
+  "TitleSlug": "word-break-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Dynamic Programming",
+    "Backtracking",
+    "Trie",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 56.2,
+  "TotalAccepted": 847365,
+  "TotalSubmissions": 1508152,
+  "Likes": 7626,
+  "Dislikes": 551,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E and a dictionary of strings \u003Ccode\u003EwordDict\u003C/code\u003E, add spaces in \u003Ccode\u003Es\u003C/code\u003E to construct a sentence where each word is a valid dictionary word. Return all such possible sentences in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that the same word in the dictionary may be reused multiple times in the segmentation.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;catsanddog\u0026quot;, wordDict = [\u0026quot;cat\u0026quot;,\u0026quot;cats\u0026quot;,\u0026quot;and\u0026quot;,\u0026quot;sand\u0026quot;,\u0026quot;dog\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;cats and dog\u0026quot;,\u0026quot;cat sand dog\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;pineapplepenapple\u0026quot;, wordDict = [\u0026quot;apple\u0026quot;,\u0026quot;pen\u0026quot;,\u0026quot;applepen\u0026quot;,\u0026quot;pine\u0026quot;,\u0026quot;pineapple\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;pine apple pen apple\u0026quot;,\u0026quot;pineapple pen apple\u0026quot;,\u0026quot;pine applepen apple\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Note that you are allowed to reuse a dictionary word.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;catsandog\u0026quot;, wordDict = [\u0026quot;cats\u0026quot;,\u0026quot;dog\u0026quot;,\u0026quot;sand\u0026quot;,\u0026quot;and\u0026quot;,\u0026quot;cat\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= wordDict.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= wordDict[i].length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003EwordDict[i]\u003C/code\u003E consist of only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003EwordDict\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EInput is generated in a way that the length of the answer doesn\u0026#39;t exceed\u0026nbsp;10\u003Csup\u003E5\u003C/sup\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022catsanddog\u0022\n[\u0022cat\u0022,\u0022cats\u0022,\u0022and\u0022,\u0022sand\u0022,\u0022dog\u0022]",
+      "RawExpectedOutput": "[\u0022cats and dog\u0022,\u0022cat sand dog\u0022]"
+    },
+    {
+      "RawInput": "\u0022pineapplepenapple\u0022\n[\u0022apple\u0022,\u0022pen\u0022,\u0022applepen\u0022,\u0022pine\u0022,\u0022pineapple\u0022]",
+      "RawExpectedOutput": "[\u0022pine apple pen apple\u0022,\u0022pineapple pen apple\u0022,\u0022pine applepen apple\u0022]"
+    },
+    {
+      "RawInput": "\u0022catsandog\u0022\n[\u0022cats\u0022,\u0022dog\u0022,\u0022sand\u0022,\u0022and\u0022,\u0022cat\u0022]",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3990093+00:00",
+  "Url": "https://leetcode.com/problems/word-break-ii/"
+}

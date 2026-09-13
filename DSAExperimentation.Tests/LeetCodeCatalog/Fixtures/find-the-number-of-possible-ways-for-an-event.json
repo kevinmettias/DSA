@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3604,
+  "FrontendId": 3317,
+  "Title": "Find the Number of Possible Ways for an Event",
+  "TitleSlug": "find-the-number-of-possible-ways-for-an-event",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 34.7,
+  "TotalAccepted": 5694,
+  "TotalSubmissions": 16388,
+  "Likes": 80,
+  "Dislikes": 15,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given three integers \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003Ex\u003C/code\u003E, and \u003Ccode\u003Ey\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn event is being held for \u003Ccode\u003En\u003C/code\u003E performers. When a performer arrives, they are \u003Cstrong\u003Eassigned\u003C/strong\u003E to one of the \u003Ccode\u003Ex\u003C/code\u003E stages. All performers assigned to the \u003Cstrong\u003Esame\u003C/strong\u003E stage will perform together as a band, though some stages \u003Cem\u003Emight\u003C/em\u003E remain \u003Cstrong\u003Eempty\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAfter all performances are completed, the jury will \u003Cstrong\u003Eaward\u003C/strong\u003E each band a score in the range \u003Ccode\u003E[1, y]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Etotal\u003C/strong\u003E number of possible ways the event can take place.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that two events are considered to have been held \u003Cstrong\u003Edifferently\u003C/strong\u003E if \u003Cstrong\u003Eeither\u003C/strong\u003E of the following conditions is satisfied:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EAny\u003C/strong\u003E performer is \u003Cem\u003Eassigned\u003C/em\u003E a different stage.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EAny\u003C/strong\u003E band is \u003Cem\u003Eawarded\u003C/em\u003E a different score.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 1, x = 2, y = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere are 2 ways to assign a stage to the performer.\u003C/li\u003E\n\t\u003Cli\u003EThe jury can award a score of either 1, 2, or 3 to the only band.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, x = 2, y = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E 32\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach performer will be assigned either stage 1 or stage 2.\u003C/li\u003E\n\t\u003Cli\u003EAll bands will be awarded a score of 1.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, x = 3, y = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E 684\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n, x, y \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Fix the number of stages.",
+    "Assign the Performers to the stages.",
+    "Use inclusion-exclusion to ensure that no stage has 0 performers."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n2\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n2\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n3\n4",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3006154+00:00",
+  "Url": "https://leetcode.com/problems/find-the-number-of-possible-ways-for-an-event/"
+}

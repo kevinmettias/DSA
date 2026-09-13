@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3139,
+  "FrontendId": 2916,
+  "Title": "Subarrays Distinct Element Sum of Squares II",
+  "TitleSlug": "subarrays-distinct-element-sum-of-squares-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Binary Indexed Tree",
+    "Segment Tree"
+  ],
+  "AcceptanceRatePercent": 23.5,
+  "TotalAccepted": 5066,
+  "TotalSubmissions": 21535,
+  "Likes": 159,
+  "Dislikes": 12,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed \u003C/strong\u003Einteger array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Edistinct count\u003C/strong\u003E of a subarray of \u003Ccode\u003Enums\u003C/code\u003E is defined as:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ELet \u003Ccode\u003Enums[i..j]\u003C/code\u003E be a subarray of \u003Ccode\u003Enums\u003C/code\u003E consisting of all the indices from \u003Ccode\u003Ei\u003C/code\u003E to \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003E0 \u0026lt;= i \u0026lt;= j \u0026lt; nums.length\u003C/code\u003E. Then the number of distinct values in \u003Ccode\u003Enums[i..j]\u003C/code\u003E is called the distinct count of \u003Ccode\u003Enums[i..j]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe sum of the \u003Cstrong\u003Esquares\u003C/strong\u003E of \u003Cstrong\u003Edistinct counts\u003C/strong\u003E of all subarrays of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA subarray is a contiguous \u003Cstrong\u003Enon-empty\u003C/strong\u003E sequence of elements within an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 15\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Six possible subarrays are:\n[1]: 1 distinct value\n[2]: 1 distinct value\n[1]: 1 distinct value\n[1,2]: 2 distinct values\n[2,1]: 2 distinct values\n[1,2,1]: 2 distinct values\nThe sum of the squares of the distinct counts in all subarrays is equal to 1\u003Csup\u003E2\u003C/sup\u003E \u002B 1\u003Csup\u003E2\u003C/sup\u003E \u002B 1\u003Csup\u003E2\u003C/sup\u003E \u002B 2\u003Csup\u003E2\u003C/sup\u003E \u002B 2\u003Csup\u003E2\u003C/sup\u003E \u002B 2\u003Csup\u003E2\u003C/sup\u003E = 15.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Three possible subarrays are:\n[2]: 1 distinct value\n[2]: 1 distinct value\n[2,2]: 1 distinct value\nThe sum of the squares of the distinct counts in all subarrays is equal to 1\u003Csup\u003E2\u003C/sup\u003E \u002B 1\u003Csup\u003E2\u003C/sup\u003E \u002B 1\u003Csup\u003E2\u003C/sup\u003E = 3.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Consider the sum of the count of distinct values of subarrays ending with index \u003Ccode\u003Ei\u003C/code\u003E, let\u2019s call it \u003Ccode\u003Esum\u003C/code\u003E. Now if you need the sum of all subarrays ending with index \u003Ccode\u003Ei \u002B 1\u003C/code\u003E think how it can be related to \u003Ccode\u003Esum\u003C/code\u003E and what extra will be needed to add to this.",
+    "You can find that extra sum using the segment tree."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,1]",
+      "RawExpectedOutput": "15"
+    },
+    {
+      "RawInput": "[2,2]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1587075+00:00",
+  "Url": "https://leetcode.com/problems/subarrays-distinct-element-sum-of-squares-ii/"
+}

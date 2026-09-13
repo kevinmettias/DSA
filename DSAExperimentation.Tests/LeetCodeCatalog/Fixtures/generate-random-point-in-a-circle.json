@@ -1,0 +1,29 @@
+{
+  "QuestionId": 915,
+  "FrontendId": 478,
+  "Title": "Generate Random Point in a Circle",
+  "TitleSlug": "generate-random-point-in-a-circle",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Geometry",
+    "Rejection Sampling",
+    "Randomized"
+  ],
+  "AcceptanceRatePercent": 43.7,
+  "TotalAccepted": 57529,
+  "TotalSubmissions": 131558,
+  "Likes": 489,
+  "Dislikes": 784,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the radius and the position of the center of a circle, implement the function \u003Ccode\u003ErandPoint\u003C/code\u003E which generates a uniform random point inside the circle.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESolution\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESolution(double radius, double x_center, double y_center)\u003C/code\u003E initializes the object with the radius of the circle \u003Ccode\u003Eradius\u003C/code\u003E and the position of the center \u003Ccode\u003E(x_center, y_center)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003ErandPoint()\u003C/code\u003E returns a random point inside the circle. A point on the circumference of the circle is considered to be in the circle. The answer is returned as an array \u003Ccode\u003E[x, y]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;Solution\u0026quot;, \u0026quot;randPoint\u0026quot;, \u0026quot;randPoint\u0026quot;, \u0026quot;randPoint\u0026quot;]\n[[1.0, 0.0, 0.0], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, [-0.02493, -0.38077], [0.82314, 0.38945], [0.36572, 0.17248]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSolution solution = new Solution(1.0, 0.0, 0.0);\nsolution.randPoint(); // return [-0.02493, -0.38077]\nsolution.randPoint(); // return [0.82314, 0.38945]\nsolution.randPoint(); // return [0.36572, 0.17248]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;\u0026nbsp;radius \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E7\u003C/sup\u003E \u0026lt;= x_center, y_center \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E3 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003ErandPoint\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022Solution\u0022,\u0022randPoint\u0022,\u0022randPoint\u0022,\u0022randPoint\u0022]\n[[1.0,0.0,0.0],[],[],[]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.390926+00:00",
+  "Url": "https://leetcode.com/problems/generate-random-point-in-a-circle/"
+}

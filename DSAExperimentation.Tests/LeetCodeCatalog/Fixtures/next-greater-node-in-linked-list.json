@@ -1,0 +1,35 @@
+{
+  "QuestionId": 1072,
+  "FrontendId": 1019,
+  "Title": "Next Greater Node In Linked List",
+  "TitleSlug": "next-greater-node-in-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Linked List",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 64.8,
+  "TotalAccepted": 239555,
+  "TotalSubmissions": 369585,
+  "Likes": 3576,
+  "Dislikes": 130,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given the \u003Ccode\u003Ehead\u003C/code\u003E of a linked list with \u003Ccode\u003En\u003C/code\u003E nodes.\u003C/p\u003E\n\n\u003Cp\u003EFor each node in the list, find the value of the \u003Cstrong\u003Enext greater node\u003C/strong\u003E. That is, for each node, find the value of the first node that is next to it and has a \u003Cstrong\u003Estrictly larger\u003C/strong\u003E value than it.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer array \u003Ccode\u003Eanswer\u003C/code\u003E where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the value of the next greater node of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node (\u003Cstrong\u003E1-indexed\u003C/strong\u003E). If the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E node does not have a next greater node, set \u003Ccode\u003Eanswer[i] = 0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/05/linkedlistnext1.jpg\u0022 style=\u0022width: 304px; height: 133px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [2,1,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [5,5,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/08/05/linkedlistnext2.jpg\u0022 style=\u0022width: 500px; height: 113px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [2,7,4,3,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [7,0,5,5,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the list is \u003Ccode\u003En\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can use a stack that stores nodes in monotone decreasing order of value.  When we see a node_j with a larger value, every node_i in the stack has next_larger(node_i) = node_j ."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,1,5]",
+      "RawExpectedOutput": "[5,5,0]"
+    },
+    {
+      "RawInput": "[2,7,4,3,5]",
+      "RawExpectedOutput": "[7,0,5,5,0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.2109693+00:00",
+  "Url": "https://leetcode.com/problems/next-greater-node-in-linked-list/"
+}

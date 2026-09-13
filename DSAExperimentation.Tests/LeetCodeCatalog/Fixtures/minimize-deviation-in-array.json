@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1794,
+  "FrontendId": 1675,
+  "Title": "Minimize Deviation in Array",
+  "TitleSlug": "minimize-deviation-in-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Heap (Priority Queue)",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 54,
+  "TotalAccepted": 102424,
+  "TotalSubmissions": 189509,
+  "Likes": 3101,
+  "Dislikes": 175,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E of \u003Ccode\u003En\u003C/code\u003E positive integers.\u003C/p\u003E\n\n\u003Cp\u003EYou can perform two types of operations on any element of the array any number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf the element is \u003Cstrong\u003Eeven\u003C/strong\u003E, \u003Cstrong\u003Edivide\u003C/strong\u003E it by \u003Ccode\u003E2\u003C/code\u003E.\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EFor example, if the array is \u003Ccode\u003E[1,2,3,4]\u003C/code\u003E, then you can do this operation on the last element, and the array will be \u003Ccode\u003E[1,2,3,\u003Cu\u003E2\u003C/u\u003E].\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EIf the element is \u003Cstrong\u003Eodd\u003C/strong\u003E, \u003Cstrong\u003Emultiply\u003C/strong\u003E it by \u003Ccode\u003E2\u003C/code\u003E.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EFor example, if the array is \u003Ccode\u003E[1,2,3,4]\u003C/code\u003E, then you can do this operation on the first element, and the array will be \u003Ccode\u003E[\u003Cu\u003E2\u003C/u\u003E,2,3,4].\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Edeviation\u003C/strong\u003E of the array is the \u003Cstrong\u003Emaximum difference\u003C/strong\u003E between any two elements in the array.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Eminimum deviation\u003C/strong\u003E the array can have after performing some number of operations.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can transform the array to [1,2,3,\u003Cu\u003E2\u003C/u\u003E], then to [\u003Cu\u003E2\u003C/u\u003E,2,3,2], then the deviation will be 3 - 2 = 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,1,5,20,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can transform the array after two operations to [4,\u003Cu\u003E2\u003C/u\u003E,5,\u003Cu\u003E5\u003C/u\u003E,3], then the deviation will be 5 - 2 = 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,10,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 5 * 10\u003Csup\u003E\u003Cspan style=\u0022font-size: 10.8333px;\u0022\u003E4\u003C/span\u003E\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Assume you start with the minimum possible value for each number so you can only multiply a number by 2 till it reaches its maximum possible value.",
+    "If there is a better solution than the current one, then it must have either its maximum value less than the current maximum value, or the minimum value larger than the current minimum value.",
+    "Since that we only increase numbers (multiply them by 2), we cannot decrease the current maximum value, so we must multiply the current minimum number by 2."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[4,1,5,20,3]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[2,10,8]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9979283+00:00",
+  "Url": "https://leetcode.com/problems/minimize-deviation-in-array/"
+}

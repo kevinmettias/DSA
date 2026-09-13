@@ -1,0 +1,35 @@
+{
+  "QuestionId": 2042,
+  "FrontendId": 1913,
+  "Title": "Maximum Product Difference Between Two Pairs",
+  "TitleSlug": "maximum-product-difference-between-two-pairs",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Sorting",
+    "Quicksort"
+  ],
+  "AcceptanceRatePercent": 83.1,
+  "TotalAccepted": 309950,
+  "TotalSubmissions": 373008,
+  "Likes": 1608,
+  "Dislikes": 70,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe \u003Cstrong\u003Eproduct difference\u003C/strong\u003E between two pairs \u003Ccode\u003E(a, b)\u003C/code\u003E and \u003Ccode\u003E(c, d)\u003C/code\u003E is defined as \u003Ccode\u003E(a * b) - (c * d)\u003C/code\u003E.\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003EFor example, the product difference between \u003Ccode\u003E(5, 6)\u003C/code\u003E and \u003Ccode\u003E(2, 7)\u003C/code\u003E is \u003Ccode\u003E(5 * 6) - (2 * 7) = 16\u003C/code\u003E.\u003C/li\u003E\r\n\u003C/ul\u003E\r\n\r\n\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, choose four \u003Cstrong\u003Edistinct\u003C/strong\u003E indices \u003Ccode\u003Ew\u003C/code\u003E, \u003Ccode\u003Ex\u003C/code\u003E, \u003Ccode\u003Ey\u003C/code\u003E, and \u003Ccode\u003Ez\u003C/code\u003E such that the \u003Cstrong\u003Eproduct difference\u003C/strong\u003E between pairs \u003Ccode\u003E(nums[w], nums[x])\u003C/code\u003E and \u003Ccode\u003E(nums[y], nums[z])\u003C/code\u003E is \u003Cstrong\u003Emaximized\u003C/strong\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E such product difference\u003C/em\u003E.\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,6,2,7,4]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 34\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can choose indices 1 and 3 for the first pair (6, 7) and indices 2 and 4 for the second pair (2, 4).\r\nThe product difference is (6 * 7) - (2 * 4) = 34.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cpre\u003E\r\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,2,5,9,7,4,8]\r\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 64\r\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can choose indices 3 and 6 for the first pair (9, 8) and indices 1 and 5 for the second pair (2, 4).\r\nThe product difference is (9 * 8) - (2 * 4) = 64.\r\n\u003C/pre\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cul\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E4 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\r\n\u003C/ul\u003E",
+  "Hints": [
+    "If you only had to find the maximum product of 2 numbers in an array, which 2 numbers should you choose?",
+    "We only need to worry about 4 numbers in the array."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,6,2,7,4]",
+      "RawExpectedOutput": "34"
+    },
+    {
+      "RawInput": "[4,2,5,9,7,4,8]",
+      "RawExpectedOutput": "64"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9153404+00:00",
+  "Url": "https://leetcode.com/problems/maximum-product-difference-between-two-pairs/"
+}

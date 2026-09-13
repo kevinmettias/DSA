@@ -1,0 +1,32 @@
+{
+  "QuestionId": 17,
+  "FrontendId": 17,
+  "Title": "Letter Combinations of a Phone Number",
+  "TitleSlug": "letter-combinations-of-a-phone-number",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Backtracking"
+  ],
+  "AcceptanceRatePercent": 66.8,
+  "TotalAccepted": 3209930,
+  "TotalSubmissions": 4803932,
+  "Likes": 21351,
+  "Dislikes": 1145,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string containing digits from \u003Ccode\u003E2-9\u003C/code\u003E inclusive, return all possible letter combinations that the number could represent. Return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/03/15/1200px-telephone-keypad2svg.png\u0022 style=\u0022width: 300px; height: 243px;\u0022 /\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E digits = \u0026quot;23\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;ad\u0026quot;,\u0026quot;ae\u0026quot;,\u0026quot;af\u0026quot;,\u0026quot;bd\u0026quot;,\u0026quot;be\u0026quot;,\u0026quot;bf\u0026quot;,\u0026quot;cd\u0026quot;,\u0026quot;ce\u0026quot;,\u0026quot;cf\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E digits = \u0026quot;2\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;c\u0026quot;]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= digits.length \u0026lt;= 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edigits[i]\u003C/code\u003E is a digit in the range \u003Ccode\u003E[\u0026#39;2\u0026#39;, \u0026#39;9\u0026#39;]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u002223\u0022",
+      "RawExpectedOutput": "[\u0022ad\u0022,\u0022ae\u0022,\u0022af\u0022,\u0022bd\u0022,\u0022be\u0022,\u0022bf\u0022,\u0022cd\u0022,\u0022ce\u0022,\u0022cf\u0022]"
+    },
+    {
+      "RawInput": "\u00222\u0022",
+      "RawExpectedOutput": "[\u0022a\u0022,\u0022b\u0022,\u0022c\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.657711+00:00",
+  "Url": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/"
+}

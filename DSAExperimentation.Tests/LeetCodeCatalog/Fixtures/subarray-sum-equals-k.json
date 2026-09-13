@@ -1,0 +1,37 @@
+{
+  "QuestionId": 560,
+  "FrontendId": 560,
+  "Title": "Subarray Sum Equals K",
+  "TitleSlug": "subarray-sum-equals-k",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 48.2,
+  "TotalAccepted": 2741805,
+  "TotalSubmissions": 5694037,
+  "Likes": 25801,
+  "Dislikes": 870,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe total number of subarrays whose sum equals to\u003C/em\u003E \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA subarray is a contiguous \u003Cstrong\u003Enon-empty\u003C/strong\u003E sequence of elements within an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,1,1], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E7\u003C/sup\u003E \u0026lt;= k \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Will Brute force work here? Try to optimize it.",
+    "Can we optimize it by using some extra space?",
+    "What about storing sum frequencies in a hash table? Will it be useful?",
+    "sum(i,j)=sum(0,j)-sum(0,i), where sum(i,j) represents the sum of all the elements from index i to j-1.\r\n\r\nCan we use this property to optimize it."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,1,1]\n2",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[1,2,3]\n3",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1578502+00:00",
+  "Url": "https://leetcode.com/problems/subarray-sum-equals-k/"
+}

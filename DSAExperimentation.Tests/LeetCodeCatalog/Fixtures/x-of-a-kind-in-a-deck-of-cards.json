@@ -1,0 +1,36 @@
+{
+  "QuestionId": 950,
+  "FrontendId": 914,
+  "Title": "X of a Kind in a Deck of Cards",
+  "TitleSlug": "x-of-a-kind-in-a-deck-of-cards",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Counting",
+    "Number Theory",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 30.5,
+  "TotalAccepted": 165891,
+  "TotalSubmissions": 543205,
+  "Likes": 1916,
+  "Dislikes": 585,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Edeck\u003C/code\u003E where \u003Ccode\u003Edeck[i]\u003C/code\u003E represents the number written on the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E card.\u003C/p\u003E\n\n\u003Cp\u003EPartition the cards into \u003Cstrong\u003Eone or more groups\u003C/strong\u003E such that:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach group has \u003Cstrong\u003Eexactly\u003C/strong\u003E \u003Ccode\u003Ex\u003C/code\u003E cards where \u003Ccode\u003Ex \u0026gt; 1\u003C/code\u003E, and\u003C/li\u003E\n\t\u003Cli\u003EAll the cards in one group have the same integer written on them.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if such partition is possible, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E deck = [1,2,3,4,4,3,2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation\u003C/strong\u003E: Possible partition [1,1],[2,2],[3,3],[4,4].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E deck = [1,1,1,2,2,2,3,3]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation\u003C/strong\u003E: No possible partition.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= deck.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= deck[i] \u0026lt; 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,4,3,2,1]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[1,1,1,2,2,2,3,3]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.4237979+00:00",
+  "Url": "https://leetcode.com/problems/x-of-a-kind-in-a-deck-of-cards/"
+}

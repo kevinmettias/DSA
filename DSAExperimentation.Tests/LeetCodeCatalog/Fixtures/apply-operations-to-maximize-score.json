@@ -1,0 +1,43 @@
+{
+  "QuestionId": 3001,
+  "FrontendId": 2818,
+  "Title": "Apply Operations to Maximize Score",
+  "TitleSlug": "apply-operations-to-maximize-score",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Stack",
+    "Greedy",
+    "Sorting",
+    "Monotonic Stack",
+    "Number Theory"
+  ],
+  "AcceptanceRatePercent": 53.4,
+  "TotalAccepted": 76921,
+  "TotalSubmissions": 144132,
+  "Likes": 781,
+  "Dislikes": 127,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Enums\u003C/code\u003E of \u003Ccode\u003En\u003C/code\u003E positive integers and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EInitially, you start with a score of \u003Ccode\u003E1\u003C/code\u003E. You have to maximize your score by applying the following operation at most \u003Ccode\u003Ek\u003C/code\u003E times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose any \u003Cstrong\u003Enon-empty\u003C/strong\u003E subarray \u003Ccode\u003Enums[l, ..., r]\u003C/code\u003E that you haven\u0026#39;t chosen previously.\u003C/li\u003E\n\t\u003Cli\u003EChoose an element \u003Ccode\u003Ex\u003C/code\u003E of \u003Ccode\u003Enums[l, ..., r]\u003C/code\u003E with the highest \u003Cstrong\u003Eprime score\u003C/strong\u003E. If multiple such elements exist, choose the one with the smallest index.\u003C/li\u003E\n\t\u003Cli\u003EMultiply your score by \u003Ccode\u003Ex\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EHere, \u003Ccode\u003Enums[l, ..., r]\u003C/code\u003E denotes the subarray of \u003Ccode\u003Enums\u003C/code\u003E starting at index \u003Ccode\u003El\u003C/code\u003E and ending at the index \u003Ccode\u003Er\u003C/code\u003E, both ends being inclusive.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Eprime score\u003C/strong\u003E of an integer \u003Ccode\u003Ex\u003C/code\u003E is equal to the number of distinct prime factors of \u003Ccode\u003Ex\u003C/code\u003E. For example, the prime score of \u003Ccode\u003E300\u003C/code\u003E is \u003Ccode\u003E3\u003C/code\u003E since \u003Ccode\u003E300 = 2 * 2 * 3 * 5 * 5\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum possible score\u003C/strong\u003E after applying at most \u003C/em\u003E\u003Ccode\u003Ek\u003C/code\u003E\u003Cem\u003E operations\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be large, return it modulo \u003Ccode\u003E10\u003Csup\u003E9 \u003C/sup\u003E\u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [8,3,9,3,8], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 81\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E To get a score of 81, we can apply the following operations:\n- Choose subarray nums[2, ..., 2]. nums[2] is the only element in this subarray. Hence, we multiply the score by nums[2]. The score becomes 1 * 9 = 9.\n- Choose subarray nums[2, ..., 3]. Both nums[2] and nums[3] have a prime score of 1, but nums[2] has the smaller index. Hence, we multiply the score by nums[2]. The score becomes 9 * 9 = 81.\nIt can be proven that 81 is the highest score one can obtain.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [19,12,14,6,10,18], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4788\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E To get a score of 4788, we can apply the following operations: \n- Choose subarray nums[0, ..., 0]. nums[0] is the only element in this subarray. Hence, we multiply the score by nums[0]. The score becomes 1 * 19 = 19.\n- Choose subarray nums[5, ..., 5]. nums[5] is the only element in this subarray. Hence, we multiply the score by nums[5]. The score becomes 19 * 18 = 342.\n- Choose subarray nums[2, ..., 3]. Both nums[2] and nums[3] have a prime score of 2, but nums[2] has the smaller index. Hence, we multipy the score by nums[2]. The score becomes 342 * 14 = 4788.\nIt can be proven that 4788 is the highest score one can obtain.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length == n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= min(n * (n \u002B 1) / 2, 10\u003Csup\u003E9\u003C/sup\u003E)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003ECalculate \u003Ccode\u003Enums[i]\u003C/code\u003E\u0027s prime score \u003Ccode\u003Es[i]\u003C/code\u003E\u00A0by factoring in \u003Ccode\u003EO(sqrt(nums[i]))\u003C/code\u003E time.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EFor each \u003Ccode\u003Enums[i]\u003C/code\u003E, find the nearest index \u003Ccode\u003Eleft[i]\u003C/code\u003E on the left (if any) such that \u003Ccode\u003Es[left[i]] \u003E= s[i]\u003C/code\u003E.\u00A0if none is\u00A0found,\u00A0set \u003Ccode\u003Eleft[i]\u003C/code\u003E to \u003Ccode\u003E-1\u003C/code\u003E. Similarly, find the nearest index \u003Ccode\u003Eright[i]\u003C/code\u003E on the right (if any) such that \u003Ccode\u003Es[right[i]] \u003E s[i]\u003C/code\u003E. If none is found, set \u003Ccode\u003Eright[i]\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EUse a monotonic stack to compute \u003Ccode\u003Eright[i]\u003C/code\u003E and \u003Ccode\u003Eleft[i]\u003C/code\u003E.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EFor each index \u003Ccode\u003Ei\u003C/code\u003E, if \u003Ccode\u003Eleft[i] \u002B 1 \u003C= l\u00A0\u003C= i \u003C= r\u00A0\u003C= right[i] - 1\u003C/code\u003E, then \u003Ccode\u003Es[i]\u003C/code\u003E is the maximum value in the range \u003Ccode\u003E[l, r]\u003C/code\u003E. For this particular \u003Ccode\u003Ei\u003C/code\u003E, there are\u00A0\u003Ccode\u003Eranges[i] =\u00A0(i - left[i]) * (right[i] - i)\u003C/code\u003E ranges where index \u003Ccode\u003Ei\u003C/code\u003E will be chosen.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003ELoop over all elements of \u003Ccode\u003Enums\u003C/code\u003E\u00A0by non-increasing\u00A0prime score, each element will be chosen \u003Ccode\u003Emin(ranges[i], remainingK)\u003C/code\u003E\u00A0times, where \u003Ccode\u003EreaminingK\u003C/code\u003E\u00A0denotes the number of remaining operations. Therefore, the score will be multiplied by \u003Ccode\u003Es[i]^min(ranges[i],remainingK)\u003C/code\u003E.\u003C/div\u003E",
+    "\u003Cdiv class=\u0022_1l1MA\u0022\u003EUse fast exponentiation to quickly calculate \u003Ccode\u003EA^B mod C\u003C/code\u003E.\u003C/div\u003E"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[8,3,9,3,8]\n2",
+      "RawExpectedOutput": "81"
+    },
+    {
+      "RawInput": "[19,12,14,6,10,18]\n3",
+      "RawExpectedOutput": "4788"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.5745849+00:00",
+  "Url": "https://leetcode.com/problems/apply-operations-to-maximize-score/"
+}

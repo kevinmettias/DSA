@@ -1,0 +1,27 @@
+{
+  "QuestionId": 2357,
+  "FrontendId": 2276,
+  "Title": "Count Integers in Intervals",
+  "TitleSlug": "count-integers-in-intervals",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Design",
+    "Segment Tree",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 36.2,
+  "TotalAccepted": 30783,
+  "TotalSubmissions": 84952,
+  "Likes": 630,
+  "Dislikes": 64,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an \u003Cstrong\u003Eempty\u003C/strong\u003E set of intervals, implement a data structure that can:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Cstrong\u003EAdd\u003C/strong\u003E an interval to the set of intervals.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cstrong\u003ECount\u003C/strong\u003E the number of integers that are present in \u003Cstrong\u003Eat least one\u003C/strong\u003E interval.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ECountIntervals\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ECountIntervals()\u003C/code\u003E Initializes the object with an empty set of intervals.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid add(int left, int right)\u003C/code\u003E Adds the interval \u003Ccode\u003E[left, right]\u003C/code\u003E to the set of intervals.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint count()\u003C/code\u003E Returns the number of integers that are present in \u003Cstrong\u003Eat least one\u003C/strong\u003E interval.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that an interval \u003Ccode\u003E[left, right]\u003C/code\u003E denotes all the integers \u003Ccode\u003Ex\u003C/code\u003E where \u003Ccode\u003Eleft \u0026lt;= x \u0026lt;= right\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;CountIntervals\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;count\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;count\u0026quot;]\n[[], [2, 3], [7, 10], [], [5, 8], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, 6, null, 8]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nCountIntervals countIntervals = new CountIntervals(); // initialize the object with an empty set of intervals. \ncountIntervals.add(2, 3);  // add [2, 3] to the set of intervals.\ncountIntervals.add(7, 10); // add [7, 10] to the set of intervals.\ncountIntervals.count();    // return 6\n                           // the integers 2 and 3 are present in the interval [2, 3].\n                           // the integers 7, 8, 9, and 10 are present in the interval [7, 10].\ncountIntervals.add(5, 8);  // add [5, 8] to the set of intervals.\ncountIntervals.count();    // return 8\n                           // the integers 2 and 3 are present in the interval [2, 3].\n                           // the integers 5 and 6 are present in the interval [5, 8].\n                           // the integers 7 and 8 are present in the intervals [5, 8] and [7, 10].\n                           // the integers 9 and 10 are present in the interval [7, 10].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= left \u0026lt;= right \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls \u003Cstrong\u003Ein total\u003C/strong\u003E will be made to \u003Ccode\u003Eadd\u003C/code\u003E and \u003Ccode\u003Ecount\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt least \u003Cstrong\u003Eone\u003C/strong\u003E call will be made to \u003Ccode\u003Ecount\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "How can you efficiently add intervals to the set of intervals? Can a data structure like a Binary Search Tree help?",
+    "How can you ensure that the intervals present in the set are non-overlapping? Try merging the overlapping intervals whenever a new interval is added.",
+    "How can you update the count of integers present in at least one interval when a new interval is added to the set?"
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9404528+00:00",
+  "Url": "https://leetcode.com/problems/count-integers-in-intervals/"
+}

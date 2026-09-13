@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3603,
+  "FrontendId": 3327,
+  "Title": "Check if DFS Strings Are Palindromes",
+  "TitleSlug": "check-if-dfs-strings-are-palindromes",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Tree",
+    "Depth-First Search",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 21.1,
+  "TotalAccepted": 7478,
+  "TotalSubmissions": 35506,
+  "Likes": 82,
+  "Dislikes": 14,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a tree rooted at node 0, consisting of \u003Ccode\u003En\u003C/code\u003E nodes numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. The tree is represented by an array \u003Ccode\u003Eparent\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Eparent[i]\u003C/code\u003E is the parent of node \u003Ccode\u003Ei\u003C/code\u003E. Since node 0 is the root, \u003Ccode\u003Eparent[0] == -1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a string \u003Ccode\u003Es\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Es[i]\u003C/code\u003E is the character assigned to node \u003Ccode\u003Ei\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EConsider an empty string \u003Ccode\u003EdfsStr\u003C/code\u003E, and define a recursive function \u003Ccode\u003Edfs(int x)\u003C/code\u003E that takes a node \u003Ccode\u003Ex\u003C/code\u003E as a parameter and performs the following steps in order:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIterate over each child \u003Ccode\u003Ey\u003C/code\u003E of \u003Ccode\u003Ex\u003C/code\u003E \u003Cstrong\u003Ein increasing order of their numbers\u003C/strong\u003E, and call \u003Ccode\u003Edfs(y)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAdd the character \u003Ccode\u003Es[x]\u003C/code\u003E to the end of the string \u003Ccode\u003EdfsStr\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that \u003Ccode\u003EdfsStr\u003C/code\u003E is shared across all recursive calls of \u003Ccode\u003Edfs\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou need to find a boolean array \u003Ccode\u003Eanswer\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E, where for each index \u003Ccode\u003Ei\u003C/code\u003E from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E, you do the following:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEmpty the string \u003Ccode\u003EdfsStr\u003C/code\u003E and call \u003Ccode\u003Edfs(i)\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIf the resulting string \u003Ccode\u003EdfsStr\u003C/code\u003E is a \u003Cspan data-keyword=\u0022palindrome-string\u0022\u003Epalindrome\u003C/span\u003E, then set \u003Ccode\u003Eanswer[i]\u003C/code\u003E to \u003Ccode\u003Etrue\u003C/code\u003E. Otherwise, set \u003Ccode\u003Eanswer[i]\u003C/code\u003E to \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the array \u003Ccode\u003Eanswer\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/09/01/tree1drawio.png\u0022 style=\u0022width: 240px; height: 256px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eparent = [-1,0,0,1,1,2], s = \u0026quot;aababa\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[true,true,false,true,true,true]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECalling \u003Ccode\u003Edfs(0)\u003C/code\u003E results in the string \u003Ccode\u003EdfsStr = \u0026quot;abaaba\u0026quot;\u003C/code\u003E, which is a palindrome.\u003C/li\u003E\n\t\u003Cli\u003ECalling \u003Ccode\u003Edfs(1)\u003C/code\u003E results in the string \u003Ccode\u003EdfsStr = \u0026quot;aba\u0026quot;\u003C/code\u003E, which is a palindrome.\u003C/li\u003E\n\t\u003Cli\u003ECalling \u003Ccode\u003Edfs(2)\u003C/code\u003E results in the string \u003Ccode\u003EdfsStr = \u0026quot;ab\u0026quot;\u003C/code\u003E, which is \u003Cstrong\u003Enot\u003C/strong\u003E a palindrome.\u003C/li\u003E\n\t\u003Cli\u003ECalling \u003Ccode\u003Edfs(3)\u003C/code\u003E results in the string \u003Ccode\u003EdfsStr = \u0026quot;a\u0026quot;\u003C/code\u003E, which is a palindrome.\u003C/li\u003E\n\t\u003Cli\u003ECalling \u003Ccode\u003Edfs(4)\u003C/code\u003E results in the string \u003Ccode\u003EdfsStr = \u0026quot;b\u0026quot;\u003C/code\u003E, which is a palindrome.\u003C/li\u003E\n\t\u003Cli\u003ECalling \u003Ccode\u003Edfs(5)\u003C/code\u003E results in the string \u003Ccode\u003EdfsStr = \u0026quot;a\u0026quot;\u003C/code\u003E, which is a palindrome.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/09/01/tree2drawio-1.png\u0022 style=\u0022width: 260px; height: 167px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Eparent = [-1,0,0,0,0], s = \u0026quot;aabcb\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[true,true,true,true,true]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EEvery call on \u003Ccode\u003Edfs(x)\u003C/code\u003E results in a palindrome string.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == parent.length == s.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= parent[i] \u0026lt;= n - 1\u003C/code\u003E for all \u003Ccode\u003Ei \u0026gt;= 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eparent[0] == -1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eparent\u003C/code\u003E represents a valid tree.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists only of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Perform the dfs described from the root of tree, and store the order in which nodes are visited into an array.",
+    "For any node in the tree, the nodes in its subtree will form a contiguous subarray within the DFS traversal array.",
+    "Use Manacher\u2019s algorithm to compute the answer for each node in constant time."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[-1,0,0,1,1,2]\n\u0022aababa\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[-1,0,0,0,0]\n\u0022aabcb\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7611492+00:00",
+  "Url": "https://leetcode.com/problems/check-if-dfs-strings-are-palindromes/"
+}

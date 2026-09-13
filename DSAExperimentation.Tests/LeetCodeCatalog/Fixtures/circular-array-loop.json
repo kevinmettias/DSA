@@ -1,0 +1,37 @@
+{
+  "QuestionId": 457,
+  "FrontendId": 457,
+  "Title": "Circular Array Loop",
+  "TitleSlug": "circular-array-loop",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Two Pointers",
+    "Floyd\u0027s Cycle Finding Algorithm"
+  ],
+  "AcceptanceRatePercent": 38.4,
+  "TotalAccepted": 118158,
+  "TotalSubmissions": 307427,
+  "Likes": 863,
+  "Dislikes": 929,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are playing a game involving a \u003Cstrong\u003Ecircular\u003C/strong\u003E array of non-zero integers \u003Ccode\u003Enums\u003C/code\u003E. Each \u003Ccode\u003Enums[i]\u003C/code\u003E denotes the number of indices forward/backward you must move if you are located at index \u003Ccode\u003Ei\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Enums[i]\u003C/code\u003E is positive, move \u003Ccode\u003Enums[i]\u003C/code\u003E steps \u003Cstrong\u003Eforward\u003C/strong\u003E, and\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Enums[i]\u003C/code\u003E is negative, move \u003Ccode\u003Eabs(nums[i])\u003C/code\u003E steps \u003Cstrong\u003Ebackward\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ESince the array is \u003Cstrong\u003Ecircular\u003C/strong\u003E, you may assume that moving forward from the last element puts you on the first element, and moving backwards from the first element puts you on the last element.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Ecycle\u003C/strong\u003E in the array consists of a sequence of indices \u003Ccode\u003Eseq\u003C/code\u003E of length \u003Ccode\u003Ek\u003C/code\u003E where:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFollowing the movement rules above results in the repeating index sequence \u003Ccode\u003Eseq[0] -\u0026gt; seq[1] -\u0026gt; ... -\u0026gt; seq[k - 1] -\u0026gt; seq[0] -\u0026gt; ...\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EEvery \u003Ccode\u003Enums[seq[j]]\u003C/code\u003E is either \u003Cstrong\u003Eall positive\u003C/strong\u003E or \u003Cstrong\u003Eall negative\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ek \u0026gt; 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if there is a \u003Cstrong\u003Ecycle\u003C/strong\u003E in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/09/01/img1.jpg\u0022 style=\u0022width: 402px; height: 289px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,-1,1,2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The graph shows how the indices are connected. White nodes are jumping forward, while red is jumping backward.\nWe can see the cycle 0 --\u0026gt; 2 --\u0026gt; 3 --\u0026gt; 0 --\u0026gt; ..., and all of its nodes are white (jumping in the same direction).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/09/01/img2.jpg\u0022 style=\u0022width: 402px; height: 390px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,-2,-3,-4,-5,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The graph shows how the indices are connected. White nodes are jumping forward, while red is jumping backward.\nThe only cycle is of size 1, so we return false.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/09/01/img3.jpg\u0022 style=\u0022width: 497px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,-1,5,1,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The graph shows how the indices are connected. White nodes are jumping forward, while red is jumping backward.\nWe can see the cycle 0 --\u0026gt; 1 --\u0026gt; 0 --\u0026gt; ..., and while it is of size \u0026gt; 1, it has a node jumping forward and a node jumping backward, so \u003Cstrong\u003Eit is not a cycle\u003C/strong\u003E.\nWe can see the cycle 3 --\u0026gt; 4 --\u0026gt; 3 --\u0026gt; ..., and all of its nodes are white (jumping in the same direction).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums[i] != 0\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E Could you solve it in \u003Ccode\u003EO(n)\u003C/code\u003E time complexity and \u003Ccode\u003EO(1)\u003C/code\u003E extra space complexity?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,-1,1,2,2]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[-1,-2,-3,-4,-5,6]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[1,-1,5,1,4]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7927205+00:00",
+  "Url": "https://leetcode.com/problems/circular-array-loop/"
+}

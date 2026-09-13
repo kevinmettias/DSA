@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2445,
+  "FrontendId": 2368,
+  "Title": "Reachable Nodes With Restrictions",
+  "TitleSlug": "reachable-nodes-with-restrictions",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Tree",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory"
+  ],
+  "AcceptanceRatePercent": 60.8,
+  "TotalAccepted": 92868,
+  "TotalSubmissions": 152739,
+  "Likes": 792,
+  "Dislikes": 36,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an undirected tree with \u003Ccode\u003En\u003C/code\u003E nodes labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E and \u003Ccode\u003En - 1\u003C/code\u003E edges.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a 2D integer array \u003Ccode\u003Eedges\u003C/code\u003E of length \u003Ccode\u003En - 1\u003C/code\u003E where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is an edge between nodes \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E in the tree. You are also given an integer array \u003Ccode\u003Erestricted\u003C/code\u003E which represents \u003Cstrong\u003Erestricted\u003C/strong\u003E nodes.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E number of nodes you can reach from node \u003C/em\u003E\u003Ccode\u003E0\u003C/code\u003E\u003Cem\u003E without visiting a restricted node.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003ENote that node \u003Ccode\u003E0\u003C/code\u003E will \u003Cstrong\u003Enot\u003C/strong\u003E be a restricted node.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/06/15/ex1drawio.png\u0022 style=\u0022width: 402px; height: 322px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 7, edges = [[0,1],[1,2],[3,1],[4,0],[0,5],[5,6]], restricted = [4,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows the tree.\nWe have that [0,1,2,3] are the only nodes that can be reached from node 0 without visiting a restricted node.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2022/06/15/ex2drawio.png\u0022 style=\u0022width: 412px; height: 312px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 7, edges = [[0,1],[0,2],[0,5],[0,4],[3,2],[6,5]], restricted = [4,2,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The diagram above shows the tree.\nWe have that [0,5,6] are the only nodes that can be reached from node 0 without visiting a restricted node.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges.length == n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E != b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges\u003C/code\u003E represents a valid tree.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= restricted.length \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= restricted[i] \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Erestricted\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we find all the reachable nodes in a single traversal?",
+    "Traverse the graph from node 0 while avoiding the nodes in restricted and do not revisit nodes that have been visited.",
+    "Keep count of how many nodes are visited in total."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "7\n[[0,1],[1,2],[3,1],[4,0],[0,5],[5,6]]\n[4,5]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "7\n[[0,1],[0,2],[0,5],[0,4],[3,2],[6,5]]\n[4,2,1]",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6743106+00:00",
+  "Url": "https://leetcode.com/problems/reachable-nodes-with-restrictions/"
+}

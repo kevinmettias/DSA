@@ -1,0 +1,40 @@
+{
+  "QuestionId": 2187,
+  "FrontendId": 2063,
+  "Title": "Vowels of All Substrings",
+  "TitleSlug": "vowels-of-all-substrings",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Dynamic Programming",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 55.7,
+  "TotalAccepted": 47759,
+  "TotalSubmissions": 85701,
+  "Likes": 936,
+  "Dislikes": 38,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Eword\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Esum of the number of vowels\u003C/strong\u003E (\u003C/em\u003E\u003Ccode\u003E\u0026#39;a\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;e\u0026#39;\u003C/code\u003E\u003Cem\u003E,\u003C/em\u003E \u003Ccode\u003E\u0026#39;i\u0026#39;\u003C/code\u003E\u003Cem\u003E,\u003C/em\u003E \u003Ccode\u003E\u0026#39;o\u0026#39;\u003C/code\u003E\u003Cem\u003E, and\u003C/em\u003E \u003Ccode\u003E\u0026#39;u\u0026#39;\u003C/code\u003E\u003Cem\u003E)\u003C/em\u003E \u003Cem\u003Ein every substring of \u003C/em\u003E\u003Ccode\u003Eword\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubstring\u003C/strong\u003E is a contiguous (non-empty) sequence of characters within a string.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E Due to the large constraints, the answer may not fit in a signed 32-bit integer. Please be careful during the calculations.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word = \u0026quot;aba\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nAll possible substrings are: \u0026quot;a\u0026quot;, \u0026quot;ab\u0026quot;, \u0026quot;aba\u0026quot;, \u0026quot;b\u0026quot;, \u0026quot;ba\u0026quot;, and \u0026quot;a\u0026quot;.\n- \u0026quot;b\u0026quot; has 0 vowels in it\n- \u0026quot;a\u0026quot;, \u0026quot;ab\u0026quot;, \u0026quot;ba\u0026quot;, and \u0026quot;a\u0026quot; have 1 vowel each\n- \u0026quot;aba\u0026quot; has 2 vowels in it\nHence, the total sum of vowels = 0 \u002B 1 \u002B 1 \u002B 1 \u002B 1 \u002B 2 = 6. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word = \u0026quot;abc\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nAll possible substrings are: \u0026quot;a\u0026quot;, \u0026quot;ab\u0026quot;, \u0026quot;abc\u0026quot;, \u0026quot;b\u0026quot;, \u0026quot;bc\u0026quot;, and \u0026quot;c\u0026quot;.\n- \u0026quot;a\u0026quot;, \u0026quot;ab\u0026quot;, and \u0026quot;abc\u0026quot; have 1 vowel each\n- \u0026quot;b\u0026quot;, \u0026quot;bc\u0026quot;, and \u0026quot;c\u0026quot; have 0 vowels each\nHence, the total sum of vowels = 1 \u002B 1 \u002B 1 \u002B 0 \u002B 0 \u002B 0 = 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E word = \u0026quot;ltcd\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are no vowels in any substring of \u0026quot;ltcd\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= word.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eword\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Since generating substrings is not an option, can we count the number of substrings a vowel appears in?",
+    "How much does each vowel contribute to the total sum?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aba\u0022",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "\u0022abc\u0022",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "\u0022ltcd\u0022",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3758285+00:00",
+  "Url": "https://leetcode.com/problems/vowels-of-all-substrings/"
+}

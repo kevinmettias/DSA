@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1549,
+  "FrontendId": 1438,
+  "Title": "Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit",
+  "TitleSlug": "longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Queue",
+    "Sliding Window",
+    "Heap (Priority Queue)",
+    "Ordered Set",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 58,
+  "TotalAccepted": 333028,
+  "TotalSubmissions": 573725,
+  "Likes": 4600,
+  "Dislikes": 232,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Elimit\u003C/code\u003E, return the size of the longest \u003Cstrong\u003Enon-empty\u003C/strong\u003E subarray such that the absolute difference between any two elements of this subarray is less than or equal to \u003Ccode\u003Elimit\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [8,2,4,7], limit = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2 \n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All subarrays are: \n[8] with maximum absolute diff |8-8| = 0 \u0026lt;= 4.\n[8,2] with maximum absolute diff |8-2| = 6 \u0026gt; 4. \n[8,2,4] with maximum absolute diff |8-2| = 6 \u0026gt; 4.\n[8,2,4,7] with maximum absolute diff |8-2| = 6 \u0026gt; 4.\n[2] with maximum absolute diff |2-2| = 0 \u0026lt;= 4.\n[2,4] with maximum absolute diff |2-4| = 2 \u0026lt;= 4.\n[2,4,7] with maximum absolute diff |2-7| = 5 \u0026gt; 4.\n[4] with maximum absolute diff |4-4| = 0 \u0026lt;= 4.\n[4,7] with maximum absolute diff |4-7| = 3 \u0026lt;= 4.\n[7] with maximum absolute diff |7-7| = 0 \u0026lt;= 4. \nTherefore, the size of the longest subarray is 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [10,1,2,4,7,2], limit = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4 \n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The subarray [2,4,7,2] is the longest since the maximum absolute diff is |2-7| = 5 \u0026lt;= 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [4,2,2,2,4,4,2,2], limit = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= limit \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a sliding window approach keeping the maximum and minimum value using a data structure like a multiset from STL in C\u002B\u002B.",
+    "More specifically, use the two pointer technique, moving the right pointer as far as possible to the right until the subarray is not valid (maxValue - minValue \u003E limit), then moving the left pointer until the subarray is valid again (maxValue - minValue \u003C= limit). Keep repeating this process."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[8,2,4,7]\n4",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[10,1,2,4,7,2]\n5",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[4,2,2,2,4,4,2,2]\n0",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.7241707+00:00",
+  "Url": "https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/"
+}

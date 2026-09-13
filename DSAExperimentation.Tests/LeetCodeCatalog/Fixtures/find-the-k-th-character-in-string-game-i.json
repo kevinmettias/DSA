@@ -1,0 +1,35 @@
+{
+  "QuestionId": 3600,
+  "FrontendId": 3304,
+  "Title": "Find the K-th Character in String Game I",
+  "TitleSlug": "find-the-k-th-character-in-string-game-i",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "Bit Manipulation",
+    "Recursion",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 81.6,
+  "TotalAccepted": 219938,
+  "TotalSubmissions": 269507,
+  "Likes": 664,
+  "Dislikes": 138,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob are playing a game. Initially, Alice has a string \u003Ccode\u003Eword = \u0026quot;a\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a \u003Cstrong\u003Epositive\u003C/strong\u003E integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENow Bob will ask Alice to perform the following operation \u003Cstrong\u003Eforever\u003C/strong\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EGenerate a new string by \u003Cstrong\u003Echanging\u003C/strong\u003E each character in \u003Ccode\u003Eword\u003C/code\u003E to its \u003Cstrong\u003Enext\u003C/strong\u003E character in the English alphabet, and \u003Cstrong\u003Eappend\u003C/strong\u003E it to the \u003Cem\u003Eoriginal\u003C/em\u003E \u003Ccode\u003Eword\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, performing the operation on \u003Ccode\u003E\u0026quot;c\u0026quot;\u003C/code\u003E generates \u003Ccode\u003E\u0026quot;cd\u0026quot;\u003C/code\u003E and performing the operation on \u003Ccode\u003E\u0026quot;zb\u0026quot;\u003C/code\u003E generates \u003Ccode\u003E\u0026quot;zbac\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the value of the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E character in \u003Ccode\u003Eword\u003C/code\u003E, after enough operations have been done for \u003Ccode\u003Eword\u003C/code\u003E to have \u003Cstrong\u003Eat least\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E characters.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ek = 5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;b\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EInitially, \u003Ccode\u003Eword = \u0026quot;a\u0026quot;\u003C/code\u003E. We need to do the operation three times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EGenerated string is \u003Ccode\u003E\u0026quot;b\u0026quot;\u003C/code\u003E, \u003Ccode\u003Eword\u003C/code\u003E becomes \u003Ccode\u003E\u0026quot;ab\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EGenerated string is \u003Ccode\u003E\u0026quot;bc\u0026quot;\u003C/code\u003E, \u003Ccode\u003Eword\u003C/code\u003E becomes \u003Ccode\u003E\u0026quot;abbc\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EGenerated string is \u003Ccode\u003E\u0026quot;bccd\u0026quot;\u003C/code\u003E, \u003Ccode\u003Eword\u003C/code\u003E becomes \u003Ccode\u003E\u0026quot;abbcbccd\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ek = 10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;c\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 500\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The constraints are small. Construct the string by simulating the operations."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "10",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2964129+00:00",
+  "Url": "https://leetcode.com/problems/find-the-k-th-character-in-string-game-i/"
+}

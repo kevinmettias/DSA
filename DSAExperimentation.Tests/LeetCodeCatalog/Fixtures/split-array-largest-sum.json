@@ -1,0 +1,34 @@
+{
+  "QuestionId": 410,
+  "FrontendId": 410,
+  "Title": "Split Array Largest Sum",
+  "TitleSlug": "split-array-largest-sum",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Dynamic Programming",
+    "Greedy",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 61.4,
+  "TotalAccepted": 721665,
+  "TotalSubmissions": 1175535,
+  "Likes": 11673,
+  "Dislikes": 277,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E, split \u003Ccode\u003Enums\u003C/code\u003E into \u003Ccode\u003Ek\u003C/code\u003E non-empty subarrays such that the largest sum of any subarray is \u003Cstrong\u003Eminimized\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimized largest sum of the split\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a contiguous part of the array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [7,2,5,10,8], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are four ways to split nums into two subarrays.\nThe best way is to split it into [7,2,5] and [10,8], where the largest sum among the two subarrays is only 18.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4,5], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 9\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are four ways to split nums into two subarrays.\nThe best way is to split it into [1,2,3] and [4,5], where the largest sum among the two subarrays is only 9.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= min(50, nums.length)\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[7,2,5,10,8]\n2",
+      "RawExpectedOutput": "18"
+    },
+    {
+      "RawInput": "[1,2,3,4,5]\n2",
+      "RawExpectedOutput": "9"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1065825+00:00",
+  "Url": "https://leetcode.com/problems/split-array-largest-sum/"
+}

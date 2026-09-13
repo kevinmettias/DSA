@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2026,
+  "FrontendId": 1899,
+  "Title": "Merge Triplets to Form Target Triplet",
+  "TitleSlug": "merge-triplets-to-form-target-triplet",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Greedy"
+  ],
+  "AcceptanceRatePercent": 69.4,
+  "TotalAccepted": 131173,
+  "TotalSubmissions": 188909,
+  "Likes": 968,
+  "Dislikes": 84,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Cstrong\u003Etriplet\u003C/strong\u003E is an array of three integers. You are given a 2D integer array \u003Ccode\u003Etriplets\u003C/code\u003E, where \u003Ccode\u003Etriplets[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E, c\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E describes the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cstrong\u003Etriplet\u003C/strong\u003E. You are also given an integer array \u003Ccode\u003Etarget = [x, y, z]\u003C/code\u003E that describes the \u003Cstrong\u003Etriplet\u003C/strong\u003E you want to obtain.\u003C/p\u003E\n\n\u003Cp\u003ETo obtain \u003Ccode\u003Etarget\u003C/code\u003E, you may apply the following operation on \u003Ccode\u003Etriplets\u003C/code\u003E \u003Cstrong\u003Eany number\u003C/strong\u003E of times (possibly \u003Cstrong\u003Ezero\u003C/strong\u003E):\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose two indices (\u003Cstrong\u003E0-indexed\u003C/strong\u003E) \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E (\u003Ccode\u003Ei != j\u003C/code\u003E) and \u003Cstrong\u003Eupdate\u003C/strong\u003E \u003Ccode\u003Etriplets[j]\u003C/code\u003E to become \u003Ccode\u003E[max(a\u003Csub\u003Ei\u003C/sub\u003E, a\u003Csub\u003Ej\u003C/sub\u003E), max(b\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ej\u003C/sub\u003E), max(c\u003Csub\u003Ei\u003C/sub\u003E, c\u003Csub\u003Ej\u003C/sub\u003E)]\u003C/code\u003E.\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EFor example, if \u003Ccode\u003Etriplets[i] = [2, 5, 3]\u003C/code\u003E and \u003Ccode\u003Etriplets[j] = [1, 7, 5]\u003C/code\u003E, \u003Ccode\u003Etriplets[j]\u003C/code\u003E will be updated to \u003Ccode\u003E[max(2, 1), max(5, 7), max(3, 5)] = [2, 7, 5]\u003C/code\u003E.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif it is possible to obtain the \u003C/em\u003E\u003Ccode\u003Etarget\u003C/code\u003E\u003Cem\u003E \u003Cstrong\u003Etriplet\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003E[x, y, z]\u003C/code\u003E\u003Cem\u003E as an\u003Cstrong\u003E element\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Etriplets\u003C/code\u003E\u003Cem\u003E, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E otherwise\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E triplets = [[2,5,3],[1,8,4],[1,7,5]], target = [2,7,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Perform the following operations:\n- Choose the first and last triplets [\u003Cu\u003E[2,5,3]\u003C/u\u003E,[1,8,4],\u003Cu\u003E[1,7,5]\u003C/u\u003E]. Update the last triplet to be [max(2,1), max(5,7), max(3,5)] = [2,7,5]. triplets = [[2,5,3],[1,8,4],\u003Cu\u003E[2,7,5]\u003C/u\u003E]\nThe target triplet [2,7,5] is now an element of triplets.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E triplets = [[3,4,5],[4,5,6]], target = [3,2,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E It is impossible to have [3,2,5] as an element because there is no 2 in any of the triplets.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E triplets = [[2,5,3],[2,3,4],[1,2,5],[5,2,3]], target = [5,5,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EPerform the following operations:\n- Choose the first and third triplets [\u003Cu\u003E[2,5,3]\u003C/u\u003E,[2,3,4],\u003Cu\u003E[1,2,5]\u003C/u\u003E,[5,2,3]]. Update the third triplet to be [max(2,1), max(5,2), max(3,5)] = [2,5,5]. triplets = [[2,5,3],[2,3,4],\u003Cu\u003E[2,5,5]\u003C/u\u003E,[5,2,3]].\n- Choose the third and fourth triplets [[2,5,3],[2,3,4],\u003Cu\u003E[2,5,5]\u003C/u\u003E,\u003Cu\u003E[5,2,3]\u003C/u\u003E]. Update the fourth triplet to be [max(2,5), max(5,2), max(5,3)] = [5,5,5]. triplets = [[2,5,3],[2,3,4],[2,5,5],\u003Cu\u003E[5,5,5]\u003C/u\u003E].\nThe target triplet [5,5,5] is now an element of triplets.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= triplets.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etriplets[i].length == target.length == 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E, c\u003Csub\u003Ei\u003C/sub\u003E, x, y, z \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Which triplets do you actually care about?",
+    "What property of max can you use to solve the problem?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,5,3],[1,8,4],[1,7,5]]\n[2,7,5]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[3,4,5],[4,5,6]]\n[3,2,5]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[[2,5,3],[2,3,4],[1,2,5],[5,2,3]]\n[5,5,5]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9778515+00:00",
+  "Url": "https://leetcode.com/problems/merge-triplets-to-form-target-triplet/"
+}

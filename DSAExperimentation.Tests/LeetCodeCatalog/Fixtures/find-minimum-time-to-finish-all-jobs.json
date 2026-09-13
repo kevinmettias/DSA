@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1825,
+  "FrontendId": 1723,
+  "Title": "Find Minimum Time to Finish All Jobs",
+  "TitleSlug": "find-minimum-time-to-finish-all-jobs",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 46.3,
+  "TotalAccepted": 47442,
+  "TotalSubmissions": 102450,
+  "Likes": 1157,
+  "Dislikes": 40,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Ejobs\u003C/code\u003E, where \u003Ccode\u003Ejobs[i]\u003C/code\u003E is the amount of time it takes to complete the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E job.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003Ek\u003C/code\u003E workers that you can assign jobs to. Each job should be assigned to \u003Cstrong\u003Eexactly\u003C/strong\u003E one worker. The \u003Cstrong\u003Eworking time\u003C/strong\u003E of a worker is the sum of the time it takes to complete all jobs assigned to them. Your goal is to devise an optimal assignment such that the \u003Cstrong\u003Emaximum working time\u003C/strong\u003E of any worker is \u003Cstrong\u003Eminimized\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cem\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E possible \u003Cstrong\u003Emaximum working time\u003C/strong\u003E of any assignment. \u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E jobs = [3,2,3], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E By assigning each person one job, the maximum time is 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E jobs = [1,2,4,7,8], k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 11\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Assign the jobs the following way:\nWorker 1: 1, 2, 8 (working time = 1 \u002B 2 \u002B 8 = 11)\nWorker 2: 4, 7 (working time = 4 \u002B 7 = 11)\nThe maximum working time is 11.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= jobs.length \u0026lt;= 12\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= jobs[i] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "We can select a subset of tasks and assign it to a worker then solve the subproblem on the remaining tasks"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,2,3]\n3",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,2,4,7,8]\n2",
+      "RawExpectedOutput": "11"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2562422+00:00",
+  "Url": "https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/"
+}

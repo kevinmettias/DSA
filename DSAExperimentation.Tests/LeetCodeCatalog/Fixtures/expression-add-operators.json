@@ -1,0 +1,42 @@
+{
+  "QuestionId": 282,
+  "FrontendId": 282,
+  "Title": "Expression Add Operators",
+  "TitleSlug": "expression-add-operators",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Backtracking"
+  ],
+  "AcceptanceRatePercent": 43.8,
+  "TotalAccepted": 334610,
+  "TotalSubmissions": 764165,
+  "Likes": 3842,
+  "Dislikes": 738,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Enum\u003C/code\u003E that contains only digits and an integer \u003Ccode\u003Etarget\u003C/code\u003E, return \u003Cem\u003E\u003Cstrong\u003Eall possibilities\u003C/strong\u003E to insert the binary operators \u003C/em\u003E\u003Ccode\u003E\u0026#39;\u002B\u0026#39;\u003C/code\u003E\u003Cem\u003E, \u003C/em\u003E\u003Ccode\u003E\u0026#39;-\u0026#39;\u003C/code\u003E\u003Cem\u003E, and/or \u003C/em\u003E\u003Ccode\u003E\u0026#39;*\u0026#39;\u003C/code\u003E\u003Cem\u003E between the digits of \u003C/em\u003E\u003Ccode\u003Enum\u003C/code\u003E\u003Cem\u003E so that the resultant expression evaluates to the \u003C/em\u003E\u003Ccode\u003Etarget\u003C/code\u003E\u003Cem\u003E value\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that operands in the returned expressions \u003Cstrong\u003Eshould not\u003C/strong\u003E contain leading zeros.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that a number can contain multiple digits.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = \u0026quot;123\u0026quot;, target = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;1*2*3\u0026quot;,\u0026quot;1\u002B2\u002B3\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Both \u0026quot;1*2*3\u0026quot; and \u0026quot;1\u002B2\u002B3\u0026quot; evaluate to 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = \u0026quot;232\u0026quot;, target = 8\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;2*3\u002B2\u0026quot;,\u0026quot;2\u002B3*2\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Both \u0026quot;2*3\u002B2\u0026quot; and \u0026quot;2\u002B3*2\u0026quot; evaluate to 8.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E num = \u0026quot;3456237490\u0026quot;, target = 9191\n\u003Cstrong\u003EOutput:\u003C/strong\u003E []\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are no expressions that can be created from \u0026quot;3456237490\u0026quot; to evaluate to 9191.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= num.length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enum\u003C/code\u003E consists of only digits.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-2\u003Csup\u003E31\u003C/sup\u003E \u0026lt;= target \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Note that a number can contain multiple digits.",
+    "Since the question asks us to find \u003Cb\u003Eall\u003C/b\u003E of the valid expressions, we need a way to iterate over all of them. (\u003Cb\u003EHint:\u003C/b\u003E Recursion!)",
+    "We can keep track of the expression string and evaluate it at the very end. But that would take a lot of time. Can we keep track of the expression\u0027s value as well so as to avoid the evaluation at the very end of recursion?",
+    "Think carefully about the multiply operator. It has a higher precedence than the addition and subtraction operators. \r\n\r\n\u003Cbr\u003E 1 \u002B 2 = 3  \u003Cbr\u003E\r\n1 \u002B 2 - 4 --\u003E 3 - 4 --\u003E -1 \u003Cbr\u003E\r\n1 \u002B 2 - 4 * 12 --\u003E -1 * 12 --\u003E -12 (WRONG!) \u003Cbr\u003E\r\n1 \u002B 2 - 4 * 12 --\u003E -1 - (-4) \u002B (-4 * 12) --\u003E 3 \u002B (-48) --\u003E -45 (CORRECT!)",
+    "We simply need to keep track of the last operand in our expression and reverse it\u0027s effect on the expression\u0027s value while considering the multiply operator."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022123\u0022\n6",
+      "RawExpectedOutput": "[\u00221*2*3\u0022,\u00221\u002B2\u002B3\u0022]"
+    },
+    {
+      "RawInput": "\u0022232\u0022\n8",
+      "RawExpectedOutput": "[\u00222*3\u002B2\u0022,\u00222\u002B3*2\u0022]"
+    },
+    {
+      "RawInput": "\u00223456237490\u0022\n9191",
+      "RawExpectedOutput": "[]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1984475+00:00",
+  "Url": "https://leetcode.com/problems/expression-add-operators/"
+}

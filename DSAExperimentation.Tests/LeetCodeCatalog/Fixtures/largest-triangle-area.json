@@ -1,0 +1,33 @@
+{
+  "QuestionId": 830,
+  "FrontendId": 812,
+  "Title": "Largest Triangle Area",
+  "TitleSlug": "largest-triangle-area",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Polygons"
+  ],
+  "AcceptanceRatePercent": 72.2,
+  "TotalAccepted": 192984,
+  "TotalSubmissions": 267183,
+  "Likes": 860,
+  "Dislikes": 1741,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of points on the \u003Cstrong\u003EX-Y\u003C/strong\u003E plane \u003Ccode\u003Epoints\u003C/code\u003E where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E, return \u003Cem\u003Ethe area of the largest triangle that can be formed by any three different points\u003C/em\u003E. Answers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://s3-lc-upload.s3.amazonaws.com/uploads/2018/04/04/1027.png\u0022 style=\u0022height: 369px; width: 450px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[0,0],[0,1],[1,0],[0,2],[2,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The five points are shown in the above figure. The red triangle is the largest.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,0],[0,0],[0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.50000\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= points.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-50 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the given points are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0],[0,1],[1,0],[0,2],[2,0]]",
+      "RawExpectedOutput": "2.00000"
+    },
+    {
+      "RawInput": "[[1,0],[0,0],[0,1]]",
+      "RawExpectedOutput": "0.50000"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6366331+00:00",
+  "Url": "https://leetcode.com/problems/largest-triangle-area/"
+}

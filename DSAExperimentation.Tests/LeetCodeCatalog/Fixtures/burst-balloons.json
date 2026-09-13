@@ -1,0 +1,31 @@
+{
+  "QuestionId": 312,
+  "FrontendId": 312,
+  "Title": "Burst Balloons",
+  "TitleSlug": "burst-balloons",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 64.4,
+  "TotalAccepted": 486462,
+  "TotalSubmissions": 755717,
+  "Likes": 9970,
+  "Dislikes": 298,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given \u003Ccode\u003En\u003C/code\u003E balloons, indexed from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. Each balloon is painted with a number on it represented by an array \u003Ccode\u003Enums\u003C/code\u003E. You are asked to burst all the balloons.\u003C/p\u003E\n\n\u003Cp\u003EIf you burst the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E balloon, you will get \u003Ccode\u003Enums[i - 1] * nums[i] * nums[i \u002B 1]\u003C/code\u003E coins. If \u003Ccode\u003Ei - 1\u003C/code\u003E or \u003Ccode\u003Ei \u002B 1\u003C/code\u003E goes out of bounds of the array, then treat it as if there is a balloon with a \u003Ccode\u003E1\u003C/code\u003E painted on it.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum coins you can collect by bursting the balloons wisely\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,1,5,8]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 167\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nnums = [3,1,5,8] --\u0026gt; [3,5,8] --\u0026gt; [3,8] --\u0026gt; [8] --\u0026gt; []\ncoins =  3*1*5    \u002B   3*5*8   \u002B  1*3*8  \u002B 1*8*1 = 167\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,5]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,1,5,8]",
+      "RawExpectedOutput": "167"
+    },
+    {
+      "RawInput": "[1,5]",
+      "RawExpectedOutput": "10"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7223531+00:00",
+  "Url": "https://leetcode.com/problems/burst-balloons/"
+}

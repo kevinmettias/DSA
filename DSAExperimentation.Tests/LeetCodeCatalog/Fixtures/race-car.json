@@ -1,0 +1,32 @@
+{
+  "QuestionId": 836,
+  "FrontendId": 818,
+  "Title": "Race Car",
+  "TitleSlug": "race-car",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Heuristic Search",
+    "A* Search"
+  ],
+  "AcceptanceRatePercent": 45.1,
+  "TotalAccepted": 110209,
+  "TotalSubmissions": 244438,
+  "Likes": 2034,
+  "Dislikes": 192,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYour car starts at position \u003Ccode\u003E0\u003C/code\u003E and speed \u003Ccode\u003E\u002B1\u003C/code\u003E on an infinite number line. Your car can go into negative positions. Your car drives automatically according to a sequence of instructions \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E (accelerate) and \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E (reverse):\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EWhen you get an instruction \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E, your car does the following:\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Eposition \u002B= speed\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Espeed *= 2\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EWhen you get an instruction \u003Ccode\u003E\u0026#39;R\u0026#39;\u003C/code\u003E, your car does the following:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EIf your speed is positive then \u003Ccode\u003Espeed = -1\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003Eotherwise \u003Ccode\u003Espeed = 1\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\tYour position stays the same.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, after commands \u003Ccode\u003E\u0026quot;AAR\u0026quot;\u003C/code\u003E, your car goes to positions \u003Ccode\u003E0 --\u0026gt; 1 --\u0026gt; 3 --\u0026gt; 3\u003C/code\u003E, and your speed goes to \u003Ccode\u003E1 --\u0026gt; 2 --\u0026gt; 4 --\u0026gt; -1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven a target position \u003Ccode\u003Etarget\u003C/code\u003E, return \u003Cem\u003Ethe length of the shortest sequence of instructions to get there\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E target = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThe shortest instruction sequence is \u0026quot;AA\u0026quot;.\nYour position goes from 0 --\u0026gt; 1 --\u0026gt; 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E target = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nThe shortest instruction sequence is \u0026quot;AAARA\u0026quot;.\nYour position goes from 0 --\u0026gt; 1 --\u0026gt; 3 --\u0026gt; 7 --\u0026gt; 7 --\u0026gt; 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "6",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.6162438+00:00",
+  "Url": "https://leetcode.com/problems/race-car/"
+}

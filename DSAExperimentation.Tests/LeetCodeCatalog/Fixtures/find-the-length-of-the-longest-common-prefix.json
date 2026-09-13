@@ -1,0 +1,36 @@
+{
+  "QuestionId": 3329,
+  "FrontendId": 3043,
+  "Title": "Find the Length of the Longest Common Prefix",
+  "TitleSlug": "find-the-length-of-the-longest-common-prefix",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 62.3,
+  "TotalAccepted": 285144,
+  "TotalSubmissions": 457815,
+  "Likes": 1108,
+  "Dislikes": 59,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two arrays with \u003Cstrong\u003Epositive\u003C/strong\u003E integers \u003Ccode\u003Earr1\u003C/code\u003E and \u003Ccode\u003Earr2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Eprefix\u003C/strong\u003E of a positive integer is an integer formed by one or more of its digits, starting from its \u003Cstrong\u003Eleftmost\u003C/strong\u003E digit. For example, \u003Ccode\u003E123\u003C/code\u003E is a prefix of the integer \u003Ccode\u003E12345\u003C/code\u003E, while \u003Ccode\u003E234\u003C/code\u003E is \u003Cstrong\u003Enot\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Ecommon prefix\u003C/strong\u003E of two integers \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E is an integer \u003Ccode\u003Ec\u003C/code\u003E, such that \u003Ccode\u003Ec\u003C/code\u003E is a prefix of both \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E. For example, \u003Ccode\u003E5655359\u003C/code\u003E and \u003Ccode\u003E56554\u003C/code\u003E have common prefixes \u003Ccode\u003E565\u003C/code\u003E and \u003Ccode\u003E5655\u003C/code\u003E while \u003Ccode\u003E1223\u003C/code\u003E and \u003Ccode\u003E43456\u003C/code\u003E \u003Cstrong\u003Edo not\u003C/strong\u003E have a common prefix.\u003C/p\u003E\n\n\u003Cp\u003EYou need to find the length of the \u003Cstrong\u003Elongest common prefix\u003C/strong\u003E between all pairs of integers \u003Ccode\u003E(x, y)\u003C/code\u003E such that \u003Ccode\u003Ex\u003C/code\u003E belongs to \u003Ccode\u003Earr1\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E belongs to \u003Ccode\u003Earr2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe length of the \u003Cstrong\u003Elongest\u003C/strong\u003E common prefix among all pairs\u003C/em\u003E.\u003Cem\u003E If no common prefix exists among them\u003C/em\u003E, \u003Cem\u003Ereturn\u003C/em\u003E \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr1 = [1,10,100], arr2 = [1000]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 3 pairs (arr1[i], arr2[j]):\n- The longest common prefix of (1, 1000) is 1.\n- The longest common prefix of (10, 1000) is 10.\n- The longest common prefix of (100, 1000) is 100.\nThe longest common prefix is 100 with a length of 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E arr1 = [1,2,3], arr2 = [4,4,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There exists no common prefix for any pair (arr1[i], arr2[j]), hence we return 0.\nNote that common prefixes between elements of the same array do not count.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr1.length, arr2.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= arr1[i], arr2[i] \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Put all the possible prefixes of each element in \u003Ccode\u003Earr1\u003C/code\u003E into a HashSet.",
+    "For all the possible prefixes of each element in \u003Ccode\u003Earr2\u003C/code\u003E, check if it exists in the HashSet."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,10,100]\n[1000]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,2,3]\n[4,4,4]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2980112+00:00",
+  "Url": "https://leetcode.com/problems/find-the-length-of-the-longest-common-prefix/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 566,
+  "FrontendId": 566,
+  "Title": "Reshape the Matrix",
+  "TitleSlug": "reshape-the-matrix",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 65.5,
+  "TotalAccepted": 495306,
+  "TotalSubmissions": 755984,
+  "Likes": 3736,
+  "Dislikes": 442,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EIn MATLAB, there is a handy function called \u003Ccode\u003Ereshape\u003C/code\u003E which can reshape an \u003Ccode\u003Em x n\u003C/code\u003E matrix into a new one with a different size \u003Ccode\u003Er x c\u003C/code\u003E keeping its original data.\u003C/p\u003E\n\n\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E matrix \u003Ccode\u003Emat\u003C/code\u003E and two integers \u003Ccode\u003Er\u003C/code\u003E and \u003Ccode\u003Ec\u003C/code\u003E representing the number of rows and the number of columns of the wanted reshaped matrix.\u003C/p\u003E\n\n\u003Cp\u003EThe reshaped matrix should be filled with all the elements of the original matrix in the same row-traversing order as they were.\u003C/p\u003E\n\n\u003Cp\u003EIf the \u003Ccode\u003Ereshape\u003C/code\u003E operation with given parameters is possible and legal, output the new reshaped matrix; Otherwise, output the original matrix.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/24/reshape1-grid.jpg\u0022 style=\u0022width: 613px; height: 173px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[1,2],[3,4]], r = 1, c = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2,3,4]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/24/reshape2-grid.jpg\u0022 style=\u0022width: 453px; height: 173px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mat = [[1,2],[3,4]], r = 2, c = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [[1,2],[3,4]]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == mat.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == mat[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= mat[i][j] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= r, c \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Do you know how 2d matrix is stored in 1d memory? Try to map 2-dimensions into one.",
+    "M[i][j]=M[n*i\u002Bj] , where n is the number of cols. \r\nThis is the one way of converting 2-d indices into one 1-d index.  \r\nNow, how will you convert 1-d index into 2-d indices?",
+    "Try to use division and modulus to convert 1-d index into 2-d indices.",
+    "M[i] =\u003E  M[i/n][i%n] Will it result in right mapping? Take some example and check this formula."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[3,4]]\n1\n4",
+      "RawExpectedOutput": "[[1,2,3,4]]"
+    },
+    {
+      "RawInput": "[[1,2],[3,4]]\n2\n4",
+      "RawExpectedOutput": "[[1,2],[3,4]]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8181407+00:00",
+  "Url": "https://leetcode.com/problems/reshape-the-matrix/"
+}

@@ -1,0 +1,41 @@
+{
+  "QuestionId": 1985,
+  "FrontendId": 1856,
+  "Title": "Maximum Subarray Min-Product",
+  "TitleSlug": "maximum-subarray-min-product",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack",
+    "Prefix Sum",
+    "Cartesian Tree"
+  ],
+  "AcceptanceRatePercent": 40.9,
+  "TotalAccepted": 44008,
+  "TotalSubmissions": 107512,
+  "Likes": 1598,
+  "Dislikes": 147,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe \u003Cstrong\u003Emin-product\u003C/strong\u003E of an array is equal to the \u003Cstrong\u003Eminimum value\u003C/strong\u003E in the array \u003Cstrong\u003Emultiplied by\u003C/strong\u003E the array\u0026#39;s \u003Cstrong\u003Esum\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, the array \u003Ccode\u003E[3,2,5]\u003C/code\u003E (minimum value is \u003Ccode\u003E2\u003C/code\u003E) has a min-product of \u003Ccode\u003E2 * (3\u002B2\u002B5) = 2 * 10 = 20\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven an array of integers \u003Ccode\u003Enums\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Emaximum min-product\u003C/strong\u003E of any \u003Cstrong\u003Enon-empty subarray\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E. Since the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that the min-product should be maximized \u003Cstrong\u003Ebefore\u003C/strong\u003E performing the modulo operation. Testcases are generated such that the maximum min-product \u003Cstrong\u003Ewithout\u003C/strong\u003E modulo will fit in a \u003Cstrong\u003E64-bit signed integer\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Esubarray\u003C/strong\u003E is a \u003Cstrong\u003Econtiguous\u003C/strong\u003E part of an array.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,\u003Cu\u003E2,3,2\u003C/u\u003E]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 14\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The maximum min-product is achieved with the subarray [2,3,2] (minimum value is 2).\n2 * (2\u002B3\u002B2) = 2 * 7 = 14.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,\u003Cu\u003E3,3\u003C/u\u003E,1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 18\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The maximum min-product is achieved with the subarray [3,3] (minimum value is 3).\n3 * (3\u002B3) = 3 * 6 = 18.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,1,\u003Cu\u003E5,6,4\u003C/u\u003E,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 60\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The maximum min-product is achieved with the subarray [5,6,4] (minimum value is 4).\n4 * (5\u002B6\u002B4) = 4 * 15 = 60.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Is there a way we can sort the elements to simplify the problem?",
+    "Can we find the maximum min-product for every value in the array?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,2]",
+      "RawExpectedOutput": "14"
+    },
+    {
+      "RawInput": "[2,3,3,1,2]",
+      "RawExpectedOutput": "18"
+    },
+    {
+      "RawInput": "[3,1,5,6,4,2]",
+      "RawExpectedOutput": "60"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9336891+00:00",
+  "Url": "https://leetcode.com/problems/maximum-subarray-min-product/"
+}

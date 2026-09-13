@@ -1,0 +1,44 @@
+{
+  "QuestionId": 399,
+  "FrontendId": 399,
+  "Title": "Evaluate Division",
+  "TitleSlug": "evaluate-division",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory",
+    "Shortest Path",
+    "Bellman\u2013Ford Algorithm",
+    "Floyd\u2013Warshall Algorithm"
+  ],
+  "AcceptanceRatePercent": 64.6,
+  "TotalAccepted": 748700,
+  "TotalSubmissions": 1159392,
+  "Likes": 10352,
+  "Dislikes": 1106,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of variable pairs \u003Ccode\u003Eequations\u003C/code\u003E and an array of real numbers \u003Ccode\u003Evalues\u003C/code\u003E, where \u003Ccode\u003Eequations[i] = [A\u003Csub\u003Ei\u003C/sub\u003E, B\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E and \u003Ccode\u003Evalues[i]\u003C/code\u003E represent the equation \u003Ccode\u003EA\u003Csub\u003Ei\u003C/sub\u003E / B\u003Csub\u003Ei\u003C/sub\u003E = values[i]\u003C/code\u003E. Each \u003Ccode\u003EA\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E or \u003Ccode\u003EB\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E is a string that represents a single variable.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given some \u003Ccode\u003Equeries\u003C/code\u003E, where \u003Ccode\u003Equeries[j] = [C\u003Csub\u003Ej\u003C/sub\u003E, D\u003Csub\u003Ej\u003C/sub\u003E]\u003C/code\u003E represents the \u003Ccode\u003Ej\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E query where you must find the answer for \u003Ccode\u003EC\u003Csub\u003Ej\u003C/sub\u003E / D\u003Csub\u003Ej\u003C/sub\u003E = ?\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe answers to all queries\u003C/em\u003E. If a single answer cannot be determined, return \u003Ccode\u003E-1.0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E The input is always valid. You may assume that evaluating the queries will not result in division by zero and that there is no contradiction.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u0026nbsp;\u003C/strong\u003EThe variables that do not occur in the list of equations are undefined, so the answer cannot be determined for them.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E equations = [[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;c\u0026quot;]], values = [2.0,3.0], queries = [[\u0026quot;a\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;e\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;x\u0026quot;,\u0026quot;x\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [6.00000,0.50000,-1.00000,1.00000,-1.00000]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nGiven: \u003Cem\u003Ea / b = 2.0\u003C/em\u003E, \u003Cem\u003Eb / c = 3.0\u003C/em\u003E\nqueries are: \u003Cem\u003Ea / c = ?\u003C/em\u003E, \u003Cem\u003Eb / a = ?\u003C/em\u003E, \u003Cem\u003Ea / e = ?\u003C/em\u003E, \u003Cem\u003Ea / a = ?\u003C/em\u003E, \u003Cem\u003Ex / x = ? \u003C/em\u003E\nreturn: [6.0, 0.5, -1.0, 1.0, -1.0 ]\nnote: x is undefined =\u0026gt; -1.0\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E equations = [[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;bc\u0026quot;,\u0026quot;cd\u0026quot;]], values = [1.5,2.5,5.0], queries = [[\u0026quot;a\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;c\u0026quot;,\u0026quot;b\u0026quot;],[\u0026quot;bc\u0026quot;,\u0026quot;cd\u0026quot;],[\u0026quot;cd\u0026quot;,\u0026quot;bc\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3.75000,0.40000,5.00000,0.20000]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E equations = [[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;]], values = [0.5], queries = [[\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;x\u0026quot;,\u0026quot;y\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0.50000,2.00000,-1.00000,-1.00000]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= equations.length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eequations[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= A\u003Csub\u003Ei\u003C/sub\u003E.length, B\u003Csub\u003Ei\u003C/sub\u003E.length \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evalues.length == equations.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0.0 \u0026lt; values[i] \u0026lt;= 20.0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= C\u003Csub\u003Ej\u003C/sub\u003E.length, D\u003Csub\u003Ej\u003C/sub\u003E.length \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EA\u003Csub\u003Ei\u003C/sub\u003E, B\u003Csub\u003Ei\u003C/sub\u003E, C\u003Csub\u003Ej\u003C/sub\u003E, D\u003Csub\u003Ej\u003C/sub\u003E\u003C/code\u003E consist of lower case English letters and digits.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Do you recognize this as a graph problem?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[\u0022a\u0022,\u0022b\u0022],[\u0022b\u0022,\u0022c\u0022]]\n[2.0,3.0]\n[[\u0022a\u0022,\u0022c\u0022],[\u0022b\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022e\u0022],[\u0022a\u0022,\u0022a\u0022],[\u0022x\u0022,\u0022x\u0022]]",
+      "RawExpectedOutput": "[6.00000,0.50000,-1.00000,1.00000,-1.00000]"
+    },
+    {
+      "RawInput": "[[\u0022a\u0022,\u0022b\u0022],[\u0022b\u0022,\u0022c\u0022],[\u0022bc\u0022,\u0022cd\u0022]]\n[1.5,2.5,5.0]\n[[\u0022a\u0022,\u0022c\u0022],[\u0022c\u0022,\u0022b\u0022],[\u0022bc\u0022,\u0022cd\u0022],[\u0022cd\u0022,\u0022bc\u0022]]",
+      "RawExpectedOutput": "[3.75000,0.40000,5.00000,0.20000]"
+    },
+    {
+      "RawInput": "[[\u0022a\u0022,\u0022b\u0022]]\n[0.5]\n[[\u0022a\u0022,\u0022b\u0022],[\u0022b\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022c\u0022],[\u0022x\u0022,\u0022y\u0022]]",
+      "RawExpectedOutput": "[0.50000,2.00000,-1.00000,-1.00000]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1845467+00:00",
+  "Url": "https://leetcode.com/problems/evaluate-division/"
+}

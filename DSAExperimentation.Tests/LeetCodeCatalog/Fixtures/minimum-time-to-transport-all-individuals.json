@@ -1,0 +1,45 @@
+{
+  "QuestionId": 3896,
+  "FrontendId": 3594,
+  "Title": "Minimum Time to Transport All Individuals",
+  "TitleSlug": "minimum-time-to-transport-all-individuals",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Bit Manipulation",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Shortest Path",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 28.3,
+  "TotalAccepted": 3857,
+  "TotalSubmissions": 13627,
+  "Likes": 42,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given \u003Ccode\u003En\u003C/code\u003E individuals at a base camp who need to cross a river to reach a destination using a single boat. The boat can carry at most \u003Ccode\u003Ek\u003C/code\u003E people at a time. The trip is affected by environmental conditions that vary \u003Cstrong\u003Ecyclically\u003C/strong\u003E over \u003Ccode\u003Em\u003C/code\u003E stages.\u003C/p\u003E\n\n\u003Cp\u003EEach stage \u003Ccode\u003Ej\u003C/code\u003E has a speed multiplier \u003Ccode\u003Emul[j]\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Emul[j] \u0026gt; 1\u003C/code\u003E, the trip slows down.\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Emul[j] \u0026lt; 1\u003C/code\u003E, the trip speeds up.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EEach individual \u003Ccode\u003Ei\u003C/code\u003E has a rowing strength represented by \u003Ccode\u003Etime[i]\u003C/code\u003E, the time (in minutes) it takes them to cross alone in neutral conditions.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ERules:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EA group \u003Ccode\u003Eg\u003C/code\u003E departing at stage \u003Ccode\u003Ej\u003C/code\u003E takes time equal to the \u003Cstrong\u003Emaximum\u003C/strong\u003E \u003Ccode\u003Etime[i]\u003C/code\u003E among its members, multiplied by \u003Ccode\u003Emul[j]\u003C/code\u003E minutes to reach the destination.\u003C/li\u003E\n\t\u003Cli\u003EAfter the group crosses the river in time \u003Ccode\u003Ed\u003C/code\u003E, the stage advances by \u003Ccode\u003Efloor(d) % m\u003C/code\u003E steps.\u003C/li\u003E\n\t\u003Cli\u003EIf individuals are left behind, one person must return with the boat. Let \u003Ccode\u003Er\u003C/code\u003E be the index of the returning person, the return takes \u003Ccode\u003Etime[r] \u0026times; mul[current_stage]\u003C/code\u003E, defined as \u003Ccode\u003Ereturn_time\u003C/code\u003E, and the stage advances by \u003Ccode\u003Efloor(return_time) % m\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E total time required to transport all individuals. If it is not possible to transport all individuals to the destination, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 1, k = 1, m = 2, time = [5], mul = [1.0,1.3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E5.00000\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIndividual 0 departs from stage 0, so crossing time = \u003Ccode\u003E5 \u0026times; 1.00 = 5.00\u003C/code\u003E minutes.\u003C/li\u003E\n\t\u003Cli\u003EAll team members are now at the destination. Thus, the total time taken is \u003Ccode\u003E5.00\u003C/code\u003E minutes.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, k = 2, m = 3, time = [2,5,8], mul = [1.0,1.5,0.75]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E14.50000\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe optimal strategy is:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESend individuals 0 and 2 from the base camp to the destination from stage 0. The crossing time is \u003Ccode\u003Emax(2, 8) \u0026times; mul[0] = 8 \u0026times; 1.00 = 8.00\u003C/code\u003E minutes. The stage advances by \u003Ccode\u003Efloor(8.00) % 3 = 2\u003C/code\u003E, so the next stage is \u003Ccode\u003E(0 \u002B 2) % 3 = 2\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIndividual 0 returns alone from the destination to the base camp from stage 2. The return time is \u003Ccode\u003E2 \u0026times; mul[2] = 2 \u0026times; 0.75 = 1.50\u003C/code\u003E minutes. The stage advances by \u003Ccode\u003Efloor(1.50) % 3 = 1\u003C/code\u003E, so the next stage is \u003Ccode\u003E(2 \u002B 1) % 3 = 0\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ESend individuals 0 and 1 from the base camp to the destination from stage 0. The crossing time is \u003Ccode\u003Emax(2, 5) \u0026times; mul[0] = 5 \u0026times; 1.00 = 5.00\u003C/code\u003E minutes. The stage advances by \u003Ccode\u003Efloor(5.00) % 3 = 2\u003C/code\u003E, so the final stage is \u003Ccode\u003E(0 \u002B 2) % 3 = 2\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAll team members are now at the destination. The total time taken is \u003Ccode\u003E8.00 \u002B 1.50 \u002B 5.00 = 14.50\u003C/code\u003E minutes.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 2, k = 1, m = 2, time = [10,10], mul = [2.0,2.0]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1.00000\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ESince the boat can only carry one person at a time, it is impossible to transport both individuals as one must always return. Thus, the answer is \u003Ccode\u003E-1.00\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == time.length \u0026lt;= 12\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= time[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == mul.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0.5 \u0026lt;= mul[i] \u0026lt;= 2.0\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming.",
+    "The states are \u003Ccode\u003Emask\u003C/code\u003E of people left and \u003Ccode\u003Ecurrent_stage\u003C/code\u003E.",
+    "The states form a cycle.",
+    "Consider the transitions as edges and the entire DP problem as a graph; all edge weights are positive.",
+    "We can use Dijkstra\u0027s algorithm."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n1\n2\n[5]\n[1.0,1.3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n2\n3\n[2,5,8]\n[1.0,1.5,0.75]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "2\n1\n2\n[10,10]\n[2.0,2.0]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.108056+00:00",
+  "Url": "https://leetcode.com/problems/minimum-time-to-transport-all-individuals/"
+}

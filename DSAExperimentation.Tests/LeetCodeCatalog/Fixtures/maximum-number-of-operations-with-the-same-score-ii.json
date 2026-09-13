@@ -1,0 +1,35 @@
+{
+  "QuestionId": 3318,
+  "FrontendId": 3040,
+  "Title": "Maximum Number of Operations With the Same Score II",
+  "TitleSlug": "maximum-number-of-operations-with-the-same-score-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 34.3,
+  "TotalAccepted": 26544,
+  "TotalSubmissions": 77290,
+  "Likes": 195,
+  "Dislikes": 17,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers called \u003Ccode\u003Enums\u003C/code\u003E, you can perform \u003Cstrong\u003Eany\u003C/strong\u003E of the following operation while \u003Ccode\u003Enums\u003C/code\u003E contains \u003Cstrong\u003Eat least\u003C/strong\u003E \u003Ccode\u003E2\u003C/code\u003E elements:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose the first two elements of \u003Ccode\u003Enums\u003C/code\u003E and delete them.\u003C/li\u003E\n\t\u003Cli\u003EChoose the last two elements of \u003Ccode\u003Enums\u003C/code\u003E and delete them.\u003C/li\u003E\n\t\u003Cli\u003EChoose the first and the last elements of \u003Ccode\u003Enums\u003C/code\u003E and delete them.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe\u003Cstrong\u003E score\u003C/strong\u003E of the operation is the sum of the deleted elements.\u003C/p\u003E\n\n\u003Cp\u003EYour task is to find the \u003Cstrong\u003Emaximum\u003C/strong\u003E number of operations that can be performed, such that \u003Cstrong\u003Eall operations have the same score\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E number of operations possible that satisfy the condition mentioned above\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,2,1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We perform the following operations:\n- Delete the first two elements, with score 3 \u002B 2 = 5, nums = [1,2,3,4].\n- Delete the first and the last elements, with score 1 \u002B 4 = 5, nums = [2,3].\n- Delete the first and the last elements, with score 2 \u002B 3 = 5, nums = [].\nWe are unable to perform any more operations as nums is empty.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,2,6,1,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We perform the following operations:\n- Delete the first two elements, with score 3 \u002B 2 = 5, nums = [6,1,4].\n- Delete the last two elements, with score 1 \u002B 4 = 5, nums = [6].\nIt can be proven that we can perform at most 2 operations.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "After the first operation, the score of other operations is fixed.",
+    "For the fixed score use dynamic programming \u003Ccode\u003Edp[l][r]\u003C/code\u003E to find a maximum number of operations on the subarray \u003Ccode\u003Enums[l..r]\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,2,1,2,3,4]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[3,2,6,1,4]",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9121881+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-operations-with-the-same-score-ii/"
+}

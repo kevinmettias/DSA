@@ -1,0 +1,33 @@
+{
+  "QuestionId": 111,
+  "FrontendId": 111,
+  "Title": "Minimum Depth of Binary Tree",
+  "TitleSlug": "minimum-depth-of-binary-tree",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 53.8,
+  "TotalAccepted": 1776015,
+  "TotalSubmissions": 3303988,
+  "Likes": 7956,
+  "Dislikes": 1371,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a binary tree, find its minimum depth.\u003C/p\u003E\n\n\u003Cp\u003EThe minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E\u0026nbsp;A leaf is a node with no children.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg\u0022 style=\u0022width: 432px; height: 302px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [3,9,20,null,null,15,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [2,null,3,null,4,null,5,null,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[0, 10\u003Csup\u003E5\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,9,20,null,null,15,7]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[2,null,3,null,4,null,5,null,6]",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0459756+00:00",
+  "Url": "https://leetcode.com/problems/minimum-depth-of-binary-tree/"
+}

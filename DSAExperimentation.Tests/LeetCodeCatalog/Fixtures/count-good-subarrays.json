@@ -1,0 +1,37 @@
+{
+  "QuestionId": 4222,
+  "FrontendId": 3878,
+  "Title": "Count Good Subarrays",
+  "TitleSlug": "count-good-subarrays",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Bit Manipulation",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 25.8,
+  "TotalAccepted": 7721,
+  "TotalSubmissions": 29879,
+  "Likes": 92,
+  "Dislikes": 2,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003E\u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E\u003C/strong\u003E is called \u003Cstrong\u003Egood\u003C/strong\u003E if the \u003Cstrong\u003Ebitwise OR\u003C/strong\u003E of all its elements is equal to \u003Cstrong\u003Eat least one\u003C/strong\u003E element present in that subarray.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of good subarrays in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EHere, the bitwise OR of two integers \u003Ccode\u003Ea\u003C/code\u003E and \u003Ccode\u003Eb\u003C/code\u003E is denoted by \u003Ccode\u003Ea | b\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,2,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe subarrays of \u003Ccode\u003Enums\u003C/code\u003E are:\u003C/p\u003E\n\n\u003Ctable style=\u0022border: 1px solid black;\u0022\u003E\n\t\u003Ctbody\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Cth style=\u0022border: 1px solid black;\u0022\u003ESubarray\u003C/th\u003E\n\t\t\t\u003Cth style=\u0022border: 1px solid black;\u0022\u003EBitwise OR\u003C/th\u003E\n\t\t\t\u003Cth style=\u0022border: 1px solid black;\u0022\u003EPresent in Subarray\u003C/th\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E[4]\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E4 = 4\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003EYes\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E[2]\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E2 = 2\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003EYes\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E[3]\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E3 = 3\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003EYes\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E[4, 2]\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E4 | 2 = 6\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003ENo\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E[2, 3]\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E2 | 3 = 3\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003EYes\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\t\u003Ctr\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E[4, 2, 3]\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003E\u003Ccode\u003E4 | 2 | 3 = 7\u003C/code\u003E\u003C/td\u003E\n\t\t\t\u003Ctd style=\u0022border: 1px solid black;\u0022\u003ENo\u003C/td\u003E\n\t\t\u003C/tr\u003E\n\t\u003C/tbody\u003E\n\u003C/table\u003E\n\n\u003Cp\u003EThus, the good subarrays of \u003Ccode\u003Enums\u003C/code\u003E are \u003Ccode\u003E[4]\u003C/code\u003E, \u003Ccode\u003E[2]\u003C/code\u003E, \u003Ccode\u003E[3]\u003C/code\u003E and \u003Ccode\u003E[2, 3]\u003C/code\u003E. Thus, the answer is 4.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,3,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EAny subarray of \u003Ccode\u003Enums\u003C/code\u003E containing 3 has bitwise OR equal to 3, and subarrays containing only 1 have bitwise OR equal to 1.\u003C/p\u003E\n\n\u003Cp\u003EIn both cases, the result is present in the subarray, so all subarrays are good, and the answer is 6.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Observe that a subarray is good if its bitwise OR equals its maximum element. This happens when every element in the subarray has all its set bits contained inside the bits of the maximum element.",
+    "Use a monotonic decreasing stack to compute for each index \u003Ccode\u003Ei\u003C/code\u003E the range \u003Ccode\u003E[L[i], R[i]]\u003C/code\u003E where \u003Ccode\u003Enums[i]\u003C/code\u003E is the maximum of the subarray (break ties so only one index owns equal values).",
+    "Precompute for each bit the previous and next positions where that bit is set. For index \u003Ccode\u003Ei\u003C/code\u003E, shrink \u003Ccode\u003E[L[i], R[i]]\u003C/code\u003E by excluding positions that contain a bit not set in \u003Ccode\u003Enums[i]\u003C/code\u003E. The contribution of \u003Ccode\u003Ei\u003C/code\u003E is \u003Ccode\u003E(i - effective_left \u002B 1) * (effective_right - i \u002B 1)\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,2,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,3,1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9390929+00:00",
+  "Url": "https://leetcode.com/problems/count-good-subarrays/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 3386,
+  "FrontendId": 3123,
+  "Title": "Find Edges in Shortest Paths",
+  "TitleSlug": "find-edges-in-shortest-paths",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 46.8,
+  "TotalAccepted": 21291,
+  "TotalSubmissions": 45494,
+  "Likes": 335,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an undirected weighted graph of \u003Ccode\u003En\u003C/code\u003E nodes numbered from 0 to \u003Ccode\u003En - 1\u003C/code\u003E. The graph consists of \u003Ccode\u003Em\u003C/code\u003E edges represented by a 2D array \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that there is an edge between nodes \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EConsider all the shortest paths from node 0 to node \u003Ccode\u003En - 1\u003C/code\u003E in the graph. You need to find a \u003Cstrong\u003Eboolean\u003C/strong\u003E array \u003Ccode\u003Eanswer\u003C/code\u003E where \u003Ccode\u003Eanswer[i]\u003C/code\u003E is \u003Ccode\u003Etrue\u003C/code\u003E if the edge \u003Ccode\u003Eedges[i]\u003C/code\u003E is part of \u003Cstrong\u003Eat least\u003C/strong\u003E one shortest path. Otherwise, \u003Ccode\u003Eanswer[i]\u003C/code\u003E is \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the array \u003Ccode\u003Eanswer\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that the graph may not be connected.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/03/05/graph35drawio-1.png\u0022 style=\u0022height: 129px; width: 250px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 6, edges = [[0,1,4],[0,2,1],[1,3,2],[1,4,3],[1,5,1],[2,3,1],[3,5,3],[4,5,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[true,true,true,false,true,true,true,false]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe following are \u003Cstrong\u003Eall\u003C/strong\u003E the shortest paths between nodes 0 and 5:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe path \u003Ccode\u003E0 -\u0026gt; 1 -\u0026gt; 5\u003C/code\u003E: The sum of weights is \u003Ccode\u003E4 \u002B 1 = 5\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe path \u003Ccode\u003E0 -\u0026gt; 2 -\u0026gt; 3 -\u0026gt; 5\u003C/code\u003E: The sum of weights is \u003Ccode\u003E1 \u002B 1 \u002B 3 = 5\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe path \u003Ccode\u003E0 -\u0026gt; 2 -\u0026gt; 3 -\u0026gt; 1 -\u0026gt; 5\u003C/code\u003E: The sum of weights is \u003Ccode\u003E1 \u002B 1 \u002B 2 \u002B 1 = 5\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/03/05/graphhhh.png\u0022 style=\u0022width: 185px; height: 136px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, edges = [[2,0,1],[0,1,1],[0,3,4],[3,2,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[true,false,false,true]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is one shortest path between nodes 0 and 3, which is the path \u003Ccode\u003E0 -\u0026gt; 2 -\u0026gt; 3\u003C/code\u003E with the sum of weights \u003Ccode\u003E1 \u002B 2 = 3\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == edges.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= min(5 * 10\u003Csup\u003E4\u003C/sup\u003E, n * (n - 1) / 2)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E != b\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= w\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are no repeated edges.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Find all the shortest paths starting from nodes 0 and \u003Ccode\u003En - 1\u003C/code\u003E to all other nodes.",
+    "How to use the above calculated shortest paths to check if an edge is part of at least one shortest path from 0 to \u003Ccode\u003En - 1\u003C/code\u003E?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "6\n[[0,1,4],[0,2,1],[1,3,2],[1,4,3],[1,5,1],[2,3,1],[3,5,3],[4,5,2]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4\n[[2,0,1],[0,1,1],[0,3,4],[3,2,2]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2191123+00:00",
+  "Url": "https://leetcode.com/problems/find-edges-in-shortest-paths/"
+}

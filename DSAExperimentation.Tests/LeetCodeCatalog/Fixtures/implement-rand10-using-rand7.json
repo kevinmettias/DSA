@@ -1,0 +1,37 @@
+{
+  "QuestionId": 903,
+  "FrontendId": 470,
+  "Title": "Implement Rand10() Using Rand7()",
+  "TitleSlug": "implement-rand10-using-rand7",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Rejection Sampling",
+    "Randomized",
+    "Probability and Statistics"
+  ],
+  "AcceptanceRatePercent": 46.7,
+  "TotalAccepted": 115689,
+  "TotalSubmissions": 247729,
+  "Likes": 1190,
+  "Dislikes": 389,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Cstrong\u003EAPI\u003C/strong\u003E \u003Ccode\u003Erand7()\u003C/code\u003E that generates a uniform random integer in the range \u003Ccode\u003E[1, 7]\u003C/code\u003E, write a function \u003Ccode\u003Erand10()\u003C/code\u003E that generates a uniform random integer in the range \u003Ccode\u003E[1, 10]\u003C/code\u003E. You can only call the API \u003Ccode\u003Erand7()\u003C/code\u003E, and you shouldn\u0026#39;t call any other API. Please \u003Cstrong\u003Edo not\u003C/strong\u003E use a language\u0026#39;s built-in random API.\u003C/p\u003E\n\n\u003Cp\u003EEach test case will have one \u003Cstrong\u003Einternal\u003C/strong\u003E argument \u003Ccode\u003En\u003C/code\u003E, the number of times that your implemented function \u003Ccode\u003Erand10()\u003C/code\u003E will be called while testing. Note that this is \u003Cstrong\u003Enot an argument\u003C/strong\u003E passed to \u003Ccode\u003Erand10()\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,8]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [3,8,10]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EWhat is the \u003Ca href=\u0022https://en.wikipedia.org/wiki/Expected_value\u0022 target=\u0022_blank\u0022\u003Eexpected value\u003C/a\u003E for the number of calls to \u003Ccode\u003Erand7()\u003C/code\u003E function?\u003C/li\u003E\n\t\u003Cli\u003ECould you minimize the number of calls to \u003Ccode\u003Erand7()\u003C/code\u003E?\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "[2]"
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "[2,8]"
+    },
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "[3,8,10]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.475685+00:00",
+  "Url": "https://leetcode.com/problems/implement-rand10-using-rand7/"
+}

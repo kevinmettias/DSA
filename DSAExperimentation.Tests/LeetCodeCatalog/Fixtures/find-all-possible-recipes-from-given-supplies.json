@@ -1,0 +1,42 @@
+{
+  "QuestionId": 2220,
+  "FrontendId": 2115,
+  "Title": "Find All Possible Recipes from Given Supplies",
+  "TitleSlug": "find-all-possible-recipes-from-given-supplies",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Graph Theory",
+    "Topological Sort",
+    "Directed Acyclic Graph"
+  ],
+  "AcceptanceRatePercent": 57.1,
+  "TotalAccepted": 244568,
+  "TotalSubmissions": 428063,
+  "Likes": 2734,
+  "Dislikes": 145,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have information about \u003Ccode\u003En\u003C/code\u003E different recipes. You are given a string array \u003Ccode\u003Erecipes\u003C/code\u003E and a 2D string array \u003Ccode\u003Eingredients\u003C/code\u003E. The \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E recipe has the name \u003Ccode\u003Erecipes[i]\u003C/code\u003E, and you can \u003Cstrong\u003Ecreate\u003C/strong\u003E it if you have \u003Cstrong\u003Eall\u003C/strong\u003E the needed ingredients from \u003Ccode\u003Eingredients[i]\u003C/code\u003E. A recipe can also be an ingredient for \u003Cstrong\u003Eother \u003C/strong\u003Erecipes, i.e., \u003Ccode\u003Eingredients[i]\u003C/code\u003E may contain a string that is in \u003Ccode\u003Erecipes\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a string array \u003Ccode\u003Esupplies\u003C/code\u003E containing all the ingredients that you initially have, and you have an infinite supply of all of them.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ea list of all the recipes that you can create. \u003C/em\u003EYou may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that two recipes may contain each other in their ingredients.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E recipes = [\u0026quot;bread\u0026quot;], ingredients = [[\u0026quot;yeast\u0026quot;,\u0026quot;flour\u0026quot;]], supplies = [\u0026quot;yeast\u0026quot;,\u0026quot;flour\u0026quot;,\u0026quot;corn\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;bread\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe can create \u0026quot;bread\u0026quot; since we have the ingredients \u0026quot;yeast\u0026quot; and \u0026quot;flour\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E recipes = [\u0026quot;bread\u0026quot;,\u0026quot;sandwich\u0026quot;], ingredients = [[\u0026quot;yeast\u0026quot;,\u0026quot;flour\u0026quot;],[\u0026quot;bread\u0026quot;,\u0026quot;meat\u0026quot;]], supplies = [\u0026quot;yeast\u0026quot;,\u0026quot;flour\u0026quot;,\u0026quot;meat\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;bread\u0026quot;,\u0026quot;sandwich\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe can create \u0026quot;bread\u0026quot; since we have the ingredients \u0026quot;yeast\u0026quot; and \u0026quot;flour\u0026quot;.\nWe can create \u0026quot;sandwich\u0026quot; since we have the ingredient \u0026quot;meat\u0026quot; and can create the ingredient \u0026quot;bread\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E recipes = [\u0026quot;bread\u0026quot;,\u0026quot;sandwich\u0026quot;,\u0026quot;burger\u0026quot;], ingredients = [[\u0026quot;yeast\u0026quot;,\u0026quot;flour\u0026quot;],[\u0026quot;bread\u0026quot;,\u0026quot;meat\u0026quot;],[\u0026quot;sandwich\u0026quot;,\u0026quot;meat\u0026quot;,\u0026quot;bread\u0026quot;]], supplies = [\u0026quot;yeast\u0026quot;,\u0026quot;flour\u0026quot;,\u0026quot;meat\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0026quot;bread\u0026quot;,\u0026quot;sandwich\u0026quot;,\u0026quot;burger\u0026quot;]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe can create \u0026quot;bread\u0026quot; since we have the ingredients \u0026quot;yeast\u0026quot; and \u0026quot;flour\u0026quot;.\nWe can create \u0026quot;sandwich\u0026quot; since we have the ingredient \u0026quot;meat\u0026quot; and can create the ingredient \u0026quot;bread\u0026quot;.\nWe can create \u0026quot;burger\u0026quot; since we have the ingredient \u0026quot;meat\u0026quot; and can create the ingredients \u0026quot;bread\u0026quot; and \u0026quot;sandwich\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == recipes.length == ingredients.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= ingredients[i].length, supplies.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= recipes[i].length, ingredients[i][j].length, supplies[k].length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erecipes[i], ingredients[i][j]\u003C/code\u003E, and \u003Ccode\u003Esupplies[k]\u003C/code\u003E consist only of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the values of \u003Ccode\u003Erecipes\u003C/code\u003E and \u003Ccode\u003Esupplies\u003C/code\u003E\u0026nbsp;combined are unique.\u003C/li\u003E\n\t\u003Cli\u003EEach \u003Ccode\u003Eingredients[i]\u003C/code\u003E does not contain any duplicate values.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Can we use a data structure to quickly query whether we have a certain ingredient?",
+    "Once we verify that we can make a recipe, we can add it to our ingredient data structure. We can then check if we can make more recipes as a result of this."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022bread\u0022]\n[[\u0022yeast\u0022,\u0022flour\u0022]]\n[\u0022yeast\u0022,\u0022flour\u0022,\u0022corn\u0022]",
+      "RawExpectedOutput": "[\u0022bread\u0022]"
+    },
+    {
+      "RawInput": "[\u0022bread\u0022,\u0022sandwich\u0022]\n[[\u0022yeast\u0022,\u0022flour\u0022],[\u0022bread\u0022,\u0022meat\u0022]]\n[\u0022yeast\u0022,\u0022flour\u0022,\u0022meat\u0022]",
+      "RawExpectedOutput": "[\u0022bread\u0022,\u0022sandwich\u0022]"
+    },
+    {
+      "RawInput": "[\u0022bread\u0022,\u0022sandwich\u0022,\u0022burger\u0022]\n[[\u0022yeast\u0022,\u0022flour\u0022],[\u0022bread\u0022,\u0022meat\u0022],[\u0022sandwich\u0022,\u0022meat\u0022,\u0022bread\u0022]]\n[\u0022yeast\u0022,\u0022flour\u0022,\u0022meat\u0022]",
+      "RawExpectedOutput": "[\u0022bread\u0022,\u0022sandwich\u0022,\u0022burger\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2168386+00:00",
+  "Url": "https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/"
+}

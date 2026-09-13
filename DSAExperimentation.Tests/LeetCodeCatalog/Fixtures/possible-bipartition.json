@@ -1,0 +1,35 @@
+{
+  "QuestionId": 922,
+  "FrontendId": 886,
+  "Title": "Possible Bipartition",
+  "TitleSlug": "possible-bipartition",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Graph Theory",
+    "Graph Coloring",
+    "Bipartite Graph"
+  ],
+  "AcceptanceRatePercent": 53.1,
+  "TotalAccepted": 279172,
+  "TotalSubmissions": 526008,
+  "Likes": 4972,
+  "Dislikes": 120,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe want to split a group of \u003Ccode\u003En\u003C/code\u003E people (labeled from \u003Ccode\u003E1\u003C/code\u003E to \u003Ccode\u003En\u003C/code\u003E) into two groups of \u003Cstrong\u003Eany size\u003C/strong\u003E. Each person may dislike some other people, and they should not go into the same group.\u003C/p\u003E\n\n\u003Cp\u003EGiven the integer \u003Ccode\u003En\u003C/code\u003E and the array \u003Ccode\u003Edislikes\u003C/code\u003E where \u003Ccode\u003Edislikes[i] = [a\u003Csub\u003Ei\u003C/sub\u003E, b\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that the person labeled \u003Ccode\u003Ea\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E does not like the person labeled \u003Ccode\u003Eb\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E \u003Cem\u003Eif it is possible to split everyone into two groups in this way\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, dislikes = [[1,2],[1,3],[2,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The first group has [1,4], and the second group has [2,3].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, dislikes = [[1,2],[1,3],[2,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We need at least 3 groups to divide them. We cannot put them in two groups.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= dislikes.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edislikes[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; b\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the pairs of \u003Ccode\u003Edislikes\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n[[1,2],[1,3],[2,4]]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "3\n[[1,2],[1,3],[2,3]]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5378778+00:00",
+  "Url": "https://leetcode.com/problems/possible-bipartition/"
+}

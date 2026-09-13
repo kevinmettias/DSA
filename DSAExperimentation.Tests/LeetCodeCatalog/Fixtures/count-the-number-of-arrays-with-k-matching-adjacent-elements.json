@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3682,
+  "FrontendId": 3405,
+  "Title": "Count the Number of Arrays with K Matching Adjacent Elements",
+  "TitleSlug": "count-the-number-of-arrays-with-k-matching-adjacent-elements",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Combinatorics",
+    "Fermat\u0027s Little Theorem"
+  ],
+  "AcceptanceRatePercent": 57.8,
+  "TotalAccepted": 68686,
+  "TotalSubmissions": 118734,
+  "Likes": 432,
+  "Dislikes": 68,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given three integers \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003Em\u003C/code\u003E, \u003Ccode\u003Ek\u003C/code\u003E. A \u003Cstrong\u003Egood array\u003C/strong\u003E \u003Ccode\u003Earr\u003C/code\u003E of size \u003Ccode\u003En\u003C/code\u003E is defined as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEach element in \u003Ccode\u003Earr\u003C/code\u003E is in the \u003Cstrong\u003Einclusive\u003C/strong\u003E range \u003Ccode\u003E[1, m]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Cem\u003EExactly\u003C/em\u003E \u003Ccode\u003Ek\u003C/code\u003E indices \u003Ccode\u003Ei\u003C/code\u003E (where \u003Ccode\u003E1 \u0026lt;= i \u0026lt; n\u003C/code\u003E) satisfy the condition \u003Ccode\u003Earr[i - 1] == arr[i]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the number of \u003Cstrong\u003Egood arrays\u003C/strong\u003E that can be formed.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be very large, return it \u003Cstrong\u003Emodulo \u003C/strong\u003E\u003Ccode\u003E10\u003Csup\u003E9 \u003C/sup\u003E\u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, m = 2, k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThere are 4 good arrays. They are \u003Ccode\u003E[1, 1, 2]\u003C/code\u003E, \u003Ccode\u003E[1, 2, 2]\u003C/code\u003E, \u003Ccode\u003E[2, 1, 1]\u003C/code\u003E and \u003Ccode\u003E[2, 2, 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EHence, the answer is 4.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, m = 2, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe good arrays are \u003Ccode\u003E[1, 1, 1, 2]\u003C/code\u003E, \u003Ccode\u003E[1, 1, 2, 2]\u003C/code\u003E, \u003Ccode\u003E[1, 2, 2, 2]\u003C/code\u003E, \u003Ccode\u003E[2, 1, 1, 1]\u003C/code\u003E, \u003Ccode\u003E[2, 2, 1, 1]\u003C/code\u003E and \u003Ccode\u003E[2, 2, 2, 1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EHence, the answer is 6.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, m = 2, k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe good arrays are \u003Ccode\u003E[1, 2, 1, 2, 1]\u003C/code\u003E and \u003Ccode\u003E[2, 1, 2, 1, 2]\u003C/code\u003E. Hence, the answer is 2.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The first position \u003Ccode\u003Earr[0]\u003C/code\u003E has \u003Ccode\u003Em\u003C/code\u003E choices.",
+    "For each of the remaining \u003Ccode\u003En - 1\u003C/code\u003E indices, \u003Ccode\u003E0 \u003C i \u003C n\u003C/code\u003E, select \u003Ccode\u003Ek\u003C/code\u003E positions from left to right and set \u003Ccode\u003Earr[i] = arr[i - 1]\u003C/code\u003E.",
+    "For all other indices, \u003Ccode\u003Eset arr[i] != arr[i - 1]\u003C/code\u003E with (\u003Ccode\u003Em - 1\u003C/code\u003E) choices for each of the \u003Ccode\u003En - 1 - k\u003C/code\u003E positions."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n2\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4\n2\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "5\n2\n0",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9814633+00:00",
+  "Url": "https://leetcode.com/problems/count-the-number-of-arrays-with-k-matching-adjacent-elements/"
+}

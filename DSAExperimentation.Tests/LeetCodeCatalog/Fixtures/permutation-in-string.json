@@ -1,0 +1,40 @@
+{
+  "QuestionId": 567,
+  "FrontendId": 567,
+  "Title": "Permutation in String",
+  "TitleSlug": "permutation-in-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Two Pointers",
+    "String",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 49.7,
+  "TotalAccepted": 1636858,
+  "TotalSubmissions": 3292430,
+  "Likes": 13261,
+  "Dislikes": 529,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two strings \u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E if \u003Ccode\u003Es2\u003C/code\u003E contains a \u003Cspan data-keyword=\u0022permutation-string\u0022\u003Epermutation\u003C/span\u003E of \u003Ccode\u003Es1\u003C/code\u003E, or \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003EIn other words, return \u003Ccode\u003Etrue\u003C/code\u003E if one of \u003Ccode\u003Es1\u003C/code\u003E\u0026#39;s permutations is the substring of \u003Ccode\u003Es2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;ab\u0026quot;, s2 = \u0026quot;eidbaooo\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E s2 contains one permutation of s1 (\u0026quot;ba\u0026quot;).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s1 = \u0026quot;ab\u0026quot;, s2 = \u0026quot;eidboaoo\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s1.length, s2.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es1\u003C/code\u003E and \u003Ccode\u003Es2\u003C/code\u003E consist of lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Obviously, brute force will result in TLE. Think of something else.",
+    "How will you check whether one string is a permutation of another string?",
+    "One way is to sort the string and then compare. But, Is there a better way?",
+    "If one string is a permutation of another string then they must have one common metric. What is that?",
+    "Both strings must have same character frequencies, if  one is permutation of another. Which data structure should be used to store frequencies?",
+    "What about hash table?  An array of size 26?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022ab\u0022\n\u0022eidbaooo\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022ab\u0022\n\u0022eidboaoo\u0022",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4912275+00:00",
+  "Url": "https://leetcode.com/problems/permutation-in-string/"
+}

@@ -1,0 +1,37 @@
+{
+  "QuestionId": 928,
+  "FrontendId": 892,
+  "Title": "Surface Area of 3D Shapes",
+  "TitleSlug": "surface-area-of-3d-shapes",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 71.4,
+  "TotalAccepted": 60711,
+  "TotalSubmissions": 84978,
+  "Likes": 618,
+  "Dislikes": 763,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003En x n\u003C/code\u003E \u003Ccode\u003Egrid\u003C/code\u003E where you have placed some \u003Ccode\u003E1 x 1 x 1\u003C/code\u003E cubes. Each value \u003Ccode\u003Ev = grid[i][j]\u003C/code\u003E represents a tower of \u003Ccode\u003Ev\u003C/code\u003E cubes placed on top of cell \u003Ccode\u003E(i, j)\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAfter placing these cubes, you have decided to glue any directly adjacent cubes to each other, forming several irregular 3D shapes.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe total surface area of the resulting shapes\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E The bottom face of each shape counts toward its surface area.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/08/tmp-grid2.jpg\u0022 style=\u0022width: 162px; height: 162px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,2],[3,4]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 34\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/08/tmp-grid4.jpg\u0022 style=\u0022width: 242px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,1,1],[1,0,1],[1,1,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 32\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/01/08/tmp-grid5.jpg\u0022 style=\u0022width: 242px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[2,2,2],[2,1,2],[2,2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 46\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[3,4]]",
+      "RawExpectedOutput": "34"
+    },
+    {
+      "RawInput": "[[1,1,1],[1,0,1],[1,1,1]]",
+      "RawExpectedOutput": "32"
+    },
+    {
+      "RawInput": "[[2,2,2],[2,1,2],[2,2,2]]",
+      "RawExpectedOutput": "46"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2132862+00:00",
+  "Url": "https://leetcode.com/problems/surface-area-of-3d-shapes/"
+}

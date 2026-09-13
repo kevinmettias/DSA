@@ -1,0 +1,45 @@
+{
+  "QuestionId": 4246,
+  "FrontendId": 3962,
+  "Title": "Maximum Subarray Sum After at Most K Swaps",
+  "TitleSlug": "maximum-subarray-sum-after-at-most-k-swaps",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Greedy",
+    "Binary Indexed Tree",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 14.3,
+  "TotalAccepted": 3577,
+  "TotalSubmissions": 25081,
+  "Likes": 49,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are allowed to perform \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E swap operations on the array.\u003C/p\u003E\n\n\u003Cp\u003EIn one swap operation, you may choose any two indices \u003Ccode\u003Ei\u003C/code\u003E and \u003Ccode\u003Ej\u003C/code\u003E and swap \u003Ccode\u003Enums[i]\u003C/code\u003E and \u003Ccode\u003Enums[j]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn an integer denoting the \u003Cstrong\u003Emaximum possible \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarray\u003C/span\u003E sum\u003C/strong\u003E after performing the swaps.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,-1,0,2], k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EWe can swap on indices 1 and 3, resulting in the array \u003Ccode\u003E[1, 2, 0, -1]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe subarray \u003Ccode\u003E[1, 2]\u003C/code\u003E has a sum of 3, which is the maximum possible subarray sum after at most \u003Ccode\u003Ek = 1\u003C/code\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B swap.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,3,2,4], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E13\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe maximum possible subarray sum after at most \u003Ccode\u003Ek = 2\u003C/code\u003E swaps is the sum of the entire array, which is 13.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [-1,-2], k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ek = 0\u003C/code\u003E swaps are allowed.\u003C/li\u003E\n\t\u003Cli\u003EThe possible subarrays are \u003Ccode\u003E[-1]\u003C/code\u003E, \u003Ccode\u003E[-2]\u003C/code\u003E, and \u003Ccode\u003E[-1, -2]\u003C/code\u003E, with sums -1, -2, and -3 respectively.\u003C/li\u003E\n\t\u003Cli\u003EAmong these sums, the maximum is -1.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 1500\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= nums.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Fix a subarray. An optimal swap exchanges one of its smallest elements with one of the largest elements outside it, provided this increases the sum.",
+    "If the elements inside are ordered increasingly and those outside decreasingly, the gain from using \u003Ccode\u003Et\u003C/code\u003E swaps is the sum of the \u003Ccode\u003Et\u003C/code\u003E largest outside elements minus the sum of the \u003Ccode\u003Et\u003C/code\u003E smallest inside elements.",
+    "Enumerate the left endpoint and extend the right endpoint while maintaining the inside and outside elements in order-statistics data structures that support counts, sums, and the sum of the smallest or largest \u003Ccode\u003Et\u003C/code\u003E elements.",
+    "The marginal gains are non-increasing as \u003Ccode\u003Et\u003C/code\u003E grows, so find the largest profitable \u003Ccode\u003Et \u003C= k\u003C/code\u003E and add its gain to the original subarray sum."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,-1,0,2]\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[4,3,2,4]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[-1,-2]\n0",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9340254+00:00",
+  "Url": "https://leetcode.com/problems/maximum-subarray-sum-after-at-most-k-swaps/"
+}

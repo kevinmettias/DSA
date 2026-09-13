@@ -1,0 +1,41 @@
+{
+  "QuestionId": 2123,
+  "FrontendId": 1996,
+  "Title": "The Number of Weak Characters in the Game",
+  "TitleSlug": "the-number-of-weak-characters-in-the-game",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Stack",
+    "Greedy",
+    "Sorting",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 44.7,
+  "TotalAccepted": 121183,
+  "TotalSubmissions": 271257,
+  "Likes": 3123,
+  "Dislikes": 100,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are playing a game that contains multiple characters, and each of the characters has \u003Cstrong\u003Etwo\u003C/strong\u003E main properties: \u003Cstrong\u003Eattack\u003C/strong\u003E and \u003Cstrong\u003Edefense\u003C/strong\u003E. You are given a 2D integer array \u003Ccode\u003Eproperties\u003C/code\u003E where \u003Ccode\u003Eproperties[i] = [attack\u003Csub\u003Ei\u003C/sub\u003E, defense\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the properties of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E character in the game.\u003C/p\u003E\n\n\u003Cp\u003EA character is said to be \u003Cstrong\u003Eweak\u003C/strong\u003E if any other character has \u003Cstrong\u003Eboth\u003C/strong\u003E attack and defense levels \u003Cstrong\u003Estrictly greater\u003C/strong\u003E than this character\u0026#39;s attack and defense levels. More formally, a character \u003Ccode\u003Ei\u003C/code\u003E is said to be \u003Cstrong\u003Eweak\u003C/strong\u003E if there exists another character \u003Ccode\u003Ej\u003C/code\u003E where \u003Ccode\u003Eattack\u003Csub\u003Ej\u003C/sub\u003E \u0026gt; attack\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Edefense\u003Csub\u003Ej\u003C/sub\u003E \u0026gt; defense\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe number of \u003Cstrong\u003Eweak\u003C/strong\u003E characters\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E properties = [[5,5],[6,3],[3,6]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E No character has strictly greater attack and defense than the other.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E properties = [[2,2],[3,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The first character is weak because the second character has a strictly greater attack and defense.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E properties = [[1,5],[10,4],[4,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The third character is weak because the second character has a strictly greater attack and defense.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= properties.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eproperties[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= attack\u003Csub\u003Ei\u003C/sub\u003E, defense\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the array on the basis of the attack values and group characters with the same attack together. How can you use these groups?",
+    "Characters in one group will always have a lesser attack value than the characters of the next group. Hence, we will only need to check if there is a higher defense value present in the next groups."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[5,5],[6,3],[3,6]]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[[2,2],[3,3]]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[[1,5],[10,4],[4,3]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2469942+00:00",
+  "Url": "https://leetcode.com/problems/the-number-of-weak-characters-in-the-game/"
+}

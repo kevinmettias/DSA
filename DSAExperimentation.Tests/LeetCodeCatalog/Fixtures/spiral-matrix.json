@@ -1,0 +1,36 @@
+{
+  "QuestionId": 54,
+  "FrontendId": 54,
+  "Title": "Spiral Matrix",
+  "TitleSlug": "spiral-matrix",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 57.8,
+  "TotalAccepted": 2590856,
+  "TotalSubmissions": 4478858,
+  "Likes": 17857,
+  "Dislikes": 1600,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an \u003Ccode\u003Em x n\u003C/code\u003E \u003Ccode\u003Ematrix\u003C/code\u003E, return \u003Cem\u003Eall elements of the\u003C/em\u003E \u003Ccode\u003Ematrix\u003C/code\u003E \u003Cem\u003Ein spiral order\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/13/spiral1.jpg\u0022 style=\u0022width: 242px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1,2,3],[4,5,6],[7,8,9]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,6,9,8,7,4,5]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/13/spiral.jpg\u0022 style=\u0022width: 322px; height: 242px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,4,8,12,11,10,9,5,6,7]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-100 \u0026lt;= matrix[i][j] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Well for some problems, the best way really is to come up with some algorithms for simulation. Basically, you need to simulate what the problem asks us to do.",
+    "We go boundary by boundary and move inwards. That is the essential operation. First row, last column, last row, first column, and then we move inwards by 1 and repeat. That\u0027s all. That is all the simulation that we need.",
+    "Think about when you want to switch the progress on one of the indexes. If you progress on i out of [i, j], you\u0027ll shift in the same column. Similarly, by changing values for j, you\u0027d be shifting in the same row.\r\nAlso, keep track of the end of a boundary so that you can move inwards and then keep repeating. It\u0027s always best to simulate edge cases like a single column or a single row to see if anything breaks or not."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2,3],[4,5,6],[7,8,9]]",
+      "RawExpectedOutput": "[1,2,3,6,9,8,7,4,5]"
+    },
+    {
+      "RawInput": "[[1,2,3,4],[5,6,7,8],[9,10,11,12]]",
+      "RawExpectedOutput": "[1,2,3,4,8,12,11,10,9,5,6,7]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1025221+00:00",
+  "Url": "https://leetcode.com/problems/spiral-matrix/"
+}

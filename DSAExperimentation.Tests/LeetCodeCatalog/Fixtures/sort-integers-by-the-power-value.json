@@ -1,0 +1,35 @@
+{
+  "QuestionId": 1488,
+  "FrontendId": 1387,
+  "Title": "Sort Integers by The Power Value",
+  "TitleSlug": "sort-integers-by-the-power-value",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Memoization",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 71.8,
+  "TotalAccepted": 126161,
+  "TotalSubmissions": 175710,
+  "Likes": 1517,
+  "Dislikes": 122,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe power of an integer \u003Ccode\u003Ex\u003C/code\u003E is defined as the number of steps needed to transform \u003Ccode\u003Ex\u003C/code\u003E into \u003Ccode\u003E1\u003C/code\u003E using the following steps:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003Eif \u003Ccode\u003Ex\u003C/code\u003E is even then \u003Ccode\u003Ex = x / 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003Eif \u003Ccode\u003Ex\u003C/code\u003E is odd then \u003Ccode\u003Ex = 3 * x \u002B 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, the power of \u003Ccode\u003Ex = 3\u003C/code\u003E is \u003Ccode\u003E7\u003C/code\u003E because \u003Ccode\u003E3\u003C/code\u003E needs \u003Ccode\u003E7\u003C/code\u003E steps to become \u003Ccode\u003E1\u003C/code\u003E (\u003Ccode\u003E3 --\u0026gt; 10 --\u0026gt; 5 --\u0026gt; 16 --\u0026gt; 8 --\u0026gt; 4 --\u0026gt; 2 --\u0026gt; 1\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EGiven three integers \u003Ccode\u003Elo\u003C/code\u003E, \u003Ccode\u003Ehi\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E. The task is to sort all integers in the interval \u003Ccode\u003E[lo, hi]\u003C/code\u003E by the power value in \u003Cstrong\u003Eascending order\u003C/strong\u003E, if two or more integers have \u003Cstrong\u003Ethe same\u003C/strong\u003E power value sort them by \u003Cstrong\u003Eascending order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Ccode\u003Ek\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E integer in the range \u003Ccode\u003E[lo, hi]\u003C/code\u003E sorted by the power value.\u003C/p\u003E\n\n\u003Cp\u003ENotice that for any integer \u003Ccode\u003Ex\u003C/code\u003E \u003Ccode\u003E(lo \u0026lt;= x \u0026lt;= hi)\u003C/code\u003E it is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E that \u003Ccode\u003Ex\u003C/code\u003E will transform into \u003Ccode\u003E1\u003C/code\u003E using these steps and that the power of \u003Ccode\u003Ex\u003C/code\u003E is will \u003Cstrong\u003Efit\u003C/strong\u003E in a 32-bit signed integer.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E lo = 12, hi = 15, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 13\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The power of 12 is 9 (12 --\u0026gt; 6 --\u0026gt; 3 --\u0026gt; 10 --\u0026gt; 5 --\u0026gt; 16 --\u0026gt; 8 --\u0026gt; 4 --\u0026gt; 2 --\u0026gt; 1)\nThe power of 13 is 9\nThe power of 14 is 17\nThe power of 15 is 17\nThe interval sorted by the power value [12,13,14,15]. For k = 2 answer is the second element which is 13.\nNotice that 12 and 13 have the same power value and we sorted them in ascending order. Same for 14 and 15.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E lo = 7, hi = 11, k = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The power array corresponding to the interval [7, 8, 9, 10, 11] is [16, 3, 19, 6, 14].\nThe interval sorted by power is [8, 10, 11, 7, 9].\nThe fourth number in the sorted array is 7.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= lo \u0026lt;= hi \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= hi - lo \u002B 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming to get the power of each integer of the intervals.",
+    "Sort all the integers of the interval by the power value and return the k-th in the sorted list."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "12\n15\n2",
+      "RawExpectedOutput": "13"
+    },
+    {
+      "RawInput": "7\n11\n4",
+      "RawExpectedOutput": "7"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0658359+00:00",
+  "Url": "https://leetcode.com/problems/sort-integers-by-the-power-value/"
+}

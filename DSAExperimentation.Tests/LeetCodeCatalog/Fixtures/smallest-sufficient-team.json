@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1220,
+  "FrontendId": 1125,
+  "Title": "Smallest Sufficient Team",
+  "TitleSlug": "smallest-sufficient-team",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 55.8,
+  "TotalAccepted": 77668,
+  "TotalSubmissions": 139127,
+  "Likes": 2298,
+  "Dislikes": 57,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EIn a project, you have a list of required skills \u003Ccode\u003Ereq_skills\u003C/code\u003E, and a list of people. The \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E person \u003Ccode\u003Epeople[i]\u003C/code\u003E contains a list of skills that the person has.\u003C/p\u003E\n\n\u003Cp\u003EConsider a sufficient team: a set of people such that for every required skill in \u003Ccode\u003Ereq_skills\u003C/code\u003E, there is at least one person in the team who has that skill. We can represent these teams by the index of each person.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003Eteam = [0, 1, 3]\u003C/code\u003E represents the people with skills \u003Ccode\u003Epeople[0]\u003C/code\u003E, \u003Ccode\u003Epeople[1]\u003C/code\u003E, and \u003Ccode\u003Epeople[3]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Eany sufficient team of the smallest possible size, represented by the index of each person\u003C/em\u003E. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIt is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E an answer exists.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E req_skills = [\u0022java\u0022,\u0022nodejs\u0022,\u0022reactjs\u0022], people = [[\u0022java\u0022],[\u0022nodejs\u0022],[\u0022nodejs\u0022,\u0022reactjs\u0022]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,2]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E req_skills = [\u0022algorithms\u0022,\u0022math\u0022,\u0022java\u0022,\u0022reactjs\u0022,\u0022csharp\u0022,\u0022aws\u0022], people = [[\u0022algorithms\u0022,\u0022math\u0022,\u0022java\u0022],[\u0022algorithms\u0022,\u0022math\u0022,\u0022reactjs\u0022],[\u0022java\u0022,\u0022csharp\u0022,\u0022aws\u0022],[\u0022reactjs\u0022,\u0022csharp\u0022],[\u0022csharp\u0022,\u0022math\u0022],[\u0022aws\u0022,\u0022java\u0022]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= req_skills.length \u0026lt;= 16\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= req_skills[i].length \u0026lt;= 16\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ereq_skills[i]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003Ereq_skills\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= people.length \u0026lt;= 60\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= people[i].length \u0026lt;= 16\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= people[i][j].length \u0026lt;= 16\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epeople[i][j]\u003C/code\u003E consists of lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003EAll the strings of \u003Ccode\u003Epeople[i]\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EEvery skill in \u003Ccode\u003Epeople[i]\u003C/code\u003E is a skill in \u003Ccode\u003Ereq_skills\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed a sufficient team exists.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Do a bitmask DP.",
+    "For each person, for each set of skills, we can update our understanding of a minimum set of people needed to perform this set of skills."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022java\u0022,\u0022nodejs\u0022,\u0022reactjs\u0022]\n[[\u0022java\u0022],[\u0022nodejs\u0022],[\u0022nodejs\u0022,\u0022reactjs\u0022]]",
+      "RawExpectedOutput": "[0,2]"
+    },
+    {
+      "RawInput": "[\u0022algorithms\u0022,\u0022math\u0022,\u0022java\u0022,\u0022reactjs\u0022,\u0022csharp\u0022,\u0022aws\u0022]\n[[\u0022algorithms\u0022,\u0022math\u0022,\u0022java\u0022],[\u0022algorithms\u0022,\u0022math\u0022,\u0022reactjs\u0022],[\u0022java\u0022,\u0022csharp\u0022,\u0022aws\u0022],[\u0022reactjs\u0022,\u0022csharp\u0022],[\u0022csharp\u0022,\u0022math\u0022],[\u0022aws\u0022,\u0022java\u0022]]",
+      "RawExpectedOutput": "[1,2]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0422437+00:00",
+  "Url": "https://leetcode.com/problems/smallest-sufficient-team/"
+}

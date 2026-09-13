@@ -1,0 +1,38 @@
+{
+  "QuestionId": 1197,
+  "FrontendId": 1106,
+  "Title": "Parsing A Boolean Expression",
+  "TitleSlug": "parsing-a-boolean-expression",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 69.8,
+  "TotalAccepted": 157593,
+  "TotalSubmissions": 225762,
+  "Likes": 1980,
+  "Dislikes": 88,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA \u003Cstrong\u003Eboolean expression\u003C/strong\u003E is an expression that evaluates to either \u003Ccode\u003Etrue\u003C/code\u003E or \u003Ccode\u003Efalse\u003C/code\u003E. It can be in one of the following shapes:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;t\u0026#39;\u003C/code\u003E that evaluates to \u003Ccode\u003Etrue\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;f\u0026#39;\u003C/code\u003E that evaluates to \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;!(subExpr)\u0026#39;\u003C/code\u003E that evaluates to \u003Cstrong\u003Ethe logical NOT\u003C/strong\u003E of the inner expression \u003Ccode\u003EsubExpr\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;\u0026amp;(subExpr\u003Csub\u003E1\u003C/sub\u003E, subExpr\u003Csub\u003E2\u003C/sub\u003E, ..., subExpr\u003Csub\u003En\u003C/sub\u003E)\u0026#39;\u003C/code\u003E that evaluates to \u003Cstrong\u003Ethe logical AND\u003C/strong\u003E of the inner expressions \u003Ccode\u003EsubExpr\u003Csub\u003E1\u003C/sub\u003E, subExpr\u003Csub\u003E2\u003C/sub\u003E, ..., subExpr\u003Csub\u003En\u003C/sub\u003E\u003C/code\u003E where \u003Ccode\u003En \u0026gt;= 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;|(subExpr\u003Csub\u003E1\u003C/sub\u003E, subExpr\u003Csub\u003E2\u003C/sub\u003E, ..., subExpr\u003Csub\u003En\u003C/sub\u003E)\u0026#39;\u003C/code\u003E that evaluates to \u003Cstrong\u003Ethe logical OR\u003C/strong\u003E of the inner expressions \u003Ccode\u003EsubExpr\u003Csub\u003E1\u003C/sub\u003E, subExpr\u003Csub\u003E2\u003C/sub\u003E, ..., subExpr\u003Csub\u003En\u003C/sub\u003E\u003C/code\u003E where \u003Ccode\u003En \u0026gt;= 1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven a string \u003Ccode\u003Eexpression\u003C/code\u003E that represents a \u003Cstrong\u003Eboolean expression\u003C/strong\u003E, return \u003Cem\u003Ethe evaluation of that expression\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIt is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E that the given expression is valid and follows the given rules.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E expression = \u0026quot;\u0026amp;(|(f))\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFirst, evaluate |(f) --\u0026gt; f. The expression is now \u0026quot;\u0026amp;(f)\u0026quot;.\nThen, evaluate \u0026amp;(f) --\u0026gt; f. The expression is now \u0026quot;f\u0026quot;.\nFinally, return false.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E expression = \u0026quot;|(f,f,f,t)\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The evaluation of (false OR false OR false OR true) is true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E expression = \u0026quot;!(\u0026amp;(f,t))\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nFirst, evaluate \u0026amp;(f,t) --\u0026gt; (false AND true) --\u0026gt; false --\u0026gt; f. The expression is now \u0026quot;!(f)\u0026quot;.\nThen, evaluate !(f) --\u0026gt; NOT false --\u0026gt; true. We return true.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= expression.length \u0026lt;= 2 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003Eexpression[i] is one following characters: \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;\u0026amp;\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;|\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;!\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;t\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;f\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;,\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Write a function \u0022parse\u0022 which calls helper functions \u0022parse_or\u0022, \u0022parse_and\u0022, \u0022parse_not\u0022."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022\u0026(|(f))\u0022",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "\u0022|(f,f,f,t)\u0022",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "\u0022!(\u0026(f,t))\u0022",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4080032+00:00",
+  "Url": "https://leetcode.com/problems/parsing-a-boolean-expression/"
+}

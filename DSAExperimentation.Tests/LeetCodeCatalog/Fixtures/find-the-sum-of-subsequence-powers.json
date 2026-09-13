@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3316,
+  "FrontendId": 3098,
+  "Title": "Find the Sum of Subsequence Powers",
+  "TitleSlug": "find-the-sum-of-subsequence-powers",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 25.4,
+  "TotalAccepted": 7608,
+  "TotalSubmissions": 30010,
+  "Likes": 151,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, and a \u003Cstrong\u003Epositive\u003C/strong\u003E integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Epower\u003C/strong\u003E of a \u003Cspan data-keyword=\u0022subsequence-array\u0022\u003Esubsequence\u003C/span\u003E is defined as the \u003Cstrong\u003Eminimum\u003C/strong\u003E absolute difference between \u003Cstrong\u003Eany\u003C/strong\u003E two elements in the subsequence.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Esum\u003C/strong\u003E of \u003Cstrong\u003Epowers\u003C/strong\u003E of \u003Cstrong\u003Eall\u003C/strong\u003E subsequences of \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E which have length\u003C/em\u003E \u003Cstrong\u003E\u003Cem\u003Eequal to\u003C/em\u003E\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9 \u003C/sup\u003E\u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3,4], k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 4 subsequences in \u003Ccode\u003Enums\u003C/code\u003E which have length 3: \u003Ccode\u003E[1,2,3]\u003C/code\u003E, \u003Ccode\u003E[1,3,4]\u003C/code\u003E, \u003Ccode\u003E[1,2,4]\u003C/code\u003E, and \u003Ccode\u003E[2,3,4]\u003C/code\u003E. The sum of powers is \u003Ccode\u003E|2 - 3| \u002B |3 - 4| \u002B |2 - 1| \u002B |3 - 4| = 4\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,2], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe only subsequence in \u003Ccode\u003Enums\u003C/code\u003E which has length 2 is\u0026nbsp;\u003Ccode\u003E[2,2]\u003C/code\u003E. The sum of powers is \u003Ccode\u003E|2 - 2| = 0\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [4,3,-1], k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E10\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 3 subsequences in \u003Ccode\u003Enums\u003C/code\u003E which have length 2: \u003Ccode\u003E[4,3]\u003C/code\u003E, \u003Ccode\u003E[4,-1]\u003C/code\u003E, and \u003Ccode\u003E[3,-1]\u003C/code\u003E. The sum of powers is \u003Ccode\u003E|4 - 3| \u002B |4 - (-1)| \u002B |3 - (-1)| = 10\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n == nums.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E8\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E \u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= k \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort \u003Ccode\u003Enums\u003C/code\u003E.",
+    "There are at most \u003Ccode\u003En\u003Csup\u003E2\u003C/sup\u003E\u003C/code\u003E distinct differences.",
+    "For a particular difference \u003Ccode\u003Ed\u003C/code\u003E, let \u003Ccode\u003Edp[len][i][j]\u003C/code\u003E be the number of subsequences of length \u003Ccode\u003Elen\u003C/code\u003E in the subarray \u003Ccode\u003Enums[0..i]\u003C/code\u003E where the last element picked was at index \u003Ccode\u003Ej\u003C/code\u003E.",
+    "For each index, we can check if it can be picked if \u003Ccode\u003Enums[i] - nums[j] \u003C= d\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4]\n3",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,2]\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[4,3,-1]\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3110483+00:00",
+  "Url": "https://leetcode.com/problems/find-the-sum-of-subsequence-powers/"
+}

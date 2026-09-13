@@ -1,0 +1,33 @@
+{
+  "QuestionId": 1676,
+  "FrontendId": 1553,
+  "Title": "Minimum Number of Days to Eat N Oranges",
+  "TitleSlug": "minimum-number-of-days-to-eat-n-oranges",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Dynamic Programming",
+    "Memoization"
+  ],
+  "AcceptanceRatePercent": 36.5,
+  "TotalAccepted": 46295,
+  "TotalSubmissions": 126766,
+  "Likes": 1042,
+  "Dislikes": 65,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E oranges in the kitchen and you decided to eat some of these oranges every day as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EEat one orange.\u003C/li\u003E\n\t\u003Cli\u003EIf the number of remaining oranges \u003Ccode\u003En\u003C/code\u003E is divisible by \u003Ccode\u003E2\u003C/code\u003E then you can eat \u003Ccode\u003En / 2\u003C/code\u003E oranges.\u003C/li\u003E\n\t\u003Cli\u003EIf the number of remaining oranges \u003Ccode\u003En\u003C/code\u003E is divisible by \u003Ccode\u003E3\u003C/code\u003E then you can eat \u003Ccode\u003E2 * (n / 3)\u003C/code\u003E oranges.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou can only choose one of the actions per day.\u003C/p\u003E\n\n\u003Cp\u003EGiven the integer \u003Ccode\u003En\u003C/code\u003E, return \u003Cem\u003Ethe minimum number of days to eat\u003C/em\u003E \u003Ccode\u003En\u003C/code\u003E \u003Cem\u003Eoranges\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 10\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You have 10 oranges.\nDay 1: Eat 1 orange,  10 - 1 = 9.  \nDay 2: Eat 6 oranges, 9 - 2*(9/3) = 9 - 6 = 3. (Since 9 is divisible by 3)\nDay 3: Eat 2 oranges, 3 - 2*(3/3) = 3 - 2 = 1. \nDay 4: Eat the last orange  1 - 1  = 0.\nYou need at least 4 days to eat the 10 oranges.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 6\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You have 6 oranges.\nDay 1: Eat 3 oranges, 6 - 6/2 = 6 - 3 = 3. (Since 6 is divisible by 2).\nDay 2: Eat 2 oranges, 3 - 2*(3/3) = 3 - 2 = 1. (Since 3 is divisible by 3)\nDay 3: Eat the last orange  1 - 1  = 0.\nYou need at least 3 days to eat the 6 oranges.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2 * 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "In each step, choose between 2 options:\r\nminOranges = 1 \u002B min( (n%2) \u002B f(n/2), (n%3) \u002B f(n/3) )\r\nwhere f(n) is the minimum number of days to eat n oranges."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "10",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "6",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0701849+00:00",
+  "Url": "https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/"
+}

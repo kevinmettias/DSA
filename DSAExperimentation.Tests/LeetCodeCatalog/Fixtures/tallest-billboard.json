@@ -1,0 +1,38 @@
+{
+  "QuestionId": 993,
+  "FrontendId": 956,
+  "Title": "Tallest Billboard",
+  "TitleSlug": "tallest-billboard",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Meet in the Middle",
+    "Knapsack Problem",
+    "0-1 Knapsack"
+  ],
+  "AcceptanceRatePercent": 51.9,
+  "TotalAccepted": 75072,
+  "TotalSubmissions": 144676,
+  "Likes": 2526,
+  "Dislikes": 64,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are installing a billboard and want it to have the largest height. The billboard will have two steel supports, one on each side. Each steel support must be an equal height.\u003C/p\u003E\n\n\u003Cp\u003EYou are given a collection of \u003Ccode\u003Erods\u003C/code\u003E that can be welded together. For example, if you have rods of lengths \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E, and \u003Ccode\u003E3\u003C/code\u003E, you can weld them together to make a support of length \u003Ccode\u003E6\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe largest possible height of your billboard installation\u003C/em\u003E. If you cannot support the billboard, return \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rods = [1,2,3,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We have two disjoint subsets {1,2,3} and {6}, which have the same sum = 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rods = [1,2,3,4,5,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We have two disjoint subsets {2,3,5} and {4,6}, which have the same sum = 10.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E rods = [1,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The billboard cannot be supported, so we return 0.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rods.length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rods[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Esum(rods[i]) \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,6]",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[1,2,3,4,5,6]",
+      "RawExpectedOutput": "10"
+    },
+    {
+      "RawInput": "[1,2]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.2345517+00:00",
+  "Url": "https://leetcode.com/problems/tallest-billboard/"
+}

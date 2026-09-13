@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1003,
+  "FrontendId": 963,
+  "Title": "Minimum Area Rectangle II",
+  "TitleSlug": "minimum-area-rectangle-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 56,
+  "TotalAccepted": 37638,
+  "TotalSubmissions": 67153,
+  "Likes": 415,
+  "Dislikes": 488,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of points in the \u003Cstrong\u003EX-Y\u003C/strong\u003E plane \u003Ccode\u003Epoints\u003C/code\u003E where \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum area of any rectangle formed from these points, with sides \u003Cstrong\u003Enot necessarily parallel\u003C/strong\u003E to the X and Y axes\u003C/em\u003E. If there is not any such rectangle, return \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAnswers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/21/1a.png\u0022 style=\u0022width: 398px; height: 400px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,2],[2,1],[1,0],[0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The minimum area rectangle occurs at [1,2],[2,1],[1,0],[0,1], with an area of 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/22/2.png\u0022 style=\u0022width: 400px; height: 251px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[0,1],[2,1],[1,1],[1,0],[2,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The minimum area rectangle occurs at [1,0],[1,1],[2,1],[2,0], with an area of 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/22/3.png\u0022 style=\u0022width: 383px; height: 400px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[0,3],[1,2],[3,1],[1,3],[2,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no possible rectangle to form from these points.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= points.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the given points are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[2,1],[1,0],[0,1]]",
+      "RawExpectedOutput": "2.00000"
+    },
+    {
+      "RawInput": "[[0,1],[2,1],[1,1],[1,0],[2,0]]",
+      "RawExpectedOutput": "1.00000"
+    },
+    {
+      "RawInput": "[[0,3],[1,2],[3,1],[1,3],[2,1]]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0237649+00:00",
+  "Url": "https://leetcode.com/problems/minimum-area-rectangle-ii/"
+}

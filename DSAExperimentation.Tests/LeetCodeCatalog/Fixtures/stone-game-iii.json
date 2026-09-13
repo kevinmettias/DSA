@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1522,
+  "FrontendId": 1406,
+  "Title": "Stone Game III",
+  "TitleSlug": "stone-game-iii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Minimax",
+    "Game Theory",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 67.9,
+  "TotalAccepted": 213456,
+  "TotalSubmissions": 314287,
+  "Likes": 2600,
+  "Dislikes": 88,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAlice and Bob continue their games with piles of stones. There are several stones \u003Cstrong\u003Earranged in a row\u003C/strong\u003E, and each stone has an associated value which is an integer given in the array \u003Ccode\u003EstoneValue\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAlice and Bob take turns, with Alice starting first. On each player\u0026#39;s turn, that player can take \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E, or \u003Ccode\u003E3\u003C/code\u003E stones from the \u003Cstrong\u003Efirst\u003C/strong\u003E remaining stones in the row.\u003C/p\u003E\n\n\u003Cp\u003EThe score of each player is the sum of the values of the stones taken. The score of each player is \u003Ccode\u003E0\u003C/code\u003E initially.\u003C/p\u003E\n\n\u003Cp\u003EThe objective of the game is to end with the highest score, and the winner is the player with the highest score and there could be a tie. The game continues until all the stones have been taken.\u003C/p\u003E\n\n\u003Cp\u003EAssume Alice and Bob \u003Cstrong\u003Eplay optimally\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003E\u0026quot;Alice\u0026quot;\u003C/code\u003E\u003Cem\u003E if Alice will win, \u003C/em\u003E\u003Ccode\u003E\u0026quot;Bob\u0026quot;\u003C/code\u003E\u003Cem\u003E if Bob will win, or \u003C/em\u003E\u003Ccode\u003E\u0026quot;Tie\u0026quot;\u003C/code\u003E\u003Cem\u003E if they will end the game with the same score\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stoneValue = [1,2,3,7]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;Bob\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice will always lose. Her best move will be to take three piles and the score become 6. Now the score of Bob is 7 and Bob wins.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stoneValue = [1,2,3,-9]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;Alice\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice must choose all the three piles at the first move to win and leave Bob with negative score.\nIf Alice chooses one pile her score will be 1 and the next move Bob\u0026#39;s score becomes 5. In the next move, Alice will take the pile with value = -9 and lose.\nIf Alice chooses two piles her score will be 3 and the next move Bob\u0026#39;s score becomes 3. In the next move, Alice will take the pile with value = -9 and also lose.\nRemember that both play optimally so here Alice will choose the scenario that makes her win.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stoneValue = [1,2,3,6]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;Tie\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Alice cannot win this game. She can end the game in a draw if she decided to choose all the first three piles, otherwise she will lose.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stoneValue.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= stoneValue[i] \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The game can be mapped to minmax game. Alice tries to maximize the total score and Bob tries to minimize it.",
+    "Use dynamic programming to simulate the game. If the total score was 0 the game is \u0022Tie\u0022, and if it has positive value then \u0022Alice\u0022 wins, otherwise \u0022Bob\u0022 wins."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,7]",
+      "RawExpectedOutput": "\u0022Bob\u0022"
+    },
+    {
+      "RawInput": "[1,2,3,-9]",
+      "RawExpectedOutput": "\u0022Alice\u0022"
+    },
+    {
+      "RawInput": "[1,2,3,6]",
+      "RawExpectedOutput": "\u0022Tie\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1358371+00:00",
+  "Url": "https://leetcode.com/problems/stone-game-iii/"
+}

@@ -1,0 +1,39 @@
+{
+  "QuestionId": 2100,
+  "FrontendId": 1969,
+  "Title": "Minimum Non-Zero Product of the Array Elements",
+  "TitleSlug": "minimum-non-zero-product-of-the-array-elements",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Greedy",
+    "Recursion"
+  ],
+  "AcceptanceRatePercent": 37.7,
+  "TotalAccepted": 17392,
+  "TotalSubmissions": 46113,
+  "Likes": 298,
+  "Dislikes": 401,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a positive integer \u003Ccode\u003Ep\u003C/code\u003E. Consider an array \u003Ccode\u003Enums\u003C/code\u003E (\u003Cstrong\u003E1-indexed\u003C/strong\u003E) that consists of the integers in the \u003Cstrong\u003Einclusive\u003C/strong\u003E range \u003Ccode\u003E[1, 2\u003Csup\u003Ep\u003C/sup\u003E - 1]\u003C/code\u003E in their binary representations. You are allowed to do the following operation \u003Cstrong\u003Eany\u003C/strong\u003E number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EChoose two elements \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E from \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EChoose a bit in \u003Ccode\u003Ex\u003C/code\u003E and swap it with its corresponding bit in \u003Ccode\u003Ey\u003C/code\u003E. Corresponding bit refers to the bit that is in the \u003Cstrong\u003Esame position\u003C/strong\u003E in the other integer.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, if \u003Ccode\u003Ex = 11\u003Cu\u003E0\u003C/u\u003E1\u003C/code\u003E and \u003Ccode\u003Ey = 00\u003Cu\u003E1\u003C/u\u003E1\u003C/code\u003E, after swapping the \u003Ccode\u003E2\u003Csup\u003End\u003C/sup\u003E\u003C/code\u003E bit from the right, we have \u003Ccode\u003Ex = 11\u003Cu\u003E1\u003C/u\u003E1\u003C/code\u003E and \u003Ccode\u003Ey = 00\u003Cu\u003E0\u003C/u\u003E1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFind the \u003Cstrong\u003Eminimum non-zero\u003C/strong\u003E product of \u003Ccode\u003Enums\u003C/code\u003E after performing the above operation \u003Cstrong\u003Eany\u003C/strong\u003E number of times. Return \u003Cem\u003Ethis product\u003C/em\u003E\u003Cem\u003E \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003C/em\u003E\u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E The answer should be the minimum product \u003Cstrong\u003Ebefore\u003C/strong\u003E the modulo operation is done.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E p = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E nums = [1].\nThere is only one element, so the product equals that element.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E p = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E nums = [01, 10, 11].\nAny swap would either make the product 0 or stay the same.\nThus, the array product of 1 * 2 * 3 = 6 is already minimized.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E p = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1512\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E nums = [001, 010, 011, 100, 101, 110, 111]\n- In the first operation we can swap the leftmost bit of the second and fifth elements.\n    - The resulting array is [001, \u003Cu\u003E1\u003C/u\u003E10, 011, 100, \u003Cu\u003E0\u003C/u\u003E01, 110, 111].\n- In the second operation we can swap the middle bit of the third and fourth elements.\n    - The resulting array is [001, 110, 0\u003Cu\u003E0\u003C/u\u003E1, 1\u003Cu\u003E1\u003C/u\u003E0, 001, 110, 111].\nThe array product is 1 * 6 * 1 * 6 * 1 * 6 * 7 = 1512, which is the minimum possible product.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= p \u0026lt;= 60\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Try to minimize each element by swapping bits with any of the elements after it.",
+    "If you swap out all the 1s in some element, this will lead to a product of zero."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "1512"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0638595+00:00",
+  "Url": "https://leetcode.com/problems/minimum-non-zero-product-of-the-array-elements/"
+}

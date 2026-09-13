@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1325,
+  "FrontendId": 1514,
+  "Title": "Path with Maximum Probability",
+  "TitleSlug": "path-with-maximum-probability",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Shortest Path",
+    "Dijkstra\u0027s Algorithm"
+  ],
+  "AcceptanceRatePercent": 65.8,
+  "TotalAccepted": 390777,
+  "TotalSubmissions": 594067,
+  "Likes": 3941,
+  "Dislikes": 110,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an undirected weighted graph of\u0026nbsp;\u003Ccode\u003En\u003C/code\u003E\u0026nbsp;nodes (0-indexed), represented by an edge list where\u0026nbsp;\u003Ccode\u003Eedges[i] = [a, b]\u003C/code\u003E\u0026nbsp;is an undirected edge connecting the nodes\u0026nbsp;\u003Ccode\u003Ea\u003C/code\u003E\u0026nbsp;and\u0026nbsp;\u003Ccode\u003Eb\u003C/code\u003E\u0026nbsp;with a probability of success of traversing that edge\u0026nbsp;\u003Ccode\u003EsuccProb[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven two nodes\u0026nbsp;\u003Ccode\u003Estart\u003C/code\u003E\u0026nbsp;and\u0026nbsp;\u003Ccode\u003Eend\u003C/code\u003E, find the path with the maximum probability of success to go from\u0026nbsp;\u003Ccode\u003Estart\u003C/code\u003E\u0026nbsp;to\u0026nbsp;\u003Ccode\u003Eend\u003C/code\u003E\u0026nbsp;and return its success probability.\u003C/p\u003E\n\n\u003Cp\u003EIf there is no path from\u0026nbsp;\u003Ccode\u003Estart\u003C/code\u003E\u0026nbsp;to\u0026nbsp;\u003Ccode\u003Eend\u003C/code\u003E, \u003Cstrong\u003Ereturn\u0026nbsp;0\u003C/strong\u003E. Your answer will be accepted if it differs from the correct answer by at most \u003Cstrong\u003E1e-5\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/09/20/1558_ex1.png\u0022 style=\u0022width: 187px; height: 186px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edges = [[0,1],[1,2],[0,2]], succProb = [0.5,0.5,0.2], start = 0, end = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.25000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;There are two paths from start to end, one having a probability of success = 0.2 and the other has 0.5 * 0.5 = 0.25.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/09/20/1558_ex2.png\u0022 style=\u0022width: 189px; height: 186px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edges = [[0,1],[1,2],[0,2]], succProb = [0.5,0.5,0.3], start = 0, end = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.30000\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/09/20/1558_ex3.png\u0022 style=\u0022width: 215px; height: 191px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, edges = [[0,1]], succProb = [0.5], start = 0, end = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0.00000\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u0026nbsp;There is no path between 0 and 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= n \u0026lt;= 10^4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= start, end \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estart != end\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= a, b \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ea != b\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= succProb.length == edges.length \u0026lt;= 2*10^4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= succProb[i] \u0026lt;= 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere is at most one edge between every two nodes.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Multiplying probabilities will result in precision errors.",
+    "Take log probabilities to sum up numbers instead of multiplying them.",
+    "Use Dijkstra\u0027s algorithm to find the minimum path between the two nodes after negating all costs."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1],[1,2],[0,2]]\n[0.5,0.5,0.2]\n0\n2",
+      "RawExpectedOutput": "0.25000"
+    },
+    {
+      "RawInput": "3\n[[0,1],[1,2],[0,2]]\n[0.5,0.5,0.3]\n0\n2",
+      "RawExpectedOutput": "0.30000"
+    },
+    {
+      "RawInput": "3\n[[0,1]]\n[0.5]\n0\n2",
+      "RawExpectedOutput": "0.00000"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4585947+00:00",
+  "Url": "https://leetcode.com/problems/path-with-maximum-probability/"
+}

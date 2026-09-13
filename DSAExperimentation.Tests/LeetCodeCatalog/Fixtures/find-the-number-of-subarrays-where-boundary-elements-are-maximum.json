@@ -1,0 +1,43 @@
+{
+  "QuestionId": 3382,
+  "FrontendId": 3113,
+  "Title": "Find the Number of Subarrays Where Boundary Elements Are Maximum",
+  "TitleSlug": "find-the-number-of-subarrays-where-boundary-elements-are-maximum",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 33.8,
+  "TotalAccepted": 15942,
+  "TotalSubmissions": 47129,
+  "Likes": 271,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of \u003Cstrong\u003Epositive\u003C/strong\u003E integers \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the number of \u003Cspan data-keyword=\u0022subarray-nonempty\u0022\u003Esubarrays\u003C/span\u003E of \u003Ccode\u003Enums\u003C/code\u003E, where the \u003Cstrong\u003Efirst\u003C/strong\u003E and the \u003Cstrong\u003Elast\u003C/strong\u003E elements of the subarray are \u003Cem\u003Eequal\u003C/em\u003E to the \u003Cstrong\u003Elargest\u003C/strong\u003E element in the subarray.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,4,3,3,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 6 subarrays which have the first and the last elements equal to the largest element of the subarray:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[\u003Cstrong\u003E\u003Cu\u003E1\u003C/u\u003E\u003C/strong\u003E,4,3,3,2]\u003C/code\u003E, with its largest element 1. The first element is 1 and the last element is also 1.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[1,\u003Cu\u003E\u003Cstrong\u003E4\u003C/strong\u003E\u003C/u\u003E,3,3,2]\u003C/code\u003E, with its largest element 4. The first element is 4 and the last element is also 4.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[1,4,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E,3,2]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[1,4,3,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E,2]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[1,4,3,3,\u003Cu\u003E\u003Cstrong\u003E2\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E, with its largest element 2. The first element is 2 and the last element is also 2.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[1,4,\u003Cu\u003E\u003Cstrong\u003E3,3\u003C/strong\u003E\u003C/u\u003E,2]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EHence, we return 6.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,3,3]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 6 subarrays which have the first and the last elements equal to the largest element of the subarray:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E,3,3]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[3,\u003Cstrong\u003E\u003Cu\u003E3\u003C/u\u003E\u003C/strong\u003E,3]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[3,3,\u003Cu\u003E\u003Cstrong\u003E3\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[\u003Cstrong\u003E\u003Cu\u003E3,3\u003C/u\u003E\u003C/strong\u003E,3]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[3,\u003Cu\u003E\u003Cstrong\u003E3,3\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\t\u003Cli\u003Esubarray \u003Ccode\u003E[\u003Cu\u003E\u003Cstrong\u003E3,3,3\u003C/strong\u003E\u003C/u\u003E]\u003C/code\u003E, with its largest element 3. The first element is 3 and the last element is also 3.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EHence, we return 6.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is a single subarray of \u003Ccode\u003Enums\u003C/code\u003E which is \u003Ccode\u003E[\u003Cstrong\u003E\u003Cu\u003E1\u003C/u\u003E\u003C/strong\u003E]\u003C/code\u003E, with its largest element 1. The first element is 1 and the last element is also 1.\u003C/p\u003E\n\n\u003Cp\u003EHence, we return 1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For each element \u003Ccode\u003Enums[i]\u003C/code\u003E, we can count the number of valid subarrays ending with it.",
+    "For each index \u003Ccode\u003Ei\u003C/code\u003E, find the nearest index \u003Ccode\u003Ej\u003C/code\u003E on its left \u003Ccode\u003E(j \u003C i)\u003C/code\u003E such that \u003Ccode\u003Enums[j] \u003C nums[i]\u003C/code\u003E. This can be done via a monotonic stack.",
+    "For each index \u003Ccode\u003Ei\u003C/code\u003E, find the number of indices \u003Ccode\u003Ek\u003C/code\u003E in the window \u003Ccode\u003E[j \u002B 1, i]\u003C/code\u003E such that \u003Ccode\u003Enums[k] == nums[i]\u003C/code\u003E, this is the number of the valid subarrays ending with \u003Ccode\u003Enums[i]\u003C/code\u003E. This can be done by sliding window.",
+    "Sum the answer of all the indices \u003Ccode\u003Ei\u003C/code\u003E to get the final result.",
+    "Is it possible to use DSU as an alternate solution?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,4,3,3,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,3,3]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3010535+00:00",
+  "Url": "https://leetcode.com/problems/find-the-number-of-subarrays-where-boundary-elements-are-maximum/"
+}

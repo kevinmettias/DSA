@@ -1,0 +1,33 @@
+{
+  "QuestionId": 837,
+  "FrontendId": 819,
+  "Title": "Most Common Word",
+  "TitleSlug": "most-common-word",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Counting"
+  ],
+  "AcceptanceRatePercent": 45.4,
+  "TotalAccepted": 469131,
+  "TotalSubmissions": 1033775,
+  "Likes": 1878,
+  "Dislikes": 3121,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a string \u003Ccode\u003Eparagraph\u003C/code\u003E and a string array of the banned words \u003Ccode\u003Ebanned\u003C/code\u003E, return \u003Cem\u003Ethe most frequent word that is not banned\u003C/em\u003E. It is \u003Cstrong\u003Eguaranteed\u003C/strong\u003E there is \u003Cstrong\u003Eat least one word\u003C/strong\u003E that is not banned, and that the answer is \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe words in \u003Ccode\u003Eparagraph\u003C/code\u003E are \u003Cstrong\u003Ecase-insensitive\u003C/strong\u003E and the answer should be returned in \u003Cstrong\u003Elowercase\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that words can not contain punctuation symbols.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E paragraph = \u0026quot;Bob hit a ball, the hit BALL flew far after it was hit.\u0026quot;, banned = [\u0026quot;hit\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;ball\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \n\u0026quot;hit\u0026quot; occurs 3 times, but it is a banned word.\n\u0026quot;ball\u0026quot; occurs twice (and no other word does), so it is the most frequent non-banned word in the paragraph. \nNote that words in the paragraph are not case sensitive,\nthat punctuation is ignored (even if adjacent to words, such as \u0026quot;ball,\u0026quot;), \nand that \u0026quot;hit\u0026quot; isn\u0026#39;t the answer even though it occurs more because it is banned.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E paragraph = \u0026quot;a.\u0026quot;, banned = []\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;a\u0026quot;\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= paragraph.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003Eparagraph consists of English letters, space \u003Ccode\u003E\u0026#39; \u0026#39;\u003C/code\u003E, or one of the symbols: \u003Ccode\u003E\u0026quot;!?\u0026#39;,;.\u0026quot;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= banned.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= banned[i].length \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebanned[i]\u003C/code\u003E consists of only lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022Bob hit a ball, the hit BALL flew far after it was hit.\u0022\n[\u0022hit\u0022]",
+      "RawExpectedOutput": "\u0022ball\u0022"
+    },
+    {
+      "RawInput": "\u0022a.\u0022\n[]",
+      "RawExpectedOutput": "\u0022a\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1348578+00:00",
+  "Url": "https://leetcode.com/problems/most-common-word/"
+}

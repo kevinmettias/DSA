@@ -1,0 +1,40 @@
+{
+  "QuestionId": 999,
+  "FrontendId": 959,
+  "Title": "Regions Cut By Slashes",
+  "TitleSlug": "regions-cut-by-slashes",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix",
+    "Planar Graph"
+  ],
+  "AcceptanceRatePercent": 77.5,
+  "TotalAccepted": 153552,
+  "TotalSubmissions": 198005,
+  "Likes": 4014,
+  "Dislikes": 880,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAn \u003Ccode\u003En x n\u003C/code\u003E grid is composed of \u003Ccode\u003E1 x 1\u003C/code\u003E squares where each \u003Ccode\u003E1 x 1\u003C/code\u003E square consists of a \u003Ccode\u003E\u0026#39;/\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;\\\u0026#39;\u003C/code\u003E, or blank space \u003Ccode\u003E\u0026#39; \u0026#39;\u003C/code\u003E. These characters divide the square into contiguous regions.\u003C/p\u003E\n\n\u003Cp\u003EGiven the grid \u003Ccode\u003Egrid\u003C/code\u003E represented as a string array, return \u003Cem\u003Ethe number of regions\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENote that backslash characters are escaped, so a \u003Ccode\u003E\u0026#39;\\\u0026#39;\u003C/code\u003E is represented as \u003Ccode\u003E\u0026#39;\\\\\u0026#39;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/15/1.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [\u0026quot; /\u0026quot;,\u0026quot;/ \u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/15/2.png\u0022 style=\u0022width: 200px; height: 198px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [\u0026quot; /\u0026quot;,\u0026quot;  \u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2018/12/15/4.png\u0022 style=\u0022width: 200px; height: 200px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [\u0026quot;/\\\\\u0026quot;,\u0026quot;\\\\/\u0026quot;]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation: \u003C/strong\u003ERecall that because \\ characters are escaped, \u0026quot;\\\\/\u0026quot; refers to \\/, and \u0026quot;/\\\\\u0026quot; refers to /\\.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid.length == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid[i][j]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;/\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;\\\u0026#39;\u003C/code\u003E, or \u003Ccode\u003E\u0026#39; \u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022 /\u0022,\u0022/ \u0022]",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[\u0022 /\u0022,\u0022  \u0022]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[\u0022/\\\\\u0022,\u0022\\\\/\u0022]",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.7177706+00:00",
+  "Url": "https://leetcode.com/problems/regions-cut-by-slashes/"
+}

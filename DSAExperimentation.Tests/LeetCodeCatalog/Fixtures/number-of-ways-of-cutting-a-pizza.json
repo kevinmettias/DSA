@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1555,
+  "FrontendId": 1444,
+  "Title": "Number of Ways of Cutting a Pizza",
+  "TitleSlug": "number-of-ways-of-cutting-a-pizza",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Memoization",
+    "Matrix",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 61.6,
+  "TotalAccepted": 78447,
+  "TotalSubmissions": 127324,
+  "Likes": 1929,
+  "Dislikes": 98,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a rectangular pizza represented as a \u003Ccode\u003Erows x cols\u003C/code\u003E\u0026nbsp;matrix containing the following characters: \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E (an apple) and \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E (empty cell) and given the integer \u003Ccode\u003Ek\u003C/code\u003E. You have to cut the pizza into \u003Ccode\u003Ek\u003C/code\u003E pieces using \u003Ccode\u003Ek-1\u003C/code\u003E cuts.\u0026nbsp;\u003C/p\u003E\n\n\u003Cp\u003EFor each cut you choose the direction: vertical or horizontal, then you choose a cut position at the cell boundary and cut the pizza into two pieces. If you cut the pizza vertically, give the left part of the pizza to a person. If you cut the pizza horizontally, give the upper part of the pizza to a person. Give the last piece of pizza to the last person.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cem\u003EReturn the number of ways of cutting the pizza such that each piece contains \u003Cstrong\u003Eat least\u003C/strong\u003E one apple.\u0026nbsp;\u003C/em\u003ESince the answer can be a huge number, return this modulo 10^9 \u002B 7.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/04/23/ways_to_cut_apple_1.png\u0022 style=\u0022width: 500px; height: 378px;\u0022 /\u003E\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pizza = [\u0026quot;A..\u0026quot;,\u0026quot;AAA\u0026quot;,\u0026quot;...\u0026quot;], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3 \n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The figure above shows the three ways to cut the pizza. Note that pieces must contain at least one apple.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pizza = [\u0026quot;A..\u0026quot;,\u0026quot;AA.\u0026quot;,\u0026quot;...\u0026quot;], k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E pizza = [\u0026quot;A..\u0026quot;,\u0026quot;A..\u0026quot;,\u0026quot;...\u0026quot;], k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rows, cols \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erows ==\u0026nbsp;pizza.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecols ==\u0026nbsp;pizza[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epizza\u003C/code\u003E consists of characters \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E\u0026nbsp;and \u003Ccode\u003E\u0026#39;.\u0026#39;\u003C/code\u003E only.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Note that after each cut the remaining piece of pizza always has the lower right coordinate at (rows-1,cols-1).",
+    "Use dynamic programming approach with states (row1, col1, c) which computes the number of ways of cutting the pizza using \u0022c\u0022 cuts where the current piece of pizza has upper left coordinate at (row1,col1) and lower right coordinate at (rows-1,cols-1).",
+    "For the transitions try all vertical and horizontal cuts such that the piece of pizza you have to give a person must contain at least one apple. The base case is when c=k-1.",
+    "Additionally use a 2D dynamic programming to respond in O(1) if a piece of pizza contains at least one apple."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022A..\u0022,\u0022AAA\u0022,\u0022...\u0022]\n3",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[\u0022A..\u0022,\u0022AA.\u0022,\u0022...\u0022]\n3",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[\u0022A..\u0022,\u0022A..\u0022,\u0022...\u0022]\n1",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.3109786+00:00",
+  "Url": "https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza/"
+}

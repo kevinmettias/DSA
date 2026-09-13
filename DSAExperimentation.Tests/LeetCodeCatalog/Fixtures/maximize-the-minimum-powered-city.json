@@ -1,0 +1,38 @@
+{
+  "QuestionId": 2618,
+  "FrontendId": 2528,
+  "Title": "Maximize the Minimum Powered City",
+  "TitleSlug": "maximize-the-minimum-powered-city",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Greedy",
+    "Queue",
+    "Sliding Window",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 61.3,
+  "TotalAccepted": 69860,
+  "TotalSubmissions": 113909,
+  "Likes": 890,
+  "Dislikes": 34,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E integer array \u003Ccode\u003Estations\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Estations[i]\u003C/code\u003E represents the number of power stations in the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E city.\u003C/p\u003E\n\n\u003Cp\u003EEach power station can provide power to every city in a fixed \u003Cstrong\u003Erange\u003C/strong\u003E. In other words, if the range is denoted by \u003Ccode\u003Er\u003C/code\u003E, then a power station at city \u003Ccode\u003Ei\u003C/code\u003E can provide power to all cities \u003Ccode\u003Ej\u003C/code\u003E such that \u003Ccode\u003E|i - j| \u0026lt;= r\u003C/code\u003E and \u003Ccode\u003E0 \u0026lt;= i, j \u0026lt;= n - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ENote that \u003Ccode\u003E|x|\u003C/code\u003E denotes \u003Cstrong\u003Eabsolute\u003C/strong\u003E value. For example, \u003Ccode\u003E|7 - 5| = 2\u003C/code\u003E and \u003Ccode\u003E|3 - 10| = 7\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Epower\u003C/strong\u003E of a city is the total number of power stations it is being provided power from.\u003C/p\u003E\n\n\u003Cp\u003EThe government has sanctioned building \u003Ccode\u003Ek\u003C/code\u003E more power stations, each of which can be built in any city, and have the same range as the pre-existing ones.\u003C/p\u003E\n\n\u003Cp\u003EGiven the two integers \u003Ccode\u003Er\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Emaximum possible minimum power\u003C/strong\u003E of a city, if the additional power stations are built optimally.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that you can build the \u003Ccode\u003Ek\u003C/code\u003E power stations in multiple cities.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stations = [1,2,4,5,0], r = 1, k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nOne of the optimal ways is to install both the power stations at city 1. \nSo stations will become [1,4,4,5,0].\n- City 0 is provided by 1 \u002B 4 = 5 power stations.\n- City 1 is provided by 1 \u002B 4 \u002B 4 = 9 power stations.\n- City 2 is provided by 4 \u002B 4 \u002B 5 = 13 power stations.\n- City 3 is provided by 5 \u002B 4 = 9 power stations.\n- City 4 is provided by 5 \u002B 0 = 5 power stations.\nSo the minimum power of a city is 5.\nSince it is not possible to obtain a larger power, we return 5.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stations = [4,4,4,4], r = 0, k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E \nIt can be proved that we cannot make the minimum power of a city greater than 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == stations.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= stations[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= r\u0026nbsp;\u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k\u0026nbsp;\u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Pre calculate the number of stations on each city using Line Sweep.",
+    "Use binary search to maximize the minimum."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,4,5,0]\n1\n2",
+      "RawExpectedOutput": "5"
+    },
+    {
+      "RawInput": "[4,4,4,4]\n0\n3",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8702037+00:00",
+  "Url": "https://leetcode.com/problems/maximize-the-minimum-powered-city/"
+}

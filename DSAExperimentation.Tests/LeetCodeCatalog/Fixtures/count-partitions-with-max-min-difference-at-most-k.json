@@ -1,0 +1,39 @@
+{
+  "QuestionId": 3835,
+  "FrontendId": 3578,
+  "Title": "Count Partitions With Max-Min Difference at Most K",
+  "TitleSlug": "count-partitions-with-max-min-difference-at-most-k",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Queue",
+    "Sliding Window",
+    "Prefix Sum",
+    "Monotonic Queue"
+  ],
+  "AcceptanceRatePercent": 57.9,
+  "TotalAccepted": 67174,
+  "TotalSubmissions": 116091,
+  "Likes": 542,
+  "Dislikes": 138,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and an integer \u003Ccode\u003Ek\u003C/code\u003E. Your task is to partition \u003Ccode\u003Enums\u003C/code\u003E into one or more \u003Cstrong\u003Enon-empty\u003C/strong\u003E contiguous segments such that in each segment, the difference between its \u003Cstrong\u003Emaximum\u003C/strong\u003E and \u003Cstrong\u003Eminimum\u003C/strong\u003E elements is \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the total number of ways to partition \u003Ccode\u003Enums\u003C/code\u003E under this condition.\u003C/p\u003E\n\n\u003Cp\u003ESince the answer may be too large, return it \u003Cstrong\u003Emodulo\u003C/strong\u003E \u003Ccode\u003E10\u003Csup\u003E9\u003C/sup\u003E \u002B 7\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [9,4,1,3,7], k = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 6 valid partitions where the difference between the maximum and minimum elements in each segment is at most \u003Ccode\u003Ek = 4\u003C/code\u003E:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[9], [4], [1], [3], [7]]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[9], [4], [1], [3, 7]]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[9], [4], [1, 3], [7]]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[9], [4, 1], [3], [7]]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[9], [4, 1], [3, 7]]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[9], [4, 1, 3], [7]]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,3,4], k = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere are 2 valid partitions that satisfy the given conditions:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[3], [3], [4]]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[[3, 3], [4]]\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= nums.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use dynamic programming.",
+    "Let \u003Ccode\u003Edp[idx]\u003C/code\u003E be the count of ways to partition the array with the last partition ending at index \u003Ccode\u003Eidx\u003C/code\u003E.",
+    "Try using a sliding window; we can track the minimum and maximum in the window using deques."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[9,4,1,3,7]\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[3,3,4]\n0",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9563623+00:00",
+  "Url": "https://leetcode.com/problems/count-partitions-with-max-min-difference-at-most-k/"
+}

@@ -1,0 +1,36 @@
+{
+  "QuestionId": 214,
+  "FrontendId": 214,
+  "Title": "Shortest Palindrome",
+  "TitleSlug": "shortest-palindrome",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "String",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function",
+    "Manacher",
+    "Z Algorithm",
+    "Knuth\u2013Morris\u2013Pratt Algorithm"
+  ],
+  "AcceptanceRatePercent": 43.1,
+  "TotalAccepted": 376941,
+  "TotalSubmissions": 874686,
+  "Likes": 4637,
+  "Dislikes": 299,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a string \u003Ccode\u003Es\u003C/code\u003E. You can convert \u003Ccode\u003Es\u003C/code\u003E to a \u003Cspan data-keyword=\u0022palindrome-string\u0022\u003Epalindrome\u003C/span\u003E by adding characters in front of it.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe shortest palindrome you can find by performing this transformation\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0022aacecaaa\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0022aaacecaaa\u0022\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0022abcd\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0022dcbabcd\u0022\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= s.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of lowercase English letters only.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022aacecaaa\u0022",
+      "RawExpectedOutput": "\u0022aaacecaaa\u0022"
+    },
+    {
+      "RawInput": "\u0022abcd\u0022",
+      "RawExpectedOutput": "\u0022dcbabcd\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9699377+00:00",
+  "Url": "https://leetcode.com/problems/shortest-palindrome/"
+}

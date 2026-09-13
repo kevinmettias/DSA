@@ -1,0 +1,36 @@
+{
+  "QuestionId": 486,
+  "FrontendId": 486,
+  "Title": "Predict the Winner",
+  "TitleSlug": "predict-the-winner",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Recursion",
+    "Minimax",
+    "Game Theory",
+    "Zero-Sum Game"
+  ],
+  "AcceptanceRatePercent": 60,
+  "TotalAccepted": 423764,
+  "TotalSubmissions": 706691,
+  "Likes": 6643,
+  "Dislikes": 303,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ETwo players are playing a game with this array: Player 1 and Player 2.\u003C/p\u003E\n\n\u003Cp\u003EPlayer 1 and Player 2 take turns, with Player 1 starting first. Both players start the game with a score of 0.\u003C/p\u003E\n\n\u003Cp\u003EAt each turn, the current player takes the number at \u003Cstrong\u003Eeither end\u003C/strong\u003E of the array (i.e., \u003Ccode\u003Enums[0]\u003C/code\u003E or \u003Ccode\u003Enums[nums.length - 1]\u003C/code\u003E), \u003Cstrong\u003Eremoving\u003C/strong\u003E it from the array and adding it to their own score. The game ends when there are no more elements in the array.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if Player 1\u0026#39;s final score is \u003Cstrong\u003Egreater than or equal\u003C/strong\u003E to Player 2\u0026#39;s final score, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that a tie counts as a win for Player 1. You may assume that both players play optimally.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,5,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Efalse\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPlayer 1 must open by taking either 1 or 2, and both choices lead to the same result.\u003C/li\u003E\n\t\u003Cli\u003EIf Player 1 takes 1, the array becomes \u003Ccode\u003E[5,2]\u003C/code\u003E. Player 2 takes 5, leaving 2 for Player 1.\u003C/li\u003E\n\t\u003Cli\u003EIf Player 1 takes 2, the array becomes \u003Ccode\u003E[1,5]\u003C/code\u003E. Player 2 takes 5, leaving 1 for Player 1.\u003C/li\u003E\n\t\u003Cli\u003EEither way, Player 1 finishes with \u003Ccode\u003E1 \u002B 2 = 3\u003C/code\u003E and Player 2 finishes with \u003Ccode\u003E5\u003C/code\u003E. Player 1 can never win, so return \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,5,233,7]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Etrue\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPlayer 1 first takes 1, leaving \u003Ccode\u003E[5,233,7]\u003C/code\u003E. Player 2 must then choose between 5 and 7, and no matter which number Player 2 chooses, Player 1 can take 233 on the next turn.\u003C/li\u003E\n\t\u003Cli\u003EPlayer 1 finishes with a higher score (234) than Player 2 (12), so return \u003Ccode\u003Etrue\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 20\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E7\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,5,2]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,5,233,7]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5655758+00:00",
+  "Url": "https://leetcode.com/problems/predict-the-winner/"
+}

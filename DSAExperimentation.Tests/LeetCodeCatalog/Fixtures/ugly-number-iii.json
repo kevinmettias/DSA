@@ -1,0 +1,44 @@
+{
+  "QuestionId": 1307,
+  "FrontendId": 1201,
+  "Title": "Ugly Number III",
+  "TitleSlug": "ugly-number-iii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Binary Search",
+    "Combinatorics",
+    "Number Theory",
+    "Least Common Multiple",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor",
+    "Inclusion-Exclusion Principle"
+  ],
+  "AcceptanceRatePercent": 32.1,
+  "TotalAccepted": 47338,
+  "TotalSubmissions": 147410,
+  "Likes": 1347,
+  "Dislikes": 520,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EAn \u003Cstrong\u003Eugly number\u003C/strong\u003E is a positive integer that is divisible by \u003Ccode\u003Ea\u003C/code\u003E, \u003Ccode\u003Eb\u003C/code\u003E, or \u003Ccode\u003Ec\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven four integers \u003Ccode\u003En\u003C/code\u003E, \u003Ccode\u003Ea\u003C/code\u003E, \u003Ccode\u003Eb\u003C/code\u003E, and \u003Ccode\u003Ec\u003C/code\u003E, return the \u003Ccode\u003En\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E \u003Cstrong\u003Eugly number\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 3, a = 2, b = 3, c = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The ugly numbers are 2, 3, 4, 5, 6, 8, 9, 10... The 3\u003Csup\u003Erd\u003C/sup\u003E is 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 4, a = 2, b = 3, c = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The ugly numbers are 2, 3, 4, 6, 8, 9, 10, 12... The 4\u003Csup\u003Eth\u003C/sup\u003E is 6.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E n = 5, a = 2, b = 11, c = 13\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 10\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The ugly numbers are 2, 4, 6, 8, 10, 11, 12, 13... The 5\u003Csup\u003Eth\u003C/sup\u003E is 10.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n, a, b, c \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a * b * c \u0026lt;= 10\u003Csup\u003E18\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EIt is guaranteed that the result will be in range \u003Ccode\u003E[1, 2 * 10\u003Csup\u003E9\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Write a function f(k) to determine how many ugly numbers smaller than k. As f(k) is non-decreasing, try binary search.",
+    "Find all ugly numbers in [1, LCM(a, b, c)] (LCM is Least Common Multiple). Use inclusion-exclusion principle to expand the result."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n2\n3\n5",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "4\n2\n3\n4",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "5\n2\n11\n13",
+      "RawExpectedOutput": "10"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.3086946+00:00",
+  "Url": "https://leetcode.com/problems/ugly-number-iii/"
+}

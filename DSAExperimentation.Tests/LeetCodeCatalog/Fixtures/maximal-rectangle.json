@@ -1,0 +1,38 @@
+{
+  "QuestionId": 85,
+  "FrontendId": 85,
+  "Title": "Maximal Rectangle",
+  "TitleSlug": "maximal-rectangle",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Stack",
+    "Matrix",
+    "Monotonic Stack"
+  ],
+  "AcceptanceRatePercent": 59.8,
+  "TotalAccepted": 868512,
+  "TotalSubmissions": 1452006,
+  "Likes": 12284,
+  "Dislikes": 230,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a \u003Ccode\u003Erows x cols\u003C/code\u003E\u0026nbsp;binary \u003Ccode\u003Ematrix\u003C/code\u003E filled with \u003Ccode\u003E0\u003C/code\u003E\u0026#39;s and \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s, find the largest rectangle containing only \u003Ccode\u003E1\u003C/code\u003E\u0026#39;s and return \u003Cem\u003Eits area\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/14/maximal.jpg\u0022 style=\u0022width: 402px; height: 322px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[\u0026quot;1\u0026quot;,\u0026quot;0\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;0\u0026quot;,\u0026quot;0\u0026quot;],[\u0026quot;1\u0026quot;,\u0026quot;0\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;1\u0026quot;],[\u0026quot;1\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;1\u0026quot;],[\u0026quot;1\u0026quot;,\u0026quot;0\u0026quot;,\u0026quot;0\u0026quot;,\u0026quot;1\u0026quot;,\u0026quot;0\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 6\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The maximal rectangle is shown in the above picture.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[\u0026quot;0\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[\u0026quot;1\u0026quot;]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Erows == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ecols == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= rows, cols \u0026lt;= 200\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ematrix[i][j]\u003C/code\u003E is \u003Ccode\u003E\u0026#39;0\u0026#39;\u003C/code\u003E or \u003Ccode\u003E\u0026#39;1\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[\u00221\u0022,\u00220\u0022,\u00221\u0022,\u00220\u0022,\u00220\u0022],[\u00221\u0022,\u00220\u0022,\u00221\u0022,\u00221\u0022,\u00221\u0022],[\u00221\u0022,\u00221\u0022,\u00221\u0022,\u00221\u0022,\u00221\u0022],[\u00221\u0022,\u00220\u0022,\u00220\u0022,\u00221\u0022,\u00220\u0022]]",
+      "RawExpectedOutput": "6"
+    },
+    {
+      "RawInput": "[[\u00220\u0022]]",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "[[\u00221\u0022]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8658294+00:00",
+  "Url": "https://leetcode.com/problems/maximal-rectangle/"
+}

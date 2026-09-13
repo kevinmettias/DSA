@@ -1,0 +1,42 @@
+{
+  "QuestionId": 4104,
+  "FrontendId": 3970,
+  "Title": "Shortest Path With At Most K Consecutive Identical Characters",
+  "TitleSlug": "shortest-path-with-at-most-k-consecutive-identical-characters",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Graph Theory",
+    "Heap (Priority Queue)",
+    "Shortest Path"
+  ],
+  "AcceptanceRatePercent": 44.3,
+  "TotalAccepted": 19035,
+  "TotalSubmissions": 42972,
+  "Likes": 91,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E representing the number of nodes in a \u003Cstrong\u003Edirected weighted\u003C/strong\u003E graph, numbered from 0 to \u003Ccode\u003En - 1\u003C/code\u003E. This is represented by a 2D integer array \u003Ccode\u003Eedges\u003C/code\u003E, where \u003Ccode\u003Eedges[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents a directed edge from node \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E to node \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E with weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou are also given a string \u003Ccode\u003Elabels\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E, where \u003Ccode\u003Elabels[i]\u003C/code\u003E is the character assigned to node \u003Ccode\u003Ei\u003C/code\u003E, and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Eminimum\u003C/strong\u003E \u003Cstrong\u003Etotal\u003C/strong\u003E edge weight of a path from node 0 to node \u003Ccode\u003En - 1\u003C/code\u003E such that the concatenation of the labels of the nodes along the path contains \u003Cstrong\u003Eat most\u003C/strong\u003E \u003Ccode\u003Ek\u003C/code\u003E \u003Cstrong\u003Econsecutive\u003C/strong\u003E \u003Cstrong\u003Eidentical\u003C/strong\u003E characters. If no valid path exists, return -1.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,1],[1,2,1],[0,2,3]], labels = \u0026quot;aab\u0026quot;, k = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe optimal valid path from node 0 to node 2 is as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EUse \u003Ccode\u003Eedges[2] = [0, 2, 3]\u003C/code\u003E to reach node 2 with a weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E = 3\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\nThe corresponding concatenation of labels is \u003Ccode\u003E\u0026quot;ab\u0026quot;\u003C/code\u003E, which satisfies at most \u003Ccode\u003Ek = 1\u003C/code\u003E consecutive identical characters. Thus, the answer is 3.\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,1],[1,2,1],[0,2,3]], labels = \u0026quot;aab\u0026quot;, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe optimal valid path from node 0 to node 2 is as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EUse \u003Ccode\u003Eedges[0] = [0, 1, 1]\u003C/code\u003E to reach node 1 with weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E = 1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EUse \u003Ccode\u003Eedges[1] = [1, 2, 1]\u003C/code\u003E to reach node 2 with weight \u003Ccode\u003Ew\u003Csub\u003Ei\u003C/sub\u003E = 1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\nThe corresponding concatenation of labels is \u003Ccode\u003E\u0026quot;aab\u0026quot;\u003C/code\u003E, which satisfies at most \u003Ccode\u003Ek = 2\u003C/code\u003E consecutive identical characters. Thus, the answer is 2.\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, edges = [[0,1,1],[1,2,1]], labels = \u0026quot;aaa\u0026quot;, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E-1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThere is no valid path from node 0 to node 2 that satisfies at most \u003Ccode\u003Ek = 2\u003C/code\u003E consecutive identical characters. Thus, the answer is -1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n == labels.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= edges.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eedges[i] == [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E, w\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E != v\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= w\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Elabels\u003C/code\u003E consists of lowercase English letters\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The validity of a path depends not only on the current node, but also on how many consecutive times the current node\u2019s label has appeared at the end of the path.",
+    "Use Dijkstra on states \u003Ccode\u003E(node, count)\u003C/code\u003E, where \u003Ccode\u003Ecount\u003C/code\u003E is the current consecutive run length of \u003Ccode\u003Elabels[node]\u003C/code\u003E.",
+    "When moving from node \u003Ccode\u003Eu\u003C/code\u003E to node \u003Ccode\u003Ev\u003C/code\u003E, the next count becomes \u003Ccode\u003Ecount \u002B 1\u003C/code\u003E if \u003Ccode\u003Elabels[u] == labels[v]\u003C/code\u003E, otherwise it becomes 1. Ignore transitions where the next count exceeds \u003Ccode\u003Ek\u003C/code\u003E.",
+    "The answer is the minimum distance among all states ending at node \u003Ccode\u003En - 1\u003C/code\u003E."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "3\n[[0,1,1],[1,2,1],[0,2,3]]\n\u0022aab\u0022\n1",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[[0,1,1],[1,2,1],[0,2,3]]\n\u0022aab\u0022\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n[[0,1,1],[1,2,1]]\n\u0022aaa\u0022\n2",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9812184+00:00",
+  "Url": "https://leetcode.com/problems/shortest-path-with-at-most-k-consecutive-identical-characters/"
+}

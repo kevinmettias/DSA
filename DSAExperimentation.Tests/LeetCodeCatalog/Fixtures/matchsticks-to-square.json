@@ -1,0 +1,40 @@
+{
+  "QuestionId": 473,
+  "FrontendId": 473,
+  "Title": "Matchsticks to Square",
+  "TitleSlug": "matchsticks-to-square",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 42.3,
+  "TotalAccepted": 226949,
+  "TotalSubmissions": 536511,
+  "Likes": 4089,
+  "Dislikes": 311,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Ematchsticks\u003C/code\u003E where \u003Ccode\u003Ematchsticks[i]\u003C/code\u003E is the length of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E matchstick. You want to use \u003Cstrong\u003Eall the matchsticks\u003C/strong\u003E to make one square. You \u003Cstrong\u003Eshould not break\u003C/strong\u003E any stick, but you can link them up, and each matchstick must be used \u003Cstrong\u003Eexactly one time\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E if you can make this square and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/09/matchsticks1-grid.jpg\u0022 style=\u0022width: 253px; height: 253px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matchsticks = [1,1,2,2,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can form a square with length 2, one side of the square came two sticks with length 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matchsticks = [3,3,3,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You cannot find a way to form a square with all the matchsticks.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= matchsticks.length \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= matchsticks[i] \u0026lt;= 10\u003Csup\u003E8\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Treat the matchsticks as an array. Can we split the array into 4 equal parts?",
+    "Every matchstick can belong to either of the 4 sides. We don\u0027t know which one. Maybe try out all options!",
+    "For every matchstick, we have to try out each of the 4 options i.e. which side it can belong to. We can make use of recursion for this.",
+    "We don\u0027t really need to keep track of which matchsticks belong to a particular side during recursion. We just need to keep track of the \u003Cb\u003Elength\u003C/b\u003E of each of the 4 sides.",
+    "When all matchsticks have been used we simply need to see the length of all 4 sides. If they\u0027re equal, we have a square on our hands!"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,1,2,2,2]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[3,3,3,3,4]",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8333167+00:00",
+  "Url": "https://leetcode.com/problems/matchsticks-to-square/"
+}

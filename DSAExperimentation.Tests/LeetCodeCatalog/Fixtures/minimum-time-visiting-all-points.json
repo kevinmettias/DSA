@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1395,
+  "FrontendId": 1266,
+  "Title": "Minimum Time Visiting All Points",
+  "TitleSlug": "minimum-time-visiting-all-points",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 84.9,
+  "TotalAccepted": 421548,
+  "TotalSubmissions": 496798,
+  "Likes": 2773,
+  "Dislikes": 274,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EOn a 2D plane, there are \u003Ccode\u003En\u003C/code\u003E points with integer coordinates \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. Return \u003Cem\u003Ethe \u003Cstrong\u003Eminimum time\u003C/strong\u003E in seconds to visit all the points in the order given by \u003C/em\u003E\u003Ccode\u003Epoints\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou can move according to these rules:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIn \u003Ccode\u003E1\u003C/code\u003E second, you can either:\n\n\t\u003Cul\u003E\n\t\t\u003Cli\u003Emove vertically by one\u0026nbsp;unit,\u003C/li\u003E\n\t\t\u003Cli\u003Emove horizontally by one unit, or\u003C/li\u003E\n\t\t\u003Cli\u003Emove diagonally \u003Ccode\u003Esqrt(2)\u003C/code\u003E units (in other words, move one unit vertically then one unit horizontally in \u003Ccode\u003E1\u003C/code\u003E second).\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EYou have to visit the points in the same order as they appear in the array.\u003C/li\u003E\n\t\u003Cli\u003EYou are allowed to pass through points that appear later in the order, but these do not count as visits.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2019/11/14/1626_example_1.PNG\u0022 style=\u0022width: 500px; height: 428px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,1],[3,4],[-1,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EOne optimal path is \u003Cstrong\u003E[1,1]\u003C/strong\u003E -\u0026gt; [2,2] -\u0026gt; [3,3] -\u0026gt; \u003Cstrong\u003E[3,4] \u003C/strong\u003E-\u0026gt; [2,3] -\u0026gt; [1,2] -\u0026gt; [0,1] -\u0026gt; \u003Cstrong\u003E[-1,0]\u003C/strong\u003E   \nTime from [1,1] to [3,4] = 3 seconds \nTime from [3,4] to [-1,0] = 4 seconds\nTotal time = 7 seconds\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[3,2],[-2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints.length == n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n\u0026nbsp;\u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000\u0026nbsp;\u0026lt;= points[i][0], points[i][1]\u0026nbsp;\u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "To walk from point A to point B there will be an optimal strategy to walk ?",
+    "Advance in diagonal as possible then after that go in straight line.",
+    "Repeat the process until visiting all the points."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,1],[3,4],[-1,0]]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "[[3,2],[-2,2]]",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.1144245+00:00",
+  "Url": "https://leetcode.com/problems/minimum-time-visiting-all-points/"
+}

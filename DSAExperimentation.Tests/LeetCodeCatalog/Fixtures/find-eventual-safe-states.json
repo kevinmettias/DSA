@@ -1,0 +1,35 @@
+{
+  "QuestionId": 820,
+  "FrontendId": 802,
+  "Title": "Find Eventual Safe States",
+  "TitleSlug": "find-eventual-safe-states",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Graph Theory",
+    "Topological Sort",
+    "Kosaraju\u0027s Algorithm",
+    "Tarjan\u0027s SCC Algorithm"
+  ],
+  "AcceptanceRatePercent": 71.6,
+  "TotalAccepted": 631783,
+  "TotalSubmissions": 882886,
+  "Likes": 7214,
+  "Dislikes": 533,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a directed graph of \u003Ccode\u003En\u003C/code\u003E nodes with each node labeled from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. The graph is represented by a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D integer array \u003Ccode\u003Egraph\u003C/code\u003E where \u003Ccode\u003Egraph[i]\u003C/code\u003E is an integer array of nodes adjacent to node \u003Ccode\u003Ei\u003C/code\u003E, meaning there is an edge from node \u003Ccode\u003Ei\u003C/code\u003E to each node in \u003Ccode\u003Egraph[i]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA node is a \u003Cstrong\u003Eterminal node\u003C/strong\u003E if there are no outgoing edges. A node is a \u003Cstrong\u003Esafe node\u003C/strong\u003E if every possible path starting from that node leads to a \u003Cstrong\u003Eterminal node\u003C/strong\u003E (or another safe node).\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean array containing all the \u003Cstrong\u003Esafe nodes\u003C/strong\u003E of the graph\u003C/em\u003E. The answer should be sorted in \u003Cstrong\u003Eascending\u003C/strong\u003E order.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022Illustration of graph\u0022 src=\u0022https://s3-lc-upload.s3.amazonaws.com/uploads/2018/03/17/picture1.png\u0022 style=\u0022height: 171px; width: 600px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E graph = [[1,2],[2,3],[5],[0],[5],[],[]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [2,4,5,6]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The given graph is shown above.\nNodes 5 and 6 are terminal nodes as there are no outgoing edges from either of them.\nEvery path starting at nodes 2, 4, 5, and 6 all lead to either node 5 or 6.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E graph = [[1,2,3,4],[1,2],[3,4],[0,4],[]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [4]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nOnly node 4 is a terminal node, and every path starting at node 4 leads to node 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == graph.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= graph[i].length \u0026lt;= n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= graph[i][j] \u0026lt;= n - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egraph[i]\u003C/code\u003E is sorted in a strictly increasing order.\u003C/li\u003E\n\t\u003Cli\u003EThe graph may contain self-loops.\u003C/li\u003E\n\t\u003Cli\u003EThe number of edges in the graph will be in the range \u003Ccode\u003E[1, 4 * 10\u003Csup\u003E4\u003C/sup\u003E]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,2],[2,3],[5],[0],[5],[],[]]",
+      "RawExpectedOutput": "[2,4,5,6]"
+    },
+    {
+      "RawInput": "[[1,2,3,4],[1,2],[3,4],[0,4],[]]",
+      "RawExpectedOutput": "[4]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2294497+00:00",
+  "Url": "https://leetcode.com/problems/find-eventual-safe-states/"
+}

@@ -1,0 +1,34 @@
+{
+  "QuestionId": 746,
+  "FrontendId": 745,
+  "Title": "Prefix and Suffix Search",
+  "TitleSlug": "prefix-and-suffix-search",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Design",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 41.2,
+  "TotalAccepted": 113828,
+  "TotalSubmissions": 276575,
+  "Likes": 2362,
+  "Dislikes": 501,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a special dictionary that searches the words in it by a prefix and a suffix.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EWordFilter\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EWordFilter(string[] words)\u003C/code\u003E Initializes the object with the \u003Ccode\u003Ewords\u003C/code\u003E in the dictionary.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ef(string pref, string suff)\u003C/code\u003E Returns \u003Cem\u003Ethe index of the word in the dictionary,\u003C/em\u003E which has the prefix \u003Ccode\u003Epref\u003C/code\u003E and the suffix \u003Ccode\u003Esuff\u003C/code\u003E. If there is more than one valid index, return \u003Cstrong\u003Ethe largest\u003C/strong\u003E of them. If there is no such word in the dictionary, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;WordFilter\u0026quot;, \u0026quot;f\u0026quot;]\n[[[\u0026quot;apple\u0026quot;]], [\u0026quot;a\u0026quot;, \u0026quot;e\u0026quot;]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 0]\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nWordFilter wordFilter = new WordFilter([\u0026quot;apple\u0026quot;]);\nwordFilter.f(\u0026quot;a\u0026quot;, \u0026quot;e\u0026quot;); // return 0, because the word at index 0 has prefix = \u0026quot;a\u0026quot; and suffix = \u0026quot;e\u0026quot;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 7\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= pref.length, suff.length \u0026lt;= 7\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E, \u003Ccode\u003Epref\u003C/code\u003E and \u003Ccode\u003Esuff\u003C/code\u003E consist of lowercase English letters only.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to the function \u003Ccode\u003Ef\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Take \u0022apple\u0022 as an example, we will insert add \u0022apple{apple\u0022, \u0022pple{apple\u0022, \u0022ple{apple\u0022, \u0022le{apple\u0022, \u0022e{apple\u0022, \u0022{apple\u0022 into the Trie Tree.",
+    "If the query is: prefix = \u0022app\u0022, suffix = \u0022le\u0022, we can find it by querying our trie for\r\n\u0022le { app\u0022.",
+    "We use \u0027{\u0027 because in ASCii Table, \u0027{\u0027 is next to \u0027z\u0027, so we just need to create new TrieNode[27] instead of 26. Also, compared with traditional Trie, we add the attribute weight in class TrieNode.\r\nYou can still choose any different character."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022WordFilter\u0022,\u0022f\u0022]\n[[[\u0022apple\u0022]],[\u0022a\u0022,\u0022e\u0022]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5717298+00:00",
+  "Url": "https://leetcode.com/problems/prefix-and-suffix-search/"
+}

@@ -1,0 +1,25 @@
+{
+  "QuestionId": 295,
+  "FrontendId": 295,
+  "Title": "Find Median from Data Stream",
+  "TitleSlug": "find-median-from-data-stream",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Two Pointers",
+    "Design",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Data Stream"
+  ],
+  "AcceptanceRatePercent": 55,
+  "TotalAccepted": 1308282,
+  "TotalSubmissions": 2379468,
+  "Likes": 13454,
+  "Dislikes": 285,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe \u003Cstrong\u003Emedian\u003C/strong\u003E is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, for \u003Ccode\u003Earr = [2,3,4]\u003C/code\u003E, the median is \u003Ccode\u003E3\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EFor example, for \u003Ccode\u003Earr = [2,3]\u003C/code\u003E, the median is \u003Ccode\u003E(2 \u002B 3) / 2 = 2.5\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EImplement the MedianFinder class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMedianFinder()\u003C/code\u003E initializes the \u003Ccode\u003EMedianFinder\u003C/code\u003E object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid addNum(int num)\u003C/code\u003E adds the integer \u003Ccode\u003Enum\u003C/code\u003E from the data stream to the data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edouble findMedian()\u003C/code\u003E returns the median of all elements so far. Answers within \u003Ccode\u003E10\u003Csup\u003E-5\u003C/sup\u003E\u003C/code\u003E of the actual answer will be accepted.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MedianFinder\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;findMedian\u0026quot;, \u0026quot;addNum\u0026quot;, \u0026quot;findMedian\u0026quot;]\n[[], [1], [2], [], [3], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, 1.5, null, 2.0]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMedianFinder medianFinder = new MedianFinder();\nmedianFinder.addNum(1);    // arr = [1]\nmedianFinder.addNum(2);    // arr = [1, 2]\nmedianFinder.findMedian(); // return 1.5 (i.e., (1 \u002B 2) / 2)\nmedianFinder.addNum(3);    // arr[1, 2, 3]\nmedianFinder.findMedian(); // return 2.0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E5\u003C/sup\u003E \u0026lt;= num \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere will be at least one element in the data structure before calling \u003Ccode\u003EfindMedian\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003EaddNum\u003C/code\u003E and \u003Ccode\u003EfindMedian\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf all integer numbers from the stream are in the range \u003Ccode\u003E[0, 100]\u003C/code\u003E, how would you optimize your solution?\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003E99%\u003C/code\u003E of all integer numbers from the stream are in the range \u003Ccode\u003E[0, 100]\u003C/code\u003E, how would you optimize your solution?\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2458898+00:00",
+  "Url": "https://leetcode.com/problems/find-median-from-data-stream/"
+}

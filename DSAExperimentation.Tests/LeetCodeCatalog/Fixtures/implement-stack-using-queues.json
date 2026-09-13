@@ -1,0 +1,23 @@
+{
+  "QuestionId": 225,
+  "FrontendId": 225,
+  "Title": "Implement Stack using Queues",
+  "TitleSlug": "implement-stack-using-queues",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Stack",
+    "Design",
+    "Queue"
+  ],
+  "AcceptanceRatePercent": 70.5,
+  "TotalAccepted": 1270838,
+  "TotalSubmissions": 1801929,
+  "Likes": 7110,
+  "Dislikes": 1293,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EImplement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (\u003Ccode\u003Epush\u003C/code\u003E, \u003Ccode\u003Etop\u003C/code\u003E, \u003Ccode\u003Epop\u003C/code\u003E, and \u003Ccode\u003Eempty\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMyStack\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid push(int x)\u003C/code\u003E Pushes element x to the top of the stack.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint pop()\u003C/code\u003E Removes the element on the top of the stack and returns it.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint top()\u003C/code\u003E Returns the element on the top of the stack.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean empty()\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if the stack is empty, \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cb\u003ENotes:\u003C/b\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EYou must use \u003Cstrong\u003Eonly\u003C/strong\u003E standard operations of a queue, which means that only \u003Ccode\u003Epush to back\u003C/code\u003E, \u003Ccode\u003Epeek/pop from front\u003C/code\u003E, \u003Ccode\u003Esize\u003C/code\u003E and \u003Ccode\u003Eis empty\u003C/code\u003E operations are valid.\u003C/li\u003E\n\t\u003Cli\u003EDepending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue\u0026#39;s standard operations.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MyStack\u0026quot;, \u0026quot;push\u0026quot;, \u0026quot;push\u0026quot;, \u0026quot;top\u0026quot;, \u0026quot;pop\u0026quot;, \u0026quot;empty\u0026quot;]\n[[], [1], [2], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, 2, 2, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMyStack myStack = new MyStack();\nmyStack.push(1);\nmyStack.push(2);\nmyStack.top(); // return 2\nmyStack.pop(); // return 2\nmyStack.empty(); // return False\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= x \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E100\u003C/code\u003E calls will be made to \u003Ccode\u003Epush\u003C/code\u003E, \u003Ccode\u003Epop\u003C/code\u003E, \u003Ccode\u003Etop\u003C/code\u003E, and \u003Ccode\u003Eempty\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAll the calls to \u003Ccode\u003Epop\u003C/code\u003E and \u003Ccode\u003Etop\u003C/code\u003E are valid.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow-up:\u003C/strong\u003E Can you implement the stack using only one queue?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.4812356+00:00",
+  "Url": "https://leetcode.com/problems/implement-stack-using-queues/"
+}

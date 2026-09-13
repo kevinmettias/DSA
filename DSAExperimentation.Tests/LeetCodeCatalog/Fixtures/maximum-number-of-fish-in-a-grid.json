@@ -1,0 +1,37 @@
+{
+  "QuestionId": 2764,
+  "FrontendId": 2658,
+  "Title": "Maximum Number of Fish in a Grid",
+  "TitleSlug": "maximum-number-of-fish-in-a-grid",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Depth-First Search",
+    "Breadth-First Search",
+    "Union-Find",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 70.4,
+  "TotalAccepted": 168800,
+  "TotalSubmissions": 239797,
+  "Likes": 967,
+  "Dislikes": 67,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E 2D matrix \u003Ccode\u003Egrid\u003C/code\u003E of size \u003Ccode\u003Em x n\u003C/code\u003E, where \u003Ccode\u003E(r, c)\u003C/code\u003E represents:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EA \u003Cstrong\u003Eland\u003C/strong\u003E cell if \u003Ccode\u003Egrid[r][c] = 0\u003C/code\u003E, or\u003C/li\u003E\n\t\u003Cli\u003EA \u003Cstrong\u003Ewater\u003C/strong\u003E cell containing \u003Ccode\u003Egrid[r][c]\u003C/code\u003E fish, if \u003Ccode\u003Egrid[r][c] \u0026gt; 0\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EA fisher can start at any \u003Cstrong\u003Ewater\u003C/strong\u003E cell \u003Ccode\u003E(r, c)\u003C/code\u003E and can do the following operations any number of times:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003ECatch all the fish at cell \u003Ccode\u003E(r, c)\u003C/code\u003E, or\u003C/li\u003E\n\t\u003Cli\u003EMove to any adjacent \u003Cstrong\u003Ewater\u003C/strong\u003E cell.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E number of fish the fisher can catch if he chooses his starting cell optimally, or \u003C/em\u003E\u003Ccode\u003E0\u003C/code\u003E if no water cell exists.\u003C/p\u003E\n\n\u003Cp\u003EAn \u003Cstrong\u003Eadjacent\u003C/strong\u003E cell of the cell \u003Ccode\u003E(r, c)\u003C/code\u003E, is one of the cells \u003Ccode\u003E(r, c \u002B 1)\u003C/code\u003E, \u003Ccode\u003E(r, c - 1)\u003C/code\u003E, \u003Ccode\u003E(r \u002B 1, c)\u003C/code\u003E or \u003Ccode\u003E(r - 1, c)\u003C/code\u003E if it exists.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/03/29/example.png\u0022 style=\u0022width: 241px; height: 161px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[0,2,1,0],[4,0,0,3],[1,0,0,4],[0,3,2,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 7\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The fisher can start at cell \u003Ccode\u003E(1,3)\u003C/code\u003E and collect 3 fish, then move to cell \u003Ccode\u003E(2,3)\u003C/code\u003E\u0026nbsp;and collect 4 fish.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2023/03/29/example2.png\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E grid = [[1,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,1]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The fisher can start at cells (0,0) or (3,3) and collect a single fish. \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= grid[i][j] \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Run DFS from each non-zero cell.",
+    "Each time you pick a cell to start from, add up the number of fish contained in the cells you visit."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,2,1,0],[4,0,0,3],[1,0,0,4],[0,3,2,0]]",
+      "RawExpectedOutput": "7"
+    },
+    {
+      "RawInput": "[[1,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,1]]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9106146+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-fish-in-a-grid/"
+}

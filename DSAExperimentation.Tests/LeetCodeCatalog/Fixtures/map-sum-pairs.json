@@ -1,0 +1,24 @@
+{
+  "QuestionId": 677,
+  "FrontendId": 677,
+  "Title": "Map Sum Pairs",
+  "TitleSlug": "map-sum-pairs",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Design",
+    "Trie"
+  ],
+  "AcceptanceRatePercent": 57.4,
+  "TotalAccepted": 146653,
+  "TotalSubmissions": 255560,
+  "Likes": 1748,
+  "Dislikes": 167,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a map that allows you to do the following:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EMaps a string key to a given value.\u003C/li\u003E\n\t\u003Cli\u003EReturns the sum of the values that have a key with a prefix equal to a given string.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EMapSum\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMapSum()\u003C/code\u003E Initializes the \u003Ccode\u003EMapSum\u003C/code\u003E object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid insert(String key, int val)\u003C/code\u003E Inserts the \u003Ccode\u003Ekey-val\u003C/code\u003E pair into the map. If the \u003Ccode\u003Ekey\u003C/code\u003E already existed, the original \u003Ccode\u003Ekey-value\u003C/code\u003E pair will be overridden to the new one.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint sum(string prefix)\u003C/code\u003E Returns the sum of all the pairs\u0026#39; value whose \u003Ccode\u003Ekey\u003C/code\u003E starts with the \u003Ccode\u003Eprefix\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;MapSum\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;sum\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;sum\u0026quot;]\n[[], [\u0026quot;apple\u0026quot;, 3], [\u0026quot;ap\u0026quot;], [\u0026quot;app\u0026quot;, 2], [\u0026quot;ap\u0026quot;]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, 3, null, 5]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nMapSum mapSum = new MapSum();\nmapSum.insert(\u0026quot;apple\u0026quot;, 3);  \nmapSum.sum(\u0026quot;ap\u0026quot;);           // return 3 (\u003Cu\u003Eap\u003C/u\u003Eple = 3)\nmapSum.insert(\u0026quot;app\u0026quot;, 2);    \nmapSum.sum(\u0026quot;ap\u0026quot;);           // return 5 (\u003Cu\u003Eap\u003C/u\u003Eple \u002B \u003Cu\u003Eap\u003C/u\u003Ep = 3 \u002B 2 = 5)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= key.length, prefix.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ekey\u003C/code\u003E and \u003Ccode\u003Eprefix\u003C/code\u003E consist of only lowercase English letters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E50\u003C/code\u003E calls will be made to \u003Ccode\u003Einsert\u003C/code\u003E and \u003Ccode\u003Esum\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.8264205+00:00",
+  "Url": "https://leetcode.com/problems/map-sum-pairs/"
+}

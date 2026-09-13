@@ -1,0 +1,25 @@
+{
+  "QuestionId": 380,
+  "FrontendId": 380,
+  "Title": "Insert Delete GetRandom O(1)",
+  "TitleSlug": "insert-delete-getrandom-o1",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Design",
+    "Randomized"
+  ],
+  "AcceptanceRatePercent": 55.5,
+  "TotalAccepted": 1425760,
+  "TotalSubmissions": 2568141,
+  "Likes": 10067,
+  "Dislikes": 701,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EImplement the \u003Ccode\u003ERandomizedSet\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ERandomizedSet()\u003C/code\u003E Initializes the \u003Ccode\u003ERandomizedSet\u003C/code\u003E object.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool insert(int val)\u003C/code\u003E Inserts an item \u003Ccode\u003Eval\u003C/code\u003E into the set if not present. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the item was not present, \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool remove(int val)\u003C/code\u003E Removes an item \u003Ccode\u003Eval\u003C/code\u003E from the set if present. Returns \u003Ccode\u003Etrue\u003C/code\u003E if the item was present, \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint getRandom()\u003C/code\u003E Returns a random element from the current set of elements (it\u0026#39;s guaranteed that at least one element exists when this method is called). Each element must have the \u003Cb\u003Esame probability\u003C/b\u003E of being returned.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou must implement the functions of the class such that each function works in\u0026nbsp;\u003Cstrong\u003Eaverage\u003C/strong\u003E\u0026nbsp;\u003Ccode\u003EO(1)\u003C/code\u003E\u0026nbsp;time complexity.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;RandomizedSet\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;remove\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;getRandom\u0026quot;, \u0026quot;remove\u0026quot;, \u0026quot;insert\u0026quot;, \u0026quot;getRandom\u0026quot;]\n[[], [1], [2], [2], [], [1], [2], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, true, false, true, 2, true, false, 2]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nRandomizedSet randomizedSet = new RandomizedSet();\nrandomizedSet.insert(1); // Inserts 1 to the set. Returns true as 1 was inserted successfully.\nrandomizedSet.remove(2); // Returns false as 2 does not exist in the set.\nrandomizedSet.insert(2); // Inserts 2 to the set, returns true. Set now contains [1,2].\nrandomizedSet.getRandom(); // getRandom() should return either 1 or 2 randomly.\nrandomizedSet.remove(1); // Removes 1 from the set, returns true. Set now contains [2].\nrandomizedSet.insert(2); // 2 was already in the set, so return false.\nrandomizedSet.getRandom(); // Since 2 is the only number in the set, getRandom() will always return 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-2\u003Csup\u003E31\u003C/sup\u003E \u0026lt;= val \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E2 *\u0026nbsp;\u003C/code\u003E\u003Ccode\u003E10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Einsert\u003C/code\u003E, \u003Ccode\u003Eremove\u003C/code\u003E, and \u003Ccode\u003EgetRandom\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThere will be \u003Cstrong\u003Eat least one\u003C/strong\u003E element in the data structure when \u003Ccode\u003EgetRandom\u003C/code\u003E is called.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.5019441+00:00",
+  "Url": "https://leetcode.com/problems/insert-delete-getrandom-o1/"
+}

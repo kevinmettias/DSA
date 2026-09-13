@@ -1,0 +1,36 @@
+{
+  "QuestionId": 886,
+  "FrontendId": 856,
+  "Title": "Score of Parentheses",
+  "TitleSlug": "score-of-parentheses",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 63.5,
+  "TotalAccepted": 231802,
+  "TotalSubmissions": 365204,
+  "Likes": 5645,
+  "Dislikes": 241,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a balanced parentheses string \u003Ccode\u003Es\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Escore\u003C/strong\u003E of the string\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe \u003Cstrong\u003Escore\u003C/strong\u003E of a balanced parentheses string is based on the following rule:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;()\u0026quot;\u003C/code\u003E has score \u003Ccode\u003E1\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EAB\u003C/code\u003E has score \u003Ccode\u003EA \u002B B\u003C/code\u003E, where \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E are balanced parentheses strings.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E(A)\u003C/code\u003E has score \u003Ccode\u003E2 * A\u003C/code\u003E, where \u003Ccode\u003EA\u003C/code\u003E is a balanced parentheses string.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(())\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;()()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= s.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of only \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E is a balanced parentheses string.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022()\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022(())\u0022",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "\u0022()()\u0022",
+      "RawExpectedOutput": "2"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9056649+00:00",
+  "Url": "https://leetcode.com/problems/score-of-parentheses/"
+}

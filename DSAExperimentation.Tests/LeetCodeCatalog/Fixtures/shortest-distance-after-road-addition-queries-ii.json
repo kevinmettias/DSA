@@ -1,0 +1,33 @@
+{
+  "QuestionId": 3514,
+  "FrontendId": 3244,
+  "Title": "Shortest Distance After Road Addition Queries II",
+  "TitleSlug": "shortest-distance-after-road-addition-queries-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Greedy",
+    "Graph Theory",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 26.8,
+  "TotalAccepted": 16154,
+  "TotalSubmissions": 60212,
+  "Likes": 213,
+  "Dislikes": 6,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer \u003Ccode\u003En\u003C/code\u003E and a 2D integer array \u003Ccode\u003Equeries\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere are \u003Ccode\u003En\u003C/code\u003E cities numbered from \u003Ccode\u003E0\u003C/code\u003E to \u003Ccode\u003En - 1\u003C/code\u003E. Initially, there is a \u003Cstrong\u003Eunidirectional\u003C/strong\u003E road from city \u003Ccode\u003Ei\u003C/code\u003E to city \u003Ccode\u003Ei \u002B 1\u003C/code\u003E for all \u003Ccode\u003E0 \u0026lt;= i \u0026lt; n - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003Equeries[i] = [u\u003Csub\u003Ei\u003C/sub\u003E, v\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E represents the addition of a new \u003Cstrong\u003Eunidirectional\u003C/strong\u003E road from city \u003Ccode\u003Eu\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E to city \u003Ccode\u003Ev\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E. After each query, you need to find the \u003Cstrong\u003Elength\u003C/strong\u003E of the \u003Cstrong\u003Eshortest path\u003C/strong\u003E from city \u003Ccode\u003E0\u003C/code\u003E to city \u003Ccode\u003En - 1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere are no two queries such that \u003Ccode\u003Equeries[i][0] \u0026lt; queries[j][0] \u0026lt; queries[i][1] \u0026lt; queries[j][1]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn an array \u003Ccode\u003Eanswer\u003C/code\u003E where for each \u003Ccode\u003Ei\u003C/code\u003E in the range \u003Ccode\u003E[0, queries.length - 1]\u003C/code\u003E, \u003Ccode\u003Eanswer[i]\u003C/code\u003E is the \u003Cem\u003Elength of the shortest path\u003C/em\u003E from city \u003Ccode\u003E0\u003C/code\u003E to city \u003Ccode\u003En - 1\u003C/code\u003E after processing the \u003Cstrong\u003Efirst \u003C/strong\u003E\u003Ccode\u003Ei \u002B 1\u003C/code\u003E queries.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 5, queries = [[2,4],[0,2],[0,4]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[3,2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation: \u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/28/image8.jpg\u0022 style=\u0022width: 350px; height: 60px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAfter the addition of the road from 2 to 4, the length of the shortest path from 0 to 4 is 3.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/28/image9.jpg\u0022 style=\u0022width: 350px; height: 60px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAfter the addition of the road from 0 to 2, the length of the shortest path from 0 to 4 is 2.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/28/image10.jpg\u0022 style=\u0022width: 350px; height: 96px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAfter the addition of the road from 0 to 4, the length of the shortest path from 0 to 4 is 1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, queries = [[0,3],[0,2]]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[1,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/28/image11.jpg\u0022 style=\u0022width: 300px; height: 70px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAfter the addition of the road from 0 to 3, the length of the shortest path from 0 to 3 is 1.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2024/06/28/image12.jpg\u0022 style=\u0022width: 300px; height: 70px;\u0022 /\u003E\u003C/p\u003E\n\n\u003Cp\u003EAfter the addition of the road from 0 to 2, the length of the shortest path remains 1.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Equeries[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= queries[i][0] \u0026lt; queries[i][1] \u0026lt; n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt; queries[i][1] - queries[i][0]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are no repeated roads among the queries.\u003C/li\u003E\n\t\u003Cli\u003EThere are no two queries such that \u003Ccode\u003Ei != j\u003C/code\u003E and \u003Ccode\u003Equeries[i][0] \u0026lt; queries[j][0] \u0026lt; queries[i][1] \u0026lt; queries[j][1]\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "5\n[[2,4],[0,2],[0,4]]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "4\n[[0,3],[0,2]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9629489+00:00",
+  "Url": "https://leetcode.com/problems/shortest-distance-after-road-addition-queries-ii/"
+}

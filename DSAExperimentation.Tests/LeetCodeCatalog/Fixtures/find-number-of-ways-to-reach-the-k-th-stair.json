@@ -1,0 +1,38 @@
+{
+  "QuestionId": 3414,
+  "FrontendId": 3154,
+  "Title": "Find Number of Ways to Reach the K-th Stair",
+  "TitleSlug": "find-number-of-ways-to-reach-the-k-th-stair",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Math",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Memoization",
+    "Combinatorics"
+  ],
+  "AcceptanceRatePercent": 37.9,
+  "TotalAccepted": 16905,
+  "TotalSubmissions": 44602,
+  "Likes": 206,
+  "Dislikes": 14,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003Enon-negative\u003C/strong\u003E integer \u003Ccode\u003Ek\u003C/code\u003E. There exists a staircase with an infinite number of stairs, with the \u003Cstrong\u003Elowest\u003C/strong\u003E stair numbered 0.\u003C/p\u003E\n\n\u003Cp\u003EAlice has an integer \u003Ccode\u003Ejump\u003C/code\u003E, with an initial value of 0. She starts on stair 1 and wants to reach stair \u003Ccode\u003Ek\u003C/code\u003E using \u003Cstrong\u003Eany\u003C/strong\u003E number of \u003Cstrong\u003Eoperations\u003C/strong\u003E. If she is on stair \u003Ccode\u003Ei\u003C/code\u003E, in one \u003Cstrong\u003Eoperation\u003C/strong\u003E she can:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EGo down to stair \u003Ccode\u003Ei - 1\u003C/code\u003E. This operation \u003Cstrong\u003Ecannot\u003C/strong\u003E be used consecutively or on stair 0.\u003C/li\u003E\n\t\u003Cli\u003EGo up to stair \u003Ccode\u003Ei \u002B 2\u003Csup\u003Ejump\u003C/sup\u003E\u003C/code\u003E. And then, \u003Ccode\u003Ejump\u003C/code\u003E becomes \u003Ccode\u003Ejump \u002B 1\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the \u003Cem\u003Etotal\u003C/em\u003E number of ways Alice can reach stair \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote\u003C/strong\u003E that it is possible that Alice reaches the stair \u003Ccode\u003Ek\u003C/code\u003E, and performs some operations to reach the stair \u003Ccode\u003Ek\u003C/code\u003E again.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ek = 0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe 2 possible ways of reaching stair 0 are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice starts at stair 1.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 0.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EAlice starts at stair 1.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 0.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the second type, she goes up 2\u003Csup\u003E0\u003C/sup\u003E stairs to reach stair 1.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 0.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Ek = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe 4 possible ways of reaching stair 1 are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAlice starts at stair 1. Alice is at stair 1.\u003C/li\u003E\n\t\u003Cli\u003EAlice starts at stair 1.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 0.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the second type, she goes up 2\u003Csup\u003E0\u003C/sup\u003E stairs to reach stair 1.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EAlice starts at stair 1.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUsing an operation of the second type, she goes up 2\u003Csup\u003E0\u003C/sup\u003E stairs to reach stair 2.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 1.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\t\u003Cli\u003EAlice starts at stair 1.\n\t\u003Cul\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 0.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the second type, she goes up 2\u003Csup\u003E0\u003C/sup\u003E stairs to reach stair 1.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 0.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the second type, she goes up 2\u003Csup\u003E1\u003C/sup\u003E stairs to reach stair 2.\u003C/li\u003E\n\t\t\u003Cli\u003EUsing an operation of the first type, she goes down 1 stair to reach stair 1.\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "On using \u003Ccode\u003Ex\u003C/code\u003E operations of the second type and \u003Ccode\u003Ey\u003C/code\u003E operations of the first type, the stair \u003Ccode\u003E2\u003Csup\u003Ex\u003C/sup\u003E - y\u003C/code\u003E is reached.",
+    "Since first operations cannot be consecutive, there are exactly \u003Ccode\u003Ex \u002B 1\u003C/code\u003E positions (before and after each power of 2) to perform the second operation.",
+    "Using combinatorics, we have \u003Csup\u003Ex \u002B 1\u003C/sup\u003EC\u003Csub\u003Ey\u003C/sub\u003E number of ways to select the positions of second operations."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "0",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2643446+00:00",
+  "Url": "https://leetcode.com/problems/find-number-of-ways-to-reach-the-k-th-stair/"
+}

@@ -1,0 +1,35 @@
+{
+  "QuestionId": 91,
+  "FrontendId": 91,
+  "Title": "Decode Ways",
+  "TitleSlug": "decode-ways",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Dynamic Programming"
+  ],
+  "AcceptanceRatePercent": 38.6,
+  "TotalAccepted": 1746505,
+  "TotalSubmissions": 4525609,
+  "Likes": 13108,
+  "Dislikes": 4618,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou have intercepted a secret message encoded as a string of numbers. The message is \u003Cstrong\u003Edecoded\u003C/strong\u003E via the following mapping:\u003C/p\u003E\n\n\u003Cp\u003E\u003Ccode\u003E\u0026quot;1\u0026quot; -\u0026gt; \u0026#39;A\u0026#39;\u003Cbr /\u003E\n\u0026quot;2\u0026quot; -\u0026gt; \u0026#39;B\u0026#39;\u003Cbr /\u003E\n...\u003Cbr /\u003E\n\u0026quot;25\u0026quot; -\u0026gt; \u0026#39;Y\u0026#39;\u003Cbr /\u003E\n\u0026quot;26\u0026quot; -\u0026gt; \u0026#39;Z\u0026#39;\u003C/code\u003E\u003C/p\u003E\n\n\u003Cp\u003EHowever, while decoding the message, you realize that there are many different ways you can decode the message because some codes are contained in other codes (\u003Ccode\u003E\u0026quot;2\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;5\u0026quot;\u003C/code\u003E vs \u003Ccode\u003E\u0026quot;25\u0026quot;\u003C/code\u003E).\u003C/p\u003E\n\n\u003Cp\u003EFor example, \u003Ccode\u003E\u0026quot;11106\u0026quot;\u003C/code\u003E can be decoded into:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;AAJF\u0026quot;\u003C/code\u003E with the grouping \u003Ccode\u003E(1, 1, 10, 6)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026quot;KJF\u0026quot;\u003C/code\u003E with the grouping \u003Ccode\u003E(11, 10, 6)\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe grouping \u003Ccode\u003E(1, 11, 06)\u003C/code\u003E is invalid because \u003Ccode\u003E\u0026quot;06\u0026quot;\u003C/code\u003E is not a valid code (only \u003Ccode\u003E\u0026quot;6\u0026quot;\u003C/code\u003E is valid).\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ENote: there may be strings that are impossible to decode.\u003Cbr /\u003E\n\u003Cbr /\u003E\nGiven a string s containing only digits, return the \u003Cstrong\u003Enumber of ways\u003C/strong\u003E to \u003Cstrong\u003Edecode\u003C/strong\u003E it. If the entire string cannot be decoded in any valid way, return \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe test cases are generated so that the answer fits in a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;12\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026quot;12\u0026quot; could be decoded as \u0026quot;AB\u0026quot; (1 2) or \u0026quot;L\u0026quot; (12).\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;226\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026quot;226\u0026quot; could be decoded as \u0026quot;BZ\u0026quot; (2 26), \u0026quot;VF\u0026quot; (22 6), or \u0026quot;BBF\u0026quot; (2 2 6).\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Es = \u0026quot;06\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026quot;06\u0026quot; cannot be mapped to \u0026quot;F\u0026quot; because of the leading zero (\u0026quot;6\u0026quot; is different from \u0026quot;06\u0026quot;). In this case, the string is not a valid encoding, so return 0.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E contains only digits and may contain leading zero(s).\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u002212\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022226\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u002206\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.056764+00:00",
+  "Url": "https://leetcode.com/problems/decode-ways/"
+}

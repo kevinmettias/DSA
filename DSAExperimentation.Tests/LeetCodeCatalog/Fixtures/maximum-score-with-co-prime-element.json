@@ -1,0 +1,43 @@
+{
+  "QuestionId": 4182,
+  "FrontendId": 3953,
+  "Title": "Maximum Score with Co-Prime Element",
+  "TitleSlug": "maximum-score-with-co-prime-element",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Math",
+    "Combinatorics",
+    "Enumeration",
+    "Number Theory"
+  ],
+  "AcceptanceRatePercent": 29.3,
+  "TotalAccepted": 4060,
+  "TotalSubmissions": 13873,
+  "Likes": 27,
+  "Dislikes": 5,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E of length \u003Ccode\u003En\u003C/code\u003E and an integer \u003Ccode\u003EmaxVal\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou \u003Cstrong\u003Emay\u003C/strong\u003E change any element in \u003Ccode\u003Enums\u003C/code\u003E to any positive integer \u003Cstrong\u003Eless than or equal\u003C/strong\u003E to \u003Ccode\u003EmaxVal\u003C/code\u003E. Each such change costs 1.\u003C/p\u003E\n\n\u003Cp\u003ETwo integers are \u003Cstrong\u003Eco-prime\u003C/strong\u003E if their \u003Cspan data-keyword=\u0022gcd-function\u0022\u003E\u003Cstrong\u003Egreatest common divisor (GCD)\u003C/strong\u003E\u003C/span\u003E is 1.\u003C/p\u003E\n\n\u003Cp\u003EAfter all modifications, you \u003Cstrong\u003Emust\u003C/strong\u003E choose an index \u003Ccode\u003Ei\u003C/code\u003E such that, \u003Ccode\u003Enums[i]\u003C/code\u003E is \u003Cstrong\u003Eco-prime\u003C/strong\u003E with every other element \u003Ccode\u003Enums[j]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ELet:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EselectedValue\u003C/code\u003E be the final value of \u003Ccode\u003Enums[i]\u003C/code\u003E after modifications.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EmodificationCost\u003C/code\u003E be the total number of elements changed.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe score is defined as \u003Ccode\u003Escore = selectedValue - modificationCost\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Emaximum\u003C/strong\u003E possible score.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [3,4,6], maxVal = 5\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EChange \u003Ccode\u003Enums[2]\u003C/code\u003E from 6 to 5, which costs 1. Choose \u003Ccode\u003Enums[2] = 5\u003C/code\u003E, since it is co-prime with 3 and 4.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EselectedValue = 5\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EmodificationCost = 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe score is \u003Ccode\u003E5 - 1 = 4\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3], maxVal = 4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ENo modifications are required. Choose \u003Ccode\u003Enums[2] = 3\u003C/code\u003E, since it is co-prime with 1 and 2.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EselectedValue = 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EmodificationCost = 0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe score is \u003Ccode\u003E3 - 0 = 3\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [2,2], maxVal = 1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EChange \u003Ccode\u003Enums[0]\u003C/code\u003E from 2 to 1, which costs 1. Choose \u003Ccode\u003Enums[1] = 2\u003C/code\u003E, since it is co-prime with 1.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EselectedValue = 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EmodificationCost = 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe score is \u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003Ccode\u003E2 - 1 = 1\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= maxVal \u0026lt;= 10\u003Csup\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "For a fixed chosen value \u003Ccode\u003Ex\u003C/code\u003E, every other element not co-prime with \u003Ccode\u003Ex\u003C/code\u003E must be changed.",
+    "Precompute how many numbers in \u003Ccode\u003Enums\u003C/code\u003E are divisible by each value, then use inclusion-exclusion over the prime factors of \u003Ccode\u003Ex\u003C/code\u003E to count elements sharing a common factor with \u003Ccode\u003Ex\u003C/code\u003E.",
+    "Try all possible selected values: existing values in \u003Ccode\u003Enums\u003C/code\u003E, and values up to \u003Ccode\u003EmaxVal\u003C/code\u003E that can be created by changing the selected element."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[3,4,6]\n5",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[1,2,3]\n4",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[2,2]\n1",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9266857+00:00",
+  "Url": "https://leetcode.com/problems/maximum-score-with-co-prime-element/"
+}

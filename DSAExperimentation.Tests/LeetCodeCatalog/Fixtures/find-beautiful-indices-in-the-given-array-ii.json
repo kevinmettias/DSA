@@ -1,0 +1,40 @@
+{
+  "QuestionId": 3303,
+  "FrontendId": 3008,
+  "Title": "Find Beautiful Indices in the Given Array II",
+  "TitleSlug": "find-beautiful-indices-in-the-given-array-ii",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Two Pointers",
+    "String",
+    "Binary Search",
+    "Rolling Hash",
+    "String Matching",
+    "Hash Function",
+    "Z Algorithm",
+    "Knuth\u2013Morris\u2013Pratt Algorithm",
+    "Boyer\u2013Moore String-Search Algorithm"
+  ],
+  "AcceptanceRatePercent": 28.6,
+  "TotalAccepted": 18981,
+  "TotalSubmissions": 66352,
+  "Likes": 218,
+  "Dislikes": 16,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a \u003Cstrong\u003E0-indexed\u003C/strong\u003E string \u003Ccode\u003Es\u003C/code\u003E, a string \u003Ccode\u003Ea\u003C/code\u003E, a string \u003Ccode\u003Eb\u003C/code\u003E, and an integer \u003Ccode\u003Ek\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAn index \u003Ccode\u003Ei\u003C/code\u003E is \u003Cstrong\u003Ebeautiful\u003C/strong\u003E if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= i \u0026lt;= s.length - a.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i..(i \u002B a.length - 1)] == a\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere exists an index \u003Ccode\u003Ej\u003C/code\u003E such that:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= j \u0026lt;= s.length - b.length\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Es[j..(j \u002B b.length - 1)] == b\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003E|j - i| \u0026lt;= k\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe array that contains beautiful indices in \u003Cstrong\u003Esorted order from smallest to largest\u003C/strong\u003E\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;isawsquirrelnearmysquirrelhouseohmy\u0026quot;, a = \u0026quot;my\u0026quot;, b = \u0026quot;squirrel\u0026quot;, k = 15\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [16,33]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are 2 beautiful indices: [16,33].\n- The index 16 is beautiful as s[16..17] == \u0026quot;my\u0026quot; and there exists an index 4 with s[4..11] == \u0026quot;squirrel\u0026quot; and |16 - 4| \u0026lt;= 15.\n- The index 33 is beautiful as s[33..34] == \u0026quot;my\u0026quot; and there exists an index 18 with s[18..25] == \u0026quot;squirrel\u0026quot; and |33 - 18| \u0026lt;= 15.\nThus we return [16,33] as the result.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;abcd\u0026quot;, a = \u0026quot;a\u0026quot;, b = \u0026quot;a\u0026quot;, k = 4\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is 1 beautiful index: [0].\n- The index 0 is beautiful as s[0..0] == \u0026quot;a\u0026quot; and there exists an index 0 with s[0..0] == \u0026quot;a\u0026quot; and |0 - 0| \u0026lt;= 4.\nThus we return [0] as the result.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= s.length \u0026lt;= 5 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= a.length, b.length \u0026lt;= 5 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E, \u003Ccode\u003Ea\u003C/code\u003E, and \u003Ccode\u003Eb\u003C/code\u003E contain only lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use KMP or string hashing."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022isawsquirrelnearmysquirrelhouseohmy\u0022\n\u0022my\u0022\n\u0022squirrel\u0022\n15",
+      "RawExpectedOutput": "[16,33]"
+    },
+    {
+      "RawInput": "\u0022abcd\u0022\n\u0022a\u0022\n\u0022a\u0022\n4",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2171452+00:00",
+  "Url": "https://leetcode.com/problems/find-beautiful-indices-in-the-given-array-ii/"
+}

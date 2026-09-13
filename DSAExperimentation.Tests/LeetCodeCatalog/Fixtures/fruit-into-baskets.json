@@ -1,0 +1,36 @@
+{
+  "QuestionId": 940,
+  "FrontendId": 904,
+  "Title": "Fruit Into Baskets",
+  "TitleSlug": "fruit-into-baskets",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Sliding Window"
+  ],
+  "AcceptanceRatePercent": 52.5,
+  "TotalAccepted": 965533,
+  "TotalSubmissions": 1840195,
+  "Likes": 6474,
+  "Dislikes": 637,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are visiting a farm that has a single row of fruit trees arranged from left to right. The trees are represented by an integer array \u003Ccode\u003Efruits\u003C/code\u003E where \u003Ccode\u003Efruits[i]\u003C/code\u003E is the \u003Cstrong\u003Etype\u003C/strong\u003E of fruit the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E tree produces.\u003C/p\u003E\n\n\u003Cp\u003EYou want to collect as much fruit as possible. However, the owner has some strict rules that you must follow:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EYou only have \u003Cstrong\u003Etwo\u003C/strong\u003E baskets, and each basket can only hold a \u003Cstrong\u003Esingle type\u003C/strong\u003E of fruit. There is no limit on the amount of fruit each basket can hold.\u003C/li\u003E\n\t\u003Cli\u003EStarting from any tree of your choice, you must pick \u003Cstrong\u003Eexactly one fruit\u003C/strong\u003E from \u003Cstrong\u003Eevery\u003C/strong\u003E tree (including the start tree) while moving to the right. The picked fruits must fit in one of your baskets.\u003C/li\u003E\n\t\u003Cli\u003EOnce you reach a tree with fruit that cannot fit in your baskets, you must stop.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven the integer array \u003Ccode\u003Efruits\u003C/code\u003E, return \u003Cem\u003Ethe \u003Cstrong\u003Emaximum\u003C/strong\u003E number of fruits you can pick\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E fruits = [\u003Cu\u003E1,2,1\u003C/u\u003E]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can pick from all 3 trees.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E fruits = [0,\u003Cu\u003E1,2,2\u003C/u\u003E]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can pick from trees [1,2,2].\nIf we had started at the first tree, we would only pick from trees [0,1].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E fruits = [1,\u003Cu\u003E2,3,2,2\u003C/u\u003E]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E We can pick from trees [2,3,2,2].\nIf we had started at the first tree, we would only pick from trees [1,2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= fruits.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= fruits[i] \u0026lt; fruits.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,1]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[0,1,2,2]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[1,2,3,2,2]",
+      "RawExpectedOutput": "4"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3680256+00:00",
+  "Url": "https://leetcode.com/problems/fruit-into-baskets/"
+}

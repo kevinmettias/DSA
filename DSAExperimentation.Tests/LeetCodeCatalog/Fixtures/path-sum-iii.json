@@ -1,0 +1,32 @@
+{
+  "QuestionId": 437,
+  "FrontendId": 437,
+  "Title": "Path Sum III",
+  "TitleSlug": "path-sum-iii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Tree",
+    "Depth-First Search",
+    "Binary Tree"
+  ],
+  "AcceptanceRatePercent": 46.6,
+  "TotalAccepted": 833189,
+  "TotalSubmissions": 1786229,
+  "Likes": 12061,
+  "Dislikes": 575,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven the \u003Ccode\u003Eroot\u003C/code\u003E of a binary tree and an integer \u003Ccode\u003EtargetSum\u003C/code\u003E, return \u003Cem\u003Ethe number of paths where the sum of the values\u0026nbsp;along the path equals\u003C/em\u003E\u0026nbsp;\u003Ccode\u003EtargetSum\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThe path does not need to start or end at the root or a leaf, but it must go downwards (i.e., traveling only from parent nodes to child nodes).\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/04/09/pathsum3-1-tree.jpg\u0022 style=\u0022width: 450px; height: 386px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The paths that sum to 8 are shown.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of nodes in the tree is in the range \u003Ccode\u003E[0, 1000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= Node.val \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= targetSum \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[10,5,-3,3,2,null,11,3,-2,null,1]\n8",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[5,4,8,11,null,13,4,7,2,null,null,5,1]\n22",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.4430344+00:00",
+  "Url": "https://leetcode.com/problems/path-sum-iii/"
+}

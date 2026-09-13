@@ -1,0 +1,31 @@
+{
+  "QuestionId": 81,
+  "FrontendId": 81,
+  "Title": "Search in Rotated Sorted Array II",
+  "TitleSlug": "search-in-rotated-sorted-array-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search"
+  ],
+  "AcceptanceRatePercent": 40.6,
+  "TotalAccepted": 1368708,
+  "TotalSubmissions": 3374804,
+  "Likes": 9871,
+  "Dislikes": 1135,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is an integer array \u003Ccode\u003Enums\u003C/code\u003E sorted in non-decreasing order (not necessarily with \u003Cstrong\u003Edistinct\u003C/strong\u003E values).\u003C/p\u003E\n\n\u003Cp\u003EBefore being passed to your function, \u003Ccode\u003Enums\u003C/code\u003E is \u003Cstrong\u003Erotated\u003C/strong\u003E at an unknown pivot index \u003Ccode\u003Ek\u003C/code\u003E (\u003Ccode\u003E0 \u0026lt;= k \u0026lt; nums.length\u003C/code\u003E) such that the resulting array is \u003Ccode\u003E[nums[k], nums[k\u002B1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]\u003C/code\u003E (\u003Cstrong\u003E0-indexed\u003C/strong\u003E). For example, \u003Ccode\u003E[0,1,2,4,4,4,5,6,6,7]\u003C/code\u003E might be rotated at pivot index \u003Ccode\u003E5\u003C/code\u003E and become \u003Ccode\u003E[4,5,6,6,7,0,1,2,4,4]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EGiven the array \u003Ccode\u003Enums\u003C/code\u003E \u003Cstrong\u003Eafter\u003C/strong\u003E the rotation and an integer \u003Ccode\u003Etarget\u003C/code\u003E, return \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if \u003C/em\u003E\u003Ccode\u003Etarget\u003C/code\u003E\u003Cem\u003E is in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E, or \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E if it is not in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003EYou must decrease the overall operation steps as much as possible.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,5,6,0,0,1,2], target = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [2,5,6,0,0,1,2], target = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Enums\u003C/code\u003E is guaranteed to be rotated at some pivot.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= target \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EFollow up:\u003C/strong\u003E This problem is similar to\u0026nbsp;\u003Ca href=\u0022/problems/search-in-rotated-sorted-array/description/\u0022 target=\u0022_blank\u0022\u003ESearch in Rotated Sorted Array\u003C/a\u003E, but\u0026nbsp;\u003Ccode\u003Enums\u003C/code\u003E may contain \u003Cstrong\u003Eduplicates\u003C/strong\u003E. Would this affect the runtime complexity? How and why?\u003C/p\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,5,6,0,0,1,2]\n0",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[2,5,6,0,0,1,2]\n3",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9205649+00:00",
+  "Url": "https://leetcode.com/problems/search-in-rotated-sorted-array-ii/"
+}

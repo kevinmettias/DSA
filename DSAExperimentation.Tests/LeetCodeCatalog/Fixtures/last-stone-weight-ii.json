@@ -1,0 +1,36 @@
+{
+  "QuestionId": 1130,
+  "FrontendId": 1049,
+  "Title": "Last Stone Weight II",
+  "TitleSlug": "last-stone-weight-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Knapsack Problem",
+    "0-1 Knapsack"
+  ],
+  "AcceptanceRatePercent": 60.8,
+  "TotalAccepted": 151000,
+  "TotalSubmissions": 248216,
+  "Likes": 3453,
+  "Dislikes": 148,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array of integers \u003Ccode\u003Estones\u003C/code\u003E where \u003Ccode\u003Estones[i]\u003C/code\u003E is the weight of the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E stone.\u003C/p\u003E\n\n\u003Cp\u003EWe are playing a game with the stones. On each turn, we choose any two stones and smash them together. Suppose the stones have weights \u003Ccode\u003Ex\u003C/code\u003E and \u003Ccode\u003Ey\u003C/code\u003E with \u003Ccode\u003Ex \u0026lt;= y\u003C/code\u003E. The result of this smash is:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Ex == y\u003C/code\u003E, both stones are destroyed, and\u003C/li\u003E\n\t\u003Cli\u003EIf \u003Ccode\u003Ex != y\u003C/code\u003E, the stone of weight \u003Ccode\u003Ex\u003C/code\u003E is destroyed, and the stone of weight \u003Ccode\u003Ey\u003C/code\u003E has new weight \u003Ccode\u003Ey - x\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EAt the end of the game, there is \u003Cstrong\u003Eat most one\u003C/strong\u003E stone left.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe smallest possible weight of the left stone\u003C/em\u003E. If there are no stones left, return \u003Ccode\u003E0\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [2,7,4,1,8,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nWe can combine 2 and 4 to get 2, so the array converts to [2,7,1,8,1] then,\nwe can combine 7 and 8 to get 1, so the array converts to [2,1,1,1] then,\nwe can combine 2 and 1 to get 1, so the array converts to [1,1,1] then,\nwe can combine 1 and 1 to get 0, so the array converts to [1], then that\u0026#39;s the optimal value.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E stones = [31,26,33,21,40]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 5\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stones.length \u0026lt;= 30\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= stones[i] \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Think of the final answer as a sum of weights with \u002B or - sign symbols infront of each weight.  Actually, all sums with 1 of each sign symbol are possible.",
+    "Use dynamic programming: for every possible sum with N stones, those sums \u002Bx or -x is possible with N\u002B1 stones, where x is the value of the newest stone.  (This overcounts sums that are all positive or all negative, but those don\u0027t matter.)"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[2,7,4,1,8,1]",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "[31,26,33,21,40]",
+      "RawExpectedOutput": "5"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.6385317+00:00",
+  "Url": "https://leetcode.com/problems/last-stone-weight-ii/"
+}

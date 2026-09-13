@@ -1,0 +1,37 @@
+{
+  "QuestionId": 187,
+  "FrontendId": 187,
+  "Title": "Repeated DNA Sequences",
+  "TitleSlug": "repeated-dna-sequences",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "String",
+    "Bit Manipulation",
+    "Sliding Window",
+    "Rolling Hash",
+    "Hash Function",
+    "Z Algorithm",
+    "Boyer\u2013Moore String-Search Algorithm"
+  ],
+  "AcceptanceRatePercent": 54,
+  "TotalAccepted": 564351,
+  "TotalSubmissions": 1045043,
+  "Likes": 3681,
+  "Dislikes": 576,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThe \u003Cstrong\u003EDNA sequence\u003C/strong\u003E is composed of a series of nucleotides abbreviated as \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;C\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;G\u0026#39;\u003C/code\u003E, and \u003Ccode\u003E\u0026#39;T\u0026#39;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E\u0026quot;ACGAATTCCG\u0026quot;\u003C/code\u003E is a \u003Cstrong\u003EDNA sequence\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EWhen studying \u003Cstrong\u003EDNA\u003C/strong\u003E, it is useful to identify repeated sequences within the DNA.\u003C/p\u003E\n\n\u003Cp\u003EGiven a string \u003Ccode\u003Es\u003C/code\u003E that represents a \u003Cstrong\u003EDNA sequence\u003C/strong\u003E, return all the \u003Cstrong\u003E\u003Ccode\u003E10\u003C/code\u003E-letter-long\u003C/strong\u003E sequences (substrings) that occur more than once in a DNA molecule. You may return the answer in \u003Cstrong\u003Eany order\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0022AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0022AAAAACCCCC\u0022,\u0022CCCCCAAAAA\u0022]\n\u003C/pre\u003E\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cpre\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0022AAAAAAAAAAAAA\u0022\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [\u0022AAAAAAAAAA\u0022]\n\u003C/pre\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es[i]\u003C/code\u003E is either \u003Ccode\u003E\u0026#39;A\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;C\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;G\u0026#39;\u003C/code\u003E, or \u003Ccode\u003E\u0026#39;T\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT\u0022",
+      "RawExpectedOutput": "[\u0022AAAAACCCCC\u0022,\u0022CCCCCAAAAA\u0022]"
+    },
+    {
+      "RawInput": "\u0022AAAAAAAAAAAAA\u0022",
+      "RawExpectedOutput": "[\u0022AAAAAAAAAA\u0022]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8001643+00:00",
+  "Url": "https://leetcode.com/problems/repeated-dna-sequences/"
+}

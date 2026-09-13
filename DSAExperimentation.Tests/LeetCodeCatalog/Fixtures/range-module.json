@@ -1,0 +1,30 @@
+{
+  "QuestionId": 715,
+  "FrontendId": 715,
+  "Title": "Range Module",
+  "TitleSlug": "range-module",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Design",
+    "Segment Tree",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 45.5,
+  "TotalAccepted": 99403,
+  "TotalSubmissions": 218497,
+  "Likes": 1610,
+  "Dislikes": 144,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA Range Module is a module that tracks ranges of numbers. Design a data structure to track the ranges represented as \u003Cstrong\u003Ehalf-open intervals\u003C/strong\u003E and query about them.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong\u003Ehalf-open interval\u003C/strong\u003E \u003Ccode\u003E[left, right)\u003C/code\u003E denotes all the real numbers \u003Ccode\u003Ex\u003C/code\u003E where \u003Ccode\u003Eleft \u0026lt;= x \u0026lt; right\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ERangeModule\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ERangeModule()\u003C/code\u003E Initializes the object of the data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid addRange(int left, int right)\u003C/code\u003E Adds the \u003Cstrong\u003Ehalf-open interval\u003C/strong\u003E \u003Ccode\u003E[left, right)\u003C/code\u003E, tracking every real number in that interval. Adding an interval that partially overlaps with currently tracked numbers should add any numbers in the interval \u003Ccode\u003E[left, right)\u003C/code\u003E that are not already tracked.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eboolean queryRange(int left, int right)\u003C/code\u003E Returns \u003Ccode\u003Etrue\u003C/code\u003E if every real number in the interval \u003Ccode\u003E[left, right)\u003C/code\u003E is currently being tracked, and \u003Ccode\u003Efalse\u003C/code\u003E otherwise.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid removeRange(int left, int right)\u003C/code\u003E Stops tracking every real number currently being tracked in the \u003Cstrong\u003Ehalf-open interval\u003C/strong\u003E \u003Ccode\u003E[left, right)\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;RangeModule\u0026quot;, \u0026quot;addRange\u0026quot;, \u0026quot;removeRange\u0026quot;, \u0026quot;queryRange\u0026quot;, \u0026quot;queryRange\u0026quot;, \u0026quot;queryRange\u0026quot;]\n[[], [10, 20], [14, 16], [10, 14], [13, 15], [16, 17]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, true, false, true]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nRangeModule rangeModule = new RangeModule();\nrangeModule.addRange(10, 20);\nrangeModule.removeRange(14, 16);\nrangeModule.queryRange(10, 14); // return True,(Every number in [10, 14) is being tracked)\nrangeModule.queryRange(13, 15); // return False,(Numbers like 14, 14.03, 14.17 in [13, 15) are not being tracked)\nrangeModule.queryRange(16, 17); // return True, (The number 16 in [16, 17) is still being tracked, despite the remove operation)\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= left \u0026lt; right \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003EaddRange\u003C/code\u003E, \u003Ccode\u003EqueryRange\u003C/code\u003E, and \u003Ccode\u003EremoveRange\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Maintain a sorted set of disjoint intervals.  addRange and removeRange can be performed with time complexity linear to the size of this set; queryRange can be performed with time complexity logarithmic to the size of this set."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022RangeModule\u0022,\u0022addRange\u0022,\u0022removeRange\u0022,\u0022queryRange\u0022,\u0022queryRange\u0022,\u0022queryRange\u0022]\n[[],[10,20],[14,16],[10,14],[13,15],[16,17]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.648034+00:00",
+  "Url": "https://leetcode.com/problems/range-module/"
+}

@@ -1,0 +1,26 @@
+{
+  "QuestionId": 384,
+  "FrontendId": 384,
+  "Title": "Shuffle an Array",
+  "TitleSlug": "shuffle-an-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Design",
+    "Randomized"
+  ],
+  "AcceptanceRatePercent": 60,
+  "TotalAccepted": 404798,
+  "TotalSubmissions": 674652,
+  "Likes": 1451,
+  "Dislikes": 947,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an integer array \u003Ccode\u003Enums\u003C/code\u003E, design an algorithm to randomly shuffle the array. All permutations of the array should be \u003Cstrong\u003Eequally likely\u003C/strong\u003E as a result of the shuffling.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ESolution\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ESolution(int[] nums)\u003C/code\u003E Initializes the object with the integer array \u003Ccode\u003Enums\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint[] reset()\u003C/code\u003E Resets the array to its original configuration and returns it.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint[] shuffle()\u003C/code\u003E Returns a random shuffling of the array.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;Solution\u0026quot;, \u0026quot;shuffle\u0026quot;, \u0026quot;reset\u0026quot;, \u0026quot;shuffle\u0026quot;]\n[[[1, 2, 3]], [], [], []]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, [3, 1, 2], [1, 2, 3], [1, 3, 2]]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nSolution solution = new Solution([1, 2, 3]);\nsolution.shuffle();    // Shuffle the array [1,2,3] and return its result.\n                       // Any permutation of [1,2,3] must be equally likely to be returned.\n                       // Example: return [3, 1, 2]\nsolution.reset();      // Resets the array back to its original configuration [1,2,3]. Return [1, 2, 3]\nsolution.shuffle();    // Returns the random shuffling of array [1,2,3]. Example: return [1, 3, 2]\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 50\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E6\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E6\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the elements of \u003Ccode\u003Enums\u003C/code\u003E are \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls \u003Cstrong\u003Ein total\u003C/strong\u003E will be made to \u003Ccode\u003Ereset\u003C/code\u003E and \u003Ccode\u003Eshuffle\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The solution expects that we always use the original array to shuffle() else some of the test cases fail. (Credits; @snehasingh31)"
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9938667+00:00",
+  "Url": "https://leetcode.com/problems/shuffle-an-array/"
+}

@@ -1,0 +1,35 @@
+{
+  "QuestionId": 1185,
+  "FrontendId": 1095,
+  "Title": "Find in Mountain Array",
+  "TitleSlug": "find-in-mountain-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Interactive",
+    "Ternary Search"
+  ],
+  "AcceptanceRatePercent": 42,
+  "TotalAccepted": 219910,
+  "TotalSubmissions": 523359,
+  "Likes": 3667,
+  "Dislikes": 158,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003E\u003Cem\u003E(This problem is an \u003Cstrong\u003Einteractive problem\u003C/strong\u003E.)\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003EYou may recall that an array \u003Ccode\u003Earr\u003C/code\u003E is a \u003Cstrong\u003Emountain array\u003C/strong\u003E if and only if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Earr.length \u0026gt;= 3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere exists some \u003Ccode\u003Ei\u003C/code\u003E with \u003Ccode\u003E0 \u0026lt; i \u0026lt; arr.length - 1\u003C/code\u003E such that:\n\t\u003Cul\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Earr[0] \u0026lt; arr[1] \u0026lt; ... \u0026lt; arr[i - 1] \u0026lt; arr[i]\u003C/code\u003E\u003C/li\u003E\n\t\t\u003Cli\u003E\u003Ccode\u003Earr[i] \u0026gt; arr[i \u002B 1] \u0026gt; ... \u0026gt; arr[arr.length - 1]\u003C/code\u003E\u003C/li\u003E\n\t\u003C/ul\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven a mountain array \u003Ccode\u003EmountainArr\u003C/code\u003E, return the \u003Cstrong\u003Eminimum\u003C/strong\u003E \u003Ccode\u003Eindex\u003C/code\u003E such that \u003Ccode\u003EmountainArr.get(index) == target\u003C/code\u003E. If such an \u003Ccode\u003Eindex\u003C/code\u003E does not exist, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EYou cannot access the mountain array directly.\u003C/strong\u003E You may only access the array using a \u003Ccode\u003EMountainArray\u003C/code\u003E interface:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMountainArray.get(k)\u003C/code\u003E returns the element of the array at index \u003Ccode\u003Ek\u003C/code\u003E (0-indexed).\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EMountainArray.length()\u003C/code\u003E returns the length of the array.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003ESubmissions making more than \u003Ccode\u003E100\u003C/code\u003E calls to \u003Ccode\u003EMountainArray.get\u003C/code\u003E will be judged \u003Cem\u003EWrong Answer\u003C/em\u003E. Also, any solutions that attempt to circumvent the judge will result in disqualification.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mountainArr = [1,2,3,4,5,3,1], target = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 2\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 3 exists in the array, at index=2 and index=5. Return the minimum index, which is 2.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E mountainArr = [0,1,2,4,2,1], target = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 3 does not exist in \u003Ccode\u003Ethe array,\u003C/code\u003E so we return -1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E3 \u0026lt;= mountainArr.length() \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= target \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= mountainArr.get(index) \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Based on whether A[i-1] \u003C A[i] \u003C A[i\u002B1], A[i-1] \u003C A[i] \u003E A[i\u002B1], or A[i-1] \u003E A[i] \u003E A[i\u002B1], we are either at the left side, peak, or right side of the mountain.  We can binary search to find the peak.\r\nAfter finding the peak, we can binary search two more times to find whether the value occurs on either side of the peak."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4,5,3,1]\n3",
+      "RawExpectedOutput": "2"
+    },
+    {
+      "RawInput": "[0,1,2,4,2,1]\n3",
+      "RawExpectedOutput": "-1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.2392596+00:00",
+  "Url": "https://leetcode.com/problems/find-in-mountain-array/"
+}

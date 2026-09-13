@@ -1,0 +1,37 @@
+{
+  "QuestionId": 948,
+  "FrontendId": 912,
+  "Title": "Sort an Array",
+  "TitleSlug": "sort-an-array",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Divide and Conquer",
+    "Sorting",
+    "Heap (Priority Queue)",
+    "Merge Sort",
+    "Bucket Sort",
+    "Radix Sort",
+    "Counting Sort"
+  ],
+  "AcceptanceRatePercent": 55.7,
+  "TotalAccepted": 1217680,
+  "TotalSubmissions": 2187789,
+  "Likes": 7376,
+  "Dislikes": 850,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of integers \u003Ccode\u003Enums\u003C/code\u003E, sort the array in ascending order and return it.\u003C/p\u003E\n\n\u003Cp\u003EYou must solve the problem \u003Cstrong\u003Ewithout using any built-in\u003C/strong\u003E functions in \u003Ccode\u003EO(nlog(n))\u003C/code\u003E time complexity and with the smallest space complexity possible.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,2,3,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [1,2,3,5]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E After sorting the array, the positions of some numbers are not changed (for example, 2 and 3), while the positions of other numbers are changed (for example, 1 and 5).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [5,1,1,2,0,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0,1,1,2,5]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Note that the values of nums are not necessarily unique.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-5 * 10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[5,2,3,1]",
+      "RawExpectedOutput": "[1,2,3,5]"
+    },
+    {
+      "RawInput": "[5,1,1,2,0,0]",
+      "RawExpectedOutput": "[0,0,1,1,2,5]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0552864+00:00",
+  "Url": "https://leetcode.com/problems/sort-an-array/"
+}

@@ -1,0 +1,31 @@
+{
+  "QuestionId": 1027,
+  "FrontendId": 985,
+  "Title": "Sum of Even Numbers After Queries",
+  "TitleSlug": "sum-of-even-numbers-after-queries",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 69,
+  "TotalAccepted": 159297,
+  "TotalSubmissions": 230862,
+  "Likes": 2146,
+  "Dislikes": 323,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Enums\u003C/code\u003E and an array \u003Ccode\u003Equeries\u003C/code\u003E where \u003Ccode\u003Equeries[i] = [val\u003Csub\u003Ei\u003C/sub\u003E, index\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EFor each query \u003Ccode\u003Ei\u003C/code\u003E, first, apply \u003Ccode\u003Enums[index\u003Csub\u003Ei\u003C/sub\u003E] = nums[index\u003Csub\u003Ei\u003C/sub\u003E] \u002B val\u003Csub\u003Ei\u003C/sub\u003E\u003C/code\u003E, then print the sum of the even values of \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ean integer array \u003C/em\u003E\u003Ccode\u003Eanswer\u003C/code\u003E\u003Cem\u003E where \u003C/em\u003E\u003Ccode\u003Eanswer[i]\u003C/code\u003E\u003Cem\u003E is the answer to the \u003C/em\u003E\u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E\u003Cem\u003E query\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4], queries = [[1,0],[-3,1],[-4,0],[2,3]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [8,6,2,4]\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E At the beginning, the array is [1,2,3,4].\nAfter adding 1 to nums[0], the array is [2,2,3,4], and the sum of even values is 2 \u002B 2 \u002B 4 = 8.\nAfter adding -3 to nums[1], the array is [2,-1,3,4], and the sum of even values is 2 \u002B 4 = 6.\nAfter adding -4 to nums[0], the array is [-2,-1,3,4], and the sum of even values is -2 \u002B 4 = 2.\nAfter adding 2 to nums[3], the array is [-2,-1,3,6], and the sum of even values is -2 \u002B 6 = 4.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1], queries = [[4,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= queries.length \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= val\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= index\u003Csub\u003Ei\u003C/sub\u003E \u0026lt; nums.length\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4]\n[[1,0],[-3,1],[-4,0],[2,3]]",
+      "RawExpectedOutput": "[8,6,2,4]"
+    },
+    {
+      "RawInput": "[1]\n[[4,0]]",
+      "RawExpectedOutput": "[0]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.1867003+00:00",
+  "Url": "https://leetcode.com/problems/sum-of-even-numbers-after-queries/"
+}

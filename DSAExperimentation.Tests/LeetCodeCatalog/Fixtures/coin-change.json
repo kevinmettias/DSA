@@ -1,0 +1,38 @@
+{
+  "QuestionId": 322,
+  "FrontendId": 322,
+  "Title": "Coin Change",
+  "TitleSlug": "coin-change",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Dynamic Programming",
+    "Breadth-First Search",
+    "Knapsack Problem",
+    "Complete Knapsack"
+  ],
+  "AcceptanceRatePercent": 49.1,
+  "TotalAccepted": 3065975,
+  "TotalSubmissions": 6241173,
+  "Likes": 21311,
+  "Dislikes": 553,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an integer array \u003Ccode\u003Ecoins\u003C/code\u003E representing coins of different denominations and an integer \u003Ccode\u003Eamount\u003C/code\u003E representing a total amount of money.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe fewest number of coins that you need to make up that amount\u003C/em\u003E. If that amount of money cannot be made up by any combination of the coins, return \u003Ccode\u003E-1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou may assume that you have an infinite number of each kind of coin.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E coins = [1,2,5], amount = 11\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E 11 = 5 \u002B 5 \u002B 1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E coins = [2], amount = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E coins = [1], amount = 0\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= coins.length \u0026lt;= 12\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= coins[i] \u0026lt;= 2\u003Csup\u003E31\u003C/sup\u003E - 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= amount \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,5]\n11",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[2]\n3",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "[1]\n0",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.8156922+00:00",
+  "Url": "https://leetcode.com/problems/coin-change/"
+}

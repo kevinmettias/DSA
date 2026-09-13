@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3783,
+  "FrontendId": 3470,
+  "Title": "Permutations IV",
+  "TitleSlug": "permutations-iv",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Combinatorics",
+    "Enumeration"
+  ],
+  "AcceptanceRatePercent": 32.6,
+  "TotalAccepted": 4649,
+  "TotalSubmissions": 14261,
+  "Likes": 31,
+  "Dislikes": 4,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven two integers, \u003Ccode\u003En\u003C/code\u003E and \u003Ccode\u003Ek\u003C/code\u003E, an \u003Cstrong\u003Ealternating permutation\u003C/strong\u003E is a permutation of the first \u003Ccode\u003En\u003C/code\u003E positive integers such that no \u003Cstrong\u003Etwo\u003C/strong\u003E adjacent elements are both odd or both even.\u003C/p\u003E\n\n\u003Cp\u003EReturn the \u003Cstrong\u003Ek-th\u003C/strong\u003E \u003Cstrong\u003Ealternating permutation\u003C/strong\u003E sorted in \u003Cem\u003Elexicographical order\u003C/em\u003E. If there are fewer than \u003Ccode\u003Ek\u003C/code\u003E valid \u003Cstrong\u003Ealternating permutations\u003C/strong\u003E, return an empty list.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 4, k = 6\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[3,4,1,2]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe lexicographically-sorted alternating permutations of \u003Ccode\u003E[1, 2, 3, 4]\u003C/code\u003E are:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 2, 3, 4]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 4, 3, 2]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[2, 1, 4, 3]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[2, 3, 4, 1]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[3, 2, 1, 4]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[3, 4, 1, 2]\u003C/code\u003E \u0026larr; 6th permutation\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[4, 1, 2, 3]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[4, 3, 2, 1]\u003C/code\u003E\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003ESince \u003Ccode\u003Ek = 6\u003C/code\u003E, we return \u003Ccode\u003E[3, 4, 1, 2]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 3, k = 2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[3,2,1]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe lexicographically-sorted alternating permutations of \u003Ccode\u003E[1, 2, 3]\u003C/code\u003E are:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 2, 3]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[3, 2, 1]\u003C/code\u003E \u0026larr; 2nd permutation\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003ESince \u003Ccode\u003Ek = 2\u003C/code\u003E, we return \u003Ccode\u003E[3, 2, 1]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003En = 2, k = 3\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E[]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe lexicographically-sorted alternating permutations of \u003Ccode\u003E[1, 2]\u003C/code\u003E are:\u003C/p\u003E\n\n\u003Col\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[1, 2]\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E[2, 1]\u003C/code\u003E\u003C/li\u003E\n\u003C/ol\u003E\n\n\u003Cp\u003EThere are only 2 alternating permutations, but \u003Ccode\u003Ek = 3\u003C/code\u003E, which is out of range. Thus, we return an empty list \u003Ccode\u003E[]\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E15\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "If \u003Ccode\u003En\u003C/code\u003E is odd, the first number must be odd.",
+    "If \u003Ccode\u003En\u003C/code\u003E is even, the first number can be either odd or even.",
+    "From smallest to largest, place each number and subtract the number of permutations from \u003Ccode\u003Ek\u003C/code\u003E.",
+    "The number of permutations can be calculated using factorials."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "4\n6",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "3\n2",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "2\n3",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.5027772+00:00",
+  "Url": "https://leetcode.com/problems/permutations-iv/"
+}

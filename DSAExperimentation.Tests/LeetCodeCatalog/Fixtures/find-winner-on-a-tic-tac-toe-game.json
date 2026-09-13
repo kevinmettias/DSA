@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1400,
+  "FrontendId": 1275,
+  "Title": "Find Winner on a Tic Tac Toe Game",
+  "TitleSlug": "find-winner-on-a-tic-tac-toe-game",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "Matrix",
+    "Simulation"
+  ],
+  "AcceptanceRatePercent": 54.7,
+  "TotalAccepted": 175500,
+  "TotalSubmissions": 320806,
+  "Likes": 1645,
+  "Dislikes": 370,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003E\u003Cstrong\u003ETic-tac-toe\u003C/strong\u003E is played by two players \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E on a \u003Ccode\u003E3 x 3\u003C/code\u003E grid. The rules of Tic-Tac-Toe are:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EPlayers take turns placing characters into empty squares \u003Ccode\u003E\u0026#39; \u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe first player \u003Ccode\u003EA\u003C/code\u003E always places \u003Ccode\u003E\u0026#39;X\u0026#39;\u003C/code\u003E characters, while the second player \u003Ccode\u003EB\u003C/code\u003E always places \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003E characters.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E\u0026#39;X\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;O\u0026#39;\u003C/code\u003E characters are always placed into empty squares, never on filled ones.\u003C/li\u003E\n\t\u003Cli\u003EThe game ends when there are \u003Cstrong\u003Ethree\u003C/strong\u003E of the same (non-empty) character filling any row, column, or diagonal.\u003C/li\u003E\n\t\u003Cli\u003EThe game also ends if all squares are non-empty.\u003C/li\u003E\n\t\u003Cli\u003ENo more moves can be played if the game is over.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven a 2D integer array \u003Ccode\u003Emoves\u003C/code\u003E where \u003Ccode\u003Emoves[i] = [row\u003Csub\u003Ei\u003C/sub\u003E, col\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E indicates that the \u003Ccode\u003Ei\u003Csup\u003Eth\u003C/sup\u003E\u003C/code\u003E move will be played on \u003Ccode\u003Egrid[row\u003Csub\u003Ei\u003C/sub\u003E][col\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E. return \u003Cem\u003Ethe winner of the game if it exists\u003C/em\u003E (\u003Ccode\u003EA\u003C/code\u003E or \u003Ccode\u003EB\u003C/code\u003E). In case the game ends in a draw return \u003Ccode\u003E\u0026quot;Draw\u0026quot;\u003C/code\u003E. If there are still movements to play return \u003Ccode\u003E\u0026quot;Pending\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EYou can assume that \u003Ccode\u003Emoves\u003C/code\u003E is valid (i.e., it follows the rules of \u003Cstrong\u003ETic-Tac-Toe\u003C/strong\u003E), the grid is initially empty, and \u003Ccode\u003EA\u003C/code\u003E will play first.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/22/xo1-grid.jpg\u0022 style=\u0022width: 244px; height: 245px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E moves = [[0,0],[2,0],[1,1],[2,1],[2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;A\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E A wins, they always play first.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/22/xo2-grid.jpg\u0022 style=\u0022width: 244px; height: 245px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E moves = [[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;B\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E B wins.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2021/09/22/xo3-grid.jpg\u0022 style=\u0022width: 244px; height: 245px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E moves = [[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E \u0026quot;Draw\u0026quot;\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The game ends in a draw since there are no moves to make.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= moves.length \u0026lt;= 9\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emoves[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= row\u003Csub\u003Ei\u003C/sub\u003E, col\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThere are no repeated elements on \u003Ccode\u003Emoves\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Emoves\u003C/code\u003E follow the rules of tic tac toe.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "It\u0027s straightforward to check if A or B won or not, check for each row/column/diag if all the three are the same.",
+    "Then if no one wins, the game is a draw iff the board is full, i.e. moves.length = 9 otherwise is pending."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[0,0],[2,0],[1,1],[2,1],[2,2]]",
+      "RawExpectedOutput": "\u0022A\u0022"
+    },
+    {
+      "RawInput": "[[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]",
+      "RawExpectedOutput": "\u0022B\u0022"
+    },
+    {
+      "RawInput": "[[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]",
+      "RawExpectedOutput": "\u0022Draw\u0022"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3179271+00:00",
+  "Url": "https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/"
+}

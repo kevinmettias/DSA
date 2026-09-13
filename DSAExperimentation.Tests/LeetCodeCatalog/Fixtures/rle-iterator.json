@@ -1,0 +1,29 @@
+{
+  "QuestionId": 936,
+  "FrontendId": 900,
+  "Title": "RLE Iterator",
+  "TitleSlug": "rle-iterator",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Design",
+    "Counting",
+    "Iterator"
+  ],
+  "AcceptanceRatePercent": 59.6,
+  "TotalAccepted": 93291,
+  "TotalSubmissions": 156523,
+  "Likes": 775,
+  "Dislikes": 202,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWe can use run-length encoding (i.e., \u003Cstrong\u003ERLE\u003C/strong\u003E) to encode a sequence of integers. In a run-length encoded array of even length \u003Ccode\u003Eencoding\u003C/code\u003E (\u003Cstrong\u003E0-indexed\u003C/strong\u003E), for all even \u003Ccode\u003Ei\u003C/code\u003E, \u003Ccode\u003Eencoding[i]\u003C/code\u003E tells us the number of times that the non-negative integer value \u003Ccode\u003Eencoding[i \u002B 1]\u003C/code\u003E is repeated in the sequence.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, the sequence \u003Ccode\u003Earr = [8,8,8,5,5]\u003C/code\u003E can be encoded to be \u003Ccode\u003Eencoding = [3,8,2,5]\u003C/code\u003E. \u003Ccode\u003Eencoding = [3,8,0,9,2,5]\u003C/code\u003E and \u003Ccode\u003Eencoding = [2,8,1,8,2,5]\u003C/code\u003E are also valid \u003Cstrong\u003ERLE\u003C/strong\u003E of \u003Ccode\u003Earr\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EGiven a run-length encoded array, design an iterator that iterates through it.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003ERLEIterator\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003ERLEIterator(int[] encoded)\u003C/code\u003E Initializes the object with the encoded array \u003Ccode\u003Eencoded\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint next(int n)\u003C/code\u003E Exhausts the next \u003Ccode\u003En\u003C/code\u003E elements and returns the last element exhausted in this way. If there is no element left to exhaust, return \u003Ccode\u003E-1\u003C/code\u003E instead.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;RLEIterator\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;next\u0026quot;, \u0026quot;next\u0026quot;]\n[[[3, 8, 0, 9, 2, 5]], [2], [1], [1], [2]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, 8, 8, 5, -1]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nRLEIterator rLEIterator = new RLEIterator([3, 8, 0, 9, 2, 5]); // This maps to the sequence [8,8,8,5,5].\nrLEIterator.next(2); // exhausts 2 terms of the sequence, returning 8. The remaining sequence is now [8, 5, 5].\nrLEIterator.next(1); // exhausts 1 term of the sequence, returning 8. The remaining sequence is now [5, 5].\nrLEIterator.next(1); // exhausts 1 term of the sequence, returning 5. The remaining sequence is now [5].\nrLEIterator.next(2); // exhausts 2 terms, returning -1. This is because the first term exhausted was 5,\nbut the second term did not exist. Since the last term exhausted does not exist, we return -1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E2 \u0026lt;= encoding.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eencoding.length\u003C/code\u003E is even.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= encoding[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made to \u003Ccode\u003Enext\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022RLEIterator\u0022,\u0022next\u0022,\u0022next\u0022,\u0022next\u0022,\u0022next\u0022]\n[[[3,8,0,9,2,5]],[2],[1],[1],[2]]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.8621887+00:00",
+  "Url": "https://leetcode.com/problems/rle-iterator/"
+}

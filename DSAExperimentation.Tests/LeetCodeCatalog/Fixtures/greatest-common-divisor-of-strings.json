@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1146,
+  "FrontendId": 1071,
+  "Title": "Greatest Common Divisor of Strings",
+  "TitleSlug": "greatest-common-divisor-of-strings",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Math",
+    "String",
+    "Euclidean Algorithm",
+    "Greatest Common Divisor"
+  ],
+  "AcceptanceRatePercent": 54.4,
+  "TotalAccepted": 1019189,
+  "TotalSubmissions": 1873283,
+  "Likes": 6112,
+  "Dislikes": 1682,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EFor two strings \u003Ccode\u003Es\u003C/code\u003E and \u003Ccode\u003Et\u003C/code\u003E, we say \u0026quot;\u003Ccode\u003Et\u003C/code\u003E divides \u003Ccode\u003Es\u003C/code\u003E\u0026quot; if and only if \u003Ccode\u003Es = t \u002B t \u002B t \u002B ... \u002B t \u002B t\u003C/code\u003E (i.e., \u003Ccode\u003Et\u003C/code\u003E is concatenated with itself one or more times).\u003C/p\u003E\n\n\u003Cp\u003EGiven two strings \u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E, return \u003Cem\u003Ethe largest string \u003C/em\u003E\u003Ccode\u003Ex\u003C/code\u003E\u003Cem\u003E such that \u003C/em\u003E\u003Ccode\u003Ex\u003C/code\u003E\u003Cem\u003E divides both \u003C/em\u003E\u003Ccode\u003Estr1\u003C/code\u003E\u003Cem\u003E and \u003C/em\u003E\u003Ccode\u003Estr2\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;ABCABC\u0026quot;, str2 = \u0026quot;ABC\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;ABC\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;ABABAB\u0026quot;, str2 = \u0026quot;ABAB\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;AB\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;LEET\u0026quot;, str2 = \u0026quot;CODE\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 4:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Estr1 = \u0026quot;AAAAAB\u0026quot;, str2 = \u0026quot;AAA\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E\u0026quot;\u0026quot;\u003C/span\u003E\u200B\u200B\u200B\u200B\u200B\u200B\u200B\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= str1.length, str2.length \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Estr1\u003C/code\u003E and \u003Ccode\u003Estr2\u003C/code\u003E consist of English uppercase letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "The greatest common divisor must be a prefix of each string, so we can try all prefixes."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022ABCABC\u0022\n\u0022ABC\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022ABABAB\u0022\n\u0022ABAB\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022LEET\u0022\n\u0022CODE\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "\u0022AAAAAB\u0022\n\u0022AAA\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3986069+00:00",
+  "Url": "https://leetcode.com/problems/greatest-common-divisor-of-strings/"
+}

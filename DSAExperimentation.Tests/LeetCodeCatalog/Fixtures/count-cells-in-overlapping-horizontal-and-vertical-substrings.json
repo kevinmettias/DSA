@@ -1,0 +1,42 @@
+{
+  "QuestionId": 3821,
+  "FrontendId": 3529,
+  "Title": "Count Cells in Overlapping Horizontal and Vertical Substrings",
+  "TitleSlug": "count-cells-in-overlapping-horizontal-and-vertical-substrings",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "String",
+    "Rolling Hash",
+    "String Matching",
+    "Matrix",
+    "Hash Function"
+  ],
+  "AcceptanceRatePercent": 27.4,
+  "TotalAccepted": 8009,
+  "TotalSubmissions": 29209,
+  "Likes": 65,
+  "Dislikes": 15,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an \u003Ccode\u003Em x n\u003C/code\u003E matrix \u003Ccode\u003Egrid\u003C/code\u003E consisting of characters and a string \u003Ccode\u003Epattern\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong data-end=\u0022264\u0022 data-start=\u0022240\u0022\u003Ehorizontal substring\u003C/strong\u003E is a contiguous sequence of characters read from left to right. If the end of a row is reached before the substring is complete, it wraps to the first column of the next row and continues as needed. You do \u003Cstrong\u003Enot\u003C/strong\u003E wrap from the bottom row back to the top.\u003C/p\u003E\n\n\u003Cp\u003EA \u003Cstrong data-end=\u0022484\u0022 data-start=\u0022462\u0022\u003Evertical substring\u003C/strong\u003E is a contiguous sequence of characters read from top to bottom. If the bottom of a column is reached before the substring is complete, it wraps to the first row of the next column and continues as needed. You do \u003Cstrong\u003Enot\u003C/strong\u003E wrap from the last column back to the first.\u003C/p\u003E\n\n\u003Cp\u003ECount the number of cells in the matrix that satisfy the following condition:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe cell must be part of \u003Cstrong\u003Eat least\u003C/strong\u003E one horizontal substring and \u003Cstrong\u003Eat least\u003C/strong\u003E one vertical substring, where \u003Cstrong\u003Eboth\u003C/strong\u003E substrings are equal to the given \u003Ccode\u003Epattern\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EReturn the count of these cells.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/03/03/gridtwosubstringsdrawio.png\u0022 style=\u0022width: 150px; height: 187px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;c\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;c\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;]], pattern = \u0026quot;abaca\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe pattern \u003Ccode\u003E\u0026quot;abaca\u0026quot;\u003C/code\u003E appears once as a horizontal substring (colored blue) and once as a vertical substring (colored red), intersecting at one cell (colored purple).\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2025/03/03/gridexample2fixeddrawio.png\u0022 style=\u0022width: 150px; height: 150px;\u0022 /\u003E\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[\u0026quot;c\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;b\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;],[\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;a\u0026quot;]], pattern = \u0026quot;aba\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E4\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe cells colored above are all part of at least one horizontal and one vertical substring matching the pattern \u003Ccode\u003E\u0026quot;aba\u0026quot;\u003C/code\u003E.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Egrid = [[\u0026quot;a\u0026quot;]], pattern = \u0026quot;a\u0026quot;\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == grid.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == grid[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m, n \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= m * n \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= pattern.length \u0026lt;= m * n\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Egrid\u003C/code\u003E and \u003Ccode\u003Epattern\u003C/code\u003E consist of only lowercase English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a string hashing or pattern matching algorithm to efficiently find all horizontal and vertical occurrences of the pattern in the grid.",
+    "Track the positions of each match and count only the cells that appear in both horizontal and vertical matches."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[\u0022a\u0022,\u0022a\u0022,\u0022c\u0022,\u0022c\u0022],[\u0022b\u0022,\u0022b\u0022,\u0022b\u0022,\u0022c\u0022],[\u0022a\u0022,\u0022a\u0022,\u0022b\u0022,\u0022a\u0022],[\u0022c\u0022,\u0022a\u0022,\u0022a\u0022,\u0022c\u0022],[\u0022a\u0022,\u0022a\u0022,\u0022b\u0022,\u0022a\u0022]]\n\u0022abaca\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[\u0022c\u0022,\u0022a\u0022,\u0022a\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022a\u0022,\u0022b\u0022,\u0022a\u0022],[\u0022b\u0022,\u0022b\u0022,\u0022a\u0022,\u0022a\u0022],[\u0022a\u0022,\u0022a\u0022,\u0022b\u0022,\u0022a\u0022]]\n\u0022aba\u0022",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[[\u0022a\u0022]]\n\u0022a\u0022",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.9355232+00:00",
+  "Url": "https://leetcode.com/problems/count-cells-in-overlapping-horizontal-and-vertical-substrings/"
+}

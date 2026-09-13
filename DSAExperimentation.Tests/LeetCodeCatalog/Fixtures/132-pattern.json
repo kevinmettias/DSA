@@ -1,0 +1,38 @@
+{
+  "QuestionId": 456,
+  "FrontendId": 456,
+  "Title": "132 Pattern",
+  "TitleSlug": "132-pattern",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Stack",
+    "Monotonic Stack",
+    "Ordered Set"
+  ],
+  "AcceptanceRatePercent": 35.1,
+  "TotalAccepted": 342445,
+  "TotalSubmissions": 975681,
+  "Likes": 7714,
+  "Dislikes": 477,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven an array of \u003Ccode\u003En\u003C/code\u003E integers \u003Ccode\u003Enums\u003C/code\u003E, a \u003Cstrong\u003E132 pattern\u003C/strong\u003E is a subsequence of three integers \u003Ccode\u003Enums[i]\u003C/code\u003E, \u003Ccode\u003Enums[j]\u003C/code\u003E and \u003Ccode\u003Enums[k]\u003C/code\u003E such that \u003Ccode\u003Ei \u0026lt; j \u0026lt; k\u003C/code\u003E and \u003Ccode\u003Enums[i] \u0026lt; nums[k] \u0026lt; nums[j]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if there is a \u003Cstrong\u003E132 pattern\u003C/strong\u003E in \u003C/em\u003E\u003Ccode\u003Enums\u003C/code\u003E\u003Cem\u003E, otherwise, return \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E\u003Cem\u003E.\u003C/em\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [1,2,3,4]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no 132 pattern in the sequence.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [3,1,4,2]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is a 132 pattern in the sequence: [1, 4, 2].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E nums = [-1,3,2,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There are three 132 patterns in the sequence: [-1, 3, 2], [-1, 3, 0] and [-1, 2, 0].\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n \u0026lt;= 2 * 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= nums[i] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3,4]",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "[3,1,4,2]",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[-1,3,2,0]",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.4837882+00:00",
+  "Url": "https://leetcode.com/problems/132-pattern/"
+}

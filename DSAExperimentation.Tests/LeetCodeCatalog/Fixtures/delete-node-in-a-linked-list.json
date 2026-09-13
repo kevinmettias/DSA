@@ -1,0 +1,30 @@
+{
+  "QuestionId": 237,
+  "FrontendId": 237,
+  "Title": "Delete Node in a Linked List",
+  "TitleSlug": "delete-node-in-a-linked-list",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Linked List"
+  ],
+  "AcceptanceRatePercent": 84.4,
+  "TotalAccepted": 2155818,
+  "TotalSubmissions": 2554331,
+  "Likes": 6503,
+  "Dislikes": 1817,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EThere is a singly-linked list \u003Ccode\u003Ehead\u003C/code\u003E and we want to delete a node \u003Ccode\u003Enode\u003C/code\u003E in it.\u003C/p\u003E\n\n\u003Cp\u003EYou are given the node to be deleted \u003Ccode\u003Enode\u003C/code\u003E. You will \u003Cstrong\u003Enot be given access\u003C/strong\u003E to the first node of \u003Ccode\u003Ehead\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EAll the values of the linked list are \u003Cstrong\u003Eunique\u003C/strong\u003E, and it is guaranteed that the given node \u003Ccode\u003Enode\u003C/code\u003E is not the last node in the linked list.\u003C/p\u003E\n\n\u003Cp\u003EDelete the given node. Note that by deleting the node, we do not mean removing it from memory. We mean:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe value of the given node should not exist in the linked list.\u003C/li\u003E\n\t\u003Cli\u003EThe number of nodes in the linked list should decrease by one.\u003C/li\u003E\n\t\u003Cli\u003EAll the values before \u003Ccode\u003Enode\u003C/code\u003E should be in the same order.\u003C/li\u003E\n\t\u003Cli\u003EAll the values after \u003Ccode\u003Enode\u003C/code\u003E should be in the same order.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ECustom testing:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor the input, you should provide the entire linked list \u003Ccode\u003Ehead\u003C/code\u003E and the node to be given \u003Ccode\u003Enode\u003C/code\u003E. \u003Ccode\u003Enode\u003C/code\u003E should not be the last node of the list and should be an actual node in the list.\u003C/li\u003E\n\t\u003Cli\u003EWe will build the linked list and pass the node to your function.\u003C/li\u003E\n\t\u003Cli\u003EThe output will be the entire list after calling your function.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/01/node1.jpg\u0022 style=\u0022width: 400px; height: 286px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [4,5,1,9], node = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [4,1,9]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EYou are given the second node with value 5, the linked list should become 4 -\u0026gt; 1 -\u0026gt; 9 after calling your function.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/01/node2.jpg\u0022 style=\u0022width: 400px; height: 315px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E head = [4,5,1,9], node = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [4,5,9]\n\u003Cstrong\u003EExplanation: \u003C/strong\u003EYou are given the third node with value 1, the linked list should become 4 -\u0026gt; 5 -\u0026gt; 9 after calling your function.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EThe number of the nodes in the given list is in the range \u003Ccode\u003E[2, 1000]\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-1000 \u0026lt;= Node.val \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EThe value of each node in the list is \u003Cstrong\u003Eunique\u003C/strong\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe \u003Ccode\u003Enode\u003C/code\u003E to be deleted is \u003Cstrong\u003Ein the list\u003C/strong\u003E and is \u003Cstrong\u003Enot a tail\u003C/strong\u003E node.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[4,5,1,9]\n5",
+      "RawExpectedOutput": "[4,1,9]"
+    },
+    {
+      "RawInput": "[4,5,1,9]\n1",
+      "RawExpectedOutput": "[4,5,9]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.0690354+00:00",
+  "Url": "https://leetcode.com/problems/delete-node-in-a-linked-list/"
+}

@@ -1,0 +1,32 @@
+{
+  "QuestionId": 1208,
+  "FrontendId": 1111,
+  "Title": "Maximum Nesting Depth of Two Valid Parentheses Strings",
+  "TitleSlug": "maximum-nesting-depth-of-two-valid-parentheses-strings",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 72.2,
+  "TotalAccepted": 35338,
+  "TotalSubmissions": 48915,
+  "Likes": 472,
+  "Dislikes": 1943,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EA string is a \u003Cem\u003Evalid parentheses string\u003C/em\u003E\u0026nbsp;(denoted VPS) if and only if it consists of \u003Ccode\u003E\u0026quot;(\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;)\u0026quot;\u003C/code\u003E characters only, and:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIt is the empty string, or\u003C/li\u003E\n\t\u003Cli\u003EIt can be written as\u0026nbsp;\u003Ccode\u003EAB\u003C/code\u003E\u0026nbsp;(\u003Ccode\u003EA\u003C/code\u003E\u0026nbsp;concatenated with\u0026nbsp;\u003Ccode\u003EB\u003C/code\u003E), where\u0026nbsp;\u003Ccode\u003EA\u003C/code\u003E\u0026nbsp;and\u0026nbsp;\u003Ccode\u003EB\u003C/code\u003E\u0026nbsp;are VPS\u0026#39;s, or\u003C/li\u003E\n\t\u003Cli\u003EIt can be written as\u0026nbsp;\u003Ccode\u003E(A)\u003C/code\u003E, where\u0026nbsp;\u003Ccode\u003EA\u003C/code\u003E\u0026nbsp;is a VPS.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EWe can\u0026nbsp;similarly define the \u003Cem\u003Enesting depth\u003C/em\u003E \u003Ccode\u003Edepth(S)\u003C/code\u003E of any VPS \u003Ccode\u003ES\u003C/code\u003E as follows:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edepth(\u0026quot;\u0026quot;) = 0\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edepth(A \u002B B) = max(depth(A), depth(B))\u003C/code\u003E, where \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E are VPS\u0026#39;s\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Edepth(\u0026quot;(\u0026quot; \u002B A \u002B \u0026quot;)\u0026quot;) = 1 \u002B depth(A)\u003C/code\u003E, where \u003Ccode\u003EA\u003C/code\u003E is a VPS.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EFor example, \u003Ccode\u003E\u0026quot;\u0026quot;\u003C/code\u003E,\u0026nbsp;\u003Ccode\u003E\u0026quot;()()\u0026quot;\u003C/code\u003E, and\u0026nbsp;\u003Ccode\u003E\u0026quot;()(()())\u0026quot;\u003C/code\u003E\u0026nbsp;are VPS\u0026#39;s (with nesting depths 0, 1, and 2), and \u003Ccode\u003E\u0026quot;)(\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;(()\u0026quot;\u003C/code\u003E are not VPS\u0026#39;s.\u003C/p\u003E\n\n\u003Cp\u003EGiven a VPS \u003Cfont face=\u0022monospace\u0022\u003Eseq\u003C/font\u003E, split it into two disjoint subsequences \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E, such that\u0026nbsp;\u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E are VPS\u0026#39;s (and\u0026nbsp;\u003Ccode\u003EA.length \u002B B.length = seq.length\u003C/code\u003E). The subsequences may not necessarily be contiguous.\u003C/p\u003E\n\n\u003Cp\u003EFor example, for the sequence \u003Ccode\u003E123456789\u003C/code\u003E, one possible split is:\u003C/p\u003E\n\n\u003Cul data-end=\u0022822\u0022 data-start=\u0022776\u0022\u003E\n\t\u003Cli data-end=\u0022800\u0022 data-start=\u0022776\u0022\u003E\n\t\u003Cp data-end=\u0022800\u0022 data-start=\u0022778\u0022\u003E\u003Ccode data-end=\u0022799\u0022 data-start=\u0022778\u0022\u003EA = {1, 3, 5, 7, 9}\u003C/code\u003E,\u003C/p\u003E\n\t\u003C/li\u003E\n\t\u003Cli data-end=\u0022822\u0022 data-start=\u0022801\u0022\u003E\n\t\u003Cp data-end=\u0022822\u0022 data-start=\u0022803\u0022\u003E\u003Ccode data-end=\u0022821\u0022 data-start=\u0022803\u0022\u003EB = {2, 4, 6, 8}\u003C/code\u003E.\u003C/p\u003E\n\t\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp data-end=\u0022855\u0022 data-start=\u0022824\u0022\u003EThis corresponds to the output \u003Ccode\u003E[0, 1, 0, 1, 0, 1, 0, 1, 0]\u003C/code\u003E \u0026nbsp;where 0 indicates membership in\u0026nbsp;\u003Ccode data-end=\u0022929\u0022 data-start=\u0022926\u0022\u003EA\u003C/code\u003E\u0026nbsp;and 1 indicates membership in\u0026nbsp;\u003Ccode data-end=\u0022965\u0022 data-start=\u0022962\u0022\u003EB\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003ENow choose \u003Cstrong\u003Eany\u003C/strong\u003E such \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E such that\u0026nbsp;\u003Ccode\u003Emax(depth(A), depth(B))\u003C/code\u003E is the minimum possible value.\u003C/p\u003E\n\n\u003Cp\u003EReturn an \u003Ccode\u003Eanswer\u003C/code\u003E array (of length \u003Ccode\u003Eseq.length\u003C/code\u003E) that encodes such a\u0026nbsp;choice of \u003Ccode\u003EA\u003C/code\u003E and \u003Ccode\u003EB\u003C/code\u003E:\u0026nbsp; \u003Ccode\u003Eanswer[i] = 0\u003C/code\u003E if \u003Ccode\u003Eseq[i]\u003C/code\u003E is part of \u003Ccode\u003EA\u003C/code\u003E, else \u003Ccode\u003Eanswer[i] = 1\u003C/code\u003E.\u0026nbsp; Note that even though multiple answers may exist, you may return any of them.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E seq = \u0026quot;(()())\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,1,1,1,1,0]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E seq = \u0026quot;()(())()\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E [0,0,0,1,1,0,1,1]\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= seq.size \u0026lt;= 10000\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022(()())\u0022",
+      "RawExpectedOutput": "[0,1,1,1,1,0]"
+    },
+    {
+      "RawInput": "\u0022()(())()\u0022",
+      "RawExpectedOutput": "[0,0,0,1,1,0,1,1]"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9090768+00:00",
+  "Url": "https://leetcode.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/"
+}

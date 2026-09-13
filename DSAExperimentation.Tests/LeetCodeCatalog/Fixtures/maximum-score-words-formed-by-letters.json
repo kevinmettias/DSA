@@ -1,0 +1,43 @@
+{
+  "QuestionId": 1381,
+  "FrontendId": 1255,
+  "Title": "Maximum Score Words Formed by Letters",
+  "TitleSlug": "maximum-score-words-formed-by-letters",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Hash Table",
+    "String",
+    "Dynamic Programming",
+    "Backtracking",
+    "Bit Manipulation",
+    "Counting",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 81.5,
+  "TotalAccepted": 139903,
+  "TotalSubmissions": 171675,
+  "Likes": 1879,
+  "Dislikes": 119,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a list of \u003Ccode\u003Ewords\u003C/code\u003E, list of\u0026nbsp; single\u0026nbsp;\u003Ccode\u003Eletters\u003C/code\u003E (might be repeating)\u0026nbsp;and \u003Ccode\u003Escore\u003C/code\u003E\u0026nbsp;of every character.\u003C/p\u003E\n\n\u003Cp\u003EReturn the maximum score of \u003Cstrong\u003Eany\u003C/strong\u003E valid set of words formed by using the given letters (\u003Ccode\u003Ewords[i]\u003C/code\u003E cannot be used two\u0026nbsp;or more times).\u003C/p\u003E\n\n\u003Cp\u003EIt is not necessary to use all characters in \u003Ccode\u003Eletters\u003C/code\u003E and each letter can only be used once. Score of letters\u0026nbsp;\u003Ccode\u003E\u0026#39;a\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;b\u0026#39;\u003C/code\u003E, \u003Ccode\u003E\u0026#39;c\u0026#39;\u003C/code\u003E, ... ,\u003Ccode\u003E\u0026#39;z\u0026#39;\u003C/code\u003E is given by\u0026nbsp;\u003Ccode\u003Escore[0]\u003C/code\u003E, \u003Ccode\u003Escore[1]\u003C/code\u003E, ... , \u003Ccode\u003Escore[25]\u003C/code\u003E respectively.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;dog\u0026quot;,\u0026quot;cat\u0026quot;,\u0026quot;dad\u0026quot;,\u0026quot;good\u0026quot;], letters = [\u0026quot;a\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;d\u0026quot;,\u0026quot;d\u0026quot;,\u0026quot;d\u0026quot;,\u0026quot;g\u0026quot;,\u0026quot;o\u0026quot;,\u0026quot;o\u0026quot;], score = [1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 23\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nScore  a=1, c=9, d=5, g=3, o=2\nGiven letters, we can form the words \u0026quot;dad\u0026quot; (5\u002B1\u002B5) and \u0026quot;good\u0026quot; (3\u002B2\u002B2\u002B5) with a score of 23.\nWords \u0026quot;dad\u0026quot; and \u0026quot;dog\u0026quot; only get a score of 21.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;xxxz\u0026quot;,\u0026quot;ax\u0026quot;,\u0026quot;bx\u0026quot;,\u0026quot;cx\u0026quot;], letters = [\u0026quot;z\u0026quot;,\u0026quot;a\u0026quot;,\u0026quot;b\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;x\u0026quot;,\u0026quot;x\u0026quot;,\u0026quot;x\u0026quot;], score = [4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,10]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 27\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nScore  a=4, b=4, c=4, x=5, z=10\nGiven letters, we can form the words \u0026quot;ax\u0026quot; (4\u002B5), \u0026quot;bx\u0026quot; (4\u002B5) and \u0026quot;cx\u0026quot; (4\u002B5) with a score of 27.\nWord \u0026quot;xxxz\u0026quot; only get a score of 25.\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E words = [\u0026quot;leetcode\u0026quot;], letters = [\u0026quot;l\u0026quot;,\u0026quot;e\u0026quot;,\u0026quot;t\u0026quot;,\u0026quot;c\u0026quot;,\u0026quot;o\u0026quot;,\u0026quot;d\u0026quot;], score = [0,0,1,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E\nLetter \u0026quot;e\u0026quot; can only be used once.\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words.length \u0026lt;= 14\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= words[i].length \u0026lt;= 15\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= letters.length \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eletters[i].length == 1\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Escore.length ==\u0026nbsp;26\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= score[i] \u0026lt;= 10\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ewords[i]\u003C/code\u003E, \u003Ccode\u003Eletters[i]\u003C/code\u003E\u0026nbsp;contains only lower case English letters.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Note that words.length is small. This means you can iterate over every subset of words (2^N)."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[\u0022dog\u0022,\u0022cat\u0022,\u0022dad\u0022,\u0022good\u0022]\n[\u0022a\u0022,\u0022a\u0022,\u0022c\u0022,\u0022d\u0022,\u0022d\u0022,\u0022d\u0022,\u0022g\u0022,\u0022o\u0022,\u0022o\u0022]\n[1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0]",
+      "RawExpectedOutput": "23"
+    },
+    {
+      "RawInput": "[\u0022xxxz\u0022,\u0022ax\u0022,\u0022bx\u0022,\u0022cx\u0022]\n[\u0022z\u0022,\u0022a\u0022,\u0022b\u0022,\u0022c\u0022,\u0022x\u0022,\u0022x\u0022,\u0022x\u0022]\n[4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,10]",
+      "RawExpectedOutput": "27"
+    },
+    {
+      "RawInput": "[\u0022leetcode\u0022]\n[\u0022l\u0022,\u0022e\u0022,\u0022t\u0022,\u0022c\u0022,\u0022o\u0022,\u0022d\u0022]\n[0,0,1,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0]",
+      "RawExpectedOutput": "0"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9312089+00:00",
+  "Url": "https://leetcode.com/problems/maximum-score-words-formed-by-letters/"
+}

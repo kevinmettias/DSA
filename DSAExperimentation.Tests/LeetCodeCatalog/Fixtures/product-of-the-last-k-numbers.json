@@ -1,0 +1,28 @@
+{
+  "QuestionId": 1477,
+  "FrontendId": 1352,
+  "Title": "Product of the Last K Numbers",
+  "TitleSlug": "product-of-the-last-k-numbers",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Design",
+    "Data Stream",
+    "Prefix Sum"
+  ],
+  "AcceptanceRatePercent": 63.1,
+  "TotalAccepted": 268443,
+  "TotalSubmissions": 425721,
+  "Likes": 2186,
+  "Dislikes": 110,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign an algorithm that accepts a stream of integers and retrieves the product of the last \u003Ccode\u003Ek\u003C/code\u003E integers of the stream.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EProductOfNumbers\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EProductOfNumbers()\u003C/code\u003E Initializes the object with an empty stream.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid add(int num)\u003C/code\u003E Appends the integer \u003Ccode\u003Enum\u003C/code\u003E to the stream.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Eint getProduct(int k)\u003C/code\u003E Returns the product of the last \u003Ccode\u003Ek\u003C/code\u003E numbers in the current list. You can assume that always the current list has at least \u003Ccode\u003Ek\u003C/code\u003E numbers.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EThe test cases are generated so that, at any time, the product of any contiguous sequence of numbers will fit into a single 32-bit integer without overflowing.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;ProductOfNumbers\u0026quot;,\u0026quot;add\u0026quot;,\u0026quot;add\u0026quot;,\u0026quot;add\u0026quot;,\u0026quot;add\u0026quot;,\u0026quot;add\u0026quot;,\u0026quot;getProduct\u0026quot;,\u0026quot;getProduct\u0026quot;,\u0026quot;getProduct\u0026quot;,\u0026quot;add\u0026quot;,\u0026quot;getProduct\u0026quot;]\n[[],[3],[0],[2],[5],[4],[2],[3],[4],[8],[2]]\n\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null,null,null,null,null,null,20,40,0,null,32]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nProductOfNumbers productOfNumbers = new ProductOfNumbers();\nproductOfNumbers.add(3);        // [3]\nproductOfNumbers.add(0);        // [3,0]\nproductOfNumbers.add(2);        // [3,0,2]\nproductOfNumbers.add(5);        // [3,0,2,5]\nproductOfNumbers.add(4);        // [3,0,2,5,4]\nproductOfNumbers.getProduct(2); // return 20. The product of the last 2 numbers is 5 * 4 = 20\nproductOfNumbers.getProduct(3); // return 40. The product of the last 3 numbers is 2 * 5 * 4 = 40\nproductOfNumbers.getProduct(4); // return 0. The product of the last 4 numbers is 0 * 2 * 5 * 4 = 0\nproductOfNumbers.add(8);        // [3,0,2,5,4,8]\nproductOfNumbers.getProduct(2); // return 32. The product of the last 2 numbers is 4 * 8 = 32 \n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= num \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E4 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E calls will be made to \u003Ccode\u003Eadd\u003C/code\u003E and \u003Ccode\u003EgetProduct\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003EThe product of the stream at any point in time will fit in a \u003Cstrong\u003E32-bit\u003C/strong\u003E integer.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cstrong\u003EFollow-up: \u003C/strong\u003ECan you implement \u003Cstrong\u003Eboth\u003C/strong\u003E \u003Ccode\u003EGetProduct\u003C/code\u003E and \u003Ccode\u003EAdd\u003C/code\u003E to work in \u003Ccode\u003EO(1)\u003C/code\u003E time complexity instead of \u003Ccode\u003EO(k)\u003C/code\u003E time complexity?",
+  "Hints": [
+    "Keep all prefix products of numbers in an array, then calculate the product of last K elements in O(1) complexity.",
+    "When a zero number is added, clean the array of prefix products."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:41.597586+00:00",
+  "Url": "https://leetcode.com/problems/product-of-the-last-k-numbers/"
+}

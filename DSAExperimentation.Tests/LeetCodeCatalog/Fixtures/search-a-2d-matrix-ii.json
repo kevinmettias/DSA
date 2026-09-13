@@ -1,0 +1,33 @@
+{
+  "QuestionId": 240,
+  "FrontendId": 240,
+  "Title": "Search a 2D Matrix II",
+  "TitleSlug": "search-a-2d-matrix-ii",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Array",
+    "Binary Search",
+    "Divide and Conquer",
+    "Matrix"
+  ],
+  "AcceptanceRatePercent": 58.1,
+  "TotalAccepted": 1480410,
+  "TotalSubmissions": 2549569,
+  "Likes": 13350,
+  "Dislikes": 238,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EWrite an efficient algorithm that searches for a value \u003Ccode\u003Etarget\u003C/code\u003E in an \u003Ccode\u003Em x n\u003C/code\u003E integer matrix \u003Ccode\u003Ematrix\u003C/code\u003E. This matrix has the following properties:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIntegers in each row are sorted in ascending from left to right.\u003C/li\u003E\n\t\u003Cli\u003EIntegers in each column are sorted in ascending from top to bottom.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/24/searchgrid2.jpg\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/11/24/searchgrid.jpg\u0022 style=\u0022width: 300px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003Em == matrix.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003En == matrix[i].length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= n, m \u0026lt;= 300\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= matrix[i][j] \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAll the integers in each row are \u003Cstrong\u003Esorted\u003C/strong\u003E in ascending order.\u003C/li\u003E\n\t\u003Cli\u003EAll the integers in each column are \u003Cstrong\u003Esorted\u003C/strong\u003E in ascending order.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E9\u003C/sup\u003E \u0026lt;= target \u0026lt;= 10\u003Csup\u003E9\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]\n5",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "[[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]]\n20",
+      "RawExpectedOutput": "false"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.9106733+00:00",
+  "Url": "https://leetcode.com/problems/search-a-2d-matrix-ii/"
+}

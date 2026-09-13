@@ -1,0 +1,42 @@
+{
+  "QuestionId": 1733,
+  "FrontendId": 1610,
+  "Title": "Maximum Number of Visible Points",
+  "TitleSlug": "maximum-number-of-visible-points",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Geometry",
+    "Sliding Window",
+    "Sorting"
+  ],
+  "AcceptanceRatePercent": 38.5,
+  "TotalAccepted": 55954,
+  "TotalSubmissions": 145417,
+  "Likes": 636,
+  "Dislikes": 769,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given an array \u003Ccode\u003Epoints\u003C/code\u003E, an integer \u003Ccode\u003Eangle\u003C/code\u003E, and your \u003Ccode\u003Elocation\u003C/code\u003E, where \u003Ccode\u003Elocation = [pos\u003Csub\u003Ex\u003C/sub\u003E, pos\u003Csub\u003Ey\u003C/sub\u003E]\u003C/code\u003E and \u003Ccode\u003Epoints[i] = [x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E]\u003C/code\u003E both denote \u003Cstrong\u003Eintegral coordinates\u003C/strong\u003E on the X-Y plane.\u003C/p\u003E\n\n\u003Cp\u003EInitially, you are facing directly east from your position. You \u003Cstrong\u003Ecannot move\u003C/strong\u003E from your position, but you can \u003Cstrong\u003Erotate\u003C/strong\u003E. In other words, \u003Ccode\u003Epos\u003Csub\u003Ex\u003C/sub\u003E\u003C/code\u003E and \u003Ccode\u003Epos\u003Csub\u003Ey\u003C/sub\u003E\u003C/code\u003E cannot be changed. Your field of view in \u003Cstrong\u003Edegrees\u003C/strong\u003E is represented by \u003Ccode\u003Eangle\u003C/code\u003E, determining how wide you can see from any given view direction. Let \u003Ccode\u003Ed\u003C/code\u003E be the amount in degrees that you rotate counterclockwise. Then, your field of view is the \u003Cstrong\u003Einclusive\u003C/strong\u003E range of angles \u003Ccode\u003E[d - angle/2, d \u002B angle/2]\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\n\u003Cvideo autoplay=\u0022\u0022 controls=\u0022\u0022 height=\u0022360\u0022 muted=\u0022\u0022 style=\u0022max-width:100%;height:auto;\u0022 width=\u0022480\u0022\u003E\u003Csource src=\u0022https://assets.leetcode.com/uploads/2020/09/30/angle.mp4\u0022 type=\u0022video/mp4\u0022 /\u003EYour browser does not support the video tag or this video format.\u003C/video\u003E\n\u003C/p\u003E\n\n\u003Cp\u003EYou can \u003Cstrong\u003Esee\u003C/strong\u003E some set of points if, for each point, the \u003Cstrong\u003Eangle\u003C/strong\u003E formed by the point, your position, and the immediate east direction from your position is \u003Cstrong\u003Ein your field of view\u003C/strong\u003E.\u003C/p\u003E\n\n\u003Cp\u003EThere can be multiple points at one coordinate. There may be points at your location, and you can always see these points regardless of your rotation. Points do not obstruct your vision to other points.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe maximum number of points you can see\u003C/em\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/30/89a07e9b-00ab-4967-976a-c723b2aa8656.png\u0022 style=\u0022width: 400px; height: 300px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[2,1],[2,2],[3,3]], angle = 90, location = [1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The shaded region represents your field of view. All points can be made visible in your field of view, including [3,3] even though [2,2] is in front and in the same line of sight.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[2,1],[2,2],[3,4],[1,1]], angle = 90, location = [1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 4\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E All points can be made visible in your field of view, including the one at your location.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/09/30/5010bfd3-86e6-465f-ac64-e9df941d2e49.png\u0022 style=\u0022width: 690px; height: 348px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E points = [[1,0],[2,1]], angle = 13, location = [1,1]\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E You can only see one of the two points, as shown above.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= points.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Epoints[i].length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Elocation.length == 2\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= angle \u0026lt; 360\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= pos\u003Csub\u003Ex\u003C/sub\u003E, pos\u003Csub\u003Ey\u003C/sub\u003E, x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E \u0026lt;= 100\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Sort the points by polar angle with the original position. Now only a consecutive collection of points would be visible from any coordinate.",
+    "We can use two pointers to keep track of visible points for each start point",
+    "For handling the cyclic condition, it\u2019d be helpful to append the point list to itself after sorting."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[[2,1],[2,2],[3,3]]\n90\n[1,1]",
+      "RawExpectedOutput": "3"
+    },
+    {
+      "RawInput": "[[2,1],[2,2],[3,4],[1,1]]\n90\n[1,1]",
+      "RawExpectedOutput": "4"
+    },
+    {
+      "RawInput": "[[1,0],[2,1]]\n13\n[1,1]",
+      "RawExpectedOutput": "1"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:40.9134773+00:00",
+  "Url": "https://leetcode.com/problems/maximum-number-of-visible-points/"
+}

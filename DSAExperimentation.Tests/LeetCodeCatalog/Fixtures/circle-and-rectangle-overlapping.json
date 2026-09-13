@@ -1,0 +1,37 @@
+{
+  "QuestionId": 1501,
+  "FrontendId": 1401,
+  "Title": "Circle and Rectangle Overlapping",
+  "TitleSlug": "circle-and-rectangle-overlapping",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Math",
+    "Geometry"
+  ],
+  "AcceptanceRatePercent": 50.6,
+  "TotalAccepted": 25624,
+  "TotalSubmissions": 50680,
+  "Likes": 409,
+  "Dislikes": 85,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given a circle represented as \u003Ccode\u003E(radius, xCenter, yCenter)\u003C/code\u003E and an axis-aligned rectangle represented as \u003Ccode\u003E(x1, y1, x2, y2)\u003C/code\u003E, where \u003Ccode\u003E(x1, y1)\u003C/code\u003E are the coordinates of the bottom-left corner, and \u003Ccode\u003E(x2, y2)\u003C/code\u003E are the coordinates of the top-right corner of the rectangle.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Ccode\u003Etrue\u003C/code\u003E\u003Cem\u003E if the circle and rectangle are overlapped otherwise return \u003C/em\u003E\u003Ccode\u003Efalse\u003C/code\u003E. In other words, check if there is \u003Cstrong\u003Eany\u003C/strong\u003E point \u003Ccode\u003E(x\u003Csub\u003Ei\u003C/sub\u003E, y\u003Csub\u003Ei\u003C/sub\u003E)\u003C/code\u003E that belongs to the circle and the rectangle at the same time.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/02/20/sample_4_1728.png\u0022 style=\u0022width: 258px; height: 167px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E radius = 1, xCenter = 0, yCenter = 0, x1 = 1, y1 = -1, x2 = 3, y2 = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Circle and rectangle share the point (1,0).\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E radius = 1, xCenter = 1, yCenter = 1, x1 = 1, y1 = -3, x2 = 2, y2 = -1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E false\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\u003Cimg alt=\u0022\u0022 src=\u0022https://assets.leetcode.com/uploads/2020/02/20/sample_2_1728.png\u0022 style=\u0022width: 150px; height: 135px;\u0022 /\u003E\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E radius = 1, xCenter = 0, yCenter = 0, x1 = -1, y1 = 0, x2 = 0, y2 = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E true\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= radius \u0026lt;= 2000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= xCenter, yCenter \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= x1 \u0026lt; x2 \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E-10\u003Csup\u003E4\u003C/sup\u003E \u0026lt;= y1 \u0026lt; y2 \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Locate the closest point of the square to the circle, you can then find the distance from this point to the center of the circle and check if this is less than or equal to the radius."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1\n0\n0\n1\n-1\n3\n1",
+      "RawExpectedOutput": "true"
+    },
+    {
+      "RawInput": "1\n1\n1\n1\n-3\n2\n-1",
+      "RawExpectedOutput": "false"
+    },
+    {
+      "RawInput": "1\n0\n0\n-1\n0\n0\n1",
+      "RawExpectedOutput": "true"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:39.7875556+00:00",
+  "Url": "https://leetcode.com/problems/circle-and-rectangle-overlapping/"
+}

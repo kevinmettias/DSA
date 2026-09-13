@@ -1,0 +1,25 @@
+{
+  "QuestionId": 1708,
+  "FrontendId": 1603,
+  "Title": "Design Parking System",
+  "TitleSlug": "design-parking-system",
+  "Difficulty": "Easy",
+  "TopicTags": [
+    "Design",
+    "Simulation",
+    "Counting"
+  ],
+  "AcceptanceRatePercent": 87.2,
+  "TotalAccepted": 377424,
+  "TotalSubmissions": 432884,
+  "Likes": 2085,
+  "Dislikes": 462,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a parking system for a parking lot. The parking lot has three kinds of parking spaces: big, medium, and small, with a fixed number of slots for each size.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EParkingSystem\u003C/code\u003E class:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EParkingSystem(int big, int medium, int small)\u003C/code\u003E Initializes object of the \u003Ccode\u003EParkingSystem\u003C/code\u003E class. The number of slots for each parking space are given as part of the constructor.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool addCar(int carType)\u003C/code\u003E Checks whether there is a parking space of \u003Ccode\u003EcarType\u003C/code\u003E for the car that wants to get into the parking lot. \u003Ccode\u003EcarType\u003C/code\u003E can be of three kinds: big, medium, or small, which are represented by \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E, and \u003Ccode\u003E3\u003C/code\u003E respectively. \u003Cstrong\u003EA car can only park in a parking space of its \u003C/strong\u003E\u003Ccode\u003EcarType\u003C/code\u003E. If there is no space available, return \u003Ccode\u003Efalse\u003C/code\u003E, else park the car in that size space and return \u003Ccode\u003Etrue\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;ParkingSystem\u0026quot;, \u0026quot;addCar\u0026quot;, \u0026quot;addCar\u0026quot;, \u0026quot;addCar\u0026quot;, \u0026quot;addCar\u0026quot;]\n[[1, 1, 0], [1], [2], [3], [1]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, true, true, false, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nParkingSystem parkingSystem = new ParkingSystem(1, 1, 0);\nparkingSystem.addCar(1); // return true because there is 1 available slot for a big car\nparkingSystem.addCar(2); // return true because there is 1 available slot for a medium car\nparkingSystem.addCar(3); // return false because there is no available slot for a small car\nparkingSystem.addCar(1); // return false because there is no available slot for a big car. It is already occupied.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E0 \u0026lt;= big, medium, small \u0026lt;= 1000\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003EcarType\u003C/code\u003E is \u003Ccode\u003E1\u003C/code\u003E, \u003Ccode\u003E2\u003C/code\u003E, or \u003Ccode\u003E3\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most \u003Ccode\u003E1000\u003C/code\u003E calls will be made to \u003Ccode\u003EaddCar\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Record number of parking slots still available for each car type."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.1032714+00:00",
+  "Url": "https://leetcode.com/problems/design-parking-system/"
+}

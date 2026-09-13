@@ -1,0 +1,41 @@
+{
+  "QuestionId": 3697,
+  "FrontendId": 3444,
+  "Title": "Minimum Increments for Target Multiples in an Array",
+  "TitleSlug": "minimum-increments-for-target-multiples-in-an-array",
+  "Difficulty": "Hard",
+  "TopicTags": [
+    "Array",
+    "Math",
+    "Dynamic Programming",
+    "Bit Manipulation",
+    "Number Theory",
+    "Bitmask"
+  ],
+  "AcceptanceRatePercent": 27.7,
+  "TotalAccepted": 7059,
+  "TotalSubmissions": 25449,
+  "Likes": 89,
+  "Dislikes": 7,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EYou are given two arrays, \u003Ccode\u003Enums\u003C/code\u003E and \u003Ccode\u003Etarget\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EIn a single operation, you may increment any element of \u003Ccode\u003Enums\u003C/code\u003E by 1.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cstrong\u003Ethe minimum number\u003C/strong\u003E of operations required so that each element in \u003Ccode\u003Etarget\u003C/code\u003E has \u003Cstrong\u003Eat least\u003C/strong\u003E one multiple in \u003Ccode\u003Enums\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [1,2,3], target = [4]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E1\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe minimum number of operations required to satisfy the condition is 1.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIncrement 3 to 4 with just one operation, making 4 a multiple of itself.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [8,4], target = [10,5]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E2\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003EThe minimum number of operations required to satisfy the condition is 2.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EIncrement 8 to 10 with 2 operations, making 10 a multiple of both 5 and 10.\u003C/li\u003E\n\u003C/ul\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cdiv class=\u0022example-block\u0022\u003E\n\u003Cp\u003E\u003Cstrong\u003EInput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003Enums = [7,9,10], target = [7]\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EOutput:\u003C/strong\u003E \u003Cspan class=\u0022example-io\u0022\u003E0\u003C/span\u003E\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003EExplanation:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cp\u003ETarget 7 already has a multiple in nums, so no additional operations are needed.\u003C/p\u003E\n\u003C/div\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums.length \u0026lt;= 5 * 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= target.length \u0026lt;= 4\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Etarget.length \u0026lt;= nums.length\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= nums[i], target[i] \u0026lt;= 10\u003Csup\u003E4\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use bitmask dynamic programming."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "[1,2,3]\n[4]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[8,4]\n[10,5]",
+      "RawExpectedOutput": null
+    },
+    {
+      "RawInput": "[7,9,10]\n[7]",
+      "RawExpectedOutput": null
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0607195+00:00",
+  "Url": "https://leetcode.com/problems/minimum-increments-for-target-multiples-in-an-array/"
+}

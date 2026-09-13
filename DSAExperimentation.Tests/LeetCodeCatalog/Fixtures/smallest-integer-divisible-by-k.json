@@ -1,0 +1,39 @@
+{
+  "QuestionId": 1064,
+  "FrontendId": 1015,
+  "Title": "Smallest Integer Divisible by K",
+  "TitleSlug": "smallest-integer-divisible-by-k",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Math",
+    "Pigeonhole Principle"
+  ],
+  "AcceptanceRatePercent": 54.2,
+  "TotalAccepted": 198878,
+  "TotalSubmissions": 367212,
+  "Likes": 1671,
+  "Dislikes": 1177,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a positive integer \u003Ccode\u003Ek\u003C/code\u003E, you need to find the \u003Cstrong\u003Elength\u003C/strong\u003E of the \u003Cstrong\u003Esmallest\u003C/strong\u003E positive integer \u003Ccode\u003En\u003C/code\u003E such that \u003Ccode\u003En\u003C/code\u003E is divisible by \u003Ccode\u003Ek\u003C/code\u003E, and \u003Ccode\u003En\u003C/code\u003E only contains the digit \u003Ccode\u003E1\u003C/code\u003E.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe \u003Cstrong\u003Elength\u003C/strong\u003E of \u003C/em\u003E\u003Ccode\u003En\u003C/code\u003E. If there is no such \u003Ccode\u003En\u003C/code\u003E, return -1.\u003C/p\u003E\n\n\u003Cp\u003E\u003Cstrong\u003ENote:\u003C/strong\u003E \u003Ccode\u003En\u003C/code\u003E may not fit in a 64-bit signed integer.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E k = 1\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The smallest answer is n = 1, which has length 1.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E k = 2\n\u003Cstrong\u003EOutput:\u003C/strong\u003E -1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E There is no such positive integer n divisible by 2.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E k = 3\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The smallest answer is n = 111, which has length 3.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= k \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "11111 = 1111 * 10 \u002B 1\r\nWe only need to store remainders modulo K.",
+    "If we never get a remainder of 0, why would that happen, and how would we know that?"
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "1",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "2",
+      "RawExpectedOutput": "-1"
+    },
+    {
+      "RawInput": "3",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:42.0221654+00:00",
+  "Url": "https://leetcode.com/problems/smallest-integer-divisible-by-k/"
+}

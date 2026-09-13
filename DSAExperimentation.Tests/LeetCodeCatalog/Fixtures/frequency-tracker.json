@@ -1,0 +1,26 @@
+{
+  "QuestionId": 2778,
+  "FrontendId": 2671,
+  "Title": "Frequency Tracker",
+  "TitleSlug": "frequency-tracker",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "Hash Table",
+    "Design"
+  ],
+  "AcceptanceRatePercent": 31.6,
+  "TotalAccepted": 30698,
+  "TotalSubmissions": 97176,
+  "Likes": 348,
+  "Dislikes": 31,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EDesign a data structure that keeps track of the values in it and answers some queries regarding their frequencies.\u003C/p\u003E\n\n\u003Cp\u003EImplement the \u003Ccode\u003EFrequencyTracker\u003C/code\u003E class.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003EFrequencyTracker()\u003C/code\u003E: Initializes the \u003Ccode\u003EFrequencyTracker\u003C/code\u003E object with an empty array initially.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid add(int number)\u003C/code\u003E: Adds \u003Ccode\u003Enumber\u003C/code\u003E to the data structure.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Evoid deleteOne(int number)\u003C/code\u003E: Deletes \u003Cstrong\u003Eone\u003C/strong\u003E occurrence of \u003Ccode\u003Enumber\u003C/code\u003E from the data structure. The data structure \u003Cstrong\u003Emay not contain\u003C/strong\u003E \u003Ccode\u003Enumber\u003C/code\u003E, and in this case nothing is deleted.\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Ebool hasFrequency(int frequency)\u003C/code\u003E: Returns \u003Ccode\u003Etrue\u003C/code\u003E if there is a number in the data structure that occurs \u003Ccode\u003Efrequency\u003C/code\u003E number of times, otherwise, it returns \u003Ccode\u003Efalse\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;FrequencyTracker\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;hasFrequency\u0026quot;]\n[[], [3], [3], [2]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, true]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nFrequencyTracker frequencyTracker = new FrequencyTracker();\nfrequencyTracker.add(3); // The data structure now contains [3]\nfrequencyTracker.add(3); // The data structure now contains [3, 3]\nfrequencyTracker.hasFrequency(2); // Returns true, because 3 occurs twice\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;FrequencyTracker\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;deleteOne\u0026quot;, \u0026quot;hasFrequency\u0026quot;]\n[[], [1], [1], [1]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, null, null, false]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nFrequencyTracker frequencyTracker = new FrequencyTracker();\nfrequencyTracker.add(1); // The data structure now contains [1]\nfrequencyTracker.deleteOne(1); // The data structure becomes empty []\nfrequencyTracker.hasFrequency(1); // Returns false, because the data structure is empty\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput\u003C/strong\u003E\n[\u0026quot;FrequencyTracker\u0026quot;, \u0026quot;hasFrequency\u0026quot;, \u0026quot;add\u0026quot;, \u0026quot;hasFrequency\u0026quot;]\n[[], [2], [3], [1]]\n\u003Cstrong\u003EOutput\u003C/strong\u003E\n[null, false, null, true]\n\n\u003Cstrong\u003EExplanation\u003C/strong\u003E\nFrequencyTracker frequencyTracker = new FrequencyTracker();\nfrequencyTracker.hasFrequency(2); // Returns false, because the data structure is empty\nfrequencyTracker.add(3); // The data structure now contains [3]\nfrequencyTracker.hasFrequency(1); // Returns true, because 3 occurs once\n\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= number \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= frequency \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003EAt most, \u003Ccode\u003E2 *\u0026nbsp;10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u0026nbsp;calls will be made to \u003Ccode\u003Eadd\u003C/code\u003E, \u003Ccode\u003EdeleteOne\u003C/code\u003E, and \u003Ccode\u003EhasFrequency\u003C/code\u003E\u0026nbsp;in \u003Cstrong\u003Etotal\u003C/strong\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Put all the numbers in a hash map (or just an integer array given the number range is small) to maintain each number\u2019s frequency dynamically.",
+    "Put each frequency in another hash map (or just an integer array given the range is small, note there are only 200000 calls in total) to maintain each kind of frequency dynamically.",
+    "Keep the 2 hash maps in sync."
+  ],
+  "ExampleTestCases": [],
+  "FetchedAtUtc": "2026-09-13T04:39:40.3584566+00:00",
+  "Url": "https://leetcode.com/problems/frequency-tracker/"
+}

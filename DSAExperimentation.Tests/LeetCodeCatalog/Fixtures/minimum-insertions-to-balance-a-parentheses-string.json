@@ -1,0 +1,40 @@
+{
+  "QuestionId": 1648,
+  "FrontendId": 1541,
+  "Title": "Minimum Insertions to Balance a Parentheses String",
+  "TitleSlug": "minimum-insertions-to-balance-a-parentheses-string",
+  "Difficulty": "Medium",
+  "TopicTags": [
+    "String",
+    "Stack",
+    "Greedy",
+    "Bracket Sequences"
+  ],
+  "AcceptanceRatePercent": 53.7,
+  "TotalAccepted": 86259,
+  "TotalSubmissions": 160592,
+  "Likes": 1287,
+  "Dislikes": 300,
+  "IsPaidOnly": false,
+  "ContentHtml": "\u003Cp\u003EGiven a parentheses string \u003Ccode\u003Es\u003C/code\u003E containing only the characters \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E. A parentheses string is \u003Cstrong\u003Ebalanced\u003C/strong\u003E if:\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EAny left parenthesis \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E must have a corresponding two consecutive right parenthesis \u003Ccode\u003E\u0026#39;))\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\t\u003Cli\u003ELeft parenthesis \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E must go before the corresponding two consecutive right parenthesis \u003Ccode\u003E\u0026#39;))\u0026#39;\u003C/code\u003E.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EIn other words, we treat \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E as an opening parenthesis and \u003Ccode\u003E\u0026#39;))\u0026#39;\u003C/code\u003E as a closing parenthesis.\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003EFor example, \u003Ccode\u003E\u0026quot;())\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;())(())))\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;(())())))\u0026quot;\u003C/code\u003E are balanced, \u003Ccode\u003E\u0026quot;)()\u0026quot;\u003C/code\u003E, \u003Ccode\u003E\u0026quot;()))\u0026quot;\u003C/code\u003E and \u003Ccode\u003E\u0026quot;(()))\u0026quot;\u003C/code\u003E are not balanced.\u003C/li\u003E\n\u003C/ul\u003E\n\n\u003Cp\u003EYou can insert the characters \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E at any position of the string to balance it if needed.\u003C/p\u003E\n\n\u003Cp\u003EReturn \u003Cem\u003Ethe minimum number of insertions\u003C/em\u003E needed to make \u003Ccode\u003Es\u003C/code\u003E balanced.\u003C/p\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 1:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;(()))\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 1\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The second \u0026#39;(\u0026#39; has two matching \u0026#39;))\u0026#39;, but the first \u0026#39;(\u0026#39; has only \u0026#39;)\u0026#39; matching. We need to add one more \u0026#39;)\u0026#39; at the end of the string to be \u0026quot;(())))\u0026quot; which is balanced.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 2:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;())\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 0\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E The string is already balanced.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u003Cstrong class=\u0022example\u0022\u003EExample 3:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cpre\u003E\n\u003Cstrong\u003EInput:\u003C/strong\u003E s = \u0026quot;))())(\u0026quot;\n\u003Cstrong\u003EOutput:\u003C/strong\u003E 3\n\u003Cstrong\u003EExplanation:\u003C/strong\u003E Add \u0026#39;(\u0026#39; to match the first \u0026#39;))\u0026#39;, Add \u0026#39;))\u0026#39; to match the last \u0026#39;(\u0026#39;.\n\u003C/pre\u003E\n\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EConstraints:\u003C/strong\u003E\u003C/p\u003E\n\n\u003Cul\u003E\n\t\u003Cli\u003E\u003Ccode\u003E1 \u0026lt;= s.length \u0026lt;= 10\u003Csup\u003E5\u003C/sup\u003E\u003C/code\u003E\u003C/li\u003E\n\t\u003Cli\u003E\u003Ccode\u003Es\u003C/code\u003E consists of \u003Ccode\u003E\u0026#39;(\u0026#39;\u003C/code\u003E and \u003Ccode\u003E\u0026#39;)\u0026#39;\u003C/code\u003E only.\u003C/li\u003E\n\u003C/ul\u003E\n",
+  "Hints": [
+    "Use a stack to keep opening brackets. If you face single closing \u0027)\u0027 add 1 to the answer and consider it as \u0027))\u0027.",
+    "If you have \u0027))\u0027 with empty stack, add 1 to the answer, If after finishing you have x opening remaining in the stack, add 2x to the answer."
+  ],
+  "ExampleTestCases": [
+    {
+      "RawInput": "\u0022(()))\u0022",
+      "RawExpectedOutput": "1"
+    },
+    {
+      "RawInput": "\u0022())\u0022",
+      "RawExpectedOutput": "0"
+    },
+    {
+      "RawInput": "\u0022))())(\u0022",
+      "RawExpectedOutput": "3"
+    }
+  ],
+  "FetchedAtUtc": "2026-09-13T04:39:41.0612859+00:00",
+  "Url": "https://leetcode.com/problems/minimum-insertions-to-balance-a-parentheses-string/"
+}
