@@ -1,16 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.StoneGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Stone Game (LC 877): plain un-memoized minimax recursion over (left, right)
-// bounds - exponential, since the same (left, right) sub-range recurs through
-// many different pick orders - vs. this repo's own Memoizer<TState,TResult>
-// caching that exact pair, the identical shape PredictTheWinnerBenchmarks
-// already uses for its own interval-DP game (LC 877 is the same recurrence as
-// LC 486, just a different win condition on the resulting score difference). N
-// is kept modest for the same reason PredictTheWinnerBenchmarks documents: the
-// un-memoized baseline's blowup is real.
+// Harness only: both arms are StoneGameSolution's, the same methods StoneGameTests
+// proves correct. UnmemoizedRecursion is plain minimax over (left, right) bounds -
+// exponential, since the same sub-range recurs through many different pick orders -
+// against this repo's own Memoizer<TState,TResult> caching that exact pair, the
+// identical shape PredictTheWinnerBenchmarks uses for its own interval-DP game
+// (LC 877 is LC 486's recurrence with a different win condition). N is kept modest
+// for the same reason PredictTheWinnerBenchmarks documents: the un-memoized
+// baseline's blowup is real.
 [MemoryDiagnoser]
 public class StoneGameBenchmarks
 {
@@ -30,34 +30,8 @@ public class StoneGameBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => ScoreDiff(0, N - 1);
-
-    private int ScoreDiff(int left, int right)
-    {
-        if (left == right)
-        {
-            return _piles[left];
-        }
-
-        var takeLeft = _piles[left] - ScoreDiff(left + 1, right);
-        var takeRight = _piles[right] - ScoreDiff(left, right - 1);
-        return Math.Max(takeLeft, takeRight);
-    }
+    public bool UnmemoizedRecursion() => StoneGameSolution.AliceWinsByUnmemoizedRecursion(_piles);
 
     [Benchmark]
-    public int MemoizedRecursion()
-        => Memoizer.Memoize<(int Left, int Right), int>((0, N - 1), ScoreDiffMemoized);
-
-    private int ScoreDiffMemoized((int Left, int Right) range, Func<(int Left, int Right), int> bestDiff)
-    {
-        var (left, right) = range;
-        if (left == right)
-        {
-            return _piles[left];
-        }
-
-        var takeLeft = _piles[left] - bestDiff((left + 1, right));
-        var takeRight = _piles[right] - bestDiff((left, right - 1));
-        return Math.Max(takeLeft, takeRight);
-    }
+    public bool MemoizedRecursion() => StoneGameSolution.AliceWinsByMemoizedRecursion(_piles);
 }

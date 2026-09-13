@@ -1,81 +1,48 @@
+using DSAExperimentation.LeetCode.ProjectionAreaOf3DShapes;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ProjectionAreaOf3DShapes;
 
-// LeetCode 883. Projection Area of 3D Shapes: sum the three orthographic
-// projections of a height grid - top (count of occupied cells), front (each
-// row's tallest stack), side (each column's tallest stack). A direct
-// O(rows*cols) grid reduction; no repo Representation/Operations primitive
-// applies (the same "nothing to compose" precedent Spiral Matrix/Spiral
-// Matrix II already establish) since there is nothing here beyond a plain
-// int[][] and Math.Max.
-public sealed partial class ProjectionAreaOf3DShapesTests
+// Harness only. All three grid reductions - the three-pass baseline, the two-pass
+// row/column split the pre-migration test carried, and the fused single pass - are
+// ProjectionAreaOf3DShapesSolution's; this file just pins them to LeetCode's
+// published examples.
+public sealed class ProjectionAreaOf3DShapesTests
 {
-    [Fact]
-    public void ProjectionArea_ClassicExample_ReturnsSummedAreas()
-    {
-        int[][] grid = [[1, 2], [3, 4]];
-
-        Assert.Equal(17, ProjectionArea(grid));
-    }
-
-    [Fact]
-    public void ProjectionArea_AllZeroGrid_ReturnsZero()
-    {
-        int[][] grid = [[0, 0], [0, 0]];
-
-        Assert.Equal(0, ProjectionArea(grid));
-    }
-
-    private static int ProjectionArea(int[][] grid)
-    {
-        var (top, front) = ComputeTopAndFront(grid);
-        var side = ComputeSide(grid);
-
-        return top + front + side;
-    }
-
-    private static (int Top, int Front) ComputeTopAndFront(int[][] grid)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-        var top = 0;
-        var front = 0;
-
-        for (var r = 0; r < rows; r++)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            var rowMax = 0;
-            for (var c = 0; c < cols; c++)
-            {
-                if (grid[r][c] > 0)
-                {
-                    top++;
-                }
+            // LeetCode example 1: top 4, front 2 + 4, side 3 + 4.
+            { [[1, 2], [3, 4]], 17 },
 
-                rowMax = Math.Max(rowMax, grid[r][c]);
-            }
+            // LeetCode example 2: a single stack of height 2 projects 1 + 2 + 2.
+            { [[2]], 5 },
 
-            front += rowMax;
-        }
+            // LeetCode example 3: the two occupied cells lie on opposite diagonals.
+            { [[1, 0], [0, 2]], 8 },
 
-        return (top, front);
-    }
+            // Empty space everywhere: no projection has any area.
+            { [[0, 0], [0, 0]], 0 },
 
-    private static int ComputeSide(int[][] grid)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-        var side = 0;
+            // A hole in the middle: the top view loses a cell the two side-on views
+            // still see over, so the three projections disagree about that column.
+            { [[1, 1, 1], [1, 0, 1], [1, 1, 1]], 14 },
+        };
 
-        for (var c = 0; c < cols; c++)
-        {
-            var colMax = 0;
-            for (var r = 0; r < rows; r++)
-            {
-                colMax = Math.Max(colMax, grid[r][c]);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ProjectionAreaByThreeSeparatePasses_LeetCodeExamples_ReturnsSummedProjectionAreas(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, ProjectionAreaOf3DShapesSolution.ProjectionAreaByThreeSeparatePasses(grid));
 
-            side += colMax;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ProjectionAreaByRowAndColumnPasses_LeetCodeExamples_ReturnsSummedProjectionAreas(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, ProjectionAreaOf3DShapesSolution.ProjectionAreaByRowAndColumnPasses(grid));
 
-        return side;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ProjectionAreaBySingleCombinedPass_LeetCodeExamples_ReturnsSummedProjectionAreas(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, ProjectionAreaOf3DShapesSolution.ProjectionAreaBySingleCombinedPass(grid));
 }

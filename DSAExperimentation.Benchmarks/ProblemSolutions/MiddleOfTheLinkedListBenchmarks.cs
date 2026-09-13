@@ -1,19 +1,18 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Middle of the Linked List (LC 876): a naive two-pass approach (count the list,
-// then walk length/2 steps from the head) vs. Floyd's slow/fast two-pointer walk
-// over this repo's own SinglyLinkedListNode<int>.Next (MiddleOfTheLinkedListTests
-// precedent) that lands on the same node in a single pass. Both are O(n), but
-// CountThenWalk touches every node twice while SlowFastTwoPointer touches the
-// list once.
+// Harness only: both arms are MiddleOfTheLinkedListSolution's, the same methods
+// MiddleOfTheLinkedListTests proves correct. CountThenWalk is the naive two-pass
+// approach (count the list, then walk length/2 steps from the head);
+// SlowFastTwoPointer lands on the same node in a single pass. Both are O(n), but
+// the baseline touches every node twice.
 [MemoryDiagnoser]
 public class MiddleOfTheLinkedListBenchmarks
 {
     private const int RandomSeed = 876; // LC problem number
-    private const int MidpointDivisor = 2;
     private const int MaxNodeValueExclusive = 1_000;
 
     [Params(200, 5_000)]
@@ -28,39 +27,16 @@ public class MiddleOfTheLinkedListBenchmarks
         _head = BuildRandomList(random, Length);
     }
 
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
+    // Returning the middle node itself keeps both arms on LeetCode's real answer
+    // shape rather than the weaker "read a value off it" measurement the pre-§17
+    // benchmark took.
     [Benchmark(Baseline = true)]
-    public int CountThenWalk()
-    {
-        var count = 0;
-        for (var node = _head; node is not null; node = node.Next)
-        {
-            count++;
-        }
-
-        var target = count / MidpointDivisor;
-        var current = _head;
-        for (var i = 0; i < target; i++)
-        {
-            current = current!.Next;
-        }
-
-        return current!.Value;
-    }
+    public object? CountThenWalk() => MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(_head);
 
     [Benchmark]
-    public int SlowFastTwoPointer()
-    {
-        var slow = _head;
-        var fast = _head;
-
-        while (fast?.Next is not null)
-        {
-            slow = slow!.Next;
-            fast = fast.Next.Next;
-        }
-
-        return slow!.Value;
-    }
+    public object? SlowFastTwoPointer() => MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(_head);
 
     private static SinglyLinkedListNode<int> BuildRandomList(Random random, int length)
     {

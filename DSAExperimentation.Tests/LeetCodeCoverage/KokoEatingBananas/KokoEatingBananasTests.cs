@@ -1,49 +1,45 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.KokoEatingBananas;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.KokoEatingBananas;
 
-// LeetCode 875. Koko Eating Bananas: "binary search on the answer" over eating
-// speed - the minimum speed k that lets Koko finish every pile within h hours is
-// monotone (once some speed is feasible, every faster speed stays feasible), so
-// it's the leftmost "true" in an implicit [false...false, true...true] sequence
-// over k in [1, max(piles)]. Same FeasibleSpeedSequence + BinarySearch.LowerBound
-// shape SplitArrayLargestSumTests already uses for its own search-on-answer.
-public sealed partial class KokoEatingBananasTests
+// Harness only. Both strategies are KokoEatingBananasSolution's - the hand-rolled
+// bisection that used to live only in the benchmark's baseline arm, and the
+// BinarySearch.LowerBound walk over the feasibility sequence the test used to inline.
+public sealed class KokoEatingBananasTests
 {
-    [Theory]
-    [InlineData(new[] { 3, 6, 7, 11 }, 8, 4)]
-    [InlineData(new[] { 30, 11, 23, 4, 20 }, 5, 30)]
-    [InlineData(new[] { 30, 11, 23, 4, 20 }, 6, 23)]
-    [InlineData(new[] { 1 }, 1, 1)]
-    public void MinEatingSpeed_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(int[] piles, int h, int expected)
-    {
-        var actual = MinEatingSpeed(piles, h);
-        Assert.Equal(expected, actual);
-    }
-
-    private static int MinEatingSpeed(int[] piles, int h)
-    {
-        var sequence = new FeasibleSpeedSequence(piles, h);
-        return 1 + BinarySearch.LowerBound(sequence, true);
-    }
-
-    private static long HoursNeeded(int[] piles, int speed)
-    {
-        var hours = 0L;
-
-        foreach (var pile in piles)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            hours += (pile + speed - 1) / speed;
-        }
+            // LC examples 1-3.
+            { [3, 6, 7, 11], 8, 4 },
+            { [30, 11, 23, 4, 20], 5, 30 },
+            { [30, 11, 23, 4, 20], 6, 23 },
 
-        return hours;
-    }
+            // One pile with exactly one hour: the answer is the pile itself.
+            { [1], 1, 1 },
+            { [1000000000], 1, 1000000000 },
 
-    private readonly struct FeasibleSpeedSequence(int[] piles, int h) : IRandomAccessSequence<bool>
-    {
-        public int Length => piles.Max();
+            // Hours to spare, so the slowest speed already clears every pile.
+            { [3, 6, 7, 11], 100, 1 },
 
-        public bool Get(int index) => HoursNeeded(piles, 1 + index) <= h;
-    }
+            // h equals the pile count, so every pile must go in a single hour and the
+            // answer is the largest pile.
+            { [4, 4, 4, 4], 4, 4 },
+
+            // Ceilings matter: at speed 2 the piles cost 2 + 1 + 2 = 5 hours, at speed
+            // 3 they cost 2 + 1 + 1 = 4.
+            { [4, 2, 3], 4, 3 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinEatingSpeedByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
+        int[] piles, int h, int expected) =>
+        Assert.Equal(expected, KokoEatingBananasSolution.MinEatingSpeedByManualBisection(piles, h));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinEatingSpeedBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
+        int[] piles, int h, int expected) =>
+        Assert.Equal(expected, KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(piles, h));
 }
