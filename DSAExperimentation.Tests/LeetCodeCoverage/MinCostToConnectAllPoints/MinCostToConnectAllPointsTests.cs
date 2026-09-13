@@ -1,53 +1,34 @@
-using DSAExperimentation.Algorithms.MinimumSpanningTrees;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
+using DSAExperimentation.LeetCode.MinCostToConnectAllPoints;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinCostToConnectAllPoints;
 
-// LeetCode 1584. Min Cost to Connect All Points: "minimum total edge weight to
-// connect every point" is exactly what a minimum spanning tree computes, with edge
-// weight defined as Manhattan distance between every pair of points (a complete
-// graph, one edge per pair) - a direct read of this repo's own
-// Algorithms.MinimumSpanningTrees.MinimumSpanningTree.Kruskal's reported total
-// weight over the same WeightedNode/WeightedTopology fixtures NetworkDelayTimeTests
-// already reuses for a weighted graph.
-public sealed partial class MinCostToConnectAllPointsTests
+// Harness only. Both the dense-Prim baseline and the Kruskal composition are
+// MinCostToConnectAllPointsSolution's own methods; this file just pins them to
+// LeetCode's published examples plus the degenerate one- and two-point inputs.
+// The baseline used to live inlined in MinCostToConnectAllPointsBenchmarks and was
+// asserted by nothing - it is under test here for the first time.
+public sealed class MinCostToConnectAllPointsTests
 {
-    [Fact]
-    public void MinCostConnectPoints_ClassicExample_ReturnsMstWeight()
-    {
-        int[][] points = [[0, 0], [2, 2], [3, 10], [5, 2], [7, 0]];
-
-        Assert.Equal(20, MinCostConnectPoints(points));
-    }
-
-    [Fact]
-    public void MinCostConnectPoints_SinglePoint_ReturnsZero()
-    {
-        int[][] points = [[0, 0]];
-
-        Assert.Equal(0, MinCostConnectPoints(points));
-    }
-
-    private static int MinCostConnectPoints(int[][] points)
-    {
-        var nodes = points.Select((_, i) => new WeightedNode($"p{i}")).ToArray();
-
-        for (var i = 0; i < points.Length; i++)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            for (var j = i + 1; j < points.Length; j++)
-            {
-                var weight = ManhattanDistance(points[i], points[j]);
-                nodes[i].Edges.Add((weight, nodes[j]));
-                nodes[j].Edges.Add((weight, nodes[i]));
-            }
-        }
+            { [[0, 0], [2, 2], [3, 10], [5, 2], [7, 0]], 20 },
+            { [[3, 12], [-2, 5], [-4, 1]], 18 },
+            { [[0, 0]], 0 },
+            { [[0, 0], [1, 1]], 2 },
+            { [[0, 0], [1, 1], [2, 2]], 4 },
+            { [[-1000000, -1000000], [1000000, 1000000]], 4000000 },
+        };
 
-        var mst = MinimumSpanningTree.Kruskal<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            nodes);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCostConnectPointsByDensePrim_LeetCodeExamples_ReturnsSpanningTreeWeight(
+        int[][] points, int expected) =>
+        Assert.Equal(expected, MinCostToConnectAllPointsSolution.MinCostConnectPointsByDensePrim(points));
 
-        return mst.Sum(edge => edge.Weight);
-    }
-
-    private static int ManhattanDistance(int[] a, int[] b) => Math.Abs(a[0] - b[0]) + Math.Abs(a[1] - b[1]);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCostConnectPointsByKruskalMst_LeetCodeExamples_ReturnsSpanningTreeWeight(
+        int[][] points, int expected) =>
+        Assert.Equal(expected, MinCostToConnectAllPointsSolution.MinCostConnectPointsByKruskalMst(points));
 }

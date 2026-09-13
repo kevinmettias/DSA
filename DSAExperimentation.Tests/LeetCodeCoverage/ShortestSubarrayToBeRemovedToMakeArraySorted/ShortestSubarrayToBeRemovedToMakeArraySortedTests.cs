@@ -1,80 +1,39 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ShortestSubarrayToBeRemovedToMakeArraySorted;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestSubarrayToBeRemovedToMakeArraySorted;
 
-// LeetCode 1574. Shortest Subarray to be Removed to Make Array Sorted: a two-pointer
-// pass finds the longest already-sorted prefix ([0, left]) and suffix ([right, n-1])
-// in O(n) - plain array scanning, no primitive needed for that half. What DOES compose
-// this repo's own primitives is stitching the two runs together: for every prefix index
-// i, this repo's own BinarySearch.LowerBound over an ArraySequence<int> witness wrapping
-// the (already-sorted) suffix slice finds the smallest suffix value >= arr[i] in
-// O(log n) instead of a second nested scan - the same "search on a derived monotonic
-// sequence" idiom MinimumSizeSubarraySumTests/ReversePairsTests already establish, here
-// applied to the sorted suffix itself rather than a prefix-sum/coordinate-compressed
-// derivation of it.
-public sealed partial class ShortestSubarrayToBeRemovedToMakeArraySortedTests
+// Harness only. Both strategies are
+// ShortestSubarrayToBeRemovedToMakeArraySortedSolution's - this file just pins them
+// to LeetCode's published examples plus the two shapes the stitching arm has to get
+// right without any prefix/suffix overlap at all: a strictly decreasing array (only
+// one element can survive) and an already-sorted one (nothing is removed).
+public sealed class ShortestSubarrayToBeRemovedToMakeArraySortedTests
 {
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [1, 2, 3, 10, 4, 2, 3, 5], 3 },
+            { [5, 4, 3, 2, 1], 4 },
+            { [1, 2, 3], 0 },
+            { [1], 0 },
+            { [2, 2, 2, 1, 1, 1], 3 },
+            { [1, 2, 3, 5, 4], 1 },
+            { [6, 3, 10, 11, 15, 20, 13, 22], 5 },
+        };
+
     [Theory]
-    [InlineData(new[] { 1, 2, 3, 10, 4, 2, 3, 5 }, 3)]
-    [InlineData(new[] { 5, 4, 3, 2, 1 }, 4)]
-    [InlineData(new[] { 1, 2, 3 }, 0)]
-    [InlineData(new[] { 1 }, 0)]
-    public void FindLengthOfShortestSubarray_LeetCodeExamples_ReturnsMinRemovalLength(int[] arr, int expected)
-        => Assert.Equal(expected, FindLengthOfShortestSubarray(arr));
+    [MemberData(nameof(Examples))]
+    public void FindLengthOfShortestSubarrayByBruteForce_LeetCodeExamples_ReturnsMinRemovalLength(
+        int[] arr, int expected) =>
+        Assert.Equal(
+            expected,
+            ShortestSubarrayToBeRemovedToMakeArraySortedSolution.FindLengthOfShortestSubarrayByBruteForce(arr));
 
-    private static int FindLengthOfShortestSubarray(int[] arr)
-    {
-        var left = FindSortedPrefixEnd(arr);
-
-        if (left == arr.Length - 1)
-        {
-            return 0;
-        }
-
-        var right = FindSortedSuffixStart(arr);
-
-        return StitchShortestRemoval(arr, left, right);
-    }
-
-    private static int FindSortedPrefixEnd(int[] arr)
-    {
-        var left = 0;
-        while (left + 1 < arr.Length && arr[left] <= arr[left + 1])
-        {
-            left++;
-        }
-
-        return left;
-    }
-
-    private static int FindSortedSuffixStart(int[] arr)
-    {
-        var right = arr.Length - 1;
-        while (right > 0 && arr[right - 1] <= arr[right])
-        {
-            right--;
-        }
-
-        return right;
-    }
-
-    // Removing everything after the sorted prefix, or everything before the
-    // sorted suffix, are always valid - the floor every stitched candidate below
-    // has to beat. Then binary-searches, for every prefix index, the smallest
-    // suffix value >= arr[i] to find a shorter stitched removal.
-    private static int StitchShortestRemoval(int[] arr, int left, int right)
-    {
-        var n = arr.Length;
-        var best = Math.Min(n - left - 1, right);
-
-        var suffix = new ArraySequence<int>(arr[right..]);
-        for (var i = 0; i <= left; i++)
-        {
-            var j = right + BinarySearch.LowerBound(suffix, arr[i]);
-            best = Math.Min(best, j - i - 1);
-        }
-
-        return best;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindLengthOfShortestSubarrayByBinarySearchStitch_LeetCodeExamples_ReturnsMinRemovalLength(
+        int[] arr, int expected) =>
+        Assert.Equal(
+            expected,
+            ShortestSubarrayToBeRemovedToMakeArraySortedSolution.FindLengthOfShortestSubarrayByBinarySearchStitch(arr));
 }
