@@ -1,90 +1,115 @@
-using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.BalanceABinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BalanceABinarySearchTree;
 
-// LeetCode 1382. Balance a Binary Search Tree: an in-order walk of any BST visits
-// values in ascending order regardless of shape, so collecting them via this
-// repo's own InOrderTraversal/IInOrderHooks - the same composition FindModeInBina
-// rySearchTreeTests/KthSmallestElementInABSTTests already use, into a
-// DynamicArray<int> instead of a BCL List<int> - and rebuilding by always
-// splitting at the midpoint (exactly ConvertSortedArrayToBinarySearchTreeTests'
-// own Build helper) produces a height-balanced BST with the same values, no
-// matter how skewed the input was.
-public sealed partial class BalanceABinarySearchTreeTests
+// Harness only: both strategies live in BalanceABinarySearchTreeSolution. Examples
+// are stated as LeetCode's own level-order arrays - BinaryTreeNode<int> is
+// internal, so it cannot appear in a public TheoryData member; BuildTree
+// reconstructs it inside each test method instead, the same shape
+// DiameterOfBinaryTreeTests uses. LeetCode accepts any height-balanced BST whose
+// in-order walk reproduces the input's values, so each example is checked against
+// those two properties rather than one specific tree shape. The pre-migration test
+// only exercised the InOrderTraversal composition; BalanceByRepeatedKthSmallest
+// (previously untested scaffolding inlined in BalanceABinarySearchTreeBenchmarks as
+// its [Benchmark(Baseline = true)] arm) gets the identical assertions here for the
+// first time.
+public sealed class BalanceABinarySearchTreeTests
 {
-    [Fact]
-    public void Balance_SkewedRightOnlyChain_ProducesHeightBalancedBst()
-    {
-        // [1,null,2,null,3,null,4] - a right-only chain, height 4.
-        var root = new BinaryTreeNode<int>(1) { Right = new(2) { Right = new(3) { Right = new(4) } } };
-
-        var balanced = Balance(root);
-
-        Assert.Equal([1, 2, 3, 4], InOrder(balanced));
-        Assert.True(Height(balanced) <= 3);
-    }
-
-    [Fact]
-    public void Balance_AlreadyBalancedTree_PreservesValuesAndStaysBalanced()
-    {
-        var root = new BinaryTreeNode<int>(2) { Left = new(1), Right = new(3) };
-
-        var balanced = Balance(root);
-
-        Assert.Equal([1, 2, 3], InOrder(balanced));
-        Assert.True(Math.Abs(Height(balanced!.Left) - Height(balanced.Right)) <= 1);
-    }
-
-    [Fact]
-    public void Balance_SingleNode_ReturnsThatSameSingleNode()
-    {
-        var root = new BinaryTreeNode<int>(9);
-
-        var balanced = Balance(root);
-
-        Assert.Equal([9], InOrder(balanced));
-        Assert.Equal(1, Height(balanced));
-    }
-
-    private static BinaryTreeNode<int>? Balance(BinaryTreeNode<int> root)
-    {
-        State.Sorted.Value = new DynamicArray<int>();
-
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-
-        var sorted = State.Sorted.Value;
-        return Build(sorted, 0, sorted.Count - 1);
-    }
-
-    private static BinaryTreeNode<int>? Build(DynamicArray<int> sorted, int low, int high)
-    {
-        if (low > high)
+    public static TheoryData<int?[], int[]> Examples =>
+        new()
         {
-            return null;
+            // LeetCode's published example 1: a right-only chain, height 4.
+            { [1, null, 2, null, 3, null, 4], [1, 2, 3, 4] },
+
+            // LeetCode's published example 2: already balanced.
+            { [2, 1, 3], [1, 2, 3] },
+
+            // A single node is its own balanced tree.
+            { [9], [9] },
+
+            // A left-only chain - the mirror image of example 1.
+            { [4, 3, null, 2, null, 1], [1, 2, 3, 4] },
+
+            // A larger, lopsided-but-ordered tree: the left subtree is a chain, the
+            // right subtree is already balanced.
+            { [5, 3, 8, 2, null, 7, 9, 1], [1, 2, 3, 5, 7, 8, 9] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BalanceByInOrderTraversal_LeetCodeExamples_ProducesHeightBalancedBstWithSameValues(
+        int?[] levelOrder, int[] expectedSorted)
+    {
+        var balanced = BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(BuildTree(levelOrder));
+
+        Assert.Equal(expectedSorted, InOrder(balanced));
+        Assert.True(IsHeightBalanced(balanced, out _));
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BalanceByRepeatedKthSmallest_LeetCodeExamples_ProducesHeightBalancedBstWithSameValues(
+        int?[] levelOrder, int[] expectedSorted)
+    {
+        var balanced = BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(BuildTree(levelOrder));
+
+        Assert.Equal(expectedSorted, InOrder(balanced));
+        Assert.True(IsHeightBalanced(balanced, out _));
+    }
+
+    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
+    // in for a missing child.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
+    {
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (i < levelOrder.Length)
+        {
+            var current = queue.Dequeue();
+
+            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
+            {
+                current.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(current.Left);
+            }
+
+            i++;
+
+            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+            {
+                current.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(current.Right);
+            }
+
+            i++;
         }
 
-        var mid = low + ((high - low) / 2);
-        return new BinaryTreeNode<int>(sorted.Get(mid))
-        {
-            Left = Build(sorted, low, mid - 1),
-            Right = Build(sorted, mid + 1, high),
-        };
+        return root;
     }
 
     private static int[] InOrder(BinaryTreeNode<int>? node)
         => node is null ? [] : [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
 
-    private static int Height(BinaryTreeNode<int>? node)
-        => node is null ? 0 : 1 + Math.Max(Height(node.Left), Height(node.Right));
-
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    private static bool IsHeightBalanced(BinaryTreeNode<int>? node, out int height)
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Sorted.Value!.Add(node.Value);
-    }
+        if (node is null)
+        {
+            height = 0;
+            return true;
+        }
 
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Sorted = new();
+        if (!IsHeightBalanced(node.Left, out var leftHeight) ||
+            !IsHeightBalanced(node.Right, out var rightHeight))
+        {
+            height = 0;
+            return false;
+        }
+
+        height = 1 + Math.Max(leftHeight, rightHeight);
+        return Math.Abs(leftHeight - rightHeight) <= 1;
     }
 }

@@ -1,53 +1,32 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SortIntegersByThePowerValue;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SortIntegersByThePowerValue;
 
-// LeetCode 1387. Sort Integers by The Power Value: compute each integer's Collatz
-// "power" (step count to reach 1), pair it with the integer itself, and sort those
-// (Power, Value) pairs with this repo's own MergeSort over ArrayIndexedSequence
-// (SortAnArrayTests/HeightCheckerTests precedent) - no custom comparer needed,
-// since ValueTuple<int,int> already implements IComparable lexicographically
-// (KClosestPointsToOriginTests precedent), which sorts by Power first and Value
-// second, exactly LeetCode's tie-break rule.
-public sealed partial class SortIntegersByThePowerValueTests
+// Harness only. Both strategies are SortIntegersByThePowerValueSolution's - this
+// repo's MergeSort over ArrayIndexedSequence and the insertion sort that used to live
+// untested as the benchmark's baseline - pinned to LeetCode's published examples plus
+// a single-value range and a case whose kth falls on a power tie.
+public sealed class SortIntegersByThePowerValueTests
 {
+    public static TheoryData<int, int, int, int> Examples =>
+        new()
+        {
+            { 12, 15, 2, 13 },
+            { 7, 11, 4, 7 },
+            { 10, 20, 5, 13 },
+            { 1, 1, 1, 1 },
+            { 1, 4, 4, 3 },
+        };
+
     [Theory]
-    [InlineData(12, 15, 2, 13)]
-    [InlineData(7, 11, 4, 7)]
-    public void GetKth_LeetCodeExamples_ReturnsKthIntegerByPowerValue(int lo, int hi, int k, int expected)
-    {
-        var actual = GetKth(lo, hi, k);
-        Assert.Equal(expected, actual);
-    }
+    [MemberData(nameof(Examples))]
+    public void GetKthByMergeSort_LeetCodeExamples_ReturnsKthIntegerByPowerValue(
+        int lo, int hi, int k, int expected) =>
+        Assert.Equal(expected, SortIntegersByThePowerValueSolution.GetKthByMergeSort(lo, hi, k));
 
-    private static int GetKth(int lo, int hi, int k)
-    {
-        var length = hi - lo + 1;
-        var pairs = new (int Power, int Value)[length];
-
-        for (var i = 0; i < length; i++)
-        {
-            var value = lo + i;
-            pairs[i] = (PowerOf(value), value);
-        }
-
-        MergeSort.Sort<(int Power, int Value), ArrayIndexedSequence<(int Power, int Value)>>(
-            new ArrayIndexedSequence<(int Power, int Value)>(pairs));
-
-        return pairs[k - 1].Value;
-    }
-
-    private static int PowerOf(int x)
-    {
-        var power = 0;
-
-        while (x != 1)
-        {
-            x = x % 2 == 0 ? x / 2 : (3 * x) + 1;
-            power++;
-        }
-
-        return power;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetKthByInsertionSort_LeetCodeExamples_ReturnsKthIntegerByPowerValue(
+        int lo, int hi, int k, int expected) =>
+        Assert.Equal(expected, SortIntegersByThePowerValueSolution.GetKthByInsertionSort(lo, hi, k));
 }

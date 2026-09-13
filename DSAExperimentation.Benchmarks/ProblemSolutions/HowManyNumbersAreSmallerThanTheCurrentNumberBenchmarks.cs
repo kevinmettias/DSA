@@ -1,14 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.HowManyNumbersAreSmallerThanTheCurrentNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// How Many Numbers Are Smaller Than the Current Number (LC 1365): the textbook
-// O(n^2) pairwise-count baseline vs. sort once (this repo's own MergeSort) then
-// binary-search each element's insertion point (BinarySearch.LowerBound) -
-// O(n log n).
+// Harness only: both arms are
+// HowManyNumbersAreSmallerThanTheCurrentNumberSolution's, the same methods
+// HowManyNumbersAreSmallerThanTheCurrentNumberTests proves correct - the textbook
+// O(n^2) pairwise count against sort once (this repo's own MergeSort) then
+// binary-search each element's insertion point (BinarySearch.LowerBound),
+// O(n log n). LeetCode's input shape is already the measured method's parameter,
+// so there is nothing to hoist beyond generating the values themselves.
 [MemoryDiagnoser]
 public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
 {
@@ -28,42 +29,10 @@ public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] BruteForce()
-    {
-        var result = new int[_values.Length];
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            var count = 0;
-
-            for (var j = 0; j < _values.Length; j++)
-            {
-                if (_values[j] < _values[i])
-                {
-                    count++;
-                }
-            }
-
-            result[i] = count;
-        }
-
-        return result;
-    }
+    public int[] PairwiseCount() =>
+        HowManyNumbersAreSmallerThanTheCurrentNumberSolution.SmallerNumbersThanCurrentByPairwiseCount(_values);
 
     [Benchmark]
-    public int[] SortThenBinarySearch()
-    {
-        var sorted = (int[])_values.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        var sequence = new ArraySequence<int>(sorted);
-        var result = new int[_values.Length];
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            result[i] = BinarySearch.LowerBound<int, ArraySequence<int>>(sequence, _values[i]);
-        }
-
-        return result;
-    }
+    public int[] SortAndLowerBound() =>
+        HowManyNumbersAreSmallerThanTheCurrentNumberSolution.SmallerNumbersThanCurrentBySortAndLowerBound(_values);
 }
