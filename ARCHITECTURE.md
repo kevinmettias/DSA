@@ -1422,3 +1422,34 @@ A new type under `DataStructures/` or `Algorithms/` ships with its own `<Name>Te
 mirrored path in the same change. A LeetCode coverage entry (§17) does not discharge that
 obligation for any primitive it composes — and if a problem needs a primitive that does not exist,
 §17's own rule still applies: mark it blocked, do not build one ad hoc and untested.
+
+### 18.5 The layering rules are tests, not prose
+
+Three of this document's rules were only ever stated here, which meant they held exactly as long as
+whoever was editing remembered them. They are now asserted by
+`DSAExperimentation.Tests/Architecture/`, which reads the repository as *text* rather than as types
+— the benchmark project is not on the test project's reference list, and a reflection-only rule
+would be blind in precisely the place duplication happens.
+
+- **§17.2's tier order** — `LayeringTests`, already in place: a file may reference its own tier or a
+  lower one, with a named allow-list for the one deliberate inversion.
+- **§17.7's "a harness holds assertions and workload sizing"** — `Tier5WitnessTests`. A type that
+  implements a *structural* contract (`IGraphTopology`, `ITreeTopology`, `IFoldAlgebra`,
+  `IRandomAccessSequence`, `IHeapOrder`, …) is domain code wherever the file sits, so it may not be
+  declared in a test folder or in `Benchmarks/Fixtures/`. Hooks are deliberately excluded: a
+  recording `IInOrderHooks` that collects a traversal so a test can assert its order is an
+  assertion device, which is the first of the two things §17.7 allows.
+- **§17.3's "the solution class holds every strategy"** — `LeetCodeStrategyCoverageTests`. Each
+  registration must name exactly the strategies its sibling `<Problem>Solution` exposes, derived
+  from the `<Operation>By<Strategy>` naming so §17.4's two hoisted overloads collapse onto the one
+  strategy they share. Without it a solution can grow a third arm that no case asserts and no
+  benchmark measures — the same "the naive baseline was never tested" gap the reorg set out to
+  close, relocated from the test file to the registration.
+
+The witness rule is scoped to problems that have **already reached tier 4**, so it tightens on its
+own: converting a problem brings its harnesses under the rule in the same commit, and no list needs
+editing to keep pace. **56 files still declare a stranded witness** — 30 under
+`Tests/LeetCodeCoverage/**`, 18 in `Benchmarks/ProblemSolutions/`, and 8 in the shared
+`Benchmarks/Fixtures/` — and every one of them belongs to a problem the migration has not reached.
+The eight shared ones are listed individually in the test, each naming the problem that still holds
+it there, because that folder is flat and offers no path to key the rule on.
