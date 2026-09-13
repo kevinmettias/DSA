@@ -1,16 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using System.Text;
+using DSAExperimentation.LeetCode.AmbiguousCoordinates;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Ambiguous Coordinates (LC 816): no repo primitive applies (same category as
-// GasStation/Candy/MaximumProductSubarray) - both variants are pure string
-// enumeration over the digit run, differing only in technique. The naive baseline
-// materializes each candidate number via StringBuilder and re-scans it end to end
-// (IndexOf the dot, then re-walk both sides) to validate leading/trailing zeros.
-// The optimized version already knows the split point from the loop that produced
-// it, so it slices directly and checks only the two boundary characters that can
-// possibly violate the rule - no rebuilt string, no re-scan.
+// Harness only: both arms are AmbiguousCoordinatesSolution's, the same methods
+// AmbiguousCoordinatesTests proves correct. [GlobalSetup] builds the input already
+// wrapped in LeetCode's parentheses, so only the enumeration is measured. Both arms
+// now return the coordinate list rather than a count - see the solution class's
+// note on that deliberate change.
 [MemoryDiagnoser]
 public class AmbiguousCoordinatesBenchmarks
 {
@@ -23,13 +20,10 @@ public class AmbiguousCoordinatesBenchmarks
     // Every other digit is drawn from 0-9.
     private const int DigitRange = 10;
 
-    // The string form of the number zero - the only digit run allowed a leading zero.
-    private const string Zero = "0";
-
     [Params(8, 16)]
     public int Length;
 
-    private string _digits = null!;
+    private string _coordinates = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -43,99 +37,14 @@ public class AmbiguousCoordinatesBenchmarks
             chars[i] = (char)('0' + random.Next(DigitRange));
         }
 
-        _digits = new string(chars);
+        _coordinates = $"({new string(chars)})";
     }
 
     [Benchmark(Baseline = true)]
-    public int RebuildAndRescan()
-    {
-        var count = 0;
-
-        for (var split = 1; split < _digits.Length; split++)
-        {
-            var left = _digits[..split];
-            var right = _digits[split..];
-
-            foreach (var _ in RebuiltValidNumbers(left))
-            {
-                foreach (var __ in RebuiltValidNumbers(right))
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    public List<string> RebuildAndRescan() =>
+        AmbiguousCoordinatesSolution.FindCoordinatesByRebuildAndRescan(_coordinates);
 
     [Benchmark]
-    public int SliceAndCheckBoundary()
-    {
-        var count = 0;
-
-        for (var split = 1; split < _digits.Length; split++)
-        {
-            var left = _digits[..split];
-            var right = _digits[split..];
-
-            foreach (var _ in SlicedValidNumbers(left))
-            {
-                foreach (var __ in SlicedValidNumbers(right))
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    private static IEnumerable<string> RebuiltValidNumbers(string digits)
-    {
-        if (IsValidWhole(digits))
-        {
-            yield return digits;
-        }
-
-        for (var dot = 1; dot < digits.Length; dot++)
-        {
-            var builder = new StringBuilder(digits.Length + 1);
-            builder.Append(digits, 0, dot).Append('.').Append(digits, dot, digits.Length - dot);
-            var candidate = builder.ToString();
-
-            if (IsValidWithDot(candidate))
-            {
-                yield return candidate;
-            }
-        }
-    }
-
-    private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != '0';
-
-    private static bool IsValidWithDot(string candidate)
-    {
-        var dotIndex = candidate.IndexOf('.');
-        var intPart = candidate[..dotIndex];
-        var fracPart = candidate[(dotIndex + 1)..];
-        return (intPart == Zero || intPart[0] != '0') && fracPart[^1] != '0';
-    }
-
-    private static IEnumerable<string> SlicedValidNumbers(string digits)
-    {
-        if (digits == Zero || digits[0] != '0')
-        {
-            yield return digits;
-        }
-
-        for (var dot = 1; dot < digits.Length; dot++)
-        {
-            var intPart = digits[..dot];
-            var fracPart = digits[dot..];
-
-            if ((intPart == Zero || intPart[0] != '0') && fracPart[^1] != '0')
-            {
-                yield return $"{intPart}.{fracPart}";
-            }
-        }
-    }
+    public List<string> SliceAndCheckBoundary() =>
+        AmbiguousCoordinatesSolution.FindCoordinatesBySliceAndCheck(_coordinates);
 }

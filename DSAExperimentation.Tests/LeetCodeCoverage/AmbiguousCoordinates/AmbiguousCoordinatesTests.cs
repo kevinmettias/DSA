@@ -1,76 +1,40 @@
+using DSAExperimentation.LeetCode.AmbiguousCoordinates;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AmbiguousCoordinates;
 
-// LeetCode 816. Ambiguous Coordinates: pure string generation/validation over the
-// digit run between the parentheses - split it into two non-empty halves at every
-// position, then for each half either keep it as a whole integer or insert a
-// decimal point at every position, discarding leading-zero integer parts (unless
-// exactly "0") and trailing-zero fractional parts. No repo primitive applies - the
-// same category already established for GasStation/Candy/MaximumProductSubarray:
-// a bounded combinatorial scan over an array/string with no reusable data
-// structure to compose.
-public sealed partial class AmbiguousCoordinatesTests
+// Harness only: both strategies live in AmbiguousCoordinatesSolution and are
+// asserted against the same examples - all four of LeetCode's published ones,
+// which between them cover a clean digit run, a leading zero that only "0" itself
+// can carry, a run where both zero rules bite at once, and a trailing zero that
+// leaves exactly one answer. Order is not part of LeetCode's answer, so examples
+// compare as sets.
+public sealed class AmbiguousCoordinatesTests
 {
-    [Fact]
-    public void AmbiguousCoordinates_ThreeDigits_ReturnsAllFourPlacements()
-    {
-        var results = FindAmbiguousCoordinates("(123)");
-
-        Assert.Equal(
-            new HashSet<string> { "(1, 23)", "(12, 3)", "(1.2, 3)", "(1, 2.3)" },
-            new HashSet<string>(results));
-    }
-
-    [Fact]
-    public void AmbiguousCoordinates_LeadingZeroDigit_DropsInvalidLeadingZeroPlacements()
-    {
-        var results = FindAmbiguousCoordinates("(0123)");
-
-        Assert.Equal(
-            new HashSet<string>
+    public static TheoryData<string, string[]> Examples =>
+        new()
+        {
+            { "(123)", ["(1, 23)", "(12, 3)", "(1.2, 3)", "(1, 2.3)"] },
             {
-                "(0, 123)", "(0, 12.3)", "(0, 1.23)", "(0.1, 23)", "(0.1, 2.3)", "(0.12, 3)",
+                "(0123)",
+                ["(0, 123)", "(0, 12.3)", "(0, 1.23)", "(0.1, 23)", "(0.1, 2.3)", "(0.12, 3)"]
             },
-            new HashSet<string>(results));
-    }
+            { "(00011)", ["(0, 0.011)", "(0.001, 1)"] },
+            { "(100)", ["(10, 0)"] },
+        };
 
-    private static List<string> FindAmbiguousCoordinates(string s)
-    {
-        var digits = s[1..^1];
-        var results = new List<string>();
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindCoordinatesByRebuildAndRescan_LeetCodeExamples_ReturnsEveryValidPlacement(
+        string s, string[] expected) =>
+        Assert.Equal(
+            new HashSet<string>(expected),
+            new HashSet<string>(AmbiguousCoordinatesSolution.FindCoordinatesByRebuildAndRescan(s)));
 
-        for (var split = 1; split < digits.Length; split++)
-        {
-            var left = digits[..split];
-            var right = digits[split..];
-
-            foreach (var l in ValidNumbers(left))
-            {
-                foreach (var r in ValidNumbers(right))
-                {
-                    results.Add($"({l}, {r})");
-                }
-            }
-        }
-
-        return results;
-    }
-
-    private static IEnumerable<string> ValidNumbers(string digits)
-    {
-        if (digits == "0" || digits[0] != '0')
-        {
-            yield return digits;
-        }
-
-        for (var dot = 1; dot < digits.Length; dot++)
-        {
-            var intPart = digits[..dot];
-            var fracPart = digits[dot..];
-
-            if ((intPart == "0" || intPart[0] != '0') && fracPart[^1] != '0')
-            {
-                yield return $"{intPart}.{fracPart}";
-            }
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindCoordinatesBySliceAndCheck_LeetCodeExamples_ReturnsEveryValidPlacement(
+        string s, string[] expected) =>
+        Assert.Equal(
+            new HashSet<string>(expected),
+            new HashSet<string>(AmbiguousCoordinatesSolution.FindCoordinatesBySliceAndCheck(s)));
 }
