@@ -1,128 +1,50 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfVisiblePoints;
 
-// LeetCode 1610. Maximum Number of Visible Points: convert every point (other than
-// ones stacked exactly on location, which are visible from any direction and
-// counted separately) to its polar angle in degrees from location, sort those
-// angles with this repo's own Algorithms.Sorting.MergeSort (SortAnArrayTests
-// precedent) over an ArrayIndexedSequence<double>, then duplicate the sorted run
-// shifted by +360 degrees so a single two-pointer sweep can slide a window of
-// width `angle` straight across the 360/0-degree seam instead of special-casing
-// it. The widest window found, plus the always-visible same-location count, is the
-// answer.
-public sealed partial class MaximumNumberOfVisiblePointsTests
+// Harness only. Both strategies are MaximumNumberOfVisiblePointsSolution's - this
+// file pins them to LeetCode's three published examples plus the three shapes a
+// windowing bug hides in: a window that straddles the 360/0-degree seam, a field of
+// view narrow enough that a window centered on a point would overcount, and points
+// standing exactly on `location`.
+public sealed class MaximumNumberOfVisiblePointsTests
 {
-    [Fact]
-    public void VisiblePoints_LeetCodeExampleOne_ReturnsThreeVisiblePoints()
-    {
-        int[][] points = [[2, 1], [2, 2], [3, 3]];
-
-        var visible = VisiblePoints(points, angle: 90, location: [1, 1]);
-
-        Assert.Equal(3, visible);
-    }
-
-    [Fact]
-    public void VisiblePoints_LeetCodeExampleTwo_CountsThePointAtLocationRegardlessOfAngle()
-    {
-        int[][] points = [[2, 1], [2, 2], [3, 4], [1, 1]];
-
-        var visible = VisiblePoints(points, angle: 90, location: [1, 1]);
-
-        Assert.Equal(4, visible);
-    }
-
-    [Fact]
-    public void VisiblePoints_WindowStraddlesTheThreeSixtyDegreeSeam_GroupsAcrossIt()
-    {
-        // Angle -90 deg (point (0,-1)) and angle 180 deg (point (-1,0)) are only 90
-        // degrees apart going the short way around (180 -> 270 == -90), but 270
-        // degrees apart in a plain ascending sort - only the +360 duplication finds
-        // the window that groups them.
-        int[][] points = [[0, -1], [-1, 0]];
-
-        var visible = VisiblePoints(points, angle: 90, location: [0, 0]);
-
-        Assert.Equal(2, visible);
-    }
-
-    private static int VisiblePoints(int[][] points, int angle, int[] location)
-    {
-        var angles = CollectAngles(points, location, out var samePoint);
-
-        var sorted = angles.ToArray();
-        MergeSort.Sort<double, ArrayIndexedSequence<double>>(new ArrayIndexedSequence<double>(sorted));
-
-        var doubled = DuplicateWithWrap(sorted);
-        var widestWindow = WidestWindow(doubled, angle);
-
-        return Math.Min(widestWindow, sorted.Length) + samePoint;
-    }
-
-    private static List<double> CollectAngles(int[][] points, int[] location, out int samePoint)
-    {
-        samePoint = 0;
-        var angles = new List<double>(points.Length);
-
-        foreach (var point in points)
+    public static TheoryData<int[][], int, int[], int> Examples =>
+        new()
         {
-            var pointAngle = ComputeAngle(point, location);
+            { [[2, 1], [2, 2], [3, 3]], 90, [1, 1], 3 },
+            { [[2, 1], [2, 2], [3, 4], [1, 1]], 90, [1, 1], 4 },
+            { [[1, 0], [2, 1]], 13, [1, 1], 1 },
+            // Angle -90 deg (point (0,-1)) and angle 180 deg (point (-1,0)) are only
+            // 90 degrees apart going the short way around (180 -> 270 == -90), but
+            // 270 degrees apart in a plain ascending sort - only wrapping finds the
+            // window that groups them.
+            { [[0, -1], [-1, 0]], 90, [0, 0], 2 },
+            // Angles -45, 0 and 45 with a 60-degree field of view: no window of width
+            // 60 holds all three, but one *centered* on 0 degrees would span 120 and
+            // wrongly report 3.
+            { [[1, 0], [1, 1], [1, -1]], 60, [0, 0], 2 },
+            // Every point stands on `location`, so all are visible facing any
+            // direction and no angle exists to window at all.
+            { [[1, 1], [1, 1], [1, 1]], 0, [1, 1], 3 },
+            // A zero-degree field of view still sees every point sharing one exact
+            // bearing.
+            { [[1, 0], [2, 0], [3, 0]], 0, [0, 0], 3 },
+        };
 
-            if (pointAngle is null)
-            {
-                samePoint++;
-                continue;
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void VisiblePointsByPairwiseBruteForce_LeetCodeExamples_ReturnsMaximumVisibleCount(
+        int[][] points, int angle, int[] location, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumNumberOfVisiblePointsSolution.VisiblePointsByPairwiseBruteForce(points, angle, location));
 
-            angles.Add(pointAngle.Value);
-        }
-
-        return angles;
-    }
-
-    private static double[] DuplicateWithWrap(double[] sorted)
-    {
-        var doubled = new double[sorted.Length * 2];
-
-        for (var i = 0; i < sorted.Length; i++)
-        {
-            doubled[i] = sorted[i];
-            doubled[i + sorted.Length] = sorted[i] + 360.0;
-        }
-
-        return doubled;
-    }
-
-    private static int WidestWindow(double[] doubled, int angle)
-    {
-        var widestWindow = 0;
-        var left = 0;
-
-        for (var right = 0; right < doubled.Length; right++)
-        {
-            while (doubled[right] - doubled[left] > angle + 1e-9)
-            {
-                left++;
-            }
-
-            widestWindow = Math.Max(widestWindow, right - left + 1);
-        }
-
-        return widestWindow;
-    }
-
-    private static double? ComputeAngle(int[] point, int[] location)
-    {
-        var dx = point[0] - location[0];
-        var dy = point[1] - location[1];
-
-        if (dx == 0 && dy == 0)
-        {
-            return null;
-        }
-
-        return Math.Atan2(dy, dx) * 180.0 / Math.PI;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void VisiblePointsBySortAndSlideWindow_LeetCodeExamples_ReturnsMaximumVisibleCount(
+        int[][] points, int angle, int[] location, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumNumberOfVisiblePointsSolution.VisiblePointsBySortAndSlideWindow(points, angle, location));
 }

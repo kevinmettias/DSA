@@ -1,45 +1,33 @@
-using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.MaximumNestingDepthOfTheParentheses;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNestingDepthOfTheParentheses;
 
-// LeetCode 1614. Maximum Nesting Depth of the Parentheses: this repo's own
-// Stack<char> (ValidParenthesesTests/RemoveOutermostParenthesesTests precedent)
-// holds every unmatched '(' - its own Count doubles as the running depth, the same
-// "stack size as depth" trick RemoveOutermostParenthesesTests uses, just reporting
-// the running maximum instead of stripping the outermost pair. Digits and the four
-// arithmetic operators pass through untouched.
-public sealed partial class MaximumNestingDepthOfTheParenthesesTests
+// Harness only. Both strategies are MaximumNestingDepthOfTheParenthesesSolution's -
+// this file just pins them to LeetCode's published examples, the sibling-groups case
+// where the deepest group is not the first, and the two no-parentheses expressions
+// whose answer is zero.
+public sealed class MaximumNestingDepthOfTheParenthesesTests
 {
-    [Fact]
-    public void MaxDepth_MixedArithmeticAndNesting_ReturnsDeepestLevel()
-        => Assert.Equal(3, MaxDepth("(1+(2*3)+((8)/4))+1"));
-
-    [Fact]
-    public void MaxDepth_ThreeSiblingGroupsSameDepth_ReturnsThatDepth()
-        => Assert.Equal(3, MaxDepth("(1)+((2))+(((3)))"));
-
-    [Fact]
-    public void MaxDepth_NoParenthesesAtAll_ReturnsZero()
-        => Assert.Equal(0, MaxDepth("1"));
-
-    private static int MaxDepth(string s)
-    {
-        var openers = new RepoCharStack();
-        var maxDepth = 0;
-
-        foreach (var c in s)
+    public static TheoryData<string, int> Examples =>
+        new()
         {
-            if (c == '(')
-            {
-                openers.Push(c);
-                maxDepth = Math.Max(maxDepth, openers.Count);
-            }
-            else if (c == ')')
-            {
-                openers.TryPop(out _);
-            }
-        }
+            { "(1+(2*3)+((8)/4))+1", 3 },
+            { "(1)+((2))+(((3)))", 3 },
+            { "()(())((()()))", 3 },
+            { "1", 0 },
+            { "8", 0 },
+            { "1+2*3/4-5", 0 },
+        };
 
-        return maxDepth;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxDepthByRunningCounter_LeetCodeExamples_ReturnsDeepestNestingLevel(
+        string s, int expected) =>
+        Assert.Equal(expected, MaximumNestingDepthOfTheParenthesesSolution.MaxDepthByRunningCounter(s));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxDepthByOpenerStack_LeetCodeExamples_ReturnsDeepestNestingLevel(
+        string s, int expected) =>
+        Assert.Equal(expected, MaximumNestingDepthOfTheParenthesesSolution.MaxDepthByOpenerStack(s));
 }
