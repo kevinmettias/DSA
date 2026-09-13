@@ -1,19 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.SuffixArray;
+using DSAExperimentation.LeetCode.LastSubstringInLexicographicalOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Last Substring in Lexicographical Order (LC 1163): pairwise O(n^2) suffix
-// comparison (compare every candidate suffix against the current best via an
-// ordinal span comparison) vs. this repo's own SuffixArray, which sorts every
-// suffix in O(n log^2 n) and then reads the answer off as its final entry.
-// A small 4-letter alphabet is used so many suffixes share long common prefixes,
-// forcing both approaches through real character-by-character comparison work
-// instead of resolving on the first character.
+// Harness only: both arms are LastSubstringInLexicographicalOrderSolution's, the same
+// methods LastSubstringInLexicographicalOrderTests proves correct - pairwise O(n^2)
+// suffix comparison against this repo's own SuffixArray, which sorts every suffix in
+// O(n log^2 n) and then reads the answer off as its final entry. A small 4-letter
+// alphabet makes many suffixes share long common prefixes, forcing both approaches
+// through real character-by-character comparison work instead of resolving on the
+// first character. [GlobalSetup] generates the text, so text generation is charged to
+// setup rather than to the measured methods.
 [MemoryDiagnoser]
 public class LastSubstringInLexicographicalOrderBenchmarks
 {
     private const int AlphabetSize = 4;
+    private const int RandomSeed = 1; // unchanged from the pre-migration workload
 
     [Params(200, 2_000)]
     public int Length;
@@ -23,7 +25,7 @@ public class LastSubstringInLexicographicalOrderBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
+        var random = new Random(RandomSeed);
         _text = string.Create(Length, random, static (span, rng) =>
         {
             for (var i = 0; i < span.Length; i++)
@@ -34,28 +36,10 @@ public class LastSubstringInLexicographicalOrderBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string PairwiseComparison()
-    {
-        var bestStart = 0;
-
-        for (var candidate = 1; candidate < _text.Length; candidate++)
-        {
-            var candidateSpan = _text.AsSpan(candidate);
-            var bestSpan = _text.AsSpan(bestStart);
-
-            if (candidateSpan.CompareTo(bestSpan, StringComparison.Ordinal) > 0)
-            {
-                bestStart = candidate;
-            }
-        }
-
-        return _text[bestStart..];
-    }
+    public string PairwiseComparison() =>
+        LastSubstringInLexicographicalOrderSolution.LastSubstringByPairwiseComparison(_text);
 
     [Benchmark]
-    public string SuffixArrayLookup()
-    {
-        var suffixArray = new SuffixArray(_text);
-        return _text[suffixArray.Suffixes[^1]..];
-    }
+    public string SuffixArrayLookup() =>
+        LastSubstringInLexicographicalOrderSolution.LastSubstringBySuffixArray(_text);
 }

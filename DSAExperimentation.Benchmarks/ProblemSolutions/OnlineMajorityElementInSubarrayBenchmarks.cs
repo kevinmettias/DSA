@@ -1,39 +1,41 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using static DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray.OnlineMajorityElementInSubarraySolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Online Majority Element In Subarray (LC 1157): a naive per-query O(range) scan
-// (tally every value in [left, right] with a Dictionary, then check the threshold)
-// vs. this repo's own HashMap<int, DynamicArray<int>> position index, counting a
-// candidate's occurrences in O(log n) via BinarySearch.LowerBound/UpperBound over a
-// DynamicArraySequence<int> view. Every generated query's range sits entirely inside
-// one same-valued run, so its left endpoint's value is always the answer with an
-// occurrence count equal to the whole range - a trivially verifiable majority
-// (2*threshold > range) for every query, matching LeetCode's own query guarantee,
-// without needing randomized sampling to demonstrate the timing difference.
+// Harness only: both arms are OnlineMajorityElementInSubarraySolution's, the same
+// classes OnlineMajorityElementInSubarrayTests proves correct - a naive per-query
+// O(range) tally against this repo's own HashMap<int, DynamicArray<int>> position
+// index, which counts a candidate's occurrences in O(log n) via
+// BinarySearch.LowerBound/UpperBound over a DynamicArraySequence<int> view. Both
+// checkers are constructed in [GlobalSetup], so building the position index is
+// charged to setup rather than to the query replay each arm measures.
+//
+// Every generated query's range sits entirely inside one same-valued run, so its
+// answer is that run's value with an occurrence count equal to the whole range - a
+// majority satisfying LeetCode's own 2*threshold > range guarantee for every query,
+// which also means the indexed arm's first sample always lands on the answer.
 [MemoryDiagnoser]
 public class OnlineMajorityElementInSubarrayBenchmarks
 {
     private const int RunLength = 25;
     private const int QueryCount = 200;
+    private const int RandomSeed = 1; // unchanged from the pre-migration workload
 
     [Params(1_000, 8_000)]
     public int Length;
 
-    private int[] _values = null!;
     private (int Left, int Right, int Threshold)[] _queries = null!;
-    private HashMap<int, DynamicArray<int>> _positionsByValue = null!;
+    private IMajorityChecker _rangeTally = null!;
+    private IMajorityChecker _positionIndex = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        _values = BuildRunLengthEncodedArray(Length);
+        var values = BuildRunLengthEncodedArray(Length);
         _queries = BuildQueriesWithinRuns(Length);
-        _positionsByValue = BuildPositionIndex(_values);
+        _rangeTally = new MajorityCheckerByRangeTally(values);
+        _positionIndex = new MajorityCheckerByPositionIndex(values);
     }
 
     private static int[] BuildRunLengthEncodedArray(int length)
@@ -50,7 +52,7 @@ public class OnlineMajorityElementInSubarrayBenchmarks
 
     private static (int Left, int Right, int Threshold)[] BuildQueriesWithinRuns(int length)
     {
-        var random = new Random(1);
+        var random = new Random(RandomSeed);
         var queries = new (int Left, int Right, int Threshold)[QueryCount];
         var runCount = (length + RunLength - 1) / RunLength;
 
@@ -67,83 +69,23 @@ public class OnlineMajorityElementInSubarrayBenchmarks
         return queries;
     }
 
-    private static HashMap<int, DynamicArray<int>> BuildPositionIndex(int[] values)
-    {
-        var positionsByValue = new HashMap<int, DynamicArray<int>>();
-
-        for (var i = 0; i < values.Length; i++)
-        {
-            if (!positionsByValue.TryGetValue(values[i], out var positions))
-            {
-                positions = new DynamicArray<int>();
-                positionsByValue.Set(values[i], positions);
-            }
-
-            positions.Add(i);
-        }
-
-        return positionsByValue;
-    }
-
     [Benchmark(Baseline = true)]
-    public long LinearScanPerQuery()
-    {
-        var total = 0L;
-
-        foreach (var (left, right, threshold) in _queries)
-        {
-            total += CountByLinearScan(left, right, threshold);
-        }
-
-        return total;
-    }
-
-    private int CountByLinearScan(int left, int right, int threshold)
-    {
-        var counts = new Dictionary<int, int>();
-
-        for (var i = left; i <= right; i++)
-        {
-            counts[_values[i]] = counts.GetValueOrDefault(_values[i]) + 1;
-        }
-
-        foreach (var (value, count) in counts)
-        {
-            if (count >= threshold)
-            {
-                return value;
-            }
-        }
-
-        return -1;
-    }
+    public long TallyEveryValueInRange() => ReplayQueries(_rangeTally);
 
     [Benchmark]
-    public long HashMapWithBinarySearchPerQuery()
+    public long PositionIndexWithBinarySearch() => ReplayQueries(_positionIndex);
+
+    // Sums the answers rather than discarding them, so the JIT can't eliminate the
+    // replay as dead code.
+    private long ReplayQueries(IMajorityChecker checker)
     {
         var total = 0L;
 
         foreach (var (left, right, threshold) in _queries)
         {
-            total += QueryByCandidateAtLeft(left, right, threshold);
+            total += checker.Query(left, right, threshold);
         }
 
         return total;
-    }
-
-    private int QueryByCandidateAtLeft(int left, int right, int threshold)
-    {
-        var value = _values[left];
-
-        if (!_positionsByValue.TryGetValue(value, out var positions))
-        {
-            return -1;
-        }
-
-        var sequence = new DynamicArraySequence<int>(positions);
-        var lower = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(sequence, left);
-        var upper = BinarySearch.UpperBound<int, DynamicArraySequence<int>>(sequence, right);
-
-        return upper - lower >= threshold ? value : -1;
     }
 }

@@ -1,30 +1,38 @@
-using DSAExperimentation.DataStructures.SuffixArray;
+using DSAExperimentation.LeetCode.LastSubstringInLexicographicalOrder;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LastSubstringInLexicographicalOrder;
 
-// LeetCode 1163. Last Substring in Lexicographical Order: the answer is exactly the
-// lexicographically greatest suffix of s, which is the LAST entry of this repo's own
-// SuffixArray.Suffixes permutation (Suffixes is sorted ascending, so Suffixes[^1] is
-// the start index of the maximal suffix) - no separate algorithm needed beyond
-// reading that one index back out.
-public sealed partial class LastSubstringInLexicographicalOrderTests
+// Harness only: both strategies live in LastSubstringInLexicographicalOrderSolution
+// and are asserted against the same examples - LeetCode's own two, the single
+// character, the all-equal string (where the tie between equal-prefixed suffixes must
+// break on length), and a case whose maximal suffix starts at the LAST occurrence of
+// the largest character rather than the first.
+public sealed class LastSubstringInLexicographicalOrderTests
 {
-    [Fact]
-    public void LastSubstring_RepeatedCharactersTieBreakOnLength_ReturnsLongestMaximalSuffix()
-        => Assert.Equal("bab", FindLastSubstring("abab"));
+    public static TheoryData<string, string> Examples =>
+        new()
+        {
+            { "abab", "bab" },
+            { "leetcode", "tcode" },
+            { "z", "z" },
+            { "aaaa", "aaaa" },
+            { "cacacb", "cb" },
+            { "zzazz", "zzazz" },
+        };
 
-    [Fact]
-    public void LastSubstring_DistinctCharacters_ReturnsSuffixStartingAtMaxCharacter()
-        => Assert.Equal("tcode", FindLastSubstring("leetcode"));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LastSubstringByPairwiseComparison_LeetCodeExamples_ReturnsMaximalSuffix(
+        string s, string expected) =>
+        Assert.Equal(
+            expected,
+            LastSubstringInLexicographicalOrderSolution.LastSubstringByPairwiseComparison(s));
 
-    [Fact]
-    public void LastSubstring_SingleCharacter_ReturnsTheWholeString()
-        => Assert.Equal("z", FindLastSubstring("z"));
-
-    private static string FindLastSubstring(string s)
-    {
-        var suffixArray = new SuffixArray(s);
-        var maxSuffixStart = suffixArray.Suffixes[^1];
-        return s[maxSuffixStart..];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LastSubstringBySuffixArray_LeetCodeExamples_ReturnsMaximalSuffix(
+        string s, string expected) =>
+        Assert.Equal(
+            expected,
+            LastSubstringInLexicographicalOrderSolution.LastSubstringBySuffixArray(s));
 }
