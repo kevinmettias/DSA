@@ -1,13 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using StackOfInt = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.FlippingAnImage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Flipping an Image (LC 832): in-place two-pointer reverse+invert (the textbook
-// approach) vs. this repo's own LIFO Stack<T> reversing each row while inverting
-// each value as it comes back off the stack - the same digit-reversal primitive
-// ReverseIntegerBenchmarks/RotateImageBenchmarks already compose, applied to a
-// row's bits instead of decimal digits or a transposed matrix's columns.
+// Harness only: both arms are FlippingAnImageSolution's, the same methods
+// FlippingAnImageTests proves correct - an in-place two-pointer reverse+invert
+// (the textbook approach) vs. this repo's own LIFO Stack<int> reversing each row
+// while inverting each value as it comes back off the stack. Each iteration clones
+// the pristine image before flipping, since the solution rewrites in place and
+// [GlobalSetup] runs once per benchmark, not once per invocation.
 [MemoryDiagnoser]
 public class FlippingAnImageBenchmarks
 {
@@ -37,49 +38,12 @@ public class FlippingAnImageBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] TwoPointerReverseAndInvert()
-    {
-        var image = Clone(_image);
-
-        foreach (var row in image)
-        {
-            var left = 0;
-            var right = row.Length - 1;
-
-            while (left <= right)
-            {
-                (row[left], row[right]) = (1 - row[right], 1 - row[left]);
-                left++;
-                right--;
-            }
-        }
-
-        return image;
-    }
+    public int[][] TwoPointerReverseAndInvert() =>
+        FlippingAnImageSolution.FlipAndInvertImageByTwoPointerReverse(Clone(_image));
 
     [Benchmark]
-    public int[][] StackReverseAndInvert()
-    {
-        var image = Clone(_image);
-
-        foreach (var row in image)
-        {
-            var pending = new StackOfInt();
-
-            foreach (var value in row)
-            {
-                pending.Push(value);
-            }
-
-            var index = 0;
-            while (pending.TryPop(out var value))
-            {
-                row[index++] = 1 - value;
-            }
-        }
-
-        return image;
-    }
+    public int[][] StackReverseAndInvert() =>
+        FlippingAnImageSolution.FlipAndInvertImageByStackReverse(Clone(_image));
 
     private static int[][] Clone(int[][] image)
     {

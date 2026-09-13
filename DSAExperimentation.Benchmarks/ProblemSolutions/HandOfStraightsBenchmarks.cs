@@ -1,19 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.HandOfStraights;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Hand of Straights (LC 846): counting with the BCL's Dictionary and sorting the
-// whole hand with Array.Sort vs. counting with this repo's own HashMap<int,int> and
-// sorting with this repo's own MergeSort (over an ArrayIndexedSequence<int>) - the
-// same "same greedy algorithm, BCL structures vs. repo structures" contrast
-// TopKFrequentElementsBenchmarks already draws for counting, extended here to the
-// sort step neither of that problem's two benchmarks needed. The hand is built from
-// whole, non-overlapping groupSize runs, so it always straightens and both
-// benchmarks are forced through their full group-forming sweep instead of one
-// returning early on the first missing card.
+// Harness only: both arms are HandOfStraightsSolution's, the same methods
+// HandOfStraightsTests proves correct - counting with the BCL's Dictionary and
+// sorting with Array.Sort vs. counting with this repo's own HashMap<int,int> and
+// sorting with this repo's own MergeSort, the same "same greedy algorithm, BCL
+// structures vs. repo structures" contrast TopKFrequentElementsBenchmarks already
+// draws for counting, extended here to the sort step. The hand is built from
+// whole, non-overlapping groupSize runs, so it always straightens and both arms
+// are forced through their full group-forming sweep instead of one returning early
+// on the first missing card.
 [MemoryDiagnoser]
 public class HandOfStraightsBenchmarks
 {
@@ -31,123 +29,12 @@ public class HandOfStraightsBenchmarks
     public void Setup() => _hand = BuildStraightableHand(HandCount, GroupSize, seed: HandSeed);
 
     [Benchmark(Baseline = true)]
-    public bool DictionaryThenArraySort() => IsNStraightHandBcl(_hand, GroupSize);
+    public bool DictionaryThenArraySort() =>
+        HandOfStraightsSolution.IsNStraightHandByBclDictionary(_hand, GroupSize);
 
     [Benchmark]
-    public bool HashMapThenMergeSort() => IsNStraightHandRepo(_hand, GroupSize);
-
-    private static bool IsNStraightHandBcl(int[] hand, int groupSize)
-    {
-        var counts = BuildCountsBcl(hand);
-        var sortedHand = SortedCopyBcl(hand);
-
-        foreach (var card in sortedHand)
-        {
-            if (counts[card] == 0)
-            {
-                continue;
-            }
-
-            if (!TryConsumeGroupBcl(counts, card, groupSize))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static Dictionary<int, int> BuildCountsBcl(int[] hand)
-    {
-        var counts = new Dictionary<int, int>();
-
-        foreach (var card in hand)
-        {
-            counts[card] = counts.GetValueOrDefault(card) + 1;
-        }
-
-        return counts;
-    }
-
-    private static int[] SortedCopyBcl(int[] hand)
-    {
-        var sortedHand = (int[])hand.Clone();
-        Array.Sort(sortedHand);
-        return sortedHand;
-    }
-
-    private static bool TryConsumeGroupBcl(Dictionary<int, int> counts, int card, int groupSize)
-    {
-        for (var next = card; next < card + groupSize; next++)
-        {
-            if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
-            {
-                return false;
-            }
-
-            counts[next] = nextCount - 1;
-        }
-
-        return true;
-    }
-
-    private static bool IsNStraightHandRepo(int[] hand, int groupSize)
-    {
-        var counts = BuildCountsRepo(hand);
-        var sortedHand = SortedCopyRepo(hand);
-
-        foreach (var card in sortedHand)
-        {
-            counts.TryGetValue(card, out var remaining);
-
-            if (remaining == 0)
-            {
-                continue;
-            }
-
-            if (!TryConsumeGroupRepo(counts, card, groupSize))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static HashMap<int, int> BuildCountsRepo(int[] hand)
-    {
-        var counts = new HashMap<int, int>();
-
-        foreach (var card in hand)
-        {
-            counts.TryGetValue(card, out var count);
-            counts.Set(card, count + 1);
-        }
-
-        return counts;
-    }
-
-    private static int[] SortedCopyRepo(int[] hand)
-    {
-        var sortedHand = (int[])hand.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
-        return sortedHand;
-    }
-
-    private static bool TryConsumeGroupRepo(HashMap<int, int> counts, int card, int groupSize)
-    {
-        for (var next = card; next < card + groupSize; next++)
-        {
-            if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
-            {
-                return false;
-            }
-
-            counts.Set(next, nextCount - 1);
-        }
-
-        return true;
-    }
+    public bool HashMapThenMergeSort() =>
+        HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(_hand, GroupSize);
 
     // groupCount whole runs of groupSize consecutive values, each run starting at a
     // random, widely-spaced multiple of groupSize (so runs never overlap), then

@@ -1,92 +1,34 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.HandOfStraights;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.HandOfStraights;
 
-// LeetCode 846. Hand of Straights: a HashMap<int,int> counts how many of each card
-// value remain, this repo's own MergeSort (over an ArrayIndexedSequence<int>, the
-// same witness Sorting/MergeSort's own tests use) orders a working copy of the hand,
-// then a single ascending sweep greedily starts a fresh groupSize run at every card
-// still holding a nonzero count - correct because, in ascending order, a card with
-// cards remaining can only be the bottom of some group.
-public sealed partial class HandOfStraightsTests
+// Harness only. Both greedy strategies are HandOfStraightsSolution's - this file
+// just pins them to LeetCode's published examples, including a hand that cannot
+// divide evenly into groups at all and a hand whose duplicates have to be spread
+// across parallel groups rather than stacked into one.
+public sealed class HandOfStraightsTests
 {
-    [Fact]
-    public void IsNStraightHand_ClassicExample_ReturnsTrue()
-    {
-        int[] hand = [1, 2, 3, 6, 2, 3, 4, 7, 8];
-
-        var isStraight = IsNStraightHand(hand, groupSize: 3);
-
-        Assert.True(isStraight);
-    }
-
-    [Fact]
-    public void IsNStraightHand_HandDoesNotDivideEvenlyIntoGroups_ReturnsFalse()
-    {
-        int[] hand = [1, 2, 3, 4, 5];
-
-        var isStraight = IsNStraightHand(hand, groupSize: 4);
-
-        Assert.False(isStraight);
-    }
-
-    private static bool IsNStraightHand(int[] hand, int groupSize)
-    {
-        if (hand.Length % groupSize != 0)
+    public static TheoryData<int[], int, bool> Examples =>
+        new()
         {
-            return false;
-        }
+            { [1, 2, 3, 6, 2, 3, 4, 7, 8], 3, true },
+            { [1, 2, 3, 4, 5], 4, false },
+            { [1, 2, 3, 4, 5, 6], 2, true },
+            { [1, 1, 2, 2, 3, 3], 3, true },
+            { [8, 10, 12], 3, false },
+            { [1], 1, true },
+        };
 
-        var counts = BuildCounts(hand);
-        var sortedHand = SortedCopy(hand);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsNStraightHandByBclDictionary_LeetCodeExamples_ReturnsWhetherHandSplitsIntoStraights(
+        int[] hand, int groupSize, bool expected) =>
+        Assert.Equal(expected, HandOfStraightsSolution.IsNStraightHandByBclDictionary(hand, groupSize));
 
-        return TryConsumeGroups(sortedHand, counts, groupSize);
-    }
-
-    private static HashMap<int, int> BuildCounts(int[] hand)
-    {
-        var counts = new HashMap<int, int>();
-
-        foreach (var card in hand)
-        {
-            counts.TryGetValue(card, out var count);
-            counts.Set(card, count + 1);
-        }
-
-        return counts;
-    }
-
-    private static int[] SortedCopy(int[] hand)
-    {
-        var sortedHand = (int[])hand.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
-        return sortedHand;
-    }
-
-    private static bool TryConsumeGroups(int[] sortedHand, HashMap<int, int> counts, int groupSize)
-    {
-        foreach (var card in sortedHand)
-        {
-            counts.TryGetValue(card, out var remaining);
-
-            if (remaining == 0)
-            {
-                continue;
-            }
-
-            for (var next = card; next < card + groupSize; next++)
-            {
-                if (!counts.TryGetValue(next, out var nextCount) || nextCount == 0)
-                {
-                    return false;
-                }
-
-                counts.Set(next, nextCount - 1);
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsNStraightHandByHashMapMergeSort_LeetCodeExamples_ReturnsWhetherHandSplitsIntoStraights(
+        int[] hand, int groupSize, bool expected) =>
+        Assert.Equal(
+            expected, HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(hand, groupSize));
 }
