@@ -1,93 +1,39 @@
-using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.ParsingABooleanExpression;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ParsingABooleanExpression;
 
-// LeetCode 1106. Parsing A Boolean Expression: this repo's Stack<char> as an explicit
-// parser stack, the same "repo Stack instead of recursion" move DecodeStringTests and
-// BasicCalculatorTests already make. 't'/'f'/operator characters are pushed as
-// encountered; on every ')' the operands since the matching '(' are popped and
-// tallied, the operator below that '(' is popped and applied, and the single 't'/'f'
-// result is pushed back - so by the time the closing ')' of the outermost group is
-// processed, exactly one value remains on the stack.
-public sealed partial class ParsingABooleanExpressionTests
+// Harness only: both strategies live in ParsingABooleanExpressionSolution and are
+// asserted against the same expressions - the leaf cases, each operator on its own,
+// and the nested expression LeetCode itself publishes.
+public sealed class ParsingABooleanExpressionTests
 {
-    [Theory]
-    [InlineData("t", true)]
-    [InlineData("f", false)]
-    [InlineData("!(f)", true)]
-    [InlineData("!(t)", false)]
-    [InlineData("&(t,f)", false)]
-    [InlineData("&(t,t,t)", true)]
-    [InlineData("|(t,f)", true)]
-    [InlineData("|(f,f,f)", false)]
-    [InlineData("|(&(t,f,t),!(t))", false)]
-    public void Parse_LeetCodeExamples_EvaluatesToExpectedBoolean(string expression, bool expected)
-        => Assert.Equal(expected, Parse(expression));
-
-    private static bool Parse(string expression)
-    {
-        var stack = new RepoCharStack();
-
-        foreach (var c in expression)
+    public static TheoryData<string, bool> Examples =>
+        new()
         {
-            if (c == ',')
-            {
-                continue;
-            }
-
-            if (c != ')')
-            {
-                stack.Push(c);
-                continue;
-            }
-
-            stack.Push(EvaluateGroup(stack));
-        }
-
-        stack.TryPop(out var result);
-        return result == 't';
-    }
-
-    // Pops operands back to (and including) the matching '(' plus the operator below
-    // it, tallies how many were 't' vs. 'f', and returns the group's collapsed value.
-    private static char EvaluateGroup(RepoCharStack stack)
-    {
-        var (trueCount, falseCount) = TallyOperands(stack);
-
-        stack.TryPop(out _); // the matching '('
-        stack.TryPop(out var op);
-
-        var value = Evaluate(op, trueCount, falseCount);
-
-        return value ? 't' : 'f';
-    }
-
-    private static (int TrueCount, int FalseCount) TallyOperands(RepoCharStack stack)
-    {
-        var trueCount = 0;
-        var falseCount = 0;
-
-        while (stack.TryPeek(out var top) && top != '(')
-        {
-            stack.TryPop(out var operand);
-            if (operand == 't')
-            {
-                trueCount++;
-            }
-            else
-            {
-                falseCount++;
-            }
-        }
-
-        return (trueCount, falseCount);
-    }
-
-    private static bool Evaluate(char op, int trueCount, int falseCount)
-        => op switch
-        {
-            '!' => trueCount == 0,
-            '&' => falseCount == 0,
-            _ => trueCount > 0, // '|'
+            { "t", true },
+            { "f", false },
+            { "!(f)", true },
+            { "!(t)", false },
+            { "&(t,f)", false },
+            { "&(t,t,t)", true },
+            { "|(t,f)", true },
+            { "|(f,f,f)", false },
+            { "|(&(t,f,t),!(t))", false },
+            { "&(|(f),t)", false },
+            { "|(!(&(t,f)),f)", true },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ParseBoolExprByRecursiveDescent_LeetCodeExamples_EvaluatesToExpectedBoolean(
+        string expression,
+        bool expected) =>
+        Assert.Equal(expected, ParsingABooleanExpressionSolution.ParseBoolExprByRecursiveDescent(expression));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ParseBoolExprByParserStack_LeetCodeExamples_EvaluatesToExpectedBoolean(
+        string expression,
+        bool expected) =>
+        Assert.Equal(expected, ParsingABooleanExpressionSolution.ParseBoolExprByParserStack(expression));
 }
