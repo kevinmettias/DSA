@@ -1,49 +1,34 @@
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+using DSAExperimentation.LeetCode.NumberOfRecentCalls;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfRecentCalls;
 
-// LeetCode 933. Number of Recent Calls: Ping(t) enqueues t and drops every request
-// older than t - 3000 from the front before reporting the remaining count - exactly
-// this repo's own Queue<int>'s FIFO shape (Enqueue at the back, TryDequeue from the
-// front), the same "compose, don't invent a new representation" move
-// DesignCircularQueueTests already makes over Deque<int>.
-public sealed partial class NumberOfRecentCallsTests
+// Harness only: both strategies live in NumberOfRecentCallsSolution and are asserted
+// against the same examples - LeetCode's published ping stream, the far-apart stream
+// the old test drove by hand, a single call, and the two window boundaries (a request
+// exactly 3000ms old is still counted, one 3001ms old is not).
+public sealed class NumberOfRecentCallsTests
 {
-    [Fact]
-    public void Ping_LeetCodeExample_ReturnsCountsWithinTheThreeThousandMillisecondWindow()
-    {
-        var counter = new RecentCounter();
-
-        Assert.Equal(1, counter.Ping(1));
-        Assert.Equal(2, counter.Ping(100));
-        Assert.Equal(3, counter.Ping(3001));
-        Assert.Equal(3, counter.Ping(3002));
-    }
-
-    [Fact]
-    public void Ping_RequestsFarApart_EachDropsAllEarlierRequests()
-    {
-        var counter = new RecentCounter();
-
-        Assert.Equal(1, counter.Ping(1));
-        Assert.Equal(1, counter.Ping(10_000));
-        Assert.Equal(1, counter.Ping(20_000));
-    }
-
-    private sealed class RecentCounter
-    {
-        private readonly RepoQueue _pings = new();
-
-        public int Ping(int t)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            _pings.Enqueue(t);
+            { [1, 100, 3001, 3002], [1, 2, 3, 3] },
+            { [1, 10_000, 20_000], [1, 1, 1] },
+            { [1], [1] },
+            { [0, 3000], [1, 2] },
+            { [0, 3001], [1, 1] },
+            { [1, 2, 3, 4, 5], [1, 2, 3, 4, 5] },
+            { [100, 3100, 3101, 6101], [1, 2, 2, 2] },
+        };
 
-            while (_pings.TryPeek(out var oldest) && oldest < t - 3000)
-            {
-                _pings.TryDequeue(out _);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PingCountsByFullHistoryRescan_LeetCodeExamples_ReturnsCountPerPing(
+        int[] timestamps, int[] expected) =>
+        Assert.Equal(expected, NumberOfRecentCallsSolution.PingCountsByFullHistoryRescan(timestamps));
 
-            return _pings.Count;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PingCountsBySlidingWindowQueue_LeetCodeExamples_ReturnsCountPerPing(
+        int[] timestamps, int[] expected) =>
+        Assert.Equal(expected, NumberOfRecentCallsSolution.PingCountsBySlidingWindowQueue(timestamps));
 }

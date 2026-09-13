@@ -1,65 +1,46 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.BeautifulArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BeautifulArray;
 
-// LeetCode 932. Beautiful Array: top-down divide-and-conquer construction - if
-// Build(m) is a beautiful permutation of 1..m, then doubling-and-shifting its
-// values into odds (2x-1) and evens (2x) keeps the "no A[k] is the average of an
-// earlier/later pair" property, since an odd value can never average with an even
-// one to produce an odd result on one side and the parity split itself already
-// keeps every odd strictly before/after being irrelevant to every even comparison.
-// This repo's own HashMap<int,int[]> memoizes the O(n) distinct subproblem sizes
-// the recursion actually revisits (Build(n) and Build(n/2) both recurse into
-// overlapping halves) - the same top-down-memoization role HashMap already plays
-// elsewhere in this repo's DP coverage, not just Two Sum's single O(n) lookup.
-public sealed partial class BeautifulArrayTests
+// Harness only. Both constructions are BeautifulArraySolution's.
+//
+// LC 932 is checker-judged - ANY permutation of 1..n with no element equal to the
+// average of one before it and one after it is accepted - so the assertion is the
+// property itself rather than one fixed array. That is not a weakening: pinning the
+// divide-and-conquer output would reject the backtracking arm's equally valid
+// answer, which first differs at n = 8.
+public sealed class BeautifulArrayTests
 {
-    [Fact]
-    public void Construct_LengthOne_ReturnsSingleElement()
-    {
-        Assert.Equal([1], Construct(1));
-    }
+    // Lengths both arms are checked at. The backtracking arm is exponential (n = 16
+    // already costs ~13M search nodes), so the shared set stops at 12 and the
+    // scalable arm gets its own larger cases below.
+    public static TheoryData<int> Examples =>
+        new() { 1, 2, 3, 4, 5, 6, 8, 10, 12 };
 
-    [Fact]
-    public void Construct_LengthFour_MatchesKnownBeautifulPermutation()
-    {
-        Assert.Equal([1, 3, 2, 4], Construct(4));
-    }
+    // Sizes only the memoized construction can reach in test time; 17 is the
+    // largest case the pre-migration test carried.
+    public static TheoryData<int> LargeExamples =>
+        new() { 17, 33, 64 };
 
     [Theory]
-    [InlineData(2)]
-    [InlineData(5)]
-    [InlineData(10)]
-    [InlineData(17)]
-    public void Construct_VariousLengths_ProducesABeautifulPermutation(int n)
+    [MemberData(nameof(Examples))]
+    public void ConstructByPrunedBacktracking_LeetCodeLengths_ReturnsABeautifulPermutation(int n) =>
+        AssertBeautifulPermutation(n, BeautifulArraySolution.ConstructByPrunedBacktracking(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ConstructByMemoizedDivideAndConquer_LeetCodeLengths_ReturnsABeautifulPermutation(int n) =>
+        AssertBeautifulPermutation(n, BeautifulArraySolution.ConstructByMemoizedDivideAndConquer(n));
+
+    [Theory]
+    [MemberData(nameof(LargeExamples))]
+    public void ConstructByMemoizedDivideAndConquer_LargeLengths_ReturnsABeautifulPermutation(int n) =>
+        AssertBeautifulPermutation(n, BeautifulArraySolution.ConstructByMemoizedDivideAndConquer(n));
+
+    private static void AssertBeautifulPermutation(int n, int[] actual)
     {
-        var result = Construct(n);
-        var expectedValues = Enumerable.Range(1, n);
-
-        Assert.Equal(expectedValues, result.OrderBy(x => x));
-        Assert.True(IsBeautiful(result));
-    }
-
-    private static int[] Construct(int n) => Build(n, new HashMap<int, int[]>());
-
-    private static int[] Build(int n, HashMap<int, int[]> memo)
-    {
-        if (n == 1)
-        {
-            return [1];
-        }
-
-        if (memo.TryGetValue(n, out var cached))
-        {
-            return cached;
-        }
-
-        var odds = Build((n + 1) / 2, memo).Select(x => (2 * x) - 1);
-        var evens = Build(n / 2, memo).Select(x => 2 * x);
-        var result = odds.Concat(evens).ToArray();
-
-        memo.Set(n, result);
-        return result;
+        Assert.Equal(Enumerable.Range(1, n), actual.OrderBy(value => value));
+        Assert.True(IsBeautiful(actual), $"Not a beautiful array: [{string.Join(", ", actual)}]");
     }
 
     private static bool IsBeautiful(int[] values)

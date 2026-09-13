@@ -1,15 +1,13 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.RangeSumOfBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Range Sum of BST (LC 938): a full-tree scan that checks every node against
-// [low, high] regardless of ordering (O(n), the same complexity a plain binary
-// tree would force) vs. the BST-ordering-pruned walk RangeSumOfBSTTests itself
-// uses, which skips an entire subtree the moment a node proves it can't contain
-// anything in range. _low/_high are deliberately narrow and near the low end of
-// the value domain, so pruning discards most of a large tree instead of merely
-// skipping a few leaves.
+// Harness only: both arms are RangeSumOfBSTSolution's, the same methods
+// RangeSumOfBSTTests proves correct. Low/High are deliberately narrow and near the
+// low end of the value domain, so pruning discards most of a large tree instead of
+// merely skipping a few leaves. Tree construction is charged to [GlobalSetup].
 [MemoryDiagnoser]
 public class RangeSumOfBSTBenchmarks
 {
@@ -48,39 +46,9 @@ public class RangeSumOfBSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int FullTreeScan() => FullScan(_root);
+    public int FullTreeScan() => RangeSumOfBSTSolution.RangeSumByFullScan(_root, Low, High);
 
     [Benchmark]
-    public int BstPrunedWalk() => PrunedRangeSum(_root);
-
-    private static int FullScan(BinaryTreeNode<int>? node)
-    {
-        if (node is null)
-        {
-            return 0;
-        }
-
-        var contribution = node.Value >= Low && node.Value <= High ? node.Value : 0;
-        return contribution + FullScan(node.Left) + FullScan(node.Right);
-    }
-
-    private static int PrunedRangeSum(BinaryTreeNode<int>? node)
-    {
-        if (node is null)
-        {
-            return 0;
-        }
-
-        if (node.Value < Low)
-        {
-            return PrunedRangeSum(node.Right);
-        }
-
-        if (node.Value > High)
-        {
-            return PrunedRangeSum(node.Left);
-        }
-
-        return node.Value + PrunedRangeSum(node.Left) + PrunedRangeSum(node.Right);
-    }
+    public int SearchTreePrunedWalk() =>
+        RangeSumOfBSTSolution.RangeSumBySearchTreePruning(_root, Low, High);
 }

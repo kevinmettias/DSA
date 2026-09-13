@@ -1,22 +1,19 @@
 using BenchmarkDotNet.Attributes;
-
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+using DSAExperimentation.LeetCode.NumberOfRecentCalls;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Number of Recent Calls (LC 933): FullHistoryRescan keeps every timestamp ever
-// pinged in a growing list and rescans all of it on every call - O(calls) per
-// Ping, O(calls^2) total across a full run. SlidingWindowQueue instead uses this
-// repo's own Queue<int> as a FIFO sliding window, evicting stale timestamps from
-// the front the instant they fall outside the 3000ms window - each timestamp is
-// enqueued and dequeued exactly once across the whole run, so the total cost is
-// O(calls) amortized instead of O(calls^2).
+// Harness only: both arms are NumberOfRecentCallsSolution's, the same methods
+// NumberOfRecentCallsTests proves correct. The workload is a stream of strictly
+// non-decreasing timestamps with small random gaps, so the 3000ms window always
+// holds a large slice of recent history - the case where rescanning the whole
+// history costs O(calls) per ping (O(calls^2) over the run) while the queue window
+// enqueues and dequeues each timestamp exactly once (O(calls) amortized).
 [MemoryDiagnoser]
 public class NumberOfRecentCallsBenchmarks
 {
     private const int RandomSeed = 933; // LC problem number
     private const int MaxGapExclusive = 50;
-    private const int WindowMilliseconds = 3000;
 
     [Params(500, 5_000)]
     public int CallCount;
@@ -38,48 +35,10 @@ public class NumberOfRecentCallsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int FullHistoryRescan()
-    {
-        var history = new List<int>();
-        var lastCount = 0;
-
-        foreach (var t in _timestamps)
-        {
-            history.Add(t);
-            var count = 0;
-
-            foreach (var seen in history)
-            {
-                if (seen >= t - WindowMilliseconds)
-                {
-                    count++;
-                }
-            }
-
-            lastCount = count;
-        }
-
-        return lastCount;
-    }
+    public int[] FullHistoryRescan() =>
+        NumberOfRecentCallsSolution.PingCountsByFullHistoryRescan(_timestamps);
 
     [Benchmark]
-    public int SlidingWindowQueue()
-    {
-        var pings = new RepoQueue();
-        var lastCount = 0;
-
-        foreach (var t in _timestamps)
-        {
-            pings.Enqueue(t);
-
-            while (pings.TryPeek(out var oldest) && oldest < t - WindowMilliseconds)
-            {
-                pings.TryDequeue(out _);
-            }
-
-            lastCount = pings.Count;
-        }
-
-        return lastCount;
-    }
+    public int[] SlidingWindowQueue() =>
+        NumberOfRecentCallsSolution.PingCountsBySlidingWindowQueue(_timestamps);
 }
