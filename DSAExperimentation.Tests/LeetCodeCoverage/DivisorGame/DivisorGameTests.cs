@@ -1,34 +1,36 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.DivisorGame;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DivisorGame;
 
-// LeetCode 1025. Divisor Game: AliceWins(n) = there exists a divisor x of n
-// (0 < x < n) that leaves the opponent facing a losing position - natural-looking
-// recursion via this repo's own Memoizer, the same shape NimGameTests/
-// StoneGameTests already use for their own game-theory recurrences. The recursion
-// reduces to the well-known "n is even" closed form, which the benchmark compares
-// against.
+// Harness only: both strategies live in DivisorGameSolution and are asserted against
+// the same examples. The memoized recursion is the definition and the parity formula
+// is the closed form it reduces to, so pinning both to one example set is exactly the
+// check that the reduction holds - the benchmark previously compared them with only
+// the recursion under test.
 public sealed class DivisorGameTests
 {
-    [Theory]
-    [InlineData(1, false)]
-    [InlineData(2, true)]
-    [InlineData(3, false)]
-    [InlineData(4, true)]
-    public void AliceWins_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected)
-        => Assert.Equal(expected, AliceWins(n));
-
-    private static bool AliceWins(int n)
-        => Memoizer.Memoize<int, bool>(n, (current, aliceWins) =>
+    public static TheoryData<int, bool> Examples =>
+        new()
         {
-            for (var x = 1; x < current; x++)
-            {
-                if (current % x == 0 && !aliceWins(current - x))
-                {
-                    return true;
-                }
-            }
+            { 1, false },
+            { 2, true },
+            { 3, false },
+            { 4, true },
+            { 5, false },
+            { 6, true },
+            { 7, false },
+            { 12, true },
+            { 17, false },
+            { 20, true },
+        };
 
-            return false;
-        });
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
+        Assert.Equal(expected, DivisorGameSolution.AliceWinsByMemoizedRecursion(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AliceWinsByParityFormula_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
+        Assert.Equal(expected, DivisorGameSolution.AliceWinsByParityFormula(n));
 }

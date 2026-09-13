@@ -1,77 +1,52 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.NextGreaterNodeInLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NextGreaterNodeInLinkedList;
 
-// LeetCode 1019. Next Greater Node In Linked List: walk this repo's own
-// SinglyLinkedListNode<int>.Next once to materialize node values (MiddleOfTheLinkedListTests
-// precedent for the node representation), then run the exact same monotonic
-// decreasing Stack<int> sweep NextGreaterElementITests/DailyTemperaturesTests already
-// use over an array - here the stack holds pending indices, popped and resolved the
-// moment a larger value arrives.
-public sealed partial class NextGreaterNodeInLinkedListTests
+// Harness only. Both strategies are NextGreaterNodeInLinkedListSolution's - this
+// file states LeetCode's examples once as the list's values plus the expected
+// per-node answer, and asserts each strategy against them.
+public sealed class NextGreaterNodeInLinkedListTests
 {
-    [Fact]
-    public void NextLargerNodes_ClassicExampleOne_ReturnsNextGreaterPerNode()
-    {
-        var result = NextLargerNodes(Build([2, 1, 5]));
-
-        Assert.Equal([5, 5, 0], result);
-    }
-
-    [Fact]
-    public void NextLargerNodes_ClassicExampleTwo_ReturnsNextGreaterPerNode()
-    {
-        var result = NextLargerNodes(Build([2, 7, 4, 3, 5]));
-
-        Assert.Equal([7, 0, 5, 5, 0], result);
-    }
-
-    [Fact]
-    public void NextLargerNodes_StrictlyDecreasing_ReturnsAllZeros()
-    {
-        var result = NextLargerNodes(Build([9, 7, 5, 3]));
-
-        Assert.Equal([0, 0, 0, 0], result);
-    }
-
-    private static int[] NextLargerNodes(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            values.Add(node.Value);
-        }
+            { [2, 1, 5], [5, 5, 0] },
+            { [2, 7, 4, 3, 5], [7, 0, 5, 5, 0] },
+            { [1, 7, 5, 1, 9, 2, 5, 1], [7, 9, 9, 9, 0, 5, 0, 0] },
+            { [9, 7, 5, 3], [0, 0, 0, 0] },
+            { [1, 2, 3, 4], [2, 3, 4, 0] },
+            { [4, 4, 4, 4], [0, 0, 0, 0] },
+            { [1], [0] },
+        };
 
-        var result = new int[values.Count];
-        var decreasingIndices = new RepoIntStack();
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NextLargerNodesByBruteForceScan_LeetCodeExamples_ReturnsNextGreaterPerNode(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            NextGreaterNodeInLinkedListSolution.NextLargerNodesByBruteForceScan(BuildList(values)));
 
-        for (var i = 0; i < values.Count; i++)
-        {
-            while (decreasingIndices.TryPeek(out var previousIndex) && values[previousIndex] < values[i])
-            {
-                decreasingIndices.TryPop(out _);
-                result[previousIndex] = values[i];
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NextLargerNodesByMonotonicStackSweep_LeetCodeExamples_ReturnsNextGreaterPerNode(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            NextGreaterNodeInLinkedListSolution.NextLargerNodesByMonotonicStackSweep(BuildList(values)));
 
-            decreasingIndices.Push(i);
-        }
-
-        return result;
-    }
-
-    private static SinglyLinkedListNode<int>? Build(int[] values)
+    private static SinglyLinkedListNode<int> BuildList(int[] values)
     {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
+        var head = new SinglyLinkedListNode<int>(values[0]);
+        var tail = head;
 
-        foreach (var value in values)
+        foreach (var value in values[1..])
         {
             tail.Next = new SinglyLinkedListNode<int>(value);
             tail = tail.Next;
         }
 
-        return dummy.Next;
+        return head;
     }
 }

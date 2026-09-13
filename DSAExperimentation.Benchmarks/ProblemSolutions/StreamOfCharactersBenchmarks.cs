@@ -1,18 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using static DSAExperimentation.LeetCode.StreamOfCharacters.StreamOfCharactersSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Stream of Characters (LC 1032): re-testing every suffix of the whole stream so
-// far against a HashSet<string> on every query (O(stream length * max word length)
-// per query, since each candidate substring itself costs O(length) to materialize
-// and hash) vs. this repo's own LowercaseTrie<TValue> built from reversed words,
-// walked backward one already-streamed character at a time through
-// DynamicArray<char>'s O(1) indexed Get (O(max word length) per query, the standard
-// LC1032 solution). Words are chosen with no shared suffixes so neither approach
-// gets an early exit from an early match, forcing both through their full per-query
-// cost on nearly every character.
+// Harness only: both arms are StreamOfCharactersSolution's, the same classes
+// StreamOfCharactersTests proves correct - re-testing every suffix of the whole
+// stream so far against a HashSet<string> on every query (O(stream length * max word
+// length) per query, since each candidate substring itself costs O(length) to
+// materialize and hash) against this repo's own LowercaseTrie<TValue> built from
+// reversed words and walked backward through DynamicArray<char>'s O(1) indexed Get
+// (O(max word length) per query). [GlobalSetup] generates the streamed characters,
+// so stream generation is charged to setup rather than to the replay each arm
+// measures. Words are chosen with no shared suffixes so neither approach gets an
+// early exit from an early match, forcing both through their full per-query cost on
+// nearly every character.
 [MemoryDiagnoser]
 public class StreamOfCharactersBenchmarks
 {
@@ -21,8 +22,6 @@ public class StreamOfCharactersBenchmarks
         "characters", "algorithm", "benchmark", "primitive", "structure",
         "traversal", "reference", "composed", "sequence", "children",
     ];
-
-    private static readonly int MaxWordLength = Words.Max(w => w.Length);
 
     private const int RandomSeed = 1032; // LC problem number
     private const int AlphabetSize = 26;
@@ -40,83 +39,25 @@ public class StreamOfCharactersBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RescanEverySuffixAgainstHashSet()
-    {
-        var words = new HashSet<string>(Words);
-        var buffer = new List<char>();
-        var matches = 0;
-
-        foreach (var letter in _stream)
-        {
-            buffer.Add(letter);
-
-            for (var length = 1; length <= Math.Min(buffer.Count, MaxWordLength); length++)
-            {
-                var suffix = new string(buffer.GetRange(buffer.Count - length, length).ToArray());
-
-                if (words.Contains(suffix))
-                {
-                    matches++;
-                    break;
-                }
-            }
-        }
-
-        return matches;
-    }
+    public int RescanEverySuffixAgainstHashSet() => CountMatches(new StreamCheckerBySuffixRescan(Words));
 
     [Benchmark]
-    public int ReversedTrieBackwardWalk()
+    public int ReversedTrieBackwardWalk() => CountMatches(new StreamCheckerByReversedTrie(Words));
+
+    // Counts matches rather than discarding each Query result, so the JIT can't
+    // eliminate the replay as dead code.
+    private int CountMatches(IStreamCheckerStrategy checker)
     {
-        var reversedWords = BuildReversedTrie();
-
-        return CountBackwardMatches(reversedWords);
-    }
-
-    private static LowercaseTrie<bool> BuildReversedTrie()
-    {
-        var reversedWords = new LowercaseTrie<bool>();
-
-        foreach (var word in Words)
-        {
-            reversedWords.Set(new string(word.Reverse().ToArray()), true);
-        }
-
-        return reversedWords;
-    }
-
-    private int CountBackwardMatches(LowercaseTrie<bool> reversedWords)
-    {
-        var buffer = new DynamicArray<char>();
         var matches = 0;
 
         foreach (var letter in _stream)
         {
-            buffer.Add(letter);
-
-            if (HasBackwardMatch(reversedWords, buffer))
+            if (checker.Query(letter))
             {
                 matches++;
             }
         }
 
         return matches;
-    }
-
-    private static bool HasBackwardMatch(LowercaseTrie<bool> reversedWords, DynamicArray<char> buffer)
-    {
-        var node = reversedWords.Root;
-
-        for (var i = buffer.Count - 1; i >= 0 && node is not null; i--)
-        {
-            node = node.Children[buffer.Get(i) - 'a'];
-
-            if (node is not null && node.HasValue)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

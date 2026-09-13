@@ -1,6 +1,8 @@
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 856. The scoring itself is
+// Benchmark workload sizing for LC 856, reused by LC 1021 (Remove Outermost
+// Parentheses), whose worst case wants the same "many sibling primitives, bounded
+// nesting" shape. The scoring itself is
 // ScoreOfParenthesesSolution's; what stays here is only how large a balanced
 // string to measure and how deeply to nest it - measurement decisions, not domain
 // ones. Depth is capped because unbounded nesting would make the baseline's
