@@ -1,84 +1,84 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.MaximumSumBSTInBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumBSTInBinaryTree;
 
-// LeetCode 1373. Maximum Sum BST in Binary Tree: one bottom-up post-order pass over
-// this repo's own BinaryTreeNode<int>, combining each node's two subtree summaries
-// (IsBst, Min, Max, Sum) - the same direct-recursion composition ValidateBinaryS
-// earchTreeTests already uses to check BST-ness bottom-up and BinaryTreeMaximumPath
-// SumTests already uses to thread a running "best" through the walk. TreeFold isn't
-// a fit here: BinaryTreeChildren compacts away a missing Left/Right (its own doc
-// comment explains why), and this algorithm's every combine step needs to know
-// specifically whether left.Max or right.Min came from an *actual* left/right child
-// versus an absent one - exactly the positional identity that compaction throws away.
-public sealed partial class MaximumSumBSTInBinaryTreeTests
+// Harness only. Both the revalidate-per-node baseline and the single bottom-up
+// scan are MaximumSumBSTInBinaryTreeSolution's - this file pins them to LeetCode's
+// published examples, given in LeetCode's own level-order-with-null array shape
+// (BinaryTreeNode<int> is internal, so it cannot appear in a public TheoryData
+// signature; BuildTree reconstructs it).
+public sealed class MaximumSumBSTInBinaryTreeTests
 {
-    [Fact]
-    public void MaxSumBST_RootBreaksBstButALeftSubtreeIsValid_ReturnsThatSubtreeSum()
-    {
-        // Root 5 with left child 8 already breaks BST order (8 > 5), so the whole
-        // tree is invalid - but the subtree rooted at 8 (8, 3, 10) is itself a
-        // valid BST and beats every smaller valid subtree's sum (10, 3, -2).
-        var root = new BinaryTreeNode<int>(5)
+    public static TheoryData<int?[], int> Examples =>
+        new()
         {
-            Left = new BinaryTreeNode<int>(8)
-            {
-                Left = new BinaryTreeNode<int>(3),
-                Right = new BinaryTreeNode<int>(10),
-            },
-            Right = new BinaryTreeNode<int>(-2),
+            // LC 1373's own three examples: a tree whose best BST is a mid-tree
+            // subtree, one whose best is a single leaf, and the all-negative tree
+            // that reports the empty BST's zero.
+            { [1, 4, 3, 2, 4, 2, 5, null, null, null, null, null, null, 4, 6], 20 },
+            { [4, 3, null, 1, 2], 2 },
+            { [-4, -2, -5], 0 },
+
+            // The root already breaks BST order (8 > 5), so the whole tree is
+            // invalid - but the subtree rooted at 8 is valid and beats every
+            // smaller valid subtree's sum (10, 3, -2).
+            { [5, 8, -2, 3, 10], 21 },
+
+            // The entire tree is already a valid BST, so the answer is its total.
+            { [2, 1, 3], 6 },
+
+            // A single node is a trivially valid BST.
+            { [7], 7 },
         };
 
-        Assert.Equal(21, MaxSumBST(root));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxSumBSTByRevalidatingEachNode_LeetCodeExamples_ReturnsBestValidSubtreeSum(
+        int?[] values, int expected) =>
+        Assert.Equal(expected, MaximumSumBSTInBinaryTreeSolution.MaxSumBSTByRevalidatingEachNode(BuildTree(values)));
 
-    [Fact]
-    public void MaxSumBST_EntireTreeIsAlreadyAValidBst_ReturnsTotalSum()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxSumBSTByBottomUpScan_LeetCodeExamples_ReturnsBestValidSubtreeSum(
+        int?[] values, int expected) =>
+        Assert.Equal(expected, MaximumSumBSTInBinaryTreeSolution.MaxSumBSTByBottomUpScan(BuildTree(values)));
+
+    // LeetCode's level-order array shape: each existing node consumes exactly
+    // two subsequent slots for its children, null marking a missing one.
+    private static BinaryTreeNode<int>? BuildTree(int?[] values)
     {
-        var root = new BinaryTreeNode<int>(2) { Left = new(1), Right = new(3) };
-
-        Assert.Equal(6, MaxSumBST(root));
-    }
-
-    [Fact]
-    public void MaxSumBST_SingleNode_ReturnsItsOwnValue()
-    {
-        var root = new BinaryTreeNode<int>(7);
-
-        Assert.Equal(7, MaxSumBST(root));
-    }
-
-    private static int MaxSumBST(BinaryTreeNode<int>? root)
-    {
-        // Starts at int.MinValue, not 0: a single node is always a trivially valid
-        // BST, so the true answer can itself be negative when every value in the
-        // tree is negative - there is no implicit "or zero" floor in the problem.
-        var best = int.MinValue;
-        Scan(root);
-        return best;
-
-        Summary Scan(BinaryTreeNode<int>? node)
+        if (values.Length == 0 || values[0] is null)
         {
-            if (node is null)
-            {
-                return new Summary(IsBst: true, Min: int.MaxValue, Max: int.MinValue, Sum: 0);
-            }
-
-            var left = Scan(node.Left);
-            var right = Scan(node.Right);
-            var isBst = left.IsBst && right.IsBst && node.Value > left.Max && node.Value < right.Min;
-
-            if (!isBst)
-            {
-                return new Summary(false, 0, 0, 0);
-            }
-
-            var sum = left.Sum + right.Sum + node.Value;
-            best = Math.Max(best, sum);
-
-            return new Summary(true, Math.Min(node.Value, left.Min), Math.Max(node.Value, right.Max), sum);
+            return null;
         }
-    }
 
-    private readonly record struct Summary(bool IsBst, int Min, int Max, int Sum);
+        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (queue.Count > 0 && i < values.Length)
+        {
+            var node = queue.Dequeue();
+
+            if (values[i] is int leftValue)
+            {
+                node.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(node.Left);
+            }
+
+            i++;
+
+            if (i < values.Length && values[i] is int rightValue)
+            {
+                node.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(node.Right);
+            }
+
+            i++;
+        }
+
+        return root;
+    }
 }
