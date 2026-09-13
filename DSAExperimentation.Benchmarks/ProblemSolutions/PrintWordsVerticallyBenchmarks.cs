@@ -1,14 +1,20 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.PrintWordsVertically;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Print Words Vertically (LC 1324): building each column with a plain
-// List<char> and trimming trailing spaces via a materialized-string TrimEnd
-// pass (baseline) vs. this repo's own DynamicArray<char>
-// (StreamOfCharactersBenchmarks' own precedent for a growable char buffer),
-// trimming trailing spaces in place by popping from the tail with
-// RemoveAt(Count - 1) instead of allocating a second trimmed string.
+// Harness only: both arms are PrintWordsVerticallySolution's, the same methods
+// PrintWordsVerticallyTests proves correct - a List<char> column materialized as a
+// padded string and TrimEnd'ed (baseline) against this repo's own
+// DynamicArray<char> trimmed in place by popping its tail. Unlike the pre-refactor
+// version, which only accumulated each row's length so no output list had to be
+// built, both arms now return LeetCode's actual answer and the harness takes its
+// row count; the rows were being built either way, so the comparison is still
+// about the trimming.
+//
+// Each arm is handed the prepared word list its hoisted overload takes, so the
+// sentence split is charged to [GlobalSetup] rather than to the measured method.
 [MemoryDiagnoser]
 public class PrintWordsVerticallyBenchmarks
 {
@@ -19,13 +25,18 @@ public class PrintWordsVerticallyBenchmarks
     [Params(50, 500)]
     public int WordCount;
 
-    private string[] _words = null!;
+    private DynamicArray<string> _words = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _words = [.. Enumerable.Range(0, WordCount).Select(_ => RandomWord(random))];
+        _words = new DynamicArray<string>();
+
+        for (var i = 0; i < WordCount; i++)
+        {
+            _words.Add(RandomWord(random));
+        }
     }
 
     private static string RandomWord(Random random)
@@ -35,50 +46,10 @@ public class PrintWordsVerticallyBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListCharTrimEnd()
-    {
-        var maxLength = _words.Max(word => word.Length);
-        var rows = 0;
-
-        for (var column = 0; column < maxLength; column++)
-        {
-            var chars = new List<char>();
-
-            foreach (var word in _words)
-            {
-                chars.Add(column < word.Length ? word[column] : ' ');
-            }
-
-            var row = new string([.. chars]).TrimEnd(' ');
-            rows += row.Length;
-        }
-
-        return rows;
-    }
+    public int ListCharTrimEnd() =>
+        PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(_words).Count;
 
     [Benchmark]
-    public int DynamicArrayTrimTail()
-    {
-        var maxLength = _words.Max(word => word.Length);
-        var rows = 0;
-
-        for (var column = 0; column < maxLength; column++)
-        {
-            var buffer = new DynamicArray<char>();
-
-            foreach (var word in _words)
-            {
-                buffer.Add(column < word.Length ? word[column] : ' ');
-            }
-
-            while (buffer.Count > 0 && buffer.Get(buffer.Count - 1) == ' ')
-            {
-                buffer.RemoveAt(buffer.Count - 1);
-            }
-
-            rows += buffer.Count;
-        }
-
-        return rows;
-    }
+    public int DynamicArrayTrimTail() =>
+        PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(_words).Count;
 }

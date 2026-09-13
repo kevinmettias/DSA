@@ -1,76 +1,38 @@
-using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.NumberOfOperationsToMakeNetworkConnected;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfOperationsToMakeNetworkConnected;
 
-// LeetCode 1319. Number of Operations to Make Network Connected: union every
-// connection into this repo's own DisjointSet (NumberOfProvincesTests precedent),
-// then read the answer off as componentCount - 1 - the minimum number of cables
-// that must be moved to connect every remaining isolated component, since one
-// spare cable buys exactly one merge. -1 whenever there simply aren't enough
-// cables (fewer than n-1) to connect n computers at all, checked before touching
-// the DisjointSet.
-public sealed partial class NumberOfOperationsToMakeNetworkConnectedTests
+// Harness only. Both component counts - the DFS flood fill and the DisjointSet
+// walk - are NumberOfOperationsToMakeNetworkConnectedSolution's; this file just
+// pins them to LeetCode's published examples plus the cases the two arms are most
+// likely to disagree on: too few cables to connect anything, a network that is
+// already connected, and a single computer with no cables at all.
+public sealed class NumberOfOperationsToMakeNetworkConnectedTests
 {
-    [Fact]
-    public void MakeConnected_ClassicExample_ReturnsOneOperation()
-    {
-        int[][] connections = [[0, 1], [0, 2], [1, 2]];
-
-        var operations = MakeConnected(4, connections);
-
-        Assert.Equal(1, operations);
-    }
-
-    [Fact]
-    public void MakeConnected_TwoOperationsNeeded_ReturnsTwo()
-    {
-        int[][] connections = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3]];
-
-        var operations = MakeConnected(6, connections);
-
-        Assert.Equal(2, operations);
-    }
-
-    [Fact]
-    public void MakeConnected_NotEnoughCables_ReturnsNegativeOne()
-    {
-        int[][] connections = [[0, 1], [0, 2], [0, 3], [1, 2]];
-
-        var operations = MakeConnected(6, connections);
-
-        Assert.Equal(-1, operations);
-    }
-
-    [Fact]
-    public void MakeConnected_AlreadyFullyConnected_ReturnsZero()
-    {
-        int[][] connections = [[0, 1], [1, 2], [2, 3]];
-
-        var operations = MakeConnected(4, connections);
-
-        Assert.Equal(0, operations);
-    }
-
-    private static int MakeConnected(int n, int[][] connections)
-    {
-        if (connections.Length < n - 1)
+    public static TheoryData<int, int[][], int> Examples =>
+        new()
         {
-            return -1;
-        }
+            { 4, [[0, 1], [0, 2], [1, 2]], 1 },
+            { 6, [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3]], 2 },
+            { 6, [[0, 1], [0, 2], [0, 3], [1, 2]], -1 },
+            { 4, [[0, 1], [1, 2], [2, 3]], 0 },
+            { 5, [[0, 1], [1, 2], [0, 2], [3, 4]], 1 },
+            { 1, [], 0 },
+        };
 
-        var components = new DisjointSet(n);
-        foreach (var connection in connections)
-        {
-            components.Union(connection[0], connection[1]);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MakeConnectedByDepthFirstFloodFill_LeetCodeExamples_ReturnsCablesThatMustMove(
+        int n, int[][] connections, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfOperationsToMakeNetworkConnectedSolution.MakeConnectedByDepthFirstFloodFill(n, connections));
 
-        var roots = new Set<int>();
-        for (var i = 0; i < n; i++)
-        {
-            roots.TryAdd(components.Find(i));
-        }
-
-        return roots.Count - 1;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MakeConnectedByDisjointSet_LeetCodeExamples_ReturnsCablesThatMustMove(
+        int n, int[][] connections, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfOperationsToMakeNetworkConnectedSolution.MakeConnectedByDisjointSet(n, connections));
 }
