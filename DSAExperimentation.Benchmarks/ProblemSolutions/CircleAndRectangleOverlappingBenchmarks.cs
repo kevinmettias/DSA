@@ -1,16 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.CircleAndRectangleOverlapping;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Circle and Rectangle Overlapping (LC 1401): brute-force O(width*height)
-// lattice-point scan, using this repo's own DynamicArray<bool> to record
-// each rectangle lattice point's circle membership (the same coverage-grid
-// role it plays in RectangleOverlapBenchmarks/RectangleAreaBenchmarks), vs.
-// the O(1) closed-form clamp-and-distance check. The circle is centered
-// exactly on the rectangle's far corner with radius 0, so it only overlaps
-// at that single last-scanned lattice point - forcing the brute-force scan
-// through its full worst case instead of exiting early.
+// Harness only: both arms are CircleAndRectangleOverlappingSolution's, the same methods
+// CircleAndRectangleOverlappingTests proves correct - the brute-force O(width*height)
+// lattice-point scan against the O(1) closed-form clamp-and-distance check. The circle
+// is centred exactly on the rectangle's far corner with radius 0, so it only overlaps at
+// that single last-scanned lattice point, forcing the brute-force scan through its full
+// worst case instead of exiting early.
 [MemoryDiagnoser]
 public class CircleAndRectangleOverlappingBenchmarks
 {
@@ -35,52 +33,12 @@ public class CircleAndRectangleOverlappingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool LatticePointScan()
-    {
-        var width = _x2 - _x1 + 1;
-        var height = _y2 - _y1 + 1;
-
-        var withinCircle = BuildCircleMembershipGrid();
-
-        return AnyPointWithinCircle(withinCircle, width * height);
-    }
-
-    private DynamicArray<bool> BuildCircleMembershipGrid()
-    {
-        var withinCircle = new DynamicArray<bool>();
-        for (var y = _y1; y <= _y2; y++)
-        {
-            for (var x = _x1; x <= _x2; x++)
-            {
-                var dx = (long)(x - _xCenter);
-                var dy = (long)(y - _yCenter);
-                withinCircle.Add((dx * dx) + (dy * dy) <= (long)_radius * _radius);
-            }
-        }
-
-        return withinCircle;
-    }
-
-    private static bool AnyPointWithinCircle(DynamicArray<bool> withinCircle, int pointCount)
-    {
-        for (var i = 0; i < pointCount; i++)
-        {
-            if (withinCircle.Get(i))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool LatticePointScan() =>
+        CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
+            _radius, _xCenter, _yCenter, _x1, _y1, _x2, _y2);
 
     [Benchmark]
-    public bool ClosedFormClampAndDistance()
-    {
-        var closestX = Math.Clamp(_xCenter, _x1, _x2);
-        var closestY = Math.Clamp(_yCenter, _y1, _y2);
-        var dx = (long)(_xCenter - closestX);
-        var dy = (long)(_yCenter - closestY);
-        return (dx * dx) + (dy * dy) <= (long)_radius * _radius;
-    }
+    public bool ClosedFormClampAndDistance() =>
+        CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
+            _radius, _xCenter, _yCenter, _x1, _y1, _x2, _y2);
 }

@@ -1,67 +1,34 @@
-using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.StringMatchingInAnArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StringMatchingInAnArray;
 
-// LeetCode 1408. String Matching in an Array: for each word, KMP substring
-// search (this repo's own PrefixFunctionSearch) against every other word - a
-// word is kept whenever some other word's text contains it as a substring.
-public sealed partial class StringMatchingInAnArrayTests
+// Harness only. Both strategies are StringMatchingInAnArraySolution's -
+// FindContainedWordsByNaiveScan (previously untested scaffolding inlined in the
+// benchmark as its baseline arm, and only counting the contained words rather than
+// building LC 1408's list) now gets the same examples as
+// FindContainedWordsByPrefixFunctionSearch (previously the test's own private
+// helper), so a failure names the strategy that broke.
+public sealed class StringMatchingInAnArrayTests
 {
-    [Fact]
-    public void StringMatching_LeetCodeExampleOne_ReturnsContainedWords()
-    {
-        string[] words = ["mass", "as", "hero", "superhero"];
-
-        var result = StringMatching(words);
-
-        Assert.Equal(["as", "hero"], result);
-    }
-
-    [Fact]
-    public void StringMatching_LeetCodeExampleTwo_ReturnsContainedWords()
-    {
-        string[] words = ["leetcode", "et", "code"];
-
-        var result = StringMatching(words);
-
-        Assert.Equal(["et", "code"], result);
-    }
-
-    [Fact]
-    public void StringMatching_NoWordIsASubstringOfAnother_ReturnsEmpty()
-    {
-        string[] words = ["blue", "green", "bu"];
-
-        var result = StringMatching(words);
-
-        Assert.Equal([], result);
-    }
-
-    private static List<string> StringMatching(string[] words)
-    {
-        var result = new List<string>();
-
-        for (var i = 0; i < words.Length; i++)
+    public static TheoryData<string[], string[]> Examples =>
+        new()
         {
-            if (IsSubstringOfAnotherWord(words, i))
-            {
-                result.Add(words[i]);
-            }
-        }
+            { ["mass", "as", "hero", "superhero"], ["as", "hero"] },
+            { ["leetcode", "et", "code"], ["et", "code"] },
+            { ["blue", "green", "bu"], [] },
+            { ["ab", "abc", "abcd"], ["ab", "abc"] },
+            { ["a", "a", "a"], ["a", "a", "a"] },
+        };
 
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindContainedWordsByNaiveScan_LeetCodeExamples_ReturnsWordsContainedInAnotherWord(
+        string[] words, string[] expected) =>
+        Assert.Equal(expected, StringMatchingInAnArraySolution.FindContainedWordsByNaiveScan(words));
 
-    private static bool IsSubstringOfAnotherWord(string[] words, int index)
-    {
-        for (var j = 0; j < words.Length; j++)
-        {
-            if (j != index && PrefixFunctionSearch.FindAll(words[j], words[index]).Count > 0)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindContainedWordsByPrefixFunctionSearch_LeetCodeExamples_ReturnsWordsContainedInAnotherWord(
+        string[] words, string[] expected) =>
+        Assert.Equal(expected, StringMatchingInAnArraySolution.FindContainedWordsByPrefixFunctionSearch(words));
 }

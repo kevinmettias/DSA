@@ -1,18 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.QueriesOnAPermutationWithKey;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Queries on a Permutation With Key (LC 1409): move-to-front simulation of the
-// permutation P, once over a plain BCL List<int> and once over this repo's own
-// DynamicArray<int> (PermutationSequenceBenchmarks precedent for reusing
-// DynamicArray as a shrinking/growing sequence). Both are O(Queries * M) -
-// finding and re-inserting an element is a linear scan/shift either way - so
-// this measures the repo primitive's overhead against the BCL type doing the
-// identical job, not a different complexity class.
+// Harness only: both arms are QueriesOnAPermutationWithKeySolution's, the same
+// methods QueriesOnAPermutationWithKeyTests proves correct - the move-to-front
+// simulation over a BCL List<int> vs. over this repo's own DynamicArray<int>,
+// both O(Queries * M). The query stream is a fixed-seed random draw over
+// [1..M], built in [GlobalSetup] so only the simulation is measured.
 [MemoryDiagnoser]
 public class QueriesOnAPermutationWithKeyBenchmarks
 {
+    private const int Seed = 1;
+    private const int FirstPermutationValue = 1;
+
     [Params(200, 1_000)]
     public int M;
 
@@ -21,64 +22,15 @@ public class QueriesOnAPermutationWithKeyBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        _queries = Enumerable.Range(0, M).Select(_ => random.Next(1, M + 1)).ToArray();
+        var random = new Random(Seed);
+        _queries = Enumerable.Range(0, M).Select(_ => random.Next(FirstPermutationValue, M + 1)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public int ListMoveToFront()
-    {
-        var permutation = new List<int>(M);
-        for (var value = 1; value <= M; value++)
-        {
-            permutation.Add(value);
-        }
-
-        var lastIndex = 0;
-
-        foreach (var query in _queries)
-        {
-            var index = permutation.IndexOf(query);
-            lastIndex = index;
-            permutation.RemoveAt(index);
-            permutation.Insert(0, query);
-        }
-
-        return lastIndex;
-    }
+    public List<int> ListMoveToFront() =>
+        QueriesOnAPermutationWithKeySolution.ProcessQueriesByListMoveToFront(_queries, M);
 
     [Benchmark]
-    public int DynamicArrayMoveToFront()
-    {
-        var permutation = new DynamicArray<int>();
-        for (var value = 1; value <= M; value++)
-        {
-            permutation.Add(value);
-        }
-
-        var lastIndex = 0;
-
-        foreach (var query in _queries)
-        {
-            var index = IndexOf(permutation, query);
-            lastIndex = index;
-            permutation.RemoveAt(index);
-            permutation.Insert(0, query);
-        }
-
-        return lastIndex;
-    }
-
-    private static int IndexOf(DynamicArray<int> permutation, int value)
-    {
-        for (var i = 0; i < permutation.Count; i++)
-        {
-            if (permutation.Get(i) == value)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    public List<int> DynamicArrayMoveToFront() =>
+        QueriesOnAPermutationWithKeySolution.ProcessQueriesByDynamicArrayMoveToFront(_queries, M);
 }

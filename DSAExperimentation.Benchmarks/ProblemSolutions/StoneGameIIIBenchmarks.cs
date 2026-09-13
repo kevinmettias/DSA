@@ -1,63 +1,49 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.StoneGameIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Stone Game III (LC 1406): plain un-memoized minimax recursion over index -
-// exponential (tribonacci-shaped growth), since the same index recurs
-// through many different take-1/2/3 pick sequences reaching it - vs. this
-// repo's own Memoizer<TState,TResult> caching that index, the identical
-// shape StoneGameBenchmarks/StoneGameIIBenchmarks already use. PileCount is
-// kept modest for the same reason those benchmarks document: the
-// un-memoized baseline's blowup is real, just slower-growing here than LC
-// 877's binary branching since each state only has up to 3 children instead
-// of an M-bounded window.
+// Harness only: both arms are StoneGameIIISolution's, the same methods
+// StoneGameIIITests proves correct. UnmemoizedRecursion is plain minimax over the
+// index - exponential (tribonacci-shaped growth), since the same index recurs
+// through many different take-1/2/3 pick sequences reaching it - against this repo's
+// own Memoizer<TState,TResult> caching that index, the identical shape
+// StoneGameBenchmarks/StoneGameIIBenchmarks already use. PileCount is kept modest
+// for the same reason those benchmarks document: the un-memoized baseline's blowup
+// is real, just slower-growing here than LC 877's binary branching since each state
+// only has up to 3 children instead of an M-bounded window.
+//
+// Both arms now return LC 1406's actual answer - the winner's name - rather than the
+// raw score difference the previous arms reported. That is one sign test on top of
+// the same recurrence, identical in both arms, so what the comparison isolates is
+// still memoization alone.
 [MemoryDiagnoser]
 public class StoneGameIIIBenchmarks
 {
-    private const int RandomSeed = 1406; // LC 1406
+    // LC problem number, used as the deterministic seed for stone-value generation.
+    private const int RandomSeed = 1406;
+
+    // LC 1406 allows negative stone values; these bracket the generated range.
     private const int MinStoneValue = -50;
     private const int StoneValueUpperBound = 100;
-    private const int MaxTakePerTurn = 3;
 
     [Params(20, 24)]
     public int PileCount;
 
     private int[] _stoneValue = null!;
-    private Func<int, int>? _best;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _stoneValue = Enumerable.Range(0, PileCount).Select(_ => random.Next(MinStoneValue, StoneValueUpperBound)).ToArray();
+        _stoneValue = Enumerable.Range(0, PileCount)
+            .Select(_ => random.Next(MinStoneValue, StoneValueUpperBound))
+            .ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => Best(0);
-
-    private int Best(int index) => ComputeBest(index, _best ??= Best);
+    public string UnmemoizedRecursion() => StoneGameIIISolution.WinnerByUnmemoizedRecursion(_stoneValue);
 
     [Benchmark]
-    public int MemoizedRecursion() => Memoizer.Memoize<int, int>(0, BestMemoized);
-
-    private int BestMemoized(int index, Func<int, int> bestFrom) => ComputeBest(index, bestFrom);
-
-    private int ComputeBest(int index, Func<int, int> bestFrom)
-    {
-        if (index >= PileCount)
-        {
-            return 0;
-        }
-
-        var result = int.MinValue;
-        var takenSum = 0;
-        for (var take = 1; take <= MaxTakePerTurn && index + take <= PileCount; take++)
-        {
-            takenSum += _stoneValue[index + take - 1];
-            result = Math.Max(result, takenSum - bestFrom(index + take));
-        }
-
-        return result;
-    }
+    public string MemoizedRecursion() => StoneGameIIISolution.WinnerByMemoizedRecursion(_stoneValue);
 }

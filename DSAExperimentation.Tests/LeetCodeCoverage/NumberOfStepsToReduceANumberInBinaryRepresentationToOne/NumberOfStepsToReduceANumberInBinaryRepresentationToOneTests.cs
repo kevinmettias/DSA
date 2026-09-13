@@ -1,53 +1,42 @@
+using DSAExperimentation.LeetCode.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
 
-// LeetCode 1404. Number of Steps to Reduce a Number in Binary Representation
-// to One: reduces to a single O(n) carry-propagation scan over the binary
-// string from the LSB (an even digit is one "divide by 2" step; an odd
-// digit is a "+1" step that also sets the carry into the next digit) - the
-// same "lighter repo-primitive fit" case RectangleOverlapTests (LC 836)
-// already documents; a running carry/step counter needs nothing more than
-// two plain ints. See
-// NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks.cs for a
-// comparison against a brute-force per-step simulation that DOES compose a
-// repo primitive (Stack<char>, the same LSB-first binary-add technique
-// AddBinaryTests already uses for LC 67).
-public sealed partial class NumberOfStepsToReduceANumberInBinaryRepresentationToOneTests
+// Harness only. Both strategies are
+// NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution's - the single-pass
+// carry-propagation scan and the step-by-step binary-addition simulation that used to
+// live untested as the benchmark's baseline - pinned to LeetCode's published examples
+// plus a cascading carry, an all-halvings case, and the alternating bit pattern the
+// benchmark measures.
+public sealed class NumberOfStepsToReduceANumberInBinaryRepresentationToOneTests
 {
-    [Fact]
-    public void NumSteps_LeetCodeExampleOne_ReturnsSix()
-        => Assert.Equal(6, NumSteps("1101"));
-
-    [Fact]
-    public void NumSteps_LeetCodeExampleTwo_ReturnsOne()
-        => Assert.Equal(1, NumSteps("10"));
-
-    [Fact]
-    public void NumSteps_LeetCodeExampleThree_ReturnsZero()
-        => Assert.Equal(0, NumSteps("1"));
-
-    [Fact]
-    public void NumSteps_CarryCascadesThroughLeadingOnes_CountsEveryStep()
-        => Assert.Equal(4, NumSteps("111"));
-
-    private static int NumSteps(string s)
-    {
-        var steps = 0;
-        var carry = 0;
-        for (var i = s.Length - 1; i >= 1; i--)
+    public static TheoryData<string, int> Examples =>
+        new()
         {
-            var digit = (s[i] - '0') + carry;
-            if (digit % 2 == 1)
-            {
-                steps += 2;
-                carry = 1;
-            }
-            else
-            {
-                steps += 1;
-                carry = digit / 2;
-            }
-        }
+            { "1101", 6 },
+            { "10", 1 },
+            { "1", 0 },
+            { "111", 4 },
+            { "1000", 3 },
+            { "1011", 6 },
+            { "1010", 6 },
+        };
 
-        return steps + carry;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumStepsByCarryPropagationScan_LeetCodeExamples_ReturnsStepsToReachOne(
+        string s, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
+                .NumStepsByCarryPropagationScan(s));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumStepsByStackAddSimulation_LeetCodeExamples_ReturnsStepsToReachOne(
+        string s, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
+                .NumStepsByStackAddSimulation(s));
 }
