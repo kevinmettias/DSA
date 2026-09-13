@@ -1,28 +1,32 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Traversal.TopDown;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.KthAncestorOfATreeNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Kth Ancestor of a Tree Node (LC 1483): the textbook "walk the raw parent[] array k
-// times" per query vs. this repo's own ITopDownHooks-driven precompute -
-// TopDownTraversal.Walk (the same inherited-attribute primitive
-// Algorithms.Paths.AllRootToLeafPaths uses to thread "the path so far" down a
-// root-to-node walk) fills in every node's full ancestor chain in one O(n log n)
-// pass, so each getKthAncestor call afterward is an O(1) array index instead of an
-// O(depth) walk. The tree is heap-shaped (parent(i) = (i-1)/2) rather than a chain: a
-// chain would make node i's ancestor array length i, so the precompute itself would
-// be O(n^2) and no repo-only technique could beat the O(1)-space naive walk on it. A
+// Harness only: both arms are KthAncestorOfATreeNodeSolution's, the same methods
+// KthAncestorOfATreeNodeTests proves correct - the textbook "walk the raw parent[]
+// array k times" per query against this repo's ITopDownHooks-driven precompute,
+// which fills in every node's ancestor chain in one pass so each query afterward
+// is an O(1) index.
+//
+// The precompute deliberately stays inside the measured arm rather than moving to
+// [GlobalSetup]: what this comparison is about is whether one O(n log n) pass pays
+// for itself across the query batch, and hoisting it would measure only the index.
+// The parent array and the query batch - the workload's sizing and seeding - are
+// what [GlobalSetup] builds.
+//
+// The tree is heap-shaped (parent(i) = (i-1)/2) rather than a chain: a chain would
+// make node i's ancestor array length i, so the precompute itself would be O(n^2)
+// and no repo-only technique could beat the O(1)-space naive walk on it. A
 // heap-shaped tree keeps every ancestor array at O(log n), which is also why the
-// query batch below is large - it's what makes paying that one-time O(n log n)
-// precompute worthwhile over paying O(log n) on every single query.
+// query batch below is large.
 [MemoryDiagnoser]
 public class KthAncestorOfATreeNodeBenchmarks
 {
     private const int RandomSeed = 1483; // LC problem number
     private const int BranchingFactor = 2;
     private const int QueryCount = 1_000_000;
+    private const int RootParent = -1;
 
     [Params(2_000, 20_000)]
     public int NodeCount;
@@ -35,7 +39,7 @@ public class KthAncestorOfATreeNodeBenchmarks
     {
         var random = new Random(RandomSeed);
         _parent = new int[NodeCount];
-        _parent[0] = -1;
+        _parent[0] = RootParent;
 
         for (var i = 1; i < NodeCount; i++)
         {
@@ -54,7 +58,7 @@ public class KthAncestorOfATreeNodeBenchmarks
 
         foreach (var (node, k) in _queries)
         {
-            total += WalkUp(node, k);
+            total += KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(_parent, node, k);
         }
 
         return total;
@@ -63,87 +67,14 @@ public class KthAncestorOfATreeNodeBenchmarks
     [Benchmark]
     public long PrecomputedAncestorChains()
     {
-        var ancestorsById = BuildAncestorTable();
+        var chains = KthAncestorOfATreeNodeSolution.BuildAncestorChains(_parent);
         var total = 0L;
 
         foreach (var (node, k) in _queries)
         {
-            var ancestors = ancestorsById[node];
-            total += k <= ancestors.Length ? ancestors[^k] : -1;
+            total += KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, k);
         }
 
         return total;
-    }
-
-    private int WalkUp(int node, int k)
-    {
-        var current = node;
-
-        for (var step = 0; step < k; step++)
-        {
-            if (current == -1)
-            {
-                return -1;
-            }
-
-            current = _parent[current];
-        }
-
-        return current;
-    }
-
-    private int[][] BuildAncestorTable()
-    {
-        var nodes = new BenchmarkTreeNode[NodeCount];
-        for (var i = 0; i < NodeCount; i++)
-        {
-            nodes[i] = new BenchmarkTreeNode(i);
-        }
-
-        for (var i = 1; i < NodeCount; i++)
-        {
-            nodes[_parent[i]].Children.Add(nodes[i]);
-        }
-
-        var ancestorsById = new int[NodeCount][];
-
-        TopDownTraversal.Walk<
-            BenchmarkTreeNode, BenchmarkTreeTopology, ListChildren<BenchmarkTreeNode>,
-            NaturalChildOrder<BenchmarkTreeNode, ListChildren<BenchmarkTreeNode>>, ListChildren<BenchmarkTreeNode>,
-            CollectAncestorIdsHooks, (int[] Ancestors, int[][] AncestorsById)>(
-            nodes[0], ([], ancestorsById));
-
-        return ancestorsById;
-    }
-
-    private sealed class BenchmarkTreeNode(int id)
-    {
-        public int Id { get; } = id;
-
-        public List<BenchmarkTreeNode> Children { get; } = [];
-    }
-
-    private readonly struct BenchmarkTreeTopology
-        : ITreeTopology<BenchmarkTreeNode, ListChildren<BenchmarkTreeNode>>
-    {
-        public static ListChildren<BenchmarkTreeNode> GetChildren(BenchmarkTreeNode node) => new(node.Children);
-    }
-
-    private readonly struct CollectAncestorIdsHooks
-        : ITopDownHooks<BenchmarkTreeNode, (int[] Ancestors, int[][] AncestorsById)>
-    {
-        public static void Visit(
-            BenchmarkTreeNode node, (int[] Ancestors, int[][] AncestorsById) state, int depth, NodePosition position)
-            => state.AncestorsById[node.Id] = state.Ancestors;
-
-        public static (int[] Ancestors, int[][] AncestorsById) Descend(
-            BenchmarkTreeNode parent, (int[] Ancestors, int[][] AncestorsById) parentState, BenchmarkTreeNode child)
-        {
-            var ancestors = new int[parentState.Ancestors.Length + 1];
-            Array.Copy(parentState.Ancestors, ancestors, parentState.Ancestors.Length);
-            ancestors[^1] = parent.Id;
-
-            return (ancestors, parentState.AncestorsById);
-        }
     }
 }

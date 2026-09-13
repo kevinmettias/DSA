@@ -1,90 +1,57 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.TheKthFactorOfN;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TheKthFactorOfN;
 
-// LeetCode 1492. The kth Factor of n: the same anchor-at-floor(sqrt(n)) technique
-// FourDivisorsTests/ClosestDivisorsTests use for their own divisor enumeration -
-// BinarySearch.LowerBound over a monotone virtual SquareExceedsSequence locates
-// floor(sqrt(n)) in O(log n) - then walks divisors up to the anchor (ascending) and,
-// past it, walks the anchor back down to 1 pairing each with n/divisor (also
-// ascending, since n/divisor grows as divisor shrinks), counting off factors in
-// sorted order until the kth is found.
-public sealed partial class TheKthFactorOfNTests
+// Harness only. Both strategies live in TheKthFactorOfNSolution - this file pins them
+// to LeetCode's published examples plus the shapes a sqrt-anchored divisor walk has to
+// get right: a perfect square (whose root must be counted exactly once), a prime, the
+// largest divisor of all (n itself), and a k that runs past the end of the divisor list.
+public sealed class TheKthFactorOfNTests
 {
+    public static TheoryData<int, int, int> Examples =>
+        new()
+        {
+            // LC example 1: divisors of 12 are 1, 2, 3, 4, 6, 12.
+            { 12, 3, 3 },
+
+            // LC example 2: a prime has only 1 and itself.
+            { 7, 2, 7 },
+
+            // LC example 3: 4 has three divisors, so there is no fourth.
+            { 4, 4, -1 },
+
+            // The smallest input: 1 is its own only divisor.
+            { 1, 1, 1 },
+
+            // A prime asked for one factor too many.
+            { 7, 3, -1 },
+
+            // A perfect square: divisors of 16 are 1, 2, 4, 8, 16 - the root 4 sits on
+            // the anchor and must be counted once, not twice.
+            { 16, 3, 4 },
+            { 16, 5, 16 },
+            { 16, 6, -1 },
+
+            // The last divisor is always n itself.
+            { 12, 6, 12 },
+
+            // A highly composite value at the top of LC's range: divisors of 1000 are
+            // 1, 2, 4, 5, 8, 10, 20, 25, 40, 50, 100, 125, 200, 250, 500, 1000.
+            { 1000, 1, 1 },
+            { 1000, 9, 40 },
+            { 1000, 16, 1000 },
+            { 1000, 17, -1 },
+        };
+
     [Theory]
-    [InlineData(12, 3, 3)]
-    [InlineData(7, 2, 7)]
-    [InlineData(4, 4, -1)]
-    [InlineData(1, 1, 1)]
-    public void KthFactor_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(int n, int k, int expected)
-    {
-        var factor = KthFactor(n, k);
-        Assert.Equal(expected, factor);
-    }
+    [MemberData(nameof(Examples))]
+    public void KthFactorByFullRangeScan_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(
+        int n, int k, int expected) =>
+        Assert.Equal(expected, TheKthFactorOfNSolution.KthFactorByFullRangeScan(n, k));
 
-    private static int KthFactor(int n, int k)
-    {
-        var anchor = FindAnchor(n);
-        var remaining = k;
-
-        if (TryFindAscending(n, anchor, ref remaining, out var found))
-        {
-            return found;
-        }
-
-        if (TryFindDescending(n, anchor, ref remaining, out found))
-        {
-            return found;
-        }
-
-        return -1;
-    }
-
-    private static int FindAnchor(int n)
-    {
-        var sequence = new SquareExceedsSequence(n, n + 1);
-        return BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
-    }
-
-    private static bool TryFindAscending(int n, int anchor, ref int remaining, out int found)
-    {
-        for (var divisor = 1; divisor <= anchor; divisor++)
-        {
-            if (n % divisor == 0 && --remaining == 0)
-            {
-                found = divisor;
-                return true;
-            }
-        }
-
-        found = -1;
-        return false;
-    }
-
-    private static bool TryFindDescending(int n, int anchor, ref int remaining, out int found)
-    {
-        for (var divisor = anchor; divisor >= 1; divisor--)
-        {
-            if (divisor * divisor == n || n % divisor != 0)
-            {
-                continue;
-            }
-
-            if (--remaining == 0)
-            {
-                found = n / divisor;
-                return true;
-            }
-        }
-
-        found = -1;
-        return false;
-    }
-
-    private readonly struct SquareExceedsSequence(long x, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int value) => (long)value * value > x ? 1 : 0;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthFactorByBinarySearchAnchor_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(
+        int n, int k, int expected) =>
+        Assert.Equal(expected, TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(n, k));
 }

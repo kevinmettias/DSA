@@ -1,15 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using RepoDynamicArray = DSAExperimentation.DataStructures.DynamicArray.DynamicArray<string>;
+using static DSAExperimentation.LeetCode.DesignBrowserHistory.DesignBrowserHistorySolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Browser History (LC 1472): a textbook List<string> + cursor implementation
-// (RemoveRange to truncate discarded forward history) vs. this repo's own
-// DynamicArray<string> doing the same truncate-then-append, the same "array
-// Representation primitive vs. the BCL equivalent" comparison
-// DesignCircularQueueBenchmarks already makes for Deque<int>. Each [Benchmark]
-// churns a Visit/Back/Visit cycle so every iteration exercises both the truncation
-// path (discarding forward history) and plain append growth.
+// Harness only: both arms are DesignBrowserHistorySolution's, the same classes
+// DesignBrowserHistoryTests proves correct - the textbook List<string> + cursor
+// baseline against this repo's own DynamicArray<string> doing the same
+// truncate-then-append, the "array Representation primitive vs. the BCL
+// equivalent" comparison DesignCircularQueueBenchmarks already makes for
+// Deque<int>. [GlobalSetup] materializes the urls so string formatting is charged
+// to setup rather than to the replay; the replay itself is the pre-migration
+// Visit/Back/Visit cycle unchanged, so every iteration exercises both the
+// truncation path (discarding forward history) and plain append growth.
 [MemoryDiagnoser]
 public class DesignBrowserHistoryBenchmarks
 {
@@ -19,81 +21,45 @@ public class DesignBrowserHistoryBenchmarks
     [Params(200, 5_000)]
     public int OperationCount;
 
-    [Benchmark(Baseline = true)]
-    public string ListBacked()
+    private string[] _visitUrls = null!;
+    private string[] _branchUrls = null!;
+
+    [GlobalSetup]
+    public void Setup()
     {
-        var history = new ListBrowserHistory(HomePageUrl);
-        var last = HomePageUrl;
-
-        for (var i = 0; i < OperationCount; i++)
-        {
-            history.Visit($"url{i}.com");
-            last = history.Back(BackSteps);
-            history.Visit($"branch{i}.com");
-        }
-
-        return last;
+        _visitUrls = BuildUrls("url", OperationCount);
+        _branchUrls = BuildUrls("branch", OperationCount);
     }
+
+    [Benchmark(Baseline = true)]
+    public string ListBacked() => Replay(new BrowserHistoryByListBacked(HomePageUrl));
 
     [Benchmark]
-    public string DynamicArrayBacked()
+    public string DynamicArrayBacked() => Replay(new BrowserHistoryByDynamicArrayBacked(HomePageUrl));
+
+    private string Replay(IBrowserHistory history)
     {
-        var history = new DynamicArrayBrowserHistory(HomePageUrl);
         var last = HomePageUrl;
 
         for (var i = 0; i < OperationCount; i++)
         {
-            history.Visit($"url{i}.com");
+            history.Visit(_visitUrls[i]);
             last = history.Back(BackSteps);
-            history.Visit($"branch{i}.com");
+            history.Visit(_branchUrls[i]);
         }
 
         return last;
     }
 
-    private sealed class ListBrowserHistory
+    private static string[] BuildUrls(string prefix, int count)
     {
-        private readonly List<string> _history;
-        private int _current;
+        var urls = new string[count];
 
-        public ListBrowserHistory(string homepage) => _history = [homepage];
-
-        public void Visit(string url)
+        for (var i = 0; i < count; i++)
         {
-            _history.RemoveRange(_current + 1, _history.Count - _current - 1);
-            _history.Add(url);
-            _current++;
+            urls[i] = $"{prefix}{i}.com";
         }
 
-        public string Back(int steps)
-        {
-            _current = Math.Max(0, _current - steps);
-            return _history[_current];
-        }
-    }
-
-    private sealed class DynamicArrayBrowserHistory
-    {
-        private readonly RepoDynamicArray _history = new();
-        private int _current;
-
-        public DynamicArrayBrowserHistory(string homepage) => _history.Add(homepage);
-
-        public void Visit(string url)
-        {
-            while (_history.Count > _current + 1)
-            {
-                _history.RemoveAt(_history.Count - 1);
-            }
-
-            _history.Add(url);
-            _current++;
-        }
-
-        public string Back(int steps)
-        {
-            _current = Math.Max(0, _current - steps);
-            return _history.Get(_current);
-        }
+        return urls;
     }
 }

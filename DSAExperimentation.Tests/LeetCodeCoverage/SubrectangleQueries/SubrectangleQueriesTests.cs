@@ -1,86 +1,138 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using static DSAExperimentation.LeetCode.SubrectangleQueries.SubrectangleQueriesSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SubrectangleQueries;
 
-// LeetCode 1476. Subrectangle Queries: a row-major matrix backed by this repo's own
-// DynamicArray<T> - once for the row list, once per row - composed the same way
-// Stack<T> composes DynamicArray<T> for its own backing store (ARCHITECTURE.md
-// §4.1). UpdateSubrectangle is the brute-force nested overwrite LeetCode's own tiny
-// constraints (<=100x100 grid, <=500 queries) are sized for; there is no smarter
-// algorithm to reach for here, only a backing-store choice.
-public sealed partial class SubrectangleQueriesTests
+// Harness only: both strategies are SubrectangleQueriesSolution's. LeetCode's own
+// shape here is a stateful object across a sequence of calls, so Examples encodes a
+// call script instead of a single argument tuple - the same shape
+// DesignCircularQueueTests already uses for its own instance-API problem.
+// SubrectangleQueryOp.Apply returns null for UpdateSubrectangle, which LeetCode's
+// own judge output also reports as null, and the read value for GetValue.
+public sealed class SubrectangleQueriesTests
 {
-    [Fact]
-    public void UpdateAndGetValue_LeetCodeExample_AppliesUpdatesToTheRightCells()
+    public static TheoryData<int[][], SubrectangleQueryOp[], int?[]> Examples =>
+        new()
+        {
+            // LeetCode's published example 1.
+            {
+                [[1, 2, 1], [4, 3, 4], [3, 2, 1], [1, 1, 1]],
+                [
+                    SubrectangleQueryOp.GetValue(0, 2),
+                    SubrectangleQueryOp.Update(0, 0, 3, 2, 5),
+                    SubrectangleQueryOp.GetValue(0, 2),
+                    SubrectangleQueryOp.GetValue(3, 1),
+                    SubrectangleQueryOp.Update(3, 0, 3, 2, 10),
+                    SubrectangleQueryOp.GetValue(3, 1),
+                    SubrectangleQueryOp.GetValue(0, 2),
+                ],
+                [1, null, 5, 5, null, 10, 5]
+            },
+
+            // LeetCode's published example 2: two overlapping full-grid
+            // overwrites, so the second has to win at every cell.
+            {
+                [[1, 1, 1], [2, 2, 2], [3, 3, 3]],
+                [
+                    SubrectangleQueryOp.Update(0, 0, 2, 2, 4),
+                    SubrectangleQueryOp.GetValue(0, 0),
+                    SubrectangleQueryOp.Update(0, 0, 2, 2, 5),
+                    SubrectangleQueryOp.GetValue(0, 0),
+                    SubrectangleQueryOp.GetValue(2, 2),
+                ],
+                [null, 4, null, 5, 5]
+            },
+
+            // Whole-grid overwrite read at the far corner.
+            {
+                [[1, 1, 1], [2, 2, 2], [3, 3, 3]],
+                [
+                    SubrectangleQueryOp.GetValue(0, 0),
+                    SubrectangleQueryOp.Update(0, 0, 2, 2, 100),
+                    SubrectangleQueryOp.GetValue(2, 2),
+                ],
+                [1, null, 100]
+            },
+
+            // A single-cell update leaves every neighbouring cell alone.
+            {
+                [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+                [
+                    SubrectangleQueryOp.Update(1, 1, 1, 1, 0),
+                    SubrectangleQueryOp.GetValue(1, 1),
+                    SubrectangleQueryOp.GetValue(0, 1),
+                    SubrectangleQueryOp.GetValue(1, 0),
+                    SubrectangleQueryOp.GetValue(1, 2),
+                    SubrectangleQueryOp.GetValue(2, 1),
+                ],
+                [null, 0, 2, 4, 6, 8]
+            },
+
+            // A 1x1 grid, the smallest input LeetCode's constraints allow.
+            {
+                [[7]],
+                [
+                    SubrectangleQueryOp.GetValue(0, 0),
+                    SubrectangleQueryOp.Update(0, 0, 0, 0, 3),
+                    SubrectangleQueryOp.GetValue(0, 0),
+                ],
+                [7, null, 3]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SubrectangleQueriesByArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
+        int[][] rectangle, SubrectangleQueryOp[] operations, int?[] expected) =>
+        RunScript(new SubrectangleQueriesByArrayBacked(rectangle), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SubrectangleQueriesByDynamicArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
+        int[][] rectangle, SubrectangleQueryOp[] operations, int?[] expected) =>
+        RunScript(new SubrectangleQueriesByDynamicArrayBacked(rectangle), operations, expected);
+
+    private static void RunScript(ISubrectangleQueries queries, SubrectangleQueryOp[] operations, int?[] expected)
     {
-        int[][] rectangle = [[1, 2, 1], [4, 3, 4], [3, 2, 1], [1, 1, 1]];
-        var queries = new SubrectangleQueries(rectangle);
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(queries));
+        }
+    }
+}
 
-        var beforeAnyUpdate = queries.GetValue(0, 2);
-        Assert.Equal(1, beforeAnyUpdate);
+// One call in a SubrectangleQueries script: which operation to invoke and with what
+// arguments. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct SubrectangleQueryOp
+{
+    private readonly bool _isUpdate;
+    private readonly SubrectangleBounds _bounds;
+    private readonly int _value;
 
-        queries.UpdateSubrectangle(new SubrectangleBounds(0, 0, 3, 2), 5);
-        var row0Col2AfterFirstUpdate = queries.GetValue(0, 2);
-        Assert.Equal(5, row0Col2AfterFirstUpdate);
-        var row3Col1AfterFirstUpdate = queries.GetValue(3, 1);
-        Assert.Equal(5, row3Col1AfterFirstUpdate);
-
-        queries.UpdateSubrectangle(new SubrectangleBounds(3, 0, 3, 2), 10);
-        var row3Col1AfterSecondUpdate = queries.GetValue(3, 1);
-        Assert.Equal(10, row3Col1AfterSecondUpdate);
-        var row0Col2AfterSecondUpdate = queries.GetValue(0, 2);
-        Assert.Equal(5, row0Col2AfterSecondUpdate);
+    private SubrectangleQueryOp(bool isUpdate, SubrectangleBounds bounds, int value)
+    {
+        _isUpdate = isUpdate;
+        _bounds = bounds;
+        _value = value;
     }
 
-    [Fact]
-    public void UpdateSubrectangle_EntireGrid_OverwritesEveryCell()
+    public static SubrectangleQueryOp Update(int row1, int col1, int row2, int col2, int newValue) =>
+        new(isUpdate: true, new SubrectangleBounds(row1, col1, row2, col2), newValue);
+
+    public static SubrectangleQueryOp GetValue(int row, int col) =>
+        new(isUpdate: false, new SubrectangleBounds(row, col, row, col), 0);
+
+    // null for UpdateSubrectangle, which returns nothing; the cell's value for
+    // GetValue - so one script runner can assert a single expected entry per
+    // operation uniformly.
+    internal int? Apply(ISubrectangleQueries queries)
     {
-        int[][] rectangle = [[1, 1, 1], [2, 2, 2], [3, 3, 3]];
-        var queries = new SubrectangleQueries(rectangle);
-
-        var beforeUpdate = queries.GetValue(0, 0);
-        Assert.Equal(1, beforeUpdate);
-
-        queries.UpdateSubrectangle(new SubrectangleBounds(0, 0, 2, 2), 100);
-
-        var afterFullGridUpdate = queries.GetValue(2, 2);
-        Assert.Equal(100, afterFullGridUpdate);
-    }
-
-    private readonly record struct SubrectangleBounds(int Row1, int Col1, int Row2, int Col2);
-
-    private sealed class SubrectangleQueries
-    {
-        private readonly DynamicArray<DynamicArray<int>> _rectangle = new();
-
-        public SubrectangleQueries(int[][] rectangle)
+        if (!_isUpdate)
         {
-            foreach (var sourceRow in rectangle)
-            {
-                var row = new DynamicArray<int>();
-
-                foreach (var value in sourceRow)
-                {
-                    row.Add(value);
-                }
-
-                _rectangle.Add(row);
-            }
+            return queries.GetValue(_bounds.Row1, _bounds.Col1);
         }
 
-        public void UpdateSubrectangle(SubrectangleBounds bounds, int newValue)
-        {
-            for (var r = bounds.Row1; r <= bounds.Row2; r++)
-            {
-                var row = _rectangle.Get(r);
-
-                for (var c = bounds.Col1; c <= bounds.Col2; c++)
-                {
-                    row.Set(c, newValue);
-                }
-            }
-        }
-
-        public int GetValue(int row, int col) => _rectangle.Get(row).Get(col);
+        queries.UpdateSubrectangle(_bounds, _value);
+        return null;
     }
 }

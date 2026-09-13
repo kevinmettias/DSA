@@ -1,18 +1,23 @@
 using BenchmarkDotNet.Attributes;
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Final Prices With a Special Discount in a Shop (LC 1475): the O(n^2) brute-force
-// nested-loop search for the next not-greater price vs. the O(n) monotonic-stack
-// approach using this repo's own Stack<int> (LIFO over DynamicArray<int>,
-// ARCHITECTURE.md §4.1) - the same brute-force-vs-primitive shape as
-// TwoSumBenchmarks. Prices are random with no forced worst case, matching the
-// distribution LeetCode's own constraints describe.
+// Harness only: both arms are FinalPricesWithASpecialDiscountInAShopSolution's,
+// the same methods FinalPricesWithASpecialDiscountInAShopTests proves correct -
+// the O(n^2) forward scan against the O(n) monotonic-stack pass over this repo's
+// own Stack<int>, the same brute-force-vs-primitive shape TwoSumBenchmarks makes.
+// Prices are random with no forced worst case, matching the distribution
+// LeetCode's own constraints describe; the price array is LeetCode's own argument
+// shape, so [GlobalSetup] hands it to both arms directly.
 [MemoryDiagnoser]
 public class FinalPricesWithASpecialDiscountInAShopBenchmarks
 {
     private const int MaxPrice = 1_000;
+
+    // Fixed seed so the measured price distribution is identical run to run;
+    // the value carries over unchanged from the pre-migration benchmark.
+    private const int PriceSeed = 1;
 
     [Params(200, 5_000)]
     public int Length;
@@ -22,47 +27,15 @@ public class FinalPricesWithASpecialDiscountInAShopBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
+        var random = new Random(PriceSeed);
         _prices = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxPrice)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public int[] BruteForce()
-    {
-        var result = (int[])_prices.Clone();
-
-        for (var i = 0; i < _prices.Length; i++)
-        {
-            for (var j = i + 1; j < _prices.Length; j++)
-            {
-                if (_prices[j] <= _prices[i])
-                {
-                    result[i] -= _prices[j];
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    public int[] BruteForce() =>
+        FinalPricesWithASpecialDiscountInAShopSolution.FinalPricesByBruteForce(_prices);
 
     [Benchmark]
-    public int[] MonotonicStack()
-    {
-        var result = (int[])_prices.Clone();
-        var pendingIndices = new RepoStack();
-
-        for (var i = 0; i < _prices.Length; i++)
-        {
-            while (pendingIndices.TryPeek(out var top) && _prices[i] <= _prices[top])
-            {
-                pendingIndices.TryPop(out _);
-                result[top] -= _prices[i];
-            }
-
-            pendingIndices.Push(i);
-        }
-
-        return result;
-    }
+    public int[] MonotonicStack() =>
+        FinalPricesWithASpecialDiscountInAShopSolution.FinalPricesByMonotonicStack(_prices);
 }
