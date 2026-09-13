@@ -1,15 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Statistics from a Large Sample (LC 1093): expanding the 256-bucket count array into
-// the full sorted sample and indexing straight into it for the median vs. this repo's
-// own BinarySearch.LowerBound over a cumulative-sum ArraySequence<long> built directly
-// from the buckets. AverageCountPerValue scales the total sample size while the bucket
-// range stays fixed at [0, 255] - the shape LeetCode itself fixes - so ExpandAndIndex's
-// O(total) allocation grows while CumulativeSumBinarySearch's stays O(256) regardless.
+// Harness only: both arms are StatisticsFromALargeSampleSolution's, the same
+// methods StatisticsFromALargeSampleTests proves correct. AverageCountPerValue
+// scales the total sample size while the bucket range stays fixed at [0, 255] -
+// the shape LeetCode itself fixes - so SampleExpansion's O(total) allocation grows
+// while CumulativeBinarySearch's stays O(256) regardless.
 [MemoryDiagnoser]
 public class StatisticsFromALargeSampleBenchmarks
 {
@@ -19,16 +17,8 @@ public class StatisticsFromALargeSampleBenchmarks
     // so the sampled mean lands near AverageCountPerValue.
     private const int MaxCountMultiplier = 2;
 
-    // total % MedianParityDivisor distinguishes an odd total (single middle
-    // element) from an even total (two middle elements to average).
-    private const int MedianParityDivisor = 2;
-
-    // total / MedianIndexDivisor locates the middle index/indices of the
-    // sorted sample.
-    private const int MedianIndexDivisor = 2;
-
-    // Divisor used to average the two middle values of an even-sized sample.
-    private const double MedianPairAverageDivisor = 2.0;
+    // Fixed seed so the bucket draw is identical from run to run.
+    private const int CountSeed = 1;
 
     [Params(100, 5_000)]
     public int AverageCountPerValue;
@@ -38,7 +28,7 @@ public class StatisticsFromALargeSampleBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
+        var random = new Random(CountSeed);
         _count = new long[ValueRange];
 
         for (var i = 0; i < ValueRange; i++)
@@ -48,56 +38,10 @@ public class StatisticsFromALargeSampleBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public double ExpandAndIndex() => MedianByExpansion(_count);
+    public double[] ExpandAndIndex() =>
+        StatisticsFromALargeSampleSolution.ComputeStatisticsBySampleExpansion(_count);
 
     [Benchmark]
-    public double CumulativeSumBinarySearch() => MedianByBinarySearch(_count);
-
-    private static double MedianByExpansion(long[] count)
-    {
-        long total = 0;
-        foreach (var c in count)
-        {
-            total += c;
-        }
-
-        var sample = new int[total];
-        var index = 0;
-
-        for (var value = 0; value < count.Length; value++)
-        {
-            for (long occurrence = 0; occurrence < count[value]; occurrence++)
-            {
-                sample[index++] = value;
-            }
-        }
-
-        return total % MedianParityDivisor == 1
-            ? sample[total / MedianIndexDivisor]
-            : (sample[(total / MedianIndexDivisor) - 1] + sample[total / MedianIndexDivisor]) / MedianPairAverageDivisor;
-    }
-
-    private static double MedianByBinarySearch(long[] count)
-    {
-        var cumulative = new long[count.Length];
-        long running = 0;
-
-        for (var i = 0; i < count.Length; i++)
-        {
-            running += count[i];
-            cumulative[i] = running;
-        }
-
-        var total = running;
-        var sequence = new ArraySequence<long>(cumulative);
-
-        if (total % MedianParityDivisor == 1)
-        {
-            return BinarySearch.LowerBound(sequence, total / MedianIndexDivisor + 1);
-        }
-
-        var lowerMiddle = BinarySearch.LowerBound(sequence, total / MedianIndexDivisor);
-        var upperMiddle = BinarySearch.LowerBound(sequence, total / MedianIndexDivisor + 1);
-        return (lowerMiddle + upperMiddle) / MedianPairAverageDivisor;
-    }
+    public double[] CumulativeSumBinarySearch() =>
+        StatisticsFromALargeSampleSolution.ComputeStatisticsByCumulativeBinarySearch(_count);
 }

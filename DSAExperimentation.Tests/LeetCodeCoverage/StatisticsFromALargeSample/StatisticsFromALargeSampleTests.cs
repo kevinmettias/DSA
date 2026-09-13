@@ -1,116 +1,78 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StatisticsFromALargeSample;
 
-// LeetCode 1093. Statistics from a Large Sample: min/max/mean/mode fall out of a
-// single pass over the 256-bucket count array, but median is a positional query
-// ("the element(s) at sorted position total/2") over that array's running cumulative
-// sum - exactly the shape this repo's own BinarySearch.LowerBound answers ("first
-// index whose value is >= target") over an ArraySequence<long>, without ever
-// materializing the up-to-1e9-element sample itself.
-public sealed partial class StatisticsFromALargeSampleTests
+// Harness only. Both strategies are StatisticsFromALargeSampleSolution's; this file
+// pins them to LeetCode's published examples plus the odd/even-total pair that
+// exercises both halves of the median rule.
+public sealed class StatisticsFromALargeSampleTests
 {
-    [Fact]
-    public void ComputeStatistics_OddSampleSize_ReturnsSinglePositionMedian()
-    {
-        // sample [1,2,2,2,3]: count[1]=1, count[2]=3, count[3]=1.
-        var count = new long[256];
-        count[1] = 1;
-        count[2] = 3;
-        count[3] = 1;
+    // LeetCode fixes the sample's value range at [0, 255], so every count array is
+    // this long however few buckets an example actually fills.
+    private const int BucketCount = 256;
 
-        var stats = ComputeStatistics(count);
+    // The mean is a ratio, so expectations like 24/11 are only equal to within a
+    // few decimal places.
+    private const int StatisticPrecision = 5;
 
-        Assert.Equal([1.0, 3.0, 2.0, 2.0, 2.0], stats);
-    }
-
-    [Fact]
-    public void ComputeStatistics_EvenSampleSize_AveragesTheTwoMiddlePositions()
-    {
-        // sample [1,1,2,3]: count[1]=2, count[2]=1, count[3]=1.
-        var count = new long[256];
-        count[1] = 2;
-        count[2] = 1;
-        count[3] = 1;
-
-        var stats = ComputeStatistics(count);
-
-        Assert.Equal([1.0, 3.0, 1.75, 1.5, 1.0], stats);
-    }
-
-    private static double[] ComputeStatistics(long[] count)
-    {
-        var accumulator = new SampleAccumulator();
-
-        for (var value = 0; value < count.Length; value++)
+    public static TheoryData<long[], double[]> Examples =>
+        new()
         {
-            accumulator.Accumulate(value, count[value]);
-        }
+            // LeetCode example 1: sample [1,2,2,2,3,3,3,3].
+            { Counts((1, 1), (2, 3), (3, 4)), [1.0, 3.0, 19.0 / 8.0, 2.5, 3.0] },
 
-        var mean = (double)accumulator.WeightedSum / accumulator.Total;
-        var median = ComputeMedian(count, accumulator.Total);
+            // LeetCode example 2: sample [1,1,1,1,2,2,2,3,3,4,4].
+            { Counts((1, 4), (2, 3), (3, 2), (4, 2)), [1.0, 4.0, 24.0 / 11.0, 2.0, 1.0] },
 
-        return [accumulator.Min, accumulator.Max, mean, median, accumulator.ModeValue];
-    }
+            // Odd total: the median is the single element at position total/2 + 1.
+            { Counts((1, 1), (2, 3), (3, 1)), [1.0, 3.0, 2.0, 2.0, 2.0] },
 
-    private struct SampleAccumulator
+            // Even total: the median averages the two middle positions, and lands
+            // between two distinct values rather than on one of them.
+            { Counts((1, 2), (2, 1), (3, 1)), [1.0, 3.0, 1.75, 1.5, 1.0] },
+
+            // A single distinct value: minimum, maximum, mean, median and mode all
+            // collapse onto it.
+            { Counts((7, 5)), [7.0, 7.0, 7.0, 7.0, 7.0] },
+
+            // Non-adjacent buckets, so the empty buckets between them must neither
+            // shift the median nor become the minimum.
+            { Counts((0, 3), (200, 3)), [0.0, 200.0, 100.0, 100.0, 0.0] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ComputeStatisticsBySampleExpansion_LeetCodeExamples_ReturnsMinMaxMeanMedianMode(
+        long[] count, double[] expected) =>
+        AssertStatistics(expected, StatisticsFromALargeSampleSolution.ComputeStatisticsBySampleExpansion(count));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ComputeStatisticsByCumulativeBinarySearch_LeetCodeExamples_ReturnsMinMaxMeanMedianMode(
+        long[] count, double[] expected) =>
+        AssertStatistics(expected, StatisticsFromALargeSampleSolution.ComputeStatisticsByCumulativeBinarySearch(count));
+
+    private static void AssertStatistics(double[] expected, double[] actual)
     {
-        public int Min = -1;
-        public int Max = -1;
-        public long Total;
-        public long WeightedSum;
-        public int ModeValue;
-        public long ModeCount;
+        Assert.Equal(expected.Length, actual.Length);
 
-        public SampleAccumulator()
+        for (var i = 0; i < expected.Length; i++)
         {
-        }
-
-        public void Accumulate(int value, long occurrences)
-        {
-            if (occurrences == 0)
-            {
-                return;
-            }
-
-            if (Min == -1)
-            {
-                Min = value;
-            }
-
-            Max = value;
-            Total += occurrences;
-            WeightedSum += (long)value * occurrences;
-
-            if (occurrences > ModeCount)
-            {
-                ModeCount = occurrences;
-                ModeValue = value;
-            }
+            Assert.Equal(expected[i], actual[i], StatisticPrecision);
         }
     }
 
-    private static double ComputeMedian(long[] count, long total)
+    // States an example as just its non-empty buckets, spread into the full
+    // 256-slot count array LeetCode actually passes.
+    private static long[] Counts(params (int Value, long Occurrences)[] buckets)
     {
-        var cumulative = new long[count.Length];
-        long running = 0;
+        var count = new long[BucketCount];
 
-        for (var i = 0; i < count.Length; i++)
+        foreach (var (value, occurrences) in buckets)
         {
-            running += count[i];
-            cumulative[i] = running;
+            count[value] = occurrences;
         }
 
-        var sequence = new ArraySequence<long>(cumulative);
-
-        if (total % 2 == 1)
-        {
-            return BinarySearch.LowerBound(sequence, total / 2 + 1);
-        }
-
-        var lowerMiddle = BinarySearch.LowerBound(sequence, total / 2);
-        var upperMiddle = BinarySearch.LowerBound(sequence, total / 2 + 1);
-        return (lowerMiddle + upperMiddle) / 2.0;
+        return count;
     }
 }

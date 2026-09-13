@@ -1,90 +1,45 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms;
-using DSAExperimentation.DataStructures.Sequence;
-using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.FindInMountainArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindInMountainArray;
 
-// LeetCode 1095. Find in Mountain Array: a hand-rolled bisection over this repo's own
-// SearchRange locates the peak (the one part with no existing primitive to compose -
-// every solution to this problem needs a bespoke peak search), then the ascending and
-// descending slopes are handed to BinarySearch.Find as two ordinary sorted ranges -
-// the descending slope via a reversed IComparer<int>, exactly the "any total order is
-// a valid comparer" contract BinarySearch.Find's own doc comment relies on
-// (ARCHITECTURE.md Sec 9.2). OffsetSequence is a thin IRandomAccessSequence<int>
-// witness over a sub-range of the backing array, so neither slope needs to be copied.
-public sealed partial class FindInMountainArrayTests
+// Harness only. Both strategies are FindInMountainArraySolution's; this file pins
+// them to LeetCode's published examples plus the cases that separate the two
+// slopes - a target on the peak itself, and one present on both slopes whose
+// smaller index is the required answer.
+public sealed class FindInMountainArrayTests
 {
-    private static readonly IComparer<int> Descending = Comparer<int>.Create((a, b) => b.CompareTo(a));
-
-    [Fact]
-    public void SearchMountainArray_TargetOnAscendingSlope_ReturnsItsIndex()
-    {
-        int[] mountain = [1, 2, 3, 4, 5, 3, 1];
-
-        var index = SearchMountainArray(mountain, target: 3);
-
-        Assert.Equal(2, index);
-    }
-
-    [Fact]
-    public void SearchMountainArray_TargetOnDescendingSlopeOnly_ReturnsItsIndex()
-    {
-        int[] mountain = [1, 5, 10, 20, 15, 8, 2];
-
-        var index = SearchMountainArray(mountain, target: 8);
-
-        Assert.Equal(5, index);
-    }
-
-    [Fact]
-    public void SearchMountainArray_TargetAbsent_ReturnsNegativeOne()
-    {
-        int[] mountain = [0, 1, 2, 4, 2, 1];
-
-        var index = SearchMountainArray(mountain, target: 3);
-
-        Assert.Equal(-1, index);
-    }
-
-    private static int SearchMountainArray(int[] mountain, int target)
-    {
-        var peakIndex = FindPeakIndex(mountain);
-
-        var ascending = new OffsetSequence(mountain, offset: 0, peakIndex + 1);
-        var ascendingIndex = BinarySearch.Find(ascending, target);
-        if (ascendingIndex is not null)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            return ascendingIndex.Value;
-        }
+            // LeetCode example 1: target sits on the ascending slope.
+            { [1, 2, 3, 4, 5, 3, 1], 3, 2 },
 
-        var descending = new OffsetSequence(mountain, peakIndex, mountain.Length - peakIndex);
-        var descendingIndex = BinarySearch.Find(descending, target, Descending);
+            // LeetCode example 2: target is absent from both slopes.
+            { [0, 1, 2, 4, 2, 1], 3, -1 },
 
-        return descendingIndex is null ? -1 : descendingIndex.Value + peakIndex;
-    }
+            // Present only on the descending slope, so the ascending search must
+            // miss before the reversed comparer finds it.
+            { [1, 5, 10, 20, 15, 8, 2], 8, 5 },
 
-    private static int FindPeakIndex(int[] mountain)
-    {
-        var sequence = new OffsetSequence(mountain, offset: 0, mountain.Length);
-        var range = new SearchRange(0, mountain.Length - 1);
+            // The peak itself, which belongs to the ascending slope.
+            { [1, 2, 3, 4, 5, 3, 1], 5, 4 },
 
-        while (range.Low < range.High)
-        {
-            var mid = range.Low + ((range.High - range.Low) / AlgorithmConstants.HalvingFactor);
+            // Present on both slopes: the smallest index wins.
+            { [1, 2, 3, 4, 5, 3, 1], 1, 0 },
 
-            range = sequence.Get(mid) < sequence.Get(mid + 1)
-                ? range with { Low = mid + 1 }
-                : range with { High = mid };
-        }
+            // Peak at index 1, so the ascending slope is two elements long.
+            { [0, 5, 3, 1], 3, 2 },
+        };
 
-        return range.Low;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindIndexByLinearScan_LeetCodeExamples_ReturnsSmallestMatchingIndex(
+        int[] mountain, int target, int expected) =>
+        Assert.Equal(expected, FindInMountainArraySolution.FindIndexByLinearScan(mountain, target));
 
-    private readonly struct OffsetSequence(int[] items, int offset, int length) : IRandomAccessSequence<int>
-    {
-        public int Length { get; } = length;
-
-        public int Get(int index) => items[offset + index];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindIndexByPeakBisection_LeetCodeExamples_ReturnsSmallestMatchingIndex(
+        int[] mountain, int target, int expected) =>
+        Assert.Equal(expected, FindInMountainArraySolution.FindIndexByPeakBisection(mountain, target));
 }

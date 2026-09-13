@@ -1,25 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RelativeSortArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Relative Sort Array (LC 1122): LinearScanComparerSort re-derives each element's
-// rank by scanning arr2 (Array.IndexOf) on every comparison Array.Sort makes -
-// O(n log n * m). HashMapMergeSort instead precomputes every rank once into this
-// repo's own HashMap<int,int> - O(n + m) - then sorts by that O(1) lookup via
-// MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence, the same
-// custom-comparer shape TwoCitySchedulingBenchmarks already uses. _arr1 is half
-// values drawn from _arr2 (exercises the ranked branch) and half values guaranteed
-// outside _arr2's range (exercises the unranked, sort-by-value-ascending branch and
-// forces every LinearScanComparerSort miss through a full m-length scan). With
-// ReferenceLength (m) fixed at 2,000, a BenchmarkDotNet --job Dry run shows the
-// expected crossover: LinearScanComparerSort ahead 2.63x at Length=200 (n log n * m
-// hasn't yet outgrown Array.Sort's much lower per-comparison constant factor), then
-// HashMapMergeSort ahead ~2.5x at Length=5,000, as the O(n log n * m) scan cost
-// overtakes HashMap's O(1)-lookup advantage - the same small-n-overhead-then-
-// crossover shape several other composed-vs-naive benchmarks in this repo show.
+// Harness only: both arms are RelativeSortArraySolution's, the same methods
+// RelativeSortArrayTests proves correct. _arr1 is half values drawn from _arr2
+// (exercises the ranked branch) and half values guaranteed outside _arr2's range
+// (exercises the unranked, sort-by-value-ascending branch and forces every
+// LinearScanComparerSort miss through a full m-length scan). With ReferenceLength
+// (m) fixed at 2,000, a BenchmarkDotNet --job Dry run shows the expected crossover:
+// LinearScanComparerSort ahead 2.63x at Length=200 (n log n * m hasn't yet outgrown
+// Array.Sort's much lower per-comparison constant factor), then HashMapMergeSort
+// ahead ~2.5x at Length=5,000, as the O(n log n * m) scan cost overtakes HashMap's
+// O(1)-lookup advantage - the same small-n-overhead-then-crossover shape several
+// other composed-vs-naive benchmarks in this repo show.
 [MemoryDiagnoser]
 public class RelativeSortArrayBenchmarks
 {
@@ -49,40 +43,10 @@ public class RelativeSortArrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] LinearScanComparerSort()
-    {
-        var arr1 = (int[])_arr1.Clone();
-
-        Array.Sort(arr1, (a, b) =>
-        {
-            var aRank = Array.IndexOf(_arr2, a);
-            var bRank = Array.IndexOf(_arr2, b);
-            var aKey = aRank >= 0 ? aRank : int.MaxValue;
-            var bKey = bRank >= 0 ? bRank : int.MaxValue;
-            return aKey != bKey ? aKey.CompareTo(bKey) : a.CompareTo(b);
-        });
-
-        return arr1;
-    }
+    public int[] LinearScanComparerSort() =>
+        RelativeSortArraySolution.RelativeSortByLinearScanComparer(_arr1, _arr2);
 
     [Benchmark]
-    public int[] HashMapMergeSort()
-    {
-        var arr1 = (int[])_arr1.Clone();
-        var rank = new HashMap<int, int>();
-        for (var i = 0; i < _arr2.Length; i++)
-        {
-            rank.Set(_arr2[i], i);
-        }
-
-        var byRelativeOrder = Comparer<int>.Create((a, b) =>
-        {
-            var aKey = rank.TryGetValue(a, out var aIndex) ? aIndex : int.MaxValue;
-            var bKey = rank.TryGetValue(b, out var bIndex) ? bIndex : int.MaxValue;
-            return aKey != bKey ? aKey.CompareTo(bKey) : a.CompareTo(b);
-        });
-
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(arr1), byRelativeOrder);
-        return arr1;
-    }
+    public int[] HashMapMergeSort() =>
+        RelativeSortArraySolution.RelativeSortByHashMapMergeSort(_arr1, _arr2);
 }
