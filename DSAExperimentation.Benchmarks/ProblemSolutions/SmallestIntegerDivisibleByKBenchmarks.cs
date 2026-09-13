@@ -1,61 +1,30 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Smallest Integer Divisible by K (LC 1015): the textbook modular walk (a single int
-// updated in place, remainder = (remainder*10+1) % k for up to k steps) vs. this
-// repo's own BFS - Reduce.Graph + DistanceMapReduceAlgebra over a precomputed
-// RemainderNode graph (OpenTheLockBenchmarks precedent), where each node's single
-// outgoing edge stands in for "append one more '1' digit". K is always coprime to
-// 10 (see RemainderGraphs), so both approaches walk the full distance to remainder
-// 0 rather than short-circuiting on an immediate "-1".
+// Harness only: both arms are SmallestIntegerDivisibleByKSolution's, the same methods
+// SmallestIntegerDivisibleByKTests proves correct - the textbook modular walk (a
+// single int updated in place for up to k steps) against Reduce.Graph +
+// DistanceMapReduceAlgebra over the remainder graph, where each node's single
+// outgoing edge stands in for "append one more '1' digit". The graph is built once in
+// [GlobalSetup] so construction is not charged to the measured method; both K values
+// are coprime to 10 (odd, not a multiple of 5), so both arms walk the full distance to
+// remainder 0 rather than short-circuiting on an immediate "-1".
 [MemoryDiagnoser]
 public class SmallestIntegerDivisibleByKBenchmarks
 {
-    private const int DecimalBase = 10;
-
     [Params(201, 5_001)]
     public int K;
 
-    private Dictionary<int, RemainderNode> _nodesByRemainder = null!;
-    private RemainderNode _startNode = null!;
+    private RemainderGraph _graph = null!;
 
     [GlobalSetup]
-    public void Setup()
-    {
-        (_nodesByRemainder, _startNode) = RemainderGraphs.BuildGraph(K);
-    }
+    public void Setup() => _graph = RemainderGraph.Build(K);
 
     [Benchmark(Baseline = true)]
-    public int ModularWalk()
-    {
-        var remainder = 0;
-
-        for (var length = 1; length <= K; length++)
-        {
-            remainder = ((remainder * DecimalBase) + 1) % K;
-
-            if (remainder == 0)
-            {
-                return length;
-            }
-        }
-
-        return -1;
-    }
+    public int ModularWalk() => SmallestIntegerDivisibleByKSolution.SmallestRepunitLengthByModularWalk(K);
 
     [Benchmark]
-    public int ReduceGraphBfs()
-    {
-        var distances = Reduce.Graph<
-            RemainderNode, RemainderTopology, ListChildren<RemainderNode>,
-            NaturalChildOrder<RemainderNode, ListChildren<RemainderNode>>, ListChildren<RemainderNode>,
-            BreadthFirstReduceOrder<RemainderNode>,
-            DistanceMapReduceAlgebra<RemainderNode>, Dictionary<RemainderNode, int>>(_startNode);
-
-        return distances.TryGetValue(_nodesByRemainder[0], out var distance) ? distance + 1 : -1;
-    }
+    public int ReduceGraphBfs() => SmallestIntegerDivisibleByKSolution.SmallestRepunitLengthByReduceGraph(_graph);
 }

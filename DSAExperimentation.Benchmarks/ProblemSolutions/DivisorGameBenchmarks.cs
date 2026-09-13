@@ -1,35 +1,20 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.DivisorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Divisor Game (LC 1025): the O(n^2) memoized game-theory recursion scanning every
-// divisor x of n - via this repo's own Memoizer, no hand-rolled cache, the same
-// pairing NimGameBenchmarks already uses - vs. the closed-form O(1) "n is even"
-// formula the recursion itself reduces to.
+// Harness only: both arms are DivisorGameSolution's, the same methods DivisorGameTests
+// proves correct. The O(n^2) memoized game-theory recursion scanning every divisor of
+// n vs. the closed-form O(1) "n is even" formula the recursion reduces to.
 [MemoryDiagnoser]
 public class DivisorGameBenchmarks
 {
-    private const int ParityDivisor = 2;
-
     [Params(100, 1_000)]
     public int N;
 
     [Benchmark(Baseline = true)]
-    public bool MemoizedRecursion()
-        => Memoizer.Memoize<int, bool>(N, (current, aliceWins) =>
-        {
-            for (var x = 1; x < current; x++)
-            {
-                if (current % x == 0 && !aliceWins(current - x))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        });
+    public bool MemoizedRecursion() => DivisorGameSolution.AliceWinsByMemoizedRecursion(N);
 
     [Benchmark]
-    public bool ParityFormula() => N % ParityDivisor == 0;
+    public bool ParityFormula() => DivisorGameSolution.AliceWinsByParityFormula(N);
 }

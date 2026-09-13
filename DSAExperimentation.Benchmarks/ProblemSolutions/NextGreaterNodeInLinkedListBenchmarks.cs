@@ -1,19 +1,19 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.NextGreaterNodeInLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Next Greater Node In Linked List (LC 1019): the canonical O(n^2) per-node forward
-// scan vs. a single O(n) monotonic-decreasing sweep through this repo's own
-// Stack<int> of pending indices (DailyTemperaturesBenchmarks precedent), after one
-// initial O(n) walk of SinglyLinkedListNode<int>.Next to materialize node values.
-// Values are a random permutation so no node's answer short-circuits the
-// brute-force scan early.
+// Harness only: both arms are NextGreaterNodeInLinkedListSolution's, the same
+// methods NextGreaterNodeInLinkedListTests proves correct - the canonical O(n^2)
+// per-node forward scan vs. a single O(n) monotonic-decreasing sweep through this
+// repo's own Stack<int> of pending indices. Values are a random permutation so no
+// node's answer short-circuits the brute-force scan early; list construction is
+// charged to [GlobalSetup].
 [MemoryDiagnoser]
 public class NextGreaterNodeInLinkedListBenchmarks
 {
-    private const int RandomSeed = 1019;
+    private const int RandomSeed = 1019; // LC problem number
 
     [Params(200, 5_000)]
     public int Length;
@@ -29,70 +29,24 @@ public class NextGreaterNodeInLinkedListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] BruteForceScan()
-    {
-        var values = ToValues(_head);
-        var result = new int[values.Count];
-
-        for (var i = 0; i < values.Count; i++)
-        {
-            for (var later = i + 1; later < values.Count; later++)
-            {
-                if (values[later] > values[i])
-                {
-                    result[i] = values[later];
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    public int[] BruteForceScan() =>
+        NextGreaterNodeInLinkedListSolution.NextLargerNodesByBruteForceScan(_head);
 
     [Benchmark]
-    public int[] MonotonicStackSweep()
-    {
-        var values = ToValues(_head);
-        var result = new int[values.Count];
-        var decreasingIndices = new RepoIntStack();
-
-        for (var i = 0; i < values.Count; i++)
-        {
-            while (decreasingIndices.TryPeek(out var previousIndex) && values[previousIndex] < values[i])
-            {
-                decreasingIndices.TryPop(out _);
-                result[previousIndex] = values[i];
-            }
-
-            decreasingIndices.Push(i);
-        }
-
-        return result;
-    }
-
-    private static List<int> ToValues(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values;
-    }
+    public int[] MonotonicStackSweep() =>
+        NextGreaterNodeInLinkedListSolution.NextLargerNodesByMonotonicStackSweep(_head);
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
+        var head = new SinglyLinkedListNode<int>(values[0]);
+        var tail = head;
 
-        foreach (var value in values)
+        foreach (var value in values[1..])
         {
             tail.Next = new SinglyLinkedListNode<int>(value);
             tail = tail.Next;
         }
 
-        return dummy.Next!;
+        return head;
     }
 }
