@@ -1,80 +1,71 @@
 using BenchmarkDotNet.Attributes;
-using RepoDynamicArray = DSAExperimentation.DataStructures.DynamicArray.DynamicArray<string?>;
+using static DSAExperimentation.LeetCode.DesignAnOrderedStream.DesignAnOrderedStreamSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design an Ordered Stream (LC 1656): a textbook List<string?> + cursor implementation
-// vs. this repo's own DynamicArray<string?> doing the same pre-filled-slots-plus-cursor
-// bookkeeping, the same "BCL List vs. repo DynamicArray" comparison
-// DesignBrowserHistoryBenchmarks already makes. Ids arrive in a fixed shuffled (not
-// ascending) order so every Insert does real cursor-walking work instead of the
-// trivial one-id-at-a-time-in-order case.
+// Harness only: both arms are DesignAnOrderedStreamSolution's, the same classes
+// DesignAnOrderedStreamTests proves correct - the textbook List<string?> + cursor
+// baseline against this repo's own DynamicArray<string?> doing the same
+// pre-filled-slots-plus-cursor bookkeeping, the same "array Representation
+// primitive vs. the BCL equivalent" comparison DesignBrowserHistoryBenchmarks
+// already makes. Ids arrive in a fixed shuffled (not ascending) order so every
+// Insert does real cursor-walking work instead of the trivial
+// one-id-at-a-time-in-order case; [GlobalSetup] materializes that order and the
+// values, so shuffling and string formatting are charged to setup rather than to
+// the replay.
 [MemoryDiagnoser]
 public class DesignAnOrderedStreamBenchmarks
 {
+    // Fixed so both arms replay the identical arrival order every run.
+    private const int ArrivalSeed = 1;
+
     [Params(200, 5_000)]
     public int Size;
 
     private int[] _order = null!;
+    private string[] _values = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var order = Enumerable.Range(1, Size).ToArray();
-        var random = new Random(1);
-        for (var i = order.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (order[i], order[j]) = (order[j], order[i]);
-        }
+        _order = ShuffledIds(Size, ArrivalSeed);
+        _values = new string[Size];
 
-        _order = order;
+        for (var i = 0; i < Size; i++)
+        {
+            _values[i] = $"v{i + 1}";
+        }
     }
 
     [Benchmark(Baseline = true)]
-    public int ListBacked()
+    public int ListBacked() => Replay(new OrderedStreamByListBacked(Size));
+
+    [Benchmark]
+    public int DynamicArrayBacked() => Replay(new OrderedStreamByDynamicArrayBacked(Size));
+
+    private int Replay(IOrderedStream stream)
     {
-        var values = new List<string?>(new string?[Size]);
-        var ptr = 0;
         var emitted = 0;
 
         foreach (var id in _order)
         {
-            values[id - 1] = $"v{id}";
-
-            while (ptr < values.Count && values[ptr] is not null)
-            {
-                emitted++;
-                ptr++;
-            }
+            emitted += stream.Insert(id, _values[id - 1]).Count;
         }
 
         return emitted;
     }
 
-    [Benchmark]
-    public int DynamicArrayBacked()
+    private static int[] ShuffledIds(int size, int seed)
     {
-        var values = new RepoDynamicArray();
-        for (var i = 0; i < Size; i++)
+        var ids = Enumerable.Range(1, size).ToArray();
+        var random = new Random(seed);
+
+        for (var i = ids.Length - 1; i > 0; i--)
         {
-            values.Add(null);
+            var j = random.Next(i + 1);
+            (ids[i], ids[j]) = (ids[j], ids[i]);
         }
 
-        var ptr = 0;
-        var emitted = 0;
-
-        foreach (var id in _order)
-        {
-            values.Set(id - 1, $"v{id}");
-
-            while (ptr < values.Count && values.Get(ptr) is not null)
-            {
-                emitted++;
-                ptr++;
-            }
-        }
-
-        return emitted;
+        return ids;
     }
 }

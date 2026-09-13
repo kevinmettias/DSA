@@ -1,46 +1,32 @@
 using BenchmarkDotNet.Attributes;
-using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
+using static DSAExperimentation.LeetCode.DesignFrontMiddleBackQueue.DesignFrontMiddleBackQueueSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Front Middle Back Queue (LC 1670): a single List<int> reaching for
-// Insert(0,_)/Insert(Count/2,_) for front/middle pushes (each an O(n) shift of every
-// following element) vs. this repo's two-Deque<int> split, where a push at any of the
-// three positions is O(1) (amortized, across the occasional single-element rebalance
-// move between the two deques) - the same DesignLinkedListBenchmarks precedent
-// (array-shift baseline vs. O(1) primitive-based insert), just with a third position.
+// Harness only: both arms are DesignFrontMiddleBackQueueSolution's, the same
+// classes DesignFrontMiddleBackQueueTests proves correct. The cycle pushes at all
+// three positions in turn, so the baseline's List<int> pays an O(n) shift on two
+// of every three calls while the two-deque split pays O(1) at each - the same
+// DesignLinkedListBenchmarks precedent (array-shift baseline vs. O(1)
+// primitive-based insert), just with a third position.
 [MemoryDiagnoser]
 public class DesignFrontMiddleBackQueueBenchmarks
 {
     private const int OperationCycleLength = 3; // cycles push front/middle/back
-    private const int MiddleIndexDivisor = 2;
 
     [Params(5_000, 50_000)]
     public int Calls;
 
     [Benchmark(Baseline = true)]
-    public int ArrayListInsertAtPosition()
-    {
-        var list = new List<int>();
-
-        for (var i = 0; i < Calls; i++)
-        {
-            switch (i % OperationCycleLength)
-            {
-                case 0: list.Insert(0, i); break;
-                case 1: list.Insert(list.Count / MiddleIndexDivisor, i); break;
-                default: list.Add(i); break;
-            }
-        }
-
-        return list.Count;
-    }
+    public int ArrayListInsertAtPosition() => RunPushCycle(new FrontMiddleBackQueueByListInsert());
 
     [Benchmark]
-    public int TwoDequeFrontMiddleBackQueue()
-    {
-        var queue = new FrontMiddleBackQueue();
+    public int TwoDequeFrontMiddleBackQueue() => RunPushCycle(new FrontMiddleBackQueueByTwoDeques());
 
+    // Returns the queue's own Count, the same non-dead value both of this
+    // problem's original arms returned, so the pushes cannot be optimized away.
+    private int RunPushCycle(IFrontMiddleBackQueue queue)
+    {
         for (var i = 0; i < Calls; i++)
         {
             switch (i % OperationCycleLength)
@@ -52,51 +38,5 @@ public class DesignFrontMiddleBackQueueBenchmarks
         }
 
         return queue.Count;
-    }
-
-    private sealed class FrontMiddleBackQueue
-    {
-        private readonly RepoDeque _front = new();
-        private readonly RepoDeque _back = new();
-
-        public int Count => _front.Count + _back.Count;
-
-        public void PushFront(int value)
-        {
-            _front.PushFront(value);
-            Rebalance();
-        }
-
-        public void PushMiddle(int value)
-        {
-            if (_front.Count < _back.Count)
-            {
-                _front.PushBack(value);
-            }
-            else
-            {
-                _back.PushFront(value);
-            }
-        }
-
-        public void PushBack(int value)
-        {
-            _back.PushBack(value);
-            Rebalance();
-        }
-
-        private void Rebalance()
-        {
-            if (_front.Count > _back.Count + 1)
-            {
-                _front.TryPopBack(out var value);
-                _back.PushFront(value);
-            }
-            else if (_back.Count > _front.Count + 1)
-            {
-                _back.TryPopFront(out var value);
-                _front.PushBack(value);
-            }
-        }
     }
 }

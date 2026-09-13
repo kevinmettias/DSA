@@ -1,17 +1,20 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.DistributeRepeatingIntegers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Distribute Repeating Integers (LC 1655): the same PartitionToKEqualSumSubsetsBenchmarks
-// shape (a hand-specialized recursion vs. this repo's generic Backtrack.TrySearch
-// closed over the identical choose/explore/unchoose steps), reframed as orders
-// (the items) assigned against each distinct value's stock count (a bucket
-// capacity) instead of a fixed target sum. _orders is ValueCount interleaved
-// copies of 1..OrdersPerValue, so every stock bucket's capacity (their shared sum)
-// can always be exactly refilled by re-assembling the copy it originally came
-// from - a valid distribution always exists - but the interleaving still forces a
-// real search rather than an immediate match.
+// Harness only: both arms are DistributeRepeatingIntegersSolution's, the same
+// methods DistributeRepeatingIntegersTests proves correct - a hand-written
+// recursion against this repo's generic Backtrack.TrySearch closed over the
+// identical choose/explore/unchoose steps. Each arm is handed the prepared stock
+// counts its hoisted overload takes, so collapsing nums into per-value counts is
+// charged to [GlobalSetup] rather than to the search being measured.
+//
+// _orders is ValueCount interleaved copies of 1..OrdersPerValue and every stock
+// bucket holds their shared sum, so a valid distribution always exists - each
+// bucket can be exactly refilled by re-assembling the copy it came from - but the
+// shuffled ordering still forces a real search rather than an immediate match.
 [MemoryDiagnoser]
 public class DistributeRepeatingIntegersBenchmarks
 {
@@ -24,7 +27,7 @@ public class DistributeRepeatingIntegersBenchmarks
     public int ValueCount;
 
     private int[] _orders = null!;
-    private int[] _stock = null!;
+    private DynamicArray<int> _stock = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -39,90 +42,20 @@ public class DistributeRepeatingIntegersBenchmarks
 
         var random = new Random(RandomSeed);
         _orders = all.OrderBy(_ => random.Next()).ToArray();
-        _stock = Enumerable.Repeat(perValue.Sum(), ValueCount).ToArray();
+        _stock = new DynamicArray<int>();
+        var capacity = perValue.Sum();
+
+        for (var value = 0; value < ValueCount; value++)
+        {
+            _stock.Add(capacity);
+        }
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveBacktracking()
-    {
-        var sorted = (int[])_orders.Clone();
-        Array.Sort(sorted);
-        Array.Reverse(sorted);
-        var remaining = (int[])_stock.Clone();
-
-        return Search(sorted, remaining, 0);
-    }
-
-    private static bool Search(int[] sorted, int[] remaining, int index)
-    {
-        if (index == sorted.Length)
-        {
-            return true;
-        }
-
-        for (var value = 0; value < remaining.Length; value++)
-        {
-            if (TryAssign(sorted, remaining, value, index))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryAssign(int[] sorted, int[] remaining, int value, int index)
-    {
-        if (remaining[value] < sorted[index])
-        {
-            return false;
-        }
-
-        remaining[value] -= sorted[index];
-
-        if (Search(sorted, remaining, index + 1))
-        {
-            return true;
-        }
-
-        remaining[value] += sorted[index];
-        return false;
-    }
+    public bool NaiveBacktracking() =>
+        DistributeRepeatingIntegersSolution.CanDistributeByNaiveBacktracking(_stock, _orders);
 
     [Benchmark]
-    public bool BacktrackPrimitive()
-    {
-        var sorted = (int[])_orders.Clone();
-        Array.Sort(sorted);
-        Array.Reverse(sorted);
-        var state = new State(sorted, _stock);
-
-        return Backtrack.TrySearch<State, int>(state, new BacktrackingSteps<State, int>(
-            IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, _stock.Length).Where(s.CanPlace),
-            Choose: (s, value) => s.Place(value),
-            Unchoose: (s, value) => s.Remove(value),
-            OnSolution: _ => true));
-    }
-
-    private sealed class State(int[] orders, int[] stock)
-    {
-        private readonly int[] _remaining = (int[])stock.Clone();
-
-        public int Index { get; private set; }
-
-        public bool CanPlace(int value) => _remaining[value] >= orders[Index];
-
-        public void Place(int value)
-        {
-            _remaining[value] -= orders[Index];
-            Index++;
-        }
-
-        public void Remove(int value)
-        {
-            Index--;
-            _remaining[value] += orders[Index];
-        }
-    }
+    public bool BacktrackPrimitive() =>
+        DistributeRepeatingIntegersSolution.CanDistributeByGenericBacktrack(_stock, _orders);
 }

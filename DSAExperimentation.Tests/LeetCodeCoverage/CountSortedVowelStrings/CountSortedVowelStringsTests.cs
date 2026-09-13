@@ -1,45 +1,33 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.CountSortedVowelStrings;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSortedVowelStrings;
 
-// LeetCode 1641. Count Sorted Vowel Strings: Memoizer caches the recurrence
-// counting non-decreasing vowel sequences by (remaining length, smallest
-// allowed vowel index) - the same "state -> memoized recursive count" shape
-// UniquePathsTests already uses for its own counting recurrence. A choice at
-// vowel v may only be followed by choices >= v, which is exactly what keeps
-// every produced string sorted without ever materializing one.
-public sealed partial class CountSortedVowelStringsTests
+// Harness only. Both strategies are CountSortedVowelStringsSolution's - the
+// brute-force enumeration that builds every sorted vowel string and the memoized
+// recurrence that only counts them - asserted against LeetCode's published
+// examples plus the two small lengths that catch an off-by-one in the "vowels may
+// repeat" rule.
+public sealed class CountSortedVowelStringsTests
 {
-    private const int VowelCount = 5;
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 1, 5 },
+            { 2, 15 },
+            { 3, 35 },
+            { 4, 70 },
+            { 33, 66045 },
+        };
 
     [Theory]
-    [InlineData(1, 5)]
-    [InlineData(2, 15)]
-    [InlineData(33, 66045)]
-    public void CountVowelStrings_LeetCodeExamples_ReturnsExpectedCount(int n, int expected)
-        => Assert.Equal(expected, CountVowelStrings(n));
+    [MemberData(nameof(Examples))]
+    public void CountVowelStringsByBacktrackingEnumeration_LeetCodeExamples_ReturnsExpectedCount(
+        int n, int expected) =>
+        Assert.Equal(expected, CountSortedVowelStringsSolution.CountVowelStringsByBacktrackingEnumeration(n));
 
-    private static int CountVowelStrings(int n)
-    {
-        return Memoizer.Memoize<(int Remaining, int Start), int>((n, 0), Count);
-
-        int Count((int Remaining, int Start) state, Func<(int Remaining, int Start), int> count)
-        {
-            var (remaining, start) = state;
-
-            if (remaining == 0)
-            {
-                return 1;
-            }
-
-            var total = 0;
-
-            for (var vowel = start; vowel < VowelCount; vowel++)
-            {
-                total += count((remaining - 1, vowel));
-            }
-
-            return total;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountVowelStringsByMemoizedRecurrence_LeetCodeExamples_ReturnsExpectedCount(
+        int n, int expected) =>
+        Assert.Equal(expected, CountSortedVowelStringsSolution.CountVowelStringsByMemoizedRecurrence(n));
 }

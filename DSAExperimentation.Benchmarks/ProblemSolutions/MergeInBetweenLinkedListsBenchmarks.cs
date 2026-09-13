@@ -1,20 +1,24 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.MergeInBetweenLinkedLists;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Merge In Between Linked Lists (LC 1669): the array-rebuild baseline (materialize
-// list1 as a List<int>, RemoveRange the [a,b] window, InsertRange list2's values -
-// O(n) per call since everything after the window shifts) vs. this repo's own
-// SinglyLinkedListNode<T> chain, which splices list2 in with two pointer rewrites
-// regardless of how many nodes sit on either side of the removed range.
+// Harness only: both arms are MergeInBetweenLinkedListsSolution's, the same methods
+// MergeInBetweenLinkedListsTests proves correct. [GlobalSetup] hoists the workload
+// values and the splice window, but the lists themselves are rebuilt fresh inside
+// each benchmark method rather than cached, because the splice strategy rewires the
+// nodes it is handed - a cached chain would only be valid for the first measured
+// iteration.
+//
+// Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
+// public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class MergeInBetweenLinkedListsBenchmarks
 {
     private const int SecondListLength = 5;
     private const int SecondListValueOffset = 1_000_000;
     private const int SpliceStartDivisor = 3;
-    private const int WindowBoundaryOffset = 2;
 
     [Params(200, 5_000)]
     public int Length;
@@ -34,41 +38,14 @@ public class MergeInBetweenLinkedListsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ArraySpliceRebuild()
-    {
-        var merged = new List<int>(_list1Values);
-        merged.RemoveRange(_a, _b - _a + 1);
-        merged.InsertRange(_a, _list2Values);
-        return merged.Count;
-    }
+    public object ArraySpliceRebuild() =>
+        MergeInBetweenLinkedListsSolution.MergeInBetweenByArrayRebuild(
+            BuildList(_list1Values), _a, _b, BuildList(_list2Values));
 
     [Benchmark]
-    public int LinkedListSplice()
-    {
-        var list1 = BuildList(_list1Values);
-        var list2 = BuildList(_list2Values);
-
-        var merged = MergeInBetween(list1, _a, _b, list2);
-
-        return Count(merged);
-    }
-
-    private static SinglyLinkedListNode<int> MergeInBetween(SinglyLinkedListNode<int> list1, int a, int b, SinglyLinkedListNode<int> list2)
-    {
-        var before = list1;
-        for (var i = 0; i < a - 1; i++) before = before.Next!;
-
-        var after = before;
-        for (var i = 0; i < b - a + WindowBoundaryOffset; i++) after = after.Next!;
-
-        before.Next = list2;
-
-        var list2Tail = list2;
-        while (list2Tail.Next is not null) list2Tail = list2Tail.Next;
-        list2Tail.Next = after;
-
-        return list1;
-    }
+    public object LinkedListSplice() =>
+        MergeInBetweenLinkedListsSolution.MergeInBetweenByPointerSplice(
+            BuildList(_list1Values), _a, _b, BuildList(_list2Values));
 
     private static SinglyLinkedListNode<int> BuildList(int[] values)
     {
@@ -81,12 +58,5 @@ public class MergeInBetweenLinkedListsBenchmarks
         }
 
         return dummy.Next!;
-    }
-
-    private static int Count(SinglyLinkedListNode<int>? head)
-    {
-        var count = 0;
-        for (var node = head; node is not null; node = node.Next) count++;
-        return count;
     }
 }
