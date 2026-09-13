@@ -1,18 +1,24 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Connectivity;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Critical Connections in a Network (LC 1192): the textbook "remove each edge,
-// rerun a full BFS to check connectivity" brute force, O(E*(V+E)) - against this
-// repo's own low-link bridge-finding DFS (BridgesAndArticulationPoints.Find),
-// O(V+E) total. The network is a chain of triangles linked end-to-end (a repeating
-// two-triangle-joined-by-one-edge shape, the same construction
-// BridgesAndArticulationPointsTests uses) so most edges sit on a real cycle
-// (never a bridge) while the links between triangles are real bridges - both
-// strategies see a genuine mix instead of an all-bridge or no-bridge shortcut.
+// Harness only: both arms are CriticalConnectionsInANetworkSolution's, the same
+// methods CriticalConnectionsInANetworkTests proves correct - the textbook "remove
+// each connection, re-run a full BFS to check connectivity" scan, O(E*(V+E)),
+// against this repo's low-link bridge-finding DFS
+// (Algorithms.Connectivity.BridgesAndArticulationPoints.Find), O(V+E) total.
+//
+// The network is a chain of triangles linked end-to-end (the same construction
+// BridgesAndArticulationPointsTests uses) so most connections sit on a real cycle
+// and are never critical, while the links between triangles are real bridges -
+// both strategies see a genuine mix instead of an all-bridge or no-bridge
+// shortcut.
+//
+// Materializing the ServerNode network is input construction, so it is charged to
+// [GlobalSetup] and handed to the strategy's prepared-input overload; the baseline
+// takes the same connection list in LeetCode's own int[][] shape, which needs no
+// preparation.
 [MemoryDiagnoser]
 public class CriticalConnectionsInANetworkBenchmarks
 {
@@ -25,134 +31,38 @@ public class CriticalConnectionsInANetworkBenchmarks
     [Params(150, 3_000)]
     public int NodeCount;
 
-    private List<(int A, int B)> _connections = null!;
+    private int[][] _connections = null!;
+    private ServerNetwork _network = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var connections = new List<(int A, int B)>();
+        var connections = new List<int[]>();
         var groupCount = NodeCount / TriangleSize;
 
         for (var g = 0; g < groupCount; g++)
         {
             var first = g * TriangleSize;
-            connections.Add((first, first + 1));
-            connections.Add((first + 1, first + ThirdVertexOffset));
-            connections.Add((first + ThirdVertexOffset, first));
+            connections.Add([first, first + 1]);
+            connections.Add([first + 1, first + ThirdVertexOffset]);
+            connections.Add([first + ThirdVertexOffset, first]);
 
             if (g > 0)
             {
-                connections.Add((first - 1, first));
+                connections.Add([first - 1, first]);
             }
         }
 
-        _connections = connections;
+        _connections = [.. connections];
+        _network = ServerNetwork.Build(NodeCount, _connections);
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveEdgeRemovalScan()
-    {
-        var bridgeCount = 0;
-
-        for (var i = 0; i < _connections.Count; i++)
-        {
-            if (!IsConnectedWithoutEdge(i))
-            {
-                bridgeCount++;
-            }
-        }
-
-        return bridgeCount;
-    }
+    public int NaiveEdgeRemovalScan() =>
+        CriticalConnectionsInANetworkSolution
+            .CriticalConnectionsByEdgeRemovalScan(NodeCount, _connections).Length;
 
     [Benchmark]
-    public int LowLinkBridgeSearch()
-    {
-        var servers = Enumerable.Range(0, NodeCount).Select(id => new ServerNode(id)).ToList();
-
-        foreach (var (a, b) in _connections)
-        {
-            servers[a].Neighbors.Add(servers[b]);
-            servers[b].Neighbors.Add(servers[a]);
-        }
-
-        var (bridges, _) = BridgesAndArticulationPoints.Find<
-            ServerNode, ServerTopology, ListChildren<ServerNode>,
-            NaturalChildOrder<ServerNode, ListChildren<ServerNode>>, ListChildren<ServerNode>>(
-            servers);
-
-        return bridges.Count;
-    }
-
-    private bool IsConnectedWithoutEdge(int skipIndex)
-    {
-        var adjacency = BuildAdjacencyWithoutEdge(skipIndex);
-        var visited = new bool[NodeCount];
-        var queue = new Queue<int>();
-        queue.Enqueue(0);
-        visited[0] = true;
-        var visitedCount = 1;
-
-        while (queue.Count > 0)
-        {
-            var current = queue.Dequeue();
-            foreach (var neighbor in adjacency[current])
-            {
-                VisitNeighbor(neighbor, visited, queue, ref visitedCount);
-            }
-        }
-
-        return visitedCount == NodeCount;
-    }
-
-    private static void VisitNeighbor(int neighbor, bool[] visited, Queue<int> queue, ref int visitedCount)
-    {
-        if (visited[neighbor])
-        {
-            return;
-        }
-
-        visited[neighbor] = true;
-        visitedCount++;
-        queue.Enqueue(neighbor);
-    }
-
-    private List<int>[] BuildAdjacencyWithoutEdge(int skipIndex)
-    {
-        var adjacency = new List<int>[NodeCount];
-        for (var i = 0; i < NodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        for (var i = 0; i < _connections.Count; i++)
-        {
-            if (i == skipIndex)
-            {
-                continue;
-            }
-
-            var (a, b) = _connections[i];
-            adjacency[a].Add(b);
-            adjacency[b].Add(a);
-        }
-
-        return adjacency;
-    }
-
-    // See CriticalConnectionsInANetworkTests.Fixtures for the full explanation -
-    // repeated here rather than shared because TwoSumBenchmarks/
-    // CourseScheduleIIBenchmarks establish this project keeps its own copy of the
-    // solution rather than depending on the Tests project.
-    private sealed class ServerNode(int id)
-    {
-        public int Id { get; } = id;
-
-        public List<ServerNode> Neighbors { get; } = [];
-    }
-
-    private readonly struct ServerTopology : IGraphTopology<ServerNode, ListChildren<ServerNode>>
-    {
-        public static ListChildren<ServerNode> GetChildren(ServerNode node) => new(node.Neighbors);
-    }
+    public int LowLinkBridgeSearch() =>
+        CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(_network).Length;
 }

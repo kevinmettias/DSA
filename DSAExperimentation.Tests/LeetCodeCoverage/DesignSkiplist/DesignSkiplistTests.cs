@@ -1,70 +1,136 @@
-using DSAExperimentation.DataStructures.FenwickTree;
+using static DSAExperimentation.LeetCode.DesignSkiplist.DesignSkiplistSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSkiplist;
 
-// LeetCode 1206. Design Skiplist: add/erase/search only ever need "how many of this
-// exact value are currently stored," never an ordered walk between values - so this
-// repo's own FenwickTree<int,SumOperation<int>>, used as a point-update/point-query
-// frequency array over num's bounded domain (0 <= num <= 2*10^4 per LeetCode's own
-// constraint), answers every call in O(log 2*10^4) with no probabilistic multi-level
-// list needed. Add is FenwickTree's own native +1 delta; Search/Erase both read the
-// current count via a single-index Query before Erase turns it into a -1 delta.
-public sealed partial class DesignSkiplistTests
+// Harness only. Both strategies are DesignSkiplistSolution's - this file replays a
+// script of Add/Search/Erase calls against each ISkiplist implementation, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of mutating/querying calls rather than a single argument tuple.
+// SkiplistOp.Apply is pure dispatch - no multiset logic of its own.
+public sealed class DesignSkiplistTests
 {
-    [Fact]
-    public void Skiplist_LeetCodeExample_MatchesExpectedCallSequence()
-    {
-        var skiplist = new SkiplistOperations();
-
-        skiplist.Add(1);
-        skiplist.Add(2);
-        skiplist.Add(3);
-
-        Assert.False(skiplist.Search(0));
-
-        skiplist.Add(4);
-
-        Assert.True(skiplist.Search(1));
-        Assert.False(skiplist.Erase(0));
-        Assert.True(skiplist.Erase(1));
-        Assert.False(skiplist.Search(1));
-    }
-
-    [Fact]
-    public void Skiplist_DuplicateValues_EraseRemovesOnlyOneOccurrenceAtATime()
-    {
-        var skiplist = new SkiplistOperations();
-
-        skiplist.Add(5);
-        skiplist.Add(5);
-
-        Assert.True(skiplist.Erase(5));
-        Assert.True(skiplist.Search(5));
-
-        Assert.True(skiplist.Erase(5));
-        Assert.False(skiplist.Search(5));
-        Assert.False(skiplist.Erase(5));
-    }
-
-    private sealed class SkiplistOperations
-    {
-        private const int MaxValue = 20_000;
-
-        private readonly FenwickTree<int, SumOperation<int>> _frequencies = new(MaxValue + 1);
-
-        public bool Search(int target) => _frequencies.Query(target, target) > 0;
-
-        public void Add(int num) => _frequencies.Add(num, 1);
-
-        public bool Erase(int num)
+    public static TheoryData<SkiplistOp[], bool?[]> Examples =>
+        new()
         {
-            if (!Search(num))
+            // LeetCode's published call sequence.
             {
-                return false;
-            }
+                [
+                    SkiplistOp.Add(1),
+                    SkiplistOp.Add(2),
+                    SkiplistOp.Add(3),
+                    SkiplistOp.Search(0),
+                    SkiplistOp.Add(4),
+                    SkiplistOp.Search(1),
+                    SkiplistOp.Erase(0),
+                    SkiplistOp.Erase(1),
+                    SkiplistOp.Search(1),
+                ],
+                [null, null, null, false, null, true, false, true, false]
+            },
 
-            _frequencies.Add(num, -1);
-            return true;
+            // A multiset, not a set: each Erase removes one occurrence only, and
+            // erasing past the last one reports false.
+            {
+                [
+                    SkiplistOp.Add(5),
+                    SkiplistOp.Add(5),
+                    SkiplistOp.Erase(5),
+                    SkiplistOp.Search(5),
+                    SkiplistOp.Erase(5),
+                    SkiplistOp.Search(5),
+                    SkiplistOp.Erase(5),
+                ],
+                [null, null, true, true, true, false, false]
+            },
+
+            // Both ends of LeetCode's value domain (0 <= num <= 20000), which is
+            // exactly the range the frequency-array strategy indexes.
+            {
+                [
+                    SkiplistOp.Add(0),
+                    SkiplistOp.Add(20_000),
+                    SkiplistOp.Search(0),
+                    SkiplistOp.Search(20_000),
+                    SkiplistOp.Erase(0),
+                    SkiplistOp.Search(0),
+                    SkiplistOp.Search(20_000),
+                ],
+                [null, null, true, true, true, false, true]
+            },
+
+            // Searching and erasing on an untouched skiplist.
+            {
+                [
+                    SkiplistOp.Search(7),
+                    SkiplistOp.Erase(7),
+                ],
+                [false, false]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SkiplistByLinearScanList_LeetCodeExamples_MatchesExpectedResults(
+        SkiplistOp[] operations, bool?[] expected) =>
+        RunScript(new SkiplistByLinearScanList(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SkiplistByFenwickFrequencies_LeetCodeExamples_MatchesExpectedResults(
+        SkiplistOp[] operations, bool?[] expected) =>
+        RunScript(new SkiplistByFenwickFrequencies(), operations, expected);
+
+    private static void RunScript(ISkiplist skiplist, SkiplistOp[] operations, bool?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(skiplist));
         }
+    }
+}
+
+// One call in a Skiplist script: which method to invoke and with what value. Pure
+// dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays.
+public readonly record struct SkiplistOp
+{
+    private readonly Kind _kind;
+    private readonly int _value;
+
+    private SkiplistOp(Kind kind, int value)
+    {
+        _kind = kind;
+        _value = value;
+    }
+
+    public static SkiplistOp Add(int num) => new(Kind.Add, num);
+
+    public static SkiplistOp Search(int target) => new(Kind.Search, target);
+
+    public static SkiplistOp Erase(int num) => new(Kind.Erase, num);
+
+    // null for the void Add, the reported bool for Search and Erase - so a script
+    // runner can assert against one expected value per operation uniformly.
+    // Internal, not public: ISkiplist is internal to DesignSkiplistSolution, and
+    // only this same assembly's RunScript ever calls Apply.
+    internal bool? Apply(ISkiplist skiplist)
+    {
+        switch (_kind)
+        {
+            case Kind.Add:
+                skiplist.Add(_value);
+                return null;
+            case Kind.Search:
+                return skiplist.Search(_value);
+            default:
+                return skiplist.Erase(_value);
+        }
+    }
+
+    private enum Kind
+    {
+        Add,
+        Search,
+        Erase,
     }
 }

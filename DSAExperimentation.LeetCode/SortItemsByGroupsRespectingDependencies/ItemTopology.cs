@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.SortItemsByGroupsRespectingDependencies.Fixtures;
+namespace DSAExperimentation.LeetCode.SortItemsByGroupsRespectingDependencies;
 
 internal readonly struct ItemTopology : IGraphTopology<ItemNode, ListChildren<ItemNode>>
 {

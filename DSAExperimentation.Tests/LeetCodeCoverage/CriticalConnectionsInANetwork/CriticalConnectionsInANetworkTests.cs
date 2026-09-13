@@ -1,78 +1,54 @@
-using DSAExperimentation.Algorithms.Connectivity;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.LeetCodeCoverage.CriticalConnectionsInANetwork.Fixtures;
+using DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CriticalConnectionsInANetwork;
 
-// LeetCode 1192. Critical Connections in a Network: a critical connection is
-// exactly a bridge - an edge whose removal disconnects the network - so this is a
-// direct call into this repo's own low-link bridge-finding DFS
-// (BridgesAndArticulationPoints.Find), reading only the Bridges half of its tuple
-// result over an undirected topology (each connection stored as two directed
-// child-edges, one from each endpoint, the same convention
-// BridgesAndArticulationPointsTests/MinimumSpanningTree.cs already use).
-public sealed partial class CriticalConnectionsInANetworkTests
+// Harness only. Both strategies live in CriticalConnectionsInANetworkSolution -
+// this file pins them to LeetCode's published examples plus the shapes a bridge
+// search has to get right: a ring with no critical connection at all, two cycles
+// joined by a single link, and a pure chain where every connection is critical.
+//
+// LeetCode returns the connections in any order, so each expectation is stated in
+// ascending order and the actual result is sorted the same way before comparison -
+// membership, not discovery order, is the contract.
+public sealed class CriticalConnectionsInANetworkTests
 {
-    [Fact]
-    public void CriticalConnections_LeetCodeExampleOne_ReturnsTheSinglePendantEdge()
-    {
-        var servers = BuildNetwork(4, [(0, 1), (1, 2), (2, 0), (1, 3)]);
-
-        var result = FindCriticalConnections(servers);
-
-        Assert.Equal([[1, 3]], NormalizeConnections(result));
-    }
-
-    [Fact]
-    public void CriticalConnections_RingOfServers_HasNoCriticalConnection()
-    {
-        var servers = BuildNetwork(4, [(0, 1), (1, 2), (2, 3), (3, 0)]);
-
-        var result = FindCriticalConnections(servers);
-
-        Assert.Empty(result);
-    }
-
-    [Fact]
-    public void CriticalConnections_TwoTrianglesJoinedByOneLink_ReturnsThatLink()
-    {
-        var servers = BuildNetwork(6, [(0, 1), (1, 2), (2, 0), (3, 4), (4, 5), (5, 3), (2, 3)]);
-
-        var result = FindCriticalConnections(servers);
-
-        Assert.Equal([[2, 3]], NormalizeConnections(result));
-    }
-
-    private static List<ServerNode> BuildNetwork(int serverCount, (int A, int B)[] connections)
-    {
-        var servers = Enumerable.Range(0, serverCount).Select(id => new ServerNode(id)).ToList();
-
-        foreach (var (a, b) in connections)
+    public static TheoryData<int, int[][], int[][]> Examples =>
+        new()
         {
-            servers[a].Neighbors.Add(servers[b]);
-            servers[b].Neighbors.Add(servers[a]);
-        }
+            // LC example 1: only the pendant link to server 3 is critical.
+            { 4, [[0, 1], [1, 2], [2, 0], [1, 3]], [[1, 3]] },
 
-        return servers;
-    }
+            // LC example 2: a lone connection is always critical.
+            { 2, [[0, 1]], [[0, 1]] },
 
-    private static List<(ServerNode A, ServerNode B)> FindCriticalConnections(List<ServerNode> servers)
-    {
-        var (bridges, _) = BridgesAndArticulationPoints.Find<
-            ServerNode, ServerTopology, ListChildren<ServerNode>,
-            NaturalChildOrder<ServerNode, ListChildren<ServerNode>>, ListChildren<ServerNode>>(
-            servers);
+            // A ring: every connection sits on the one cycle, so none is critical.
+            { 4, [[0, 1], [1, 2], [2, 3], [3, 0]], [] },
 
-        return bridges;
-    }
+            // Two triangles joined by one link - that link is the only bridge.
+            { 6, [[0, 1], [1, 2], [2, 0], [3, 4], [4, 5], [5, 3], [2, 3]], [[2, 3]] },
 
-    // Bridge membership, not discovery order, is the contract LeetCode's own
-    // "return in any order" spec cares about, so both the pair and the outer list
-    // sort to a stable order before comparison.
-    private static List<List<int>> NormalizeConnections(List<(ServerNode A, ServerNode B)> connections)
-        => connections
-            .Select(connection => new List<int> { connection.A.Id, connection.B.Id }.OrderBy(id => id).ToList())
-            .OrderBy(pair => pair[0])
-            .ThenBy(pair => pair[1])
-            .ToList();
+            // A chain has no cycles at all, so every connection is critical.
+            { 4, [[0, 1], [1, 2], [2, 3]], [[0, 1], [1, 2], [2, 3]] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CriticalConnectionsByEdgeRemovalScan_LeetCodeExamples_ReturnsEveryDisconnectingLink(
+        int serverCount, int[][] connections, int[][] expected) =>
+        Assert.Equal(
+            expected,
+            Ordered(CriticalConnectionsInANetworkSolution.CriticalConnectionsByEdgeRemovalScan(
+                serverCount, connections)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CriticalConnectionsByLowLinkSearch_LeetCodeExamples_ReturnsEveryDisconnectingLink(
+        int serverCount, int[][] connections, int[][] expected) =>
+        Assert.Equal(
+            expected,
+            Ordered(CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(
+                serverCount, connections)));
+
+    private static int[][] Ordered(int[][] connections) =>
+        [.. connections.OrderBy(connection => connection[0]).ThenBy(connection => connection[1])];
 }

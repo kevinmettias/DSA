@@ -1,26 +1,23 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Queens That Can Attack the King (LC 1222): both strategies ray-walk the same 8
-// queen-move directions outward from the king until the edge or a queen is reached -
-// they differ only in how "is this cell occupied" is answered per ray step.
-// LinearScanRayWalk rescans the raw queens array at every step (O(boardSize*queens)
-// worst case). SetLookupRayWalk builds this repo's own Set<(int Row,int Col)> once up
-// front (the same primitive MinimumAreaRectangleBenchmarks uses for its own corner
-// checks) and answers each step in O(1), the same "swap a linear rescan for a hash
-// lookup" move that benchmark and TwoSumBenchmarks both make.
+// Harness only: both arms are QueensThatCanAttackTheKingSolution's, the same methods
+// QueensThatCanAttackTheKingTests proves correct. They ray-walk the same 8 queen-move
+// directions and differ only in how "is this square occupied" is answered per step:
+// a rescan of the raw queens array, or one O(1) lookup in this repo's own
+// Set<(int Row, int Col)>. Each is handed the prepared KingBoard its hoisted overload
+// takes, so placing the king and sizing the board is charged to [GlobalSetup] rather
+// than to the measured search; building the set stays inside the set arm, since that
+// one-off cost is exactly what it has to earn back.
+//
+// Both arms now return LeetCode's actual answer - the attacking queens' coordinates -
+// and the harness takes .Count, where previously both counted attackers without
+// building the list (§17.8's deliberate-measurement-change note).
 [MemoryDiagnoser]
 public class QueensThatCanAttackTheKingBenchmarks
 {
-    private static readonly (int DRow, int DCol)[] Directions =
-    [
-        (-1, -1), (-1, 0), (-1, 1),
-        (0, -1), (0, 1),
-        (1, -1), (1, 0), (1, 1),
-    ];
-
     private const int BoardSize = 1_000;
     private const int BoardCenter = BoardSize / 2;
     private const int RandomSeed = 1222;
@@ -29,13 +26,13 @@ public class QueensThatCanAttackTheKingBenchmarks
     public int QueensCount;
 
     private int[][] _queens = null!;
-    private (int Row, int Col) _king;
+    private KingBoard _board;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _king = (BoardCenter, BoardCenter);
+        _board = new KingBoard(BoardCenter, BoardCenter, BoardSize);
 
         var coordinates = new HashSet<(int Row, int Col)>();
 
@@ -43,7 +40,7 @@ public class QueensThatCanAttackTheKingBenchmarks
         {
             var candidate = (random.Next(BoardSize), random.Next(BoardSize));
 
-            if (candidate != _king)
+            if (candidate != (_board.KingRow, _board.KingCol))
             {
                 coordinates.Add(candidate);
             }
@@ -53,79 +50,10 @@ public class QueensThatCanAttackTheKingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanRayWalk()
-    {
-        var attackers = 0;
-
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var row = _king.Row + dRow;
-            var col = _king.Col + dCol;
-
-            while (IsInBounds(row, col) && !IsOccupiedByLinearScan(row, col))
-            {
-                row += dRow;
-                col += dCol;
-            }
-
-            if (IsInBounds(row, col))
-            {
-                attackers++;
-            }
-        }
-
-        return attackers;
-    }
+    public int LinearScanRayWalk() =>
+        QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(_queens, _board).Count;
 
     [Benchmark]
-    public int SetLookupRayWalk()
-    {
-        var occupied = new Set<(int Row, int Col)>();
-
-        foreach (var queen in _queens)
-        {
-            occupied.TryAdd((queen[0], queen[1]));
-        }
-
-        var attackers = 0;
-
-        foreach (var (dRow, dCol) in Directions)
-        {
-            if (IsAttackerAlongRay(dRow, dCol, occupied))
-            {
-                attackers++;
-            }
-        }
-
-        return attackers;
-    }
-
-    private bool IsAttackerAlongRay(int dRow, int dCol, Set<(int Row, int Col)> occupied)
-    {
-        var row = _king.Row + dRow;
-        var col = _king.Col + dCol;
-
-        while (IsInBounds(row, col) && !occupied.Has((row, col)))
-        {
-            row += dRow;
-            col += dCol;
-        }
-
-        return IsInBounds(row, col);
-    }
-
-    private bool IsOccupiedByLinearScan(int row, int col)
-    {
-        foreach (var queen in _queens)
-        {
-            if (queen[0] == row && queen[1] == col)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool IsInBounds(int row, int col) => row >= 0 && row < BoardSize && col >= 0 && col < BoardSize;
+    public int SetLookupRayWalk() =>
+        QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(_queens, _board).Count;
 }

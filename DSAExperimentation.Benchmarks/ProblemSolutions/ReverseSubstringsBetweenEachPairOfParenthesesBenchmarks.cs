@@ -1,13 +1,15 @@
+using System.Text;
 using BenchmarkDotNet.Attributes;
-using RepoCharListStack = DSAExperimentation.DataStructures.Stack.Stack<System.Collections.Generic.List<char>>;
+using DSAExperimentation.LeetCode.ReverseSubstringsBetweenEachPairOfParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Reverse Substrings Between Each Pair of Parentheses (LC 1190): repeatedly
-// splicing the innermost pair with IndexOf/LastIndexOf/Substring (rebuilding the
-// whole string once per pair - quadratic overall) vs. a single pass through this
-// repo's own Stack<List<char>>, where each character is only ever re-reversed once
-// per enclosing paren level.
+// Harness only: both arms are
+// ReverseSubstringsBetweenEachPairOfParenthesesSolution's, the same methods
+// ReverseSubstringsBetweenEachPairOfParenthesesTests proves correct. The input is
+// LeetCode's own shape - a run of GroupCount sibling (non-nested) groups, so the
+// quadratic baseline's cost comes from re-splicing the string once per pair rather
+// than from nesting depth - and building it is charged to [GlobalSetup].
 [MemoryDiagnoser]
 public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
 {
@@ -21,7 +23,8 @@ public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var builder = new System.Text.StringBuilder();
+        var builder = new StringBuilder();
+
         for (var i = 0; i < GroupCount; i++)
         {
             builder.Append('(').Append(GroupBody).Append(')');
@@ -31,62 +34,10 @@ public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string NaiveRepeatedSplice()
-    {
-        var current = _input;
-
-        while (true)
-        {
-            var closeIndex = current.IndexOf(')');
-            if (closeIndex < 0)
-            {
-                break;
-            }
-
-            var openIndex = current.LastIndexOf('(', closeIndex);
-            var inner = current.Substring(openIndex + 1, closeIndex - openIndex - 1);
-            var reversedInner = new string(inner.Reverse().ToArray());
-            var beforeGroup = current.AsSpan(0, openIndex);
-            var afterGroup = current.AsSpan(closeIndex + 1);
-            current = string.Concat(beforeGroup, reversedInner, afterGroup);
-        }
-
-        return current;
-    }
+    public string NaiveRepeatedSplice() =>
+        ReverseSubstringsBetweenEachPairOfParenthesesSolution.ReverseParenthesesByRepeatedSplice(_input);
 
     [Benchmark]
-    public string StackOfCharBuffers()
-    {
-        var groups = new RepoCharListStack();
-        var current = new List<char>();
-
-        foreach (var ch in _input)
-        {
-            current = ProcessChar(ch, groups, current);
-        }
-
-        return new string(current.ToArray());
-    }
-
-    private static List<char> ProcessChar(char ch, RepoCharListStack groups, List<char> current)
-    {
-        switch (ch)
-        {
-            case '(':
-                groups.Push(current);
-                return [];
-            case ')':
-                current.Reverse();
-                if (groups.TryPop(out var enclosing))
-                {
-                    enclosing.AddRange(current);
-                    return enclosing;
-                }
-
-                return current;
-            default:
-                current.Add(ch);
-                return current;
-        }
-    }
+    public string StackOfCharBuffers() =>
+        ReverseSubstringsBetweenEachPairOfParenthesesSolution.ReverseParenthesesByCharBufferStack(_input);
 }

@@ -1,13 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.FenwickTree;
+using static DSAExperimentation.LeetCode.DesignSkiplist.DesignSkiplistSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Skiplist (LC 1206): a linear-scan List<int> multiset (Contains/IndexOf +
-// RemoveAt, O(n) per call) vs. this repo's own FenwickTree<int,SumOperation<int>>
-// used as a point-update/point-query frequency array over num's bounded domain,
-// O(log 2*10^4) per call. Both run the same fixed batch of add-then-search-then-erase
-// calls a real Skiplist caller would make.
+// Harness only: both arms are DesignSkiplistSolution's, the same classes
+// DesignSkiplistTests proves correct. A linear-scan List<int> multiset
+// (Contains/IndexOf + RemoveAt, O(n) per call) against this repo's own
+// FenwickTree<int,SumOperation<int>> used as a point-update/point-query frequency
+// array over num's bounded domain, O(log 2*10^4) per call. Both replay the same
+// fixed batch of add-then-search-then-erase calls a real Skiplist caller would make.
 [MemoryDiagnoser]
 public class DesignSkiplistBenchmarks
 {
@@ -29,97 +30,32 @@ public class DesignSkiplistBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanList()
-    {
-        var list = new List<int>();
-        AddAllList(list);
-        var trueCount = CountContainsList(list);
-        trueCount += RemoveFoundList(list);
-        return trueCount;
-    }
+    public int LinearScanList() => Replay(new SkiplistByLinearScanList());
 
     [Benchmark]
-    public int FenwickTreeFrequencyMultiset()
-    {
-        var frequencies = new FenwickTree<int, SumOperation<int>>(MaxValue + 1);
-        AddAllFenwick(frequencies);
-        var trueCount = CountContainsFenwick(frequencies);
-        trueCount += RemoveFoundFenwick(frequencies);
-        return trueCount;
-    }
+    public int FenwickTreeFrequencyMultiset() => Replay(new SkiplistByFenwickFrequencies());
 
-    private void AddAllList(List<int> list)
+    private int Replay(ISkiplist skiplist)
     {
         foreach (var value in _values)
         {
-            list.Add(value);
+            skiplist.Add(value);
         }
-    }
 
-    private int CountContainsList(List<int> list)
-    {
         var trueCount = 0;
 
         foreach (var value in _values)
         {
-            if (list.Contains(value))
+            if (skiplist.Search(value))
             {
                 trueCount++;
             }
         }
 
-        return trueCount;
-    }
-
-    private int RemoveFoundList(List<int> list)
-    {
-        var trueCount = 0;
-
         foreach (var value in _values)
         {
-            var index = list.IndexOf(value);
-            if (index >= 0)
+            if (skiplist.Erase(value))
             {
-                list.RemoveAt(index);
-                trueCount++;
-            }
-        }
-
-        return trueCount;
-    }
-
-    private void AddAllFenwick(FenwickTree<int, SumOperation<int>> frequencies)
-    {
-        foreach (var value in _values)
-        {
-            frequencies.Add(value, 1);
-        }
-    }
-
-    private int CountContainsFenwick(FenwickTree<int, SumOperation<int>> frequencies)
-    {
-        var trueCount = 0;
-
-        foreach (var value in _values)
-        {
-            if (frequencies.Query(value, value) > 0)
-            {
-                trueCount++;
-            }
-        }
-
-        return trueCount;
-    }
-
-    private int RemoveFoundFenwick(FenwickTree<int, SumOperation<int>> frequencies)
-    {
-        var trueCount = 0;
-
-        foreach (var value in _values)
-        {
-            if (frequencies.Query(value, value) > 0)
-            {
-                frequencies.Add(value, -1);
                 trueCount++;
             }
         }
