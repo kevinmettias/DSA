@@ -1,138 +1,43 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.PrisonCellsAfterNDays;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PrisonCellsAfterNDays;
 
-// LeetCode 957. Prison Cells After N Days: the 8-cell state space has only 256
-// possible encodings, so simulating all of N (up to 10^9) days directly is
-// wasteful - the sequence of states must eventually repeat. This repo's own
-// HashMap<int,int> maps each encoded state to the day index it was first seen
-// (the same "have I seen this key before" role TwoSumTests already uses HashMap
-// for, just keyed on a packed state instead of a value), letting the simulation
-// detect the cycle and jump straight to day N modulo the cycle length instead of
-// looping N times.
-public sealed partial class PrisonCellsAfterNDaysTests
+// Harness only: both strategies live in PrisonCellsAfterNDaysSolution. One test
+// method per strategy over one shared set of LeetCode's own examples, so a
+// failure names the strategy that broke - which now includes the day-by-day
+// simulation the benchmark used as its untested baseline arm.
+public sealed class PrisonCellsAfterNDaysTests
 {
-    [Fact]
-    public void NextDayStates_ClassicExample_MatchesSevenDaySimulation()
-    {
-        int[] cells = [0, 1, 0, 1, 1, 0, 0, 1];
-
-        var result = SimulateAfterNDays(cells, n: 7);
-
-        Assert.Equal([0, 0, 1, 1, 0, 0, 0, 0], result);
-    }
-
-    [Fact]
-    public void SimulateAfterNDays_LargeN_UsesCycleDetectionToMatchBruteForce()
-    {
-        int[] cells = [1, 0, 0, 1, 0, 0, 1, 0];
-        const int n = 1_000_000;
-
-        var expected = BruteForceSimulate(cells, n);
-        var actual = SimulateAfterNDays(cells, n);
-
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void SimulateAfterNDays_ZeroDays_ReturnsInputUnchanged()
-    {
-        int[] cells = [0, 1, 0, 1, 1, 0, 0, 1];
-
-        var result = SimulateAfterNDays(cells, n: 0);
-
-        Assert.Equal(cells, result);
-    }
-
-    private static int[] SimulateAfterNDays(int[] cells, int n)
-    {
-        var seenAtDay = new HashMap<int, int>();
-        var state = Encode(cells);
-        var day = 0;
-
-        while (day < n)
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
         {
-            if (seenAtDay.TryGetValue(state, out var firstSeenDay))
-            {
-                var finalState = JumpToCycleEnd(state, day, firstSeenDay, n);
-                return Decode(finalState);
-            }
+            { [0, 1, 0, 1, 1, 0, 0, 1], 7, [0, 0, 1, 1, 0, 0, 0, 0] },
+            // LeetCode's second published example is this cell layout at
+            // n = 10^9, whose answer is [0,0,1,1,1,1,1,0]. Both arms share these
+            // cases and the daily simulation really does walk every day, so n is
+            // stated as 1_000 - the same position in the 14-day cycle (999 and
+            // 999_999_999 are both 5 mod 14), hence the same published answer,
+            // without charging the baseline a billion iterations.
+            { [1, 0, 0, 1, 0, 0, 1, 0], 1_000, [0, 0, 1, 1, 1, 1, 1, 0] },
+            // Zero days is the one case with no transition at all: the two end
+            // cells are still whatever the caller passed in, rather than vacant.
+            { [0, 1, 0, 1, 1, 0, 0, 1], 0, [0, 1, 0, 1, 1, 0, 0, 1] },
+            // One day is the first transition, where both ends go vacant.
+            { [0, 1, 0, 1, 1, 0, 0, 1], 1, [0, 1, 1, 0, 0, 0, 0, 0] },
+            // Far enough past the first repeat that a wrong cycle length shows up
+            // as a wrong answer rather than an accidentally aligned one.
+            { [1, 0, 0, 1, 0, 0, 1, 0], 1_000_000, [0, 1, 0, 0, 1, 0, 0, 0] },
+        };
 
-            seenAtDay.Set(state, day);
-            state = NextState(state);
-            day++;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CellsAfterNDaysByDailySimulation_LeetCodeExamples_ReturnsCellsOnDayN(
+        int[] cells, int n, int[] expected) =>
+        Assert.Equal(expected, PrisonCellsAfterNDaysSolution.CellsAfterNDaysByDailySimulation(cells, n));
 
-        return Decode(state);
-    }
-
-    private static int JumpToCycleEnd(int state, int day, int firstSeenDay, int n)
-    {
-        var cycleLength = day - firstSeenDay;
-        var remaining = (n - day) % cycleLength;
-
-        for (var i = 0; i < remaining; i++)
-        {
-            state = NextState(state);
-        }
-
-        return state;
-    }
-
-    private static int NextState(int state)
-    {
-        var next = 0;
-
-        for (var i = 1; i < 7; i++)
-        {
-            var left = (state >> (i - 1)) & 1;
-            var right = (state >> (i + 1)) & 1;
-
-            if (left == right)
-            {
-                next |= 1 << i;
-            }
-        }
-
-        return next;
-    }
-
-    private static int Encode(int[] cells)
-    {
-        var state = 0;
-
-        for (var i = 0; i < cells.Length; i++)
-        {
-            if (cells[i] == 1)
-            {
-                state |= 1 << i;
-            }
-        }
-
-        return state;
-    }
-
-    private static int[] Decode(int state)
-    {
-        var cells = new int[8];
-
-        for (var i = 0; i < 8; i++)
-        {
-            cells[i] = (state >> i) & 1;
-        }
-
-        return cells;
-    }
-
-    private static int[] BruteForceSimulate(int[] cells, int n)
-    {
-        var state = Encode(cells);
-
-        for (var day = 0; day < n; day++)
-        {
-            state = NextState(state);
-        }
-
-        return Decode(state);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CellsAfterNDaysByCycleDetection_LeetCodeExamples_ReturnsCellsOnDayN(
+        int[] cells, int n, int[] expected) =>
+        Assert.Equal(expected, PrisonCellsAfterNDaysSolution.CellsAfterNDaysByCycleDetection(cells, n));
 }

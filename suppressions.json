@@ -1290,6 +1290,20 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/KClosestPointsToOrigin/KClosestPointsToOriginTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - the flagged 'K' prefix is shared by the KClosestPointsToOriginTests harness class and the two KClosestBy* strategy names ARCHITECTURE.md section 17.3 requires, so it is the LeetCode problem's own operation name appearing in both the file's class and its per-strategy facts, not a hidden module. The same convention is already waived tier-wide over DSAExperimentation.LeetCode/** for the solution side of this exact pair.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/OddEvenJump/OddEvenJumpTests.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls this a review, not an automatic defect, and names Test_/New_-style prefixes as the case that should NOT be extracted - the flagged 'Odd' prefix is shared by the OddEvenJumpTests harness class and the two OddEvenJumpsBy* strategy names ARCHITECTURE.md section 17.3 requires, so it is the LeetCode problem's own operation name appearing in both the file's class and its per-strategy facts, not a hidden module. The same convention is already waived tier-wide over DSAExperimentation.LeetCode/** for the solution side of this exact pair.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
       "check": "check-presumption",
       "path": "DSAExperimentation.Tests/LeetCodeCoverage/LowestCommonAncestorOfBst/LowestCommonAncestorOfBstTests.cs",
       "reason": "lca! promises FindLca found an ancestor - true because both queried values come from FindNode walking the same tree FindLca's own root parameter roots, so LowestCommonAncestor.Find always has both nodes reachable from root and can only return null when neither is (impossible here). tree.Root! promises BuildClassicExampleTree's tree is non-empty - true because the method always inserts nine values before returning. LeftChild/RightChild's node.Left!/node.Right! promise the child FindNode's own comparison just selected is present - true because FindNode only ever descends toward a value BuildClassicExampleTree is known to have inserted, so BinarySearchTree.Insert already created every node this walk can reach.",

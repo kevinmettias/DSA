@@ -1,63 +1,32 @@
-using RepoIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.MaximumWidthRamp;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumWidthRamp;
 
-// LeetCode 962. Maximum Width Ramp: build a monotonically-decreasing candidate
-// stack of left-endpoint indices over this repo's own Stack<int> (CarFleet/
-// DailyTemperatures precedent for this repo's own Stack instead of the CLR's
-// System.Collections.Generic.Stack), then walk right-to-left popping every
-// candidate whose value is <= the current right endpoint - each pop is a
-// widest-so-far ramp for that candidate, since indices only ever get more
-// favorable (further right) as the scan proceeds.
+// Harness only. Both strategies are MaximumWidthRampSolution's - the pairwise baseline
+// the benchmark used to hide, and the monotonically-decreasing candidate stack - so this
+// file just pins them to LeetCode's published examples plus the no-ramp case where the
+// answer is 0 and the equal-values case where the widest ramp spans the whole array.
 public sealed class MaximumWidthRampTests
 {
-    [Fact]
-    public void MaxWidthRamp_ClassicExample_ReturnsFour()
-    {
-        int[] nums = [6, 0, 8, 2, 1, 5];
-
-        Assert.Equal(4, MaxWidthRamp(nums));
-    }
-
-    [Fact]
-    public void MaxWidthRamp_LongerExampleWithRepeatedValues_ReturnsSeven()
-    {
-        int[] nums = [9, 8, 1, 0, 1, 9, 4, 0, 4, 1];
-
-        Assert.Equal(7, MaxWidthRamp(nums));
-    }
-
-    [Fact]
-    public void MaxWidthRamp_StrictlyDecreasing_ReturnsZero()
-    {
-        int[] nums = [5, 4, 3, 2, 1];
-
-        Assert.Equal(0, MaxWidthRamp(nums));
-    }
-
-    private static int MaxWidthRamp(int[] nums)
-    {
-        var candidates = new RepoIndexStack();
-
-        for (var i = 0; i < nums.Length; i++)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            if (!candidates.TryPeek(out var topIndex) || nums[topIndex] > nums[i])
-            {
-                candidates.Push(i);
-            }
-        }
+            { [6, 0, 8, 2, 1, 5], 4 },
+            { [9, 8, 1, 0, 1, 9, 4, 0, 4, 1], 7 },
+            { [5, 4, 3, 2, 1], 0 },
+            { [2, 2, 2, 2], 3 },
+            { [1], 0 },
+        };
 
-        var maxWidth = 0;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxWidthRampByPairwiseScan_LeetCodeExamples_ReturnsTheWidestRamp(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumWidthRampSolution.MaxWidthRampByPairwiseScan(nums));
 
-        for (var j = nums.Length - 1; j >= 0; j--)
-        {
-            while (candidates.TryPeek(out var topIndex) && nums[topIndex] <= nums[j])
-            {
-                candidates.TryPop(out _);
-                maxWidth = Math.Max(maxWidth, j - topIndex);
-            }
-        }
-
-        return maxWidth;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxWidthRampByCandidateStack_LeetCodeExamples_ReturnsTheWidestRamp(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, MaximumWidthRampSolution.MaxWidthRampByCandidateStack(nums));
 }
