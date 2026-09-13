@@ -1,12 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.FindValueOfMysteriousFunctionClosestToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find a Value of a Mysterious Function Closest to Target (LC 1521): the textbook O(n^2)
-// all-subarrays-ANDed-in-place brute force vs. the O(n log(max(arr))) approach that tracks the
-// (provably small - AND only ever clears bits, never sets them) set of distinct AND values
-// ending at each index, using this repo's own HashMap<TKey,TValue> as an ad hoc set via .Keys.
+// Harness only: both arms are FindValueOfMysteriousFunctionClosestToTargetSolution's - the
+// textbook O(n^2) all-subarrays-ANDed-in-place brute force against the O(n log(max(arr)))
+// distinct-AND-values scan. Random 20-bit values keep the distinct-value sets at their full
+// width, and the target sits mid-range where no single value can reach it, forcing a full scan.
 [MemoryDiagnoser]
 public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
 {
@@ -27,49 +27,10 @@ public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceAllSubarrays()
-    {
-        var best = int.MaxValue;
-
-        for (var l = 0; l < _values.Length; l++)
-        {
-            var current = _values[l];
-            best = Math.Min(best, Math.Abs(current - Target));
-
-            for (var r = l + 1; r < _values.Length; r++)
-            {
-                current &= _values[r];
-                best = Math.Min(best, Math.Abs(current - Target));
-            }
-        }
-
-        return best;
-    }
+    public int BruteForceAllSubarrays() =>
+        FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByBruteForce(_values, Target);
 
     [Benchmark]
-    public int DistinctAndValuesHashMap()
-    {
-        var best = int.MaxValue;
-        var endingHere = new HashMap<int, bool>();
-
-        for (var i = 0; i < _values.Length; i++)
-        {
-            var next = new HashMap<int, bool>();
-            next.Set(_values[i], true);
-
-            foreach (var previous in endingHere.Keys)
-            {
-                next.Set(previous & _values[i], true);
-            }
-
-            foreach (var candidate in next.Keys)
-            {
-                best = Math.Min(best, Math.Abs(candidate - Target));
-            }
-
-            endingHere = next;
-        }
-
-        return best;
-    }
+    public int DistinctAndValuesHashMap() =>
+        FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByDistinctAndValues(_values, Target);
 }

@@ -1,32 +1,39 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.StoneGameIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIV;
 
-// LeetCode 1510. Stone Game IV: AliceWins(n) = there exists a perfect square
-// x (1 <= x <= n) that leaves the opponent facing a losing position - the
-// same minimax-recurrence shape DivisorGameTests/StoneGameIIITests already
-// use, memoized by this repo's own Memoizer<TState,TResult>.
+// Harness only: both strategies live in StoneGameIVSolution and are asserted against
+// the same examples. The un-memoized recursion is the definition and the memoized one
+// is the same recurrence with a cache, so pinning both to one example set is exactly
+// the check that memoization changed nothing - the benchmark previously compared them
+// with only the memoized arm under test.
 public sealed class StoneGameIVTests
 {
-    [Theory]
-    [InlineData(1, true)]
-    [InlineData(2, false)]
-    [InlineData(4, true)]
-    [InlineData(7, false)]
-    public void AliceWins_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(int n, bool expected)
-        => Assert.Equal(expected, AliceWins(n));
-
-    private static bool AliceWins(int n)
-        => Memoizer.Memoize<int, bool>(n, (current, aliceWins) =>
+    public static TheoryData<int, bool> Examples =>
+        new()
         {
-            for (var square = 1; square * square <= current; square++)
-            {
-                if (!aliceWins(current - square * square))
-                {
-                    return true;
-                }
-            }
+            { 1, true },
+            { 2, false },
+            { 3, true },
+            { 4, true },
+            { 5, false },
+            { 6, true },
+            { 7, false },
+            { 8, true },
+            { 9, true },
+            { 10, false },
+            { 17, false },
+        };
 
-            return false;
-        });
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AliceWinsByUnmemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
+        int n, bool expected) =>
+        Assert.Equal(expected, StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AliceWinsByMemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
+        int n, bool expected) =>
+        Assert.Equal(expected, StoneGameIVSolution.AliceWinsByMemoizedRecursion(n));
 }

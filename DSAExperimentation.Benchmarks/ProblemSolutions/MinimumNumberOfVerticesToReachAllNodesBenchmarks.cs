@@ -1,16 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Set;
+using static DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes.MinimumNumberOfVerticesToReachAllNodesSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Number of Vertices to Reach All Nodes (LC 1557): the textbook O(V*E)
-// nested scan (for every node, rescan every edge looking for a match) vs. one O(V+E)
-// pass into this repo's own Set<int> marking which nodes have an incoming edge - the
-// same "textbook nested loop vs. one repo-primitive pass" contrast TwoSumBenchmarks
-// already established, here for in-degree instead of a target sum. Edges always run
-// from a lower to a higher node id (a real DAG, not just acyclic by luck), so node 0
-// is always a guaranteed source alongside however many other roots the random
-// generation produces.
+// Harness only: both arms are MinimumNumberOfVerticesToReachAllNodesSolution's, the
+// same methods MinimumNumberOfVerticesToReachAllNodesTests proves correct - the
+// textbook O(V*E) nested scan (for every node, rescan every edge looking for a
+// match) against one O(V+E) marking pass into this repo's own Set<int>. Edge
+// generation is charged to [GlobalSetup]; edges always run from a lower to a higher
+// node id (a real DAG, not just acyclic by luck), so node 0 is always a guaranteed
+// source alongside however many other roots the random generation produces.
 [MemoryDiagnoser]
 public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
 {
@@ -20,20 +19,20 @@ public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
     [Params(200, 5_000)]
     public int NodeCount;
 
-    private (int From, int To)[] _edges = null!;
+    private int[][] _edges = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var edges = new List<(int From, int To)>();
+        var edges = new List<int[]>();
 
         for (var to = 1; to < NodeCount; to++)
         {
             var edgeCount = random.Next(1, EdgeCountUpperBoundExclusive);
             for (var e = 0; e < edgeCount; e++)
             {
-                edges.Add((random.Next(to), to));
+                edges.Add([random.Next(to), to]);
             }
         }
 
@@ -41,49 +40,10 @@ public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] NestedScanForZeroInDegree()
-    {
-        var result = new List<int>();
-
-        for (var node = 0; node < NodeCount; node++)
-        {
-            var hasIncoming = false;
-            foreach (var edge in _edges)
-            {
-                if (edge.To == node)
-                {
-                    hasIncoming = true;
-                    break;
-                }
-            }
-
-            if (!hasIncoming)
-            {
-                result.Add(node);
-            }
-        }
-
-        return [.. result];
-    }
+    public List<int> NestedScanForZeroInDegree() =>
+        FindSmallestSetOfVerticesByNestedScan(NodeCount, _edges);
 
     [Benchmark]
-    public int[] SetTrackedInDegree()
-    {
-        var hasIncomingEdge = new Set<int>();
-        foreach (var edge in _edges)
-        {
-            hasIncomingEdge.TryAdd(edge.To);
-        }
-
-        var result = new List<int>();
-        for (var node = 0; node < NodeCount; node++)
-        {
-            if (!hasIncomingEdge.Has(node))
-            {
-                result.Add(node);
-            }
-        }
-
-        return [.. result];
-    }
+    public List<int> SetTrackedInDegree() =>
+        FindSmallestSetOfVerticesByInDegreeSet(NodeCount, _edges);
 }

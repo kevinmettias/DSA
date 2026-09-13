@@ -1,127 +1,44 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.PathWithMaximumProbability;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Path with Maximum Probability (LC 1514): the textbook exhaustive DFS over
-// every source-to-target path (exponential in NodeCount - every edge
-// branches the path count) against this repo's own ShortestPath.Dijkstra
-// run over the same edges reweighted to -log(probability), the non-negative
-// transform PathWithMaximumProbabilityTests documents, which turns
-// "maximize a product" into Dijkstra's own "minimize a non-negative sum"
-// with zero changes to Dijkstra itself. Edges only ever point from a lower
-// id to a higher one (mirrors RandomWeightedGraphs' own "back edge" trick,
-// applied here in the forward direction), so the graph is acyclic and
-// NaiveDfs needs no visited set - it still explores every one of the
-// exponentially many paths, it just never has to guard against revisits.
+// Harness only: both arms are PathWithMaximumProbabilitySolution's, the same methods
+// PathWithMaximumProbabilityTests proves correct. The textbook exhaustive walk over
+// every source-to-target path (exponential in NodeCount - every incident edge branches
+// the path count) against this repo's own ShortestPath.Dijkstra run over the same
+// edges reweighted to -log(probability), the non-negative transform the solution
+// documents, which turns "maximize a product" into Dijkstra's own "minimize a
+// non-negative sum" with zero changes to Dijkstra itself.
+//
+// Both arms are handed the prepared ProbabilityGraph their hoisted overloads take, so
+// building the graph is charged to [GlobalSetup] rather than to the search.
 [MemoryDiagnoser]
 public class PathWithMaximumProbabilityBenchmarks
 {
     private const int RandomSeed = 1514; // LC problem number
     private const int ExtraEdgesPerNode = 2;
-    private const double MinEdgeProbability = 0.5;
-    private const double EdgeProbabilityRange = 0.49; // probability lands in (0.5, 0.99]
 
     [Params(10, 14)]
     public int NodeCount;
 
-    private List<(double Probability, int To)>[] _adjacency = null!;
-    private ProbabilityNode[] _nodes = null!;
+    private ProbabilityGraph _graph = null!;
     private int _target;
 
     [GlobalSetup]
     public void Setup()
     {
         _target = NodeCount - 1;
-        var random = new Random(RandomSeed);
-
-        InitializeGraph();
-        AddGuaranteedReachabilityEdges(random);
-        AddExtraBranchingEdges(random);
-    }
-
-    private void InitializeGraph()
-    {
-        _nodes = Enumerable.Range(0, NodeCount).Select(id => new ProbabilityNode(id)).ToArray();
-        _adjacency = Enumerable.Range(0, NodeCount).Select(_ => new List<(double, int)>()).ToArray();
-    }
-
-    // Guarantees node 0 reaches every node: each node i > 0 gets one
-    // forward edge from an earlier, already-reachable node j < i.
-    private void AddGuaranteedReachabilityEdges(Random random)
-    {
-        for (var i = 1; i < NodeCount; i++)
-        {
-            AddEdge(random.Next(i), i, random);
-        }
-    }
-
-    // Extra forward edges per node for branching density, so NaiveDfs
-    // actually explores an exponential number of distinct paths.
-    private void AddExtraBranchingEdges(Random random)
-    {
-        for (var i = 0; i < NodeCount - 1; i++)
-        {
-            for (var e = 0; e < ExtraEdgesPerNode; e++)
-            {
-                var to = random.Next(i + 1, NodeCount);
-                AddEdge(i, to, random);
-            }
-        }
+        var (edges, probabilities) = ProbabilityGraphWorkloads.Build(NodeCount, ExtraEdgesPerNode, RandomSeed);
+        _graph = ProbabilityGraph.Build(NodeCount, edges, probabilities);
     }
 
     [Benchmark(Baseline = true)]
-    public double NaiveDfsOverEveryPath()
-    {
-        var best = 0.0;
-        Dfs(0, 1.0, ref best);
-        return best;
-    }
+    public double ExhaustiveDfsOverEveryPath() =>
+        PathWithMaximumProbabilitySolution.MaxProbabilityByExhaustiveDfs(_graph, start: 0, _target);
 
     [Benchmark]
-    public double DijkstraOverNegativeLogWeights()
-    {
-        var distances = ShortestPath.Dijkstra<
-            ProbabilityNode, ProbabilityTopology, ListEdges<ProbabilityNode, double>, double>(_nodes[0]);
-
-        return distances.TryGetValue(_nodes[_target], out var cost) ? Math.Exp(-cost) : 0.0;
-    }
-
-    private void Dfs(int node, double productSoFar, ref double best)
-    {
-        if (node == _target)
-        {
-            best = Math.Max(best, productSoFar);
-        }
-
-        foreach (var (probability, to) in _adjacency[node])
-        {
-            Dfs(to, productSoFar * probability, ref best);
-        }
-    }
-
-    private void AddEdge(int from, int to, Random random)
-    {
-        var probability = MinEdgeProbability + (random.NextDouble() * EdgeProbabilityRange); // (0.5, 0.99]
-        _adjacency[from].Add((probability, to));
-        _nodes[from].Edges.Add((-Math.Log(probability), _nodes[to]));
-    }
-
-    // Own copy of the solution rather than depending on the Tests project -
-    // see CheapestFlightsWithinKStopsBenchmarks' own FlightState for the
-    // precedent this mirrors.
-    private sealed class ProbabilityNode(int id)
-    {
-        public int Id { get; } = id;
-
-        public List<(double Cost, ProbabilityNode Target)> Edges { get; } = [];
-    }
-
-    private readonly struct ProbabilityTopology
-        : IEdgeTopology<ProbabilityNode, ListEdges<ProbabilityNode, double>, double>
-    {
-        public static ListEdges<ProbabilityNode, double> GetEdges(ProbabilityNode node) => new(node.Edges);
-    }
+    public double DijkstraOverNegativeLogWeights() =>
+        PathWithMaximumProbabilitySolution.MaxProbabilityByDijkstra(_graph, start: 0, _target);
 }
