@@ -11,6 +11,10 @@ namespace DSAExperimentation.LeetCode.TwoSum;
 // be testable.
 internal sealed class TwoSumRegistration : ILeetCodeProblemRegistration
 {
+    private const int UnreachableTarget = -1;
+    private const int MaxValueExclusive = 1_000;
+    private const int Seed = 1;
+
     private delegate bool TwoSumAttempt(int[] nums, int target, out int first, out int second);
 
     public LeetCodeProblem Describe()
@@ -25,8 +29,21 @@ internal sealed class TwoSumRegistration : ILeetCodeProblemRegistration
             .Case("example-2", ([3, 2, 4], 6), [1, 2])
             .Case("example-3", ([3, 3], 6), [0, 1])
             .Case("no-pair-sums-to-target", ([1, 2, 3], 100), [])
-            .Workload("dense-2000", (Enumerable.Range(0, 2000).ToArray(), 3997))
+            // The two lengths the retired per-problem benchmark swept, and its
+            // deliberately UNREACHABLE target: every value is positive and the
+            // target is negative, so neither strategy gets an early exit and brute
+            // force is measured on its actual worst case rather than on how soon it
+            // happened to stumble onto the answer.
+            .Workload("unreachable-target-200", BuildDenseValues(200))
+            .Workload("unreachable-target-5000", BuildDenseValues(5_000))
             .Build();
+
+    private static (int[] Nums, int Target) BuildDenseValues(int length)
+    {
+        var random = new Random(Seed);
+
+        return ([.. Enumerable.Range(0, length).Select(_ => random.Next(1, MaxValueExclusive))], UnreachableTarget);
+    }
 
     private static int[] Indices(TwoSumAttempt attempt, (int[] Nums, int Target) input)
         => attempt(input.Nums, input.Target, out var first, out var second) ? [first, second] : [];

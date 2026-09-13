@@ -40,6 +40,26 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
                     LeetCodeOperation.Of("getMin"),
                 ],
                 [null, null, 1, null, 5])
+
+            // The classic Min Stack bug, and the reason this script is worth
+            // keeping separate from the one above: when the minimum is pushed
+            // TWICE, popping one copy must leave it the minimum. An implementation
+            // that stores each distinct minimum once - rather than once per push -
+            // reports 3 and then loses 5 entirely on the second pop.
+            .Case(
+                "duplicate-minimum-survives-one-pop",
+                [
+                    LeetCodeOperation.Of("push", 5),
+                    LeetCodeOperation.Of("push", 5),
+                    LeetCodeOperation.Of("getMin"),
+                    LeetCodeOperation.Of("pop"),
+                    LeetCodeOperation.Of("getMin"),
+                    LeetCodeOperation.Of("push", 3),
+                    LeetCodeOperation.Of("getMin"),
+                    LeetCodeOperation.Of("pop"),
+                    LeetCodeOperation.Of("getMin"),
+                ],
+                [null, null, 5, null, 5, null, 3, null, 5])
             .Build();
 
     private static List<int?> Replay(IReadOnlyList<LeetCodeOperation> script)

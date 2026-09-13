@@ -18,8 +18,16 @@ internal sealed class SpiralMatrixRegistration : ILeetCodeProblemRegistration
                 "example-2",
                 [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]],
                 [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7])
+            .Case("single-cell", [[1]], [1])
             .Case("single-row", [[1, 2, 3]], [1, 2, 3])
             .Case("single-column", [[1], [2], [3]], [1, 2, 3])
+
+            // The two square sizes the retired per-problem benchmark swept with
+            // [Params], kept as separate workloads rather than averaged into one:
+            // the visited-grid arm's extra allocation is what separates the two
+            // strategies, and whether it shows up at all is size-dependent.
+            .Workload("square-20", BuildRectangle(rows: 20, columns: 20))
+            .Workload("square-100", BuildRectangle(rows: 100, columns: 100))
             .Workload("rectangle-300x200", BuildRectangle(rows: 300, columns: 200))
             .Build();
 

@@ -82,6 +82,19 @@ public sealed class LeetCodeProblemTests
         var problem = LeetCodeProblemRegistry.Get("path-with-maximum-probability");
 
         Assert.Equal(["ExhaustiveDfs", "Dijkstra"], problem.StrategyNames);
-        Assert.Equal(["Dijkstra"], problem.WorkloadArms.Select(arm => arm.StrategyName));
+
+        // The large workload is the restricted one - at 400 vertices the
+        // exhaustive arm would not finish.
+        Assert.Equal(["Dijkstra"], ArmsFor(problem, "cycle-400"));
+
+        // The small ones deliberately are NOT restricted: a benchmark that never
+        // ran the baseline anywhere would have no comparison left to make, which
+        // is the failure the filter must not be allowed to cause.
+        Assert.Equal(["ExhaustiveDfs", "Dijkstra"], ArmsFor(problem, "branching-14"));
     }
+
+    private static IEnumerable<string> ArmsFor(LeetCodeProblem problem, string workloadName)
+        => problem.WorkloadArms
+            .Where(arm => arm.EntryName == workloadName)
+            .Select(arm => arm.StrategyName);
 }

@@ -28,7 +28,12 @@ internal sealed class RotateImageRegistration : ILeetCodeProblemRegistration
                 () => [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]],
                 [[15, 13, 2, 5], [14, 3, 4, 1], [12, 6, 8, 9], [16, 7, 10, 11]])
             .Case("single-cell", () => [[1]], [[1]])
-            .Workload("square-200", () => BuildSquare(200))
+            // The two sizes the retired per-problem benchmark swept with [Params].
+            // Kept apart rather than collapsed into one middling size: the stack
+            // arm's allocation per row is what separates the strategies, and that
+            // cost only overtakes the in-place reversal as the square grows.
+            .Workload("square-50", () => BuildSquare(50))
+            .Workload("square-300", () => BuildSquare(300))
             .Build();
 
     private static int[][] Rotated(Action<int[][]> rotate, Func<int[][]> buildMatrix)
