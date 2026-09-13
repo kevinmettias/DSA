@@ -1,106 +1,118 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SnapshotArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SnapshotArray;
 
-// LeetCode 1146. Snapshot Array: per-index parallel DynamicArray<int> histories
-// (SnapIds/Values), the same "append on write, binary-search on read" shape
-// TimeBasedKeyValueStoreTests already uses for its (key, timestamp) -> value floor
-// query - here it's (index, snapId) -> value instead. Set appends the current,
-// not-yet-snapshotted snap id; Snap just hands out and increments a counter, no
-// per-call copy of the whole array. Get floors to the largest snap id <= the query
-// via this repo's own BinarySearch.UpperBound over a DynamicArraySequence<int>.
-public sealed partial class SnapshotArrayTests
+// Harness only: both strategies live in SnapshotArraySolution and are replayed
+// against the same call scripts - LeetCode's published Set/Snap/Set/Get sequence,
+// a Get for an index never written before the queried snapshot, three snapshots of
+// one index each reporting their own value, two indices whose histories must stay
+// independent, and two Sets inside the same snapshot where the later write wins.
+//
+// A script step is one published call: Set steps call Set(Index, Argument) and
+// assert nothing; Snap steps call Snap() and assert the snap id it hands back; Get
+// steps call Get(Index, Argument) and assert the value, which for those steps is
+// the answer LeetCode publishes.
+public sealed class SnapshotArrayTests
 {
-    [Fact]
-    public void SetSnapGet_LeetCodeExampleSequence_ReturnsValueAtSnapshotTime()
+    public enum SnapshotCall
     {
-        var snapshotArray = new SnapshotArray(3);
-
-        snapshotArray.Set(0, 5);
-        var snapId = snapshotArray.Snap();
-        snapshotArray.Set(0, 6);
-
-        Assert.Equal(0, snapId);
-
-        var valueAtSnapshot = snapshotArray.Get(0, snapId);
-        Assert.Equal(5, valueAtSnapshot);
+        Set,
+        Snap,
+        Get,
     }
 
-    [Fact]
-    public void Get_IndexNeverSetBeforeQueriedSnapshot_ReturnsZero()
-    {
-        var snapshotArray = new SnapshotArray(3);
-        var snapId = snapshotArray.Snap();
-        snapshotArray.Set(1, 9);
-
-        var valueBeforeAnySet = snapshotArray.Get(1, snapId);
-        Assert.Equal(0, valueBeforeAnySet);
-    }
-
-    [Fact]
-    public void Get_MultipleSnapshotsSameIndex_ReturnsValueFromRequestedSnapshot()
-    {
-        var snapshotArray = new SnapshotArray(1);
-
-        snapshotArray.Set(0, 1);
-        var first = snapshotArray.Snap();
-        snapshotArray.Set(0, 2);
-        var second = snapshotArray.Snap();
-        snapshotArray.Set(0, 3);
-        var third = snapshotArray.Snap();
-
-        var valueAtFirst = snapshotArray.Get(0, first);
-        Assert.Equal(1, valueAtFirst);
-
-        var valueAtSecond = snapshotArray.Get(0, second);
-        Assert.Equal(2, valueAtSecond);
-
-        var valueAtThird = snapshotArray.Get(0, third);
-        Assert.Equal(3, valueAtThird);
-    }
-
-    private sealed class SnapshotArray
-    {
-        private readonly History[] _histories;
-        private int _snapId;
-
-        public SnapshotArray(int length)
+    public static TheoryData<int, (SnapshotCall Call, int Index, int Argument, int Expected)[]> Examples =>
+        new()
         {
-            _histories = new History[length];
-            for (var i = 0; i < length; i++)
             {
-                _histories[i] = new History();
-            }
-        }
-
-        public void Set(int index, int val)
-        {
-            _histories[index].SnapIds.Add(_snapId);
-            _histories[index].Values.Add(val);
-        }
-
-        public int Snap() => _snapId++;
-
-        public int Get(int index, int snapId)
-        {
-            var history = _histories[index];
-            if (history.SnapIds.Count == 0)
+                3,
+                [
+                    (SnapshotCall.Set, 0, 5, 0),
+                    (SnapshotCall.Snap, 0, 0, 0),
+                    (SnapshotCall.Set, 0, 6, 0),
+                    (SnapshotCall.Get, 0, 0, 5),
+                ]
+            },
             {
-                return 0;
-            }
+                3,
+                [
+                    (SnapshotCall.Snap, 0, 0, 0),
+                    (SnapshotCall.Set, 1, 9, 0),
+                    (SnapshotCall.Get, 1, 0, 0),
+                    (SnapshotCall.Snap, 0, 0, 1),
+                    (SnapshotCall.Get, 1, 1, 9),
+                ]
+            },
+            {
+                1,
+                [
+                    (SnapshotCall.Set, 0, 1, 0),
+                    (SnapshotCall.Snap, 0, 0, 0),
+                    (SnapshotCall.Set, 0, 2, 0),
+                    (SnapshotCall.Snap, 0, 0, 1),
+                    (SnapshotCall.Set, 0, 3, 0),
+                    (SnapshotCall.Snap, 0, 0, 2),
+                    (SnapshotCall.Get, 0, 0, 1),
+                    (SnapshotCall.Get, 0, 1, 2),
+                    (SnapshotCall.Get, 0, 2, 3),
+                ]
+            },
+            {
+                2,
+                [
+                    (SnapshotCall.Set, 0, 7, 0),
+                    (SnapshotCall.Snap, 0, 0, 0),
+                    (SnapshotCall.Set, 1, 8, 0),
+                    (SnapshotCall.Snap, 0, 0, 1),
+                    (SnapshotCall.Get, 0, 0, 7),
+                    (SnapshotCall.Get, 0, 1, 7),
+                    (SnapshotCall.Get, 1, 0, 0),
+                    (SnapshotCall.Get, 1, 1, 8),
+                ]
+            },
+            {
+                1,
+                [
+                    (SnapshotCall.Set, 0, 4, 0),
+                    (SnapshotCall.Set, 0, 6, 0),
+                    (SnapshotCall.Snap, 0, 0, 0),
+                    (SnapshotCall.Get, 0, 0, 6),
+                ]
+            },
+        };
 
-            var sequence = new DynamicArraySequence<int>(history.SnapIds);
-            var floorIndex = BinarySearch.UpperBound(sequence, snapId) - 1;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByBinarySearchFloor_LeetCodeExamples_ReturnsValueAtSnapshotTime(
+        int length,
+        (SnapshotCall Call, int Index, int Argument, int Expected)[] calls) =>
+        AssertScript(SnapshotArraySolution.CreateByBinarySearchFloor(length), calls);
 
-            return floorIndex < 0 ? 0 : history.Values.Get(floorIndex);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLinearFloorScan_LeetCodeExamples_ReturnsValueAtSnapshotTime(
+        int length,
+        (SnapshotCall Call, int Index, int Argument, int Expected)[] calls) =>
+        AssertScript(SnapshotArraySolution.CreateByLinearFloorScan(length), calls);
 
-        private sealed class History
+    private static void AssertScript(
+        SnapshotArraySolution.ISnapshotArray snapshotArray,
+        (SnapshotCall Call, int Index, int Argument, int Expected)[] calls)
+    {
+        foreach (var (call, index, argument, expected) in calls)
         {
-            public DynamicArray<int> SnapIds { get; } = new();
-            public DynamicArray<int> Values { get; } = new();
+            switch (call)
+            {
+                case SnapshotCall.Set:
+                    snapshotArray.Set(index, argument);
+                    break;
+                case SnapshotCall.Snap:
+                    Assert.Equal(expected, snapshotArray.Snap());
+                    break;
+                default:
+                    Assert.Equal(expected, snapshotArray.Get(index, argument));
+                    break;
+            }
         }
     }
 }

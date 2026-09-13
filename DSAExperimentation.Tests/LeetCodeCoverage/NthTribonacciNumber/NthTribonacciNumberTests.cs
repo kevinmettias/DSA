@@ -1,36 +1,31 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.NthTribonacciNumber;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NthTribonacciNumber;
 
-// LeetCode 1137. N-th Tribonacci Number: Tn = Tn-1 + Tn-2 + Tn-3, the same
-// textbook recurrence FibonacciNumberTests already expresses directly through
-// this repo's Memoizer<TState,TResult> - just three prior terms instead of
-// two.
-public sealed partial class NthTribonacciNumberTests
+// Harness only: both strategies are NthTribonacciNumberSolution's - this file pins
+// them to LeetCode's published examples plus the three seed values, including the
+// naive triple recursion, which was never asserted before this migration. n = 25 is
+// LeetCode's second example and is as far as the exponential arm is asked to go.
+public sealed class NthTribonacciNumberTests
 {
-    [Fact]
-    public void Tribonacci_BaseCases_ReturnKnownSeedValues()
-    {
-        Assert.Equal(0, Tribonacci(0));
-        Assert.Equal(1, Tribonacci(1));
-        Assert.Equal(1, Tribonacci(2));
-    }
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 0, 0 },
+            { 1, 1 },
+            { 2, 1 },
+            { 3, 2 },
+            { 4, 4 },
+            { 25, 1_389_537 },
+        };
 
-    [Fact]
-    public void Tribonacci_LeetCodeExampleOne_ReturnsFour()
-        => Assert.Equal(4, Tribonacci(4));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TribonacciByNaiveRecursion_LeetCodeExamples_ReturnsTribonacciNumber(int n, int expected) =>
+        Assert.Equal(expected, NthTribonacciNumberSolution.TribonacciByNaiveRecursion(n));
 
-    [Fact]
-    public void Tribonacci_LeetCodeExampleTwo_ReturnsLargeValue()
-        => Assert.Equal(1_389_537, Tribonacci(25));
-
-    private static int Tribonacci(int n)
-        => Memoizer.Memoize<int, int>(
-            n,
-            (value, trib) => value switch
-            {
-                0 => 0,
-                1 or 2 => 1,
-                _ => trib(value - 1) + trib(value - 2) + trib(value - 3)
-            });
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TribonacciByMemoizedTopDown_LeetCodeExamples_ReturnsTribonacciNumber(int n, int expected) =>
+        Assert.Equal(expected, NthTribonacciNumberSolution.TribonacciByMemoizedTopDown(n));
 }

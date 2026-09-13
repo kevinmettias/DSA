@@ -1,15 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.SmallestSufficientTeam;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Smallest Sufficient Team (LC 1125): the textbook unmemoized bitmask recursion
-// (re-explores the identical "which skills are still missing" subtree once per
-// distinct person who could have reached it) vs. the same recursion routed through
-// this repo's own Memoizer, keyed on the missing-skills bitmask - the CanIWinBenchmarks
-// precedent, applied to a DP whose memoized RESULT (not just a bool) is the team
-// itself, packed into a long bitmask of chosen people (people.Length stays well under
-// 64). Each of PeoplePerSkill people covers exactly one, dedicated skill, so at every
+// Harness only: both arms are SmallestSufficientTeamSolution's, the same methods
+// SmallestSufficientTeamTests proves correct, each handed the SkillMasks its hoisted
+// overload takes so mask construction is charged to [GlobalSetup] rather than to the
+// search being measured.
+//
+// Each of PeoplePerSkill people covers exactly one, dedicated skill, so at every
 // level of the recursion all PeoplePerSkill branches land on the SAME child mask -
 // the worst case for an unmemoized walk (true O(PeoplePerSkill^SkillCount) recursive
 // calls across only SkillCount+1 actually-distinct states) and the best case for
@@ -22,14 +21,11 @@ public class SmallestSufficientTeamBenchmarks
     [Params(6, 10)]
     public int SkillCount;
 
-    private int[] _personSkillMask = null!;
-    private int _fullMask;
+    private SkillMasks _masks = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        _fullMask = (1 << SkillCount) - 1;
-
         var people = new List<int>();
         for (var skill = 0; skill < SkillCount; skill++)
         {
@@ -39,64 +35,14 @@ public class SmallestSufficientTeamBenchmarks
             }
         }
 
-        _personSkillMask = [.. people];
+        _masks = new SkillMasks([.. people], (1 << SkillCount) - 1);
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRecursion() => PopCount(SmallestTeamBruteForce(_fullMask));
-
-    private long SmallestTeamBruteForce(int missing) => ComputeSmallestTeam(missing, SmallestTeamBruteForce);
+    public int BruteForceRecursion() =>
+        SmallestSufficientTeamSolution.SmallestTeamByBruteForceRecursion(_masks).Length;
 
     [Benchmark]
-    public int MemoizedRecursion()
-    {
-        var teamMask = Memoizer.Memoize<int, long>(_fullMask, ComputeSmallestTeam);
-
-        return PopCount(teamMask);
-    }
-
-    private long ComputeSmallestTeam(int missing, Func<int, long> smallestTeamFor)
-    {
-        if (missing == 0)
-        {
-            return 0L;
-        }
-
-        var targetBit = missing & -missing;
-
-        return BestTeamCoveringBit(missing, targetBit, smallestTeamFor);
-    }
-
-    private long BestTeamCoveringBit(int missing, int targetBit, Func<int, long> smallestTeamFor)
-    {
-        var best = -1L;
-
-        for (var p = 0; p < _personSkillMask.Length; p++)
-        {
-            if ((_personSkillMask[p] & targetBit) == 0)
-            {
-                continue;
-            }
-
-            var candidate = smallestTeamFor(missing & ~_personSkillMask[p]) | (1L << p);
-            if (best == -1 || PopCount(candidate) < PopCount(best))
-            {
-                best = candidate;
-            }
-        }
-
-        return best;
-    }
-
-    private static int PopCount(long mask)
-    {
-        var count = 0;
-        while (mask != 0)
-        {
-            mask &= mask - 1;
-            count++;
-        }
-
-        return count;
-    }
+    public int MemoizedRecursion() =>
+        SmallestSufficientTeamSolution.SmallestTeamByMemoizedBitmask(_masks).Length;
 }

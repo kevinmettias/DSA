@@ -1,101 +1,68 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using static DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray.OnlineMajorityElementInSubarraySolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineMajorityElementInSubarray;
 
-// LeetCode 1157. Online Majority Element In Subarray: groups each value's occurrence
-// indices into this repo's own DynamicArray<int> (naturally ascending, since built by
-// one left-to-right construction pass), keyed by value in a
-// HashMap<int, DynamicArray<int>>. A query samples a bounded number of candidate
-// indices inside [left, right] and, for each one, counts how many of that value's
-// stored positions fall in range via BinarySearch.LowerBound/UpperBound over a
-// DynamicArraySequence<int> view onto the same DynamicArray - the same "wrap an
-// existing structure in an IRandomAccessSequence witness" idiom
-// RangeModuleTests (LC 715) already uses. LeetCode guarantees 2*threshold >
-// right-left+1 whenever a query has an answer, so the answer element (when one
-// exists) is a true majority of the subarray - which is what makes a bounded number
-// of samples enough to find it with overwhelming probability, matching the problem's
-// own official randomized approach.
-public sealed partial class OnlineMajorityElementInSubarrayTests
+// Harness only. Both strategies are OnlineMajorityElementInSubarraySolution's - this
+// file builds each example's checker once and replays that example's whole query
+// sequence against it, which is what LeetCode's Design shape actually specifies, so a
+// failure still names the strategy that broke. Every query obeys LeetCode's own
+// 2*threshold > right-left+1 guarantee, so each has exactly one admissible answer.
+public sealed class OnlineMajorityElementInSubarrayTests
 {
-    [Fact]
-    public void Query_LeetCodeExample_ReturnsExpectedMajorityOrNegativeOne()
-    {
-        var checker = new MajorityChecker([1, 1, 2, 2, 1, 1]);
-
-        var firstQuery = checker.Query(0, 5, 4);
-        var secondQuery = checker.Query(0, 3, 3);
-        var thirdQuery = checker.Query(2, 3, 2);
-
-        Assert.Equal(1, firstQuery);
-        Assert.Equal(-1, secondQuery);
-        Assert.Equal(2, thirdQuery);
-    }
-
-    [Fact]
-    public void Query_SingleIndexRange_ReturnsThatElement()
-    {
-        var checker = new MajorityChecker([5, 5, 5, 5, 5]);
-
-        var query = checker.Query(2, 2, 1);
-
-        Assert.Equal(5, query);
-    }
-
-    private sealed class MajorityChecker
-    {
-        private const int SampleAttempts = 20;
-
-        private readonly int[] _values;
-        private readonly HashMap<int, DynamicArray<int>> _positionsByValue = new();
-        private readonly Random _random = new(1);
-
-        public MajorityChecker(int[] arr)
+    public static TheoryData<int[], int[][], int[]> Examples =>
+        new()
         {
-            _values = arr;
-
-            for (var i = 0; i < arr.Length; i++)
+            // LeetCode's published example.
             {
-                if (!_positionsByValue.TryGetValue(arr[i], out var positions))
-                {
-                    positions = new DynamicArray<int>();
-                    _positionsByValue.Set(arr[i], positions);
-                }
+                [1, 1, 2, 2, 1, 1],
+                [[0, 5, 4], [0, 3, 3], [2, 3, 2]],
+                [1, -1, 2]
+            },
+            // A single-index range is always its own majority.
+            {
+                [5, 5, 5, 5, 5],
+                [[2, 2, 1], [0, 4, 3], [1, 3, 2]],
+                [5, 5, 5]
+            },
+            // All distinct: nothing can clear a threshold above one.
+            {
+                [1, 2, 3, 4],
+                [[0, 2, 2], [1, 3, 2], [3, 3, 1]],
+                [-1, -1, 4]
+            },
+            // The majority element differs from range to range.
+            {
+                [1, 1, 1, 2, 2],
+                [[0, 4, 3], [3, 4, 2], [1, 3, 2]],
+                [1, 2, 1]
+            },
+            // Single-element array, the smallest checker LeetCode admits.
+            {
+                [7],
+                [[0, 0, 1]],
+                [7]
+            },
+        };
 
-                positions.Add(i);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MajorityCheckerByRangeTally_LeetCodeExamples_ReturnsMajorityOrNegativeOne(
+        int[] arr, int[][] queries, int[] expected) =>
+        AssertQueryResults(new MajorityCheckerByRangeTally(arr), queries, expected);
 
-        public int Query(int left, int right, int threshold)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MajorityCheckerByPositionIndex_LeetCodeExamples_ReturnsMajorityOrNegativeOne(
+        int[] arr, int[][] queries, int[] expected) =>
+        AssertQueryResults(new MajorityCheckerByPositionIndex(arr), queries, expected);
+
+    private static void AssertQueryResults(IMajorityChecker checker, int[][] queries, int[] expected)
+    {
+        for (var i = 0; i < queries.Length; i++)
         {
-            for (var attempt = 0; attempt < SampleAttempts; attempt++)
-            {
-                var sampleIndex = left + _random.Next(right - left + 1);
-                var value = _values[sampleIndex];
+            var query = queries[i];
 
-                if (CountInRange(value, left, right) >= threshold)
-                {
-                    return value;
-                }
-            }
-
-            return -1;
-        }
-
-        private int CountInRange(int value, int left, int right)
-        {
-            if (!_positionsByValue.TryGetValue(value, out var positions))
-            {
-                return 0;
-            }
-
-            var sequence = new DynamicArraySequence<int>(positions);
-            var lower = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(sequence, left);
-            var upper = BinarySearch.UpperBound<int, DynamicArraySequence<int>>(sequence, right);
-
-            return upper - lower;
+            Assert.Equal(expected[i], checker.Query(query[0], query[1], query[2]));
         }
     }
 }
