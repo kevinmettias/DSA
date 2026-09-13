@@ -1,20 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.LeetCode.CourseScheduleIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Course Schedule IV (LC 1462): a fresh BFS reachability check per query
-// (baseline - O(V+E) every time, the textbook per-query approach with no
-// precomputation) vs. a single
-// AllPairsShortestPaths.TryComputeDistances call (Floyd-Warshall) that answers
-// every (u, v) pair up front, after which each query is an O(1) dictionary
-// lookup - the same "one all-pairs matrix, many pair lookups" shape
-// FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenchmarks.cs
-// already established for this primitive. Prerequisite edges only ever point
-// from a lower to a higher course id, which keeps the generated graph acyclic
-// (a real prerequisite DAG) without needing a separate cycle check.
+// Harness only: both arms are CourseScheduleIVSolution's, the same methods
+// CourseScheduleIVTests proves correct. Each is handed the prepared CourseGraph
+// its hoisted overload takes, so building the prerequisite network is charged to
+// [GlobalSetup] rather than to the reachability work being measured - leaving the
+// comparison where it belongs: a fresh BFS per query against one Floyd-Warshall
+// call plus a dictionary lookup per query.
+//
+// Prerequisite edges only ever point from a lower to a higher course id, which
+// keeps the generated graph acyclic (a real prerequisite DAG) without needing a
+// separate cycle check.
 [MemoryDiagnoser]
 public class CourseScheduleIVBenchmarks
 {
@@ -28,111 +26,50 @@ public class CourseScheduleIVBenchmarks
     [Params(50, 150)]
     public int CourseCount;
 
-    private List<WeightedGraphNode> _courses = null!;
-    private (int From, int To)[] _queries = null!;
+    private CourseGraph _graph = null!;
+    private int[][] _queries = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _courses = [.. Enumerable.Range(0, CourseCount).Select(id => new WeightedGraphNode(id))];
-
-        for (var i = 0; i < CourseCount - 1; i++)
-        {
-            for (var e = 0; e < EdgesPerCourse; e++)
-            {
-                var to = i + 1 + random.Next(CourseCount - i - 1);
-                _courses[i].Edges.Add((1, _courses[to]));
-            }
-        }
-
-        _queries = new (int, int)[QueryCount];
-        for (var q = 0; q < QueryCount; q++)
-        {
-            var from = random.Next(CourseCount);
-            var to = random.Next(CourseCount);
-            _queries[q] = (from, to);
-        }
+        _graph = CourseGraph.Build(CourseCount, BuildPrerequisites(random));
+        _queries = BuildQueries(random);
     }
 
     [Benchmark(Baseline = true)]
-    public int BfsPerQuery()
-    {
-        var matches = 0;
-
-        foreach (var (from, to) in _queries)
-        {
-            if (IsReachable(from, to))
-            {
-                matches++;
-            }
-        }
-
-        return matches;
-    }
+    public List<bool> BfsPerQuery() =>
+        CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(_graph, _queries);
 
     [Benchmark]
-    public int FloydWarshallAllPairs()
+    public List<bool> FloydWarshallAllPairs() =>
+        CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(_graph, _queries);
+
+    private int[][] BuildPrerequisites(Random random)
     {
-        AllPairsShortestPaths.TryComputeDistances<
-            WeightedGraphNode, WeightedGraphTopology, ListEdges<WeightedGraphNode, int>, int>(
-            _courses, out var distances);
+        var prerequisites = new List<int[]>();
 
-        var matches = 0;
-
-        foreach (var (from, to) in _queries)
+        for (var course = 0; course < CourseCount - 1; course++)
         {
-            if (distances.ContainsKey((_courses[from], _courses[to])))
+            for (var edge = 0; edge < EdgesPerCourse; edge++)
             {
-                matches++;
+                var dependent = course + 1 + random.Next(CourseCount - course - 1);
+                prerequisites.Add([course, dependent]);
             }
         }
 
-        return matches;
+        return [.. prerequisites];
     }
 
-    private bool IsReachable(int from, int to)
+    private int[][] BuildQueries(Random random)
     {
-        if (from == to)
+        var queries = new int[QueryCount][];
+
+        for (var query = 0; query < QueryCount; query++)
         {
-            return true;
+            queries[query] = [random.Next(CourseCount), random.Next(CourseCount)];
         }
 
-        var (visited, pending) = CreateBfsFrontier(from);
-        return BfsReachesTarget(visited, pending, to);
-    }
-
-    private (bool[] Visited, Queue<int> Pending) CreateBfsFrontier(int from)
-    {
-        var visited = new bool[CourseCount];
-        var pending = new Queue<int>();
-        visited[from] = true;
-        pending.Enqueue(from);
-
-        return (visited, pending);
-    }
-
-    private bool BfsReachesTarget(bool[] visited, Queue<int> pending, int to)
-    {
-        while (pending.Count > 0)
-        {
-            var current = pending.Dequeue();
-
-            foreach (var (_, target) in _courses[current].Edges)
-            {
-                if (target.Id == to)
-                {
-                    return true;
-                }
-
-                if (!visited[target.Id])
-                {
-                    visited[target.Id] = true;
-                    pending.Enqueue(target.Id);
-                }
-            }
-        }
-
-        return false;
+        return queries;
     }
 }

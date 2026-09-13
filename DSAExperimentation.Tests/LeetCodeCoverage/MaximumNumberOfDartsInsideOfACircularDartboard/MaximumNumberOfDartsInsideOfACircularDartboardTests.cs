@@ -1,135 +1,56 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.MaximumNumberOfDartsInsideOfACircularDartboard;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfDartsInsideOfACircularDartboard;
 
-// LeetCode 1453. Maximum Number of Darts Inside of a Circular Dartboard: the
-// optimal circle of radius r either contains a single dart (count 1) or has at
-// least two darts on its boundary, so every candidate center comes from a single
-// dart or from the (up to) two points where a radius-r circle passes through a
-// pair of darts within distance 2r. Candidate centers are collected into this
-// repo's own DynamicArray<(double,double)> - the same "growable scratch buffer"
-// role it plays for CircleAndRectangleOverlappingTests' (LC 1401) lattice scan -
-// then each candidate is scored with that same problem's closed-form squared-
-// distance-vs-radius-squared check, just repeated per candidate instead of once.
-// Avoids the naive O(2^n) every-subset search.
-public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardTests
+// LeetCode 1453. Maximum Number of Darts Inside of a Circular Dartboard. See
+// MaximumNumberOfDartsInsideOfACircularDartboardSolution for the two strategies:
+// the same candidate-center sweep buffering into a plain BCL List, and into this
+// repo's own DynamicArray.
+public sealed class MaximumNumberOfDartsInsideOfACircularDartboardTests
 {
-    [Fact]
-    public void MaxDarts_ClassicExampleOne_ReturnsFour()
-    {
-        int[][] darts = [[-2, 0], [2, 0], [0, 1], [0, -1]];
-
-        var actual = MaxDarts(darts, radius: 2);
-        Assert.Equal(4, actual);
-    }
-
-    [Fact]
-    public void MaxDarts_ClassicExampleTwo_ReturnsFive()
-    {
-        int[][] darts = [[-3, 0], [3, 0], [2, 6], [5, 4], [0, 9], [7, 8]];
-
-        var actual = MaxDarts(darts, radius: 5);
-        Assert.Equal(5, actual);
-    }
-
-    [Fact]
-    public void MaxDarts_SingleDart_ReturnsOne()
-    {
-        int[][] darts = [[3, 7]];
-
-        var actual = MaxDarts(darts, radius: 10);
-        Assert.Equal(1, actual);
-    }
-
-    [Fact]
-    public void MaxDarts_NoTwoDartsFitTogether_ReturnsOne()
-    {
-        int[][] darts = [[0, 0], [100, 100], [-100, -100]];
-
-        var actual = MaxDarts(darts, radius: 1);
-        Assert.Equal(1, actual);
-    }
-
-    private static int MaxDarts(int[][] darts, int radius)
-    {
-        var candidates = BuildCandidateCenters(darts, radius);
-
-        return FindBestCandidateCount(darts, candidates, radius);
-    }
-
-    private static DynamicArray<(double X, double Y)> BuildCandidateCenters(int[][] darts, int radius)
-    {
-        var candidates = new DynamicArray<(double X, double Y)>();
-
-        for (var i = 0; i < darts.Length; i++)
+    public static TheoryData<int[][], int, int> Examples =>
+        new()
         {
-            var pointI = ((double)darts[i][0], (double)darts[i][1]);
-            candidates.Add(pointI);
+            // LeetCode example 1: a radius-2 circle centred at the origin has all four
+            // darts exactly on its boundary, so containment has to be inclusive.
+            { [[-2, 0], [2, 0], [0, 2], [0, -2]], 2, 4 },
 
-            for (var j = i + 1; j < darts.Length; j++)
-            {
-                var pointJ = ((double)darts[j][0], (double)darts[j][1]);
-                AddBoundaryCandidates(candidates, pointI, pointJ, radius);
-            }
-        }
+            // The pre-migration test's own variant of that example, with the two
+            // vertical darts pulled inside the boundary instead of onto it.
+            { [[-2, 0], [2, 0], [0, 1], [0, -1]], 2, 4 },
 
-        return candidates;
-    }
+            // LeetCode example 2: the optimal radius-5 circle is centred on neither
+            // input dart, which is why dart-only centers are not a correct shortcut.
+            { [[-3, 0], [3, 0], [2, 6], [5, 4], [0, 9], [7, 8]], 5, 5 },
 
-    private static int FindBestCandidateCount(int[][] darts, DynamicArray<(double X, double Y)> candidates, int radius)
-    {
-        var best = 1;
+            // LeetCode example 3: the same four darts with half the radius - every
+            // pair is now more than a diameter apart.
+            { [[-2, 0], [2, 0], [0, 2], [0, -2]], 1, 1 },
 
-        for (var c = 0; c < candidates.Count; c++)
-        {
-            var (centerX, centerY) = candidates.Get(c);
-            var count = CountDartsNearCenter(darts, centerX, centerY, radius);
+            // LeetCode example 4: a radius-2 circle catches four of the six darts.
+            { [[1, 2], [3, 5], [1, -1], [2, 3], [4, 1], [1, 3]], 2, 4 },
 
-            best = Math.Max(best, count);
-        }
+            // A lone dart: the answer is never below one.
+            { [[3, 7]], 10, 1 },
 
-        return best;
-    }
+            // Darts pairwise further apart than a diameter, so no candidate center
+            // from a pair exists at all and every circle covers exactly one.
+            { [[0, 0], [100, 100], [-100, -100]], 1, 1 },
+        };
 
-    private static int CountDartsNearCenter(int[][] darts, double centerX, double centerY, int radius)
-    {
-        var count = 0;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxDartsByListCandidates_LeetCodeExamples_ReturnsMostDartsOneCircleCovers(
+        int[][] darts, int radius, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByListCandidates(darts, radius));
 
-        foreach (var dart in darts)
-        {
-            var dx = dart[0] - centerX;
-            var dy = dart[1] - centerY;
-
-            if ((dx * dx) + (dy * dy) <= ((double)radius * radius) + 1e-6)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private static void AddBoundaryCandidates(DynamicArray<(double X, double Y)> candidates, (double X, double Y) a, (double X, double Y) b, int radius)
-    {
-        var dx = b.X - a.X;
-        var dy = b.Y - a.Y;
-        var distanceSquared = (dx * dx) + (dy * dy);
-
-        if (distanceSquared > 4.0 * radius * radius)
-        {
-            return;
-        }
-
-        var midX = (a.X + b.X) / 2.0;
-        var midY = (a.Y + b.Y) / 2.0;
-        var distance = Math.Sqrt(distanceSquared);
-        var halfChord = distance / 2.0;
-        var heightSquared = Math.Max(0.0, ((double)radius * radius) - (halfChord * halfChord));
-        var height = Math.Sqrt(heightSquared);
-        var offsetX = -dy / distance * height;
-        var offsetY = dx / distance * height;
-
-        candidates.Add((midX + offsetX, midY + offsetY));
-        candidates.Add((midX - offsetX, midY - offsetY));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxDartsByDynamicArrayCandidates_LeetCodeExamples_ReturnsMostDartsOneCircleCovers(
+        int[][] darts, int radius, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByDynamicArrayCandidates(darts, radius));
 }

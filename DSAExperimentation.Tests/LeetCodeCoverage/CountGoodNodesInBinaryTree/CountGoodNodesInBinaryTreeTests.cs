@@ -1,67 +1,92 @@
-using DSAExperimentation.Algorithms.Traversal.TopDown;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.CountGoodNodesInBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodNodesInBinaryTree;
 
-// LeetCode 1448. Count Good Nodes in Binary Tree: this repo's own TopDownTraversal
-// threads "max value seen among strict ancestors" down from root to every node -
-// exactly the inherited root-to-node state ITopDownHooks exists for (same shape as
-// FindElementsInAContaminatedBinaryTreeTests' recovered-value threading, LC 1261).
-// Visit bumps a shared counter whenever the current node's value is >= that
-// inherited max; Descend folds the parent's own value into the max passed to its
-// children, so a node is "good" iff no strict ancestor outranks it.
-public sealed partial class CountGoodNodesInBinaryTreeTests
+// LeetCode 1448. Count Good Nodes in Binary Tree. See
+// CountGoodNodesInBinaryTreeSolution for the two strategies: a plain recursive DFS
+// threading the running maximum through call-stack parameters, and this repo's own
+// TopDownTraversal threading it through ITopDownHooks.Descend.
+//
+// Examples are stated as LeetCode's own level-order arrays - BinaryTreeNode<int> is
+// internal, so it cannot appear in a public TheoryData member; BuildTree
+// reconstructs the tree inside each test method instead, the same shape
+// FindElementsInAContaminatedBinaryTreeTests (LC 1261) uses.
+public sealed class CountGoodNodesInBinaryTreeTests
 {
-    [Fact]
-    public void GoodNodes_ClassicExample_ReturnsFour()
-        => Assert.Equal(4, GoodNodes(Tree()));
-
-    [Fact]
-    public void GoodNodes_StrictlyDecreasingPath_OnlyRootIsGood()
-        => Assert.Equal(1, GoodNodes(new(3) { Left = new(1) { Left = new(0) } }));
-
-    [Fact]
-    public void GoodNodes_SingleNode_ReturnsOne()
-        => Assert.Equal(1, GoodNodes(new(5)));
-
-    private static BinaryTreeNode<int> Tree()
-        => new(3)
+    public static TheoryData<int?[], int> Examples =>
+        new()
         {
-            Left = new(1) { Right = new(3) },
-            Right = new(4) { Left = new(1), Right = new(5) },
+            // LeetCode example 1: [3,1,4,3,null,1,5] - the root, the 4, the 3 under
+            // the 1, and the 5 are good; the 1s are not.
+            { [3, 1, 4, 3, null, 1, 5], 4 },
+
+            // The same tree with the 3 hanging off the 1's other side - the shape the
+            // pre-migration test asserted, pinning that goodness depends on ancestry
+            // rather than on which side a child sits.
+            { [3, 1, 4, null, 3, 1, 5], 4 },
+
+            // LeetCode example 2: [3,3,null,4,2] - only the 2 is outranked.
+            { [3, 3, null, 4, 2], 3 },
+
+            // LeetCode example 3: a lone root is always good.
+            { [1], 1 },
+
+            // A strictly decreasing chain: every descendant is outranked, so only the
+            // root counts.
+            { [3, 1, null, 0], 1 },
+
+            // The same shape with a single node carrying a different value, pinning
+            // that the seed is "no ancestor" rather than any particular number.
+            { [5], 1 },
         };
 
-    private static int GoodNodes(BinaryTreeNode<int> root)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountGoodNodesByRecursiveDfs_LeetCodeExamples_CountsNodesNoAncestorOutranks(
+        int?[] levelOrder, int expected) =>
+        Assert.Equal(
+            expected,
+            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByRecursiveDfs(BuildTree(levelOrder)));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountGoodNodesByTopDownTraversal_LeetCodeExamples_CountsNodesNoAncestorOutranks(
+        int?[] levelOrder, int expected) =>
+        Assert.Equal(
+            expected,
+            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByTopDownTraversal(BuildTree(levelOrder)));
+
+    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
+    // in for a missing child.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
     {
-        var counter = new Counter();
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
 
-        TopDownTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            GoodNodeHooks, (int MaxSoFar, Counter Good)>(root, (int.MinValue, counter));
-
-        return counter.Count;
-    }
-
-    private sealed class Counter
-    {
-        public int Count;
-    }
-
-    private readonly struct GoodNodeHooks : ITopDownHooks<BinaryTreeNode<int>, (int MaxSoFar, Counter Good)>
-    {
-        public static void Visit(
-            BinaryTreeNode<int> node, (int MaxSoFar, Counter Good) state, int depth, NodePosition position)
+        while (i < levelOrder.Length)
         {
-            if (node.Value >= state.MaxSoFar)
+            var current = queue.Dequeue();
+
+            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
             {
-                state.Good.Count++;
+                current.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(current.Left);
             }
+
+            i++;
+
+            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+            {
+                current.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(current.Right);
+            }
+
+            i++;
         }
 
-        public static (int MaxSoFar, Counter Good) Descend(
-            BinaryTreeNode<int> parent, (int MaxSoFar, Counter Good) parentState, BinaryTreeNode<int> child)
-            => (Math.Max(parentState.MaxSoFar, parent.Value), parentState.Good);
+        return root;
     }
 }
