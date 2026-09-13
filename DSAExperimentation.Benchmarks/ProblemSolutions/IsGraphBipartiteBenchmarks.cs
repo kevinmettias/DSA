@@ -1,13 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using BipartiteCheckOperations = DSAExperimentation.Algorithms.Bipartiteness.BipartiteCheck;
+using DSAExperimentation.LeetCode.IsGraphBipartite;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Is Graph Bipartite? (LC 785): a hand-rolled iterative DFS 2-coloring directly
+// Harness only: both arms are IsGraphBipartiteSolution's, the same methods
+// IsGraphBipartiteTests proves correct - a hand-rolled iterative DFS 2-coloring
 // over the problem's own int[][] adjacency (a plain sbyte[] color array, an
-// explicit Stack<int>) against this repo's BipartiteCheck.IsBipartite - a
+// explicit Stack<int>) against this repo's BipartiteCheck.IsBipartite, a
 // multi-root BFS 2-coloring composed from IGraphTopology/ListChildren/
 // NaturalChildOrder with a Dictionary<TNode,bool> color map. Both walk every
 // node/edge exactly once at O(V+E); the split under [MemoryDiagnoser] is the
@@ -15,6 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against the raw array baseline. The generated graph is genuinely bipartite
 // (every edge crosses a fixed A/B split) so neither strategy short-circuits on
 // an early color conflict - both are forced through their full worst-case walk.
+//
+// Materializing the BipartiteNode graph is input construction, so it is charged
+// to [GlobalSetup] and handed to the strategy's prepared-input overload.
 [MemoryDiagnoser]
 public class IsGraphBipartiteBenchmarks
 {
@@ -29,7 +31,7 @@ public class IsGraphBipartiteBenchmarks
     public int NodeCount;
 
     private int[][] _adjacency = null!;
-    private List<GraphNode> _nodes = null!;
+    private BipartiteGraph _graph = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -42,7 +44,7 @@ public class IsGraphBipartiteBenchmarks
         AddDensityEdges(edges, random, half);
 
         _adjacency = BuildAdjacency(NodeCount, edges);
-        _nodes = BuildGraphNodes(NodeCount, edges);
+        _graph = BipartiteGraph.Build(_adjacency);
     }
 
     // Guarantee connectivity: every B-side node gets one cross edge back to a
@@ -71,60 +73,10 @@ public class IsGraphBipartiteBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool ArrayAdjacencyIterativeDfs()
-    {
-        var color = new sbyte[_adjacency.Length];
-        var stack = new Stack<int>();
-
-        for (var start = 0; start < _adjacency.Length; start++)
-        {
-            if (color[start] != 0)
-            {
-                continue;
-            }
-
-            color[start] = 1;
-            stack.Push(start);
-
-            if (!Walk(stack, color))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    public bool ColorArrayDfs() => IsGraphBipartiteSolution.IsBipartiteByColorArrayDfs(_adjacency);
 
     [Benchmark]
-    public bool BipartiteCheckBfs()
-        => BipartiteCheckOperations.IsBipartite<
-            GraphNode, GraphNodeTopology, ListChildren<GraphNode>,
-            NaturalChildOrder<GraphNode, ListChildren<GraphNode>>, ListChildren<GraphNode>>(
-            _nodes);
-
-    private bool Walk(Stack<int> stack, sbyte[] color)
-    {
-        while (stack.Count > 0)
-        {
-            var node = stack.Pop();
-
-            foreach (var neighbor in _adjacency[node])
-            {
-                if (color[neighbor] == color[node])
-                {
-                    return false;
-                }
-
-                if (color[neighbor] == 0)
-                {
-                    color[neighbor] = (sbyte)-color[node];
-                    stack.Push(neighbor);
-                }
-            }
-        }
-
-        return true;
-    }
+    public bool BipartiteCheckBfs() => IsGraphBipartiteSolution.IsBipartiteByBipartiteCheck(_graph);
 
     private static int[][] BuildAdjacency(int nodeCount, List<(int From, int To)> edges)
     {
@@ -137,34 +89,5 @@ public class IsGraphBipartiteBenchmarks
         }
 
         return adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
-    }
-
-    private static List<GraphNode> BuildGraphNodes(int nodeCount, List<(int From, int To)> edges)
-    {
-        var nodes = Enumerable.Range(0, nodeCount).Select(id => new GraphNode(id)).ToList();
-
-        foreach (var (from, to) in edges)
-        {
-            nodes[from].Neighbors.Add(nodes[to]);
-            nodes[to].Neighbors.Add(nodes[from]);
-        }
-
-        return nodes;
-    }
-
-    // See IsGraphBipartiteTests.Fixtures for the full explanation - repeated here
-    // rather than shared because TwoSumBenchmarks/MedianOfTwoSortedArraysBenchmarks
-    // establish this project keeps its own copy of the solution rather than
-    // depending on the Tests project.
-    private sealed class GraphNode(int id)
-    {
-        public int Id { get; } = id;
-
-        public List<GraphNode> Neighbors { get; } = [];
-    }
-
-    private readonly struct GraphNodeTopology : IGraphTopology<GraphNode, ListChildren<GraphNode>>
-    {
-        public static ListChildren<GraphNode> GetChildren(GraphNode node) => new(node.Neighbors);
     }
 }

@@ -1,89 +1,45 @@
-using DSAExperimentation.DataStructures.HashMap;
-using WaitingQueue = DSAExperimentation.DataStructures.Queue.Queue<(string Word, int Index)>;
+using DSAExperimentation.LeetCode.NumberOfMatchingSubsequences;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfMatchingSubsequences;
 
-// LeetCode 792. Number of Matching Subsequences: bucket each word by the next
-// character it's waiting on, using this repo's own HashMap<TKey,TValue> keyed on
-// char plus a Queue<T> per bucket. A single left-to-right pass over s advances
-// every waiting word in step, instead of re-scanning s once per word.
-public sealed partial class NumberOfMatchingSubsequencesTests
+// Harness only. Both strategies - the per-word two-pointer baseline and the
+// HashMap/Queue waiting-bucket pass - are NumberOfMatchingSubsequencesSolution's;
+// this file pins them to LeetCode's published examples plus the cases the bucket
+// pass has to get right on its own: words that share a waiting character, repeated
+// words, and a word whose characters all appear but out of order.
+public sealed class NumberOfMatchingSubsequencesTests
 {
-    [Fact]
-    public void NumMatchingSubseq_ClassicExample_CountsMatchingWords()
-    {
-        var count = NumMatchingSubseq("abcde", ["a", "bb", "acd", "ace"]);
-
-        Assert.Equal(3, count);
-    }
-
-    [Fact]
-    public void NumMatchingSubseq_NoWordsMatch_ReturnsZero()
-    {
-        var count = NumMatchingSubseq("abc", ["xyz", "ba"]);
-
-        Assert.Equal(0, count);
-    }
-
-    private static int NumMatchingSubseq(string s, string[] words)
-    {
-        var buckets = new HashMap<char, WaitingQueue>();
-        SeedBuckets(buckets, words);
-
-        var matches = 0;
-
-        foreach (var c in s)
+    public static TheoryData<string, string[], int> Examples =>
+        new()
         {
-            if (buckets.TryGetValue(c, out var waiting))
-            {
-                matches += AdvanceBucket(buckets, waiting);
-            }
-        }
+            // LC example 1: "bb" is the only word that is not a subsequence.
+            { "abcde", ["a", "bb", "acd", "ace"], 3 },
 
-        return matches;
-    }
+            // LC example 2.
+            { "dsahjpjauf", ["ahjpjau", "ja", "ahbwzgqnuk", "tnmlanowax"], 2 },
 
-    private static void SeedBuckets(HashMap<char, WaitingQueue> buckets, string[] words)
-    {
-        foreach (var word in words)
-        {
-            Enqueue(buckets, word, 0);
-        }
-    }
+            // Right characters, wrong order - and a character s never contains.
+            { "abc", ["xyz", "ba"], 0 },
 
-    private static int AdvanceBucket(HashMap<char, WaitingQueue> buckets, WaitingQueue waiting)
-    {
-        var pending = waiting.Count;
-        var matches = 0;
+            // The same word twice counts twice.
+            { "abcde", ["a", "a"], 2 },
 
-        for (var i = 0; i < pending; i++)
-        {
-            waiting.TryDequeue(out var entry);
-            var nextIndex = entry.Index + 1;
+            // Every word waits on the same character, and only some of its later
+            // occurrences release them.
+            { "aaab", ["aaa", "aab", "aaab", "aaaa"], 3 },
+        };
 
-            if (nextIndex == entry.Word.Length)
-            {
-                matches++;
-            }
-            else
-            {
-                Enqueue(buckets, entry.Word, nextIndex);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumMatchingSubseqByTwoPointerPerWord_LeetCodeExamples_CountsMatchingWords(
+        string s, string[] words, int expected) =>
+        Assert.Equal(
+            expected, NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByTwoPointerPerWord(s, words));
 
-        return matches;
-    }
-
-    private static void Enqueue(HashMap<char, WaitingQueue> buckets, string word, int index)
-    {
-        var c = word[index];
-
-        if (!buckets.TryGetValue(c, out var waiting))
-        {
-            waiting = new WaitingQueue();
-            buckets.Set(c, waiting);
-        }
-
-        waiting.Enqueue((word, index));
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumMatchingSubseqByWaitingBuckets_LeetCodeExamples_CountsMatchingWords(
+        string s, string[] words, int expected) =>
+        Assert.Equal(
+            expected, NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByWaitingBuckets(s, words));
 }

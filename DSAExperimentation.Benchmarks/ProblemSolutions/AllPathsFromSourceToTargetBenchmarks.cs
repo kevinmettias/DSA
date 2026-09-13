@@ -1,13 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.AllPathsFromSourceToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// All Paths From Source to Target (LC 797): a hand-written recursive choose/
-// explore/unchoose walk over the DAG's adjacency list vs. this repo's generic
-// Backtrack. The graph is "layered complete" (every node i connects to every
-// later node), so path count grows exponentially with node count, giving both
-// strategies real work at both [Params] sizes.
+// Harness only: both arms are AllPathsFromSourceToTargetSolution's, the same
+// methods AllPathsFromSourceToTargetTests proves correct. The graph is "layered
+// complete" (every node i connects to every later node), so path count grows
+// exponentially with node count, giving both strategies real work at both [Params]
+// sizes. Building that adjacency list is charged to [GlobalSetup], not to the
+// measured walk.
+//
+// Both arms previously only counted paths; they now build LeetCode's actual answer
+// and the harness takes .Count, so the measurement includes materializing 2^(n-2)
+// paths in both arms alike (ARCHITECTURE.md 17.8's precedent).
 [MemoryDiagnoser]
 public class AllPathsFromSourceToTargetBenchmarks
 {
@@ -28,53 +33,10 @@ public class AllPathsFromSourceToTargetBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int SpecializedRecursive()
-    {
-        var target = NodeCount - 1;
-        var count = 0;
-        var path = new List<int> { 0 };
-
-        void Search(int node)
-        {
-            if (node == target)
-            {
-                count++;
-                return;
-            }
-
-            foreach (var next in _graph[node])
-            {
-                path.Add(next);
-                Search(next);
-                path.RemoveAt(path.Count - 1);
-            }
-        }
-
-        Search(0);
-        return count;
-    }
+    public int SpecializedRecursive() =>
+        AllPathsFromSourceToTargetSolution.AllPathsByRecursiveWalk(_graph).Count;
 
     [Benchmark]
-    public int Backtracking()
-    {
-        var target = NodeCount - 1;
-        var count = 0;
-        var state = new State();
-        state.Path.Add(0);
-
-        Backtrack.Search<State, int>(
-            state,
-            s => s.Path[^1] == target,
-            s => s.Path[^1] == target ? [] : _graph[s.Path[^1]],
-            (s, next) => s.Path.Add(next),
-            (s, _) => s.Path.RemoveAt(s.Path.Count - 1),
-            _ => count++);
-
-        return count;
-    }
-
-    private sealed class State
-    {
-        public List<int> Path { get; } = [];
-    }
+    public int Backtracking() =>
+        AllPathsFromSourceToTargetSolution.AllPathsByBacktracking(_graph).Count;
 }

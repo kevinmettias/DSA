@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.FindEventualSafeStates.Fixtures;
+namespace DSAExperimentation.LeetCode.FindEventualSafeStates;
 
 internal readonly struct SafeStateTopology : IGraphTopology<SafeStateNode, ListChildren<SafeStateNode>>
 {

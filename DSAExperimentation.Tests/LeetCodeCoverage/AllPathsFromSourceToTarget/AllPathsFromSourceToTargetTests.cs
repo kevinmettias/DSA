@@ -1,57 +1,49 @@
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.AllPathsFromSourceToTarget;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.AllPathsFromSourceToTarget;
 
-// LeetCode 797. All Paths From Source to Target: every path is a choose/explore/
-// unchoose walk over the DAG's own adjacency list, using this repo's Backtrack -
-// the same choose/candidates/unchoose shape CombinationSum's coverage already
-// composes, just closed over graph[node] instead of a sorted candidate array. No
-// visited-set is needed: the problem guarantees the input is acyclic, so a path
-// can never revisit a node on its own.
-public sealed partial class AllPathsFromSourceToTargetTests
+// Harness only. Both strategies are AllPathsFromSourceToTargetSolution's - the
+// hand-written recursive walk and the Backtrack composition - pinned here to
+// LeetCode's published examples plus the single-node graph, where the source is
+// already the target and the only path is [0].
+//
+// Path order is not part of LeetCode's answer, so each example is compared as an
+// unordered set of sequences rather than position by position.
+public sealed class AllPathsFromSourceToTargetTests
 {
-    [Fact]
-    public void AllPathsSourceTarget_ClassicExample_ReturnsEveryPath()
+    public static TheoryData<int[][], int[][]> Examples =>
+        new()
+        {
+            { [[1, 2], [3], [3], []], [[0, 1, 3], [0, 2, 3]] },
+            {
+                [[4, 3, 1], [3, 2, 4], [3], [4], []],
+                [[0, 4], [0, 3, 4], [0, 1, 3, 4], [0, 1, 2, 3, 4], [0, 1, 4]]
+            },
+            { [[]], [[0]] },
+            { [[1], []], [[0, 1]] },
+            { [[1, 2, 3], [2, 3], [3], []], [[0, 3], [0, 2, 3], [0, 1, 3], [0, 1, 2, 3]] },
+            { [[], []], [] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AllPathsByRecursiveWalk_LeetCodeExamples_ReturnsEverySourceToTargetPath(
+        int[][] graph, int[][] expected) =>
+        AssertSamePaths(expected, AllPathsFromSourceToTargetSolution.AllPathsByRecursiveWalk(graph));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AllPathsByBacktracking_LeetCodeExamples_ReturnsEverySourceToTargetPath(
+        int[][] graph, int[][] expected) =>
+        AssertSamePaths(expected, AllPathsFromSourceToTargetSolution.AllPathsByBacktracking(graph));
+
+    private static void AssertSamePaths(int[][] expected, List<List<int>> actual)
     {
-        int[][] graph = [[1, 2], [3], [3], []];
-
-        var paths = AllPathsSourceTarget(graph).Select(p => p.ToArray()).ToArray();
-
-        Assert.Equal(2, paths.Length);
-        Assert.Contains(paths, p => p.SequenceEqual([0, 1, 3]));
-        Assert.Contains(paths, p => p.SequenceEqual([0, 2, 3]));
+        Assert.Equal(expected.Length, actual.Count);
+        Assert.Equal(
+            expected.Select(Describe).OrderBy(path => path, StringComparer.Ordinal),
+            actual.Select(Describe).OrderBy(path => path, StringComparer.Ordinal));
     }
 
-    [Fact]
-    public void AllPathsSourceTarget_SingleNodeGraph_ReturnsTrivialPath()
-    {
-        int[][] graph = [[]];
-
-        var paths = AllPathsSourceTarget(graph).Select(p => p.ToArray()).ToArray();
-
-        Assert.Equal([[0]], paths);
-    }
-
-    private static List<List<int>> AllPathsSourceTarget(int[][] graph)
-    {
-        var target = graph.Length - 1;
-        var results = new List<List<int>>();
-        var state = new State();
-        state.Path.Add(0);
-
-        Backtrack.Search<State, int>(
-            state,
-            s => s.Path[^1] == target,
-            s => s.Path[^1] == target ? [] : graph[s.Path[^1]],
-            (s, next) => s.Path.Add(next),
-            (s, _) => s.Path.RemoveAt(s.Path.Count - 1),
-            s => results.Add([.. s.Path]));
-
-        return results;
-    }
-
-    private sealed class State
-    {
-        public List<int> Path { get; } = [];
-    }
+    private static string Describe(IEnumerable<int> path) => string.Join(",", path);
 }
