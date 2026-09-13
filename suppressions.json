@@ -1220,6 +1220,20 @@
       "expires": "2026-11-22"
     },
     {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.LeetCode/RangeSumOfBST/**",
+      "reason": "the folder name is LeetCode 938's own title, 'Range Sum of BST', which abbreviates 'binary search tree' itself - the problem folder is named after the external problem it answers (ARCHITECTURE.md §17.3), so renaming it would break the one-folder-per-problem correspondence a reader navigates by; the same judgment already recorded for DSAExperimentation.Tests/LeetCodeCoverage/LowestCommonAncestorOfBst. Every member inside the folder spells the term out (RangeSumBySearchTreePruning).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/RangeSumOfBST/**",
+      "reason": "the folder name is LeetCode 938's own title, 'Range Sum of BST', which abbreviates 'binary search tree' itself - the coverage folder mirrors the problem folder name exactly, so renaming it would break that correspondence; the same judgment already recorded for DSAExperimentation.Tests/LeetCodeCoverage/LowestCommonAncestorOfBst.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
       "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/LeetCodeCoverage/CourseSchedule/CourseScheduleTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each flagged test performs one action (a call into the algorithm under test) and then asserts several independent postconditions of it (the boolean result, the resulting ordering); the assertions share no local with each other because each reads a different facet of the same call, not because the test does two unrelated things.",

@@ -1,73 +1,59 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.RangeSumOfBST;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumOfBST;
 
-// LeetCode 938. Range Sum of BST: a recursive walk directly over BinaryTreeNode<int>
-// that prunes using the BST ordering invariant - the exact "return Trim(node.Right/
-// Left, ...)" shape TrimABinarySearchTreeTests already uses for the same problem
-// family, just summing survivors instead of re-parenting them. A node below low
-// only has anything relevant in its right subtree; a node above high only in its
-// left - so an entire out-of-range subtree is skipped without ever visiting it,
-// unlike a plain full-tree traversal.
+// Harness only. Both strategies are RangeSumOfBSTSolution's; this file states
+// LeetCode's published examples once as insertion orders, builds each tree through
+// this repo's own BinarySearchTree<int>.Insert (which reproduces the published
+// shapes exactly), and asserts every strategy against the same expectations - the
+// full scan included, which the benchmark's baseline arm previously left unchecked.
 public sealed class RangeSumOfBSTTests
 {
-    [Fact]
-    public void RangeSumBST_SevenNodeTree_SumsValuesInsideRange()
-    {
-        // [10,5,15,3,7,null,18], low=7, high=15 -> 7 + 10 + 15 = 32
-        var root = new BinaryTreeNode<int>(10)
+    // values (insertion order), low, high, expected sum
+    public static TheoryData<int[], int, int, int> Examples =>
+        new()
         {
-            Left = new(5) { Left = new(3), Right = new(7) },
-            Right = new(15) { Right = new(18) },
+            // [10,5,15,3,7,null,18], low=7, high=15 -> 7 + 10 + 15 = 32
+            { [10, 5, 15, 3, 7, 18], 7, 15, 32 },
+
+            // [10,5,15,3,7,13,18,1,null,6], low=6, high=10 -> 6 + 7 + 10 = 23
+            { [10, 5, 15, 3, 7, 13, 18, 1, 6], 6, 10, 23 },
+
+            // A range entirely above the tree contributes nothing.
+            { [10, 5, 15], 100, 200, 0 },
+
+            // A range spanning the whole tree sums every node.
+            { [10, 5, 15, 3, 7, 18], 1, 100, 58 },
+
+            // A single-node tree whose value is both bounds.
+            { [7], 7, 7, 7 },
+
+            // Bounds are inclusive at both ends.
+            { [10, 5, 15, 3, 7, 18], 5, 7, 12 },
         };
 
-        var rangeSum = RangeSumBST(root, 7, 15);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RangeSumByFullScan_LeetCodeExamples_SumsValuesInsideRange(
+        int[] values, int low, int high, int expected) =>
+        Assert.Equal(expected, RangeSumOfBSTSolution.RangeSumByFullScan(BuildTree(values), low, high));
 
-        Assert.Equal(32, rangeSum);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RangeSumBySearchTreePruning_LeetCodeExamples_SumsValuesInsideRange(
+        int[] values, int low, int high, int expected) =>
+        Assert.Equal(expected, RangeSumOfBSTSolution.RangeSumBySearchTreePruning(BuildTree(values), low, high));
 
-    [Fact]
-    public void RangeSumBST_TenNodeTree_SumsValuesInsideRange()
+    private static BinaryTreeNode<int>? BuildTree(int[] values)
     {
-        // [10,5,15,3,7,13,18,1,null,6], low=6, high=10 -> 6 + 7 + 10 = 23
-        var root = new BinaryTreeNode<int>(10)
+        var tree = new BinarySearchTree<int>();
+
+        foreach (var value in values)
         {
-            Left = new(5) { Left = new(3) { Left = new(1) }, Right = new(7) { Left = new(6) } },
-            Right = new(15) { Left = new(13), Right = new(18) },
-        };
-
-        var rangeSum = RangeSumBST(root, 6, 10);
-
-        Assert.Equal(23, rangeSum);
-    }
-
-    [Fact]
-    public void RangeSumBST_RangeOutsideEntireTree_ReturnsZero()
-    {
-        var root = new BinaryTreeNode<int>(10) { Left = new(5), Right = new(15) };
-
-        var rangeSum = RangeSumBST(root, 100, 200);
-
-        Assert.Equal(0, rangeSum);
-    }
-
-    private static int RangeSumBST(BinaryTreeNode<int>? node, int low, int high)
-    {
-        if (node is null)
-        {
-            return 0;
+            tree.Insert(value);
         }
 
-        if (node.Value < low)
-        {
-            return RangeSumBST(node.Right, low, high);
-        }
-
-        if (node.Value > high)
-        {
-            return RangeSumBST(node.Left, low, high);
-        }
-
-        return node.Value + RangeSumBST(node.Left, low, high) + RangeSumBST(node.Right, low, high);
+        return tree.Root;
     }
 }

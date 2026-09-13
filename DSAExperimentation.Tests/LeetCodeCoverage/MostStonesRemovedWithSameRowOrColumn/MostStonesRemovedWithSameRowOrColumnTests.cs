@@ -1,53 +1,32 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.MostStonesRemovedWithSameRowOrColumn;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MostStonesRemovedWithSameRowOrColumn;
 
-// LeetCode 947. Most Stones Removed with Same Row or Column: union each stone's row
-// id with its column id (columns offset past every row id so the two axes share one
-// DisjointSet universe without colliding, the same "encode two id spaces into one
-// dense-int universe" move RedundantConnectionTests' nodeCount+1 sizing already makes
-// for a single axis). Every connected component can be reduced to one surviving
-// stone by repeatedly removing a stone that still shares a row/column with another
-// remaining stone, so the answer is stones.Length minus the number of components.
-public sealed partial class MostStonesRemovedWithSameRowOrColumnTests
+// Harness only: both strategies live in MostStonesRemovedWithSameRowOrColumnSolution
+// and are pinned to LeetCode's published examples, plus the two degenerate cases the
+// axis-keyed union has to agree with the pairwise scan on - a single stone, and stones
+// that share no row or column at all.
+public sealed class MostStonesRemovedWithSameRowOrColumnTests
 {
-    [Fact]
-    public void RemoveStones_ClassicGrid_RemovesAllButOnePerComponent()
-    {
-        int[][] stones = [[0, 0], [0, 1], [1, 0], [1, 2], [2, 1], [2, 2]];
-
-        var removed = RemoveStones(stones);
-
-        Assert.Equal(5, removed);
-    }
-
-    [Fact]
-    public void RemoveStones_NoSharedRowsOrColumns_RemovesNone()
-    {
-        int[][] stones = [[0, 0], [1, 1], [2, 2]];
-
-        var removed = RemoveStones(stones);
-
-        Assert.Equal(0, removed);
-    }
-
-    private static int RemoveStones(int[][] stones)
-    {
-        var colOffset = stones.Max(stone => stone[0]) + 1;
-        var universeSize = colOffset + stones.Max(stone => stone[1]) + 1;
-        var components = new DisjointSet(universeSize);
-
-        foreach (var stone in stones)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            components.Union(stone[0], colOffset + stone[1]);
-        }
+            { [[0, 0], [0, 1], [1, 0], [1, 2], [2, 1], [2, 2]], 5 },
+            { [[0, 0], [0, 2], [1, 1], [2, 0], [2, 2]], 3 },
+            { [[0, 0]], 0 },
+            { [[0, 0], [1, 1], [2, 2]], 0 },
+            { [[0, 0], [0, 1], [1, 1]], 2 },
+        };
 
-        var roots = new HashSet<int>();
-        foreach (var stone in stones)
-        {
-            roots.Add(components.Find(stone[0]));
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveStonesByPairwiseScan_LeetCodeExamples_ReturnsStonesMinusComponentCount(
+        int[][] stones, int expected) =>
+        Assert.Equal(expected, MostStonesRemovedWithSameRowOrColumnSolution.RemoveStonesByPairwiseScan(stones));
 
-        return stones.Length - roots.Count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveStonesByRowColumnKeyedUnion_LeetCodeExamples_ReturnsStonesMinusComponentCount(
+        int[][] stones, int expected) =>
+        Assert.Equal(expected, MostStonesRemovedWithSameRowOrColumnSolution.RemoveStonesByRowColumnKeyedUnion(stones));
 }

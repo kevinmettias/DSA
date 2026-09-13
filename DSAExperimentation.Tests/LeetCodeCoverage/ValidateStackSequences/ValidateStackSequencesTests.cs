@@ -1,54 +1,35 @@
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.ValidateStackSequences;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateStackSequences;
 
-// LeetCode 946. Validate Stack Sequences: greedily push from `pushed` onto this
-// repo's own Stack<int>, draining it whenever its top matches the next value
-// `popped` expects - the same "push, then drain whatever matches" idiom
-// NextGreaterElementITests already uses this Stack<int> for, just draining against a
-// target sequence instead of a monotonic condition. Greedy popping is always safe
-// here: once the top equals the value popped expects next, there is never a reason
-// to delay popping it, since nothing pushed later can ever be needed before it.
-public sealed partial class ValidateStackSequencesTests
+// Harness only. Both the exhaustive backtracking search and the greedy Stack<int>
+// sweep are ValidateStackSequencesSolution's; this file pins them to LeetCode's two
+// published examples plus the shapes that separate "greedy is safe" from "greedy is
+// lucky" - pop-immediately, pop-everything-at-the-end, and a pop order that is
+// unreachable only because of what was buried beneath the first match.
+public sealed class ValidateStackSequencesTests
 {
-    [Fact]
-    public void ValidateStackSequences_MatchesGreedyPopOrder_ReturnsTrue()
-    {
-        int[] pushed = [1, 2, 3, 4, 5];
-        int[] popped = [4, 5, 3, 2, 1];
-
-        var valid = Validate(pushed, popped);
-
-        Assert.True(valid);
-    }
-
-    [Fact]
-    public void ValidateStackSequences_PopOrderUnreachableFromAnyInterleaving_ReturnsFalse()
-    {
-        int[] pushed = [1, 2, 3, 4, 5];
-        int[] popped = [4, 3, 5, 1, 2];
-
-        var valid = Validate(pushed, popped);
-
-        Assert.False(valid);
-    }
-
-    private static bool Validate(int[] pushed, int[] popped)
-    {
-        var stack = new RepoIntStack();
-        var popIndex = 0;
-
-        foreach (var value in pushed)
+    public static TheoryData<int[], int[], bool> Examples =>
+        new()
         {
-            stack.Push(value);
+            { [1, 2, 3, 4, 5], [4, 5, 3, 2, 1], true },
+            { [1, 2, 3, 4, 5], [4, 3, 5, 1, 2], false },
+            { [1], [1], true },
+            { [1, 2], [1, 2], true },
+            { [1, 2], [2, 1], true },
+            { [2, 1, 0], [0, 1, 2], true },
+            { [1, 2, 3], [3, 1, 2], false },
+        };
 
-            while (stack.TryPeek(out var top) && popIndex < popped.Length && top == popped[popIndex])
-            {
-                stack.TryPop(out _);
-                popIndex++;
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsValidByBacktrackingSearch_LeetCodeExamples_ReportsWhetherSomeInterleavingProducesThePopOrder(
+        int[] pushed, int[] popped, bool expected) =>
+        Assert.Equal(expected, ValidateStackSequencesSolution.IsValidByBacktrackingSearch(pushed, popped));
 
-        return popIndex == popped.Length;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsValidByGreedyStackSweep_LeetCodeExamples_ReportsWhetherSomeInterleavingProducesThePopOrder(
+        int[] pushed, int[] popped, bool expected) =>
+        Assert.Equal(expected, ValidateStackSequencesSolution.IsValidByGreedyStackSweep(pushed, popped));
 }
