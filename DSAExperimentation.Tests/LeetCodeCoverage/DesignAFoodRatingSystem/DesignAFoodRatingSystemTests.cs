@@ -5,9 +5,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAFoodRatingSystem;
 
 // LeetCode 2353. Design a Food Rating System: each cuisine's foods live in a max
 // Heap<(int Rating, string Food),TOrder> ordered by rating descending, then food name
-// ascending for LeetCode's tie-break rule - the same tie-break shape
-// MinimumIntervalToIncludeEachQueryTests' BySizeOrder already demonstrates for a
-// different field pair, just comparing a secondary field instead of stopping at one.
+// ascending for LeetCode's tie-break rule - a two-field order, unlike the single-field
+// IHeapOrder witnesses that stop at the primary key and leave ties to the heap.
 // ChangeRating never removes the food's old heap entry; a HashMap<string,int> tracks
 // each food's *current* rating so HighestRated can lazily discard stale entries from
 // the top instead of updating mid-heap.

@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestColorValueInADirectedGraph.Fixtures;
+namespace DSAExperimentation.LeetCode.LargestColorValueInADirectedGraph;
 
 internal readonly struct ColorGraphTopology : IGraphTopology<ColorGraphNode, ListChildren<ColorGraphNode>>
 {

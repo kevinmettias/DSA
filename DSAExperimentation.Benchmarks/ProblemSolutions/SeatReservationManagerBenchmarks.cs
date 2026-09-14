@@ -1,15 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Seat Reservation Manager (LC 1845): a naive bool[]-scan-for-smallest-free-
-// seat baseline vs. this repo's Heap<int,MinHeapOrder<int>> holding only
-// released seats behind a monotonic "next fresh seat" counter. Both replay
-// the identical script - OperationCount reserves, then unreserving every
-// third issued seat, then OperationCount more reserves - so the linear
-// scanner is forced to walk past a growing prefix of already-reserved seats
-// on every call instead of an artificially seat-light workload.
+// Harness only: both arms are SeatReservationManagerSolution's, the same classes
+// SeatReservationManagerTests proves correct - the naive bool[]-scan-for-the-
+// smallest-free-seat manager against this repo's Heap<int,MinHeapOrder<int>>
+// holding only released seats behind a monotonic "next fresh seat" counter. Both
+// replay the identical script - OperationCount reserves, then unreserving every
+// third issued seat, then OperationCount more reserves - so the linear scanner is
+// forced to walk past a growing prefix of already-reserved seats on every call
+// instead of an artificially seat-light workload. [GlobalSetup] materializes the
+// unreserve targets so building that list is not charged to either arm.
 [MemoryDiagnoser]
 public class SeatReservationManagerBenchmarks
 {
@@ -22,41 +24,22 @@ public class SeatReservationManagerBenchmarks
     private int[] _unreserveTargets = null!;
 
     [GlobalSetup]
-    public void Setup()
-    {
+    public void Setup() =>
         _unreserveTargets = Enumerable.Range(1, OperationCount / UnreserveStride)
             .Select(i => i * UnreserveStride)
             .ToArray();
-    }
 
+    // The scan baseline is the arm that needs a seat count, and it needs one large
+    // enough for every seat both passes issue.
     [Benchmark(Baseline = true)]
-    public int LinearScanManager()
-    {
-        var manager = new LinearScanSeatManager(OperationCount * ReservePassCount + 1);
-        var last = 0;
-
-        for (var i = 0; i < OperationCount; i++)
-        {
-            last = manager.Reserve();
-        }
-
-        foreach (var seat in _unreserveTargets)
-        {
-            manager.Unreserve(seat);
-        }
-
-        for (var i = 0; i < OperationCount; i++)
-        {
-            last = manager.Reserve();
-        }
-
-        return last;
-    }
+    public int LinearScanArray() =>
+        Replay(new SeatManagerByLinearScanArray(OperationCount * ReservePassCount + 1));
 
     [Benchmark]
-    public int HeapLazyReleaseManager()
+    public int ReleasedSeatHeap() => Replay(new SeatManagerByReleasedSeatHeap());
+
+    private int Replay(ISeatManager manager)
     {
-        var manager = new HeapSeatManager();
         var last = 0;
 
         for (var i = 0; i < OperationCount; i++)
@@ -75,38 +58,5 @@ public class SeatReservationManagerBenchmarks
         }
 
         return last;
-    }
-
-    private sealed class LinearScanSeatManager(int capacity)
-    {
-        private const string NoSeatsLeftMessage = "No seats left.";
-
-        private readonly bool[] _reserved = new bool[capacity + 1];
-
-        public int Reserve()
-        {
-            for (var seat = 1; seat < _reserved.Length; seat++)
-            {
-                if (!_reserved[seat])
-                {
-                    _reserved[seat] = true;
-                    return seat;
-                }
-            }
-
-            throw new InvalidOperationException(NoSeatsLeftMessage);
-        }
-
-        public void Unreserve(int seatNumber) => _reserved[seatNumber] = false;
-    }
-
-    private sealed class HeapSeatManager
-    {
-        private readonly Heap<int, MinHeapOrder<int>> _released = new();
-        private int _nextFreshSeat = 1;
-
-        public int Reserve() => _released.TryPop(out var seat) ? seat : _nextFreshSeat++;
-
-        public void Unreserve(int seatNumber) => _released.Push(seatNumber);
     }
 }

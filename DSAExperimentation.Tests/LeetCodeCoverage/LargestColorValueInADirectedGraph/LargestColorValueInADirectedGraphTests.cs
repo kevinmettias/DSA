@@ -1,91 +1,39 @@
-using DSAExperimentation.Algorithms.TopologicalSort;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.LeetCodeCoverage.LargestColorValueInADirectedGraph.Fixtures;
+using DSAExperimentation.LeetCode.LargestColorValueInADirectedGraph;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestColorValueInADirectedGraph;
 
-// LeetCode 1857. Largest Color Value in a Directed Graph: TopologicalSort.TrySort
-// both detects the cycle case (returns false -> answer -1, the same
-// leftover-in-degree signal Course Schedule already relies on) and hands
-// back a dependency-respecting order to run a per-color counting DP over -
-// count[node][c] is the most c-colored nodes on any path ending at node,
-// relaxed onto each successor only once its predecessor's own count is
-// fully known, which Kahn's order guarantees.
-public sealed partial class LargestColorValueInADirectedGraphTests
+// Harness only. Both strategies are LargestColorValueInADirectedGraphSolution's -
+// this file pins them to LeetCode's published examples in LeetCode's own
+// (colors, edges) input shape, plus the cases the two arms have to agree on: an
+// edgeless graph, a path whose colors are all distinct, a path whose answer is not
+// its final node's color, and a cycle that is longer than the self-loop LeetCode's
+// own second example uses.
+public sealed class LargestColorValueInADirectedGraphTests
 {
-    private const int AlphabetSize = 26;
-
-    [Fact]
-    public void LargestPathValue_LeetCodeExampleOne_ReturnsThree()
-    {
-        var nodes = BuildGraph("abaca", [[0, 1], [0, 2], [2, 3], [3, 4]]);
-
-        Assert.Equal(3, LargestPathValue(nodes));
-    }
-
-    [Fact]
-    public void LargestPathValue_LeetCodeExampleTwo_ReturnsNegativeOneOnCycle()
-    {
-        var nodes = BuildGraph("a", [[0, 0]]);
-
-        Assert.Equal(-1, LargestPathValue(nodes));
-    }
-
-    private static List<ColorGraphNode> BuildGraph(string colors, int[][] edges)
-    {
-        var nodes = colors.Select((color, id) => new ColorGraphNode(id, color - 'a')).ToList();
-
-        foreach (var edge in edges)
+    public static TheoryData<string, int[][], int> Examples =>
+        new()
         {
-            nodes[edge[0]].Successors.Add(nodes[edge[1]]);
-        }
+            { "abaca", [[0, 1], [0, 2], [2, 3], [3, 4]], 3 },
+            { "a", [[0, 0]], -1 },
+            { "aaa", [], 1 },
+            { "abc", [[0, 1], [1, 2]], 1 },
+            { "aabbb", [[0, 1], [1, 2], [2, 3], [3, 4]], 3 },
+            { "abc", [[0, 1], [1, 2], [2, 0]], -1 },
+        };
 
-        return nodes;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LargestPathValueByKahnsTopologicalSort_LeetCodeExamples_ReturnsLargestColorCountOnAnyPath(
+        string colors, int[][] edges, int expected) =>
+        Assert.Equal(
+            expected,
+            LargestColorValueInADirectedGraphSolution.LargestPathValueByKahnsTopologicalSort(colors, edges));
 
-    private static int LargestPathValue(List<ColorGraphNode> nodes)
-    {
-        var sorted = TopologicalSort.TrySort<
-            ColorGraphNode, ColorGraphTopology, ListChildren<ColorGraphNode>,
-            NaturalChildOrder<ColorGraphNode, ListChildren<ColorGraphNode>>, ListChildren<ColorGraphNode>>(
-            nodes, out var ordering);
-
-        if (!sorted)
-        {
-            return -1;
-        }
-
-        var counts = nodes.ToDictionary(node => node, _ => new int[AlphabetSize]);
-        var best = 0;
-
-        foreach (var node in ordering)
-        {
-            var nodeBest = RelaxNode(node, counts);
-            best = Math.Max(best, nodeBest);
-        }
-
-        return best;
-    }
-
-    // Increments node's own color count and relaxes it forward onto every
-    // successor (each child's count[c] becomes the max of its own and node's,
-    // since Kahn's order guarantees node is fully finalized before any child
-    // is visited). Returns node's own updated count for its color.
-    private static int RelaxNode(ColorGraphNode node, Dictionary<ColorGraphNode, int[]> counts)
-    {
-        var nodeCounts = counts[node];
-        nodeCounts[node.Color]++;
-
-        var children = ColorGraphTopology.GetChildren(node);
-        for (var i = 0; i < children.Count; i++)
-        {
-            var childCounts = counts[children.Get(i)];
-            for (var c = 0; c < AlphabetSize; c++)
-            {
-                childCounts[c] = Math.Max(childCounts[c], nodeCounts[c]);
-            }
-        }
-
-        return nodeCounts[node.Color];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LargestPathValueByRepeatedRelaxation_LeetCodeExamples_ReturnsLargestColorCountOnAnyPath(
+        string colors, int[][] edges, int expected) =>
+        Assert.Equal(
+            expected,
+            LargestColorValueInADirectedGraphSolution.LargestPathValueByRepeatedRelaxation(colors, edges));
 }
