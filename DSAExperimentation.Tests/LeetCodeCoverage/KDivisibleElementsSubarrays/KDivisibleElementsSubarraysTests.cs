@@ -1,78 +1,52 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.KDivisibleElementsSubarrays;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.KDivisibleElementsSubarrays;
 
-// LeetCode 2261. K Divisible Elements Subarrays: n <= 200, so every subarray can be
-// enumerated directly - for each start, extend the end while the running count of
-// elements divisible by p stays within k, exactly the same early-break-on-violated-
-// count shape ValidParenthesisStringTests/CheckIfAParenthesesStringCanBeValidTests
-// use for their own single-pass scans. Distinctness is deduplicated through this
-// repo's own Set<string> (HashMap-backed), keyed by the subarray's own elements
-// joined into a signature - the same "dedupe via Set<string>" composition
-// DistinctEchoSubstringsTests already proves out for substrings, reused here for
-// subarrays.
-public sealed partial class KDivisibleElementsSubarraysTests
+// Harness only. Both strategies are KDivisibleElementsSubarraysSolution's, and
+// pinning them to the same examples is what finally puts the HashSet baseline -
+// previously a private helper in the benchmark, asserted by nothing - under test
+// alongside the Set-backed dedupe it is measured against.
+public sealed class KDivisibleElementsSubarraysTests
 {
-    [Fact]
-    public void CountDistinctSubarrays_ClassicExampleOne_ReturnsElevenDistinctSubarrays()
-    {
-        int[] nums = [2, 3, 3, 2, 2];
-
-        var count = CountDistinctSubarrays(nums, k: 2, p: 2);
-
-        Assert.Equal(11, count);
-    }
-
-    [Fact]
-    public void CountDistinctSubarrays_ClassicExampleTwo_EveryNonEmptySubarrayQualifies()
-    {
-        int[] nums = [1, 2, 3, 4];
-
-        var count = CountDistinctSubarrays(nums, k: 4, p: 1);
-
-        Assert.Equal(10, count);
-    }
-
-    [Fact]
-    public void CountDistinctSubarrays_ZeroAllowedDivisibleElements_OnlyNonDivisibleRunsQualify()
-    {
-        int[] nums = [2, 2, 2];
-
-        var count = CountDistinctSubarrays(nums, k: 0, p: 2);
-
-        Assert.Equal(0, count);
-    }
-
-    private static int CountDistinctSubarrays(int[] nums, int k, int p)
-    {
-        var distinctSubarrays = new Set<string>();
-
-        PopulateDistinctSubarraySignatures(nums, p, k, distinctSubarrays);
-
-        return distinctSubarrays.Count;
-    }
-
-    private static void PopulateDistinctSubarraySignatures(int[] nums, int divisorP, int maxDivisibleCount, Set<string> distinctSubarrays)
-    {
-        for (var start = 0; start < nums.Length; start++)
+    public static TheoryData<int[], int, int, int> Examples =>
+        new()
         {
-            var divisibleCount = 0;
+            // LeetCode example 1: [2,3,3,2,2] with k = 2, p = 2. Sixteen candidate
+            // subarrays survive the divisible-count bound, eleven of them distinct.
+            { [2, 3, 3, 2, 2], 2, 2, 11 },
 
-            for (var end = start; end < nums.Length; end++)
-            {
-                if (nums[end] % divisorP == 0)
-                {
-                    divisibleCount++;
-                }
+            // LeetCode example 2: every element is divisible by 1 and k covers the
+            // whole array, so all 4+3+2+1 subarrays qualify and none repeat.
+            { [1, 2, 3, 4], 4, 1, 10 },
 
-                if (divisibleCount > maxDivisibleCount)
-                {
-                    break;
-                }
+            // k = 0 with every element divisible by p: no subarray qualifies at all.
+            { [2, 2, 2], 0, 2, 0 },
 
-                var subarraySignature = string.Join(',', nums[start..(end + 1)]);
-                distinctSubarrays.TryAdd(subarraySignature);
-            }
-        }
-    }
+            // The mirror of the previous case: nothing is divisible, so k = 0 admits
+            // everything and only distinctness thins the six candidates down to five.
+            { [1, 3, 1], 0, 2, 5 },
+
+            // Deduplication carries the whole answer here - nine candidates, three
+            // distinct signatures.
+            { [1, 1, 1], 3, 2, 3 },
+
+            // The bound truncates every start after one element, leaving the three
+            // singletons.
+            { [2, 4, 6], 1, 2, 3 },
+
+            // A single non-divisible element is still one qualifying subarray.
+            { [5], 0, 2, 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDistinctByHashSetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
+        int[] nums, int k, int p, int expected) =>
+        Assert.Equal(expected, KDivisibleElementsSubarraysSolution.CountDistinctByHashSetDedupe(nums, k, p));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDistinctBySetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
+        int[] nums, int k, int p, int expected) =>
+        Assert.Equal(expected, KDivisibleElementsSubarraysSolution.CountDistinctBySetDedupe(nums, k, p));
 }

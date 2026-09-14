@@ -1,146 +1,136 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.DataStructures.Sequence;
+using static DSAExperimentation.LeetCode.BookingConcertTicketsInGroups.BookingConcertTicketsInGroupsSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BookingConcertTicketsInGroups;
 
-// LeetCode 2286. Booking Concert Tickets in Groups: two production SegmentTree
-// instances over the same "seats still available per row" values - Max locates the
-// leftmost qualifying row for Gather (HasCapacitySequence + BinarySearch.LowerBound,
-// the same "binary search on the answer" idiom KokoEatingBananasTests already
-// establishes, just with the monotone answer being a row index instead of a numeric
-// parameter: a prefix max over a growing window is non-decreasing, so the window's
-// running max can only cross the threshold at the row that itself supplies the
-// qualifying value), Sum answers Scatter's feasibility check with one range query
-// instead of a per-row scan.
-public sealed partial class BookingConcertTicketsInGroupsTests
+// Harness only. Both strategies are BookingConcertTicketsInGroupsSolution's - this
+// file replays LeetCode's published call sequences against each
+// IBookMyShowStrategy implementation via a small operation script, so a failure
+// still names the strategy that broke even though the "input" here is a sequence of
+// mutating calls rather than a single argument tuple - the same shape
+// DesignTaskManagerTests already uses for its own instance-API problem. Unlike
+// those scripts, gather and scatter answer with different types (a [row, seat] pair
+// versus a bool), so each BookMyShowOp carries its own expected answer instead of
+// the script being paired with one uniform expected[] array. BookMyShowOp is pure
+// dispatch plus the assertion - no seating logic of its own.
+//
+// The pre-migration test only proved the segment-tree strategy; the row-scan
+// baseline (previously untested scaffolding inlined in the benchmark, where its
+// gather only ever reported whether a row was found rather than which row and seat)
+// gets that same coverage here for the first time.
+public sealed class BookingConcertTicketsInGroupsTests
 {
-    [Fact]
-    public void GatherAndScatter_LeetCodeExample_MatchesExpectedSequence()
-    {
-        var bookMyShow = new BookMyShow(2, 5);
-
-        var firstGather = bookMyShow.Gather(4, 0);
-        Assert.Equal([0, 0], firstGather);
-
-        var secondGather = bookMyShow.Gather(2, 0);
-        Assert.Equal([], secondGather);
-
-        var firstScatter = bookMyShow.Scatter(5, 1);
-        Assert.True(firstScatter);
-
-        var secondScatter = bookMyShow.Scatter(5, 1);
-        Assert.False(secondScatter);
-    }
-
-    [Fact]
-    public void Gather_NoRowWithinMaxRowHasEnoughCapacity_ReturnsEmptyArray()
-    {
-        var bookMyShow = new BookMyShow(3, 3);
-
-        var actual = bookMyShow.Gather(4, 2);
-        Assert.Equal([], actual);
-    }
-
-    [Fact]
-    public void Scatter_MoreSeatsRequestedThanRemainInRange_ReturnsFalse()
-    {
-        var bookMyShow = new BookMyShow(2, 3);
-
-        var actual = bookMyShow.Scatter(7, 1);
-        Assert.False(actual);
-    }
-
-    private sealed class BookMyShow
-    {
-        private readonly int _seatsPerRow;
-        private readonly SegmentTree<int, MaxOperation<int>> _maxAvailable;
-        private readonly SegmentTree<int, SumOperation<int>> _sumAvailable;
-
-        public BookMyShow(int rowCount, int seatsPerRow)
+    public static TheoryData<int, int, BookMyShowOp[]> Examples =>
+        new()
         {
-            _seatsPerRow = seatsPerRow;
-            var initial = Enumerable.Repeat(seatsPerRow, rowCount).ToArray();
-            _maxAvailable = new SegmentTree<int, MaxOperation<int>>(initial);
-            _sumAvailable = new SegmentTree<int, SumOperation<int>>((int[])initial.Clone());
-        }
-
-        public int[] Gather(int k, int maxRow)
-        {
-            var row = FindLeftmostRowWithCapacity(fromRow: 0, maxRow, threshold: k);
-
-            if (row is null)
             {
-                return [];
-            }
-
-            var available = _maxAvailable.Query(row.Value, row.Value);
-            var seat = _seatsPerRow - available;
-            SetAvailable(row.Value, available - k);
-
-            return [row.Value, seat];
-        }
-
-        public bool Scatter(int k, int maxRow)
-        {
-            if (_sumAvailable.Query(0, maxRow) < k)
+                // LeetCode's own published example.
+                2, 5,
+                [
+                    BookMyShowOp.Gather(4, 0, [0, 0]),
+                    BookMyShowOp.Gather(2, 0, []),
+                    BookMyShowOp.Scatter(5, 1, true),
+                    BookMyShowOp.Scatter(5, 1, false),
+                ]
+            },
             {
-                return false;
-            }
-
-            var row = 0;
-
-            while (k > 0)
+                // No row within maxRow is wide enough to seat the group at all.
+                3, 3, [BookMyShowOp.Gather(4, 2, [])]
+            },
             {
-                (row, k) = ScatterStep(row, maxRow, k);
-            }
-
-            return true;
-        }
-
-        private (int Row, int K) ScatterStep(int row, int maxRow, int k)
-        {
-            row = FindLeftmostRowWithCapacity(row, maxRow, threshold: 1)!.Value;
-
-            var available = _maxAvailable.Query(row, row);
-            var take = Math.Min(available, k);
-            SetAvailable(row, available - take);
-            k -= take;
-
-            if (take == available)
+                // Two rows of three seats is six seats; seven never fits.
+                2, 3, [BookMyShowOp.Scatter(7, 1, false)]
+            },
             {
-                row++;
-            }
+                // A single row consumed by successive gathers: the reported seat is
+                // the first still-free one, so it walks 0 then 2, and the third
+                // group no longer fits in the one remaining seat.
+                1, 5,
+                [
+                    BookMyShowOp.Gather(2, 0, [0, 0]),
+                    BookMyShowOp.Gather(2, 0, [0, 2]),
+                    BookMyShowOp.Gather(2, 0, []),
+                    BookMyShowOp.Scatter(1, 0, true),
+                    BookMyShowOp.Scatter(1, 0, false),
+                ]
+            },
+            {
+                // Scatter spilling across rows: five seats over three rows of two
+                // leaves exactly one free seat, in the last row.
+                3, 2,
+                [
+                    BookMyShowOp.Scatter(5, 2, true),
+                    BookMyShowOp.Gather(1, 2, [2, 1]),
+                    BookMyShowOp.Scatter(1, 2, false),
+                ]
+            },
+            {
+                // maxRow really does bound the search: the same group that finds no
+                // row at maxRow 0 is seated in row 1 as soon as maxRow allows it.
+                3, 5,
+                [
+                    BookMyShowOp.Gather(5, 0, [0, 0]),
+                    BookMyShowOp.Gather(5, 0, []),
+                    BookMyShowOp.Gather(5, 1, [1, 0]),
+                ]
+            },
+        };
 
-            return (row, k);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BookMyShowByRowScan_LeetCodeExamples_SeatsEachGroupInTheLowestQualifyingRow(
+        int rowCount, int seatsPerRow, BookMyShowOp[] operations) =>
+        RunScript(new BookMyShowByRowScan(rowCount, seatsPerRow), operations);
 
-        private int? FindLeftmostRowWithCapacity(int fromRow, int maxRow, int threshold)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BookMyShowBySegmentTreeBinarySearch_LeetCodeExamples_SeatsEachGroupInTheLowestQualifyingRow(
+        int rowCount, int seatsPerRow, BookMyShowOp[] operations) =>
+        RunScript(new BookMyShowBySegmentTreeBinarySearch(rowCount, seatsPerRow), operations);
+
+    private static void RunScript(IBookMyShowStrategy strategy, BookMyShowOp[] operations)
+    {
+        foreach (var operation in operations)
         {
-            var sequence = new HasCapacitySequence(_maxAvailable, fromRow, maxRow, threshold);
-            var offset = BinarySearch.LowerBound(sequence, true);
-
-            return offset >= sequence.Length ? null : fromRow + offset;
-        }
-
-        private void SetAvailable(int row, int available)
-        {
-            _maxAvailable.Update(row, available);
-            _sumAvailable.Update(row, available);
+            operation.AssertAgainst(strategy);
         }
     }
+}
 
-    // Whether a row with at least `threshold` available seats exists anywhere in the
-    // growing window [fromRow, fromRow + index]. A prefix max over a growing window
-    // is monotonically non-decreasing, so this is [false...false, true...true] over
-    // index, exactly the shape KokoEatingBananasTests.FeasibleSpeedSequence already
-    // uses for its own search-on-answer.
-    private readonly struct HasCapacitySequence(
-        SegmentTree<int, MaxOperation<int>> availableSeats, int fromRow, int maxRow, int threshold)
-        : IRandomAccessSequence<bool>
+// One call in a BookMyShow script: which method to invoke, with what arguments, and
+// what LeetCode says it answers. Built via the named factories below so a script
+// (like Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct BookMyShowOp
+{
+    private readonly bool _isGather;
+    private readonly int _k;
+    private readonly int _maxRow;
+    private readonly int[] _expectedSeating;
+    private readonly bool _expectedSeated;
+
+    private BookMyShowOp(bool isGather, int k, int maxRow, int[] expectedSeating, bool expectedSeated)
     {
-        public int Length => maxRow - fromRow + 1;
+        _isGather = isGather;
+        _k = k;
+        _maxRow = maxRow;
+        _expectedSeating = expectedSeating;
+        _expectedSeated = expectedSeated;
+    }
 
-        public bool Get(int index) => availableSeats.Query(fromRow, fromRow + index) >= threshold;
+    public static BookMyShowOp Gather(int k, int maxRow, int[] expected) => new(true, k, maxRow, expected, false);
+
+    public static BookMyShowOp Scatter(int k, int maxRow, bool expected) => new(false, k, maxRow, [], expected);
+
+    // Internal, not public: IBookMyShowStrategy is internal to
+    // BookingConcertTicketsInGroupsSolution, and only this same assembly's
+    // RunScript ever calls this.
+    internal void AssertAgainst(IBookMyShowStrategy strategy)
+    {
+        if (_isGather)
+        {
+            Assert.Equal(_expectedSeating, strategy.Gather(_k, _maxRow));
+            return;
+        }
+
+        Assert.Equal(_expectedSeated, strategy.Scatter(_k, _maxRow));
     }
 }

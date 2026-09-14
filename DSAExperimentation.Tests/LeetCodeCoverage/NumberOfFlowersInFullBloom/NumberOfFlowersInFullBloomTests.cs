@@ -1,100 +1,33 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.NumberOfFlowersInFullBloom;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfFlowersInFullBloom;
 
-// LeetCode 2251. Number of Flowers in Full Bloom: a flower is in bloom at time t
-// exactly when start <= t <= end, so the count in bloom at t is
-// (# starts <= t) - (# ends < t). Sorting the start/end arrays once with this
-// repo's own MergeSort and then answering each query with BinarySearch's
-// UpperBound (count of starts <= t)/LowerBound (count of ends < t) turns the
-// textbook O(n*m) per-person scan into O((n+m) log n) - the same
-// sort-then-bound composition HowManyNumbersAreSmallerThanTheCurrentNumberTests
-// already proves out, applied to two arrays instead of one.
-public sealed partial class NumberOfFlowersInFullBloomTests
+// Harness only. Both strategies - the O(n*m) per-person scan and the sort-then-
+// bound composition - live in NumberOfFlowersInFullBloomSolution; this file pins
+// each of them to LeetCode's published examples plus the interval endpoints the
+// bound strategy has to split exactly right (a person arriving before every start,
+// after every end, and on a start and an end).
+public sealed class NumberOfFlowersInFullBloomTests
 {
-    [Fact]
-    public void FullBloomFlowers_ClassicExampleOne_ReturnsCountPerPerson()
-    {
-        int[][] flowers = [[1, 6], [3, 7], [9, 12], [4, 13]];
-        int[] persons = [2, 3, 7, 11];
-
-        var counts = FullBloomFlowers(flowers, persons);
-
-        Assert.Equal([1, 2, 2, 2], counts);
-    }
-
-    [Fact]
-    public void FullBloomFlowers_ClassicExampleTwo_ReturnsCountPerPerson()
-    {
-        int[][] flowers = [[1, 10], [3, 3]];
-        int[] persons = [3, 3, 2];
-
-        var counts = FullBloomFlowers(flowers, persons);
-
-        Assert.Equal([2, 2, 1], counts);
-    }
-
-    [Fact]
-    public void FullBloomFlowers_PersonBeforeEveryFlowerStarts_ReturnsZero()
-    {
-        int[][] flowers = [[5, 10]];
-        int[] persons = [1];
-
-        var counts = FullBloomFlowers(flowers, persons);
-
-        Assert.Equal([0], counts);
-    }
-
-    private static int[] FullBloomFlowers(int[][] flowers, int[] persons)
-    {
-        var (starts, ends) = ExtractStartsAndEnds(flowers);
-
-        SortTimes(starts);
-        SortTimes(ends);
-
-        var startSequence = new ArraySequence<int>(starts);
-        var endSequence = new ArraySequence<int>(ends);
-
-        return CountBloomsPerPerson(persons, startSequence, endSequence);
-    }
-
-    private static (int[] Starts, int[] Ends) ExtractStartsAndEnds(int[][] flowers)
-    {
-        var starts = new int[flowers.Length];
-        var ends = new int[flowers.Length];
-
-        for (var i = 0; i < flowers.Length; i++)
+    public static TheoryData<int[][], int[], int[]> Examples =>
+        new()
         {
-            starts[i] = flowers[i][0];
-            ends[i] = flowers[i][1];
-        }
+            { [[1, 6], [3, 7], [9, 12], [4, 13]], [2, 3, 7, 11], [1, 2, 2, 2] },
+            { [[1, 10], [3, 3]], [3, 3, 2], [2, 2, 1] },
+            { [[5, 10]], [1], [0] },
+            { [[1, 3]], [4], [0] },
+            { [[1, 2], [2, 3], [3, 4]], [2], [2] },
+        };
 
-        return (starts, ends);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FullBloomFlowersByPerPersonScan_LeetCodeExamples_ReturnsCountPerPerson(
+        int[][] flowers, int[] persons, int[] expected) =>
+        Assert.Equal(expected, NumberOfFlowersInFullBloomSolution.FullBloomFlowersByPerPersonScan(flowers, persons));
 
-    private static void SortTimes(int[] times)
-    {
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(times));
-    }
-
-    private static int[] CountBloomsPerPerson(int[] persons, ArraySequence<int> startSequence, ArraySequence<int> endSequence)
-    {
-        var counts = new int[persons.Length];
-
-        for (var i = 0; i < persons.Length; i++)
-        {
-            counts[i] = CountBloomingAt(startSequence, endSequence, persons[i]);
-        }
-
-        return counts;
-    }
-
-    private static int CountBloomingAt(ArraySequence<int> startSequence, ArraySequence<int> endSequence, int time)
-    {
-        var bloomedByNow = BinarySearch.UpperBound<int, ArraySequence<int>>(startSequence, time);
-        var wiltedByNow = BinarySearch.LowerBound<int, ArraySequence<int>>(endSequence, time);
-        return bloomedByNow - wiltedByNow;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FullBloomFlowersBySortedBounds_LeetCodeExamples_ReturnsCountPerPerson(
+        int[][] flowers, int[] persons, int[] expected) =>
+        Assert.Equal(expected, NumberOfFlowersInFullBloomSolution.FullBloomFlowersBySortedBounds(flowers, persons));
 }

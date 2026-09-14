@@ -1,62 +1,72 @@
-using DSAExperimentation.DataStructures.IntervalSet;
+using DSAExperimentation.LeetCode.CountIntegersInIntervals;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountIntegersInIntervals;
 
-// LeetCode 2276. Count Integers in Intervals: Add(left, right) delegates straight to this
-// repo's own IntervalSet<int>.Add(left, right) - the closed-interval semantics IntervalSet
-// already implements (see IntervalSet.cs's own doc comment) match this problem's "add every
-// integer in [left, right]" exactly, no encoding needed: two ranges merge whenever they share an
-// actual integer value (e.g. [1,3] and [3,5] both contain 3), which is precisely when NOT
-// merging them would double-count that shared integer. Count() sums (End - Start + 1) over every
-// disjoint interval IntervalSet currently holds instead of tracking a running total field, so it
-// stays correct no matter how many times Add merges ranges behind it.
-public sealed partial class CountIntegersInIntervalsTests
+// Harness only. Both strategies are CountIntegersInIntervalsSolution's; this file just
+// replays LeetCode's published add() call script against each and asserts count() after
+// EVERY add rather than only at the script's own count() positions, so a merge that goes
+// wrong is caught at the call that caused it - the same running-snapshot shape
+// DataStreamAsDisjointIntervalsTests uses for LC 352. The pre-migration test only
+// exercised the IntervalSet composition; CreateByHashSetPerInteger's baseline (previously
+// untested scaffolding inlined in the benchmark) gets that same coverage here for the
+// first time.
+public sealed class CountIntegersInIntervalsTests
 {
-    [Fact]
-    public void Add_LeetCodeExample_CountTracksUnionSizeAsRangesMerge()
-    {
-        var countIntervals = new CountIntervals();
-
-        countIntervals.Add(2, 3);
-        Assert.Equal(2, countIntervals.Count());
-
-        countIntervals.Add(7, 10);
-        Assert.Equal(6, countIntervals.Count());
-
-        countIntervals.Add(5, 8);
-        Assert.Equal(8, countIntervals.Count());
-    }
-
-    [Fact]
-    public void Add_DisjointThenBridgingRange_MergesEverythingIntoOneUnion()
-    {
-        var countIntervals = new CountIntervals();
-
-        countIntervals.Add(1, 3);
-        countIntervals.Add(5, 7);
-        Assert.Equal(6, countIntervals.Count());
-
-        countIntervals.Add(3, 5);
-        Assert.Equal(7, countIntervals.Count());
-    }
-
-    private sealed class CountIntervals
-    {
-        private readonly IntervalSet<int> _intervals = new();
-
-        public void Add(int left, int right) => _intervals.Add(left, right);
-
-        public int Count()
+    public static TheoryData<(int Left, int Right)[], int[]> Examples =>
+        new()
         {
-            var total = 0;
+            // LeetCode example 1: add(2,3), add(7,10), add(5,8) - the last add bridges
+            // [7,10] and reports 8, the union {2,3} u {5..10}.
+            { [(2, 3), (7, 10), (5, 8)], [2, 6, 8] },
 
-            for (var i = 0; i < _intervals.Count; i++)
-            {
-                var (start, end) = _intervals.Get(i);
-                total += end - start + 1;
-            }
+            // Two disjoint ranges, then a range that bridges both into a single union.
+            { [(1, 3), (5, 7), (3, 5)], [3, 6, 7] },
 
-            return total;
+            // A single integer, added as a degenerate range.
+            { [(1, 1)], [1] },
+
+            // Re-adding a range already fully contained changes nothing.
+            { [(1, 10), (3, 4)], [10, 10] },
+
+            // The same degenerate range twice: still one integer.
+            { [(5, 5), (5, 5)], [1, 1] },
+
+            // Ranges that abut without sharing an integer stay two intervals, and the
+            // total is still the plain count of distinct integers.
+            { [(1, 2), (4, 5)], [2, 4] },
+
+            // A wide range added last swallows several earlier disjoint ones at once,
+            // which is where a running-total field (rather than re-summing the intervals
+            // actually held) would over-count.
+            { [(1, 2), (5, 6), (9, 10), (0, 20)], [2, 4, 6, 21] },
+
+            // Negative and zero-crossing bounds.
+            { [(-5, -3), (-4, 0)], [3, 6] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByIntervalSetMerge_LeetCodeExamples_CountTracksUnionSizeAsRangesMerge(
+        (int Left, int Right)[] ranges, int[] expectedAfterEachAdd) =>
+        AssertSequence(
+            CountIntegersInIntervalsSolution.CreateByIntervalSetMerge(), ranges, expectedAfterEachAdd);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByHashSetPerInteger_LeetCodeExamples_CountTracksUnionSizeAsRangesMerge(
+        (int Left, int Right)[] ranges, int[] expectedAfterEachAdd) =>
+        AssertSequence(
+            CountIntegersInIntervalsSolution.CreateByHashSetPerInteger(), ranges, expectedAfterEachAdd);
+
+    private static void AssertSequence(
+        CountIntegersInIntervalsSolution.ICountIntervals countIntervals,
+        (int Left, int Right)[] ranges,
+        int[] expectedAfterEachAdd)
+    {
+        for (var i = 0; i < ranges.Length; i++)
+        {
+            countIntervals.Add(ranges[i].Left, ranges[i].Right);
+            Assert.Equal(expectedAfterEachAdd[i], countIntervals.Count());
         }
     }
 }
