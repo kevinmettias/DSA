@@ -1,61 +1,73 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.NumberOfWaysToRearrangeSticksWithKSticksVisible;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToRearrangeSticksWithKSticksVisible;
 
-// LeetCode 1866. Number of Ways to Rearrange Sticks With K Sticks Visible: counting
-// arrangements of sticks [1..n] with exactly k left-to-right visible (a stick is
-// visible iff it's taller than every stick before it) is the unsigned Stirling
-// numbers of the first kind, T(n,k) = T(n-1,k-1) + (n-1)*T(n-1,k) - placing stick n
-// (the tallest) either as its own new visible stick (T(n-1,k-1), one way) or
-// slotted in anywhere after one of the n-1 already-arranged sticks where it stays
-// hidden behind them (T(n-1,k) ways, times n-1 insertion slots). Same top-down
-// recurrence shape UniqueBinarySearchTreesTests already uses for a different
-// counting recurrence, via this repo's own Memoizer<TState,TResult>, keyed on the
-// (n,k) pair and reduced mod 1e9+7.
+// Harness only. Both strategies are
+// NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution's - LeetCode's published
+// examples are stated once and replayed against each, so a failure names the
+// strategy that broke rather than reporting a disagreement between an anonymous
+// test helper and an anonymous benchmark arm. The permutation baseline was never
+// asserted before this migration.
 public sealed class NumberOfWaysToRearrangeSticksWithKSticksVisibleTests
 {
-    private const int Mod = 1_000_000_007;
-
-    [Fact]
-    public void RearrangeSticks_ThreeSticksTwoVisible_ReturnsThree()
-    {
-        var actual = RearrangeSticks(n: 3, k: 2);
-        Assert.Equal(3, actual);
-    }
-
-    [Fact]
-    public void RearrangeSticks_FiveSticksAllVisible_ReturnsOne()
-    {
-        var actual = RearrangeSticks(n: 5, k: 5);
-        Assert.Equal(1, actual);
-    }
-
-    [Fact]
-    public void RearrangeSticks_TwentySticksElevenVisible_ReturnsSixHundredFortySevenMillionModResult()
-    {
-        var actual = RearrangeSticks(n: 20, k: 11);
-        Assert.Equal(647_427_950, actual);
-    }
-
-    private static int RearrangeSticks(int n, int k)
-        => (int)Memoizer.Memoize<(int N, int K), long>((n, k), Ways);
-
-    private static long Ways((int N, int K) state, Func<(int N, int K), long> ways)
-    {
-        var (n, k) = state;
-
-        if (n == 0)
+    // Cases both arms are checked at. The permutation baseline lays out all n!
+    // arrangements, so the shared set stops at the larger of the two stick counts
+    // the benchmark measures and the big modular case below is the recurrence's
+    // alone.
+    public static TheoryData<int, int, int> Examples =>
+        new()
         {
-            return k == 0 ? 1 : 0;
-        }
+            // LC example 1.
+            { 3, 2, 3 },
 
-        if (k == 0)
+            // LC example 2: only the increasing arrangement shows every stick.
+            { 5, 5, 1 },
+
+            // One stick is always its own single visible stick.
+            { 1, 1, 1 },
+
+            // Two more rows of the unsigned Stirling triangle.
+            { 4, 2, 11 },
+            { 5, 3, 35 },
+
+            // The two stick counts the benchmark measures, at its visible count.
+            { 8, 3, 13_132 },
+            { 9, 3, 118_124 },
+        };
+
+    // LC example 3. Its answer is the count reduced mod 1e9+7, and 20! arrangements
+    // is far past what the permutation baseline can enumerate in test time, so only
+    // the recurrence is asserted against it.
+    public static TheoryData<int, int, int> LargeExamples =>
+        new()
         {
-            return 0;
-        }
+            { 20, 11, 647_427_950 },
+        };
 
-        var placeAsNewVisible = ways((n - 1, k - 1));
-        var hideAfterExistingStick = (n - 1) * ways((n - 1, k)) % Mod;
-        return (placeAsNewVisible + hideAfterExistingStick) % Mod;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RearrangeSticksByPermutationEnumeration_LeetCodeExamples_CountsArrangementsWithKVisibleSticks(
+        int stickCount, int visibleCount, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
+                .RearrangeSticksByPermutationEnumeration(stickCount, visibleCount));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RearrangeSticksByMemoizedStirling_LeetCodeExamples_CountsArrangementsWithKVisibleSticks(
+        int stickCount, int visibleCount, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
+                .RearrangeSticksByMemoizedStirling(stickCount, visibleCount));
+
+    [Theory]
+    [MemberData(nameof(LargeExamples))]
+    public void RearrangeSticksByMemoizedStirling_TwentySticks_ReducesTheCountModuloOneBillionSeven(
+        int stickCount, int visibleCount, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
+                .RearrangeSticksByMemoizedStirling(stickCount, visibleCount));
 }

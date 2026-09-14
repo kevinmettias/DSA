@@ -1,65 +1,51 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.MergeTripletsToFormTargetTriplet;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeTripletsToFormTargetTriplet;
 
-// LeetCode 1899. Merge Triplets to Form Target Triplet: a "compatible" triplet
-// (every coordinate <= target's) can only ever help the component-wise-max merge,
-// never push a coordinate past target - so the whole problem reduces to "does some
-// compatible triplet hit target[i] exactly, for every i in {0,1,2}," tracked with
-// this repo's own Set<int> over the matched coordinate indices, the same
-// membership-tracking role ContainsDuplicateTests already gives it.
-public sealed partial class MergeTripletsToFormTargetTripletTests
+// Harness only: both strategies live in MergeTripletsToFormTargetTripletSolution
+// and answer the same question - the exhaustive subset search that used to be a
+// benchmark-only baseline nothing asserted, and the Set<int>-tracked linear scan.
+// One test method per strategy over LeetCode's published examples plus the edge
+// cases the original coverage carried.
+public sealed class MergeTripletsToFormTargetTripletTests
 {
-    [Fact]
-    public void CanFormTarget_CompatibleTripletsTogetherCoverEveryCoordinate_ReturnsTrue()
-    {
-        int[][] triplets = [[2, 5, 3], [1, 8, 4], [1, 7, 5]];
-        int[] target = [2, 7, 5];
-
-        var actual = CanFormTarget(triplets, target);
-        Assert.True(actual);
-    }
-
-    [Fact]
-    public void CanFormTarget_NoTripletReachesEveryCoordinate_ReturnsFalse()
-    {
-        int[][] triplets = [[1, 3, 4], [2, 2, 2]];
-        int[] target = [3, 4, 5];
-
-        var actual = CanFormTarget(triplets, target);
-        Assert.False(actual);
-    }
-
-    [Fact]
-    public void CanFormTarget_IncompatibleTripletIsSkippedButMatchStillFound_ReturnsTrue()
-    {
-        int[][] triplets = [[9, 9, 9], [3, 4, 5]];
-        int[] target = [3, 4, 5];
-
-        var actual = CanFormTarget(triplets, target);
-        Assert.True(actual);
-    }
-
-    private static bool CanFormTarget(int[][] triplets, int[] target)
-    {
-        var matched = new Set<int>();
-
-        foreach (var triplet in triplets)
+    public static TheoryData<int[][], int[], bool> Examples =>
+        new()
         {
-            if (triplet[0] > target[0] || triplet[1] > target[1] || triplet[2] > target[2])
-            {
-                continue;
-            }
+            // LC example 1: [2,5,3] merged with [1,7,5] is [2,7,5].
+            { [[2, 5, 3], [1, 8, 4], [1, 7, 5]], [2, 7, 5], true },
 
-            for (var i = 0; i < 3; i++)
-            {
-                if (triplet[i] == target[i])
-                {
-                    matched.TryAdd(i);
-                }
-            }
-        }
+            // LC example 2: every triplet overshoots the target's y coordinate.
+            { [[3, 4, 5], [4, 5, 6]], [3, 2, 5], false },
 
-        return matched.Count == 3;
-    }
+            // LC example 3: three of the four triplets each contribute one coordinate.
+            { [[2, 5, 3], [2, 3, 4], [1, 2, 5], [5, 2, 3]], [5, 5, 5], true },
+
+            // Compatible throughout, but no triplet ever hits a target coordinate exactly.
+            { [[1, 3, 4], [2, 2, 2]], [3, 4, 5], false },
+
+            // The incompatible triplet must be skipped, not merged, for the match to stand.
+            { [[9, 9, 9], [3, 4, 5]], [3, 4, 5], true },
+
+            // A single triplet that already is the target.
+            { [[4, 6, 8]], [4, 6, 8], true },
+
+            // A single triplet, one coordinate short.
+            { [[4, 6, 7]], [4, 6, 8], false },
+
+            // Every coordinate is matched, but each by a different triplet.
+            { [[5, 1, 1], [1, 5, 1], [1, 1, 5]], [5, 5, 5], true },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanFormTargetByBruteForceSubsets_LeetCodeExamples_ReturnsWhetherTargetIsReachable(
+        int[][] triplets, int[] target, bool expected) =>
+        Assert.Equal(expected, MergeTripletsToFormTargetTripletSolution.CanFormTargetByBruteForceSubsets(triplets, target));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanFormTargetBySetTrackedLinearScan_LeetCodeExamples_ReturnsWhetherTargetIsReachable(
+        int[][] triplets, int[] target, bool expected) =>
+        Assert.Equal(expected, MergeTripletsToFormTargetTripletSolution.CanFormTargetBySetTrackedLinearScan(triplets, target));
 }
