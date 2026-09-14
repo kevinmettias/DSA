@@ -1,102 +1,63 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.TheScoreOfStudentsSolvingMathExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// The Score of Students Solving Math Expression (LC 2019): plain recursion with no
-// caching (every (left,right) sub-interval gets recomputed from scratch each time a
-// different split path reaches it - the same overlapping-subproblems blowup matrix
-// chain multiplication has) vs. this repo's own Memoizer<TState,TResult> caching by
-// (left,right) number-token indices, with each interval's achievable-value set held
-// in this repo's own HashMap<long,bool> (Set<long> exposes no enumeration, so it
-// cannot support the pairwise combine step - see the coverage test's own note).
+// Harness only: both arms are TheScoreOfStudentsSolvingMathExpressionSolution's, the
+// same methods TheScoreOfStudentsSolvingMathExpressionTests proves correct. Plain
+// recursion with no caching - every (left, right) sub-interval recomputed from scratch
+// each time a different split path reaches it, the same overlapping-subproblems blowup
+// matrix chain multiplication has - vs. the identical recurrence over this repo's own
+// Memoizer<TState,TResult>.
+//
+// [GlobalSetup] builds LeetCode's own input shape (the expression string) rather than
+// the parsed token arrays the pre-migration benchmark hoisted: parsing is one O(n) pass,
+// identical in both arms and negligible against the interval search, so no prepared-input
+// overload is warranted and none could be added without either an ambiguous BCL parameter
+// or a type invented for the purpose.
 [MemoryDiagnoser]
 public class TheScoreOfStudentsSolvingMathExpressionBenchmarks
 {
+    private const int WorkloadSeed = 1;
     private const int MaxDigitValueExclusive = 9;
     private const int OperatorChoiceCount = 2;
+    private const int AnswerCount = 5;
+    private const int MaxAnswerExclusive = 1_001;
 
     [Params(6, 10)]
     public int NumberCount;
 
-    private int[] _numbers = null!;
-    private char[] _ops = null!;
+    private string _expression = null!;
+    private int[] _answers = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        _numbers = Enumerable.Range(0, NumberCount).Select(_ => random.Next(1, MaxDigitValueExclusive)).ToArray();
-        _ops = Enumerable.Range(0, NumberCount - 1).Select(_ => random.Next(0, OperatorChoiceCount) == 0 ? '+' : '*').ToArray();
+        var random = new Random(WorkloadSeed);
+        var numbers = Enumerable.Range(0, NumberCount)
+            .Select(_ => random.Next(1, MaxDigitValueExclusive))
+            .ToArray();
+        var ops = Enumerable.Range(0, NumberCount - 1)
+            .Select(_ => random.Next(0, OperatorChoiceCount) == 0 ? '+' : '*')
+            .ToArray();
+
+        _expression = BuildExpression(numbers, ops);
+        _answers = Enumerable.Range(0, AnswerCount)
+            .Select(_ => random.Next(0, MaxAnswerExclusive))
+            .ToArray();
     }
+
+    private static string BuildExpression(int[] numbers, char[] ops) =>
+        string.Concat(Enumerable.Range(0, numbers.Length)
+            .Select(i => i == 0 ? $"{numbers[i]}" : $"{ops[i - 1]}{numbers[i]}"));
 
     [Benchmark(Baseline = true)]
-    public int RecursiveNoMemo()
-    {
-        var values = Solve(0, _numbers.Length - 1);
-        return new HashSet<long>(values).Count;
-    }
-
-    private List<long> Solve(int left, int right)
-    {
-        if (left == right)
-        {
-            return [_numbers[left]];
-        }
-
-        var results = new List<long>();
-
-        for (var split = left; split < right; split++)
-        {
-            var leftValues = Solve(left, split);
-            var rightValues = Solve(split + 1, right);
-
-            foreach (var a in leftValues)
-            {
-                foreach (var b in rightValues)
-                {
-                    results.Add(_ops[split] == '+' ? a + b : a * b);
-                }
-            }
-        }
-
-        return results;
-    }
+    public int UnmemoizedRecursion() =>
+        TheScoreOfStudentsSolvingMathExpressionSolution.ScoreOfStudentsByUnmemoizedRecursion(
+            _expression, _answers);
 
     [Benchmark]
-    public int MemoizedHashMap()
-    {
-        var values = Memoizer.Memoize<(int Left, int Right), HashMap<long, bool>>(
-            (0, _numbers.Length - 1),
-            (range, solve) =>
-            {
-                var (left, right) = range;
-                var map = new HashMap<long, bool>();
-
-                if (left == right)
-                {
-                    map.Set(_numbers[left], true);
-                    return map;
-                }
-
-                for (var split = left; split < right; split++)
-                {
-                    var leftValues = solve((left, split));
-                    var rightValues = solve((split + 1, right));
-
-                    foreach (var a in leftValues.Keys)
-                    {
-                        foreach (var b in rightValues.Keys)
-                        {
-                            map.Set(_ops[split] == '+' ? a + b : a * b, true);
-                        }
-                    }
-                }
-
-                return map;
-            });
-
-        return values.Count;
-    }
+    public int MemoizedIntervals() =>
+        TheScoreOfStudentsSolvingMathExpressionSolution.ScoreOfStudentsByMemoizedIntervals(
+            _expression, _answers);
 }

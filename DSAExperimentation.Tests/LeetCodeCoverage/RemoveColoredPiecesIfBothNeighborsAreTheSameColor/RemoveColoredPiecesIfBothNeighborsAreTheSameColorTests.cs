@@ -1,57 +1,66 @@
-using DSAExperimentation.DataStructures.Buffers;
+using DSAExperimentation.LeetCode.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
 
-// LeetCode 2038. Remove Colored Pieces if Both Neighbors are the Same Color: a
-// move only ever removes an interior piece from a maximal run of same-colored
-// pieces, and removing one never changes how many total removals that run can
-// ever yield - a run of length L always yields exactly max(L-2, 0) moves,
-// regardless of removal order, since the run just gets shorter by one and stays
-// homogeneous. The "game" therefore reduces to counting each player's fixed move
-// budget via this repo's own ContiguousGroupBuffer, the same run-grouping
-// primitive ContiguousGroupBufferTests exercises directly. Alice moves first and
-// only ever has 'A' moves available, Bob only 'B' moves; since the two budgets
-// never interact, Alice wins iff her budget is strictly larger than Bob's.
-public sealed partial class RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests
+// Harness only. Both playing the game out and counting each player's fixed move
+// budget are RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution's - this file
+// pins them to LeetCode's three published examples plus the cases the examples never
+// reach: a run short enough to yield no moves at all, equal budgets (which Alice
+// loses, because she needs a STRICTLY larger one), and a string of one color only,
+// where the losing player's budget is never touched.
+public sealed class RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests
 {
-    [Fact]
-    public void WinnerOfGame_ClassicExample_AliceHasMoreMovesAndWins()
-    {
-        var wins = WinnerOfGame("AAABABB");
-
-        Assert.True(wins);
-    }
-
-    [Fact]
-    public void WinnerOfGame_OnlyTwoSameColorPieces_NeitherPlayerCanMoveAndAliceLoses()
-    {
-        var wins = WinnerOfGame("AA");
-
-        Assert.False(wins);
-    }
-
-    [Fact]
-    public void WinnerOfGame_BobsRunGivesHimMoreMoves_AliceLoses()
-    {
-        var wins = WinnerOfGame("ABBBBBBBAAA");
-
-        Assert.False(wins);
-    }
-
-    private static bool WinnerOfGame(string colors)
-    {
-        var buffer = new ContiguousGroupBuffer<char, char>();
-        var budgets = new Dictionary<char, int> { ['A'] = 0, ['B'] = 0 };
-
-        void Accumulate(IReadOnlyList<char> items, char key) => budgets[key] += Math.Max(0, items.Count - 2);
-
-        foreach (var color in colors)
+    public static TheoryData<string, bool> Examples =>
+        new()
         {
-            buffer.Add(color, color, Accumulate);
-        }
+            // LeetCode example 1: Alice's run of three yields one move, Bob's runs none.
+            { "AAABABB", true },
 
-        buffer.Flush(Accumulate);
+            // LeetCode example 2: neither player has an interior piece to remove, and
+            // Alice, moving first, is the one who is stuck.
+            { "AA", false },
 
-        return budgets['A'] > budgets['B'];
-    }
+            // LeetCode example 3: Bob's run of seven buys him five moves to Alice's one.
+            { "ABBBBBBBAAA", false },
+
+            // The smallest winning position: one removable 'A' and nothing for Bob.
+            { "AAA", true },
+
+            // Its mirror - Alice cannot move at all on turn one.
+            { "BBB", false },
+
+            // Equal budgets: Alice runs out first, so a tie is a loss for her.
+            { "AAABBB", false },
+
+            // One more 'A' than that tips it.
+            { "AAAABBB", true },
+
+            // Two pieces of different colors: no interior position exists.
+            { "AB", false },
+
+            // Bob out-budgets Alice two to three.
+            { "AAAABBBBB", false },
+
+            // A single colour: Bob never gets a move.
+            { "AAAAA", true },
+
+            // Alternating pieces: every run has length one, so nobody can ever move.
+            { "ABABABAB", false },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WinnerOfGameByGameSimulation_LeetCodeExamples_ReturnsWhetherAliceWins(
+        string colors, bool expected) =>
+        Assert.Equal(
+            expected,
+            RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.WinnerOfGameByGameSimulation(colors));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WinnerOfGameByRunLengthCounting_LeetCodeExamples_ReturnsWhetherAliceWins(
+        string colors, bool expected) =>
+        Assert.Equal(
+            expected,
+            RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.WinnerOfGameByRunLengthCounting(colors));
 }
