@@ -1,17 +1,15 @@
 using BenchmarkDotNet.Attributes;
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.NumberOfStudentsUnableToEatLunch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Number of Students Unable to Eat Lunch (LC 1700): a plain List<int>
-// simulation of the textbook circular-queue process (List.RemoveAt(0) is
-// O(n), so every front-of-line removal shifts the rest of the list - O(n^2)
-// overall once many students cycle to the back) vs. this repo's own
-// Queue<int> (students, Deque-backed so front removal is O(1)) and
-// Stack<int> (sandwiches, top = index 0) running the identical simulation -
-// the same Queue+Stack composition NumberOfStudentsUnableToEatLunchTests
-// itself makes - for O(n) overall.
+// Harness only: both arms are NumberOfStudentsUnableToEatLunchSolution's, the same
+// methods NumberOfStudentsUnableToEatLunchTests proves correct. The workload is a
+// seeded random line of binary preferences against an equally random pile, so many
+// students cycle to the back before the line stalls - exactly the traffic that
+// charges the List<int> baseline its O(n) RemoveAt(0) per round against the
+// Deque-backed Queue<int>'s O(1). Generating both arrays is [GlobalSetup]'s job,
+// so only the simulation is measured.
 [MemoryDiagnoser]
 public class NumberOfStudentsUnableToEatLunchBenchmarks
 {
@@ -35,86 +33,10 @@ public class NumberOfStudentsUnableToEatLunchBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListSimulation()
-    {
-        var queue = new List<int>(_students);
-        var sandwichIndex = 0;
-        var consecutiveSkips = 0;
-
-        while (queue.Count > 0 && consecutiveSkips < queue.Count)
-        {
-            var preference = queue[0];
-            queue.RemoveAt(0);
-
-            if (preference == _sandwiches[sandwichIndex])
-            {
-                sandwichIndex++;
-                consecutiveSkips = 0;
-            }
-            else
-            {
-                queue.Add(preference);
-                consecutiveSkips++;
-            }
-        }
-
-        return queue.Count;
-    }
+    public int ListSimulation() =>
+        NumberOfStudentsUnableToEatLunchSolution.CountStudentsByListSimulation(_students, _sandwiches);
 
     [Benchmark]
-    public int QueueStackSimulation()
-    {
-        var queue = BuildQueue(_students);
-        var stack = BuildStack(_sandwiches);
-
-        return SimulateLunchLine(queue, stack);
-    }
-
-    private static RepoQueue BuildQueue(int[] students)
-    {
-        var queue = new RepoQueue();
-
-        foreach (var student in students)
-        {
-            queue.Enqueue(student);
-        }
-
-        return queue;
-    }
-
-    private static RepoStack BuildStack(int[] sandwiches)
-    {
-        var stack = new RepoStack();
-
-        for (var i = sandwiches.Length - 1; i >= 0; i--)
-        {
-            stack.Push(sandwiches[i]);
-        }
-
-        return stack;
-    }
-
-    private static int SimulateLunchLine(RepoQueue queue, RepoStack stack)
-    {
-        var consecutiveSkips = 0;
-
-        while (queue.Count > 0 && consecutiveSkips < queue.Count)
-        {
-            queue.TryDequeue(out var preference);
-            stack.TryPeek(out var top);
-
-            if (preference == top)
-            {
-                stack.TryPop(out _);
-                consecutiveSkips = 0;
-            }
-            else
-            {
-                queue.Enqueue(preference);
-                consecutiveSkips++;
-            }
-        }
-
-        return queue.Count;
-    }
+    public int QueueStackSimulation() =>
+        NumberOfStudentsUnableToEatLunchSolution.CountStudentsByQueueStackSimulation(_students, _sandwiches);
 }
