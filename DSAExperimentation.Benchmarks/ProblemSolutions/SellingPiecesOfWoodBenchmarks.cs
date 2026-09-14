@@ -1,22 +1,23 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.SellingPiecesOfWood;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Selling Pieces of Wood (LC 2312): plain un-memoized (Height, Width) recursion -
-// exponential, since the same (Height, Width) sub-piece recurs across many different
-// earlier horizontal/vertical cut sequences that land on it - vs. this repo's own
-// Memoizer<TState,TResult> caching that exact pair (the same
-// MinimumScoreTriangulationOfPolygonBenchmarks/NumberOfWaysOfCuttingAPizzaBenchmarks
-// un-memoized-vs-Memoizer shape). Both look up each piece's listed price through this
-// repo's own HashMap<TKey,TValue>; only the recursion's caching differs. The
-// un-memoized recursion's blow-up is far steeper here than the single-axis interval
-// DPs those benchmarks use (two independent cut axes instead of one), so Size is kept
-// very modest (<=6) for the same "the baseline's blowup is real" reason those
-// benchmarks' own comments give - a size-7 baseline already runs tens of millions of
-// calls. Every (h, w) pair up to Size is priced, so nothing short-circuits the naive
-// baseline's full branching early.
+// Harness only: both arms are SellingPiecesOfWoodSolution's, the same methods
+// SellingPiecesOfWoodTests proves agree. They share one recurrence and differ only
+// in whether recursive calls go through Memoizer's cache, so the measurement
+// isolates memoization itself - the same un-memoized-vs-Memoizer shape
+// MinimumScoreTriangulationOfPolygonBenchmarks and NumberOfWaysOfCuttingAPizzaBenchmarks
+// already use.
+//
+// The un-memoized baseline's blow-up is far steeper here than in those single-axis
+// interval DPs (two independent cut axes instead of one), so Size stays very modest
+// (<= 6): a size-7 baseline already runs tens of millions of calls. Every (h, w)
+// pair up to Size is priced, so nothing short-circuits its full branching early.
+//
+// Each arm is handed the prepared price index its hoisted overload takes, so
+// building the HashMap is charged to [GlobalSetup] rather than to the search.
 [MemoryDiagnoser]
 public class SellingPiecesOfWoodBenchmarks
 {
@@ -34,58 +35,22 @@ public class SellingPiecesOfWoodBenchmarks
         var random = new Random(RandomSeed);
         _prices = new HashMap<(int Height, int Width), int>();
 
-        for (var h = 1; h <= Size; h++)
+        for (var height = 1; height <= Size; height++)
         {
-            for (var w = 1; w <= Size; w++)
+            for (var width = 1; width <= Size; width++)
             {
-                _prices.Set((h, w), random.Next(1, MaxPrice));
+                var price = random.Next(1, MaxPrice);
+
+                _prices.Set((height, width), price);
             }
         }
     }
 
     [Benchmark(Baseline = true)]
-    public long UnmemoizedRecursion() => BestValue((Size, Size));
-
-    private long BestValue((int Height, int Width) piece)
-    {
-        var (height, width) = piece;
-        _prices.TryGetValue(piece, out var listedPrice);
-        long best = listedPrice;
-
-        for (var cut = 1; cut < height; cut++)
-        {
-            best = Math.Max(best, BestValue((cut, width)) + BestValue((height - cut, width)));
-        }
-
-        for (var cut = 1; cut < width; cut++)
-        {
-            best = Math.Max(best, BestValue((height, cut)) + BestValue((height, width - cut)));
-        }
-
-        return best;
-    }
+    public long UnmemoizedRecursion() =>
+        SellingPiecesOfWoodSolution.SellingWoodByUnmemoizedRecursion(Size, Size, _prices);
 
     [Benchmark]
-    public long MemoizedRecursion()
-        => Memoizer.Memoize<(int Height, int Width), long>((Size, Size), BestValueMemoized);
-
-    private long BestValueMemoized(
-        (int Height, int Width) piece, Func<(int Height, int Width), long> bestValue)
-    {
-        var (height, width) = piece;
-        _prices.TryGetValue(piece, out var listedPrice);
-        long best = listedPrice;
-
-        for (var cut = 1; cut < height; cut++)
-        {
-            best = Math.Max(best, bestValue((cut, width)) + bestValue((height - cut, width)));
-        }
-
-        for (var cut = 1; cut < width; cut++)
-        {
-            best = Math.Max(best, bestValue((height, cut)) + bestValue((height, width - cut)));
-        }
-
-        return best;
-    }
+    public long MemoizedRecursion() =>
+        SellingPiecesOfWoodSolution.SellingWoodByMemoizedRecursion(Size, Size, _prices);
 }

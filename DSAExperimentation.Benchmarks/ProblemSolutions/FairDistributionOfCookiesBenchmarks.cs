@@ -1,14 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.FairDistributionOfCookies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Fair Distribution of Cookies (LC 2305): hand-rolled recursive backtracking (same
-// symmetry-breaking + branch-and-bound pruning as FairDistributionOfCookiesTests) vs.
-// this repo's generic Backtrack.Search closed over identical steps - the same
-// hand-rolled-vs-generic-primitive shape PartitionToKEqualSumSubsetsBenchmarks
-// already uses. Bags are random in [1, MaxBagSize) so a real search is needed instead
-// of an immediately-degenerate all-equal split.
+// Harness only: both arms are FairDistributionOfCookiesSolution's, the same methods
+// FairDistributionOfCookiesTests proves correct - the hand-rolled recursion against
+// this repo's generic Backtrack.Search closed over identical steps, the same
+// hand-rolled-vs-generic-primitive shape PartitionToKEqualSumSubsetsBenchmarks uses.
+//
+// Bags are random in [1, MaxBagSize) so a real search is needed instead of an
+// immediately-degenerate all-equal split. The workload is LeetCode's own input shape
+// already, so there is nothing for a hoisted overload to prepare: [GlobalSetup]
+// hands both arms the same int[].
 [MemoryDiagnoser]
 public class FairDistributionOfCookiesBenchmarks
 {
@@ -29,128 +32,10 @@ public class FairDistributionOfCookiesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveBacktracking()
-    {
-        var sorted = SortDescending(_cookies);
-        var buckets = new int[Children];
-        var best = sorted.Sum();
-        Search(sorted, buckets, 0, ref best);
-        return best;
-    }
-
-    private void Search(int[] sorted, int[] buckets, int index, ref int best)
-    {
-        if (index == sorted.Length)
-        {
-            var max = buckets.Max();
-            if (max < best)
-            {
-                best = max;
-            }
-
-            return;
-        }
-
-        var sawEmpty = false;
-
-        for (var child = 0; child < Children; child++)
-        {
-            if (buckets[child] == 0)
-            {
-                if (sawEmpty)
-                {
-                    continue;
-                }
-
-                sawEmpty = true;
-            }
-
-            if (buckets[child] + sorted[index] >= best)
-            {
-                continue;
-            }
-
-            buckets[child] += sorted[index];
-            Search(sorted, buckets, index + 1, ref best);
-            buckets[child] -= sorted[index];
-        }
-    }
+    public int RecursiveBacktracking() =>
+        FairDistributionOfCookiesSolution.DistributeCookiesByRecursiveBacktracking(_cookies, Children);
 
     [Benchmark]
-    public int BacktrackPrimitive()
-    {
-        var sorted = SortDescending(_cookies);
-        var state = new State(sorted, Children);
-
-        Backtrack.Search(
-            state,
-            isSolution: s => s.Index == sorted.Length,
-            candidates: s => s.Index == sorted.Length ? [] : s.CandidateChildren(),
-            choose: (s, child) => s.Place(child),
-            unchoose: (s, child) => s.Remove(child),
-            onSolution: s => s.RecordIfBetter());
-
-        return state.Best;
-    }
-
-    private static int[] SortDescending(int[] cookies)
-    {
-        var sorted = (int[])cookies.Clone();
-        Array.Sort(sorted);
-        Array.Reverse(sorted);
-        return sorted;
-    }
-
-    private sealed class State(int[] cookies, int k)
-    {
-        private readonly int[] _buckets = new int[k];
-
-        public int Index { get; private set; }
-
-        public int Best { get; private set; } = cookies.Sum();
-
-        public IEnumerable<int> CandidateChildren()
-        {
-            var sawEmpty = false;
-
-            for (var child = 0; child < k; child++)
-            {
-                if (_buckets[child] == 0)
-                {
-                    if (sawEmpty)
-                    {
-                        continue;
-                    }
-
-                    sawEmpty = true;
-                }
-
-                if (_buckets[child] + cookies[Index] < Best)
-                {
-                    yield return child;
-                }
-            }
-        }
-
-        public void Place(int child)
-        {
-            _buckets[child] += cookies[Index];
-            Index++;
-        }
-
-        public void Remove(int child)
-        {
-            Index--;
-            _buckets[child] -= cookies[Index];
-        }
-
-        public void RecordIfBetter()
-        {
-            var max = _buckets.Max();
-            if (max < Best)
-            {
-                Best = max;
-            }
-        }
-    }
+    public int BacktrackPrimitive() =>
+        FairDistributionOfCookiesSolution.DistributeCookiesByBacktrackSearch(_cookies, Children);
 }

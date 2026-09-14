@@ -1,22 +1,21 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.LongestBinarySubsequenceLessThanOrEqualToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Longest Binary Subsequence Less Than or Equal to K (LC 2311): brute-force subset
-// enumeration (every one of the 2^n subsequences, value checked against k) vs. the
-// O(n) right-to-left greedy (LongestBinarySubsequenceLessThanOrEqualToKTests' own
-// algorithm) - always keep every '0' (never adds value, only length), and greedily
-// accept the cheapest (rightmost) '1's while still affordable. No repo primitive
-// applies here - a pure single-pass greedy scan over the string itself, the same
-// "no stronger reusable primitive" shape already established for GasStation/
-// JumpGame/MaximumProductSubarray. Length is kept small (<=20) so the 2^n
-// brute-force baseline finishes in reasonable time; the bits are randomized (not
-// all-1s or all-0s) so brute force can't short-circuit on an early degenerate case.
+// Harness only: both arms are LongestBinarySubsequenceLessThanOrEqualToKSolution's,
+// the same methods LongestBinarySubsequenceLessThanOrEqualToKTests proves agree -
+// exhaustive subset enumeration against the O(n) right-to-left greedy scan.
+//
+// Length is kept small (<= 20) so the 2^n baseline finishes in reasonable time, and
+// the bits are randomized rather than all-1s or all-0s so it cannot short-circuit on
+// a degenerate case. The workload is the LeetCode input shape itself, so building it
+// in [GlobalSetup] already keeps string construction off the measured methods.
 [MemoryDiagnoser]
 public class LongestBinarySubsequenceLessThanOrEqualToKBenchmarks
 {
     private const int RandomSeed = 2311; // LC problem number
-    private const int MaxAffordablePower = 30; // 2^30 > 1e9, k's maximum possible value
+    private const int BinaryDigits = 2; // '0' or '1', the only characters the input holds
     private const int K = 100;
 
     [Params(16, 20)]
@@ -28,76 +27,15 @@ public class LongestBinarySubsequenceLessThanOrEqualToKBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _bits = new string(Enumerable.Range(0, Length).Select(_ => random.Next(2) == 0 ? '0' : '1').ToArray());
+        _bits = new string(
+            Enumerable.Range(0, Length).Select(_ => random.Next(BinaryDigits) == 0 ? '0' : '1').ToArray());
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceSubsetEnumeration()
-    {
-        var best = 0;
-
-        for (var mask = 1; mask < 1 << _bits.Length; mask++)
-        {
-            var (value, length) = ValueAndLength(mask);
-
-            if (value <= K && length > best)
-            {
-                best = length;
-            }
-        }
-
-        return best;
-    }
-
-    private (long Value, int Length) ValueAndLength(int mask)
-    {
-        long value = 0;
-        var length = 0;
-
-        for (var i = 0; i < _bits.Length; i++)
-        {
-            if ((mask & (1 << i)) == 0)
-            {
-                continue;
-            }
-
-            value = (value << 1) + (_bits[i] - '0');
-            length++;
-        }
-
-        return (value, length);
-    }
+    public int BruteForceSubsetEnumeration() =>
+        LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceBySubsetEnumeration(_bits, K);
 
     [Benchmark]
-    public int GreedyRightToLeftScan()
-    {
-        var length = 0;
-        long value = 0;
-        var power = 0;
-
-        for (var i = _bits.Length - 1; i >= 0; i--)
-        {
-            if (_bits[i] == '0')
-            {
-                length++;
-                power++;
-                continue;
-            }
-
-            if (power >= MaxAffordablePower)
-            {
-                continue;
-            }
-
-            var weight = 1L << power;
-            if (value + weight <= K)
-            {
-                value += weight;
-                power++;
-                length++;
-            }
-        }
-
-        return length;
-    }
+    public int GreedyRightToLeftScan() =>
+        LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceByGreedyScan(_bits, K);
 }

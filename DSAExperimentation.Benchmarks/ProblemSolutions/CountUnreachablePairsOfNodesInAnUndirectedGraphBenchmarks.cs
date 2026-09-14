@@ -1,21 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.CountUnreachablePairsOfNodesInAnUndirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Count Unreachable Pairs of Nodes in an Undirected Graph (LC 2316): a DFS flood
-// fill over an adjacency list built from the edges (baseline -
-// NumberOfOperationsToMakeNetworkConnectedBenchmarks' own DFS-vs-Union-Find
-// contrast, applied here to summed component sizes instead of a component count)
-// vs. this repo's own DisjointSet unioning every edge and tallying component sizes
-// through a HashMap<root,size>. The graph is built as several disjoint chains
-// (not one connected component) so both strategies have multiple real components
-// to discover and size.
+// Harness only: both arms are CountUnreachablePairsOfNodesInAnUndirectedGraph-
+// Solution's, the same methods the tests prove correct - a DFS flood fill over an
+// adjacency list against this repo's own DisjointSet plus a HashMap size tally. The
+// graph is built as several disjoint chains rather than one connected component, so
+// both strategies have multiple real components to discover and size, and edge
+// construction is charged to [GlobalSetup] rather than to the measured arms.
 [MemoryDiagnoser]
 public class CountUnreachablePairsOfNodesInAnUndirectedGraphBenchmarks
 {
-    private const int RandomSeed = 2316;
     private const int NodesPerComponent = 25;
 
     [Params(200, 2_000)]
@@ -41,100 +37,10 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraphBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long DepthFirstFloodFill()
-    {
-        var adjacency = BuildAdjacency();
-        var visited = new bool[NodeCount];
-        var totalPairs = (long)NodeCount * (NodeCount - 1) / 2;
-        var reachablePairs = 0L;
-
-        for (var i = 0; i < NodeCount; i++)
-        {
-            if (visited[i])
-            {
-                continue;
-            }
-
-            var size = Visit(i, adjacency, visited);
-            reachablePairs += (long)size * (size - 1) / 2;
-        }
-
-        return totalPairs - reachablePairs;
-    }
-
-    private int[][] BuildAdjacency()
-    {
-        var adjacency = new List<int>[NodeCount];
-        for (var i = 0; i < NodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in _edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        var result = new int[NodeCount][];
-        for (var i = 0; i < NodeCount; i++)
-        {
-            result[i] = [.. adjacency[i]];
-        }
-
-        return result;
-    }
-
-    private static int Visit(int start, int[][] adjacency, bool[] visited)
-    {
-        var stack = new Stack<int>();
-        stack.Push(start);
-        visited[start] = true;
-        var size = 0;
-
-        while (stack.Count > 0)
-        {
-            var node = stack.Pop();
-            size++;
-
-            foreach (var next in adjacency[node])
-            {
-                if (!visited[next])
-                {
-                    visited[next] = true;
-                    stack.Push(next);
-                }
-            }
-        }
-
-        return size;
-    }
+    public long DepthFirstFloodFill() =>
+        CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDepthFirstFloodFill(NodeCount, _edges);
 
     [Benchmark]
-    public long DisjointSetUnionFind()
-    {
-        var components = new DisjointSet(NodeCount);
-        foreach (var edge in _edges)
-        {
-            components.Union(edge[0], edge[1]);
-        }
-
-        var sizeByRoot = new HashMap<int, long>();
-        for (var i = 0; i < NodeCount; i++)
-        {
-            var root = components.Find(i);
-            sizeByRoot.TryGetValue(root, out var size);
-            sizeByRoot.Set(root, size + 1);
-        }
-
-        var totalPairs = (long)NodeCount * (NodeCount - 1) / 2;
-        var reachablePairs = 0L;
-
-        foreach (var size in sizeByRoot.Values)
-        {
-            reachablePairs += size * (size - 1) / 2;
-        }
-
-        return totalPairs - reachablePairs;
-    }
+    public long DisjointSetUnionFind() =>
+        CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDisjointSet(NodeCount, _edges);
 }

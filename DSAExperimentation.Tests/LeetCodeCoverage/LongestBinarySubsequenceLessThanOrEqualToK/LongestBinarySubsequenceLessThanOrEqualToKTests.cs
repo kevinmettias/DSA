@@ -1,90 +1,58 @@
+using DSAExperimentation.LeetCode.LongestBinarySubsequenceLessThanOrEqualToK;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestBinarySubsequenceLessThanOrEqualToK;
 
-// LeetCode 2311. Longest Binary Subsequence Less Than or Equal to K: no repo
-// primitive applies - a pure O(n) right-to-left greedy scan over the string itself,
-// the same "no stronger reusable primitive over a bare sequence" category already
-// established for GasStation/JumpGame/MaximumProductSubarray. Every '0' is always
-// worth including (it contributes 0 to the value no matter where it lands, only
-// length), so it's accepted unconditionally; every '1' is a real cost (its weight
-// doubles with every character already accepted to its right), so it's accepted
-// greedily, cheapest (rightmost, least-significant) first, only while the running
-// value stays within k. Once the running power has climbed past ~30, no further '1'
-// can ever be affordable (2^30 already exceeds k's maximum possible value of 1e9),
-// so those are skipped outright rather than computing 1L shifted by an unbounded
-// power - shift counts on a long are masked to 6 bits in C#, so an unguarded shift
-// past 63 would silently produce a small, wrong weight instead of the huge one
-// intended. The same "state the complexity/overflow law, don't just assume it"
-// discipline IntegerReplacementTests' int-vs-long choice already documents.
-public sealed partial class LongestBinarySubsequenceLessThanOrEqualToKTests
+// Harness only. Both strategies are LongestBinarySubsequenceLessThanOrEqualToKSolution's,
+// and pinning them to the same examples is what finally puts the exhaustive subset
+// enumeration - previously a benchmark arm asserted by nothing - under test beside
+// the greedy scan it is measured against. Every string here is short enough that the
+// baseline's 2^n walk stays trivial.
+public sealed class LongestBinarySubsequenceLessThanOrEqualToKTests
 {
-    [Fact]
-    public void LongestSubsequence_LeetCodeExampleOne_ReturnsFive()
-    {
-        var actual = LongestSubsequence("1001010", k: 5);
-        Assert.Equal(5, actual);
-    }
-
-    [Fact]
-    public void LongestSubsequence_LeetCodeExampleTwo_ReturnsSix()
-    {
-        var actual = LongestSubsequence("00101001", k: 1);
-        Assert.Equal(6, actual);
-    }
-
-    [Fact]
-    public void LongestSubsequence_IncludingEveryZeroWouldOverflowK_DropsSomeOnesInstead()
-    {
-        // All zeros are free, but greedily taking both available '1's ("101" = 5)
-        // would exceed k=3, so only the cheaper, rightmost '1' can be kept.
-        var actual = LongestSubsequence("1101", k: 3);
-        Assert.Equal(2, actual);
-    }
-
-    [Fact]
-    public void LongestSubsequence_SingleZero_IsAlwaysIncludable()
-    {
-        var actual = LongestSubsequence("0", k: 5);
-        Assert.Equal(1, actual);
-    }
-
-    [Fact]
-    public void LongestSubsequence_SingleOneExceedsK_ReturnsEmptySubsequence()
-    {
-        var actual = LongestSubsequence("1", k: 0);
-        Assert.Equal(0, actual);
-    }
-
-    private const int MaxAffordablePower = 30; // 2^30 > 1e9, k's maximum possible value
-
-    private static int LongestSubsequence(string s, int k)
-    {
-        var length = 0;
-        long value = 0;
-        var power = 0;
-
-        for (var i = s.Length - 1; i >= 0; i--)
+    public static TheoryData<string, int, int> Examples =>
+        new()
         {
-            if (s[i] == '0')
-            {
-                length++;
-                power++;
-                continue;
-            }
+            // LeetCode example 1: "1001010" with k = 5, whose best subsequence is
+            // "00010" - five characters worth 2.
+            { "1001010", 5, 5 },
 
-            if (power >= MaxAffordablePower)
-            {
-                continue;
-            }
+            // LeetCode example 2: "00101001" with k = 1, whose best subsequence is
+            // "000001" - six characters worth 1.
+            { "00101001", 1, 6 },
 
-            var weight = 1L << power;
-            if (value + weight <= k)
-            {
-                value += weight;
-                power++;
-                length++;
-            }
-        }
+            // Both '1's would cost 5 together, past k = 3, so only the cheaper
+            // rightmost one joins the single free '0'.
+            { "1101", 3, 2 },
 
-        return length;
-    }
+            // A '0' is free no matter what k is.
+            { "0", 5, 1 },
+
+            // A lone '1' is worth 1, which k = 0 cannot afford, leaving nothing.
+            { "1", 0, 0 },
+
+            // Zeros are always all takeable, so the whole string qualifies.
+            { "0000", 0, 4 },
+
+            // k admits the entire value, so nothing is dropped.
+            { "1111", 15, 4 },
+
+            // k = 0 admits only zeros - the single '0' here, and neither '1'.
+            { "110", 0, 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LongestSubsequenceBySubsetEnumeration_LeetCodeExamples_ReturnsLongestAffordableLength(
+        string bits, int maxValue, int expected) =>
+        Assert.Equal(
+            expected,
+            LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceBySubsetEnumeration(bits, maxValue));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LongestSubsequenceByGreedyScan_LeetCodeExamples_ReturnsLongestAffordableLength(
+        string bits, int maxValue, int expected) =>
+        Assert.Equal(
+            expected,
+            LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceByGreedyScan(bits, maxValue));
 }

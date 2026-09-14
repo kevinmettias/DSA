@@ -1,91 +1,47 @@
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.MatchSubstringAfterReplacement;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MatchSubstringAfterReplacement;
 
-// LeetCode 2301. Match Substring After Replacement: for each candidate start index
-// in s, sub matches if every position either equals s's character outright or is
-// reachable via one of the allowed (old, new) replacement pairs. The replacement
-// pairs are indexed as HashMap<char, Set<char>> - this repo's own HashMap<TKey,TValue>
-// keyed by the "old" character, each value a Set<Element> (HashMap<Element,bool>,
-// ARCHITECTURE.md §4.1) of characters that old is allowed to become - turning "is
-// (subChar, sChar) an allowed pair" into an O(1) two-step lookup instead of scanning
-// the raw mappings list on every character comparison.
-public sealed partial class MatchSubstringAfterReplacementTests
+// Harness only: both strategies live in MatchSubstringAfterReplacementSolution -
+// the linear scan over the raw mapping list that used to be the benchmark's
+// untested baseline arm, and the HashMap<char, Set<char>> lookup the test used to
+// carry inline. This file just pins them to LeetCode's published examples plus the
+// cases that separate the two lookup shapes: one "old" character with several
+// allowed targets, no mappings at all, and a sub longer than s.
+public sealed class MatchSubstringAfterReplacementTests
 {
-    [Fact]
-    public void IsMatch_LeetCodeExampleWithChainedMappings_ReturnsTrue()
-    {
-        (char Old, char New)[] mappings = [('e', '3'), ('t', '7'), ('t', '8')];
-
-        var found = IsMatch("fool3e7bar", "leet", mappings);
-
-        Assert.True(found);
-    }
-
-    [Fact]
-    public void IsMatch_MappingOnlyAppliesInOneDirection_ReturnsFalse()
-    {
-        // sub's '0' characters have no mapping - the given mapping only lets an 'o'
-        // in sub become '0', not the reverse - so "f00l" can never equal "fool".
-        (char Old, char New)[] mappings = [('o', '0')];
-
-        var found = IsMatch("fooleetbar", "f00l", mappings);
-
-        Assert.False(found);
-    }
-
-    private static bool IsMatch(string s, string sub, (char Old, char New)[] mappings)
-    {
-        var allowed = BuildAllowedMap(mappings);
-
-        for (var start = 0; start + sub.Length <= s.Length; start++)
+    public static TheoryData<string, string, (char Old, char New)[], bool> Examples =>
+        new()
         {
-            if (MatchesAt(s, sub, start, allowed))
-            {
-                return true;
-            }
-        }
+            { "fool3e7bar", "leet", [('e', '3'), ('t', '7'), ('t', '8')], true },
+            // The mapping only lets an 'o' in sub become '0', not the reverse, so
+            // sub's '0' characters can never equal s's 'o' characters.
+            { "fooleetbar", "f00l", [('o', '0')], false },
+            { "Fool33tbaR", "leetd", [('e', '3'), ('t', '7'), ('t', '8'), ('d', 'b'), ('p', 'b')], true },
+            // 'x' has two allowed targets, and only the second one matches at the
+            // start position that works - so a lookup keyed by "old" alone is not
+            // enough, the target set has to be consulted too.
+            { "a1b2", "xy", [('x', '1'), ('x', 'a'), ('y', 'b')], true },
+            // No replacements offered at all: this degenerates to plain substring
+            // containment.
+            { "hello", "ell", [], true },
+            { "hello", "lox", [], false },
+            // sub cannot fit in s, so there is no candidate start position at all.
+            { "ab", "abc", [('a', 'b')], false },
+        };
 
-        return false;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsMatchByLinearScan_LeetCodeExamples_ReportsWhetherSubMatchesSomewhere(
+        string s, string sub, (char Old, char New)[] mappings, bool expected) =>
+        Assert.Equal(
+            expected, MatchSubstringAfterReplacementSolution.IsMatchByLinearScan(s, sub, mappings));
 
-    private static HashMap<char, Set<char>> BuildAllowedMap((char Old, char New)[] mappings)
-    {
-        var allowed = new HashMap<char, Set<char>>();
-
-        foreach (var (oldChar, newChar) in mappings)
-        {
-            if (!allowed.TryGetValue(oldChar, out var targets))
-            {
-                targets = new Set<char>();
-                allowed.Set(oldChar, targets);
-            }
-
-            targets.TryAdd(newChar);
-        }
-
-        return allowed;
-    }
-
-    private static bool MatchesAt(string s, string sub, int start, HashMap<char, Set<char>> allowed)
-    {
-        for (var j = 0; j < sub.Length; j++)
-        {
-            var subChar = sub[j];
-            var sChar = s[start + j];
-
-            if (subChar == sChar)
-            {
-                continue;
-            }
-
-            if (!allowed.TryGetValue(subChar, out var targets) || !targets.Has(sChar))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsMatchByHashMapLookup_LeetCodeExamples_ReportsWhetherSubMatchesSomewhere(
+        string s, string sub, (char Old, char New)[] mappings, bool expected) =>
+        Assert.Equal(
+            expected,
+            MatchSubstringAfterReplacementSolution.IsMatchByHashMapLookup(s, sub, mappings));
 }
