@@ -1,15 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find Kth Largest XOR Coordinate Value (LC 1738): both approaches share the
-// same O(rows*cols) 2D prefix-XOR pass and differ only in how they pick the
-// kth largest value out of it afterward - a full O(nm log nm) sort-then-index
-// vs. an O(nm log k) size-k min-heap (this repo's own
-// Heap<int,MinHeapOrder<int>>, the KthLargestElement precedent), discarding
-// the smaller root whenever a bigger candidate arrives so its own log factor
-// is on K, not on the coordinate count.
+// Harness only: both arms are FindKthLargestXorCoordinateValueSolution's, the same
+// methods FindKthLargestXorCoordinateValueTests proves correct. They share the same
+// 2D prefix-XOR pass and differ only in the selection that follows it - a full
+// O(nm log nm) sort against an O(nm log k) size-k min-heap - so the matrix itself is
+// built once in [GlobalSetup] rather than charged to either arm.
 [MemoryDiagnoser]
 public class FindKthLargestXorCoordinateValueBenchmarks
 {
@@ -32,57 +30,10 @@ public class FindKthLargestXorCoordinateValueBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int FullSort()
-    {
-        var values = PrefixXorValues();
-        Array.Sort(values);
-        return values[^K];
-    }
+    public int FullSort() =>
+        FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(_matrix, K);
 
     [Benchmark]
-    public int SizeKMinHeap()
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var prefixXor = new int[rows + 1, cols + 1];
-        var heap = new Heap<int, MinHeapOrder<int>>();
-
-        for (var r = 1; r <= rows; r++)
-        {
-            for (var c = 1; c <= cols; c++)
-            {
-                prefixXor[r, c] = _matrix[r - 1][c - 1] ^ prefixXor[r - 1, c] ^ prefixXor[r, c - 1] ^ prefixXor[r - 1, c - 1];
-
-                heap.Push(prefixXor[r, c]);
-
-                if (heap.Count > K)
-                {
-                    heap.TryPop(out _);
-                }
-            }
-        }
-
-        heap.TryPeek(out var kthLargest);
-        return kthLargest;
-    }
-
-    private int[] PrefixXorValues()
-    {
-        var rows = _matrix.Length;
-        var cols = _matrix[0].Length;
-        var prefixXor = new int[rows + 1, cols + 1];
-        var values = new int[rows * cols];
-        var index = 0;
-
-        for (var r = 1; r <= rows; r++)
-        {
-            for (var c = 1; c <= cols; c++)
-            {
-                prefixXor[r, c] = _matrix[r - 1][c - 1] ^ prefixXor[r - 1, c] ^ prefixXor[r, c - 1] ^ prefixXor[r - 1, c - 1];
-                values[index++] = prefixXor[r, c];
-            }
-        }
-
-        return values;
-    }
+    public int SizeKMinHeap() =>
+        FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(_matrix, K);
 }

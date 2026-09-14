@@ -1,14 +1,24 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Swapping Nodes in a Linked List (LC 1721): materializing the list into an array first
-// (the naive approach many linked-list solutions fall back to, paying O(n) extra space to
-// get random access) vs. this repo's own SinglyLinkedListNode<T> walked with a fast/slow
-// pair of references so the kth-from-front and kth-from-end nodes are both found in one
-// O(n), O(1)-extra-space pass - the same "array baseline vs. linked-list primitive" shape
-// SwapNodesInPairsBenchmarks already uses for its own problem.
+// Harness only: both arms are SwappingNodesInALinkedListSolution's, the same
+// methods SwappingNodesInALinkedListTests proves correct. Materializing the list
+// into a BCL buffer to get random access to index n - k, vs. a fast/slow pair of
+// SinglyLinkedListNode<int> references that finds the same node in one O(n),
+// O(1)-extra-space pass - the same "array baseline vs. linked-list primitive"
+// shape SwapNodesInPairsBenchmarks uses for its own problem.
+//
+// SwapNodesByTwoPointerWalk rewrites the Values of the list it is handed, so - as
+// in SwapNodesInPairsBenchmarks - the chain cannot be hoisted into [GlobalSetup]
+// and reused across iterations. [GlobalSetup] decides only how large the workload
+// is and which position k picks; each [Benchmark] call builds its own list, so both
+// arms pay the same construction and the measurement is of the search alone.
+//
+// Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so a
+// public [Benchmark] method cannot name it as a return type (CS0050).
 [MemoryDiagnoser]
 public class SwappingNodesInALinkedListBenchmarks
 {
@@ -28,41 +38,18 @@ public class SwappingNodesInALinkedListBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ArrayMaterializeSwap()
-    {
-        var copy = _values.ToArray();
-        (copy[_k - 1], copy[copy.Length - _k]) = (copy[copy.Length - _k], copy[_k - 1]);
-        return copy[0];
-    }
+    public object? ArrayMaterializeSwap() =>
+        SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(BuildList(_values), _k);
 
     [Benchmark]
-    public int LinkedListTwoPointerSwap()
-        => SwapNodes(BuildList(_values), _k)!.Value;
-
-    private static SinglyLinkedListNode<int>? SwapNodes(SinglyLinkedListNode<int>? head, int k)
-    {
-        var front = head;
-        for (var i = 1; i < k; i++)
-        {
-            front = front!.Next;
-        }
-
-        var end = head;
-        var runner = front;
-        while (runner!.Next is not null)
-        {
-            runner = runner.Next;
-            end = end!.Next;
-        }
-
-        (front!.Value, end!.Value) = (end.Value, front.Value);
-        return head;
-    }
+    public object? LinkedListTwoPointerSwap() =>
+        SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(BuildList(_values), _k);
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
         var tail = dummy;
+
         foreach (var value in values)
         {
             tail.Next = new SinglyLinkedListNode<int>(value);
