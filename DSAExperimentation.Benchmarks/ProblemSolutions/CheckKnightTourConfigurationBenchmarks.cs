@@ -1,126 +1,56 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.CheckKnightTourConfiguration;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Check Knight Tour Configuration (LC 2596): re-scanning the whole n x n board to
-// locate each order value (O(n^4) total across all n^2 orders) vs. building the
-// order -> cell lookup with a single O(n^2) pass before sweeping consecutive pairs
-// (O(n^2) overall). No repo primitive applies to either arm - see
-// CheckKnightTourConfigurationTests.cs's own doc comment for why Grid/GridChildren
-// isn't a genuine fit. Both Params values are genuine, verified knight's tours
-// (not random shuffles) so every consecutive pair actually is a valid knight move
-// and neither arm gets to exit early - the same "force the full worst-case walk"
+// Harness only: both arms are CheckKnightTourConfigurationSolution's, the same
+// methods CheckKnightTourConfigurationTests proves correct. Re-scanning the whole
+// n x n board to locate each move value (O(n^4) across all n^2 moves) vs. building
+// the move -> cell lookup with a single O(n^2) pass before sweeping consecutive
+// pairs (O(n^2) overall). Both Params values are genuine, verified knight's tours
+// that begin at the top-left cell (not random shuffles) so no pair fails and
+// neither arm gets to exit early - the same "force the full worst-case walk"
 // intent TwoSumBenchmarks' unreachable target already uses. n itself is capped by
 // the problem's own constraint (n <= 7), so both sizes stay inside LeetCode's real
 // input domain.
 [MemoryDiagnoser]
 public class CheckKnightTourConfigurationBenchmarks
 {
-    private static readonly (int DRow, int DCol)[] KnightOffsets =
-        [(1, 2), (1, -2), (-1, 2), (-1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1)];
-
     private static readonly int[][] FiveByFiveTour =
     [
-        [20, 3, 12, 9, 22],
-        [13, 8, 21, 4, 11],
-        [2, 19, 10, 23, 16],
-        [7, 14, 17, 0, 5],
-        [18, 1, 6, 15, 24],
+        [0, 19, 8, 13, 2],
+        [9, 14, 1, 18, 23],
+        [20, 7, 22, 3, 12],
+        [15, 10, 5, 24, 17],
+        [6, 21, 16, 11, 4],
     ];
 
     private static readonly int[][] SevenBySevenTour =
     [
-        [22, 37, 0, 47, 20, 39, 26],
-        [1, 30, 21, 38, 25, 42, 19],
-        [36, 23, 46, 29, 48, 27, 40],
-        [31, 2, 35, 24, 41, 18, 43],
-        [8, 5, 32, 45, 28, 15, 12],
-        [3, 34, 7, 10, 13, 44, 17],
-        [6, 9, 4, 33, 16, 11, 14],
+        [0, 29, 16, 33, 2, 39, 26],
+        [17, 32, 1, 28, 25, 34, 3],
+        [30, 15, 42, 35, 38, 27, 40],
+        [43, 18, 31, 24, 41, 4, 37],
+        [14, 21, 44, 47, 36, 7, 10],
+        [19, 46, 23, 12, 9, 48, 5],
+        [22, 13, 20, 45, 6, 11, 8],
     ];
 
-    [Params(5, 7)]
+    private const int SmallBoard = 5;
+
+    [Params(SmallBoard, 7)]
     public int N;
 
     private int[][] _grid = null!;
 
     [GlobalSetup]
-    public void Setup() => _grid = N == 5 ? FiveByFiveTour : SevenBySevenTour;
+    public void Setup() => _grid = N == SmallBoard ? FiveByFiveTour : SevenBySevenTour;
 
     [Benchmark(Baseline = true)]
-    public bool RescanBoardPerOrder() => ValidTourByRescanning(_grid);
-
-    private static bool ValidTourByRescanning(int[][] grid)
-    {
-        var n = grid.Length;
-
-        for (var order = 0; order < (n * n) - 1; order++)
-        {
-            var from = FindOrder(grid, order);
-            var to = FindOrder(grid, order + 1);
-
-            if (!IsKnightMove(from, to))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static (int Row, int Col) FindOrder(int[][] grid, int order)
-    {
-        for (var row = 0; row < grid.Length; row++)
-        {
-            for (var col = 0; col < grid.Length; col++)
-            {
-                if (grid[row][col] == order)
-                {
-                    return (row, col);
-                }
-            }
-        }
-
-        throw new InvalidOperationException();
-    }
+    public bool RescanBoardPerMove() =>
+        CheckKnightTourConfigurationSolution.CheckValidGridByBoardRescan(_grid);
 
     [Benchmark]
-    public bool SinglePassPositionLookup() => ValidTourByPositionLookup(_grid);
-
-    private static bool ValidTourByPositionLookup(int[][] grid)
-    {
-        var n = grid.Length;
-        var positionByOrder = new (int Row, int Col)[n * n];
-
-        for (var row = 0; row < n; row++)
-        {
-            for (var col = 0; col < n; col++)
-            {
-                positionByOrder[grid[row][col]] = (row, col);
-            }
-        }
-
-        for (var order = 0; order < (n * n) - 1; order++)
-        {
-            if (!IsKnightMove(positionByOrder[order], positionByOrder[order + 1]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static bool IsKnightMove((int Row, int Col) from, (int Row, int Col) to)
-    {
-        foreach (var (dRow, dCol) in KnightOffsets)
-        {
-            if (from.Row + dRow == to.Row && from.Col + dCol == to.Col)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public bool SinglePassPositionLookup() =>
+        CheckKnightTourConfigurationSolution.CheckValidGridByPositionLookup(_grid);
 }
