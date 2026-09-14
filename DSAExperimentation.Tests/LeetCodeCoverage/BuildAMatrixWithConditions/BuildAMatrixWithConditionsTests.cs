@@ -1,66 +1,80 @@
-using DSAExperimentation.Algorithms.TopologicalSort;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.LeetCodeCoverage.BuildAMatrixWithConditions.Fixtures;
+using DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BuildAMatrixWithConditions;
 
-// LeetCode 2392. Build a Matrix With Conditions: this repo's own Kahn's-algorithm
-// TopologicalSort.TrySort (CourseScheduleIITests' own precedent for reading back
-// the actual ordering, not just whether one exists), run once over rowConditions
-// and once over colConditions, gives every value's row index and column index
-// directly from each ordering's position - and TrySort's own false-on-cycle
-// result is exactly LeetCode's "return an empty matrix" signal, so no separate
-// cycle check is needed either.
-public sealed partial class BuildAMatrixWithConditionsTests
+// Harness only. Both strategies are BuildAMatrixWithConditionsSolution's - this
+// file pins them to LeetCode's published examples plus the shapes those never
+// reach: no conditions at all, a cycle on the COLUMN axis rather than the row
+// axis, and chains that constrain both axes fully.
+//
+// LC 2392 accepts *any* matrix satisfying the conditions, so an example cannot
+// state one blessed matrix; it states whether the conditions are satisfiable, and
+// the shared check below verifies the returned matrix really places every value
+// exactly once and honours every condition on both axes. The rescan baseline is
+// asserted here too, which is the point of hoisting it into the solution class:
+// before this migration it existed only as a benchmark arm nothing checked.
+public sealed class BuildAMatrixWithConditionsTests
 {
-    [Fact]
-    public void BuildMatrix_ClassicExample_PlacesEachValueSatisfyingBothOrders()
+    public static TheoryData<int, int[][], int[][], bool> Examples =>
+        new()
+        {
+            { 3, [[1, 2], [3, 2]], [[2, 1]], true },
+            { 3, [[1, 2], [2, 3], [3, 1]], [], false },
+            { 2, [], [], true },
+            { 2, [[1, 2]], [[1, 2], [2, 1]], false },
+            { 4, [[1, 2], [2, 3], [3, 4]], [[4, 3], [3, 2], [2, 1]], true },
+            { 5, [[2, 1], [3, 1]], [[1, 4], [5, 1]], true },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildMatrixByKahnsTopologicalSort_LeetCodeExamples_PlacesEveryValueSatisfyingBothAxes(
+        int k, int[][] rowConditions, int[][] colConditions, bool satisfiable) =>
+        AssertSatisfies(
+            BuildAMatrixWithConditionsSolution.BuildMatrixByKahnsTopologicalSort(k, rowConditions, colConditions),
+            k, rowConditions, colConditions, satisfiable);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildMatrixByNaiveRescan_LeetCodeExamples_PlacesEveryValueSatisfyingBothAxes(
+        int k, int[][] rowConditions, int[][] colConditions, bool satisfiable) =>
+        AssertSatisfies(
+            BuildAMatrixWithConditionsSolution.BuildMatrixByNaiveRescan(k, rowConditions, colConditions),
+            k, rowConditions, colConditions, satisfiable);
+
+    private static void AssertSatisfies(
+        int[][] matrix, int k, int[][] rowConditions, int[][] colConditions, bool satisfiable)
     {
-        int[][] rowConditions = [[1, 2], [3, 2]];
-        int[][] colConditions = [[2, 1]];
+        if (!satisfiable)
+        {
+            Assert.Empty(matrix);
+            return;
+        }
 
-        var matrix = BuildMatrix(3, rowConditions, colConditions);
+        Assert.Equal(k, matrix.Length);
+        Assert.All(matrix, row => Assert.Equal(k, row.Length));
+        Assert.Equal(
+            Enumerable.Range(1, k),
+            matrix.SelectMany(row => row).Where(value => value != 0).Order());
 
-        Assert.NotEmpty(matrix);
-        AssertRowBefore(matrix, 1, 2);
-        AssertRowBefore(matrix, 3, 2);
-        AssertColumnBefore(matrix, 2, 1);
+        foreach (var condition in rowConditions)
+        {
+            Assert.True(FindRow(matrix, condition[0]) < FindRow(matrix, condition[1]));
+        }
+
+        foreach (var condition in colConditions)
+        {
+            Assert.True(FindColumn(matrix, condition[0]) < FindColumn(matrix, condition[1]));
+        }
     }
-
-    [Fact]
-    public void BuildMatrix_CyclicRowConditions_ReturnsEmptyMatrix()
-    {
-        int[][] rowConditions = [[1, 2], [2, 3], [3, 1]];
-        int[][] colConditions = [];
-
-        var matrix = BuildMatrix(3, rowConditions, colConditions);
-
-        Assert.Empty(matrix);
-    }
-
-    [Fact]
-    public void BuildMatrix_NoConditions_PlacesEveryValueExactlyOnce()
-    {
-        var matrix = BuildMatrix(2, [], []);
-
-        Assert.NotEmpty(matrix);
-        var placedValues = matrix.SelectMany(row => row).Where(value => value != 0).OrderBy(value => value);
-        Assert.Equal([1, 2], placedValues);
-    }
-
-    private static void AssertRowBefore(int[][] matrix, int before, int after)
-        => Assert.True(FindRow(matrix, before) < FindRow(matrix, after));
-
-    private static void AssertColumnBefore(int[][] matrix, int before, int after)
-        => Assert.True(FindColumn(matrix, before) < FindColumn(matrix, after));
 
     private static int FindRow(int[][] matrix, int value)
     {
-        for (var r = 0; r < matrix.Length; r++)
+        for (var row = 0; row < matrix.Length; row++)
         {
-            if (Array.IndexOf(matrix[r], value) >= 0)
+            if (Array.IndexOf(matrix[row], value) >= 0)
             {
-                return r;
+                return row;
             }
         }
 
@@ -72,6 +86,7 @@ public sealed partial class BuildAMatrixWithConditionsTests
         foreach (var row in matrix)
         {
             var column = Array.IndexOf(row, value);
+
             if (column >= 0)
             {
                 return column;
@@ -79,56 +94,5 @@ public sealed partial class BuildAMatrixWithConditionsTests
         }
 
         throw new InvalidOperationException($"Value {value} not found in matrix.");
-    }
-
-    private static int[][] BuildMatrix(int k, int[][] rowConditions, int[][] colConditions)
-    {
-        if (!TryOrder(k, rowConditions, out var rowOrder) || !TryOrder(k, colConditions, out var colOrder))
-        {
-            return [];
-        }
-
-        var rowIndex = new int[k + 1];
-        for (var i = 0; i < rowOrder.Count; i++)
-        {
-            rowIndex[rowOrder[i]] = i;
-        }
-
-        var colIndex = new int[k + 1];
-        for (var i = 0; i < colOrder.Count; i++)
-        {
-            colIndex[colOrder[i]] = i;
-        }
-
-        var matrix = new int[k][];
-        for (var r = 0; r < k; r++)
-        {
-            matrix[r] = new int[k];
-        }
-
-        for (var value = 1; value <= k; value++)
-        {
-            matrix[rowIndex[value]][colIndex[value]] = value;
-        }
-
-        return matrix;
-    }
-
-    private static bool TryOrder(int k, int[][] conditions, out List<int> order)
-    {
-        var nodes = Enumerable.Range(1, k).Select(id => new ValueNode(id)).ToArray();
-
-        foreach (var condition in conditions)
-        {
-            nodes[condition[0] - 1].After.Add(nodes[condition[1] - 1]);
-        }
-
-        var canOrder = TopologicalSort.TrySort<
-            ValueNode, ValueTopology, ListChildren<ValueNode>,
-            NaturalChildOrder<ValueNode, ListChildren<ValueNode>>, ListChildren<ValueNode>>(
-            nodes, out var ordering);
-
-        order = canOrder ? ordering.Select(n => n.Id).ToList() : [];
-        return canOrder;
     }
 }

@@ -1,74 +1,40 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.ReachableNodesWithRestrictions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReachableNodesWithRestrictions;
 
-// LeetCode 2368. Reachable Nodes With Restrictions: the input tree stays a tree
-// even after restricted nodes are dropped from it - removing a node's edges only
-// ever prunes whole subtrees, never reconnects two otherwise-disjoint pieces - so
-// unioning every edge whose endpoints are BOTH unrestricted into this repo's own
-// DisjointSet (CountUnreachablePairsOfNodesInAnUndirectedGraphTests' own
-// union-every-edge shape) and counting how many unrestricted nodes land in node
-// 0's component answers the question directly, with no separate BFS/DFS needed.
-public sealed partial class ReachableNodesWithRestrictionsTests
+// Harness only: both strategies live in ReachableNodesWithRestrictionsSolution and are
+// asserted here under their own names, so a failure names the strategy that broke. The
+// cases are LeetCode's two published examples plus the boundaries the restriction rule
+// turns on - nothing restricted at all, a single node with no edges, and a restriction
+// sitting directly on node 0's only neighbour so the answer collapses to the root.
+public sealed class ReachableNodesWithRestrictionsTests
 {
-    [Fact]
-    public void ReachableNodes_ClassicExample_CountsNodesBeforeTheRestrictedBranch()
+    public static TheoryData<int, int[][], int[], int> Examples => new()
     {
-        int[][] edges = [[0, 1], [1, 2], [3, 1], [4, 0], [0, 5], [5, 6]];
-        int[] restricted = [4, 5];
+        { 7, [[0, 1], [1, 2], [3, 1], [4, 0], [0, 5], [5, 6]], [4, 5], 4 },
+        { 7, [[0, 1], [0, 2], [0, 5], [0, 4], [3, 2], [6, 5]], [4, 2, 1], 3 },
+        { 4, [[0, 1], [1, 2], [2, 3]], [], 4 },
+        { 3, [[0, 1], [1, 2]], [1], 1 },
+        { 1, [], [], 1 },
+    };
 
-        var reachable = ReachableNodes(7, edges, restricted);
-
-        Assert.Equal(4, reachable);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReachableNodesByDepthFirstFloodFill_Example_CountsNodesStillReachableFromZero(
+        int nodeCount, int[][] edges, int[] restricted, int expected)
+    {
+        Assert.Equal(
+            expected,
+            ReachableNodesWithRestrictionsSolution.ReachableNodesByDepthFirstFloodFill(nodeCount, edges, restricted));
     }
 
-    [Fact]
-    public void ReachableNodes_RestrictedNodesCutOffMostOfTheTree_CountsOnlyTheSurvivingBranch()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReachableNodesByDisjointSet_Example_CountsNodesStillReachableFromZero(
+        int nodeCount, int[][] edges, int[] restricted, int expected)
     {
-        int[][] edges = [[0, 1], [0, 2], [0, 5], [0, 4], [3, 2], [6, 5]];
-        int[] restricted = [4, 2, 1];
-
-        var reachable = ReachableNodes(7, edges, restricted);
-
-        Assert.Equal(3, reachable);
-    }
-
-    [Fact]
-    public void ReachableNodes_NoRestrictedNodes_EveryNodeIsReachable()
-    {
-        int[][] edges = [[0, 1], [1, 2], [2, 3]];
-
-        var reachable = ReachableNodes(4, edges, []);
-
-        Assert.Equal(4, reachable);
-    }
-
-    private static int ReachableNodes(int n, int[][] edges, int[] restricted)
-    {
-        var isRestricted = new bool[n];
-        foreach (var node in restricted)
-        {
-            isRestricted[node] = true;
-        }
-
-        var components = new DisjointSet(n);
-        foreach (var edge in edges)
-        {
-            if (!isRestricted[edge[0]] && !isRestricted[edge[1]])
-            {
-                components.Union(edge[0], edge[1]);
-            }
-        }
-
-        var reachable = 0;
-        for (var i = 0; i < n; i++)
-        {
-            if (!isRestricted[i] && components.IsConnected(i, 0))
-            {
-                reachable++;
-            }
-        }
-
-        return reachable;
+        Assert.Equal(
+            expected,
+            ReachableNodesWithRestrictionsSolution.ReachableNodesByDisjointSet(nodeCount, edges, restricted));
     }
 }

@@ -1,105 +1,39 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.MeetingRoomsIII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MeetingRoomsIII;
 
-// LeetCode 2402. Meeting Rooms III: this repo's own Heap<T,TOrder> stands in twice,
-// mirroring FindServersThatHandledMostNumberOfRequestsTests' two-heap shape -
-// Heap<int, MinHeapOrder<int>> as the free-room pool (root is always the lowest
-// free room number) and Heap<(long End, int Room), MinHeapOrder<(long,int)>> as the
-// busy-room pool ordered by end time then room number on a tie (ValueTuple's own
-// IComparable already orders End first, Room second - the exact trick that other
-// test already relies on). Delayed end times are tracked as `long` since repeated
-// delays can accumulate past int range on the benchmark's larger inputs.
+// Harness only: both strategies are MeetingRoomsIIISolution's. Beyond LeetCode's two
+// published examples this pins the shapes the simulation has to get right - meetings
+// listed out of start order, a delayed meeting that keeps its original duration, and
+// a tie on the busiest room resolving to the lowest room number.
 public sealed class MeetingRoomsIIITests
 {
-    [Fact]
-    public void MostBooked_LeetCodeExampleOne_ReturnsLowestIndexOnTie()
-    {
-        int[][] meetings = [[0, 10], [1, 5], [2, 7], [3, 4]];
-
-        var busiest = MostBooked(n: 2, meetings);
-
-        Assert.Equal(0, busiest);
-    }
-
-    [Fact]
-    public void MostBooked_LeetCodeExampleTwo_ReturnsRoomWithMostMeetings()
-    {
-        int[][] meetings = [[1, 20], [2, 10], [3, 5], [4, 9], [6, 8]];
-
-        var busiest = MostBooked(n: 3, meetings);
-
-        Assert.Equal(1, busiest);
-    }
-
-    [Fact]
-    public void MostBooked_SingleRoomHandlesEveryMeeting_ReturnsThatRoom()
-    {
-        int[][] meetings = [[0, 5], [10, 15], [20, 25]];
-
-        var busiest = MostBooked(n: 4, meetings);
-
-        Assert.Equal(0, busiest);
-    }
-
-    private static int MostBooked(int n, int[][] meetings)
-    {
-        var pool = new RoomPool(n);
-
-        foreach (var i in Enumerable.Range(0, meetings.Length).OrderBy(i => meetings[i][0]))
+    public static TheoryData<int, int[][], int> Examples =>
+        new()
         {
-            pool.Process(meetings[i][0], meetings[i][1]);
-        }
+            { 2, [[0, 10], [1, 5], [2, 7], [3, 4]], 0 },
+            { 3, [[1, 20], [2, 10], [3, 5], [4, 9], [6, 8]], 1 },
+            // Example one, listed out of start order: the answer only comes out right
+            // if the simulation sorts before it books.
+            { 2, [[3, 4], [0, 10], [2, 7], [1, 5]], 0 },
+            // Every meeting fits in room 0, so the spare rooms stay untouched.
+            { 4, [[0, 5], [10, 15], [20, 25]], 0 },
+            // One room, so the two later meetings are delayed and each keeps its own
+            // one-unit duration rather than inheriting the blocker's end time.
+            { 1, [[0, 10], [1, 2], [2, 3]], 0 },
+            // Three rooms, one meeting each: every room is tied, so the lowest wins.
+            { 3, [[0, 10], [1, 11], [2, 12]], 0 },
+        };
 
-        var busiest = 0;
-        for (var room = 1; room < n; room++)
-        {
-            if (pool.Handled[room] > pool.Handled[busiest])
-            {
-                busiest = room;
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MostBookedByLinearScanFreeAt_LeetCodeExamples_ReturnsBusiestRoom(
+        int n, int[][] meetings, int expected)
+        => Assert.Equal(expected, MeetingRoomsIIISolution.MostBookedByLinearScanFreeAt(n, meetings));
 
-        return busiest;
-    }
-
-    private sealed class RoomPool
-    {
-        private readonly Heap<int, MinHeapOrder<int>> _free = new();
-        private readonly Heap<(long End, int Room), MinHeapOrder<(long, int)>> _busy = new();
-
-        public RoomPool(int n)
-        {
-            Handled = new int[n];
-
-            for (var room = 0; room < n; room++)
-            {
-                _free.Push(room);
-            }
-        }
-
-        public int[] Handled { get; }
-
-        public void Process(int start, int end)
-        {
-            while (_busy.TryPeek(out var freed) && freed.End <= start)
-            {
-                _busy.TryPop(out freed);
-                _free.Push(freed.Room);
-            }
-
-            if (_free.TryPop(out var room))
-            {
-                _busy.Push((end, room));
-            }
-            else
-            {
-                _busy.TryPop(out var earliest);
-                room = earliest.Room;
-                _busy.Push((earliest.End + (end - start), room));
-            }
-
-            Handled[room]++;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MostBookedByTwoHeapPool_LeetCodeExamples_ReturnsBusiestRoom(
+        int n, int[][] meetings, int expected)
+        => Assert.Equal(expected, MeetingRoomsIIISolution.MostBookedByTwoHeapPool(n, meetings));
 }

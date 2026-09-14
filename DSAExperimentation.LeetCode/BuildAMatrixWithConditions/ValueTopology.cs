@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.BuildAMatrixWithConditions.Fixtures;
+namespace DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
 
 internal readonly struct ValueTopology : IGraphTopology<ValueNode, ListChildren<ValueNode>>
 {
