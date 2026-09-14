@@ -1,108 +1,54 @@
-using DSAExperimentation.Algorithms.Connectivity;
-using DSAExperimentation.Algorithms.TopologicalSort;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.LeetCodeCoverage.MaximumEmployeesToBeInvitedToAMeeting.Fixtures;
+using DSAExperimentation.LeetCode.MaximumEmployeesToBeInvitedToAMeeting;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumEmployeesToBeInvitedToAMeeting;
 
-// LeetCode 2127. Maximum Employees to Be Invited to a Meeting: favorite[] is a
-// functional graph (every node has out-degree exactly 1), so its strongly
-// connected components (StronglyConnectedComponents.Tarjan, general
-// IGraphTopology - no acyclicity promise to rely on here) are exactly its
-// cycles - a size-1 component is an off-cycle node, a size-k component (k >= 2)
-// *is* a k-cycle, since one outgoing edge per node rules out any other SCC
-// shape. TopologicalSort.TrySort's Kahn peel always reports a cycle (returns
-// false) but its `ordering` out-parameter still lists every off-cycle node in
-// dependency order for free - exactly the traversal CourseSchedule/
-// LargestColorValueInADirectedGraph already rely on for their own DPs - which
-// this reuses to relax each node's longest incoming chain onto its favorite
-// before that favorite is itself processed. The answer is then the larger of:
-// the longest cycle of length >= 3 seated on its own, or the sum, over every
-// mutual (2-cycle) pair, of both members' longest chains plus the pair itself -
-// multiple 2-cycles can all share one table, a single >=3 cycle cannot share
-// with anything else.
-public sealed partial class MaximumEmployeesToBeInvitedToAMeetingTests
+// Harness only. Both strategies are
+// MaximumEmployeesToBeInvitedToAMeetingSolution's - including the manual peel,
+// which the benchmark used to own privately as its baseline arm and nothing
+// asserted. EmployeeNode/EmployeeTopology moved beside the solution, so this
+// folder no longer carries a Fixtures/ subfolder.
+public sealed class MaximumEmployeesToBeInvitedToAMeetingTests
 {
-    [Fact]
-    public void MaximumInvited_TwoCycleWithChains_ReturnsThree() =>
-        Assert.Equal(3, MaximumInvited([2, 2, 1, 2]));
-
-    [Fact]
-    public void MaximumInvited_ThreeCycle_ReturnsThree() =>
-        Assert.Equal(3, MaximumInvited([1, 2, 0]));
-
-    [Fact]
-    public void MaximumInvited_FourCycle_ReturnsFour() =>
-        Assert.Equal(4, MaximumInvited([3, 0, 1, 2]));
-
-    private static int MaximumInvited(int[] favorite)
-    {
-        var nodes = BuildGraph(favorite);
-
-        var components = StronglyConnectedComponents.Tarjan<
-            EmployeeNode, EmployeeTopology, ListChildren<EmployeeNode>,
-            NaturalChildOrder<EmployeeNode, ListChildren<EmployeeNode>>, ListChildren<EmployeeNode>>(nodes);
-
-        TopologicalSort.TrySort<
-            EmployeeNode, EmployeeTopology, ListChildren<EmployeeNode>,
-            NaturalChildOrder<EmployeeNode, ListChildren<EmployeeNode>>, ListChildren<EmployeeNode>>(
-            nodes, out var ordering);
-
-        var chainLength = ComputeChainLengths(nodes, ordering);
-
-        return ComputeMaxInvited(components, chainLength);
-    }
-
-    private static int ComputeMaxInvited(
-        List<List<EmployeeNode>> components, Dictionary<EmployeeNode, int> chainLength)
-    {
-        var longestCycle = 0;
-        var pairedChainsTotal = 0;
-
-        foreach (var component in components)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            if (component.Count == 2)
-            {
-                pairedChainsTotal += chainLength[component[0]] + chainLength[component[1]] + 2;
-            }
-            else if (component.Count > 2)
-            {
-                longestCycle = Math.Max(longestCycle, component.Count);
-            }
-        }
+            // LC example 1: employees 1 and 2 favor each other, with 0 and 3 both
+            // chaining into 2 - one of them joins the pair.
+            { [2, 2, 1, 2], 3 },
 
-        return Math.Max(longestCycle, pairedChainsTotal);
-    }
+            // LC example 2: a single 3-cycle fills the table.
+            { [1, 2, 0], 3 },
 
-    // Kahn's order guarantees every predecessor of `node` already had its own
-    // chain length finalized and relaxed forward before `node` is dequeued
-    // (LargestColorValueInADirectedGraphTests.RelaxNode's same guarantee), so
-    // one forward pass over `ordering` suffices - cycle nodes never appear in
-    // it (their in-degree never reaches zero), which is exactly what keeps
-    // this from walking into a cycle.
-    private static Dictionary<EmployeeNode, int> ComputeChainLengths(
-        List<EmployeeNode> nodes, List<EmployeeNode> ordering)
-    {
-        var chainLength = nodes.ToDictionary(node => node, _ => 0);
+            // LC example 3: a single 4-cycle.
+            { [3, 0, 1, 2], 4 },
 
-        foreach (var node in ordering)
-        {
-            var favorite = node.Successors[0];
-            chainLength[favorite] = Math.Max(chainLength[favorite], chainLength[node] + 1);
-        }
+            // Two mutual pairs and no chains: both pairs share one table.
+            { [1, 0, 3, 2], 4 },
 
-        return chainLength;
-    }
+            // One mutual pair with a one-employee chain hanging off each member.
+            { [1, 0, 0, 1], 4 },
 
-    private static List<EmployeeNode> BuildGraph(int[] favorite)
-    {
-        var nodes = Enumerable.Range(0, favorite.Length).Select(id => new EmployeeNode(id)).ToList();
+            // A mutual pair with no chains against a 3-cycle: the longer cycle wins.
+            { [1, 0, 3, 4, 2], 3 },
 
-        for (var i = 0; i < favorite.Length; i++)
-        {
-            nodes[i].Successors.Add(nodes[favorite[i]]);
-        }
+            // A mutual pair with a two-employee chain on each side (6) beats the
+            // separate 3-cycle it shares the input with.
+            { [1, 0, 0, 1, 2, 3, 7, 8, 6], 6 },
+        };
 
-        return nodes;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumInvitedByManualPeelAndCycleWalk_LeetCodeExamples_ReturnsLargestSeatableGroup(
+        int[] favorite, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByManualPeelAndCycleWalk(favorite));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumInvitedByGraphPrimitiveComposition_LeetCodeExamples_ReturnsLargestSeatableGroup(
+        int[] favorite, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByGraphPrimitiveComposition(favorite));
 }

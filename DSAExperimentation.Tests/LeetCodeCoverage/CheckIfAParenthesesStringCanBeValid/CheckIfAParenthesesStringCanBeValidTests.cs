@@ -1,79 +1,44 @@
-using RepoIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.CheckIfAParenthesesStringCanBeValid;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAParenthesesStringCanBeValid;
 
-// LeetCode 2116. Check if a Parentheses String Can Be Valid: the same two-stack
-// greedy ValidParenthesisStringTests (LC 678) already proved out for '*' wildcards
-// applies unchanged here - locked[i] == '0' makes position i free to become either
-// bracket, exactly the role '*' plays there. This repo's own Stack<int>
-// (RepoIndexStack, ValidParenthesisStringTests precedent) tracks unmatched '('
-// indices and unmatched free-position indices; each ')' first consumes an open
-// paren, falling back to a free position, and any opens still unmatched afterward
-// are paired against free positions after them, greedily from the innermost pair
-// out.
-public sealed partial class CheckIfAParenthesesStringCanBeValidTests
+// Harness only: both strategies live in
+// CheckIfAParenthesesStringCanBeValidSolution and are asserted against the same
+// examples - LeetCode's three published ones plus the odd-length free position that
+// the benchmark's stack arm used to get wrong, a free position that has to become
+// '(' to save a locked ')', and a free position sitting before a locked '(' that no
+// rewriting can rescue.
+public sealed class CheckIfAParenthesesStringCanBeValidTests
 {
+    public static TheoryData<string, string, bool> Examples =>
+        new()
+        {
+            { "))()))", "010100", true },  // LeetCode example 1
+            { "()()", "0000", true },      // LeetCode example 2
+            { ")", "0", false },           // LeetCode example 3
+            { "(", "0", false },           // odd length: a free position must still become a bracket
+            { "()", "11", true },          // fully locked and already balanced
+            { ")(", "11", false },         // fully locked and unbalanceable
+            { "))", "01", true },          // the leading free position becomes '('
+            { "))", "10", false },         // the leading locked ')' has nothing to match
+            { ")(", "01", false },         // the free position sits before the locked '('
+            { "(())", "1111", true },      // nested and fully locked
+            { "(((", "000", false },       // odd length, everything free
+        };
+
     [Theory]
-    [InlineData("))()))", "010100", true)]
-    [InlineData("()()", "0000", true)]
-    [InlineData(")", "0", false)]
-    public void CanBeValid_LeetCodeExamples_ReturnsExpectedValidity(string s, string locked, bool expected)
-    {
-        var actual = CanBeValid(s, locked);
+    [MemberData(nameof(Examples))]
+    public void CanBeValidByReachableOpenCountDp_LeetCodeExamples_ReturnsExpectedValidity(
+        string s, string locked, bool expected) =>
+        Assert.Equal(
+            expected,
+            CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByReachableOpenCountDp(s, locked));
 
-        Assert.Equal(expected, actual);
-    }
-
-    private static bool CanBeValid(string s, string locked)
-    {
-        if (s.Length % 2 != 0)
-        {
-            return false;
-        }
-
-        if (!TryMatchClosingParens(s, locked, out var openIndices, out var freeIndices))
-        {
-            return false;
-        }
-
-        return ReconcileLeftoverOpens(openIndices, freeIndices);
-    }
-
-    private static bool TryMatchClosingParens(
-        string s, string locked, out RepoIndexStack openIndices, out RepoIndexStack freeIndices)
-    {
-        openIndices = new RepoIndexStack();
-        freeIndices = new RepoIndexStack();
-
-        for (var i = 0; i < s.Length; i++)
-        {
-            if (locked[i] == '0')
-            {
-                freeIndices.Push(i);
-            }
-            else if (s[i] == '(')
-            {
-                openIndices.Push(i);
-            }
-            else if (!openIndices.TryPop(out _) && !freeIndices.TryPop(out _))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static bool ReconcileLeftoverOpens(RepoIndexStack openIndices, RepoIndexStack freeIndices)
-    {
-        while (openIndices.TryPop(out var openIndex))
-        {
-            if (!freeIndices.TryPop(out var freeIndex) || freeIndex < openIndex)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanBeValidByIndexStackSweep_LeetCodeExamples_ReturnsExpectedValidity(
+        string s, string locked, bool expected) =>
+        Assert.Equal(
+            expected,
+            CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByIndexStackSweep(s, locked));
 }

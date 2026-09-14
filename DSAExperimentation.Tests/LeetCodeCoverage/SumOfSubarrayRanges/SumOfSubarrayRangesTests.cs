@@ -1,61 +1,36 @@
-using RangeIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.SumOfSubarrayRanges;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfSubarrayRanges;
 
-// LeetCode 2104. Sum of Subarray Ranges: sum(subarray max) - sum(subarray min),
-// each computed in O(n) via the same monotonic-stack "distance to the next/previous
-// out-of-order element" contribution trick LargestRectangleInHistogramTests already
-// uses, over this repo's own Stack<int> holding indices (not values).
-public sealed partial class SumOfSubarrayRangesTests
+// Harness only: both strategies live in SumOfSubarrayRangesSolution and are
+// asserted against the same examples - LeetCode's three published cases, a single
+// element (no subarray has a nonzero range), a run of equal values (the strict
+// pop condition that stops a tie being attributed twice, once through the maximum
+// sweep and once through the minimum sweep), and a strictly increasing and a
+// strictly decreasing array, which are mirror images of each other. The
+// brute-force arm was previously an unasserted benchmark baseline; it is under
+// test here for the first time.
+public sealed class SumOfSubarrayRangesTests
 {
-    [Fact]
-    public void SubarrayRanges_ClassicExample_ReturnsSumOfRanges()
-    {
-        int[] nums = [1, 2, 3];
-
-        Assert.Equal(4, SubarrayRanges(nums));
-    }
-
-    [Fact]
-    public void SubarrayRanges_WithDuplicatesAndNegatives_ReturnsSumOfRanges()
-    {
-        int[] nums = [4, -2, -3, 4, 1];
-
-        Assert.Equal(59, SubarrayRanges(nums));
-    }
-
-    private static long SubarrayRanges(int[] nums) => SumOfSubarrayMaximums(nums) - SumOfSubarrayMinimums(nums);
-
-    // Pop condition is strict (<) so a run of equal maximums only ever gets
-    // attributed once, to the leftmost occurrence - the same duplicate-safe shape
-    // SumOfSubarrayMinimums mirrors with the opposite strict comparison.
-    private static long SumOfSubarrayMaximums(int[] nums) =>
-        SumOfSubarrayContribution(nums, int.MaxValue, static (value, current) => value < current);
-
-    private static long SumOfSubarrayMinimums(int[] nums) =>
-        SumOfSubarrayContribution(nums, int.MinValue, static (value, current) => value > current);
-
-    // Shared monotonic-stack shape behind SumOfSubarrayMaximums/Minimums: only the
-    // "no more elements" sentinel and the pop condition differ between max and min.
-    private static long SumOfSubarrayContribution(int[] nums, int sentinel, Func<int, int, bool> shouldPop)
-    {
-        var sum = 0L;
-        var indices = new RangeIndexStack();
-
-        for (var i = 0; i <= nums.Length; i++)
+    public static TheoryData<int[], long> Examples =>
+        new()
         {
-            var current = i == nums.Length ? sentinel : nums[i];
+            { [1, 2, 3], 4L },
+            { [1, 3, 3], 4L },
+            { [4, -2, -3, 4, 1], 59L },
+            { [5], 0L },
+            { [2, 2, 2], 0L },
+            { [1, 2, 3, 4], 10L },
+            { [4, 3, 2, 1], 10L },
+        };
 
-            while (indices.TryPeek(out var top) && shouldPop(nums[top], current))
-            {
-                indices.TryPop(out _);
-                var left = indices.TryPeek(out var previous) ? previous : -1;
-                sum += (long)nums[top] * (top - left) * (i - top);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SubarrayRangesByBruteForce_LeetCodeExamples_ReturnsSumOfRanges(int[] nums, long expected) =>
+        Assert.Equal(expected, SumOfSubarrayRangesSolution.SubarrayRangesByBruteForce(nums));
 
-            indices.Push(i);
-        }
-
-        return sum;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SubarrayRangesByMonotonicStack_LeetCodeExamples_ReturnsSumOfRanges(int[] nums, long expected) =>
+        Assert.Equal(expected, SumOfSubarrayRangesSolution.SubarrayRangesByMonotonicStack(nums));
 }

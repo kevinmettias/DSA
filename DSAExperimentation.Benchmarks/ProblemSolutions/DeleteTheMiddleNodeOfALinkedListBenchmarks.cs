@@ -1,25 +1,24 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Delete the Middle Node of a Linked List (LC 2095): the naive way to delete an
-// index found by first counting the list is to rebuild a whole new list, copying
-// every node except the one at that index - two full traversals (count, then copy)
-// and n-1 fresh node allocations. SlowFastPointerInPlaceDelete instead reuses this
-// repo's own SinglyLinkedListNode<T>.Next slow/fast walk (the same two-pointer shape
-// CycleDetection.cs already uses) to find the middle's predecessor in one traversal,
-// then splices it out in place with zero new node allocations beyond the list
-// itself. Both methods build a fresh list from the same source array on every
-// invocation - deleting is destructive, so a shared mutable list across invocations
-// would only ever pay the real cost once, the same "fresh copy per invocation"
-// discipline SortAnArrayBenchmarks already uses for its in-place sort.
+// Harness only: both arms are DeleteTheMiddleNodeOfALinkedListSolution's, the
+// same methods DeleteTheMiddleNodeOfALinkedListTests proves correct.
+// CountThenRebuild counts the list and then copies every node but the middle -
+// two traversals and n-1 allocations - while SlowFastPointers finds the middle's
+// predecessor in one traversal and splices it out in place with no new nodes.
+// [GlobalSetup] prepares only the value array: the list itself is rebuilt inside
+// each [Benchmark] call rather than shared, because deleting is destructive and
+// one pre-built list would let the first iteration's splice make every later
+// iteration measure an already-shortened list - the same "fresh copy per
+// invocation" discipline SortAnArrayBenchmarks uses for its in-place sort.
 [MemoryDiagnoser]
 public class DeleteTheMiddleNodeOfALinkedListBenchmarks
 {
     private const int RandomSeed = 2095; // LC problem number
     private const int ValueRangeExclusive = 1_000;
-    private const int MiddleDivisor = 2;
 
     [Params(500, 20_000)]
     public int Length;
@@ -33,91 +32,15 @@ public class DeleteTheMiddleNodeOfALinkedListBenchmarks
         _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueRangeExclusive)).ToArray();
     }
 
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public int TwoPassCountThenRebuild()
-    {
-        var head = BuildList(_values);
-
-        var length = 0;
-        for (var node = head; node is not null; node = node.Next)
-        {
-            length++;
-        }
-
-        var middleIndex = length / MiddleDivisor;
-        var newHead = RebuildWithoutMiddle(head, middleIndex);
-
-        return CountNodes(newHead);
-    }
-
-    private static SinglyLinkedListNode<int>? RebuildWithoutMiddle(SinglyLinkedListNode<int> head, int middleIndex)
-    {
-        var builder = new LinkedListBuilder();
-        var index = 0;
-
-        for (var node = head; node is not null; node = node.Next, index++)
-        {
-            if (index != middleIndex)
-            {
-                builder.Append(node.Value);
-            }
-        }
-
-        return builder.Head;
-    }
-
-    private sealed class LinkedListBuilder
-    {
-        private SinglyLinkedListNode<int>? _tail;
-
-        public SinglyLinkedListNode<int>? Head { get; private set; }
-
-        public void Append(int value)
-        {
-            var copy = new SinglyLinkedListNode<int>(value);
-
-            if (_tail is null)
-            {
-                Head = copy;
-            }
-            else
-            {
-                _tail.Next = copy;
-            }
-
-            _tail = copy;
-        }
-    }
+    public object? CountThenRebuild() =>
+        DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(BuildList(_values));
 
     [Benchmark]
-    public int SlowFastPointerInPlaceDelete()
-    {
-        var head = BuildList(_values);
-        var result = DeleteMiddle(head);
-        return CountNodes(result);
-    }
-
-    private static SinglyLinkedListNode<int>? DeleteMiddle(SinglyLinkedListNode<int>? head)
-    {
-        if (head?.Next is null)
-        {
-            return null;
-        }
-
-        var prev = head;
-        var slow = head;
-        var fast = head;
-
-        while (fast is not null && fast.Next is not null)
-        {
-            prev = slow;
-            slow = slow!.Next;
-            fast = fast.Next.Next;
-        }
-
-        prev!.Next = slow!.Next;
-        return head;
-    }
+    public object? SlowFastPointers() =>
+        DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(BuildList(_values));
 
     private static SinglyLinkedListNode<int> BuildList(int[] values)
     {
@@ -131,17 +54,5 @@ public class DeleteTheMiddleNodeOfALinkedListBenchmarks
         }
 
         return head;
-    }
-
-    private static int CountNodes(SinglyLinkedListNode<int>? head)
-    {
-        var count = 0;
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            count++;
-        }
-
-        return count;
     }
 }

@@ -1,125 +1,87 @@
-using DSAExperimentation.Algorithms.Ancestry;
-using DSAExperimentation.Algorithms.Paths;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.StepByStepDirectionsFromABinaryTreeNodeToAnother;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StepByStepDirectionsFromABinaryTreeNodeToAnother;
 
-// LeetCode 2096. Step-By-Step Directions From a Binary Tree Node to Another: reuses
-// this repo's own LowestCommonAncestor (the same engine LowestCommonAncestorOfBstTests
-// composes) to find where the start->dest route turns around, then AllRootToLeafPaths
-// (already proven by PathSumII/PathSumIII/KthAncestorOfATreeNode) rooted AT that LCA
-// to recover the two root-to-node chains needed to build the "U"/"L"/"R" string - one
-// "U" per edge climbing from start up to the LCA, then one "L" or "R" per edge
-// descending from the LCA down to dest depending on which child pointer each step
-// follows.
-public sealed partial class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
+// Harness only. Both strategies are
+// StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution's - this file states
+// LeetCode's published examples once and pins each strategy to them.
+// BinaryTreeNode<int> is internal, so it cannot appear in a public TheoryData
+// member; the trees travel as LeetCode's own level-order arrays and BuildTree
+// reconstructs one inside each test method.
+public sealed class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
 {
-    [Fact]
-    public void GetDirections_LeetCodeExampleOne_ReturnsUpThenLeftThenRight()
-    {
-        // root: 5
-        //      / \
-        //     1   2
-        //    /   / \
-        //   3   6   4
-        var three = new BinaryTreeNode<int>(3);
-        var six = new BinaryTreeNode<int>(6);
-        var four = new BinaryTreeNode<int>(4);
-        var one = new BinaryTreeNode<int>(1) { Left = three };
-        var two = new BinaryTreeNode<int>(2) { Left = six, Right = four };
-        var root = new BinaryTreeNode<int>(5) { Left = one, Right = two };
-
-        var directions = GetDirections(root, three, six);
-
-        Assert.Equal("UURL", directions);
-    }
-
-    [Fact]
-    public void GetDirections_DestinationIsDescendantOfStart_ReturnsOnlyDownwardMoves()
-    {
-        var grandchild = new BinaryTreeNode<int>(3);
-        var child = new BinaryTreeNode<int>(2) { Right = grandchild };
-        var root = new BinaryTreeNode<int>(1) { Left = child };
-
-        var directions = GetDirections(root, root, grandchild);
-
-        Assert.Equal("LR", directions);
-    }
-
-    [Fact]
-    public void GetDirections_StartIsAncestorOfDestination_ReturnsOnlyUpwardMoves()
-    {
-        var grandchild = new BinaryTreeNode<int>(3);
-        var child = new BinaryTreeNode<int>(2) { Right = grandchild };
-        var root = new BinaryTreeNode<int>(1) { Left = child };
-
-        var directions = GetDirections(root, grandchild, root);
-
-        Assert.Equal("UU", directions);
-    }
-
-    private static string GetDirections(BinaryTreeNode<int> root, BinaryTreeNode<int> start, BinaryTreeNode<int> dest)
-    {
-        var lca = FindLowestCommonAncestor(root, start, dest);
-        var leafPaths = FindLeafPaths(lca);
-
-        var pathToStart = PathTo(leafPaths, start);
-        var pathToDest = PathTo(leafPaths, dest);
-
-        var up = BuildUpwardMoves(pathToStart);
-        var down = BuildDownwardMoves(pathToDest);
-
-        return up + down;
-    }
-
-    private static BinaryTreeNode<int> FindLowestCommonAncestor(
-        BinaryTreeNode<int> root, BinaryTreeNode<int> start, BinaryTreeNode<int> dest)
-    {
-        var lca = LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root, start, dest);
-
-        // presumption: allow -- start and dest are always nodes reachable from root in
-        // the trees these tests build, so Find can only return null when neither is
-        // (impossible here), the same guarantee LowestCommonAncestorOfBstTests relies on.
-        return lca!;
-    }
-
-    private static List<BinaryTreeNode<int>[]> FindLeafPaths(BinaryTreeNode<int> lca)
-        => AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(lca);
-
-    private static string BuildUpwardMoves(BinaryTreeNode<int>[] pathToStart) => new('U', pathToStart.Length - 1);
-
-    private static string BuildDownwardMoves(BinaryTreeNode<int>[] pathToDest)
-    {
-        var down = new char[pathToDest.Length - 1];
-
-        for (var i = 0; i < down.Length; i++)
+    public static TheoryData<int?[], int, int, string> Examples =>
+        new()
         {
-            down[i] = pathToDest[i].Left == pathToDest[i + 1] ? 'L' : 'R';
-        }
+            // LeetCode's example 1: up out of the left subtree, back down the right.
+            { [5, 1, 2, 3, null, 6, 4], 3, 6, "UURL" },
+            // LeetCode's example 2: the destination is the start's own child.
+            { [2, 1], 2, 1, "L" },
+            // Same tree as example 1, descending into the other child of the turnaround.
+            { [5, 1, 2, 3, null, 6, 4], 3, 4, "UURR" },
+            // The destination is a descendant of the start, so the route never climbs.
+            { [1, 2, null, null, 3], 1, 3, "LR" },
+            // The reverse of it: the start is a descendant, so the route only climbs.
+            { [1, 2, null, null, 3], 3, 1, "UU" },
+        };
 
-        return new string(down);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetDirectionsByPathSearch_LeetCodeExamples_ReturnsTheClimbThenDescent(
+        int?[] levelOrder, int startValue, int destValue, string expected)
+    {
+        var root = BuildTree(levelOrder);
+
+        var directions = StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution.GetDirectionsByPathSearch(
+            root, startValue, destValue);
+
+        Assert.Equal(expected, directions);
     }
 
-    // Every leaf path AllRootToLeafPaths returns starts at the same root (here, the
-    // LCA); target's own root-to-node chain is whichever leaf path contains it,
-    // truncated right after target.
-    private static BinaryTreeNode<int>[] PathTo(List<BinaryTreeNode<int>[]> leafPaths, BinaryTreeNode<int> target)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void GetDirectionsByLowestCommonAncestorPaths_LeetCodeExamples_ReturnsTheClimbThenDescent(
+        int?[] levelOrder, int startValue, int destValue, string expected)
     {
-        foreach (var path in leafPaths)
-        {
-            var index = Array.IndexOf(path, target);
+        var root = BuildTree(levelOrder);
 
-            if (index >= 0)
+        var directions = StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
+            .GetDirectionsByLowestCommonAncestorPaths(root, startValue, destValue);
+
+        Assert.Equal(expected, directions);
+    }
+
+    // LeetCode's own level-order input shape: a BFS-ordered array with null
+    // standing in for a missing child.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
+    {
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (i < levelOrder.Length)
+        {
+            var current = queue.Dequeue();
+
+            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
             {
-                return path[..(index + 1)];
+                current.Left = new BinaryTreeNode<int>(leftValue);
+                queue.Enqueue(current.Left);
             }
+
+            i++;
+
+            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+            {
+                current.Right = new BinaryTreeNode<int>(rightValue);
+                queue.Enqueue(current.Right);
+            }
+
+            i++;
         }
 
-        throw new InvalidOperationException("target is not reachable from the given root.");
+        return root;
     }
 }

@@ -1,51 +1,66 @@
-using DSAExperimentation.DataStructures.Deque;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.MaximumTwinSumOfALinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumTwinSumOfALinkedList;
 
-// LeetCode 2130. Maximum Twin Sum of a Linked List: this repo's own Deque<int>
-// (CircularBuffer-backed, ARCHITECTURE.md Sec.4.1) collects every value with one
-// forward walk over the list, then drains matched front/back pairs together - node
-// i and node (n-1-i) always arrive at the deque's two ends in lockstep, so no index
-// arithmetic or list reversal is needed to find twin i's partner.
-public sealed partial class MaximumTwinSumOfALinkedListTests
+// Harness only. Both strategies are MaximumTwinSumOfALinkedListSolution's -
+// including the index-pairing baseline, which the benchmark used to own privately
+// and nothing asserted. SinglyLinkedListNode<int> is internal, so it cannot appear
+// in a public TheoryData<...> member (CS0053); the examples state the node values
+// and each theory builds the chain, the same shape
+// FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsTests uses.
+public sealed class MaximumTwinSumOfALinkedListTests
 {
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            // LC example 1: twin sums are 5 + 1 and 4 + 2.
+            { [5, 4, 2, 1], 6 },
+
+            // LC example 2: twin sums are 4 + 3 and 2 + 2.
+            { [4, 2, 2, 3], 7 },
+
+            // LC example 3: the shortest list LC allows is a single twin pair.
+            { [1, 100_000], 100_001 },
+
+            // Every pair sums the same, so the maximum is not the first pair by
+            // accident.
+            { [1, 2, 3, 4, 5, 6], 7 },
+
+            // The largest pair is the innermost one, reached last by both walks.
+            { [1, 1, 9, 8, 1, 1], 17 },
+
+            // The largest pair is the outermost one, reached first by both walks.
+            { [9, 1, 1, 1, 1, 8], 17 },
+        };
+
     [Theory]
-    [InlineData(new[] { 5, 4, 2, 1 }, 6)]
-    [InlineData(new[] { 4, 2, 2, 3 }, 7)]
-    public void PairSum_LeetCodeExamples_ReturnsMaximumTwinSum(int[] values, int expected) =>
-        Assert.Equal(expected, PairSum(Build(values)));
+    [MemberData(nameof(Examples))]
+    public void PairSumByArrayIndexTwoPointer_LeetCodeExamples_ReturnsMaximumTwinSum(
+        int[] values, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumTwinSumOfALinkedListSolution.PairSumByArrayIndexTwoPointer(BuildList(values)));
 
-    private static int PairSum(SinglyLinkedListNode<int>? head)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PairSumByDequeFrontBackDrain_LeetCodeExamples_ReturnsMaximumTwinSum(
+        int[] values, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumTwinSumOfALinkedListSolution.PairSumByDequeFrontBackDrain(BuildList(values)));
+
+    private static SinglyLinkedListNode<int> BuildList(int[] values)
     {
-        var values = new Deque<int>();
+        var head = new SinglyLinkedListNode<int>(values[0]);
+        var tail = head;
 
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.PushBack(node.Value);
-        }
-
-        var best = 0;
-
-        while (values.TryPopFront(out var front) && values.TryPopBack(out var back))
-        {
-            best = Math.Max(best, front + back);
-        }
-
-        return best;
-    }
-
-    private static SinglyLinkedListNode<int> Build(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
+        foreach (var value in values[1..])
         {
             tail.Next = new SinglyLinkedListNode<int>(value);
             tail = tail.Next;
         }
 
-        return dummy.Next!;
+        return head;
     }
 }
