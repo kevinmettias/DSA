@@ -1,67 +1,33 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RangeFrequencyQueries;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeFrequencyQueries;
 
-// LeetCode 2080. Range Frequency Queries: this repo's own HashMap<TKey,TValue> maps
-// each distinct value to a DynamicArray<int> of the indices where it occurs, built in
-// ascending index order (so it's already sorted, with no extra sort step needed).
-// Query wraps that DynamicArray in a DynamicArraySequence and answers with
-// BinarySearch.UpperBound - LowerBound, an O(log n) count instead of a fresh O(n)
-// rescan of arr[left..right] per call.
+// Harness only. Both strategies are RangeFrequencyQueriesSolution's - this file
+// just pins them to LeetCode's published example queries, plus a value that never
+// occurs, a single-index window, and a window that excludes some occurrences.
 public sealed class RangeFrequencyQueriesTests
 {
-    [Fact]
-    public void Query_LeetCodeExample_ReturnsFrequencyOfValueInSubarray()
-    {
-        var rangeFreqQuery = new RangeFreqQueryOperations([12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]);
-
-        var firstQuery = rangeFreqQuery.Query(1, 2, 4);
-        var secondQuery = rangeFreqQuery.Query(0, 11, 33);
-
-        Assert.Equal(1, firstQuery);
-        Assert.Equal(2, secondQuery);
-    }
-
-    [Fact]
-    public void Query_ValueNeverOccursInArray_ReturnsZero()
-    {
-        var rangeFreqQuery = new RangeFreqQueryOperations([1, 2, 3]);
-
-        var count = rangeFreqQuery.Query(0, 2, 99);
-
-        Assert.Equal(0, count);
-    }
-
-    private sealed class RangeFreqQueryOperations
-    {
-        private readonly HashMap<int, DynamicArray<int>> _indicesByValue = new();
-
-        public RangeFreqQueryOperations(int[] arr)
+    public static TheoryData<int[], int, int, int, int> Examples =>
+        new()
         {
-            for (var i = 0; i < arr.Length; i++)
-            {
-                if (!_indicesByValue.TryGetValue(arr[i], out var indices))
-                {
-                    indices = new DynamicArray<int>();
-                    _indicesByValue.Set(arr[i], indices);
-                }
+            { [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], 1, 2, 4, 1 },
+            { [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], 0, 11, 33, 2 },
+            { [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], 0, 11, 22, 2 },
+            { [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], 0, 3, 33, 1 },
+            { [12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56], 5, 5, 2, 1 },
+            { [1, 2, 3], 0, 2, 99, 0 },
+            { [7], 0, 0, 7, 1 },
+        };
 
-                indices.Add(i);
-            }
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void QueryByBinarySearchIndex_LeetCodeExamples_ReturnsFrequencyOfValueInSubarray(
+        int[] arr, int left, int right, int value, int expected) =>
+        Assert.Equal(expected, RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(arr, left, right, value));
 
-        public int Query(int left, int right, int value)
-        {
-            if (!_indicesByValue.TryGetValue(value, out var indices))
-            {
-                return 0;
-            }
-
-            var sequence = new DynamicArraySequence<int>(indices);
-            return BinarySearch.UpperBound(sequence, right) - BinarySearch.LowerBound(sequence, left);
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void QueryByBruteForceRescan_LeetCodeExamples_ReturnsFrequencyOfValueInSubarray(
+        int[] arr, int left, int right, int value, int expected) =>
+        Assert.Equal(expected, RangeFrequencyQueriesSolution.QueryByBruteForceRescan(arr, left, right, value));
 }

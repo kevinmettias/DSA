@@ -1,17 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.RangeFrequencyQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Range Frequency Queries (LC 2080): a brute-force rescan baseline (counts
-// occurrences of value in arr[left..right] directly, O(n) per query) vs. this repo's
-// own HashMap<TKey,TValue> mapping each value to a DynamicArray<int> of its indices
-// (built once, O(n)), so every Query afterward is an O(log n)
-// BinarySearch.UpperBound - LowerBound instead of a rescan. Both methods answer the
-// same fixed batch of queries.
+// Harness only: both arms are RangeFrequencyQueriesSolution's, the same methods
+// RangeFrequencyQueriesTests proves correct, run over a fixed batch of queries -
+// RangeFreqQuery's index is built once per arm and queried QueryCount times against
+// it, the pattern LeetCode's own class exposes, so the comparison is "build one
+// index + QueryCount O(log n) lookups" against "no build + QueryCount O(n) rescans".
 [MemoryDiagnoser]
 public class RangeFrequencyQueriesBenchmarks
 {
@@ -51,13 +47,7 @@ public class RangeFrequencyQueriesBenchmarks
 
         foreach (var (left, right, value) in _queries)
         {
-            for (var i = left; i <= right; i++)
-            {
-                if (_arr[i] == value)
-                {
-                    total++;
-                }
-            }
+            total += RangeFrequencyQueriesSolution.QueryByBruteForceRescan(_arr, left, right, value);
         }
 
         return total;
@@ -66,41 +56,12 @@ public class RangeFrequencyQueriesBenchmarks
     [Benchmark]
     public long HashMapWithBinarySearch()
     {
-        var indicesByValue = BuildValueIndex();
-        return SumRangeMatches(indicesByValue);
-    }
-
-    private HashMap<int, DynamicArray<int>> BuildValueIndex()
-    {
-        var indicesByValue = new HashMap<int, DynamicArray<int>>();
-
-        for (var i = 0; i < _arr.Length; i++)
-        {
-            if (!indicesByValue.TryGetValue(_arr[i], out var indices))
-            {
-                indices = new DynamicArray<int>();
-                indicesByValue.Set(_arr[i], indices);
-            }
-
-            indices.Add(i);
-        }
-
-        return indicesByValue;
-    }
-
-    private long SumRangeMatches(HashMap<int, DynamicArray<int>> indicesByValue)
-    {
+        var indicesByValue = RangeFrequencyQueriesSolution.BuildValueIndex(_arr);
         var total = 0L;
 
         foreach (var (left, right, value) in _queries)
         {
-            if (!indicesByValue.TryGetValue(value, out var indices))
-            {
-                continue;
-            }
-
-            var sequence = new DynamicArraySequence<int>(indices);
-            total += BinarySearch.UpperBound(sequence, right) - BinarySearch.LowerBound(sequence, left);
+            total += RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(indicesByValue, left, right, value);
         }
 
         return total;

@@ -1,15 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Index, int Remaining)>;
+using DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Time Needed to Buy Tickets (LC 2073): this repo's own Queue<(int,int)> directly
-// simulating the line (TimeNeededToBuyTicketsTests precedent) - O(total tickets
-// purchased before person k finishes) - vs. the O(n) closed-form sum (everyone at
-// or ahead of k contributes min(their tickets, k's tickets); everyone behind k
-// contributes min(their tickets, k's tickets - 1)). _tickets uses a large, uniform
-// ticket count per person so the queue simulation is forced through its full
-// O(n * ticketsPerPerson) worst case instead of finishing after a handful of turns.
+// Harness only: both arms are TimeNeededToBuyTicketsSolution's, the same methods
+// TimeNeededToBuyTicketsTests proves correct - this repo's Queue<(int, int)>
+// replaying the line, O(total tickets sold before person k finishes), against the
+// O(n) closed-form sum. _tickets uses a large, uniform ticket count per person so
+// the simulation is forced through its full O(n * ticketsPerPerson) worst case
+// instead of finishing after a handful of turns.
 [MemoryDiagnoser]
 public class TimeNeededToBuyTicketsBenchmarks
 {
@@ -33,58 +32,10 @@ public class TimeNeededToBuyTicketsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int QueueSimulation()
-    {
-        var line = new RepoQueue();
-
-        for (var i = 0; i < _tickets.Length; i++)
-        {
-            line.Enqueue((i, _tickets[i]));
-        }
-
-        var time = 0;
-
-        while (line.TryDequeue(out var person))
-        {
-            time++;
-
-            if (ProcessTurn(line, person))
-            {
-                break;
-            }
-        }
-
-        return time;
-    }
-
-    private bool ProcessTurn(RepoQueue line, (int Index, int Remaining) person)
-    {
-        var remaining = person.Remaining - 1;
-
-        if (remaining == 0 && person.Index == _k)
-        {
-            return true;
-        }
-
-        if (remaining > 0)
-        {
-            line.Enqueue((person.Index, remaining));
-        }
-
-        return false;
-    }
+    public int QueueSimulation() =>
+        TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByQueueSimulation(_tickets, _k);
 
     [Benchmark]
-    public int ClosedFormSum()
-    {
-        var target = _tickets[_k];
-        var time = 0;
-
-        for (var i = 0; i < _tickets.Length; i++)
-        {
-            time += i <= _k ? Math.Min(_tickets[i], target) : Math.Min(_tickets[i], target - 1);
-        }
-
-        return time;
-    }
+    public int ClosedFormSum() =>
+        TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByClosedFormSum(_tickets, _k);
 }
