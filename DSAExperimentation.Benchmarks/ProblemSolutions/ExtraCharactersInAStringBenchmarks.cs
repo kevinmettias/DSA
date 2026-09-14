@@ -1,17 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.ExtraCharactersInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Extra Characters in a String (LC 2707): both arms fill the same
-// fewest-leftover-characters recurrence bottom-up, differing only in how a start
-// position finds the dictionary words beginning there. HashSetFullScan checks every
-// end position up to the string's own length against a HashSet<string>, extracting
-// and hashing a full substring even when no dictionary word could possibly match.
-// TriePrunedScan instead walks a Trie<bool> one character at a time and stops the
-// instant no dictionary word shares that prefix, bounding the inner loop by the
-// longest dictionary word instead of by the remaining string length.
+// Harness only: both arms are ExtraCharactersInAStringSolution's, the same methods
+// ExtraCharactersInAStringTests proves correct. [GlobalSetup] builds a repeating run of
+// characters that never form a dictionary word, so neither arm gets an early exact-match
+// shortcut - both are forced through their full per-start scan strategy, which is
+// exactly the difference being measured: a full-length substring sweep against a trie
+// walk that stops at the first dead prefix.
 [MemoryDiagnoser]
 public class ExtraCharactersInAStringBenchmarks
 {
@@ -25,9 +22,6 @@ public class ExtraCharactersInAStringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        // A repeating run of characters that never form a dictionary word, so
-        // neither arm gets an early exact-match shortcut - both are forced through
-        // their full per-start scan strategy.
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
@@ -38,65 +32,10 @@ public class ExtraCharactersInAStringBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int HashSetFullScan()
-    {
-        var dictionary = new HashSet<string>(Dictionary);
-        var n = _s.Length;
-        var dp = new int[n + 1];
-
-        for (var start = n - 1; start >= 0; start--)
-        {
-            var best = 1 + dp[start + 1];
-
-            for (var end = start + 1; end <= n; end++)
-            {
-                if (dictionary.Contains(_s[start..end]))
-                {
-                    best = Math.Min(best, dp[end]);
-                }
-            }
-
-            dp[start] = best;
-        }
-
-        return dp[0];
-    }
+    public int HashSetFullScan() =>
+        ExtraCharactersInAStringSolution.MinExtraCharsByHashSetFullScan(_s, Dictionary);
 
     [Benchmark]
-    public int TriePrunedScan()
-    {
-        var trie = new Trie<bool>();
-        foreach (var word in Dictionary)
-        {
-            trie.Set(word, true);
-        }
-
-        return Memoizer.Memoize<int, int>(0, From);
-
-        int From(int start, Func<int, int> min)
-        {
-            if (start == _s.Length)
-            {
-                return 0;
-            }
-
-            var best = 1 + min(start + 1);
-
-            for (var end = start + 1; end <= _s.Length; end++)
-            {
-                var piece = _s[start..end];
-                if (!trie.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (trie.HasKey(piece))
-                {
-                    best = Math.Min(best, min(end));
-                }
-            }
-
-            return best;
-        }
-    }
+    public int TriePrunedScan() =>
+        ExtraCharactersInAStringSolution.MinExtraCharsByTriePrunedScan(_s, Dictionary);
 }
