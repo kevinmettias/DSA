@@ -21620,7 +21620,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SubarraysDistinctElementSumOfSquaresI/SubarraysDistinctElementSumOfSquaresITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SubarraysDistinctElementSumOfSquaresIBenchmarks.cs",
       "primitivesUsed": "DataStructures.Set.Set<int> (HashMap<Element,bool>-backed) grown one element at a time per subarray start index, counting distinct values via O(1)-amortized TryAdd instead of a full re-scan per subarray - same membership-set role TwoSumTests/NumberOfProvincesTests already play.",
-      "notes": "2 xUnit Theory cases (both official LeetCode examples: [1,2,1]->15, [1,1]->3) pass, hand-verified by manual subarray enumeration too. Benchmark: O(n^3) linear-rescan-per-subarray baseline vs O(n^2) growing-Set<int> arm, Length in {20,100} (this problem's own n<=100 constraint). Dry-run smoke confirms both arms execute; at Length=100 GrowingSet (2.65ms) beats BruteForce (8.38ms) as expected, though the single-iteration dry job shows the usual cold-start noise at Length=20 (same documented artifact CountPrimesTests' own notes already call out). Both projects build with 0 warnings/0 errors."
+      "notes": "Two distinct strategies across the pair. (1) The growing-Set sweep existed TWICE - as the test's private `SumOfSquares` helper and again as the benchmark's `GrowingSet` arm - identical code, so no behaviour reconciliation was needed; it is now SumOfSquaresByGrowingSet. (2) The benchmark's [Benchmark(Baseline = true)] `BruteForce` arm (plus its private CountDistinctByLinearScan helper) re-derived each subarray's distinct count with an O(length) prefix scan, O(n^3) overall, and was asserted by nothing; it is now SumOfSquaresByBruteForce, a first-class method under test, with BCL-only internals (not even a HashSet) per 17.5. Both arms already returned LeetCode's real answer shape (an unreduced long sum - LC 2913 has NO modulus; the 1e9+7 reduction belongs to LC 2916), so nothing was promoted or changed in behaviour. No hoisted overload was needed: the benchmark's [GlobalSetup] prepares an int[], which is already LeetCode's own input shape, so per 17.4 a second overload would be redundant and ambiguous. Params (20, 100), seed 1 and the value range 1..100 are preserved exactly; the two magic numbers became named constants in the harness. No fixture types existed to relocate (the test folder had no Fixtures/ subfolder and the benchmark had no Fixtures entry), and no new DataStructures/ or Algorithms/ type was created, so section 18 owes nothing here. Examples grew from the original 2 cases ([1,2,1]=15, [1,1]=3) to 5, adding [2,2]=3 (LeetCode's own Example 2 wording), the singleton [1]=1 and the all-distinct [1,2,3]=20. A stale comment in the old test claiming part II 'needs a Fenwick-tree-backed approach this repo has no facade for yet' was dropped - LC 2916 is migrated and uses RangeFenwickTree.",
+      "solutionPath": "DSAExperimentation.LeetCode/SubarraysDistinctElementSumOfSquaresI/SubarraysDistinctElementSumOfSquaresISolution.cs",
+      "strategies": "SumOfSquaresByBruteForce, SumOfSquaresByGrowingSet",
+      "architectureTier": "section-17"
     },
     {
       "id": 2916,
@@ -21641,7 +21644,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/SubarraysDistinctElementSumOfSquaresII/SubarraysDistinctElementSumOfSquaresIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/SubarraysDistinctElementSumOfSquaresIIBenchmarks.cs",
       "primitivesUsed": "DataStructures.RangeFenwickTree.RangeFenwickTree<long,ScaledSumOperation<long>> (two-Fenwick-tree range-add/range-sum) + DataStructures.HashMap.HashMap<int,int>",
-      "notes": "D[l]=distinct(l,r) for the current right endpoint; extending r range-adds +1 over (prevOccurrence,r], and the sum-of-squares delta (2*rangeSum+len) is read via Query before each update. O(n log n) vs brute force O(n^2). 22 tests total across all 3 problems pass; benchmark smoke-run via --job Dry with no exceptions (repo primitive wins clearly at n=2000)."
+      "notes": "Already migrated by another session - the solution file existed on arrival and both harnesses are already reduced to harness-only form (the test carries one [Theory] per strategy over a shared Examples TheoryData; the benchmark's two arms are one-line calls into the solution class). Left completely untouched per step 1. Its tests pass in the run I did for LC 2913.",
+      "solutionPath": "DSAExperimentation.LeetCode/SubarraysDistinctElementSumOfSquaresII/SubarraysDistinctElementSumOfSquaresIISolution.cs",
+      "strategies": "SumOfSquaresByBruteForce, SumOfSquaresByRangeFenwickTree",
+      "architectureTier": "section-17"
     },
     {
       "id": 2920,
@@ -21665,7 +21671,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaximumPointsAfterCollectingCoinsFromAllNodes/MaximumPointsAfterCollectingCoinsFromAllNodesTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumPointsAfterCollectingCoinsFromAllNodesBenchmarks.cs",
       "primitivesUsed": "Algorithms.Folding.Dags.Trees.TreeFold + DataStructures.Graph.Engines.Dags.Trees.{RootedTreeNode,RootedTreeTopology,ParentArrayTree} + DataStructures.Queue.Queue<int> (edges->parent BFS), closed over problem-local CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode,long[]>",
-      "notes": "Verified true problem mechanic via web search since initial recollection was wrong; re-derived and hand-checked against both official LeetCode examples plus a third case. Per-node fold result is the whole per-halving-level DP table, capped at MaxHalvings=14 (2^14 > LeetCode's 1e4 coins bound). A concurrent session relocated Domain.RootedTrees into DataStructures.Graph.Engines.Dags.Trees mid-task; my files were auto-updated to the new namespace and rebuild/retest confirmed green after that reorg settled."
+      "notes": "Already migrated by another session; nothing rewritten. Verified the whole pair, not just file existence: solution class is internal static in namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNodes with both strategies (memoized-recursion baseline keeps BCL internals; MaxPointsByTreeFold composes ParentArrayTree + RootedTreeNode/RootedTreeTopology + TreeFold). The bespoke CoinPointsAlgebra witness is correctly kept in the LeetCode problem folder (used by this problem alone), matching the CountWaysToBuildRoomsInAnAntColony precedent. Test is harness-only: public sealed class, examples stated once as TheoryData<int[][], int[], int, long>, one [Theory]/[MemberData] method per strategy, so the former benchmark-only baseline is now asserted. Benchmark is harness-only: [Params] NodeCount + [GlobalSetup] Setup, two one-line [Benchmark] arms with Baseline = true on MemoizedRecursion. No Fixtures/ subfolder remains under the test folder.",
+      "solutionPath": "DSAExperimentation.LeetCode/MaximumPointsAfterCollectingCoinsFromAllNodes/MaximumPointsAfterCollectingCoinsFromAllNodesSolution.cs",
+      "strategies": "MaxPointsByMemoizedRecursion, MaxPointsByTreeFold (pre-existing)",
+      "architectureTier": "section-17"
     },
     {
       "id": 2926,
@@ -21687,7 +21696,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaximumBalancedSubsequenceSum/MaximumBalancedSubsequenceSumTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumBalancedSubsequenceSumBenchmarks.cs",
       "primitivesUsed": "DataStructures.SegmentTree.SegmentTree<long,MaxOperation<long>> + Algorithms.Searching.BinarySearch.LowerBound + DataStructures.Sequence.ArraySequence<long>",
-      "notes": "nums[i]-i must be non-decreasing along the subsequence; coordinate-compressed via BinarySearch.LowerBound, swept through SegmentTree<long,MaxOperation<long>> for prefix-max. Confirmed FenwickTree cannot substitute here (max has no group inverse, which FenwickTree's own doc comment requires as a precondition) -- SegmentTree needs no inverse, so it is the correct existing primitive, not a workaround. Benchmark comment is honest that SegmentTree's recursive constant overhead only pays off past ~20k elements (crossover verified empirically), not at 2k."
+      "notes": "Already migrated by another session; nothing rewritten. Verified the whole pair: internal static MaximumBalancedSubsequenceSumSolution in namespace DSAExperimentation.LeetCode.MaximumBalancedSubsequenceSum holds the O(n^2) DP baseline with BCL-only internals plus MaxBalancedSumBySegmentTree, which composes existing repo primitives (Algorithms.Searching.BinarySearch.LowerBound over an ArraySequence<long> for coordinate compression, then SegmentTree<long, MaxOperation<long>>) rather than inventing anything. Test is harness-only: examples once as TheoryData<int[], long>, one [Theory]/[MemberData] method per strategy. Benchmark is harness-only: [Params] Length + [GlobalSetup] Setup, two one-line arms with Baseline = true on BruteForce. No Fixtures/ subfolder remains.",
+      "solutionPath": "DSAExperimentation.LeetCode/MaximumBalancedSubsequenceSum/MaximumBalancedSubsequenceSumSolution.cs",
+      "strategies": "MaxBalancedSumByBruteForce, MaxBalancedSumBySegmentTree (pre-existing)",
+      "architectureTier": "section-17"
     },
     {
       "id": 2928,
@@ -22062,8 +22074,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumNumberOfOperationsToMakeXAndYEqual/MinimumNumberOfOperationsToMakeXAndYEqualTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumNumberOfOperationsToMakeXAndYEqualBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.DynamicProgramming.Memoizer (existing primitive, same tuple/state-Memoize composition CountTheNumberOfSquareFreeSubsetsSolution and NumberOfBeautifulIntegersInTheRangeSolution already use) for the optimized MinOperationsByMemoizedReduce arm; the baseline MinOperationsByMutationQueue is a plain bounded BCL Queue+HashSet BFS (OpenTheLock baseline precedent). No new production primitives added.",
-      "notes": "Both strategies verified against all 3 official LeetCode examples (26,1->3; 54,2->4; 25,30->5) via dotnet test - 6/6 pass. Benchmark dry-run (X=997, X=9973) executes cleanly with MemoizedReduce ~19% faster and zero-allocating vs. the BFS baseline's ~10KB. Full repo test suite (3566 tests) still green after the addition.",
-      "solutionPath": "DSAExperimentation.LeetCode/MinimumNumberOfOperationsToMakeXAndYEqual/MinimumNumberOfOperationsToMakeXAndYEqualSolution.cs"
+      "notes": "Solution file already present with real content (119 lines, internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution in namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeXAndYEqual). Test and benchmark already reduced to harnesses that call into the solution class; test folder carries no Fixtures/ subfolder. Nothing rewritten per step 1.",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumNumberOfOperationsToMakeXAndYEqual/MinimumNumberOfOperationsToMakeXAndYEqualSolution.cs",
+      "strategies": "MinOperationsByMutationQueue, MinOperationsByMemoizedReduce (pre-existing, not authored by this session)",
+      "architectureTier": "section-17"
     },
     {
       "id": 3001,
@@ -22082,8 +22096,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MinimumMovesToCaptureTheQueen/MinimumMovesToCaptureTheQueenTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumMovesToCaptureTheQueenBenchmarks.cs",
       "primitivesUsed": "None from DataStructures/Algorithms - the whole domain is six bounded (1-8) coordinates with no expensive input construction or reusable container to compose, the same plain-arithmetic shape TwoSum's two arms already have (per TwoSumSolution precedent, not every problem needs a graph/DP primitive). Two genuinely distinct strategies: full 4-direction destination enumeration (baseline) vs. a direct piece-to-queen line-of-sight walk (optimized).",
-      "notes": "Both strategies verified against both official LeetCode examples ((1,1,8,8,2,3)->2; (5,3,3,4,5,2)->1) via dotnet test - 4/4 pass. Since every query is O(1) on the fixed board, the benchmark sizes a BATCH of random queries via [Params] (workload-sizing decision, mirrors LockWorkloads' role for OpenTheLockBenchmarks) - dry-run shows LineOfSight running at 26-68% of DestinationEnumeration's time. Full repo test suite still green.",
-      "solutionPath": "DSAExperimentation.LeetCode/MinimumMovesToCaptureTheQueen/MinimumMovesToCaptureTheQueenSolution.cs"
+      "notes": "Solution file already present with real content (118 lines, internal static class MinimumMovesToCaptureTheQueenSolution in namespace DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen). Test and benchmark already reduced to harnesses that call into the solution class; test folder carries no Fixtures/ subfolder. Nothing rewritten per step 1.",
+      "solutionPath": "DSAExperimentation.LeetCode/MinimumMovesToCaptureTheQueen/MinimumMovesToCaptureTheQueenSolution.cs",
+      "strategies": "MinMovesByDestinationEnumeration, MinMovesByLineOfSight (pre-existing, not authored by this session)",
+      "architectureTier": "section-17"
     },
     {
       "id": 3003,
@@ -22104,8 +22120,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/MaximizeTheNumberOfPartitionsAfterOperations/MaximizeTheNumberOfPartitionsAfterOperationsTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks.cs",
       "primitivesUsed": "DSAExperimentation.Algorithms.DynamicProgramming.Memoizer (existing primitive) for the optimized MaxPartitionsByBitmaskMemo arm, memoizing over (Position, Mask, CanChange) - same tuple-state Memoizer.Memoize<TState,TResult> composition CountTheNumberOfSquareFreeSubsetsSolution.CountByBitmaskMemo and NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo already prove out. Baseline MaxPartitionsByBruteForceRecolor tries every single-character recoloring directly (O(n^2*26), the standard textbook arm). No new production primitives added.",
-      "notes": "This is the Hard problem in the cluster. Both strategies verified against all 3 official LeetCode examples (\"accca\",2->3; \"aabaab\",3->1; \"xxyz\",1->4) via dotnet test - 6/6 pass. Benchmark dry-run at Length=100/400 (small alphabet=6, k=3) executes without exception or stack overflow and shows BitmaskMemo pulling ahead as Length grows (Length=400: ~8.4ms vs baseline's ~22ms, 0.38x ratio). Full repo test suite (3566 tests) still green after the addition.",
-      "solutionPath": "DSAExperimentation.LeetCode/MaximizeTheNumberOfPartitionsAfterOperations/MaximizeTheNumberOfPartitionsAfterOperationsSolution.cs"
+      "notes": "Already migrated by another session; nothing rewritten. Verified the full tier-4/tier-5 shape is in place: internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution in namespace DSAExperimentation.LeetCode.MaximizeTheNumberOfPartitionsAfterOperations with both strategies as public static methods (the brute-force recolor baseline is first-class there with BCL-only internals per 17.5; the memo arm composes Algorithms.DynamicProgramming.Memoizer). Test is harness-only: one shared public static TheoryData<string,int,int> Examples with LeetCode's 3 examples, one [Theory][MemberData] method per strategy. Benchmark is harness-only: [Params(100, 400)] Length, [GlobalSetup] seeded string build, two one-line [Benchmark] arms (BruteForceRecolor is Baseline=true). No Fixtures/ folder exists for this problem, no hoisted-overload need (GlobalSetup produces a plain string, which is LeetCode's own input shape), no new DataStructures/Algorithms types, so no section 18 debt.",
+      "solutionPath": "DSAExperimentation.LeetCode/MaximizeTheNumberOfPartitionsAfterOperations/MaximizeTheNumberOfPartitionsAfterOperationsSolution.cs",
+      "strategies": "MaxPartitionsByBruteForceRecolor, MaxPartitionsByBitmaskMemo (pre-existing, not written by me)",
+      "architectureTier": "section-17"
     },
     {
       "id": 3006,
@@ -22131,8 +22149,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FindBeautifulIndicesInTheGivenArrayI/FindBeautifulIndicesInTheGivenArrayITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FindBeautifulIndicesInTheGivenArrayIBenchmarks.cs",
       "primitivesUsed": "Algorithms/StringMatching/PrefixFunctionSearch.FindAll (KMP occurrence search) + Algorithms/Searching/BinarySearch.LowerBound over DataStructures/Sequence/ArraySequence<int> for the within-k pairing scan. Baseline strategy (FindBeautifulIndicesByBruteForce) is plain BCL per Section 17.5. No Domain/ type needed.",
-      "notes": "Verified no existing folder covers this problem by content. Built clean, 4/4 new tests pass, benchmark smoke-tested with a Dry job.",
-      "solutionPath": "DSAExperimentation.LeetCode/FindBeautifulIndicesInTheGivenArrayI/FindBeautifulIndicesInTheGivenArrayISolution.cs"
+      "notes": "Already migrated by another session; nothing rewritten. Verified the full tier-4/tier-5 shape: internal static class FindBeautifulIndicesInTheGivenArrayISolution in namespace DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayI, both strategies returning int[] (LeetCode's real answer shape, so no indices-vs-bool drift remains). Baseline FindBeautifulIndicesByBruteForce keeps BCL-only internals (nested scan plus linear pairing) per 17.5; FindBeautifulIndicesByPrefixFunctionSearch composes Algorithms.StringMatching.PrefixFunctionSearch.FindAll and Algorithms.Searching.BinarySearch.LowerBound over a DataStructures.Sequence.ArraySequence<int>. Test is harness-only: shared public static TheoryData<string,string,string,int,int[]> Examples with both LeetCode examples, one [Theory][MemberData] per strategy. Benchmark is harness-only: [Params(200, 5000)] Length, [GlobalSetup] building the worst-case late-mismatch patterns, two one-line arms (BruteForce is Baseline=true). No Fixtures/ folder, no hoisted-overload need (GlobalSetup yields plain strings), no new primitives, so no section 18 debt.",
+      "solutionPath": "DSAExperimentation.LeetCode/FindBeautifulIndicesInTheGivenArrayI/FindBeautifulIndicesInTheGivenArrayISolution.cs",
+      "strategies": "FindBeautifulIndicesByBruteForce, FindBeautifulIndicesByPrefixFunctionSearch (pre-existing, not written by me)",
+      "architectureTier": "section-17"
     },
     {
       "id": 3008,
@@ -22158,8 +22178,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/FindBeautifulIndicesInTheGivenArrayII/FindBeautifulIndicesInTheGivenArrayIITests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/FindBeautifulIndicesInTheGivenArrayIIBenchmarks.cs",
       "primitivesUsed": "Algorithms/StringMatching/ZFunction.FindAll (Z-function occurrence search, chosen over PrefixFunctionSearch to show a second primitive across the cluster) + the same BinarySearch.LowerBound/ArraySequence<int> pairing as #3006. Baseline strategy is plain BCL. No Domain/ type needed.",
-      "notes": "Same published examples as #3006 (only constraints differ). Kept as its own folder/solution class per the WordLadder/WordLadderII precedent rather than merging with #3006. Built clean, 4/4 new tests pass, benchmark smoke-tested with a Dry job; benchmark workload scales pattern length with s.Length so brute force's O(n*m) cost is genuinely exercised without needing LeetCode's own huge bound.",
-      "solutionPath": "DSAExperimentation.LeetCode/FindBeautifulIndicesInTheGivenArrayII/FindBeautifulIndicesInTheGivenArrayIISolution.cs"
+      "notes": "Already migrated before I started; per step 1 I did not rewrite it. Verified it is a real migration, not a stub: internal static class FindBeautifulIndicesInTheGivenArrayIISolution in namespace DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayII holds both strategies as public static methods, with the naive baseline promoted to a first-class tested method (BCL-only internals) alongside the ZFunction/BinarySearch.LowerBound arm. The test is harness-only: one public static TheoryData<string, string, string, int, int[]> Examples and one [Theory][MemberData] method per strategy. The benchmark is harness-only: [Params(200, 5_000)] and [GlobalSetup] preserved, with [Benchmark(Baseline = true)] and [Benchmark] each a one-line call into the solution class. No Fixtures/ subfolder remains under the test folder.",
+      "solutionPath": "DSAExperimentation.LeetCode/FindBeautifulIndicesInTheGivenArrayII/FindBeautifulIndicesInTheGivenArrayIISolution.cs",
+      "strategies": "FindBeautifulIndicesByBruteForce, FindBeautifulIndicesByZFunction (pre-existing, written by another session)",
+      "architectureTier": "section-17"
     },
     {
       "id": 3024,
@@ -22180,8 +22202,10 @@
       "testPath": "DSAExperimentation.Tests/LeetCodeCoverage/TypeOfTriangle/TypeOfTriangleTests.cs",
       "benchmarkPath": "DSAExperimentation.Benchmarks/ProblemSolutions/TypeOfTriangleBenchmarks.cs",
       "primitivesUsed": "Algorithms/Sorting/MergeSort.Sort over DataStructures/Sequence/ArrayIndexedSequence<int> for the sorting-based strategy. Baseline strategy (ClassifyByDirectComparison) uses no repo primitive at all, matching DistributeCandiesAmongChildrenI's precedent for purely-arithmetic LeetCode problems. No Domain/ type needed.",
-      "notes": "Fixed-size (length-3) input, so the benchmark has no [Params] size axis - documented why in the file. Built clean, 4/4 new tests pass, benchmark smoke-tested with a Dry job.",
-      "solutionPath": "DSAExperimentation.LeetCode/TypeOfTriangle/TypeOfTriangleSolution.cs"
+      "notes": "Already migrated before I started; per step 1 I did not rewrite it. Verified it is a real migration, not a stub: internal static class TypeOfTriangleSolution in namespace DSAExperimentation.LeetCode.TypeOfTriangle holds both strategies, with the direct pairwise-comparison baseline kept as a first-class tested method (BCL-only internals) and the sorting arm composing this repo's MergeSort over an ArrayIndexedSequence copy so the caller's array is not mutated. The test is harness-only: one public static TheoryData<int[], string> Examples and one [Theory][MemberData] method per strategy. The benchmark is harness-only, two one-line [Benchmark] calls with the baseline marked; it carries no [Params] because both arms are O(1) on a fixed three-element input, matching the original. No Fixtures/ subfolder remains under the test folder.",
+      "solutionPath": "DSAExperimentation.LeetCode/TypeOfTriangle/TypeOfTriangleSolution.cs",
+      "strategies": "ClassifyByDirectComparison, ClassifyByMergeSort (pre-existing, written by another session)",
+      "architectureTier": "section-17"
     },
     {
       "id": 3025,
