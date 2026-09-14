@@ -1,190 +1,138 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.MergeBSTsToCreateSingleBST;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeBSTsToCreateSingleBST;
 
-// LeetCode 1932. Merge BSTs to Create Single BST: this repo's own BinaryTreeNode
-// <TValue> is already a mutable reference type built for exactly this kind of
-// splice (its own doc comment names "mutate-in-place operations" as the reason
-// Left/Right are settable), so a leaf whose value matches another tree's root gets
-// spliced by reassigning the parent's Left/Right pointer, no new node type needed.
-// A HashMap<int,BinaryTreeNode<int>> indexes every candidate tree by its root value
-// (removed once consumed, so a root can only be spliced in once) and a Set<int> of
-// every leaf value across all trees finds the one root value that is never anyone's
-// leaf - the overall merged root (zero or more than one such candidate means no
-// valid merge exists). Splicing alone doesn't guarantee a valid BST - two spliced-
-// together subtrees can still violate global ordering - so the merged tree is
-// validated the same way AllElementsInTwoBinarySearchTreesTests/
-// ValidateBinarySearchTreeTests already do: an in-order walk (this repo's own
-// InOrderTraversal/IInOrderHooks) must produce strictly ascending values.
-public sealed partial class MergeBSTsToCreateSingleBSTTests
+// Harness only. Both strategies live in MergeBSTsToCreateSingleBSTSolution; this
+// file pins them to the same examples, so a failure names the strategy that broke.
+// The linear rescan was previously only a [Benchmark(Baseline = true)] arm - and one
+// that answered a weaker question, assuming the first tree was the overall root and
+// never checking BST order - so these are its first assertions.
+//
+// Trees are stated in LeetCode's own level-order-with-null array shape, because
+// BinaryTreeNode<int> is internal and cannot appear in a public TheoryData
+// signature; BuildForest reconstructs them inside each test method, which also gives
+// every strategy its own forest to splice (the merge mutates Left/Right in place).
+// An empty expected array means "no valid merge", which is how LeetCode renders it.
+public sealed class MergeBSTsToCreateSingleBSTTests
 {
-    [Fact]
-    public void CanMerge_LeafMatchesOtherTreesRoot_SplicesIntoOneValidBst()
-    {
-        // treeA: 2 -> left=1(leaf), right=4(leaf). treeB: 1 -> left=0(leaf).
-        // treeA's leaf "1" is where treeB's root "1" attaches.
-        var treeA = new BinaryTreeNode<int>(2) { Left = new(1), Right = new(4) };
-        var treeB = new BinaryTreeNode<int>(1) { Left = new(0) };
-
-        var merged = CanMerge([treeA, treeB]);
-
-        Assert.NotNull(merged);
-        Assert.Equal(2, merged!.Value);
-        Assert.Equal(4, merged.Right!.Value);
-        Assert.Equal(1, merged.Left!.Value);
-        Assert.Equal(0, merged.Left.Left!.Value);
-        Assert.Null(merged.Left.Right);
-    }
-
-    [Fact]
-    public void CanMerge_NoTreesLeafMatchesAnotherRoot_ReturnsNull()
-    {
-        var treeA = new BinaryTreeNode<int>(10) { Left = new(5) };
-        var treeB = new BinaryTreeNode<int>(20) { Left = new(15) };
-
-        Assert.Null(CanMerge([treeA, treeB]));
-    }
-
-    [Fact]
-    public void CanMerge_SpliceProducesInvalidBstOrder_ReturnsNull()
-    {
-        // treeA: 2 -> left=1(leaf). treeB: 1 -> right=5(leaf). Splicing treeB into
-        // treeA's leaf puts 5 under 2's LEFT subtree, breaking BST order (5 > 2).
-        var treeA = new BinaryTreeNode<int>(2) { Left = new(1) };
-        var treeB = new BinaryTreeNode<int>(1) { Right = new(5) };
-
-        Assert.Null(CanMerge([treeA, treeB]));
-    }
-
-    private static BinaryTreeNode<int>? CanMerge(List<BinaryTreeNode<int>> trees)
-    {
-        var rootByValue = BuildRootIndex(trees);
-        var leafValues = CollectAllLeafValues(trees);
-        var overallRoot = FindOverallRoot(trees, leafValues);
-
-        if (overallRoot is null)
+    public static TheoryData<int?[][], int?[]> Examples =>
+        new()
         {
-            return null;
+            // LeetCode example 1: trees = [[2,1],[3,2,5],[5,4]].
+            { [[2, 1], [3, 2, 5], [5, 4]], [3, 2, 5, 1, null, 4] },
+
+            // LeetCode example 2: merging is possible but puts 6 in 5's left
+            // subtree, so the result is not a BST.
+            { [[5, 3, 8], [3, 2, 6]], [] },
+
+            // LeetCode example 3: no leaf matches another tree's root.
+            { [[5, 4], [3]], [] },
+
+            // treeA's leaf 1 is where treeB's root 1 attaches.
+            { [[2, 1, 4], [1, 0]], [2, 1, 4, 0] },
+
+            // Neither root is anyone's leaf, so there is no single overall root.
+            { [[10, 5], [20, 15]], [] },
+
+            // Splicing succeeds but puts 5 under 2's LEFT subtree, breaking order.
+            { [[2, 1], [1, null, 5]], [] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanMergeByLinearScan_LeetCodeExamples_ReturnsMergedBstOrNull(int?[][] trees, int?[] expected) =>
+        Assert.Equal(
+            expected,
+            LevelOrder(MergeBSTsToCreateSingleBSTSolution.CanMergeByLinearScan(BuildForest(trees))));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanMergeByHashMapIndex_LeetCodeExamples_ReturnsMergedBstOrNull(int?[][] trees, int?[] expected) =>
+        Assert.Equal(
+            expected,
+            LevelOrder(MergeBSTsToCreateSingleBSTSolution.CanMergeByHashMapIndex(BuildForest(trees))));
+
+    private static List<BinaryTreeNode<int>> BuildForest(int?[][] trees)
+    {
+        var forest = new List<BinaryTreeNode<int>>(trees.Length);
+
+        foreach (var levelOrder in trees)
+        {
+            forest.Add(BuildTree(levelOrder));
         }
 
-        rootByValue.TryRemove(overallRoot.Value);
-        var merged = Splice(overallRoot, rootByValue);
-
-        return rootByValue.Count == 0 && IsStrictlyAscending(merged) ? merged : null;
+        return forest;
     }
 
-    private static HashMap<int, BinaryTreeNode<int>> BuildRootIndex(List<BinaryTreeNode<int>> trees)
+    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
+    // in for a missing child.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
     {
-        var rootByValue = new HashMap<int, BinaryTreeNode<int>>();
-        foreach (var tree in trees)
+        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
+        var i = 1;
+
+        while (i < levelOrder.Length)
         {
-            rootByValue.Set(tree.Value, tree);
+            var current = queue.Dequeue();
+            i = AttachChildren(current, levelOrder, queue, i);
         }
 
-        return rootByValue;
+        return root;
     }
 
-    private static Set<int> CollectAllLeafValues(List<BinaryTreeNode<int>> trees)
+    private static int AttachChildren(
+        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
     {
-        var leafValues = new Set<int>();
-        foreach (var tree in trees)
+        if (levelOrder[i] is { } leftValue)
         {
-            CollectLeafValues(tree, leafValues);
+            current.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(current.Left);
         }
 
-        return leafValues;
+        i++;
+
+        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+        {
+            current.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(current.Right);
+        }
+
+        return i + 1;
     }
 
-    // The overall merged root is whichever tree's own root value is never
-    // anyone's leaf; zero or more than one such candidate means no valid
-    // single merge exists.
-    private static BinaryTreeNode<int>? FindOverallRoot(List<BinaryTreeNode<int>> trees, Set<int> leafValues)
+    // The same shape back out, so an expected tree reads exactly as LeetCode prints
+    // it: trailing nulls trimmed, and an empty array for "no valid merge".
+    private static int?[] LevelOrder(BinaryTreeNode<int>? root)
     {
-        BinaryTreeNode<int>? overallRoot = null;
-        foreach (var tree in trees)
+        if (root is null)
         {
-            if (leafValues.Has(tree.Value))
+            return [];
+        }
+
+        var values = new List<int?>();
+        var queue = new Queue<BinaryTreeNode<int>?>();
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            var node = queue.Dequeue();
+            values.Add(node?.Value);
+
+            if (node is not null)
             {
-                continue;
+                queue.Enqueue(node.Left);
+                queue.Enqueue(node.Right);
             }
-
-            if (overallRoot is not null)
-            {
-                return null;
-            }
-
-            overallRoot = tree;
         }
 
-        return overallRoot;
-    }
-
-    private static void CollectLeafValues(BinaryTreeNode<int> node, Set<int> leafValues)
-    {
-        if (node.Left is null && node.Right is null)
+        while (values.Count > 0 && values[^1] is null)
         {
-            leafValues.TryAdd(node.Value);
-            return;
+            values.RemoveAt(values.Count - 1);
         }
 
-        if (node.Left is { } left)
-        {
-            CollectLeafValues(left, leafValues);
-        }
-
-        if (node.Right is { } right)
-        {
-            CollectLeafValues(right, leafValues);
-        }
-    }
-
-    private static BinaryTreeNode<int> Splice(BinaryTreeNode<int> node, HashMap<int, BinaryTreeNode<int>> rootByValue)
-    {
-        if (node.Left is null && node.Right is null && rootByValue.TryGetValue(node.Value, out var mergeRoot))
-        {
-            rootByValue.TryRemove(node.Value);
-            return Splice(mergeRoot, rootByValue);
-        }
-
-        if (node.Left is { } left)
-        {
-            node.Left = Splice(left, rootByValue);
-        }
-
-        if (node.Right is { } right)
-        {
-            node.Right = Splice(right, rootByValue);
-        }
-
-        return node;
-    }
-
-    private static bool IsStrictlyAscending(BinaryTreeNode<int> root)
-    {
-        State.Previous.Value = null;
-        State.IsAscending.Value = true;
-        InOrderTraversal.Walk<int, ValidateAscendingHooks>(root);
-        return State.IsAscending.Value;
-    }
-
-    private readonly struct ValidateAscendingHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
-        {
-            if (State.Previous.Value is { } previous && node.Value <= previous)
-            {
-                State.IsAscending.Value = false;
-            }
-
-            State.Previous.Value = node.Value;
-        }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<int?> Previous = new();
-        public static readonly AsyncLocal<bool> IsAscending = new();
+        return [.. values];
     }
 }
