@@ -1,82 +1,74 @@
-using DSAExperimentation.DataStructures.Set;
+using static DSAExperimentation.LeetCode.LongestUploadedPrefix.LongestUploadedPrefixSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestUploadedPrefix;
 
-// LeetCode 2424. Longest Uploaded Prefix: every Upload just needs "has video been
-// seen" membership, so this repo's own Set<int> (backed by HashMap) tracks the
-// uploaded videos, and a frontier pointer advances past every already-seen video
-// number immediately after each upload. The pointer only ever moves forward, so the
-// total work across every call is O(number of uploads) amortized, not O(uploads^2)
-// - no ordered/range structure is needed, since the frontier check only ever asks
-// about one specific next value at a time.
-public sealed partial class LongestUploadedPrefixTests
+// Harness only: both strategies live in LongestUploadedPrefixSolution. LeetCode's
+// own shape here is a stateful object across a sequence of calls, so an example is
+// a call script rather than a single argument tuple - the same shape
+// SeatReservationManagerTests uses for its own instance-API problem. The expected
+// sequence carries one more entry than the script's uploads: its first entry is
+// what longest() reports before anything has been uploaded, which is the published
+// example's own first query.
+//
+// The rescan baseline is asserted here too, which is the point of hoisting it into
+// the solution class: before this migration it lived only in the benchmark's
+// baseline arm and nothing checked that the arm the frontier is measured against
+// was even right. It is also the one strategy that needs the stream capacity, which
+// is why the script states it.
+public sealed class LongestUploadedPrefixTests
 {
-    [Fact]
-    public void Upload_LeetCodeExampleSequence_MatchesExpectedLongestValues()
-    {
-        var server = new LUPrefixOperations();
-
-        server.Upload(3);
-        server.Upload(1);
-        Assert.Equal(1, server.Longest());
-
-        server.Upload(2);
-        Assert.Equal(3, server.Longest());
-    }
-
-    [Fact]
-    public void Longest_BeforeAnyUpload_ReturnsZero()
-    {
-        var server = new LUPrefixOperations();
-
-        Assert.Equal(0, server.Longest());
-    }
-
-    [Fact]
-    public void Upload_WithGapAfterPrefix_StopsAtTheGap()
-    {
-        var server = new LUPrefixOperations();
-
-        server.Upload(1);
-        server.Upload(2);
-        server.Upload(4);
-
-        Assert.Equal(2, server.Longest());
-
-        server.Upload(3);
-
-        Assert.Equal(4, server.Longest());
-    }
-
-    [Fact]
-    public void Upload_SameVideoTwice_DoesNotCorruptTheFrontier()
-    {
-        var server = new LUPrefixOperations();
-
-        server.Upload(1);
-        server.Upload(1);
-
-        Assert.Equal(1, server.Longest());
-    }
-
-    // n (the stream's declared capacity in LeetCode's own LUPrefix(int n)) plays no
-    // role in this solution's correctness - the frontier advances purely off which
-    // video numbers have actually been uploaded - so it is intentionally not stored.
-    private sealed class LUPrefixOperations
-    {
-        private readonly Set<int> _uploaded = new();
-        private int _longest;
-
-        public void Upload(int video)
+    public static TheoryData<UploadScript, int[]> Examples =>
+        new()
         {
-            _uploaded.TryAdd(video);
+            // LeetCode's published example: LUPrefix(4), then upload 3, 1, 2 with a
+            // longest() after each - 0, then 1, then 3.
+            { new UploadScript(VideoCount: 4, [3, 1, 2]), [0, 0, 1, 3] },
 
-            while (_uploaded.Has(_longest + 1))
-            {
-                _longest++;
-            }
+            // Nothing uploaded at all, the pre-section-17 test's second case.
+            { new UploadScript(VideoCount: 1, []), [0] },
+
+            // A gap left open and then filled: the frontier stalls at 2 while 4 sits
+            // stranded, then jumps straight to 4 when 3 arrives.
+            { new UploadScript(VideoCount: 4, [1, 2, 4, 3]), [0, 1, 2, 2, 4] },
+
+            // The same video twice, which must not advance the frontier twice.
+            { new UploadScript(VideoCount: 1, [1, 1]), [0, 1, 1] },
+
+            // Arrivals in descending order: nothing is contiguous until the very
+            // last upload completes the whole stream at once.
+            { new UploadScript(VideoCount: 5, [5, 4, 3, 2, 1]), [0, 0, 0, 0, 0, 5] },
+
+            // Arrivals already in order, so every upload extends the prefix by one.
+            { new UploadScript(VideoCount: 3, [1, 2, 3]), [0, 1, 2, 3] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void UploadedPrefixByRescanArray_LeetCodeExamples_ReportsLongestPrefixAfterEachUpload(
+        UploadScript script, int[] expected) =>
+        AssertScript(new UploadedPrefixByRescanArray(script.VideoCount), script.Uploads, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void UploadedPrefixBySetFrontier_LeetCodeExamples_ReportsLongestPrefixAfterEachUpload(
+        UploadScript script, int[] expected) =>
+        AssertScript(new UploadedPrefixBySetFrontier(), script.Uploads, expected);
+
+    private static void AssertScript(IUploadedPrefix server, int[] uploads, int[] expected)
+    {
+        Assert.Equal(expected[0], server.Longest());
+
+        for (var i = 0; i < uploads.Length; i++)
+        {
+            server.Upload(uploads[i]);
+
+            Assert.Equal(expected[i + 1], server.Longest());
         }
-
-        public int Longest() => _longest;
     }
 }
+
+// One LeetCode call script: the stream capacity LUPrefix's constructor was given,
+// and the videos uploaded after it. The two travel together because only one of the
+// strategies takes the capacity - the frontier never allocates per video, so it
+// answers the identical script without being told how many videos exist.
+public readonly record struct UploadScript(int VideoCount, int[] Uploads);

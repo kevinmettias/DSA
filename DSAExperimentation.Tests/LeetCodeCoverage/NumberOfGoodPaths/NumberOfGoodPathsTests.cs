@@ -1,93 +1,57 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.NumberOfGoodPaths;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfGoodPaths;
 
-// LeetCode 2421. Number of Good Paths: process the tree's edges in increasing order
-// of their higher-valued endpoint with this repo's own DisjointSet (Union-Find).
-// Every single node is trivially its own good path (n of them, counted up front).
-// Each DisjointSet.Union call merges two components whose "component max value" and
-// "count of nodes achieving it" are tracked alongside it - when both sides share the
-// same max value, every max-value node on one side pairs with every max-value node
-// on the other to form a newly-connected good path (their connecting path's highest
-// value is exactly that shared max, since every earlier-processed edge already
-// guaranteed both sides never exceed it).
-public sealed partial class NumberOfGoodPathsTests
+// Harness only. Both strategies are NumberOfGoodPathsSolution's - this file pins
+// them to LeetCode's published examples plus the shapes those never reach: a lone
+// node, a chain where a taller node blocks the only path between two equal ones,
+// and a chain where a shorter node does not.
+//
+// The pairwise path walk is asserted here too, which is the point of hoisting it
+// into the solution class: before this migration it lived only in the benchmark's
+// baseline arm and nothing checked that the arm the DisjointSet sweep is measured
+// against was even right.
+public sealed class NumberOfGoodPathsTests
 {
-    [Fact]
-    public void CountGoodPaths_ClassicExample_ReturnsSixGoodPaths()
-    {
-        int[] vals = [1, 3, 2, 1, 3];
-        int[][] edges = [[0, 1], [0, 2], [2, 3], [2, 4]];
-
-        var count = CountGoodPaths(vals, edges);
-
-        Assert.Equal(6, count);
-    }
-
-    [Fact]
-    public void CountGoodPaths_AllNodesSameValue_CountsEveryPairPlusTrivialPaths()
-    {
-        // A path graph 0-1-2 with every value equal to 1: 3 trivial single-node
-        // paths plus all 3 pairs, since the unique connecting path between any two
-        // never exceeds their shared value.
-        int[] vals = [1, 1, 1];
-        int[][] edges = [[0, 1], [1, 2]];
-
-        var count = CountGoodPaths(vals, edges);
-
-        Assert.Equal(6, count);
-    }
-
-    [Fact]
-    public void CountGoodPaths_SingleNode_ReturnsOneTrivialPath()
-    {
-        int[] vals = [5];
-        int[][] edges = [];
-
-        var count = CountGoodPaths(vals, edges);
-
-        Assert.Equal(1, count);
-    }
-
-    private static int CountGoodPaths(int[] vals, int[][] edges)
-    {
-        var n = vals.Length;
-        var components = new DisjointSet(n);
-        var componentMaxValue = (int[])vals.Clone();
-        var componentMaxCount = new int[n];
-        Array.Fill(componentMaxCount, 1);
-
-        var goodPaths = n;
-
-        foreach (var edge in edges.OrderBy(e => Math.Max(vals[e[0]], vals[e[1]])))
+    public static TheoryData<int[], int[][], int> Examples =>
+        new()
         {
-            var rootA = components.Find(edge[0]);
-            var rootB = components.Find(edge[1]);
+            // LeetCode example 1: the two 1s and the two 3s each connect through a
+            // 2, so only the 1s pair up on top of the five trivial paths.
+            { [1, 3, 2, 1, 3], [[0, 1], [0, 2], [2, 3], [2, 4]], 6 },
 
-            if (rootA == rootB)
-            {
-                continue;
-            }
+            // LeetCode example 2: every value equal, so all four trivial paths plus
+            // all six pairs count.
+            { [1, 1, 1, 1], [[0, 1], [1, 2], [2, 3]], 10 },
 
-            var maxA = componentMaxValue[rootA];
-            var maxB = componentMaxValue[rootB];
+            // LeetCode example 3: a single node with no edges.
+            { [1], [], 1 },
 
-            if (maxA == maxB)
-            {
-                goodPaths += componentMaxCount[rootA] * componentMaxCount[rootB];
-            }
+            // The three-node version of example 2, which the pre-section-17 test
+            // asserted.
+            { [1, 1, 1], [[0, 1], [1, 2]], 6 },
 
-            var mergedMax = Math.Max(maxA, maxB);
-            var mergedCount = maxA == maxB
-                ? componentMaxCount[rootA] + componentMaxCount[rootB]
-                : maxA > maxB ? componentMaxCount[rootA] : componentMaxCount[rootB];
+            // The pre-section-17 test's single-node case, with a value that is not 1.
+            { [5], [], 1 },
 
-            components.Union(edge[0], edge[1]);
-            var newRoot = components.Find(edge[0]);
-            componentMaxValue[newRoot] = mergedMax;
-            componentMaxCount[newRoot] = mergedCount;
-        }
+            // A shorter node between two equal ones does not block them: 3 trivial
+            // paths plus the 2-1-2 pair.
+            { [2, 1, 2], [[0, 1], [1, 2]], 4 },
 
-        return goodPaths;
-    }
+            // A taller node between two equal ones does block them, so only the
+            // trivial paths remain.
+            { [1, 3, 1], [[0, 1], [1, 2]], 3 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountGoodPathsByPairwisePathWalk_LeetCodeExamples_CountsEveryGoodPath(
+        int[] vals, int[][] edges, int expected) =>
+        Assert.Equal(expected, NumberOfGoodPathsSolution.CountGoodPathsByPairwisePathWalk(vals, edges));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountGoodPathsByDisjointSetSweep_LeetCodeExamples_CountsEveryGoodPath(
+        int[] vals, int[][] edges, int expected) =>
+        Assert.Equal(expected, NumberOfGoodPathsSolution.CountGoodPathsByDisjointSetSweep(vals, edges));
 }

@@ -1,65 +1,39 @@
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.CountSubarraysWithFixedBounds;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithFixedBounds;
 
-// LeetCode 2444. Count Subarrays With Fixed Bounds: a subarray's minimum equals
-// minK AND its maximum equals maxK if and only if every one of its elements already
-// lies within [minK, maxK] - min==minK forces every element >= minK, max==maxK
-// forces every element <= maxK, so no separate range check is needed on top of the
-// two equalities. Every subarray's min/max is answered in O(log n) by this repo's
-// own SegmentTree<int,MinOperation<int>>/SegmentTree<int,MaxOperation<int>> pair -
-// the same Min/Max SegmentTree composition BookingConcertTicketsInGroupsTests
-// already uses, queried once per (start,end) pair instead of rescanning each
-// subarray from scratch.
-public sealed partial class CountSubarraysWithFixedBoundsTests
+// Harness only. Both counting strategies are CountSubarraysWithFixedBoundsSolution's
+// - the triple-nested rescan that used to live untested as the benchmark baseline,
+// and the SegmentTree min/max pair - pinned here to LeetCode's published examples
+// plus the cases that exercise an out-of-range element splitting the array
+// ([1, 5, 9, 1, 5], where the 9 blocks every subarray that spans it) and a bound
+// that no element reaches at all.
+public sealed class CountSubarraysWithFixedBoundsTests
 {
-    [Fact]
-    public void CountFixedBoundSubarrays_LeetCodeExampleOne_ReturnsTwoQualifyingSubarrays()
-    {
-        int[] nums = [1, 3, 5, 2, 7, 5];
-
-        var count = CountFixedBoundSubarrays(nums, minK: 1, maxK: 5);
-
-        Assert.Equal(2, count);
-    }
-
-    [Fact]
-    public void CountFixedBoundSubarrays_LeetCodeExampleTwo_EveryElementEqualsBothBounds_CountsEverySubarray()
-    {
-        int[] nums = [1, 1, 1, 1];
-
-        var count = CountFixedBoundSubarrays(nums, minK: 1, maxK: 1);
-
-        Assert.Equal(10, count);
-    }
-
-    [Fact]
-    public void CountFixedBoundSubarrays_NoElementReachesMaxK_ReturnsZero()
-    {
-        int[] nums = [2, 2, 2];
-
-        var count = CountFixedBoundSubarrays(nums, minK: 1, maxK: 5);
-
-        Assert.Equal(0, count);
-    }
-
-    private static long CountFixedBoundSubarrays(int[] nums, int minK, int maxK)
-    {
-        var minTree = new SegmentTree<int, MinOperation<int>>(nums);
-        var maxTree = new SegmentTree<int, MaxOperation<int>>(nums);
-        long count = 0;
-
-        for (var start = 0; start < nums.Length; start++)
+    public static TheoryData<int[], int, int, long> Examples =>
+        new()
         {
-            for (var end = start; end < nums.Length; end++)
-            {
-                if (minTree.Query(start, end) == minK && maxTree.Query(start, end) == maxK)
-                {
-                    count++;
-                }
-            }
-        }
+            { [1, 3, 5, 2, 7, 5], 1, 5, 2L },
+            { [1, 1, 1, 1], 1, 1, 10L },
+            { [2, 2, 2], 1, 5, 0L },
+            { [1, 5, 1, 5], 1, 5, 6L },
+            { [1, 5, 9, 1, 5], 1, 5, 2L },
+            { [3, 3], 3, 3, 3L },
+        };
 
-        return count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountFixedBoundSubarraysByRescan_LeetCodeExamples_ReturnsQualifyingSubarrayCount(
+        int[] nums, int minK, int maxK, long expected) =>
+        Assert.Equal(
+            expected,
+            CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysByRescan(nums, minK, maxK));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountFixedBoundSubarraysBySegmentTreeQueries_LeetCodeExamples_ReturnsQualifyingSubarrayCount(
+        int[] nums, int minK, int maxK, long expected) =>
+        Assert.Equal(
+            expected,
+            CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysBySegmentTreeQueries(nums, minK, maxK));
 }

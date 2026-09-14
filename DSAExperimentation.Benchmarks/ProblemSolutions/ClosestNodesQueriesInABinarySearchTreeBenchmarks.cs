@@ -1,22 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ClosestNodesQueriesInABinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Closest Nodes Queries in a Binary Search Tree (LC 2476): an O(n) per-query
-// recursive scan of every node's value (the "ignore the BST invariant entirely"
-// baseline) vs. this repo's own InOrderTraversal/IInOrderHooks collecting every
-// value into a sorted DynamicArray<int> exactly once - the same composition
-// FindModeInBinarySearchTreeBenchmarks/KthSmallestElementInABSTBenchmarks already
-// use - then answering each query with BinarySearch.LowerBound's insertion point,
-// the same floor/ceiling-from-an-insertion-point move ClosestRoomBenchmarks
-// already proves out. O(n * queries) vs. O(n + queries * log n). The tree itself
-// is built with this repo's own BinarySearchTree<int>.Insert over a shuffled
-// distinct-value permutation, the same random-insertion-order precedent
-// FindModeInBinarySearchTreeBenchmarks uses for a realistically shaped tree.
+// Harness only: both arms are ClosestNodesQueriesInABinarySearchTreeSolution's, the
+// same methods ClosestNodesQueriesInABinarySearchTreeTests proves correct.
+// LinearScanPerQuery rescans every node for every query and ignores the BST
+// invariant entirely - O(n * queries) - while InOrderBinarySearch spends one
+// in-order walk on an ascending buffer and then bisects it per query, O(n + queries
+// * log n). The tree is built in [GlobalSetup] with this repo's own
+// BinarySearchTree<int>.Insert over a shuffled distinct-value permutation, the same
+// random-insertion-order precedent AllElementsInTwoBinarySearchTreesBenchmarks uses,
+// so height stays close to O(log n) rather than degenerating on ascending input.
 [MemoryDiagnoser]
 public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
 {
@@ -56,86 +52,10 @@ public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScanPerQuery()
-    {
-        var total = 0L;
-
-        foreach (var query in _queries)
-        {
-            var (floor, ceiling) = LinearFloorAndCeiling(_root, query);
-            total += floor + ceiling;
-        }
-
-        return total;
-    }
-
-    private static (int Floor, int Ceiling) LinearFloorAndCeiling(BinaryTreeNode<int>? node, int query)
-    {
-        var floor = -1;
-        var ceiling = -1;
-        Walk(node, query, ref floor, ref ceiling);
-        return (floor, ceiling);
-    }
-
-    private static void Walk(BinaryTreeNode<int>? node, int query, ref int floor, ref int ceiling)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        if (node.Value <= query && (floor == -1 || node.Value > floor))
-        {
-            floor = node.Value;
-        }
-
-        if (node.Value >= query && (ceiling == -1 || node.Value < ceiling))
-        {
-            ceiling = node.Value;
-        }
-
-        Walk(node.Left, query, ref floor, ref ceiling);
-        Walk(node.Right, query, ref floor, ref ceiling);
-    }
+    public int[][] LinearScanPerQuery() =>
+        ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByLinearScan(_root, _queries);
 
     [Benchmark]
-    public long SortedInOrderWithBinarySearch()
-    {
-        State.Values.Value = new DynamicArray<int>();
-        InOrderTraversal.Walk<int, CollectHooks>(_root);
-        var values = State.Values.Value;
-        var total = 0L;
-
-        foreach (var query in _queries)
-        {
-            var (floor, ceiling) = FloorAndCeiling(values, query);
-            total += floor + ceiling;
-        }
-
-        return total;
-    }
-
-    private static (int Floor, int Ceiling) FloorAndCeiling(DynamicArray<int> values, int query)
-    {
-        var index = BinarySearch.LowerBound(new DynamicArraySequence<int>(values), query);
-
-        if (index < values.Count && values.Get(index) == query)
-        {
-            return (query, query);
-        }
-
-        var floor = index > 0 ? values.Get(index - 1) : -1;
-        var ceiling = index < values.Count ? values.Get(index) : -1;
-        return (floor, ceiling);
-    }
-
-    private readonly struct CollectHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Values = new();
-    }
+    public int[][] InOrderBinarySearch() =>
+        ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByInOrderBinarySearch(_root, _queries);
 }

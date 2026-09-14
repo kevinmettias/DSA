@@ -1,18 +1,26 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Words Within Two Edits of Dictionary (LC 2452): scanning the whole dictionary and
-// counting mismatched characters for every query (same per-call batch shape
-// ImplementMagicDictionaryBenchmarks uses) vs. this repo's own LowercaseTrie<bool>,
-// walked via a remaining-edit-budget DFS over its already-public Root/Children -
-// ImplementMagicDictionaryBenchmarks' one-substitution walk generalized from a
-// budget of exactly 1 to "at most 2". O(queries * dictionarySize * wordLength) vs.
-// O(dictionarySize * wordLength) to build the trie once plus a budgeted walk per
-// query. Each query is exactly one dictionary word with 0, 1, or 2 characters
-// changed (guaranteed to be a real match), so neither strategy short-circuits on an
-// early "definitely no match" bail-out.
+// Harness only: both arms are WordsWithinTwoEditsOfDictionarySolution's, the same
+// methods WordsWithinTwoEditsOfDictionaryTests proves correct. [GlobalSetup] builds
+// the dictionary and the query batch - LeetCode's own input shape, handed straight
+// to each strategy, so no prepared-input overload is needed - leaving each arm to
+// measure only the matching.
+//
+// Scanning the whole dictionary and counting mismatched characters for every query
+// is O(queries * dictionarySize * wordLength); building the LowercaseTrie<bool>
+// once is O(dictionarySize * wordLength) plus a budgeted walk per query. Each query
+// is exactly one dictionary word with 0, 1, or 2 characters changed (so every query
+// really does match), and neither strategy short-circuits on an early "definitely
+// no match" bail-out.
+//
+// Section 17.8 note: both arms previously COUNTED matches; they now return
+// LeetCode's actual answer, the matching queries themselves, so the measurement
+// includes materializing that list. Every query matches by construction, so the
+// list is the full query batch in both arms and the comparison is still about
+// matching cost.
 [MemoryDiagnoser]
 public class WordsWithinTwoEditsOfDictionaryBenchmarks
 {
@@ -39,99 +47,12 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce()
-    {
-        var matches = 0;
-
-        foreach (var query in _queries)
-        {
-            if (_dictionary.Any(word => IsWithinEditBudget(word, query)))
-            {
-                matches++;
-            }
-        }
-
-        return matches;
-    }
-
-    private static bool IsWithinEditBudget(string word, string query)
-    {
-        var differences = 0;
-
-        for (var i = 0; i < word.Length && differences <= MaxEdits; i++)
-        {
-            if (word[i] != query[i])
-            {
-                differences++;
-            }
-        }
-
-        return differences <= MaxEdits;
-    }
+    public string[] BruteForce() =>
+        WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(_queries, _dictionary);
 
     [Benchmark]
-    public int TrieSearch()
-    {
-        var trie = new LowercaseTrie<bool>();
-
-        foreach (var word in _dictionary)
-        {
-            trie.Set(word, true);
-        }
-
-        var matches = 0;
-
-        foreach (var query in _queries)
-        {
-            if (Search(trie.Root, new SearchState(query, 0, MaxEdits)))
-            {
-                matches++;
-            }
-        }
-
-        return matches;
-    }
-
-    private readonly record struct SearchState(string Query, int Index, int RemainingEdits);
-
-    private static bool Search(LowercaseTrieNode<bool> node, SearchState state)
-    {
-        if (state.Index == state.Query.Length)
-        {
-            return node.HasValue;
-        }
-
-        return SearchChildren(node, state);
-    }
-
-    private static bool SearchChildren(LowercaseTrieNode<bool> node, SearchState state)
-    {
-        var target = state.Query[state.Index] - 'a';
-
-        for (var candidate = 0; candidate < LowercaseTrieNode<bool>.AlphabetSize; candidate++)
-        {
-            var next = node.Children[candidate];
-
-            if (next is not null && TryMatchCandidate(next, state, isTargetCandidate: candidate == target))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryMatchCandidate(LowercaseTrieNode<bool> next, SearchState state, bool isTargetCandidate)
-    {
-        var nextBudget = isTargetCandidate ? state.RemainingEdits : state.RemainingEdits - 1;
-
-        if (nextBudget < 0)
-        {
-            return false;
-        }
-
-        return Search(next, state with { Index = state.Index + 1, RemainingEdits = nextBudget });
-    }
+    public string[] TrieSearch() =>
+        WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(_queries, _dictionary);
 
     private static string RandomWord(Random random)
         => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
