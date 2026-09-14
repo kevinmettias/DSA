@@ -1,14 +1,18 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.InsertGreatestCommonDivisorsInLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Insert Greatest Common Divisors in Linked List (LC 2807): materializing the interleaved
-// result into a fresh List<int> (OddEvenLinkedListBenchmarks' "extra buffer" contrast)
-// vs. this repo's SinglyLinkedListNode<int> spliced in place, one new gcd node stitched
-// between each original pair instead of a whole new sequence being built up. Both arms
-// clone the shared fixture first so mutating one iteration's result never corrupts the
-// next (SetMatrixZeroesBenchmarks precedent).
+// Harness only: both arms are InsertGreatestCommonDivisorsInLinkedListSolution's,
+// the same methods InsertGreatestCommonDivisorsInLinkedListTests proves correct -
+// a whole fresh sequence rebuilt through a List<int> buffer
+// (OddEvenLinkedListBenchmarks' "extra buffer" contrast) against one gcd node
+// spliced between each original pair. Each arm clones the [GlobalSetup] list
+// inside the measured call rather than sharing it, because the splice rewrites
+// .Next in place: reusing one pre-built list would let the first iteration's
+// insertions make every later iteration measure an already-expanded list
+// (SetMatrixZeroesBenchmarks precedent).
 [MemoryDiagnoser]
 public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
 {
@@ -20,51 +24,15 @@ public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
     [GlobalSetup]
     public void Setup() => _head = Build(Enumerable.Range(1, Length).ToArray());
 
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public int RebuildViaValueList() => BuildInterleavedArray(Clone(_head)).Length;
-
-    private static int[] BuildInterleavedArray(SinglyLinkedListNode<int> head)
-    {
-        var original = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            original.Add(node.Value);
-        }
-
-        var interleaved = new List<int>((original.Count * 2) - 1);
-
-        for (var i = 0; i < original.Count; i++)
-        {
-            if (i > 0)
-            {
-                interleaved.Add(Gcd(original[i - 1], original[i]));
-            }
-
-            interleaved.Add(original[i]);
-        }
-
-        return interleaved.ToArray();
-    }
+    public object? ValueRebuild() =>
+        InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByValueRebuild(Clone(_head));
 
     [Benchmark]
-    public int InPlaceNodeInsertion() => Count(InsertGreatestCommonDivisors(Clone(_head)));
-
-    private static SinglyLinkedListNode<int> InsertGreatestCommonDivisors(SinglyLinkedListNode<int> head)
-    {
-        var current = head;
-
-        while (current.Next is not null)
-        {
-            var gcdNode = new SinglyLinkedListNode<int>(Gcd(current.Value, current.Next.Value)) { Next = current.Next };
-            current.Next = gcdNode;
-            current = gcdNode.Next;
-        }
-
-        return head;
-    }
-
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    public object? NodeSplice() =>
+        InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByNodeSplice(Clone(_head));
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
@@ -92,17 +60,5 @@ public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
         }
 
         return dummy.Next!;
-    }
-
-    private static int Count(SinglyLinkedListNode<int>? head)
-    {
-        var count = 0;
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            count++;
-        }
-
-        return count;
     }
 }
