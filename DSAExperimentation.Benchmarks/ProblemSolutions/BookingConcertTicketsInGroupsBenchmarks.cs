@@ -1,20 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.SegmentTree;
-using DSAExperimentation.DataStructures.Sequence;
+using static DSAExperimentation.LeetCode.BookingConcertTicketsInGroups.BookingConcertTicketsInGroupsSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Booking Concert Tickets in Groups (LC 2286): a raw-array baseline (Gather/Scatter
-// each linear-scan every row up to maxRow, O(n) per call) vs. this repo's own
-// SegmentTree<int,MaxOperation<int>>/SegmentTree<int,SumOperation<int>> pair plus
-// BinarySearch.LowerBound (RangeSumQueryMutableBenchmarks' fresh-rebuild-per-run
-// precedent, so mutation from one run never leaks into the next). The leftmost
-// qualifying-row search collapses from an O(n) scan to O(log^2 n) via the same
-// "binary search on the answer" idiom KokoEatingBananasTests already uses, and
-// Scatter's feasibility check collapses to one O(log n) sum query instead of an
-// O(n) row-by-row total. Both variants replay the same fixed stream of random
-// Gather/Scatter calls.
+// Harness only: both arms are BookingConcertTicketsInGroupsSolution's, the same
+// classes BookingConcertTicketsInGroupsTests proves correct. [GlobalSetup] draws
+// one fixed stream of gather/scatter calls, so script construction is charged to
+// setup rather than to the replay each arm measures. The instance itself is built
+// inside each [Benchmark] arm and not hoisted - a Design problem's state is mutated
+// by the very calls being measured, so a shared instance would let one run's
+// bookings leak into the next (the RangeSumQueryMutableBenchmarks
+// fresh-rebuild-per-run precedent).
 [MemoryDiagnoser]
 public class BookingConcertTicketsInGroupsBenchmarks
 {
@@ -44,150 +40,33 @@ public class BookingConcertTicketsInGroupsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ArrayScan()
-    {
-        var available = Enumerable.Repeat(SeatsPerRow, RowCount).ToArray();
-        var bookings = 0;
-
-        foreach (var (isGather, k, maxRow) in _operations)
-        {
-            bookings += isGather ? GatherLinear(available, k, maxRow) : ScatterLinear(available, k, maxRow);
-        }
-
-        return bookings;
-    }
+    public long RowScan() => Replay(new BookMyShowByRowScan(RowCount, SeatsPerRow));
 
     [Benchmark]
-    public int SegmentTreeBinarySearch()
+    public long SegmentTreeBinarySearch() => Replay(new BookMyShowBySegmentTreeBinarySearch(RowCount, SeatsPerRow));
+
+    // Folds every answer into a checksum rather than discarding it, so the JIT
+    // cannot eliminate the replay as dead code - the same "return the real answer,
+    // not a weaker proxy" shape DesignTaskManagerBenchmarks already follows.
+    private long Replay(IBookMyShowStrategy strategy)
     {
-        var initial = Enumerable.Repeat(SeatsPerRow, RowCount).ToArray();
-        var maxTree = new SegmentTree<int, MaxOperation<int>>(initial);
-        var sumTree = new SegmentTree<int, SumOperation<int>>((int[])initial.Clone());
-        var bookings = 0;
+        var checksum = 0L;
 
         foreach (var (isGather, k, maxRow) in _operations)
         {
-            bookings += isGather ? GatherTree(maxTree, sumTree, k, maxRow) : ScatterTree(maxTree, sumTree, k, maxRow);
+            checksum += isGather ? GatherChecksum(strategy, k, maxRow) : ScatterChecksum(strategy, k, maxRow);
         }
 
-        return bookings;
+        return checksum;
     }
 
-    private static int GatherLinear(int[] available, int k, int maxRow)
+    private static long GatherChecksum(IBookMyShowStrategy strategy, int k, int maxRow)
     {
-        for (var row = 0; row <= maxRow; row++)
-        {
-            if (available[row] >= k)
-            {
-                available[row] -= k;
-                return 1;
-            }
-        }
+        var seating = strategy.Gather(k, maxRow);
 
-        return 0;
+        return seating.Length == 0 ? 0 : seating[0] + seating[1];
     }
 
-    private static int ScatterLinear(int[] available, int k, int maxRow)
-    {
-        var total = 0;
-
-        for (var row = 0; row <= maxRow; row++)
-        {
-            total += available[row];
-        }
-
-        if (total < k)
-        {
-            return 0;
-        }
-
-        for (var row = 0; row <= maxRow && k > 0; row++)
-        {
-            var take = Math.Min(available[row], k);
-            available[row] -= take;
-            k -= take;
-        }
-
-        return 1;
-    }
-
-    private static int GatherTree(
-        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, SumOperation<int>> sumTree, int k, int maxRow)
-    {
-        var row = FindLeftmostRowWithCapacity(maxTree, fromRow: 0, maxRow, threshold: k);
-
-        if (row is null)
-        {
-            return 0;
-        }
-
-        var available = maxTree.Query(row.Value, row.Value);
-        SetAvailable(maxTree, sumTree, row.Value, available - k);
-
-        return 1;
-    }
-
-    private static int ScatterTree(
-        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, SumOperation<int>> sumTree, int k, int maxRow)
-    {
-        if (sumTree.Query(0, maxRow) < k)
-        {
-            return 0;
-        }
-
-        var trees = new SeatTrees(maxTree, sumTree);
-        var row = 0;
-
-        while (k > 0)
-        {
-            (row, k) = ScatterStep(trees, row, maxRow, k);
-        }
-
-        return 1;
-    }
-
-    private static (int Row, int K) ScatterStep(SeatTrees trees, int row, int maxRow, int k)
-    {
-        row = FindLeftmostRowWithCapacity(trees.MaxTree, row, maxRow, threshold: 1)!.Value;
-
-        var available = trees.MaxTree.Query(row, row);
-        var take = Math.Min(available, k);
-        SetAvailable(trees.MaxTree, trees.SumTree, row, available - take);
-        k -= take;
-
-        if (take == available)
-        {
-            row++;
-        }
-
-        return (row, k);
-    }
-
-    private static int? FindLeftmostRowWithCapacity(
-        SegmentTree<int, MaxOperation<int>> maxTree, int fromRow, int maxRow, int threshold)
-    {
-        var sequence = new HasCapacitySequence(maxTree, fromRow, maxRow, threshold);
-        var offset = BinarySearch.LowerBound(sequence, true);
-
-        return offset >= sequence.Length ? null : fromRow + offset;
-    }
-
-    private static void SetAvailable(
-        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, SumOperation<int>> sumTree, int row, int available)
-    {
-        maxTree.Update(row, available);
-        sumTree.Update(row, available);
-    }
-
-    private readonly struct HasCapacitySequence(
-        SegmentTree<int, MaxOperation<int>> availableSeats, int fromRow, int maxRow, int threshold)
-        : IRandomAccessSequence<bool>
-    {
-        public int Length => maxRow - fromRow + 1;
-
-        public bool Get(int index) => availableSeats.Query(fromRow, fromRow + index) >= threshold;
-    }
-
-    private readonly record struct SeatTrees(
-        SegmentTree<int, MaxOperation<int>> MaxTree, SegmentTree<int, SumOperation<int>> SumTree);
+    private static long ScatterChecksum(IBookMyShowStrategy strategy, int k, int maxRow)
+        => strategy.Scatter(k, maxRow) ? 1 : 0;
 }

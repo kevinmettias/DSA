@@ -1,16 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.NumberOfFlowersInFullBloom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Number of Flowers in Full Bloom (LC 2251): the textbook O(n*m) baseline scans
-// every flower for every person - vs. sorting the start/end arrays once with this
-// repo's own MergeSort and answering each person with two BinarySearch bounds
-// (UpperBound on starts, LowerBound on ends), O((n+m) log n) overall - the same
-// sort-then-bound shape HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
-// already proves out.
+// Harness only: both arms are NumberOfFlowersInFullBloomSolution's, the same
+// methods NumberOfFlowersInFullBloomTests proves correct. [GlobalSetup] builds the
+// flower intervals and the arrival times - LeetCode's own input shape, so nothing
+// further is prepared for the measured methods; splitting and sorting the endpoint
+// arrays is the composed arm's own cost and stays inside it.
 [MemoryDiagnoser]
 public class NumberOfFlowersInFullBloomBenchmarks
 {
@@ -41,73 +38,10 @@ public class NumberOfFlowersInFullBloomBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce()
-    {
-        var total = 0;
-
-        foreach (var time in _persons)
-        {
-            foreach (var flower in _flowers)
-            {
-                if (flower[0] <= time && time <= flower[1])
-                {
-                    total++;
-                }
-            }
-        }
-
-        return total;
-    }
+    public int[] BruteForce() =>
+        NumberOfFlowersInFullBloomSolution.FullBloomFlowersByPerPersonScan(_flowers, _persons);
 
     [Benchmark]
-    public int SortThenBinarySearch()
-    {
-        var (starts, ends) = ExtractStartsAndEnds(_flowers);
-
-        SortTimes(starts);
-        SortTimes(ends);
-
-        var startSequence = new ArraySequence<int>(starts);
-        var endSequence = new ArraySequence<int>(ends);
-
-        return SumBloomsAcrossPersons(_persons, startSequence, endSequence);
-    }
-
-    private static (int[] Starts, int[] Ends) ExtractStartsAndEnds(int[][] flowers)
-    {
-        var starts = new int[flowers.Length];
-        var ends = new int[flowers.Length];
-
-        for (var i = 0; i < flowers.Length; i++)
-        {
-            starts[i] = flowers[i][0];
-            ends[i] = flowers[i][1];
-        }
-
-        return (starts, ends);
-    }
-
-    private static void SortTimes(int[] times)
-    {
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(times));
-    }
-
-    private static int SumBloomsAcrossPersons(int[] persons, ArraySequence<int> startSequence, ArraySequence<int> endSequence)
-    {
-        var total = 0;
-
-        foreach (var time in persons)
-        {
-            total += CountBloomingAt(startSequence, endSequence, time);
-        }
-
-        return total;
-    }
-
-    private static int CountBloomingAt(ArraySequence<int> startSequence, ArraySequence<int> endSequence, int time)
-    {
-        var bloomedByNow = BinarySearch.UpperBound<int, ArraySequence<int>>(startSequence, time);
-        var wiltedByNow = BinarySearch.LowerBound<int, ArraySequence<int>>(endSequence, time);
-        return bloomedByNow - wiltedByNow;
-    }
+    public int[] SortThenBinarySearch() =>
+        NumberOfFlowersInFullBloomSolution.FullBloomFlowersBySortedBounds(_flowers, _persons);
 }

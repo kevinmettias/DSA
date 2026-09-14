@@ -1,66 +1,36 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<(int Value, int Step)>;
+using DSAExperimentation.LeetCode.StepsToMakeArrayNonDecreasing;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StepsToMakeArrayNonDecreasing;
 
-// LeetCode 2289. Steps to Make Array Non-decreasing: each step simultaneously
-// removes every element with a strictly greater element somewhere to its left;
-// find how many steps until the array is non-decreasing. A monotonic
-// (non-increasing) stack tracks, for each element, the step at which it gets
-// removed - the answer is the max removal step seen - using this repo's own
-// Stack<T> as the scratch structure (DailyTemperaturesTests' monotonic-stack
-// precedent, generalized from "wait days" to "removal step").
-public sealed partial class StepsToMakeArrayNonDecreasingTests
+// Harness only: both strategies are StepsToMakeArrayNonDecreasingSolution's -
+// this file just pins them to LeetCode's published examples, plus the boundary
+// cases the round simulation and the monotonic sweep disagree about most easily:
+// an array that is already sorted (no round runs), a strictly decreasing one
+// (every removal happens in a single round), and a leading maximum that peels one
+// element per round for as many rounds as there are elements behind it.
+public sealed class StepsToMakeArrayNonDecreasingTests
 {
-    [Fact]
-    public void TotalSteps_LeetCodeExample_ReturnsThree()
-    {
-        int[] nums = [5, 3, 4, 4, 7, 3, 6, 11, 8, 5, 11];
-
-        var steps = TotalSteps(nums);
-
-        Assert.Equal(3, steps);
-    }
-
-    [Fact]
-    public void TotalSteps_AlreadyNonDecreasing_ReturnsZero()
-    {
-        int[] nums = [4, 5, 7, 7, 13];
-
-        var steps = TotalSteps(nums);
-
-        Assert.Equal(0, steps);
-    }
-
-    [Fact]
-    public void TotalSteps_StrictlyDecreasing_ReturnsOne()
-    {
-        int[] nums = [9, 7, 5, 3, 1];
-
-        var steps = TotalSteps(nums);
-
-        Assert.Equal(1, steps);
-    }
-
-    private static int TotalSteps(int[] nums)
-    {
-        var stack = new RepoStack();
-        var maxSteps = 0;
-
-        foreach (var value in nums)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            var step = 0;
+            { [5, 3, 4, 4, 7, 3, 6, 11, 8, 5, 11], 3 },
+            { [4, 5, 7, 7, 13], 0 },
+            { [9, 7, 5, 3, 1], 1 },
+            { [10, 1, 2, 3, 4], 4 },
+            { [1, 2, 3, 10, 4, 5], 2 },
+            { [7, 7, 7], 0 },
+            { [1], 0 },
+        };
 
-            while (stack.TryPeek(out var top) && top.Value <= value)
-            {
-                step = Math.Max(step, top.Step);
-                stack.TryPop(out _);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TotalStepsBySimulatingRounds_LeetCodeExamples_ReturnsRoundsUntilNonDecreasing(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, StepsToMakeArrayNonDecreasingSolution.TotalStepsBySimulatingRounds(nums));
 
-            step = stack.Count == 0 ? 0 : step + 1;
-            maxSteps = Math.Max(maxSteps, step);
-            stack.Push((value, step));
-        }
-
-        return maxSteps;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TotalStepsByMonotonicStackSweep_LeetCodeExamples_ReturnsRoundsUntilNonDecreasing(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, StepsToMakeArrayNonDecreasingSolution.TotalStepsByMonotonicStackSweep(nums));
 }

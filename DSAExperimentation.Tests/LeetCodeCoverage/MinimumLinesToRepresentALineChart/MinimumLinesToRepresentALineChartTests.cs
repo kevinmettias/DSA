@@ -1,66 +1,59 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimumLinesToRepresentALineChart;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumLinesToRepresentALineChart;
 
-// LeetCode 2280. Minimum Lines to Represent a Line Chart: sort the (day, price) points by day
-// with this repo's own MergeSort over ArrayIndexedSequence (same composition ArrayPartitionTests
-// already uses for a plain int[]), then walk consecutive point triples counting slope changes.
-// Collinearity between segment (p0,p1) and segment (p1,p2) is tested via the cross-product form
-// (y1-y0)*(x2-x1) == (y2-y1)*(x1-x0) instead of comparing floating-point slopes, so no division
-// or precision loss is ever involved - widened to long before multiplying since day/price can
-// each be up to 1e9 per the problem's constraints.
-public sealed partial class MinimumLinesToRepresentALineChartTests
+// Harness only. Both strategies are MinimumLinesToRepresentALineChartSolution's - a BCL
+// Array.Sort with floating-point slope comparison, and this repo's own MergeSort over
+// ArrayIndexedSequence with the exact cross-product collinearity test - so each is
+// asserted here under its own name. The pre-migration test only covered the second one;
+// the floating-slope baseline (previously untested scaffolding inlined in the benchmark)
+// is asserted here for the first time, against the same examples.
+public sealed class MinimumLinesToRepresentALineChartTests
 {
-    [Fact]
-    public void MinimumLines_LeetCodeExampleOne_ReturnsThree()
-    {
-        int[][] stockPrices = [[1, 7], [2, 6], [3, 5], [4, 4], [5, 4], [6, 3], [7, 2], [8, 1]];
-
-        Assert.Equal(3, MinimumLines(stockPrices));
-    }
-
-    [Fact]
-    public void MinimumLines_LeetCodeExampleTwo_UnsortedInputStillCollapsesToOneLine()
-    {
-        int[][] stockPrices = [[3, 4], [1, 2], [7, 8], [2, 3]];
-
-        Assert.Equal(1, MinimumLines(stockPrices));
-    }
-
-    [Fact]
-    public void MinimumLines_SinglePoint_ReturnsZero()
-    {
-        int[][] stockPrices = [[5, 5]];
-
-        Assert.Equal(0, MinimumLines(stockPrices));
-    }
-
-    private static int MinimumLines(int[][] stockPrices)
-    {
-        if (stockPrices.Length == 1)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            return 0;
-        }
+            // LeetCode example 1: a long -1 run, one flat step, then another -1 run.
+            { [[1, 7], [2, 6], [3, 5], [4, 4], [5, 4], [6, 3], [7, 2], [8, 1]], 3 },
 
-        var points = stockPrices.Select(price => (Day: price[0], Price: price[1])).ToArray();
-        var byDay = Comparer<(int Day, int Price)>.Create((a, b) => a.Day.CompareTo(b.Day));
-        MergeSort.Sort<(int Day, int Price), ArrayIndexedSequence<(int Day, int Price)>>(
-            new ArrayIndexedSequence<(int Day, int Price)>(points), byDay);
+            // LeetCode example 2: unsorted input that collapses to a single line once
+            // ordered by day.
+            { [[3, 4], [1, 2], [7, 8], [2, 3]], 1 },
 
-        var lines = 1;
+            // A single point draws no line at all.
+            { [[5, 5]], 0 },
 
-        for (var i = 2; i < points.Length; i++)
-        {
-            if (!IsCollinear(points[i - 2], points[i - 1], points[i]))
-            {
-                lines++;
-            }
-        }
+            // Two points are always exactly one line, whatever their slope.
+            { [[1, 1], [2, 3]], 1 },
 
-        return lines;
-    }
+            // Three collinear points still need only one line.
+            { [[1, 1], [2, 2], [3, 3]], 1 },
 
-    private static bool IsCollinear((int Day, int Price) p0, (int Day, int Price) p1, (int Day, int Price) p2)
-        => (long)(p1.Price - p0.Price) * (p2.Day - p1.Day) == (long)(p2.Price - p1.Price) * (p1.Day - p0.Day);
+            // Unsorted input whose sorted order genuinely bends.
+            { [[1, 1], [3, 3], [2, 5]], 2 },
+
+            // Every consecutive triple bends the other way.
+            { [[1, 1], [2, 2], [3, 1], [4, 2]], 3 },
+
+            // Collinear at the problem's own coordinate bounds: the cross-product test
+            // multiplies values near 1e9, which overflows int and only stays correct
+            // because the operands are widened to long first.
+            { [[1, 1], [500_000_000, 500_000_000], [1_000_000_000, 1_000_000_000]], 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinimumLinesByArraySortFloatingSlope_LeetCodeExamples_CountsSlopeChanges(
+        int[][] stockPrices, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumLinesToRepresentALineChartSolution.MinimumLinesByArraySortFloatingSlope(stockPrices));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinimumLinesByMergeSortIntegerSlope_LeetCodeExamples_CountsSlopeChanges(
+        int[][] stockPrices, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumLinesToRepresentALineChartSolution.MinimumLinesByMergeSortIntegerSlope(stockPrices));
 }
