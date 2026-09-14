@@ -1,57 +1,35 @@
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+using DSAExperimentation.LeetCode.FindTheWinnerOfTheCircularGame;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheWinnerOfTheCircularGame;
 
-// LeetCode 1823. Find the Winner of the Circular Game: this repo's own Queue<int>
-// simulates the circle directly - every friend 1..n is Enqueued once, then each
-// elimination round rotates k-1 friends from front to back (TryDequeue immediately
-// re-Enqueued) before TryDequeue-ing and discarding the friend now at the front, who
-// is exactly the kth friend counted from wherever the previous round left off. The
-// last friend left in the queue is the winner.
-public sealed partial class FindTheWinnerOfTheCircularGameTests
+// Harness only. Both simulations live in FindTheWinnerOfTheCircularGameSolution -
+// this file pins them to LeetCode's published examples plus the single-friend
+// circle, k = 1 (nobody is counted past, so the last friend survives), the two-friend
+// circle, and k > n, where the count wraps the circle more than once before landing.
+public sealed class FindTheWinnerOfTheCircularGameTests
 {
-    [Fact]
-    public void FindTheWinner_LeetCodeExampleOne_ReturnsThree()
-    {
-        var actual = FindTheWinner(n: 5, k: 2);
-        Assert.Equal(3, actual);
-    }
-
-    [Fact]
-    public void FindTheWinner_LeetCodeExampleTwo_ReturnsOne()
-    {
-        var actual = FindTheWinner(n: 6, k: 5);
-        Assert.Equal(1, actual);
-    }
-
-    [Fact]
-    public void FindTheWinner_SingleFriend_ReturnsThatFriend()
-    {
-        var actual = FindTheWinner(n: 1, k: 1);
-        Assert.Equal(1, actual);
-    }
-
-    private static int FindTheWinner(int n, int k)
-    {
-        var friends = new RepoQueue();
-
-        for (var friend = 1; friend <= n; friend++)
+    public static TheoryData<int, int, int> Examples =>
+        new()
         {
-            friends.Enqueue(friend);
-        }
+            { 5, 2, 3 },
+            { 6, 5, 1 },
+            { 1, 1, 1 },
+            { 5, 1, 5 },
+            { 6, 2, 5 },
+            { 2, 2, 1 },
+            { 4, 4, 2 },
+            { 3, 5, 1 },
+        };
 
-        while (friends.Count > 1)
-        {
-            for (var step = 0; step < k - 1; step++)
-            {
-                friends.TryDequeue(out var rotated);
-                friends.Enqueue(rotated);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindTheWinnerByListRemoval_LeetCodeExamples_ReturnsTheLastFriendStanding(
+        int n, int k, int expected) =>
+        Assert.Equal(expected, FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByListRemoval(n, k));
 
-            friends.TryDequeue(out _);
-        }
-
-        friends.TryDequeue(out var winner);
-        return winner;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindTheWinnerByQueueRotation_LeetCodeExamples_ReturnsTheLastFriendStanding(
+        int n, int k, int expected) =>
+        Assert.Equal(expected, FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByQueueRotation(n, k));
 }

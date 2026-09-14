@@ -1,88 +1,44 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAbsoluteSumDifference;
 
-// LeetCode 1818. Minimum Absolute Sum Difference: sort a copy of nums1 with this
-// repo's own MergeSort over ArrayIndexedSequence (the same composition
-// ArrayPartitionTests/AssignCookiesTests already use), then for each index probe the
-// sorted copy with BinarySearch.LowerBound to find nums1's closest replacement value
-// to nums2[i] - the largest single-index swap can only ever reduce the sum by
-// replacing exactly one term with its nearest available neighbor, so the answer is
-// the base absolute-difference sum minus the single biggest such reduction.
-public sealed partial class MinimumAbsoluteSumDifferenceTests
+// Harness only. Both strategies are MinimumAbsoluteSumDifferenceSolution's - this
+// file pins them to LeetCode's three published examples plus two cases the original
+// coverage left untested: a single-element input (there is nothing else in nums1 to
+// swap in, so the one term stands) and an input where the best replacement sits at
+// the very end of the sorted copy, which is the boundary the lower-bound probe's
+// insertion == Length branch exists for.
+public sealed class MinimumAbsoluteSumDifferenceTests
 {
-    [Fact]
-    public void MinAbsoluteSumDiff_LeetCodeExampleOne_ReturnsThree()
-    {
-        int[] nums1 = [1, 7, 5];
-        int[] nums2 = [2, 3, 5];
-
-        var minAbsoluteSumDiff = MinAbsoluteSumDiff(nums1, nums2);
-        Assert.Equal(3, minAbsoluteSumDiff);
-    }
-
-    [Fact]
-    public void MinAbsoluteSumDiff_IdenticalArrays_ReturnsZero()
-    {
-        int[] nums1 = [2, 4, 6, 8, 10];
-        int[] nums2 = [2, 4, 6, 8, 10];
-
-        var minAbsoluteSumDiff = MinAbsoluteSumDiff(nums1, nums2);
-        Assert.Equal(0, minAbsoluteSumDiff);
-    }
-
-    [Fact]
-    public void MinAbsoluteSumDiff_LeetCodeExampleThree_ReturnsTwenty()
-    {
-        int[] nums1 = [1, 10, 4, 4, 2, 7];
-        int[] nums2 = [9, 3, 5, 1, 7, 4];
-
-        var minAbsoluteSumDiff = MinAbsoluteSumDiff(nums1, nums2);
-        Assert.Equal(20, minAbsoluteSumDiff);
-    }
-
-    private static int MinAbsoluteSumDiff(int[] nums1, int[] nums2)
-    {
-        const int mod = 1_000_000_007;
-
-        var sorted = nums1.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-        var sortedSequence = new ArraySequence<int>(sorted);
-
-        long baseSum = 0;
-        long maxReduction = 0;
-
-        for (var i = 0; i < nums1.Length; i++)
+    public static TheoryData<int[], int[], int> Examples =>
+        new()
         {
-            var (diff, reduction) = EvaluateReplacement(nums1[i], nums2[i], sorted, sortedSequence);
-            baseSum += diff;
-            maxReduction = Math.Max(maxReduction, reduction);
-        }
+            // LeetCode example 1: replacing the 7 with the 5 drops |7-3| from 4 to 2.
+            { [1, 7, 5], [2, 3, 5], 3 },
+            // LeetCode example 2: already elementwise equal, so no swap can help.
+            { [2, 4, 6, 8, 10], [2, 4, 6, 8, 10], 0 },
+            // LeetCode example 3.
+            { [1, 10, 4, 4, 2, 7], [9, 3, 5, 1, 7, 4], 20 },
+            // One element: the only replacement available is the value itself.
+            { [3], [9], 6 },
+            // The closest replacement for 100 is the largest value in nums1, which
+            // sits past every entry the lower bound can land on.
+            { [1, 2, 90], [100, 2, 90], 10 },
+        };
 
-        return (int)((baseSum - maxReduction) % mod);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinAbsoluteSumDiffByFullRescan_LeetCodeExamples_ReturnsMinimumSum(
+        int[] nums1, int[] nums2, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffByFullRescan(nums1, nums2));
 
-    // One index's contribution: its base |nums1[i]-nums2[i]| difference, and how
-    // much that difference would shrink by if nums1[i] were replaced with its
-    // nearest neighbor (by lower-bound insertion point) in the sorted copy.
-    private static (int Diff, int Reduction) EvaluateReplacement(int value1, int value2, int[] sorted, ArraySequence<int> sortedSequence)
-    {
-        var diff = Math.Abs(value1 - value2);
-        var insertion = BinarySearch.LowerBound<int, ArraySequence<int>>(sortedSequence, value2);
-        var bestDiff = diff;
-
-        if (insertion < sorted.Length)
-        {
-            bestDiff = Math.Min(bestDiff, Math.Abs(sorted[insertion] - value2));
-        }
-
-        if (insertion > 0)
-        {
-            bestDiff = Math.Min(bestDiff, Math.Abs(sorted[insertion - 1] - value2));
-        }
-
-        return (diff, diff - bestDiff);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinAbsoluteSumDiffBySortedBinarySearch_LeetCodeExamples_ReturnsMinimumSum(
+        int[] nums1, int[] nums2, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffBySortedBinarySearch(nums1, nums2));
 }

@@ -1,77 +1,49 @@
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.MaximumScoreOfAGoodSubarray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumScoreOfAGoodSubarray;
 
-// LeetCode 1793. Maximum Score of a Good Subarray: two monotonic-increasing
-// Stack<int> sweeps (DailyTemperatures/CarFleetII precedent for this repo's own
-// Stack) compute, for every index, the nearest strictly-smaller element to its left
-// and right - the widest window where nums[i] is the minimum. The answer is the
-// best nums[i] * width among the indices whose window actually contains k, since
-// the optimal good subarray's minimum must be one of those windows' defining index.
-public sealed partial class MaximumScoreOfAGoodSubarrayTests
+// Harness only: both strategies live in MaximumScoreOfAGoodSubarraySolution. The
+// O(n^2) expand baseline used to exist only as a benchmark arm with nothing
+// asserting it, so it is pinned to the same examples as the monotonic-stack
+// sweep here.
+public sealed class MaximumScoreOfAGoodSubarrayTests
 {
-    [Fact]
-    public void MaximumScore_ClassicExample_ReturnsFifteen()
-    {
-        int[] nums = [1, 4, 3, 7, 4, 5];
-
-        var score = MaximumScore(nums, k: 3);
-
-        Assert.Equal(15, score);
-    }
-
-    [Fact]
-    public void MaximumScore_PlateauWithDuplicates_ReturnsTwenty()
-    {
-        int[] nums = [5, 5, 4, 5, 4, 1, 1, 1];
-
-        var score = MaximumScore(nums, k: 0);
-
-        Assert.Equal(20, score);
-    }
-
-    private static int MaximumScore(int[] nums, int k)
-    {
-        var previousSmaller = BoundaryIndices(nums, left: true);
-        var nextSmaller = BoundaryIndices(nums, left: false);
-
-        var best = 0;
-
-        for (var i = 0; i < nums.Length; i++)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            if (previousSmaller[i] < k && k < nextSmaller[i])
-            {
-                var width = nextSmaller[i] - previousSmaller[i] - 1;
-                best = Math.Max(best, nums[i] * width);
-            }
-        }
+            // LeetCode's two published examples.
+            { [1, 4, 3, 7, 4, 5], 3, 15 },
+            { [5, 5, 4, 5, 4, 1, 1, 1], 0, 20 },
 
-        return best;
-    }
+            // A single-element array: the only good subarray is nums[k] itself.
+            { [7], 0, 7 },
 
-    // left: true computes, per index, the nearest strictly-smaller index to its
-    // left (or -1); false computes the nearest strictly-smaller index to its right
-    // (or nums.Length) - the same monotonic-stack sweep run in each direction.
-    private static int[] BoundaryIndices(int[] nums, bool left)
-    {
-        var n = nums.Length;
-        var result = new int[n];
-        var stack = new RepoIntStack();
-        var outOfRange = left ? -1 : n;
+            // A plateau either side of k, so the ties the two sweeps break
+            // differently (>= popping in both directions) still yield one window.
+            { [6, 5, 6], 1, 15 },
 
-        for (var step = 0; step < n; step++)
-        {
-            var i = left ? step : n - 1 - step;
+            // Strictly decreasing with k at the far end: every window containing
+            // k has the same minimum, so the widest one wins.
+            { [4, 3, 2, 1], 3, 4 },
 
-            while (stack.TryPeek(out var top) && nums[top] >= nums[i])
-            {
-                stack.TryPop(out _);
-            }
+            // k at the far end of a strictly increasing run, where the best trade
+            // between minimum and width is an interior window rather than either
+            // extreme.
+            { [1, 2, 3, 4], 3, 6 },
+        };
 
-            result[i] = stack.TryPeek(out var boundary) ? boundary : outOfRange;
-            stack.Push(i);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumScoreByBruteForceExpand_LeetCodeExamples_ReturnsBestGoodSubarrayScore(
+        int[] nums, int k, int expected) =>
+        Assert.Equal(
+            expected, MaximumScoreOfAGoodSubarraySolution.MaximumScoreByBruteForceExpand(nums, k));
 
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumScoreByMonotonicStackBoundaries_LeetCodeExamples_ReturnsBestGoodSubarrayScore(
+        int[] nums, int k, int expected) =>
+        Assert.Equal(
+            expected,
+            MaximumScoreOfAGoodSubarraySolution.MaximumScoreByMonotonicStackBoundaries(nums, k));
 }
