@@ -1,66 +1,46 @@
-using RepoLongStack = DSAExperimentation.DataStructures.Stack.Stack<long>;
+using DSAExperimentation.LeetCode.ReplaceNonCoprimeNumbersInArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReplaceNonCoprimeNumbersInArray;
 
-// LeetCode 2197. Replace Non-Coprime Numbers in Array: this repo's own Stack<long>
-// (DailyTemperatures/NextGreaterElement precedent) holding the merged prefix so far
-// - each new number keeps merging into the top of the stack via LCM while it shares
-// a factor with it, which correctly cascades merges backward exactly as far as
-// needed, since the stack's top is always the most recently finalized element.
-public sealed partial class ReplaceNonCoprimeNumbersInArrayTests
+// Harness only. Both merge strategies are
+// ReplaceNonCoprimeNumbersInArraySolution's - this file just pins them to
+// LeetCode's published examples plus the cascade cases that distinguish a
+// backward-merging stack from a naive left-to-right pass.
+public sealed class ReplaceNonCoprimeNumbersInArrayTests
 {
-    [Fact]
-    public void ReplaceNonCoprimes_ClassicExample_MergesCascadingFactors()
-    {
-        int[] nums = [6, 4, 3, 2, 7, 6, 2];
-
-        var result = ReplaceNonCoprimes(nums);
-
-        Assert.Equal([12, 7, 6], result);
-    }
-
-    [Fact]
-    public void ReplaceNonCoprimes_RepeatedFactorsOfOne_LeavesOnesUnmerged()
-    {
-        int[] nums = [2, 2, 1, 1, 3, 3, 3];
-
-        var result = ReplaceNonCoprimes(nums);
-
-        Assert.Equal([2, 1, 1, 3], result);
-    }
-
-    private static int[] ReplaceNonCoprimes(int[] nums)
-    {
-        var stack = new RepoLongStack();
-
-        foreach (var num in nums)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            long current = num;
+            // LeetCode example 1: 6 and 4 merge to 12, then 3 and 2 merge to 6,
+            // which merges into the 12 already sitting behind it.
+            { [6, 4, 3, 2, 7, 6, 2], [12, 7, 6] },
 
-            while (stack.TryPeek(out var top) && Gcd(top, current) > 1)
-            {
-                stack.TryPop(out _);
-                current = current / Gcd(top, current) * top;
-            }
+            // LeetCode example 2: 1 is coprime with everything, so the runs of
+            // ones survive untouched between the merged runs.
+            { [2, 2, 1, 1, 3, 3, 3], [2, 1, 1, 3] },
 
-            stack.Push(current);
-        }
+            // A merge that only becomes possible after the one to its right has
+            // happened - 3 and 6 merge first, and the result then merges with the
+            // 2 in front of it.
+            { [2, 3, 6], [6] },
 
-        return DrainToArray(stack);
-    }
+            // Every merge cascades: the whole array collapses to one value.
+            { [2, 4, 8], [8] },
 
-    private static int[] DrainToArray(RepoLongStack stack)
-    {
-        var values = new List<long>();
+            // Nothing shares a factor, so the array is returned unchanged.
+            { [2, 3, 5, 7], [2, 3, 5, 7] },
 
-        while (stack.TryPop(out var value))
-        {
-            values.Add(value);
-        }
+            // A single element has no adjacent pair at all.
+            { [7], [7] },
+        };
 
-        values.Reverse();
-        return values.Select(v => (int)v).ToArray();
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReplaceByRepeatedRescan_LeetCodeExamples_MergesEveryNonCoprimePair(int[] nums, int[] expected) =>
+        Assert.Equal(expected, ReplaceNonCoprimeNumbersInArraySolution.ReplaceByRepeatedRescan(nums));
 
-    private static long Gcd(long a, long b) => b == 0 ? a : Gcd(b, a % b);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReplaceByStackCascade_LeetCodeExamples_MergesEveryNonCoprimePair(int[] nums, int[] expected) =>
+        Assert.Equal(expected, ReplaceNonCoprimeNumbersInArraySolution.ReplaceByStackCascade(nums));
 }

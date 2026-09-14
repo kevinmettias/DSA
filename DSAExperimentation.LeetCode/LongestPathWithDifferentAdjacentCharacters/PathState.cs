@@ -1,4 +1,4 @@
-namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestPathWithDifferentAdjacentCharacters.Fixtures;
+namespace DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters;
 
 // Carries each node's own label alongside its fold result so the parent's Combine
 // can tell, per child, whether the connecting edge is usable (labels differ) -

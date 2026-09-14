@@ -1,69 +1,58 @@
-using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.SumOfScoresOfBuiltStrings;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfScoresOfBuiltStrings;
 
-// LeetCode 2223. Sum of Scores of Built Strings: t_i is the length-i suffix of s,
-// and score(t_i) is the length of the longest common prefix between t_i and s
-// itself. Reversing s turns every suffix into a prefix of the reversed string, and
-// the LCP of t_i with s becomes exactly the Z-value at position i of reverse(s) -
-// this repo's own ZFunction.Compute (the same Z-array StringMatching's own
-// ZFunctionTests already exercises). Summing Z[1..n-1] and adding n (for t_n = s
-// itself, whose score is trivially its own full length) gives the answer in one
-// O(n) pass instead of comparing every suffix against s character by character.
+// Harness only: both strategies live in SumOfScoresOfBuiltStringsSolution,
+// including the suffix-comparison baseline the pre-migration benchmark kept to
+// itself.
+//
+// The last three cases are the ones that would have caught the reversed-Z bug the
+// pre-migration test carried (see the solution's own note): every example the old
+// test asserted is either a palindrome or free of self-overlap, and on exactly
+// those inputs summing the Z-array of reverse(s) accidentally agrees with the
+// answer. "aab" and "banana" are the smallest inputs where it does not.
 public sealed class SumOfScoresOfBuiltStringsTests
 {
-    [Fact]
-    public void SumScores_LeetCodeExample1_ReturnsExpectedSum()
-    {
-        const string S = "babab";
-
-        var result = SumScores(S);
-
-        Assert.Equal(9, result);
-    }
-
-    [Fact]
-    public void SumScores_LeetCodeExample2_ReturnsExpectedSum()
-    {
-        const string S = "azbazbzaz";
-
-        var result = SumScores(S);
-
-        Assert.Equal(14, result);
-    }
-
-    [Fact]
-    public void SumScores_SingleCharacter_ReturnsOne()
-    {
-        const string S = "a";
-
-        var result = SumScores(S);
-
-        Assert.Equal(1, result);
-    }
-
-    [Fact]
-    public void SumScores_NoSharedPrefixesBetweenSuffixesAndWhole_ReturnsJustN()
-    {
-        const string S = "abcde";
-
-        var result = SumScores(S);
-
-        Assert.Equal(5, result);
-    }
-
-    private static long SumScores(string s)
-    {
-        var reversed = new string(s.Reverse().ToArray());
-        var z = ZFunction.Compute(reversed);
-
-        var total = (long)s.Length;
-
-        for (var i = 1; i < z.Length; i++)
+    // (s, sum of every suffix's longest common prefix with s)
+    public static TheoryData<string, long> Examples =>
+        new()
         {
-            total += z[i];
-        }
+            // LeetCode example 1: scores are 1, 0, 3, 0, 5.
+            { "babab", 9 },
 
-        return total;
-    }
+            // LeetCode example 2.
+            { "azbazbzaz", 14 },
+
+            // A single character scores itself and nothing else.
+            { "a", 1 },
+
+            // No suffix shares a first character with s, so only t_n contributes.
+            { "abcde", 5 },
+
+            // Every suffix of an all-one-letter string is a prefix of s, so the
+            // scores are 1 + 2 + 3 + 4 - the maximum a length-4 string can reach.
+            { "aaaa", 10 },
+
+            // Overlapping repeats: scores 0, 0, 3, 0, 0, 6, 0, 0, 9.
+            { "abcabcabc", 18 },
+
+            // Palindromic overlap: scores 1, 2, 0, 1, 5.
+            { "aabaa", 9 },
+
+            // Scores 0, 1, 3. Reversed-Z reports 3 here.
+            { "aab", 4 },
+
+            // Only t_n scores at all. Reversed-Z reports 10 here.
+            { "banana", 6 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SumScoresBySuffixComparison_LeetCodeExamples_ReturnsTotalScore(string s, long expected) =>
+        Assert.Equal(expected, SumOfScoresOfBuiltStringsSolution.SumScoresBySuffixComparison(s));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SumScoresByZFunction_LeetCodeExamples_ReturnsTotalScore(string s, long expected) =>
+        Assert.Equal(expected, SumOfScoresOfBuiltStringsSolution.SumScoresByZFunction(s));
 }

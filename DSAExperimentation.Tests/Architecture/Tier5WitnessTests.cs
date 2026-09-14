@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // and a copy of one sitting in a test folder or in Benchmarks/Fixtures is exactly
 // the duplication section 17.1 set out to remove: the same witness written twice
 // because a test and a benchmark cannot see each other's copy. FunctionalGraph-
-// Topology currently exists three times for that reason, PathTopology twice.
+// Topology currently exists three times for that reason.
 //
 // Hooks are deliberately NOT on the list below. A recording IInOrderHooks that
 // collects a traversal so a test can assert its order is an assertion device,
@@ -64,8 +64,6 @@ public sealed class Tier5WitnessTests
             + "own copies under the test project - three copies of one witness",
         ["JumpGridChildren.cs"] = "Minimum Number Of Visited Cells In A Grid",
         ["JumpGridTopology.cs"] = "Minimum Number Of Visited Cells In A Grid",
-        ["LongestPathAlgebra.cs"] = "Longest Path With Different Adjacent Characters",
-        ["PathTopology.cs"] = "Longest Path With Different Adjacent Characters",
         ["ReversalChildren.cs"] = "Minimum Reverse Operations",
         ["ReversalTopology.cs"] = "Minimum Reverse Operations",
     };
