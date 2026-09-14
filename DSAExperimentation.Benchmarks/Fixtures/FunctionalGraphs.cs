@@ -18,21 +18,4 @@ internal static class FunctionalGraphs
 
         return edges;
     }
-
-    public static FunctionalGraphNode[] BuildNodes(int[] edges)
-    {
-        var nodes = new FunctionalGraphNode[edges.Length];
-
-        for (var i = 0; i < edges.Length; i++)
-        {
-            nodes[i] = new FunctionalGraphNode(i);
-        }
-
-        for (var i = 0; i < edges.Length; i++)
-        {
-            nodes[i].Successors.Add(nodes[edges[i]]);
-        }
-
-        return nodes;
-    }
 }

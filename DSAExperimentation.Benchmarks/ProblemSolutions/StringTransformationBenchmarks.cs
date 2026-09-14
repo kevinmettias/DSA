@@ -1,116 +1,49 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.StringTransformation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// String Transformation (LC 2851): both arms share the same closed-form modular
+// Harness only: both arms are StringTransformationSolution's, the same methods
+// StringTransformationTests proves correct. They share the closed-form modular
 // combine step (O(log k) regardless of k, so k stays a large fixed constant here
-// rather than a varying axis) - the isolated variable is how the single rotation
-// -match count it needs gets computed: an O(n^2) brute-force window compare vs.
-// this repo's O(n) ZFunction.FindAll, the same StringTransformationTests precedent.
+// rather than a varying axis) - the isolated variable is how the single
+// rotation-match count it needs gets computed: an O(n^2) brute-force window
+// compare vs. this repo's O(n) ZFunction.FindAll.
 [MemoryDiagnoser]
 public class StringTransformationBenchmarks
 {
-    private const long Mod = 1_000_000_007;
-    private const long K = 1_000_000_000_007;
+    private const int Seed = 1;
+    private const int AlphabetSize = 26;
+    private const long Operations = 1_000_000_000_007;
+
+    // The target is the source rotated by half its length - a genuine rotation
+    // rather than the source itself, so both strategies find a real, non-trivial
+    // match instead of the degenerate zero-match case.
+    private const int HalfwayDivisor = 2;
+
+    private string _source = null!;
+    private string _target = null!;
 
     [Params(200, 2_000)]
     public int Length;
 
-    private string _s = null!;
-    private string _t = null!;
-
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        var chars = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(26))).ToArray();
-        _s = new string(chars);
-        // A genuine rotation of s (not s itself), so both strategies find a real,
-        // non-trivial match instead of the degenerate all-zero R=0 case.
-        _t = _s.Substring(Length / 2) + _s.Substring(0, Length / 2);
+        var random = new Random(Seed);
+        var characters = Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray();
+        var source = new string(characters);
+        var rotation = Length / HalfwayDivisor;
+
+        _source = source;
+        _target = source[rotation..] + source[..rotation];
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRotationCompare()
-    {
-        var relevantCount = CountRotationMatchesByBruteForce(_s, _t);
-        return Combine(_s.Length, relevantCount, sameString: false, K);
-    }
+    public int BruteForceRotationCompare() =>
+        StringTransformationSolution.NumberOfWaysByBruteForceRotationCompare(_source, _target, Operations);
 
     [Benchmark]
-    public int ZFunctionSearch()
-    {
-        var relevantCount = CountRotationMatchesByZFunction(_s, _t);
-        return Combine(_s.Length, relevantCount, sameString: false, K);
-    }
-
-    private static int CountRotationMatchesByBruteForce(string s, string pattern)
-    {
-        var n = s.Length;
-        var count = 0;
-
-        for (var start = 0; start < n; start++)
-        {
-            var matches = true;
-
-            for (var offset = 0; offset < n; offset++)
-            {
-                if (s[(start + offset) % n] != pattern[offset])
-                {
-                    matches = false;
-                    break;
-                }
-            }
-
-            if (matches)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private static int CountRotationMatchesByZFunction(string s, string pattern)
-    {
-        var text = s + s.Substring(0, s.Length - 1);
-        return ZFunction.FindAll(text, pattern).Count;
-    }
-
-    private static int Combine(int n, int relevantCount, bool sameString, long k)
-    {
-        var sign = k % 2 == 0 ? 1L : Mod - 1;
-        var pow = ModPow(n - 1, k, Mod);
-        var inverseN = ModPow(n, Mod - 2, Mod);
-        var g = ((pow - sign) % Mod + Mod) % Mod * inverseN % Mod;
-
-        if (!sameString)
-        {
-            return (int)((long)relevantCount * g % Mod);
-        }
-
-        var f = (g + sign) % Mod;
-        var extra = (long)(relevantCount - 1) * g % Mod;
-        return (int)((f + extra) % Mod);
-    }
-
-    private static long ModPow(long value, long exponent, long modulus)
-    {
-        value %= modulus;
-        var result = 1L;
-
-        while (exponent > 0)
-        {
-            if ((exponent & 1) == 1)
-            {
-                result = result * value % modulus;
-            }
-
-            value = value * value % modulus;
-            exponent >>= 1;
-        }
-
-        return result;
-    }
+    public int ZFunctionSearch() =>
+        StringTransformationSolution.NumberOfWaysByZFunction(_source, _target, Operations);
 }

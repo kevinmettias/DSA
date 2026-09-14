@@ -1,12 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using MonotonicStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.BeautifulTowersI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Beautiful Towers I (LC 2865): the O(n) per-peak-as-candidate baseline (n <= 1000
-// per LC's own constraint, so [Params] stays at that scale) vs. the O(n)
-// monotonic-stack sweep (one pass per direction) using this repo's own Stack<int> -
-// the same LargestRectangleInHistogramBenchmarks precedent.
+// Harness only: both arms are BeautifulTowersISolution's, the same methods
+// BeautifulTowersITests proves correct - the O(n^2) per-peak clamped walk baseline
+// vs. the O(n) monotonic-stack sweep over this repo's own Stack<int>. [Params]
+// stays at LC 2865's own n <= 1000 constraint.
 [MemoryDiagnoser]
 public class BeautifulTowersIBenchmarks
 {
@@ -25,97 +25,8 @@ public class BeautifulTowersIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForce() => MaximumSumOfHeightsByBruteForce(_maxHeights);
+    public long BruteForce() => BeautifulTowersISolution.MaximumSumOfHeightsByBruteForce(_maxHeights);
 
     [Benchmark]
-    public long MonotonicStack() => MaximumSumOfHeightsByMonotonicStack(_maxHeights);
-
-    private static long MaximumSumOfHeightsByBruteForce(int[] maxHeights)
-    {
-        var n = maxHeights.Length;
-        var best = 0L;
-
-        for (var peak = 0; peak < n; peak++)
-        {
-            var sum = (long)maxHeights[peak];
-
-            var cap = maxHeights[peak];
-            for (var j = peak - 1; j >= 0; j--)
-            {
-                cap = Math.Min(cap, maxHeights[j]);
-                sum += cap;
-            }
-
-            cap = maxHeights[peak];
-            for (var j = peak + 1; j < n; j++)
-            {
-                cap = Math.Min(cap, maxHeights[j]);
-                sum += cap;
-            }
-
-            best = Math.Max(best, sum);
-        }
-
-        return best;
-    }
-
-    private static long MaximumSumOfHeightsByMonotonicStack(int[] maxHeights)
-    {
-        var left = ComputeLeftSums(maxHeights);
-        var right = ComputeRightSums(maxHeights);
-        var best = 0L;
-
-        for (var i = 0; i < maxHeights.Length; i++)
-        {
-            best = Math.Max(best, left[i] + right[i] - maxHeights[i]);
-        }
-
-        return best;
-    }
-
-    private static long[] ComputeLeftSums(int[] maxHeights)
-    {
-        var n = maxHeights.Length;
-        var sums = new long[n];
-        var stack = new MonotonicStack();
-
-        for (var i = 0; i < n; i++)
-        {
-            while (stack.TryPeek(out var top) && maxHeights[top] > maxHeights[i])
-            {
-                stack.TryPop(out _);
-            }
-
-            sums[i] = stack.TryPeek(out var prev)
-                ? sums[prev] + (long)maxHeights[i] * (i - prev)
-                : (long)maxHeights[i] * (i + 1);
-
-            stack.Push(i);
-        }
-
-        return sums;
-    }
-
-    private static long[] ComputeRightSums(int[] maxHeights)
-    {
-        var n = maxHeights.Length;
-        var sums = new long[n];
-        var stack = new MonotonicStack();
-
-        for (var i = n - 1; i >= 0; i--)
-        {
-            while (stack.TryPeek(out var top) && maxHeights[top] > maxHeights[i])
-            {
-                stack.TryPop(out _);
-            }
-
-            sums[i] = stack.TryPeek(out var next)
-                ? sums[next] + (long)maxHeights[i] * (next - i)
-                : (long)maxHeights[i] * (n - i);
-
-            stack.Push(i);
-        }
-
-        return sums;
-    }
+    public long MonotonicStack() => BeautifulTowersISolution.MaximumSumOfHeightsByMonotonicStack(_maxHeights);
 }

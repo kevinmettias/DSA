@@ -7,7 +7,8 @@ namespace DSAExperimentation.Tests.Architecture;
 // and a copy of one sitting in a test folder or in Benchmarks/Fixtures is exactly
 // the duplication section 17.1 set out to remove: the same witness written twice
 // because a test and a benchmark cannot see each other's copy. FunctionalGraph-
-// Topology currently exists three times for that reason.
+// Topology once existed three times for that reason; the ledger below is now empty
+// because the last of those copies moved down a tier with its problem.
 //
 // Hooks are deliberately NOT on the list below. A recording IInOrderHooks that
 // collects a traversal so a test can assert its order is an assertion device,
@@ -56,13 +57,7 @@ public sealed class Tier5WitnessTests
     // unmigrated problem it belongs to. Every one of these moves down a tier when
     // that problem is converted - delete the line then, which is what makes the
     // staleness check below a burn-down list rather than a permanent allowance.
-    private static readonly Dictionary<string, string> SharedFixtureStragglers = new()
-    {
-        ["FunctionalGraphTopology.cs"] =
-            "Count Visited Nodes In A Directed Graph, which also keeps its own copy under the test "
-            + "project - two copies of one witness, down from three now that Longest Cycle In A Graph "
-            + "declares its own beside its solution",
-    };
+    private static readonly Dictionary<string, string> SharedFixtureStragglers = [];
 
     [Fact]
     public void EveryMigratedProblem_LeavesNoStructuralWitnessInItsHarnesses()

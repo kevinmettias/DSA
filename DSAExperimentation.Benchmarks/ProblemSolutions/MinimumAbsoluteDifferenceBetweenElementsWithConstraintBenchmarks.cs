@@ -1,15 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceBetweenElementsWithConstraint;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Absolute Difference Between Elements With Constraint (LC 2817): the
-// brute-force baseline checks every (i, j) pair with j - i >= x directly, O(n^2).
-// BstSlidingWindow instead slides j across nums, inserting nums[j - x] into this
-// repo's own BinarySearchTree<int> exactly when it becomes eligible, then asking
-// FindClosest.TryFind (the same nearest-value primitive
-// ClosestNodesQueriesInABinarySearchTreeBenchmarks already proves out) for the
-// tree's closest value to nums[j] - O(n log n).
+// Harness only: both arms are
+// MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution's, the same methods
+// MinimumAbsoluteDifferenceBetweenElementsWithConstraintTests proves correct - the
+// O(n^2) scan of every admissible pair against the O(n log n) BinarySearchTree<int>
+// sliding window queried by FindClosest.TryFind. Values are drawn from a range wide
+// enough that no early pair collapses the answer to zero, so both arms do their full
+// work; the index gap is a quarter of the array, leaving the eligible prefix large
+// enough for the tree to matter. int[] plus an int gap is already LeetCode's own
+// input shape, so [GlobalSetup] hands it straight in and no hoisted overload is
+// needed.
 [MemoryDiagnoser]
 public class MinimumAbsoluteDifferenceBetweenElementsWithConstraintBenchmarks
 {
@@ -31,40 +34,12 @@ public class MinimumAbsoluteDifferenceBetweenElementsWithConstraintBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForcePairScan()
-    {
-        var minDifference = int.MaxValue;
-
-        for (var i = 0; i < _nums.Length; i++)
-        {
-            for (var j = i + _x; j < _nums.Length; j++)
-            {
-                minDifference = Math.Min(minDifference, Math.Abs(_nums[i] - _nums[j]));
-            }
-        }
-
-        return minDifference;
-    }
+    public int BruteForcePairScan() =>
+        MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
+            .MinAbsoluteDifferenceByBruteForcePairScan(_nums, _x);
 
     [Benchmark]
-    public int BstSlidingWindow()
-    {
-        var tree = new BinarySearchTree<int>();
-        var minDifference = int.MaxValue;
-
-        for (var j = 0; j < _nums.Length; j++)
-        {
-            if (j >= _x)
-            {
-                tree.Insert(_nums[j - _x]);
-            }
-
-            if (FindClosest.TryFind(tree.Root, _nums[j], out var closest))
-            {
-                minDifference = Math.Min(minDifference, Math.Abs(closest - _nums[j]));
-            }
-        }
-
-        return minDifference;
-    }
+    public int BstSlidingWindow() =>
+        MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
+            .MinAbsoluteDifferenceByBstSlidingWindow(_nums, _x);
 }
