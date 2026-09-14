@@ -1,20 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using RepoIndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.CarFleetII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Car Fleet II (LC 1776): both variants compute the exact same right-to-left
-// recurrence (CarFleetIITests precedent) - a candidate car j ahead is only ever
-// usable if car i is faster and would reach j before j's own already-known
-// collision. BruteForcePerCar re-derives that from scratch for every car via an
-// independent forward scan with no memory of previous cars' discarded
-// candidates, O(n^2) worst case. MonotonicStackSweep instead composes this
-// repo's own Stack<int> to permanently discard a candidate the moment it's
-// proven irrelevant, so it is examined by later (further-behind) cars at all -
-// O(n) amortized, one push and at most one pop per car. Speeds are strictly
-// increasing front-to-back (car i is always slower than every car ahead of it),
-// so no car ever catches up - the classic "never breaks early" adversarial input
-// that forces BruteForcePerCar's inner scan all the way to the end every time.
+// Harness only: both arms are CarFleetIISolution's, the same methods CarFleetIITests
+// proves correct, and both take LeetCode's own cars array, so the fleet is built once
+// in [GlobalSetup] rather than inside either measured call.
+//
+// Speeds are strictly increasing front-to-back (car i is always slower than every car
+// ahead of it), so no car ever catches up - the classic "never breaks early"
+// adversarial input that forces the baseline's forward scan all the way to the end
+// for every car, while the sweep still pays one push and at most one pop each.
 [MemoryDiagnoser]
 public class CarFleetIIBenchmarks
 {
@@ -38,74 +34,8 @@ public class CarFleetIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public double[] BruteForcePerCar()
-    {
-        var cars = _cars;
-        var answer = new double[cars.Length];
-        ComputeCollisionTimesBruteForce(cars, answer);
-        return answer;
-    }
+    public double[] BruteForcePerCar() => CarFleetIISolution.GetCollisionTimesByBruteForce(_cars);
 
     [Benchmark]
-    public double[] MonotonicStackSweep()
-    {
-        var cars = _cars;
-        var answer = new double[cars.Length];
-        var candidatesAhead = new RepoIndexStack();
-
-        for (var i = cars.Length - 1; i >= 0; i--)
-        {
-            answer[i] = -1.0;
-            ResolveCollisionForCar(cars, answer, candidatesAhead, i);
-            candidatesAhead.Push(i);
-        }
-
-        return answer;
-    }
-
-    private static void ComputeCollisionTimesBruteForce(int[][] cars, double[] answer)
-    {
-        for (var i = cars.Length - 1; i >= 0; i--)
-        {
-            answer[i] = -1.0;
-
-            for (var j = i + 1; j < cars.Length; j++)
-            {
-                if (cars[i][1] <= cars[j][1])
-                {
-                    continue;
-                }
-
-                var collisionTime = (double)(cars[j][0] - cars[i][0]) / (cars[i][1] - cars[j][1]);
-
-                if (answer[j] < 0 || collisionTime <= answer[j])
-                {
-                    answer[i] = collisionTime;
-                    break;
-                }
-            }
-        }
-    }
-
-    private static void ResolveCollisionForCar(int[][] cars, double[] answer, RepoIndexStack candidatesAhead, int i)
-    {
-        while (candidatesAhead.TryPeek(out var j))
-        {
-            if (cars[i][1] <= cars[j][1])
-            {
-                candidatesAhead.TryPop(out _);
-                continue;
-            }
-
-            var collisionTime = (double)(cars[j][0] - cars[i][0]) / (cars[i][1] - cars[j][1]);
-
-            if (answer[j] < 0 || collisionTime <= answer[j])
-            {
-                answer[i] = collisionTime;
-                break;
-            }
-
-            candidatesAhead.TryPop(out _);
-        }
-    }
+    public double[] MonotonicStackSweep() => CarFleetIISolution.GetCollisionTimesByMonotonicStack(_cars);
 }

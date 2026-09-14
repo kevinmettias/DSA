@@ -1,61 +1,53 @@
-using System.Numerics;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeNumberOfNiceDivisors;
 
-// LeetCode 1808. Maximize Number of Nice Divisors: a "nice" divisor of
-// n = p1^a1 * p2^a2 * ... must contain every one of n's prime factors at least
-// once, so the count of nice divisors is exactly the product of the a_i (each
-// exponent contributes a_i legal choices, 1..a_i) - the same "split n into parts
-// maximizing their product" shape as Integer Break (LC 343), just for an n up to
-// 1e9 instead of 58. This repo's own Memoizer (Algorithms/DynamicProgramming/
-// Memoizer.cs) drives the recurrence maxProduct(remaining) = max(remaining,
-// 2*maxProduct(remaining-2), 3*maxProduct(remaining-3)) - many different peel-2/
-// peel-3 orders land on the same remaining budget, exactly the overlapping-
-// subproblem shape memoization exists for (same idiom CountAllPossibleRoutesTests
-// uses over a different state shape). BigInteger, not long, keeps every candidate's
-// max comparison exact for however far the recursion runs - this composition
-// proves correct, not that it matches LeetCode's own O(log n) modular-
-// exponentiation scale (see the benchmark for the naive-vs-memoized complexity
-// split, bounded well below 1e9 for the same reason).
-public sealed partial class MaximizeNumberOfNiceDivisorsTests
+// Harness only. Both recurrences are MaximizeNumberOfNiceDivisorsSolution's; this
+// file pins them to LeetCode's two published examples plus the small budgets where
+// leaving the budget whole still beats splitting it, and the first budgets at which
+// peeling a 3 overtakes peeling a 2.
+public sealed class MaximizeNumberOfNiceDivisorsTests
 {
-    private const int Modulo = 1_000_000_007;
+    // 57 = 3 * 19, so the exact product is 3^19 = 1,162,261,467 - the smallest
+    // multiple-of-three budget whose answer overflows LeetCode's own 1e9+7 modulus
+    // and therefore the smallest one that proves the reported answer is reduced.
+    private const int OverflowingPrimeFactors = 57;
+    private const int OverflowingExpected = 162_261_460;
+
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 1, 1 },
+            { 2, 2 },
+            { 3, 3 },
+            { 4, 4 },
+            { 5, 6 },
+            { 6, 9 },
+            { 7, 12 },
+            { 8, 18 },
+            { 9, 27 },
+            { 10, 36 },
+            { 20, 1_458 },
+        };
 
     [Theory]
-    [InlineData(1, 1)]
-    [InlineData(2, 2)]
-    [InlineData(4, 4)]
-    [InlineData(5, 6)]
-    [InlineData(8, 18)]
-    public void MaxNiceDivisors_KnownExamples_ReturnsExpectedCount(int primeFactors, int expected)
-        => Assert.Equal(expected, MaxNiceDivisors(primeFactors));
+    [MemberData(nameof(Examples))]
+    public void MaxNiceDivisorsByNaiveRecursion_LeetCodeExamples_ReturnsMaximumNiceDivisorCount(
+        int primeFactors, int expected) =>
+        Assert.Equal(expected, MaximizeNumberOfNiceDivisorsSolution.MaxNiceDivisorsByNaiveRecursion(primeFactors));
 
-    private static int MaxNiceDivisors(int primeFactors)
-        => (int)(MaxProduct(primeFactors) % Modulo);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxNiceDivisorsByMemoizedRecurrence_LeetCodeExamples_ReturnsMaximumNiceDivisorCount(
+        int primeFactors, int expected) =>
+        Assert.Equal(expected, MaximizeNumberOfNiceDivisorsSolution.MaxNiceDivisorsByMemoizedRecurrence(primeFactors));
 
-    private static BigInteger MaxProduct(int remaining)
-        => Memoizer.Memoize<int, BigInteger>(remaining, Recurrence);
-
-    private static BigInteger Recurrence(int remaining, Func<int, BigInteger> maxProduct)
-    {
-        if (remaining == 0)
-        {
-            return BigInteger.One;
-        }
-
-        var best = (BigInteger)remaining;
-
-        if (remaining >= 2)
-        {
-            best = BigInteger.Max(best, 2 * maxProduct(remaining - 2));
-        }
-
-        if (remaining >= 3)
-        {
-            best = BigInteger.Max(best, 3 * maxProduct(remaining - 3));
-        }
-
-        return best;
-    }
+    // The naive arm deliberately has no cache, so it cannot be run at a budget this
+    // large in a unit test - the same asymmetry the benchmark's [Params] bound
+    // records. Only the memoized arm is asserted here.
+    [Fact]
+    public void MaxNiceDivisorsByMemoizedRecurrence_ProductExceedsLeetCodesPrime_ReportsItModuloThatPrime() =>
+        Assert.Equal(
+            OverflowingExpected,
+            MaximizeNumberOfNiceDivisorsSolution.MaxNiceDivisorsByMemoizedRecurrence(OverflowingPrimeFactors));
 }

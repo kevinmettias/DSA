@@ -1,15 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignAuthenticationManager.DesignAuthenticationManagerSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Authentication Manager (LC 1797): a naive List<(string TokenId, int
-// Expiry)> linear-scan manager (the "no hashing at all" baseline a first-pass
-// implementation reaches for - DesignHashMapBenchmarks precedent) vs. this repo's
-// HashMap<TKey,TValue>. Both are populated with the same Length tokens, then
-// renewed with Length probes split evenly between existing and unknown token ids,
-// so a linear scan's O(n) cost per lookup is fully exercised on every probe
-// (existing-but-unrenewable ids never short-circuit the scan early).
+// Harness only: both arms are DesignAuthenticationManagerSolution's, the same
+// classes DesignAuthenticationManagerTests proves correct - the naive
+// List<(string, int)> linear-scan manager (the "no hashing at all" baseline a
+// first-pass implementation reaches for, DesignHashMapBenchmarks precedent)
+// against this repo's HashMap<TKey,TValue>. Both are populated with the same
+// Length tokens, then renewed with Length probes split evenly between existing and
+// unknown token ids, so a linear scan's O(n) cost per lookup is fully exercised on
+// every probe (existing-but-unrenewable ids never short-circuit the scan early).
+// [GlobalSetup] materializes the token ids so string formatting is charged to
+// setup rather than to the replay.
 [MemoryDiagnoser]
 public class DesignAuthenticationManagerBenchmarks
 {
@@ -37,89 +40,28 @@ public class DesignAuthenticationManagerBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanList()
-    {
-        var entries = BuildLinearScanEntries();
-        RenewLinearScanEntries(entries);
-        return CountUnexpired(entries.Select(entry => entry.Expiry));
-    }
-
-    private List<(string TokenId, int Expiry)> BuildLinearScanEntries()
-    {
-        var entries = new List<(string TokenId, int Expiry)>(Length);
-
-        for (var i = 0; i < _tokenIds.Length; i++)
-        {
-            entries.Add((_tokenIds[i], i + TimeToLive));
-        }
-
-        return entries;
-    }
-
-    private void RenewLinearScanEntries(List<(string TokenId, int Expiry)> entries)
-    {
-        foreach (var probe in _renewProbeIds)
-        {
-            for (var i = 0; i < entries.Count; i++)
-            {
-                if (entries[i].TokenId != probe)
-                {
-                    continue;
-                }
-
-                if (entries[i].Expiry > Length)
-                {
-                    entries[i] = (probe, Length + TimeToLive);
-                }
-
-                break;
-            }
-        }
-    }
+    public int LinearScanList() => Replay(new AuthenticationManagerByLinearScanList(TimeToLive));
 
     [Benchmark]
-    public int RepoHashMap()
-    {
-        var expiryByToken = BuildHashMapEntries();
-        RenewHashMapEntries(expiryByToken);
-        return CountUnexpired(expiryByToken.Values);
-    }
+    public int RepoHashMap() => Replay(new AuthenticationManagerByHashMap(TimeToLive));
 
-    private HashMap<string, int> BuildHashMapEntries()
+    // Token i is generated at time i, so it expires at i + TimeToLive; every renew
+    // and the final count then happen at time Length, so only the most recently
+    // generated tokens are still alive - a hit on an older one pays for the whole
+    // lookup and then declines to renew, which is exactly the path that never
+    // short-circuits.
+    private int Replay(IAuthenticationManager manager)
     {
-        var expiryByToken = new HashMap<string, int>();
-
         for (var i = 0; i < _tokenIds.Length; i++)
         {
-            expiryByToken.Set(_tokenIds[i], i + TimeToLive);
+            manager.Generate(_tokenIds[i], currentTime: i);
         }
 
-        return expiryByToken;
-    }
-
-    private void RenewHashMapEntries(HashMap<string, int> expiryByToken)
-    {
         foreach (var probe in _renewProbeIds)
         {
-            if (expiryByToken.TryGetValue(probe, out var expiry) && expiry > Length)
-            {
-                expiryByToken.Set(probe, Length + TimeToLive);
-            }
-        }
-    }
-
-    private int CountUnexpired(IEnumerable<int> expiries)
-    {
-        var unexpired = 0;
-
-        foreach (var expiry in expiries)
-        {
-            if (expiry > Length)
-            {
-                unexpired++;
-            }
+            manager.Renew(probe, currentTime: Length);
         }
 
-        return unexpired;
+        return manager.CountUnexpiredTokens(currentTime: Length);
     }
 }

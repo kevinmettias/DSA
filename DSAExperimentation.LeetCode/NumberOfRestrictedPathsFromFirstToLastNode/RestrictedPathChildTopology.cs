@@ -1,7 +1,7 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfRestrictedPathsFromFirstToLastNode.Fixtures;
+namespace DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode;
 
 // A restricted path only ever steps to a neighbor with a strictly smaller distance
 // to the last node, so this can never revisit a node already on the walk - exactly

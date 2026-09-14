@@ -1,99 +1,39 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.NumberOfDifferentSubsequencesGCDs;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfDifferentSubsequencesGCDs;
 
-// LeetCode 1819. Number of Different Subsequences GCDs: mark every value's presence
-// in this repo's own Set<int> (O(1) Has, the same membership role
-// XOfAKindInADeckOfCardsTests' HashMap plays for counts), then for each candidate g
-// from 1 to max(nums) fold Gcd over only g's multiples that are present - g is an
-// achievable subsequence GCD exactly when that running fold lands back on g itself.
-// Walking multiples instead of the whole array per candidate is what turns this into
-// O(max log max) (harmonic series) instead of O(max * n); see
-// NumberOfDifferentSubsequencesGCDsBenchmarks for that comparison. Same private
-// Euclidean Gcd helper CheckIfItIsAGoodArrayTests/XOfAKindInADeckOfCardsTests already
-// reuse inline rather than promoting to a shared production type.
-public sealed partial class NumberOfDifferentSubsequencesGCDsTests
+// Harness only. Both strategies live in NumberOfDifferentSubsequencesGCDsSolution -
+// this file pins them to LeetCode's published examples plus the singleton, the
+// all-multiples chain whose achievable gcds are exactly its own values, the coprime
+// pair whose gcd 1 is only reachable by taking both, and a repeated value that must
+// not be counted twice.
+public sealed class NumberOfDifferentSubsequencesGCDsTests
 {
-    [Fact]
-    public void CountDifferentSubsequenceGcds_LeetCodeExampleOne_ReturnsFive()
-    {
-        int[] nums = [6, 10, 3];
-
-        Assert.Equal(5, CountDifferentSubsequenceGcds(nums));
-    }
-
-    [Fact]
-    public void CountDifferentSubsequenceGcds_LeetCodeExampleTwo_ReturnsSeven()
-    {
-        int[] nums = [5, 15, 40, 5, 6];
-
-        Assert.Equal(7, CountDifferentSubsequenceGcds(nums));
-    }
-
-    [Fact]
-    public void CountDifferentSubsequenceGcds_SingleValue_ReturnsOne()
-    {
-        int[] nums = [7];
-
-        Assert.Equal(1, CountDifferentSubsequenceGcds(nums));
-    }
-
-    private static int CountDifferentSubsequenceGcds(int[] nums)
-    {
-        var (present, maxValue) = CollectPresentValues(nums);
-        return CountAchievableGcds(present, maxValue);
-    }
-
-    private static (Set<int> Present, int MaxValue) CollectPresentValues(int[] nums)
-    {
-        var present = new Set<int>();
-        var maxValue = 0;
-
-        foreach (var num in nums)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            present.TryAdd(num);
-            maxValue = Math.Max(maxValue, num);
-        }
+            { [6, 10, 3], 5 },
+            { [5, 15, 40, 5, 6], 7 },
+            { [7], 1 },
+            { [1], 1 },
+            { [4, 8, 16], 3 },
+            { [2, 3], 3 },
+            { [5, 5], 1 },
+        };
 
-        return (present, maxValue);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDifferentSubsequenceGcdsByWholeArrayScan_LeetCodeExamples_ReturnsDistinctAchievableGcdCount(
+        int[] nums, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfDifferentSubsequencesGCDsSolution.CountDifferentSubsequenceGcdsByWholeArrayScan(nums));
 
-    private static int CountAchievableGcds(Set<int> present, int maxValue)
-    {
-        var count = 0;
-
-        for (var candidate = 1; candidate <= maxValue; candidate++)
-        {
-            if (IsAchievableGcd(candidate, maxValue, present))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private static bool IsAchievableGcd(int candidate, int maxValue, Set<int> present)
-    {
-        var runningGcd = 0;
-
-        for (var multiple = candidate; multiple <= maxValue; multiple += candidate)
-        {
-            if (!present.Has(multiple))
-            {
-                continue;
-            }
-
-            runningGcd = Gcd(runningGcd, multiple);
-
-            if (runningGcd == candidate)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDifferentSubsequenceGcdsBySetMultiples_LeetCodeExamples_ReturnsDistinctAchievableGcdCount(
+        int[] nums, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfDifferentSubsequencesGCDsSolution.CountDifferentSubsequenceGcdsBySetMultiples(nums));
 }
