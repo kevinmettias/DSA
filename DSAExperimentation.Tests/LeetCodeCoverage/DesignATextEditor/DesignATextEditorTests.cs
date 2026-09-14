@@ -1,108 +1,138 @@
-using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using static DSAExperimentation.LeetCode.DesignATextEditor.DesignATextEditorSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignATextEditor;
 
-// LeetCode 2296. Design a Text Editor: the classic two-stack cursor design - a
-// "left of cursor" Stack<char> (top = char immediately left of the cursor) and a
-// "right of cursor" Stack<char> (top = char immediately right), both this repo's
-// own Stack<T>. AddText pushes onto left; CursorLeft/CursorRight move characters
-// one at a time between the two stacks; DeleteText pops from left. No shifting of
-// unrelated characters is ever needed, unlike an array/List positional insert.
-public sealed partial class DesignATextEditorTests
+// Harness only: both strategies live in DesignATextEditorSolution. LeetCode's own
+// shape here is a stateful object across a sequence of calls, so Examples encodes
+// a call script instead of a single argument tuple - the same shape
+// DesignBrowserHistoryTests and ImplementQueueUsingStacksTests use for their own
+// instance-API problems. AddText returns null in LeetCode's judge output and
+// deleteText returns a count while the two cursor moves return strings, so the
+// expected sequence is object?[] and reads exactly like the published one.
+public sealed class DesignATextEditorTests
 {
-    [Fact]
-    public void FullOperationSequence_LeetCodeExample_MatchesExpectedOutputs()
+    public static TheoryData<TextEditorOp[], object?[]> Examples =>
+        new()
+        {
+            {
+                [
+                    TextEditorOp.AddText("leetcode"),
+                    TextEditorOp.DeleteText(4),
+                    TextEditorOp.AddText("practice"),
+                    TextEditorOp.CursorRight(3),
+                    TextEditorOp.CursorLeft(8),
+                    TextEditorOp.DeleteText(10),
+                    TextEditorOp.CursorLeft(2),
+                    TextEditorOp.CursorRight(6),
+                ],
+                [null, 4, null, "etpractice", "leet", 4, "", "practi"]
+            },
+            {
+                // Deleting more than sits left of the cursor clips to what is
+                // actually there, and a second delete against an empty left side
+                // removes nothing.
+                [
+                    TextEditorOp.AddText("hi"),
+                    TextEditorOp.DeleteText(50),
+                    TextEditorOp.DeleteText(1),
+                ],
+                [null, 2, 0]
+            },
+            {
+                // More than ten characters left of the cursor: only the last ten
+                // are reported, and moving right past the end clamps there.
+                [
+                    TextEditorOp.AddText("abcdefghijklm"),
+                    TextEditorOp.CursorLeft(1),
+                    TextEditorOp.CursorRight(99),
+                    TextEditorOp.CursorLeft(99),
+                ],
+                [null, "cdefghijkl", "defghijklm", ""]
+            },
+            {
+                // A delete happens at the cursor, not at the end of the buffer:
+                // the text right of the cursor survives and can be walked back over.
+                [
+                    TextEditorOp.AddText("abcdef"),
+                    TextEditorOp.CursorLeft(3),
+                    TextEditorOp.DeleteText(2),
+                    TextEditorOp.CursorRight(3),
+                ],
+                [null, "abc", 2, "adef"]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TextEditorByListBacked_LeetCodeExamples_MatchesExpectedSequence(
+        TextEditorOp[] operations, object?[] expected) =>
+        RunScript(new TextEditorByListBacked(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TextEditorByStackBacked_LeetCodeExamples_MatchesExpectedSequence(
+        TextEditorOp[] operations, object?[] expected) =>
+        RunScript(new TextEditorByStackBacked(), operations, expected);
+
+    private static void RunScript(
+        ITextEditor editor, TextEditorOp[] operations, object?[] expected)
     {
-        var editor = new TextEditor();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(editor));
+        }
+    }
+}
 
-        editor.AddText("leetcode");
-        Assert.Equal(4, editor.DeleteText(4));
+// One call in a TextEditor script: which operation to invoke, and with what text
+// or character count. Pure dispatch, built via the named factories below so a
+// script reads like the LeetCode call sequence it replays.
+public readonly record struct TextEditorOp
+{
+    private readonly Kind _kind;
+    private readonly string _text;
+    private readonly int _count;
 
-        editor.AddText("practice");
-        Assert.Equal("etpractice", editor.CursorRight(3));
-        Assert.Equal("leet", editor.CursorLeft(8));
-        Assert.Equal(4, editor.DeleteText(10));
-        Assert.Equal("", editor.CursorLeft(2));
-        Assert.Equal("practi", editor.CursorRight(6));
+    private TextEditorOp(Kind kind, string text, int count)
+    {
+        _kind = kind;
+        _text = text;
+        _count = count;
     }
 
-    [Fact]
-    public void DeleteText_MoreThanAvailable_ClipsToCharactersActuallyPresent()
-    {
-        var editor = new TextEditor();
-        editor.AddText("hi");
+    public static TextEditorOp AddText(string text) => new(Kind.AddText, text, 0);
 
-        Assert.Equal(2, editor.DeleteText(50));
-        Assert.Equal(0, editor.DeleteText(1));
+    public static TextEditorOp DeleteText(int k) => new(Kind.DeleteText, string.Empty, k);
+
+    public static TextEditorOp CursorLeft(int k) => new(Kind.CursorLeft, string.Empty, k);
+
+    public static TextEditorOp CursorRight(int k) => new(Kind.CursorRight, string.Empty, k);
+
+    // null for AddText, matching LeetCode's own judge output for a void operation;
+    // the deleted count for DeleteText and the reported window for the two cursor
+    // moves, each boxed as its own type so the script can assert one expected
+    // value per operation without forcing them onto a common shape.
+    internal object? Apply(ITextEditor editor)
+    {
+        switch (_kind)
+        {
+            case Kind.AddText:
+                editor.AddText(_text);
+                return null;
+            case Kind.DeleteText:
+                return editor.DeleteText(_count);
+            case Kind.CursorLeft:
+                return editor.CursorLeft(_count);
+            default:
+                return editor.CursorRight(_count);
+        }
     }
 
-    private sealed class TextEditor
+    private enum Kind
     {
-        private readonly RepoStack _left = new();
-        private readonly RepoStack _right = new();
-
-        public void AddText(string text)
-        {
-            foreach (var c in text)
-            {
-                _left.Push(c);
-            }
-        }
-
-        public int DeleteText(int k)
-        {
-            var deleted = 0;
-
-            while (deleted < k && _left.TryPop(out _))
-            {
-                deleted++;
-            }
-
-            return deleted;
-        }
-
-        public string CursorLeft(int k)
-        {
-            var moved = 0;
-
-            while (moved < k && _left.TryPop(out var c))
-            {
-                _right.Push(c);
-                moved++;
-            }
-
-            return LastTenBeforeCursor();
-        }
-
-        public string CursorRight(int k)
-        {
-            var moved = 0;
-
-            while (moved < k && _right.TryPop(out var c))
-            {
-                _left.Push(c);
-                moved++;
-            }
-
-            return LastTenBeforeCursor();
-        }
-
-        private string LastTenBeforeCursor()
-        {
-            var popped = new List<char>(10);
-
-            while (popped.Count < 10 && _left.TryPop(out var c))
-            {
-                popped.Add(c);
-            }
-
-            for (var i = popped.Count - 1; i >= 0; i--)
-            {
-                _left.Push(popped[i]);
-            }
-
-            popped.Reverse();
-            return new string(popped.ToArray());
-        }
+        AddText,
+        DeleteText,
+        CursorLeft,
+        CursorRight,
     }
 }

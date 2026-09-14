@@ -1,58 +1,42 @@
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.CalculateAmountPaidInTaxes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CalculateAmountPaidInTaxes;
 
-// LeetCode 2303. Calculate Amount Paid in Taxes: a single forward pass over the
-// already-sorted tax brackets, taxing only the slice of income that falls inside
-// each bracket. The brackets are wrapped in this repo's own ArraySequence<T> - the
-// O(1)-Get witness of IRandomAccessSequence<T> (ARCHITECTURE.md §9) - since "an
-// already-sorted, indexable sequence" is exactly what that Representation contract
-// models, the same shape BinarySearch's own sequence argument already uses.
-public sealed partial class CalculateAmountPaidInTaxesTests
+// Harness only. Both the raw jagged-array walk and the ArraySequence<T> walk are
+// CalculateAmountPaidInTaxesSolution's - this file pins them to LeetCode's published
+// examples plus the zero-income, single-bracket and income-above-the-top-bracket
+// cases, where the loop either never taxes anything or never gets to break early.
+public sealed class CalculateAmountPaidInTaxesTests
 {
+    private const int Precision = 5;
+
+    public static TheoryData<int[][], int, double> Examples =>
+        new()
+        {
+            { [[3, 50], [7, 10], [12, 25]], 10, 2.65 },
+            { [[1, 0], [4, 25], [5, 50]], 2, 0.25 },
+            { [[1, 0], [4, 25], [5, 50]], 0, 0.0 },
+            { [[2, 50], [4, 10], [10, 25]], 0, 0.0 },
+            { [[2, 50], [6, 10], [8, 25]], 8, 1.9 },
+            { [[10, 100]], 5, 5.0 },
+            { [[3, 50], [7, 10]], 100, 1.9 },
+        };
+
     [Theory]
-    [InlineData(new int[] { 3, 50, 7, 10, 12, 25 }, 10, 2.65)]
-    [InlineData(new int[] { 1, 0, 4, 25, 5, 50 }, 0, 0.0)]
-    [InlineData(new int[] { 2, 50, 6, 10, 8, 25 }, 8, 1.9)]
-    public void CalculateTax_LeetCodeExamples_ReturnsExpectedAmount(int[] flatBrackets, int income, double expected)
-    {
-        var brackets = ToBracketSequence(flatBrackets);
+    [MemberData(nameof(Examples))]
+    public void CalculateTaxByBracketArrayWalk_LeetCodeExamples_ReturnsExpectedAmount(
+        int[][] brackets, int income, double expected) =>
+        Assert.Equal(
+            expected,
+            CalculateAmountPaidInTaxesSolution.CalculateTaxByBracketArrayWalk(brackets, income),
+            Precision);
 
-        var tax = CalculateTax(brackets, income);
-
-        Assert.Equal(expected, tax, precision: 5);
-    }
-
-    private static double CalculateTax(ArraySequence<(int Upper, int Percent)> brackets, int income)
-    {
-        var tax = 0.0;
-        var previousUpper = 0;
-
-        for (var i = 0; i < brackets.Length; i++)
-        {
-            var (upper, percent) = brackets.Get(i);
-            var taxableInBracket = Math.Max(0, Math.Min(income, upper) - previousUpper);
-            tax += taxableInBracket * percent / 100.0;
-            previousUpper = upper;
-
-            if (income <= upper)
-            {
-                break;
-            }
-        }
-
-        return tax;
-    }
-
-    private static ArraySequence<(int Upper, int Percent)> ToBracketSequence(int[] flatBrackets)
-    {
-        var pairs = new (int Upper, int Percent)[flatBrackets.Length / 2];
-
-        for (var i = 0; i < pairs.Length; i++)
-        {
-            pairs[i] = (flatBrackets[i * 2], flatBrackets[i * 2 + 1]);
-        }
-
-        return new ArraySequence<(int Upper, int Percent)>(pairs);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CalculateTaxByRandomAccessSequence_LeetCodeExamples_ReturnsExpectedAmount(
+        int[][] brackets, int income, double expected) =>
+        Assert.Equal(
+            expected,
+            CalculateAmountPaidInTaxesSolution.CalculateTaxByRandomAccessSequence(brackets, income),
+            Precision);
 }

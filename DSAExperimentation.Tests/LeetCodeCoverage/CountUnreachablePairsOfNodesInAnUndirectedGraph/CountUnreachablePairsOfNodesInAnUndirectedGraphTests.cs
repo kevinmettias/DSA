@@ -1,74 +1,38 @@
-using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.CountUnreachablePairsOfNodesInAnUndirectedGraph;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountUnreachablePairsOfNodesInAnUndirectedGraph;
 
-// LeetCode 2316. Count Unreachable Pairs of Nodes in an Undirected Graph: union
-// every edge into this repo's own DisjointSet (NumberOfProvincesTests/
-// NumberOfOperationsToMakeNetworkConnectedTests precedent), then tally each
-// component's size via HashMap<root,size> (LargestComponentSizeByCommonFactorTests'
-// own TallyComponent shape, read back afterward through HashMap.Values so each
-// distinct component contributes exactly once). Every pair of nodes is either
-// inside the same component (reachable) or split across two different components
-// (unreachable), so the answer is total pairs C(n,2) minus the reachable pairs
-// summed component-by-component - no separate reachability search needed once
-// component sizes are known.
-public sealed partial class CountUnreachablePairsOfNodesInAnUndirectedGraphTests
+// Harness only: both strategies live in
+// CountUnreachablePairsOfNodesInAnUndirectedGraphSolution and are asserted against
+// the same examples - LeetCode's two published ones plus the edge-free graph (every
+// pair unreachable), a single fully connected component (none), and a graph whose
+// components have different sizes including an isolated node, which is where a
+// size tally that misses singletons goes wrong.
+public sealed class CountUnreachablePairsOfNodesInAnUndirectedGraphTests
 {
-    [Fact]
-    public void CountPairs_TwoComponents_ReturnsPairsSplitAcrossThem()
-    {
-        // {0,1,2} (size 3) and {3,4,5,6} (size 4); verified independently against a
-        // brute-force pairwise BFS reachability check.
-        int[][] edges = [[0, 2], [0, 1], [1, 2], [3, 4], [4, 5], [5, 6]];
-
-        var unreachable = CountPairs(7, edges);
-
-        Assert.Equal(12, unreachable);
-    }
-
-    [Fact]
-    public void CountPairs_NoEdges_EveryPairIsUnreachable()
-    {
-        var unreachable = CountPairs(4, []);
-
-        Assert.Equal(6, unreachable);
-    }
-
-    [Fact]
-    public void CountPairs_FullyConnectedTriangle_ReturnsZero()
-    {
-        int[][] edges = [[0, 1], [1, 2], [2, 0]];
-
-        var unreachable = CountPairs(3, edges);
-
-        Assert.Equal(0, unreachable);
-    }
-
-    private static long CountPairs(int n, int[][] edges)
-    {
-        var components = new DisjointSet(n);
-        foreach (var edge in edges)
+    public static TheoryData<int, int[][], long> Examples =>
+        new()
         {
-            components.Union(edge[0], edge[1]);
-        }
+            { 3, [[0, 1], [0, 2], [1, 2]], 0L },
+            { 7, [[0, 2], [0, 5], [2, 4], [1, 6], [5, 4]], 14L },
+            { 7, [[0, 2], [0, 1], [1, 2], [3, 4], [4, 5], [5, 6]], 12L },
+            { 4, [], 6L },
+            { 1, [], 0L },
+        };
 
-        var sizeByRoot = new HashMap<int, long>();
-        for (var i = 0; i < n; i++)
-        {
-            var root = components.Find(i);
-            sizeByRoot.TryGetValue(root, out var size);
-            sizeByRoot.Set(root, size + 1);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountPairsByDepthFirstFloodFill_LeetCodeExamples_ReturnsPairsSplitAcrossComponents(
+        int n, int[][] edges, long expected) =>
+        Assert.Equal(
+            expected,
+            CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDepthFirstFloodFill(n, edges));
 
-        var totalPairs = (long)n * (n - 1) / 2;
-        var reachablePairs = 0L;
-
-        foreach (var size in sizeByRoot.Values)
-        {
-            reachablePairs += size * (size - 1) / 2;
-        }
-
-        return totalPairs - reachablePairs;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountPairsByDisjointSet_LeetCodeExamples_ReturnsPairsSplitAcrossComponents(
+        int n, int[][] edges, long expected) =>
+        Assert.Equal(
+            expected,
+            CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDisjointSet(n, edges));
 }
