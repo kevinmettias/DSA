@@ -1,213 +1,56 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.NumberOfWaysToReconstructATree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToReconstructATree;
 
-// LeetCode 1719. Number Of Ways To Reconstruct A Tree: the "candidate parent" technique -
-// pairs is the FULL ancestor/descendant relation of some unknown tree, so build it as an
-// adjacency map (HashMap<node, HashMap<neighbor,bool>>, the same map-of-set shape
-// AccountsMergeTests uses for emailsByRoot), sort nodes by degree with this repo's own
-// MergeSort (AccountsMergeTests' "sort with this repo's MergeSort" convention), and for
-// every node but one arbitrarily designated root, its parent is the neighbor with the
-// smallest degree still >= its own degree - transitivity of ancestor/descendant means
-// adjacency[node] minus that parent must be a subset of adjacency[parent], and a tie for
-// that minimal qualifying degree (including a tie with the node's own degree) means more
-// than one tree reproduces the same relation.
-public sealed partial class NumberOfWaysToReconstructATreeTests
+// Harness only. Both strategies live in NumberOfWaysToReconstructATreeSolution -
+// this file pins them to LeetCode's three published examples plus four cases that
+// separate the two ways an answer of 0 can arise (no node is related to everyone,
+// versus a node whose neighbours are not all shared with its only possible parent)
+// and the two ways an answer of 2 can arise (a tie at the minimal qualifying
+// degree, versus a node tied with its own parent).
+public sealed class NumberOfWaysToReconstructATreeTests
 {
-    [Fact]
-    public void CheckWays_StarShapedTree_ReturnsExactlyOne()
-    {
-        int[][] pairs = [[1, 2], [2, 3]];
-
-        Assert.Equal(1, CheckWays(pairs));
-    }
-
-    [Fact]
-    public void CheckWays_FullyConnectedTriple_ReturnsMoreThanOne()
-    {
-        int[][] pairs = [[1, 2], [2, 3], [1, 3]];
-
-        Assert.Equal(2, CheckWays(pairs));
-    }
-
-    [Fact]
-    public void CheckWays_DegreesCannotProduceARoot_ReturnsZero()
-    {
-        int[][] pairs = [[1, 2], [2, 3], [2, 4], [1, 5]];
-
-        Assert.Equal(0, CheckWays(pairs));
-    }
-
-    [Fact]
-    public void CheckWays_TwoNodesBothHaveMaxDegree_StillDetectsAmbiguity()
-    {
-        // 1 -> 4 -> {2, 3} reproduces the same relation as 4 -> 1 -> {2, 3}: both 1 and 4
-        // end up related to everyone (degree n-1) despite only one of them being the
-        // actual root of either tree.
-        int[][] pairs = [[1, 2], [1, 3], [1, 4], [2, 4], [3, 4]];
-
-        Assert.Equal(2, CheckWays(pairs));
-    }
-
-    private static int CheckWays(int[][] pairs)
-    {
-        var adjacency = BuildAdjacency(pairs);
-        var nodes = SortNodesByDegree(adjacency);
-
-        if (Degree(adjacency, nodes[^1]) != adjacency.Count - 1)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            return 0;
-        }
+            // LeetCode's example 1: 1 -> 2 -> 3 is the only tree with this relation.
+            { [[1, 2], [2, 3]], 1 },
 
-        return EvaluateAllCandidateParents(adjacency, nodes);
-    }
+            // LeetCode's example 2: every node is related to every other, so any of
+            // the three can be the root of a chain.
+            { [[1, 2], [2, 3], [1, 3]], 2 },
 
-    private static HashMap<int, HashMap<int, bool>> BuildAdjacency(int[][] pairs)
-    {
-        var adjacency = new HashMap<int, HashMap<int, bool>>();
+            // LeetCode's example 3: no node is related to all four others, so no
+            // node can be the root.
+            { [[1, 2], [2, 3], [2, 4], [1, 5]], 0 },
 
-        foreach (var pair in pairs)
-        {
-            AddEdge(adjacency, pair[0], pair[1]);
-            AddEdge(adjacency, pair[1], pair[0]);
-        }
+            // Two nodes both end up related to everyone: 1 -> 4 -> {2, 3} reproduces
+            // the same relation as 4 -> 1 -> {2, 3}, despite only one of them being
+            // the actual root of either tree.
+            { [[1, 2], [1, 3], [1, 4], [2, 4], [3, 4]], 2 },
 
-        return adjacency;
-    }
+            // The smallest ambiguous input: either node can be the other's parent.
+            { [[1, 2]], 2 },
 
-    private static int[] SortNodesByDegree(HashMap<int, HashMap<int, bool>> adjacency)
-    {
-        var nodes = adjacency.Keys.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
-            new ArrayIndexedSequence<int>(nodes),
-            Comparer<int>.Create((a, b) =>
-            {
-                var degreeA = Degree(adjacency, a);
-                var degreeB = Degree(adjacency, b);
-                return degreeA.CompareTo(degreeB);
-            }));
+            // A forced three-level tree - 1 -> {5, 3} and 3 -> {2, 4} - where every
+            // non-root node's parent is the unique lowest qualifying degree.
+            { [[1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [3, 4]], 1 },
 
-        return nodes;
-    }
+            // Node 1 is still related to everyone, so the degree check passes; but
+            // node 2's only possible parent is 3, and node 2 is related to 5 while
+            // node 3 is not - which transitivity forbids.
+            { [[1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [3, 4], [2, 5]], 0 },
+        };
 
-    // nodes[^1] is arbitrarily designated the root and skipped; every other node
-    // (including any further node that also happens to have degree n - 1) is
-    // validated against its own candidate parent.
-    private static int EvaluateAllCandidateParents(HashMap<int, HashMap<int, bool>> adjacency, int[] nodes)
-    {
-        var result = 1;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckWaysByDictionaryAndLinqSort_LeetCodeExamples_ReturnsReconstructionCount(
+        int[][] pairs, int expected) =>
+        Assert.Equal(expected, NumberOfWaysToReconstructATreeSolution.CheckWaysByDictionaryAndLinqSort(pairs));
 
-        for (var i = 0; i < nodes.Length - 1; i++)
-        {
-            var outcome = EvaluateCandidateParent(adjacency, nodes[i]);
-
-            if (outcome is null)
-            {
-                return 0;
-            }
-
-            if (outcome.Value)
-            {
-                result = 2;
-            }
-        }
-
-        return result;
-    }
-
-    // Returns null when no valid parent exists for this node (the pairs are
-    // inconsistent with any tree), true when the parent choice is ambiguous
-    // (ties the root-parent designation), false when the parent is unambiguous.
-    private static bool? EvaluateCandidateParent(HashMap<int, HashMap<int, bool>> adjacency, int node)
-    {
-        var ownDegree = Degree(adjacency, node);
-        adjacency.TryGetValue(node, out var neighbors);
-
-        var (parent, minQualifyingDegree, countAtMinDegree) = FindCandidateParent(adjacency, neighbors!, ownDegree);
-
-        if (parent == -1)
-        {
-            return null;
-        }
-
-        adjacency.TryGetValue(parent, out var parentNeighbors);
-        foreach (var other in neighbors!.Keys)
-        {
-            if (other != parent && !parentNeighbors!.HasKey(other))
-            {
-                return null;
-            }
-        }
-
-        return minQualifyingDegree == ownDegree || countAtMinDegree > 1;
-    }
-
-    private static (int Parent, int MinQualifyingDegree, int CountAtMinDegree) FindCandidateParent(
-        HashMap<int, HashMap<int, bool>> adjacency, HashMap<int, bool> neighbors, int ownDegree)
-    {
-        var minQualifyingDegree = FindMinQualifyingDegree(adjacency, neighbors, ownDegree);
-        var (parent, countAtMinDegree) = CountNeighborsAtDegree(adjacency, neighbors, minQualifyingDegree);
-
-        return (parent, minQualifyingDegree, countAtMinDegree);
-    }
-
-    // Smallest neighbor degree that is still >= ownDegree, or int.MaxValue if none qualify.
-    private static int FindMinQualifyingDegree(HashMap<int, HashMap<int, bool>> adjacency, HashMap<int, bool> neighbors, int ownDegree)
-    {
-        var minQualifyingDegree = int.MaxValue;
-
-        foreach (var neighbor in neighbors.Keys)
-        {
-            var neighborDegree = Degree(adjacency, neighbor);
-            if (neighborDegree >= ownDegree && neighborDegree < minQualifyingDegree)
-            {
-                minQualifyingDegree = neighborDegree;
-            }
-        }
-
-        return minQualifyingDegree;
-    }
-
-    // First neighbor (in iteration order) at exactly the given degree, plus how many share it.
-    private static (int Parent, int Count) CountNeighborsAtDegree(HashMap<int, HashMap<int, bool>> adjacency, HashMap<int, bool> neighbors, int degree)
-    {
-        var parent = -1;
-        var count = 0;
-
-        foreach (var neighbor in neighbors.Keys)
-        {
-            if (Degree(adjacency, neighbor) != degree)
-            {
-                continue;
-            }
-
-            if (parent == -1)
-            {
-                parent = neighbor;
-            }
-
-            count++;
-        }
-
-        return (parent, count);
-    }
-
-    private static void AddEdge(HashMap<int, HashMap<int, bool>> adjacency, int from, int to)
-    {
-        if (!adjacency.TryGetValue(from, out var neighbors))
-        {
-            neighbors = new HashMap<int, bool>();
-            adjacency.Set(from, neighbors);
-        }
-
-        neighbors.Set(to, true);
-    }
-
-    private static int Degree(HashMap<int, HashMap<int, bool>> adjacency, int node)
-    {
-        adjacency.TryGetValue(node, out var neighbors);
-        return neighbors!.Count;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckWaysByHashMapAndMergeSort_LeetCodeExamples_ReturnsReconstructionCount(
+        int[][] pairs, int expected) =>
+        Assert.Equal(expected, NumberOfWaysToReconstructATreeSolution.CheckWaysByHashMapAndMergeSort(pairs));
 }

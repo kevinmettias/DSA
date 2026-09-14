@@ -1,88 +1,48 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.StoneGameVI;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameVI;
 
-// LeetCode 1686. Stone Game VI: the classic greedy proof - a stone's total "swing"
-// value (aliceValue[i] + bobValue[i]) is what an optimal player fights over, so
-// sorting stones by that swing descending and alternating picks (Alice first) is
-// optimal. Same TwoCitySchedulingTests shape: this repo's own
-// MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence with a custom
-// descending comparer, not the textbook game-theory DP this problem doesn't
-// actually need.
+// Harness only: both strategies are StoneGameVISolution's. This file pins them to
+// LeetCode's three published examples plus the boundaries it never published - a
+// single stone, a run of equal swings whose tie-break order must not matter, and a
+// lopsided board where Bob's values decide every stone.
 public sealed class StoneGameVITests
 {
-    [Fact]
-    public void Winner_LeetCodeExampleOne_AliceWins()
-    {
-        int[] aliceValues = [1, 3];
-        int[] bobValues = [2, 1];
-
-        var winner = Winner(aliceValues, bobValues);
-        Assert.Equal("Alice", winner);
-    }
-
-    [Fact]
-    public void Winner_LeetCodeExampleTwo_TieWhenSwingsAreEqual()
-    {
-        int[] aliceValues = [1, 2];
-        int[] bobValues = [3, 1];
-
-        var winner = Winner(aliceValues, bobValues);
-        Assert.Equal("Tie", winner);
-    }
-
-    [Fact]
-    public void Winner_LeetCodeExampleThree_BobWins()
-    {
-        int[] aliceValues = [2, 4, 3];
-        int[] bobValues = [1, 6, 7];
-
-        var winner = Winner(aliceValues, bobValues);
-        Assert.Equal("Bob", winner);
-    }
-
-    private static string Winner(int[] aliceValues, int[] bobValues)
-    {
-        var stones = BuildStonesBySwing(aliceValues, bobValues);
-        SortBySwingDescending(stones);
-        var (aliceScore, bobScore) = TallyAlternatingScores(stones);
-
-        return DetermineWinner(aliceScore, bobScore);
-    }
-
-    private static (int Alice, int Bob)[] BuildStonesBySwing(int[] aliceValues, int[] bobValues)
-        => aliceValues.Select((a, i) => (Alice: a, Bob: bobValues[i])).ToArray();
-
-    private static void SortBySwingDescending((int Alice, int Bob)[] stones)
-    {
-        var bySwingDescending = Comparer<(int Alice, int Bob)>.Create(
-            (x, y) => (y.Alice + y.Bob).CompareTo(x.Alice + x.Bob));
-
-        MergeSort.Sort<(int Alice, int Bob), ArrayIndexedSequence<(int Alice, int Bob)>>(
-            new ArrayIndexedSequence<(int Alice, int Bob)>(stones), bySwingDescending);
-    }
-
-    private static (int AliceScore, int BobScore) TallyAlternatingScores((int Alice, int Bob)[] stones)
-    {
-        var aliceScore = 0;
-        var bobScore = 0;
-
-        for (var i = 0; i < stones.Length; i++)
+    // 1 when Alice ends ahead, -1 when Bob does, 0 on a tie.
+    public static TheoryData<int[], int[], int> Examples =>
+        new()
         {
-            if (i % 2 == 0)
-            {
-                aliceScore += stones[i].Alice;
-            }
-            else
-            {
-                bobScore += stones[i].Bob;
-            }
-        }
+            // LeetCode's three published examples.
+            { [1, 3], [2, 1], 1 },
+            { [1, 2], [3, 1], 0 },
+            { [2, 4, 3], [1, 6, 7], -1 },
 
-        return (aliceScore, bobScore);
-    }
+            // One stone: Alice takes it and Bob never plays.
+            { [5], [3], 1 },
 
-    private static string DetermineWinner(int aliceScore, int bobScore)
-        => aliceScore == bobScore ? "Tie" : aliceScore > bobScore ? "Alice" : "Bob";
+            // Equal swings throughout, so the two sorts may order them differently
+            // and still have to agree - the answer depends on which swings land on
+            // Bob's turns, not on which stone does.
+            { [2, 1], [1, 2], 0 },
+            { [3, 2, 1], [1, 2, 3], 1 },
+
+            // Bob's values dominate every swing, so every stone he takes costs
+            // Alice more than the ones she keeps are worth.
+            { [1, 1], [10, 10], -1 },
+
+            // An odd count leaves Alice with the extra pick.
+            { [4, 4, 4], [1, 1, 1], 1 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WinnerByArraySortGreedy_LeetCodeExamples_ReportsOptimalPlayOutcome(
+        int[] aliceValues, int[] bobValues, int expected) =>
+        Assert.Equal(expected, StoneGameVISolution.WinnerByArraySortGreedy(aliceValues, bobValues));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void WinnerByMergeSortGreedy_LeetCodeExamples_ReportsOptimalPlayOutcome(
+        int[] aliceValues, int[] bobValues, int expected) =>
+        Assert.Equal(expected, StoneGameVISolution.WinnerByMergeSortGreedy(aliceValues, bobValues));
 }

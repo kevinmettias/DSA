@@ -1,15 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.StoneGameVI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Stone Game VI (LC 1686): both strategies run the identical O(n log n) greedy -
-// sort stones by (aliceValue + bobValue) descending, alternate picks starting with
-// Alice - the same "same algorithm, different sort primitive" pairing
-// TwoCitySchedulingBenchmarks already uses. ArraySortGreedy uses BCL Array.Sort;
-// MergeSortGreedy instead composes this repo's own MergeSort.Sort<Element,TSequence>
-// over an ArrayIndexedSequence.
+// Harness only: both arms are StoneGameVISolution's, the same methods
+// StoneGameVITests proves correct. Both run the identical O(n log n) greedy and
+// differ only in the sort primitive - the BCL's Array.Sort against this repo's own
+// MergeSort over an ArrayIndexedSequence - so the seeded value arrays are built
+// once in [GlobalSetup] and only the sort-and-tally is measured.
 [MemoryDiagnoser]
 public class StoneGameVIBenchmarks
 {
@@ -19,58 +17,26 @@ public class StoneGameVIBenchmarks
     [Params(200, 4_000)]
     public int Length;
 
-    private (int Alice, int Bob)[] _stones = null!;
+    private int[] _aliceValues = null!;
+    private int[] _bobValues = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _stones = Enumerable.Range(0, Length)
-            .Select(_ => (Alice: random.Next(1, MaxStoneValue), Bob: random.Next(1, MaxStoneValue)))
-            .ToArray();
+        _aliceValues = new int[Length];
+        _bobValues = new int[Length];
+
+        for (var i = 0; i < Length; i++)
+        {
+            _aliceValues[i] = random.Next(1, MaxStoneValue);
+            _bobValues[i] = random.Next(1, MaxStoneValue);
+        }
     }
 
     [Benchmark(Baseline = true)]
-    public int ArraySortGreedy()
-    {
-        var stones = ((int Alice, int Bob)[])_stones.Clone();
-        Array.Sort(stones, (x, y) => (y.Alice + y.Bob).CompareTo(x.Alice + x.Bob));
-
-        return ScoreDifference(stones);
-    }
+    public int ArraySortGreedy() => StoneGameVISolution.WinnerByArraySortGreedy(_aliceValues, _bobValues);
 
     [Benchmark]
-    public int MergeSortGreedy()
-    {
-        var stones = ((int Alice, int Bob)[])_stones.Clone();
-        var bySwingDescending = Comparer<(int Alice, int Bob)>.Create(
-            (x, y) => (y.Alice + y.Bob).CompareTo(x.Alice + x.Bob));
-
-        MergeSort.Sort<(int Alice, int Bob), ArrayIndexedSequence<(int Alice, int Bob)>>(
-            new ArrayIndexedSequence<(int Alice, int Bob)>(stones), bySwingDescending);
-
-        return ScoreDifference(stones);
-    }
-
-    private const int TurnParityDivisor = 2; // even index -> Alice's turn, odd index -> Bob's turn
-
-    private static int ScoreDifference((int Alice, int Bob)[] stones)
-    {
-        var aliceScore = 0;
-        var bobScore = 0;
-
-        for (var i = 0; i < stones.Length; i++)
-        {
-            if (i % TurnParityDivisor == 0)
-            {
-                aliceScore += stones[i].Alice;
-            }
-            else
-            {
-                bobScore += stones[i].Bob;
-            }
-        }
-
-        return aliceScore - bobScore;
-    }
+    public int MergeSortGreedy() => StoneGameVISolution.WinnerByMergeSortGreedy(_aliceValues, _bobValues);
 }

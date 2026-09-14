@@ -1,18 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MaximumXORWithAnElementFromArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Maximum XOR With an Element From Array (LC 1707): a per-query linear scan
-// baseline (for every query, scan every num <= mi and XOR it against xi) vs.
-// this repo's own offline sweep - MergeSort (Algorithms/Sorting/MergeSort.cs)
-// orders nums and query indices by limit, then this repo's own BitTrie
-// (DataStructures/Graph/Engines/Dags/Trees/BitTrie.cs - the same MaxXor-family
-// primitive MaximumXOROfTwoNumbersInAnArrayBenchmarks already composes)
-// answers each query in O(32) once its eligible nums have been inserted.
-// O(n*q) baseline vs. O((n+q) log(n+q)) offline.
+// Harness only: both arms are MaximumXORWithAnElementFromArraySolution's, the same
+// methods MaximumXORWithAnElementFromArrayTests proves correct. Values are spread
+// over a range far wider than the query count so limits genuinely partition nums,
+// and there are as many queries as elements - which is where the O(n*q) per-query
+// scan and the O((n + q) log(n + q)) offline sweep actually diverge.
 [MemoryDiagnoser]
 public class MaximumXORWithAnElementFromArrayBenchmarks
 {
@@ -25,8 +20,6 @@ public class MaximumXORWithAnElementFromArrayBenchmarks
     private int[] _nums = null!;
     private int[][] _queries = null!;
 
-    private readonly record struct SweepState(int[] SortedNums, BitTrie Trie);
-
     [GlobalSetup]
     public void Setup()
     {
@@ -38,65 +31,10 @@ public class MaximumXORWithAnElementFromArrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] LinearScanPerQuery()
-    {
-        var answers = new int[_queries.Length];
-
-        for (var i = 0; i < _queries.Length; i++)
-        {
-            var xi = _queries[i][0];
-            var mi = _queries[i][1];
-            var best = -1;
-
-            foreach (var num in _nums)
-            {
-                if (num <= mi)
-                {
-                    best = Math.Max(best, xi ^ num);
-                }
-            }
-
-            answers[i] = best;
-        }
-
-        return answers;
-    }
+    public int[] LinearScanPerQuery() =>
+        MaximumXORWithAnElementFromArraySolution.MaximizeXorByLinearScanPerQuery(_nums, _queries);
 
     [Benchmark]
-    public int[] OfflineSortedBitTrieSweep()
-    {
-        var sortedNums = _nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedNums));
-
-        var queryOrder = Enumerable.Range(0, _queries.Length).ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
-            new ArrayIndexedSequence<int>(queryOrder),
-            Comparer<int>.Create((a, b) => _queries[a][1].CompareTo(_queries[b][1])));
-
-        var answers = new int[_queries.Length];
-        var state = new SweepState(sortedNums, new BitTrie());
-        var numIndex = 0;
-
-        foreach (var queryIndex in queryOrder)
-        {
-            ResolveQuery(state, ref numIndex, answers, queryIndex);
-        }
-
-        return answers;
-    }
-
-    private void ResolveQuery(SweepState state, ref int numIndex, int[] answers, int queryIndex)
-    {
-        var (sortedNums, trie) = state;
-        var xi = _queries[queryIndex][0];
-        var mi = _queries[queryIndex][1];
-
-        while (numIndex < sortedNums.Length && sortedNums[numIndex] <= mi)
-        {
-            trie.Insert(sortedNums[numIndex]);
-            numIndex++;
-        }
-
-        answers[queryIndex] = trie.TryMaxXor(xi, out var candidate) ? candidate : -1;
-    }
+    public int[] OfflineSortedBitTrieSweep() =>
+        MaximumXORWithAnElementFromArraySolution.MaximizeXorByOfflineBitTrieSweep(_nums, _queries);
 }
