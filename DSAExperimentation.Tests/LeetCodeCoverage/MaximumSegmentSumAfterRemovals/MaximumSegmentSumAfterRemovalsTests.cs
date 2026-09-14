@@ -1,94 +1,45 @@
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.MaximumSegmentSumAfterRemovals;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSegmentSumAfterRemovals;
 
-// LeetCode 2382. Maximum Segment Sum After Removals: replay removeQueries
-// backward as INSERTIONS into an initially-all-removed array, unioning each
-// newly-restored index with any already-standing neighbor via this repo's own
-// DisjointSet - BricksFallingWhenHitTests' own reverse-time trick, with a
-// per-root running SUM threaded beside Find/Union instead of that test's per-root
-// SIZE. Because insertion only ever grows or merges segments, the best sum seen so
-// far can never shrink as more indices come back, so a single running maximum
-// updated after each insertion reconstructs answer[] once the pass is reversed
-// back into forward order.
-public sealed partial class MaximumSegmentSumAfterRemovalsTests
+// Harness only. Both strategies are MaximumSegmentSumAfterRemovalsSolution's -
+// this file pins them to LeetCode's published examples plus the degenerate shapes
+// those never reach: a single element, a two-element array, an already-sorted
+// suffix-first removal order, and repeated equal values where several segments
+// tie for best.
+//
+// The rescan baseline is asserted here too, which is the point of hoisting it into
+// the solution class: before this migration it lived only in the benchmark and
+// nothing checked that the arm the composed strategy is measured against was even
+// right.
+public sealed class MaximumSegmentSumAfterRemovalsTests
 {
-    [Fact]
-    public void MaxSegmentSums_ClassicExample_MatchesRunningMaximumAfterEachRemoval()
-    {
-        int[] nums = [1, 2, 5, 6, 1];
-        int[] removeQueries = [0, 3, 2, 4, 1];
-
-        var answer = MaxSegmentSums(nums, removeQueries);
-
-        Assert.Equal([14, 7, 2, 2, 0], answer);
-    }
-
-    [Fact]
-    public void MaxSegmentSums_SecondExample_MatchesRunningMaximumAfterEachRemoval()
-    {
-        int[] nums = [3, 2, 11, 1];
-        int[] removeQueries = [3, 2, 1, 0];
-
-        var answer = MaxSegmentSums(nums, removeQueries);
-
-        Assert.Equal([16, 5, 3, 0], answer);
-    }
-
-    [Fact]
-    public void MaxSegmentSums_SingleElement_RemovingItLeavesNothing()
-    {
-        int[] nums = [42];
-        int[] removeQueries = [0];
-
-        var answer = MaxSegmentSums(nums, removeQueries);
-
-        Assert.Equal([0], answer);
-    }
-
-    private static long[] MaxSegmentSums(int[] nums, int[] removeQueries)
-    {
-        var n = nums.Length;
-        var answer = new long[n];
-        var present = new bool[n];
-        var sum = new long[n];
-        var components = new DisjointSet(n);
-        var maxSum = 0L;
-
-        for (var i = n - 1; i >= 1; i--)
+    public static TheoryData<int[], int[], long[]> Examples =>
+        new()
         {
-            var index = removeQueries[i];
-            Insert(components, present, sum, nums, index);
-            maxSum = Math.Max(maxSum, sum[components.Find(index)]);
-            answer[i - 1] = maxSum;
-        }
+            { [1, 2, 5, 6, 1], [0, 3, 2, 4, 1], [14, 7, 2, 2, 0] },
+            { [3, 2, 11, 1], [3, 2, 1, 0], [16, 5, 3, 0] },
+            { [42], [0], [0] },
+            { [2, 3], [0, 1], [3, 0] },
+            { [1, 1, 1], [1, 0, 2], [1, 1, 0] },
+            { [5, 4, 3, 2, 1], [4, 3, 2, 1, 0], [14, 12, 9, 5, 0] },
+        };
 
-        return answer;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumSegmentSumsByRescanAfterEachRemoval_LeetCodeExamples_ReturnsBestSegmentAfterEachRemoval(
+        int[] nums, int[] removeQueries, long[] expected) =>
+        Assert.Equal(
+            expected,
+            MaximumSegmentSumAfterRemovalsSolution.MaximumSegmentSumsByRescanAfterEachRemoval(
+                nums, removeQueries));
 
-    private static void Insert(DisjointSet components, bool[] present, long[] sum, int[] nums, int index)
-    {
-        present[index] = true;
-        sum[index] = nums[index];
-
-        if (index > 0 && present[index - 1])
-        {
-            Merge(components, sum, index, index - 1);
-        }
-
-        if (index < nums.Length - 1 && present[index + 1])
-        {
-            Merge(components, sum, index, index + 1);
-        }
-    }
-
-    private static void Merge(DisjointSet components, long[] sum, int first, int second)
-    {
-        var firstRoot = components.Find(first);
-        var secondRoot = components.Find(second);
-
-        components.Union(first, second);
-        var mergedRoot = components.Find(first);
-        sum[mergedRoot] = sum[firstRoot] + sum[secondRoot];
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaximumSegmentSumsByReverseTimeDisjointSet_LeetCodeExamples_ReturnsBestSegmentAfterEachRemoval(
+        int[] nums, int[] removeQueries, long[] expected) =>
+        Assert.Equal(
+            expected,
+            MaximumSegmentSumAfterRemovalsSolution.MaximumSegmentSumsByReverseTimeDisjointSet(
+                nums, removeQueries));
 }

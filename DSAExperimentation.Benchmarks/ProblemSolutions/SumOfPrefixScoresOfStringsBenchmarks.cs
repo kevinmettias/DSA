@@ -1,17 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.SumOfPrefixScoresOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Sum of Prefix Scores of Strings (LC 2416): scoring every word by re-scanning the
-// whole word list with string.StartsWith for each of its own prefixes (same
-// MapSumPairsBenchmarks/ImplementMagicDictionaryBenchmarks precedent) vs. this
-// repo's own LowercaseTrie<int>, walked directly through its already-public
-// Root/Children (MapSumPairsBenchmarks.WalkTo's own navigation) to increment every
-// node's Value while inserting instead of only setting the end-of-word node. Scoring
-// a word then just sums the counts already stored along its root-to-leaf path.
-// O(wordCount^2 * wordLength) vs. O(wordCount * wordLength) to build the trie once
-// plus O(wordCount * wordLength) to score every word.
+// Harness only: both arms are SumOfPrefixScoresOfStringsSolution's, the same
+// methods SumOfPrefixScoresOfStringsTests proves correct. [GlobalSetup] generates
+// the word list - LeetCode's own input shape, so it is handed straight to each
+// strategy and no prepared-input overload is needed - leaving each arm to measure
+// only the scoring.
+//
+// Re-scanning the whole word list with string.StartsWith for each of a word's own
+// prefixes is O(wordCount^2 * wordLength); building the prefix-counting
+// LowercaseTrie<int> once and reading each word's score off its root-to-leaf path
+// is O(wordCount * wordLength) twice over.
 [MemoryDiagnoser]
 public class SumOfPrefixScoresOfStringsBenchmarks
 {
@@ -32,73 +33,11 @@ public class SumOfPrefixScoresOfStringsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long StartsWithScan()
-    {
-        long total = 0;
-
-        foreach (var word in _words)
-        {
-            for (var len = 1; len <= word.Length; len++)
-            {
-                var prefix = word[..len];
-
-                foreach (var candidate in _words)
-                {
-                    if (candidate.StartsWith(prefix, StringComparison.Ordinal))
-                    {
-                        total++;
-                    }
-                }
-            }
-        }
-
-        return total;
-    }
+    public int[] StartsWithScan() => SumOfPrefixScoresOfStringsSolution.SumPrefixScoresByStartsWithScan(_words);
 
     [Benchmark]
-    public long PrefixCountingTrie()
-    {
-        var trie = new LowercaseTrie<int>();
-
-        foreach (var word in _words)
-        {
-            Insert(trie.Root, word);
-        }
-
-        long total = 0;
-
-        foreach (var word in _words)
-        {
-            total += ScoreOf(trie.Root, word);
-        }
-
-        return total;
-    }
-
-    private static void Insert(LowercaseTrieNode<int> root, string word)
-    {
-        var current = root;
-
-        foreach (var ch in word)
-        {
-            current = current.Children[ch - 'a'] ??= new LowercaseTrieNode<int>();
-            current.Value++;
-        }
-    }
-
-    private static int ScoreOf(LowercaseTrieNode<int> root, string word)
-    {
-        var current = root;
-        var score = 0;
-
-        foreach (var ch in word)
-        {
-            current = current.Children[ch - 'a']!;
-            score += current.Value;
-        }
-
-        return score;
-    }
+    public int[] PrefixCountingTrie() =>
+        SumOfPrefixScoresOfStringsSolution.SumPrefixScoresByPrefixCountingTrie(_words);
 
     private static string RandomWord(Random random)
         => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());

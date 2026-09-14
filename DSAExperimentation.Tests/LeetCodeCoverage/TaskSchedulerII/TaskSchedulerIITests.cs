@@ -1,64 +1,35 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.TaskSchedulerII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TaskSchedulerII;
 
-// LeetCode 2365. Task Scheduler II: a HashMap<int,long> tracks each task type's most
-// recently used day; a single forward pass advances the current day past that type's
-// cooldown whenever performing it today would violate `space`. The same HashMap
-// single-pass bookkeeping convention TwoSumTests/LongestSubstringWithoutRepeatingCharactersTests
-// already use for "have I seen this key recently", applied here to task-type recency
-// instead of value or character recency.
-public sealed partial class TaskSchedulerIITests
+// Harness only: both strategies live in TaskSchedulerIISolution and are asserted here
+// under their own names, so a failure names the strategy that broke. The cases are
+// LeetCode's two published examples plus the boundaries the cooldown rule turns on -
+// no repeats at all, back-to-back repeats that each force a full wait, and a single
+// task that can never wait for anything.
+public sealed class TaskSchedulerIITests
 {
-    [Fact]
-    public void CountDays_RepeatedTaskForcesWaiting_ReturnsExpandedDayCount()
+    public static TheoryData<int[], int, long> Examples => new()
     {
-        int[] tasks = [1, 2, 1, 2, 3, 1];
+        { [1, 2, 1, 2, 3, 1], 3, 9 },
+        { [5, 8, 8, 5], 2, 6 },
+        { [1, 2, 3, 4], 10, 4 },
+        { [1, 1, 1], 2, 7 },
+        { [2, 2], 1, 3 },
+        { [7], 5, 1 },
+    };
 
-        var days = CountDays(tasks, space: 3);
-
-        Assert.Equal(9, days);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDaysByBackwardScan_Example_ReturnsDayTheLastTaskLandsOn(int[] tasks, int space, long expected)
+    {
+        Assert.Equal(expected, TaskSchedulerIISolution.CountDaysByBackwardScan(tasks, space));
     }
 
-    [Fact]
-    public void CountDays_CooldownAlreadySatisfied_SkipsOnlyWhereNeeded()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountDaysByHashMapOnePass_Example_ReturnsDayTheLastTaskLandsOn(int[] tasks, int space, long expected)
     {
-        int[] tasks = [5, 8, 8, 5];
-
-        var days = CountDays(tasks, space: 2);
-
-        Assert.Equal(6, days);
-    }
-
-    [Fact]
-    public void CountDays_AllDistinctTasks_NeedsNoWaiting()
-    {
-        int[] tasks = [1, 2, 3, 4];
-
-        var days = CountDays(tasks, space: 10);
-
-        Assert.Equal(4, days);
-    }
-
-    private static long CountDays(int[] tasks, int space)
-    {
-        var lastDay = new HashMap<int, long>();
-        long currentDay = 0;
-
-        foreach (var task in tasks)
-        {
-            if (lastDay.TryGetValue(task, out var previousDay) && currentDay - previousDay <= space)
-            {
-                currentDay = previousDay + space + 1;
-            }
-            else
-            {
-                currentDay++;
-            }
-
-            lastDay.Set(task, currentDay);
-        }
-
-        return currentDay;
+        Assert.Equal(expected, TaskSchedulerIISolution.CountDaysByHashMapOnePass(tasks, space));
     }
 }

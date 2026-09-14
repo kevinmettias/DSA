@@ -1,41 +1,37 @@
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.LongestIncreasingSubsequenceII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestIncreasingSubsequenceII;
 
-// LeetCode 2407. Longest Increasing Subsequence II: dp[v] = the length of the best
-// valid subsequence ending exactly at value v. For each num, the best predecessor is
-// the max dp over the value window [num-k, num-1] - this repo's own
-// SegmentTree<int,MaxOperation<int>> keyed directly by value (not by rank the way
-// NumberOfLongestIncreasingSubsequenceTests coordinate-compresses: the window here is
-// defined in value-space, not subsequence-index-space, so rank-compression would
-// break it). Query/Update are O(log maxValue), so the whole sweep is O(n log
-// maxValue) instead of the textbook O(n^2) DP (see LongestIncreasingSubsequenceIIBenchmarks
-// for that comparison).
-public sealed partial class LongestIncreasingSubsequenceIITests
+// Harness only: both strategies are LongestIncreasingSubsequenceIISolution's. Beyond
+// LeetCode's three published examples this pins the two ends of the k constraint - a
+// run the gap rule admits whole, and a run it rejects at every step.
+public sealed class LongestIncreasingSubsequenceIITests
 {
-    [Theory]
-    [InlineData(new[] { 4, 2, 1, 4, 3, 4, 5, 8, 15 }, 3, 5)]
-    [InlineData(new[] { 7, 4, 5, 1, 8, 12, 4, 7 }, 5, 4)]
-    [InlineData(new[] { 1, 5 }, 1, 1)]
-    public void LengthOfLis_LeetCodeExamples_ReturnsExpectedLength(int[] nums, int k, int expected)
-        => Assert.Equal(expected, LengthOfLis(nums, k));
-
-    private static int LengthOfLis(int[] nums, int k)
-    {
-        var maxValue = nums.Max();
-        var tree = new SegmentTree<int, MaxOperation<int>>(new int[maxValue + 1]);
-        var best = 0;
-
-        foreach (var num in nums)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            var lo = Math.Max(0, num - k);
-            var predecessor = tree.Query(lo, num - 1);
-            var length = predecessor + 1;
+            { [4, 2, 1, 4, 3, 4, 5, 8, 15], 3, 5 },
+            { [7, 4, 5, 1, 8, 12, 4, 7], 5, 4 },
+            { [1, 5], 1, 1 },
+            // Consecutive values, so a gap of one admits the whole run.
+            { [1, 2, 3, 4, 5], 1, 5 },
+            // The same run with gaps of two: k rejects every pair, leaving singletons.
+            { [1, 3, 5, 7], 1, 1 },
+            // Strictly decreasing, so no pair is increasing however wide k is.
+            { [5, 4, 3, 2, 1], 10, 1 },
+            { [10], 1, 1 },
+        };
 
-            tree.Update(num, Math.Max(tree.Query(num, num), length));
-            best = Math.Max(best, length);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LengthOfLisByDynamicProgramming_LeetCodeExamples_ReturnsLongestConstrainedLength(
+        int[] nums, int k, int expected)
+        => Assert.Equal(expected, LongestIncreasingSubsequenceIISolution.LengthOfLisByDynamicProgramming(nums, k));
 
-        return best;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LengthOfLisBySegmentTreeValueWindow_LeetCodeExamples_ReturnsLongestConstrainedLength(
+        int[] nums, int k, int expected)
+        => Assert.Equal(
+            expected, LongestIncreasingSubsequenceIISolution.LengthOfLisBySegmentTreeValueWindow(nums, k));
 }

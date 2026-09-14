@@ -1,100 +1,172 @@
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignSQL.DesignSQLSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSQL;
 
-// LeetCode 2408. Design SQL: each table is this repo's own HashMap<int,string[]>
-// keyed by an ever-increasing row id (deleteRow never reuses an id, matching the
-// problem's own contract), with the table-name -> table lookup itself a second
-// HashMap<string,Table> - the same two-level HashMap-of-HashMap composition
-// DesignMovieRentalSystemTests' HashMap<int,BinarySearchTree<...>> already rehearses.
-// insertRow/deleteRow/selectCell are then just Set/TryRemove/TryGetValue composed
-// over those two maps; no new primitive needed.
-public sealed partial class DesignSQLTests
+// Harness only. Both strategies are DesignSQLSolution's - this file replays
+// LeetCode's published call sequence against each ISqlStrategy implementation via a
+// small operation script, so a failure still names the strategy that broke even
+// though the "input" here is a constructor plus a sequence of mutating calls rather
+// than a single argument tuple. SqlOp.Apply is pure dispatch (which method to call
+// with which arguments) - no row-id or table-lookup logic of its own.
+public sealed class DesignSQLTests
 {
-    [Fact]
-    public void Sql_InsertSelectDeleteThenSelectAgain_ReflectsEachMutation()
-    {
-        var sql = new SQL(["one", "two"], [2, 3]);
-
-        sql.InsertRow("two", ["first", "second", "third"]);
-        Assert.Equal("third", sql.SelectCell("two", 1, 3));
-
-        sql.InsertRow("two", ["fourth", "fifth", "sixth"]);
-        sql.DeleteRow("two", 1);
-
-        Assert.Equal("fifth", sql.SelectCell("two", 2, 2));
-    }
-
-    [Fact]
-    public void InsertRow_AssignsSequentialIdsAndNeverReusesADeletedOne()
-    {
-        var sql = new SQL(["t"], [1]);
-
-        sql.InsertRow("t", ["a"]);
-        sql.InsertRow("t", ["b"]);
-        sql.DeleteRow("t", 1);
-        sql.InsertRow("t", ["c"]);
-
-        Assert.Equal("b", sql.SelectCell("t", 2, 1));
-        Assert.Equal("c", sql.SelectCell("t", 3, 1));
-    }
-
-    [Fact]
-    public void SelectCell_SeparateTables_DoNotShareRows()
-    {
-        var sql = new SQL(["one", "two"], [1, 1]);
-
-        sql.InsertRow("one", ["alpha"]);
-        sql.InsertRow("two", ["beta"]);
-
-        Assert.Equal("alpha", sql.SelectCell("one", 1, 1));
-        Assert.Equal("beta", sql.SelectCell("two", 1, 1));
-    }
-
-    private sealed class SQL
-    {
-        private readonly HashMap<string, Table> _tables = new();
-
-        public SQL(string[] names, int[] columns)
+    public static TheoryData<string[], int[], SqlOp[], string?[]> Examples =>
+        new()
         {
-            for (var i = 0; i < names.Length; i++)
+            // LeetCode's published example: insert two rows into "two", read a cell
+            // of the first, delete the first, then read a cell of the second - the
+            // deleted id is gone but the second row keeps the id it was given.
             {
-                _tables.Set(names[i], new Table());
-            }
-        }
+                ["one", "two", "three"],
+                [2, 3, 1],
+                [
+                    SqlOp.InsertRow("two", ["first", "second", "third"]),
+                    SqlOp.SelectCell("two", 1, 3),
+                    SqlOp.InsertRow("two", ["fourth", "fifth", "sixth"]),
+                    SqlOp.DeleteRow("two", 1),
+                    SqlOp.SelectCell("two", 2, 2),
+                ],
+                [null, "third", null, null, "fifth"]
+            },
 
-        public void InsertRow(string name, string[] row)
-        {
-            _tables.TryGetValue(name, out var table);
-            table!.Insert(row);
-        }
-
-        public void DeleteRow(string name, int rowId)
-        {
-            _tables.TryGetValue(name, out var table);
-            table!.Delete(rowId);
-        }
-
-        public string SelectCell(string name, int rowId, int columnId)
-        {
-            _tables.TryGetValue(name, out var table);
-            return table!.Select(rowId, columnId);
-        }
-
-        private sealed class Table
-        {
-            private readonly HashMap<int, string[]> _rows = new();
-            private int _nextRowId = 1;
-
-            public void Insert(string[] row) => _rows.Set(_nextRowId++, row);
-
-            public void Delete(int rowId) => _rows.TryRemove(rowId);
-
-            public string Select(int rowId, int columnId)
+            // Ids are handed out in order and a deleted one is never reused: the
+            // insert after the delete gets 3, not the freed 1.
             {
-                _rows.TryGetValue(rowId, out var row);
-                return row[columnId - 1];
-            }
+                ["t"],
+                [1],
+                [
+                    SqlOp.InsertRow("t", ["a"]),
+                    SqlOp.InsertRow("t", ["b"]),
+                    SqlOp.DeleteRow("t", 1),
+                    SqlOp.InsertRow("t", ["c"]),
+                    SqlOp.SelectCell("t", 2, 1),
+                    SqlOp.SelectCell("t", 3, 1),
+                ],
+                [null, null, null, null, "b", "c"]
+            },
+
+            // Separate tables keep separate id counters and separate rows, so both
+            // hold a row 1 and neither sees the other's.
+            {
+                ["one", "two"],
+                [1, 1],
+                [
+                    SqlOp.InsertRow("one", ["alpha"]),
+                    SqlOp.InsertRow("two", ["beta"]),
+                    SqlOp.SelectCell("one", 1, 1),
+                    SqlOp.SelectCell("two", 1, 1),
+                ],
+                [null, null, "alpha", "beta"]
+            },
+
+            // Every column of one row, read first-to-last and last-to-first, so a
+            // strategy that mixed up the 1-based column id cannot pass on symmetry.
+            {
+                ["grid"],
+                [3],
+                [
+                    SqlOp.InsertRow("grid", ["x", "y", "z"]),
+                    SqlOp.SelectCell("grid", 1, 1),
+                    SqlOp.SelectCell("grid", 1, 2),
+                    SqlOp.SelectCell("grid", 1, 3),
+                    SqlOp.SelectCell("grid", 1, 3),
+                    SqlOp.SelectCell("grid", 1, 1),
+                ],
+                [null, "x", "y", "z", "z", "x"]
+            },
+
+            // Deleting the last row still leaves the earlier ones addressable, and
+            // the counter keeps climbing past every id ever issued.
+            {
+                ["log"],
+                [1],
+                [
+                    SqlOp.InsertRow("log", ["one"]),
+                    SqlOp.InsertRow("log", ["two"]),
+                    SqlOp.InsertRow("log", ["three"]),
+                    SqlOp.DeleteRow("log", 3),
+                    SqlOp.DeleteRow("log", 2),
+                    SqlOp.InsertRow("log", ["four"]),
+                    SqlOp.SelectCell("log", 1, 1),
+                    SqlOp.SelectCell("log", 4, 1),
+                ],
+                [null, null, null, null, null, null, "one", "four"]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SqlByListScan_LeetCodeExamples_ReadsTheCellOfTheLiveRow(
+        string[] names, int[] columns, SqlOp[] operations, string?[] expected) =>
+        RunScript(new SqlByListScan(names, columns), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SqlByHashMapTables_LeetCodeExamples_ReadsTheCellOfTheLiveRow(
+        string[] names, int[] columns, SqlOp[] operations, string?[] expected) =>
+        RunScript(new SqlByHashMapTables(names, columns), operations, expected);
+
+    private static void RunScript(ISqlStrategy strategy, SqlOp[] operations, string?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
+    }
+}
+
+// One call in an SQL script: which method to invoke and with what arguments. Pure
+// dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays.
+public readonly record struct SqlOp
+{
+    private readonly SqlCall _call;
+    private readonly string _name;
+    private readonly string[] _row;
+    private readonly int _rowId;
+    private readonly int _columnId;
+
+    private SqlOp(SqlCall call, string name, string[] row, int rowId, int columnId)
+    {
+        _call = call;
+        _name = name;
+        _row = row;
+        _rowId = rowId;
+        _columnId = columnId;
+    }
+
+    public static SqlOp InsertRow(string name, string[] row)
+        => new(SqlCall.Insert, name, row, rowId: 0, columnId: 0);
+
+    public static SqlOp DeleteRow(string name, int rowId)
+        => new(SqlCall.Delete, name, [], rowId, columnId: 0);
+
+    public static SqlOp SelectCell(string name, int rowId, int columnId)
+        => new(SqlCall.Select, name, [], rowId, columnId);
+
+    // null for the two void calls, the read cell for selectCell - so a script
+    // runner can assert against one expected value per operation uniformly.
+    // Internal, not public: ISqlStrategy is internal to DesignSQLSolution, and only
+    // this same assembly's RunScript ever calls Apply.
+    internal string? Apply(ISqlStrategy strategy)
+    {
+        switch (_call)
+        {
+            case SqlCall.Insert:
+                strategy.InsertRow(_name, _row);
+                return null;
+            case SqlCall.Delete:
+                strategy.DeleteRow(_name, _rowId);
+                return null;
+            default:
+                return strategy.SelectCell(_name, _rowId, _columnId);
+        }
+    }
+
+    private enum SqlCall
+    {
+        Insert,
+        Delete,
+        Select,
     }
 }
