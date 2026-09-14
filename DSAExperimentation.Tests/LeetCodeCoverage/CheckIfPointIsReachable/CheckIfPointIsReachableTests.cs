@@ -1,37 +1,39 @@
+using DSAExperimentation.LeetCode.CheckIfPointIsReachable;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfPointIsReachable;
 
-// LeetCode 2543. Check if Point Is Reachable: starting from (1, 1), the
-// allowed moves are (x, y) -> (x, x + y), (x, y) -> (x + y, y),
-// (x, y) -> (2x, y), and (x, y) -> (x, 2y). The two doubling moves inject (or,
-// read backwards, freely remove) any factor of 2, while the two addition moves
-// are exactly one step of the deterministic, reversible subtractive Euclidean
-// algorithm on whatever is left - which only ever bottoms out at (1, 1) when
-// that remainder is already 1. So (targetX, targetY) is reachable iff
-// Gcd(targetX, targetY)'s odd part is 1, i.e. the gcd itself is a power of two
-// (the one-line n & (n - 1) == 0 bit trick). Same private Euclidean Gcd helper
-// this repo already reuses verbatim across FindGreatestCommonDivisorOfArrayTests/
-// CheckIfItIsAGoodArrayTests/XOfAKindInADeckOfCardsTests - "no repo container or
-// algorithm primitive applies here" for that piece, per those files' own
-// reasoning.
-public sealed partial class CheckIfPointIsReachableTests
+// Harness only. Both strategies are CheckIfPointIsReachableSolution's - the
+// state-space breadth-first search that used to live untested as the benchmark
+// baseline, and the gcd-is-a-power-of-two closed form - pinned to LeetCode's
+// published examples plus the smallest targets that separate the two failure
+// shapes: an odd gcd greater than one (3, 3), a gcd that is a power of two but
+// not one (8, 12), and coprime coordinates (4, 7).
+public sealed class CheckIfPointIsReachableTests
 {
+    public static TheoryData<int, int, bool> Examples =>
+        new()
+        {
+            { 6, 9, false },
+            { 4, 7, true },
+            { 1, 1, true },
+            { 2, 2, true },
+            { 12, 18, false },
+            { 3, 3, false },
+            { 5, 10, false },
+            { 8, 12, true },
+            { 2, 3, true },
+            { 16, 24, true },
+        };
+
     [Theory]
-    [InlineData(6, 9, false)]
-    [InlineData(4, 7, true)]
-    [InlineData(1, 1, true)]
-    [InlineData(2, 2, true)]
-    [InlineData(12, 18, false)]
-    public void IsReachable_LeetCodeExamples_ReturnsWhetherTargetIsReachable(int targetX, int targetY, bool expected)
-    {
-        var actual = IsReachable(targetX, targetY);
-        Assert.Equal(expected, actual);
-    }
+    [MemberData(nameof(Examples))]
+    public void IsReachableByBruteForceBfs_LeetCodeExamples_ReturnsWhetherTargetIsReachable(
+        int targetX, int targetY, bool expected) =>
+        Assert.Equal(expected, CheckIfPointIsReachableSolution.IsReachableByBruteForceBfs(targetX, targetY));
 
-    private static bool IsReachable(int targetX, int targetY)
-    {
-        var gcd = Gcd(targetX, targetY);
-        return (gcd & (gcd - 1)) == 0;
-    }
-
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsReachableByGcd_LeetCodeExamples_ReturnsWhetherTargetIsReachable(
+        int targetX, int targetY, bool expected) =>
+        Assert.Equal(expected, CheckIfPointIsReachableSolution.IsReachableByGcd(targetX, targetY));
 }

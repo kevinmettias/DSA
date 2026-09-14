@@ -1,15 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.HouseRobberIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// House Robber IV (LC 2560): a linear scan of every candidate capability from
-// min(nums) upward (baseline) vs. this repo's own BinarySearch.LowerBound over an
-// on-demand FeasibleCapabilitySequence (HouseRobberIVTests precedent, the same
-// "binary search on the answer" shape KokoEatingBananasBenchmarks already uses) -
-// both binary-search the same monotone feasibility predicate, just one through an
-// O(range * n) sweep and the other through an O(n * log(range)) bisection.
+// Harness only: both arms are HouseRobberIVSolution's, the same methods
+// HouseRobberIVTests proves correct - one sweeping every candidate capability in
+// O(range * n), the other bisecting the same monotone predicate in
+// O(n * log range).
 [MemoryDiagnoser]
 public class HouseRobberIVBenchmarks
 {
@@ -32,57 +29,8 @@ public class HouseRobberIVBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScan()
-    {
-        var floor = _nums.Min();
-        var ceiling = _nums.Max();
-
-        for (var cap = floor; cap <= ceiling; cap++)
-        {
-            if (CanRobAtLeastKWithinCap(_nums, _k, cap))
-            {
-                return cap;
-            }
-        }
-
-        return ceiling;
-    }
+    public int LinearScan() => HouseRobberIVSolution.MinCapabilityByLinearScan(_nums, _k);
 
     [Benchmark]
-    public int SequenceLowerBound()
-    {
-        var floor = _nums.Min();
-        var ceiling = _nums.Max();
-        var sequence = new FeasibleCapabilitySequence(_nums, _k, floor, ceiling);
-
-        return floor + BinarySearch.LowerBound(sequence, true);
-    }
-
-    private static bool CanRobAtLeastKWithinCap(int[] nums, int k, int cap)
-    {
-        var count = 0;
-        var previousRobbed = false;
-
-        foreach (var value in nums)
-        {
-            if (value <= cap && !previousRobbed)
-            {
-                count++;
-                previousRobbed = true;
-            }
-            else
-            {
-                previousRobbed = false;
-            }
-        }
-
-        return count >= k;
-    }
-
-    private readonly struct FeasibleCapabilitySequence(int[] nums, int k, int floor, int ceiling) : IRandomAccessSequence<bool>
-    {
-        public int Length => ceiling - floor + 1;
-
-        public bool Get(int index) => CanRobAtLeastKWithinCap(nums, k, floor + index);
-    }
+    public int SequenceLowerBound() => HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(_nums, _k);
 }

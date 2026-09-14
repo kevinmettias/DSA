@@ -1,71 +1,35 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.HouseRobberIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobberIV;
 
-// LeetCode 2560. House Robber IV: "binary search on the answer" over the robber's
-// capability - the smallest cap that admits robbing >= k non-adjacent houses each
-// worth at most cap is monotone (once some cap is feasible, every larger cap stays
-// feasible), so it's the leftmost "true" in an implicit [false...false, true...true]
-// sequence over cap in [min(nums), max(nums)]. Same FeasibleCapabilitySequence +
-// BinarySearch.LowerBound shape KokoEatingBananasTests/SplitArrayLargestSumTests
-// already use for their own search-on-answer.
-public sealed partial class HouseRobberIVTests
+// Harness only. Both strategies are HouseRobberIVSolution's - this file just pins
+// them to LeetCode's published examples, plus the "k equals the maximum number of
+// non-adjacent houses" boundary the original test carried and three further cases
+// the original arms never reached: a single house, k = 1, and a run where the
+// only k non-adjacent choices all sit at the maximum.
+public sealed class HouseRobberIVTests
 {
-    [Theory]
-    [InlineData(new[] { 2, 3, 5, 9 }, 2, 5)]
-    [InlineData(new[] { 2, 7, 9, 3, 1 }, 2, 2)]
-    public void MinCapability_LeetCodeExamples_ReturnsSmallestFeasibleCapability(int[] nums, int k, int expected)
-    {
-        var actual = MinCapability(nums, k);
-
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void MinCapability_KEqualsHouseCount_ReturnsMaxValue()
-    {
-        int[] nums = [6, 1, 8];
-
-        var actual = MinCapability(nums, k: 2);
-
-        Assert.Equal(8, actual);
-    }
-
-    private static int MinCapability(int[] nums, int k)
-    {
-        var floor = nums.Min();
-        var ceiling = nums.Max();
-        var sequence = new FeasibleCapabilitySequence(nums, k, floor, ceiling);
-
-        return floor + BinarySearch.LowerBound(sequence, true);
-    }
-
-    private static bool CanRobAtLeastKWithinCap(int[] nums, int k, int cap)
-    {
-        var count = 0;
-        var previousRobbed = false;
-
-        foreach (var value in nums)
+    public static TheoryData<int[], int, int> Examples =>
+        new()
         {
-            if (value <= cap && !previousRobbed)
-            {
-                count++;
-                previousRobbed = true;
-            }
-            else
-            {
-                previousRobbed = false;
-            }
-        }
+            { [2, 3, 5, 9], 2, 5 },
+            { [2, 7, 9, 3, 1], 2, 2 },
+            { [6, 1, 8], 2, 8 },
+            { [4], 1, 4 },
+            { [5, 3, 4, 7], 1, 3 },
+            { [1, 2, 3, 4, 5, 6], 3, 5 },
+            { [9, 1, 9, 1, 9], 3, 9 },
+        };
 
-        return count >= k;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCapabilityByLinearScan_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
+        int[] nums, int k, int expected) =>
+        Assert.Equal(expected, HouseRobberIVSolution.MinCapabilityByLinearScan(nums, k));
 
-    private readonly struct FeasibleCapabilitySequence(int[] nums, int k, int floor, int ceiling) : IRandomAccessSequence<bool>
-    {
-        public int Length => ceiling - floor + 1;
-
-        public bool Get(int index) => CanRobAtLeastKWithinCap(nums, k, floor + index);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCapabilityBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
+        int[] nums, int k, int expected) =>
+        Assert.Equal(expected, HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(nums, k));
 }

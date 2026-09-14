@@ -1,66 +1,34 @@
-using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.CountIncreasingQuadruplets;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountIncreasingQuadruplets;
 
-// LeetCode 2552. Count Increasing Quadruplets: i<j<k<l with nums[i]<nums[k]<nums[j]<nums[l]
-// pivots on the middle "inversion" pair (j,k) with j<k, nums[j]>nums[k] - the answer is the
-// sum, over every such pair, of (count of i<j with nums[i]<nums[k]) times (count of l>k
-// with nums[l]>nums[j]). Scanning k right to left, a plain running counter tracks the first
-// factor (its threshold nums[k] is fixed for the whole inner j-loop, so no data structure is
-// needed there), and this repo's own FenwickTree<int,SumOperation<int>> - a Binary Indexed
-// Tree of already-inserted suffix values - answers the second factor as an O(log n)
-// range-count query as l-candidates stream in from the right. Same "Fenwick tree of counts
-// swept alongside a value-rank query" shape NumberOfPairsSatisfyingInequalityTests and
-// CountOfSmallerNumbersAfterSelfTests already use, here swept right-to-left instead of
-// left-to-right because the query side (l>k) is a suffix, not a prefix.
-public sealed partial class CountIncreasingQuadrupletsTests
+// Harness only. Both strategies are CountIncreasingQuadrupletsSolution's - this
+// file just pins them to LeetCode's published examples, plus the strictly
+// decreasing permutation the original test carried and three further
+// permutations that actually exercise the middle-inversion pivot (the published
+// examples only reach a count of 2). Every case is a permutation of 1..n, which
+// LC 2552's constraints guarantee and the Fenwick arm's value-as-index mapping
+// relies on.
+public sealed class CountIncreasingQuadrupletsTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 3, 2, 4, 5 }, 2L)]
-    [InlineData(new[] { 1, 2, 3, 4 }, 0L)]
-    public void CountQuadruplets_LeetCodeExamples_ReturnsExpectedCount(int[] nums, long expected)
-    {
-        var actual = CountQuadruplets(nums);
-
-        Assert.Equal(expected, actual);
-    }
-
-    [Fact]
-    public void CountQuadruplets_StrictlyDecreasingPermutation_FindsNoValidQuadruplet()
-    {
-        int[] nums = [5, 4, 3, 2, 1];
-
-        var actual = CountQuadruplets(nums);
-
-        Assert.Equal(0L, actual);
-    }
-
-    private static long CountQuadruplets(int[] nums)
-    {
-        var n = nums.Length;
-        var suffixGreaterCounts = new FenwickTree<int, SumOperation<int>>(n);
-        var total = 0L;
-
-        for (var k = n - 1; k >= 0; k--)
+    public static TheoryData<int[], long> Examples =>
+        new()
         {
-            var leftSmallerCount = 0;
+            { [1, 3, 2, 4, 5], 2L },
+            { [1, 2, 3, 4], 0L },
+            { [5, 4, 3, 2, 1], 0L },
+            { [2, 4, 1, 3, 5], 1L },
+            { [3, 1, 4, 2, 5, 6], 2L },
+            { [1, 4, 3, 2, 5, 6], 6L },
+        };
 
-            for (var j = 0; j < k; j++)
-            {
-                if (nums[j] > nums[k])
-                {
-                    var rightGreaterCount = nums[j] == n ? 0 : suffixGreaterCounts.Query(nums[j], n - 1);
-                    total += (long)leftSmallerCount * rightGreaterCount;
-                }
-                else
-                {
-                    leftSmallerCount++;
-                }
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountQuadrupletsByBruteForce_LeetCodeExamples_ReturnsExpectedCount(int[] nums, long expected) =>
+        Assert.Equal(expected, CountIncreasingQuadrupletsSolution.CountQuadrupletsByBruteForce(nums));
 
-            suffixGreaterCounts.Add(nums[k] - 1, 1);
-        }
-
-        return total;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountQuadrupletsByFenwickTreeSweep_LeetCodeExamples_ReturnsExpectedCount(int[] nums, long expected) =>
+        Assert.Equal(expected, CountIncreasingQuadrupletsSolution.CountQuadrupletsByFenwickTreeSweep(nums));
 }
