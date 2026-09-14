@@ -1,100 +1,118 @@
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.DetectSquares;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DetectSquares;
 
-// LeetCode 2013. Detect Squares: points are grouped by x-coordinate into a nested
-// HashMap<int, HashMap<int,int>> (x -> y -> occurrence count) - this
-// repo's own HashMap composed inside itself, the same nested-map technique
-// EvaluateDivisionTests already uses for a different problem's adjacency
-// structure. Count(x,y) only ever scans the points that already share the query's
-// x-coordinate: for each such point (x,y2), the square's side length is |y2-y|,
-// which pins the other two corners' x-coordinates to x-side and x+side, so each
-// candidate square is checked (not searched for) via two more HashMap lookups.
-public sealed partial class DetectSquaresTests
+// Harness only. Both strategies are DetectSquaresSolution's - this file replays
+// LeetCode's published call sequence against each IDetectSquares instance, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of Add/Count calls rather than a single argument tuple, the same shape
+// AllOneDataStructureTests uses for its own instance-API problem. The point-list
+// baseline (previously untested scaffolding inlined in the benchmark) gets the same
+// coverage as the grouped-HashMap strategy here for the first time.
+public sealed class DetectSquaresTests
 {
-    [Fact]
-    public void CountSquares_LeetCodeExample_MatchesExpectedCountsAfterEachQuery()
+    public static TheoryData<DetectSquaresOp[], int?[]> Examples =>
+        new()
+        {
+            {
+                // LeetCode's published example, including the repeated Add that turns
+                // the same query from 1 into 2.
+                [
+                    DetectSquaresOp.Add(3, 10), DetectSquaresOp.Add(11, 2), DetectSquaresOp.Add(3, 2),
+                    DetectSquaresOp.Count(11, 10), DetectSquaresOp.Count(14, 8),
+                    DetectSquaresOp.Add(11, 2), DetectSquaresOp.Count(11, 10),
+                ],
+                [null, null, null, 1, 0, null, 2]
+            },
+            {
+                // No stored point shares the query's x-coordinate.
+                [DetectSquaresOp.Add(0, 0), DetectSquaresOp.Count(5, 5)],
+                [null, 0]
+            },
+            {
+                // Nothing added yet.
+                [DetectSquaresOp.Count(0, 0)],
+                [0]
+            },
+            {
+                // The square lies to the LEFT of the query, so only the x - side
+                // candidate corner exists.
+                [
+                    DetectSquaresOp.Add(0, 0), DetectSquaresOp.Add(0, 2), DetectSquaresOp.Add(2, 0),
+                    DetectSquaresOp.Count(2, 2),
+                ],
+                [null, null, null, 1]
+            },
+            {
+                // A duplicated corner multiplies the answer: (0,0) was added twice, so
+                // the one square shape is counted twice.
+                [
+                    DetectSquaresOp.Add(0, 0), DetectSquaresOp.Add(0, 0), DetectSquaresOp.Add(0, 2),
+                    DetectSquaresOp.Add(2, 2), DetectSquaresOp.Count(2, 0),
+                ],
+                [null, null, null, null, 2]
+            },
+            {
+                // A duplicate of the query point itself is a zero-area "square" and
+                // must not be counted.
+                [DetectSquaresOp.Add(1, 1), DetectSquaresOp.Add(1, 1), DetectSquaresOp.Count(1, 1)],
+                [null, null, 0]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByHashMapGroupedByX_LeetCodeExamples_CountsAxisAlignedSquares(
+        DetectSquaresOp[] operations, int?[] expected) =>
+        RunScript(DetectSquaresSolution.CreateByHashMapGroupedByX(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByPointListScan_LeetCodeExamples_CountsAxisAlignedSquares(
+        DetectSquaresOp[] operations, int?[] expected) =>
+        RunScript(DetectSquaresSolution.CreateByPointListScan(), operations, expected);
+
+    private static void RunScript(
+        DetectSquaresSolution.IDetectSquares detector, DetectSquaresOp[] operations, int?[] expected)
     {
-        var detector = new Solution();
-        detector.Add(3, 10);
-        detector.Add(11, 2);
-        detector.Add(3, 2);
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(detector));
+        }
+    }
+}
 
-        var firstCount = detector.Count(11, 10);
-        Assert.Equal(1, firstCount);
+// One call in a DetectSquares script: which operation to invoke and at which point.
+// Pure dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays. Add returns null (no answer);
+// Count returns the actual answer - the same null-means-"no return value" convention
+// AllOneOp.Apply uses for its own mutator/query split.
+public readonly record struct DetectSquaresOp
+{
+    private readonly bool _isCount;
+    private readonly int _pointX;
+    private readonly int _pointY;
 
-        var secondCount = detector.Count(14, 8);
-        Assert.Equal(0, secondCount);
-
-        detector.Add(11, 2);
-
-        var thirdCount = detector.Count(11, 10);
-        Assert.Equal(2, thirdCount);
+    private DetectSquaresOp(bool isCount, int pointX, int pointY)
+    {
+        _isCount = isCount;
+        _pointX = pointX;
+        _pointY = pointY;
     }
 
-    [Fact]
-    public void CountSquares_NoPointsShareTheQueryXCoordinate_ReturnsZero()
+    public static DetectSquaresOp Add(int pointX, int pointY) => new(isCount: false, pointX, pointY);
+
+    public static DetectSquaresOp Count(int pointX, int pointY) => new(isCount: true, pointX, pointY);
+
+    internal int? Apply(DetectSquaresSolution.IDetectSquares detector)
     {
-        var detector = new Solution();
-        detector.Add(0, 0);
-
-        var count = detector.Count(5, 5);
-        Assert.Equal(0, count);
-    }
-
-    private sealed class Solution
-    {
-        private readonly HashMap<int, HashMap<int, int>> _countsByX = new();
-
-        public void Add(int x, int y)
+        if (_isCount)
         {
-            if (!_countsByX.TryGetValue(x, out var byY))
-            {
-                byY = new HashMap<int, int>();
-                _countsByX.Set(x, byY);
-            }
-
-            byY.TryGetValue(y, out var existing);
-            byY.Set(y, existing + 1);
+            return detector.Count(_pointX, _pointY);
         }
 
-        public int Count(int x, int y)
-        {
-            if (!_countsByX.TryGetValue(x, out var sameX))
-            {
-                return 0;
-            }
+        detector.Add(_pointX, _pointY);
 
-            var total = 0;
-
-            foreach (var y2 in sameX.Keys)
-            {
-                if (y2 == y)
-                {
-                    continue;
-                }
-
-                sameX.TryGetValue(y2, out var countY2);
-                var side = Math.Abs(y2 - y);
-
-                total += CountCorner(x + side, y, y2, countY2);
-                total += CountCorner(x - side, y, y2, countY2);
-            }
-
-            return total;
-        }
-
-        private int CountCorner(int otherX, int y, int y2, int countY2)
-        {
-            if (!_countsByX.TryGetValue(otherX, out var byY))
-            {
-                return 0;
-            }
-
-            byY.TryGetValue(y, out var countXY);
-            byY.TryGetValue(y2, out var countXY2);
-
-            return countXY * countXY2 * countY2;
-        }
+        return null;
     }
 }
