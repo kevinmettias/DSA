@@ -1,60 +1,46 @@
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.JumpGameVII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameVII;
 
-// LeetCode 1871. Jump Game VII: reachability over an implicit graph where index i
-// (only when s[i] == '0') has an edge to every j in [i+minJump, min(i+maxJump,
-// n-1)] with s[j] == '0' - the same "board too large/awkward to materialize as
-// actual edges" shape EscapeALargeMazeTests already uses this repo's own
-// DepthFirstSearch.Traverse for, just over a 1-D index range instead of a 2-D grid.
-// Traverse's own HashSet-backed visited tracking is exactly what turns this into a
-// single O(n * (maxJump-minJump)) walk instead of the exponential blowup an
-// unmemoized recursive search would hit when multiple jump chains reconverge on the
-// same index (see JumpGameVIIBenchmarks' UnmemoizedRecursiveSearch baseline).
+// Harness only. Both strategies are JumpGameVIISolution's - LeetCode's published
+// examples are stated once and replayed against each, so a failure names the
+// strategy that broke rather than reporting a disagreement between an anonymous
+// test helper and an anonymous benchmark arm. The unmemoized baseline was never
+// asserted before this migration; every case here is small enough that its
+// reconverging jump chains stay cheap.
 public sealed class JumpGameVIITests
 {
-    [Fact]
-    public void CanReach_LeetCodeExampleOne_ReturnsTrue()
-    {
-        var canReach = CanReach("011010", minJump: 2, maxJump: 3);
-        Assert.True(canReach);
-    }
-
-    [Fact]
-    public void CanReach_LeetCodeExampleTwo_ReturnsFalse()
-    {
-        var canReach = CanReach("01101110", minJump: 2, maxJump: 3);
-        Assert.False(canReach);
-    }
-
-    [Fact]
-    public void CanReach_SingleZeroTwoCharacterString_ReachesItselfTrivially()
-    {
-        var canReach = CanReach("00", minJump: 1, maxJump: 1);
-        Assert.True(canReach);
-    }
-
-    private static bool CanReach(string s, int minJump, int maxJump)
-    {
-        var successors = Successors(s, minJump, maxJump);
-        var reached = DepthFirstSearch.Traverse(0, successors);
-        return reached.Contains(s.Length - 1);
-    }
-
-    private static Func<int, IEnumerable<int>> Successors(string s, int minJump, int maxJump)
-        => i =>
+    public static TheoryData<string, int, int, bool> Examples =>
+        new()
         {
-            var lastIndex = Math.Min(i + maxJump, s.Length - 1);
-            var next = new List<int>();
+            // LC example 1: 0 -> 3 -> 5.
+            { "011010", 2, 3, true },
 
-            for (var j = i + minJump; j <= lastIndex; j++)
-            {
-                if (s[j] == '0')
-                {
-                    next.Add(j);
-                }
-            }
+            // LC example 2: nothing in the jump window from 0 is a '0'.
+            { "01101110", 2, 3, false },
 
-            return next;
+            // The last index is reachable in one step, and is the start's only move.
+            { "00", 1, 1, true },
+
+            // The last index is a wall, so it can never be landed on.
+            { "0001", 1, 2, false },
+
+            // Every index is open and the window straddles the end.
+            { "0000", 2, 3, true },
+
+            // A wall inside a width-one window cuts the only chain at index 2.
+            { "0010", 1, 1, false },
         };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanReachByUnmemoizedRecursion_LeetCodeExamples_ReportsWhetherTheLastIndexIsReachable(
+        string positions, int minJump, int maxJump, bool expected) =>
+        Assert.Equal(expected, JumpGameVIISolution.CanReachByUnmemoizedRecursion(positions, minJump, maxJump));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CanReachByVisitedTrackingTraversal_LeetCodeExamples_ReportsWhetherTheLastIndexIsReachable(
+        string positions, int minJump, int maxJump, bool expected) =>
+        Assert.Equal(expected, JumpGameVIISolution.CanReachByVisitedTrackingTraversal(positions, minJump, maxJump));
 }

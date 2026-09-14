@@ -1,15 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.MinimumXorSumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum XOR Sum of Two Arrays (LC 1879): the textbook unmemoized bitmask
-// recursion over (index, assignedMask) - the same (index, mask) state re-explored
-// from scratch down every branch, since many different assignment orderings reach
-// an identical "these nums2 elements are already used" state - vs. the same
-// recursion routed through this repo's own Memoizer, the identical (int, int)
-// tuple-state shape MinimumCostToConnectTwoGroupsOfPointsBenchmarks already uses
-// for LC 1595's near-twin "index, connected-mask" assignment recurrence.
+// Harness only: both arms are MinimumXorSumOfTwoArraysSolution's, the same methods
+// MinimumXorSumOfTwoArraysTests proves correct - the textbook unmemoized bitmask
+// recursion over (index, claimedMask), which re-explores that state once per
+// assignment ordering that reaches it, against the same recurrence routed through
+// this repo's own Memoizer. Both arrays are LeetCode's own input shape, so
+// [GlobalSetup] only picks the sizes and the seed.
 [MemoryDiagnoser]
 public class MinimumXorSumOfTwoArraysBenchmarks
 {
@@ -32,52 +31,10 @@ public class MinimumXorSumOfTwoArraysBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRecursion() => MinXorSum(0, 0);
-
-    private int MinXorSum(int index, int mask)
-    {
-        if (index == Length)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-        for (var j = 0; j < Length; j++)
-        {
-            if ((mask & (1 << j)) != 0)
-            {
-                continue;
-            }
-
-            var candidate = (_nums1[index] ^ _nums2[j]) + MinXorSum(index + 1, mask | (1 << j));
-            best = Math.Min(best, candidate);
-        }
-
-        return best;
-    }
+    public int BruteForceRecursion() =>
+        MinimumXorSumOfTwoArraysSolution.MinimumXorSumByBruteForceRecursion(_nums1, _nums2);
 
     [Benchmark]
-    public int MemoizedRecursion() => Memoizer.Memoize<(int Index, int Mask), int>((0, 0), (state, costFor) =>
-    {
-        var (index, mask) = state;
-
-        if (index == Length)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-        for (var j = 0; j < Length; j++)
-        {
-            if ((mask & (1 << j)) != 0)
-            {
-                continue;
-            }
-
-            var candidate = (_nums1[index] ^ _nums2[j]) + costFor((index + 1, mask | (1 << j)));
-            best = Math.Min(best, candidate);
-        }
-
-        return best;
-    });
+    public int MemoizedRecursion() =>
+        MinimumXorSumOfTwoArraysSolution.MinimumXorSumByMemoizedBitmask(_nums1, _nums2);
 }
