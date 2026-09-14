@@ -1,100 +1,119 @@
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignAnATMMachine.DesignAnATMMachineSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAnATMMachine;
 
-// LeetCode 2241. Design an ATM Machine: five fixed denomination counters keyed by
-// banknote value, held in this repo's own HashMap<int,long> (DesignParkingSystemTests
-// precedent) rather than five separate fields. Withdraw is a strict greedy walk from
-// the largest denomination down - not a general coin-change search - so it can fail
-// (and must leave state untouched) even when some other combination of banknotes
-// would have worked.
-public sealed partial class DesignAnATMMachineTests
+// Harness only: both strategies live in DesignAnATMMachineSolution. LeetCode's own
+// shape here is a stateful object across a sequence of calls, so Examples encodes a
+// call script instead of a single argument tuple - the same shape
+// DesignAuthenticationManagerTests uses for its own instance-API problem. The
+// five-slot array strategy used to exist only as a benchmark arm with nothing
+// asserting it, and it answered a weaker question there (did the withdrawal
+// succeed?) than the test's own arm did (which banknotes came out); both are pinned
+// to LeetCode's real answer here.
+public sealed class DesignAnATMMachineTests
 {
-    private static readonly int[] DenominationsAscending = [20, 50, 100, 200, 500];
+    public static TheoryData<AtmOp[], long[]?[]> Examples =>
+        new()
+        {
+            {
+                // LeetCode's published example. The second withdrawal fails because
+                // the greedy walk takes the $500 first and is then left with $100 it
+                // has no note for; the third succeeds on the same contents.
+                [
+                    AtmOp.Deposit([0, 0, 1, 2, 1]),
+                    AtmOp.Withdraw(600),
+                    AtmOp.Deposit([0, 1, 0, 1, 1]),
+                    AtmOp.Withdraw(600),
+                    AtmOp.Withdraw(550),
+                ],
+                [null, [0, 0, 1, 0, 1], null, [-1], [0, 1, 0, 0, 1]]
+            },
+            {
+                // 60 could be reached as three $20s, but the greedy walk never tries
+                // that: it takes one $50 first, leaving 10, and no smaller
+                // denomination covers 10. The failed withdrawal must leave the $20s
+                // untouched, which the following one proves.
+                [
+                    AtmOp.Deposit([10, 10, 0, 0, 0]),
+                    AtmOp.Withdraw(60),
+                    AtmOp.Withdraw(20),
+                ],
+                [null, [-1], [1, 0, 0, 0, 0]]
+            },
+            {
+                // An empty machine refuses everything, and a machine emptied by a
+                // successful withdrawal refuses the repeat.
+                [
+                    AtmOp.Withdraw(20),
+                    AtmOp.Deposit([1, 0, 0, 0, 0]),
+                    AtmOp.Withdraw(20),
+                    AtmOp.Withdraw(20),
+                ],
+                [[-1], null, [1, 0, 0, 0, 0], [-1]]
+            },
+            {
+                // An amount no combination of the notes on hand can make: a single
+                // $500 covers neither $30 nor $520, but covers $500 exactly.
+                [
+                    AtmOp.Deposit([0, 0, 0, 0, 1]),
+                    AtmOp.Withdraw(30),
+                    AtmOp.Withdraw(520),
+                    AtmOp.Withdraw(500),
+                ],
+                [null, [-1], [-1], [0, 0, 0, 0, 1]]
+            },
+        };
 
-    [Fact]
-    public void WithdrawSequence_LeetCodeExample_MatchesExpectedResults()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AtmByFiveSlotArray_LeetCodeExamples_MatchesExpectedSequence(
+        AtmOp[] operations, long[]?[] expected) =>
+        RunScript(new AtmByFiveSlotArray(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void AtmByHashMap_LeetCodeExamples_MatchesExpectedSequence(
+        AtmOp[] operations, long[]?[] expected) =>
+        RunScript(new AtmByHashMap(), operations, expected);
+
+    private static void RunScript(IAtm atm, AtmOp[] operations, long[]?[] expected)
     {
-        var atm = new Atm();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(atm));
+        }
+    }
+}
 
-        atm.Deposit([0, 0, 1, 2, 1]);
-        Assert.Equal(new long[] { 0, 0, 1, 0, 1 }, atm.Withdraw(600));
+// One call in an ATM script: a bulk deposit or a withdrawal of a given amount.
+// Pure dispatch, built via the named factories below so a script (like Examples
+// above) reads like the LeetCode call sequence it replays.
+public readonly record struct AtmOp
+{
+    private readonly long[]? _banknotesCount;
+    private readonly long _amount;
 
-        atm.Deposit([0, 1, 0, 1, 1]);
-        Assert.Equal(new long[] { -1 }, atm.Withdraw(600));
-        Assert.Equal(new long[] { 0, 1, 0, 0, 1 }, atm.Withdraw(550));
+    private AtmOp(long[]? banknotesCount, long amount)
+    {
+        _banknotesCount = banknotesCount;
+        _amount = amount;
     }
 
-    [Fact]
-    public void Withdraw_AmountNotRepresentableInGreedyOrder_FailsWithoutChangingState()
+    public static AtmOp Deposit(long[] banknotesCount) => new(banknotesCount, 0);
+
+    public static AtmOp Withdraw(long amount) => new(null, amount);
+
+    // Deposit returns nothing in LeetCode's judge output, so it reports null here
+    // and the expected sequence reads exactly like the published one.
+    internal long[]? Apply(IAtm atm)
     {
-        var atm = new Atm();
-        atm.Deposit([10, 10, 0, 0, 0]);
-
-        // 60 could be reached as three $20s, but the greedy walk never tries that:
-        // it takes one $50 first (leaving 10), and no smaller denomination covers 10.
-        Assert.Equal(new long[] { -1 }, atm.Withdraw(60));
-
-        // State must be untouched by the failed withdrawal above - the $20s are
-        // still all there for this one to succeed.
-        Assert.Equal(new long[] { 1, 0, 0, 0, 0 }, atm.Withdraw(20));
-    }
-
-    private sealed class Atm
-    {
-        private readonly HashMap<int, long> _countByDenomination = new();
-
-        public Atm()
+        if (_banknotesCount is not null)
         {
-            foreach (var denomination in DenominationsAscending)
-            {
-                _countByDenomination.Set(denomination, 0);
-            }
+            atm.Deposit(_banknotesCount);
+
+            return null;
         }
 
-        public void Deposit(long[] banknotesCount)
-        {
-            for (var i = 0; i < DenominationsAscending.Length; i++)
-            {
-                _countByDenomination.TryGetValue(DenominationsAscending[i], out var count);
-                _countByDenomination.Set(DenominationsAscending[i], count + banknotesCount[i]);
-            }
-        }
-
-        // Ascending-index result (matching DenominationsAscending), [-1] on failure.
-        // Feasibility is decided by a read-only greedy pass first so a failing
-        // withdrawal never mutates _countByDenomination.
-        public long[] Withdraw(long amount)
-        {
-            var used = new long[DenominationsAscending.Length];
-            var remaining = amount;
-
-            for (var i = DenominationsAscending.Length - 1; i >= 0; i--)
-            {
-                var (notes, updatedRemaining) = TakeNotes(DenominationsAscending[i], remaining);
-                used[i] = notes;
-                remaining = updatedRemaining;
-            }
-
-            if (remaining != 0)
-            {
-                return [-1];
-            }
-
-            for (var i = 0; i < DenominationsAscending.Length; i++)
-            {
-                _countByDenomination.TryGetValue(DenominationsAscending[i], out var available);
-                _countByDenomination.Set(DenominationsAscending[i], available - used[i]);
-            }
-
-            return used;
-        }
-
-        private (long Notes, long Remaining) TakeNotes(int denomination, long remaining)
-        {
-            _countByDenomination.TryGetValue(denomination, out var available);
-            var notes = Math.Min(available, remaining / denomination);
-            return (notes, remaining - (notes * denomination));
-        }
+        return atm.Withdraw(_amount);
     }
 }

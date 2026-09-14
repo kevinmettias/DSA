@@ -1,92 +1,141 @@
-using System.Text;
-using DSAExperimentation.DataStructures.HashMap;
+using System.Globalization;
+using static DSAExperimentation.LeetCode.EncryptAndDecryptStrings.EncryptAndDecryptStringsSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.EncryptAndDecryptStrings;
 
-// LeetCode 2227. Encrypt and Decrypt Strings: encrypt is a straight per-character
-// lookup through this repo's own HashMap<char,string> (keys[i] -> values[i],
-// TwoSumTests/DesignParkingSystemTests precedent). decrypt needs the count of
-// dictionary words that encrypt to a given target - values are not required to be
-// unique, so re-encrypting the whole dictionary per call would be the naive
-// approach. Precomputing every dictionary word's encryption once into a second
-// HashMap<string,int> frequency table turns each decrypt call into an O(1) lookup
-// instead.
-public sealed partial class EncryptAndDecryptStringsTests
+// Harness only: both strategies live in EncryptAndDecryptStringsSolution,
+// including the re-encrypt-the-dictionary-per-query baseline the pre-migration
+// benchmark kept to itself. LeetCode's own shape here is a stateful object across
+// a sequence of calls, so Examples encodes the constructor's three arguments plus
+// a call script instead of a single argument tuple - the same shape
+// DesignBitsetTests uses for its own instance-API problem. EncrypterCall.Apply
+// renders each result as the string LeetCode's judge output shows for it, so one
+// expected value per call covers both encrypt's string and decrypt's count.
+public sealed class EncryptAndDecryptStringsTests
 {
-    [Fact]
-    public void Encrypt_LeetCodeExample_ReturnsConcatenatedMapping()
-    {
-        var encryptor = BuildLeetCodeExampleEncryptor();
-
-        Assert.Equal("eizfeiam", encryptor.Encrypt("abcd"));
-    }
-
-    [Fact]
-    public void Decrypt_LeetCodeExample_ReturnsMatchingDictionaryWordCount()
-    {
-        var encryptor = BuildLeetCodeExampleEncryptor();
-
-        Assert.Equal(2, encryptor.Decrypt("eizfeiam"));
-    }
-
-    [Fact]
-    public void Decrypt_NoDictionaryWordEncryptsToTarget_ReturnsZero()
-    {
-        var encryptor = BuildLeetCodeExampleEncryptor();
-
-        Assert.Equal(0, encryptor.Decrypt("zfzfzfzf"));
-    }
-
-    private static Encryptor BuildLeetCodeExampleEncryptor()
-    {
-        char[] keys = ['a', 'b', 'c', 'd'];
-        string[] values = ["ei", "zf", "ei", "am"];
-        string[] dictionary = ["abcd", "acbd", "adbc", "badc", "dacb", "cadb", "cbda", "abad"];
-
-        return new Encryptor(keys, values, dictionary);
-    }
-
-    private sealed class Encryptor
-    {
-        private readonly HashMap<char, string> _valueByKey = new();
-        private readonly HashMap<string, int> _encryptedDictionaryCounts = new();
-
-        public Encryptor(char[] keys, string[] values, string[] dictionary)
+    // (keys, values, dictionary, call script, one expected result per call)
+    public static TheoryData<char[], string[], string[], EncrypterCall[], string[]> Examples =>
+        new()
         {
-            for (var i = 0; i < keys.Length; i++)
+            // LeetCode's published example. 'a' and 'c' both map to "ei", so
+            // "abcd" and "abad" encrypt identically and decrypt reports 2.
             {
-                _valueByKey.Set(keys[i], values[i]);
-            }
+                ['a', 'b', 'c', 'd'],
+                ["ei", "zf", "ei", "am"],
+                ["abcd", "acbd", "adbc", "badc", "dacb", "cadb", "cbda", "abad"],
+                [
+                    EncrypterCall.Encrypt("abcd"),
+                    EncrypterCall.Decrypt("eizfeiam"),
+                ],
+                ["eizfeiam", "2"]
+            },
 
-            foreach (var word in dictionary)
+            // No dictionary word encrypts to this, even though every two-letter
+            // group in it is a legal value.
             {
-                var encrypted = Encrypt(word);
-                _encryptedDictionaryCounts.TryGetValue(encrypted, out var count);
-                _encryptedDictionaryCounts.Set(encrypted, count + 1);
-            }
-        }
+                ['a', 'b', 'c', 'd'],
+                ["ei", "zf", "ei", "am"],
+                ["abcd", "acbd", "adbc", "badc", "dacb", "cadb", "cbda", "abad"],
+                [EncrypterCall.Decrypt("zfzfzfzf")],
+                ["0"]
+            },
 
-        // Empty string on an unmapped character is this repo's own choice for the
-        // (constraint-excluded) case a caller passes a character outside keys - there
-        // is no LeetCode-specified behavior to match here since word1 is guaranteed to
-        // only contain characters present in keys.
-        public string Encrypt(string word)
+            // A character outside keys cannot be encrypted at all, so encrypt
+            // reports the empty string - LeetCode's own stated behaviour.
+            {
+                ['a', 'b', 'c', 'd'],
+                ["ei", "zf", "ei", "am"],
+                ["abcd"],
+                [EncrypterCall.Encrypt("abce"), EncrypterCall.Encrypt("dcba")],
+                ["", "ameizfei"]
+            },
+
+            // Duplicate values with single-character dictionary words: "ei" is the
+            // encryption of both "a" and "b", so it decrypts to 2, while "eiei"
+            // matches only "ab" - "aa", "ba" and "bb" are not in the dictionary.
+            {
+                ['a', 'b'],
+                ["ei", "ei"],
+                ["a", "b", "ab"],
+                [
+                    EncrypterCall.Encrypt("a"),
+                    EncrypterCall.Encrypt("ab"),
+                    EncrypterCall.Decrypt("ei"),
+                    EncrypterCall.Decrypt("eiei"),
+                ],
+                ["ei", "eiei", "2", "1"]
+            },
+
+            // Nothing in word2 is a value at all, and its length is odd besides -
+            // no dictionary word can encrypt to it.
+            {
+                ['a', 'b'],
+                ["ei", "zf"],
+                ["a", "b", "ab", "ba"],
+                [EncrypterCall.Decrypt("xyx"), EncrypterCall.Decrypt("zfei")],
+                ["0", "1"]
+            },
+
+            // Repeats in the dictionary count once each, so the same word listed
+            // twice makes its encryption decrypt to 2.
+            {
+                ['a', 'b'],
+                ["ei", "zf"],
+                ["ab", "ab", "ba"],
+                [EncrypterCall.Decrypt("eizf"), EncrypterCall.Decrypt("zfei")],
+                ["2", "1"]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByDictionaryRescan_LeetCodeExamples_MatchesExpectedSequence(
+        char[] keys, string[] values, string[] dictionary, EncrypterCall[] calls, string[] expected) =>
+        RunScript(CreateByDictionaryRescan(keys, values, dictionary), calls, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByPrecomputedFrequency_LeetCodeExamples_MatchesExpectedSequence(
+        char[] keys, string[] values, string[] dictionary, EncrypterCall[] calls, string[] expected) =>
+        RunScript(CreateByPrecomputedFrequency(keys, values, dictionary), calls, expected);
+
+    private static void RunScript(IEncrypter encrypter, EncrypterCall[] calls, string[] expected)
+    {
+        for (var i = 0; i < calls.Length; i++)
         {
-            var result = new StringBuilder(word.Length * 2);
-
-            foreach (var c in word)
-            {
-                if (!_valueByKey.TryGetValue(c, out var mapped))
-                {
-                    return string.Empty;
-                }
-
-                result.Append(mapped);
-            }
-
-            return result.ToString();
+            Assert.Equal(expected[i], calls[i].Apply(encrypter));
         }
+    }
+}
 
-        public int Decrypt(string word) => _encryptedDictionaryCounts.TryGetValue(word, out var count) ? count : 0;
+// One call in an Encrypter script: which of the two operations to invoke and on
+// what word. Pure dispatch, built via the named factories below so a script reads
+// like the LeetCode call sequence it replays.
+public readonly record struct EncrypterCall
+{
+    private readonly Kind _kind;
+    private readonly string _word;
+
+    private EncrypterCall(Kind kind, string word)
+    {
+        _kind = kind;
+        _word = word;
+    }
+
+    public static EncrypterCall Encrypt(string word1) => new(Kind.Encrypt, word1);
+
+    public static EncrypterCall Decrypt(string word2) => new(Kind.Decrypt, word2);
+
+    // The string LeetCode's own judge output shows for this call - the ciphertext
+    // itself for encrypt, the decimal count for decrypt - so one expected value
+    // per call covers both operations uniformly.
+    internal string Apply(IEncrypter encrypter) => _kind == Kind.Encrypt
+        ? encrypter.Encrypt(_word)
+        : encrypter.Decrypt(_word).ToString(CultureInfo.InvariantCulture);
+
+    private enum Kind
+    {
+        Encrypt,
+        Decrypt,
     }
 }
