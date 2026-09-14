@@ -1,90 +1,59 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
-using RepoNodeStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.SinglyLinkedList.SinglyLinkedListNode<int>>;
+using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveNodesFromLinkedList;
 
-// LeetCode 2487. Remove Nodes From Linked List: a node survives only if its value is
-// >= every value to its right, i.e. the surviving nodes form a non-increasing sequence
-// left to right - the exact monotonic-stack shape AsteroidCollisionTests/
-// DailyTemperaturesTests already use over this repo's own Stack<T>, here holding
-// SinglyLinkedListNode<int> references instead of ints/indices: walking left to right,
-// any node smaller than the incoming one gets popped (it has a greater node to its
-// right, so it must be removed) before the incoming node is pushed. What remains on
-// the stack, bottom to top, is exactly the answer in order - popped into an array
-// (AsteroidCollisionTests' own reverse-fill precedent) and relinked in one more pass.
-public sealed partial class RemoveNodesFromLinkedListTests
+// Harness only. Both strategies are RemoveNodesFromLinkedListSolution's - including
+// the per-node rescan, which the benchmark used to own privately as its baseline and
+// nothing asserted. SinglyLinkedListNode<int> is internal, so it cannot appear in a
+// public TheoryData<...> member (CS0053); the examples state the node values and
+// LeetCodeWireFormat translates both ends.
+public sealed class RemoveNodesFromLinkedListTests
 {
-    [Fact]
-    public void RemoveNodes_ClassicExampleOne_KeepsOnlyNonIncreasingSuffixValues()
-        => Assert.Equal([13, 8], ToArray(RemoveNodes(BuildList([5, 2, 13, 3, 8]))));
-
-    [Fact]
-    public void RemoveNodes_AllValuesEqual_KeepsEveryNode()
-        => Assert.Equal([1, 1, 1, 1], ToArray(RemoveNodes(BuildList([1, 1, 1, 1]))));
-
-    [Fact]
-    public void RemoveNodes_StrictlyIncreasingValues_KeepsOnlyTheLastNode()
-        => Assert.Equal([3], ToArray(RemoveNodes(BuildList([1, 2, 3]))));
-
-    [Fact]
-    public void RemoveNodes_StrictlyDecreasingValues_KeepsEveryNode()
-        => Assert.Equal([8, 3, 1], ToArray(RemoveNodes(BuildList([8, 3, 1]))));
-
-    private static SinglyLinkedListNode<int>? RemoveNodes(SinglyLinkedListNode<int>? head)
-    {
-        var keep = new RepoNodeStack();
-
-        for (var node = head; node is not null; node = node.Next)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            while (keep.TryPeek(out var top) && top.Value < node.Value)
-            {
-                keep.TryPop(out _);
-            }
+            // LC example 1.
+            { [5, 2, 13, 3, 8], [13, 8] },
 
-            keep.Push(node);
-        }
+            // LC example 2: equal values never remove each other, so nothing goes.
+            { [1, 1, 1, 1], [1, 1, 1, 1] },
 
-        var survivors = new SinglyLinkedListNode<int>[keep.Count];
-        for (var i = survivors.Length - 1; i >= 0; i--)
-        {
-            keep.TryPop(out survivors[i]!);
-        }
+            // Strictly increasing: every node has a greater one to its right except
+            // the last, which is the worst case for the answer's length.
+            { [1, 2, 3], [3] },
 
-        for (var i = 0; i < survivors.Length - 1; i++)
-        {
-            survivors[i].Next = survivors[i + 1];
-        }
+            // Strictly decreasing: already the answer, so nothing may be dropped.
+            { [8, 3, 1], [8, 3, 1] },
 
-        if (survivors.Length > 0)
-        {
-            survivors[^1].Next = null;
-        }
+            // A single node has nothing to its right and always survives.
+            { [1], [1] },
 
-        return survivors.Length == 0 ? null : survivors[0];
-    }
+            // Ties around a removal: the middle 2 goes, but neither 5 removes the
+            // other, which is what separates a strict < from a <= in the sweep.
+            { [5, 5, 2, 5], [5, 5, 5] },
 
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
+            // The surviving node is the last one, reached only after two removals.
+            { [2, 1, 3], [3] },
+        };
 
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveNodesByBruteForceScan_LeetCodeExamples_KeepsOnlyNodesWithNoGreaterValueToTheirRight(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                RemoveNodesFromLinkedListSolution.RemoveNodesByBruteForceScan(
+                    LeetCodeWireFormat.ToLinkedList(values))));
 
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RemoveNodesByMonotonicStack_LeetCodeExamples_KeepsOnlyNodesWithNoGreaterValueToTheirRight(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                RemoveNodesFromLinkedListSolution.RemoveNodesByMonotonicStack(
+                    LeetCodeWireFormat.ToLinkedList(values))));
 }

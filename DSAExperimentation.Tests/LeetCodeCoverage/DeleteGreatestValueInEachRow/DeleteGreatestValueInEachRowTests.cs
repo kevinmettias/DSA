@@ -1,54 +1,48 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.DeleteGreatestValueInEachRow;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteGreatestValueInEachRow;
 
-// LeetCode 2500. Delete Greatest Value in Each Row: sorting every row with this
-// repo's MergeSort over ArrayIndexedSequence (same composition ArrayPartitionTests
-// already uses) turns the problem's repeated "delete the greatest value in each
-// row" simulation into a single pass - once every row is sorted ascending, the
-// values deleted together on round j are exactly column j, so the answer is the
-// sum, over every column index, of the maximum value in that column.
-public sealed partial class DeleteGreatestValueInEachRowTests
+// Harness only. Both strategies are DeleteGreatestValueInEachRowSolution's - the
+// round-by-round simulation the statement describes and the MergeSort-then-
+// column-max collapse of it - pinned here to LeetCode's published examples plus
+// a single row (where every value is its own round's maximum), a grid of equal
+// values (where every round ties), and a square grid whose rows start sorted the
+// wrong way round.
+public sealed class DeleteGreatestValueInEachRowTests
 {
+    public static TheoryData<int[][], int> Examples =>
+        new()
+        {
+            { [[1, 2, 4], [3, 3, 1]], 8 },
+            { [[10]], 10 },
+            { [[4, 1, 3]], 8 },
+            { [[5, 5], [5, 5]], 10 },
+            { [[3, 2, 1], [6, 5, 4], [9, 8, 7]], 24 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeleteGreatestValueByRepeatedRowMaxScan_LeetCodeExamples_ReturnsSumOfEachRoundsGreatestDeletion(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, DeleteGreatestValueInEachRowSolution.DeleteGreatestValueByRepeatedRowMaxScan(grid));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeleteGreatestValueByMergeSortColumnMax_LeetCodeExamples_ReturnsSumOfEachRoundsGreatestDeletion(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, DeleteGreatestValueInEachRowSolution.DeleteGreatestValueByMergeSortColumnMax(grid));
+
+    // Both strategies read the caller's grid; neither may leave it sorted or
+    // otherwise rewritten, which the in-place MergeSort arm would do without its
+    // defensive row copy.
     [Fact]
-    public void DeleteGreatestValue_ClassicExample_ReturnsEight()
+    public void DeleteGreatestValueByMergeSortColumnMax_UnsortedGrid_LeavesTheCallersGridUntouched()
     {
         int[][] grid = [[1, 2, 4], [3, 3, 1]];
 
-        Assert.Equal(8, DeleteGreatestValue(grid));
-    }
+        DeleteGreatestValueInEachRowSolution.DeleteGreatestValueByMergeSortColumnMax(grid);
 
-    [Fact]
-    public void DeleteGreatestValue_SingleCellGrid_ReturnsThatValue()
-    {
-        int[][] grid = [[10]];
-
-        Assert.Equal(10, DeleteGreatestValue(grid));
-    }
-
-    private static int DeleteGreatestValue(int[][] grid)
-    {
-        foreach (var row in grid)
-        {
-            MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(row));
-        }
-
-        var sum = 0;
-        var columns = grid[0].Length;
-
-        for (var column = 0; column < columns; column++)
-        {
-            var columnMax = 0;
-
-            foreach (var row in grid)
-            {
-                columnMax = Math.Max(columnMax, row[column]);
-            }
-
-            sum += columnMax;
-        }
-
-        return sum;
+        Assert.Equal([1, 2, 4], grid[0]);
+        Assert.Equal([3, 3, 1], grid[1]);
     }
 }

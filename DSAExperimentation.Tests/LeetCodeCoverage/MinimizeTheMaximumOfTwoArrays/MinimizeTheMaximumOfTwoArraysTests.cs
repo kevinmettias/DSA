@@ -1,61 +1,57 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeTheMaximumOfTwoArrays;
 
-// LeetCode 2513. Minimize the Maximum of Two Arrays: "binary search on the answer"
-// over the shared maximum m - feasibility of building arr1/arr2 under some cap m is
-// monotone (a larger cap only ever adds more eligible numbers), so the smallest
-// feasible m is the leftmost "true" in an implicit [false...false, true...true]
-// sequence over m in [1, 2*(uniqueCnt1+uniqueCnt2)]. Same FeasibleMaximumSequence +
-// BinarySearch.LowerBound shape KokoEatingBananasTests/SplitArrayLargestSumTests
-// already establish for their own search-on-answer.
-//
-// Feasibility itself is the standard inclusion-exclusion count: of the numbers in
-// [1,m], eligible1 = those not divisible by divisor1 (candidates for arr1),
-// eligible2 = those not divisible by divisor2 (candidates for arr2), and
-// eligibleEither = those not divisible by lcm(divisor1,divisor2) (divisible by
-// neither divisor, so usable by whichever array still needs them). m works iff
-// eligible1 >= uniqueCnt1, eligible2 >= uniqueCnt2, and eligibleEither covers both
-// counts at once.
-public sealed partial class MinimizeTheMaximumOfTwoArraysTests
+// Harness only. Both strategies are MinimizeTheMaximumOfTwoArraysSolution's - the
+// hand-rolled lo/hi bisection that used to live only in the benchmark's baseline
+// arm, and the BinarySearch.LowerBound walk over the feasibility sequence the test
+// used to inline.
+public sealed class MinimizeTheMaximumOfTwoArraysTests
 {
+    public static TheoryData<int, int, int, int, int> Examples =>
+        new()
+        {
+            // LC examples 1-3.
+            { 2, 7, 1, 3, 4 },
+            { 3, 5, 2, 1, 3 },
+            { 2, 4, 8, 2, 15 },
+
+            // Equal divisors: neither array may take an even number, so the two
+            // arrays share the odd numbers 1 and 3.
+            { 2, 2, 1, 1, 3 },
+
+            // Equal divisors again, this time sparse enough that only the multiples
+            // of 5 are excluded: 6 numbers are needed and [1, 7] supplies exactly 6.
+            { 5, 5, 3, 3, 7 },
+
+            // Coprime divisors, one number each: 1 is divisible by neither, so the
+            // binding constraint is the pair needing two distinct numbers.
+            { 2, 3, 1, 1, 2 },
+
+            // Large enough that lcm = 6 inclusion-exclusion, not either divisor
+            // alone, decides the answer.
+            { 2, 3, 100, 100, 239 },
+
+            // Lopsided counts: arr1 takes every odd number up to 9, and arr2's
+            // single number comes from the evens 2, 4 and 8 that are left.
+            { 2, 3, 5, 1, 9 },
+        };
+
     [Theory]
-    [InlineData(2, 7, 1, 3, 4)]
-    [InlineData(3, 5, 2, 1, 3)]
-    [InlineData(2, 4, 8, 2, 15)]
-    public void MinimizeSet_LeetCodeExamples_ReturnsSmallestFeasibleMaximum(
-        int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2, int expected)
-    {
-        var actual = MinimizeSet(divisor1, divisor2, uniqueCnt1, uniqueCnt2);
-        Assert.Equal(expected, actual);
-    }
+    [MemberData(nameof(Examples))]
+    public void MinimizeSetByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleMaximum(
+        int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetByManualBisection(
+                divisor1, divisor2, uniqueCnt1, uniqueCnt2));
 
-    private static int MinimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2)
-    {
-        var sequence = new FeasibleMaximumSequence(divisor1, divisor2, uniqueCnt1, uniqueCnt2);
-        return 1 + BinarySearch.LowerBound(sequence, true);
-    }
-
-    private static bool IsFeasible(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2, int max)
-    {
-        var lcm = Lcm(divisor1, divisor2);
-        var eligible1 = max - (max / divisor1);
-        var eligible2 = max - (max / divisor2);
-        var eligibleEither = max - (max / lcm);
-
-        return eligible1 >= uniqueCnt1 && eligible2 >= uniqueCnt2 && eligibleEither >= uniqueCnt1 + (long)uniqueCnt2;
-    }
-
-    private static long Lcm(int a, int b) => (long)a / Gcd(a, b) * b;
-
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
-
-    private readonly struct FeasibleMaximumSequence(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2)
-        : IRandomAccessSequence<bool>
-    {
-        public int Length => (2 * (uniqueCnt1 + uniqueCnt2)) + 1;
-
-        public bool Get(int index) => IsFeasible(divisor1, divisor2, uniqueCnt1, uniqueCnt2, 1 + index);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinimizeSetBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleMaximum(
+        int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetBySequenceLowerBound(
+                divisor1, divisor2, uniqueCnt1, uniqueCnt2));
 }

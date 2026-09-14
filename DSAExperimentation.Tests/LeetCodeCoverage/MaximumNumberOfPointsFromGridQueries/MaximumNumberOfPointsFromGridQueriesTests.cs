@@ -1,31 +1,24 @@
-using DSAExperimentation.DataStructures.Graph.Grids;
-using DSAExperimentation.DataStructures.Graph.ShortestPaths;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.MaximumNumberOfPointsFromGridQueries;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfPointsFromGridQueries;
 
-// LeetCode 2503. Maximum Number of Points From Grid Queries: for a given query,
-// the optimal play only ever steps onto a cell whose value is below the query
-// (stepping onto anything else ends the whole process with no benefit), so the
-// answer is exactly the size of the 4-directionally-connected region of
-// below-query cells reachable from (0,0). Sorting queries ascending and flood-
-// filling outward with a min-heap ordered by cell value - Heap<Element,TOrder>
-// closed over ByPriorityOrder<GridNode,int>, the same frontier shape
-// ShortestPath.Dijkstra uses - visits cells in exactly the order they'd first
-// become reachable at an increasing threshold, so each query's answer is just
-// how many cells the heap has popped once its smallest remaining value stops
-// being < that query. Neighbor iteration reuses Graph.Grids' GridNode/
-// GridChildren/GridTopology as pure 4-directional bounds arithmetic over an
-// all-passable Grid (the value threshold, not a grid obstacle, is what gates
-// movement here), with a HashSet<GridNode> tracking visited cells the same way
-// ShortestPath.SearchState.Settled does.
-public sealed partial class MaximumNumberOfPointsFromGridQueriesTests
+// Harness only. Both strategies are MaximumNumberOfPointsFromGridQueriesSolution's -
+// the per-query re-simulation and the single shared min-heap flood fill - so this
+// file only pins them to LeetCode's published examples and the hand-traced grids the
+// original suite carried, including the two cases where the start cell itself blocks
+// every query and the one where a below-query cell is unreachable because the region
+// around it is not.
+public sealed class MaximumNumberOfPointsFromGridQueriesTests
 {
-    // Hand-traced grids (see the walkthrough in this suite's PR/notes): each
-    // expected value was worked out cell-by-cell rather than copied from memory.
     public static TheoryData<int[][], int[], int[]> Examples =>
         new()
         {
+            // LeetCode example 1: at query 5 the bottom-right 1 is walled off by two
+            // 5s, so it is below the threshold and still uncounted; query 6 lets the
+            // 5s through and picks it up, and query 2 admits the start cell alone.
+            { [[1, 2, 3], [2, 5, 7], [3, 5, 1]], [5, 6, 2], [5, 8, 1] },
+            // LeetCode example 2: the start cell's own value blocks the only query.
+            { [[5, 2, 1], [1, 1, 2]], [3], [0] },
             // 1 3 / 2 4 - query 2 only ever admits the start cell (1); query 5
             // admits every cell, since the whole 2x2 grid is < 5.
             { [[1, 3], [2, 4]], [2, 5], [1, 4] },
@@ -39,76 +32,17 @@ public sealed partial class MaximumNumberOfPointsFromGridQueriesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxPoints_HandTracedGrids_ReturnsPerQueryReachableCellCounts(
-        int[][] grid, int[] queries, int[] expected)
-    {
-        Assert.Equal(expected, MaxPoints(grid, queries));
-    }
+    public void MaxPointsByFloodFillPerQuery_LeetCodeExamples_ReturnsPerQueryReachableCellCounts(
+        int[][] grid, int[] queries, int[] expected) =>
+        Assert.Equal(
+            expected,
+            MaximumNumberOfPointsFromGridQueriesSolution.MaxPointsByFloodFillPerQuery(grid, queries));
 
-    private static int[] MaxPoints(int[][] gridValues, int[] queries)
-    {
-        var rows = gridValues.Length;
-        var cols = gridValues[0].Length;
-        var grid = new Grid(AllPassable(rows, cols));
-
-        var start = new GridNode(0, 0, grid);
-        var visited = new HashSet<GridNode> { start };
-        var frontier = new Heap<(GridNode Node, int Priority), ByPriorityOrder<GridNode, int>>();
-        frontier.Push((start, gridValues[0][0]));
-
-        var order = queries
-            .Select((value, index) => (Value: value, Index: index))
-            .OrderBy(query => query.Value);
-
-        var answers = new int[queries.Length];
-        var points = 0;
-
-        foreach (var query in order)
-        {
-            points = AdvanceFrontier(frontier, visited, gridValues, query.Value, points);
-            answers[query.Index] = points;
-        }
-
-        return answers;
-    }
-
-    private static int AdvanceFrontier(
-        Heap<(GridNode Node, int Priority), ByPriorityOrder<GridNode, int>> frontier,
-        HashSet<GridNode> visited, int[][] gridValues, int query, int points)
-    {
-        while (frontier.TryPeek(out var top) && top.Priority < query)
-        {
-            frontier.TryPop(out var current);
-            points++;
-
-            var children = GridTopology.GetChildren(current.Node);
-
-            for (var i = 0; i < children.Count; i++)
-            {
-                var neighbor = children.Get(i);
-
-                if (visited.Add(neighbor))
-                {
-                    frontier.Push((neighbor, gridValues[neighbor.Row][neighbor.Col]));
-                }
-            }
-        }
-
-        return points;
-    }
-
-    private static bool[,] AllPassable(int rows, int cols)
-    {
-        var passable = new bool[rows, cols];
-
-        for (var row = 0; row < rows; row++)
-        {
-            for (var col = 0; col < cols; col++)
-            {
-                passable[row, col] = true;
-            }
-        }
-
-        return passable;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxPointsByMinHeapFrontier_LeetCodeExamples_ReturnsPerQueryReachableCellCounts(
+        int[][] grid, int[] queries, int[] expected) =>
+        Assert.Equal(
+            expected,
+            MaximumNumberOfPointsFromGridQueriesSolution.MaxPointsByMinHeapFrontier(grid, queries));
 }

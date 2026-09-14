@@ -1,28 +1,29 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignMemoryAllocator.DesignMemoryAllocatorSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design Memory Allocator (LC 2502): both strategies share the identical Allocate
-// (leftmost-free-run scan over a plain int[] memory array - every accepted
-// solution to this problem does this, so it is not the axis being compared here)
-// and differ only in Free. ArrayScanFree rescans the whole memory array for every
-// unit still stamped with mID, on every call - it has to, since a correct Free
-// can't stop early without first ruling out a later match. HashMapTrackedFree
-// instead composes HashMap<int, DynamicArray<int>> to remember exactly which
-// indices each mID currently owns (the same "HashMap index over an array" shape
-// DesignANumberContainerSystemBenchmarks already uses), so Free only visits those.
-// Workload: `Count` single-unit allocations, each given its own distinct mID (so
-// memory fills completely with no gaps), followed by freeing every one of those
-// `Count` mIDs - both strategies still pay Allocate's real O(Count^2) leftmost-run
-// scanning cost, so the composed HashMap index only pays off on the Free half; the
-// speedup is real but bounded, not an asymptotic win (see
-// MatrixCellsInDistanceOrderBenchmarks for the same "correct composition, not
-// always a complexity-class jump" shape).
+// Harness only: both arms are DesignMemoryAllocatorSolution's, the same classes
+// DesignMemoryAllocatorTests proves correct. The two strategies share the identical
+// Allocate (a leftmost-free-run scan over a plain int[] memory array - every
+// accepted solution does this, so it is not the axis being compared) and differ only
+// in Free: the array-scan arm rescans the whole memory array for every unit still
+// stamped with mID on every call, while the HashMap-indexed arm visits only the
+// units that mID actually owns.
+//
+// [GlobalSetup] builds the call script - `Count` single-unit allocations, each given
+// its own distinct mID (so memory fills completely with no gaps), followed by
+// freeing every one of those `Count` mIDs. Both arms still pay Allocate's real
+// O(Count^2) leftmost-run scanning cost, so the composed HashMap index only pays off
+// on the Free half; the speedup is real but bounded, not an asymptotic win (see
+// MatrixCellsInDistanceOrderBenchmarks for the same "correct composition, not always
+// a complexity-class jump" shape).
 [MemoryDiagnoser]
 public class DesignMemoryAllocatorBenchmarks
 {
+    // Every allocation in this workload is one unit wide.
+    private const int SingleUnit = 1;
+
     [Params(200, 2_000)]
     public int Count;
 
@@ -32,96 +33,27 @@ public class DesignMemoryAllocatorBenchmarks
     public void Setup() => _memoryIds = Enumerable.Range(1, Count).ToArray();
 
     [Benchmark(Baseline = true)]
-    public int ArrayScanFree()
-    {
-        var memory = new int[Count];
-
-        foreach (var mID in _memoryIds)
-        {
-            memory[FindLeftmostFreeRun(memory)] = mID;
-        }
-
-        var freed = 0;
-
-        foreach (var mID in _memoryIds)
-        {
-            freed += FreeByScan(memory, mID);
-        }
-
-        return freed;
-    }
-
-    private static int FreeByScan(int[] memory, int mID)
-    {
-        var freed = 0;
-
-        for (var i = 0; i < memory.Length; i++)
-        {
-            if (memory[i] == mID)
-            {
-                memory[i] = 0;
-                freed++;
-            }
-        }
-
-        return freed;
-    }
+    public int ArrayScanFree() => Replay(new MemoryAllocatorByArrayScan(Count));
 
     [Benchmark]
-    public int HashMapTrackedFree()
+    public int HashMapTrackedFree() => Replay(new MemoryAllocatorByHashMapIndex(Count));
+
+    // Sums every reported unit count rather than discarding it, so the JIT can't
+    // eliminate the replay as dead code.
+    private int Replay(IMemoryAllocatorStrategy allocator)
     {
-        var memory = new int[Count];
-        var blocksByMemoryId = new HashMap<int, DynamicArray<int>>();
-
-        foreach (var mID in _memoryIds)
+        foreach (var memoryId in _memoryIds)
         {
-            var index = FindLeftmostFreeRun(memory);
-            memory[index] = mID;
-
-            var indices = new DynamicArray<int>();
-            indices.Add(index);
-            blocksByMemoryId.Set(mID, indices);
+            allocator.Allocate(SingleUnit, memoryId);
         }
 
         var freed = 0;
 
-        foreach (var mID in _memoryIds)
+        foreach (var memoryId in _memoryIds)
         {
-            freed += FreeByHashMap(memory, blocksByMemoryId, mID);
+            freed += allocator.Free(memoryId);
         }
 
         return freed;
-    }
-
-    private static int FreeByHashMap(int[] memory, HashMap<int, DynamicArray<int>> blocksByMemoryId, int mID)
-    {
-        if (!blocksByMemoryId.TryGetValue(mID, out var indices))
-        {
-            return 0;
-        }
-
-        for (var i = 0; i < indices.Count; i++)
-        {
-            memory[indices.Get(i)] = 0;
-        }
-
-        blocksByMemoryId.TryRemove(mID);
-        return indices.Count;
-    }
-
-    // Single-unit runs only (every allocation in this workload is size 1), so the
-    // loop can return as soon as it sees one free cell - still the same leftmost-
-    // free-cell scan a size-parameterized run search degrades to when size == 1.
-    private static int FindLeftmostFreeRun(int[] memory)
-    {
-        for (var i = 0; i < memory.Length; i++)
-        {
-            if (memory[i] == 0)
-            {
-                return i;
-            }
-        }
-
-        return -1;
     }
 }

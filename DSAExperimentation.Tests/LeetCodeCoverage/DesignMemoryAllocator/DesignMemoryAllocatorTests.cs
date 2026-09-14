@@ -1,120 +1,129 @@
-using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
+using static DSAExperimentation.LeetCode.DesignMemoryAllocator.DesignMemoryAllocatorSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignMemoryAllocator;
 
-// LeetCode 2502. Design Memory Allocator: Allocate scans a plain int[] memory
-// array (0 = free) for the leftmost run of `size` free units and stamps mID into
-// it - no data structure abstracts "find the leftmost gap" any better than direct
-// indexed access here, the same raw-array role
-// DesignANumberContainerSystemSolution's linear-scan baseline gives its
-// index-to-number table. Free is where a repo primitive earns its place: rather
-// than rescanning the whole array for every unit still carrying mID, this
-// composes HashMap<int, DynamicArray<int>> to remember exactly which indices each
-// mID currently owns, so Free only visits those indices - the same "HashMap index
-// over an array" shape DesignANumberContainerSystemSolution already uses, just
-// tracking a set of indices per key instead of one.
-public sealed partial class DesignMemoryAllocatorTests
+// Harness only. Both strategies are DesignMemoryAllocatorSolution's - this file
+// replays LeetCode's published call sequence, plus four hand-traced fragmentation
+// cases, against each IMemoryAllocatorStrategy implementation via a small operation
+// script, so a failure still names the strategy that broke even though the "input"
+// here is a sequence of mutating calls rather than a single argument tuple.
+// MemoryAllocatorOp.Apply is pure dispatch (which method to call with which
+// arguments) - no run-finding or bookkeeping logic of its own.
+public sealed class DesignMemoryAllocatorTests
 {
-    [Fact]
-    public void Allocator_LeetCodeExample_MatchesPublishedOutputSequence()
+    public static TheoryData<int, MemoryAllocatorOp[], int[]> Examples =>
+        new()
+        {
+            // LeetCode's published example: single-unit allocations, a free that
+            // opens a one-unit hole too small for the next request, reuse of that
+            // hole, a multi-block mID freed in one call, a request larger than any
+            // remaining run, and a free of an mID that never allocated anything.
+            {
+                10,
+                [
+                    MemoryAllocatorOp.Allocate(1, 1),
+                    MemoryAllocatorOp.Allocate(1, 2),
+                    MemoryAllocatorOp.Allocate(1, 3),
+                    MemoryAllocatorOp.Free(2),
+                    MemoryAllocatorOp.Allocate(3, 4),
+                    MemoryAllocatorOp.Allocate(1, 1),
+                    MemoryAllocatorOp.Allocate(1, 1),
+                    MemoryAllocatorOp.Free(1),
+                    MemoryAllocatorOp.Allocate(10, 2),
+                    MemoryAllocatorOp.Free(7),
+                ],
+                [0, 1, 2, 1, 3, 1, 6, 3, -1, 0]
+            },
+
+            // No run large enough remains, even though enough units are free in
+            // total - the scan must not accept a shorter run.
+            {
+                3,
+                [
+                    MemoryAllocatorOp.Allocate(2, 1),
+                    MemoryAllocatorOp.Allocate(2, 2),
+                ],
+                [0, -1]
+            },
+
+            // One mID owning two disjoint blocks: a single free releases both, and
+            // the four freed units are still split by a live block in the middle, so
+            // a size-4 request fails while a size-2 one takes the leftmost hole.
+            // Freeing the same mID again reports 0, as does an mID never seen.
+            {
+                6,
+                [
+                    MemoryAllocatorOp.Allocate(2, 1),
+                    MemoryAllocatorOp.Allocate(2, 2),
+                    MemoryAllocatorOp.Allocate(2, 1),
+                    MemoryAllocatorOp.Free(1),
+                    MemoryAllocatorOp.Allocate(4, 3),
+                    MemoryAllocatorOp.Allocate(2, 3),
+                    MemoryAllocatorOp.Free(9),
+                    MemoryAllocatorOp.Free(1),
+                ],
+                [0, 2, 4, 4, -1, 0, 0, 0]
+            },
+
+            // A request wider than the whole memory array, then the exact-fit
+            // request, freed in full and immediately reallocated from index 0.
+            {
+                3,
+                [
+                    MemoryAllocatorOp.Allocate(4, 1),
+                    MemoryAllocatorOp.Allocate(3, 1),
+                    MemoryAllocatorOp.Free(1),
+                    MemoryAllocatorOp.Allocate(1, 2),
+                ],
+                [-1, 0, 3, 0]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MemoryAllocatorByArrayScan_LeetCodeExamples_MatchesPublishedOutputSequence(
+        int n, MemoryAllocatorOp[] operations, int[] expected) =>
+        RunScript(new MemoryAllocatorByArrayScan(n), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MemoryAllocatorByHashMapIndex_LeetCodeExamples_MatchesPublishedOutputSequence(
+        int n, MemoryAllocatorOp[] operations, int[] expected) =>
+        RunScript(new MemoryAllocatorByHashMapIndex(n), operations, expected);
+
+    private static void RunScript(IMemoryAllocatorStrategy allocator, MemoryAllocatorOp[] operations, int[] expected)
     {
-        var allocator = new Allocator(10);
-
-        Assert.Equal(0, allocator.Allocate(1, 1));
-        Assert.Equal(1, allocator.Allocate(1, 2));
-        Assert.Equal(2, allocator.Allocate(1, 3));
-        Assert.Equal(1, allocator.Free(2));
-        Assert.Equal(3, allocator.Allocate(3, 4));
-        Assert.Equal(1, allocator.Allocate(1, 1));
-        Assert.Equal(6, allocator.Allocate(1, 1));
-        Assert.Equal(3, allocator.Free(1));
-        Assert.Equal(-1, allocator.Allocate(10, 2));
-        Assert.Equal(0, allocator.Free(7));
-    }
-
-    [Fact]
-    public void Allocate_NoRunLargeEnoughRemains_ReturnsNegativeOne()
-    {
-        var allocator = new Allocator(3);
-
-        Assert.Equal(0, allocator.Allocate(2, 1));
-        Assert.Equal(-1, allocator.Allocate(2, 2));
-    }
-
-    private sealed class Allocator(int n)
-    {
-        private readonly int[] _memory = new int[n];
-        private readonly HashMap<int, DynamicArray<int>> _blocksByMemoryId = new();
-
-        public int Allocate(int size, int mID)
+        for (var i = 0; i < operations.Length; i++)
         {
-            var runStart = FindLeftmostFreeRun(size);
-
-            if (runStart < 0)
-            {
-                return -1;
-            }
-
-            MarkAllocated(runStart, size, mID);
-            return runStart;
-        }
-
-        public int Free(int mID)
-        {
-            if (!_blocksByMemoryId.TryGetValue(mID, out var indices))
-            {
-                return 0;
-            }
-
-            for (var i = 0; i < indices.Count; i++)
-            {
-                _memory[indices.Get(i)] = 0;
-            }
-
-            _blocksByMemoryId.TryRemove(mID);
-            return indices.Count;
-        }
-
-        private int FindLeftmostFreeRun(int size)
-        {
-            var runStart = -1;
-            var runLength = 0;
-
-            for (var i = 0; i < _memory.Length; i++)
-            {
-                if (_memory[i] != 0)
-                {
-                    runStart = -1;
-                    runLength = 0;
-                    continue;
-                }
-
-                runStart = runLength == 0 ? i : runStart;
-                runLength++;
-
-                if (runLength == size)
-                {
-                    return runStart;
-                }
-            }
-
-            return -1;
-        }
-
-        private void MarkAllocated(int start, int size, int mID)
-        {
-            if (!_blocksByMemoryId.TryGetValue(mID, out var indices))
-            {
-                indices = new DynamicArray<int>();
-                _blocksByMemoryId.Set(mID, indices);
-            }
-
-            for (var i = start; i < start + size; i++)
-            {
-                _memory[i] = mID;
-                indices.Add(i);
-            }
+            Assert.Equal(expected[i], operations[i].Apply(allocator));
         }
     }
+}
+
+// One call in an allocator script: which method to invoke and with what arguments.
+// Pure dispatch, built via the named factories below so a script (like Examples
+// above) reads like the LeetCode call sequence it replays.
+public readonly record struct MemoryAllocatorOp
+{
+    private readonly bool _isFree;
+    private readonly int _size;
+    private readonly int _memoryId;
+
+    private MemoryAllocatorOp(bool isFree, int size, int memoryId)
+    {
+        _isFree = isFree;
+        _size = size;
+        _memoryId = memoryId;
+    }
+
+    public static MemoryAllocatorOp Allocate(int size, int memoryId) => new(isFree: false, size, memoryId);
+
+    public static MemoryAllocatorOp Free(int memoryId) => new(isFree: true, size: 0, memoryId);
+
+    // Both allocator calls report an int, so one expected value per operation is
+    // enough and no null placeholder is needed. Internal, not public:
+    // IMemoryAllocatorStrategy is internal to DesignMemoryAllocatorSolution, and
+    // only this same assembly's RunScript ever calls Apply.
+    internal int Apply(IMemoryAllocatorStrategy allocator)
+        => _isFree ? allocator.Free(_memoryId) : allocator.Allocate(_size, _memoryId);
 }
