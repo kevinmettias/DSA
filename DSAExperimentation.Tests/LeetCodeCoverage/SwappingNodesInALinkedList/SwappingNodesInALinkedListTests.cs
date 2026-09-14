@@ -1,71 +1,53 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SwappingNodesInALinkedList;
 
-// LeetCode 1721. Swapping Nodes in a Linked List: one pass over this repo's mutable
-// SinglyLinkedListNode<T> to reach the kth node from the front, then a fast/slow pair of
-// node references walked together so the slow reference lands on the kth node from the
-// end the moment fast runs out - swap the two nodes' Values in place, the same "rewrite
-// Value, not the pointers" shape SwapNodesInPairsTests uses for its own node primitive.
-public sealed partial class SwappingNodesInALinkedListTests
+// Harness only. Both strategies are SwappingNodesInALinkedListSolution's - this
+// file pins them to LeetCode's published examples plus the boundary cases the
+// published pair does not reach: k = 1 and k = n (the two ends swap with each
+// other), the single-node list, and the odd-length list where the kth node from
+// each end is the same node, so the swap has to be a no-op rather than a
+// self-assignment that corrupts it.
+//
+// The examples are stated as raw values, not as built nodes, because
+// SwapNodesByTwoPointerWalk rewrites the Values of the very list it is handed:
+// sharing one already-swapped chain between the two theories over this data would
+// feed the second call an input the first had already consumed.
+public sealed class SwappingNodesInALinkedListTests
 {
-    [Fact]
-    public void SwapNodes_ClassicExample_SwapsKthFromFrontAndEnd()
-    {
-        var head = BuildList([1, 2, 3, 4, 5]);
-
-        var swapped = SwapNodes(head, 2);
-        var result = ToArray(swapped);
-
-        Assert.Equal([1, 4, 3, 2, 5], result);
-    }
-
-    [Fact]
-    public void SwapNodes_KEqualsOne_SwapsFirstAndLastNodes()
-    {
-        var head = BuildList([7, 9, 6, 6, 7, 8, 3, 0, 9, 5]);
-
-        var swapped = SwapNodes(head, 1);
-        var result = ToArray(swapped);
-
-        Assert.Equal([5, 9, 6, 6, 7, 8, 3, 0, 9, 7], result);
-    }
-
-    [Fact]
-    public void SwapNodes_SingleNodeList_LeavesListUnchanged()
-    {
-        var head = BuildList([42]);
-
-        var swapped = SwapNodes(head, 1);
-        var result = ToArray(swapped);
-
-        Assert.Equal([42], result);
-    }
-
-    private static SinglyLinkedListNode<int>? SwapNodes(SinglyLinkedListNode<int>? head, int k)
-    {
-        var front = head;
-        for (var i = 1; i < k; i++)
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
         {
-            front = front!.Next;
-        }
+            { [1, 2, 3, 4, 5], 2, [1, 4, 3, 2, 5] },
+            { [7, 9, 6, 6, 7, 8, 3, 0, 9, 5], 5, [7, 9, 6, 6, 8, 7, 3, 0, 9, 5] },
+            { [7, 9, 6, 6, 7, 8, 3, 0, 9, 5], 1, [5, 9, 6, 6, 7, 8, 3, 0, 9, 7] },
+            { [1, 2, 3, 4, 5], 5, [5, 2, 3, 4, 1] },
+            { [1, 2, 3], 2, [1, 2, 3] },
+            { [42], 1, [42] },
+        };
 
-        var end = head;
-        var runner = front;
-        while (runner!.Next is not null)
-        {
-            runner = runner.Next;
-            end = end!.Next;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SwapNodesByArrayMaterialize_LeetCodeExamples_SwapsKthFromFrontAndEnd(
+        int[] values, int k, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(BuildList(values), k)));
 
-        (front!.Value, end!.Value) = (end.Value, front.Value);
-        return head;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SwapNodesByTwoPointerWalk_LeetCodeExamples_SwapsKthFromFrontAndEnd(
+        int[] values, int k, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(BuildList(values), k)));
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
         var tail = dummy;
+
         foreach (var value in values)
         {
             tail.Next = new SinglyLinkedListNode<int>(value);
@@ -78,6 +60,7 @@ public sealed partial class SwappingNodesInALinkedListTests
     private static int[] ToArray(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
+
         for (var node = head; node is not null; node = node.Next)
         {
             values.Add(node.Value);

@@ -1,50 +1,36 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindKthLargestXorCoordinateValue;
 
-// LeetCode 1738. Find Kth Largest XOR Coordinate Value: a 2D prefix-XOR pass
-// over the grid (the XOR analogue of a prefix-sum rectangle) feeds every
-// coordinate value into the same O(rows*cols*log k) size-k min-heap
-// KthLargestElementTests already uses - this repo's Heap<int,MinHeapOrder<int>>
-// discarding its smallest root whenever the heap grows past k.
-public sealed partial class FindKthLargestXorCoordinateValueTests
+// Harness only. Both selection strategies are
+// FindKthLargestXorCoordinateValueSolution's; this file pins them to all four of
+// LeetCode's published examples - including k == 4, the rank the original coverage
+// omitted, whose answer is the 0 that the corner cancellation produces - plus two
+// degenerate shapes where one dimension is a single cell.
+public sealed class FindKthLargestXorCoordinateValueTests
 {
-    [Theory]
-    [InlineData(1, 7)]
-    [InlineData(2, 5)]
-    [InlineData(3, 4)]
-    public void KthLargestValue_LeetCodeExample_ReturnsCorrectRank(int k, int expected)
-    {
-        int[][] matrix = [[5, 2], [1, 6]];
-
-        var result = KthLargestValue(matrix, k);
-
-        Assert.Equal(expected, result);
-    }
-
-    private static int KthLargestValue(int[][] matrix, int k)
-    {
-        var rows = matrix.Length;
-        var cols = matrix[0].Length;
-        var prefixXor = new int[rows + 1, cols + 1];
-        var heap = new Heap<int, MinHeapOrder<int>>();
-
-        for (var r = 1; r <= rows; r++)
+    public static TheoryData<int[][], int, int> Examples =>
+        new()
         {
-            for (var c = 1; c <= cols; c++)
-            {
-                prefixXor[r, c] = matrix[r - 1][c - 1] ^ prefixXor[r - 1, c] ^ prefixXor[r, c - 1] ^ prefixXor[r - 1, c - 1];
+            { [[5, 2], [1, 6]], 1, 7 },
+            { [[5, 2], [1, 6]], 2, 5 },
+            { [[5, 2], [1, 6]], 3, 4 },
+            { [[5, 2], [1, 6]], 4, 0 },
+            { [[8]], 1, 8 },
+            { [[1, 2, 3]], 1, 3 },
+            { [[1, 2, 3]], 2, 1 },
+            { [[1, 2, 3]], 3, 0 },
+        };
 
-                heap.Push(prefixXor[r, c]);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthLargestValueByFullSort_LeetCodeExamples_ReturnsCorrectRank(
+        int[][] matrix, int k, int expected) =>
+        Assert.Equal(expected, FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(matrix, k));
 
-                if (heap.Count > k)
-                {
-                    heap.TryPop(out _);
-                }
-            }
-        }
-
-        heap.TryPeek(out var kthLargest);
-        return kthLargest;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthLargestValueBySizeKHeap_LeetCodeExamples_ReturnsCorrectRank(
+        int[][] matrix, int k, int expected) =>
+        Assert.Equal(expected, FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(matrix, k));
 }

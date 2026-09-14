@@ -1,56 +1,34 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.PalindromePartitioningIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioningIV;
 
-// LeetCode 1745. Palindrome Partitioning IV: whether s splits into exactly
-// three non-empty palindromic substrings. This repo's Memoizer drives the
-// same (Position, PartitionsLeft) recursion PalindromePartitioningIIITests
-// already uses (fixed here at 3 remaining partitions instead of a variable
-// k), caching each state so the many different first/second cut choices that
-// land on the same later position are resolved once instead of re-walked -
-// IsPalindrome stays the same O(n) two-pointer helper PalindromePartitioningII/
-// III both use to price a candidate substring.
-public sealed partial class PalindromePartitioningIVTests
+// Harness only: both strategies live in PalindromePartitioningIVSolution and are
+// asserted against the same examples, so a failure names the strategy that broke.
+// The unmemoized recursion was previously only a benchmark's baseline arm and went
+// unasserted; it is under test here for the first time.
+public sealed class PalindromePartitioningIVTests
 {
+    public static TheoryData<string, bool> Examples =>
+        new()
+        {
+            { "abcbdd", true },
+            { "bcbddxy", false },
+            { "abc", true },
+            { "aba", true },
+            { "aaaa", true },
+            { "abcde", false },
+            { "ab", false },
+        };
+
     [Theory]
-    [InlineData("abcbdd", true)]
-    [InlineData("bcbddxy", false)]
-    public void CheckPartitioning_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(string s, bool expected)
-        => Assert.Equal(expected, CheckPartitioning(s));
+    [MemberData(nameof(Examples))]
+    public void CheckPartitioningByNaiveRecursion_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(
+        string s, bool expected) =>
+        Assert.Equal(expected, PalindromePartitioningIVSolution.CheckPartitioningByNaiveRecursion(s));
 
-    private static bool CheckPartitioning(string s)
-        => Memoizer.Memoize<(int Position, int PartitionsLeft), bool>((0, 3), (state, canSplit) =>
-        {
-            var (position, partitionsLeft) = state;
-
-            if (partitionsLeft == 0)
-            {
-                return position == s.Length;
-            }
-
-            var lastEnd = s.Length - (partitionsLeft - 1);
-
-            for (var end = position + 1; end <= lastEnd; end++)
-            {
-                if (IsPalindrome(s, position, end - 1) && canSplit((end, partitionsLeft - 1)))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        });
-
-    private static bool IsPalindrome(string s, int l, int r)
-    {
-        while (l < r)
-        {
-            if (s[l++] != s[r--])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CheckPartitioningByMemoizedRecurrence_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(
+        string s, bool expected) =>
+        Assert.Equal(expected, PalindromePartitioningIVSolution.CheckPartitioningByMemoizedRecurrence(s));
 }
