@@ -1,25 +1,41 @@
+using DSAExperimentation.LeetCode.MinimumCutsToDivideACircle;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCutsToDivideACircle;
 
-// LeetCode 2481. Minimum Cuts to Divide a Circle: purely arithmetic. A cut through the
-// center (a diameter) yields 2 equal slices per cut, so an even n needs exactly n / 2
-// such cuts. An odd n can never pair opposite slices across the center - among n
-// evenly-spaced points around the circle, no point has an antipodal partner also on
-// that list unless n is even - so every cut must instead be a single radius cut,
-// needing n of them. n == 1 needs no cut at all. No existing repo primitive
-// (Stack/HashMap/DisjointSet/Memoizer/...) genuinely models this: it is a closed-form
-// parity check with no recursive or search structure to compose over, the same
-// "lighter repo-primitive fit" shape PowerOfTwoTests.cs/NumberOf1BitsTests.cs already
-// use for bit/arithmetic-only Easy problems.
-public sealed partial class MinimumCutsToDivideACircleTests
+// Harness only. Both strategies are MinimumCutsToDivideACircleSolution's - this file
+// states LeetCode's examples once and asserts each strategy against them, including
+// the one-cut-at-a-time simulation that was previously a benchmark-only arm and so
+// was never checked against an expected answer at all.
+public sealed class MinimumCutsToDivideACircleTests
 {
-    [Theory]
-    [InlineData(4, 2)]
-    [InlineData(3, 3)]
-    [InlineData(1, 0)]
-    [InlineData(2, 1)]
-    [InlineData(100, 50)]
-    public void NumberOfCuts_LeetCodeExamples_ReturnsExpectedMinimumCuts(int n, int expected)
-        => Assert.Equal(expected, NumberOfCuts(n));
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            // n = 4 -> 2 diameter cuts.
+            { 4, 2 },
 
-    private static int NumberOfCuts(int n) => n == 1 ? 0 : n % 2 == 0 ? n / 2 : n;
+            // n = 3 -> 3 radius cuts; no pair of opposite slices exists.
+            { 3, 3 },
+
+            // n = 1 -> the circle is already one slice.
+            { 1, 0 },
+
+            // The smallest n that a single diameter cut settles.
+            { 2, 1 },
+
+            // Both parities at the top of the problem's 1 <= n <= 100 range, where
+            // the simulation actually loops: the largest even n, and the largest odd.
+            { 100, 50 },
+            { 99, 99 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfCutsBySimulation_LeetCodeExamples_ReturnsExpectedMinimumCuts(int n, int expected) =>
+        Assert.Equal(expected, MinimumCutsToDivideACircleSolution.NumberOfCutsBySimulation(n));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfCutsByClosedFormParity_LeetCodeExamples_ReturnsExpectedMinimumCuts(int n, int expected) =>
+        Assert.Equal(expected, MinimumCutsToDivideACircleSolution.NumberOfCutsByClosedFormParity(n));
 }

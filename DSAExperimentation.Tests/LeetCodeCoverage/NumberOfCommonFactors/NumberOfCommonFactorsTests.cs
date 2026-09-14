@@ -1,47 +1,43 @@
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.NumberOfCommonFactors;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfCommonFactors;
 
-// LeetCode 2427. Number of Common Factors: every common factor of a and b is
-// exactly a divisor of gcd(a,b) (Euclid's algorithm - plain arithmetic, no data
-// structure of its own), so divisors are enumerated only up to sqrt(gcd) instead of
-// scanning up to min(a,b) directly. The two divisors found at each step (i and
-// gcd/i) are deduplicated through this repo's own Set<int> (HashMap-backed) for the
-// i*i==gcd boundary case, the same role CountLatticePointsInsideACircleTests'
-// Set<(int,int)> plays for its own union-of-points dedupe.
-public sealed partial class NumberOfCommonFactorsTests
+// Harness only: both algorithms live in NumberOfCommonFactorsSolution. One test
+// method per strategy over one shared set of examples, so a failure names the
+// strategy that broke rather than reporting a disagreement between two anonymous
+// arms.
+public sealed class NumberOfCommonFactorsTests
 {
+    public static TheoryData<int, int, int> Examples =>
+        new()
+        {
+            // LeetCode's own two examples.
+            { 12, 6, 4 },
+            { 25, 15, 2 },
+
+            // The smallest possible input.
+            { 1, 1, 1 },
+
+            // Coprime operands: only 1 divides both.
+            { 7, 13, 1 },
+
+            // gcd = 12, whose divisors are 1, 2, 3, 4, 6, 12.
+            { 36, 24, 6 },
+
+            // gcd = 100 is a perfect square, so i*i == gcd offers 10 twice and the
+            // set has to collapse it: 1, 2, 4, 5, 10, 20, 25, 50, 100.
+            { 100, 100, 9 },
+        };
+
     [Theory]
-    [InlineData(12, 6, 4)]
-    [InlineData(25, 15, 2)]
-    [InlineData(1, 1, 1)]
-    public void CountCommonFactors_LeetCodeExamples_ReturnsExpectedCount(int a, int b, int expected)
-        => Assert.Equal(expected, CountCommonFactors(a, b));
+    [MemberData(nameof(Examples))]
+    public void CountCommonFactorsByLinearScan_LeetCodeExamples_ReturnsCommonFactorCount(
+        int first, int second, int expected) =>
+        Assert.Equal(expected, NumberOfCommonFactorsSolution.CountCommonFactorsByLinearScan(first, second));
 
-    private static int CountCommonFactors(int a, int b)
-    {
-        var gcd = Gcd(a, b);
-        var divisors = new Set<int>();
-
-        for (var i = 1; (long)i * i <= gcd; i++)
-        {
-            if (gcd % i == 0)
-            {
-                divisors.TryAdd(i);
-                divisors.TryAdd(gcd / i);
-            }
-        }
-
-        return divisors.Count;
-    }
-
-    private static int Gcd(int a, int b)
-    {
-        while (b != 0)
-        {
-            (a, b) = (b, a % b);
-        }
-
-        return a;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountCommonFactorsByDivisorEnumeration_LeetCodeExamples_ReturnsCommonFactorCount(
+        int first, int second, int expected) =>
+        Assert.Equal(expected, NumberOfCommonFactorsSolution.CountCommonFactorsByDivisorEnumeration(first, second));
 }

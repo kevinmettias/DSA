@@ -1,89 +1,80 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ClosestNodesQueriesInABinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ClosestNodesQueriesInABinarySearchTree;
 
-// LeetCode 2476. Closest Nodes Queries in a Binary Search Tree: an in-order walk
-// (this repo's own InOrderTraversal/IInOrderHooks over BinaryTreeNode<int>, the
-// same composition FindModeInBinarySearchTreeTests/KthSmallestElementInABSTTests
-// already use) collects every node value into a sorted DynamicArray<int> once,
-// then each query answers with BinarySearch.LowerBound's insertion point - the
-// same floor/ceiling-from-an-insertion-point move ClosestRoomTests already proves
-// out, here reporting both neighbors instead of picking whichever is nearer, and
-// -1 when a neighbor on that side doesn't exist.
+// Harness only. Both strategies are ClosestNodesQueriesInABinarySearchTreeSolution's -
+// this file states LeetCode's examples once and asserts each strategy against them,
+// including the linear per-query rescan that was previously a benchmark-only arm and
+// so was never checked against an expected answer at all.
+//
+// Each tree is given as its BST insertion order rather than as a node graph:
+// BinaryTreeNode<TValue> is internal, so a public MemberData member cannot name it,
+// and the insertion order pins the same shape LeetCode draws.
 public sealed class ClosestNodesQueriesInABinarySearchTreeTests
 {
-    [Fact]
-    public void ClosestNodes_LeetCodeExample1_ReturnsFloorAndCeilingPerQuery()
-    {
-        // [6,2,13,1,4,9,15,null,null,null,null,null,null,14]
-        var root = new BinaryTreeNode<int>(6)
+    public static TheoryData<int[], int[], int[][]> Examples =>
+        new()
         {
-            Left = new(2) { Left = new(1), Right = new(4) },
-            Right = new(13) { Left = new(9), Right = new(15) { Left = new(14) } },
+            // root = [6,2,13,1,4,9,15,null,null,null,null,null,null,14], queries = [2,5,16]
+            {
+                [6, 2, 13, 1, 4, 9, 15, 14],
+                [2, 5, 16],
+                [[2, 2], [4, 6], [15, -1]]
+            },
+
+            // root = [4,null,9], queries = [3]
+            { [4, 9], [3], [[-1, 4]] },
+
+            // Queries past both ends of the tree, and one landing exactly on a node.
+            { [5, 3, 8], [1, 10, 5], [[-1, 3], [8, -1], [5, 5]] },
+
+            // A single-node tree: the one value is its own floor and ceiling, and
+            // is the only answer either side can ever report.
+            { [7], [7, 6, 8], [[7, 7], [-1, 7], [7, -1]] },
+
+            // A deeper tree, with the four cases interleaved in one query list so a
+            // strategy that resets state per query is exercised in both directions.
+            {
+                [10, 5, 15, 3, 7, 13, 18],
+                [4, 10, 20, 1],
+                [[3, 5], [10, 10], [18, -1], [-1, 3]]
+            },
         };
-        int[] queries = [2, 5, 16];
 
-        var (mins, maxs) = ClosestNodes(root, queries);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ClosestNodesByLinearScan_LeetCodeExamples_ReturnsFloorAndCeilingPerQuery(
+        int[] insertionOrder,
+        int[] queries,
+        int[][] expected) =>
+        Assert.Equal(
+            expected,
+            ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByLinearScan(
+                BuildTree(insertionOrder),
+                queries));
 
-        Assert.Equal([2, 4, 15], mins);
-        Assert.Equal([2, 6, -1], maxs);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ClosestNodesByInOrderBinarySearch_LeetCodeExamples_ReturnsFloorAndCeilingPerQuery(
+        int[] insertionOrder,
+        int[] queries,
+        int[][] expected) =>
+        Assert.Equal(
+            expected,
+            ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByInOrderBinarySearch(
+                BuildTree(insertionOrder),
+                queries));
 
-    [Fact]
-    public void ClosestNodes_QueriesBeyondBothEnds_ReturnMinusOneForTheMissingNeighbor()
+    private static BinaryTreeNode<int>? BuildTree(int[] insertionOrder)
     {
-        var root = new BinaryTreeNode<int>(5) { Left = new(3), Right = new(8) };
-        int[] queries = [1, 10, 5];
+        var tree = new BinarySearchTree<int>();
 
-        var (mins, maxs) = ClosestNodes(root, queries);
-
-        Assert.Equal([-1, 8, 5], mins);
-        Assert.Equal([3, -1, 5], maxs);
-    }
-
-    private static (int[] Mins, int[] Maxs) ClosestNodes(BinaryTreeNode<int> root, int[] queries)
-    {
-        State.Values.Value = new DynamicArray<int>();
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-        var values = State.Values.Value;
-
-        var mins = new int[queries.Length];
-        var maxs = new int[queries.Length];
-
-        for (var i = 0; i < queries.Length; i++)
+        foreach (var value in insertionOrder)
         {
-            var (floor, ceiling) = FloorAndCeiling(values, queries[i]);
-            mins[i] = floor;
-            maxs[i] = ceiling;
+            tree.Insert(value);
         }
 
-        return (mins, maxs);
-    }
-
-    private static (int Floor, int Ceiling) FloorAndCeiling(DynamicArray<int> values, int query)
-    {
-        var index = BinarySearch.LowerBound(new DynamicArraySequence<int>(values), query);
-
-        if (index < values.Count && values.Get(index) == query)
-        {
-            return (query, query);
-        }
-
-        var floor = index > 0 ? values.Get(index - 1) : -1;
-        var ceiling = index < values.Count ? values.Get(index) : -1;
-        return (floor, ceiling);
-    }
-
-    private readonly struct CollectHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Values = new();
+        return tree.Root;
     }
 }

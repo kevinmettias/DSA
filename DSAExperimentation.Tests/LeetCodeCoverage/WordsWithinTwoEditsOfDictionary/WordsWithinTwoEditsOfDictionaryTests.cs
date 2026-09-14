@@ -1,98 +1,50 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.WordsWithinTwoEditsOfDictionary;
 
-// LeetCode 2452. Words Within Two Edits of Dictionary: build every dictionary word
-// into this repo's own LowercaseTrie<bool> (all words are guaranteed lowercase and
-// equal length), then, per query, a budgeted DFS over the trie - the same
-// Root/Children navigation ImplementMagicDictionaryTests.Search already rehearses -
-// generalized from "exactly one substitution" to "at most two," succeeding as soon
-// as the walk consumes the whole query with budget left and lands on a stored word.
+// Harness only: both strategies live in WordsWithinTwoEditsOfDictionarySolution and
+// are asserted against the same examples, including the budget boundary (two edits
+// match, three do not), a query that matches nothing, and duplicate queries, which
+// LeetCode reports once each rather than collapsing.
 public sealed class WordsWithinTwoEditsOfDictionaryTests
 {
-    private const int MaxEdits = 2;
-
-    [Fact]
-    public void FindMatchingQueries_LeetCodeExample1_ReturnsWordsWithinBudget()
-    {
-        string[] queries = ["word", "note", "ants", "wood"];
-        string[] dictionary = ["word", "note", "cash"];
-
-        var result = FindMatchingQueries(queries, dictionary);
-
-        Assert.Equal(["word", "note", "wood"], result);
-    }
-
-    [Fact]
-    public void FindMatchingQueries_LeetCodeExample2_ReturnsNoMatches()
-    {
-        string[] queries = ["yes"];
-        string[] dictionary = ["not"];
-
-        var result = FindMatchingQueries(queries, dictionary);
-
-        Assert.Empty(result);
-    }
-
-    [Fact]
-    public void FindMatchingQueries_ExactDictionaryWord_CountsAsZeroEditsWithinBudget()
-    {
-        string[] queries = ["hello"];
-        string[] dictionary = ["hello"];
-
-        var result = FindMatchingQueries(queries, dictionary);
-
-        Assert.Equal(["hello"], result);
-    }
-
-    private static string[] FindMatchingQueries(string[] queries, string[] dictionary)
-    {
-        var trie = new LowercaseTrie<bool>();
-
-        foreach (var word in dictionary)
+    public static TheoryData<string[], string[], string[]> Examples =>
+        new()
         {
-            trie.Set(word, true);
-        }
+            // LeetCode example 1: "ants" is three edits from every dictionary word.
+            { ["word", "note", "ants", "wood"], ["word", "note", "cash"], ["word", "note", "wood"] },
 
-        var matches = new List<string>();
+            // LeetCode example 2: nothing is within budget.
+            { ["yes"], ["not"], [] },
 
-        foreach (var query in queries)
-        {
-            if (IsWithinEditBudget(trie.Root, query, 0, MaxEdits))
-            {
-                matches.Add(query);
-            }
-        }
+            // An exact dictionary word costs zero edits, which is inside the budget.
+            { ["hello"], ["hello"], ["hello"] },
 
-        return [.. matches];
-    }
+            // The budget boundary walked one edit at a time: 0, 1 and 2 edits match,
+            // 3 does not.
+            { ["abcd", "abce", "abfe", "afge"], ["abcd"], ["abcd", "abce", "abfe"] },
 
-    private static bool IsWithinEditBudget(LowercaseTrieNode<bool> node, string query, int index, int remainingEdits)
-    {
-        if (index == query.Length)
-        {
-            return node.HasValue;
-        }
+            // Answers keep the queries' own order, so a later query can match while
+            // an earlier one does not.
+            { ["xyz", "abc", "xyc"], ["abc"], ["abc", "xyc"] },
 
-        var target = query[index] - 'a';
+            // Repeated queries are reported once each, not deduplicated.
+            { ["ac", "ac"], ["ab"], ["ac", "ac"] },
+        };
 
-        for (var candidate = 0; candidate < LowercaseTrieNode<bool>.AlphabetSize; candidate++)
-        {
-            var next = node.Children[candidate];
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMatchingQueriesByBruteForce_LeetCodeExamples_ReturnsQueriesWithinEditBudget(
+        string[] queries, string[] dictionary, string[] expected) =>
+        Assert.Equal(
+            expected,
+            WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(queries, dictionary));
 
-            if (next is null)
-            {
-                continue;
-            }
-
-            var nextBudget = candidate == target ? remainingEdits : remainingEdits - 1;
-
-            if (nextBudget >= 0 && IsWithinEditBudget(next, query, index + 1, nextBudget))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindMatchingQueriesByEditBudgetTrie_LeetCodeExamples_ReturnsQueriesWithinEditBudget(
+        string[] queries, string[] dictionary, string[] expected) =>
+        Assert.Equal(
+            expected,
+            WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(queries, dictionary));
 }

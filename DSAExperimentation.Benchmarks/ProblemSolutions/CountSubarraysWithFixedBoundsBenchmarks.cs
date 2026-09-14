@@ -1,14 +1,14 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.CountSubarraysWithFixedBounds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Count Subarrays With Fixed Bounds (LC 2444): the textbook triple-nested-loop
-// baseline rescans each subarray from scratch to recompute its own min/max (O(subarray
-// length) per (start,end) pair, paid again from zero every time) vs. this repo's own
-// SegmentTree<int,MinOperation<int>>/SegmentTree<int,MaxOperation<int>> pair
-// answering each subarray's min/max in O(log n) instead,
-// CountSubarraysWithFixedBoundsTests' exact composition.
+// Harness only: both arms are CountSubarraysWithFixedBoundsSolution's, the same
+// methods CountSubarraysWithFixedBoundsTests proves correct. The baseline rescans
+// each subarray from scratch to recompute its own min/max, the composed arm builds
+// this repo's Min/Max SegmentTree pair once and answers each subarray in O(log n) -
+// so the SegmentTree build stays inside the measured arm deliberately, since paying
+// for it is exactly what that strategy is trading against the rescan.
 [MemoryDiagnoser]
 public class CountSubarraysWithFixedBoundsBenchmarks
 {
@@ -30,51 +30,10 @@ public class CountSubarraysWithFixedBoundsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long RescanEachSubarray()
-    {
-        long count = 0;
-
-        for (var start = 0; start < _nums.Length; start++)
-        {
-            for (var end = start; end < _nums.Length; end++)
-            {
-                var min = int.MaxValue;
-                var max = int.MinValue;
-
-                for (var i = start; i <= end; i++)
-                {
-                    min = Math.Min(min, _nums[i]);
-                    max = Math.Max(max, _nums[i]);
-                }
-
-                if (min == MinK && max == MaxK)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    public long RescanEachSubarray() =>
+        CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysByRescan(_nums, MinK, MaxK);
 
     [Benchmark]
-    public long SegmentTreeRangeQueries()
-    {
-        var minTree = new SegmentTree<int, MinOperation<int>>(_nums);
-        var maxTree = new SegmentTree<int, MaxOperation<int>>(_nums);
-        long count = 0;
-
-        for (var start = 0; start < _nums.Length; start++)
-        {
-            for (var end = start; end < _nums.Length; end++)
-            {
-                if (minTree.Query(start, end) == MinK && maxTree.Query(start, end) == MaxK)
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    public long SegmentTreeRangeQueries() =>
+        CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysBySegmentTreeQueries(_nums, MinK, MaxK);
 }

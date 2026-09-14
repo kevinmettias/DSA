@@ -1,14 +1,13 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MinimumCutsToDivideACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Cuts to Divide a Circle (LC 2481): an O(n) simulation that places one cut at
-// a time - a diameter cut removes 2 remaining slices at once when n is even, a radius
-// cut removes 1 when n is odd - vs. the O(1) closed-form parity check the simulation
-// always reduces to. No repo data-structure primitive fits this problem (see
-// MinimumCutsToDivideACircleTests.cs: it is pure arithmetic with no recursive/search
-// structure to compose over), so both variants live here directly rather than routing
-// through a primitive that would not change either one's behavior.
+// Harness only: both arms are MinimumCutsToDivideACircleSolution's, the same
+// methods MinimumCutsToDivideACircleTests proves correct. SimulateOneCutAtATime
+// places one cut at a time, O(n); ClosedFormParityCheck reads the same count off
+// n's parity, O(1). The sizes deliberately run past LeetCode's own n <= 100 bound
+// so the linear arm has something to measure.
 [MemoryDiagnoser]
 public class MinimumCutsToDivideACircleBenchmarks
 {
@@ -16,27 +15,10 @@ public class MinimumCutsToDivideACircleBenchmarks
     public int Slices;
 
     [Benchmark(Baseline = true)]
-    public int SimulateOneCutAtATime()
-    {
-        if (Slices == 1)
-        {
-            return 0;
-        }
-
-        var remaining = Slices;
-        var step = remaining % 2 == 0 ? 2 : 1;
-        var cuts = 0;
-
-        while (remaining > 0)
-        {
-            remaining -= step;
-            cuts++;
-        }
-
-        return cuts;
-    }
+    public int SimulateOneCutAtATime() =>
+        MinimumCutsToDivideACircleSolution.NumberOfCutsBySimulation(Slices);
 
     [Benchmark]
-    public int ClosedFormParityCheck()
-        => Slices == 1 ? 0 : Slices % 2 == 0 ? Slices / 2 : Slices;
+    public int ClosedFormParityCheck() =>
+        MinimumCutsToDivideACircleSolution.NumberOfCutsByClosedFormParity(Slices);
 }

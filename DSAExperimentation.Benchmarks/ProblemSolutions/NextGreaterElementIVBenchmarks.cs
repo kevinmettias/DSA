@@ -1,22 +1,22 @@
 using BenchmarkDotNet.Attributes;
-using NextGreaterStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.NextGreaterElementIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Next Greater Element IV (LC 2454): the O(n^2) brute-force scan (walking forward
-// from each index, counting values greater than it, until the second one turns up)
-// vs. the O(n) two-monotonic-stack sweep over this repo's own Stack<int> - the same
-// NextGreaterElementII precedent, generalized from "first greater" to "second
-// greater" by promoting waitingForFirst's resolved indices into a second waiting
-// stack instead of resolving them outright.
+// Harness only: both arms are NextGreaterElementIVSolution's, the same methods
+// NextGreaterElementIVTests proves correct. [GlobalSetup] generates the value array
+// - LeetCode's own input shape, handed straight to each strategy, so no
+// prepared-input overload is needed - leaving each arm to measure only the sweep.
+//
+// The O(n^2) brute-force scan walks forward from every index until it has seen two
+// greater values; the O(n) sweep pushes each index onto one of two monotonic
+// Stack<int>s and lets later values resolve them.
 [MemoryDiagnoser]
 public class NextGreaterElementIVBenchmarks
 {
     private const int RandomSeed = 2454; // LeetCode problem number
 
     private const int MaxElementValue = 1_000;
-
-    private const int RequiredGreaterCount = 2;
 
     [Params(200, 5_000)]
     public int Length;
@@ -31,68 +31,9 @@ public class NextGreaterElementIVBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] BruteForce()
-    {
-        var n = _values.Length;
-        var result = new int[n];
-        Array.Fill(result, -1);
-
-        for (var i = 0; i < n; i++)
-        {
-            var greaterCount = 0;
-
-            for (var j = i + 1; j < n; j++)
-            {
-                if (_values[j] <= _values[i])
-                {
-                    continue;
-                }
-
-                greaterCount++;
-
-                if (greaterCount == RequiredGreaterCount)
-                {
-                    result[i] = _values[j];
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    public int[] BruteForce() => NextGreaterElementIVSolution.SecondGreaterElementByBruteForce(_values);
 
     [Benchmark]
-    public int[] TwoMonotonicStacks()
-    {
-        var n = _values.Length;
-        var result = new int[n];
-        Array.Fill(result, -1);
-        var waitingForFirst = new NextGreaterStack();
-        var waitingForSecond = new NextGreaterStack();
-        var promoted = new NextGreaterStack();
-
-        for (var i = 0; i < n; i++)
-        {
-            while (waitingForSecond.TryPeek(out var second) && _values[second] < _values[i])
-            {
-                waitingForSecond.TryPop(out _);
-                result[second] = _values[i];
-            }
-
-            while (waitingForFirst.TryPeek(out var first) && _values[first] < _values[i])
-            {
-                waitingForFirst.TryPop(out _);
-                promoted.Push(first);
-            }
-
-            while (promoted.TryPop(out var index))
-            {
-                waitingForSecond.Push(index);
-            }
-
-            waitingForFirst.Push(i);
-        }
-
-        return result;
-    }
+    public int[] TwoMonotonicStacks() =>
+        NextGreaterElementIVSolution.SecondGreaterElementByTwoMonotonicStacks(_values);
 }

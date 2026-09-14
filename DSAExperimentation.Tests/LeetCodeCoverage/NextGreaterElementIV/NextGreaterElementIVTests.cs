@@ -1,79 +1,45 @@
-using NextGreaterStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.NextGreaterElementIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NextGreaterElementIV;
 
-// LeetCode 2454. Next Greater Element IV: the classic two-monotonic-stack sweep
-// over this repo's own Stack<int> - the same NextGreaterElementII precedent.
-// waitingForFirst holds indices still waiting for their FIRST greater value;
-// waitingForSecond holds indices that already found their first and are waiting
-// for their SECOND. Popping an index out of waitingForFirst promotes it into
-// waitingForSecond through a small "promoted" stack (rather than resolving it
-// outright) so its relative order - and waitingForSecond's own decreasing
-// invariant - survives the move, since a value can only resolve waitingForSecond's
-// entries, never waitingForFirst's, on the same pass.
+// Harness only: both strategies live in NextGreaterElementIVSolution and are
+// asserted against the same examples, including the equal-values case (strictly
+// greater, so ties never count), a strictly decreasing run where nothing resolves,
+// and a duplicate-heavy run that exercises the promotion between the two stacks.
 public sealed class NextGreaterElementIVTests
 {
-    [Fact]
-    public void SecondGreaterElement_LeetCodeExample1_ReturnsExpectedSequence()
-    {
-        int[] nums = [2, 4, 0, 9, 6];
-
-        var result = SecondGreaterElement(nums);
-
-        Assert.Equal([9, 6, 6, -1, -1], result);
-    }
-
-    [Fact]
-    public void SecondGreaterElement_LeetCodeExample2_ReturnsAllMinusOne()
-    {
-        int[] nums = [3, 3];
-
-        var result = SecondGreaterElement(nums);
-
-        Assert.Equal([-1, -1], result);
-    }
-
-    [Fact]
-    public void SecondGreaterElement_StrictlyIncreasing_EachAnswerIsTwoStepsAhead()
-    {
-        // Every later value is greater, so index i's second greater is simply nums[i+2].
-        int[] nums = [1, 2, 3, 4];
-
-        var result = SecondGreaterElement(nums);
-
-        Assert.Equal([3, 4, -1, -1], result);
-    }
-
-    private static int[] SecondGreaterElement(int[] nums)
-    {
-        var result = new int[nums.Length];
-        Array.Fill(result, -1);
-        var waitingForFirst = new NextGreaterStack();
-        var waitingForSecond = new NextGreaterStack();
-        var promoted = new NextGreaterStack();
-
-        for (var i = 0; i < nums.Length; i++)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            while (waitingForSecond.TryPeek(out var second) && nums[second] < nums[i])
-            {
-                waitingForSecond.TryPop(out _);
-                result[second] = nums[i];
-            }
+            // LeetCode example 1.
+            { [2, 4, 0, 9, 6], [9, 6, 6, -1, -1] },
 
-            while (waitingForFirst.TryPeek(out var first) && nums[first] < nums[i])
-            {
-                waitingForFirst.TryPop(out _);
-                promoted.Push(first);
-            }
+            // LeetCode example 2: equal values are not greater.
+            { [3, 3], [-1, -1] },
 
-            while (promoted.TryPop(out var index))
-            {
-                waitingForSecond.Push(index);
-            }
+            // Every later value is greater, so index i's second greater is nums[i+2].
+            { [1, 2, 3, 4], [3, 4, -1, -1] },
 
-            waitingForFirst.Push(i);
-        }
+            // Strictly decreasing: nothing after any index is greater at all.
+            { [5, 4, 3, 2, 1], [-1, -1, -1, -1, -1] },
 
-        return result;
-    }
+            // A single element has nothing after it.
+            { [7], [-1] },
+
+            // Duplicates ahead count separately once they are strictly greater, and
+            // the two 1s are both promoted out of the first stack by the same 2.
+            { [1, 1, 2, 3, 2], [3, 3, -1, -1, -1] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SecondGreaterElementByBruteForce_LeetCodeExamples_ReturnsSecondGreaterPerIndex(
+        int[] nums, int[] expected) =>
+        Assert.Equal(expected, NextGreaterElementIVSolution.SecondGreaterElementByBruteForce(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SecondGreaterElementByTwoMonotonicStacks_LeetCodeExamples_ReturnsSecondGreaterPerIndex(
+        int[] nums, int[] expected) =>
+        Assert.Equal(expected, NextGreaterElementIVSolution.SecondGreaterElementByTwoMonotonicStacks(nums));
 }
