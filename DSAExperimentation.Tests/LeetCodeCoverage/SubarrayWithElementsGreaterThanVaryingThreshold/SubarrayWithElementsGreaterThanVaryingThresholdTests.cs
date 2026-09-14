@@ -1,83 +1,48 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.DisjointSet;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SubarrayWithElementsGreaterThanVaryingThreshold;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SubarrayWithElementsGreaterThanVaryingThreshold;
 
-// LeetCode 2334. Subarray With Elements Greater Than Varying Threshold: sort the
-// indices by value descending (this repo's own MergeSort.Sort<Element,TSequence>
-// over an ArrayIndexedSequence<int> - the same "sort an index array by a comparer
-// closed over the value array" shape OddEvenJumpTests already uses), then process
-// indices in that order and grow each one's window by DisjointSet.Union with any
-// already-processed neighbor (GraphConnectivityWithThreshold's own DisjointSet
-// precedent, just unioning adjacent indices instead of divisor multiples). Because
-// values are processed non-increasing, every neighbor merged into an index's
-// component already has a value >= the one being checked, so that component's
-// length is always a valid window size the moment length * value exceeds threshold
-// - returned immediately, since any qualifying window is an acceptable answer.
-// -1 if no window ever qualifies. DisjointSet itself tracks the partition, not the
-// size, so a plain int[] indexed by (unioned) root tracks each component's size
-// alongside it - the same "DisjointSet plus caller-owned bookkeeping" shape a
-// union-by-size policy would need if DisjointSet exposed one (ARCHITECTURE.md
-// §10.1: linking policy is a complexity law, not something this type has to expose).
+// Harness only. Both strategies are
+// SubarrayWithElementsGreaterThanVaryingThresholdSolution's - this file pins them to
+// LeetCode's published examples plus the degenerate cases those never reach.
+//
+// LC 2334 accepts *any* qualifying subarray size, so each example states every size
+// that qualifies rather than one blessed number, and the two strategies genuinely
+// exercise that latitude: on LeetCode's own [6,5,6,5,8] example the window scan
+// returns 2 (the first qualifying window in start order) while the union-find sweep
+// returns 1 (the first qualifying window in value order). Most examples here are
+// pinned to a single admissible size, so the freedom is not load-bearing anywhere the
+// answer is actually determined.
 public sealed class SubarrayWithElementsGreaterThanVaryingThresholdTests
 {
-    [Theory]
-    [InlineData(new[] { 1, 3, 4, 3, 1 }, 6, 3)]
-    [InlineData(new[] { 6, 5, 6, 5, 8 }, 7, 1)]
-    [InlineData(new[] { 1, 1, 1, 1 }, 1000, -1)]
-    public void ValidSubarraySize_LeetCodeExamples_ReturnsExpectedSize(int[] nums, int threshold, int expected)
-        => Assert.Equal(expected, ValidSubarraySize(nums, threshold));
-
-    private static int ValidSubarraySize(int[] nums, int threshold)
-    {
-        var n = nums.Length;
-        var order = DescendingValueOrder(nums);
-
-        var components = new DisjointSet(n);
-        var size = new int[n];
-        var visited = new bool[n];
-
-        foreach (var index in order)
+    public static TheoryData<int[], int, int[]> Examples =>
+        new()
         {
-            visited[index] = true;
-            size[index] = 1;
+            { [1, 3, 4, 3, 1], 6, [3] },
+            { [6, 5, 6, 5, 8], 7, [1, 2, 3, 4, 5] },
+            { [1, 1, 1, 1], 1000, [-1] },
+            { [9], 8, [1] },
+            { [5, 5], 6, [2] },
+            { [2, 2, 2], 5, [3] },
+            { [3, 1, 3], 5, [-1] },
+            { [10, 1, 10], 9, [1] },
+        };
 
-            if (index > 0 && visited[index - 1])
-            {
-                MergeInto(components, size, index, index - 1);
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ValidSubarraySizeByWindowMinimumScan_LeetCodeExamples_ReturnsAQualifyingSize(
+        int[] nums, int threshold, int[] qualifyingSizes) =>
+        Assert.Contains(
+            SubarrayWithElementsGreaterThanVaryingThresholdSolution.ValidSubarraySizeByWindowMinimumScan(
+                nums, threshold),
+            qualifyingSizes);
 
-            if (index < n - 1 && visited[index + 1])
-            {
-                MergeInto(components, size, index, index + 1);
-            }
-
-            var root = components.Find(index);
-            if ((long)size[root] * nums[index] > threshold)
-            {
-                return size[root];
-            }
-        }
-
-        return -1;
-    }
-
-    private static int[] DescendingValueOrder(int[] nums)
-    {
-        var order = Enumerable.Range(0, nums.Length).ToArray();
-        var byDescendingValueThenIndex = Comparer<int>.Create(
-            (a, b) => nums[a] != nums[b] ? nums[b].CompareTo(nums[a]) : a.CompareTo(b));
-
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(order), byDescendingValueThenIndex);
-
-        return order;
-    }
-
-    private static void MergeInto(DisjointSet components, int[] size, int index, int neighbor)
-    {
-        var combined = size[components.Find(index)] + size[components.Find(neighbor)];
-        components.Union(index, neighbor);
-        size[components.Find(index)] = combined;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ValidSubarraySizeByUnionFindOrder_LeetCodeExamples_ReturnsAQualifyingSize(
+        int[] nums, int threshold, int[] qualifyingSizes) =>
+        Assert.Contains(
+            SubarrayWithElementsGreaterThanVaryingThresholdSolution.ValidSubarraySizeByUnionFindOrder(
+                nums, threshold),
+            qualifyingSizes);
 }

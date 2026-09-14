@@ -1,18 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.DesignAFoodRatingSystem.DesignAFoodRatingSystemSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design a Food Rating System (LC 2353): both strategies replay the same
-// ChangeRating-then-HighestRated workload (every food's initial rating is immediately
-// superseded by one change, so both strategies serve every query off the changed value).
-// LinearScanHighestRated tracks each food's current rating in a plain array and answers
-// a query with a fresh O(n) scan for the best-rated match in that cuisine.
-// HeapPerCuisineHighestRated instead composes this repo's own HashMap<TKey,TValue> and a
-// max Heap<(int,string),TOrder> per cuisine (ordered by rating, then food name for ties)
-// so a query only ever pops entries that have since been superseded by a rating change,
-// amortized O(log n) per call.
+// Harness only: both arms are DesignAFoodRatingSystemSolution's, the same classes
+// DesignAFoodRatingSystemTests proves correct. [GlobalSetup] builds the workload -
+// the constructor's foods/cuisines/ratings, one superseding rating per food, and
+// the query cuisines - so generating it is charged to setup rather than to the
+// replay each arm measures.
+//
+// Every food's initial rating is immediately superseded by one ChangeRating, so
+// both strategies answer every query off the changed value. LinearScan rescans all
+// `Count` foods for the best-rated match in the queried cuisine on every call;
+// LazyDeletionHeap only ever pops the entries a rating change superseded, amortized
+// O(log n) per call.
 [MemoryDiagnoser]
 public class DesignAFoodRatingSystemBenchmarks
 {
@@ -41,105 +42,27 @@ public class DesignAFoodRatingSystemBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanHighestRated()
-    {
-        var ratings = _changeRatings.ToArray();
-
-        var total = 0;
-        foreach (var cuisine in _queryCuisines)
-        {
-            total += ScanForBestRating(ratings, cuisine);
-        }
-
-        return total;
-    }
-
-    private int ScanForBestRating(int[] ratings, string cuisine)
-    {
-        var bestIndex = -1;
-
-        for (var i = 0; i < _foods.Length; i++)
-        {
-            if (_cuisines[i] != cuisine)
-            {
-                continue;
-            }
-
-            if (bestIndex == -1
-                || ratings[i] > ratings[bestIndex]
-                || (ratings[i] == ratings[bestIndex] && string.CompareOrdinal(_foods[i], _foods[bestIndex]) < 0))
-            {
-                bestIndex = i;
-            }
-        }
-
-        return bestIndex == -1 ? 0 : ratings[bestIndex];
-    }
+    public long LinearScan() => Replay(new FoodRatingsByLinearScan(_foods, _cuisines, _initialRatings));
 
     [Benchmark]
-    public int HeapPerCuisineHighestRated()
+    public long LazyDeletionHeap() => Replay(new FoodRatingsByLazyDeletionHeap(_foods, _cuisines, _initialRatings));
+
+    // Sums the length of every reported food name rather than discarding the
+    // answer, so the JIT can't eliminate the replay as dead code.
+    private long Replay(IFoodRatingStrategy strategy)
     {
-        var ratingByFood = new HashMap<string, int>();
-        var heapByCuisine = new HashMap<string, Heap<(int Rating, string Food), ByRatingThenFoodOrder>>();
-
         for (var i = 0; i < _foods.Length; i++)
         {
-            ratingByFood.Set(_foods[i], _initialRatings[i]);
-            HeapForCuisine(heapByCuisine, _cuisines[i]).Push((_initialRatings[i], _foods[i]));
+            strategy.ChangeRating(_foods[i], _changeRatings[i]);
         }
 
-        for (var i = 0; i < _foods.Length; i++)
-        {
-            ratingByFood.Set(_foods[i], _changeRatings[i]);
-            HeapForCuisine(heapByCuisine, _cuisines[i]).Push((_changeRatings[i], _foods[i]));
-        }
+        var reportedNameLengthSum = 0L;
 
-        var total = 0;
         foreach (var cuisine in _queryCuisines)
         {
-            total += HighestRated(ratingByFood, heapByCuisine, cuisine);
+            reportedNameLengthSum += strategy.HighestRated(cuisine).Length;
         }
 
-        return total;
-    }
-
-    private static Heap<(int Rating, string Food), ByRatingThenFoodOrder> HeapForCuisine(
-        HashMap<string, Heap<(int Rating, string Food), ByRatingThenFoodOrder>> heapByCuisine, string cuisine)
-    {
-        if (!heapByCuisine.TryGetValue(cuisine, out var heap))
-        {
-            heap = new Heap<(int Rating, string Food), ByRatingThenFoodOrder>();
-            heapByCuisine.Set(cuisine, heap);
-        }
-
-        return heap;
-    }
-
-    private static int HighestRated(
-        HashMap<string, int> ratingByFood,
-        HashMap<string, Heap<(int Rating, string Food), ByRatingThenFoodOrder>> heapByCuisine,
-        string cuisine)
-    {
-        var heap = HeapForCuisine(heapByCuisine, cuisine);
-
-        while (heap.TryPeek(out var top))
-        {
-            if (ratingByFood.TryGetValue(top.Food, out var current) && current == top.Rating)
-            {
-                return top.Rating;
-            }
-
-            heap.TryPop(out _);
-        }
-
-        return 0;
-    }
-
-    private readonly struct ByRatingThenFoodOrder : IHeapOrder<(int Rating, string Food)>
-    {
-        public static bool HasPriority((int Rating, string Food) candidate, (int Rating, string Food) incumbent)
-            => candidate.Rating != incumbent.Rating
-                ? candidate.Rating > incumbent.Rating
-                : string.CompareOrdinal(candidate.Food, incumbent.Food) < 0;
+        return reportedNameLengthSum;
     }
 }

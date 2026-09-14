@@ -1,105 +1,132 @@
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.DesignAFoodRatingSystem.DesignAFoodRatingSystemSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAFoodRatingSystem;
 
-// LeetCode 2353. Design a Food Rating System: each cuisine's foods live in a max
-// Heap<(int Rating, string Food),TOrder> ordered by rating descending, then food name
-// ascending for LeetCode's tie-break rule - a two-field order, unlike the single-field
-// IHeapOrder witnesses that stop at the primary key and leave ties to the heap.
-// ChangeRating never removes the food's old heap entry; a HashMap<string,int> tracks
-// each food's *current* rating so HighestRated can lazily discard stale entries from
-// the top instead of updating mid-heap.
-public sealed partial class DesignAFoodRatingSystemTests
+// Harness only. Both strategies are DesignAFoodRatingSystemSolution's - this file
+// replays LeetCode's published call sequence against each IFoodRatingStrategy
+// implementation via a small operation script, so a failure still names the
+// strategy that broke even though the "input" here is a constructor plus a
+// sequence of mutating calls rather than a single argument tuple. FoodRatingOp.Apply
+// is pure dispatch (which method to call with which arguments) - no rating or
+// tie-break logic of its own.
+public sealed class DesignAFoodRatingSystemTests
 {
-    [Fact]
-    public void FoodRatings_LeetCodeExample_TracksHighestRatedAcrossRatingChanges()
+    public static TheoryData<string[], string[], int[], FoodRatingOp[], string?[]> Examples =>
+        new()
+        {
+            // LeetCode's published example, including the change that makes ramen
+            // and sushi tie at 16 so the lexicographically smaller name wins.
+            {
+                ["kimchi", "miso", "sushi", "moussaka", "ramen", "bulgogi"],
+                ["korean", "japanese", "japanese", "greek", "japanese", "korean"],
+                [9, 12, 8, 15, 14, 7],
+                [
+                    FoodRatingOp.HighestRated("korean"),
+                    FoodRatingOp.HighestRated("japanese"),
+                    FoodRatingOp.ChangeRating("sushi", 16),
+                    FoodRatingOp.HighestRated("japanese"),
+                    FoodRatingOp.ChangeRating("ramen", 16),
+                    FoodRatingOp.HighestRated("japanese"),
+                ],
+                ["kimchi", "ramen", null, "sushi", null, "ramen"]
+            },
+
+            // Tied from the start: the smaller name wins without any rating change.
+            {
+                ["bravo", "alpha"],
+                ["mex", "mex"],
+                [5, 5],
+                [FoodRatingOp.HighestRated("mex")],
+                ["alpha"]
+            },
+
+            // A rating lowered rather than raised, so the leader changes and the
+            // superseded entry has to be discarded; then restored into a tie, where
+            // the smaller name takes the lead back.
+            {
+                ["alpha", "bravo"],
+                ["thai", "thai"],
+                [9, 5],
+                [
+                    FoodRatingOp.HighestRated("thai"),
+                    FoodRatingOp.ChangeRating("alpha", 1),
+                    FoodRatingOp.HighestRated("thai"),
+                    FoodRatingOp.ChangeRating("alpha", 5),
+                    FoodRatingOp.HighestRated("thai"),
+                ],
+                ["alpha", null, "bravo", null, "alpha"]
+            },
+
+            // Cuisines do not interfere: a change in one leaves the other's answer
+            // alone, and a single-food cuisine always reports that food.
+            {
+                ["udon", "pho", "laksa"],
+                ["japanese", "viet", "malay"],
+                [3, 4, 5],
+                [
+                    FoodRatingOp.ChangeRating("udon", 100),
+                    FoodRatingOp.HighestRated("viet"),
+                    FoodRatingOp.HighestRated("malay"),
+                    FoodRatingOp.HighestRated("japanese"),
+                ],
+                [null, "pho", "laksa", "udon"]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FoodRatingsByLinearScan_LeetCodeExamples_ReturnsHighestRatedFoodPerCuisine(
+        string[] foods, string[] cuisines, int[] ratings, FoodRatingOp[] operations, string?[] expected) =>
+        RunScript(new FoodRatingsByLinearScan(foods, cuisines, ratings), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FoodRatingsByLazyDeletionHeap_LeetCodeExamples_ReturnsHighestRatedFoodPerCuisine(
+        string[] foods, string[] cuisines, int[] ratings, FoodRatingOp[] operations, string?[] expected) =>
+        RunScript(new FoodRatingsByLazyDeletionHeap(foods, cuisines, ratings), operations, expected);
+
+    private static void RunScript(IFoodRatingStrategy strategy, FoodRatingOp[] operations, string?[] expected)
     {
-        string[] foods = ["kimchi", "miso", "sushi", "moussaka", "ramen", "bulgogi"];
-        string[] cuisines = ["korean", "japanese", "japanese", "greek", "japanese", "korean"];
-        int[] ratings = [9, 12, 8, 15, 14, 7];
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(strategy));
+        }
+    }
+}
 
-        var foodRatings = new FoodRatings(foods, cuisines, ratings);
+// One call in a FoodRatings script: which method to invoke and with what arguments.
+// Pure dispatch, built via the named factories below so a script (like Examples
+// above) reads like the LeetCode call sequence it replays.
+public readonly record struct FoodRatingOp
+{
+    private readonly bool _isQuery;
+    private readonly string _subject;
+    private readonly int _rating;
 
-        Assert.Equal("kimchi", foodRatings.HighestRated("korean"));
-        Assert.Equal("ramen", foodRatings.HighestRated("japanese"));
-
-        foodRatings.ChangeRating("sushi", 16);
-        Assert.Equal("sushi", foodRatings.HighestRated("japanese"));
-
-        foodRatings.ChangeRating("ramen", 16);
-        Assert.Equal("ramen", foodRatings.HighestRated("japanese"));
+    private FoodRatingOp(bool isQuery, string subject, int rating)
+    {
+        _isQuery = isQuery;
+        _subject = subject;
+        _rating = rating;
     }
 
-    [Fact]
-    public void HighestRated_TiedRatings_ReturnsLexicographicallySmallerName()
+    public static FoodRatingOp ChangeRating(string food, int newRating) => new(isQuery: false, food, newRating);
+
+    public static FoodRatingOp HighestRated(string cuisine) => new(isQuery: true, cuisine, rating: 0);
+
+    // null for the void ChangeRating call, the reported food name for
+    // HighestRated - so a script runner can assert against one expected value per
+    // operation uniformly. Internal, not public: IFoodRatingStrategy is internal to
+    // DesignAFoodRatingSystemSolution, and only this same assembly's RunScript ever
+    // calls Apply.
+    internal string? Apply(IFoodRatingStrategy strategy)
     {
-        string[] foods = ["bravo", "alpha"];
-        string[] cuisines = ["mex", "mex"];
-        int[] ratings = [5, 5];
-
-        var foodRatings = new FoodRatings(foods, cuisines, ratings);
-
-        Assert.Equal("alpha", foodRatings.HighestRated("mex"));
-    }
-
-    private sealed class FoodRatings
-    {
-        private readonly HashMap<string, int> _ratingByFood = new();
-        private readonly HashMap<string, string> _cuisineByFood = new();
-        private readonly HashMap<string, Heap<(int Rating, string Food), ByRatingThenFoodOrder>> _heapByCuisine = new();
-
-        public FoodRatings(string[] foods, string[] cuisines, int[] ratings)
+        if (_isQuery)
         {
-            for (var i = 0; i < foods.Length; i++)
-            {
-                _ratingByFood.Set(foods[i], ratings[i]);
-                _cuisineByFood.Set(foods[i], cuisines[i]);
-                HeapForCuisine(cuisines[i]).Push((ratings[i], foods[i]));
-            }
+            return strategy.HighestRated(_subject);
         }
 
-        public void ChangeRating(string food, int newRating)
-        {
-            _ratingByFood.Set(food, newRating);
-            _cuisineByFood.TryGetValue(food, out var cuisine);
-            HeapForCuisine(cuisine).Push((newRating, food));
-        }
-
-        public string HighestRated(string cuisine)
-        {
-            var heap = HeapForCuisine(cuisine);
-
-            while (heap.TryPeek(out var top))
-            {
-                if (_ratingByFood.TryGetValue(top.Food, out var current) && current == top.Rating)
-                {
-                    return top.Food;
-                }
-
-                heap.TryPop(out _);
-            }
-
-            return string.Empty;
-        }
-
-        private Heap<(int Rating, string Food), ByRatingThenFoodOrder> HeapForCuisine(string cuisine)
-        {
-            if (!_heapByCuisine.TryGetValue(cuisine, out var heap))
-            {
-                heap = new Heap<(int Rating, string Food), ByRatingThenFoodOrder>();
-                _heapByCuisine.Set(cuisine, heap);
-            }
-
-            return heap;
-        }
-    }
-
-    private readonly struct ByRatingThenFoodOrder : IHeapOrder<(int Rating, string Food)>
-    {
-        public static bool HasPriority((int Rating, string Food) candidate, (int Rating, string Food) incumbent)
-            => candidate.Rating != incumbent.Rating
-                ? candidate.Rating > incumbent.Rating
-                : string.CompareOrdinal(candidate.Food, incumbent.Food) < 0;
+        strategy.ChangeRating(_subject, _rating);
+        return null;
     }
 }

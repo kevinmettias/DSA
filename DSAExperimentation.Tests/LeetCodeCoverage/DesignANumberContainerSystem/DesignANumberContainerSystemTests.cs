@@ -1,91 +1,130 @@
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.DesignANumberContainerSystem.DesignANumberContainerSystemSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignANumberContainerSystem;
 
-// LeetCode 2349. Design a Number Container System: each number's ever-assigned indices
-// live in a min Heap<int,MinHeapOrder<int>> (Find always wants the smallest surviving
-// index for that number), and a HashMap<int,int> tracks each index's *current* number so
-// stale heap entries - indices later overwritten with a different number - can be
-// lazily discarded from the top instead of removed mid-heap.
-public sealed partial class DesignANumberContainerSystemTests
+// Harness only. Both strategies are DesignANumberContainerSystemSolution's - this
+// file replays LeetCode's published call sequence against each
+// INumberContainerStrategy implementation via a small operation script, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of mutating calls rather than a single argument tuple.
+// NumberContainerOp.Apply is pure dispatch (which method to call with which
+// arguments) - no index/ordering logic of its own.
+public sealed class DesignANumberContainerSystemTests
 {
-    [Fact]
-    public void NumberContainers_LeetCodeExample_TracksSmallestIndexAcrossReplacement()
-    {
-        var containers = new NumberContainers();
-
-        Assert.Equal(-1, containers.Find(10));
-
-        containers.Change(2, 10);
-        containers.Change(1, 10);
-        containers.Change(3, 10);
-        containers.Change(5, 10);
-        Assert.Equal(1, containers.Find(10));
-
-        containers.Change(1, 20);
-        Assert.Equal(2, containers.Find(10));
-    }
-
-    [Fact]
-    public void Find_NumberNeverAssigned_ReturnsNegativeOne()
-    {
-        var containers = new NumberContainers();
-
-        containers.Change(0, 5);
-
-        Assert.Equal(-1, containers.Find(99));
-    }
-
-    [Fact]
-    public void Change_ReplacesIndexRepeatedly_FindReflectsOnlyCurrentAssignment()
-    {
-        var containers = new NumberContainers();
-
-        containers.Change(4, 7);
-        containers.Change(4, 8);
-        containers.Change(4, 7);
-
-        Assert.Equal(4, containers.Find(7));
-        Assert.Equal(-1, containers.Find(8));
-    }
-
-    private sealed class NumberContainers
-    {
-        private readonly HashMap<int, int> _numberByIndex = new();
-        private readonly HashMap<int, Heap<int, MinHeapOrder<int>>> _indicesByNumber = new();
-
-        public void Change(int index, int number)
+    public static TheoryData<NumberContainerOp[], int?[]> Examples =>
+        new()
         {
-            _numberByIndex.Set(index, number);
-
-            if (!_indicesByNumber.TryGetValue(number, out var indices))
+            // LeetCode's published example: find before anything is assigned, then
+            // the smallest index for 10, then the same query after index 1 is
+            // reassigned to a different number.
             {
-                indices = new Heap<int, MinHeapOrder<int>>();
-                _indicesByNumber.Set(number, indices);
-            }
+                [
+                    NumberContainerOp.Find(10),
+                    NumberContainerOp.Change(2, 10),
+                    NumberContainerOp.Change(1, 10),
+                    NumberContainerOp.Change(3, 10),
+                    NumberContainerOp.Change(5, 10),
+                    NumberContainerOp.Find(10),
+                    NumberContainerOp.Change(1, 20),
+                    NumberContainerOp.Find(10),
+                ],
+                [-1, null, null, null, null, 1, null, 2]
+            },
 
-            indices.Push(index);
+            // A number nothing was ever assigned to.
+            {
+                [
+                    NumberContainerOp.Change(0, 5),
+                    NumberContainerOp.Find(99),
+                ],
+                [null, -1]
+            },
+
+            // One index reassigned repeatedly, ending back on its first number:
+            // only the current assignment counts, and the abandoned one is empty.
+            {
+                [
+                    NumberContainerOp.Change(4, 7),
+                    NumberContainerOp.Change(4, 8),
+                    NumberContainerOp.Change(4, 7),
+                    NumberContainerOp.Find(7),
+                    NumberContainerOp.Find(8),
+                ],
+                [null, null, null, 4, -1]
+            },
+
+            // An index reclaimed by a number a previous Find already discarded it
+            // from - the lazy-deletion strategy has to answer 1 again rather than
+            // stay on the entry it popped.
+            {
+                [
+                    NumberContainerOp.Change(1, 10),
+                    NumberContainerOp.Change(2, 10),
+                    NumberContainerOp.Find(10),
+                    NumberContainerOp.Change(1, 20),
+                    NumberContainerOp.Find(10),
+                    NumberContainerOp.Change(1, 10),
+                    NumberContainerOp.Find(10),
+                    NumberContainerOp.Find(20),
+                ],
+                [null, null, 1, null, 2, null, 1, -1]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberContainersByLinearScan_LeetCodeExamples_FindsSmallestCurrentlyAssignedIndex(
+        NumberContainerOp[] operations, int?[] expected) =>
+        RunScript(new NumberContainersByLinearScan(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberContainersByLazyDeletionHeap_LeetCodeExamples_FindsSmallestCurrentlyAssignedIndex(
+        NumberContainerOp[] operations, int?[] expected) =>
+        RunScript(new NumberContainersByLazyDeletionHeap(), operations, expected);
+
+    private static void RunScript(INumberContainerStrategy strategy, NumberContainerOp[] operations, int?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(strategy));
+        }
+    }
+}
+
+// One call in a NumberContainers script: which method to invoke and with what
+// arguments. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct NumberContainerOp
+{
+    private readonly bool _isFind;
+    private readonly int _index;
+    private readonly int _number;
+
+    private NumberContainerOp(bool isFind, int index, int number)
+    {
+        _isFind = isFind;
+        _index = index;
+        _number = number;
+    }
+
+    public static NumberContainerOp Change(int index, int number) => new(isFind: false, index, number);
+
+    public static NumberContainerOp Find(int number) => new(isFind: true, index: 0, number);
+
+    // null for the void Change call, the reported index for Find - so a script
+    // runner can assert against one expected value per operation uniformly.
+    // Internal, not public: INumberContainerStrategy is internal to
+    // DesignANumberContainerSystemSolution, and only this same assembly's
+    // RunScript ever calls Apply.
+    internal int? Apply(INumberContainerStrategy strategy)
+    {
+        if (_isFind)
+        {
+            return strategy.Find(_number);
         }
 
-        public int Find(int number)
-        {
-            if (!_indicesByNumber.TryGetValue(number, out var indices))
-            {
-                return -1;
-            }
-
-            while (indices.TryPeek(out var index))
-            {
-                if (_numberByIndex.TryGetValue(index, out var current) && current == number)
-                {
-                    return index;
-                }
-
-                indices.TryPop(out _);
-            }
-
-            return -1;
-        }
+        strategy.Change(_index, _number);
+        return null;
     }
 }

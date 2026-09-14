@@ -1,22 +1,23 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using static DSAExperimentation.LeetCode.DesignANumberContainerSystem.DesignANumberContainerSystemSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Design a Number Container System (LC 2349): both strategies replay the same
-// Change-then-Find workload. Each index first gets its own distinct number (a
-// bijection over [0, Count)), then ~20% of indices are reassigned to a different
-// random number - just enough churn to exercise HeapPerNumberFind's lazy discarding
-// of now-stale entries. With numbers this sparse (at most a couple of indices ever
-// share one), a matching index is roughly uniformly positioned across the whole
-// array, so ArrayScanFind's fresh scan for the smallest matching index in a plain
-// int[] (unset = -1) genuinely costs O(n) on average per query - unlike a small
-// fixed number domain, where scanning from index 0 tends to hit a match within the
-// first few slots regardless of Count and never actually exercises the O(n) case.
-// HeapPerNumberFind instead composes this repo's own HashMap<TKey,TValue> (current
-// number per index) and a min Heap<int,MinHeapOrder<int>> per number, whose size
-// stays O(1) here, so Find resolves in amortized O(1) instead of scanning the array.
+// Harness only: both arms are DesignANumberContainerSystemSolution's, the same
+// classes DesignANumberContainerSystemTests proves correct. [GlobalSetup] builds
+// the call script - each index first gets its own distinct number (a bijection over
+// [0, Count)), then ~20% of indices are reassigned to a different random number,
+// just enough churn to exercise the heap strategy's lazy discarding of now-stale
+// entries - so script construction is charged to setup rather than to the replay
+// each arm measures.
+//
+// With numbers this sparse (at most a couple of indices ever share one), a matching
+// index is roughly uniformly positioned across the whole assignment table, so
+// LinearScan's fresh scan for the smallest matching index genuinely costs O(n) on
+// average per query - unlike a small fixed number domain, where scanning tends to
+// hit a match within the first few entries regardless of Count and never actually
+// exercises the O(n) case. LazyDeletionHeap's per-number heap stays O(1)-sized
+// here, so Find resolves in amortized O(1) instead.
 [MemoryDiagnoser]
 public class DesignANumberContainerSystemBenchmarks
 {
@@ -46,92 +47,27 @@ public class DesignANumberContainerSystemBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ArrayScanFind()
-    {
-        var numberByIndex = new int[Count];
-        Array.Fill(numberByIndex, -1);
-
-        for (var i = 0; i < _changeIndices.Length; i++)
-        {
-            numberByIndex[_changeIndices[i]] = _changeNumbers[i];
-        }
-
-        long total = 0;
-
-        foreach (var number in _findQueries)
-        {
-            total += ScanForSmallestIndex(numberByIndex, number);
-        }
-
-        return total;
-    }
-
-    private static int ScanForSmallestIndex(int[] numberByIndex, int number)
-    {
-        for (var i = 0; i < numberByIndex.Length; i++)
-        {
-            if (numberByIndex[i] == number)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    public long LinearScan() => Replay(new NumberContainersByLinearScan());
 
     [Benchmark]
-    public long HeapPerNumberFind()
-    {
-        var numberByIndex = new HashMap<int, int>();
-        var indicesByNumber = new HashMap<int, Heap<int, MinHeapOrder<int>>>();
+    public long LazyDeletionHeap() => Replay(new NumberContainersByLazyDeletionHeap());
 
+    // Sums every reported index rather than discarding it, so the JIT can't
+    // eliminate the replay as dead code.
+    private long Replay(INumberContainerStrategy strategy)
+    {
         for (var i = 0; i < _changeIndices.Length; i++)
         {
-            Change(numberByIndex, indicesByNumber, _changeIndices[i], _changeNumbers[i]);
+            strategy.Change(_changeIndices[i], _changeNumbers[i]);
         }
 
-        long total = 0;
+        var foundIndexSum = 0L;
 
         foreach (var number in _findQueries)
         {
-            total += Find(numberByIndex, indicesByNumber, number);
+            foundIndexSum += strategy.Find(number);
         }
 
-        return total;
-    }
-
-    private static void Change(
-        HashMap<int, int> numberByIndex, HashMap<int, Heap<int, MinHeapOrder<int>>> indicesByNumber, int index, int number)
-    {
-        numberByIndex.Set(index, number);
-
-        if (!indicesByNumber.TryGetValue(number, out var indices))
-        {
-            indices = new Heap<int, MinHeapOrder<int>>();
-            indicesByNumber.Set(number, indices);
-        }
-
-        indices.Push(index);
-    }
-
-    private static int Find(
-        HashMap<int, int> numberByIndex, HashMap<int, Heap<int, MinHeapOrder<int>>> indicesByNumber, int number)
-    {
-        if (!indicesByNumber.TryGetValue(number, out var indices))
-        {
-            return -1;
-        }
-
-        while (indices.TryPeek(out var index))
-        {
-            if (numberByIndex.TryGetValue(index, out var current) && current == number)
-            {
-                return index;
-            }
-
-            indices.TryPop(out _);
-        }
-
-        return -1;
+        return foundIndexSum;
     }
 }
