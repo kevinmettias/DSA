@@ -1,95 +1,154 @@
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.StockPriceFluctuation;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StockPriceFluctuation;
 
-// LeetCode 2034. Stock Price Fluctuation: this repo's own HashMap<int,int> holds
-// the authoritative price per timestamp (so a correction just overwrites it), while
-// two Heap<(int Price, int Timestamp), TOrder> instances - the same two-heap shape
-// FindMedianFromDataStreamTests already uses, one MaxHeapOrder, one MinHeapOrder -
-// track candidate maximum/minimum prices with lazy deletion: a heap root is only
-// trusted once its timestamp's HashMap entry still matches the price it was pushed
-// with, discarding every stale (superseded-by-correction) entry first.
-public sealed partial class StockPriceFluctuationTests
+// Harness only. Both strategies are StockPriceFluctuationSolution's - this file
+// replays LeetCode's published call sequence against each IStockPrice instance, so a
+// failure still names the strategy that broke even though the "input" here is a
+// sequence of Update/Current/Maximum/Minimum calls rather than a single argument
+// tuple, the same shape DetectSquaresTests uses for its own instance-API problem. The
+// full-scan baseline (previously untested scaffolding inlined in the benchmark) gets
+// the same coverage as the two-heap strategy here for the first time.
+public sealed class StockPriceFluctuationTests
 {
-    [Fact]
-    public void Update_LeetCodeExampleSequence_TracksCurrentMaximumAndMinimum()
+    public static TheoryData<StockPriceOp[], int?[]> Examples =>
+        new()
+        {
+            {
+                // LeetCode's published example: the correction at timestamp 1 drops
+                // that record from 10 to 3, which is what moves the maximum to 5.
+                [
+                    StockPriceOp.Update(1, 10), StockPriceOp.Update(2, 5),
+                    StockPriceOp.Current(), StockPriceOp.Maximum(),
+                    StockPriceOp.Update(1, 3), StockPriceOp.Maximum(),
+                    StockPriceOp.Update(4, 2), StockPriceOp.Minimum(),
+                    StockPriceOp.Update(4, 2), StockPriceOp.Minimum(),
+                ],
+                [null, null, 5, 10, null, 5, null, 2, null, 2]
+            },
+            {
+                // A correction makes the standing maximum stale, and the same
+                // correction simultaneously becomes the new minimum.
+                [
+                    StockPriceOp.Update(1, 100), StockPriceOp.Update(2, 20), StockPriceOp.Maximum(),
+                    StockPriceOp.Update(1, 1), StockPriceOp.Maximum(), StockPriceOp.Minimum(),
+                ],
+                [null, null, 100, null, 20, 1]
+            },
+            {
+                // One record: it is simultaneously the latest, the maximum and the
+                // minimum.
+                [
+                    StockPriceOp.Update(3, 7), StockPriceOp.Current(),
+                    StockPriceOp.Maximum(), StockPriceOp.Minimum(),
+                ],
+                [null, 7, 7, 7]
+            },
+            {
+                // Correcting the LATEST timestamp changes what Current reports.
+                [
+                    StockPriceOp.Update(1, 10), StockPriceOp.Update(2, 5), StockPriceOp.Current(),
+                    StockPriceOp.Update(2, 7), StockPriceOp.Current(),
+                ],
+                [null, null, 5, null, 7]
+            },
+            {
+                // Updates arrive out of timestamp order, so Current follows the
+                // largest timestamp rather than the most recent call.
+                [StockPriceOp.Update(5, 10), StockPriceOp.Update(2, 20), StockPriceOp.Current()],
+                [null, null, 10]
+            },
+            {
+                // A correction that RAISES a price: the old minimum is stale and the
+                // corrected record becomes the new maximum.
+                [
+                    StockPriceOp.Update(1, 5), StockPriceOp.Update(2, 9), StockPriceOp.Minimum(),
+                    StockPriceOp.Update(1, 20), StockPriceOp.Minimum(), StockPriceOp.Maximum(),
+                ],
+                [null, null, 5, null, 9, 20]
+            },
+            {
+                // Re-stating a price that is already current must not invalidate the
+                // entries the heaps already hold for it.
+                [
+                    StockPriceOp.Update(1, 4), StockPriceOp.Update(1, 4), StockPriceOp.Maximum(),
+                    StockPriceOp.Minimum(), StockPriceOp.Current(),
+                ],
+                [null, null, 4, 4, 4]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLazyDeletionTwoHeaps_LeetCodeExamples_TracksCurrentMaximumAndMinimum(
+        StockPriceOp[] operations, int?[] expected) =>
+        RunScript(StockPriceFluctuationSolution.CreateByLazyDeletionTwoHeaps(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByFullScan_LeetCodeExamples_TracksCurrentMaximumAndMinimum(
+        StockPriceOp[] operations, int?[] expected) =>
+        RunScript(StockPriceFluctuationSolution.CreateByFullScan(), operations, expected);
+
+    private static void RunScript(
+        StockPriceFluctuationSolution.IStockPrice stockPrice, StockPriceOp[] operations, int?[] expected)
     {
-        var stockPrice = new StockPriceOperations();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(stockPrice));
+        }
+    }
+}
 
-        stockPrice.Update(1, 10);
-        stockPrice.Update(2, 5);
-        Assert.Equal(5, stockPrice.Current());
-        Assert.Equal(10, stockPrice.Maximum());
+// One call in a StockPrice script: which operation to invoke and, for Update, the
+// record to store. Pure dispatch, built via the named factories below so a script
+// (like Examples above) reads like the LeetCode call sequence it replays. Update
+// returns null (no answer); the three queries return the actual answer - the same
+// null-means-no-return-value convention DetectSquaresOp.Apply uses for its own
+// mutator/query split.
+public readonly record struct StockPriceOp
+{
+    private readonly StockPriceOpKind _kind;
+    private readonly int _timestamp;
+    private readonly int _price;
 
-        stockPrice.Update(1, 3);
-        Assert.Equal(5, stockPrice.Maximum());
-
-        stockPrice.Update(4, 2);
-        Assert.Equal(2, stockPrice.Minimum());
-
-        stockPrice.Update(4, 2);
-        Assert.Equal(2, stockPrice.Minimum());
+    private StockPriceOp(StockPriceOpKind kind, int timestamp, int price)
+    {
+        _kind = kind;
+        _timestamp = timestamp;
+        _price = price;
     }
 
-    [Fact]
-    public void Maximum_AfterCorrectionMakesOldRootStale_SkipsStaleHeapEntries()
+    public static StockPriceOp Update(int timestamp, int price) =>
+        new(StockPriceOpKind.Update, timestamp, price);
+
+    public static StockPriceOp Current() => new(StockPriceOpKind.Current, timestamp: 0, price: 0);
+
+    public static StockPriceOp Maximum() => new(StockPriceOpKind.Maximum, timestamp: 0, price: 0);
+
+    public static StockPriceOp Minimum() => new(StockPriceOpKind.Minimum, timestamp: 0, price: 0);
+
+    internal int? Apply(StockPriceFluctuationSolution.IStockPrice stockPrice)
     {
-        var stockPrice = new StockPriceOperations();
-
-        stockPrice.Update(1, 100);
-        stockPrice.Update(2, 20);
-        Assert.Equal(100, stockPrice.Maximum());
-
-        stockPrice.Update(1, 1);
-        Assert.Equal(20, stockPrice.Maximum());
-        Assert.Equal(1, stockPrice.Minimum());
+        switch (_kind)
+        {
+            case StockPriceOpKind.Current:
+                return stockPrice.Current();
+            case StockPriceOpKind.Maximum:
+                return stockPrice.Maximum();
+            case StockPriceOpKind.Minimum:
+                return stockPrice.Minimum();
+            default:
+                stockPrice.Update(_timestamp, _price);
+                return null;
+        }
     }
 
-    private sealed class StockPriceOperations
+    private enum StockPriceOpKind
     {
-        private readonly HashMap<int, int> _priceAtTimestamp = new();
-        private readonly Heap<(int Price, int Timestamp), MaxHeapOrder<(int, int)>> _maxHeap = new();
-        private readonly Heap<(int Price, int Timestamp), MinHeapOrder<(int, int)>> _minHeap = new();
-        private int _latestTimestamp;
-
-        public void Update(int timestamp, int price)
-        {
-            _priceAtTimestamp.Set(timestamp, price);
-            _maxHeap.Push((price, timestamp));
-            _minHeap.Push((price, timestamp));
-            _latestTimestamp = Math.Max(_latestTimestamp, timestamp);
-        }
-
-        public int Current()
-        {
-            _priceAtTimestamp.TryGetValue(_latestTimestamp, out var price);
-            return price;
-        }
-
-        public int Maximum()
-        {
-            while (_maxHeap.TryPeek(out var top) && IsStale(top))
-            {
-                _maxHeap.TryPop(out _);
-            }
-
-            _maxHeap.TryPeek(out var current);
-            return current.Price;
-        }
-
-        public int Minimum()
-        {
-            while (_minHeap.TryPeek(out var top) && IsStale(top))
-            {
-                _minHeap.TryPop(out _);
-            }
-
-            _minHeap.TryPeek(out var current);
-            return current.Price;
-        }
-
-        private bool IsStale((int Price, int Timestamp) entry)
-            => _priceAtTimestamp.TryGetValue(entry.Timestamp, out var currentPrice) && currentPrice != entry.Price;
+        Update,
+        Current,
+        Maximum,
+        Minimum,
     }
 }

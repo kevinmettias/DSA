@@ -1,19 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimumNumberOfMovesToSeatEveryone;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Number of Moves to Seat Everyone (LC 2037): an O(n^2) selection sort of
-// both arrays (repeatedly extracting the minimum remaining element, no real
-// sorting algorithm - the same "no sort" brute-force shape ArrayPartitionBenchmarks
-// uses for LC 561) vs this repo's own O(n log n) MergeSort over
-// ArrayIndexedSequence, both followed by summing the index-wise absolute
-// difference between the two sorted arrays.
+// Harness only: both arms are MinimumNumberOfMovesToSeatEveryoneSolution's, the
+// same methods MinimumNumberOfMovesToSeatEveryoneTests proves correct - an O(n^2)
+// selection sort of both arrays against this repo's own O(n log n) MergeSort over
+// ArrayIndexedSequence, each followed by the same index-wise distance sum.
 [MemoryDiagnoser]
 public class MinimumNumberOfMovesToSeatEveryoneBenchmarks
 {
+    // LC problem number, reused as the deterministic random seed.
     private const int RandomSeed = 2037;
+
+    // Exclusive upper bound on a generated seat or student position.
     private const int MaxSeatPosition = 1_000_000;
 
     [Params(200, 5_000)]
@@ -31,54 +31,10 @@ public class MinimumNumberOfMovesToSeatEveryoneBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int SelectionSortPairSum()
-    {
-        var sortedSeats = _seats.ToArray();
-        var sortedStudents = _students.ToArray();
-        SelectionSort(sortedSeats);
-        SelectionSort(sortedStudents);
-
-        var moves = 0;
-        for (var i = 0; i < sortedSeats.Length; i++)
-        {
-            moves += Math.Abs(sortedSeats[i] - sortedStudents[i]);
-        }
-
-        return moves;
-    }
-
-    private static void SelectionSort(int[] values)
-    {
-        for (var i = 0; i < values.Length; i++)
-        {
-            var smallest = i;
-
-            for (var j = i + 1; j < values.Length; j++)
-            {
-                if (values[j] < values[smallest])
-                {
-                    smallest = j;
-                }
-            }
-
-            (values[i], values[smallest]) = (values[smallest], values[i]);
-        }
-    }
+    public int SelectionSortPairSum() =>
+        MinimumNumberOfMovesToSeatEveryoneSolution.MinMovesToSeatBySelectionSort(_seats, _students);
 
     [Benchmark]
-    public int MergeSortPairSum()
-    {
-        var sortedSeats = _seats.ToArray();
-        var sortedStudents = _students.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedSeats));
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedStudents));
-
-        var moves = 0;
-        for (var i = 0; i < sortedSeats.Length; i++)
-        {
-            moves += Math.Abs(sortedSeats[i] - sortedStudents[i]);
-        }
-
-        return moves;
-    }
+    public int MergeSortPairSum() =>
+        MinimumNumberOfMovesToSeatEveryoneSolution.MinMovesToSeatByMergeSort(_seats, _students);
 }

@@ -1,123 +1,65 @@
-using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Node, int Steps)>;
+using DSAExperimentation.LeetCode.SecondMinimumTimeToReachDestination;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SecondMinimumTimeToReachDestination;
 
-// LeetCode 2045. Second Minimum Time to Reach Destination: every road takes the
-// same `time` minutes, so "second minimum time" reduces to a second-shortest
-// path measured in EDGE COUNT - a dual-distance BFS variant of the level-by-level
-// peel MinimumHeightTreesTests already uses, tracking each node's first AND
-// second distinct BFS depth instead of stopping at the first. This repo's own
-// Queue<(int,int)> (DataStructures.Queue.Queue<Element>) is the frontier, the
-// same primitive MinimumCostToReachDestinationInTimeTests uses for its own
-// state-expansion BFS. Once the second-shortest edge count is known, the
-// traffic-signal wait at each intersection is a plain arithmetic simulation, not
-// itself a data-structure concern.
-public sealed partial class SecondMinimumTimeToReachDestinationTests
+// Harness only. Both dual-distance walks are
+// SecondMinimumTimeToReachDestinationSolution's - this file pins them to LeetCode's
+// two published examples plus the cases the examples never reach: a trip short enough
+// that no signal is ever red, a bipartite graph where the second-shortest route is two
+// roads longer rather than one, a triangle where it is exactly one longer, and a
+// signal so short that every single arrival waits.
+public sealed class SecondMinimumTimeToReachDestinationTests
 {
-    [Fact]
-    public void SecondMinimumTime_ClassicExampleWithBranchingGraph_WaitsOutOneRedLight()
-    {
-        int[][] edges = [[1, 2], [1, 3], [1, 4], [3, 4], [4, 5]];
-
-        var minutes = SecondMinimumTime(n: 5, edges, time: 3, change: 5);
-
-        Assert.Equal(13, minutes);
-    }
-
-    [Fact]
-    public void SecondMinimumTime_TwoNodesForcesBackAndForthTravel_WaitsOutTwoRedLights()
-    {
-        int[][] edges = [[1, 2]];
-
-        var minutes = SecondMinimumTime(n: 2, edges, time: 3, change: 2);
-
-        Assert.Equal(11, minutes);
-    }
-
-    private static int SecondMinimumTime(int n, int[][] edges, int time, int change)
-    {
-        var adjacency = BuildAdjacency(n, edges);
-        var (_, secondShortest) = ComputeFirstAndSecondEdgeCounts(n, adjacency);
-
-        return SimulateTravelTime(secondShortest[n - 1], time, change);
-    }
-
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
-    {
-        var adjacency = new List<int>[n];
-        for (var i = 0; i < n; i++)
+    public static TheoryData<int, int[][], int, int, int> Examples =>
+        new()
         {
-            adjacency[i] = [];
-        }
+            // LeetCode example 1: the two-road route takes 6 minutes, so the answer is
+            // the three-road one - which waits out one red light on the way.
+            { 5, [[1, 2], [1, 3], [1, 4], [3, 4], [4, 5]], 3, 5, 13 },
 
-        foreach (var edge in edges)
-        {
-            var (a, b) = (edge[0] - 1, edge[1] - 1);
-            adjacency[a].Add(b);
-            adjacency[b].Add(a);
-        }
+            // LeetCode example 2: the only road forces a trip back and forth, three
+            // crossings in all, two of them starting on red.
+            { 2, [[1, 2]], 3, 2, 11 },
 
-        return adjacency;
+            // The same graph as example 1 with a signal that never turns red inside the
+            // trip: three roads at three minutes each.
+            { 5, [[1, 2], [1, 3], [1, 4], [3, 4], [4, 5]], 3, 100, 9 },
+
+            // A path graph is bipartite, so every route to the far end uses an odd
+            // number of roads - the second minimum is two more, not one.
+            { 3, [[1, 2], [2, 3]], 1, 100, 4 },
+
+            // A triangle is not bipartite: one road there directly, two the long way.
+            { 3, [[1, 2], [2, 3], [1, 3]], 1, 100, 2 },
+
+            // A star: out to a leaf, back to the center, then on to the destination.
+            { 4, [[1, 2], [1, 3], [1, 4]], 1, 100, 3 },
+
+            // A four-node path with a signal shorter than two crossings, so two of the
+            // five arrivals wait out a red light.
+            { 4, [[1, 2], [2, 3], [3, 4]], 2, 3, 14 },
+
+            // The shortest possible signal: every arrival after the first lands on red.
+            { 2, [[1, 2]], 1, 1, 5 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SecondMinimumTimeByListFrontier_LeetCodeExamples_ReturnsSecondShortestArrivalTime(
+        int n, int[][] edges, int time, int change, int expected)
+    {
+        var minutes = SecondMinimumTimeToReachDestinationSolution.SecondMinimumTimeByListFrontier(n, edges, time, change);
+
+        Assert.Equal(expected, minutes);
     }
 
-    private static (int[] First, int[] Second) ComputeFirstAndSecondEdgeCounts(int n, List<int>[] adjacency)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SecondMinimumTimeByQueueFrontier_LeetCodeExamples_ReturnsSecondShortestArrivalTime(
+        int n, int[][] edges, int time, int change, int expected)
     {
-        var first = new int[n];
-        var second = new int[n];
-        Array.Fill(first, -1);
-        Array.Fill(second, -1);
-        first[0] = 0;
+        var minutes = SecondMinimumTimeToReachDestinationSolution.SecondMinimumTimeByQueueFrontier(n, edges, time, change);
 
-        var frontier = new RepoQueue();
-        frontier.Enqueue((0, 0));
-
-        var edgeCounts = new EdgeCounts(first, second);
-
-        while (frontier.TryDequeue(out var current))
-        {
-            RelaxNeighbors(adjacency, current, edgeCounts, frontier);
-        }
-
-        return (first, second);
-    }
-
-    private readonly record struct EdgeCounts(int[] First, int[] Second);
-
-    private static void RelaxNeighbors(
-        List<int>[] adjacency, (int Node, int Steps) current, EdgeCounts edgeCounts, RepoQueue frontier)
-    {
-        var nextSteps = current.Steps + 1;
-
-        foreach (var neighbor in adjacency[current.Node])
-        {
-            if (edgeCounts.First[neighbor] == -1)
-            {
-                edgeCounts.First[neighbor] = nextSteps;
-                frontier.Enqueue((neighbor, nextSteps));
-            }
-            else if (edgeCounts.First[neighbor] != nextSteps && edgeCounts.Second[neighbor] == -1)
-            {
-                edgeCounts.Second[neighbor] = nextSteps;
-                frontier.Enqueue((neighbor, nextSteps));
-            }
-        }
-    }
-
-    private static int SimulateTravelTime(int edgeCount, int time, int change)
-    {
-        var currentTime = 0;
-
-        for (var i = 0; i < edgeCount; i++)
-        {
-            var cycle = currentTime / change;
-            if (cycle % 2 == 1)
-            {
-                currentTime = (cycle + 1) * change;
-            }
-
-            currentTime += time;
-        }
-
-        return currentTime;
+        Assert.Equal(expected, minutes);
     }
 }
