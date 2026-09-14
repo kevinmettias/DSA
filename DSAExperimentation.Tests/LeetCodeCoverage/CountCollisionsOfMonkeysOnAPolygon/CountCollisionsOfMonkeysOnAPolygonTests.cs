@@ -1,53 +1,38 @@
+using DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountCollisionsOfMonkeysOnAPolygon;
 
-// LeetCode 2550. Count Collisions of Monkeys on a Polygon: each of the n
-// monkeys independently picks one of 2 directions, so there are 2^n total
-// configurations; the only two configurations with zero collisions are "every
-// monkey goes clockwise" and "every monkey goes counterclockwise" (any other
-// mix has two adjacent monkeys meeting somewhere on the polygon), so the
-// answer is (2^n - 2) mod 1e9+7. Fast exponentiation by squaring is the same
-// private-helper-for-a-small-numeric-primitive pattern this repo already
-// reuses when no DataStructures/Algorithms type applies - the precedent
-// FindGreatestCommonDivisorOfArrayTests sets for its own Euclidean Gcd
-// ("no repo container or algorithm primitive applies here").
-public sealed partial class CountCollisionsOfMonkeysOnAPolygonTests
+// Harness only. Both strategies are CountCollisionsOfMonkeysOnAPolygonSolution's -
+// the repeated-doubling arm that used to live untested as the benchmark baseline,
+// and the exponentiation-by-squaring arm - pinned to LeetCode's published examples
+// plus lengths large enough that 2^n has wrapped the modulus several times, which
+// is where the two arms would drift if either handled the fold differently.
+public sealed class CountCollisionsOfMonkeysOnAPolygonTests
 {
-    private const int Mod = 1_000_000_007;
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 3, 6 },
+            { 4, 14 },
+            { 5, 30 },
+            { 10, 1_022 },
+            { 1_000, 688_423_208 },
+            { 100_000, 607_723_518 },
+        };
 
     [Theory]
-    [InlineData(3, 6)]
-    [InlineData(4, 14)]
-    public void NumberOfWays_LeetCodeExamples_ReturnsCollisionCount(int n, int expected)
-    {
-        var actual = NumberOfWays(n);
-        Assert.Equal(expected, actual);
-    }
+    [MemberData(nameof(Examples))]
+    public void NumberOfWaysByRepeatedMultiplication_LeetCodeExamples_ReturnsCollisionCount(
+        int n, int expected) =>
+        Assert.Equal(
+            expected,
+            CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByRepeatedMultiplication(n));
 
-    [Fact]
-    public void NumberOfWays_LargeN_StaysWithinModulusBounds()
-    {
-        var actual = NumberOfWays(100_000);
-        Assert.InRange(actual, 0, Mod - 1);
-    }
-
-    private static int NumberOfWays(int n) => (int)((ModPow(2, n, Mod) - 2 + Mod) % Mod);
-
-    private static long ModPow(long value, long exponent, long modulus)
-    {
-        var result = 1L;
-        value %= modulus;
-
-        while (exponent > 0)
-        {
-            if ((exponent & 1) == 1)
-            {
-                result = result * value % modulus;
-            }
-
-            value = value * value % modulus;
-            exponent >>= 1;
-        }
-
-        return result;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfWaysByExponentiationBySquaring_LeetCodeExamples_ReturnsCollisionCount(
+        int n, int expected) =>
+        Assert.Equal(
+            expected,
+            CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByExponentiationBySquaring(n));
 }
