@@ -1,100 +1,57 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.MergeNodesInBetweenZeros;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeNodesInBetweenZeros;
 
-// LeetCode 2181. Merge Nodes in Between Zeros: a single left-to-right walk over this
-// repo's own SinglyLinkedListNode<int>.Next, the same dummy-head list-building shape
-// AddTwoNumbersTests/RemoveZeroSumConsecutiveNodesFromLinkedListTests already use.
-// The list always starts and ends with a 0 delimiter; every run of non-zero nodes
-// between two delimiters collapses into one new node holding their sum.
+// Harness only. Both strategies are MergeNodesInBetweenZerosSolution's - including
+// the two-pass value buffer, which the benchmark used to own privately as its
+// baseline and nothing asserted. SinglyLinkedListNode<int> is internal, so it
+// cannot appear in a public TheoryData<...> member (CS0053); the examples state
+// the node values and LeetCodeWireFormat translates both ends.
 public sealed class MergeNodesInBetweenZerosTests
 {
-    [Fact]
-    public void MergeNodes_LeetCodeExampleOne_ReturnsFourAndEleven()
-    {
-        var head = BuildList([0, 3, 1, 0, 4, 5, 2, 0]);
-
-        var merged = MergeNodes(head);
-
-        Assert.Equal([4, 11], ToArray(merged));
-    }
-
-    [Fact]
-    public void MergeNodes_LeetCodeExampleTwo_ReturnsOneAndSeven()
-    {
-        var head = BuildList([0, 1, 0, 3, 4, 0]);
-
-        var merged = MergeNodes(head);
-
-        Assert.Equal([1, 7], ToArray(merged));
-    }
-
-    [Fact]
-    public void MergeNodes_SingleGroup_ReturnsOneMergedNode()
-    {
-        var head = BuildList([0, 5, 0]);
-
-        var merged = MergeNodes(head);
-
-        Assert.Equal([5], ToArray(merged));
-    }
-
-    private static SinglyLinkedListNode<int>? MergeNodes(SinglyLinkedListNode<int>? head)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        var sum = 0;
-
-        for (var node = head?.Next; node is not null; node = node.Next)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            if (node.Value == 0)
-            {
-                tail.Next = new SinglyLinkedListNode<int>(sum);
-                tail = tail.Next;
-                sum = 0;
-            }
-            else
-            {
-                sum += node.Value;
-            }
-        }
+            // LC example 1: groups 3 + 1 and 4 + 5 + 2.
+            { [0, 3, 1, 0, 4, 5, 2, 0], [4, 11] },
 
-        return dummy.Next;
-    }
+            // LC example 2: groups 1 and 3 + 4.
+            { [0, 1, 0, 3, 4, 0], [1, 7] },
 
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        SinglyLinkedListNode<int>? tail = null;
+            // The shortest list LC allows: one group of one node.
+            { [0, 5, 0], [5] },
 
-        foreach (var value in values)
-        {
-            var node = new SinglyLinkedListNode<int>(value);
-            head ??= node;
-            AppendAfter(tail, node);
-            tail = node;
-        }
+            // Three groups of differing lengths, so no strategy can pass by
+            // assuming a fixed group size.
+            { [0, 1, 2, 3, 0, 4, 0, 5, 6, 0], [6, 4, 11] },
 
-        return head;
-    }
+            // LC's largest node value, and a group that follows it, so the merged
+            // sum of one group cannot leak into the next.
+            { [0, 1000, 0, 1, 1, 1, 0], [1000, 3] },
 
-    private static void AppendAfter(SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int> node)
-    {
-        if (tail is not null)
-        {
-            tail.Next = node;
-        }
-    }
+            // Every group is a single node, so the answer is as long as the input
+            // is short.
+            { [0, 7, 0, 8, 0, 9, 0], [7, 8, 9] },
+        };
 
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeNodesByTwoPassValueBuffer_LeetCodeExamples_ReturnsOneNodePerGroupSum(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                MergeNodesInBetweenZerosSolution.MergeNodesByTwoPassValueBuffer(
+                    LeetCodeWireFormat.ToLinkedList(values))));
 
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeNodesBySinglePassSum_LeetCodeExamples_ReturnsOneNodePerGroupSum(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                MergeNodesInBetweenZerosSolution.MergeNodesBySinglePassSum(
+                    LeetCodeWireFormat.ToLinkedList(values))));
 }
