@@ -1,18 +1,16 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.SortingTheSentence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Sorting the Sentence (LC 1859), generalized beyond its real 1-9-word/single-digit
-// constraint (the same "scale past the strict LeetCode bound to exercise real
-// complexity" convention AddTwoNumbersBenchmarks/RelativeSortArrayBenchmarks already
-// use) so a numeric position suffix of any length replaces the single trailing digit.
-// BruteForce rescans the whole word array once per target position to place it -
-// O(n^2). MergeSortByPosition instead sorts the words in place by their embedded
-// position via this repo's own MergeSort.Sort<Element,TSequence> over an
-// ArrayIndexedSequence with a custom comparer - O(n log n) - the same
-// custom-comparer-over-ArrayIndexedSequence shape RelativeSortArrayBenchmarks uses.
+// Harness only: both arms are SortingTheSentenceSolution's, the same methods
+// SortingTheSentenceTests proves correct. The workload is generalized beyond the
+// problem's real 1-9-word/single-digit constraint (the same "scale past the strict
+// LeetCode bound to exercise real complexity" convention AddTwoNumbersBenchmarks
+// and RelativeSortArrayBenchmarks already use) so a numeric position suffix of any
+// length replaces the single trailing digit. Each arm is handed the prepared word
+// array its hoisted overload takes, so the shuffle is charged to [GlobalSetup]
+// rather than to the sort being measured.
 [MemoryDiagnoser]
 public class SortingTheSentenceBenchmarks
 {
@@ -32,48 +30,8 @@ public class SortingTheSentenceBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string BruteForce()
-    {
-        var result = new string[_words.Length];
-
-        for (var position = 0; position < _words.Length; position++)
-        {
-            foreach (var word in _words)
-            {
-                if (ExtractPosition(word) == position)
-                {
-                    result[position] = StripPosition(word);
-                    break;
-                }
-            }
-        }
-
-        return string.Join(' ', result);
-    }
+    public string PositionScan() => SortingTheSentenceSolution.SortSentenceByPositionScan(_words);
 
     [Benchmark]
-    public string MergeSortByPosition()
-    {
-        var words = (string[])_words.Clone();
-        var byPosition = Comparer<string>.Create((a, b) => ExtractPosition(a).CompareTo(ExtractPosition(b)));
-
-        MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(words), byPosition);
-
-        return string.Join(' ', words.Select(StripPosition));
-    }
-
-    private static int ExtractPosition(string word) => int.Parse(word.AsSpan(DigitsStart(word)));
-
-    private static string StripPosition(string word) => word[..DigitsStart(word)];
-
-    private static int DigitsStart(string word)
-    {
-        var digitsStart = word.Length;
-        while (digitsStart > 0 && char.IsAsciiDigit(word[digitsStart - 1]))
-        {
-            digitsStart--;
-        }
-
-        return digitsStart;
-    }
+    public string MergeSortByPosition() => SortingTheSentenceSolution.SortSentenceByMergeSort(_words);
 }

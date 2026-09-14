@@ -1,53 +1,41 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MaximumIceCreamBars;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumIceCreamBars;
 
-// LeetCode 1833. Maximum Ice Cream Bars: sort costs ascending with this repo's
-// MergeSort over ArrayIndexedSequence, then greedily buy the cheapest bars
-// first until coins run out - the standard exchange-argument greedy proof
-// (any optimal selection can be reordered to buy strictly cheaper-or-equal
-// bars first without lowering its count).
-public sealed partial class MaximumIceCreamBarsTests
+// Harness only: both strategies live in MaximumIceCreamBarsSolution. One test
+// method per strategy over one shared set of examples, so a failure names the
+// strategy that broke - the O(n^2) selection scan included, which was previously a
+// benchmark-only arm nothing asserted.
+public sealed class MaximumIceCreamBarsTests
 {
+    public static TheoryData<int[], int, int> Examples =>
+        new()
+        {
+            { [1, 3, 2, 4, 1], 7, 4 }, // LC example 1: 1 + 1 + 2 + 3
+            { [10, 6, 8, 7, 7, 8], 5, 0 }, // LC example 2: even the cheapest bar is unaffordable
+            { [1, 6, 3, 1, 2, 5], 20, 6 }, // LC example 3: the whole tray costs 18
+            { [1, 3, 2, 4, 1], 11, 5 }, // coins exactly cover every bar
+            { [5], 5, 1 }, // one bar, exactly affordable
+            { [5], 4, 0 }, // one bar, one coin short
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxIceCreamBySelectionScan_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected) =>
+        Assert.Equal(expected, MaximumIceCreamBarsSolution.MaxIceCreamBySelectionScan(costs, coins));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxIceCreamByMergeSortGreedy_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected) =>
+        Assert.Equal(expected, MaximumIceCreamBarsSolution.MaxIceCreamByMergeSortGreedy(costs, coins));
+
     [Fact]
-    public void MaxIceCream_ClassicExample_ReturnsFourBarsAffordable()
+    public void MaxIceCreamByMergeSortGreedy_SortingStrategy_DoesNotReorderCallersArray()
     {
         int[] costs = [1, 3, 2, 4, 1];
 
-        var result = MaxIceCream(costs, coins: 7);
+        MaximumIceCreamBarsSolution.MaxIceCreamByMergeSortGreedy(costs, coins: 7);
 
-        Assert.Equal(4, result);
-    }
-
-    [Fact]
-    public void MaxIceCream_CoinsTooFewForCheapestBar_ReturnsZero()
-    {
-        int[] costs = [10, 6, 8, 7, 7, 8];
-
-        var result = MaxIceCream(costs, coins: 5);
-
-        Assert.Equal(0, result);
-    }
-
-    private static int MaxIceCream(int[] costs, int coins)
-    {
-        var sorted = costs.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        var count = 0;
-
-        foreach (var cost in sorted)
-        {
-            if (cost > coins)
-            {
-                break;
-            }
-
-            coins -= cost;
-            count++;
-        }
-
-        return count;
+        Assert.Equal([1, 3, 2, 4, 1], costs);
     }
 }
