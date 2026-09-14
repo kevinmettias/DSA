@@ -1,90 +1,139 @@
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
+using static DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator.DesignGraphWithShortestPathCalculatorSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignGraphWithShortestPathCalculator;
 
-// LeetCode 2642. Design Graph With Shortest Path Calculator: a directed,
-// non-negative-weight graph that supports adding edges after construction and
-// answering repeated shortest-path queries between two given nodes. AddEdge can
-// change the graph between calls, so nothing may be cached - each query runs a
-// fresh ShortestPath.Dijkstra from node1, the same WeightedNode/ListEdges/
-// IEdgeTopology composition NetworkDelayTimeTests already establishes for LC 743's
-// own single-source distances-from-source map, here with a mutable per-node edge
-// list so AddEdge is just another List<T>.Add. The query method is named
-// ShortestPathBetween rather than LeetCode's literal ShortestPath to avoid
-// shadowing the imported Algorithms.ShortestPaths.ShortestPath static class from
-// inside its own body (an instance member and an imported type sharing one bare
-// name inside the same class - the same C# name-resolution wrinkle
-// ARCHITECTURE.md 10.3 already documents for DisjointSet, here avoided by naming
-// instead of aliasing).
-public sealed partial class DesignGraphWithShortestPathCalculatorTests
+// Harness only: both strategies live in
+// DesignGraphWithShortestPathCalculatorSolution, and so does the graph
+// representation each one searches. LeetCode's own shape here is a stateful
+// object across a sequence of calls, so Examples encodes a call script instead of
+// a single argument tuple - the same shape DesignBrowserHistoryTests uses for its
+// own instance-API problem. An addEdge returns null in LeetCode's judge output,
+// so ShortestPathGraphOp.Apply returns null for it too and the expected sequence
+// reads exactly like the published one.
+public sealed class DesignGraphWithShortestPathCalculatorTests
 {
-    [Fact]
-    public void ShortestPathBetween_GrowingGraph_TracksCheaperRoutesAsEdgesAreAdded()
+    public static TheoryData<int, int[][], ShortestPathGraphOp[], int?[]> Examples =>
+        new()
+        {
+            {
+                // LeetCode's published example: node 3 reaches node 2 the long way
+                // round, node 3 is unreachable from node 0 until addEdge creates a
+                // route into it.
+                4,
+                [[0, 2, 5], [0, 1, 2], [1, 2, 1], [3, 0, 3]],
+                [
+                    ShortestPathGraphOp.ShortestPath(3, 2),
+                    ShortestPathGraphOp.ShortestPath(0, 3),
+                    ShortestPathGraphOp.AddEdge([1, 3, 4]),
+                    ShortestPathGraphOp.ShortestPath(0, 3),
+                ],
+                [6, -1, null, 6]
+            },
+            {
+                // Every added edge has to be visible to the very next query, both
+                // when it opens a route that did not exist and when it undercuts
+                // one that did.
+                4,
+                [[0, 2, 5]],
+                [
+                    ShortestPathGraphOp.ShortestPath(0, 2),
+                    ShortestPathGraphOp.ShortestPath(0, 3),
+                    ShortestPathGraphOp.AddEdge([2, 3, 2]),
+                    ShortestPathGraphOp.ShortestPath(0, 3),
+                    ShortestPathGraphOp.AddEdge([0, 1, 1]),
+                    ShortestPathGraphOp.AddEdge([1, 2, 1]),
+                    ShortestPathGraphOp.ShortestPath(0, 2),
+                    ShortestPathGraphOp.ShortestPath(0, 3),
+                ],
+                [5, -1, null, 7, null, null, 2, 4]
+            },
+            {
+                // No edges at all: a node still reaches itself at cost 0, and
+                // nothing else.
+                2,
+                [],
+                [
+                    ShortestPathGraphOp.ShortestPath(0, 0),
+                    ShortestPathGraphOp.ShortestPath(0, 1),
+                ],
+                [0, -1]
+            },
+            {
+                // Edges are directed, so reachability is not symmetric, and a node
+                // with no outgoing edge at all reaches only itself.
+                3,
+                [[1, 0, 4]],
+                [
+                    ShortestPathGraphOp.ShortestPath(1, 0),
+                    ShortestPathGraphOp.ShortestPath(0, 1),
+                    ShortestPathGraphOp.ShortestPath(2, 2),
+                ],
+                [4, -1, 0]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShortestPathGraphByArrayDijkstra_LeetCodeExamples_MatchesExpectedSequence(
+        int n, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
+        RunScript(new ShortestPathGraphByArrayDijkstra(n, edges), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ShortestPathGraphByHeapDijkstra_LeetCodeExamples_MatchesExpectedSequence(
+        int n, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
+        RunScript(new ShortestPathGraphByHeapDijkstra(n, edges), operations, expected);
+
+    private static void RunScript(
+        IShortestPathGraph graph, ShortestPathGraphOp[] operations, int?[] expected)
     {
-        int[][] edges = [[0, 2, 5]];
-        var graph = new Graph(4, edges);
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(graph));
+        }
+    }
+}
 
-        Assert.Equal(5, graph.ShortestPathBetween(0, 2));
-        Assert.Equal(-1, graph.ShortestPathBetween(0, 3));
+// One call in an LC 2642 script: either an edge to add or a pair of nodes to
+// query. Pure dispatch, built via the named factories below so a script reads
+// like the LeetCode call sequence it replays.
+public readonly record struct ShortestPathGraphOp
+{
+    private readonly Kind _kind;
+    private readonly int[] _edge;
+    private readonly int _node1;
+    private readonly int _node2;
 
-        graph.AddEdge([2, 3, 2]);
-
-        Assert.Equal(7, graph.ShortestPathBetween(0, 3));
-
-        graph.AddEdge([0, 1, 1]);
-        graph.AddEdge([1, 2, 1]);
-
-        Assert.Equal(2, graph.ShortestPathBetween(0, 2));
-        Assert.Equal(4, graph.ShortestPathBetween(0, 3));
+    private ShortestPathGraphOp(Kind kind, int[] edge, int node1, int node2)
+    {
+        _kind = kind;
+        _edge = edge;
+        _node1 = node1;
+        _node2 = node2;
     }
 
-    [Fact]
-    public void ShortestPathBetween_NoEdgesAtAll_ReturnsNegativeOneExceptSameNode()
-    {
-        var graph = new Graph(2, []);
+    public static ShortestPathGraphOp AddEdge(int[] edge) => new(Kind.AddEdge, edge, 0, 0);
 
-        Assert.Equal(0, graph.ShortestPathBetween(0, 0));
-        Assert.Equal(-1, graph.ShortestPathBetween(0, 1));
+    public static ShortestPathGraphOp ShortestPath(int node1, int node2) => new(Kind.ShortestPath, [], node1, node2);
+
+    // null for addEdge, matching LeetCode's own judge output for a void
+    // operation; the query's answer otherwise - so a script runner can assert
+    // against one expected value per operation uniformly.
+    internal int? Apply(IShortestPathGraph graph)
+    {
+        if (_kind == Kind.AddEdge)
+        {
+            graph.AddEdge(_edge);
+
+            return null;
+        }
+
+        return graph.ShortestPathBetween(_node1, _node2);
     }
 
-    private sealed class Graph
+    private enum Kind
     {
-        private readonly Node[] _nodes;
-
-        public Graph(int n, int[][] edges)
-        {
-            _nodes = new Node[n];
-
-            for (var i = 0; i < n; i++)
-            {
-                _nodes[i] = new Node();
-            }
-
-            foreach (var edge in edges)
-            {
-                AddEdge(edge);
-            }
-        }
-
-        public void AddEdge(int[] edge) => _nodes[edge[0]].Edges.Add((edge[2], _nodes[edge[1]]));
-
-        public int ShortestPathBetween(int node1, int node2)
-        {
-            var distances = ShortestPath.Dijkstra<Node, NodeTopology, ListEdges<Node, int>, int>(_nodes[node1]);
-
-            return distances.TryGetValue(_nodes[node2], out var distance) ? distance : -1;
-        }
-
-        private sealed class Node
-        {
-            public List<(int Weight, Node Target)> Edges { get; } = [];
-        }
-
-        private readonly struct NodeTopology : IEdgeTopology<Node, ListEdges<Node, int>, int>
-        {
-            public static ListEdges<Node, int> GetEdges(Node node) => new(node.Edges);
-        }
+        AddEdge,
+        ShortestPath,
     }
 }

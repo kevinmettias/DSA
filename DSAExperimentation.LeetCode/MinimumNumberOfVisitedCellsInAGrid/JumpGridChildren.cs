@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfVisitedCellsInAGrid.Fixtures;
+namespace DSAExperimentation.LeetCode.MinimumNumberOfVisitedCellsInAGrid;
 
 // Computed on demand from the cell's own stored jump distance, the same way
 // GridChildren computes its neighbors from geometry instead of storing a
