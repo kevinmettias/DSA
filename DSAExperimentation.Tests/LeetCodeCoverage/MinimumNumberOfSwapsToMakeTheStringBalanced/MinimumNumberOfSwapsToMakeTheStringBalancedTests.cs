@@ -1,46 +1,31 @@
-using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
+using DSAExperimentation.LeetCode.MinimumNumberOfSwapsToMakeTheStringBalanced;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfSwapsToMakeTheStringBalanced;
 
-// LeetCode 1963. Minimum Number of Swaps to Make the String Balanced: this repo's own
-// Stack<char> tracks unmatched '[' the same way ValidParenthesesTests does. Every ']'
-// pops a pending '[' when one is available; when the stack is empty, that ']' has no
-// partner anywhere to its left, so a swap is counted and a virtual '[' is pushed in its
-// place, standing in for whichever later ']' actually gets swapped with it. The final
-// swap count is provably optimal (equivalent to ceil(maxDeficit / 2), the standard
-// result for this problem) because every unmatched closer this scan finds is genuinely
-// unresolvable without pulling in an opener from beyond the current position.
-public sealed partial class MinimumNumberOfSwapsToMakeTheStringBalancedTests
+// Harness only: both strategies live in MinimumNumberOfSwapsToMakeTheStringBalancedSolution
+// and are asserted against the same examples, including the already-balanced cases and
+// the all-closers-then-all-openers shape the benchmark measures.
+public sealed class MinimumNumberOfSwapsToMakeTheStringBalancedTests
 {
-    [Theory]
-    [InlineData("][][", 1)]
-    [InlineData("]]][[[", 2)]
-    [InlineData("[]", 0)]
-    public void MinSwaps_LeetCodeExamples_ReturnsMinimumSwapCount(string s, int expected)
-        => Assert.Equal(expected, MinSwaps(s));
-
-    private static int MinSwaps(string s)
-    {
-        var open = new RepoCharStack();
-        var swaps = 0;
-
-        foreach (var ch in s)
+    public static TheoryData<string, int> Examples =>
+        new()
         {
-            if (ch == '[')
-            {
-                open.Push(ch);
-                continue;
-            }
+            { "][][", 1 },
+            { "]]][[[", 2 },
+            { "[]", 0 },
+            { "[[]]", 0 },
+            { "]][[", 1 },
+            { "]]]][[[[", 2 },
+            { "[]][[]", 1 },
+        };
 
-            if (open.TryPop(out _))
-            {
-                continue;
-            }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinSwapsByBackwardScan_LeetCodeExamples_ReturnsMinimumSwapCount(string s, int expected) =>
+        Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByBackwardScan(s));
 
-            swaps++;
-            open.Push('[');
-        }
-
-        return swaps;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinSwapsByStack_LeetCodeExamples_ReturnsMinimumSwapCount(string s, int expected) =>
+        Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByStack(s));
 }

@@ -1,28 +1,18 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Folding;
-using DSAExperimentation.Algorithms.Folding.Dags;
-using DSAExperimentation.Algorithms.ShortestPaths;
-using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
-using DSAExperimentation.DataStructures.Graph.Engines.Dags;
+using DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Number of Ways to Arrive at Destination (LC 1976): both variants share the same
-// Dijkstra-computed distances-to-destination (precomputed once in Setup, not timed
-// - NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks' own precedent for this
-// split), so the benchmarked difference is purely how shortest paths from node 0
-// are counted afterward. The graph gives each node i a "step 1" edge to i-1 and a
-// "step 2" edge to i-2, both tying for shortest distance i (matching
-// NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks' own recurrence exactly) -
-// so the same downstream node is reached two ways at every layer, making
-// NaiveDfs's unmemoized recount genuinely exponential (Fibonacci-shaped). DagFold
-// composes this repo's own memoized fold over the identical (node, edges, Dist)
-// data, turning the same walk into one Combine per distinct node.
+// Harness only: both arms are NumberOfWaysToArriveAtDestinationSolution's, the same
+// methods NumberOfWaysToArriveAtDestinationTests proves correct. Each is handed the
+// prepared WaysGraph its hoisted overload takes, so the shared Dijkstra distance
+// labelling is charged to [GlobalSetup] and the measured difference stays purely
+// how the shortest-time journeys are counted afterwards.
 [MemoryDiagnoser]
 public class NumberOfWaysToArriveAtDestinationBenchmarks
 {
-    // The graph's "step 2" edges skip one node (i to i-2) with a matching weight of 2.
+    // The network's "step 2" roads skip one intersection (u to u + 2) with a
+    // matching travel time of 2.
     private const int TwoStepOffset = 2;
 
     // Kept modest (<=30), same reasoning as
@@ -31,127 +21,40 @@ public class NumberOfWaysToArriveAtDestinationBenchmarks
     [Params(20, 30)]
     public int N;
 
-    private WaysNode _start = null!;
+    private WaysGraph _graph = null!;
 
     [GlobalSetup]
-    public void Setup()
+    public void Setup() => _graph = WaysGraph.Build(NodeCount(N), BuildTwoStepRoads(N));
+
+    // The chain spans stepCount time-1 roads, so it has one more intersection than
+    // steps.
+    private static int NodeCount(int stepCount) => stepCount + 1;
+
+    // Intersection u gets a time-1 road to u + 1 and a time-2 road to u + 2, both
+    // equally shortest, so every intersection's distance to the destination is
+    // exactly its remaining step count and the same downstream intersection is
+    // reached two ways at every layer - the Fibonacci recurrence that makes the
+    // unmemoized arm's recount genuinely exponential.
+    private static int[][] BuildTwoStepRoads(int stepCount)
     {
-        var nodes = Enumerable.Range(0, N + 1).Select(id => new WaysNode(id)).ToArray();
+        var roads = new List<int[]>();
 
-        for (var i = 1; i <= N; i++)
+        for (var u = 0; u < stepCount; u++)
         {
-            AddEdge(nodes[i], nodes[i - 1], weight: 1);
-
-            if (i >= TwoStepOffset)
-            {
-                AddEdge(nodes[i], nodes[i - TwoStepOffset], weight: TwoStepOffset);
-            }
+            roads.Add([u, u + 1, 1]);
         }
 
-        var distances = ShortestPath.Dijkstra<
-            WaysNode, WaysEdgeTopology, ListEdges<WaysNode, long>, long>(nodes[N]);
-
-        foreach (var node in nodes)
+        for (var u = 0; u + TwoStepOffset <= stepCount; u++)
         {
-            node.Dist = distances[node];
+            roads.Add([u, u + TwoStepOffset, TwoStepOffset]);
         }
 
-        _start = nodes[0];
-    }
-
-    private static void AddEdge(WaysNode a, WaysNode b, long weight)
-    {
-        a.Edges.Add((weight, b));
-        b.Edges.Add((weight, a));
+        return [.. roads];
     }
 
     [Benchmark(Baseline = true)]
-    public long NaiveDfs() => CountPaths(_start);
-
-    private static long CountPaths(WaysNode node)
-    {
-        if (node.Dist == 0)
-        {
-            return 1;
-        }
-
-        var total = 0L;
-
-        foreach (var (weight, target) in node.Edges)
-        {
-            if (node.Dist - weight == target.Dist)
-            {
-                total += CountPaths(target);
-            }
-        }
-
-        return total;
-    }
+    public long NaiveDfs() => NumberOfWaysToArriveAtDestinationSolution.CountWaysByNaiveDfs(_graph);
 
     [Benchmark]
-    public long DagFoldMemoized()
-        => DagFold.Fold<
-            WaysNode, WaysChildTopology, ListChildren<WaysNode>,
-            NaturalChildOrder<WaysNode, ListChildren<WaysNode>>, ListChildren<WaysNode>,
-            WaysCountAlgebra, long>(_start);
-
-    // See NumberOfWaysToArriveAtDestinationTests.Fixtures for the full explanation
-    // - repeated here rather than shared because TwoSumBenchmarks/
-    // MedianOfTwoSortedArraysBenchmarks establish this project keeps its own copy
-    // of the solution rather than depending on the Tests project.
-    private sealed class WaysNode(int id)
-    {
-        public int Id { get; } = id;
-
-        public List<(long Weight, WaysNode Target)> Edges { get; } = [];
-
-        public long Dist { get; set; }
-    }
-
-    private readonly struct WaysEdgeTopology : IEdgeTopology<WaysNode, ListEdges<WaysNode, long>, long>
-    {
-        public static ListEdges<WaysNode, long> GetEdges(WaysNode node) => new(node.Edges);
-    }
-
-    private readonly struct WaysChildTopology : IDagTopology<WaysNode, ListChildren<WaysNode>>
-    {
-        public static ListChildren<WaysNode> GetChildren(WaysNode node)
-        {
-            var children = new List<WaysNode>();
-
-            foreach (var (weight, target) in node.Edges)
-            {
-                if (node.Dist - weight == target.Dist)
-                {
-                    children.Add(target);
-                }
-            }
-
-            return new ListChildren<WaysNode>(children);
-        }
-    }
-
-    private readonly struct WaysCountAlgebra : IFoldAlgebra<WaysNode, long>
-    {
-        private const long Modulo = 1_000_000_007;
-
-        public static long Empty => 0;
-
-        public static long Combine(WaysNode node, IReadOnlyList<long> children)
-        {
-            if (node.Dist == 0)
-            {
-                return 1;
-            }
-
-            var total = 0L;
-
-            foreach (var child in children)
-            {
-                total = (total + child) % Modulo;
-            }
-
-            return total;
-        }
-    }
+    public long DagFoldMemoized() => NumberOfWaysToArriveAtDestinationSolution.CountWaysByDagFold(_graph);
 }
