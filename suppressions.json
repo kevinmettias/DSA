@@ -1228,6 +1228,27 @@
     },
     {
       "check": "check-abbreviations",
+      "path": "DSAExperimentation.LeetCode/MergeBSTsToCreateSingleBST/**",
+      "reason": "the folder name is LeetCode 1932's own title, 'Merge BSTs to Create Single BST', which abbreviates 'binary search tree' itself - the problem folder is named after the external problem it answers (ARCHITECTURE.md §17.3), so renaming it would break the one-folder-per-problem correspondence a reader navigates by; the same judgment already recorded for DSAExperimentation.LeetCode/RangeSumOfBST. Every member inside the folder spells the term out (CanMergeByHashMapIndex, IsStrictlyAscending).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MergeBSTsToCreateSingleBSTBenchmarks.cs",
+      "reason": "the file is named after LeetCode 1932, 'Merge BSTs to Create Single BST', whose own title abbreviates 'binary search tree' - a benchmark harness is named for the problem folder it measures, so renaming it would break that correspondence; the same judgment already recorded for DSAExperimentation.LeetCode/RangeSumOfBST.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.Tests/LeetCodeCoverage/MergeBSTsToCreateSingleBST/**",
+      "reason": "the coverage folder mirrors the LeetCode 1932 problem folder name exactly, and LeetCode's own title 'Merge BSTs to Create Single BST' abbreviates 'binary search tree' - renaming it would break that correspondence; the same judgment already recorded for DSAExperimentation.Tests/LeetCodeCoverage/RangeSumOfBST.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
       "path": "DSAExperimentation.Tests/LeetCodeCoverage/RangeSumOfBST/**",
       "reason": "the folder name is LeetCode 938's own title, 'Range Sum of BST', which abbreviates 'binary search tree' itself - the coverage folder mirrors the problem folder name exactly, so renaming it would break that correspondence; the same judgment already recorded for DSAExperimentation.Tests/LeetCodeCoverage/LowestCommonAncestorOfBst.",
       "owner": "@kmettias",
