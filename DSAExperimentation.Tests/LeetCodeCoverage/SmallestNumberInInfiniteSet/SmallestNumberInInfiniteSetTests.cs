@@ -1,89 +1,126 @@
-using DSAExperimentation.DataStructures.Heap;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.SmallestNumberInInfiniteSet;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestNumberInInfiniteSet;
 
-// LeetCode 2336. Smallest Number in Infinite Set: the infinite set [1, 2, 3, ...] is represented
-// implicitly via a single counter (_nextUnused) instead of materialized, so only numbers pulled
-// back in via AddBack ever need real storage - exactly the "added-back" subset this repo's own
-// Heap<Element,MinHeapOrder<Element>> is built for (peek/pop the smallest of a dynamic collection
-// in O(log n)), paired with Set<Element> purely to reject a duplicate AddBack in O(1) instead of
-// letting the same value sit in the heap twice. PopSmallest always prefers the heap: every value
-// ever pushed there was already < _nextUnused at push time, so it can never exceed the next
-// never-yet-produced number - no comparison between the two sources is ever needed.
-public sealed partial class SmallestNumberInInfiniteSetTests
+// Harness only. Both strategies are SmallestNumberInInfiniteSetSolution's - this file
+// replays LeetCode's published call sequence against each ISmallestInfiniteSet
+// instance, so a failure still names the strategy that broke even though the "input"
+// here is a sequence of PopSmallest/AddBack calls rather than a single argument tuple,
+// the same shape AllOneDataStructureTests already uses for its own instance-API
+// problem. The pre-migration test only proved the heap+set composition;
+// CreateByListScan's baseline (previously untested scaffolding inlined in the
+// benchmark) gets that same coverage here for the first time. InfiniteSetOp.Apply is
+// pure dispatch, no set logic of its own.
+public sealed class SmallestNumberInInfiniteSetTests
 {
-    [Fact]
-    public void PopSmallestAndAddBack_ClassicExample_MatchesLeetCodeTrace()
-    {
-        var set = new SmallestInfiniteSet();
-
-        set.AddBack(2); // 2 was never popped, so it's already "in" the infinite set - no-op
-
-        Assert.Equal(1, set.PopSmallest());
-        Assert.Equal(2, set.PopSmallest());
-        Assert.Equal(3, set.PopSmallest());
-
-        set.AddBack(1);
-
-        Assert.Equal(1, set.PopSmallest());
-        Assert.Equal(4, set.PopSmallest());
-        Assert.Equal(5, set.PopSmallest());
-    }
-
-    [Fact]
-    public void AddBack_DuplicateOfAlreadyPendingNumber_IsIgnored()
-    {
-        var set = new SmallestInfiniteSet();
-
-        set.PopSmallest(); // 1
-        set.PopSmallest(); // 2
-        set.AddBack(1);
-        set.AddBack(1); // duplicate - must not double-queue 1
-
-        Assert.Equal(1, set.PopSmallest());
-        Assert.Equal(3, set.PopSmallest());
-    }
-
-    [Fact]
-    public void AddBack_NumberNotYetProduced_IsIgnoredAsAlreadyInSet()
-    {
-        var set = new SmallestInfiniteSet();
-
-        set.AddBack(5); // never popped yet, so already present
-
-        Assert.Equal(1, set.PopSmallest());
-        Assert.Equal(2, set.PopSmallest());
-        Assert.Equal(3, set.PopSmallest());
-        Assert.Equal(4, set.PopSmallest());
-        Assert.Equal(5, set.PopSmallest());
-    }
-
-    private sealed class SmallestInfiniteSet
-    {
-        private readonly Heap<int, MinHeapOrder<int>> _addedBack = new();
-        private readonly Set<int> _pending = new();
-        private int _nextUnused = 1;
-
-        public int PopSmallest()
+    public static TheoryData<InfiniteSetOp[], int?[]> Examples =>
+        new()
         {
-            if (_addedBack.TryPop(out var restored))
             {
-                _pending.TryRemove(restored);
-                return restored;
-            }
+                // LeetCode's own example: AddBack(2) is a no-op because 2 has never been
+                // popped, so it is already in the set.
+                [
+                    InfiniteSetOp.AddBack(2),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                    InfiniteSetOp.AddBack(1),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                ],
+                [null, 1, 2, 3, null, 1, 4, 5]
+            },
+            {
+                // A duplicate AddBack must not queue the same number twice.
+                [
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                    InfiniteSetOp.AddBack(1), InfiniteSetOp.AddBack(1),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                ],
+                [1, 2, null, null, 1, 3]
+            },
+            {
+                // AddBack of a number never produced is ignored - it is already present.
+                [
+                    InfiniteSetOp.AddBack(5),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                ],
+                [null, 1, 2, 3, 4, 5]
+            },
+            {
+                // Several numbers added back out of order all come out smallest-first,
+                // and only then does the counter resume.
+                [
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                    InfiniteSetOp.AddBack(4), InfiniteSetOp.AddBack(2), InfiniteSetOp.AddBack(3),
+                    InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop(),
+                ],
+                [1, 2, 3, 4, 5, null, null, null, 2, 3, 4, 6]
+            },
+            {
+                // Popping with nothing ever added back is pure counter walking.
+                [InfiniteSetOp.Pop(), InfiniteSetOp.Pop(), InfiniteSetOp.Pop()],
+                [1, 2, 3]
+            },
+        };
 
-            return _nextUnused++;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByHeapAndSet_LeetCodeExamples_MatchesTheInfiniteSetTrace(
+        InfiniteSetOp[] operations, int?[] expected) =>
+        RunScript(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByListScan_LeetCodeExamples_MatchesTheInfiniteSetTrace(
+        InfiniteSetOp[] operations, int?[] expected) =>
+        RunScript(SmallestNumberInInfiniteSetSolution.CreateByListScan(), operations, expected);
+
+    private static void RunScript(
+        SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set,
+        InfiniteSetOp[] operations,
+        int?[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(set));
+        }
+    }
+}
+
+// One call in a SmallestInfiniteSet script: which method to invoke and with what
+// argument. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays. AddBack returns
+// null (no value); PopSmallest returns the actual answer - the same null-means-"no
+// return value" convention AllOneOp.Apply uses for its own void/value split.
+public readonly record struct InfiniteSetOp
+{
+    private readonly Kind _kind;
+    private readonly int _num;
+
+    private InfiniteSetOp(Kind kind, int num)
+    {
+        _kind = kind;
+        _num = num;
+    }
+
+    public static InfiniteSetOp Pop() => new(Kind.Pop, 0);
+
+    public static InfiniteSetOp AddBack(int num) => new(Kind.AddBack, num);
+
+    internal int? Apply(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
+    {
+        if (_kind == Kind.AddBack)
+        {
+            set.AddBack(_num);
+            return null;
         }
 
-        public void AddBack(int num)
-        {
-            if (num >= _nextUnused || !_pending.TryAdd(num))
-            {
-                return;
-            }
+        return set.PopSmallest();
+    }
 
-            _addedBack.Push(num);
-        }
+    private enum Kind
+    {
+        Pop,
+        AddBack,
     }
 }

@@ -6,14 +6,14 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignMemoryAllocator;
 // LeetCode 2502. Design Memory Allocator: Allocate scans a plain int[] memory
 // array (0 = free) for the leftmost run of `size` free units and stamps mID into
 // it - no data structure abstracts "find the leftmost gap" any better than direct
-// indexed access here, the same raw-array role DesignANumberContainerSystemTests'
-// own NumberContainers gives its numberByIndex array. Free is where a repo
-// primitive earns its place: rather than rescanning the whole array for every
-// unit still carrying mID, this composes HashMap<int, DynamicArray<int>> to
-// remember exactly which indices each mID currently owns, so Free only visits
-// those indices - the same "HashMap index over an array" shape
-// DesignANumberContainerSystemTests already uses, just tracking a set of indices
-// per key instead of one.
+// indexed access here, the same raw-array role
+// DesignANumberContainerSystemSolution's linear-scan baseline gives its
+// index-to-number table. Free is where a repo primitive earns its place: rather
+// than rescanning the whole array for every unit still carrying mID, this
+// composes HashMap<int, DynamicArray<int>> to remember exactly which indices each
+// mID currently owns, so Free only visits those indices - the same "HashMap index
+// over an array" shape DesignANumberContainerSystemSolution already uses, just
+// tracking a set of indices per key instead of one.
 public sealed partial class DesignMemoryAllocatorTests
 {
     [Fact]

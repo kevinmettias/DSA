@@ -60,8 +60,9 @@ public sealed class Tier5WitnessTests
     {
         ["CircularArrayTopology.cs"] = "Shortest Distance To Target String In A Circular Array",
         ["FunctionalGraphTopology.cs"] =
-            "Count Visited Nodes In A Directed Graph and Longest Cycle In A Graph, which also keep their "
-            + "own copies under the test project - three copies of one witness",
+            "Count Visited Nodes In A Directed Graph, which also keeps its own copy under the test "
+            + "project - two copies of one witness, down from three now that Longest Cycle In A Graph "
+            + "declares its own beside its solution",
         ["JumpGridChildren.cs"] = "Minimum Number Of Visited Cells In A Grid",
         ["JumpGridTopology.cs"] = "Minimum Number Of Visited Cells In A Grid",
         ["ReversalChildren.cs"] = "Minimum Reverse Operations",

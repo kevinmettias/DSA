@@ -1,22 +1,19 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimumDeletionsToMakeArrayDivisible;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Deletions to Make Array Divisible (LC 2344): both strategies reduce
-// numsDivide to one divisor via the same O(m) Euclidean gcd fold, then diverge on how
-// they find the fewest deletions from nums. numsDivide is every entry set to the same
-// fixed BaseDivisor (720, chosen for its 30 divisors) so the fold is trivial and the
-// reduced divisor is always exactly BaseDivisor; nums is drawn entirely from
-// BaseDivisor's own divisors, so EVERY element is a valid candidate - the worst case for
-// CountValidPrecedingBruteForce, which checks each one via a fresh full-array scan for
-// how many smaller elements exist, O(n^2). MergeSortAndScan instead sorts nums once with
-// this repo's own Algorithms.Sorting.MergeSort over an ArrayIndexedSequence<int> and
-// returns the index of the first element that divides - since 1 is among BaseDivisor's
-// divisors and virtually always present for n this large, the sorted scan resolves in
-// O(1) after the O(n log n) sort, making the asymptotic gap visible even though both
-// strategies compute the same answer.
+// Harness only: both arms are MinimumDeletionsToMakeArrayDivisibleSolution's, proved
+// equivalent by MinimumDeletionsToMakeArrayDivisibleTests. They share the same O(m) Euclidean
+// gcd fold and diverge on how they find the fewest deletions.
+//
+// The workload is chosen to make the asymptotic gap visible: numsDivide is every entry set to
+// the same BaseDivisor (720, for its 30 divisors) so the fold is trivial and the reduced
+// divisor is always exactly BaseDivisor, and nums is drawn entirely from BaseDivisor's own
+// divisors, so EVERY element is a valid candidate - the worst case for the candidate scan,
+// which pays a fresh full-array count per element, O(n^2). The MergeSort arm sorts once in
+// O(n log n) and, since 1 is among those divisors and virtually always present at this n,
+// resolves its scan in O(1).
 [MemoryDiagnoser]
 public class MinimumDeletionsToMakeArrayDivisibleBenchmarks
 {
@@ -42,71 +39,9 @@ public class MinimumDeletionsToMakeArrayDivisibleBenchmarks
 
     [Benchmark(Baseline = true)]
     public int CountValidPrecedingBruteForce()
-    {
-        var divisor = GcdOfArray(_numsDivide);
-        var best = -1;
-
-        foreach (var candidate in _nums)
-        {
-            if (divisor % candidate != 0)
-            {
-                continue;
-            }
-
-            var precedingCount = CountSmaller(candidate);
-            if (best == -1 || precedingCount < best)
-            {
-                best = precedingCount;
-            }
-        }
-
-        return best;
-    }
-
-    private int CountSmaller(int candidate)
-    {
-        var count = 0;
-
-        foreach (var value in _nums)
-        {
-            if (value < candidate)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+        => MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByCandidateScan(_nums, _numsDivide);
 
     [Benchmark]
     public int MergeSortAndScan()
-    {
-        var divisor = GcdOfArray(_numsDivide);
-        var sorted = _nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        for (var i = 0; i < sorted.Length; i++)
-        {
-            if (divisor % sorted[i] == 0)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    private static int GcdOfArray(int[] values)
-    {
-        var divisor = values[0];
-
-        foreach (var value in values)
-        {
-            divisor = Gcd(divisor, value);
-        }
-
-        return divisor;
-    }
-
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+        => MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByMergeSort(_nums, _numsDivide);
 }
