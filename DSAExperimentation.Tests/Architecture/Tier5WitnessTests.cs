@@ -58,7 +58,6 @@ public sealed class Tier5WitnessTests
     // staleness check below a burn-down list rather than a permanent allowance.
     private static readonly Dictionary<string, string> SharedFixtureStragglers = new()
     {
-        ["CircularArrayTopology.cs"] = "Shortest Distance To Target String In A Circular Array",
         ["FunctionalGraphTopology.cs"] =
             "Count Visited Nodes In A Directed Graph, which also keeps its own copy under the test "
             + "project - two copies of one witness, down from three now that Longest Cycle In A Graph "

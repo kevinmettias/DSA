@@ -1,24 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimize the Maximum of Two Arrays (LC 2513): a hand-rolled long lo/hi bisection
-// loop vs. this repo's own BinarySearch.LowerBound over an on-demand
-// FeasibleMaximumSequence (MinimizeTheMaximumOfTwoArraysTests precedent, itself the
-// same "binary search on the answer" shape KokoEatingBananasBenchmarks already
-// uses) - both binary-search the same monotone feasibility predicate, just one
-// through a bespoke loop and the other through the reusable
-// IRandomAccessSequence<bool> abstraction. Divisors are fixed and coprime (2, 3) so
-// every UniqueCountScale forces a real lcm=6 inclusion-exclusion check instead of
-// degenerating to a single-divisor case.
+// Harness only: both arms are MinimizeTheMaximumOfTwoArraysSolution's, the same
+// methods MinimizeTheMaximumOfTwoArraysTests proves correct - a hand-rolled lo/hi
+// bisection against BinarySearch.LowerBound over an on-demand feasibility sequence.
+// Both binary-search the same monotone predicate over the same range, so what is
+// measured is the cost of routing it through the reusable IRandomAccessSequence
+// abstraction. Divisors are fixed and coprime (2, 3) so every UniqueCountScale
+// forces a real lcm=6 inclusion-exclusion check instead of degenerating to a
+// single-divisor case.
 [MemoryDiagnoser]
 public class MinimizeTheMaximumOfTwoArraysBenchmarks
 {
     private const int Divisor1 = 2;
     private const int Divisor2 = 3;
-    private const int MidpointDivisor = 2;
 
     [Params(1_000, 1_000_000)]
     public int UniqueCountScale;
@@ -34,49 +31,12 @@ public class MinimizeTheMaximumOfTwoArraysBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ManualBinarySearch()
-    {
-        var low = 1L;
-        var high = (2L * (_uniqueCnt1 + _uniqueCnt2)) + 1;
-
-        while (low < high)
-        {
-            var mid = low + ((high - low) / MidpointDivisor);
-
-            if (IsFeasible(_uniqueCnt1, _uniqueCnt2, mid))
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-
-        return low;
-    }
+    public int ManualBinarySearch() =>
+        MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetByManualBisection(
+            Divisor1, Divisor2, _uniqueCnt1, _uniqueCnt2);
 
     [Benchmark]
-    public long SequenceLowerBound()
-    {
-        var sequence = new FeasibleMaximumSequence(_uniqueCnt1, _uniqueCnt2);
-        return 1 + BinarySearch.LowerBound(sequence, true);
-    }
-
-    private static bool IsFeasible(int uniqueCnt1, int uniqueCnt2, long max)
-    {
-        const long lcm = 6; // lcm(Divisor1, Divisor2)
-        var eligible1 = max - (max / Divisor1);
-        var eligible2 = max - (max / Divisor2);
-        var eligibleEither = max - (max / lcm);
-
-        return eligible1 >= uniqueCnt1 && eligible2 >= uniqueCnt2 && eligibleEither >= uniqueCnt1 + (long)uniqueCnt2;
-    }
-
-    private readonly struct FeasibleMaximumSequence(int uniqueCnt1, int uniqueCnt2) : IRandomAccessSequence<bool>
-    {
-        public int Length => (2 * (uniqueCnt1 + uniqueCnt2)) + 1;
-
-        public bool Get(int index) => IsFeasible(uniqueCnt1, uniqueCnt2, 1 + index);
-    }
+    public int SequenceLowerBound() =>
+        MinimizeTheMaximumOfTwoArraysSolution.MinimizeSetBySequenceLowerBound(
+            Divisor1, Divisor2, _uniqueCnt1, _uniqueCnt2);
 }

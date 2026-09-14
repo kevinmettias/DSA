@@ -1,110 +1,45 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.SinglyLinkedList;
-using RepoNodeStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.SinglyLinkedList.SinglyLinkedListNode<int>>;
+using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Remove Nodes From Linked List (LC 2487): the naive O(n^2) approach - for every node,
-// scan every node to its right for a strictly greater value (baseline) - vs. a single
-// O(n) left-to-right sweep through this repo's own Stack<SinglyLinkedListNode<int>>,
-// the same monotonic-stack shape NextGreaterNodeInLinkedListBenchmarks already uses
-// over SinglyLinkedListNode<int>.Next, here popping any node made obsolete by a larger
-// one instead of just recording it. Values are a random permutation so no node's
-// removal decision short-circuits the brute-force scan early.
+// Harness only: both arms are RemoveNodesFromLinkedListSolution's, the same methods
+// RemoveNodesFromLinkedListTests proves correct. Values are a random permutation so
+// no node's removal decision short-circuits the brute-force rescan early.
+//
+// Only the value permutation is hoisted to [GlobalSetup]; the list itself is built
+// inside each [Benchmark] call rather than shared, because both strategies splice
+// .Next pointers in place - reusing one pre-built list across iterations would let
+// the first iteration's removals leave every later iteration measuring an
+// already-non-increasing list. Both arms pay the identical construction cost, so the
+// comparison between them is unaffected.
 [MemoryDiagnoser]
 public class RemoveNodesFromLinkedListBenchmarks
 {
-    private const int RandomSeed = 2487;
+    private const int RandomSeed = 2487; // LC problem number
 
     [Params(200, 5_000)]
     public int Length;
 
-    private SinglyLinkedListNode<int> _head = null!;
+    private int[] _values = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var values = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
-        _head = Build(values);
+        _values = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
     }
 
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so
+    // a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
-    public int[] BruteForceScan()
-    {
-        var values = ToValues(_head);
-        var kept = new List<int>();
-
-        for (var i = 0; i < values.Count; i++)
-        {
-            var hasGreaterToTheRight = false;
-
-            for (var later = i + 1; later < values.Count; later++)
-            {
-                if (values[later] > values[i])
-                {
-                    hasGreaterToTheRight = true;
-                    break;
-                }
-            }
-
-            if (!hasGreaterToTheRight)
-            {
-                kept.Add(values[i]);
-            }
-        }
-
-        return kept.ToArray();
-    }
+    public object? BruteForceScan() =>
+        RemoveNodesFromLinkedListSolution.RemoveNodesByBruteForceScan(
+            LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
-    public int[] MonotonicStackSweep()
-    {
-        var keep = new RepoNodeStack();
-
-        for (var node = _head; node is not null; node = node.Next)
-        {
-            while (keep.TryPeek(out var top) && top.Value < node.Value)
-            {
-                keep.TryPop(out _);
-            }
-
-            keep.Push(node);
-        }
-
-        var survivors = new int[keep.Count];
-        for (var i = survivors.Length - 1; i >= 0; i--)
-        {
-            keep.TryPop(out var node);
-            survivors[i] = node.Value;
-        }
-
-        return survivors;
-    }
-
-    private static List<int> ToValues(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values;
-    }
-
-    private static SinglyLinkedListNode<int> Build(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next!;
-    }
+    public object? MonotonicStackSweep() =>
+        RemoveNodesFromLinkedListSolution.RemoveNodesByMonotonicStack(
+            LeetCodeWireFormat.ToLinkedList(_values));
 }
