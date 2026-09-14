@@ -1,136 +1,65 @@
+using static DSAExperimentation.LeetCode.WalkingRobotSimulationII.WalkingRobotSimulationIISolution;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.WalkingRobotSimulationII;
 
-// LeetCode 2069. Walking Robot Simulation II: width/height and each move()'s step
-// count can both reach 1e9, so a naive per-unit-step walk (this repo's own
-// WalkingRobotSimulation, LC 874, precedent) is too slow here - move() has to be
-// O(1). The robot's path is a fixed perimeter loop of length
-// 2*(width+height-2), so every position is just an index into that loop: only the
-// total distance traveled so far (mod the perimeter) is kept as state, and
-// GetPos/GetDir decode it with direct modular-arithmetic boundary-segment math -
-// the same "boundary-shrinking index arithmetic, no repo Representation/Operations
-// primitive to compose" category this repo's Spiral Matrix / Spiral Matrix II
-// coverage already established.
+// Harness only: both strategies live in WalkingRobotSimulationIISolution. LeetCode's
+// own shape here is a stateful object queried across a sequence of calls, so an
+// example is a grid, the Move script run against it, and the position and heading
+// the robot ends on - GetPos and GetDir are pure, so a mid-script checkpoint is
+// simply another row with the shorter prefix of the same script.
 public sealed class WalkingRobotSimulationIITests
 {
-    [Fact]
-    public void MoveGetPosGetDir_LeetCodeStyleSequence_MatchesHandSimulatedPath()
-    {
-        var robot = new Robot(6, 3);
-
-        robot.Move(2);
-        robot.Move(2);
-        robot.Move(2);
-        Assert.Equal((5, 1), robot.GetPos());
-        Assert.Equal("North", robot.GetDir());
-
-        robot.Move(3);
-        robot.Move(3);
-        robot.Move(3);
-        robot.Move(3);
-        robot.Move(3);
-        Assert.Equal((5, 2), robot.GetPos());
-        Assert.Equal("North", robot.GetDir());
-    }
-
-    [Fact]
-    public void GetDir_CompletesExactlyOneFullPerimeterLoop_ReturnsSouthAtOrigin()
-    {
-        var robot = new Robot(6, 3);
-
-        robot.Move(14); // exactly one full perimeter loop: 2*((6-1)+(3-1))
-
-        Assert.Equal((0, 0), robot.GetPos());
-        Assert.Equal("South", robot.GetDir());
-    }
-
-    [Fact]
-    public void GetDir_NoMoveYet_ReturnsEastAtOrigin()
-    {
-        var robot = new Robot(6, 3);
-
-        Assert.Equal((0, 0), robot.GetPos());
-        Assert.Equal("East", robot.GetDir());
-    }
-
-    private sealed class Robot
-    {
-        private readonly int _maxX;
-        private readonly int _maxY;
-        private readonly long _perimeter;
-        private long _totalSteps;
-
-        public Robot(int width, int height)
+    public static TheoryData<int, int, int[], int, int, string> Examples =>
+        new()
         {
-            _maxX = width - 1;
-            _maxY = height - 1;
-            _perimeter = 2L * (_maxX + _maxY);
-        }
+            // LeetCode's published example, at both of the points it queries: after
+            // step(2) + step(2), then after three more steps of 2, 1 and 4.
+            { 6, 3, [2, 2], 4, 0, "East" },
+            { 6, 3, [2, 2, 2, 1, 4], 1, 2, "West" },
 
-        public void Move(int num) => _totalSteps += num;
+            // Turning the first two corners: the last cell of the east edge still
+            // reads as facing east, and the far corner as facing north.
+            { 6, 3, [5], 5, 0, "East" },
+            { 6, 3, [2, 2, 2], 5, 1, "North" },
+            { 6, 3, [7], 5, 2, "North" },
+            { 6, 3, [2, 2, 2, 3, 3, 3, 3, 3], 5, 2, "North" },
 
-        // Which of the perimeter's 4 straight runs the robot is currently on.
-        private enum Edge
-        {
-            East,
-            North,
-            West,
-            South,
-        }
+            // The origin is the one cell that answers two headings: east before the
+            // robot has moved, south once a whole loop of 2*((6-1)+(3-1)) has
+            // brought it back - and that stays true after any number of loops.
+            { 6, 3, [], 0, 0, "East" },
+            { 6, 3, [14], 0, 0, "South" },
+            { 6, 3, [14, 14], 0, 0, "South" },
 
-        public (int X, int Y) GetPos()
-        {
-            var d = _totalSteps % _perimeter;
-            if (d == 0)
-            {
-                return (0, 0);
-            }
+            // Past a full loop the walk simply resumes along the east edge.
+            { 6, 3, [17], 3, 0, "East" },
 
-            var (edge, offset) = LocateOnEastEdge(d);
-            return ToPosition(edge, offset);
-        }
-
-        public string GetDir()
-        {
-            if (_totalSteps == 0)
-            {
-                return "East";
-            }
-
-            var d = _totalSteps % _perimeter;
-            if (d == 0)
-            {
-                return "South";
-            }
-
-            var (edge, _) = LocateOnEastEdge(d);
-            return ToDirection(edge);
-        }
-
-        // The perimeter walk shared by GetPos/GetDir: which edge the remaining
-        // distance `d` lands on, and the offset along that edge.
-        private (Edge Edge, long Offset) LocateOnEastEdge(long d)
-            => d <= _maxX ? (Edge.East, d) : LocateOnNorthEdge(d - _maxX);
-
-        private (Edge Edge, long Offset) LocateOnNorthEdge(long d)
-            => d <= _maxY ? (Edge.North, d) : LocateOnWestEdge(d - _maxY);
-
-        private (Edge Edge, long Offset) LocateOnWestEdge(long d)
-            => d <= _maxX ? (Edge.West, d) : (Edge.South, d - _maxX);
-
-        private (int X, int Y) ToPosition(Edge edge, long offset) => edge switch
-        {
-            Edge.East => ((int)offset, 0),
-            Edge.North => (_maxX, (int)offset),
-            Edge.West => (_maxX - (int)offset, _maxY),
-            _ => (0, _maxY - (int)offset),
+            // A grid only two cells wide, where the east and west edges are a single
+            // step each.
+            { 2, 3, [4], 0, 2, "West" },
         };
 
-        private static string ToDirection(Edge edge) => edge switch
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RobotByStepSimulation_LeetCodeExamples_EndsOnExpectedCellAndHeading(
+        int width, int height, int[] moves, int expectedX, int expectedY, string expectedDirection) =>
+        AssertEndState(new RobotByStepSimulation(width, height), moves, expectedX, expectedY, expectedDirection);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RobotByPerimeterFormula_LeetCodeExamples_EndsOnExpectedCellAndHeading(
+        int width, int height, int[] moves, int expectedX, int expectedY, string expectedDirection) =>
+        AssertEndState(new RobotByPerimeterFormula(width, height), moves, expectedX, expectedY, expectedDirection);
+
+    private static void AssertEndState(
+        IRobot robot, int[] moves, int expectedX, int expectedY, string expectedDirection)
+    {
+        foreach (var steps in moves)
         {
-            Edge.East => "East",
-            Edge.North => "North",
-            Edge.West => "West",
-            _ => "South",
-        };
+            robot.Move(steps);
+        }
+
+        Assert.Equal((expectedX, expectedY), robot.GetPos());
+        Assert.Equal(expectedDirection, robot.GetDir());
     }
 }

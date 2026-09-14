@@ -1,137 +1,55 @@
-using DSAExperimentation.DataStructures.KeyedDisjointSet;
-using DSAExperimentation.DataStructures.Set;
+using DSAExperimentation.LeetCode.FindAllPeopleWithSecret;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindAllPeopleWithSecret;
 
-// LeetCode 2092. Find All People With Secret: secrets only propagate transitively
-// within the SAME instant (a chain of meetings sharing one timestamp all resolve
-// together), never across timestamps in a single hop. Meetings are grouped by time
-// and processed in ascending order; for each timestamp group a fresh
-// KeyedDisjointSet<int> is built over just that group's participants - the same
-// "union on shared membership" shape AccountsMergeTests already uses for shared
-// emails, applied here to shared timestamps instead. A component learns the secret
-// for this timestamp iff at least one of its members already knew it walking in - a
-// Set<int> tracks which component representatives qualify before a second pass marks
-// every member of a qualifying component as now knowing the secret. Building a fresh
-// KeyedDisjointSet per timestamp (rather than one global DisjointSet needing an
-// "undo union" this repo has no primitive for) is what keeps a same-timestamp-only
-// chain from ever leaking a false connection into a later timestamp's group.
-public sealed partial class FindAllPeopleWithSecretTests
+// Harness only. Both strategies live in FindAllPeopleWithSecretSolution - the
+// repeated-relaxation baseline that used to exist only as an unasserted benchmark
+// arm, and the per-timestamp KeyedDisjointSet composition - and this file pins
+// both to LeetCode's published examples plus the orderings that separate them.
+public sealed class FindAllPeopleWithSecretTests
 {
-    [Fact]
-    public void FindAllPeople_ClassicExample_ReturnsEveryoneReachableThroughTimeOrderedMeetings()
-    {
-        (int First, int Second, int Time)[] meetings = [(1, 2, 5), (2, 3, 8), (1, 5, 10)];
-
-        var people = FindAllPeople(n: 6, meetings, firstPerson: 1);
-
-        Assert.Equal([0, 1, 2, 3, 5], people);
-    }
-
-    [Fact]
-    public void FindAllPeople_LaterTimestampCannotReachAnEarlierOnlyConnectedPerson_ExcludesThem()
-    {
-        (int First, int Second, int Time)[] meetings = [(3, 1, 3), (1, 2, 2), (0, 3, 3)];
-
-        var people = FindAllPeople(n: 4, meetings, firstPerson: 3);
-
-        Assert.Equal([0, 1, 3], people);
-    }
-
-    [Fact]
-    public void FindAllPeople_SameTimestampChainPropagatesTransitively_ReturnsEveryone()
-    {
-        (int First, int Second, int Time)[] meetings = [(3, 4, 2), (1, 2, 1), (2, 3, 1)];
-
-        var people = FindAllPeople(n: 5, meetings, firstPerson: 1);
-
-        Assert.Equal([0, 1, 2, 3, 4], people);
-    }
-
-    private static int[] FindAllPeople(int n, (int First, int Second, int Time)[] meetings, int firstPerson)
-    {
-        var knowsSecret = new bool[n];
-        knowsSecret[0] = true;
-        knowsSecret[firstPerson] = true;
-
-        foreach (var group in GroupByTimeAscending(meetings))
+    public static TheoryData<int, (int First, int Second, int Time)[], int, int[]> Examples =>
+        new()
         {
-            PropagateWithinTimestamp(group, knowsSecret);
-        }
+            // LC example 1: the secret walks forward through ascending timestamps.
+            { 6, [(1, 2, 5), (2, 3, 8), (1, 5, 10)], 1, [0, 1, 2, 3, 5] },
 
-        var people = new List<int>();
-        for (var person = 0; person < n; person++)
-        {
-            if (knowsSecret[person])
-            {
-                people.Add(person);
-            }
-        }
+            // LC example 2: person 2 meets person 1 at time 2, BEFORE person 1
+            // learns anything at time 3, so a later timestamp cannot reach back.
+            { 4, [(3, 1, 3), (1, 2, 2), (0, 3, 3)], 3, [0, 1, 3] },
 
-        return people.ToArray();
-    }
+            // LC example 3: a same-timestamp chain resolves transitively.
+            { 5, [(3, 4, 2), (1, 2, 1), (2, 3, 1)], 1, [0, 1, 2, 3, 4] },
 
-    private static void PropagateWithinTimestamp((int First, int Second)[] group, bool[] knowsSecret)
-    {
-        var participants = CollectParticipants(group);
-        var components = BuildComponents(group, participants);
-        var secretRoots = FindSecretRoots(participants, components, knowsSecret);
-        MarkQualifyingComponents(participants, components, secretRoots, knowsSecret);
-    }
+            // A same-timestamp chain stated in reverse edge order - the shape the
+            // benchmark measures, where one forward pass extends the informed
+            // frontier by a single hop and relaxation must keep rescanning.
+            { 6, [(4, 5, 1), (3, 4, 1), (2, 3, 1), (1, 2, 1)], 1, [0, 1, 2, 3, 4, 5] },
 
-    private static List<int> CollectParticipants((int First, int Second)[] group)
-    {
-        var participants = new List<int>();
-        foreach (var (first, second) in group)
-        {
-            participants.Add(first);
-            participants.Add(second);
-        }
+            // No meetings at all: only the two people who started out informed.
+            { 3, [], 2, [0, 2] },
 
-        return participants;
-    }
+            // A meeting between two uninformed people spreads nothing.
+            { 4, [(1, 2, 1)], 3, [0, 3] },
 
-    private static KeyedDisjointSet<int> BuildComponents((int First, int Second)[] group, List<int> participants)
-    {
-        var components = new KeyedDisjointSet<int>(participants);
+            // firstPerson is person 0's own meeting partner later on, and the
+            // unreached component stays unreached across every timestamp.
+            { 7, [(0, 1, 1), (2, 3, 2), (4, 5, 3), (3, 4, 4)], 6, [0, 1, 6] },
+        };
 
-        foreach (var (first, second) in group)
-        {
-            components.TryUnion(first, second);
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindAllPeopleByRepeatedRelaxation_LeetCodeExamples_ReturnsEveryoneWhoLearnsTheSecret(
+        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson, int[] expected) =>
+        Assert.Equal(
+            expected,
+            FindAllPeopleWithSecretSolution.FindAllPeopleByRepeatedRelaxation(peopleCount, meetings, firstPerson));
 
-        return components;
-    }
-
-    private static Set<int> FindSecretRoots(List<int> participants, KeyedDisjointSet<int> components, bool[] knowsSecret)
-    {
-        var secretRoots = new Set<int>();
-        foreach (var person in participants)
-        {
-            if (knowsSecret[person] && components.TryFind(person, out var root))
-            {
-                secretRoots.TryAdd(root);
-            }
-        }
-
-        return secretRoots;
-    }
-
-    private static void MarkQualifyingComponents(
-        List<int> participants, KeyedDisjointSet<int> components, Set<int> secretRoots, bool[] knowsSecret)
-    {
-        foreach (var person in participants)
-        {
-            if (components.TryFind(person, out var root) && secretRoots.Has(root))
-            {
-                knowsSecret[person] = true;
-            }
-        }
-    }
-
-    private static IEnumerable<(int First, int Second)[]> GroupByTimeAscending((int First, int Second, int Time)[] meetings)
-        => meetings
-            .GroupBy(m => m.Time)
-            .OrderBy(g => g.Key)
-            .Select(g => g.Select(m => (m.First, m.Second)).ToArray());
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindAllPeopleByKeyedDisjointSet_LeetCodeExamples_ReturnsEveryoneWhoLearnsTheSecret(
+        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson, int[] expected) =>
+        Assert.Equal(
+            expected,
+            FindAllPeopleWithSecretSolution.FindAllPeopleByKeyedDisjointSet(peopleCount, meetings, firstPerson));
 }
