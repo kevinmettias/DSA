@@ -1,22 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.DisjointSet;
+using DSAExperimentation.LeetCode.FindIfPathExistsInGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find if Path Exists in Graph (LC 1971): an iterative DFS reachability search
-// over an adjacency list built from the edges (baseline - the textbook approach,
-// NumberOfOperationsToMakeNetworkConnectedBenchmarks/NumberOfProvincesBenchmarks'
-// own precedent for this exact DFS-vs-Union-Find contrast; iterative rather than
-// recursive purely to stay overflow-safe at this benchmark's larger NodeCount) vs.
-// this repo's own DisjointSet unioning every edge and answering with one
-// IsConnected(source, destination) lookup. Source and destination sit in two
-// disjoint spanning trees on every run - the worst case for DFS, which must
-// exhaust the whole source component before concluding no path exists - so both
-// strategies do real, comparable work.
+// Harness only: both arms are FindIfPathExistsInGraphSolution's, the same methods
+// FindIfPathExistsInGraphTests proves correct. Source and destination sit in two
+// disjoint spanning trees on every run - the worst case for the search arm, which
+// must exhaust the whole source component before concluding no path exists - so
+// both strategies do real, comparable work.
 [MemoryDiagnoser]
 public class FindIfPathExistsInGraphBenchmarks
 {
-    private const int RandomSeed = 1971;
+    private const int RandomSeed = 1971; // LC problem number
 
     private const int HalfDivisor = 2;
 
@@ -52,77 +47,10 @@ public class FindIfPathExistsInGraphBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool IterativeDepthFirstReachability()
-    {
-        var adjacency = BuildAdjacency();
-        var (visited, stack) = InitializeTraversal();
-
-        TraverseDepthFirst(adjacency, visited, stack);
-
-        return visited[_destination];
-    }
-
-    private (bool[] Visited, Stack<int> Stack) InitializeTraversal()
-    {
-        var visited = new bool[NodeCount];
-        var stack = new Stack<int>();
-        stack.Push(_source);
-        visited[_source] = true;
-        return (visited, stack);
-    }
-
-    private static void TraverseDepthFirst(int[][] adjacency, bool[] visited, Stack<int> stack)
-    {
-        while (stack.Count > 0)
-        {
-            var node = stack.Pop();
-
-            foreach (var next in adjacency[node])
-            {
-                if (visited[next])
-                {
-                    continue;
-                }
-
-                visited[next] = true;
-                stack.Push(next);
-            }
-        }
-    }
-
-    private int[][] BuildAdjacency()
-    {
-        var adjacency = new List<int>[NodeCount];
-        for (var i = 0; i < NodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in _edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        var result = new int[NodeCount][];
-        for (var i = 0; i < NodeCount; i++)
-        {
-            result[i] = [.. adjacency[i]];
-        }
-
-        return result;
-    }
+    public bool IterativeDepthFirstReachability() =>
+        FindIfPathExistsInGraphSolution.HasPathByDepthFirstSearch(NodeCount, _edges, _source, _destination);
 
     [Benchmark]
-    public bool DisjointSetUnionFind()
-    {
-        var components = new DisjointSet(NodeCount);
-
-        foreach (var edge in _edges)
-        {
-            components.Union(edge[0], edge[1]);
-        }
-
-        return components.IsConnected(_source, _destination);
-    }
+    public bool DisjointSetUnionFind() =>
+        FindIfPathExistsInGraphSolution.HasPathByDisjointSet(NodeCount, _edges, _source, _destination);
 }

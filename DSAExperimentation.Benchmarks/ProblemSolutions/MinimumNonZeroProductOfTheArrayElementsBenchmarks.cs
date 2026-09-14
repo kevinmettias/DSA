@@ -1,58 +1,26 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Non-Zero Product of the Array Elements (LC 1969): naive O(exponent)
-// repeated modular multiplication vs. O(log exponent) exponentiation by squaring
-// (PowXnBenchmarks'/SuperPowBenchmarks' squaring loop, folded under Modulus at
-// every step). No repo container or algorithm primitive applies here - there is
-// nothing to compose over a handful of running scalars, the same "lighter
-// repo-primitive fit" those two benchmarks already document. Exponent stands in
-// for 2^(p-1)-1 (the real pair count for LeetCode's own p <= 60 - up to ~2^59,
-// far beyond any naive loop, which is exactly why the squaring algorithm exists
-// at all) kept to a size the naive loop can still finish inside a benchmark run.
+// Harness only: both arms are MinimumNonZeroProductOfTheArrayElementsSolution's, the
+// same methods MinimumNonZeroProductOfTheArrayElementsTests proves correct. The
+// parameter is LeetCode's own p rather than a stand-in exponent, so both arms compute
+// the real answer; p = 15 and p = 21 put the pair count at 16,383 and 1,048,575, the
+// 10^4 / 10^6 workload sizes this comparison was always run at. That is as large as
+// the naive arm can finish - LeetCode's own p <= 60 means an exponent up to 2^59,
+// which is exactly why the squaring strategy exists at all.
 [MemoryDiagnoser]
 public class MinimumNonZeroProductOfTheArrayElementsBenchmarks
 {
-    private const long Modulus = 1_000_000_007;
-    private const long PairBase = 999_999_999; // stand-in for 2^p - 2
-
-    [Params(10_000, 1_000_000)]
-    public int Exponent;
+    [Params(15, 21)]
+    public int Power;
 
     [Benchmark(Baseline = true)]
-    public long RepeatedModularMultiplication()
-    {
-        var result = 1L;
-        var value = PairBase % Modulus;
-
-        for (var i = 0; i < Exponent; i++)
-        {
-            result = result * value % Modulus;
-        }
-
-        return result;
-    }
+    public long RepeatedModularMultiplication() =>
+        MinimumNonZeroProductOfTheArrayElementsSolution.MinNonZeroProductByRepeatedMultiplication(Power);
 
     [Benchmark]
-    public long ModPowBySquaring() => ModPow(PairBase, Exponent);
-
-    private static long ModPow(long value, long exponent)
-    {
-        var result = 1L;
-        value %= Modulus;
-
-        while (exponent > 0)
-        {
-            if ((exponent & 1) == 1)
-            {
-                result = result * value % Modulus;
-            }
-
-            value = value * value % Modulus;
-            exponent >>= 1;
-        }
-
-        return result;
-    }
+    public long ModPowBySquaring() =>
+        MinimumNonZeroProductOfTheArrayElementsSolution.MinNonZeroProductBySquaring(Power);
 }

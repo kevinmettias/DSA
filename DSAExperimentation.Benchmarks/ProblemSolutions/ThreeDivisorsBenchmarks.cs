@@ -1,26 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ThreeDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Three Divisors (LC 1952): the textbook O(num) full-range trial division vs. this
-// repo's own BinarySearch.LowerBound anchoring the scan at floor(sqrt(num)) - the same
-// technique FourDivisorsBenchmarks/ClosestDivisorsBenchmarks use - then a short downward
-// walk that bails out the moment a fourth divisor appears, so the common case (more or
-// fewer than exactly three divisors) stops paying almost immediately instead of scanning
-// to 1.
+// Harness only: both arms are ThreeDivisorsSolution's, the same methods
+// ThreeDivisorsTests proves correct - the textbook O(num) full-range trial division
+// per number against BinarySearch.LowerBound anchoring each number's scan at
+// floor(sqrt(num)), then a short downward walk that bails out the moment a fourth
+// divisor appears. The random numbers are built once in [GlobalSetup], so generation
+// is not charged to either arm; each arm tallies how many of them have exactly three
+// divisors so the whole workload is consumed.
 [MemoryDiagnoser]
 public class ThreeDivisorsBenchmarks
 {
+    // LC problem number, reused as the deterministic workload seed.
     private const int RandomSeed = 1952;
     private const int MaxGeneratedNumber = 20_000;
-    private const int TargetDivisorCount = 3;
-    private const int DistinctDivisorPairCount = 2;
-
-    // floor(sqrt(int.MaxValue)) + 1, keeps the divisor^2 comparison in
-    // SquareExceedsSequence from overflowing.
-    private const int MaxSafeDivisorBound = 46_341;
 
     [Params(200, 2_000)]
     public int Length;
@@ -41,7 +36,7 @@ public class ThreeDivisorsBenchmarks
 
         foreach (var num in _nums)
         {
-            total += FullRangeHasExactlyThree(num) ? 1 : 0;
+            total += ThreeDivisorsSolution.IsThreeByFullRangeScan(num) ? 1 : 0;
         }
 
         return total;
@@ -54,70 +49,9 @@ public class ThreeDivisorsBenchmarks
 
         foreach (var num in _nums)
         {
-            total += AnchoredHasExactlyThree(num) ? 1 : 0;
+            total += ThreeDivisorsSolution.IsThreeByBinarySearchAnchor(num) ? 1 : 0;
         }
 
         return total;
-    }
-
-    private static bool FullRangeHasExactlyThree(int num)
-    {
-        var count = 0;
-
-        for (var divisor = 1; divisor <= num; divisor++)
-        {
-            if (num % divisor != 0)
-            {
-                continue;
-            }
-
-            count++;
-
-            if (count > TargetDivisorCount)
-            {
-                return false;
-            }
-        }
-
-        return count == TargetDivisorCount;
-    }
-
-    private static bool AnchoredHasExactlyThree(int num)
-    {
-        var sequence = new SquareExceedsSequence(num, Math.Min(num, MaxSafeDivisorBound) + 1);
-        var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
-
-        var count = 0;
-
-        for (var divisor = anchor; divisor >= 1; divisor--)
-        {
-            (count, var exceeded) = AccumulateDivisor(num, divisor, count);
-
-            if (exceeded)
-            {
-                return false;
-            }
-        }
-
-        return count == TargetDivisorCount;
-    }
-
-    private static (int Count, bool Exceeded) AccumulateDivisor(int num, int divisor, int count)
-    {
-        if (num % divisor != 0)
-        {
-            return (count, false);
-        }
-
-        var paired = num / divisor;
-        count += divisor == paired ? 1 : DistinctDivisorPairCount;
-
-        return (count, count > TargetDivisorCount);
-    }
-
-    private readonly struct SquareExceedsSequence(long x, int length) : IRandomAccessSequence<int>
-    {
-        public int Length => length;
-        public int Get(int value) => (long)value * value > x ? 1 : 0;
     }
 }
