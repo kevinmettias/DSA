@@ -1,0 +1,101 @@
+using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.DataStructures.Trie;
+
+namespace DSAExperimentation.LeetCode.ExtraCharactersInAString;
+
+// LeetCode 2707. Extra Characters in a String: break s into non-overlapping pieces that
+// are all dictionary words and report the fewest characters left over. Both strategies
+// fill the same recurrence - the best from a start position is either "waste this
+// character and continue" or "consume a dictionary word starting here and continue past
+// it" - so what separates them is only how a start position discovers the dictionary
+// words that begin there:
+//
+//   HashSetFullScan is the textbook arm. It walks every end position from start to the
+//   end of the string, cuts the substring out and hashes it against a HashSet<string>,
+//   paying an O(remaining length) substring extraction per candidate even when no
+//   dictionary word could possibly begin with that prefix. O(n^2) substrings, filled
+//   bottom-up over an int[]. Deliberately all BCL internally - it is what you would
+//   write without this repo, and it lives here rather than in the benchmark so that it
+//   is actually asserted.
+//
+//   TriePrunedScan walks a Trie<bool> instead, extending the candidate one character at
+//   a time and stopping the instant HasPrefix reports that no dictionary word shares
+//   that prefix. The inner loop is then bounded by the longest dictionary word rather
+//   than by the remaining string length. The recurrence itself is Memoizer.Memoize over
+//   the start index - the same Trie + Memoizer segmentation WordBreak uses for LC 139,
+//   minimizing a leftover count instead of answering a yes/no reachability.
+internal static class ExtraCharactersInAStringSolution
+{
+    // The naive arm: hash every substring against the dictionary. Internals are
+    // deliberately all BCL.
+    public static int MinExtraCharsByHashSetFullScan(string s, string[] dictionary)
+    {
+        var words = new HashSet<string>(dictionary);
+        var length = s.Length;
+        var fewestLeftoverFrom = new int[length + 1];
+
+        for (var start = length - 1; start >= 0; start--)
+        {
+            var best = 1 + fewestLeftoverFrom[start + 1];
+
+            for (var end = start + 1; end <= length; end++)
+            {
+                if (words.Contains(s[start..end]))
+                {
+                    best = Math.Min(best, fewestLeftoverFrom[end]);
+                }
+            }
+
+            fewestLeftoverFrom[start] = best;
+        }
+
+        return fewestLeftoverFrom[0];
+    }
+
+    // This repo's own arm: a Trie<bool> prunes the candidate scan the moment the prefix
+    // leaves the dictionary, and Memoizer carries the recurrence over start indices.
+    public static int MinExtraCharsByTriePrunedScan(string s, string[] dictionary)
+    {
+        var words = BuildTrie(dictionary);
+
+        return Memoizer.Memoize<int, int>(0, FewestLeftoverFrom);
+
+        int FewestLeftoverFrom(int start, Func<int, int> fewestFrom)
+        {
+            if (start == s.Length)
+            {
+                return 0;
+            }
+
+            var best = 1 + fewestFrom(start + 1);
+
+            for (var end = start + 1; end <= s.Length; end++)
+            {
+                var piece = s[start..end];
+                if (!words.HasPrefix(piece))
+                {
+                    break;
+                }
+
+                if (words.HasKey(piece))
+                {
+                    best = Math.Min(best, fewestFrom(end));
+                }
+            }
+
+            return best;
+        }
+    }
+
+    private static Trie<bool> BuildTrie(string[] dictionary)
+    {
+        var words = new Trie<bool>();
+
+        foreach (var word in dictionary)
+        {
+            words.Set(word, true);
+        }
+
+        return words;
+    }
+}

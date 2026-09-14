@@ -1,58 +1,35 @@
-using DSAExperimentation.Algorithms.DynamicProgramming;
-using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.ExtraCharactersInAString;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ExtraCharactersInAString;
 
-// LeetCode 2707. Extra Characters in a String: fewest leftover characters after
-// segmenting s into dictionary words - the same Trie<bool> prefix-pruned
-// segmentation WordBreakTests already proves out over this exact pair of
-// primitives, minimizing a leftover count via Memoizer instead of returning a
-// yes/no reachability.
-public sealed partial class ExtraCharactersInAStringTests
+// Harness only: both strategies live in ExtraCharactersInAStringSolution and are pinned
+// to LeetCode's published examples, plus the degenerate cases the two arms have to agree
+// on - a string the dictionary cannot touch at all, an exact single-word cover, a
+// dictionary word longer than the string (which the trie arm has to reject by running
+// out of string rather than out of prefix), and the greedy trap where taking the longest
+// word first is worse than taking the shorter one.
+public sealed class ExtraCharactersInAStringTests
 {
+    public static TheoryData<string, string[], int> Examples =>
+        new()
+        {
+            { "leetscode", ["leet", "code", "leetcode"], 1 },
+            { "sayhelloworld", ["hello", "world"], 3 },
+            { "abc", ["x", "y"], 3 },
+            { "abc", ["abc"], 0 },
+            { "ab", ["abc"], 2 },
+            { "abcdef", ["abcde", "abc", "def"], 0 },
+        };
+
     [Theory]
-    [InlineData("leetscode", new[] { "leet", "code", "leetcode" }, 1)]
-    [InlineData("sayhelloworld", new[] { "hello", "world" }, 3)]
-    public void MinExtraChars_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
-        string s, string[] dictionary, int expected)
-    {
-        Assert.Equal(expected, MinExtraChars(s, dictionary));
-    }
+    [MemberData(nameof(Examples))]
+    public void MinExtraCharsByHashSetFullScan_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
+        string s, string[] dictionary, int expected) =>
+        Assert.Equal(expected, ExtraCharactersInAStringSolution.MinExtraCharsByHashSetFullScan(s, dictionary));
 
-    private static int MinExtraChars(string s, string[] dictionary)
-    {
-        var trie = new Trie<bool>();
-        foreach (var word in dictionary)
-        {
-            trie.Set(word, true);
-        }
-
-        return Memoizer.Memoize<int, int>(0, From);
-
-        int From(int start, Func<int, int> min)
-        {
-            if (start == s.Length)
-            {
-                return 0;
-            }
-
-            var best = 1 + min(start + 1);
-
-            for (var end = start + 1; end <= s.Length; end++)
-            {
-                var piece = s[start..end];
-                if (!trie.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (trie.HasKey(piece))
-                {
-                    best = Math.Min(best, min(end));
-                }
-            }
-
-            return best;
-        }
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinExtraCharsByTriePrunedScan_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
+        string s, string[] dictionary, int expected) =>
+        Assert.Equal(expected, ExtraCharactersInAStringSolution.MinExtraCharsByTriePrunedScan(s, dictionary));
 }

@@ -1,99 +1,67 @@
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfFishInAGrid;
 
-// LeetCode 2658. Maximum Number of Fish in a Grid: the same border-agnostic
-// flood-fill shape MaxAreaOfIslandTests/NumberOfIslandsTests already use for a
-// binary land/water grid - a water cell here is any grid[r][c] > 0 (land is
-// exactly 0), so this repo's own DepthFirstSearch.Traverse walks one connected
-// water component per unvisited water cell, and instead of the traversal's own
-// reachable-node count (MaxAreaOfIsland's area), the answer sums each visited
-// cell's own fish count.
-public sealed partial class MaximumNumberOfFishInAGridTests
+// Harness only. Both strategies are MaximumNumberOfFishInAGridSolution's -
+// including the recursive flood fill, which the benchmark used to own privately as
+// its baseline and nothing asserted. Beyond LeetCode's two published examples the
+// cases pin what makes this problem different from the binary-grid flood fills:
+// the score is a SUM of cell values rather than a cell count, so a grid whose
+// largest component is not its heaviest one catches a strategy that kept counting
+// cells, and a grid whose best component comes last catches one that returned the
+// first component it found.
+public sealed class MaximumNumberOfFishInAGridTests
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
-    [Fact]
-    public void FindMaxFish_ClassicExample_ReturnsLargestComponentFishTotal()
-    {
-        int[][] grid =
-        [
-            [0, 2, 1, 0],
-            [4, 0, 0, 3],
-            [1, 0, 0, 4],
-            [0, 3, 2, 0],
-        ];
-
-        Assert.Equal(7, FindMaxFish(grid));
-    }
-
-    [Fact]
-    public void FindMaxFish_AllLand_ReturnsZero()
-    {
-        int[][] grid = [[0, 0], [0, 0]];
-
-        Assert.Equal(0, FindMaxFish(grid));
-    }
-
-    private static int FindMaxFish(int[][] grid)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-        var best = 0;
-
-        for (var r = 0; r < rows; r++)
+    public static TheoryData<int[][], int> Examples =>
+        new()
         {
-            for (var c = 0; c < cols; c++)
+            // LC example 1: the (1,3)-(2,3) pair sums to 7, beating every other
+            // water component.
             {
-                var total = FloodFillFishTotal(r, c, grid);
-                best = Math.Max(best, total);
-            }
-        }
+                [
+                    [0, 2, 1, 0],
+                    [4, 0, 0, 3],
+                    [1, 0, 0, 4],
+                    [0, 3, 2, 0],
+                ],
+                7
+            },
 
-        return best;
-    }
-
-    private static int FloodFillFishTotal(int r, int c, int[][] grid)
-    {
-        if (grid[r][c] == 0)
-        {
-            return 0;
-        }
-
-        var component = DepthFirstSearch.Traverse((Row: r, Col: c), p => Neighbors(p, grid));
-        var total = component.Sum(p => grid[p.Row][p.Col]);
-
-        foreach (var (row, col) in component)
-        {
-            grid[row][col] = 0;
-        }
-
-        return total;
-    }
-
-    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p, int[][] grid)
-    {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
-
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var next = (Row: p.Row + dRow, Col: p.Col + dCol);
-
-            if (IsWater(next, rows, cols, grid))
+            // LC example 2: two isolated single-cell components, both worth 1.
             {
-                yield return next;
-            }
-        }
-    }
+                [
+                    [1, 0, 0, 0],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 1],
+                ],
+                1
+            },
 
-    private static bool IsWater((int Row, int Col) next, int rows, int cols, int[][] grid)
-    {
-        if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
-        {
-            return false;
-        }
+            // No water at all - there is nowhere to start, so the answer is 0.
+            { [[0, 0], [0, 0]], 0 },
 
-        return grid[next.Row][next.Col] > 0;
-    }
+            // A single water cell is its own component.
+            { [[5]], 5 },
+
+            // Every cell is water and connected, so the whole grid is one component.
+            { [[1, 2], [3, 4]], 10 },
+
+            // The two-cell component sums to 2; the single heavy cell later in the
+            // sweep is worth 9. Cell COUNT would pick the wrong one, and stopping
+            // at the first component found would too.
+            { [[1, 1, 0, 0], [0, 0, 0, 9]], 9 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxFishByNaiveFloodFill_LeetCodeExamples_ReturnsLargestComponentFishTotal(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, MaximumNumberOfFishInAGridSolution.MaxFishByNaiveFloodFill(grid));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MaxFishByDepthFirstSearch_LeetCodeExamples_ReturnsLargestComponentFishTotal(
+        int[][] grid, int expected) =>
+        Assert.Equal(expected, MaximumNumberOfFishInAGridSolution.MaxFishByDepthFirstSearch(grid));
 }
