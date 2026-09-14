@@ -1,200 +1,196 @@
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.LeetCode.OperationsOnTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OperationsOnTree;
 
-// LeetCode 1993. Operations on Tree: lock/unlock/upgrade over a parent-array tree. Ancestor checks
-// (does locking node collide with a locked ancestor) are a plain walk up each node's own Parent
-// field - Graph-domain topology contracts are deliberately child-ward only (GetChildren, never
-// GetParent, see KthAncestorOfATreeNodeTests), so there is no witness for that direction to compose
-// in the first place. Upgrade's "unlock every locked descendant" instead reuses this repo's own
-// DepthFirstSearch.Traverse (Algorithms.Traversal.DepthFirst) - the bare-successor-function engine
-// ARCHITECTURE.md §12 documents - called fresh per query with successors = node => node.Children to
-// collect that node's whole subtree.
-public sealed partial class OperationsOnTreeTests
+// Harness only. The tree object is LeetCode.OperationsOnTree's LockingTree and both
+// strategies are OperationsOnTreeSolution's - this file replays LeetCode's published
+// call sequence against each one, so a failure still names the strategy that broke
+// even though the "input" here is a sequence of lock/unlock/upgrade calls rather
+// than a single argument tuple, the same shape LRUCacheTests uses for its own
+// instance-API problem.
+//
+// LockedDescendantsOf gets its own examples because it is the step the two
+// strategies actually differ in and the one the benchmark measures; before this
+// migration the whole-tree scan existed only as the benchmark's baseline arm, which
+// nothing asserted.
+public sealed class OperationsOnTreeTests
 {
-    [Fact]
-    public void LockingTree_LeetCodeExampleSequence_MatchesExpectedResults()
-    {
-        // node:      0
-        //          / | \
-        //         1  2  3
-        //           / \
-        //          4   5
-        int[] parent = [-1, 0, 0, 0, 2, 2];
-        var tree = new LockingTree(parent);
-
-        (bool Expected, Func<bool> Operation)[] steps =
-        [
-            (true, () => tree.Lock(2, 2)),
-            (false, () => tree.Unlock(2, 3)),
-            (true, () => tree.Unlock(2, 2)),
-            (true, () => tree.Lock(4, 5)),
-            (true, () => tree.Upgrade(0, 1)),
-            (false, () => tree.Lock(0, 1)),
-        ];
-
-        AssertOperationSequence(steps);
-    }
-
-    [Fact]
-    public void Lock_AlreadyLockedNode_Fails()
-    {
-        int[] parent = [-1, 0];
-        var tree = new LockingTree(parent);
-
-        AssertOperationResult(true, () => tree.Lock(1, 7));
-
-        AssertOperationResult(false, () => tree.Lock(1, 9));
-    }
-
-    [Fact]
-    public void Upgrade_NodeItselfLocked_Fails()
-    {
-        int[] parent = [-1, 0, 0];
-        var tree = new LockingTree(parent);
-        tree.Lock(0, 1);
-        tree.Lock(1, 2);
-
-        AssertOperationResult(false, () => tree.Upgrade(0, 3));
-    }
-
-    [Fact]
-    public void Upgrade_LockedAncestorExists_Fails()
-    {
-        // 0 -> 1 -> 2
-        int[] parent = [-1, 0, 1];
-        var tree = new LockingTree(parent);
-        tree.Lock(0, 1);
-        tree.Lock(2, 2);
-
-        AssertOperationResult(false, () => tree.Upgrade(1, 3));
-    }
-
-    [Fact]
-    public void Upgrade_NoLockedDescendant_Fails()
-    {
-        int[] parent = [-1, 0, 0];
-        var tree = new LockingTree(parent);
-
-        AssertOperationResult(false, () => tree.Upgrade(0, 1));
-    }
-
-    // Shared shape behind every Lock/Unlock/Upgrade assertion above: run the
-    // operation, name its result, then compare - encapsulated once instead of
-    // repeating the same Assert(tree.Op(...)) shape at each call site.
-    private static void AssertOperationResult(bool expected, Func<bool> operation)
-    {
-        var actual = operation();
-        Assert.Equal(expected, actual);
-    }
-
-    private static void AssertOperationSequence(IEnumerable<(bool Expected, Func<bool> Operation)> steps)
-    {
-        foreach (var (expected, operation) in steps)
+    public static TheoryData<int[], LockingTreeOp[], bool[]> Examples =>
+        new()
         {
-            AssertOperationResult(expected, operation);
+            {
+                // LeetCode's own example tree: 0 -> 1, 2; 1 -> 3, 4; 2 -> 5, 6.
+                [-1, 0, 0, 1, 1, 2, 2],
+                [
+                    LockingTreeOp.Lock(2, 2),
+                    LockingTreeOp.Unlock(2, 3),
+                    LockingTreeOp.Unlock(2, 2),
+                    LockingTreeOp.Lock(4, 5),
+                    LockingTreeOp.Upgrade(0, 1),
+                    LockingTreeOp.Lock(0, 1),
+                ],
+                [true, false, true, true, true, false]
+            },
+            {
+                // The same call sequence against a shallower tree: 0 -> 1, 2, 3; 2 -> 4, 5.
+                [-1, 0, 0, 0, 2, 2],
+                [
+                    LockingTreeOp.Lock(2, 2),
+                    LockingTreeOp.Unlock(2, 3),
+                    LockingTreeOp.Unlock(2, 2),
+                    LockingTreeOp.Lock(4, 5),
+                    LockingTreeOp.Upgrade(0, 1),
+                    LockingTreeOp.Lock(0, 1),
+                ],
+                [true, false, true, true, true, false]
+            },
+            {
+                // Unlocking is only ever the holder's to do, and a locked node
+                // cannot be locked a second time.
+                [-1, 0],
+                [
+                    LockingTreeOp.Unlock(1, 7),
+                    LockingTreeOp.Lock(1, 7),
+                    LockingTreeOp.Lock(1, 9),
+                    LockingTreeOp.Unlock(1, 9),
+                    LockingTreeOp.Unlock(1, 7),
+                ],
+                [false, true, false, false, true]
+            },
+            {
+                // Upgrade refuses when the node itself is already locked.
+                [-1, 0, 0],
+                [LockingTreeOp.Lock(0, 1), LockingTreeOp.Lock(1, 2), LockingTreeOp.Upgrade(0, 3)],
+                [true, true, false]
+            },
+            {
+                // Upgrade refuses when an ancestor is locked: 0 -> 1 -> 2.
+                [-1, 0, 1],
+                [LockingTreeOp.Lock(0, 1), LockingTreeOp.Lock(2, 2), LockingTreeOp.Upgrade(1, 3)],
+                [true, true, false]
+            },
+            {
+                // Upgrade refuses when nothing beneath the node is locked.
+                [-1, 0, 0],
+                [LockingTreeOp.Upgrade(0, 1)],
+                [false]
+            },
+            {
+                // A successful upgrade releases every locked descendant, so one of
+                // them can be locked again straight afterwards: 0 -> 1, 2; 1 -> 3, 4.
+                [-1, 0, 0, 1, 1],
+                [
+                    LockingTreeOp.Lock(3, 1),
+                    LockingTreeOp.Lock(4, 2),
+                    LockingTreeOp.Upgrade(1, 5),
+                    LockingTreeOp.Lock(3, 9),
+                    LockingTreeOp.Lock(1, 9),
+                    LockingTreeOp.Unlock(1, 5),
+                ],
+                [true, true, true, true, false, true]
+            },
+        };
+
+    public static TheoryData<int[], LockingTreeOp[], int, int[]> DescendantExamples =>
+        new()
+        {
+            // 0 -> 1, 2; 1 -> 3, 4.
+            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(3, 1), LockingTreeOp.Lock(4, 2)], 1, [3, 4] },
+            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(3, 1), LockingTreeOp.Lock(4, 2)], 0, [3, 4] },
+
+            // A locked node is never its own descendant.
+            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(1, 1)], 1, [] },
+
+            // A lock in a sibling subtree is not beneath node 1.
+            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(2, 1)], 1, [] },
+
+            // Nothing locked anywhere.
+            { [-1, 0, 0], [], 0, [] },
+
+            // A chain 0 -> 1 -> 2 with only the deepest node locked.
+            { [-1, 0, 1], [LockingTreeOp.Lock(2, 2)], 0, [2] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByWholeTreeScan_LeetCodeExamples_MatchesEveryOperationResult(
+        int[] parent, LockingTreeOp[] operations, bool[] expected) =>
+        AssertScript(OperationsOnTreeSolution.CreateByWholeTreeScan(parent), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateBySubtreeDepthFirstSearch_LeetCodeExamples_MatchesEveryOperationResult(
+        int[] parent, LockingTreeOp[] operations, bool[] expected) =>
+        AssertScript(OperationsOnTreeSolution.CreateBySubtreeDepthFirstSearch(parent), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(DescendantExamples))]
+    public void CreateByWholeTreeScan_LockedSubtrees_ReturnsLockedDescendantsInAscendingOrder(
+        int[] parent, LockingTreeOp[] setup, int num, int[] expected) =>
+        AssertLockedDescendants(OperationsOnTreeSolution.CreateByWholeTreeScan(parent), setup, num, expected);
+
+    [Theory]
+    [MemberData(nameof(DescendantExamples))]
+    public void CreateBySubtreeDepthFirstSearch_LockedSubtrees_ReturnsLockedDescendantsInAscendingOrder(
+        int[] parent, LockingTreeOp[] setup, int num, int[] expected) =>
+        AssertLockedDescendants(
+            OperationsOnTreeSolution.CreateBySubtreeDepthFirstSearch(parent), setup, num, expected);
+
+    private static void AssertScript(LockingTree tree, LockingTreeOp[] operations, bool[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(tree));
         }
     }
 
-    private sealed class OperationsOnTreeNode(int id)
+    private static void AssertLockedDescendants(
+        LockingTree tree, LockingTreeOp[] setup, int num, int[] expected)
     {
-        public int Id { get; } = id;
+        foreach (var operation in setup)
+        {
+            operation.Apply(tree);
+        }
 
-        public List<OperationsOnTreeNode> Children { get; } = [];
+        Assert.Equal(expected, tree.LockedDescendantsOf(num));
+    }
+}
 
-        public OperationsOnTreeNode? Parent { get; set; }
+// One call in an OperationsOnTree script: which method to invoke and with what
+// arguments. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays.
+public readonly record struct LockingTreeOp
+{
+    private readonly Kind _kind;
+    private readonly int _num;
+    private readonly int _user;
 
-        public int LockedBy { get; set; }
+    private LockingTreeOp(Kind kind, int num, int user)
+    {
+        _kind = kind;
+        _num = num;
+        _user = user;
     }
 
-    private sealed class LockingTree
+    public static LockingTreeOp Lock(int num, int user) => new(Kind.Lock, num, user);
+
+    public static LockingTreeOp Unlock(int num, int user) => new(Kind.Unlock, num, user);
+
+    public static LockingTreeOp Upgrade(int num, int user) => new(Kind.Upgrade, num, user);
+
+    // Internal, not public: only this same assembly's test methods ever call Apply,
+    // and LockingTree itself is internal to the solution tier.
+    internal bool Apply(LockingTree tree) => _kind switch
     {
-        private readonly OperationsOnTreeNode[] _nodes;
+        Kind.Lock => tree.Lock(_num, _user),
+        Kind.Unlock => tree.Unlock(_num, _user),
+        _ => tree.Upgrade(_num, _user),
+    };
 
-        public LockingTree(int[] parent)
-        {
-            _nodes = new OperationsOnTreeNode[parent.Length];
-
-            for (var i = 0; i < parent.Length; i++)
-            {
-                _nodes[i] = new OperationsOnTreeNode(i);
-            }
-
-            for (var i = 1; i < parent.Length; i++)
-            {
-                _nodes[i].Parent = _nodes[parent[i]];
-                _nodes[parent[i]].Children.Add(_nodes[i]);
-            }
-        }
-
-        public bool Lock(int num, int user)
-        {
-            var node = _nodes[num];
-
-            if (node.LockedBy != 0)
-            {
-                return false;
-            }
-
-            node.LockedBy = user;
-            return true;
-        }
-
-        public bool Unlock(int num, int user)
-        {
-            var node = _nodes[num];
-
-            if (node.LockedBy != user)
-            {
-                return false;
-            }
-
-            node.LockedBy = 0;
-            return true;
-        }
-
-        public bool Upgrade(int num, int user)
-        {
-            var node = _nodes[num];
-
-            if (node.LockedBy != 0 || HasLockedAncestor(node))
-            {
-                return false;
-            }
-
-            var lockedDescendants = FindLockedDescendants(node);
-
-            if (lockedDescendants.Count == 0)
-            {
-                return false;
-            }
-
-            foreach (var descendant in lockedDescendants)
-            {
-                descendant.LockedBy = 0;
-            }
-
-            node.LockedBy = user;
-            return true;
-        }
-
-        private static bool HasLockedAncestor(OperationsOnTreeNode node)
-        {
-            for (var ancestor = node.Parent; ancestor is not null; ancestor = ancestor.Parent)
-            {
-                if (ancestor.LockedBy != 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static List<OperationsOnTreeNode> FindLockedDescendants(OperationsOnTreeNode node)
-        {
-            var subtree = DepthFirstSearch.Traverse(node, n => n.Children);
-            return subtree.Where(n => n != node && n.LockedBy != 0).ToList();
-        }
+    private enum Kind
+    {
+        Lock,
+        Unlock,
+        Upgrade,
     }
 }

@@ -1,13 +1,13 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.FindTheKthLargestIntegerInTheArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find the Kth Largest Integer in the Array (LC 1985): digit strings compared numerically (by
-// length, then ordinal) via NumericStringToken. FullSort clones and Array.Sorts every string with
-// that comparer (O(n log n)) then indexes; SizeKMinHeap reuses this repo's own
-// Heap<Element,MinHeapOrder<Element>> (KthLargestBenchmarks/LastStoneWeightBenchmarks precedent),
-// discarding the smallest root once the heap grows past K so its own log factor is on K, not N.
+// Harness only: both arms are FindTheKthLargestIntegerInTheArraySolution's, the same
+// methods FindTheKthLargestIntegerInTheArrayTests proves correct. The workload is
+// random digit strings of mixed length, so the numeric order the solution imposes
+// (length first, then ordinal) actually differs from string's own lexicographic one,
+// and K stays small so the size-k heap's log factor is on K rather than on Length.
 [MemoryDiagnoser]
 public class FindTheKthLargestIntegerInTheArrayBenchmarks
 {
@@ -43,39 +43,10 @@ public class FindTheKthLargestIntegerInTheArrayBenchmarks
         return new string(digits);
     }
 
-    private static int CompareNumeric(string first, string second) => first.Length != second.Length
-        ? first.Length.CompareTo(second.Length)
-        : string.CompareOrdinal(first, second);
-
     [Benchmark(Baseline = true)]
-    public string FullSort()
-    {
-        var copy = (string[])_values.Clone();
-        Array.Sort(copy, CompareNumeric);
-        return copy[^K];
-    }
+    public string FullSort() => FindTheKthLargestIntegerInTheArraySolution.KthLargestNumberByFullSort(_values, K);
 
     [Benchmark]
-    public string SizeKMinHeap()
-    {
-        var heap = new Heap<NumericStringToken, MinHeapOrder<NumericStringToken>>();
-
-        foreach (var value in _values)
-        {
-            heap.Push(new NumericStringToken(value));
-
-            if (heap.Count > K)
-            {
-                heap.TryPop(out _);
-            }
-        }
-
-        heap.TryPeek(out var kthLargest);
-        return kthLargest.Value;
-    }
-
-    private readonly record struct NumericStringToken(string Value) : IComparable<NumericStringToken>
-    {
-        public int CompareTo(NumericStringToken other) => CompareNumeric(Value, other.Value);
-    }
+    public string SizeKMinHeap() =>
+        FindTheKthLargestIntegerInTheArraySolution.KthLargestNumberBySizeKMinHeap(_values, K);
 }

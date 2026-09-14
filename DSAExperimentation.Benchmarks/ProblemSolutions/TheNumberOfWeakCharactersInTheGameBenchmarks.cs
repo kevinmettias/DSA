@@ -1,92 +1,55 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.TheNumberOfWeakCharactersInTheGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// The Number of Weak Characters in the Game (LC 1996): PairwiseComparison checks every
-// character against every other character directly - O(n^2), the literal problem
-// definition with no preprocessing at all - vs. SortThenScan, which sorts by attack
-// descending / defense ascending via this repo's own MergeSort.Sort<Element,TSequence>
-// and then makes one O(n) linear pass tracking the running maximum defense seen so far -
-// the same pair of primitives TheNumberOfWeakCharactersInTheGameTests.cs exercises for
-// correctness. _properties is deliberately generated with a small attack range so many
-// duplicate attack values occur, exercising the descending-attack/ascending-defense
-// tie-break rather than only the simple strictly-decreasing case.
+// Harness only: both arms are TheNumberOfWeakCharactersInTheGameSolution's, the same
+// methods TheNumberOfWeakCharactersInTheGameTests proves correct - the literal O(n^2)
+// pairwise check against sorting via this repo's own MergeSort and making one linear
+// pass. Each arm is handed the prepared CharacterRoster its hoisted overload takes, so
+// reading LeetCode's int[][] rows into attack/defense pairs is charged to [GlobalSetup]
+// rather than to the counting being measured.
+//
+// The attack range is deliberately narrow next to the defense range, so many characters
+// share an attack value and the descending-attack/ascending-defense tie-break is
+// exercised rather than only the simple strictly-decreasing case.
 [MemoryDiagnoser]
 public class TheNumberOfWeakCharactersInTheGameBenchmarks
 {
+    // LC problem number, reused as the deterministic roster seed.
     private const int RandomSeed = 1996;
+
+    private const int MinStat = 1;
     private const int MaxAttackExclusive = 50;
     private const int MaxDefenseExclusive = 1_000;
 
     [Params(200, 3_000)]
     public int Length;
 
-    private (int Attack, int Defense)[] _properties = null!;
+    private CharacterRoster _roster = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _properties = Enumerable.Range(0, Length)
-            .Select(_ => (Attack: random.Next(1, MaxAttackExclusive), Defense: random.Next(1, MaxDefenseExclusive)))
-            .ToArray();
+        var properties = new int[Length][];
+
+        for (var i = 0; i < Length; i++)
+        {
+            var attack = random.Next(MinStat, MaxAttackExclusive);
+            var defense = random.Next(MinStat, MaxDefenseExclusive);
+
+            properties[i] = [attack, defense];
+        }
+
+        _roster = CharacterRoster.Build(properties);
     }
 
     [Benchmark(Baseline = true)]
-    public int PairwiseComparison()
-    {
-        var weakCount = 0;
-
-        for (var i = 0; i < _properties.Length; i++)
-        {
-            for (var j = 0; j < _properties.Length; j++)
-            {
-                if (i == j)
-                {
-                    continue;
-                }
-
-                if (_properties[j].Attack > _properties[i].Attack && _properties[j].Defense > _properties[i].Defense)
-                {
-                    weakCount++;
-                    break;
-                }
-            }
-        }
-
-        return weakCount;
-    }
+    public int PairwiseComparison() =>
+        TheNumberOfWeakCharactersInTheGameSolution.NumberOfWeakCharactersByPairwiseComparison(_roster);
 
     [Benchmark]
-    public int SortThenScan()
-    {
-        var items = ((int Attack, int Defense)[])_properties.Clone();
-        SortByAttackDescendingDefenseAscending(items);
-
-        var weakCount = 0;
-        var maxDefenseSoFar = 0;
-
-        foreach (var (_, defense) in items)
-        {
-            if (defense < maxDefenseSoFar)
-            {
-                weakCount++;
-            }
-
-            maxDefenseSoFar = Math.Max(maxDefenseSoFar, defense);
-        }
-
-        return weakCount;
-    }
-
-    private static void SortByAttackDescendingDefenseAscending((int Attack, int Defense)[] items)
-    {
-        var byAttackDescendingDefenseAscending = Comparer<(int Attack, int Defense)>.Create(
-            (a, b) => a.Attack != b.Attack ? b.Attack.CompareTo(a.Attack) : a.Defense.CompareTo(b.Defense));
-
-        MergeSort.Sort<(int Attack, int Defense), ArrayIndexedSequence<(int Attack, int Defense)>>(
-            new ArrayIndexedSequence<(int Attack, int Defense)>(items), byAttackDescendingDefenseAscending);
-    }
+    public int SortThenScan() =>
+        TheNumberOfWeakCharactersInTheGameSolution.NumberOfWeakCharactersBySortThenScan(_roster);
 }

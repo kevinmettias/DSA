@@ -1,58 +1,30 @@
+using DSAExperimentation.LeetCode.FindGreatestCommonDivisorOfArray;
+
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindGreatestCommonDivisorOfArray;
 
-// LeetCode 1979. Find Greatest Common Divisor of Array: the answer is just
-// Gcd(min(nums), max(nums)) - finding the array's own min/max is a one-pass scan
-// with no interesting container to compose, and reducing two integers via the
-// Euclidean algorithm is the same private helper CheckIfItIsAGoodArrayTests/
-// XOfAKindInADeckOfCardsTests/NumberOfDifferentSubsequencesGCDsTests already reuse
-// inline rather than promoting to a shared production type - CheckIfItIsAGoodArrayTests'
-// own reasoning applies verbatim: "no repo container or algorithm primitive
-// applies here."
-public sealed partial class FindGreatestCommonDivisorOfArrayTests
+// Harness only: both gcd strategies live in FindGreatestCommonDivisorOfArraySolution
+// and are asserted against the same examples - LeetCode's three published ones plus
+// the coprime, single-element and min-divides-max cases that pin the ends of the scan.
+public sealed class FindGreatestCommonDivisorOfArrayTests
 {
-    [Fact]
-    public void FindGcd_ClassicExample_ReturnsGcdOfMinAndMax()
-    {
-        int[] nums = [2, 5, 6, 9, 10];
-
-        var gcd = FindGcd(nums);
-
-        Assert.Equal(2, gcd);
-    }
-
-    [Fact]
-    public void FindGcd_MinAndMaxAreCoprime_ReturnsOne()
-    {
-        int[] nums = [7, 5, 6, 8, 3];
-
-        var gcd = FindGcd(nums);
-
-        Assert.Equal(1, gcd);
-    }
-
-    [Fact]
-    public void FindGcd_SingleElement_ReturnsThatElement()
-    {
-        int[] nums = [3];
-
-        var gcd = FindGcd(nums);
-
-        Assert.Equal(3, gcd);
-    }
-
-    private static int FindGcd(int[] nums)
-    {
-        var min = nums[0];
-        var max = nums[0];
-
-        foreach (var num in nums)
+    public static TheoryData<int[], int> Examples =>
+        new()
         {
-            min = Math.Min(min, num);
-            max = Math.Max(max, num);
-        }
+            { [2, 5, 6, 9, 10], 2 },
+            { [7, 5, 6, 8, 3], 1 },
+            { [3, 3], 3 },
+            { [3], 3 },
+            { [6, 12, 18], 6 },
+            { [1, 1000], 1 },
+        };
 
-        return Gcd(min, max);
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindGcdBySubtraction_LeetCodeExamples_ReturnsGcdOfMinAndMax(int[] nums, int expected) =>
+        Assert.Equal(expected, FindGreatestCommonDivisorOfArraySolution.FindGcdBySubtraction(nums));
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindGcdByEuclidean_LeetCodeExamples_ReturnsGcdOfMinAndMax(int[] nums, int expected) =>
+        Assert.Equal(expected, FindGreatestCommonDivisorOfArraySolution.FindGcdByEuclidean(nums));
 }
