@@ -1,15 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.MinimumNumberOfMovesToMakePalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Minimum Number of Moves to Make Palindrome (LC 2193): the identical greedy
-// two-pointer algorithm run over two different backing representations for the
-// same "indexed access, move one element" contract - a BCL List<char> moved via
-// RemoveAt/Insert vs. this repo's ArrayIndexedSequence<char> moved via direct
-// Get/Set swaps. Both are the same O(n^2) algorithm computing the same answer;
-// this is the concrete "performance independence" case ARCHITECTURE.md SS8 names -
-// same syntactic contract, different real cost purely from the representation.
+// Harness only: both arms are MinimumNumberOfMovesToMakePalindromeSolution's, the
+// same methods MinimumNumberOfMovesToMakePalindromeTests proves correct. The
+// measured input is LeetCode's own shape - a string - so neither strategy needs a
+// hoisted overload; what [GlobalSetup] owns here is the workload's size and seed.
 [MemoryDiagnoser]
 public class MinimumNumberOfMovesToMakePalindromeBenchmarks
 {
@@ -72,101 +69,10 @@ public class MinimumNumberOfMovesToMakePalindromeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListRemoveInsert()
-    {
-        var chars = new List<char>(_value);
-        var moves = 0;
-        int i = 0, j = chars.Count - 1;
-
-        while (i < j)
-        {
-            if (chars[i] == chars[j])
-            {
-                i++;
-                j--;
-                continue;
-            }
-
-            (i, j, moves) = ResolveMismatch(chars, i, j, moves);
-        }
-
-        return moves;
-    }
-
-    private static (int I, int J, int Moves) ResolveMismatch(List<char> chars, int i, int j, int moves)
-    {
-        var k = j;
-
-        while (k > i && chars[k] != chars[i])
-        {
-            k--;
-        }
-
-        if (k == i)
-        {
-            var mid = chars[i];
-            chars.RemoveAt(i);
-            chars.Insert(i + 1, mid);
-            return (i, j, moves + 1);
-        }
-
-        var match = chars[k];
-        chars.RemoveAt(k);
-        chars.Insert(j, match);
-        return (i + 1, j - 1, moves + (j - k));
-    }
+    public int ListRemoveInsert() =>
+        MinimumNumberOfMovesToMakePalindromeSolution.MinMovesByListRemoveInsert(_value);
 
     [Benchmark]
-    public int ArrayIndexedSequenceSwap()
-    {
-        var sequence = new ArrayIndexedSequence<char>(_value.ToCharArray());
-        var moves = 0;
-        int i = 0, j = sequence.Length - 1;
-
-        while (i < j)
-        {
-            if (sequence.Get(i) == sequence.Get(j))
-            {
-                i++;
-                j--;
-                continue;
-            }
-
-            (i, j, moves) = ResolveMismatch(sequence, i, j, moves);
-        }
-
-        return moves;
-    }
-
-    private static (int I, int J, int Moves) ResolveMismatch(ArrayIndexedSequence<char> sequence, int i, int j, int moves)
-    {
-        var k = j;
-
-        while (k > i && sequence.Get(k) != sequence.Get(i))
-        {
-            k--;
-        }
-
-        if (k == i)
-        {
-            Swap(sequence, i, i + 1);
-            return (i, j, moves + 1);
-        }
-
-        while (k < j)
-        {
-            Swap(sequence, k, k + 1);
-            moves++;
-            k++;
-        }
-
-        return (i + 1, j - 1, moves);
-    }
-
-    private static void Swap(ArrayIndexedSequence<char> sequence, int first, int second)
-    {
-        (var a, var b) = (sequence.Get(first), sequence.Get(second));
-        sequence.Set(first, b);
-        sequence.Set(second, a);
-    }
+    public int ArrayIndexedSequenceSwap() =>
+        MinimumNumberOfMovesToMakePalindromeSolution.MinMovesByIndexedSequenceSwap(_value);
 }

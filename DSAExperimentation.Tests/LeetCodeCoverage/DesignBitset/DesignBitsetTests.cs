@@ -1,136 +1,206 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using System.Globalization;
+using static DSAExperimentation.LeetCode.DesignBitset.DesignBitsetSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignBitset;
 
-// LeetCode 2166. Design Bitset: a fixed-size raw-bit array (this repo's own
-// DynamicArray<int>, preallocated to `size` via Add - the same "compose an existing
-// Representation behind a thin design-problem wrapper" shape DesignCircularDequeTests
-// wraps around Deque<int>) plus a lazily-applied "flipped" interpretation flag and a
-// running ones-count. flip() therefore never touches the backing array - it just
-// toggles the flag and mirrors the count (size - count) - which is the whole reason
-// this problem exists: an eager flip() that rewrites every element is O(size), while
-// this lazy flag keeps flip()/count()/all()/one() all O(1). fix/unfix compare the
-// bit's CURRENT visible value (raw XOR flipped) against the desired one and only
-// touch the array - and adjust the running count - when a change is actually needed.
-public sealed partial class DesignBitsetTests
+// Harness only: the algorithm lives in DesignBitsetSolution. LeetCode's own shape
+// here is a stateful object across a sequence of calls, so Examples encodes a call
+// script instead of a single argument tuple - the same shape DesignCircularDequeTests
+// already uses for its own instance-API problem. BitsetOp.Apply renders every
+// operation's result as the string LeetCode's own judge output shows for it - "null"
+// for the void mutators, "true"/"false" for all()/one(), the decimal count, and the
+// bit string itself - so one expected value per call covers the whole mixed surface.
+public sealed class DesignBitsetTests
 {
-    // LeetCode's own worked example: "00000" -> fix(3) -> fix(4) -> flip() -> all()
-    // is False -> unfix(0) -> flip(), ending at "10011".
-    [Fact]
-    public void FixFlipUnfixFlip_LeetCodeExample_MatchesExpectedStateAtEachStep()
-    {
-        var bitset = new Bitset(5);
-
-        bitset.Fix(3);
-        bitset.Fix(4);
-        Assert.Equal("00011", bitset.ToBitString());
-
-        bitset.Flip();
-        Assert.Equal("11100", bitset.ToBitString());
-        Assert.False(bitset.All());
-
-        bitset.Unfix(0);
-        Assert.Equal("01100", bitset.ToBitString());
-
-        bitset.Flip();
-        Assert.Equal("10011", bitset.ToBitString());
-        Assert.Equal(3, bitset.Count());
-        Assert.True(bitset.One());
-    }
-
-    [Fact]
-    public void All_EveryBitFixed_ReturnsTrue()
-    {
-        var bitset = new Bitset(3);
-
-        bitset.Fix(0);
-        bitset.Fix(1);
-        bitset.Fix(2);
-
-        Assert.True(bitset.All());
-        Assert.Equal(3, bitset.Count());
-    }
-
-    [Fact]
-    public void One_NoBitsEverFixed_ReturnsFalse()
-    {
-        var bitset = new Bitset(4);
-
-        Assert.False(bitset.One());
-        Assert.Equal(0, bitset.Count());
-        Assert.Equal("0000", bitset.ToBitString());
-    }
-
-    [Fact]
-    public void FlipTwice_ReturnsToOriginalState()
-    {
-        var bitset = new Bitset(4);
-        bitset.Fix(1);
-
-        bitset.Flip();
-        bitset.Flip();
-
-        Assert.Equal("0100", bitset.ToBitString());
-        Assert.Equal(1, bitset.Count());
-    }
-
-    private sealed class Bitset
-    {
-        private readonly DynamicArray<int> _bits = new();
-        private readonly int _size;
-        private bool _flipped;
-        private int _onesCount;
-
-        public Bitset(int size)
+    public static TheoryData<int, BitsetOp[], string[]> Examples =>
+        new()
         {
-            _size = size;
-
-            for (var i = 0; i < size; i++)
+            // LeetCode's published example: "00000" -> fix(3) -> fix(1) -> flip()
+            // -> all() is false -> unfix(0) -> flip() -> one() is true -> unfix(0)
+            // -> count() is 2 -> toString() is "01010".
             {
-                _bits.Add(0);
-            }
-        }
+                5,
+                [
+                    BitsetOp.Fix(3),
+                    BitsetOp.Fix(1),
+                    BitsetOp.Flip(),
+                    BitsetOp.All(),
+                    BitsetOp.Unfix(0),
+                    BitsetOp.Flip(),
+                    BitsetOp.One(),
+                    BitsetOp.Unfix(0),
+                    BitsetOp.Count(),
+                    BitsetOp.ToBitString(),
+                ],
+                ["null", "null", "null", "false", "null", "null", "true", "null", "2", "01010"]
+            },
 
-        public void Fix(int idx) => SetVisible(idx, targetVisible: 1);
-
-        public void Unfix(int idx) => SetVisible(idx, targetVisible: 0);
-
-        public void Flip()
-        {
-            _flipped = !_flipped;
-            _onesCount = _size - _onesCount;
-        }
-
-        public bool All() => _onesCount == _size;
-
-        public bool One() => _onesCount > 0;
-
-        public int Count() => _onesCount;
-
-        public string ToBitString()
-        {
-            var chars = new char[_size];
-
-            for (var i = 0; i < _size; i++)
+            // The step-by-step script this problem's pre-migration test asserted,
+            // kept whole: fix(3), fix(4), flip(), unfix(0), flip(), ending at
+            // "10011" with three ones set.
             {
-                chars[i] = Visible(i) == 1 ? '1' : '0';
-            }
+                5,
+                [
+                    BitsetOp.Fix(3),
+                    BitsetOp.Fix(4),
+                    BitsetOp.ToBitString(),
+                    BitsetOp.Flip(),
+                    BitsetOp.ToBitString(),
+                    BitsetOp.All(),
+                    BitsetOp.Unfix(0),
+                    BitsetOp.ToBitString(),
+                    BitsetOp.Flip(),
+                    BitsetOp.ToBitString(),
+                    BitsetOp.Count(),
+                    BitsetOp.One(),
+                ],
+                [
+                    "null", "null", "00011", "null", "11100", "false", "null", "01100", "null", "10011",
+                    "3", "true",
+                ]
+            },
 
-            return new string(chars);
-        }
-
-        private void SetVisible(int idx, int targetVisible)
-        {
-            if (Visible(idx) == targetVisible)
+            // Every bit fixed: all() is the only case that reports true.
             {
-                return;
-            }
+                3,
+                [BitsetOp.Fix(0), BitsetOp.Fix(1), BitsetOp.Fix(2), BitsetOp.All(), BitsetOp.Count()],
+                ["null", "null", "null", "true", "3"]
+            },
 
-            var targetRaw = _flipped ? 1 - targetVisible : targetVisible;
-            _bits.Set(idx, targetRaw);
-            _onesCount += targetVisible == 1 ? 1 : -1;
+            // Nothing ever fixed: one() is false and the rendering is all zeros.
+            {
+                4,
+                [BitsetOp.One(), BitsetOp.Count(), BitsetOp.ToBitString()],
+                ["false", "0", "0000"]
+            },
+
+            // Flipping twice returns to the original state, count included.
+            {
+                4,
+                [BitsetOp.Fix(1), BitsetOp.Flip(), BitsetOp.Flip(), BitsetOp.ToBitString(), BitsetOp.Count()],
+                ["null", "null", "null", "0100", "1"]
+            },
+
+            // Fixing an already-set bit and unfixing an already-clear one are both
+            // no-ops, so the running count must not drift.
+            {
+                3,
+                [
+                    BitsetOp.Fix(2),
+                    BitsetOp.Fix(2),
+                    BitsetOp.Unfix(0),
+                    BitsetOp.Count(),
+                    BitsetOp.ToBitString(),
+                ],
+                ["null", "null", "null", "1", "001"]
+            },
+
+            // The same no-op check while the flip flag is set, where a raw write
+            // and a visible write disagree.
+            {
+                3,
+                [
+                    BitsetOp.Flip(),
+                    BitsetOp.Fix(1),
+                    BitsetOp.Unfix(2),
+                    BitsetOp.Count(),
+                    BitsetOp.ToBitString(),
+                ],
+                ["null", "null", "null", "2", "110"]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BitsetByEagerFlip_LeetCodeExamples_MatchesExpectedSequence(
+        int size, BitsetOp[] operations, string[] expected) =>
+        RunScript(new BitsetByEagerFlip(size), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BitsetByLazyFlag_LeetCodeExamples_MatchesExpectedSequence(
+        int size, BitsetOp[] operations, string[] expected) =>
+        RunScript(new BitsetByLazyFlag(size), operations, expected);
+
+    private static void RunScript(IBitset bitset, BitsetOp[] operations, string[] expected)
+    {
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(bitset));
         }
+    }
+}
 
-        private int Visible(int idx) => _bits.Get(idx) ^ (_flipped ? 1 : 0);
+// One call in a Bitset script: which operation to invoke and with what index. Pure
+// dispatch, built via the named factories below so a script (like Examples above)
+// reads like the LeetCode call sequence it replays.
+public readonly record struct BitsetOp
+{
+    private const string VoidResult = "null";
+    private const string TrueResult = "true";
+    private const string FalseResult = "false";
+
+    private readonly Kind _kind;
+    private readonly int _index;
+
+    private BitsetOp(Kind kind, int index)
+    {
+        _kind = kind;
+        _index = index;
+    }
+
+    public static BitsetOp Fix(int idx) => new(Kind.Fix, idx);
+
+    public static BitsetOp Unfix(int idx) => new(Kind.Unfix, idx);
+
+    public static BitsetOp Flip() => new(Kind.Flip, 0);
+
+    public static BitsetOp All() => new(Kind.All, 0);
+
+    public static BitsetOp One() => new(Kind.One, 0);
+
+    public static BitsetOp Count() => new(Kind.Count, 0);
+
+    public static BitsetOp ToBitString() => new(Kind.ToBitString, 0);
+
+    // The string LeetCode's own judge output shows for this call, so one expected
+    // value per operation covers the mutators, the two predicates, the count and
+    // the rendering uniformly.
+    internal string Apply(IBitset bitset) => _kind switch
+    {
+        Kind.Fix => ApplyVoid(bitset.Fix, _index),
+        Kind.Unfix => ApplyVoid(bitset.Unfix, _index),
+        Kind.Flip => ApplyFlip(bitset),
+        Kind.All => Rendered(bitset.All()),
+        Kind.One => Rendered(bitset.One()),
+        Kind.Count => bitset.Count().ToString(CultureInfo.InvariantCulture),
+        _ => bitset.ToBitString(),
+    };
+
+    private static string ApplyVoid(Action<int> mutate, int index)
+    {
+        mutate(index);
+
+        return VoidResult;
+    }
+
+    private static string ApplyFlip(IBitset bitset)
+    {
+        bitset.Flip();
+
+        return VoidResult;
+    }
+
+    private static string Rendered(bool value) => value ? TrueResult : FalseResult;
+
+    private enum Kind
+    {
+        Fix,
+        Unfix,
+        Flip,
+        All,
+        One,
+        Count,
+        ToBitString,
     }
 }

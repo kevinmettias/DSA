@@ -1,17 +1,20 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.RollingHash;
+using DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Find Substring With Given Hash Value (LC 2156): the textbook O(n*k) baseline -
-// recompute each length-k window's modular hash from scratch by walking its k
-// characters - vs. this repo's RollingHash, built once in O(n) over the REVERSED
-// text (see FindSubstringWithGivenHashValueTests' doc comment for why reversed) and
-// then queried in O(1) per window. _unreachableHashValue is deliberately outside
-// [0, Modulo) so both strategies are forced through every window on every
-// invocation instead of an early exit making the baseline look artificially
-// competitive - the same deliberately-unreachable-target trick TwoSumBenchmarks
-// uses.
+// Harness only: both arms are FindSubstringWithGivenHashValueSolution's, the same
+// methods FindSubstringWithGivenHashValueTests proves correct - the O(n*k)
+// window-rehash baseline against this repo's RollingHash queried in O(1) per
+// window. The composed arm is handed the prefix table its hoisted overload takes,
+// so the O(n) construction is charged to [GlobalSetup] rather than to the sweep
+// being measured.
+//
+// UnreachableHashValue is deliberately outside [0, Modulo) so both strategies are
+// forced through every window on every invocation instead of an early exit making
+// the baseline look artificially competitive - the same
+// deliberately-unreachable-target trick TwoSumBenchmarks uses.
 [MemoryDiagnoser]
 public class FindSubstringWithGivenHashValueBenchmarks
 {
@@ -26,7 +29,9 @@ public class FindSubstringWithGivenHashValueBenchmarks
     public int Length;
 
     private string _text = null!;
-    private char[] _reversedChars = null!;
+    private RollingHash _reversedHash = null!;
+
+    private static RollingHashLane Lane => new(Power, Modulo);
 
     [GlobalSetup]
     public void Setup()
@@ -40,62 +45,16 @@ public class FindSubstringWithGivenHashValueBenchmarks
         }
 
         _text = new string(chars);
-        _reversedChars = (char[])chars.Clone();
-        Array.Reverse(_reversedChars);
+        _reversedHash = FindSubstringWithGivenHashValueSolution.BuildReversedWindowHash(_text, Lane);
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce()
-    {
-        var n = _text.Length;
-        var found = -1;
-
-        for (var i = 0; i <= n - K; i++)
-        {
-            if (WindowHash(i) == UnreachableHashValue)
-            {
-                found = i;
-                break;
-            }
-        }
-
-        return found;
-    }
-
-    private long WindowHash(int start)
-    {
-        long hash = 0;
-        long powerTerm = 1;
-
-        for (var j = 0; j < K; j++)
-        {
-            var value = _text[start + j] - 'a' + 1;
-            hash = (hash + value * powerTerm) % Modulo;
-            powerTerm = powerTerm * Power % Modulo;
-        }
-
-        return hash;
-    }
+    public bool BruteForce() =>
+        FindSubstringWithGivenHashValueSolution.TryFindSubstringByWindowRehash(
+            _text, Lane, K, UnreachableHashValue, out _);
 
     [Benchmark]
-    public int RollingHashWindowed()
-    {
-        var comparer = EqualityComparer<char>.Create((left, right) => left == right, value => value - 'a' + 1);
-        var lane = new RollingHashLane(Power, Modulo);
-        var hash = new RollingHash(new string(_reversedChars), comparer, lane, lane);
-
-        var n = _reversedChars.Length;
-        var found = -1;
-
-        for (var i = 0; i <= n - K; i++)
-        {
-            if (hash.Hash(n - i - K, K).First == UnreachableHashValue)
-            {
-                found = i;
-                break;
-            }
-        }
-
-        return found;
-    }
+    public bool RollingHashWindowed() =>
+        FindSubstringWithGivenHashValueSolution.TryFindSubstringByRollingHash(
+            _reversedHash, _text, K, UnreachableHashValue, out _);
 }

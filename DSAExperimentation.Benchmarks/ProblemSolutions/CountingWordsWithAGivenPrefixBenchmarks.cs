@@ -1,15 +1,12 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Trie;
+using DSAExperimentation.LeetCode.CountingWordsWithAGivenPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Counting Words With a Given Prefix (LC 2185): a direct string.StartsWith scan over
-// every word vs. this repo's own Trie<bool> - one word inserted per candidate, then
-// HasPrefix(pref) (CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks' exact
-// per-word Insert+HasPrefix pairing), counting matches instead of stopping at the
-// first one. Words are randomly generated single-repeated-character strings (same
-// generator CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks uses), so a
-// single-letter prefix gives a realistic, non-trivial ~1/26 match rate.
+// Harness only: both arms are CountingWordsWithAGivenPrefixSolution's, the same methods
+// CountingWordsWithAGivenPrefixTests proves correct. Words are randomly generated
+// single-repeated-character strings, so a single-letter prefix gives a realistic,
+// non-trivial ~1/26 match rate and neither arm can stop early - the answer is a count.
 [MemoryDiagnoser]
 public class CountingWordsWithAGivenPrefixBenchmarks
 {
@@ -34,37 +31,10 @@ public class CountingWordsWithAGivenPrefixBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int StartsWithScan()
-    {
-        var count = 0;
-
-        for (var i = 0; i < _words.Length; i++)
-        {
-            if (_words[i].StartsWith(Prefix, StringComparison.Ordinal))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+    public int StartsWithScan() =>
+        CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByStartsWithScan(_words, Prefix);
 
     [Benchmark]
-    public int TriePerWordHasPrefix()
-    {
-        var count = 0;
-
-        for (var i = 0; i < _words.Length; i++)
-        {
-            var trie = new Trie<bool>();
-            trie.Set(_words[i], true);
-
-            if (trie.HasPrefix(Prefix))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+    public int TriePerWordHasPrefix() =>
+        CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByTriePerWord(_words, Prefix);
 }

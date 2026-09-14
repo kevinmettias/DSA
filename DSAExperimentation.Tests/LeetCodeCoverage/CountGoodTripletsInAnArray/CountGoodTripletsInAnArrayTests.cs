@@ -1,115 +1,60 @@
-using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.LeetCode.CountGoodTripletsInAnArray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodTripletsInAnArray;
 
-// LeetCode 2179. Count Good Triplets in an Array: nums1/nums2 are both permutations
-// of [0, n). Re-express nums1's sequence in terms of nums2's positions -
-// a[i] = (index of nums1[i] within nums2) - so a good triplet becomes exactly "count
-// increasing triples i<j<k with a[i]<a[j]<a[k]," a classic
-// FenwickTree<int,SumOperation<int>> (this repo's own Binary Indexed Tree) sweep -
-// the same coordinate-free counting shape CountOfSmallerNumbersAfterSelfTests uses,
-// run twice: one forward pass counts, for each j, how many earlier positions hold a
-// smaller a-value; one backward pass counts how many later positions hold a larger
-// one; multiplying and summing those two counts per j gives the total.
+// Harness only. Both strategies are CountGoodTripletsInAnArraySolution's -
+// including the pairwise scan, which the benchmark used to own privately as its
+// baseline and nothing asserted. Beyond LeetCode's two published examples the
+// cases pin the counting boundaries: fewer nodes than a triplet needs, a rank
+// array that is fully increasing (every triple good) and one that is fully
+// decreasing (none), and a case whose nums2 is not the identity permutation, so a
+// strategy that forgot to re-rank through nums2 could not pass by accident.
 public sealed class CountGoodTripletsInAnArrayTests
 {
-    [Fact]
-    public void CountGoodTriplets_LeetCodeExampleOne_ReturnsOne()
-    {
-        int[] nums1 = [2, 0, 1, 3];
-        int[] nums2 = [0, 1, 2, 3];
-
-        var actual = CountGoodTriplets(nums1, nums2);
-
-        Assert.Equal(1L, actual);
-    }
-
-    [Fact]
-    public void CountGoodTriplets_LeetCodeExampleTwo_ReturnsFour()
-    {
-        int[] nums1 = [4, 0, 1, 3, 2];
-        int[] nums2 = [4, 1, 0, 2, 3];
-
-        var actual = CountGoodTriplets(nums1, nums2);
-
-        Assert.Equal(4L, actual);
-    }
-
-    [Fact]
-    public void CountGoodTriplets_TooFewElementsForATriplet_ReturnsZero()
-    {
-        int[] nums1 = [1, 0];
-        int[] nums2 = [0, 1];
-
-        var actual = CountGoodTriplets(nums1, nums2);
-
-        Assert.Equal(0L, actual);
-    }
-
-    private static long CountGoodTriplets(int[] nums1, int[] nums2)
-    {
-        var a = BuildRankArray(nums1, nums2);
-        var leftSmallerCount = ComputeLeftSmallerCounts(a);
-        var rightLargerCount = ComputeRightLargerCounts(a);
-
-        return SumTripletCounts(leftSmallerCount, rightLargerCount);
-    }
-
-    private static int[] ComputeLeftSmallerCounts(int[] a)
-    {
-        var n = a.Length;
-        var leftSmallerCount = new int[n];
-        var leftTree = new FenwickTree<int, SumOperation<int>>(n);
-        for (var i = 0; i < n; i++)
+    public static TheoryData<int[], int[], long> Examples =>
+        new()
         {
-            leftSmallerCount[i] = a[i] == 0 ? 0 : leftTree.PrefixQuery(a[i] - 1);
-            leftTree.Add(a[i], 1);
-        }
+            // LC example 1: only (0, 1, 3) keeps its order in both arrays.
+            { [2, 0, 1, 3], [0, 1, 2, 3], 1L },
 
-        return leftSmallerCount;
-    }
+            // LC example 2.
+            { [4, 0, 1, 3, 2], [4, 1, 0, 2, 3], 4L },
 
-    private static int[] ComputeRightLargerCounts(int[] a)
-    {
-        var n = a.Length;
-        var rightLargerCount = new int[n];
-        var rightTree = new FenwickTree<int, SumOperation<int>>(n);
-        for (var i = n - 1; i >= 0; i--)
-        {
-            var smallerToRight = a[i] == 0 ? 0 : rightTree.PrefixQuery(a[i] - 1);
-            rightLargerCount[i] = (n - 1 - i) - smallerToRight;
-            rightTree.Add(a[i], 1);
-        }
+            // Two values cannot form a triplet at all.
+            { [1, 0], [0, 1], 0L },
 
-        return rightLargerCount;
-    }
+            // One value, the smallest input the sweep has to survive.
+            { [0], [0], 0L },
 
-    private static long SumTripletCounts(int[] leftSmallerCount, int[] rightLargerCount)
-    {
-        long total = 0;
-        for (var j = 0; j < leftSmallerCount.Length; j++)
-        {
-            total += (long)leftSmallerCount[j] * rightLargerCount[j];
-        }
+            // Identical permutations: the ranks increase, so all C(4, 3) triples
+            // are good.
+            { [0, 1, 2, 3], [0, 1, 2, 3], 4L },
 
-        return total;
-    }
+            // Exactly reversed: the ranks decrease, so no triple is.
+            { [3, 2, 1, 0], [0, 1, 2, 3], 0L },
 
-    private static int[] BuildRankArray(int[] nums1, int[] nums2)
-    {
-        var n = nums1.Length;
-        var pos2 = new int[n];
-        for (var i = 0; i < n; i++)
-        {
-            pos2[nums2[i]] = i;
-        }
+            // Ranks [0, 2, 1, 3, 4] - the one inversion in the middle removes
+            // three of the ten triples.
+            { [0, 2, 1, 3, 4], [0, 1, 2, 3, 4], 7L },
 
-        var ranks = new int[n];
-        for (var i = 0; i < n; i++)
-        {
-            ranks[i] = pos2[nums1[i]];
-        }
+            // nums2 is not the identity, so the answer depends on re-ranking
+            // nums1 through it: the ranks come out [1, 0, 2, 3].
+            { [3, 1, 0, 2], [1, 3, 0, 2], 2L },
+        };
 
-        return ranks;
-    }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountGoodTripletsByPairwiseScan_LeetCodeExamples_ReturnsGoodTripletCount(
+        int[] nums1, int[] nums2, long expected) =>
+        Assert.Equal(
+            expected,
+            CountGoodTripletsInAnArraySolution.CountGoodTripletsByPairwiseScan(nums1, nums2));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountGoodTripletsByFenwickTreeSweep_LeetCodeExamples_ReturnsGoodTripletCount(
+        int[] nums1, int[] nums2, long expected) =>
+        Assert.Equal(
+            expected,
+            CountGoodTripletsInAnArraySolution.CountGoodTripletsByFenwickTreeSweep(nums1, nums2));
 }
