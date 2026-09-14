@@ -1,79 +1,148 @@
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.SequentiallyOrdinalRankTracker;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SequentiallyOrdinalRankTracker;
 
-// LeetCode 2102. Sequentially Ordinal Rank Tracker: the classic two-heap "streaming
-// kth-largest with k growing by one every query" trick, built entirely from this
-// repo's own Heap<T,TOrder>. Locations are keyed as (-score, name) so ValueTuple's
-// own lexicographic IComparable already encodes "higher score first, ties broken by
-// ascending name" - no custom IHeapOrder witness needed beyond the two the library
-// already ships (MinHeapOrder/MaxHeapOrder).
-public sealed partial class SequentiallyOrdinalRankTrackerTests
+// Harness only. Both strategies are SequentiallyOrdinalRankTrackerSolution's -
+// this file replays call scripts against each IRankTracker instance, so a failure
+// still names the strategy that broke even though the "input" here is a sequence
+// of add/get calls rather than a single argument tuple, the same shape
+// AllOneDataStructureTests and LRUCacheTests already use for their own
+// instance-API problems. The pre-migration test only proved the two-heap tracker;
+// the re-sort baseline (previously untested scaffolding inlined in the benchmark)
+// gets that same coverage here for the first time. RankTrackerOp.Apply is pure
+// dispatch, no ranking logic of its own.
+public sealed class SequentiallyOrdinalRankTrackerTests
 {
-    [Fact]
-    public void Get_OfficialExampleSequence_ReturnsSuccessiveRanks()
+    public static TheoryData<RankTrackerOp[], string?[]> Examples =>
+        new()
+        {
+            {
+                // LeetCode's published call script, whose last two calls are two
+                // consecutive gets with no add between them.
+                [
+                    RankTrackerOp.Add("bradford", 2),
+                    RankTrackerOp.Add("branford", 3),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("alps", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("orl", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("orlando", 3),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("antibs", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Get(),
+                ],
+                [null, null, "branford", null, "alps", null, "bradford", null, "bradford", null, "bradford", "orl"]
+            },
+            {
+                // The same script with a seventh, top-scoring add in place of that
+                // trailing bare get: "forest" takes rank 1, so the sixth query still
+                // lands on "bradford" even though every earlier rank shifted down.
+                [
+                    RankTrackerOp.Add("bradford", 2),
+                    RankTrackerOp.Add("branford", 3),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("alps", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("orl", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("orlando", 3),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("antibs", 2),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Add("forest", 4),
+                    RankTrackerOp.Get(),
+                ],
+                [null, null, "branford", null, "alps", null, "bradford", null, "bradford", null, "bradford", null, "bradford"]
+            },
+            {
+                // Strictly descending scores added up front, then drained: the ranks
+                // come back in insertion order.
+                [
+                    RankTrackerOp.Add("first", 30),
+                    RankTrackerOp.Add("second", 20),
+                    RankTrackerOp.Add("third", 10),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Get(),
+                    RankTrackerOp.Get(),
+                ],
+                [null, null, null, "first", "second", "third"]
+            },
+            {
+                // Equal scores: the lexicographically smaller name outranks, even
+                // though it was added second.
+                [RankTrackerOp.Add("b", 1), RankTrackerOp.Add("a", 1), RankTrackerOp.Get(), RankTrackerOp.Get()],
+                [null, null, "a", "b"]
+            },
+            {
+                [RankTrackerOp.Add("solo", 5), RankTrackerOp.Get()],
+                [null, "solo"]
+            },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByResortEveryGet_LeetCodeExamples_ReturnsSuccessiveRanks(
+        RankTrackerOp[] operations, string?[] expected) =>
+        RunScript(SequentiallyOrdinalRankTrackerSolution.CreateByResortEveryGet(), operations, expected);
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByTwoHeaps_LeetCodeExamples_ReturnsSuccessiveRanks(
+        RankTrackerOp[] operations, string?[] expected) =>
+        RunScript(SequentiallyOrdinalRankTrackerSolution.CreateByTwoHeaps(), operations, expected);
+
+    private static void RunScript(
+        SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker,
+        RankTrackerOp[] operations,
+        string?[] expected)
     {
-        var tracker = new RankTracker();
+        for (var i = 0; i < operations.Length; i++)
+        {
+            Assert.Equal(expected[i], operations[i].Apply(tracker));
+        }
+    }
+}
 
-        tracker.Add("bradford", 2);
-        tracker.Add("branford", 3);
-        Assert.Equal("branford", tracker.Get());
+// One call in a rank-tracker script: which method to invoke and with what
+// arguments. Pure dispatch, built via the named factories below so a script (like
+// Examples above) reads like the LeetCode call sequence it replays. Add returns
+// null (no comparable value); Get returns the actual answer - the same
+// null-means-no-return-value convention LRUCacheOp.Apply uses for its own put/get
+// split.
+public readonly record struct RankTrackerOp
+{
+    private readonly Kind _kind;
+    private readonly string _name;
+    private readonly int _score;
 
-        tracker.Add("alps", 2);
-        Assert.Equal("alps", tracker.Get());
-
-        tracker.Add("orl", 2);
-        Assert.Equal("bradford", tracker.Get());
-
-        tracker.Add("orlando", 3);
-        Assert.Equal("bradford", tracker.Get());
-
-        tracker.Add("antibs", 2);
-        Assert.Equal("bradford", tracker.Get());
-
-        tracker.Add("forest", 4);
-        Assert.Equal("bradford", tracker.Get());
+    private RankTrackerOp(Kind kind, string name, int score)
+    {
+        _kind = kind;
+        _name = name;
+        _score = score;
     }
 
-    [Fact]
-    public void Get_StrictlyDescendingScores_ReturnsInInsertionOrder()
+    public static RankTrackerOp Add(string name, int score) => new(Kind.Add, name, score);
+
+    public static RankTrackerOp Get() => new(Kind.Get, "", 0);
+
+    // Internal, not public: only this same assembly's test method ever calls Apply.
+    internal string? Apply(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
     {
-        var tracker = new RankTracker();
+        if (_kind == Kind.Add)
+        {
+            tracker.Add(_name, _score);
+            return null;
+        }
 
-        tracker.Add("first", 30);
-        tracker.Add("second", 20);
-        tracker.Add("third", 10);
-
-        Assert.Equal("first", tracker.Get());
-        Assert.Equal("second", tracker.Get());
-        Assert.Equal("third", tracker.Get());
+        return tracker.Get();
     }
 
-    // topK is a size-`count` max-heap holding the current best `count` locations
-    // (worst of the best sits at its root); backup is a min-heap holding every
-    // leftover candidate (best of the rest sits at its root). Add always nets to
-    // "push into topK, then demote its new worst back into backup," which pins
-    // topK's size at however many times Get has been called; Get promotes
-    // backup's best into topK and returns the name now sitting at topK's root -
-    // exactly the count-th best location.
-    private sealed class RankTracker
+    private enum Kind
     {
-        private readonly Heap<(int NegatedScore, string Name), MaxHeapOrder<(int, string)>> _topK = new();
-        private readonly Heap<(int NegatedScore, string Name), MinHeapOrder<(int, string)>> _backup = new();
-
-        public void Add(string name, int score)
-        {
-            _topK.Push((-score, name));
-            _topK.TryPop(out var demoted);
-            _backup.Push(demoted);
-        }
-
-        public string Get()
-        {
-            _backup.TryPop(out var promoted);
-            _topK.Push(promoted);
-            _topK.TryPeek(out var worstOfTop);
-            return worstOfTop.Name;
-        }
+        Add,
+        Get,
     }
 }

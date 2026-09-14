@@ -1,90 +1,66 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteTheMiddleNodeOfALinkedList;
 
-// LeetCode 2095. Delete the Middle Node of a Linked List: the same slow/fast
-// two-pointer walk CycleDetection.cs already uses over SinglyLinkedListNode<T>.Next,
-// applied here to find the predecessor of the middle node (index n/2, 0-indexed)
-// instead of a cycle's meeting point - slow trails one step behind fast's
-// double-speed advance, so slow lands on the middle exactly when fast runs off the
-// end, and a trailing prev pointer is what makes the unlink an O(1) splice once it
-// gets there.
-public sealed partial class DeleteTheMiddleNodeOfALinkedListTests
+// Harness only. Both strategies are DeleteTheMiddleNodeOfALinkedListSolution's -
+// this file states LeetCode's published examples once and pins each strategy to
+// them. SinglyLinkedListNode<int> is internal, so it cannot appear in a public
+// TheoryData member; the examples travel as value arrays and BuildList
+// reconstructs a fresh list inside each test method, which every arm needs
+// anyway because deleting is destructive.
+public sealed class DeleteTheMiddleNodeOfALinkedListTests
 {
-    [Fact]
-    public void DeleteMiddle_OddLength_RemovesTheSingleMiddleNode()
-    {
-        var head = Build([1, 3, 4, 7, 1, 2, 6]);
-
-        var result = DeleteMiddle(head);
-
-        Assert.Equal([1, 3, 4, 1, 2, 6], ToArray(result));
-    }
-
-    [Fact]
-    public void DeleteMiddle_EvenLength_RemovesTheSecondOfTheTwoMiddleNodes()
-    {
-        var head = Build([1, 2, 3, 4]);
-
-        var result = DeleteMiddle(head);
-
-        Assert.Equal([1, 2, 4], ToArray(result));
-    }
-
-    [Fact]
-    public void DeleteMiddle_TwoNodes_LeavesOnlyTheHead()
-    {
-        var head = Build([2, 1]);
-
-        var result = DeleteMiddle(head);
-
-        Assert.Equal([2], ToArray(result));
-    }
-
-    [Fact]
-    public void DeleteMiddle_SingleNode_ReturnsEmptyList()
-    {
-        var head = Build([1]);
-
-        var result = DeleteMiddle(head);
-
-        Assert.Null(result);
-    }
-
-    private static SinglyLinkedListNode<int>? DeleteMiddle(SinglyLinkedListNode<int>? head)
-    {
-        if (head?.Next is null)
+    public static TheoryData<int[], int[]> Examples =>
+        new()
         {
-            return null;
-        }
+            { [1, 3, 4, 7, 1, 2, 6], [1, 3, 4, 1, 2, 6] }, // LeetCode's example 1: odd length, the single middle goes
+            { [1, 2, 3, 4], [1, 2, 4] },                   // LeetCode's example 2: even length, the second of the two middles goes
+            { [2, 1], [2] },                               // LeetCode's example 3: two nodes, only the head survives
+            { [1], [] },                                   // the one-node list empties
+            { [1, 2, 3], [1, 3] },                         // shortest list with a middle that is neither head nor tail
+        };
 
-        var prev = head;
-        var slow = head;
-        var fast = head;
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeleteMiddleByCountThenRebuild_LeetCodeExamples_RemovesTheNodeAtHalfTheLength(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(BuildList(values))));
 
-        while (fast is not null && fast.Next is not null)
-        {
-            prev = slow;
-            slow = slow!.Next;
-            fast = fast.Next.Next;
-        }
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeleteMiddleBySlowFastPointers_LeetCodeExamples_RemovesTheNodeAtHalfTheLength(
+        int[] values, int[] expected) =>
+        Assert.Equal(
+            expected,
+            ToArray(DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(BuildList(values))));
 
-        prev!.Next = slow!.Next;
-        return head;
-    }
-
-    private static SinglyLinkedListNode<int> Build(int[] values)
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
+        SinglyLinkedListNode<int>? head = null;
+        SinglyLinkedListNode<int>? tail = null;
 
-        for (var i = 1; i < values.Length; i++)
+        foreach (var value in values)
         {
-            tail.Next = new SinglyLinkedListNode<int>(values[i]);
-            tail = tail.Next;
+            var node = new SinglyLinkedListNode<int>(value);
+            head ??= node;
+            AppendAfter(tail, node);
+            tail = node;
         }
 
         return head;
+    }
+
+    // No previous node to link on the very first iteration (tail is still null) -
+    // head itself becomes that first node instead, back in BuildList.
+    private static void AppendAfter(SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int> node)
+    {
+        if (tail is not null)
+        {
+            tail.Next = node;
+        }
     }
 
     private static int[] ToArray(SinglyLinkedListNode<int>? head)

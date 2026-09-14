@@ -1,17 +1,21 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.DataStructures.Heap;
+using DSAExperimentation.LeetCode.SequentiallyOrdinalRankTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Sequentially Ordinal Rank Tracker (LC 2102): re-sorting every location seen so
-// far on every Get() call (O(n^2 log n) over a full add/get run) vs this repo's
-// own Heap<T,TOrder> driving the two-heap "topK size pinned at the query count"
-// trick (O(n log n) overall). Add/Get alternate every step, the shape the judge's
-// own interleaved calls take.
+// Harness only: both arms are SequentiallyOrdinalRankTrackerSolution's, the same
+// factories SequentiallyOrdinalRankTrackerTests proves correct. [GlobalSetup]
+// builds the location names and their scores, so workload construction is charged
+// to setup and only the replay is measured. Add and Get alternate every step, the
+// shape the judge's own interleaved calls take - which is also what makes the
+// re-sort baseline O(n^2 log n) over a full run against the two-heap tracker's
+// O(n log n).
 [MemoryDiagnoser]
 public class SequentiallyOrdinalRankTrackerBenchmarks
 {
     private const int ScoreExclusiveUpperBound = 1_000_000;
+    private const int RandomSeed = 1;
+    private const string NamePrefix = "loc";
 
     [Params(100, 1_000)]
     public int OperationCount;
@@ -22,44 +26,27 @@ public class SequentiallyOrdinalRankTrackerBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(1);
-        _names = Enumerable.Range(0, OperationCount).Select(i => $"loc{i}").ToArray();
+        var random = new Random(RandomSeed);
+        _names = Enumerable.Range(0, OperationCount).Select(i => NamePrefix + i).ToArray();
         _scores = Enumerable.Range(0, OperationCount).Select(_ => random.Next(0, ScoreExclusiveUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public string ResortEveryGet()
-    {
-        var seen = new List<(int Score, string Name)>(OperationCount);
-        var lastRank = string.Empty;
-
-        for (var i = 0; i < OperationCount; i++)
-        {
-            seen.Add((_scores[i], _names[i]));
-            seen.Sort((a, b) => a.Score != b.Score ? b.Score.CompareTo(a.Score) : string.CompareOrdinal(a.Name, b.Name));
-            lastRank = seen[i].Name;
-        }
-
-        return lastRank;
-    }
+    public string ResortEveryGet() =>
+        Replay(SequentiallyOrdinalRankTrackerSolution.CreateByResortEveryGet());
 
     [Benchmark]
-    public string TwoHeapTracker()
+    public string TwoHeapTracker() =>
+        Replay(SequentiallyOrdinalRankTrackerSolution.CreateByTwoHeaps());
+
+    private string Replay(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
     {
-        var topK = new Heap<(int, string), MaxHeapOrder<(int, string)>>();
-        var backup = new Heap<(int, string), MinHeapOrder<(int, string)>>();
         var lastRank = string.Empty;
 
         for (var i = 0; i < OperationCount; i++)
         {
-            topK.Push((-_scores[i], _names[i]));
-            topK.TryPop(out var demoted);
-            backup.Push(demoted);
-
-            backup.TryPop(out var promoted);
-            topK.Push(promoted);
-            topK.TryPeek(out var worstOfTop);
-            lastRank = worstOfTop.Item2;
+            tracker.Add(_names[i], _scores[i]);
+            lastRank = tracker.Get();
         }
 
         return lastRank;
