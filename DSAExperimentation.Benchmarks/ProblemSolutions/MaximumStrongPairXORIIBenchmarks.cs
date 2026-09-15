@@ -17,11 +17,11 @@ public class MaximumStrongPairXORIIBenchmarks
     private const int RandomSeed = 2935;
     private const int MaxValueExclusive = 1 << 20;
 
-    [Params(500, 20_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private ArrayIndexedSequence<int> _sortedNums;
+    [Params(500, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

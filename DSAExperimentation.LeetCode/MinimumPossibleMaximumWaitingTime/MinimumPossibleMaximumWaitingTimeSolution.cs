@@ -32,106 +32,130 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
     public static int MinWaitByRecursiveSearch(int[] demand, int[] fuel)
     {
         var prefix = PrefixDemand(demand);
-        var outcome = SearchAssignments(demand, fuel, prefix, index: 0, consumed0: 0, gap0: 0, gap1: 0);
+        var search = new CarAssignmentSearch(demand, fuel, prefix);
+        var outcome = search.Replay(new CarAssignmentState(0, 0, 0, 0), search);
 
         return outcome.Served == 0 ? LeetCodeAnswer.None : outcome.MaxWait;
-    }
-
-    private static Outcome SearchAssignments(
-        int[] demand, int[] fuel, int[] prefix, int index, int consumed0, int gap0, int gap1)
-    {
-        if (index == demand.Length)
-        {
-            return new Outcome(demand.Length, 0);
-        }
-
-        var consumed1 = prefix[index] - consumed0;
-        var remaining0 = fuel[0] - consumed0;
-        var remaining1 = fuel[1] - consumed1;
-        var need = demand[index];
-
-        if (remaining0 < need && remaining1 < need)
-        {
-            return new Outcome(index, 0);
-        }
-
-        Outcome? best = null;
-
-        if (remaining0 >= need)
-        {
-            var wait = Math.Max(0, gap0);
-            var child = SearchAssignments(
-                demand, fuel, prefix, index + 1, consumed0 + need, need, Math.Max(0, gap1 - Math.Max(0, gap0)));
-            best = Better(best, child with { MaxWait = Math.Max(wait, child.MaxWait) });
-        }
-
-        if (remaining1 >= need)
-        {
-            var wait = Math.Max(0, gap1);
-            var child = SearchAssignments(
-                demand, fuel, prefix, index + 1, consumed0, Math.Max(0, gap0 - Math.Max(0, gap1)), need);
-            best = Better(best, child with { MaxWait = Math.Max(wait, child.MaxWait) });
-        }
-
-        return best!.Value;
     }
 
     // This repo's own Memoizer: the state is exactly the tuple the comment
     // above bounds (CarAssignmentState, a value type so the default
     // TState : notnull comparer's structural equality is already correct),
-    // and the recurrence is Memoizer's usual Y-combinator shape - try every
-    // dispenser still able to take this car, recurse on the state that
-    // results.
+    // and the recurrence is the same named search below, this time with a
+    // cache in front of it - every dispenser still able to take this car is
+    // tried, and each state that results is remembered.
     public static int MinWaitByMemoizedSearch(int[] demand, int[] fuel)
     {
         var prefix = PrefixDemand(demand);
 
-        var outcome = Memoizer.Memoize<CarAssignmentState, Outcome>(
+        var outcome = Memoizer.Memoize(
             new CarAssignmentState(0, 0, 0, 0),
-            (state, bestFrom) => Evaluate(demand, fuel, prefix, state, bestFrom));
+            new CarAssignmentSearch(demand, fuel, prefix));
 
         return outcome.Served == 0 ? LeetCodeAnswer.None : outcome.MaxWait;
     }
 
+    // The recurrence itself, shared by both arms above: `cars` is the car timeline -
+    // the per-car demand plus the prefix sums over it, which every step reads together -
+    // the state carries the car index and both dispensers' standing, `bestFrom` is the
+    // recursion to continue through (the Memoizer's cached run, or the search's own
+    // uncached self-recursion), and the two early returns are the only exits.
     private static Outcome Evaluate(
-        int[] demand, int[] fuel, int[] prefix, CarAssignmentState state, Func<CarAssignmentState, Outcome> bestFrom)
+        (int[] Demand, int[] Prefix) cars, int[] fuel, CarAssignmentState state,
+        IRecurrence<CarAssignmentState, Outcome> bestFrom)
     {
-        if (state.Index == demand.Length)
+        if (state.Index == cars.Demand.Length)
         {
-            return new Outcome(demand.Length, 0);
+            return new Outcome(cars.Demand.Length, 0);
         }
 
-        var consumed1 = prefix[state.Index] - state.Consumed0;
+        var consumed1 = cars.Prefix[state.Index] - state.Consumed0;
         var remaining0 = fuel[0] - state.Consumed0;
         var remaining1 = fuel[1] - consumed1;
-        var need = demand[state.Index];
+        var need = cars.Demand[state.Index];
 
         if (remaining0 < need && remaining1 < need)
         {
             return new Outcome(state.Index, 0);
         }
 
+        return BestAssignment(state, need, (remaining0, remaining1), bestFrom);
+    }
+
+    // Both dispensers are tried, dispenser 0 first, and each arm is skipped when
+    // its remaining fuel falls short of what this car needs.
+    private static Outcome BestAssignment(
+        CarAssignmentState state, int need, (int Remaining0, int Remaining1) room,
+        IRecurrence<CarAssignmentState, Outcome> bestFrom)
+    {
         Outcome? best = null;
 
-        if (remaining0 >= need)
+        if (room.Remaining0 >= need)
         {
-            var wait = Math.Max(0, state.Gap0);
-            var next = new CarAssignmentState(
-                state.Index + 1, state.Consumed0 + need, need, Math.Max(0, state.Gap1 - Math.Max(0, state.Gap0)));
-            var child = bestFrom(next);
-            best = Better(best, child with { MaxWait = Math.Max(wait, child.MaxWait) });
+            var child = ServeByDispenser0(state, need, bestFrom);
+            best = Better(best, child);
         }
 
-        if (remaining1 >= need)
+        if (room.Remaining1 >= need)
         {
-            var wait = Math.Max(0, state.Gap1);
-            var next = new CarAssignmentState(
-                state.Index + 1, state.Consumed0, Math.Max(0, state.Gap0 - Math.Max(0, state.Gap1)), need);
-            var child = bestFrom(next);
-            best = Better(best, child with { MaxWait = Math.Max(wait, child.MaxWait) });
+            var child = ServeByDispenser1(state, need, bestFrom);
+            best = Better(best, child);
         }
 
         return best!.Value;
+    }
+
+    // Car i goes to dispenser 0: dispenser 0's own gap resets to the car's demand,
+    // dispenser 1's shrinks by max(0, gap0) before clamping, and the wait this car
+    // incurs is whatever gap 0 had left ahead of it.
+    private static Outcome ServeByDispenser0(
+        CarAssignmentState state, int need, IRecurrence<CarAssignmentState, Outcome> bestFrom)
+    {
+        var wait = Math.Max(0, state.Gap0);
+        var next = new CarAssignmentState(
+            state.Index + 1, state.Consumed0 + need, need, Math.Max(0, state.Gap1 - Math.Max(0, state.Gap0)));
+        var child = bestFrom.Replay(next, bestFrom);
+        var maxWait = Math.Max(wait, child.MaxWait);
+
+        return child with { MaxWait = maxWait };
+    }
+
+    // Lexicographic pick: more served cars wins outright; a tie goes to the
+    // smaller maximum wait. Served count can only rise by continuing to
+    // serve cars no other branch reaches, so this alone reproduces "maximize
+    // served count, then minimize the maximum wait" without a separate pass.
+    private static Outcome Better(Outcome? current, Outcome candidate)
+    {
+        if (current is null)
+        {
+            return candidate;
+        }
+
+        var champion = current.Value;
+
+        return Outranks(candidate, champion)
+            ? candidate
+            : champion;
+    }
+
+    // The same lexicographic pick, named: more served cars wins outright, and a
+    // tie on served count goes to the smaller maximum wait.
+    private static bool Outranks(Outcome candidate, Outcome champion)
+        => candidate.Served > champion.Served ||
+            (candidate.Served == champion.Served && candidate.MaxWait < champion.MaxWait);
+
+    // The same assignment to dispenser 1: its own gap resets to the car's demand
+    // and dispenser 0's shrinks by max(0, gap1) instead.
+    private static Outcome ServeByDispenser1(
+        CarAssignmentState state, int need, IRecurrence<CarAssignmentState, Outcome> bestFrom)
+    {
+        var wait = Math.Max(0, state.Gap1);
+        var next = new CarAssignmentState(
+            state.Index + 1, state.Consumed0, Math.Max(0, state.Gap0 - Math.Max(0, state.Gap1)), need);
+        var child = bestFrom.Replay(next, bestFrom);
+        var maxWait = Math.Max(wait, child.MaxWait);
+
+        return child with { MaxWait = maxWait };
     }
 
     // Prefix[i] is the total demand of cars 0..i-1 - since every served
@@ -150,23 +174,14 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
         return prefix;
     }
 
-    // Lexicographic pick: more served cars wins outright; a tie goes to the
-    // smaller maximum wait. Served count can only rise by continuing to
-    // serve cars no other branch reaches, so this alone reproduces "maximize
-    // served count, then minimize the maximum wait" without a separate pass.
-    private static Outcome Better(Outcome? current, Outcome candidate)
+    // The recurrence, as a named type: what one car-and-dispenser state costs, with no
+    // cache of its own. Both entry points run this same type - the memoized one behind
+    // Memoizer's run, the plain one straight through this type's own self-recursion.
+    private sealed class CarAssignmentSearch(int[] demand, int[] fuel, int[] prefix)
+        : IRecurrence<CarAssignmentState, Outcome>
     {
-        if (current is null)
-        {
-            return candidate;
-        }
-
-        var champion = current.Value;
-
-        return candidate.Served > champion.Served ||
-            (candidate.Served == champion.Served && candidate.MaxWait < champion.MaxWait)
-                ? candidate
-                : champion;
+        public Outcome Replay(CarAssignmentState state, IRecurrence<CarAssignmentState, Outcome> rest)
+            => Evaluate((demand, prefix), fuel, state, rest);
     }
 
     // Index: the next car to assign. Consumed0: dispenser 0's cumulative

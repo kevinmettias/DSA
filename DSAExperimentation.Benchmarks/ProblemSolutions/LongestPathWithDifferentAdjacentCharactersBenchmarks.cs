@@ -20,17 +20,30 @@ public class LongestPathWithDifferentAdjacentCharactersBenchmarks
     // so that every parent-child edge in the chain has different adjacent labels.
     private const int LabelAlternationPeriod = 2;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private RootedTreeNode _root = null!;
+
     private string _labels = string.Empty;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _root = ParentArrayTree.Chain(NodeCount);
         _labels = AlternatingLabels(NodeCount);
+    }
+
+    private static string AlternatingLabels(int nodeCount)
+    {
+        var labels = new char[nodeCount];
+
+        for (var i = 0; i < nodeCount; i++)
+        {
+            var isLabelA = i % LabelAlternationPeriod == 0;
+            labels[i] = isLabelA ? 'a' : 'b';
+        }
+
+        return new string(labels);
     }
 
     [Benchmark(Baseline = true)]
@@ -40,16 +53,4 @@ public class LongestPathWithDifferentAdjacentCharactersBenchmarks
     [Benchmark]
     public int TreeFoldLongestPath() =>
         LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByTreeFold(_root, _labels);
-
-    private static string AlternatingLabels(int nodeCount)
-    {
-        var labels = new char[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            labels[i] = i % LabelAlternationPeriod == 0 ? 'a' : 'b';
-        }
-
-        return new string(labels);
-    }
 }

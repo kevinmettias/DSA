@@ -17,19 +17,20 @@ internal static class FindAllAnagramsInAStringSolution
     // The textbook answer: a fresh BCL Dictionary<char,int> built and compared for
     // every window start. Deliberately written without this repo's own collections -
     // it is the arm the composed solution below has to justify itself against.
-    public static List<int> FindAnagramIndicesByBruteForceRebuild(string s, string p)
+    public static List<int> FindAnagramIndicesByBruteForceRebuild(ScannedText s, AnagramPattern p)
     {
         var result = new List<int>();
-        if (p.Length > s.Length)
+        if (p.Text.Length > s.Text.Length)
         {
             return result;
         }
 
-        var target = BuildFrequencyMap(p);
+        var target = BuildFrequencyMap(p.Text);
 
-        for (var start = 0; start <= s.Length - p.Length; start++)
+        for (var start = 0; start <= s.Text.Length - p.Text.Length; start++)
         {
-            var window = BuildFrequencyMap(s.Substring(start, p.Length));
+            var candidate = s.Text.Substring(start, p.Text.Length);
+            var window = BuildFrequencyMap(candidate);
             if (FrequenciesEqual(window, target))
             {
                 result.Add(start);
@@ -72,22 +73,22 @@ internal static class FindAllAnagramsInAStringSolution
     // This repo's own sliding window: two HashMap<char,int> frequency maps (window vs.
     // target) plus a running "matched distinct characters" counter, so each character
     // enters and leaves the window exactly once.
-    public static List<int> FindAnagramIndicesBySlidingWindow(string s, string p)
+    public static List<int> FindAnagramIndicesBySlidingWindow(ScannedText s, AnagramPattern p)
     {
         var result = new List<int>();
-        if (p.Length > s.Length)
+        if (p.Text.Length > s.Text.Length)
         {
             return result;
         }
 
-        var need = BuildRepoFrequencyMap(p);
+        var need = BuildRepoFrequencyMap(p.Text);
         var state = new AnagramWindowState(need);
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < s.Text.Length; i++)
         {
-            if (state.Advance(i, s, p.Length))
+            if (state.Advance(i, s.Text, p.Text.Length))
             {
-                result.Add(i - p.Length + 1);
+                result.Add(i - p.Text.Length + 1);
             }
         }
 
@@ -122,9 +123,7 @@ internal static class FindAllAnagramsInAStringSolution
                 return false;
             }
 
-            var isMatch = IsFullMatch;
-            ReleaseLeaving(s[i - windowLength + 1]);
-            return isMatch;
+            return EvictLeavingAndReportMatch(i, s, windowLength);
         }
 
         private void AbsorbEntering(char c)
@@ -141,6 +140,15 @@ internal static class FindAllAnagramsInAStringSolution
             {
                 _matched++;
             }
+        }
+
+        // The match state is read BEFORE the leaving character is evicted: it is the
+        // answer for the window that just ended, and the eviction can only un-match it.
+        private bool EvictLeavingAndReportMatch(int i, string s, int windowLength)
+        {
+            var isMatch = IsFullMatch;
+            ReleaseLeaving(s[i - windowLength + 1]);
+            return isMatch;
         }
 
         private void ReleaseLeaving(char c)

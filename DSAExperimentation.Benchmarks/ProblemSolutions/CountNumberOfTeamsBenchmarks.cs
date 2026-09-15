@@ -14,10 +14,10 @@ public class CountNumberOfTeamsBenchmarks
     private const int RandomSeed = 1395; // LC problem number
     private const int MaxRatingExclusive = 100_000;
 
-    [Params(80, 200)]
-    public int Length;
+    private int[] _rating = [];
 
-    private int[] _rating = null!;
+    [Params(80, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

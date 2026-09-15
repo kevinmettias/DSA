@@ -18,11 +18,11 @@ public class MinimumTimeToMakeArraySumAtMostXBenchmarks
     private const int ValueUpperBoundExclusive = 1_000;
     private const int UnreachableTarget = 0;
 
-    [Params(200, 1_000)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    private int[] _nums2 = [];
+    [Params(200, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

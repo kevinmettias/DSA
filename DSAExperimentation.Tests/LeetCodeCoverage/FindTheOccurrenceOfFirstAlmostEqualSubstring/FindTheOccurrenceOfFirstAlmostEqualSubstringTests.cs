@@ -22,7 +22,9 @@ public sealed class FindTheOccurrenceOfFirstAlmostEqualSubstringTests
         string s, string pattern, int expected) =>
         Assert.Equal(
             expected,
-            FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByBruteForce(s, pattern));
+            FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByBruteForce(
+                new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(s),
+                new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.MatchPattern(pattern)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -30,5 +32,7 @@ public sealed class FindTheOccurrenceOfFirstAlmostEqualSubstringTests
         string s, string pattern, int expected) =>
         Assert.Equal(
             expected,
-            FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByZFunction(s, pattern));
+            FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByZFunction(
+                new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(s),
+                new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.MatchPattern(pattern)));
 }

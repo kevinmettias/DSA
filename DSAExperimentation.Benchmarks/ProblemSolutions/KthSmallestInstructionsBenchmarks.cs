@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthSmallestInstructionsBenchmarks
 {
-    [Params(5, 8)]
-    public int Size;
+    private int[] _destination = [];
 
-    private int[] _destination = null!;
     private long _k;
+    [Params(5, 8)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

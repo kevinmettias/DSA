@@ -17,16 +17,13 @@ public class PalindromeLinkedListBenchmarks
     private const int RandomSeed = 234; // LC problem number
     private const int MaxHalfValueExclusive = 1_000;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int>? _head;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = BuildPalindrome(new Random(RandomSeed), Length);
-
-    [Benchmark]
-    public bool StackReversal() => PalindromeLinkedListSolution.IsPalindromeByStackReversal(_head);
 
     private static SinglyLinkedListNode<int>? BuildPalindrome(Random random, int length)
     {
@@ -51,4 +48,7 @@ public class PalindromeLinkedListBenchmarks
 
         return dummy.Next;
     }
+
+    [Benchmark]
+    public bool StackReversal() => PalindromeLinkedListSolution.IsPalindromeByStackReversal(_head);
 }

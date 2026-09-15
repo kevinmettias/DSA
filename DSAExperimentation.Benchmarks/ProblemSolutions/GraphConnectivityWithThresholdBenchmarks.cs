@@ -17,13 +17,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class GraphConnectivityWithThresholdBenchmarks
 {
     private const int ThresholdDivisor = 20;
-    private const int RandomSeed = 1627; // LC problem number
+    private const int RandomSeed = 1627; private int _threshold;
+
+    private int[][] _queries = [];
+    // LC problem number
 
     [Params(500, 5_000)]
-    public int CityCount;
-
-    private int _threshold;
-    private int[][] _queries = null!;
+    public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

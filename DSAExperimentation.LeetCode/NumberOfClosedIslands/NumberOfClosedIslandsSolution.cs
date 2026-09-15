@@ -14,6 +14,10 @@ namespace DSAExperimentation.LeetCode.NumberOfClosedIslands;
 // fixture reused across iterations) is never left half-filled.
 internal static class NumberOfClosedIslandsSolution
 {
+    private const int Water = 0;
+
+    private const int Land = 1;
+
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     // The textbook answer: a hand-specialized recursive flood fill, BCL only,
@@ -46,30 +50,10 @@ internal static class NumberOfClosedIslandsSolution
             return false;
         }
 
-        var touchesBorder = false;
-        Flood(grid, row, col, ref touchesBorder);
+        var contact = BorderContact.Enclosed;
+        Flood(grid, row, col, ref contact);
 
-        return !touchesBorder;
-    }
-
-    private static void Flood(LandGrid grid, int row, int col, ref bool touchesBorder)
-    {
-        if (row < 0 || row >= grid.Rows || col < 0 || col >= grid.Cols || grid.Cells[row][col] != Water)
-        {
-            return;
-        }
-
-        grid.Cells[row][col] = Land;
-
-        if (IsOnBorder(grid, row, col))
-        {
-            touchesBorder = true;
-        }
-
-        Flood(grid, row + 1, col, ref touchesBorder);
-        Flood(grid, row - 1, col, ref touchesBorder);
-        Flood(grid, row, col + 1, ref touchesBorder);
-        Flood(grid, row, col - 1, ref touchesBorder);
+        return contact == BorderContact.Enclosed;
     }
 
     // This repo's own DFS: DepthFirstSearch.Traverse already returns every cell
@@ -124,7 +108,7 @@ internal static class NumberOfClosedIslandsSolution
         {
             var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
-            if (next.Row < 0 || next.Row >= grid.Rows || next.Col < 0 || next.Col >= grid.Cols)
+            if (!IsInside(grid, next.Row, next.Col))
             {
                 continue;
             }
@@ -137,6 +121,30 @@ internal static class NumberOfClosedIslandsSolution
             yield return next;
         }
     }
+
+    private static void Flood(LandGrid grid, int row, int col, ref BorderContact contact)
+    {
+        if (!IsInside(grid, row, col) || grid.Cells[row][col] != Water)
+        {
+            return;
+        }
+
+        grid.Cells[row][col] = Land;
+
+        if (IsOnBorder(grid, row, col))
+        {
+            contact = BorderContact.TouchesBorder;
+        }
+
+        Flood(grid, row + 1, col, ref contact);
+        Flood(grid, row - 1, col, ref contact);
+        Flood(grid, row, col + 1, ref contact);
+        Flood(grid, row, col - 1, ref contact);
+    }
+
+    // Both coordinates within the board is one idea, and two scans here ask it.
+    private static bool IsInside(LandGrid grid, int row, int col) =>
+        row >= 0 && row < grid.Rows && col >= 0 && col < grid.Cols;
 
     private static bool IsOnBorder(LandGrid grid, int row, int col) =>
         row == 0 || row == grid.Rows - 1 || col == 0 || col == grid.Cols - 1;
@@ -153,11 +161,16 @@ internal static class NumberOfClosedIslandsSolution
         return new LandGrid(cells, cells.Length, cells[0].Length);
     }
 
-    private const int Water = 0;
-
-    private const int Land = 1;
-
     // The grid plus its own dimensions, so every walk below reads the bounds it
     // is checking against off one value instead of re-deriving them per call.
     private readonly record struct LandGrid(int[][] Cells, int Rows, int Cols);
+
+    // What the flood has learned about the component it is walking, named where a
+    // rewritten `true`/`false` at the call site said it only by position: Enclosed
+    // until the first cell on the grid's edge, TouchesBorder from then on.
+    private enum BorderContact
+    {
+        Enclosed,
+        TouchesBorder,
+    }
 }

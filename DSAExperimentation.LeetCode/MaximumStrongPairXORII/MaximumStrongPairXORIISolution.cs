@@ -60,7 +60,9 @@ internal static class MaximumStrongPairXORIISolution
 
     private static bool IsStrongPair(int x, int y)
     {
-        var (small, large) = x <= y ? (x, y) : (y, x);
+        var small = Math.Min(x, y);
+        var large = Math.Max(x, y);
+
         return large - small <= small;
     }
 
@@ -85,27 +87,40 @@ internal static class MaximumStrongPairXORIISolution
 
         while (bucketStart < sortedNums.Length)
         {
-            var bucketEnd = bucketStart + 1;
-
-            while (bucketEnd < sortedNums.Length &&
-                   HighestBit(sortedNums.Get(bucketEnd)) == HighestBit(sortedNums.Get(bucketStart)))
-            {
-                bucketEnd++;
-            }
-
-            best = Math.Max(best, MaxXorWithinBucket(sortedNums, bucketStart, bucketEnd));
-
-            if (previousBucketStart >= 0)
-            {
-                best = Math.Max(
-                    best, MaxXorAcrossAdjacentBuckets(sortedNums, previousBucketStart, bucketStart, bucketEnd));
-            }
-
-            previousBucketStart = bucketStart;
-            bucketStart = bucketEnd;
+            (best, previousBucketStart, bucketStart) = SweepBucket(
+                sortedNums, best, previousBucketStart, bucketStart);
         }
 
         return best;
+    }
+
+    // Advances past one bucket: scores the XORs it holds within itself, scores the
+    // ones it holds against the bucket just before it, then hands back the three
+    // threaded locals so the sweep can step on to the next bucket.
+    private static (int Best, int PreviousBucketStart, int BucketStart) SweepBucket(
+        ArrayIndexedSequence<int> sortedNums, int best, int previousBucketStart, int bucketStart)
+    {
+        var bucketEnd = bucketStart + 1;
+
+        while (bucketEnd < sortedNums.Length &&
+               HighestBit(sortedNums.Get(bucketEnd)) == HighestBit(sortedNums.Get(bucketStart)))
+        {
+            bucketEnd++;
+        }
+
+        var withinBucket = MaxXorWithinBucket(sortedNums, bucketStart, bucketEnd);
+
+        best = Math.Max(best, withinBucket);
+
+        if (previousBucketStart >= 0)
+        {
+            var acrossAdjacent = MaxXorAcrossAdjacentBuckets(
+                sortedNums, previousBucketStart, bucketStart, bucketEnd);
+
+            best = Math.Max(best, acrossAdjacent);
+        }
+
+        return (best, bucketStart, bucketEnd);
     }
 
     private static int HighestBit(int value) => 31 - BitOperations.LeadingZeroCount((uint)value);
@@ -117,6 +132,15 @@ internal static class MaximumStrongPairXORIISolution
             return 0;
         }
 
+        var trie = BuildBucketTrie(nums, start, end);
+
+        return MaxXorAgainstTrie(nums, start, end, trie);
+    }
+
+    // The bucket's own slice inserted into one BitTrie: within a bucket every pair is
+    // already a strong pair, so this is exactly LC 421's problem.
+    private static BitTrie BuildBucketTrie(ArrayIndexedSequence<int> nums, int start, int end)
+    {
         var trie = new BitTrie();
 
         for (var i = start; i < end; i++)
@@ -124,6 +148,13 @@ internal static class MaximumStrongPairXORIISolution
             trie.Insert(nums.Get(i));
         }
 
+        return trie;
+    }
+
+    // The best XOR any value of [start, end) can make against the trie.
+    private static int MaxXorAgainstTrie(
+        ArrayIndexedSequence<int> nums, int start, int end, BitTrie trie)
+    {
         var best = 0;
 
         for (var i = start; i < end; i++)

@@ -43,11 +43,12 @@ internal static class MakingALargeIslandSolution
                 }
 
                 sawWater = true;
-                best = Math.Max(best, FloodedAreaIfLand(working, r, c));
+                var flooded = FloodedAreaIfLand(working, r, c);
+                best = Math.Max(best, flooded);
             }
         }
 
-        return sawWater ? best : rows * cols;
+        return sawWater ? best : TotalCells(rows, cols);
     }
 
     private static int FloodedAreaIfLand(int[][] grid, int row, int col)
@@ -61,21 +62,8 @@ internal static class MakingALargeIslandSolution
         return floodedArea;
     }
 
-    private static int FloodCount(FloodFillGrid state, int row, int col)
-    {
-        if (row < 0 || row >= state.Rows || col < 0 || col >= state.Cols || state.Visited[row, col] || state.Grid[row][col] != 1)
-        {
-            return 0;
-        }
-
-        state.Visited[row, col] = true;
-
-        return 1
-            + FloodCount(state, row + 1, col)
-            + FloodCount(state, row - 1, col)
-            + FloodCount(state, row, col + 1)
-            + FloodCount(state, row, col - 1);
-    }
+    // The whole board, which is the answer when no water cell was there to flip.
+    private static int TotalCells(int rows, int cols) => rows * cols;
 
     // This repo's own DFS: DepthFirstSearch.Traverse labels each island exactly
     // once - writing a distinct id >= 2 back into the grid in place of the
@@ -138,10 +126,9 @@ internal static class MakingALargeIslandSolution
 
     private static bool TryGetLandNeighbor(IslandGrid context, (int Row, int Col) cell, (int DRow, int DCol) direction, out (int Row, int Col) neighbor)
     {
-        var nextRow = cell.Row + direction.DRow;
-        var nextCol = cell.Col + direction.DCol;
+        var (nextRow, nextCol) = CellInDirection(cell, direction);
 
-        if (nextRow < 0 || nextRow >= context.Rows || nextCol < 0 || nextCol >= context.Cols || context.Grid[nextRow][nextCol] != 1)
+        if (!IsInside(nextRow, nextCol, context.Rows, context.Cols) || context.Grid[nextRow][nextCol] != 1)
         {
             neighbor = default;
             return false;
@@ -151,17 +138,11 @@ internal static class MakingALargeIslandSolution
         return true;
     }
 
-    private static int MaxLabeledArea(HashMap<int, int> areaById)
-    {
-        var best = 0;
-
-        foreach (var area in areaById.Values)
-        {
-            best = Math.Max(best, area);
-        }
-
-        return best;
-    }
+    // The square one step from a cell along one of the four directions; whether that
+    // square is on the board - or is still land - is the caller's question, not this
+    // one's, so this only moves.
+    private static (int Row, int Col) CellInDirection((int Row, int Col) cell, (int DRow, int DCol) direction)
+        => (cell.Row + direction.DRow, cell.Col + direction.DCol);
 
     private static int MaxMergedWaterArea(IslandGrid context, int currentBest)
     {
@@ -202,7 +183,7 @@ internal static class MakingALargeIslandSolution
         var nextRow = cell.Row + direction.DRow;
         var nextCol = cell.Col + direction.DCol;
 
-        if (nextRow < 0 || nextRow >= context.Rows || nextCol < 0 || nextCol >= context.Cols)
+        if (!IsInside(nextRow, nextCol, context.Rows, context.Cols))
         {
             return 0;
         }
@@ -215,6 +196,45 @@ internal static class MakingALargeIslandSolution
         }
 
         return context.AreaById.TryGetValue(neighborId, out var area) ? area : 0;
+    }
+
+    private static int MaxLabeledArea(HashMap<int, int> areaById)
+    {
+        var best = 0;
+
+        foreach (var area in areaById.Values)
+        {
+            best = Math.Max(best, area);
+        }
+
+        return best;
+    }
+
+    // Both coordinates within the board is one idea, and three scans here ask it.
+    private static bool IsInside(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
+
+    // Land this flood still has to account for: on the grid, not yet counted, and
+    // still a 1 in the working grid.
+    private static bool IsFloodableLand(FloodFillGrid state, int row, int col)
+        => IsInside(row, col, state.Rows, state.Cols)
+            && !state.Visited[row, col]
+            && state.Grid[row][col] == 1;
+
+    private static int FloodCount(FloodFillGrid state, int row, int col)
+    {
+        if (!IsFloodableLand(state, row, col))
+        {
+            return 0;
+        }
+
+        state.Visited[row, col] = true;
+
+        return 1
+            + FloodCount(state, row + 1, col)
+            + FloodCount(state, row - 1, col)
+            + FloodCount(state, row, col + 1)
+            + FloodCount(state, row, col - 1);
     }
 
     private static int[][] CloneGrid(int[][] grid)

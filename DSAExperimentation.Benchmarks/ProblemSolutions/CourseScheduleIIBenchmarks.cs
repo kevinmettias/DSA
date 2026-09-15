@@ -15,10 +15,10 @@ public class CourseScheduleIIBenchmarks
 {
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int CourseCount;
+    private List<CourseNode> _courses = new();
 
-    private List<CourseNode> _courses = null!;
+    [Params(50, 1_000)]
+    public int CourseCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

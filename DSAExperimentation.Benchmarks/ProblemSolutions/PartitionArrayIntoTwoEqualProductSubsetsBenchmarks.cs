@@ -19,10 +19,10 @@ public class PartitionArrayIntoTwoEqualProductSubsetsBenchmarks
     private const int Seed = 3566;
     private const long Target = 500_000_000_000L;
 
-    [Params(12, 18)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(12, 18)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,7 +32,8 @@ public class PartitionArrayIntoTwoEqualProductSubsetsBenchmarks
 
         while (values.Count < Length)
         {
-            values.Add(random.Next(2, 101));
+            var candidate = random.Next(2, 101);
+            values.Add(candidate);
         }
 
         _nums = values.ToArray();

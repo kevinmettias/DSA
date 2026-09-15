@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SpiralMatrixBenchmarks
 {
-    [Params(20, 100)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(20, 100)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

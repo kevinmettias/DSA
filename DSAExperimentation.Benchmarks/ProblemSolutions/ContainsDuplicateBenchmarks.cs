@@ -12,10 +12,10 @@ public class ContainsDuplicateBenchmarks
 {
     private const int Seed = 217;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = ContainsDuplicateWorkloads.BuildDistinctValues(Length, seed: Seed);

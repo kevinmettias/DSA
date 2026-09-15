@@ -11,31 +11,24 @@ namespace DSAExperimentation.LeetCode.MinimumCostToConnectTwoGroupsOfPoints;
 // and its prepared overload can never be ambiguous. This is a witness for one problem
 // and nothing else - the same reason LeetCode/NumberOfWaysToWearDifferentHatsToEachOther
 // keeps HatPreferences beside its solution instead of in Domain.
-internal sealed class ConnectionCosts
+internal sealed class ConnectionCosts(
+    int[][] cost,
+    int groupOneSize,
+    int groupTwoSize,
+    int[] cheapestFromGroupOne)
 {
-    private readonly int[][] _cost;
-    private readonly int[] _cheapestFromGroupOne;
-
-    private ConnectionCosts(int[][] cost, int groupOneSize, int groupTwoSize, int[] cheapestFromGroupOne)
-    {
-        _cost = cost;
-        _cheapestFromGroupOne = cheapestFromGroupOne;
-        GroupOneSize = groupOneSize;
-        GroupTwoSize = groupTwoSize;
-    }
-
     // Points in the first group, walked outward by both recurrences.
-    public int GroupOneSize { get; }
+    public int GroupOneSize { get; } = groupOneSize;
 
     // Points in the second group; one bit of the connected-mask each, which is why
     // LeetCode caps this group at 12.
-    public int GroupTwoSize { get; }
+    public int GroupTwoSize { get; } = groupTwoSize;
 
-    public int Cost(int groupOnePoint, int groupTwoPoint) => _cost[groupOnePoint][groupTwoPoint];
+    public int Cost(int groupOnePoint, int groupTwoPoint) => cost[groupOnePoint][groupTwoPoint];
 
     // The cheapest single edge into this group-2 point, used once the group-1 walk
     // has run out and a still-unconnected group-2 point has to be attached anyway.
-    public int CheapestFromGroupOne(int groupTwoPoint) => _cheapestFromGroupOne[groupTwoPoint];
+    public int CheapestFromGroupOne(int groupTwoPoint) => cheapestFromGroupOne[groupTwoPoint];
 
     public static ConnectionCosts Build(int[][] cost)
     {

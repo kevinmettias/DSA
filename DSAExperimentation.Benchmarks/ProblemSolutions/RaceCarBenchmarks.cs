@@ -16,11 +16,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RaceCarBenchmarks
 {
-    [Params(6, 25)]
-    public int Target;
-
     private RaceCarStateSpace _space;
+
     private RaceCarStateGraph _graph = null!;
+    [Params(6, 25)]
+    public int Target { get; set; }
 
     [GlobalSetup]
     public void Setup()

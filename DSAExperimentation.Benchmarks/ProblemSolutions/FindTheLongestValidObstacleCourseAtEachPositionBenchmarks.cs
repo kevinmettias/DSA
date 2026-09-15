@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheLongestValidObstacleCourseAtEachPositionBenchmarks
 {
-    private const int RandomSeed = 1964; // LC problem number
+    private const int RandomSeed = 1964; private int[] _obstacles = [];
+
+    // LC problem number
 
     [Params(2_000, 5_000)]
-    public int Length;
-
-    private int[] _obstacles = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

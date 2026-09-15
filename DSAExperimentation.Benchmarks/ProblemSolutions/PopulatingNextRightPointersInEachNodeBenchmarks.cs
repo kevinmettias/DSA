@@ -18,10 +18,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PopulatingNextRightPointersInEachNodeBenchmarks
 {
-    [Params(63, 1_023)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(63, 1_023)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);

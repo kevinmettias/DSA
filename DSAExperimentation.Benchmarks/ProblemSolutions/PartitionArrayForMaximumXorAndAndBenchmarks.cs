@@ -17,10 +17,10 @@ public class PartitionArrayForMaximumXorAndAndBenchmarks
     // LC problem number, reused as the deterministic value seed.
     private const int ValueSeed = 3630;
 
-    [Params(8, 14)]
-    public int ElementCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(8, 14)]
+    public int ElementCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = PartitionArrayForMaximumXorAndAndWorkloads.BuildNums(ElementCount, seed: ValueSeed);

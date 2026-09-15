@@ -12,10 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SurroundedRegionsBenchmarks
 {
-    [Params(50, 500)]
-    public int Size;
+    private char[][] _board = [];
 
-    private char[][] _board = null!;
+    [Params(50, 500)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup() => _board = SurroundedRegionsWorkloads.BuildBoard(Size, seed: 130);

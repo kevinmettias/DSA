@@ -18,10 +18,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BalanceABinarySearchTreeBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Skewed(NodeCount);
@@ -35,5 +35,8 @@ public class BalanceABinarySearchTreeBenchmarks
         Height(BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(_root));
 
     private static int Height(BinaryTreeNode<int>? node)
-        => node is null ? 0 : 1 + Math.Max(Height(node.Left), Height(node.Right));
+        => node is null ? 0 : SubtreeHeight(node);
+
+    private static int SubtreeHeight(BinaryTreeNode<int> node) =>
+        1 + Math.Max(Height(node.Left), Height(node.Right));
 }

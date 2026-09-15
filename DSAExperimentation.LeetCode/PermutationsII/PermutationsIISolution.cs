@@ -29,30 +29,8 @@ internal static class PermutationsIISolution
         var used = new bool[sorted.Length];
         var path = new List<int>();
 
-        void Search()
-        {
-            if (path.Count == sorted.Length)
-            {
-                results.Add([.. path]);
-                return;
-            }
+        Search(sorted, results, used, path);
 
-            for (var i = 0; i < sorted.Length; i++)
-            {
-                if (used[i] || (i > 0 && sorted[i] == sorted[i - 1] && !used[i - 1]))
-                {
-                    continue;
-                }
-
-                used[i] = true;
-                path.Add(sorted[i]);
-                Search();
-                path.RemoveAt(path.Count - 1);
-                used[i] = false;
-            }
-        }
-
-        Search();
         return results;
     }
 
@@ -68,7 +46,7 @@ internal static class PermutationsIISolution
         Backtrack.Search<State, int>(
             state,
             s => s.Values.Count == sorted.Length,
-            s => s.Values.Count == sorted.Length ? [] : NextCandidates(sorted, s),
+            s => s.Values.Count == sorted.Length ? Array.Empty<int>() : NextCandidates(sorted, s),
             (s, i) => { s.Used[i] = true; s.Values.Add(sorted[i]); },
             (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
             s => results.Add([.. s.Values]));
@@ -80,12 +58,49 @@ internal static class PermutationsIISolution
     {
         for (var i = 0; i < sorted.Length; i++)
         {
-            if (!s.Used[i] && (i == 0 || sorted[i] != sorted[i - 1] || s.Used[i - 1]))
+            if (IsEligibleCandidate(sorted, s, i))
             {
                 yield return i;
             }
         }
     }
+
+    // The duplicate rule stated positively: a candidate is offered when it is unplaced
+    // and either nothing precedes it, or the value before it differs, or that earlier
+    // copy has already been placed.
+    private static bool IsEligibleCandidate(int[] sorted, State s, int i) =>
+        !s.Used[i] && (i == 0 || sorted[i] != sorted[i - 1] || s.Used[i - 1]);
+
+    // The recursion the baseline drives by hand: place one eligible candidate, recurse,
+    // then undo the placement, so every completion of `path` is one distinct ordering.
+    private static void Search(int[] sorted, List<List<int>> results, bool[] used, List<int> path)
+    {
+        if (path.Count == sorted.Length)
+        {
+            results.Add([.. path]);
+            return;
+        }
+
+        for (var i = 0; i < sorted.Length; i++)
+        {
+            if (ShouldSkipCandidate(used, sorted, i))
+            {
+                continue;
+            }
+
+            used[i] = true;
+            path.Add(sorted[i]);
+            Search(sorted, results, used, path);
+            path.RemoveAt(path.Count - 1);
+            used[i] = false;
+        }
+    }
+
+    // A candidate is skipped when its value is already placed, or when it repeats the
+    // value just before it and that earlier copy is still unplaced - taking this one
+    // first would only re-produce an ordering the earlier copy yields anyway.
+    private static bool ShouldSkipCandidate(bool[] used, int[] sorted, int i) =>
+        used[i] || (i > 0 && sorted[i] == sorted[i - 1] && !used[i - 1]);
 
     private static int[] SortedCopy(int[] nums)
     {
@@ -94,10 +109,12 @@ internal static class PermutationsIISolution
         return sorted;
     }
 
-    private sealed class State(int length)
+    private sealed record State
     {
-        public bool[] Used { get; } = new bool[length];
+        public bool[] Used { get; }
 
         public List<int> Values { get; } = [];
+
+        public State(int length) => Used = new bool[length];
     }
 }

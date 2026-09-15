@@ -15,18 +15,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortEncodingOfWordsBenchmarks
 {
+    // LC problem number, used as the RNG seed.
+    private const int RandomSeed = 820;
+
+    private const int MaxPrefixLength = 5;
+    private const int AlphabetSize = 26;
     private static readonly string[] SuffixPool =
         ["e", "me", "time", "bell", "ing", "ation", "tion", "er", "ed", "s"];
 
-    // LC problem number, used as the RNG seed.
-    private const int RandomSeed = 820;
-    private const int MaxPrefixLength = 5;
-    private const int AlphabetSize = 26;
+    private string[] _words = [];
 
     [Params(500, 5_000)]
-    public int Length;
-
-    private string[] _words = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -52,14 +52,14 @@ public class ShortEncodingOfWordsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int MinimumLengthByPairwiseSuffixScan() =>
+    public int PairwiseSuffixScan() =>
         ShortEncodingOfWordsSolution.MinimumLengthByPairwiseSuffixScan(_words);
 
     [Benchmark]
-    public int MinimumLengthBySuffixEviction() =>
+    public int SuffixEviction() =>
         ShortEncodingOfWordsSolution.MinimumLengthBySuffixEviction(_words);
 
     [Benchmark]
-    public int MinimumLengthByReversedTrieLeaves() =>
+    public int ReversedTrieLeaves() =>
         ShortEncodingOfWordsSolution.MinimumLengthByReversedTrieLeaves(_words);
 }

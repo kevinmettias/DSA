@@ -11,11 +11,11 @@ public class MinimumTimeForKConnectedComponentsBenchmarks
 {
     private const int Seed = 3608;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
     private int _k;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

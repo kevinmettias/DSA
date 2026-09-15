@@ -63,8 +63,6 @@ internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
         return screen;
     }
 
-    private static char NextLetter(char letter) => letter == LastLetter ? FirstLetter : (char)(letter + 1);
-
     private static string Materialize(DynamicArray<char> onScreen)
     {
         var chars = new char[onScreen.Count];
@@ -76,4 +74,8 @@ internal static class FindTheSequenceOfStringsAppearedOnTheScreenSolution
 
         return new string(chars);
     }
+
+    private static char NextLetter(char letter) => letter == LastLetter ? FirstLetter : ShiftedLetter(letter);
+
+    private static char ShiftedLetter(char letter) => (char)(letter + 1);
 }

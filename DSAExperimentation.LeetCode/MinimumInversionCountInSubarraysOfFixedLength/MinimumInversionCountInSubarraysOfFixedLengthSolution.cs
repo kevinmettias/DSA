@@ -30,7 +30,8 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
 
         for (var start = 0; start + k <= nums.Length; start++)
         {
-            minInversions = Math.Min(minInversions, CountWindowInversions(nums, start, k));
+            var windowInversions = CountWindowInversions(nums, start, k);
+            minInversions = Math.Min(minInversions, windowInversions);
         }
 
         return minInversions;
@@ -56,9 +57,7 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
 
     public static long MinInversionCountBySlidingWindowFenwick(int[] nums, int k)
     {
-        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
-        var sequence = new ArraySequence<int>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+        var (tree, sequence) = BuildRankIndex(nums);
 
         var inversions = 0L;
         var windowCount = 0;
@@ -79,6 +78,17 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
         }
 
         return minInversions;
+    }
+
+    // The rank-compressed Fenwick index the sweep below works over: every value's
+    // rank among the distinct values of nums, and a tree sized to those ranks.
+    private static RankIndex BuildRankIndex(int[] nums)
+    {
+        var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
+        var sequence = new ArraySequence<int>(sortedDistinct);
+        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
+
+        return new RankIndex(tree, sequence);
     }
 
     // Newly entering the window at the right: every already-present value

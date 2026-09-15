@@ -41,13 +41,12 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
         var bottomLeft = OrByDirectRecursiveMerge(tree1.BottomLeft!, tree2.BottomLeft!);
         var bottomRight = OrByDirectRecursiveMerge(tree1.BottomRight!, tree2.BottomRight!);
 
-        if (topLeft.IsLeaf && topRight.IsLeaf && bottomLeft.IsLeaf && bottomRight.IsLeaf
-            && topLeft.Val == topRight.Val && topRight.Val == bottomLeft.Val && bottomLeft.Val == bottomRight.Val)
+        if (AreAllUniformLeaves(topLeft, topRight, bottomLeft, bottomRight))
         {
-            return new QuadTreeNode(val: topLeft.Val, isLeaf: true);
+            return new QuadTreeNode(Val: topLeft.Val, IsLeaf: true);
         }
 
-        return new QuadTreeNode(val: true, isLeaf: false)
+        return new QuadTreeNode(Val: true, IsLeaf: false)
         {
             TopLeft = topLeft,
             TopRight = topRight,
@@ -55,6 +54,13 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
             BottomRight = bottomRight,
         };
     }
+
+    // The merged parent is uniform exactly when all four of its quadrants are leaves
+    // and all four carry the same value - the one case that collapses back to a leaf.
+    private static bool AreAllUniformLeaves(
+        QuadTreeNode topLeft, QuadTreeNode topRight, QuadTreeNode bottomLeft, QuadTreeNode bottomRight) =>
+        topLeft.IsLeaf && topRight.IsLeaf && bottomLeft.IsLeaf && bottomRight.IsLeaf
+        && topLeft.Val == topRight.Val && topRight.Val == bottomLeft.Val && bottomLeft.Val == bottomRight.Val;
 
     // Baseline: materializes both trees to grids and rebuilds via ConstructQuadTree
     // Solution's own raw-cell-scan baseline - BCL arrays only internally, the same
@@ -92,7 +98,7 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
     private static int[][] ToGrid(QuadTreeNode node, int size)
     {
         var grid = NewGrid(size);
-        Fill(node, grid, row: 0, col: 0, size);
+        Fill(node, grid, origin: (0, 0), size);
         return grid;
     }
 
@@ -107,14 +113,14 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
         return grid;
     }
 
-    private static void Fill(QuadTreeNode node, int[][] grid, int row, int col, int size)
+    private static void Fill(QuadTreeNode node, int[][] grid, (int Row, int Col) origin, int size)
     {
         if (node.IsLeaf)
         {
             var value = node.Val ? 1 : 0;
-            for (var r = row; r < row + size; r++)
+            for (var r = origin.Row; r < origin.Row + size; r++)
             {
-                for (var c = col; c < col + size; c++)
+                for (var c = origin.Col; c < origin.Col + size; c++)
                 {
                     grid[r][c] = value;
                 }
@@ -124,9 +130,9 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
         }
 
         var half = size / QuadrantSplitFactor;
-        Fill(node.TopLeft!, grid, row, col, half);
-        Fill(node.TopRight!, grid, row, col + half, half);
-        Fill(node.BottomLeft!, grid, row + half, col, half);
-        Fill(node.BottomRight!, grid, row + half, col + half, half);
+        Fill(node.TopLeft!, grid, origin, half);
+        Fill(node.TopRight!, grid, (origin.Row, origin.Col + half), half);
+        Fill(node.BottomLeft!, grid, (origin.Row + half, origin.Col), half);
+        Fill(node.BottomRight!, grid, (origin.Row + half, origin.Col + half), half);
     }
 }

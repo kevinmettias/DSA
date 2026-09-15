@@ -14,10 +14,10 @@ public class JumpGameIXBenchmarks
 {
     private const int Seed = 3660;
 
-    [Params(20, 80)]
-    public int NumCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(20, 80)]
+    public int NumCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = JumpGameIXWorkloads.Build(NumCount, seed: Seed);

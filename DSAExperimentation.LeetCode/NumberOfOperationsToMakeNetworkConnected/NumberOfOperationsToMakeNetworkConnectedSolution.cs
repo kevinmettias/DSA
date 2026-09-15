@@ -71,19 +71,6 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
         return adjacency;
     }
 
-    private static void Visit(int computer, int[][] adjacency, bool[] visited)
-    {
-        visited[computer] = true;
-
-        foreach (var neighbor in adjacency[computer])
-        {
-            if (!visited[neighbor])
-            {
-                Visit(neighbor, adjacency, visited);
-            }
-        }
-    }
-
     // This repo's own DisjointSet: every connection is a Union, so the components
     // are already tracked by the time the walk over the connections ends and the
     // count is just how many distinct roots the n computers report - collected in
@@ -110,6 +97,19 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
         }
 
         return ComponentsToOperations(roots.Count);
+    }
+
+    private static void Visit(int computer, int[][] adjacency, bool[] visited)
+    {
+        visited[computer] = true;
+
+        foreach (var neighbor in adjacency[computer])
+        {
+            if (!visited[neighbor])
+            {
+                Visit(neighbor, adjacency, visited);
+            }
+        }
     }
 
     // n computers need at least n-1 cables to be connected at all, however they

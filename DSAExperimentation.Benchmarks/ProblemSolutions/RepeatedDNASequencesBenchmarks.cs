@@ -14,10 +14,10 @@ public class RepeatedDNASequencesBenchmarks
 {
     private const int Seed = 187;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _sequence = "";
 
-    private string _sequence = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _sequence = DnaSequenceWorkloads.BuildSequence(Length, Seed);

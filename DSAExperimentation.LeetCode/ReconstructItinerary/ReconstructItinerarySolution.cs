@@ -11,8 +11,6 @@ namespace DSAExperimentation.LeetCode.ReconstructItinerary;
 // selects its next unused destination.
 internal static class ReconstructItinerarySolution
 {
-    public const string Start = "JFK";
-
     // The textbook answer: BCL Dictionary<string, List<string>>, scanning for the
     // lexicographically smallest destination and removing it at each step.
     // Deliberately written without this repo's primitives - it is the arm
@@ -33,7 +31,31 @@ internal static class ReconstructItinerarySolution
         }
 
         var route = new List<string>();
-        VisitByLinearScan(Start, graph, route);
+        VisitByLinearScan(StartAirport.Code, graph, route);
+        route.Reverse();
+        return route;
+    }
+
+    // This repo's own HashMap + Heap: each airport's unused destinations live in a
+    // MinHeapOrder<string> Heap, so the lexicographically smallest is always the next
+    // pop, O(log k) per push/pop instead of LinearScan's O(k) scan-and-remove.
+    public static List<string> FindItineraryByHeapSelection(string[][] tickets)
+    {
+        var graph = new HashMap<string, Heap<string, MinHeapOrder<string>>>();
+
+        foreach (var ticket in tickets)
+        {
+            if (!graph.TryGetValue(ticket[0], out var destinations))
+            {
+                destinations = new Heap<string, MinHeapOrder<string>>();
+                graph.Set(ticket[0], destinations);
+            }
+
+            destinations.Push(ticket[1]);
+        }
+
+        var route = new List<string>();
+        VisitByHeapSelection(StartAirport.Code, graph, route);
         route.Reverse();
         return route;
     }
@@ -68,30 +90,6 @@ internal static class ReconstructItinerarySolution
         }
 
         route.Add(airport);
-    }
-
-    // This repo's own HashMap + Heap: each airport's unused destinations live in a
-    // MinHeapOrder<string> Heap, so the lexicographically smallest is always the next
-    // pop, O(log k) per push/pop instead of LinearScan's O(k) scan-and-remove.
-    public static List<string> FindItineraryByHeapSelection(string[][] tickets)
-    {
-        var graph = new HashMap<string, Heap<string, MinHeapOrder<string>>>();
-
-        foreach (var ticket in tickets)
-        {
-            if (!graph.TryGetValue(ticket[0], out var destinations))
-            {
-                destinations = new Heap<string, MinHeapOrder<string>>();
-                graph.Set(ticket[0], destinations);
-            }
-
-            destinations.Push(ticket[1]);
-        }
-
-        var route = new List<string>();
-        VisitByHeapSelection(Start, graph, route);
-        route.Reverse();
-        return route;
     }
 
     private static void VisitByHeapSelection(

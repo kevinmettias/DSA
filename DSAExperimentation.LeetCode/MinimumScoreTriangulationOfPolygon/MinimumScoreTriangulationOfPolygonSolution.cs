@@ -23,6 +23,39 @@ internal static class MinimumScoreTriangulationOfPolygonSolution
     public static int MinScoreTriangulationByUnmemoizedRecursion(int[] values) =>
         ScoreBetweenUnmemoized(0, values.Length - 1, values);
 
+    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
+    // (left, right) boundary pair - the same 2-tuple-state shape BurstBalloonsSolution
+    // and EditDistanceBenchmarks already use.
+    public static int MinScoreTriangulationByMemoizedRecursion(int[] values) =>
+        Memoizer.Memoize((0, values.Length - 1), new ScoreBetweenVertices(values));
+
+    // The recurrence, as a named type: the sub-polygon spanning vertices Left..Right is
+    // scored by choosing which vertex is the apex of its own last triangle, then adding
+    // the two smaller sub-polygons that apex splits it into.
+    private sealed class ScoreBetweenVertices(int[] values) : IRecurrence<(int Left, int Right), int>
+    {
+        public int Replay((int Left, int Right) range, IRecurrence<(int Left, int Right), int> rest)
+        {
+            var (left, right) = range;
+
+            if (right - left < MinSpanForTriangle)
+            {
+                return 0;
+            }
+
+            var best = int.MaxValue;
+
+            for (var apex = left + 1; apex < right; apex++)
+            {
+                var triangleScore = (values[left] * values[apex] * values[right])
+                    + rest.Replay((left, apex), rest) + rest.Replay((apex, right), rest);
+                best = Math.Min(best, triangleScore);
+            }
+
+            return best;
+        }
+    }
+
     private static int ScoreBetweenUnmemoized(int left, int right, int[] values)
     {
         if (right - left < MinSpanForTriangle)
@@ -36,36 +69,6 @@ internal static class MinimumScoreTriangulationOfPolygonSolution
         {
             var triangleScore = (values[left] * values[apex] * values[right])
                 + ScoreBetweenUnmemoized(left, apex, values) + ScoreBetweenUnmemoized(apex, right, values);
-            best = Math.Min(best, triangleScore);
-        }
-
-        return best;
-    }
-
-    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
-    // (left, right) boundary pair - the same 2-tuple-state shape BurstBalloonsSolution
-    // and EditDistanceBenchmarks already use.
-    public static int MinScoreTriangulationByMemoizedRecursion(int[] values) =>
-        Memoizer.Memoize<(int Left, int Right), int>(
-            (0, values.Length - 1),
-            (range, score) => ScoreBetweenMemoized(range, score, values));
-
-    private static int ScoreBetweenMemoized(
-        (int Left, int Right) range, Func<(int Left, int Right), int> score, int[] values)
-    {
-        var (left, right) = range;
-
-        if (right - left < MinSpanForTriangle)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-
-        for (var apex = left + 1; apex < right; apex++)
-        {
-            var triangleScore = (values[left] * values[apex] * values[right])
-                + score((left, apex)) + score((apex, right));
             best = Math.Min(best, triangleScore);
         }
 

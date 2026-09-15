@@ -8,10 +8,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DecodeWaysBenchmarks
 {
-    private string _value = null!;
+    private string _value = "";
 
     [Params(20, 80)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _value = new string('1', Length);

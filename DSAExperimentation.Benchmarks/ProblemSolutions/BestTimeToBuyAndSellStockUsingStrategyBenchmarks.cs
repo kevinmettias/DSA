@@ -14,17 +14,14 @@ public class BestTimeToBuyAndSellStockUsingStrategyBenchmarks
     private const int Seed = 3652;
     private const int WindowSize = 100;
 
-    [Params(1_000, 20_000)]
-    public int DayCount;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
-    private int[] _strategy = null!;
+    private int[] _strategy = [];
+    [Params(1_000, 20_000)]
+    public int DayCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        (_prices, _strategy) = BestTimeToBuyAndSellStockUsingStrategyWorkloads.Build(DayCount, seed: Seed);
-    }
+    public void Setup() => (_prices, _strategy) = BestTimeToBuyAndSellStockUsingStrategyWorkloads.Build(DayCount, seed: Seed);
 
     [Benchmark(Baseline = true)]
     public long BruteForceWindowSum() =>

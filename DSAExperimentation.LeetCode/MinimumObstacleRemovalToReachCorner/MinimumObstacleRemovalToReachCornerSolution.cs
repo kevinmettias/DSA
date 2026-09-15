@@ -33,6 +33,15 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
+        var removals = ArrayScanRemovals(grid, rows, cols);
+
+        return removals[(rows * cols) - 1];
+    }
+
+    // The search itself: settle the nearest reachable cell once per cell, so every
+    // cell's cheapest removal count is final, and hand back the removals array.
+    private static int[] ArrayScanRemovals(int[][] grid, int rows, int cols)
+    {
         var total = rows * cols;
         var removals = new int[total];
 
@@ -50,10 +59,10 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
             }
 
             settled[current] = true;
-            RelaxArrayNeighbors(current, rows, cols, grid, removals);
+            RelaxArrayNeighbors(current, grid, removals);
         }
 
-        return removals[total - 1];
+        return removals;
     }
 
     private static int NextUnsettledMinimum(int[] removals, bool[] settled)
@@ -62,7 +71,7 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
 
         for (var i = 0; i < removals.Length; i++)
         {
-            if (!settled[i] && removals[i] != int.MaxValue && (current == -1 || removals[i] < removals[current]))
+            if (!settled[i] && IsImprovement(removals, i, current))
             {
                 current = i;
             }
@@ -71,28 +80,45 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
         return current;
     }
 
-    private static void RelaxArrayNeighbors(int current, int rows, int cols, int[][] grid, int[] removals)
+    // An unsettled cell improves the scan once it has been reached at all, and then
+    // only by carrying fewer removals than the best found so far - a cell nothing
+    // has picked yet counting as beatable.
+    private static bool IsImprovement(int[] removals, int i, int current)
+        => removals[i] != int.MaxValue
+            && (current == -1 || removals[i] < removals[current]);
+
+    private static void RelaxArrayNeighbors(int current, int[][] grid, int[] removals)
     {
-        var row = current / cols;
-        var col = current % cols;
+        var shape = (Rows: grid.Length, Cols: grid[0].Length);
 
         foreach (var (deltaRow, deltaCol) in Orthogonal)
         {
-            var nextRow = row + deltaRow;
-            var nextCol = col + deltaCol;
+            RelaxNeighbour(current, (grid, removals), shape, (deltaRow, deltaCol));
+        }
+    }
 
-            if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
-            {
-                continue;
-            }
+    // One 4-directionally adjacent cell of `current`: a step that leaves the grid is
+    // dropped, an in-grid one relaxes that neighbour's removal count.
+    private static void RelaxNeighbour(
+        int current,
+        (int[][] Grid, int[] Removals) state,
+        (int Rows, int Cols) shape,
+        (int DeltaRow, int DeltaCol) step)
+    {
+        var row = (current / shape.Cols) + step.DeltaRow;
+        var col = (current % shape.Cols) + step.DeltaCol;
 
-            var next = (nextRow * cols) + nextCol;
-            var candidate = removals[current] + grid[nextRow][nextCol];
+        if (!IsInside(row, col, shape.Rows, shape.Cols))
+        {
+            return;
+        }
 
-            if (candidate < removals[next])
-            {
-                removals[next] = candidate;
-            }
+        var next = (row * shape.Cols) + col;
+        var candidate = state.Removals[current] + state.Grid[row][col];
+
+        if (candidate < state.Removals[next])
+        {
+            state.Removals[next] = candidate;
         }
     }
 
@@ -121,6 +147,15 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
     // graph construction to setup rather than to the measured Dijkstra call.
     public static Dictionary<(int Row, int Col), WeightedGridNode> BuildObstacleCostGraph(int[][] grid)
     {
+        var nodes = CreateGridNodes(grid);
+        WireCellCosts(nodes, grid);
+
+        return nodes;
+    }
+
+    // Every cell of `grid` as a node, carrying no edges yet.
+    private static Dictionary<(int Row, int Col), WeightedGridNode> CreateGridNodes(int[][] grid)
+    {
         var nodes = new Dictionary<(int Row, int Col), WeightedGridNode>();
 
         for (var row = 0; row < grid.Length; row++)
@@ -131,6 +166,13 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
             }
         }
 
+        return nodes;
+    }
+
+    // One 4-directional edge per neighbour, weighted by the DESTINATION cell's own
+    // obstacle flag.
+    private static void WireCellCosts(Dictionary<(int Row, int Col), WeightedGridNode> nodes, int[][] grid)
+    {
         foreach (var ((row, col), node) in nodes)
         {
             foreach (var (deltaRow, deltaCol) in Orthogonal)
@@ -144,7 +186,10 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
                 }
             }
         }
-
-        return nodes;
     }
+
+    // Both coordinates within the grid is one idea, and the relaxation step asks for
+    // its negation.
+    private static bool IsInside(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
 }

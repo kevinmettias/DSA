@@ -16,10 +16,10 @@ public class FindWinnerOnATicTacToeGameBenchmarks
     // LC problem number, reused as the deterministic move-order seed.
     private const int MoveSeed = 1275;
 
-    [Params(10, 60)]
-    public int Size;
+    private int[][] _moves = [];
 
-    private int[][] _moves = null!;
+    [Params(10, 60)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

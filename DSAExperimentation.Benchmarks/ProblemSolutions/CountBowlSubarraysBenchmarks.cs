@@ -13,10 +13,10 @@ public class CountBowlSubarraysBenchmarks
 {
     private const int Seed = 3676;
 
-    [Params(200, 1000)]
-    public int Size;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 1000)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = CountBowlSubarraysWorkloads.BuildNums(Size, Seed);

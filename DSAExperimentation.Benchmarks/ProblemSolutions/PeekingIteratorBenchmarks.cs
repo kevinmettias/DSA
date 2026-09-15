@@ -1,6 +1,5 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PeekingIterator;
-using static DSAExperimentation.LeetCode.PeekingIterator.PeekingIteratorSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -11,19 +10,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PeekingIteratorBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public long IndexTracked() => Drain(CreateByIndexTracked(_values));
+    public long IndexTracked() => Drain(PeekingIteratorSolution.CreateByIndexTracked(_values));
 
     [Benchmark]
-    public long QueuePrimitive() => Drain(CreateByQueuePrimitive(_values));
+    public long QueuePrimitive() => Drain(PeekingIteratorSolution.CreateByQueuePrimitive(_values));
 
     private static long Drain(IPeekingIterator iterator)
     {

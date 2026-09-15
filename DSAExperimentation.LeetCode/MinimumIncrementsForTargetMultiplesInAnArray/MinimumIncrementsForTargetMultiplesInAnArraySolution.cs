@@ -25,31 +25,39 @@ internal static class MinimumIncrementsForTargetMultiplesInAnArraySolution
 
         foreach (var num in nums)
         {
-            var next = (long[])dp.Clone();
-
-            for (var covered = 0; covered < stateCount; covered++)
-            {
-                if (dp[covered] == long.MaxValue)
-                {
-                    continue;
-                }
-
-                for (var subset = 1; subset < stateCount; subset++)
-                {
-                    var candidate = dp[covered] + IncrementCost(num, lcmTable.SubsetLcm[subset]);
-                    var reached = covered | subset;
-
-                    if (candidate < next[reached])
-                    {
-                        next[reached] = candidate;
-                    }
-                }
-            }
-
-            dp = next;
+            dp = RelaxOneElement(dp, num, lcmTable, stateCount);
         }
 
         return dp[stateCount - 1];
+    }
+
+    // One nums element's pass: next[] starts as a copy of dp (this element skipped, so
+    // every state it already reached survives untouched) and each settled coverage state
+    // relaxes into the states reachable by raising this element to some subset's LCM.
+    private static long[] RelaxOneElement(long[] dp, int num, TargetLcmTable lcmTable, int stateCount)
+    {
+        var next = (long[])dp.Clone();
+
+        for (var covered = 0; covered < stateCount; covered++)
+        {
+            if (dp[covered] == long.MaxValue)
+            {
+                continue;
+            }
+
+            for (var subset = 1; subset < stateCount; subset++)
+            {
+                var candidate = dp[covered] + IncrementCost(num, lcmTable.SubsetLcm[subset]);
+                var reached = covered | subset;
+
+                if (candidate < next[reached])
+                {
+                    next[reached] = candidate;
+                }
+            }
+        }
+
+        return next;
     }
 
     // Same recurrence, reduced to this repo's own Memoizer: the state is "how many
@@ -62,24 +70,42 @@ internal static class MinimumIncrementsForTargetMultiplesInAnArraySolution
     {
         var fullMask = (1 << lcmTable.TargetCount) - 1;
 
-        long Recurrence((int Index, int Covered) state, Func<(int, int), long> recurse)
+        return Memoizer.Memoize((0, 0), new FewestIncrementsFrom(nums, lcmTable, fullMask));
+    }
+
+    // The recurrence, as a named type: every target is covered once `state.Covered`
+    // reaches the full mask, and until then each nums element is either skipped or
+    // raised to one subset's LCM, finishing the rest from whatever that leaves.
+    private sealed class FewestIncrementsFrom(int[] nums, TargetLcmTable lcmTable, int fullMask)
+        : IRecurrence<(int Index, int Covered), long>
+    {
+        public long Replay((int Index, int Covered) state, IRecurrence<(int Index, int Covered), long> rest)
         {
             if (state.Covered == fullMask)
             {
                 return 0;
             }
 
+            return BestCostFrom(state, rest);
+        }
+
+        // The cost of covering whatever targets are still uncovered from `state`: running
+        // out of nums first is unreachable (the bottom-up arm's long.MaxValue, halved so
+        // the additions below cannot overflow), and otherwise this element is either
+        // skipped or raised to one subset's LCM, whichever is cheaper.
+        private long BestCostFrom((int Index, int Covered) state, IRecurrence<(int Index, int Covered), long> rest)
+        {
             if (state.Index == nums.Length)
             {
                 return long.MaxValue / 2;
             }
 
-            var best = recurse((state.Index + 1, state.Covered));
+            var best = rest.Replay((state.Index + 1, state.Covered), rest);
 
             for (var subset = 1; subset <= fullMask; subset++)
             {
                 var cost = IncrementCost(nums[state.Index], lcmTable.SubsetLcm[subset]);
-                var candidate = cost + recurse((state.Index + 1, state.Covered | subset));
+                var candidate = cost + rest.Replay((state.Index + 1, state.Covered | subset), rest);
 
                 if (candidate < best)
                 {
@@ -89,14 +115,10 @@ internal static class MinimumIncrementsForTargetMultiplesInAnArraySolution
 
             return best;
         }
-
-        return Memoizer.Memoize<(int Index, int Covered), long>((0, 0), Recurrence);
     }
 
     // How many +1 increments raise num to the next multiple of lcm (0 if it already is one).
-    private static long IncrementCost(long num, long lcm)
-    {
-        var remainder = num % lcm;
-        return remainder == 0 ? 0 : lcm - remainder;
-    }
+    // The outer `% lcm` is what folds the already-a-multiple case into the same expression:
+    // a remainder of 0 gives back lcm - 0, which the modulo returns as 0.
+    private static long IncrementCost(long num, long lcm) => (lcm - (num % lcm)) % lcm;
 }

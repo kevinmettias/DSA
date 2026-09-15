@@ -16,10 +16,10 @@ public class CountPrefixAndSuffixPairsIIBenchmarks
 {
     private const int Seed = 3045;
 
-    [Params(100, 400)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(100, 400)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _words = PrefixSuffixPairWorkloads.BuildWords(WordCount, maxLength: 30, seed: Seed);

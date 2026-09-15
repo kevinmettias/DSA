@@ -37,6 +37,24 @@ internal static class CheckIfItIsAStraightLineSolution
         return true;
     }
 
+    private static bool HasNonCollinearThirdPoint(int[][] coordinates, int i, int j)
+    {
+        for (var k = j + 1; k < coordinates.Length; k++)
+        {
+            var dx1 = (long)(coordinates[j][0] - coordinates[i][0]);
+            var dy1 = (long)(coordinates[j][1] - coordinates[i][1]);
+            var dx2 = (long)(coordinates[k][0] - coordinates[i][0]);
+            var dy2 = (long)(coordinates[k][1] - coordinates[i][1]);
+
+            if (dx1 * dy2 != dy1 * dx2)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // One pass: every point must share a direction with the vector from the first
     // point to the second.
     public static bool CheckStraightLineByAnchoredCrossProductScan(int[][] coordinates)
@@ -58,23 +76,5 @@ internal static class CheckIfItIsAStraightLineSolution
         }
 
         return true;
-    }
-
-    private static bool HasNonCollinearThirdPoint(int[][] coordinates, int i, int j)
-    {
-        for (var k = j + 1; k < coordinates.Length; k++)
-        {
-            var dx1 = (long)(coordinates[j][0] - coordinates[i][0]);
-            var dy1 = (long)(coordinates[j][1] - coordinates[i][1]);
-            var dx2 = (long)(coordinates[k][0] - coordinates[i][0]);
-            var dy2 = (long)(coordinates[k][1] - coordinates[i][1]);
-
-            if (dx1 * dy2 != dy1 * dx2)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

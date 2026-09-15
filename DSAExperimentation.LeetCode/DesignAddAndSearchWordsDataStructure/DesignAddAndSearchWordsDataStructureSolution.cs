@@ -30,7 +30,8 @@ internal static class DesignAddAndSearchWordsDataStructureSolution
 
         public void AddWord(string word) => _words.Add(word);
 
-        public bool Search(string pattern) => _words.Exists(word => MatchesPattern(word, pattern));
+        public bool Search(string pattern) =>
+            _words.Exists(word => MatchesPattern(new StoredWord(word), new SearchPattern(pattern)));
     }
 
     // This repo's own Trie<bool> gives the no-wildcard case an O(m) descent
@@ -52,22 +53,22 @@ internal static class DesignAddAndSearchWordsDataStructureSolution
 
         public bool Search(string pattern) =>
             pattern.Contains('.')
-                ? _allWords.Exists(word => MatchesPattern(word, pattern))
+                ? _allWords.Exists(word => MatchesPattern(new StoredWord(word), new SearchPattern(pattern)))
                 : _exactWords.HasKey(pattern);
     }
 
     // Shared wildcard matching: same length, and every position either matches
     // the stored word exactly or the pattern has '.' there.
-    private static bool MatchesPattern(string word, string pattern)
+    private static bool MatchesPattern(StoredWord word, SearchPattern pattern)
     {
-        if (word.Length != pattern.Length)
+        if (word.Text.Length != pattern.Text.Length)
         {
             return false;
         }
 
-        for (var i = 0; i < word.Length; i++)
+        for (var i = 0; i < word.Text.Length; i++)
         {
-            if (pattern[i] != '.' && pattern[i] != word[i])
+            if (pattern.Text[i] != '.' && pattern.Text[i] != word.Text[i])
             {
                 return false;
             }
@@ -75,4 +76,11 @@ internal static class DesignAddAndSearchWordsDataStructureSolution
 
         return true;
     }
+
+    // The two sides of a wildcard match: the word that was added, and the pattern it is being
+    // tested against. Only the pattern may carry '.', so the relation is one-directional - and
+    // the two `string` positions it used to be did not say so.
+    private readonly record struct StoredWord(string Text);
+
+    private readonly record struct SearchPattern(string Text);
 }

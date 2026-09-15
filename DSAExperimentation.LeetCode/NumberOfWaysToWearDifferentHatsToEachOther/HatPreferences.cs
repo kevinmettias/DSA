@@ -11,27 +11,18 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther
 // This is a witness for one problem and nothing else - the same reason
 // LeetCode/CountWaysToBuildRoomsInAnAntColony keeps its two IFoldAlgebra
 // implementations beside its solution instead of in Domain.
-internal sealed class HatPreferences
+internal sealed class HatPreferences(List<int>[] peopleByHat, int peopleCount, int hatCount)
 {
-    private readonly List<int>[] _peopleByHat;
-
-    private HatPreferences(List<int>[] peopleByHat, int peopleCount, int hatCount)
-    {
-        _peopleByHat = peopleByHat;
-        PeopleCount = peopleCount;
-        HatCount = hatCount;
-    }
-
-    public int PeopleCount { get; }
+    public int PeopleCount { get; } = peopleCount;
 
     // Hats are numbered 1..HatCount; the DP counts down from HatCount to 0.
-    public int HatCount { get; }
+    public int HatCount { get; } = hatCount;
 
     // One bit per person, all set: the state every strategy starts from, meaning
     // "nobody has been given a hat yet".
     public int EveryoneMask => (1 << PeopleCount) - 1;
 
-    public IReadOnlyList<int> PeopleWhoLike(int hat) => _peopleByHat[hat];
+    public IReadOnlyList<int> PeopleWhoLike(int hat) => peopleByHat[hat];
 
     // Hats nobody likes contribute nothing to the recurrence (f(hat, mask) is just
     // f(hat - 1, mask) there), so the highest hat actually named is a sufficient

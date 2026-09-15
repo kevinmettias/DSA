@@ -27,12 +27,13 @@ internal static class MaximumNumberOfVisiblePointsSolution
     // be 2*angle wide and would overcount.
     public static int VisiblePointsByPairwiseBruteForce(int[][] points, int angle, int[] location)
     {
-        var angles = CollectAngles(points, location, out var atLocation);
+        var (angles, atLocation) = CollectAngles(points, location);
         var widest = 0;
 
         foreach (var anchor in angles)
         {
-            widest = Math.Max(widest, CountWithinWindow(angles, anchor, angle));
+            var inWindow = CountWithinWindow(angles, anchor, angle);
+            widest = Math.Max(widest, inWindow);
         }
 
         return widest + atLocation;
@@ -68,7 +69,7 @@ internal static class MaximumNumberOfVisiblePointsSolution
     // of per-pair window tests.
     public static int VisiblePointsBySortAndSlideWindow(int[][] points, int angle, int[] location)
     {
-        var angles = CollectAngles(points, location, out var atLocation);
+        var (angles, atLocation) = CollectAngles(points, location);
 
         MergeSort.Sort<double, ArrayIndexedSequence<double>>(new ArrayIndexedSequence<double>(angles));
 
@@ -112,9 +113,9 @@ internal static class MaximumNumberOfVisiblePointsSolution
     // Points sitting exactly on `location` are reported through `atLocation` rather
     // than given an angle: Atan2(0, 0) would answer 0 degrees, which is a direction
     // they do not have.
-    private static double[] CollectAngles(int[][] points, int[] location, out int atLocation)
+    private static (double[] Angles, int AtLocation) CollectAngles(int[][] points, int[] location)
     {
-        atLocation = 0;
+        var atLocation = 0;
         var angles = new List<double>(points.Length);
 
         foreach (var point in points)
@@ -131,6 +132,6 @@ internal static class MaximumNumberOfVisiblePointsSolution
             angles.Add(Math.Atan2(dy, dx) * DegreesPerRadian / Math.PI);
         }
 
-        return [.. angles];
+        return ([.. angles], atLocation);
     }
 }

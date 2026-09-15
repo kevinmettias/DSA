@@ -18,10 +18,10 @@ internal sealed class RestrictedPathGraph
     private const int To = 1;
     private const int Weight = 2;
 
-    private RestrictedPathGraph(RestrictedPathNode first) => First = first;
-
     // Node 1, where every restricted path starts.
     public RestrictedPathNode First { get; }
+
+    private RestrictedPathGraph(RestrictedPathNode first) => First = first;
 
     public static RestrictedPathGraph Build(int n, int[][] edges)
     {

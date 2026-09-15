@@ -20,40 +20,18 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther
 // arm re-explores each one from scratch.
 internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 {
-    // The textbook answer: plain recursion, no cache, nothing from this repo in its
-    // internals. It is the arm the memoized strategy below has to justify itself
-    // against, and putting it here is what finally gets it asserted.
+    // The textbook answer: the same plain recursion with no cache behind it - the
+    // recurrence below invoked with itself as its own recursion, rather than handed
+    // to this repo's Memoizer. It is the arm the memoized strategy beneath has to
+    // justify itself against, and putting it here is what finally gets it asserted.
     public static int NumberWaysByBruteForceRecursion(int[][] hats) =>
         NumberWaysByBruteForceRecursion(HatPreferences.Build(hats));
 
-    public static int NumberWaysByBruteForceRecursion(HatPreferences preferences) =>
-        (int)WaysFromScratch(preferences.HatCount, preferences.EveryoneMask, preferences);
-
-    private static long WaysFromScratch(int hat, int mask, HatPreferences preferences)
+    public static int NumberWaysByBruteForceRecursion(HatPreferences preferences)
     {
-        if (mask == 0)
-        {
-            return 1L;
-        }
+        var ways = new WaysByHatAndMask(preferences);
 
-        if (hat == 0)
-        {
-            return 0L;
-        }
-
-        var total = WaysFromScratch(hat - 1, mask, preferences);
-
-        foreach (var person in preferences.PeopleWhoLike(hat))
-        {
-            var personBit = 1 << person;
-
-            if ((mask & personBit) != 0)
-            {
-                total = (total + WaysFromScratch(hat - 1, mask & ~personBit, preferences)) % ModularArithmetic.Modulo;
-            }
-        }
-
-        return total;
+        return (int)ways.Replay((preferences.HatCount, preferences.EveryoneMask), ways);
     }
 
     // The same recurrence routed through this repo's own Memoizer, keyed on the
@@ -68,34 +46,40 @@ internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
     {
         var totalWays = Memoizer.Memoize<(int Hat, int Mask), long>(
             (preferences.HatCount, preferences.EveryoneMask),
-            (state, waysFor) => WaysFor(state, waysFor, preferences));
+            new WaysByHatAndMask(preferences));
 
         return (int)totalWays;
     }
 
-    private static long WaysFor(
-        (int Hat, int Mask) state, Func<(int Hat, int Mask), long> waysFor, HatPreferences preferences)
+    // The recurrence itself, named: hat `hat` is either left unworn, or given to one
+    // person who likes it and still needs one. mask == 0 is a finished assignment
+    // whatever is left of the hats, which is why it short-circuits first.
+    private sealed class WaysByHatAndMask(HatPreferences preferences)
+        : IRecurrence<(int Hat, int Mask), long>
     {
-        var (hat, mask) = state;
-
-        if (mask == 0)
+        public long Replay((int Hat, int Mask) state, IRecurrence<(int Hat, int Mask), long> rest)
         {
-            return 1L;
+            var (hat, mask) = state;
+
+            if (mask == 0)
+            {
+                return 1L;
+            }
+
+            if (hat == 0)
+            {
+                return 0L;
+            }
+
+            var leaveHatUnworn = rest.Replay((hat - 1, mask), rest);
+
+            return AccumulateAssignments(state, rest, preferences, leaveHatUnworn);
         }
-
-        if (hat == 0)
-        {
-            return 0L;
-        }
-
-        var leaveHatUnworn = waysFor((hat - 1, mask));
-
-        return AccumulateAssignments(state, waysFor, preferences, leaveHatUnworn);
     }
 
     private static long AccumulateAssignments(
         (int Hat, int Mask) state,
-        Func<(int Hat, int Mask), long> waysFor,
+        IRecurrence<(int Hat, int Mask), long> rest,
         HatPreferences preferences,
         long total)
     {
@@ -107,7 +91,7 @@ internal static class NumberOfWaysToWearDifferentHatsToEachOtherSolution
 
             if ((mask & personBit) != 0)
             {
-                total = (total + waysFor((hat - 1, mask & ~personBit))) % ModularArithmetic.Modulo;
+                total = (total + rest.Replay((hat - 1, mask & ~personBit), rest)) % ModularArithmetic.Modulo;
             }
         }
 

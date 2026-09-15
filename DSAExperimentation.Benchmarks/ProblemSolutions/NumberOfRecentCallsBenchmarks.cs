@@ -15,10 +15,10 @@ public class NumberOfRecentCallsBenchmarks
     private const int RandomSeed = 933; // LC problem number
     private const int MaxGapExclusive = 50;
 
-    [Params(500, 5_000)]
-    public int CallCount;
+    private int[] _timestamps = [];
 
-    private int[] _timestamps = null!;
+    [Params(500, 5_000)]
+    public int CallCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

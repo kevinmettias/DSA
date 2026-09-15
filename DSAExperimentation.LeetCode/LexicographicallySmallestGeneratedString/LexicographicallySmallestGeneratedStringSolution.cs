@@ -30,33 +30,45 @@ internal static class LexicographicallySmallestGeneratedStringSolution
     // 'T', same cost as writing it) rather than reasoning about str2's own
     // self-overlap. O(n*m) overall - the arm the Z-function strategy below
     // has to justify itself against.
-    public static string GenerateStringByDirectFill(string str1, string str2)
+    public static string GenerateStringByDirectFill(ConstraintPattern str1, TemplateWord str2)
     {
-        var word = Seed(str1.Length, str2.Length);
+        var word = Seed(str1.Text.Length, str2.Text.Length);
         var fixedByT = new bool[word.Length];
 
-        for (var i = 0; i < str1.Length; i++)
+        for (var i = 0; i < str1.Text.Length; i++)
         {
-            if (str1[i] != 'T')
+            if (str1.Text[i] != 'T')
             {
                 continue;
             }
 
-            for (var j = 0; j < str2.Length; j++)
+            if (!WriteWindow(word, fixedByT, i, str2.Text))
             {
-                var k = i + j;
-
-                if (fixedByT[k] && word[k] != str2[j])
-                {
-                    return string.Empty;
-                }
-
-                word[k] = str2[j];
-                fixedByT[k] = true;
+                return string.Empty;
             }
         }
 
         return ApplyForbiddenWindows(word, fixedByT, str1, str2);
+    }
+
+    // Write str2 across the window starting at `start`, reporting false as soon as a
+    // position an earlier 'T' already fixed disagrees with str2 there.
+    private static bool WriteWindow(char[] word, bool[] fixedByT, int start, string str2)
+    {
+        for (var j = 0; j < str2.Length; j++)
+        {
+            var k = start + j;
+
+            if (fixedByT[k] && word[k] != str2[j])
+            {
+                return false;
+            }
+
+            word[k] = str2[j];
+            fixedByT[k] = true;
+        }
+
+        return true;
     }
 
     // Same two-pass shape, but a 'T' window's overlap with the previous one is
@@ -66,43 +78,66 @@ internal static class LexicographicallySmallestGeneratedStringSolution
     // window's characters are also written at most once (only the portion
     // past the previous window's end), so the fill pass is O(n + m) rather
     // than O(n*m); only the forbidden-window pass below still costs O(n*m).
-    public static string GenerateStringByZFunctionConsistency(string str1, string str2)
+    public static string GenerateStringByZFunctionConsistency(ConstraintPattern str1, TemplateWord str2)
     {
-        var word = Seed(str1.Length, str2.Length);
+        var word = Seed(str1.Text.Length, str2.Text.Length);
         var fixedByT = new bool[word.Length];
-        var selfOverlap = ZFunction.Compute(str2);
+        var selfOverlap = ZFunction.Compute(str2.Text);
 
         var lastT = -1;
         var filledThrough = 0;
 
-        for (var i = 0; i < str1.Length; i++)
+        foreach (var i in TPositions(str1.Text))
         {
-            if (str1[i] != 'T')
+            if (ConflictsWithPreviousWindow(i, lastT, selfOverlap, str2.Text))
             {
-                continue;
+                return string.Empty;
             }
 
-            if (lastT >= 0)
-            {
-                var gap = i - lastT;
-
-                if (gap < str2.Length && selfOverlap[gap] < str2.Length - gap)
-                {
-                    return string.Empty;
-                }
-            }
-
-            for (var k = Math.Max(i, filledThrough); k < i + str2.Length; k++)
-            {
-                word[k] = str2[k - i];
-                fixedByT[k] = true;
-            }
-
-            filledThrough = Math.Max(filledThrough, i + str2.Length);
-            lastT = i;
+            FillWindowFrom(word, fixedByT, (i, filledThrough), str2.Text);
+            (filledThrough, lastT) = (Math.Max(filledThrough, i + str2.Text.Length), i);
         }
 
         return ApplyForbiddenWindows(word, fixedByT, str1, str2);
+    }
+
+    // The indices where str1 demands a window - the only positions the fill pass acts
+    // on.
+    private static IEnumerable<int> TPositions(string str1)
+    {
+        for (var i = 0; i < str1.Length; i++)
+        {
+            if (str1[i] == 'T')
+            {
+                yield return i;
+            }
+        }
+    }
+
+    // Whether this 'T' window contradicts the previous one: str2 shifted by their gap
+    // must agree with itself across the whole overlap, which selfOverlap[gap] reports
+    // in one lookup. The first window overlaps nothing.
+    private static bool ConflictsWithPreviousWindow(int i, int lastT, int[] selfOverlap, string str2)
+    {
+        if (lastT < 0)
+        {
+            return false;
+        }
+
+        var gap = i - lastT;
+
+        return gap < str2.Length && selfOverlap[gap] < str2.Length - gap;
+    }
+
+    // Write only the part of str2's window that no earlier window already covered.
+    private static void FillWindowFrom(
+        char[] word, bool[] fixedByT, (int Start, int FilledThrough) window, string str2)
+    {
+        for (var k = Math.Max(window.Start, window.FilledThrough); k < window.Start + str2.Length; k++)
+        {
+            word[k] = str2[k - window.Start];
+            fixedByT[k] = true;
+        }
     }
 
     private static char[] Seed(int n, int m)
@@ -112,16 +147,17 @@ internal static class LexicographicallySmallestGeneratedStringSolution
         return word;
     }
 
-    private static string ApplyForbiddenWindows(char[] word, bool[] fixedByT, string str1, string str2)
+    private static string ApplyForbiddenWindows(
+        char[] word, bool[] fixedByT, ConstraintPattern str1, TemplateWord str2)
     {
-        for (var i = 0; i < str1.Length; i++)
+        for (var i = 0; i < str1.Text.Length; i++)
         {
-            if (str1[i] != 'F' || !MatchesPattern(word, i, str2))
+            if (str1.Text[i] != 'F' || !MatchesPattern(word, i, str2.Text))
             {
                 continue;
             }
 
-            if (!TryBreakMatch(word, fixedByT, i, str2.Length))
+            if (!TryBreakMatch(word, fixedByT, i, str2.Text.Length))
             {
                 return string.Empty;
             }
@@ -156,4 +192,13 @@ internal static class LexicographicallySmallestGeneratedStringSolution
 
         return false;
     }
+
+    // LC 3474's two operands, named for the roles they play here rather than left as two
+    // adjacent `string` positions a caller could hand over the wrong way round with the
+    // compiler none the wiser. `str1` is the 'T'/'F' pattern that demands or forbids a
+    // window; `str2` is the word stamped into every 'T' window. They differ in both
+    // length and meaning, so a swap asks a different question entirely.
+    internal readonly record struct ConstraintPattern(string Text);
+
+    internal readonly record struct TemplateWord(string Text);
 }

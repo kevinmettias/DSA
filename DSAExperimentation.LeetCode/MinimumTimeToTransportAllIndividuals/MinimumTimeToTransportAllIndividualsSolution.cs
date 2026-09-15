@@ -44,26 +44,32 @@ internal static class MinimumTimeToTransportAllIndividualsSolution
                 return cost;
             }
 
-            RelaxRounds(state, cost, time, capacity, mul, fullMask, best, queue);
+            RelaxRounds(state, cost, (time, capacity, mul), (best, queue));
         }
 
         return LeetCodeAnswer.None;
     }
 
+    // The three values that define the puzzle travel as one, and so do the two the
+    // relaxation writes into - the frontier's best-so-far table and the queue that
+    // orders it. What is left beside them is the single edge being relaxed: the state
+    // it departs from and the cost the walk reached that state at.
     private static void RelaxRounds(
-        (int Mask, int Stage) state, double cost, int[] time, int capacity, double[] mul, int fullMask,
-        Dictionary<(int Mask, int Stage), double> best, PriorityQueue<(int Mask, int Stage), double> queue)
+        (int Mask, int Stage) state,
+        double cost,
+        (int[] Time, int Capacity, double[] Mul) puzzle,
+        (Dictionary<(int Mask, int Stage), double> Best, PriorityQueue<(int Mask, int Stage), double> Queue) frontier)
     {
         foreach (var (roundTime, nextMask, nextStage) in
-                 TransportGraph.Rounds(state.Mask, state.Stage, time, capacity, mul, fullMask))
+                 TransportGraph.Rounds(state, puzzle.Time, puzzle.Capacity, puzzle.Mul))
         {
             var candidate = cost + roundTime;
             var next = (nextMask, nextStage);
 
-            if (!best.TryGetValue(next, out var known) || candidate < known)
+            if (!frontier.Best.TryGetValue(next, out var known) || candidate < known)
             {
-                best[next] = candidate;
-                queue.Enqueue(next, candidate);
+                frontier.Best[next] = candidate;
+                frontier.Queue.Enqueue(next, candidate);
             }
         }
     }
@@ -72,8 +78,12 @@ internal static class MinimumTimeToTransportAllIndividualsSolution
     // TransportTopology gives every reachable (mask, stage)'s distance from
     // the start in one call; the answer is the cheapest of those whose mask
     // is full, since the puzzle may finish under any of the m stages.
-    public static double MinTimeByDijkstraOverTransportGraph(int[] time, int capacity, double[] mul) =>
-        MinTimeByDijkstraOverTransportGraph(TransportGraph.Build(time, capacity, mul));
+    public static double MinTimeByDijkstraOverTransportGraph(int[] time, int capacity, double[] mul)
+    {
+        var graph = TransportGraph.Build(time, capacity, mul);
+
+        return MinTimeByDijkstraOverTransportGraph(graph);
+    }
 
     public static double MinTimeByDijkstraOverTransportGraph(TransportGraph graph)
     {

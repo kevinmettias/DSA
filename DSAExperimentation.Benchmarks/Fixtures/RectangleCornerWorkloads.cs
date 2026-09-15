@@ -8,9 +8,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // gives for narrowing LC 3047's own coordinate range.
 internal static class RectangleCornerWorkloads
 {
-    public const int XCorner = 2_000;
-    public const int YCorner = 2_000;
-
     private const int MinRadius = 20;
     private const int MaxRadius = 80;
 
@@ -21,8 +18,8 @@ internal static class RectangleCornerWorkloads
 
         for (var i = 0; i < count; i++)
         {
-            var x = random.Next(1, XCorner);
-            var y = random.Next(1, YCorner);
+            var x = random.Next(1, RectangleCornerScenario.XCorner);
+            var y = random.Next(1, RectangleCornerScenario.YCorner);
             var r = random.Next(MinRadius, MaxRadius + 1);
             circles[i] = [x, y, r];
         }

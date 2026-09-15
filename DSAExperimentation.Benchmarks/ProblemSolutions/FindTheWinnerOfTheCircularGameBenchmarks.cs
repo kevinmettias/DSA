@@ -17,13 +17,13 @@ public class FindTheWinnerOfTheCircularGameBenchmarks
     private const int K = 3;
 
     [Params(200, 2_000)]
-    public int FriendCount;
+    public int FriendCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int FindTheWinnerByListRemoval() =>
+    public int ByListRemoval() =>
         FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByListRemoval(FriendCount, K);
 
     [Benchmark]
-    public int FindTheWinnerByQueueRotation() =>
+    public int ByQueueRotation() =>
         FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByQueueRotation(FriendCount, K);
 }

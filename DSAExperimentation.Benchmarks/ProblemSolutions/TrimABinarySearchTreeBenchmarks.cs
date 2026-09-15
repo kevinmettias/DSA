@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class TrimABinarySearchTreeBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,17 +30,29 @@ public class TrimABinarySearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int CollectAndRebuild() =>
-        CountNodes(TrimABinarySearchTreeSolution.TrimByCollectAndRebuild(_root, 0, NodeCount - 1));
+    public int CollectAndRebuild()
+    {
+        var trimmed = TrimABinarySearchTreeSolution.TrimByCollectAndRebuild(_root, 0, NodeCount - 1);
+
+        return CountNodes(trimmed);
+    }
 
     [Benchmark]
-    public int InPlaceTrim() =>
-        CountNodes(TrimABinarySearchTreeSolution.TrimByInPlaceMutation(_root, 0, NodeCount - 1));
+    public int InPlaceTrim()
+    {
+        var trimmed = TrimABinarySearchTreeSolution.TrimByInPlaceMutation(_root, 0, NodeCount - 1);
+
+        return CountNodes(trimmed);
+    }
 
     // BinaryTreeNode<int> is internal, so a public [Benchmark] method can't return
     // it directly (CS0050) - this projects the result to a public int just to give
     // BenchmarkDotNet a return value, the same role WordLadderIIBenchmarks' .Count
     // plays per ARCHITECTURE.md §17.8. It is not a second copy of either strategy.
     private static int CountNodes(BinaryTreeNode<int>? node)
-        => node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
+        => node is null ? 0 : SubtreeSize(node);
+
+    // The node itself plus both of its subtrees, counted the same way.
+    private static int SubtreeSize(BinaryTreeNode<int> node) =>
+        1 + CountNodes(node.Left) + CountNodes(node.Right);
 }

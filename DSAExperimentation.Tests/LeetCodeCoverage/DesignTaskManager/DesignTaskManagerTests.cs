@@ -51,28 +51,15 @@ public sealed class DesignTaskManagerTests
 // One call in a TaskManager script: which method to invoke and with what arguments.
 // Pure dispatch, built via the named factories below so a script (like Examples
 // above) reads like the LeetCode call sequence it replays.
-public readonly record struct TaskManagerOp
+public readonly record struct TaskManagerOp(TaskManagerOp.OpKind kind, int userId, int taskId, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _userId;
-    private readonly int _taskId;
-    private readonly int _value;
+    public static TaskManagerOp Add(int userId, int taskId, int priority) => new(OpKind.Add, userId, taskId, priority);
 
-    private TaskManagerOp(Kind kind, int userId, int taskId, int value)
-    {
-        _kind = kind;
-        _userId = userId;
-        _taskId = taskId;
-        _value = value;
-    }
+    public static TaskManagerOp Edit(int taskId, int newPriority) => new(OpKind.Edit, 0, taskId, newPriority);
 
-    public static TaskManagerOp Add(int userId, int taskId, int priority) => new(Kind.Add, userId, taskId, priority);
+    public static TaskManagerOp Rmv(int taskId) => new(OpKind.Rmv, 0, taskId, 0);
 
-    public static TaskManagerOp Edit(int taskId, int newPriority) => new(Kind.Edit, 0, taskId, newPriority);
-
-    public static TaskManagerOp Rmv(int taskId) => new(Kind.Rmv, 0, taskId, 0);
-
-    public static TaskManagerOp ExecTop() => new(Kind.ExecTop, 0, 0, 0);
+    public static TaskManagerOp ExecTop() => new(OpKind.ExecTop, 0, 0, 0);
 
     // null for the three void calls, the executed userId for ExecTop - so a script
     // runner can assert against one expected value per operation uniformly.
@@ -81,23 +68,23 @@ public readonly record struct TaskManagerOp
     // calls Apply.
     internal int? Apply(ITaskManagerStrategy strategy)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Add:
-                strategy.Add(_userId, _taskId, _value);
+            case OpKind.Add:
+                strategy.Add(userId, taskId, value);
                 return null;
-            case Kind.Edit:
-                strategy.Edit(_taskId, _value);
+            case OpKind.Edit:
+                strategy.Edit(taskId, value);
                 return null;
-            case Kind.Rmv:
-                strategy.Rmv(_taskId);
+            case OpKind.Rmv:
+                strategy.Rmv(taskId);
                 return null;
             default:
                 return strategy.ExecTop();
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Add,
         Edit,

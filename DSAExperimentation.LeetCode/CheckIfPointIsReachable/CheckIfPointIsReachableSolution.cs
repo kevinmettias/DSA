@@ -37,6 +37,14 @@ internal static class CheckIfPointIsReachableSolution
         var queue = new Queue<(long X, long Y)>();
         queue.Enqueue(start);
 
+        return SweepByBreadthFirstSearch(queue, visited, targetX, targetY);
+    }
+
+    // Drains the frontier: each point popped either answers (it is the target) or
+    // expands into its four moves, so the search ends only when nothing new is left.
+    private static bool SweepByBreadthFirstSearch(
+        Queue<(long X, long Y)> queue, HashSet<(long X, long Y)> visited, int targetX, int targetY)
+    {
         while (queue.Count > 0)
         {
             var point = queue.Dequeue();
@@ -48,7 +56,7 @@ internal static class CheckIfPointIsReachableSolution
 
             foreach (var next in Successors(point.X, point.Y))
             {
-                if (next.X <= targetX && next.Y <= targetY && visited.Add(next))
+                if (IsNewStateWithinTarget(next, targetX, targetY, visited))
                 {
                     queue.Enqueue(next);
                 }
@@ -66,6 +74,13 @@ internal static class CheckIfPointIsReachableSolution
         yield return (DoublingFactor * x, y);
         yield return (x, DoublingFactor * y);
     }
+
+    // A successor is worth queueing only when it stays inside the target's box -
+    // no move ever shrinks a coordinate, so nothing outside it can lead there -
+    // and the search has not already seen it.
+    private static bool IsNewStateWithinTarget(
+        (long X, long Y) next, int targetX, int targetY, HashSet<(long X, long Y)> visited)
+        => next.X <= targetX && next.Y <= targetY && visited.Add(next);
 
     // The closed form: the gcd carries every factor the two coordinates share, and
     // only its odd part is an obstacle, so the point is reachable exactly when the

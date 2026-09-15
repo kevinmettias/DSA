@@ -24,51 +24,6 @@ internal static class PartitionListSolution
         return BuildList(partitioned);
     }
 
-    // The standard walk: thread each node onto a "before" or "after" chain as it is
-    // visited, cutting it loose from its old neighbor first, then splice the two
-    // chains together. No extra storage; the existing nodes are reused.
-    public static SinglyLinkedListNode<int>? PartitionByPointerSplice(SinglyLinkedListNode<int>? head, int x)
-    {
-        var before = new SinglyLinkedListNode<int>(0);
-        var beforeTail = before;
-        var after = new SinglyLinkedListNode<int>(0);
-        var afterTail = after;
-
-        for (var node = head; node is not null;)
-        {
-            var next = node.Next;
-            node.Next = null;
-
-            if (node.Value < x)
-            {
-                beforeTail.Next = node;
-                beforeTail = node;
-            }
-            else
-            {
-                afterTail.Next = node;
-                afterTail = node;
-            }
-
-            node = next;
-        }
-
-        beforeTail.Next = after.Next;
-        return before.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
-
     private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
@@ -81,5 +36,61 @@ internal static class PartitionListSolution
         }
 
         return dummy.Next;
+    }
+
+    // The standard walk: thread each node onto a "before" or "after" chain as it is
+    // visited, cutting it loose from its old neighbor first, then splice the two
+    // chains together. No extra storage; the existing nodes are reused.
+    public static SinglyLinkedListNode<int>? PartitionByPointerSplice(SinglyLinkedListNode<int>? head, int x)
+    {
+        var before = new SinglyLinkedListNode<int>(0);
+        var after = new SinglyLinkedListNode<int>(0);
+
+        var (beforeTail, afterTail) = ThreadOntoChains(head, x, (before, after));
+
+        beforeTail.Next = after.Next;
+        return before.Next;
+    }
+
+    // The walk itself: cut each visited node loose from its old neighbor, append it
+    // to the chain for its side, and hand back the two chain tails - the dummy heads
+    // passed in are those tails before any node has been threaded.
+    private static (SinglyLinkedListNode<int> BeforeTail, SinglyLinkedListNode<int> AfterTail) ThreadOntoChains(
+        SinglyLinkedListNode<int>? head,
+        int x,
+        (SinglyLinkedListNode<int> BeforeTail, SinglyLinkedListNode<int> AfterTail) tails)
+    {
+        for (var node = head; node is not null;)
+        {
+            var next = node.Next;
+            node.Next = null;
+
+            if (node.Value < x)
+            {
+                tails.BeforeTail.Next = node;
+                tails.BeforeTail = node;
+            }
+            else
+            {
+                tails.AfterTail.Next = node;
+                tails.AfterTail = node;
+            }
+
+            node = next;
+        }
+
+        return tails;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
     }
 }

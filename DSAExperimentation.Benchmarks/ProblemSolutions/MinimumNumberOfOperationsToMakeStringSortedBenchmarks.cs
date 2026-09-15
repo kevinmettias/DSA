@@ -18,10 +18,10 @@ public class MinimumNumberOfOperationsToMakeStringSortedBenchmarks
     private const int RandomSeed = 1830; // LC problem number
     private const int AlphabetSize = 26;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

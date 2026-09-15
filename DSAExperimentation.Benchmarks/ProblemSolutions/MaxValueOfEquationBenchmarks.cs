@@ -17,10 +17,10 @@ public class MaxValueOfEquationBenchmarks
 
     private const int YCoordinateRange = 1_000;
 
-    [Params(500, 4_000)]
-    public int Length;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(500, 4_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

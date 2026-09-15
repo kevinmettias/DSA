@@ -15,19 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CloneGraphBenchmarks
 {
-    [Params(10, 1_000)]
-    public int NodeCount;
-
     private Node _graph = null!;
+
+    [Params(10, 1_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _graph = BuildRing(NodeCount);
-
-    [Benchmark(Baseline = true)]
-    public int DictionaryDfs() => CloneGraphSolution.CloneByDictionaryDfs(_graph)!.Value;
-
-    [Benchmark]
-    public int HashMapDfs() => CloneGraphSolution.CloneByHashMapDfs(_graph)!.Value;
 
     private static Node BuildRing(int nodeCount)
     {
@@ -47,4 +41,10 @@ public class CloneGraphBenchmarks
 
         return nodes[0];
     }
+
+    [Benchmark(Baseline = true)]
+    public int DictionaryDfs() => CloneGraphSolution.CloneByDictionaryDfs(_graph)!.Value;
+
+    [Benchmark]
+    public int HashMapDfs() => CloneGraphSolution.CloneByHashMapDfs(_graph)!.Value;
 }

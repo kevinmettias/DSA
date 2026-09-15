@@ -24,11 +24,11 @@ public class TheScoreOfStudentsSolvingMathExpressionBenchmarks
     private const int AnswerCount = 5;
     private const int MaxAnswerExclusive = 1_001;
 
-    [Params(6, 10)]
-    public int NumberCount;
+    private string _expression = "";
 
-    private string _expression = null!;
-    private int[] _answers = null!;
+    private int[] _answers = [];
+    [Params(6, 10)]
+    public int NumberCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,7 +38,7 @@ public class TheScoreOfStudentsSolvingMathExpressionBenchmarks
             .Select(_ => random.Next(1, MaxDigitValueExclusive))
             .ToArray();
         var ops = Enumerable.Range(0, NumberCount - 1)
-            .Select(_ => random.Next(0, OperatorChoiceCount) == 0 ? '+' : '*')
+            .Select(_ => IsPlus(random) ? '+' : '*')
             .ToArray();
 
         _expression = BuildExpression(numbers, ops);
@@ -46,6 +46,8 @@ public class TheScoreOfStudentsSolvingMathExpressionBenchmarks
             .Select(_ => random.Next(0, MaxAnswerExclusive))
             .ToArray();
     }
+
+    private static bool IsPlus(Random random) => random.Next(0, OperatorChoiceCount) == 0;
 
     private static string BuildExpression(int[] numbers, char[] ops) =>
         string.Concat(Enumerable.Range(0, numbers.Length)

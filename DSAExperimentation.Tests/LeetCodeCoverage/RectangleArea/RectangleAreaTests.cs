@@ -24,7 +24,8 @@ public sealed class RectangleAreaTests
         int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2, long expected) =>
         Assert.Equal(
             expected,
-            RectangleAreaSolution.TotalAreaByClosedFormOverlap(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2));
+            RectangleAreaSolution.TotalAreaByClosedFormOverlap(
+                new Rectangle(ax1, ay1, ax2, ay2), new Rectangle(bx1, by1, bx2, by2)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -32,5 +33,6 @@ public sealed class RectangleAreaTests
         int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2, long expected) =>
         Assert.Equal(
             expected,
-            RectangleAreaSolution.TotalAreaByUnitGridCoverageCount(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2));
+            RectangleAreaSolution.TotalAreaByUnitGridCoverageCount(
+                new Rectangle(ax1, ay1, ax2, ay2), new Rectangle(bx1, by1, bx2, by2)));
 }

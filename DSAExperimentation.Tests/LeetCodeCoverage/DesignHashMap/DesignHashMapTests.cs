@@ -59,24 +59,13 @@ public sealed class DesignHashMapTests
 // One call in a MyHashMap script: which method to invoke and with what
 // key/value. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct HashMapOp
+public readonly record struct HashMapOp(HashMapOp.OpKind kind, int key, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _key;
-    private readonly int _value;
+    public static HashMapOp Put(int key, int value) => new(OpKind.Put, key, value);
 
-    private HashMapOp(Kind kind, int key, int value)
-    {
-        _kind = kind;
-        _key = key;
-        _value = value;
-    }
+    public static HashMapOp Get(int key) => new(OpKind.Get, key, 0);
 
-    public static HashMapOp Put(int key, int value) => new(Kind.Put, key, value);
-
-    public static HashMapOp Get(int key) => new(Kind.Get, key, 0);
-
-    public static HashMapOp Remove(int key) => new(Kind.Remove, key, 0);
+    public static HashMapOp Remove(int key) => new(OpKind.Remove, key, 0);
 
     // null for the two void calls, the looked-up value (or -1) for Get - so a
     // script runner can assert against one expected value per operation
@@ -85,20 +74,20 @@ public readonly record struct HashMapOp
     // calls Apply.
     internal int? Apply(IMyHashMap map)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Put:
-                map.Put(_key, _value);
+            case OpKind.Put:
+                map.Put(key, value);
                 return null;
-            case Kind.Remove:
-                map.Remove(_key);
+            case OpKind.Remove:
+                map.Remove(key);
                 return null;
             default:
-                return map.Get(_key);
+                return map.Get(key);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Put,
         Get,

@@ -19,10 +19,10 @@ public class FinalPricesWithASpecialDiscountInAShopBenchmarks
     // the value carries over unchanged from the pre-migration benchmark.
     private const int PriceSeed = 1;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

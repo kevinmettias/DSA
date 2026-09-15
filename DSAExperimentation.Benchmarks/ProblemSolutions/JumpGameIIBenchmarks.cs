@@ -18,11 +18,11 @@ public class JumpGameIIBenchmarks
 {
     private const int MaxJumpDistanceExclusive = 11;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _jumps = [];
 
-    private int[] _jumps = null!;
-    private HopNode[] _hopGraph = null!;
+    private HopNode[] _hopGraph = [];
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -15,10 +15,10 @@ public class BestTimeToBuyAndSellStockIIBenchmarks
     private const int Seed = 122; // LC problem number
     private const int MaxPriceExclusive = 1_000;
 
-    [Params(16, 20)]
-    public int Length;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
+    [Params(16, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

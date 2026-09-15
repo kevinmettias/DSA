@@ -8,15 +8,15 @@ namespace DSAExperimentation.LeetCode.ReachableNodesInSubdividedGraph;
 // same framing EdgeGraph uses for LC 3123.
 internal sealed class SubdividedGraph
 {
+    public SubdividedGraphNode[] Nodes { get; }
+
+    public int[][] Edges { get; }
+
     private SubdividedGraph(SubdividedGraphNode[] nodes, int[][] edges)
     {
         Nodes = nodes;
         Edges = edges;
     }
-
-    public SubdividedGraphNode[] Nodes { get; }
-
-    public int[][] Edges { get; }
 
     public static SubdividedGraph Build(int n, int[][] edges)
     {

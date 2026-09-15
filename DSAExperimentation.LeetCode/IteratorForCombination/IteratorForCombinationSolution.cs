@@ -63,14 +63,25 @@ internal static class IteratorForCombinationSolution
 
     public static CombinationIterator CreateByBacktrackEngine(string characters, int combinationLength)
     {
-        var results = new List<string>();
         var state = new SearchState();
+        var results = RunSearch(characters, combinationLength, state);
+
+        return new CombinationIterator(results);
+    }
+
+    // Drives Backtrack.Search over the growing character selection: a state is a
+    // solution once it holds combinationLength characters, its candidates are the
+    // indices still ahead of it, and unchoosing restores the Start the previous
+    // choice replaced.
+    private static List<string> RunSearch(string characters, int combinationLength, SearchState state)
+    {
+        var results = new List<string>();
 
         Backtrack.Search<SearchState, int>(
             state,
             isSolution: s => s.Chosen.Count == combinationLength,
             candidates: s => s.Chosen.Count == combinationLength
-                ? []
+                ? Array.Empty<int>()
                 : Enumerable.Range(s.Start, characters.Length - s.Start),
             choose: (s, index) =>
             {
@@ -85,7 +96,7 @@ internal static class IteratorForCombinationSolution
             },
             onSolution: s => results.Add(new string([.. s.Chosen])));
 
-        return new CombinationIterator(results);
+        return results;
     }
 
     // LeetCode's own answer shape: the stateful object the judge drives with

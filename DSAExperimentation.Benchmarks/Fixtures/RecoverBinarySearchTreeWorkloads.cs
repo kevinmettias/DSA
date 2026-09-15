@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
@@ -7,34 +8,30 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // recovery strategies to find and fix, independent of size.
 internal static class RecoverBinarySearchTreeWorkloads
 {
-    private const int MidpointDivisor = 2;
 
     public static BinaryTreeNode<int> BuildCorruptedBst(int size)
     {
-        var values = Enumerable.Range(0, size).ToArray();
-        var root = BuildBalanced(values, 0, size - 1)!;
-
-        var min = FindMin(root);
-        var max = FindMax(root);
-        (min.Value, max.Value) = (max.Value, min.Value);
+        var root = BuildBalancedTree(size);
+        SwapMinAndMaxValues(root);
 
         return root;
     }
 
-    private static BinaryTreeNode<int>? BuildBalanced(int[] values, int low, int high)
+    // A balanced tree over 0..size-1, the ordered shape both violations are read off.
+    private static BinaryTreeNode<int> BuildBalancedTree(int size)
     {
-        if (low > high)
-        {
-            return null;
-        }
+        var values = Enumerable.Range(0, size).ToArray();
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        return BuildBalanced(values, 0, size - 1)!;
+    }
 
-        return new BinaryTreeNode<int>(values[mid])
-        {
-            Left = BuildBalanced(values, low, mid - 1),
-            Right = BuildBalanced(values, mid + 1, high),
-        };
+    // Swaps the tree's two extremal values, which is exactly the one non-adjacent
+    // violation pair the recovery strategies have to find and fix.
+    private static void SwapMinAndMaxValues(BinaryTreeNode<int> root)
+    {
+        var min = FindMin(root);
+        var max = FindMax(root);
+        (min.Value, max.Value) = (max.Value, min.Value);
     }
 
     private static BinaryTreeNode<int> FindMin(BinaryTreeNode<int> node)
@@ -55,5 +52,21 @@ internal static class RecoverBinarySearchTreeWorkloads
         }
 
         return node;
+    }
+
+    private static BinaryTreeNode<int>? BuildBalanced(int[] values, int low, int high)
+    {
+        if (low > high)
+        {
+            return null;
+        }
+
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
+
+        return new BinaryTreeNode<int>(values[mid])
+        {
+            Left = BuildBalanced(values, low, mid - 1),
+            Right = BuildBalanced(values, mid + 1, high),
+        };
     }
 }

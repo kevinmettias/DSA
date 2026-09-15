@@ -76,7 +76,8 @@ internal static class CountSubarraysWithEvenOddRatioIISolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            prefix[i + 1] = prefix[i] + (nums[i] % 2 != 0 ? a : -b);
+            var isOdd = nums[i] % 2 != 0;
+            prefix[i + 1] = prefix[i] + (isOdd ? a : -b);
         }
 
         return prefix;

@@ -26,6 +26,23 @@ internal static class FindKthLargestXorCoordinateValueSolution
         return values[^k];
     }
 
+    private static int[] PrefixXorValues(int[][] matrix)
+    {
+        var prefixXor = PrefixXorTable(matrix);
+        var values = new int[matrix.Length * matrix[0].Length];
+        var index = 0;
+
+        for (var r = 1; r < prefixXor.GetLength(0); r++)
+        {
+            for (var c = 1; c < prefixXor.GetLength(1); c++)
+            {
+                values[index++] = prefixXor[r, c];
+            }
+        }
+
+        return values;
+    }
+
     // This repo's own Heap<int, MinHeapOrder<int>>, capped at k: the root is the
     // smallest of the k largest values seen so far, so discarding it whenever the
     // heap outgrows k leaves the kth largest sitting at the root - exactly the
@@ -71,22 +88,5 @@ internal static class FindKthLargestXorCoordinateValueSolution
         }
 
         return prefixXor;
-    }
-
-    private static int[] PrefixXorValues(int[][] matrix)
-    {
-        var prefixXor = PrefixXorTable(matrix);
-        var values = new int[matrix.Length * matrix[0].Length];
-        var index = 0;
-
-        for (var r = 1; r < prefixXor.GetLength(0); r++)
-        {
-            for (var c = 1; c < prefixXor.GetLength(1); c++)
-            {
-                values[index++] = prefixXor[r, c];
-            }
-        }
-
-        return values;
     }
 }

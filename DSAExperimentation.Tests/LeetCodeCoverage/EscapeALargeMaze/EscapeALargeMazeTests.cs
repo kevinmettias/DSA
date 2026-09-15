@@ -13,7 +13,7 @@ public sealed class EscapeALargeMazeTests
 {
     private const int ReducedBoardSize = 500;
     private const int ReducedBoardMaxCoordinate = ReducedBoardSize - 1;
-    private const int LeetCodeBoardMaxCoordinate = EscapeALargeMazeSolution.LeetCodeBoardSize - 1;
+    private const int LeetCodeBoardMaxCoordinate = EscapeALargeMazeBoard.Size - 1;
 
     // blocked, source, target, canEscape - on LC 1036's own 10^6 x 10^6 board.
     public static TheoryData<int[][], int[], int[], bool> Examples =>

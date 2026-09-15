@@ -14,11 +14,11 @@ public class MaximumXORWithAnElementFromArrayBenchmarks
     private const int RandomSeed = 1707;
     private const int ValueLimit = 1_000_000;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

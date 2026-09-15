@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class UniquePathsBenchmarks
 {
-    [Params(10, 18)] public int Size;
+    [Params(10, 18)] public int Size { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Combinatorics() => UniquePathsSolution.CountPathsByCombinatorics(Size, Size);

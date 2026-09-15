@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity.MaximizeTheMinimumPoweredCitySolution;
+using DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -23,10 +23,10 @@ public class MaximizeTheMinimumPoweredCityBenchmarks
     private const int Range = 1;
     private const int ExtraStations = 5;
 
-    [Params(50, 300)]
-    public int Length;
+    private MaximizeTheMinimumPoweredCitySolution.PoweredCityPlan _plan;
 
-    private PoweredCityPlan _plan;
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,12 +36,12 @@ public class MaximizeTheMinimumPoweredCityBenchmarks
             .Select(_ => random.Next(1, MaxStationValueExclusive))
             .ToArray();
 
-        _plan = PoweredCityPlan.From(stations, Range, ExtraStations);
+        _plan = MaximizeTheMinimumPoweredCitySolution.PoweredCityPlan.From(stations, Range, ExtraStations);
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => MaxPowerByDescendingLinearScan(_plan);
+    public long LinearScan() => MaximizeTheMinimumPoweredCitySolution.MaxPowerByDescendingLinearScan(_plan);
 
     [Benchmark]
-    public long SequenceLowerBound() => MaxPowerBySequenceLowerBound(_plan);
+    public long SequenceLowerBound() => MaximizeTheMinimumPoweredCitySolution.MaxPowerBySequenceLowerBound(_plan);
 }

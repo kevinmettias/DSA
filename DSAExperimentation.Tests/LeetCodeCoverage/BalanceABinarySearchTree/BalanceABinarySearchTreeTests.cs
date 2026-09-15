@@ -44,7 +44,7 @@ public sealed class BalanceABinarySearchTreeTests
         var balanced = BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(BuildTree(levelOrder));
 
         Assert.Equal(expectedSorted, InOrder(balanced));
-        Assert.True(IsHeightBalanced(balanced, out _));
+        Assert.True(IsHeightBalanced(balanced).IsBalanced);
     }
 
     [Theory]
@@ -55,7 +55,7 @@ public sealed class BalanceABinarySearchTreeTests
         var balanced = BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(BuildTree(levelOrder));
 
         Assert.Equal(expectedSorted, InOrder(balanced));
-        Assert.True(IsHeightBalanced(balanced, out _));
+        Assert.True(IsHeightBalanced(balanced).IsBalanced);
     }
 
     // LeetCode's own level-order input shape: a BFS-ordered array with null standing
@@ -94,22 +94,27 @@ public sealed class BalanceABinarySearchTreeTests
     private static int[] InOrder(BinaryTreeNode<int>? node)
         => node is null ? [] : [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
 
-    private static bool IsHeightBalanced(BinaryTreeNode<int>? node, out int height)
+    private static (bool IsBalanced, int Height) IsHeightBalanced(BinaryTreeNode<int>? node)
     {
         if (node is null)
         {
-            height = 0;
-            return true;
+            return (true, 0);
         }
 
-        if (!IsHeightBalanced(node.Left, out var leftHeight) ||
-            !IsHeightBalanced(node.Right, out var rightHeight))
+        var (leftBalanced, leftHeight) = IsHeightBalanced(node.Left);
+
+        if (!leftBalanced)
         {
-            height = 0;
-            return false;
+            return (false, 0);
         }
 
-        height = 1 + Math.Max(leftHeight, rightHeight);
-        return Math.Abs(leftHeight - rightHeight) <= 1;
+        var (rightBalanced, rightHeight) = IsHeightBalanced(node.Right);
+
+        if (!rightBalanced)
+        {
+            return (false, 0);
+        }
+
+        return (Math.Abs(leftHeight - rightHeight) <= 1, 1 + Math.Max(leftHeight, rightHeight));
     }
 }

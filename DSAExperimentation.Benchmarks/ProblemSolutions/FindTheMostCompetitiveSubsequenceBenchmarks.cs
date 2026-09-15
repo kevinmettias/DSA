@@ -16,11 +16,11 @@ public class FindTheMostCompetitiveSubsequenceBenchmarks
     private const int SubsequenceLengthDivisor = 3;
     private const int WorkloadSeed = 1;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -16,10 +16,10 @@ public class RedundantConnectionIIBenchmarks
     // The chain's extra cross edge targets node 2, which is what gives it two parents.
     private const int DoublyParentedNode = 2;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

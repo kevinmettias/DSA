@@ -14,10 +14,10 @@ public class MaximumPointsActivatedWithOneAdditionBenchmarks
     private const int Seed = 3873; // LC problem number
     private const int CoordinateRangeExclusive = 500;
 
-    [Params(200, 5_000)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(200, 5_000)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -15,14 +15,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumAreaRectangleWithPointConstraintsIIBenchmarks
 {
+    private int[] _xCoord = [];
+
+    private int[] _yCoord = [];
+    private MaximumAreaRectangleWithPointConstraintsIISolution.Point[] _sortedPoints = [];
     // The quadruple scan is O(n^5), so GridSide has to stay small enough for it
     // to finish - the sweep arm alone could run at far larger n.
     [Params(4, 8)]
-    public int GridSide;
-
-    private int[] _xCoord = null!;
-    private int[] _yCoord = null!;
-    private MaximumAreaRectangleWithPointConstraintsIISolution.Point[] _sortedPoints = null!;
+    public int GridSide { get; set; }
 
     [GlobalSetup]
     public void Setup()

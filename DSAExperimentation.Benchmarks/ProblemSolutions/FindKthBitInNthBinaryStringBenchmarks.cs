@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindKthBitInNthBinaryStringBenchmarks
 {
-    [Params(10, 20)]
-    public int N;
-
     private int _k;
+
+    [Params(10, 20)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup() => _k = (1 << N) - 1;

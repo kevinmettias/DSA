@@ -21,31 +21,41 @@ internal static class WordBreakSolution
             trie.Set(word, true);
         }
 
-        return Memoizer.Memoize<int, bool>(0, (start, canSegment) => TrieMemoizedFrom(s, trie, start, canSegment));
+        return Memoizer.Memoize<int, bool>(0, new SegmentableFromEveryIndex(s, trie));
     }
 
-    private static bool TrieMemoizedFrom(string s, Trie<bool> trie, int start, Func<int, bool> canSegment)
+    // The recurrence, named: s[start..] segments when some prefix of it is a whole
+    // dictionary word and the remainder behind that word segments too, with the
+    // exhausted string as the base case. The string and the trie screening its
+    // prefixes belong to the caller and never vary during a run, so they travel in
+    // as constructor state.
+    private sealed class SegmentableFromEveryIndex(string source, Trie<bool> trie)
+        : IRecurrence<int, bool>
     {
-        if (start == s.Length)
+        /// <inheritdoc/>
+        public bool Replay(int start, IRecurrence<int, bool> rest)
         {
-            return true;
-        }
-
-        for (var end = start + 1; end <= s.Length; end++)
-        {
-            var piece = s[start..end];
-
-            if (!trie.HasPrefix(piece))
-            {
-                break;
-            }
-
-            if (trie.HasKey(piece) && canSegment(end))
+            if (start == source.Length)
             {
                 return true;
             }
-        }
 
-        return false;
+            for (var end = start + 1; end <= source.Length; end++)
+            {
+                var piece = source[start..end];
+
+                if (!trie.HasPrefix(piece))
+                {
+                    break;
+                }
+
+                if (trie.HasKey(piece) && rest.Replay(end, rest))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

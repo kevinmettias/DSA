@@ -16,14 +16,14 @@ internal static class LongestSubstringOfOneRepeatingCharacterSolution
     // The textbook answer: a plain char[] mutated in place and rescanned from the
     // start after each update, O(n) per query. Deliberately BCL-only - it is the arm
     // the segment-tree strategy below has to justify itself against.
-    public static int[] LongestRepeatingByLinearRescan(string s, string queryCharacters, int[] queryIndices)
+    public static int[] LongestRepeatingByLinearRescan(BaseText s, ReplacementCharacters queryCharacters, int[] queryIndices)
     {
-        var chars = s.ToCharArray();
-        var lengths = new int[queryCharacters.Length];
+        var chars = s.Text.ToCharArray();
+        var lengths = new int[queryCharacters.Text.Length];
 
-        for (var i = 0; i < queryCharacters.Length; i++)
+        for (var i = 0; i < queryCharacters.Text.Length; i++)
         {
-            chars[queryIndices[i]] = queryCharacters[i];
+            chars[queryIndices[i]] = queryCharacters.Text[i];
             lengths[i] = LongestRun(chars);
         }
 
@@ -54,15 +54,15 @@ internal static class LongestSubstringOfOneRepeatingCharacterSolution
     // This repo's own SegmentTree keyed by index, each node a RunSegment merged by
     // RunAggregate. Update is O(log n); the query spans exactly the tree's own root
     // range, which SegmentTree.Query answers from the root node without descending.
-    public static int[] LongestRepeatingBySegmentTree(string s, string queryCharacters, int[] queryIndices)
+    public static int[] LongestRepeatingBySegmentTree(BaseText s, ReplacementCharacters queryCharacters, int[] queryIndices)
     {
-        var tree = new SegmentTree<RunSegment, RunAggregate>(BuildLeaves(s));
-        var lengths = new int[queryCharacters.Length];
+        var tree = new SegmentTree<RunSegment, RunAggregate>(BuildLeaves(s.Text));
+        var lengths = new int[queryCharacters.Text.Length];
 
-        for (var i = 0; i < queryCharacters.Length; i++)
+        for (var i = 0; i < queryCharacters.Text.Length; i++)
         {
-            tree.Update(queryIndices[i], RunSegment.Leaf(queryCharacters[i]));
-            lengths[i] = tree.Query(0, s.Length - 1).MaxLen;
+            tree.Update(queryIndices[i], RunSegment.Leaf(queryCharacters.Text[i]));
+            lengths[i] = tree.Query(0, s.Text.Length - 1).MaxLen;
         }
 
         return lengths;
@@ -79,4 +79,14 @@ internal static class LongestSubstringOfOneRepeatingCharacterSolution
 
         return leaves;
     }
+
+    // The two sides of a query, named for the roles they play here rather than left as
+    // two adjacent `string` positions a caller could hand over the wrong way round with
+    // the compiler none the wiser. The base text is the string every update is applied
+    // to; the replacement characters are the per-query characters written into it - and
+    // the two are one-directional, since the updates index the base text by position
+    // while the replacements are only ever read one character per query.
+    internal readonly record struct BaseText(string Text);
+
+    internal readonly record struct ReplacementCharacters(string Text);
 }

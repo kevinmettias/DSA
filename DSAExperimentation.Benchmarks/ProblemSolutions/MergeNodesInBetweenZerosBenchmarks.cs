@@ -15,12 +15,12 @@ public class MergeNodesInBetweenZerosBenchmarks
 {
     private const int GroupSizeExclusiveUpperBound = 5;
     private const int NodeValueExclusiveUpperBound = 100;
-    private const int RandomSeed = 2181; // LC problem number
+    private const int RandomSeed = 2181; private SinglyLinkedListNode<int> _head = null!;
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int GroupCount;
-
-    private SinglyLinkedListNode<int> _head = null!;
+    public int GroupCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -28,16 +28,6 @@ public class MergeNodesInBetweenZerosBenchmarks
         var random = new Random(RandomSeed);
         _head = BuildRandomDelimitedList(random, GroupCount);
     }
-
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
-    [Benchmark(Baseline = true)]
-    public object? TwoPassValueBuffer() =>
-        MergeNodesInBetweenZerosSolution.MergeNodesByTwoPassValueBuffer(_head);
-
-    [Benchmark]
-    public object? SinglePassSum() =>
-        MergeNodesInBetweenZerosSolution.MergeNodesBySinglePassSum(_head);
 
     private static SinglyLinkedListNode<int> BuildRandomDelimitedList(Random random, int groupCount)
     {
@@ -60,4 +50,14 @@ public class MergeNodesInBetweenZerosBenchmarks
 
         return head;
     }
+
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
+    [Benchmark(Baseline = true)]
+    public object? TwoPassValueBuffer() =>
+        MergeNodesInBetweenZerosSolution.MergeNodesByTwoPassValueBuffer(_head);
+
+    [Benchmark]
+    public object? SinglePassSum() =>
+        MergeNodesInBetweenZerosSolution.MergeNodesBySinglePassSum(_head);
 }

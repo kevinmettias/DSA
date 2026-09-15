@@ -13,10 +13,10 @@ public class FindPolygonWithTheLargestPerimeterBenchmarks
 {
     private const int SideSeed = 2971;
 
-    [Params(16, 20)]
-    public int SideCount;
+    private int[] _sides = [];
 
-    private int[] _sides = null!;
+    [Params(16, 20)]
+    public int SideCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _sides = PolygonWorkloads.BuildSides(SideCount, seed: SideSeed);

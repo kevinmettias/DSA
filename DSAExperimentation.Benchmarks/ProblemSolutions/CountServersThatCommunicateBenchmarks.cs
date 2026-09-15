@@ -21,10 +21,10 @@ public class CountServersThatCommunicateBenchmarks
 
     private const int GridSeed = 1;
 
-    [Params(100, 700)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(100, 700)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,7 +38,8 @@ public class CountServersThatCommunicateBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _grid[r][c] = random.Next(0, ServerSpawnDenominator) == 0 ? 1 : 0;
+                var isServer = random.Next(0, ServerSpawnDenominator) == 0;
+                _grid[r][c] = isServer ? 1 : 0;
             }
         }
     }

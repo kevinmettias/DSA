@@ -22,6 +22,20 @@ internal sealed class GcdPairCountIndex
 
     public static GcdPairCountIndex Build(int[] nums)
     {
+        var maxValue = LargestValue(nums);
+
+        var countOfValue = CountOccurrences(nums, maxValue);
+
+        var countDivisibleBy = CountDivisibleByEachValue(countOfValue, maxValue);
+        var countGcdExactly = CountGcdExactlyEachValue(countDivisibleBy, maxValue);
+
+        var cumulative = ToCumulativeCounts(countGcdExactly);
+
+        return new GcdPairCountIndex(cumulative);
+    }
+
+    private static int LargestValue(int[] nums)
+    {
         var maxValue = 0;
 
         foreach (var num in nums)
@@ -29,6 +43,11 @@ internal sealed class GcdPairCountIndex
             maxValue = Math.Max(maxValue, num);
         }
 
+        return maxValue;
+    }
+
+    private static int[] CountOccurrences(int[] nums, int maxValue)
+    {
         var countOfValue = new int[maxValue + 1];
 
         foreach (var num in nums)
@@ -36,17 +55,7 @@ internal sealed class GcdPairCountIndex
             countOfValue[num]++;
         }
 
-        var countDivisibleBy = CountDivisibleByEachValue(countOfValue, maxValue);
-        var countGcdExactly = CountGcdExactlyEachValue(countDivisibleBy, maxValue);
-
-        var cumulative = new long[maxValue + 1];
-
-        for (var value = 1; value <= maxValue; value++)
-        {
-            cumulative[value] = cumulative[value - 1] + countGcdExactly[value];
-        }
-
-        return new GcdPairCountIndex(cumulative);
+        return countOfValue;
     }
 
     // How many nums are divisible by d, for every d - a harmonic-series sieve
@@ -91,6 +100,20 @@ internal sealed class GcdPairCountIndex
         }
 
         return countGcdExactly;
+    }
+
+    // Index v in the result holds sum(countGcdExactly[1..v]), so a query's
+    // lower-bound lookup is one read rather than a range sum.
+    private static long[] ToCumulativeCounts(long[] countGcdExactly)
+    {
+        var cumulative = new long[countGcdExactly.Length];
+
+        for (var value = 1; value < countGcdExactly.Length; value++)
+        {
+            cumulative[value] = cumulative[value - 1] + countGcdExactly[value];
+        }
+
+        return cumulative;
     }
 
     // The smallest gcd value v for which more than k pairs have gcd <= v - LC's

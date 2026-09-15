@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed.InsertDeleteGetRandomO1DuplicatesAllowedSolution;
+using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -24,11 +24,11 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
     // scan.
     private const int DistinctValues = 10;
 
-    [Params(200, 20_000)]
-    public int Count;
+    private int[] _insertOrder = [];
 
-    private int[] _insertOrder = null!;
-    private int[] _removalOrder = null!;
+    private int[] _removalOrder = [];
+    [Params(200, 20_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -40,13 +40,22 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
         Shuffle(_removalOrder, random);
     }
 
+    private static void Shuffle(int[] items, Random random)
+    {
+        for (var i = items.Length - 1; i > 0; i--)
+        {
+            var j = random.Next(i + 1);
+            (items[i], items[j]) = (items[j], items[i]);
+        }
+    }
+
     [Benchmark(Baseline = true)]
-    public int ListScan() => Replay(new RandomizedCollectionByListScan());
+    public int ListScan() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan());
 
     [Benchmark]
-    public int LinkedOccurrences() => Replay(new RandomizedCollectionByLinkedOccurrences());
+    public int LinkedOccurrences() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences());
 
-    private int Replay(IRandomizedCollection collection)
+    private int Replay(InsertDeleteGetRandomO1DuplicatesAllowedSolution.IRandomizedCollection collection)
     {
         foreach (var value in _insertOrder)
         {
@@ -59,14 +68,5 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
         }
 
         return collection.Count;
-    }
-
-    private static void Shuffle(int[] items, Random random)
-    {
-        for (var i = items.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (items[i], items[j]) = (items[j], items[i]);
-        }
     }
 }

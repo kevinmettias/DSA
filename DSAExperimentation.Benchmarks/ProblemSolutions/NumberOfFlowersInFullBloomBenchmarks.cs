@@ -15,11 +15,11 @@ public class NumberOfFlowersInFullBloomBenchmarks
     private const int MaxTimeExclusive = 1_000_000;
     private const int MaxFlowerLengthExclusive = 1_000;
 
-    [Params(200, 2_000)]
-    public int Count;
+    private int[][] _flowers = [];
 
-    private int[][] _flowers = null!;
-    private int[] _persons = null!;
+    private int[] _persons = [];
+    [Params(200, 2_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()

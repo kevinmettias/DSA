@@ -47,6 +47,11 @@ internal static class PeakIndexInAMountainArraySolution
     {
         public int Length => mountain.Length - 1;
 
-        public int Get(int index) => mountain[index] > mountain[index + 1] ? 1 : 0;
+        public int Get(int index)
+        {
+            var isDownhillStep = mountain[index] > mountain[index + 1];
+
+            return isDownhillStep ? 1 : 0;
+        }
     }
 }

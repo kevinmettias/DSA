@@ -20,6 +20,18 @@ internal static class PathSumIISolution
         return results;
     }
 
+    // Compose Algorithms.Paths' AllRootToLeafPaths (every root-to-leaf path, already
+    // proven for LC 112's single-sum question) and filter to the ones matching the
+    // target - the same reduction LC 112's own coverage uses, just keeping every
+    // match instead of asking whether one exists.
+    public static List<List<int>> FindPathsByAllRootToLeafPaths(BinaryTreeNode<int>? root, int targetSum) =>
+        AllRootToLeafPaths.Find<
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
+            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root)
+            .Where(path => path.Sum(node => node.Value) == targetSum)
+            .Select(path => path.Select(node => node.Value).ToList())
+            .ToList();
+
     private static void Search(BinaryTreeNode<int>? node, int remaining, List<int> path, List<List<int>> results)
     {
         if (node is null)
@@ -30,7 +42,7 @@ internal static class PathSumIISolution
         path.Add(node.Value);
         remaining -= node.Value;
 
-        if (node.Left is null && node.Right is null && remaining == 0)
+        if (IsMatchingLeaf(node, remaining))
         {
             results.Add([.. path]);
         }
@@ -43,15 +55,8 @@ internal static class PathSumIISolution
         path.RemoveAt(path.Count - 1);
     }
 
-    // Compose Algorithms.Paths' AllRootToLeafPaths (every root-to-leaf path, already
-    // proven for LC 112's single-sum question) and filter to the ones matching the
-    // target - the same reduction LC 112's own coverage uses, just keeping every
-    // match instead of asking whether one exists.
-    public static List<List<int>> FindPathsByAllRootToLeafPaths(BinaryTreeNode<int>? root, int targetSum) =>
-        AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root)
-            .Where(path => path.Sum(node => node.Value) == targetSum)
-            .Select(path => path.Select(node => node.Value).ToList())
-            .ToList();
+    // The path is a match only at a leaf, and only when its values have cancelled the
+    // target sum exactly.
+    private static bool IsMatchingLeaf(BinaryTreeNode<int> node, int remaining) =>
+        node.Left is null && node.Right is null && remaining == 0;
 }

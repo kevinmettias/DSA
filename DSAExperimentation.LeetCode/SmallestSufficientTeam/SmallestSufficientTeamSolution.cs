@@ -18,23 +18,31 @@ internal static class SmallestSufficientTeamSolution
     // identical "still missing" subtree is re-explored once per person who could
     // have reached it. Deliberately plain recursion over BCL arrays - the arm the
     // memoized strategy below has to justify itself against.
-    public static int[] SmallestTeamByBruteForceRecursion(string[] reqSkills, string[][] people) =>
-        SmallestTeamByBruteForceRecursion(SkillMasks.Build(reqSkills, people));
+    public static int[] SmallestTeamByBruteForceRecursion(string[] reqSkills, string[][] people)
+    {
+        var masks = SkillMasks.Build(reqSkills, people);
+
+        return SmallestTeamByBruteForceRecursion(masks);
+    }
 
     public static int[] SmallestTeamByBruteForceRecursion(SkillMasks masks)
     {
         var personSkillMask = masks.PersonSkillMask;
+        var pick = new SkillCoveringPick(personSkillMask);
+        var teamMask = pick.Replay(masks.FullMask, pick);
 
-        long SmallestTeamFor(int missing) => BestTeam(personSkillMask, missing, SmallestTeamFor);
-
-        return ExtractTeam(SmallestTeamFor(masks.FullMask), personSkillMask.Length);
+        return ExtractTeam(teamMask, personSkillMask.Length);
     }
 
     // This repo's own Memoizer, keyed on the missing-skills bitmask - the CanIWin
     // shape, applied to a DP whose memoized RESULT is a team rather than a bool.
     // Every reachable state is computed exactly once.
-    public static int[] SmallestTeamByMemoizedBitmask(string[] reqSkills, string[][] people) =>
-        SmallestTeamByMemoizedBitmask(SkillMasks.Build(reqSkills, people));
+    public static int[] SmallestTeamByMemoizedBitmask(string[] reqSkills, string[][] people)
+    {
+        var masks = SkillMasks.Build(reqSkills, people);
+
+        return SmallestTeamByMemoizedBitmask(masks);
+    }
 
     public static int[] SmallestTeamByMemoizedBitmask(SkillMasks masks)
     {
@@ -42,43 +50,52 @@ internal static class SmallestSufficientTeamSolution
 
         var teamMask = Memoizer.Memoize<int, long>(
             masks.FullMask,
-            (missing, smallestTeamFor) => BestTeam(personSkillMask, missing, smallestTeamFor));
+            new SkillCoveringPick(personSkillMask));
 
         return ExtractTeam(teamMask, personSkillMask.Length);
     }
 
-    // The recursion body both strategies share: nothing missing means the empty
-    // team, otherwise cover the lowest missing bit.
-    private static long BestTeam(int[] personSkillMask, int missing, Func<int, long> smallestTeamFor)
+    // The recursion body both strategies share, named: nothing missing means the empty
+    // team, otherwise cover the lowest missing bit. The memoized arm hands it the
+    // cache-backed recursion, and the brute-force arm replays it straight back into
+    // itself - the same rule either way, differing only in what `rest` is. Each person's
+    // skill mask is the whole of what the rule needs from its caller, so it is the
+    // constructor's only input.
+    private sealed class SkillCoveringPick(int[] personSkillMask) : IRecurrence<int, long>
     {
-        if (missing == 0)
+        public long Replay(int missing, IRecurrence<int, long> rest)
         {
-            return 0L;
-        }
-
-        return BestTeamCoveringBit(personSkillMask, missing, missing & -missing, smallestTeamFor);
-    }
-
-    private static long BestTeamCoveringBit(
-        int[] personSkillMask, int missing, int targetBit, Func<int, long> smallestTeamFor)
-    {
-        var best = -1L;
-
-        for (var p = 0; p < personSkillMask.Length; p++)
-        {
-            if ((personSkillMask[p] & targetBit) == 0)
+            if (missing == 0)
             {
-                continue;
+                return 0L;
             }
 
-            var candidate = smallestTeamFor(missing & ~personSkillMask[p]) | (1L << p);
-            if (best == -1 || PopCount(candidate) < PopCount(best))
-            {
-                best = candidate;
-            }
+            return BestTeamCoveringBit(missing, missing & -missing, rest);
         }
 
-        return best;
+        // Every sufficient team must include some person holding the target skill, so
+        // the choice is which of them, and the team is that person plus whatever they
+        // leave uncovered.
+        private long BestTeamCoveringBit(int missing, int targetBit, IRecurrence<int, long> rest)
+        {
+            var best = -1L;
+
+            for (var p = 0; p < personSkillMask.Length; p++)
+            {
+                if ((personSkillMask[p] & targetBit) == 0)
+                {
+                    continue;
+                }
+
+                var candidate = rest.Replay(missing & ~personSkillMask[p], rest) | (1L << p);
+                if (best == -1 || PopCount(candidate) < PopCount(best))
+                {
+                    best = candidate;
+                }
+            }
+
+            return best;
+        }
     }
 
     // LeetCode wants the people themselves, in ascending index order.

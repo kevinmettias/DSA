@@ -25,9 +25,27 @@ internal static class MinimumEdgeTogglesOnATreeSolution
     // below has to justify itself against.
     public static int[] MinTogglesByBruteForceDfs(int n, int[][] edges, string start, string target)
     {
-        var adjacency = new List<(int To, int EdgeIndex)>[n];
+        var adjacency = BuildAdjacency(n, edges);
 
-        for (var i = 0; i < n; i++)
+        var toggled = new List<int>();
+        var rootNeedsToggle = Dfs((0, -1), adjacency, (start, target), toggled);
+
+        if (rootNeedsToggle)
+        {
+            return [LeetCodeAnswer.None];
+        }
+
+        toggled.Sort();
+        return [.. toggled];
+    }
+
+    // The BCL adjacency list the textbook arm walks: n empty neighbour lists, then
+    // each undirected edge appended to both of its endpoints.
+    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int nodeCount, int[][] edges)
+    {
+        var adjacency = new List<(int To, int EdgeIndex)>[nodeCount];
+
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }
@@ -39,22 +57,18 @@ internal static class MinimumEdgeTogglesOnATreeSolution
             adjacency[v].Add((u, edgeIndex));
         }
 
-        var toggled = new List<int>();
-        var rootNeedsToggle = Dfs(0, -1, adjacency, start, target, toggled);
-
-        if (rootNeedsToggle)
-        {
-            return [LeetCodeAnswer.None];
-        }
-
-        toggled.Sort();
-        return [.. toggled];
+        return adjacency;
     }
 
+    // An undirected walk step is the node and the neighbour it came from (the parent
+    // is how this DFS excludes that neighbour), and the two colour strings always
+    // travel as the one pair of states being reconciled.
     private static bool Dfs(
-        int node, int parent, List<(int To, int EdgeIndex)>[] adjacency,
-        string start, string target, List<int> toggled)
+        (int Node, int Parent) step, List<(int To, int EdgeIndex)>[] adjacency,
+        (string Start, string Target) colors, List<int> toggled)
     {
+        var (node, parent) = step;
+        var (start, target) = colors;
         var needsToggle = start[node] != target[node];
 
         foreach (var (next, edgeIndex) in adjacency[node])
@@ -64,7 +78,7 @@ internal static class MinimumEdgeTogglesOnATreeSolution
                 continue;
             }
 
-            if (Dfs(next, node, adjacency, start, target, toggled))
+            if (Dfs((next, node), adjacency, colors, toggled))
             {
                 toggled.Add(edgeIndex);
                 needsToggle = !needsToggle;

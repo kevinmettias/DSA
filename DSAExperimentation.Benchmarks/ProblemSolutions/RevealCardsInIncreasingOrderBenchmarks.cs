@@ -14,10 +14,10 @@ public class RevealCardsInIncreasingOrderBenchmarks
     private const int RandomSeed = 950; // LC problem number
     private const int CardValueUpperBound = 1_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _deck = [];
 
-    private int[] _deck = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

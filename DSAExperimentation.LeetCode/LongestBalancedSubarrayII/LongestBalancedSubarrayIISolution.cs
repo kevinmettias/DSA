@@ -50,7 +50,7 @@ internal static class LongestBalancedSubarrayIISolution
 
             for (var end = start; end < nums.Length; end++)
             {
-                (nums[end] % 2 == 0 ? evens : odds).Add(nums[end]);
+                (IsEven(nums[end]) ? evens : odds).Add(nums[end]);
 
                 if (evens.Count == odds.Count)
                 {
@@ -79,21 +79,34 @@ internal static class LongestBalancedSubarrayIISolution
 
         for (var position = 1; position <= count; position++)
         {
-            var value = nums[position - 1];
-            var weight = value % 2 == 0 ? -1 : 1;
+            ApplyActivation(balance, lastSeenPosition, nums, position);
 
-            if (lastSeenPosition.TryGetValue(value, out var previousPosition))
-            {
-                balance.UpdateRange(previousPosition, count, -weight);
-            }
-
-            balance.UpdateRange(position, count, weight);
-            lastSeenPosition.Set(value, position);
-
-            longest = Math.Max(longest, LongestEndingAt(balance, position));
+            var ending = LongestEndingAt(balance, position);
+            longest = Math.Max(longest, ending);
         }
 
         return longest;
+    }
+
+    // Makes position the live occurrence of its value: the previous occurrence, if any,
+    // stops counting toward its parity (a range-add over the suffix it still covers),
+    // and position itself starts counting.
+    private static void ApplyActivation(
+        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance,
+        HashMap<int, int> lastSeenPosition,
+        int[] nums,
+        int position)
+    {
+        var value = nums[position - 1];
+        var weight = IsEven(value) ? -1 : 1;
+
+        if (lastSeenPosition.TryGetValue(value, out var previousPosition))
+        {
+            balance.UpdateRange(previousPosition, nums.Length, -weight);
+        }
+
+        balance.UpdateRange(position, nums.Length, weight);
+        lastSeenPosition.Set(value, position);
     }
 
     // Balance[position] is always attained at position itself, so it always lies
@@ -111,6 +124,15 @@ internal static class LongestBalancedSubarrayIISolution
             return 0;
         }
 
+        return SpanToLeftmostBalance(balance, position, target);
+    }
+
+    // Reached only once the target is known to lie within the [0, position - 1] prefix's own
+    // [Min, Max], so the leftmost index holding it is somewhere in that prefix and the
+    // balanced run ending here reaches back exactly that far.
+    private static int SpanToLeftmostBalance(
+        LazySegmentTree<BalanceRange, int, BalanceRangeAddOperation> balance, int position, int target)
+    {
         var matchPosition = BinaryDescendForBalance(balance, 0, position - 1, target);
         return position - matchPosition;
     }
@@ -138,4 +160,7 @@ internal static class LongestBalancedSubarrayIISolution
 
         return low;
     }
+
+    // Parity is what decides which side of a balance a value counts toward.
+    private static bool IsEven(int value) => value % 2 == 0;
 }

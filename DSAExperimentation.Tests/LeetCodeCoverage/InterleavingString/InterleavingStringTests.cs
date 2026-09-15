@@ -16,13 +16,22 @@ public sealed partial class InterleavingStringTests
     private static bool IsInterleave(string first, string second, string target)
     {
         if (first.Length + second.Length != target.Length) return false;
-        return Memoizer.Memoize<(int First, int Second), bool>((0, 0), CanBuild);
-        bool CanBuild((int First, int Second) state, Func<(int First, int Second), bool> build)
+        return Memoizer.Memoize<(int First, int Second), bool>((0, 0), new CanBuild(first, second, target));
+    }
+
+    // The interleaving rule, named: the target is buildable when its next character
+    // matches the next of either input and the rest stays buildable. The three strings
+    // are what the decision is made against, so they arrive as the constructor's
+    // parameters rather than as an ambient closure.
+    private sealed class CanBuild(string first, string second, string target)
+        : IRecurrence<(int First, int Second), bool>
+    {
+        public bool Replay((int First, int Second) state, IRecurrence<(int First, int Second), bool> rest)
         {
             var (i, j) = state; var k = i + j;
             return k == target.Length
-                || (i < first.Length && first[i] == target[k] && build((i + 1, j)))
-                || (j < second.Length && second[j] == target[k] && build((i, j + 1)));
+                || (i < first.Length && first[i] == target[k] && rest.Replay((i + 1, j), rest))
+                || (j < second.Length && second[j] == target[k] && rest.Replay((i, j + 1), rest));
         }
     }
 }

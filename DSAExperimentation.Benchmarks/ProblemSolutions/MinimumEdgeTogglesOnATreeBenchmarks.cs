@@ -19,40 +19,69 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumEdgeTogglesOnATreeBenchmarks
 {
-    private const int RandomSeed = 3812; // LeetCode problem number
+    private const int RandomSeed = 3812; private int _n;
+
+    private int[][] _edges = [];
+    private string _start = "";
+    private string _target = "";
+    private ToggleTree _tree = null!;
+    // LeetCode problem number
 
     [Params(200, 2_000)]
-    public int NodeCount;
-
-    private int _n;
-    private int[][] _edges = null!;
-    private string _start = null!;
-    private string _target = null!;
-    private ToggleTree _tree = null!;
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
         _n = NodeCount;
-        _edges = new int[_n - 1][];
+        _edges = BuildRandomEdges(random, _n);
 
-        for (var i = 1; i < _n; i++)
+        var start = RandomBits(random, _n);
+        var target = ToggledCopy(start, _edges, random);
+
+        _start = new string(start);
+        _target = new string(target);
+        _tree = ToggleTree.Build(_n, _edges);
+    }
+
+    // One edge [parent, i] per node i > 0, each parent drawn uniformly from the
+    // earlier nodes - a connected, cycle-free graph on n vertices.
+    private static int[][] BuildRandomEdges(Random random, int n)
+    {
+        var edges = new int[n - 1][];
+
+        for (var i = 1; i < n; i++)
         {
             var parent = random.Next(0, i);
-            _edges[i - 1] = [parent, i];
+            edges[i - 1] = [parent, i];
         }
 
-        var start = new char[_n];
+        return edges;
+    }
 
-        for (var i = 0; i < _n; i++)
+    // n independently drawn bits, half '0' and half '1' in expectation.
+    private static char[] RandomBits(Random random, int n)
+    {
+        var bits = new char[n];
+
+        for (var i = 0; i < n; i++)
         {
-            start[i] = random.Next(2) == 0 ? '0' : '1';
+            var isZero = random.Next(2) == 0;
+            bits[i] = isZero ? '0' : '1';
         }
 
+        return bits;
+    }
+
+    // A copy of start with both endpoints of every coin-flipped edge toggled -
+    // applying a real sequence of toggles rather than drawing the copy bit-by-bit,
+    // so the workload is always solvable.
+    private static char[] ToggledCopy(char[] start, int[][] edges, Random random)
+    {
         var target = (char[])start.Clone();
 
-        foreach (var edge in _edges)
+        foreach (var edge in edges)
         {
             if (random.Next(2) != 0)
             {
@@ -63,9 +92,7 @@ public class MinimumEdgeTogglesOnATreeBenchmarks
             target[edge[1]] = Flip(target[edge[1]]);
         }
 
-        _start = new string(start);
-        _target = new string(target);
-        _tree = ToggleTree.Build(_n, _edges);
+        return target;
     }
 
     private static char Flip(char bit) => bit == '0' ? '1' : '0';

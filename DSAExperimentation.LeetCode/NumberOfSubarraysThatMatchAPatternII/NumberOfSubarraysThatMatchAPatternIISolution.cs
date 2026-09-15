@@ -61,12 +61,6 @@ internal static class NumberOfSubarraysThatMatchAPatternIISolution
     public static int CountMatchesByZFunction(int[] nums, int[] pattern) =>
         ZFunction.FindAll(EncodeDiffs(nums), EncodePattern(pattern)).Count;
 
-    // sign is always -1, 0 or 1 here (either a pattern entry or Math.Sign of
-    // a consecutive difference), so +1 lands on '0'/'1'/'2' - three ordinary,
-    // directly comparable chars, with no other symbol ever introduced to
-    // collide with them.
-    private static char EncodeSign(int sign) => (char)('1' + sign);
-
     private static string EncodeDiffs(int[] nums)
     {
         var text = new char[nums.Length - 1];
@@ -90,4 +84,10 @@ internal static class NumberOfSubarraysThatMatchAPatternIISolution
 
         return new string(text);
     }
+
+    // sign is always -1, 0 or 1 here (either a pattern entry or Math.Sign of
+    // a consecutive difference), so +1 lands on '0'/'1'/'2' - three ordinary,
+    // directly comparable chars, with no other symbol ever introduced to
+    // collide with them.
+    private static char EncodeSign(int sign) => (char)('1' + sign);
 }

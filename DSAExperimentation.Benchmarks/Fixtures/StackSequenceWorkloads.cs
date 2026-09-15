@@ -20,10 +20,7 @@ internal static class StackSequenceWorkloads
 
         while (popped.Count < pushed.Length)
         {
-            var canPush = pushIndex < pushed.Length;
-            var canPop = stack.Count > 0;
-
-            if (canPush && (!canPop || random.Next(BranchChoiceCount) == 0))
+            if (ShouldPush(pushIndex, pushed.Length, stack.Count, random))
             {
                 stack.Push(pushed[pushIndex]);
                 pushIndex++;
@@ -36,4 +33,10 @@ internal static class StackSequenceWorkloads
 
         return [.. popped];
     }
+
+    // The next step is a push whenever one is still possible, and when a pop is also
+    // possible the coin decides between them. The draw stays behind the push check so
+    // a spent input consumes no randomness.
+    private static bool ShouldPush(int pushIndex, int pushedLength, int stackCount, Random random)
+        => pushIndex < pushedLength && (stackCount == 0 || random.Next(BranchChoiceCount) == 0);
 }

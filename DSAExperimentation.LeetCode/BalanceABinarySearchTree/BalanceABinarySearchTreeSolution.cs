@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
@@ -27,7 +28,6 @@ namespace DSAExperimentation.LeetCode.BalanceABinarySearchTree;
 // strategy is measured against.
 internal static class BalanceABinarySearchTreeSolution
 {
-    private const int MidpointDivisor = 2;
 
     public static BinaryTreeNode<int>? BalanceByInOrderTraversal(BinaryTreeNode<int>? root)
     {
@@ -51,9 +51,6 @@ internal static class BalanceABinarySearchTreeSolution
 
         return BuildFromArray(sorted, 0, count - 1);
     }
-
-    private static int CountNodes(BinaryTreeNode<int>? node)
-        => node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
 
     private static int FindKthSmallest(BinaryTreeNode<int>? root, int k)
     {
@@ -88,6 +85,13 @@ internal static class BalanceABinarySearchTreeSolution
         }
     }
 
+    private static int CountNodes(BinaryTreeNode<int>? node)
+        => node is null ? 0 : CountSubtree(node);
+
+    // The node itself plus every node its two subtrees hold.
+    private static int CountSubtree(BinaryTreeNode<int> node)
+        => 1 + CountNodes(node.Left) + CountNodes(node.Right);
+
     private static BinaryTreeNode<int>? BuildFromArray(int[] sorted, int low, int high)
     {
         if (low > high)
@@ -95,7 +99,7 @@ internal static class BalanceABinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(sorted[mid])
         {
@@ -111,7 +115,7 @@ internal static class BalanceABinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(sorted.Get(mid))
         {

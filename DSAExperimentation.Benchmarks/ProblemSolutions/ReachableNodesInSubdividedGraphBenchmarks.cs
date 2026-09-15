@@ -22,12 +22,12 @@ public class ReachableNodesInSubdividedGraphBenchmarks
     // Move budget scales with node count so larger graphs stay proportionally explorable.
     private const int MovesPerNodeBudget = 25;
 
-    [Params(30, 150)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
     private SubdividedGraph _graph = null!;
     private int _maxMoves;
+    [Params(30, 150)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

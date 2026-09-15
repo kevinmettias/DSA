@@ -26,13 +26,15 @@ internal static class GenerateParenthesesSolution
         Backtrack.Search<ParenthesesState, char>(
             state,
             isSolution: s => s.Buffer.Count == s.TargetLength,
-            candidates: s => s.Buffer.Count == s.TargetLength ? [] : s.Candidates(),
+            candidates: s => s.Buffer.Count == s.TargetLength ? NoCandidates() : s.Candidates(),
             choose: (s, c) => s.Choose(c),
             unchoose: (s, c) => s.Unchoose(c),
             onSolution: s => results.Add(new string(s.Buffer.ToArray())));
 
         return results;
     }
+
+    private static IEnumerable<char> NoCandidates() => [];
 
     // The textbook answer many first reach for: a specialized recursive function
     // tracking the open/close counts directly, without this repo's backtracking
@@ -43,28 +45,32 @@ internal static class GenerateParenthesesSolution
         var results = new List<string>();
         var buffer = new char[pairs * 2];
 
-        Search(0, 0);
+        var search = (Pairs: pairs, Buffer: buffer, Results: results);
+        Search(0, 0, search);
         return results;
+    }
 
-        void Search(int open, int close)
+    // One step of the specialized recursion: a completed buffer is recorded, an open
+    // bracket is only taken while opens remain, and a close only while it would not
+    // unbalance the prefix chosen so far.
+    private static void Search(int open, int close, (int Pairs, char[] Buffer, List<string> Results) state)
+    {
+        if (open == state.Pairs && close == state.Pairs)
         {
-            if (open == pairs && close == pairs)
-            {
-                results.Add(new string(buffer));
-                return;
-            }
+            state.Results.Add(new string(state.Buffer));
+            return;
+        }
 
-            if (open < pairs)
-            {
-                buffer[open + close] = '(';
-                Search(open + 1, close);
-            }
+        if (open < state.Pairs)
+        {
+            state.Buffer[open + close] = '(';
+            Search(open + 1, close, state);
+        }
 
-            if (close < open)
-            {
-                buffer[open + close] = ')';
-                Search(open, close + 1);
-            }
+        if (close < open)
+        {
+            state.Buffer[open + close] = ')';
+            Search(open, close + 1, state);
         }
     }
 }

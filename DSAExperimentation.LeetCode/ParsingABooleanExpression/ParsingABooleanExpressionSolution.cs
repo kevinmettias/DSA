@@ -55,6 +55,55 @@ internal static class ParsingABooleanExpressionSolution
         return result == TrueToken;
     }
 
+    // Pops the innermost group's operands and the operator beneath its '(',
+    // returning the single token the whole group collapses to.
+    private static char EvaluateGroup(ParserStack stack)
+    {
+        var (trueCount, falseCount) = CountOperands(stack);
+        var op = ConsumeGroupOperator(stack);
+        return EvaluateOperator(op, trueCount, falseCount) ? TrueToken : FalseToken;
+    }
+
+    // Pops every operand of the innermost group (down to, but not including, its
+    // opening '(') and tallies how many were true vs. false.
+    private static (int TrueCount, int FalseCount) CountOperands(ParserStack stack)
+    {
+        var trueCount = 0;
+        var falseCount = 0;
+
+        while (stack.TryPeek(out var top) && top != '(')
+        {
+            stack.TryPop(out var operand);
+            if (operand == TrueToken)
+            {
+                trueCount++;
+            }
+            else
+            {
+                falseCount++;
+            }
+        }
+
+        return (trueCount, falseCount);
+    }
+
+    // Pops the group's opening '(' and the operator character below it.
+    private static char ConsumeGroupOperator(ParserStack stack)
+    {
+        stack.TryPop(out _); // the matching '('
+        stack.TryPop(out var op);
+        return op;
+    }
+
+    // Every operator here is decided by counts alone: '!' is true when its single
+    // operand was false, '&' when nothing was false, '|' when anything was true.
+    private static bool EvaluateOperator(char op, int trueCount, int falseCount) => op switch
+    {
+        NotOperator => trueCount == 0,
+        AndOperator => falseCount == 0,
+        _ => trueCount > 0, // '|'
+    };
+
     // Consumes one sub-expression starting at index, advancing index past it.
     private static bool ParseExpression(string expression, ref int index)
     {
@@ -101,51 +150,4 @@ internal static class ParsingABooleanExpressionSolution
         index++; // consume ')'
         return result;
     }
-
-    // Pops the innermost group's operands and the operator beneath its '(',
-    // returning the single token the whole group collapses to.
-    private static char EvaluateGroup(ParserStack stack)
-    {
-        CountOperands(stack, out var trueCount, out var falseCount);
-        var op = ConsumeGroupOperator(stack);
-        return EvaluateOperator(op, trueCount, falseCount) ? TrueToken : FalseToken;
-    }
-
-    // Pops every operand of the innermost group (down to, but not including, its
-    // opening '(') and tallies how many were true vs. false.
-    private static void CountOperands(ParserStack stack, out int trueCount, out int falseCount)
-    {
-        trueCount = 0;
-        falseCount = 0;
-
-        while (stack.TryPeek(out var top) && top != '(')
-        {
-            stack.TryPop(out var operand);
-            if (operand == TrueToken)
-            {
-                trueCount++;
-            }
-            else
-            {
-                falseCount++;
-            }
-        }
-    }
-
-    // Pops the group's opening '(' and the operator character below it.
-    private static char ConsumeGroupOperator(ParserStack stack)
-    {
-        stack.TryPop(out _); // the matching '('
-        stack.TryPop(out var op);
-        return op;
-    }
-
-    // Every operator here is decided by counts alone: '!' is true when its single
-    // operand was false, '&' when nothing was false, '|' when anything was true.
-    private static bool EvaluateOperator(char op, int trueCount, int falseCount) => op switch
-    {
-        NotOperator => trueCount == 0,
-        AndOperator => falseCount == 0,
-        _ => trueCount > 0, // '|'
-    };
 }

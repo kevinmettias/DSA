@@ -19,6 +19,7 @@ internal static class ReverseSubstringsBetweenEachPairOfParenthesesSolution
     {
         var current = s;
 
+        // Stops when the current string holds no ')': every pair has been spliced out and the unwrapped string is returned.
         while (true)
         {
             var closeIndex = current.IndexOf(')');

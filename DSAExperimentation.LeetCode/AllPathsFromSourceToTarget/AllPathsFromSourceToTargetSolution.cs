@@ -23,6 +23,34 @@ internal static class AllPathsFromSourceToTargetSolution
         return walk.Paths;
     }
 
+    // The same walk expressed as this repo's Backtrack.Search: the adjacency list
+    // supplies the candidates, Add/RemoveAt are the choose/unchoose inverse pair,
+    // and reaching the target is the solution predicate. Candidates returns nothing
+    // at the target so the engine stops extending a finished path.
+    public static List<List<int>> AllPathsByBacktracking(int[][] graph)
+    {
+        var target = graph.Length - 1;
+        var paths = new List<List<int>>();
+        var state = new PathState();
+        state.Path.Add(0);
+
+        Backtrack.Search<PathState, int>(
+            state,
+            s => s.Path[^1] == target,
+            s => IsAtTarget(s, target) ? Array.Empty<int>() : AdjacentNodes(s, graph),
+            (s, next) => s.Path.Add(next),
+            (s, _) => s.Path.RemoveAt(s.Path.Count - 1),
+            s => paths.Add([.. s.Path]));
+
+        return paths;
+    }
+
+    // The walk stands on the target once the node it just chose is the last one, and
+    // a finished path offers nothing to extend.
+    private static bool IsAtTarget(PathState state, int target) => state.Path[^1] == target;
+
+    private static int[] AdjacentNodes(PathState state, int[][] graph) => graph[state.Path[^1]];
+
     private static void ExtendFrom(int node, PathWalk walk)
     {
         if (node == walk.Target)
@@ -45,31 +73,9 @@ internal static class AllPathsFromSourceToTargetSolution
         List<int> Path,
         List<List<int>> Paths);
 
-    // The same walk expressed as this repo's Backtrack.Search: the adjacency list
-    // supplies the candidates, Add/RemoveAt are the choose/unchoose inverse pair,
-    // and reaching the target is the solution predicate. Candidates returns nothing
-    // at the target so the engine stops extending a finished path.
-    public static List<List<int>> AllPathsByBacktracking(int[][] graph)
-    {
-        var target = graph.Length - 1;
-        var paths = new List<List<int>>();
-        var state = new PathState();
-        state.Path.Add(0);
-
-        Backtrack.Search<PathState, int>(
-            state,
-            s => s.Path[^1] == target,
-            s => s.Path[^1] == target ? [] : graph[s.Path[^1]],
-            (s, next) => s.Path.Add(next),
-            (s, _) => s.Path.RemoveAt(s.Path.Count - 1),
-            s => paths.Add([.. s.Path]));
-
-        return paths;
-    }
-
     // Backtrack constrains TState to a class deliberately: Choose/Unchoose mutate
     // the buffer in place and must alias rather than copy.
-    private sealed class PathState
+    private sealed record PathState
     {
         public List<int> Path { get; } = [];
     }

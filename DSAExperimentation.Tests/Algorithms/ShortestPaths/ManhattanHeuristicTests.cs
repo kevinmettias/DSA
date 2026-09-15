@@ -18,10 +18,7 @@ public sealed class ManhattanHeuristicTests
             ManhattanHeuristic.Estimate(new WeightedGridNode(row, col), new WeightedGridNode(targetRow, targetCol)));
 
     [Fact]
-    public void Estimate_NullTarget_ReturnsZeroSoAStarDegradesToDijkstra()
-    {
-        Assert.Equal(0, ManhattanHeuristic.Estimate(new WeightedGridNode(5, 5), null));
-    }
+    public void Estimate_NullTarget_ReturnsZeroSoAStarDegradesToDijkstra() => Assert.Equal(0, ManhattanHeuristic.Estimate(new WeightedGridNode(5, 5), null));
 
     [Fact]
     public void Estimate_IsSymmetricInItsTwoNodes()

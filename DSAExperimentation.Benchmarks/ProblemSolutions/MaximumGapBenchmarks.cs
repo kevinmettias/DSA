@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumGapBenchmarks
 {
-    private const int RandomSeed = 164; // LC problem number
+    private const int RandomSeed = 164; private int[] _values = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = MaximumGapWorkloads.BuildValues(Length, RandomSeed);

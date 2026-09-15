@@ -54,7 +54,7 @@ internal static class AssignCookiesSolution
 
         for (var j = 0; j < sizes.Length; j++)
         {
-            if (!used[j] && sizes[j] >= greed && (bestIndex < 0 || sizes[j] < sizes[bestIndex]))
+            if (CanBeGivenTo(used, sizes, j, greed) && BeatsBest(sizes, j, bestIndex))
             {
                 bestIndex = j;
             }
@@ -62,6 +62,15 @@ internal static class AssignCookiesSolution
 
         return bestIndex;
     }
+
+    // A cookie this child can still be given: unclaimed, and at least as large as
+    // their greed.
+    private static bool CanBeGivenTo(bool[] used, int[] sizes, int index, int greed)
+        => !used[index] && sizes[index] >= greed;
+
+    // The closest fit found so far - no cookie beats none yet.
+    private static bool BeatsBest(int[] sizes, int index, int bestIndex)
+        => bestIndex < 0 || sizes[index] < sizes[bestIndex];
 
     public static int FindContentChildrenBySortThenTwoPointer(int[] greed, int[] sizes)
     {

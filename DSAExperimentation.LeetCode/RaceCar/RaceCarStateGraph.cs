@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace DSAExperimentation.LeetCode.RaceCar;
 
 // LC 818's command graph, materialized over RaceCarStateSpace's bounded box: one
@@ -14,18 +16,18 @@ internal sealed class RaceCarStateGraph
     private readonly Dictionary<(int Position, int Speed), RaceCarNode> _nodesByState;
     private readonly List<int> _speeds;
 
+    // The state every run begins in: at the origin, moving forward at speed 1.
+    public RaceCarNode Start => _nodesByState[(RaceCarMotion.StartPosition, RaceCarMotion.StartSpeed)];
+
+    // Every speed a node in this graph can carry, so a caller asking "what is the
+    // distance to this position" can scan the states that share it.
+    public IReadOnlyList<int> Speeds => _speeds;
+
     private RaceCarStateGraph(Dictionary<(int Position, int Speed), RaceCarNode> nodesByState, List<int> speeds)
     {
         _nodesByState = nodesByState;
         _speeds = speeds;
     }
-
-    // The state every run begins in: at the origin, moving forward at speed 1.
-    public RaceCarNode Start => _nodesByState[(RaceCarStateSpace.StartPosition, RaceCarStateSpace.StartSpeed)];
-
-    // Every speed a node in this graph can carry, so a caller asking "what is the
-    // distance to this position" can scan the states that share it.
-    public IReadOnlyList<int> Speeds => _speeds;
 
     public static RaceCarStateGraph Build(int target)
     {
@@ -37,9 +39,6 @@ internal sealed class RaceCarStateGraph
 
         return new RaceCarStateGraph(nodesByState, speeds);
     }
-
-    public bool TryGetNode(int position, int speed, out RaceCarNode node) =>
-        _nodesByState.TryGetValue((position, speed), out node!);
 
     private static Dictionary<(int Position, int Speed), RaceCarNode> BuildNodes(
         RaceCarStateSpace space, List<int> speeds)
@@ -61,7 +60,7 @@ internal sealed class RaceCarStateGraph
     {
         foreach (var ((position, speed), node) in nodesByState)
         {
-            var acceleratedSpeed = speed * RaceCarStateSpace.SpeedDoublingFactor;
+            var acceleratedSpeed = speed * RaceCarMotion.SpeedDoublingFactor;
 
             if (nodesByState.TryGetValue((position + speed, acceleratedSpeed), out var accelerateNode))
             {
@@ -75,5 +74,12 @@ internal sealed class RaceCarStateGraph
     // 'R' does not move the car: it drops the speed to a single step in the
     // opposite direction.
     private static int ReversedSpeed(int speed) =>
-        speed > 0 ? -RaceCarStateSpace.StartSpeed : RaceCarStateSpace.StartSpeed;
+        speed > 0 ? -RaceCarMotion.StartSpeed : RaceCarMotion.StartSpeed;
+
+    // [MaybeNullWhen(false)] declares the contract the `node!` used to assert: the
+    // out-parameter is only read when this returns true, which is also what the
+    // dictionary's own TryGetValue promises, so the two signatures line up and no
+    // assertion is needed to pass one through the other.
+    public bool TryGetNode(int position, int speed, [MaybeNullWhen(false)] out RaceCarNode node) =>
+        _nodesByState.TryGetValue((position, speed), out node);
 }

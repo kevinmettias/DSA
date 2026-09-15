@@ -14,12 +14,12 @@ public class MaximumGoodSubtreeScoreBenchmarks
 {
     private const int TreeSeed = 3575;
 
-    [Params(12, 20)]
-    public int NodeCount;
+    private int[] _vals = [];
 
-    private int[] _vals = null!;
-    private int[] _par = null!;
+    private int[] _par = [];
     private RootedTreeNode _root = null!;
+    [Params(12, 20)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

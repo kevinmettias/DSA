@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinCostClimbingStairsBenchmarks
 {
     private const int RandomSeed = 746; // LC problem number
-    private const int CostUpperBound = 100; // exclusive upper bound for generated per-step cost
+    private const int CostUpperBound = 100; private int[] _cost = [];
+
+    // exclusive upper bound for generated per-step cost
 
     [Params(20, 30)]
-    public int N;
-
-    private int[] _cost = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

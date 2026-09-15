@@ -33,7 +33,8 @@ internal static class ReverseNodesInEvenLengthGroupsSolution
         {
             var (tail, length) = MeasureGroup(groupPrevious, groupSize);
 
-            groupPrevious = length % EvenLengthDivisor == 0 ? ReverseGroup(groupPrevious, tail) : tail;
+            var isGroupLengthEven = length % EvenLengthDivisor == 0;
+            groupPrevious = isGroupLengthEven ? ReverseGroup(groupPrevious, tail) : tail;
             groupSize++;
         }
 

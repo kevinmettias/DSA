@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class AllPossibleFullBinaryTreesBenchmarks
 {
     [Params(13, 19)]
-    public int Nodes;
+    public int Nodes { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Naive() =>

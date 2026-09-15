@@ -29,9 +29,7 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
         {
             for (var bobIndex = 0; bobIndex < points.Length; bobIndex++)
             {
-                if (aliceIndex != bobIndex &&
-                    IsUpperLeftOf(points[aliceIndex], points[bobIndex]) &&
-                    NoPointBlocks(points, aliceIndex, bobIndex))
+                if (IsValidPlacement(points, aliceIndex, bobIndex))
                 {
                     count++;
                 }
@@ -40,6 +38,13 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
 
         return count;
     }
+
+    // A valid placement: two distinct points, Alice corning the rectangle's
+    // upper-left and Bob its lower-right, with nothing else inside it.
+    private static bool IsValidPlacement(int[][] points, int aliceIndex, int bobIndex)
+        => aliceIndex != bobIndex
+            && IsUpperLeftOf(points[aliceIndex], points[bobIndex])
+            && NoPointBlocks(points, aliceIndex, bobIndex);
 
     private static bool IsUpperLeftOf(int[] alice, int[] bob) => alice[0] <= bob[0] && alice[1] >= bob[1];
 
@@ -57,7 +62,7 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
 
             var (x, y) = (points[k][0], points[k][1]);
 
-            if (x >= aliceX && x <= bobX && y <= aliceY && y >= bobY)
+            if (IsWithinRectangle((x, y), (aliceX, aliceY), (bobX, bobY)))
             {
                 return false;
             }
@@ -66,18 +71,22 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
         return true;
     }
 
+    // Whether a third point falls inside the rectangle, or on its boundary.
+    private static bool IsWithinRectangle((int X, int Y) point, (int X, int Y) alice, (int X, int Y) bob)
+        => point.X >= alice.X && point.X <= bob.X && point.Y <= alice.Y && point.Y >= bob.Y;
+
     public static int CountPairsBySortedSweep(int[][] points)
     {
         var sorted = new ArrayIndexedSequence<int[]>((int[][])points.Clone());
-        MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(sorted, ByXThenDescendingY);
+        MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(sorted, PointOrder.ByXThenDescendingY);
 
         return CountPairsBySortedSweep(sorted);
     }
 
     // Prepared-input overload: `sortedPoints` must already be sorted by x
-    // ascending, y descending on ties (ByXThenDescendingY below - exposed so a
-    // benchmark's [GlobalSetup] can sort with the exact rule this strategy's
-    // precondition depends on, instead of duplicating it). For a fixed Alice
+    // ascending, y descending on ties (PointOrder.ByXThenDescendingY - a type of
+    // its own so a benchmark's [GlobalSetup] can sort with the exact rule this
+    // strategy's precondition depends on, instead of duplicating it). For a fixed Alice
     // i, every point to its right in that order already has x >= points[i].x,
     // so a single left-to-right scan tracking the highest y counted so far
     // (maxY) finds every visible Bob: a closer point k (i < k < j) only
@@ -107,7 +116,4 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
 
         return count;
     }
-
-    public static readonly IComparer<int[]> ByXThenDescendingY =
-        Comparer<int[]>.Create((a, b) => a[0] != b[0] ? a[0].CompareTo(b[0]) : b[1].CompareTo(a[1]));
 }

@@ -23,13 +23,27 @@ internal static class CheckIfAStringContainsAllBinaryCodesOfSizeKSolution
 
         for (var code = 0; code < total; code++)
         {
-            if (!s.Contains(ToBinaryString(code, k), StringComparison.Ordinal))
+            var binary = ToBinaryString(code, k);
+            if (!s.Contains(binary, StringComparison.Ordinal))
             {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private static string ToBinaryString(int code, int k)
+    {
+        var characters = new char[k];
+
+        for (var i = k - 1; i >= 0; i--)
+        {
+            characters[i] = (char)(Zero + (code & 1));
+            code >>= 1;
+        }
+
+        return new string(characters);
     }
 
     // One O(n) pass: fold each length-k window into an int by shifting the new bit
@@ -48,8 +62,16 @@ internal static class CheckIfAStringContainsAllBinaryCodesOfSizeKSolution
             return false;
         }
 
+        return CollectDistinctCodes(s, k).Count == total;
+    }
+
+    // Folds each length-k window into an int by shifting the new bit in and masking
+    // the one that fell out of range, returning every distinct code the text
+    // produced.
+    private static Set<int> CollectDistinctCodes(string s, int k)
+    {
         var seen = new Set<int>();
-        var mask = total - 1;
+        var mask = (1 << k) - 1;
         var code = 0;
 
         for (var i = 0; i < s.Length; i++)
@@ -62,19 +84,6 @@ internal static class CheckIfAStringContainsAllBinaryCodesOfSizeKSolution
             }
         }
 
-        return seen.Count == total;
-    }
-
-    private static string ToBinaryString(int code, int k)
-    {
-        var characters = new char[k];
-
-        for (var i = k - 1; i >= 0; i--)
-        {
-            characters[i] = (char)(Zero + (code & 1));
-            code >>= 1;
-        }
-
-        return new string(characters);
+        return seen;
     }
 }

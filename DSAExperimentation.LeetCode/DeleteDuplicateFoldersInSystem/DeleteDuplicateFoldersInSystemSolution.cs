@@ -154,9 +154,12 @@ internal static class DeleteDuplicateFoldersInSystemSolution
         MergeSort.Sort<string, ArrayIndexedSequence<string>>(sequence, StringComparer.Ordinal);
 
         node.Signature = string.Concat(pieces);
-        var newCount = signatureCounts.TryGetValue(node.Signature, out var existing) ? existing + 1 : 1;
+        var newCount = signatureCounts.TryGetValue(node.Signature, out var existing) ? NextSignatureCount(existing) : 1;
         signatureCounts.Set(node.Signature, newCount);
     }
+
+    // The count to record for a signature that has now been seen one more time.
+    private static int NextSignatureCount(int previousCount) => previousCount + 1;
 
     private static void MarkRepeatedSignatures(FolderNode node, HashMap<string, int> signatureCounts)
     {
@@ -164,9 +167,7 @@ internal static class DeleteDuplicateFoldersInSystemSolution
         {
             node.Children.TryGetValue(name, out var child);
 
-            if (child.Children.Count > 0 &&
-                signatureCounts.TryGetValue(child.Signature, out var count) &&
-                count > 1)
+            if (IsRepeatedFolder(child, signatureCounts))
             {
                 child.Deleted = true;
             }
@@ -174,6 +175,13 @@ internal static class DeleteDuplicateFoldersInSystemSolution
             MarkRepeatedSignatures(child, signatureCounts);
         }
     }
+
+    // A folder is deleted when a non-leaf subtree's own signature turns up more than
+    // once anywhere in the tree - leaves carry no signature and so are never counted.
+    private static bool IsRepeatedFolder(FolderNode child, HashMap<string, int> signatureCounts)
+        => child.Children.Count > 0
+            && signatureCounts.TryGetValue(child.Signature, out var count)
+            && count > 1;
 
     private static List<string[]> CollectSurvivingPaths(FolderNode root)
     {

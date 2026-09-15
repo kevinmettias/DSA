@@ -63,10 +63,6 @@ internal static class WalkingRobotSimulationIISolution
             }
         }
 
-        public (int X, int Y) GetPos() => (_x, _y);
-
-        public string GetDir() => DirectionNames[_direction];
-
         private void TakeStep()
         {
             var nextX = _x + DeltaX[_direction];
@@ -84,6 +80,10 @@ internal static class WalkingRobotSimulationIISolution
         }
 
         private bool IsOffGrid(int x, int y) => x < 0 || x >= width || y < 0 || y >= height;
+
+        public (int X, int Y) GetPos() => (_x, _y);
+
+        public string GetDir() => DirectionNames[_direction];
     }
 
     // The O(1)-per-Move answer: the robot's path is a fixed loop of length
@@ -100,15 +100,6 @@ internal static class WalkingRobotSimulationIISolution
         private readonly long _perimeter = PerimeterSides * ((long)width - 1 + height - 1);
         private long _totalSteps;
 
-        // Which of the perimeter's four straight runs the robot is currently on.
-        private enum Edge
-        {
-            East,
-            North,
-            West,
-            South,
-        }
-
         public void Move(int num) => _totalSteps += num;
 
         public (int X, int Y) GetPos()
@@ -124,6 +115,14 @@ internal static class WalkingRobotSimulationIISolution
 
             return ToPosition(edge, offset);
         }
+
+        private (int X, int Y) ToPosition(Edge edge, long offset) => edge switch
+        {
+            Edge.East => ((int)offset, 0),
+            Edge.North => (_maxX, (int)offset),
+            Edge.West => (_maxX - (int)offset, _maxY),
+            _ => (0, _maxY - (int)offset),
+        };
 
         // The origin is the one cell the loop passes through twice over: the robot
         // faces east there before it has moved at all, and south when it has come
@@ -147,25 +146,6 @@ internal static class WalkingRobotSimulationIISolution
             return ToDirection(edge);
         }
 
-        // The perimeter walk shared by GetPos and GetDir: which edge the distance
-        // travelled lands on, and how far along that edge.
-        private (Edge Edge, long Offset) Locate(long travelled)
-            => travelled <= _maxX ? (Edge.East, travelled) : LocateOnNorthEdge(travelled - _maxX);
-
-        private (Edge Edge, long Offset) LocateOnNorthEdge(long travelled)
-            => travelled <= _maxY ? (Edge.North, travelled) : LocateOnWestEdge(travelled - _maxY);
-
-        private (Edge Edge, long Offset) LocateOnWestEdge(long travelled)
-            => travelled <= _maxX ? (Edge.West, travelled) : (Edge.South, travelled - _maxX);
-
-        private (int X, int Y) ToPosition(Edge edge, long offset) => edge switch
-        {
-            Edge.East => ((int)offset, 0),
-            Edge.North => (_maxX, (int)offset),
-            Edge.West => (_maxX - (int)offset, _maxY),
-            _ => (0, _maxY - (int)offset),
-        };
-
         private static string ToDirection(Edge edge) => edge switch
         {
             Edge.East => East,
@@ -173,5 +153,27 @@ internal static class WalkingRobotSimulationIISolution
             Edge.West => West,
             _ => South,
         };
+
+        // The perimeter walk shared by GetPos and GetDir: which edge the distance
+        // travelled lands on, and how far along that edge.
+        private (Edge Edge, long Offset) Locate(long travelled)
+            => travelled <= _maxX ? EdgePoint(Edge.East, travelled) : LocateOnNorthEdge(travelled - _maxX);
+
+        private (Edge Edge, long Offset) LocateOnNorthEdge(long travelled)
+            => travelled <= _maxY ? EdgePoint(Edge.North, travelled) : LocateOnWestEdge(travelled - _maxY);
+
+        private (Edge Edge, long Offset) LocateOnWestEdge(long travelled)
+            => travelled <= _maxX ? EdgePoint(Edge.West, travelled) : EdgePoint(Edge.South, travelled - _maxX);
+
+        private static (Edge Edge, long Offset) EdgePoint(Edge edge, long offset) => (edge, offset);
+
+        // Which of the perimeter's four straight runs the robot is currently on.
+        private enum Edge
+        {
+            East,
+            North,
+            West,
+            South,
+        }
     }
 }

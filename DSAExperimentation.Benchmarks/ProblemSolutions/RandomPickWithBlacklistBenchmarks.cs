@@ -23,10 +23,10 @@ public class RandomPickWithBlacklistBenchmarks
     private const int PickCalls = 200;
     private const int Seed = 1;
 
-    [Params(2_000, 100_000)]
-    public int N;
+    private int[] _blacklist = [];
 
-    private int[] _blacklist = null!;
+    [Params(2_000, 100_000)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,10 +36,20 @@ public class RandomPickWithBlacklistBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long RejectionSampling() => Replay(RandomPickWithBlacklistSolution.CreateByRejectionSampling(N, _blacklist, Seed));
+    public long RejectionSampling()
+    {
+        var randomPick = RandomPickWithBlacklistSolution.CreateByRejectionSampling(N, _blacklist, Seed);
+
+        return Replay(randomPick);
+    }
 
     [Benchmark]
-    public long SetHashMapRemap() => Replay(RandomPickWithBlacklistSolution.CreateBySetHashMapRemap(N, _blacklist, Seed));
+    public long SetHashMapRemap()
+    {
+        var randomPick = RandomPickWithBlacklistSolution.CreateBySetHashMapRemap(N, _blacklist, Seed);
+
+        return Replay(randomPick);
+    }
 
     private static long Replay(RandomPickWithBlacklistSolution.IRandomPick randomPick)
     {

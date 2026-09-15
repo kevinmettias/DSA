@@ -22,10 +22,10 @@ public class MaximumAndSumOfArrayBenchmarks
     private const int RandomSeed = 2172; // LC problem number
     private const int ElementsPerSlot = 2;
 
-    [Params(2, 3)]
-    public int NumSlots;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(2, 3)]
+    public int NumSlots { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -14,10 +14,10 @@ public class LongestPalindromicSubstringBenchmarks
     private const int RandomSeed = 23;
     private const string Alphabet = "abcd";
 
-    [Params(500, 8_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(500, 8_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

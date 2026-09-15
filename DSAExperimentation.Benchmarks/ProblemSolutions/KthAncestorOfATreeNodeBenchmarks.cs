@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.KthAncestorOfATreeNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,15 +25,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class KthAncestorOfATreeNodeBenchmarks
 {
     private const int RandomSeed = 1483; // LC problem number
-    private const int BranchingFactor = 2;
     private const int QueryCount = 1_000_000;
     private const int RootParent = -1;
 
-    [Params(2_000, 20_000)]
-    public int NodeCount;
+    private int[] _parent = [];
 
-    private int[] _parent = null!;
-    private (int Node, int K)[] _queries = null!;
+    private (int Node, int K)[] _queries = [];
+    [Params(2_000, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -43,7 +43,7 @@ public class KthAncestorOfATreeNodeBenchmarks
 
         for (var i = 1; i < NodeCount; i++)
         {
-            _parent[i] = (i - 1) / BranchingFactor;
+            _parent[i] = (i - 1) / AlgorithmConstants.BranchingFactor;
         }
 
         _queries = Enumerable.Range(0, QueryCount)

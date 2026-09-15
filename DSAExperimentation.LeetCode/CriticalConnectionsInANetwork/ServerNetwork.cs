@@ -11,11 +11,11 @@ namespace DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 // LeetCode-shaped one (ARCHITECTURE.md #17.4).
 internal sealed class ServerNetwork
 {
-    private ServerNetwork(IReadOnlyList<ServerNode> servers) => Servers = servers;
-
     // Every server, including any the connection list never mentions: the bridge
     // search is a multi-root walk and only visits the components its roots reach.
     public IReadOnlyList<ServerNode> Servers { get; }
+
+    private ServerNetwork(IReadOnlyList<ServerNode> servers) => Servers = servers;
 
     public static ServerNetwork Build(int serverCount, int[][] connections)
     {

@@ -68,7 +68,7 @@ internal static class MinCostToConnectAllPointsSolution
 
         for (var candidate = 0; candidate < inTree.Length; candidate++)
         {
-            if (!inTree[candidate] && (next == -1 || cheapestEdge[candidate] < cheapestEdge[next]))
+            if (IsCheaperOutsideTree(inTree, cheapestEdge, candidate, next))
             {
                 next = candidate;
             }
@@ -76,6 +76,12 @@ internal static class MinCostToConnectAllPointsSolution
 
         return next;
     }
+
+    // The candidate takes over as the next attachment when it is still outside the
+    // tree and either nothing has been chosen yet or it reaches the tree more
+    // cheaply than the current best does.
+    private static bool IsCheaperOutsideTree(bool[] inTree, int[] cheapestEdge, int candidate, int next)
+        => !inTree[candidate] && (next == -1 || cheapestEdge[candidate] < cheapestEdge[next]);
 
     private static void RelaxEdgesFrom(int[][] points, bool[] inTree, int[] cheapestEdge, int attached)
     {

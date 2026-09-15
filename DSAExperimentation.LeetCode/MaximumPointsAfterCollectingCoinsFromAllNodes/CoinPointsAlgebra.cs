@@ -12,57 +12,70 @@ namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNo
 // needs without re-walking the subtree - exactly the DP this problem wants, shaped
 // as one IFoldAlgebra.Combine per node instead of a hand-rolled recursion.
 //
-// MaxHalvings caps h: coins[i] <= 1e4 < 2^14, so coins[node] >> h is already 0 for
-// every h >= MaxHalvings, and folding h any deeper cannot change a further-halved
-// contribution - the same "once it can't move the answer, stop tracking it more
-// finely" reasoning RoomWaysPrecomputedFactorialAlgebra's own Prepare(n) table
-// bound uses, just against a value magnitude instead of a tree size. Coins/k are
-// external per-node data a static-abstract algebra cannot carry as instance state,
-// so Prepare stashes them the same way RoomWaysPrecomputedFactorialAlgebra.Prepare
-// stashes its factorial table before folding begins.
+// HalvingDepth.Max caps h: coins[i] <= 1e4 < 2^14, so coins[node] >> h is already 0
+// for every h at or past HalvingDepth.Max, and folding h any deeper cannot change a
+// further-halved contribution - the same "once it can't move the answer, stop
+// tracking it more finely" reasoning RoomWaysPrecomputedFactorialAlgebra's own
+// Prepare(n) table bound uses, just against a value magnitude instead of a tree size.
+// Coins/k are external per-node data a static-abstract algebra cannot carry as
+// instance state, so Prepare stashes them the same way
+// RoomWaysPrecomputedFactorialAlgebra.Prepare stashes its factorial table before
+// folding begins - in an AsyncLocal, so the stash belongs to the calling flow and a
+// concurrent fold of the same problem cannot overwrite it part-way through the walk.
 internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]>
 {
-    internal const int MaxHalvings = 14;
+    private static readonly AsyncLocal<CoinInputs> Inputs = new();
 
-    private static long[] _coins = [];
-    private static long _k;
+    private readonly record struct CoinInputs(long[] Coins, long K);
 
-    public static long[] Empty => new long[MaxHalvings + 1];
+    public static long[] Empty => new long[HalvingDepth.Max + 1];
 
     public static void Prepare(int[] coins, int k)
     {
-        _coins = new long[coins.Length];
+        var stored = new long[coins.Length];
         for (var i = 0; i < coins.Length; i++)
         {
-            _coins[i] = coins[i];
+            stored[i] = coins[i];
         }
 
-        _k = k;
+        Inputs.Value = new CoinInputs(stored, k);
     }
 
     public static long[] Combine(RootedTreeNode node, IReadOnlyList<long[]> children)
     {
-        var coins = _coins[node.Id];
-        var result = new long[MaxHalvings + 1];
+        var inputs = Inputs.Value;
+        var coins = inputs.Coins[node.Id];
+        var result = new long[HalvingDepth.Max + 1];
 
-        for (var h = 0; h <= MaxHalvings; h++)
+        for (var h = 0; h <= HalvingDepth.Max; h++)
         {
-            var nextH = Math.Min(h + 1, MaxHalvings);
-            var takeChildrenSum = 0L;
-            var halveChildrenSum = 0L;
-
-            for (var i = 0; i < children.Count; i++)
-            {
-                takeChildrenSum += children[i][h];
-                halveChildrenSum += children[i][nextH];
-            }
-
-            var take = (coins >> h) - _k + takeChildrenSum;
-            var halve = (coins >> nextH) + halveChildrenSum;
-
-            result[h] = Math.Max(take, halve);
+            result[h] = BestLevelValue(coins, inputs.K, h, children);
         }
 
         return result;
+    }
+
+    // This node's best outcome at one halving level: collect normally - coins shifted down
+    // by that level, minus the flat cost, plus each child folded at the same level - or
+    // halve here too - shifted down one level further with no cost, children folded one
+    // level down as well. children[i][level] is dp(child i, level), already folded by the
+    // time Combine is handed the child results.
+    private static long BestLevelValue(
+        long coins, long cost, int level, IReadOnlyList<long[]> children)
+    {
+        var nextLevel = Math.Min(level + 1, HalvingDepth.Max);
+        var takeChildrenSum = 0L;
+        var halveChildrenSum = 0L;
+
+        for (var i = 0; i < children.Count; i++)
+        {
+            takeChildrenSum += children[i][level];
+            halveChildrenSum += children[i][nextLevel];
+        }
+
+        var take = (coins >> level) - cost + takeChildrenSum;
+        var halve = (coins >> nextLevel) + halveChildrenSum;
+
+        return Math.Max(take, halve);
     }
 }

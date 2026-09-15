@@ -49,40 +49,6 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         return CountValidCombinations(positions, perPiece, new Move[pieces.Length], 0);
     }
 
-    private static int CountValidCombinations(int[][] positions, List<Move>[] perPiece, Move[] combo, int pieceIndex)
-    {
-        if (pieceIndex == perPiece.Length)
-        {
-            return IsCombinationCollisionFree(positions, combo) ? 1 : 0;
-        }
-
-        var count = 0;
-
-        foreach (var move in perPiece[pieceIndex])
-        {
-            combo[pieceIndex] = move;
-            count += CountValidCombinations(positions, perPiece, combo, pieceIndex + 1);
-        }
-
-        return count;
-    }
-
-    private static bool IsCombinationCollisionFree(int[][] positions, Move[] combo)
-    {
-        for (var i = 0; i < combo.Length; i++)
-        {
-            for (var j = i + 1; j < combo.Length; j++)
-            {
-                if (MovesCollide(positions[i], combo[i], positions[j], combo[j]))
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     private static List<Move> AllCandidateMoves(string pieceType, int[] start)
     {
         var moves = new List<Move> { new(0, 0, 0) };
@@ -110,13 +76,16 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         Backtrack.Search<State, Move>(
             state,
             s => s.Moves.Count == pieces.Length,
-            s => s.Moves.Count == pieces.Length ? [] : CandidateMoves(s),
+            s => s.Moves.Count == pieces.Length ? NoCandidates() : CandidateMoves(s),
             (s, move) => s.Moves.Add(move),
             (s, _) => s.Moves.RemoveAt(s.Moves.Count - 1),
             _ => count++);
 
         return count;
     }
+
+    // Every piece has been given a move, so the combination has no children left.
+    private static IEnumerable<Move> NoCandidates() => [];
 
     private static IEnumerable<Move> CandidateMoves(State state)
     {
@@ -151,6 +120,40 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
             if (MovesCollide(candidateStart, candidate, state.Positions[other], state.Moves[other]))
             {
                 return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static int CountValidCombinations(int[][] positions, List<Move>[] perPiece, Move[] combo, int pieceIndex)
+    {
+        if (pieceIndex == perPiece.Length)
+        {
+            return IsCombinationCollisionFree(positions, combo) ? 1 : 0;
+        }
+
+        var count = 0;
+
+        foreach (var move in perPiece[pieceIndex])
+        {
+            combo[pieceIndex] = move;
+            count += CountValidCombinations(positions, perPiece, combo, pieceIndex + 1);
+        }
+
+        return count;
+    }
+
+    private static bool IsCombinationCollisionFree(int[][] positions, Move[] combo)
+    {
+        for (var i = 0; i < combo.Length; i++)
+        {
+            for (var j = i + 1; j < combo.Length; j++)
+            {
+                if (MovesCollide(positions[i], combo[i], positions[j], combo[j]))
+                {
+                    return false;
+                }
             }
         }
 
@@ -194,12 +197,8 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 
     private readonly record struct Move(int DRow, int DCol, int Distance);
 
-    private sealed class State(string[] pieceTypes, int[][] positions)
+    private sealed record State(string[] PieceTypes, int[][] Positions)
     {
-        public string[] PieceTypes { get; } = pieceTypes;
-
-        public int[][] Positions { get; } = positions;
-
         public List<Move> Moves { get; } = [];
     }
 }

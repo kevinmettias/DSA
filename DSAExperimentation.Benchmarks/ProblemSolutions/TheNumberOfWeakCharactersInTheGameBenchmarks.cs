@@ -23,10 +23,10 @@ public class TheNumberOfWeakCharactersInTheGameBenchmarks
     private const int MaxAttackExclusive = 50;
     private const int MaxDefenseExclusive = 1_000;
 
-    [Params(200, 3_000)]
-    public int Length;
-
     private CharacterRoster _roster = null!;
+
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

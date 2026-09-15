@@ -17,11 +17,11 @@ public class ReachableNodesWithRestrictionsBenchmarks
     // LC problem number, reused as the deterministic tree seed.
     private const int RandomSeed = 2368;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
-    private Set<int> _restricted = null!;
+    private Set<int> _restricted = new();
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

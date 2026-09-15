@@ -115,7 +115,7 @@ internal static class BasicCalculatorIVSolution
     {
         var result = ParseTermCore(expr, ref pos, ops);
 
-        while (pos < expr.Length && (expr[pos] == '+' || expr[pos] == '-'))
+        while (IsAtAdditiveOperator(expr, pos))
         {
             var op = expr[pos];
             pos++;
@@ -125,6 +125,10 @@ internal static class BasicCalculatorIVSolution
 
         return result;
     }
+
+    // The next character exists and starts a `+`/`-` term in the sum.
+    private static bool IsAtAdditiveOperator(string expr, int pos)
+        => pos < expr.Length && (expr[pos] == '+' || expr[pos] == '-');
 
     private static T ParseTermCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
     {
@@ -140,36 +144,58 @@ internal static class BasicCalculatorIVSolution
         return result;
     }
 
+    // The grammar's own three cases of `factor := '(' expression ')' | number |
+    // variable`: a parenthesized sub-expression, a numeric literal, or a name.
     private static T ParseFactorCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
     {
         if (expr[pos] == '(')
         {
-            pos++;
-            var inner = ParseExpressionCore(expr, ref pos, ops);
-            pos++;
-            return inner;
+            return ParseParenthesized(expr, ref pos, ops);
         }
 
         if (char.IsDigit(expr[pos]))
         {
-            var start = pos;
-
-            while (pos < expr.Length && char.IsDigit(expr[pos]))
-            {
-                pos++;
-            }
-
-            return ops.Constant(long.Parse(expr[start..pos]));
+            return ParseNumber(expr, ref pos, ops);
         }
 
-        var startVar = pos;
+        return ParseVariable(expr, ref pos, ops);
+    }
+
+    // A parenthesized factor: step past the '(' , parse the whole expression inside
+    // it (recursing back up to the sum rule), and step past the ')' that closed it.
+    private static T ParseParenthesized<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    {
+        pos++;
+        var inner = ParseExpressionCore(expr, ref pos, ops);
+        pos++;
+        return inner;
+    }
+
+    // A numeric factor: consume its digits and evaluate them as a constant term.
+    private static T ParseNumber<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    {
+        var start = pos;
+
+        while (pos < expr.Length && char.IsDigit(expr[pos]))
+        {
+            pos++;
+        }
+
+        return ops.Constant(long.Parse(expr[start..pos]));
+    }
+
+    // A variable factor: consume its letters and resolve the name through the ops -
+    // a known variable becoming its value, an unknown one staying symbolic.
+    private static T ParseVariable<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    {
+        var start = pos;
 
         while (pos < expr.Length && char.IsLower(expr[pos]))
         {
             pos++;
         }
 
-        return ops.Variable(expr[startVar..pos]);
+        return ops.Variable(expr[start..pos]);
     }
 
     // ---- Dictionary-backed operations (baseline) ----

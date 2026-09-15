@@ -24,6 +24,7 @@ internal static class StepsToMakeArrayNonDecreasingSolution
         var current = nums;
         var steps = 0;
 
+        // Stops at the first round that removes nothing: the array is non-decreasing and the round count is returned.
         while (true)
         {
             var (next, anyRemoved) = RunOneRound(current);
@@ -79,11 +80,14 @@ internal static class StepsToMakeArrayNonDecreasingSolution
 
             // Nothing left below means this value has no strictly greater element
             // to its left at all, so it is never removed.
-            step = stack.Count == 0 ? 0 : step + 1;
+            step = stack.Count == 0 ? 0 : NextRemovalStep(step);
             maxSteps = Math.Max(maxSteps, step);
             stack.Push((value, step));
         }
 
         return maxSteps;
     }
+
+    // One past the latest removal step this value swallowed.
+    private static int NextRemovalStep(int step) => step + 1;
 }

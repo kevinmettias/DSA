@@ -23,6 +23,14 @@ internal static class SubsetsIISolution
         var sorted = (int[])nums.Clone();
         Array.Sort(sorted);
 
+        return SearchSubsets(sorted);
+    }
+
+    // The search itself: at every depth the candidate set skips an index whose value
+    // repeats the previous one unless it is the first choice tried there, and every
+    // state the walk reaches is one subset of the result.
+    private static List<List<int>> SearchSubsets(int[] sorted)
+    {
         var results = new List<List<int>>();
         var state = new BacktrackState();
 

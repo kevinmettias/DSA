@@ -13,11 +13,11 @@ public class MinimumAbsoluteSumDifferenceBenchmarks
     private const int MaxValueExclusive = 100_000;
     private const int ValueSeed = 1;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    private int[] _nums2 = [];
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

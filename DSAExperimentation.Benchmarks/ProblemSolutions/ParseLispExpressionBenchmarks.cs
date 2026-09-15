@@ -24,19 +24,13 @@ public class ParseLispExpressionBenchmarks
     private const string LetExpressionPrefix = "(let v";
     private const int PenultimateIndexOffset = 2;
 
-    [Params(50, 400)]
-    public int Length;
+    private string _expression = "";
 
-    private string _expression = null!;
+    [Params(50, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _expression = BuildNestedLetExpression(Length);
-
-    [Benchmark(Baseline = true)]
-    public long CopyEnvironmentPerLet() => ParseLispExpressionSolution.EvaluateByCopiedScope(_expression);
-
-    [Benchmark]
-    public long ScopeChain() => ParseLispExpressionSolution.EvaluateByScopeChain(_expression);
 
     // Builds "(let v0 0 (let v1 1 (let v2 2 ... (add v0 (add v1 v2))...)))" -
     // Length nested lets, each shadowing nothing, wrapping a right-nested sum
@@ -67,4 +61,10 @@ public class ParseLispExpressionBenchmarks
 
         return expr;
     }
+
+    [Benchmark(Baseline = true)]
+    public long CopyEnvironmentPerLet() => ParseLispExpressionSolution.EvaluateByCopiedScope(_expression);
+
+    [Benchmark]
+    public long ScopeChain() => ParseLispExpressionSolution.EvaluateByScopeChain(_expression);
 }

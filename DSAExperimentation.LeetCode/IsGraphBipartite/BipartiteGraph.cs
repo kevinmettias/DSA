@@ -12,11 +12,11 @@ namespace DSAExperimentation.LeetCode.IsGraphBipartite;
 // LeetCode-shaped one (ARCHITECTURE.md #17.4).
 internal sealed class BipartiteGraph
 {
-    private BipartiteGraph(IReadOnlyList<BipartiteNode> nodes) => Nodes = nodes;
-
     // Every vertex, including isolated ones: BipartiteCheck is a multi-root walk
     // and only visits the components its roots reach.
     public IReadOnlyList<BipartiteNode> Nodes { get; }
+
+    private BipartiteGraph(IReadOnlyList<BipartiteNode> nodes) => Nodes = nodes;
 
     public static BipartiteGraph Build(int[][] adjacency)
     {

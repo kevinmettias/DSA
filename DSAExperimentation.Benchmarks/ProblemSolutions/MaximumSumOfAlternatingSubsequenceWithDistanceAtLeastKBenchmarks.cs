@@ -16,11 +16,11 @@ public class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKBenchmarks
     private const int RandomSeed = 3915; // LeetCode problem number
     private const int ValueUpperBound = 100_000;
 
-    [Params(2_000, 20_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(2_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

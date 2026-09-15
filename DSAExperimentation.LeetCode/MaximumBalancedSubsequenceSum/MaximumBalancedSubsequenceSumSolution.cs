@@ -34,20 +34,27 @@ internal static class MaximumBalancedSubsequenceSumSolution
 
         for (var i = 0; i < n; i++)
         {
-            var best = 0L;
-            for (var j = 0; j < i; j++)
-            {
-                if (b[j] <= b[i])
-                {
-                    best = Math.Max(best, dp[j]);
-                }
-            }
-
-            dp[i] = nums[i] + best;
+            dp[i] = BestPredecessorSum(b, dp, nums[i], i);
             answer = Math.Max(answer, dp[i]);
         }
 
         return answer;
+    }
+
+    // Best dp[j] over j < index with b[j] <= b[index], plus this element's own
+    // value: the single O(n) predecessor scan the segment-tree arm replaces.
+    private static long BestPredecessorSum(long[] b, long[] dp, int value, int index)
+    {
+        var best = 0L;
+        for (var j = 0; j < index; j++)
+        {
+            if (b[j] <= b[index])
+            {
+                best = Math.Max(best, dp[j]);
+            }
+        }
+
+        return value + best;
     }
 
     // Composed: coordinate-compress b[i] = nums[i] - i via this repo's own
@@ -79,14 +86,27 @@ internal static class MaximumBalancedSubsequenceSumSolution
 
         for (var i = 0; i < n; i++)
         {
-            var rank = BinarySearch.LowerBound(sequence, b[i]);
-            var bestBefore = tree.Query(0, rank);
-            var dp = nums[i] + Math.Max(0, bestBefore);
-
-            tree.Update(rank, Math.Max(tree.Query(rank, rank), dp));
+            var dp = AdvanceSegmentTreeSweep(tree, sequence, b[i], nums[i]);
             answer = Math.Max(answer, dp);
         }
 
         return answer;
+    }
+
+    // One sweep step: compress bValue to its rank, read the best subsequence sum
+    // among every b-value at or below it, then fold the new sum into the tree at
+    // that rank - keeping the larger of what was already recorded and this sum.
+    private static long AdvanceSegmentTreeSweep(
+        RepoSegmentTree tree, ArraySequence<long> sequence, long bValue, int value)
+    {
+        var rank = BinarySearch.LowerBound(sequence, bValue);
+        var bestBefore = tree.Query(0, rank);
+        var dp = value + Math.Max(0, bestBefore);
+
+        var bestAtRank = tree.Query(rank, rank);
+        var bestSoFar = Math.Max(bestAtRank, dp);
+        tree.Update(rank, bestSoFar);
+
+        return dp;
     }
 }

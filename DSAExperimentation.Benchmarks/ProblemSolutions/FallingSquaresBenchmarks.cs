@@ -14,10 +14,10 @@ public class FallingSquaresBenchmarks
     private const int PositionRangeMultiplier = 2;
     private const int MaxSquareSize = 50;
 
-    [Params(100, 1_000)]
-    public int SquareCount;
+    private int[][] _positions = [];
 
-    private int[][] _positions = null!;
+    [Params(100, 1_000)]
+    public int SquareCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

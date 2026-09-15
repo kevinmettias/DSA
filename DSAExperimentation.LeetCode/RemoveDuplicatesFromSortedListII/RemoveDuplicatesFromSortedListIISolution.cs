@@ -26,50 +26,6 @@ internal static class RemoveDuplicatesFromSortedListIISolution
         return BuildList(survivors);
     }
 
-    // One pass with a dummy head and a previous/current pair: walk past every run
-    // of two or more equal values and splice the whole run out, in place.
-    // LeetCode's own idiomatic answer.
-    public static SinglyLinkedListNode<int>? DeleteDuplicatesByTwoPointerScan(SinglyLinkedListNode<int>? head)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
-        var previous = dummy;
-
-        while (previous.Next is not null)
-        {
-            var current = previous.Next;
-            var duplicated = false;
-
-            while (current.Next is not null && current.Value == current.Next.Value)
-            {
-                duplicated = true;
-                current = current.Next;
-            }
-
-            if (duplicated)
-            {
-                previous.Next = current.Next;
-            }
-            else
-            {
-                previous = previous.Next;
-            }
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
-
     private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
@@ -82,5 +38,58 @@ internal static class RemoveDuplicatesFromSortedListIISolution
         }
 
         return dummy.Next;
+    }
+
+    // One pass with a dummy head and a previous/current pair: walk past every run
+    // of two or more equal values and splice the whole run out, in place.
+    // LeetCode's own idiomatic answer.
+    public static SinglyLinkedListNode<int>? DeleteDuplicatesByTwoPointerScan(SinglyLinkedListNode<int>? head)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
+        var previous = dummy;
+
+        while (previous.Next is not null)
+        {
+            var (last, duplicated) = ScanRun(previous.Next);
+
+            if (duplicated)
+            {
+                previous.Next = last.Next;
+            }
+            else
+            {
+                previous = previous.Next;
+            }
+        }
+
+        return dummy.Next;
+    }
+
+    // Walks to the last node of the run of equal values starting at `first`, and
+    // reports whether that run held more than one node.
+    private static (SinglyLinkedListNode<int> Last, bool Duplicated) ScanRun(SinglyLinkedListNode<int> first)
+    {
+        var current = first;
+        var duplicated = false;
+
+        while (current.Next is not null && current.Value == current.Next.Value)
+        {
+            duplicated = true;
+            current = current.Next;
+        }
+
+        return (current, duplicated);
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
     }
 }

@@ -43,60 +43,86 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
         {
             for (var end = start; end < n; end++)
             {
-                best = Math.Max(best, BestForBruteForceWindow(nums, start, end, k));
+                var windowBest = BestForBruteForceWindow(nums, start, end, k);
+                best = Math.Max(best, windowBest);
             }
         }
 
         return best;
     }
 
+    // One window's worth of the brute-force arm: the two pools sorted, then the
+    // swap arithmetic.
     private static long BestForBruteForceWindow(int[] nums, int start, int end, int k)
     {
-        var windowLength = end - start + 1;
-        var window = new long[windowLength];
-
-        for (var i = 0; i < windowLength; i++)
-        {
-            window[i] = nums[start + i];
-        }
-
-        var outsideLength = nums.Length - windowLength;
-        var outside = new long[outsideLength];
-        var outsideIndex = 0;
-
-        for (var i = 0; i < start; i++)
-        {
-            outside[outsideIndex++] = nums[i];
-        }
-
-        for (var i = end + 1; i < nums.Length; i++)
-        {
-            outside[outsideIndex++] = nums[i];
-        }
+        var (window, outside) = WindowAndComplement(nums, start, end);
 
         Array.Sort(window);
         Array.Sort(outside);
 
-        var windowSum = 0L;
+        return BestAfterSwaps(window, outside, k);
+    }
 
-        foreach (var value in window)
+    // The window's own values and everything outside it, each in array order and
+    // widened to the longs the swap arithmetic works in. They are one pair: what
+    // one swap trades away comes from the window and what it gains comes from
+    // the complement, so the complement's length is also what caps the swap count.
+    private static (long[] Window, long[] Outside) WindowAndComplement(int[] nums, int start, int end)
+    {
+        var window = new long[end - start + 1];
+        var outside = new long[nums.Length - window.Length];
+        var outsideWrite = 0;
+
+        for (var i = 0; i < window.Length; i++)
         {
-            windowSum += value;
+            window[i] = nums[start + i];
         }
 
-        var cap = Math.Min(windowLength, Math.Min(k, outsideLength));
+        for (var i = 0; i < start; i++)
+        {
+            outside[outsideWrite++] = nums[i];
+        }
+
+        for (var i = end + 1; i < nums.Length; i++)
+        {
+            outside[outsideWrite++] = nums[i];
+        }
+
+        return (window, outside);
+    }
+
+    // The best window sum over every allowed swap count: spending one more swap
+    // removes the next-smallest value inside and adds the next-largest outside,
+    // so one running pair of partial sums scores every count without re-sorting.
+    private static long BestAfterSwaps(long[] window, long[] outside, int swapBudget)
+    {
+        var windowSum = Total(window);
+        var outsideCap = Math.Min(swapBudget, outside.Length);
+        var cap = Math.Min(window.Length, outsideCap);
         var best = windowSum;
         var removedSmallest = 0L;
         var addedLargest = 0L;
 
-        for (var s = 1; s <= cap; s++)
+        for (var swaps = 1; swaps <= cap; swaps++)
         {
-            removedSmallest += window[s - 1];
-            addedLargest += outside[outsideLength - s];
+            removedSmallest += window[swaps - 1];
+            addedLargest += outside[outside.Length - swaps];
             best = Math.Max(best, windowSum - removedSmallest + addedLargest);
         }
 
         return best;
+    }
+
+    private static long Total(long[] values)
+    {
+        var sum = 0L;
+
+        foreach (var value in values)
+        {
+            sum += value;
+        }
+
+        return sum;
     }
 
     // For each window length, keeps two present/absent Fenwick pairs - one
@@ -113,64 +139,157 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     public static long MaxSumByOrderStatisticsFenwick(int[] nums, int k)
     {
         var n = nums.Length;
-        var values = new long[n];
+        var values = ValuesAsLongs(nums);
+        var rankByAscendingValue = RankPositions(n, ValueOrder.Ascending, nums);
+        var rankByDescendingValue = RankPositions(n, ValueOrder.Descending, nums);
+        var prefix = PrefixSumsOf(values);
+        var source = (n, values, prefix, rankByAscendingValue, rankByDescendingValue);
 
-        for (var i = 0; i < n; i++)
+        return BestAcrossWindowLengths(k, source);
+    }
+
+    private static long[] ValuesAsLongs(int[] nums)
+    {
+        var values = new long[nums.Length];
+
+        for (var i = 0; i < nums.Length; i++)
         {
             values[i] = nums[i];
         }
 
-        var rankByAscendingValue = RankPositions(n, ascending: true, nums);
-        var rankByDescendingValue = RankPositions(n, ascending: false, nums);
-        var prefix = new long[n + 1];
+        return values;
+    }
 
-        for (var i = 0; i < n; i++)
+    // rankByValue[position] = where that array position falls in the array
+    // sorted by value, ascending or descending. Every rank is occupied by
+    // exactly one position, so it is a bijection on [0, n) regardless of value
+    // ties - the property that lets WindowLedger's Fenwick pairs stay simple
+    // present/absent counts instead of needing per-value remainder math.
+    private static int[] RankPositions(int n, ValueOrder order, int[] nums)
+    {
+        var positionAtRank = Enumerable.Range(0, n).OrderBy(i => SortKey(nums, i, order)).ToArray();
+        var rank = new int[n];
+
+        for (var r = 0; r < n; r++)
+        {
+            rank[positionAtRank[r]] = r;
+        }
+
+        return rank;
+    }
+
+    // The key a position sorts on: its own value ascending, its negated value
+    // descending, so one ordering pass reads the array in either direction.
+    private static int SortKey(int[] nums, int position, ValueOrder order)
+    {
+        if (order == ValueOrder.Ascending)
+        {
+            return nums[position];
+        }
+
+        return -nums[position];
+    }
+
+    // prefix[i] is the total of the first i values, so any window sum is one
+    // subtraction of two entries.
+    private static long[] PrefixSumsOf(long[] values)
+    {
+        var prefix = new long[values.Length + 1];
+
+        for (var i = 0; i < values.Length; i++)
         {
             prefix[i + 1] = prefix[i] + values[i];
         }
 
+        return prefix;
+    }
+
+    // Every window length in turn, each on its own ledger seeded with the initial
+    // window and then slid across every later start position.
+    private static long BestAcrossWindowLengths(
+        int swapBudget,
+        (int N, long[] Values, long[] Prefix, int[] RankAscending, int[] RankDescending) source)
+    {
+        var ranks = (Ascending: source.RankAscending, Descending: source.RankDescending);
         var best = long.MinValue;
 
-        for (var windowLength = 1; windowLength <= n; windowLength++)
+        for (var windowLength = 1; windowLength <= source.N; windowLength++)
         {
-            var ledger = new WindowLedger(n);
-
-            for (var index = 0; index < windowLength; index++)
-            {
-                ledger.MarkInside(index, values[index], rankByAscendingValue);
-            }
-
-            for (var index = windowLength; index < n; index++)
-            {
-                ledger.MarkOutside(index, values[index], rankByDescendingValue);
-            }
-
-            best = Math.Max(best, BestForWindow(ledger, prefix, 0, windowLength, k, n));
-
-            for (var start = 0; start + windowLength < n; start++)
-            {
-                var leaving = start;
-                var entering = start + windowLength;
-
-                ledger.MoveInsideToOutside(leaving, values[leaving], rankByAscendingValue, rankByDescendingValue);
-                ledger.MoveOutsideToInside(entering, values[entering], rankByAscendingValue, rankByDescendingValue);
-
-                best = Math.Max(best, BestForWindow(ledger, prefix, start + 1, windowLength, k, n));
-            }
+            var ledger = SeedLedger(source.N, source.Values, windowLength, ranks);
+            var lengthBest = BestForLength(ledger, source, windowLength, swapBudget);
+            best = Math.Max(best, lengthBest);
         }
 
         return best;
     }
 
-    private static long BestForWindow(WindowLedger ledger, long[] prefix, int start, int windowLength, int k, int n)
+    // A ledger holding the initial window [0, length) as the inside pool and
+    // every later position as the outside one.
+    private static WindowLedger SeedLedger(
+        int elementCount, long[] values, int length, (int[] Ascending, int[] Descending) ranks)
     {
-        var windowSum = prefix[start + windowLength] - prefix[start];
-        var cap = Math.Min(windowLength, Math.Min(k, n - windowLength));
+        var ledger = new WindowLedger(elementCount);
 
-        long H(int s) => s == 0
-            ? windowSum
-            : windowSum - ledger.SumOfSmallestInside(s) + ledger.SumOfLargestOutside(s);
+        for (var index = 0; index < length; index++)
+        {
+            ledger.MarkInside(index, values[index], ranks.Ascending);
+        }
 
+        for (var index = length; index < elementCount; index++)
+        {
+            ledger.MarkOutside(index, values[index], ranks.Descending);
+        }
+
+        return ledger;
+    }
+
+    // One window length's whole sweep: score the window at start 0, then slide it
+    // one position at a time to every later start, keeping the best window seen.
+    private static long BestForLength(
+        WindowLedger ledger,
+        (int N, long[] Values, long[] Prefix, int[] RankAscending, int[] RankDescending) source,
+        int windowLength,
+        int swapBudget)
+    {
+        var best = BestForWindow(ledger, source.Prefix, (Start: 0, Length: windowLength), swapBudget);
+
+        for (var start = 0; start + windowLength < source.N; start++)
+        {
+            var leaving = start;
+            var entering = start + windowLength;
+
+            ledger.MoveInsideToOutside(leaving, source.Values[leaving], source.RankAscending, source.RankDescending);
+            ledger.MoveOutsideToInside(entering, source.Values[entering], source.RankAscending, source.RankDescending);
+
+            var windowBest = BestForWindow(
+                ledger, source.Prefix, (Start: start + 1, Length: windowLength), swapBudget);
+            best = Math.Max(best, windowBest);
+        }
+
+        return best;
+    }
+
+    // The window is one range - a start and a length chosen together and never
+    // passed apart - and n is prefix.Length - 1, the element count the prefix sums
+    // were built over, so the caller need not say it twice.
+    private static long BestForWindow(
+        WindowLedger ledger, long[] prefix, (int Start, int Length) window, int k)
+    {
+        var n = prefix.Length - 1;
+        var windowSum = prefix[window.Start + window.Length] - prefix[window.Start];
+        var outsideCap = Math.Min(k, n - window.Length);
+        var cap = Math.Min(window.Length, outsideCap);
+        var (lo, hi) = NarrowToPeak(cap, windowSum, ledger);
+
+        return BestInBracket(lo, hi, windowSum, ledger);
+    }
+
+    // h(s), the window sum once s swaps are spent, is concave in s: each further
+    // swap removes a value at least as large as the last and adds one at most as
+    // large as the last. A ternary search therefore brackets its peak into
+    // whichever two-thirds of [low, high] must contain it, three points wide.
+    private static (int Low, int High) NarrowToPeak(int cap, long windowSum, WindowLedger ledger)
+    {
         var lo = 0;
         var hi = cap;
 
@@ -179,7 +298,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
             var mid1 = lo + ((hi - lo) / 3);
             var mid2 = hi - ((hi - lo) / 3);
 
-            if (H(mid1) < H(mid2))
+            if (SumAfterSwaps(windowSum, ledger, mid1) < SumAfterSwaps(windowSum, ledger, mid2))
             {
                 lo = mid1 + 1;
             }
@@ -189,33 +308,29 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
             }
         }
 
+        return (lo, hi);
+    }
+
+    // The three candidates the search leaves are the peak's bracket, so each is
+    // scored outright.
+    private static long BestInBracket(int low, int high, long windowSum, WindowLedger ledger)
+    {
         var best = long.MinValue;
 
-        for (var s = lo; s <= hi; s++)
+        for (var swaps = low; swaps <= high; swaps++)
         {
-            best = Math.Max(best, H(s));
+            var candidate = SumAfterSwaps(windowSum, ledger, swaps);
+            best = Math.Max(best, candidate);
         }
 
         return best;
     }
 
-    // rankByValue[position] = where that array position falls in the array
-    // sorted by value, ascending or descending. Every rank is occupied by
-    // exactly one position, so it is a bijection on [0, n) regardless of value
-    // ties - the property that lets WindowLedger's Fenwick pairs stay simple
-    // present/absent counts instead of needing per-value remainder math.
-    private static int[] RankPositions(int n, bool ascending, int[] nums)
-    {
-        var order = Enumerable.Range(0, n).OrderBy(i => ascending ? nums[i] : -nums[i]).ToArray();
-        var rank = new int[n];
-
-        for (var r = 0; r < n; r++)
-        {
-            rank[order[r]] = r;
-        }
-
-        return rank;
-    }
+    // The window sum once s swaps have been spent: the s smallest values inside the
+    // window are swapped for the s largest values outside it, so the sum gains the
+    // difference between the two pools.
+    private static long SumAfterSwaps(long windowSum, WindowLedger ledger, int swaps)
+        => windowSum - ledger.SumOfSmallestInside(swaps) + ledger.SumOfLargestOutside(swaps);
 
     private readonly struct FenwickPrefixCountSequence(FenwickTree<long, SumOperation<long>> counts)
         : IRandomAccessSequence<long>
@@ -285,5 +400,14 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
 
             return sum.PrefixQuery(index);
         }
+    }
+
+    // Which way a ranking pass reads the window's values: Ascending puts the
+    // smallest value at rank 0 - the inside pool's "smallest first" - and
+    // Descending puts the largest there, for the outside pool's "largest first".
+    private enum ValueOrder
+    {
+        Ascending,
+        Descending,
     }
 }

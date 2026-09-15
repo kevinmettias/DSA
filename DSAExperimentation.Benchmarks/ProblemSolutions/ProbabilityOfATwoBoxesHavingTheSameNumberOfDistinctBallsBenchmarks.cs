@@ -23,10 +23,10 @@ public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
     // The balls are dealt into exactly two boxes, so the total has to be even.
     private const int BoxCount = 2;
 
-    [Params(4, 6)]
-    public int TypeCount;
+    private int[] _balls = [];
 
-    private int[] _balls = null!;
+    [Params(4, 6)]
+    public int TypeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

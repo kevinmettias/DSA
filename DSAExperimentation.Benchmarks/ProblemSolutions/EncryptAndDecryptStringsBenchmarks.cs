@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.EncryptAndDecryptStrings.EncryptAndDecryptStringsSolution;
+using DSAExperimentation.LeetCode.EncryptAndDecryptStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -26,13 +26,13 @@ public class EncryptAndDecryptStringsBenchmarks
     private const int AlphabetSize = 26;
     private const int RandomSeed = 1;
 
-    [Params(50, 2_000)]
-    public int DictionarySize;
+    private char[] _keys = [];
 
-    private char[] _keys = null!;
-    private string[] _values = null!;
-    private string[] _dictionary = null!;
-    private string[] _queries = null!;
+    private string[] _values = [];
+    private string[] _dictionary = [];
+    private string[] _queries = [];
+    [Params(50, 2_000)]
+    public int DictionarySize { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -44,7 +44,7 @@ public class EncryptAndDecryptStringsBenchmarks
 
         // Every query is the true encryption of some dictionary word, so both
         // strategies do genuine matching work instead of an always-empty lookup.
-        var encrypter = CreateByPrecomputedFrequency(_keys, _values, _dictionary);
+        var encrypter = EncryptAndDecryptStringsSolution.CreateByPrecomputedFrequency(_keys, _values, _dictionary);
 
         _queries =
         [
@@ -53,19 +53,29 @@ public class EncryptAndDecryptStringsBenchmarks
         ];
     }
 
+    private static string RandomWord(Random random)
+        => new([.. Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize)))]);
+
     [Benchmark(Baseline = true)]
-    public int RecomputeEveryDecrypt() => TotalMatches(CreateByDictionaryRescan(_keys, _values, _dictionary));
+    public int RecomputeEveryDecrypt()
+    {
+        var encrypter = EncryptAndDecryptStringsSolution.CreateByDictionaryRescan(_keys, _values, _dictionary);
+
+        return TotalMatches(encrypter);
+    }
 
     [Benchmark]
-    public int PrecomputedFrequencyMap() => TotalMatches(CreateByPrecomputedFrequency(_keys, _values, _dictionary));
+    public int PrecomputedFrequencyMap()
+    {
+        var encrypter = EncryptAndDecryptStringsSolution.CreateByPrecomputedFrequency(_keys, _values, _dictionary);
+
+        return TotalMatches(encrypter);
+    }
 
     private static string NextLetterPair(int index)
         => new([(char)('a' + index), (char)('a' + ((index + 1) % AlphabetSize))]);
 
-    private static string RandomWord(Random random)
-        => new([.. Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize)))]);
-
-    private int TotalMatches(IEncrypter encrypter)
+    private int TotalMatches(EncryptAndDecryptStringsSolution.IEncrypter encrypter)
     {
         var matches = 0;
 

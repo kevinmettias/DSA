@@ -29,33 +29,113 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
 
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
+    // Both counts are stateless, so one instance each serves every call and neither
+    // benchmark arm allocates anything to pick one.
+    private static readonly IConnectedComponentCount NaiveCount = new NaiveFloodFillCount();
+    private static readonly IConnectedComponentCount TraversalCount = new DepthFirstSearchCount();
+
+    // The one query the two strategies answer differently: how many islands the grid
+    // holds once a single cell is treated as water. Naming it puts that skipped cell in
+    // the contract, where a bare grid-to-int callable had nowhere to say it; what counts
+    // as connected stays with the caller that compares the count.
+    private interface IConnectedComponentCount
+    {
+        int Count(IslandScan scan);
+    }
+
     // The textbook answer: a hand-rolled recursive flood fill over a bool[,] visited
     // map, BCL only. Deliberately written without this repo's traversal primitive -
     // it is the arm the composed strategy below has to justify itself against.
     public static int MinDaysByNaiveFloodFill(int[][] grid)
-        => MinDaysUsing(grid, CountIslandsByNaiveFloodFill);
+        => MinDaysUsing(grid, NaiveCount);
 
-    private static int CountIslandsByNaiveFloodFill(IslandScan scan)
+    private sealed class NaiveFloodFillCount : IConnectedComponentCount
     {
-        var visited = new bool[scan.Rows, scan.Cols];
-        var count = 0;
-
-        for (var row = 0; row < scan.Rows; row++)
+        public int Count(IslandScan scan)
         {
-            for (var col = 0; col < scan.Cols; col++)
-            {
-                if (scan.Grid[row][col] != Land || visited[row, col] || (row, col) == scan.Skip)
-                {
-                    continue;
-                }
+            var visited = new bool[scan.Rows, scan.Cols];
+            var count = 0;
 
-                count++;
-                FloodFill(scan, visited, (row, col));
+            for (var row = 0; row < scan.Rows; row++)
+            {
+                for (var col = 0; col < scan.Cols; col++)
+                {
+                    if (!StartsANewIsland(scan, visited, row, col))
+                    {
+                        continue;
+                    }
+
+                    count++;
+                    FloodFill(scan, visited, (row, col));
+                }
+            }
+
+            return count;
+        }
+    }
+
+    // This repo's own DepthFirstSearch.Traverse takes the successor function that
+    // treats the skipped cell as water and returns the island reachable from a start,
+    // so the component count is one scan claiming each island exactly once - the same
+    // composition NumberOfIslandsSolution (LC 200) and MakingALargeIslandSolution
+    // (LC 827) already use for grid connectivity.
+    public static int MinDaysByDepthFirstSearch(int[][] grid)
+        => MinDaysUsing(grid, TraversalCount);
+
+    private sealed class DepthFirstSearchCount : IConnectedComponentCount
+    {
+        public int Count(IslandScan scan)
+        {
+            var visited = new bool[scan.Rows, scan.Cols];
+            var count = 0;
+
+            for (var row = 0; row < scan.Rows; row++)
+            {
+                for (var col = 0; col < scan.Cols; col++)
+                {
+                    if (!StartsANewIsland(scan, visited, row, col))
+                    {
+                        continue;
+                    }
+
+                    count++;
+                    MarkIslandByTraversal(scan, visited, (row, col));
+                }
+            }
+
+            return count;
+        }
+    }
+
+    // Claim every cell of the island reachable from `start`, handing the successor
+    // function that treats the skipped cell as water to this repo's own traversal
+    // primitive - the one step the two counting strategies do not share.
+    private static void MarkIslandByTraversal(IslandScan scan, bool[,] visited, (int Row, int Col) start)
+    {
+        foreach (var (islandRow, islandCol) in
+                 DepthFirstSearch.Traverse(start, cell => LandNeighbors(scan, cell)))
+        {
+            visited[islandRow, islandCol] = true;
+        }
+    }
+
+    private static IEnumerable<(int Row, int Col)> LandNeighbors(IslandScan scan, (int Row, int Col) cell)
+    {
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var neighbor = (Row: cell.Row + dRow, Col: cell.Col + dCol);
+
+            if (IsLandInside(scan, neighbor))
+            {
+                yield return neighbor;
             }
         }
-
-        return count;
     }
+
+    // Both scans claim a cell as a new island's start only when it is land that is
+    // neither already claimed nor the cell the scan is pretending is water.
+    private static bool StartsANewIsland(IslandScan scan, bool[,] visited, int row, int col)
+        => scan.Grid[row][col] == Land && !visited[row, col] && (row, col) != scan.Skip;
 
     private static void FloodFill(IslandScan scan, bool[,] visited, (int Row, int Col) cell)
     {
@@ -72,64 +152,16 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
         }
     }
 
-    // This repo's own DepthFirstSearch.Traverse takes the successor function that
-    // treats the skipped cell as water and returns the island reachable from a start,
-    // so the component count is one scan claiming each island exactly once - the same
-    // composition NumberOfIslandsSolution (LC 200) and MakingALargeIslandSolution
-    // (LC 827) already use for grid connectivity.
-    public static int MinDaysByDepthFirstSearch(int[][] grid)
-        => MinDaysUsing(grid, CountIslandsByDepthFirstSearch);
-
-    private static int CountIslandsByDepthFirstSearch(IslandScan scan)
-    {
-        var visited = new bool[scan.Rows, scan.Cols];
-        var count = 0;
-
-        for (var row = 0; row < scan.Rows; row++)
-        {
-            for (var col = 0; col < scan.Cols; col++)
-            {
-                if (scan.Grid[row][col] != Land || visited[row, col] || (row, col) == scan.Skip)
-                {
-                    continue;
-                }
-
-                count++;
-
-                foreach (var (islandRow, islandCol) in
-                         DepthFirstSearch.Traverse((row, col), cell => LandNeighbors(scan, cell)))
-                {
-                    visited[islandRow, islandCol] = true;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(IslandScan scan, (int Row, int Col) cell)
-    {
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var neighbor = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (IsLandInside(scan, neighbor))
-            {
-                yield return neighbor;
-            }
-        }
-    }
-
     // Zero days if the grid is already disconnected, one if some land cell is an
     // articulation cell, two otherwise. `countIslands` supplies the competing ways to
     // count connected components while treating one cell as water, and is the only
     // thing the two strategies differ in.
-    private static int MinDaysUsing(int[][] grid, Func<IslandScan, int> countIslands)
+    private static int MinDaysUsing(int[][] grid, IConnectedComponentCount countIslands)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
 
-        if (countIslands(new IslandScan(grid, rows, cols, NoSkippedCell)) != Connected)
+        if (countIslands.Count(new IslandScan(grid, rows, cols, NoSkippedCell)) != Connected)
         {
             return 0;
         }
@@ -139,7 +171,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
             for (var col = 0; col < cols; col++)
             {
                 if (grid[row][col] == Land &&
-                    countIslands(new IslandScan(grid, rows, cols, (row, col))) != Connected)
+                    countIslands.Count(new IslandScan(grid, rows, cols, (row, col))) != Connected)
                 {
                     return 1;
                 }

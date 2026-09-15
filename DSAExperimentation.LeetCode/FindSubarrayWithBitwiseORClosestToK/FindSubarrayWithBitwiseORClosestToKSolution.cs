@@ -48,24 +48,39 @@ internal static class FindSubarrayWithBitwiseORClosestToKSolution
 
         foreach (var num in nums)
         {
-            var next = new List<int> { num };
+            endingHere = ExtendWithOrs(endingHere, num);
+            best = MinDifference(best, endingHere, k);
+        }
 
-            foreach (var previousOr in endingHere)
+        return best;
+    }
+
+    // Folds `num` into every OR value of the subarrays ending at the previous right
+    // endpoint. Folding preserves that list's superset ordering, so a single
+    // adjacent-duplicate check is enough to deduplicate the result.
+    private static List<int> ExtendWithOrs(List<int> endingHere, int num)
+    {
+        var next = new List<int> { num };
+
+        foreach (var previousOr in endingHere)
+        {
+            var combined = previousOr | num;
+
+            if (next[^1] != combined)
             {
-                var combined = previousOr | num;
-
-                if (next[^1] != combined)
-                {
-                    next.Add(combined);
-                }
+                next.Add(combined);
             }
+        }
 
-            endingHere = next;
+        return next;
+    }
 
-            foreach (var orValue in endingHere)
-            {
-                best = Math.Min(best, Math.Abs(orValue - k));
-            }
+    // The best |OR value - k| reachable through the subarrays ending here.
+    private static int MinDifference(int best, List<int> endingHere, int k)
+    {
+        foreach (var orValue in endingHere)
+        {
+            best = Math.Min(best, Math.Abs(orValue - k));
         }
 
         return best;

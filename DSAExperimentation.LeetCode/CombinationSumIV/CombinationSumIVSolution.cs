@@ -41,11 +41,14 @@ internal static class CombinationSumIVSolution
         return dp[target];
     }
 
-    public static int CountCombinationsByMemoizedRecursion(int[] nums, int target)
-    {
-        return Memoizer.Memoize<int, int>(target, WaysFor);
+    public static int CountCombinationsByMemoizedRecursion(int[] nums, int target) =>
+        Memoizer.Memoize<int, int>(target, new WaysFor(nums));
 
-        int WaysFor(int remaining, Func<int, int> ways)
+    // The rule, named: the sequences reaching a remaining target are the sum, over
+    // every usable num, of the sequences reaching the target that num leaves behind.
+    private sealed class WaysFor(int[] nums) : IRecurrence<int, int>
+    {
+        public int Replay(int remaining, IRecurrence<int, int> rest)
         {
             if (remaining == 0)
             {
@@ -57,7 +60,7 @@ internal static class CombinationSumIVSolution
             {
                 if (num <= remaining)
                 {
-                    total += ways(remaining - num);
+                    total += rest.Replay(remaining - num, rest);
                 }
             }
 

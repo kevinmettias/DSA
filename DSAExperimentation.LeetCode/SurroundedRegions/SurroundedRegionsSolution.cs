@@ -20,51 +20,68 @@ internal static class SurroundedRegionsSolution
     {
         var rows = board.Length;
         var cols = board[0].Length;
-
-        void Mark((int Row, int Col) start)
-        {
-            if (board[start.Row][start.Col] != Open)
-            {
-                return;
-            }
-
-            foreach (var (row, col) in DepthFirstSearch.Traverse(start, Neighbors))
-            {
-                board[row][col] = BorderConnected;
-            }
-        }
-
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p)
-        {
-            (int Row, int Col)[] next = [(p.Row + 1, p.Col), (p.Row - 1, p.Col), (p.Row, p.Col + 1), (p.Row, p.Col - 1)];
-
-            foreach (var n in next)
-            {
-                if (n.Row >= 0 && n.Row < rows && n.Col >= 0 && n.Col < cols && board[n.Row][n.Col] == Open)
-                {
-                    yield return n;
-                }
-            }
-        }
-
-        for (var r = 0; r < rows; r++)
-        {
-            Mark((r, 0));
-            Mark((r, cols - 1));
-        }
-
-        for (var c = 0; c < cols; c++)
-        {
-            Mark((0, c));
-            Mark((rows - 1, c));
-        }
+        MarkBorderReachable(board, rows, cols);
 
         for (var r = 0; r < rows; r++)
         {
             for (var c = 0; c < cols; c++)
             {
-                board[r][c] = board[r][c] == BorderConnected ? Open : Captured;
+                var survives = board[r][c] == BorderConnected;
+                board[r][c] = survives ? Open : Captured;
             }
         }
     }
+
+    // Every border cell is a way into a surviving region, so walking outward from
+    // each of them marks exactly the 'O' cells that reach the border - the
+    // complement of what the flip above captures.
+    private static void MarkBorderReachable(char[][] board, int rows, int cols)
+    {
+        for (var r = 0; r < rows; r++)
+        {
+            MarkBorderConnected(board, (r, 0), rows, cols);
+            MarkBorderConnected(board, (r, cols - 1), rows, cols);
+        }
+
+        for (var c = 0; c < cols; c++)
+        {
+            MarkBorderConnected(board, (0, c), rows, cols);
+            MarkBorderConnected(board, (rows - 1, c), rows, cols);
+        }
+    }
+
+    // One entry point: a cell that is not an un-marked 'O' has nothing new behind
+    // it, and otherwise the cell and everything reachable from it get marked.
+    private static void MarkBorderConnected(char[][] board, (int Row, int Col) start, int rows, int cols)
+    {
+        if (board[start.Row][start.Col] != Open)
+        {
+            return;
+        }
+
+        foreach (var (row, col) in DepthFirstSearch.Traverse(start, p => OpenNeighbors(board, p, rows, cols)))
+        {
+            board[row][col] = BorderConnected;
+        }
+    }
+
+    // The four orthogonal neighbours of a cell that are still un-marked 'O's.
+    private static IEnumerable<(int Row, int Col)> OpenNeighbors(
+        char[][] board, (int Row, int Col) p, int rows, int cols)
+    {
+        (int Row, int Col)[] next = [(p.Row + 1, p.Col), (p.Row - 1, p.Col), (p.Row, p.Col + 1), (p.Row, p.Col - 1)];
+
+        foreach (var n in next)
+        {
+            if (IsInsideGrid(n.Row, n.Col, rows, cols) && board[n.Row][n.Col] == Open)
+            {
+                yield return n;
+            }
+        }
+    }
+
+    // Both coordinates have to land inside the board for a neighbour to be worth
+    // visiting at all.
+    private static bool IsInsideGrid(int row, int col, int rows, int cols) =>
+        row >= 0 && row < rows && col >= 0 && col < cols;
 }

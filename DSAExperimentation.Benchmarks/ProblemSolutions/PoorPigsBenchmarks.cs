@@ -13,7 +13,7 @@ public class PoorPigsBenchmarks
     private const int MinutesToTest = 15;
 
     [Params(100, 1_000)]
-    public int Buckets;
+    public int Buckets { get; set; }
 
     [Benchmark(Baseline = true)]
     public int LinearRecompute() =>

@@ -18,10 +18,10 @@ internal static class FindBeautifulIndicesInTheGivenArrayIISolution
     // The textbook double loop for both occurrence searches, then an O(|A| * |B|)
     // scan pairing every a-occurrence against every b-occurrence. Correct on any
     // input, but this is the arm #3008's larger constraints exist to rule out.
-    public static int[] FindBeautifulIndicesByBruteForce(string s, string a, string b, int k)
+    public static int[] FindBeautifulIndicesByBruteForce(Haystack s, PrefixPattern a, NearbyPattern b, int k)
     {
-        var aIndices = FindOccurrencesNaive(s, a);
-        var bIndices = FindOccurrencesNaive(s, b);
+        var aIndices = FindOccurrencesNaive(s, new Needle(a.Text));
+        var bIndices = FindOccurrencesNaive(s, new Needle(b.Text));
         var result = new List<int>();
 
         foreach (var i in aIndices)
@@ -35,17 +35,17 @@ internal static class FindBeautifulIndicesInTheGivenArrayIISolution
         return [.. result];
     }
 
-    private static List<int> FindOccurrencesNaive(string s, string pattern)
+    private static List<int> FindOccurrencesNaive(Haystack s, Needle pattern)
     {
         var matches = new List<int>();
 
-        for (var i = 0; i + pattern.Length <= s.Length; i++)
+        for (var i = 0; i + pattern.Text.Length <= s.Text.Length; i++)
         {
             var isMatch = true;
 
-            for (var j = 0; j < pattern.Length; j++)
+            for (var j = 0; j < pattern.Text.Length; j++)
             {
-                if (s[i + j] != pattern[j])
+                if (s.Text[i + j] != pattern.Text[j])
                 {
                     isMatch = false;
                     break;
@@ -79,10 +79,10 @@ internal static class FindBeautifulIndicesInTheGivenArrayIISolution
     // BinarySearch.LowerBound over the b-occurrences (already ascending, since
     // FindAll discovers them left to right) instead of scanning every b for every
     // a - the combination #3008's bound requires.
-    public static int[] FindBeautifulIndicesByZFunction(string s, string a, string b, int k)
+    public static int[] FindBeautifulIndicesByZFunction(Haystack s, PrefixPattern a, NearbyPattern b, int k)
     {
-        var aIndices = ZFunction.FindAll(s, a);
-        var bIndices = ZFunction.FindAll(s, b);
+        var aIndices = ZFunction.FindAll(s.Text, a.Text);
+        var bIndices = ZFunction.FindAll(s.Text, b.Text);
 
         return CollectNearbyIndices(aIndices, bIndices, k);
     }
@@ -107,4 +107,20 @@ internal static class FindBeautifulIndicesInTheGivenArrayIISolution
 
         return [.. result];
     }
+
+    // The three strings LC 3008 asks about, named for the roles they play here rather
+    // than left as adjacent `string` positions a caller could hand over the wrong way
+    // round with the compiler none the wiser. The haystack is the string every
+    // occurrence is searched in; the prefix pattern is what an index must start with;
+    // the nearby pattern is what must occur within k of it. The three are not
+    // interchangeable - the result set is "indices of `a` that have a `b` nearby", and
+    // swapping a for b answers a different question entirely. A needle is the one
+    // pattern either of those two is reduced to when a shared occurrence scan takes it.
+    internal readonly record struct Haystack(string Text);
+
+    internal readonly record struct PrefixPattern(string Text);
+
+    internal readonly record struct NearbyPattern(string Text);
+
+    internal readonly record struct Needle(string Text);
 }

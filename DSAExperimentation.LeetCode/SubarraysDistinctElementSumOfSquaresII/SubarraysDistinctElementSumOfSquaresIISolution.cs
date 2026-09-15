@@ -56,7 +56,7 @@ internal static class SubarraysDistinctElementSumOfSquaresIISolution
         for (var right = 0; right < n; right++)
         {
             var value = nums[right];
-            var left = lastSeen.TryGetValue(value, out var previous) ? previous + 1 : 0;
+            var left = lastSeen.TryGetValue(value, out var previous) ? IndexAfter(previous) : 0;
             lastSeen.Set(value, right);
 
             var rangeSumBefore = tree.Query(left, right);
@@ -69,4 +69,7 @@ internal static class SubarraysDistinctElementSumOfSquaresIISolution
 
         return answer;
     }
+
+    // The first start that excludes the value's previous occurrence.
+    private static int IndexAfter(int previousOccurrence) => previousOccurrence + 1;
 }

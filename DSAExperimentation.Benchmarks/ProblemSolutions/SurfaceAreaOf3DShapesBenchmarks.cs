@@ -17,10 +17,10 @@ public class SurfaceAreaOf3DShapesBenchmarks
 
     private const int Seed = 1;
 
-    [Params(50, 400)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(50, 400)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

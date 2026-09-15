@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PerfectRectangleBenchmarks
 {
-    [Params(20, 150)]
-    public int GridSize;
-
     private int[][] _rectangles = [];
+
+    [Params(20, 150)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

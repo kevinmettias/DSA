@@ -20,7 +20,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindNumberOfWaysToReachTheKthStairBenchmarks
 {
     [Params(1_000_000, 20_000_000)]
-    public int K;
+    public int K { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteRecursion() => FindNumberOfWaysToReachTheKthStairSolution.WaysByBruteRecursion(K);

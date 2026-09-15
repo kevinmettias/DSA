@@ -15,7 +15,7 @@ public class NumberOfMusicPlaylistsBenchmarks
     private const int K = 2;
 
     [Params(20, 100)]
-    public int N;
+    public int N { get; set; }
 
     public int Goal => N;
 

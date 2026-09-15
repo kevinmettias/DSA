@@ -79,8 +79,6 @@ internal static class SumOfBeautifulSubsequencesSolution
         return true;
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
-
     public static int SumBeautyByDivisorSieve(int[] nums)
     {
         var maxValue = 0;
@@ -95,27 +93,39 @@ internal static class SumOfBeautifulSubsequencesSolution
 
         for (var g = maxValue; g >= 1; g--)
         {
-            var multiples = FilterMultiples(nums, g);
+            var exact = ExactCountForDivisor(nums, g, exactCount);
 
-            if (multiples.Count == 0)
-            {
-                continue;
-            }
-
-            var total = CountIncreasingSubsequences(multiples);
-            var largerMultiples = 0L;
-
-            for (var multiple = 2 * g; multiple <= maxValue; multiple += g)
-            {
-                largerMultiples += exactCount[multiple];
-            }
-
-            largerMultiples %= ModularArithmetic.Modulo;
-            exactCount[g] = ((total - largerMultiples) % ModularArithmetic.Modulo + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
-            answer = (answer + (g % ModularArithmetic.Modulo) * exactCount[g]) % ModularArithmetic.Modulo;
+            exactCount[g] = exact;
+            answer = (answer + (g % ModularArithmetic.Modulo) * exact) % ModularArithmetic.Modulo;
         }
 
         return (int)answer;
+    }
+
+    // The exact count for divisor g: every strictly increasing subsequence drawn from
+    // the multiples of g, minus the counts already recorded for the larger multiples of
+    // g - which are exactly the subsequences whose own GCD is a proper multiple of g.
+    // Zero when g divides nothing in nums, which also contributes nothing to the sum.
+    private static long ExactCountForDivisor(int[] nums, int g, long[] exactCount)
+    {
+        var multiples = FilterMultiples(nums, g);
+
+        if (multiples.Count == 0)
+        {
+            return 0;
+        }
+
+        var total = CountIncreasingSubsequences(multiples);
+        var largerMultiples = 0L;
+
+        for (var multiple = 2 * g; multiple < exactCount.Length; multiple += g)
+        {
+            largerMultiples += exactCount[multiple];
+        }
+
+        largerMultiples %= ModularArithmetic.Modulo;
+
+        return ((total - largerMultiples) % ModularArithmetic.Modulo + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
     }
 
     private static List<int> FilterMultiples(int[] nums, int g)
@@ -138,6 +148,23 @@ internal static class SumOfBeautifulSubsequencesSolution
     // one O(log n) prefix query instead of an O(n) rescan.
     private static long CountIncreasingSubsequences(List<int> values)
     {
+        var distinct = DistinctValues(values);
+        var ranks = new ArraySequence<int>(distinct);
+        var fenwick = new FenwickTree<long, SumOperation<long>>(distinct.Length);
+        var total = 0L;
+
+        foreach (var value in values)
+        {
+            total = AccumulateValue(ranks, fenwick, value, total);
+        }
+
+        return total;
+    }
+
+    // The distinct values in ascending order - the coordinate-compressed ranks' own
+    // values, so a value's index in this array is its rank.
+    private static int[] DistinctValues(List<int> values)
+    {
         var sortedValues = values.ToArray();
         Array.Sort(sortedValues);
 
@@ -151,20 +178,26 @@ internal static class SumOfBeautifulSubsequencesSolution
             }
         }
 
-        var ranks = new ArraySequence<int>(sortedValues[..distinctCount]);
-        var fenwick = new FenwickTree<long, SumOperation<long>>(distinctCount);
-        var total = 0L;
-
-        foreach (var value in values)
-        {
-            var rank = BinarySearch.LowerBound(ranks, value);
-            var before = rank == 0 ? 0 : fenwick.Query(0, rank - 1);
-            var dp = (before + 1) % ModularArithmetic.Modulo;
-
-            fenwick.Add(rank, dp);
-            total = (total + dp) % ModularArithmetic.Modulo;
-        }
-
-        return total;
+        return sortedValues[..distinctCount];
     }
+
+    // One element's contribution: its dp is one plus the sum of dp over the earlier
+    // elements whose value is strictly smaller, which the Fenwick tree answers with a
+    // single prefix query.
+    private static long AccumulateValue(
+        ArraySequence<int> ranks,
+        FenwickTree<long, SumOperation<long>> fenwick,
+        int value,
+        long total)
+    {
+        var rank = BinarySearch.LowerBound(ranks, value);
+        var before = rank == 0 ? 0 : fenwick.Query(0, rank - 1);
+        var dp = (before + 1) % ModularArithmetic.Modulo;
+
+        fenwick.Add(rank, dp);
+
+        return (total + dp) % ModularArithmetic.Modulo;
+    }
+
+    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
 }

@@ -13,19 +13,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // which can afford its own full bound) - 500 is already well past where
 // SortedSweep pulls ahead. SortedSweep is handed the pre-sorted
 // ArrayIndexedSequence<int[]> its hoisted overload takes, sorted by the
-// solution's own ByXThenDescendingY rule, so sorting is charged to
-// [GlobalSetup] rather than to the sweep being measured.
+// XThenDescendingYOrder rule the sweep's precondition names, so sorting is
+// charged to [GlobalSetup] rather than to the sweep being measured.
 [MemoryDiagnoser]
 public class FindTheNumberOfWaysToPlacePeopleIIBenchmarks
 {
     private const int RandomSeed = 3027;
     private const int MaxCoordinate = 1_000_000_000;
 
-    [Params(10, 100, 500)]
-    public int Length;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
     private ArrayIndexedSequence<int[]> _sortedPoints;
+    [Params(10, 100, 500)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -42,7 +42,7 @@ public class FindTheNumberOfWaysToPlacePeopleIIBenchmarks
 
         _sortedPoints = new ArrayIndexedSequence<int[]>((int[][])_points.Clone());
         MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(
-            _sortedPoints, FindTheNumberOfWaysToPlacePeopleIISolution.ByXThenDescendingY);
+            _sortedPoints, XThenDescendingYOrder.Rule);
     }
 
     [Benchmark(Baseline = true)]

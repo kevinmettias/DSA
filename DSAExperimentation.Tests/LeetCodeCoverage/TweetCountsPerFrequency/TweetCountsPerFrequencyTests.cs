@@ -11,6 +11,15 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TweetCountsPerFrequency;
 // TweetOp.Apply is pure dispatch - no bucketing logic of its own.
 public sealed class TweetCountsPerFrequencyTests
 {
+    // LC 1348's own frequency names, stated here rather than read off the solution.
+    // A test that asked the solution what "minute" is would still pass after the
+    // solution's spelling changed, which is the one failure this file exists to
+    // catch; these are the names the published call sequence uses, so the test
+    // states them.
+    private const string Minute = "minute";
+    private const string Hour = "hour";
+    private const string Day = "day";
+
     public static TheoryData<TweetOp[], List<int>?[]> Examples =>
         new()
         {
@@ -80,24 +89,13 @@ public sealed class TweetCountsPerFrequencyTests
 // One call in a TweetCounts script: which method to invoke and with what
 // arguments. Pure dispatch, built via the two named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct TweetOp
+public readonly record struct TweetOp(string freq, string tweetName, int startTime, int endTime, bool isQuery)
 {
-    private readonly string _freq;
-    private readonly string _tweetName;
-    private readonly int _startTime;
-    private readonly int _endTime;
-    private readonly bool _isQuery;
-
-    private TweetOp(string freq, string tweetName, int startTime, int endTime, bool isQuery)
-    {
-        _freq = freq;
-        _tweetName = tweetName;
-        _startTime = startTime;
-        _endTime = endTime;
-        _isQuery = isQuery;
-    }
-
-    public static TweetOp Record(string tweetName, int time) => new(Minute, tweetName, time, time, false);
+    // A record call carries no frequency - LC's recordTweet takes only a name and a
+    // time, and Apply never reads freq for one - so the script states the empty
+    // string rather than a real frequency name it would never ask for.
+    public static TweetOp Record(string tweetName, int time) =>
+        new(string.Empty, tweetName, time, time, false);
 
     public static TweetOp Query(string freq, string tweetName, int startTime, int endTime) =>
         new(freq, tweetName, startTime, endTime, true);
@@ -109,12 +107,12 @@ public readonly record struct TweetOp
     // ever calls Apply.
     internal List<int>? Apply(ITweetCountsStrategy strategy)
     {
-        if (_isQuery)
+        if (isQuery)
         {
-            return strategy.GetTweetCountsPerFrequency(_freq, _tweetName, _startTime, _endTime);
+            return strategy.GetTweetCountsPerFrequency(freq, tweetName, startTime, endTime);
         }
 
-        strategy.RecordTweet(_tweetName, _startTime);
+        strategy.RecordTweet(tweetName, startTime);
         return null;
     }
 }

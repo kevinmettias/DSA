@@ -18,11 +18,11 @@ public class MaximumSumOfSubsequenceWithNonAdjacentElementsBenchmarks
     private const int MaxAbsoluteValue = 1_000;
     private const int Seed = 3165;
 
-    [Params(1_000, 20_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(1_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

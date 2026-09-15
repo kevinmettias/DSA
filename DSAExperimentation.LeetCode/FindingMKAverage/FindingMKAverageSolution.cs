@@ -94,19 +94,11 @@ internal static class FindingMKAverageSolution
         }
     }
 
-    private sealed class FenwickOrderStatisticsMKAverage : IMKAverage
+    private sealed class FenwickOrderStatisticsMKAverage(int m, int k) : IMKAverage
     {
-        private readonly int _m;
-        private readonly int _k;
         private readonly RepoQueue _window = new();
         private readonly FenwickTree<int, SumOperation<int>> _counts = new(MaxElementValue);
         private readonly FenwickTree<long, SumOperation<long>> _sums = new(MaxElementValue);
-
-        public FenwickOrderStatisticsMKAverage(int m, int k)
-        {
-            _m = m;
-            _k = k;
-        }
 
         public void AddElement(int num)
         {
@@ -114,7 +106,7 @@ internal static class FindingMKAverageSolution
             _counts.Add(num - 1, 1);
             _sums.Add(num - 1, num);
 
-            if (_window.Count > _m && _window.TryDequeue(out var evicted))
+            if (_window.Count > m && _window.TryDequeue(out var evicted))
             {
                 _counts.Add(evicted - 1, -1);
                 _sums.Add(evicted - 1, -evicted);
@@ -123,15 +115,15 @@ internal static class FindingMKAverageSolution
 
         public int CalculateMKAverage()
         {
-            if (_window.Count < _m)
+            if (_window.Count < m)
             {
                 return WindowNotFull;
             }
 
-            var smallSum = SumOfSmallest(_k);
-            var midPlusSmallSum = SumOfSmallest(_m - _k);
+            var smallSum = SumOfSmallest(k);
+            var midPlusSmallSum = SumOfSmallest(m - k);
 
-            return (int)((midPlusSmallSum - smallSum) / (_m - (TrimmedEnds * _k)));
+            return (int)((midPlusSmallSum - smallSum) / (m - (TrimmedEnds * k)));
         }
 
         // The count tree's own PrefixQuery is monotonic in the value index, which is

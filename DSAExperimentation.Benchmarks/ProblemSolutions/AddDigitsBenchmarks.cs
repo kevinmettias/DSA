@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class AddDigitsBenchmarks
 {
     [Params(999_999, int.MaxValue)]
-    public int Value;
+    public int Value { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Arithmetic() => AddDigitsSolution.AddDigitsByArithmetic(Value);

@@ -30,8 +30,11 @@ internal sealed class MergeTwoSortedListsRegistration : ILeetCodeProblemRegistra
             .Build();
 
     private static int[] Merge((int[] First, int[] Second) input)
-        => LeetCodeWireFormat.FromLinkedList(
-            MergeTwoSortedListsSolution.MergeByDummyHeadSplice(
-                LeetCodeWireFormat.ToLinkedList(input.First),
-                LeetCodeWireFormat.ToLinkedList(input.Second)));
+    {
+        var first = LeetCodeWireFormat.ToLinkedList(input.First);
+        var second = LeetCodeWireFormat.ToLinkedList(input.Second);
+        var merged = MergeTwoSortedListsSolution.MergeByDummyHeadSplice(first, second);
+
+        return LeetCodeWireFormat.FromLinkedList(merged);
+    }
 }

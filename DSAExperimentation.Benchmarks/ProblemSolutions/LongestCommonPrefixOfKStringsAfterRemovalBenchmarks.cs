@@ -18,11 +18,11 @@ public class LongestCommonPrefixOfKStringsAfterRemovalBenchmarks
     private const int MaxLength = 12;
     private const int K = 3;
 
-    [Params(20, 100)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private LowercaseTrie<int> _trie = null!;
+    private LowercaseTrie<int> _trie = new();
+    [Params(20, 100)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

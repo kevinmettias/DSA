@@ -68,11 +68,31 @@ internal static class MergeSimilarItemsSolution
     public static List<(int Value, int Weight)> MergeByHashMapAndMergeSort(int[][] items1, int[][] items2)
     {
         var totals = new HashMap<int, int>();
+        AccumulateBoth(totals, items1, items2);
+
+        return MaterializeByValue(totals);
+    }
+
+    private static void AccumulateBoth(HashMap<int, int> totals, int[][] items1, int[][] items2)
+    {
         Accumulate(totals, items1);
         Accumulate(totals, items2);
+    }
 
-        var values = totals.Keys.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(values));
+    private static void Accumulate(HashMap<int, int> totals, int[][] items)
+    {
+        foreach (var item in items)
+        {
+            totals.TryGetValue(item[ValueIndex], out var weight);
+            totals.Set(item[ValueIndex], weight + item[WeightIndex]);
+        }
+    }
+
+    // The distinct values in ascending order, each paired back with the weight
+    // accumulated against it.
+    private static List<(int Value, int Weight)> MaterializeByValue(HashMap<int, int> totals)
+    {
+        var values = SortedDistinctValues(totals);
 
         var merged = new List<(int Value, int Weight)>(values.Length);
 
@@ -85,12 +105,11 @@ internal static class MergeSimilarItemsSolution
         return merged;
     }
 
-    private static void Accumulate(HashMap<int, int> totals, int[][] items)
+    private static int[] SortedDistinctValues(HashMap<int, int> totals)
     {
-        foreach (var item in items)
-        {
-            totals.TryGetValue(item[ValueIndex], out var weight);
-            totals.Set(item[ValueIndex], weight + item[WeightIndex]);
-        }
+        var values = totals.Keys.ToArray();
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(values));
+
+        return values;
     }
 }

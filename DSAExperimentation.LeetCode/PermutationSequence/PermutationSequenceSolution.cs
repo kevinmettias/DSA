@@ -29,10 +29,15 @@ internal static class PermutationSequenceSolution
 
     private static BacktrackingSteps<PermutationState, int> BuildSteps(int n, SequenceSearchProgress progress) => new(
         IsSolution: s => s.Values.Count == n,
-        Candidates: s => s.Values.Count == n ? [] : Enumerable.Range(1, n).Where(d => !s.Used[d - 1]),
+        Candidates: s => s.Values.Count == n ? Array.Empty<int>() : UnusedDigits(n, s),
         Choose: (s, d) => { s.Used[d - 1] = true; s.Values.Add(d); },
         Unchoose: (s, d) => { s.Used[d - 1] = false; s.Values.RemoveAt(s.Values.Count - 1); },
         OnSolution: s => OnSolutionFound(s, progress));
+
+    // Every digit not yet placed - a lazy pipeline the engine re-reads per MoveNext,
+    // which is what lets it observe Unchoose restoring a digit to the pool.
+    private static IEnumerable<int> UnusedDigits(int digitCount, PermutationState state)
+        => Enumerable.Range(1, digitCount).Where(d => !state.Used[d - 1]);
 
     private static bool OnSolutionFound(PermutationState state, SequenceSearchProgress progress)
     {
@@ -83,15 +88,24 @@ internal static class PermutationSequenceSolution
     {
         var index = k / factorial[remaining - 1];
         k %= factorial[remaining - 1];
+        return TakeDigitAt(digits, index);
+    }
+
+    // The chosen digit leaves the pool as it is read, so every later pick runs over the
+    // already-shrunken set - which is what makes each digit appear at most once.
+    private static int TakeDigitAt(DynamicArray<int> digits, int index)
+    {
         var digit = digits.Get(index);
         digits.RemoveAt(index);
         return digit;
     }
 
-    private sealed class PermutationState(int length)
+    private sealed record PermutationState
     {
-        public bool[] Used { get; } = new bool[length];
+        public bool[] Used { get; }
         public List<int> Values { get; } = [];
+
+        public PermutationState(int length) => Used = new bool[length];
     }
 
     private sealed class SequenceSearchProgress(int target)

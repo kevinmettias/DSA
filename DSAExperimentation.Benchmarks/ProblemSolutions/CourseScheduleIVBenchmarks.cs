@@ -23,11 +23,11 @@ public class CourseScheduleIVBenchmarks
 
     private const int EdgesPerCourse = 2;
 
-    [Params(50, 150)]
-    public int CourseCount;
-
     private CourseGraph _graph = null!;
-    private int[][] _queries = null!;
+
+    private int[][] _queries = [];
+    [Params(50, 150)]
+    public int CourseCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,14 +36,6 @@ public class CourseScheduleIVBenchmarks
         _graph = CourseGraph.Build(CourseCount, BuildPrerequisites(random));
         _queries = BuildQueries(random);
     }
-
-    [Benchmark(Baseline = true)]
-    public List<bool> BfsPerQuery() =>
-        CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(_graph, _queries);
-
-    [Benchmark]
-    public List<bool> FloydWarshallAllPairs() =>
-        CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(_graph, _queries);
 
     private int[][] BuildPrerequisites(Random random)
     {
@@ -72,4 +64,12 @@ public class CourseScheduleIVBenchmarks
 
         return queries;
     }
+
+    [Benchmark(Baseline = true)]
+    public List<bool> BfsPerQuery() =>
+        CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(_graph, _queries);
+
+    [Benchmark]
+    public List<bool> FloydWarshallAllPairs() =>
+        CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(_graph, _queries);
 }

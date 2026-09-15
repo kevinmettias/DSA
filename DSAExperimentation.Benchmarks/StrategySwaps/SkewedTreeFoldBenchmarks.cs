@@ -16,10 +16,10 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 [MemoryDiagnoser]
 public class SkewedTreeFoldBenchmarks
 {
-    [Params(1_000, 3_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(1_000, 3_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Skewed(NodeCount);

@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CircleAndRectangleOverlappingBenchmarks
 {
-    [Params(60, 400)]
-    public int Side;
-
     private int _radius;
+
     private int _xCenter, _yCenter;
     private int _x1, _y1, _x2, _y2;
+    [Params(60, 400)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,10 +35,10 @@ public class CircleAndRectangleOverlappingBenchmarks
     [Benchmark(Baseline = true)]
     public bool LatticePointScan() =>
         CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
-            _radius, _xCenter, _yCenter, _x1, _y1, _x2, _y2);
+            new Circle(_radius, _xCenter, _yCenter), new Rectangle(_x1, _y1, _x2, _y2));
 
     [Benchmark]
     public bool ClosedFormClampAndDistance() =>
         CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
-            _radius, _xCenter, _yCenter, _x1, _y1, _x2, _y2);
+            new Circle(_radius, _xCenter, _yCenter), new Rectangle(_x1, _y1, _x2, _y2));
 }

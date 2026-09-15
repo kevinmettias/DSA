@@ -9,7 +9,12 @@ namespace DSAExperimentation.LeetCode.SpiralMatrix;
 internal sealed class SpiralMatrixRegistration : ILeetCodeProblemRegistration
 {
     public LeetCodeProblem Describe()
-        => LeetCodeProblem.For<int[][], IList<int>>("spiral-matrix")
+    {
+        var square20 = BuildRectangle(rows: 20, columns: 20);
+        var square100 = BuildRectangle(rows: 100, columns: 100);
+        var rectangle300x200 = BuildRectangle(rows: 300, columns: 200);
+
+        return LeetCodeProblem.For<int[][], IList<int>>("spiral-matrix")
             .Strategy("VisitedGridWalk", SpiralMatrixSolution.SpiralOrderByVisitedGridWalk)
             .Strategy("BoundaryPointerShrink", SpiralMatrixSolution.SpiralOrderByBoundaryPointerShrink)
             .MatchingAnswersWith(LeetCodeAnswers.SequenceEqual)
@@ -26,10 +31,11 @@ internal sealed class SpiralMatrixRegistration : ILeetCodeProblemRegistration
             // [Params], kept as separate workloads rather than averaged into one:
             // the visited-grid arm's extra allocation is what separates the two
             // strategies, and whether it shows up at all is size-dependent.
-            .Workload("square-20", BuildRectangle(rows: 20, columns: 20))
-            .Workload("square-100", BuildRectangle(rows: 100, columns: 100))
-            .Workload("rectangle-300x200", BuildRectangle(rows: 300, columns: 200))
+            .Workload("square-20", square20)
+            .Workload("square-100", square100)
+            .Workload("rectangle-300x200", rectangle300x200)
             .Build();
+    }
 
     private static int[][] BuildRectangle(int rows, int columns)
         => [.. Enumerable.Range(0, rows).Select(row => Enumerable.Range(row * columns, columns).ToArray())];

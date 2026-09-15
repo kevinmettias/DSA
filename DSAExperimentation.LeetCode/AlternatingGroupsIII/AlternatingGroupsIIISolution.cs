@@ -27,7 +27,8 @@ internal static class AlternatingGroupsIIISolution
         {
             if (query[0] == CountQuery)
             {
-                answers.Add(CountAlternatingWindows(tiles, query[1]));
+                var windowCount = CountAlternatingWindows(tiles, query[1]);
+                answers.Add(windowCount);
             }
             else
             {

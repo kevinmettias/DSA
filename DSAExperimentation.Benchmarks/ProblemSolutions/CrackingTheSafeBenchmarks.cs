@@ -16,7 +16,7 @@ public class CrackingTheSafeBenchmarks
     private const int K = 2;
 
     [Params(2, 3)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public string GreedyRecursion() => CrackingTheSafeSolution.CrackSafeByGreedyRecursion(N, K);

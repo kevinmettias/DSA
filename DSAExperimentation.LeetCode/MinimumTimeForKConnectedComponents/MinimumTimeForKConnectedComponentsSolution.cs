@@ -59,24 +59,36 @@ internal static class MinimumTimeForKConnectedComponentsSolution
 
         foreach (var edge in edges)
         {
-            if (edge[2] <= t)
+            if (TryUnionKeptEdge(parent, edge, t))
             {
-                continue;
+                components--;
             }
-
-            var rootU = Find(parent, edge[0]);
-            var rootV = Find(parent, edge[1]);
-
-            if (rootU == rootV)
-            {
-                continue;
-            }
-
-            parent[rootU] = rootV;
-            components--;
         }
 
         return components;
+    }
+
+    // One edge of the rebuild: an edge already gone at time `t` joins nothing, and
+    // neither does one whose endpoints already share a component; otherwise the two
+    // components it connects become one.
+    private static bool TryUnionKeptEdge(int[] parent, int[] edge, int t)
+    {
+        if (edge[2] <= t)
+        {
+            return false;
+        }
+
+        var rootU = Find(parent, edge[0]);
+        var rootV = Find(parent, edge[1]);
+
+        if (rootU == rootV)
+        {
+            return false;
+        }
+
+        parent[rootU] = rootV;
+
+        return true;
     }
 
     private static int Find(int[] parent, int x)

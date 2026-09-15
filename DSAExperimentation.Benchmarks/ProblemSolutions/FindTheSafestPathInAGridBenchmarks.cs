@@ -13,10 +13,10 @@ public class FindTheSafestPathInAGridBenchmarks
     private const int ThiefProbabilityDenominator = 20;
     private const int Seed = 1;
 
-    [Params(20, 80)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(20, 80)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -24,7 +24,7 @@ public class FindTheSafestPathInAGridBenchmarks
         var random = new Random(Seed);
         _grid = Enumerable.Range(0, Size)
             .Select(_ => Enumerable.Range(0, Size)
-                .Select(_ => random.Next(0, ThiefProbabilityDenominator) == 0 ? 1 : 0)
+                .Select(_ => SampleCellValue(random))
                 .ToArray())
             .ToArray();
 
@@ -33,6 +33,14 @@ public class FindTheSafestPathInAGridBenchmarks
         // the trivial 0 case so every iteration exercises the full algorithm.
         _grid[0][0] = 0;
         _grid[Size - 1][Size - 1] = 0;
+    }
+
+    // One cell's value: 1 where the thief roll lands on the first of its outcomes.
+    private static int SampleCellValue(Random random)
+    {
+        var isThief = random.Next(0, ThiefProbabilityDenominator) == 0;
+
+        return isThief ? 1 : 0;
     }
 
     [Benchmark(Baseline = true)]

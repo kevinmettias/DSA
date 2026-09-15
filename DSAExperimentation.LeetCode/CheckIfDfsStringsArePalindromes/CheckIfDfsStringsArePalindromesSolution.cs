@@ -96,7 +96,7 @@ internal static class CheckIfDfsStringsArePalindromesSolution
         var end = new int[n];
         var position = 0;
 
-        BuildTour(nodes[0], s, tour, start, end, ref position);
+        BuildTour(nodes[0], s, (Text: tour, Start: start, End: end), ref position);
 
         var forward = new RollingHash(tour);
         var backward = new RollingHash(ReverseOf(tour));
@@ -117,19 +117,34 @@ internal static class CheckIfDfsStringsArePalindromesSolution
     // own run ahead of it - begin is captured before recursing, so it always equals
     // the write cursor's position at entry, exactly where this subtree's first
     // character (some descendant's, or its own if it's a leaf) will land.
-    private static void BuildTour(RootedTreeNode node, string s, char[] tour, int[] start, int[] end, ref int position)
+    //
+    // The three arrays this walk writes are one recording, not three: the tour's own
+    // characters, and each node's [start, end) run inside them. They are allocated
+    // together, filled together, and read together by the queries that follow.
+    private static void BuildTour(
+        RootedTreeNode node, string s, (char[] Text, int[] Start, int[] End) tour, ref int position)
     {
         var begin = position;
 
+        AppendSubtreeCharacters(node, s, tour, ref position);
+
+        tour.Start[node.Id] = begin;
+        tour.End[node.Id] = position;
+    }
+
+    // Appends every character of node's subtree to the tour in post-order - each child's
+    // whole run ahead of it, node's own character last - leaving the cursor just past
+    // them. The character-writing half of the walk above.
+    private static void AppendSubtreeCharacters(
+        RootedTreeNode node, string s, (char[] Text, int[] Start, int[] End) tour, ref int position)
+    {
         foreach (var child in node.Children)
         {
-            BuildTour(child, s, tour, start, end, ref position);
+            BuildTour(child, s, tour, ref position);
         }
 
-        tour[position] = s[node.Id];
+        tour.Text[position] = s[node.Id];
         position++;
-        start[node.Id] = begin;
-        end[node.Id] = position;
     }
 
     private static char[] ReverseOf(char[] tour)

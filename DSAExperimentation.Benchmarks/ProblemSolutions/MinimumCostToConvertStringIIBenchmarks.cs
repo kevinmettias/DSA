@@ -17,14 +17,14 @@ public class MinimumCostToConvertStringIIBenchmarks
     private const int RulesSeed = 2977;
     private const int StringSeed = 29770;
 
-    [Params(100, 1000)]
-    public int StringLength;
+    private string _source = "";
 
-    private string _source = null!;
-    private string _target = null!;
-    private Dictionary<string, int> _index = null!;
-    private long[,] _distances = null!;
+    private string _target = "";
+    private Dictionary<string, int> _index = new();
+    private long[,] _distances = new long[0, 0];
     private SubstringNetwork _network = null!;
+    [Params(100, 1000)]
+    public int StringLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -41,9 +41,11 @@ public class MinimumCostToConvertStringIIBenchmarks
 
     [Benchmark(Baseline = true)]
     public long BruteForceFloydWarshall() =>
-        MinimumCostToConvertStringIISolution.MinimumCostByBruteForceFloydWarshall(_source, _target, _index, _distances);
+        MinimumCostToConvertStringIISolution.MinimumCostByBruteForceFloydWarshall(
+            new SourceText(_source), new TargetText(_target), _index, _distances);
 
     [Benchmark]
     public long AllPairsShortestPaths() =>
-        MinimumCostToConvertStringIISolution.MinimumCostByAllPairsShortestPaths(_source, _target, _network);
+        MinimumCostToConvertStringIISolution.MinimumCostByAllPairsShortestPaths(
+            new SourceText(_source), new TargetText(_target), _network);
 }

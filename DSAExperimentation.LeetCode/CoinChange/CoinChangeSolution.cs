@@ -37,15 +37,27 @@ internal static class CoinChangeSolution
             dp[a] = best;
         }
 
-        return dp[amount] >= Unreachable ? LeetCodeAnswer.None : dp[amount];
+        var amountIsUnreachable = dp[amount] >= Unreachable;
+
+        return amountIsUnreachable ? LeetCodeAnswer.None : FewestCoinsFor(dp, amount);
     }
+
+    // dp[a] is the fewest coins that make amount a, with Unreachable marking the
+    // amounts no coin combination lands on - the entry a finished answer is read
+    // from.
+    private static int FewestCoinsFor(int[] dp, int amount) => dp[amount];
 
     public static int FewestCoinsByMemoization(int[] coins, int amount)
     {
-        var result = Memoizer.Memoize<int, int>(amount, MinCoinsFor);
+        var result = Memoizer.Memoize<int, int>(amount, new MinCoinsFor(coins));
         return result >= Unreachable ? LeetCodeAnswer.None : result;
+    }
 
-        int MinCoinsFor(int remaining, Func<int, int> minCoins)
+    // The rule, named: the fewest coins that make an amount are one more than the
+    // fewest coins that make it minus any coin small enough to be used.
+    private sealed class MinCoinsFor(int[] coins) : IRecurrence<int, int>
+    {
+        public int Replay(int remaining, IRecurrence<int, int> rest)
         {
             if (remaining == 0)
             {
@@ -60,7 +72,7 @@ internal static class CoinChangeSolution
             var best = Unreachable;
             foreach (var coin in coins)
             {
-                var sub = minCoins(remaining - coin);
+                var sub = rest.Replay(remaining - coin, rest);
                 if (sub < Unreachable)
                 {
                     best = Math.Min(best, sub + 1);

@@ -26,22 +26,34 @@ internal static class LongestRepeatingCharacterReplacementSolution
 
         for (var start = 0; start < s.Length; start++)
         {
-            var counts = new int[AlphabetSize];
-            var mostFrequentCount = 0;
+            var run = LongestRunFromStart(s, start, k);
+            longest = Math.Max(longest, run);
+        }
 
-            for (var end = start; end < s.Length; end++)
+        return longest;
+    }
+
+    // Extends the window from `start` as far right as k replacements allow,
+    // returning the longest window that reaches - the "re-scan from every start
+    // index" half of the brute-force arm.
+    private static int LongestRunFromStart(string s, int start, int k)
+    {
+        var counts = new int[AlphabetSize];
+        var mostFrequentCount = 0;
+        var longest = 0;
+
+        for (var end = start; end < s.Length; end++)
+        {
+            var index = s[end] - 'A';
+            counts[index]++;
+            mostFrequentCount = Math.Max(mostFrequentCount, counts[index]);
+
+            if (end - start + 1 - mostFrequentCount > k)
             {
-                var index = s[end] - 'A';
-                counts[index]++;
-                mostFrequentCount = Math.Max(mostFrequentCount, counts[index]);
-
-                if (end - start + 1 - mostFrequentCount > k)
-                {
-                    break;
-                }
-
-                longest = Math.Max(longest, end - start + 1);
+                break;
             }
+
+            longest = Math.Max(longest, end - start + 1);
         }
 
         return longest;
@@ -59,22 +71,37 @@ internal static class LongestRepeatingCharacterReplacementSolution
 
         for (var windowEnd = 0; windowEnd < s.Length; windowEnd++)
         {
-            var incoming = s[windowEnd];
-            counts.TryGetValue(incoming, out var incomingCount);
-            counts.Set(incoming, incomingCount + 1);
-            mostFrequentCount = Math.Max(mostFrequentCount, incomingCount + 1);
+            mostFrequentCount = AdmitIncoming(counts, s[windowEnd], mostFrequentCount);
 
             if (windowEnd - windowStart + 1 - mostFrequentCount > k)
             {
-                var outgoing = s[windowStart];
-                counts.TryGetValue(outgoing, out var outgoingCount);
-                counts.Set(outgoing, outgoingCount - 1);
-                windowStart++;
+                windowStart = EvictOutgoing(counts, s[windowStart], windowStart);
             }
 
             longest = Math.Max(longest, windowEnd - windowStart + 1);
         }
 
         return longest;
+    }
+
+    // Adds the character entering the window from the right and re-takes the
+    // highest per-character count seen so far - the running historical max the
+    // window's length is judged against.
+    private static int AdmitIncoming(HashMap<char, int> counts, char incoming, int mostFrequentCount)
+    {
+        counts.TryGetValue(incoming, out var incomingCount);
+        counts.Set(incoming, incomingCount + 1);
+
+        return Math.Max(mostFrequentCount, incomingCount + 1);
+    }
+
+    // Drops the character leaving the window from the left, returning the
+    // advanced left edge.
+    private static int EvictOutgoing(HashMap<char, int> counts, char outgoing, int windowStart)
+    {
+        counts.TryGetValue(outgoing, out var outgoingCount);
+        counts.Set(outgoing, outgoingCount - 1);
+
+        return windowStart + 1;
     }
 }

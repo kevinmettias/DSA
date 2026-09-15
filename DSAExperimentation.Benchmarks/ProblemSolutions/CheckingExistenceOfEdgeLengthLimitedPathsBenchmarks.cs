@@ -19,11 +19,11 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
     private const int QueryCountPerNodeMultiplier = 2;
     private const int MaxEdgeWeight = 1_000_000;
 
-    [Params(100, 2_000)]
-    public int NodeCount;
+    private int[][] _edgeList = [];
 
-    private int[][] _edgeList = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(100, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

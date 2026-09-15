@@ -27,14 +27,7 @@ internal static class CountSubarraysWithFixedBoundsSolution
         {
             for (var end = start; end < nums.Length; end++)
             {
-                var min = int.MaxValue;
-                var max = int.MinValue;
-
-                for (var i = start; i <= end; i++)
-                {
-                    min = Math.Min(min, nums[i]);
-                    max = Math.Max(max, nums[i]);
-                }
+                var (min, max) = SubarrayBounds(nums, start, end);
 
                 if (min == minK && max == maxK)
                 {
@@ -44,6 +37,21 @@ internal static class CountSubarraysWithFixedBoundsSolution
         }
 
         return count;
+    }
+
+    // The min and max of nums[start..end], rescanned from scratch each time.
+    private static (int Min, int Max) SubarrayBounds(int[] nums, int start, int end)
+    {
+        var min = int.MaxValue;
+        var max = int.MinValue;
+
+        for (var i = start; i <= end; i++)
+        {
+            min = Math.Min(min, nums[i]);
+            max = Math.Max(max, nums[i]);
+        }
+
+        return (min, max);
     }
 
     // This repo's own SegmentTree pair - one folded by MinOperation<int>, one by

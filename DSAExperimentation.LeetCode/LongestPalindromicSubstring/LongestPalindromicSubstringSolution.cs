@@ -40,7 +40,7 @@ internal static class LongestPalindromicSubstringSolution
 
     private static (int Start, int Length) ExpandFrom(string s, int left, int right)
     {
-        while (left >= 0 && right < s.Length && s[left] == s[right])
+        while (ExpandsToMatchingPair(s, left, right))
         {
             left--;
             right++;
@@ -48,6 +48,11 @@ internal static class LongestPalindromicSubstringSolution
 
         return (left + 1, right - left - 1);
     }
+
+    // The walk can keep widening while both ends are still inside the string and
+    // the characters they hold are the same.
+    private static bool ExpandsToMatchingPair(string s, int left, int right)
+        => left >= 0 && right < s.Length && s[left] == s[right];
 
     public static string FindLongestPalindromeByManacher(string s)
     {

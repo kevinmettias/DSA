@@ -63,12 +63,10 @@ public sealed class HammingGraphTests
         Assert.Equal(expected, HammingGraph.IsOneApart(first, second));
 
     [Fact]
-    public void IsOneApart_IsSymmetric()
-    {
+    public void IsOneApart_IsSymmetric() =>
         Assert.Equal(
             HammingGraph.IsOneApart("abc", "abd"),
             HammingGraph.IsOneApart("abd", "abc"));
-    }
 
     [Fact]
     public void OneCharacterMutations_ProducesEveryReplacementAndNeverTheOriginal()

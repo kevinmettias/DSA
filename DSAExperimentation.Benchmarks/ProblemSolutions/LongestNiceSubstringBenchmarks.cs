@@ -18,10 +18,10 @@ public class LongestNiceSubstringBenchmarks
     // LC problem number, used as the deterministic seed for text generation.
     private const int RandomSeed = 1763;
 
-    [Params(30, 150)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(30, 150)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

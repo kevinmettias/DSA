@@ -19,7 +19,7 @@ namespace DSAExperimentation.LeetCode.SlidingPuzzle;
 internal static class SlidingPuzzleSolution
 {
     // LeetCode's own definition of "solved".
-    public const string Target = "123450";
+    private const string Target = "123450";
 
     // Deliberately written without this repo's primitives - BCL Queue + HashSet,
     // generating each candidate slide on the fly via PuzzleGraph's pure board
@@ -42,16 +42,26 @@ internal static class SlidingPuzzleSolution
                 return moves;
             }
 
-            foreach (var neighbor in PuzzleGraph.BlankSlideNeighbors(state))
-            {
-                if (visited.Add(neighbor))
-                {
-                    queue.Enqueue((neighbor, moves + 1));
-                }
-            }
+            ExpandNeighbors(state, moves, visited, queue);
         }
 
         return LeetCodeAnswer.None;
+    }
+
+    // Queues every slide of this board that the search has not reached yet.
+    private static void ExpandNeighbors(
+        string state,
+        int moves,
+        HashSet<string> visited,
+        Queue<(string State, int Moves)> queue)
+    {
+        foreach (var neighbor in PuzzleGraph.BlankSlideNeighbors(state))
+        {
+            if (visited.Add(neighbor))
+            {
+                queue.Enqueue((neighbor, moves + 1));
+            }
+        }
     }
 
     // This repo's own BFS: Reduce.Graph in BreadthFirstReduceOrder with

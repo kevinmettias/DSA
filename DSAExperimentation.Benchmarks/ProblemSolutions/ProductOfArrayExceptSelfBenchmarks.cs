@@ -14,10 +14,10 @@ public class ProductOfArrayExceptSelfBenchmarks
     private const int LowerBound = -1_000;
     private const int UpperBound = 1_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

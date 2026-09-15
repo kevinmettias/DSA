@@ -13,10 +13,26 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
     private const int MissingValue = -1;
     private const int ScriptSeed = 146;
 
+    // What choosing a cache implementation means: take the capacity a script supplies
+    // and hand back the cache to replay it against. An ICache<int, int> parameter would
+    // name one already-built cache; the decision here is which implementation gets
+    // built, so that is what the type says.
+    private interface ICacheFactory
+    {
+        ICache<int, int> Create(int capacity);
+    }
+
+    // LRUCacheSolution exposes its arms as static factory methods, so each needs a
+    // one-method adapter to satisfy the interface. Both are stateless, so one instance
+    // each is shared: the strategies registered below run inside the benchmark
+    // harness's timed region, and picking an arm must not allocate there.
+    private static readonly ICacheFactory LruCachePrimitive = new LruCachePrimitiveFactory();
+    private static readonly ICacheFactory DictionaryLinkedList = new DictionaryLinkedListFactory();
+
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<(int Capacity, IReadOnlyList<LeetCodeOperation> Script), List<int?>>("lru-cache")
-            .Strategy("LruCachePrimitive", input => Replay(LRUCacheSolution.CreateByLruCachePrimitive, input))
-            .Strategy("DictionaryLinkedList", input => Replay(LRUCacheSolution.CreateByDictionaryLinkedList, input))
+            .Strategy("LruCachePrimitive", input => Replay(LruCachePrimitive, input))
+            .Strategy("DictionaryLinkedList", input => Replay(DictionaryLinkedList, input))
             .MatchingAnswersWith(LeetCodeAnswers.SequenceEqual)
             .Case(
                 "example-1",
@@ -63,36 +79,16 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
             .Workload("mixed-hits-and-misses-2000", BuildScriptedWorkload(2_000))
             .Build();
 
-    private static (int Capacity, IReadOnlyList<LeetCodeOperation> Script) BuildScriptedWorkload(int capacity)
-    {
-        var random = new Random(ScriptSeed);
-        var script = new List<LeetCodeOperation>();
-
-        for (var key = 0; key < capacity; key++)
-        {
-            script.Add(LeetCodeOperation.Of("put", key, random.Next(0, capacity)));
-        }
-
-        var keyUpperBound = capacity * 2;
-
-        for (var round = 0; round < capacity; round++)
-        {
-            script.Add(LeetCodeOperation.Of("get", random.Next(0, keyUpperBound)));
-            script.Add(LeetCodeOperation.Of("put", random.Next(0, keyUpperBound), random.Next(0, capacity)));
-        }
-
-        return (capacity, script);
-    }
-
     private static List<int?> Replay(
-        Func<int, ICache<int, int>> createCache, (int Capacity, IReadOnlyList<LeetCodeOperation> Script) input)
+        ICacheFactory createCache, (int Capacity, IReadOnlyList<LeetCodeOperation> Script) input)
     {
-        var cache = createCache(input.Capacity);
+        var cache = createCache.Create(input.Capacity);
         var results = new List<int?>(input.Script.Count);
 
         foreach (var operation in input.Script)
         {
-            results.Add(Apply(cache, operation));
+            var applied = Apply(cache, operation);
+            results.Add(applied);
         }
 
         return results;
@@ -111,5 +107,52 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
                 throw new ArgumentOutOfRangeException(
                     nameof(operation), operation.Name, "LRU Cache has no such operation.");
         }
+    }
+
+    private static (int Capacity, IReadOnlyList<LeetCodeOperation> Script) BuildScriptedWorkload(int capacity)
+    {
+        var random = new Random(ScriptSeed);
+        var script = new List<LeetCodeOperation>();
+
+        for (var key = 0; key < capacity; key++)
+        {
+            var value = random.Next(0, capacity);
+            var insertion = LeetCodeOperation.Of("put", key, value);
+            script.Add(insertion);
+        }
+
+        for (var round = 0; round < capacity; round++)
+        {
+            AppendMixedRound(script, random, capacity);
+        }
+
+        return (capacity, script);
+    }
+
+    // One round of the mixed phase: a read somewhere in twice the key range, then a write that
+    // may hit a recently read key, a stale one, or a key never inserted - which is what makes
+    // the phase measure eviction rather than insertion.
+    private static void AppendMixedRound(List<LeetCodeOperation> script, Random random, int capacity)
+    {
+        var keyUpperBound = capacity * 2;
+
+        var keyToRead = random.Next(0, keyUpperBound);
+        var read = LeetCodeOperation.Of("get", keyToRead);
+        script.Add(read);
+
+        var keyToWrite = random.Next(0, keyUpperBound);
+        var valueToWrite = random.Next(0, capacity);
+        var write = LeetCodeOperation.Of("put", keyToWrite, valueToWrite);
+        script.Add(write);
+    }
+
+    private sealed class LruCachePrimitiveFactory : ICacheFactory
+    {
+        public ICache<int, int> Create(int capacity) => LRUCacheSolution.CreateByLruCachePrimitive(capacity);
+    }
+
+    private sealed class DictionaryLinkedListFactory : ICacheFactory
+    {
+        public ICache<int, int> Create(int capacity) => LRUCacheSolution.CreateByDictionaryLinkedList(capacity);
     }
 }

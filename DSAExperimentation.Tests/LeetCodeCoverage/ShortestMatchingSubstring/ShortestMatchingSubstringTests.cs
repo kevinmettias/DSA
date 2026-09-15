@@ -20,11 +20,19 @@ public sealed class ShortestMatchingSubstringTests
     [MemberData(nameof(Examples))]
     public void ShortestLengthByBruteForceIndexOf_LeetCodeExamples_ReturnsShortestMatchLength(
         string s, string p, int expected) =>
-        Assert.Equal(expected, ShortestMatchingSubstringSolution.ShortestLengthByBruteForceIndexOf(s, p));
+        Assert.Equal(
+            expected,
+            ShortestMatchingSubstringSolution.ShortestLengthByBruteForceIndexOf(
+                new ShortestMatchingSubstringSolution.SourceText(s),
+                new ShortestMatchingSubstringSolution.WildcardPattern(p)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestLengthByKmpBinarySearch_LeetCodeExamples_ReturnsShortestMatchLength(
         string s, string p, int expected) =>
-        Assert.Equal(expected, ShortestMatchingSubstringSolution.ShortestLengthByKmpBinarySearch(s, p));
+        Assert.Equal(
+            expected,
+            ShortestMatchingSubstringSolution.ShortestLengthByKmpBinarySearch(
+                new ShortestMatchingSubstringSolution.SourceText(s),
+                new ShortestMatchingSubstringSolution.WildcardPattern(p)));
 }

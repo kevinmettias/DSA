@@ -34,45 +34,6 @@ internal static class SudokuSolverSolution
     // itself against.
     public static bool TrySolveBySpecializedRecursion(char[][] board) => Search(board);
 
-    private static bool Search(char[][] board)
-    {
-        var cell = FindEmptyCell(board);
-        if (cell is null)
-        {
-            return true;
-        }
-
-        var (row, col) = cell.Value;
-
-        for (var digit = '1'; digit <= '9'; digit++)
-        {
-            if (TryPlaceDigit(board, row, col, digit))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryPlaceDigit(char[][] board, int row, int col, char digit)
-    {
-        if (!IsValidPlacement(board, row, col, digit))
-        {
-            return false;
-        }
-
-        board[row][col] = digit;
-
-        if (Search(board))
-        {
-            return true;
-        }
-
-        board[row][col] = '.';
-        return false;
-    }
-
     // This repo's own choose/explore/unchoose engine, closed over the same
     // board/placement shape the specialized recursion above walks.
     public static bool TrySolveByBacktrackEngine(char[][] board)
@@ -113,6 +74,55 @@ internal static class SudokuSolverSolution
             .Select(digit => (char)('0' + digit))
             .Where(digit => IsValidPlacement(board, row, col, digit))
             .Select(digit => new Placement(row, col, digit));
+    }
+
+    private static char[][] CloneBoard(char[][] board) => board.Select(row => (char[])row.Clone()).ToArray();
+
+    private static void CopyInto(char[][] target, char[][] source)
+    {
+        for (var row = 0; row < BoardSize; row++)
+        {
+            Array.Copy(source[row], target[row], BoardSize);
+        }
+    }
+
+    private static bool Search(char[][] board)
+    {
+        var cell = FindEmptyCell(board);
+        if (cell is null)
+        {
+            return true;
+        }
+
+        var (row, col) = cell.Value;
+
+        for (var digit = '1'; digit <= '9'; digit++)
+        {
+            if (TryPlaceDigit(board, row, col, digit))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryPlaceDigit(char[][] board, int row, int col, char digit)
+    {
+        if (!IsValidPlacement(board, row, col, digit))
+        {
+            return false;
+        }
+
+        board[row][col] = digit;
+
+        if (Search(board))
+        {
+            return true;
+        }
+
+        board[row][col] = '.';
+        return false;
     }
 
     private static (int Row, int Col)? FindEmptyCell(char[][] board)
@@ -166,20 +176,7 @@ internal static class SudokuSolverSolution
         return false;
     }
 
-    private static char[][] CloneBoard(char[][] board) => board.Select(row => (char[])row.Clone()).ToArray();
-
-    private static void CopyInto(char[][] target, char[][] source)
-    {
-        for (var row = 0; row < BoardSize; row++)
-        {
-            Array.Copy(source[row], target[row], BoardSize);
-        }
-    }
-
-    private sealed class State(char[][] board)
-    {
-        public char[][] Board { get; } = board;
-    }
+    private sealed record State(char[][] Board);
 
     private readonly record struct Placement(int Row, int Col, char Digit);
 }

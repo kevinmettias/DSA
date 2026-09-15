@@ -14,10 +14,10 @@ public class QueriesOnAPermutationWithKeyBenchmarks
     private const int Seed = 1;
     private const int FirstPermutationValue = 1;
 
-    [Params(200, 1_000)]
-    public int M;
+    private int[] _queries = [];
 
-    private int[] _queries = null!;
+    [Params(200, 1_000)]
+    public int M { get; set; }
 
     [GlobalSetup]
     public void Setup()

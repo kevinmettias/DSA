@@ -20,10 +20,10 @@ public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
 
     private const int DigitCount = 10;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private string _digits = "";
 
-    private string _digits = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

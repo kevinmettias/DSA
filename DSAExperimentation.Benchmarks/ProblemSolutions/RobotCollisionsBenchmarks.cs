@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.RobotCollisions.RobotCollisionsSolution;
+using DSAExperimentation.LeetCode.RobotCollisions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,12 +17,12 @@ public class RobotCollisionsBenchmarks
     // LC problem number, reused as the deterministic workload seed.
     private const int Seed = 2751;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _positions = [];
 
-    private int[] _positions = null!;
-    private int[] _healths = null!;
-    private string _directions = null!;
+    private int[] _healths = [];
+    private string _directions = "";
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,12 +38,15 @@ public class RobotCollisionsBenchmarks
 
         _positions = shuffledPositions;
         _healths = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxHealthExclusive)).ToArray();
-        _directions = new string([.. Enumerable.Range(0, Length).Select(_ => random.Next(2) == 0 ? 'L' : 'R')]);
+        _directions = new string([.. Enumerable.Range(0, Length).Select(_ => IsLeftward(random) ? 'L' : 'R')]);
     }
 
+    // The draw is the robot's direction: half move left, half move right.
+    private static bool IsLeftward(Random random) => random.Next(2) == 0;
+
     [Benchmark(Baseline = true)]
-    public int[] RepeatedScan() => SurvivorHealthsByRepeatedScan(_positions, _healths, _directions);
+    public int[] RepeatedScan() => RobotCollisionsSolution.SurvivorHealthsByRepeatedScan(_positions, _healths, _directions);
 
     [Benchmark]
-    public int[] StackSimulation() => SurvivorHealthsByStackSimulation(_positions, _healths, _directions);
+    public int[] StackSimulation() => RobotCollisionsSolution.SurvivorHealthsByStackSimulation(_positions, _healths, _directions);
 }

@@ -16,10 +16,10 @@ public class FrequenciesOfShortestSupersequencesBenchmarks
     private const int WordSeed = 3435;
     private const int LetterCount = 16;
 
-    [Params(50, 200)]
-    public int WordCount;
-
     private LetterGraph _graph = null!;
+
+    [Params(50, 200)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

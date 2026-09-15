@@ -23,14 +23,22 @@ public sealed class WordLadderIITests
     public void FindLaddersByLayeredMutation_LeetCodeExamples_ReturnsEveryShortestSequence(
         string beginWord, string endWord, string[] wordList, string[][] expected) =>
         AssertSameSequences(
-            expected, WordLadderIISolution.FindLaddersByLayeredMutation(beginWord, endWord, wordList));
+            expected,
+            WordLadderIISolution.FindLaddersByLayeredMutation(
+                new WordLadderIISolution.BeginWord(beginWord),
+                new WordLadderIISolution.EndWord(endWord),
+                wordList));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindLaddersByReduceGraph_LeetCodeExamples_ReturnsEveryShortestSequence(
         string beginWord, string endWord, string[] wordList, string[][] expected) =>
         AssertSameSequences(
-            expected, WordLadderIISolution.FindLaddersByReduceGraph(beginWord, endWord, wordList));
+            expected,
+            WordLadderIISolution.FindLaddersByReduceGraph(
+                new WordLadderIISolution.BeginWord(beginWord),
+                new WordLadderIISolution.EndWord(endWord),
+                wordList));
 
     private static void AssertSameSequences(string[][] expected, List<string[]> actual) =>
         Assert.Equal(Sorted(expected), Sorted(actual));

@@ -19,11 +19,11 @@ public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
     private const int SubsequenceLengthDivisor = 2;
     private const int RandomSeed = 1;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
     private int _k;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

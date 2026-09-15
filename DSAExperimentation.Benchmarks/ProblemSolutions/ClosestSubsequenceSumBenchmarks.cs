@@ -15,10 +15,10 @@ public class ClosestSubsequenceSumBenchmarks
     private const int RandomSeed = 1755; // LC problem number
     private const int ValueMagnitudeBound = 50;
 
-    [Params(16, 20)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(16, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

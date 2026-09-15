@@ -13,10 +13,10 @@ public class SortColorsBenchmarks
     private const int MaxColorValue = 2;
     private const int ColorCount = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

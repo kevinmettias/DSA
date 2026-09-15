@@ -28,6 +28,11 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
     // "No edge is excluded" / "no edge is forced" for an unconstrained probe.
     private const int NoEdge = -1;
 
+    // Both strategies are stateless, so one instance each serves every call and the
+    // benchmark arms that measure these two methods allocate nothing to pick one.
+    private static readonly ISpanningWeight BfsConnectivityWeight = new SpanningWeightByBfs();
+    private static readonly ISpanningWeight DisjointSetWeight = new SpanningWeightByDisjointSet();
+
     // The textbook answer: no union-find, just an adjacency list of the edges accepted
     // so far and a fresh BFS per connectivity question. Deliberately written without
     // this repo's primitives - it is the arm the composed strategy below has to justify
@@ -41,7 +46,7 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
     }
 
     public static (int[] Critical, int[] PseudoCritical) ClassifyEdgesByBfsConnectivity(WeightedEdgeList graph) =>
-        Classify(graph, BfsSpanningWeight);
+        Classify(graph, BfsConnectivityWeight);
 
     // The same three-probe classification over this repo's DisjointSet.
     public static (int[] Critical, int[] PseudoCritical) ClassifyEdgesByDisjointSet(
@@ -53,12 +58,12 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
     }
 
     public static (int[] Critical, int[] PseudoCritical) ClassifyEdgesByDisjointSet(WeightedEdgeList graph) =>
-        Classify(graph, DisjointSetSpanningWeight);
+        Classify(graph, DisjointSetWeight);
 
     private static (int[] Critical, int[] PseudoCritical) Classify(
-        WeightedEdgeList graph, SpanningWeight spanningWeight)
+        WeightedEdgeList graph, ISpanningWeight spanningWeight)
     {
-        var baseline = spanningWeight(graph, EdgeProbe.Unconstrained)
+        var baseline = spanningWeight.Compute(graph, EdgeProbe.Unconstrained)
             ?? throw new InvalidOperationException("LeetCode 1489 guarantees a connected input graph.");
 
         var critical = new List<int>();
@@ -70,7 +75,7 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
             {
                 critical.Add(index);
             }
-            else if (spanningWeight(graph, EdgeProbe.Forcing(index)) == baseline)
+            else if (spanningWeight.Compute(graph, EdgeProbe.Forcing(index)) == baseline)
             {
                 pseudoCritical.Add(index);
             }
@@ -82,37 +87,47 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
     // Dropping a critical edge either leaves the graph disconnected (no spanning weight
     // at all) or forces a heavier tree.
     private static bool IsCritical(
-        WeightedEdgeList graph, SpanningWeight spanningWeight, int index, int baseline)
+        WeightedEdgeList graph, ISpanningWeight spanningWeight, int index, int baseline)
     {
-        var withoutEdge = spanningWeight(graph, EdgeProbe.Skipping(index));
+        var withoutEdge = spanningWeight.Compute(graph, EdgeProbe.Skipping(index));
 
         return withoutEdge is null || withoutEdge > baseline;
     }
 
-    // Weight of the minimum spanning tree under one probe's constraint, or null when
-    // the constrained graph has no spanning tree at all.
-    private delegate int? SpanningWeight(WeightedEdgeList graph, EdgeProbe probe);
-
-    private static int? DisjointSetSpanningWeight(WeightedEdgeList graph, EdgeProbe probe)
+    // The one question the two arms answer differently: the weight of the minimum
+    // spanning tree under one probe's constraint. Both of its inputs are named here,
+    // and what a null means - not "weight zero" but "the constrained graph has no
+    // spanning tree at all" - has somewhere to be stated.
+    private interface ISpanningWeight
     {
-        var components = new DisjointSet(graph.NodeCount);
-        var tally = new SpanningTally();
-
-        if (probe.ForceIndex != NoEdge)
-        {
-            UnionEdge(components, graph.Edges[probe.ForceIndex], tally);
-        }
-
-        foreach (var index in graph.ByWeight)
-        {
-            TryUnionEdge(graph, components, index, probe, tally);
-        }
-
-        return tally.SpanningWeightOf(graph.NodeCount);
+        int? Compute(WeightedEdgeList graph, EdgeProbe probe);
     }
 
+    private sealed class SpanningWeightByDisjointSet : ISpanningWeight
+    {
+        public int? Compute(WeightedEdgeList graph, EdgeProbe probe)
+        {
+            var forest = (Components: new DisjointSet(graph.NodeCount), Tally: new SpanningTally());
+
+            if (probe.ForceIndex != NoEdge)
+            {
+                UnionEdge(forest, graph.Edges[probe.ForceIndex]);
+            }
+
+            foreach (var index in graph.ByWeight)
+            {
+                TryUnionEdge(graph, forest, index, probe);
+            }
+
+            return forest.Tally.SpanningWeightOf(graph.NodeCount);
+        }
+    }
+
+    // The scan's own state: the components whose connectivity answers the question,
+    // and the running tally of the tree they have accepted - both built here, passed
+    // together to every accept step, and never meaningful apart.
     private static void TryUnionEdge(
-        WeightedEdgeList graph, DisjointSet components, int index, EdgeProbe probe, SpanningTally tally)
+        WeightedEdgeList graph, (DisjointSet Components, SpanningTally Tally) forest, int index, EdgeProbe probe)
     {
         if (probe.Excludes(index))
         {
@@ -121,44 +136,49 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
 
         var edge = graph.Edges[index];
 
-        if (!components.IsConnected(edge[0], edge[1]))
+        if (!forest.Components.IsConnected(edge[0], edge[1]))
         {
-            UnionEdge(components, edge, tally);
+            UnionEdge(forest, edge);
         }
     }
 
-    private static void UnionEdge(DisjointSet components, int[] edge, SpanningTally tally)
+    private static void UnionEdge((DisjointSet Components, SpanningTally Tally) forest, int[] edge)
     {
-        components.Union(edge[0], edge[1]);
-        tally.Accept(WeightedEdgeList.WeightOf(edge));
+        forest.Components.Union(edge[0], edge[1]);
+        forest.Tally.Accept(WeightedEdgeList.WeightOf(edge));
     }
 
-    private static int? BfsSpanningWeight(WeightedEdgeList graph, EdgeProbe probe)
+    private sealed class SpanningWeightByBfs : ISpanningWeight
     {
-        var adjacency = new List<int>[graph.NodeCount];
-
-        for (var node = 0; node < graph.NodeCount; node++)
+        public int? Compute(WeightedEdgeList graph, EdgeProbe probe)
         {
-            adjacency[node] = [];
+            var adjacency = new List<int>[graph.NodeCount];
+
+            for (var node = 0; node < graph.NodeCount; node++)
+            {
+                adjacency[node] = [];
+            }
+
+            // The same scan state as the DisjointSet arm above, with the adjacency list
+            // standing in for the union-find that answers the connectivity question.
+            var forest = (Adjacency: adjacency, Tally: new SpanningTally());
+
+            if (probe.ForceIndex != NoEdge)
+            {
+                AcceptBfsEdge(forest, graph.Edges[probe.ForceIndex]);
+            }
+
+            foreach (var index in graph.ByWeight)
+            {
+                TryAcceptBfsEdge(graph, forest, index, probe);
+            }
+
+            return forest.Tally.SpanningWeightOf(graph.NodeCount);
         }
-
-        var tally = new SpanningTally();
-
-        if (probe.ForceIndex != NoEdge)
-        {
-            AcceptBfsEdge(adjacency, graph.Edges[probe.ForceIndex], tally);
-        }
-
-        foreach (var index in graph.ByWeight)
-        {
-            TryAcceptBfsEdge(graph, adjacency, index, probe, tally);
-        }
-
-        return tally.SpanningWeightOf(graph.NodeCount);
     }
 
     private static void TryAcceptBfsEdge(
-        WeightedEdgeList graph, List<int>[] adjacency, int index, EdgeProbe probe, SpanningTally tally)
+        WeightedEdgeList graph, (List<int>[] Adjacency, SpanningTally Tally) forest, int index, EdgeProbe probe)
     {
         if (probe.Excludes(index))
         {
@@ -167,17 +187,17 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
 
         var edge = graph.Edges[index];
 
-        if (!ReachableViaBfs(adjacency, edge[0], edge[1]))
+        if (!ReachableViaBfs(forest.Adjacency, edge[0], edge[1]))
         {
-            AcceptBfsEdge(adjacency, edge, tally);
+            AcceptBfsEdge(forest, edge);
         }
     }
 
-    private static void AcceptBfsEdge(List<int>[] adjacency, int[] edge, SpanningTally tally)
+    private static void AcceptBfsEdge((List<int>[] Adjacency, SpanningTally Tally) forest, int[] edge)
     {
-        adjacency[edge[0]].Add(edge[1]);
-        adjacency[edge[1]].Add(edge[0]);
-        tally.Accept(WeightedEdgeList.WeightOf(edge));
+        forest.Adjacency[edge[0]].Add(edge[1]);
+        forest.Adjacency[edge[1]].Add(edge[0]);
+        forest.Tally.Accept(WeightedEdgeList.WeightOf(edge));
     }
 
     private static bool ReachableViaBfs(List<int>[] adjacency, int start, int target)
@@ -253,6 +273,10 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
 
         // A spanning tree over n nodes has exactly n - 1 edges; anything less means the
         // constrained graph was disconnected.
-        public int? SpanningWeightOf(int nodeCount) => _edgesUsed == nodeCount - 1 ? _totalWeight : null;
+        public int? SpanningWeightOf(int nodeCount) => HasSpanningTree(nodeCount) ? _totalWeight : null;
+
+        // The edges accepted so far form a spanning tree once there are one fewer of
+        // them than there are nodes - Kruskal never accepts an edge that closes a cycle.
+        private bool HasSpanningTree(int nodeCount) => _edgesUsed == nodeCount - 1;
     }
 }

@@ -106,19 +106,8 @@ public sealed class StockPriceFluctuationTests
 // returns null (no answer); the three queries return the actual answer - the same
 // null-means-no-return-value convention DetectSquaresOp.Apply uses for its own
 // mutator/query split.
-public readonly record struct StockPriceOp
+public readonly record struct StockPriceOp(StockPriceOp.StockPriceOpKind kind, int timestamp, int price)
 {
-    private readonly StockPriceOpKind _kind;
-    private readonly int _timestamp;
-    private readonly int _price;
-
-    private StockPriceOp(StockPriceOpKind kind, int timestamp, int price)
-    {
-        _kind = kind;
-        _timestamp = timestamp;
-        _price = price;
-    }
-
     public static StockPriceOp Update(int timestamp, int price) =>
         new(StockPriceOpKind.Update, timestamp, price);
 
@@ -130,7 +119,7 @@ public readonly record struct StockPriceOp
 
     internal int? Apply(StockPriceFluctuationSolution.IStockPrice stockPrice)
     {
-        switch (_kind)
+        switch (kind)
         {
             case StockPriceOpKind.Current:
                 return stockPrice.Current();
@@ -139,12 +128,12 @@ public readonly record struct StockPriceOp
             case StockPriceOpKind.Minimum:
                 return stockPrice.Minimum();
             default:
-                stockPrice.Update(_timestamp, _price);
+                stockPrice.Update(timestamp, price);
                 return null;
         }
     }
 
-    private enum StockPriceOpKind
+    public enum StockPriceOpKind
     {
         Update,
         Current,

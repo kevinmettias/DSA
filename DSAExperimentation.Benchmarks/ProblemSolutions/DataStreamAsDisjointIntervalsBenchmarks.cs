@@ -17,10 +17,10 @@ public class DataStreamAsDisjointIntervalsBenchmarks
     // and merge realistically instead of always being disjoint singletons.
     private const int ValueRangeMultiplier = 3;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

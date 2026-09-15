@@ -16,11 +16,11 @@ public class MinimumDeletionsToMakeAlternatingSubstringBenchmarks
     private const int RandomSeed = 3777; // LC problem number
     private const int QueryCount = 200;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,7 +30,8 @@ public class MinimumDeletionsToMakeAlternatingSubstringBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = random.Next(2) == 0 ? 'A' : 'B';
+            var isA = random.Next(2) == 0;
+            chars[i] = isA ? 'A' : 'B';
         }
 
         _s = new string(chars);

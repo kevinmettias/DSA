@@ -25,11 +25,11 @@ public class GuessTheWordBenchmarks
     private const int MiddleIndexDivisor = 2;
     private const int AlphabetSize = 26;
 
-    [Params(100, 1_000)]
-    public int WordCount;
+    private string[] _wordList = [];
 
-    private string[] _wordList = null!;
-    private string _secret = null!;
+    private string _secret = "";
+    [Params(100, 1_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

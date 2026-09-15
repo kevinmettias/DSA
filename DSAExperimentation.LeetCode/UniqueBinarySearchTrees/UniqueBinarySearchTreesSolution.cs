@@ -39,22 +39,30 @@ internal static class UniqueBinarySearchTreesSolution
     // distinct node count is computed once and shared across every caller
     // that needs it.
     public static int NumTreesByMemoizedCatalan(int n) =>
-        Memoizer.Memoize<int, int>(n, Catalan);
+        Memoizer.Memoize<int, int>(n, new SplitAtEveryLeftCount());
 
-    private static int Catalan(int nodes, Func<int, int> count)
+    // The recurrence, named: a tree over `nodes` nodes is one candidate root per
+    // left-subtree size, each pairing every left shape with every right shape, and
+    // the two smallest counts are the base cases. Whether a repeated count is
+    // computed once or many times is the memo run's business, not the rule's.
+    private sealed class SplitAtEveryLeftCount : IRecurrence<int, int>
     {
-        if (nodes <= 1)
+        /// <inheritdoc/>
+        public int Replay(int nodes, IRecurrence<int, int> rest)
         {
-            return 1;
+            if (nodes <= 1)
+            {
+                return 1;
+            }
+
+            var total = 0;
+
+            for (var left = 0; left < nodes; left++)
+            {
+                total += rest.Replay(left, rest) * rest.Replay(nodes - left - 1, rest);
+            }
+
+            return total;
         }
-
-        var total = 0;
-
-        for (var left = 0; left < nodes; left++)
-        {
-            total += count(left) * count(nodes - left - 1);
-        }
-
-        return total;
     }
 }

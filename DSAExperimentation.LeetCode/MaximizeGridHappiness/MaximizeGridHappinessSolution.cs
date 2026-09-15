@@ -38,8 +38,11 @@ internal static class MaximizeGridHappinessSolution
     // happens to land on it. Deliberately plain recursion over ints - the arm the
     // memoized strategy below has to justify itself against.
     public static int GetMaxGridHappinessByBruteForceRecursion(
-        int m, int n, int introvertsCount, int extrovertsCount) =>
-        GetMaxGridHappinessByBruteForceRecursion(GridLayout.Build(m, n), introvertsCount, extrovertsCount);
+        int m, int n, int introvertsCount, int extrovertsCount)
+    {
+        var layout = GridLayout.Build(m, n);
+        return GetMaxGridHappinessByBruteForceRecursion(layout, introvertsCount, extrovertsCount);
+    }
 
     public static int GetMaxGridHappinessByBruteForceRecursion(
         GridLayout layout, int introvertsCount, int extrovertsCount) =>
@@ -53,18 +56,19 @@ internal static class MaximizeGridHappinessSolution
         }
 
         var neighbors = layout.Neighbors(state.Pos, state.Mask);
-        var best = BestFromBruteForce(layout, SkipCell(layout, state));
+        var skipped = SkipCell(layout, state);
+        var best = BestFromBruteForce(layout, skipped);
 
         if (state.Introverts > 0)
         {
-            var placed = IntrovertGain(neighbors) + BestFromBruteForce(layout, PlaceIntrovert(layout, state));
-            best = Math.Max(best, placed);
+            var placed = PlaceIntrovert(layout, state);
+            best = Math.Max(best, IntrovertGain(neighbors) + BestFromBruteForce(layout, placed));
         }
 
         if (state.Extroverts > 0)
         {
-            var placed = ExtrovertGain(neighbors) + BestFromBruteForce(layout, PlaceExtrovert(layout, state));
-            best = Math.Max(best, placed);
+            var placed = PlaceExtrovert(layout, state);
+            best = Math.Max(best, ExtrovertGain(neighbors) + BestFromBruteForce(layout, placed));
         }
 
         return best;
@@ -76,39 +80,17 @@ internal static class MaximizeGridHappinessSolution
     // since two independently-exhaustible people pools replace that problem's single
     // per-row choice. Every reachable state is computed exactly once.
     public static int GetMaxGridHappinessByMemoizedProfileDp(
-        int m, int n, int introvertsCount, int extrovertsCount) =>
-        GetMaxGridHappinessByMemoizedProfileDp(GridLayout.Build(m, n), introvertsCount, extrovertsCount);
+        int m, int n, int introvertsCount, int extrovertsCount)
+    {
+        var layout = GridLayout.Build(m, n);
+        return GetMaxGridHappinessByMemoizedProfileDp(layout, introvertsCount, extrovertsCount);
+    }
 
     public static int GetMaxGridHappinessByMemoizedProfileDp(
         GridLayout layout, int introvertsCount, int extrovertsCount) =>
         Memoizer.Memoize<GridState, int>(
             new GridState(0, 0, introvertsCount, extrovertsCount),
-            (state, bestFrom) => BestFrom(layout, state, bestFrom));
-
-    private static int BestFrom(GridLayout layout, GridState state, Func<GridState, int> bestFrom)
-    {
-        if (IsTerminal(layout, state))
-        {
-            return 0;
-        }
-
-        var neighbors = layout.Neighbors(state.Pos, state.Mask);
-        var best = bestFrom(SkipCell(layout, state));
-
-        if (state.Introverts > 0)
-        {
-            var placed = IntrovertGain(neighbors) + bestFrom(PlaceIntrovert(layout, state));
-            best = Math.Max(best, placed);
-        }
-
-        if (state.Extroverts > 0)
-        {
-            var placed = ExtrovertGain(neighbors) + bestFrom(PlaceExtrovert(layout, state));
-            best = Math.Max(best, placed);
-        }
-
-        return best;
-    }
+            new BestPlacementFrom(layout));
 
     // Nothing is left to decide once every cell is filled or both pools are empty -
     // an empty cell is worth nothing, so the remaining grid cannot add happiness.
@@ -159,5 +141,42 @@ internal static class MaximizeGridHappinessSolution
             : ExtrovertAdjacencyDelta;
 
         return selfDelta + neighborDelta;
+    }
+
+    // The placement rule, named: from one (Pos, Mask, Introverts, Extroverts) state the
+    // best achievable happiness is whichever of leave-empty, seat an introvert or seat an
+    // extrovert scores highest once its own neighbor deltas and the rule's answer for the
+    // state that placement advances to are both counted. `rest` is the memo run's own
+    // handle on this rule, so the branches below recurse through a method on a named type
+    // rather than an anonymous call-back value. The layout is fixed for the whole walk and
+    // arrives once through the primary constructor.
+    private sealed class BestPlacementFrom(GridLayout layout) : IRecurrence<GridState, int>
+    {
+        /// <inheritdoc/>
+        public int Replay(GridState state, IRecurrence<GridState, int> rest)
+        {
+            if (IsTerminal(layout, state))
+            {
+                return 0;
+            }
+
+            var neighbors = layout.Neighbors(state.Pos, state.Mask);
+            var skipped = SkipCell(layout, state);
+            var best = rest.Replay(skipped, rest);
+
+            if (state.Introverts > 0)
+            {
+                var placed = PlaceIntrovert(layout, state);
+                best = Math.Max(best, IntrovertGain(neighbors) + rest.Replay(placed, rest));
+            }
+
+            if (state.Extroverts > 0)
+            {
+                var placed = PlaceExtrovert(layout, state);
+                best = Math.Max(best, ExtrovertGain(neighbors) + rest.Replay(placed, rest));
+            }
+
+            return best;
+        }
     }
 }

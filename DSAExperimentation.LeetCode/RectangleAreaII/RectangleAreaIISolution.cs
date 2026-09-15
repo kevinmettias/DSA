@@ -42,7 +42,7 @@ internal static class RectangleAreaIISolution
 
         for (var j = 0; j < ys.Length - 1; j++)
         {
-            if (IsCovered(rectangles, x1, x2, ys[j], ys[j + 1]))
+            if (IsCovered(rectangles, (x1, x2), (ys[j], ys[j + 1])))
             {
                 height += ys[j + 1] - ys[j];
             }
@@ -51,12 +51,14 @@ internal static class RectangleAreaIISolution
         return (x2 - x1) * (height % ModularArithmetic.Modulo);
     }
 
-    private static bool IsCovered(int[][] rectangles, int x1, int x2, int y1, int y2)
+    // The cell asked about is its x-range and its y-range, so it arrives as the two
+    // ranges SpansTheCell already tests a rectangle against.
+    private static bool IsCovered(
+        int[][] rectangles, (int Low, int High) xRange, (int Low, int High) yRange)
     {
         foreach (var rectangle in rectangles)
         {
-            if (rectangle[X1] <= x1 && rectangle[X2] >= x2 &&
-                rectangle[Y1] <= y1 && rectangle[Y2] >= y2)
+            if (SpansTheCell(rectangle, xRange, yRange))
             {
                 return true;
             }
@@ -64,6 +66,12 @@ internal static class RectangleAreaIISolution
 
         return false;
     }
+
+    // A rectangle covers the cell when it reaches across the cell's whole x-range
+    // and its whole y-range.
+    private static bool SpansTheCell(int[] rectangle, (int Low, int High) xRange, (int Low, int High) yRange)
+        => rectangle[X1] <= xRange.Low && rectangle[X2] >= xRange.High &&
+            rectangle[Y1] <= yRange.Low && rectangle[Y2] >= yRange.High;
 
     // A sweep line over the distinct x-coordinates: at each vertical slab, every
     // rectangle spanning the full slab contributes a y-range, and this repo's own

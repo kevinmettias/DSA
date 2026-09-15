@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Backtracking;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.ClosestSubsequenceSum;
@@ -24,7 +25,6 @@ namespace DSAExperimentation.LeetCode.ClosestSubsequenceSum;
 // completion regardless of goal.
 internal static class ClosestSubsequenceSumSolution
 {
-    private const int MidpointDivisor = 2;
     private const int Taken = 1;
 
     public static int MinAbsDifferenceByBruteForceSubsets(int[] nums, int goal)
@@ -56,7 +56,7 @@ internal static class ClosestSubsequenceSumSolution
 
     public static int MinAbsDifferenceByMeetInTheMiddle(int[] nums, int goal)
     {
-        var mid = nums.Length / MidpointDivisor;
+        var mid = nums.Length / AlgorithmConstants.HalvingFactor;
         var leftSums = SubsetSums(nums[..mid]);
         var rightSums = SubsetSums(nums[mid..]).ToArray();
         var sequence = SortAndWrap(rightSums);

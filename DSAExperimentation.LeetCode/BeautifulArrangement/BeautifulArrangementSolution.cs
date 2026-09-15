@@ -23,6 +23,36 @@ internal static class BeautifulArrangementSolution
         return Generate(arrangement, 0);
     }
 
+    // This repo's own Backtrack.Search engine, the same Permutations/
+    // PermutationSequence composition, with the divisibility rule folded directly
+    // into Candidates so an illegal value is never placed and the branch is
+    // pruned immediately instead of discovered n steps later, once a full
+    // permutation has already been built.
+    public static int CountByPrunedBacktracking(int n)
+    {
+        var count = 0;
+        var state = new State(n);
+
+        Backtrack.Search<State, int>(
+            state,
+            s => s.Values.Count == n,
+            s =>
+            {
+                if (s.Values.Count == n)
+                {
+                    return [];
+                }
+
+                var position = s.Values.Count + 1;
+                return Enumerable.Range(1, n).Where(v => !s.Used[v - 1] && (v % position == 0 || position % v == 0));
+            },
+            (s, v) => { s.Used[v - 1] = true; s.Values.Add(v); },
+            (s, v) => { s.Used[v - 1] = false; s.Values.RemoveAt(s.Values.Count - 1); },
+            _ => count++);
+
+        return count;
+    }
+
     private static int Generate(ArrangementState arrangement, int depth)
     {
         if (depth == arrangement.N)
@@ -69,39 +99,11 @@ internal static class BeautifulArrangementSolution
 
     private readonly record struct ArrangementState(int N, bool[] Used, int[] Values);
 
-    // This repo's own Backtrack.Search engine, the same Permutations/
-    // PermutationSequence composition, with the divisibility rule folded directly
-    // into Candidates so an illegal value is never placed and the branch is
-    // pruned immediately instead of discovered n steps later, once a full
-    // permutation has already been built.
-    public static int CountByPrunedBacktracking(int n)
+    private sealed record State
     {
-        var count = 0;
-        var state = new State(n);
-
-        Backtrack.Search<State, int>(
-            state,
-            s => s.Values.Count == n,
-            s =>
-            {
-                if (s.Values.Count == n)
-                {
-                    return [];
-                }
-
-                var position = s.Values.Count + 1;
-                return Enumerable.Range(1, n).Where(v => !s.Used[v - 1] && (v % position == 0 || position % v == 0));
-            },
-            (s, v) => { s.Used[v - 1] = true; s.Values.Add(v); },
-            (s, v) => { s.Used[v - 1] = false; s.Values.RemoveAt(s.Values.Count - 1); },
-            _ => count++);
-
-        return count;
-    }
-
-    private sealed class State(int length)
-    {
-        public bool[] Used { get; } = new bool[length];
+        public bool[] Used { get; }
         public List<int> Values { get; } = [];
+
+        public State(int length) => Used = new bool[length];
     }
 }

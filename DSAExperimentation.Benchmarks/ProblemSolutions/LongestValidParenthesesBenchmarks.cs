@@ -10,10 +10,10 @@ public class LongestValidParenthesesBenchmarks
 {
     private const string RepeatingPattern = "(()())";
 
-    private string _value = null!;
+    private string _value = "";
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

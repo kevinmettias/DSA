@@ -17,15 +17,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SplitTheArrayToMakeCoprimeProductsBenchmarks
 {
-    private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13, 17, 19];
-
     // LC problem number, reused as the deterministic benchmark seed.
     private const int RandomSeed = 2584;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13, 17, 19];
 
-    private int[] _nums = null!;
+    private int[] _nums = [];
+
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

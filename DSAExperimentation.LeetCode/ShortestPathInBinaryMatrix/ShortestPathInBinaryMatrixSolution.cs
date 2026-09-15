@@ -22,6 +22,9 @@ namespace DSAExperimentation.LeetCode.ShortestPathInBinaryMatrix;
 // no sentinel fill.
 internal static class ShortestPathInBinaryMatrixSolution
 {
+    // The problem's own cell encoding: 0 is clear ground, 1 is blocked.
+    private const int ClearCell = 0;
+
     // All 8 king moves - diagonal steps are legal in this problem.
     private static readonly (int DRow, int DCol)[] Directions =
     [
@@ -29,9 +32,6 @@ internal static class ShortestPathInBinaryMatrixSolution
         (0, -1), (0, 1),
         (1, -1), (1, 0), (1, 1),
     ];
-
-    // The problem's own cell encoding: 0 is clear ground, 1 is blocked.
-    private const int ClearCell = 0;
 
     // The textbook answer: a BCL Queue<T> as the frontier and a plain rectangular
     // int grid as the distance map, generating each of the 8 candidate moves on the
@@ -48,6 +48,14 @@ internal static class ShortestPathInBinaryMatrixSolution
         var frontier = new BclQueue();
         frontier.Enqueue((0, 0));
 
+        return SweepByBclQueue(field, frontier);
+    }
+
+    // Drains the BCL frontier: each cell popped either answers (it is the far corner)
+    // or expands into its 8 neighbours, so the first arrival at the far corner is the
+    // shortest path by cell count.
+    private static int SweepByBclQueue(PathField field, BclQueue frontier)
+    {
         while (frontier.Count > 0)
         {
             var cell = frontier.Dequeue();
@@ -82,6 +90,13 @@ internal static class ShortestPathInBinaryMatrixSolution
         var frontier = new RepoQueue();
         frontier.Enqueue((0, 0));
 
+        return SweepByRepoQueue(field, frontier);
+    }
+
+    // The identical drain over this repo's queue, whose TryDequeue supplies the cell
+    // as the loop condition instead of a separate Count check.
+    private static int SweepByRepoQueue(PathField field, RepoQueue frontier)
+    {
         while (frontier.TryDequeue(out var cell))
         {
             if (IsFarCorner(field, cell))
@@ -129,20 +144,39 @@ internal static class ShortestPathInBinaryMatrixSolution
     private static bool TryRelax(
         PathField field, (int Row, int Col) cell, (int DRow, int DCol) direction, out (int Row, int Col) next)
     {
-        var nextRow = cell.Row + direction.DRow;
-        var nextCol = cell.Col + direction.DCol;
-        next = default;
+        var relaxed = RelaxedStepFrom(field, cell, direction);
+        next = relaxed.GetValueOrDefault();
 
-        if (nextRow < 0 || nextRow >= field.Size || nextCol < 0 || nextCol >= field.Size
-            || field.Grid[nextRow][nextCol] != ClearCell || field.Distance[nextRow, nextCol] != 0)
+        return relaxed.HasValue;
+    }
+
+    // The relaxed neighbour itself - the cell one step on, with its distance recorded -
+    // or nothing when that step is out of bounds, blocked, or already reached, which is
+    // also what leaves the caller's `next` at its default.
+    private static (int Row, int Col)? RelaxedStepFrom(
+        PathField field, (int Row, int Col) cell, (int DRow, int DCol) direction)
+    {
+        var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+
+        if (!IsRelaxable(field, next.Row, next.Col))
         {
-            return false;
+            return null;
         }
 
-        field.Distance[nextRow, nextCol] = field.Distance[cell.Row, cell.Col] + 1;
-        next = (nextRow, nextCol);
-        return true;
+        field.Distance[next.Row, next.Col] = field.Distance[cell.Row, cell.Col] + 1;
+
+        return next;
     }
+
+    // A neighbour only relaxes when it lies inside the grid, is clear, and no earlier
+    // step has already reached it.
+    private static bool IsRelaxable(PathField field, int row, int col) =>
+        !IsOutsideGrid(row, col, field.Size)
+        && field.Grid[row][col] == ClearCell
+        && field.Distance[row, col] == 0;
+
+    private static bool IsOutsideGrid(int row, int col, int size) =>
+        row < 0 || row >= size || col < 0 || col >= size;
 
     // The read-only grid and the in-place-mutated distance map both sweeps relax
     // into - bundled so TryRelax reads one board rather than two loose arrays.

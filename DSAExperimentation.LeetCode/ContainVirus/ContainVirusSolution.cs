@@ -14,46 +14,52 @@ internal static class ContainVirusSolution
 {
     private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
+    // Both strategies are stateless, so one instance each serves every call and the
+    // benchmark arms that measure these two methods allocate nothing to pick one.
+    private static readonly IRegionCollector NaiveRecursiveFloodFill = new RegionByNaiveRecursiveFloodFill();
+    private static readonly IRegionCollector DepthFirstSearchTraversal = new RegionByDepthFirstSearchTraversal();
+
     // The textbook answer: a hand-specialized recursive flood fill, BCL only.
     // Deliberately written without this repo's traversal primitive - it is the arm
     // the composed solution below has to justify itself against.
     public static int MinimumWallsByNaiveRecursiveFloodFill(int[][] grid) =>
-        MinimumWalls(CloneGrid(grid), CollectRegionRecursive);
-
-    private static List<(int Row, int Col)> CollectRegionRecursive(int[][] grid, (int Row, int Col) start)
-    {
-        var cells = new List<(int Row, int Col)>();
-        var visited = new HashSet<(int Row, int Col)>();
-
-        Flood(grid, start, visited, cells);
-
-        return cells;
-    }
-
-    private static void Flood(
-        int[][] grid, (int Row, int Col) cell, HashSet<(int Row, int Col)> visited, List<(int Row, int Col)> cells)
-    {
-        if (!IsInBounds(cell, grid) || grid[cell.Row][cell.Col] != 1 || !visited.Add(cell))
-        {
-            return;
-        }
-
-        cells.Add(cell);
-
-        foreach (var (dRow, dCol) in Directions)
-        {
-            Flood(grid, (cell.Row + dRow, cell.Col + dCol), visited, cells);
-        }
-    }
+        MinimumWalls(CloneGrid(grid), NaiveRecursiveFloodFill);
 
     // This repo's own DFS: DepthFirstSearch.Traverse walks one region's full
     // infected component from each unvisited infected cell - the same
     // border-flood-fill primitive MaxAreaOfIslandSolution uses for LC 695.
     public static int MinimumWallsByDepthFirstSearchTraversal(int[][] grid) =>
-        MinimumWalls(CloneGrid(grid), CollectRegionViaTraversal);
+        MinimumWalls(CloneGrid(grid), DepthFirstSearchTraversal);
 
-    private static List<(int Row, int Col)> CollectRegionViaTraversal(int[][] grid, (int Row, int Col) start) =>
-        DepthFirstSearch.Traverse(start, cell => InfectedNeighbors(grid, cell));
+    // The one question the two arms answer differently: which cells make up the
+    // infected region reachable from `start`. The grid arrives as an argument rather
+    // than a captured field because every round mutates it in place, and a returned
+    // list holds exactly the start cell plus every infected cell reachable from it by
+    // 4-connected steps. An implementation may reach those cells by recursion or by a
+    // traversal primitive; it may not return a subset or a superset of them.
+    private interface IRegionCollector
+    {
+        List<(int Row, int Col)> Collect(int[][] grid, (int Row, int Col) start);
+    }
+
+    private sealed class RegionByNaiveRecursiveFloodFill : IRegionCollector
+    {
+        public List<(int Row, int Col)> Collect(int[][] grid, (int Row, int Col) start)
+        {
+            var cells = new List<(int Row, int Col)>();
+            var visited = new HashSet<(int Row, int Col)>();
+
+            Flood(grid, start, visited, cells);
+
+            return cells;
+        }
+    }
+
+    private sealed class RegionByDepthFirstSearchTraversal : IRegionCollector
+    {
+        public List<(int Row, int Col)> Collect(int[][] grid, (int Row, int Col) start) =>
+            DepthFirstSearch.Traverse(start, cell => InfectedNeighbors(grid, cell));
+    }
 
     private static IEnumerable<(int Row, int Col)> InfectedNeighbors(int[][] grid, (int Row, int Col) cell)
     {
@@ -66,12 +72,37 @@ internal static class ContainVirusSolution
         }
     }
 
+    // A cell joins the region only when it is on the board, infected, and not
+    // already visited - `visited.Add` both tests and records the visit, so it
+    // has to stay last in the chain.
+    private static bool IsUnvisitedInfectedCell(
+        (int Row, int Col) cell, int[][] grid, HashSet<(int Row, int Col)> visited)
+        => IsInBounds(cell, grid) && grid[cell.Row][cell.Col] == 1 && visited.Add(cell);
+
+    private static void Flood(
+        int[][] grid, (int Row, int Col) cell, HashSet<(int Row, int Col)> visited, List<(int Row, int Col)> cells)
+    {
+        if (!IsUnvisitedInfectedCell(cell, grid, visited))
+        {
+            return;
+        }
+
+        cells.Add(cell);
+
+        foreach (var (dRow, dCol) in Directions)
+        {
+            Flood(grid, (cell.Row + dRow, cell.Col + dCol), visited, cells);
+        }
+    }
+
     // The simulation shared by both strategies: find every infected region, wall
     // off whichever threatens the most uninfected cells, let the rest spread.
-    private static int MinimumWalls(int[][] grid, Func<int[][], (int Row, int Col), List<(int Row, int Col)>> collectRegion)
+    private static int MinimumWalls(int[][] grid, IRegionCollector collectRegion)
     {
         var totalWalls = 0;
 
+        // Terminates when a round finds nothing left to threaten: RunQuarantineRound
+        // reports that by returning null, and the accumulated wall count is the answer.
         while (true)
         {
             var wallsThisRound = RunQuarantineRound(grid, collectRegion);
@@ -86,7 +117,7 @@ internal static class ContainVirusSolution
     }
 
     private static int? RunQuarantineRound(
-        int[][] grid, Func<int[][], (int Row, int Col), List<(int Row, int Col)>> collectRegion)
+        int[][] grid, IRegionCollector collectRegion)
     {
         var regions = FindRegions(grid, collectRegion);
         var mostThreatening = regions.MaxBy(region => region.Threatened.Count);
@@ -110,7 +141,7 @@ internal static class ContainVirusSolution
     }
 
     private static List<Region> FindRegions(
-        int[][] grid, Func<int[][], (int Row, int Col), List<(int Row, int Col)>> collectRegion)
+        int[][] grid, IRegionCollector collectRegion)
     {
         var visited = new HashSet<(int Row, int Col)>();
         var regions = new List<Region>();
@@ -135,14 +166,14 @@ internal static class ContainVirusSolution
         int[][] grid,
         (int Row, int Col) start,
         HashSet<(int Row, int Col)> visited,
-        Func<int[][], (int Row, int Col), List<(int Row, int Col)>> collectRegion)
+        IRegionCollector collectRegion)
     {
         if (grid[start.Row][start.Col] != 1 || !visited.Add(start))
         {
             return null;
         }
 
-        var cells = collectRegion(grid, start);
+        var cells = collectRegion.Collect(grid, start);
 
         foreach (var cell in cells)
         {
@@ -216,17 +247,13 @@ internal static class ContainVirusSolution
         return clone;
     }
 
-    // A plain class, not a record: MaxBy/!= rely on reference identity to single
-    // out "the region just quarantined" among this round's regions, and a record's
-    // structural equality would compare List<T>/HashSet<T> fields by reference
-    // anyway (neither overrides Equals) - a class states that plainly instead of
-    // leaning on an accidental byproduct of record equality.
-    private sealed class Region(List<(int Row, int Col)> cells, HashSet<(int Row, int Col)> threatened, int wallsNeeded)
-    {
-        public List<(int Row, int Col)> Cells { get; } = cells;
-
-        public HashSet<(int Row, int Col)> Threatened { get; } = threatened;
-
-        public int WallsNeeded { get; } = wallsNeeded;
-    }
+    // Pure data, so a record. Its generated equality compares Cells and Threatened by
+    // reference (neither List<T> nor HashSet<T> overrides Equals), and BuildRegion is
+    // the only place a Region is built - always with its own freshly allocated HashSet
+    // - so two distinct regions can never compare equal, and the `region != mostThreatening`
+    // in RunQuarantineRound still excludes exactly the region just quarantined.
+    private sealed record Region(
+        List<(int Row, int Col)> Cells,
+        HashSet<(int Row, int Col)> Threatened,
+        int WallsNeeded);
 }

@@ -20,11 +20,11 @@ public class LexicographicallySmallestGeneratedStringBenchmarks
 {
     private const int PatternLength = 400;
 
-    [Params(2_000, 8_000)]
-    public int Length;
+    private string _str1 = "";
 
-    private string _str1 = null!;
-    private string _str2 = null!;
+    private string _str2 = "";
+    [Params(2_000, 8_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,9 +35,13 @@ public class LexicographicallySmallestGeneratedStringBenchmarks
 
     [Benchmark(Baseline = true)]
     public string DirectFill() =>
-        LexicographicallySmallestGeneratedStringSolution.GenerateStringByDirectFill(_str1, _str2);
+        LexicographicallySmallestGeneratedStringSolution.GenerateStringByDirectFill(
+            new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(_str1),
+            new LexicographicallySmallestGeneratedStringSolution.TemplateWord(_str2));
 
     [Benchmark]
     public string ZFunctionConsistency() =>
-        LexicographicallySmallestGeneratedStringSolution.GenerateStringByZFunctionConsistency(_str1, _str2);
+        LexicographicallySmallestGeneratedStringSolution.GenerateStringByZFunctionConsistency(
+            new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(_str1),
+            new LexicographicallySmallestGeneratedStringSolution.TemplateWord(_str2));
 }

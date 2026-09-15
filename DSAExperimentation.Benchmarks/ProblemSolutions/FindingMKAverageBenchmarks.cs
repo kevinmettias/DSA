@@ -18,10 +18,10 @@ public class FindingMKAverageBenchmarks
     private const int RandomSeed = 1825;
     private const int MaxElementValue = 100_000;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private int[] _stream = [];
 
-    private int[] _stream = null!;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,12 +31,18 @@ public class FindingMKAverageBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long SortingSlidingWindow() =>
-        Replay(FindingMKAverageSolution.CreateBySortingSlidingWindow(WindowSize, K));
+    public long SortingSlidingWindow()
+    {
+        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(WindowSize, K);
+        return Replay(mkAverage);
+    }
 
     [Benchmark]
-    public long FenwickOrderStatistics() =>
-        Replay(FindingMKAverageSolution.CreateByFenwickOrderStatistics(WindowSize, K));
+    public long FenwickOrderStatistics()
+    {
+        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(WindowSize, K);
+        return Replay(mkAverage);
+    }
 
     private long Replay(FindingMKAverageSolution.IMKAverage mkAverage)
     {

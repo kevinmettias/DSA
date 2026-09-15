@@ -33,10 +33,9 @@ internal static class SellingPiecesOfWoodSolution
     public static long SellingWoodByUnmemoizedRecursion(
         int boardHeight, int boardWidth, HashMap<(int Height, int Width), int> priceByDimensions)
     {
-        long BestValueUncached((int Height, int Width) piece) =>
-            BestValue(piece, priceByDimensions, BestValueUncached);
+        var plan = new CuttingPlan(priceByDimensions);
 
-        return BestValueUncached((boardHeight, boardWidth));
+        return plan.Replay((boardHeight, boardWidth), plan);
     }
 
     // The same recurrence through Memoizer, which caches on the (height, width) pair
@@ -50,7 +49,7 @@ internal static class SellingPiecesOfWoodSolution
         int boardHeight, int boardWidth, HashMap<(int Height, int Width), int> priceByDimensions) =>
         Memoizer.Memoize<(int Height, int Width), long>(
             (boardHeight, boardWidth),
-            (piece, bestValue) => BestValue(piece, priceByDimensions, bestValue));
+            new CuttingPlan(priceByDimensions));
 
     // LeetCode hands the price list as rows; both strategies want O(1) lookup by
     // dimensions, so the rows are indexed once before the recursion starts. Given to
@@ -69,29 +68,35 @@ internal static class SellingPiecesOfWoodSolution
         return priceByDimensions;
     }
 
-    // The recurrence, shared by both strategies so the only thing they differ in is
-    // what bestValue does - recurse straight back in, or go through Memoizer's cache.
-    // An unlisted piece is worth 0 whole, which is what TryGetValue's out parameter
-    // already leaves behind on a miss; it can still be worth more cut up.
-    private static long BestValue(
-        (int Height, int Width) piece,
-        HashMap<(int Height, int Width), int> priceByDimensions,
-        Func<(int Height, int Width), long> bestValue)
+    // The rule, named: a sub-piece is worth whichever is larger - its own listed price
+    // sold whole (0 when unlisted, which is what TryGetValue's out parameter already
+    // leaves behind on a miss), or the best single cut across either axis. The same named
+    // rule answers both strategies: the memoized arm hands it the cache-backed recursion,
+    // and the un-memoized arm replays it straight back into itself with no cache in
+    // between. The prices are the whole of what the rule needs from its caller, so they
+    // are the constructor's only input.
+    private sealed class CuttingPlan(HashMap<(int Height, int Width), int> priceByDimensions)
+        : IRecurrence<(int Height, int Width), long>
     {
-        var (height, width) = piece;
-        long whole = priceByDimensions.TryGetValue(piece, out var listedPrice) ? listedPrice : 0;
+        public long Replay((int Height, int Width) piece, IRecurrence<(int Height, int Width), long> rest)
+        {
+            long whole = priceByDimensions.TryGetValue(piece, out var listedPrice) ? listedPrice : 0;
 
-        var bestHorizontalCut = BestCutAlongAxis(
-            height,
-            cut => bestValue((cut, width)) + bestValue((height - cut, width)));
+            var bestHorizontalCut = BestCutAlongAxis(CutAxis.Horizontal, piece, rest);
+            var bestVerticalCut = BestCutAlongAxis(CutAxis.Vertical, piece, rest);
+            var bestCut = Math.Max(bestHorizontalCut, bestVerticalCut);
 
-        var bestVerticalCut = BestCutAlongAxis(
-            width,
-            cut => bestValue((height, cut)) + bestValue((height, width - cut)));
+            return Math.Max(whole, bestCut);
+        }
+    }
 
-        var bestCut = Math.Max(bestHorizontalCut, bestVerticalCut);
-
-        return Math.Max(whole, bestCut);
+    // Which dimension a single full cut divides: a horizontal cut divides the height and
+    // leaves two pieces of the same width, a vertical cut divides the width and leaves
+    // two pieces of the same height.
+    private enum CutAxis
+    {
+        Horizontal,
+        Vertical,
     }
 
     // One axis of cut positions: every place a single full cut can fall across a span
@@ -100,15 +105,33 @@ internal static class SellingPiecesOfWoodSolution
     // share this walk rather than writing it out twice, the same shape
     // NumberOfWaysOfCuttingAPizzaSolution's own SumCutsAlongAxis takes. A span of 1
     // admits no cut at all, leaving 0, which never beats selling the piece whole.
-    private static long BestCutAlongAxis(int span, Func<int, long> valueOfHalves)
+    private static long BestCutAlongAxis(
+        CutAxis axis,
+        (int Height, int Width) piece,
+        IRecurrence<(int Height, int Width), long> rest)
     {
+        var span = axis == CutAxis.Horizontal ? piece.Height : piece.Width;
         var best = 0L;
 
         for (var cut = 1; cut < span; cut++)
         {
-            best = Math.Max(best, valueOfHalves(cut));
+            var (firstHalf, secondHalf) = HalvesOfCut(axis, piece, cut);
+            best = Math.Max(best, rest.Replay(firstHalf, rest) + rest.Replay(secondHalf, rest));
         }
 
         return best;
+    }
+
+    // The two pieces a single cut at `cut` leaves, named by which dimension the cut
+    // divides: a horizontal cut shortens the height, a vertical cut shortens the width.
+    private static ((int Height, int Width) First, (int Height, int Width) Second) HalvesOfCut(
+        CutAxis axis, (int Height, int Width) piece, int cut)
+    {
+        if (axis == CutAxis.Horizontal)
+        {
+            return ((cut, piece.Width), (piece.Height - cut, piece.Width));
+        }
+
+        return ((piece.Height, cut), (piece.Height, piece.Width - cut));
     }
 }

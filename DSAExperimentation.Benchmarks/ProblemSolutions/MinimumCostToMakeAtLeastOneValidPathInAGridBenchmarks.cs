@@ -18,10 +18,10 @@ public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
 
     private const int ArrowDirectionUpperBound = 5;
 
-    [Params(15, 40)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(15, 40)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -10,21 +10,7 @@ internal static class BestTimeToBuyAndSellStockIISolution
     // Textbook baseline: an unmemoized two-way choice (buy-or-skip when flat,
     // sell-or-skip when holding) at every day, O(2^n). The arm
     // MaxProfitByGreedyAscent has to justify itself against.
-    public static int MaxProfitByBruteForce(int[] prices) => ProfitFrom(0, holding: false, prices);
-
-    private static int ProfitFrom(int day, bool holding, int[] prices)
-    {
-        if (day == prices.Length)
-        {
-            return 0;
-        }
-
-        var skip = ProfitFrom(day + 1, holding, prices);
-
-        return holding
-            ? Math.Max(skip, prices[day] + ProfitFrom(day + 1, holding: false, prices))
-            : Math.Max(skip, -prices[day] + ProfitFrom(day + 1, holding: true, prices));
-    }
+    public static int MaxProfitByBruteForce(int[] prices) => ProfitFrom(0, PositionState.Flat, prices);
 
     // Every consecutive-day price increase can be captured as its own
     // buy-yesterday/sell-today transaction, so the maximum total profit is just
@@ -43,5 +29,29 @@ internal static class BestTimeToBuyAndSellStockIISolution
         }
 
         return profit;
+    }
+
+    private static int ProfitFrom(int day, PositionState position, int[] prices)
+    {
+        if (day == prices.Length)
+        {
+            return 0;
+        }
+
+        var skip = ProfitFrom(day + 1, position, prices);
+
+        return position == PositionState.Holding
+            ? Math.Max(skip, prices[day] + ProfitFrom(day + 1, PositionState.Flat, prices))
+            : Math.Max(skip, -prices[day] + ProfitFrom(day + 1, PositionState.Holding, prices));
+    }
+
+    // Whether the day opens holding a share or flat: the two arms the buy/sell
+    // decision branches on. Named after the position itself (Flat/Holding, the
+    // same vocabulary BestTimeToBuyAndSellStockVSolution uses), not after the
+    // flag, so the call sites read as the state they pass.
+    private enum PositionState
+    {
+        Flat,
+        Holding,
     }
 }

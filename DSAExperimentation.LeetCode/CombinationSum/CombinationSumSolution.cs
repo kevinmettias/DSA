@@ -53,14 +53,22 @@ internal static class CombinationSumSolution
             state,
             s => s.Sum == target,
             s => s.Sum == target
-                ? []
-                : Enumerable.Range(s.Start, sorted.Length - s.Start).Where(i => s.Sum + sorted[i] <= target),
+                ? NoCandidateIndices()
+                : CandidateIndices(s, sorted, target),
             (s, i) => { s.Starts.Push(s.Start); s.Values.Add(sorted[i]); s.Sum += sorted[i]; s.Start = i; },
             (s, i) => { s.Start = s.Starts.Pop(); s.Sum -= sorted[i]; s.Values.RemoveAt(s.Values.Count - 1); },
             s => results.Add([.. s.Values]));
 
         return results;
     }
+
+    private static IEnumerable<int> NoCandidateIndices() => [];
+
+    // The candidate indices still worth trying from this state: those whose value
+    // keeps the running sum at or below target.
+    private static IEnumerable<int> CandidateIndices(SearchState state, int[] sorted, int target)
+        => Enumerable.Range(state.Start, sorted.Length - state.Start)
+            .Where(i => state.Sum + sorted[i] <= target);
 
     private static int[] SortedCopy(int[] candidates)
     {

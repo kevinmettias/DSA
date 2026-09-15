@@ -66,22 +66,13 @@ public sealed class DesignHashSetTests
 // One call in a MyHashSet script: which method to invoke and with what key.
 // Pure dispatch, built via the named factories below so a script (like Examples
 // above) reads like the LeetCode call sequence it replays.
-public readonly record struct HashSetOp
+public readonly record struct HashSetOp(HashSetOp.OpKind kind, int key)
 {
-    private readonly Kind _kind;
-    private readonly int _key;
+    public static HashSetOp Add(int key) => new(OpKind.Add, key);
 
-    private HashSetOp(Kind kind, int key)
-    {
-        _kind = kind;
-        _key = key;
-    }
+    public static HashSetOp Remove(int key) => new(OpKind.Remove, key);
 
-    public static HashSetOp Add(int key) => new(Kind.Add, key);
-
-    public static HashSetOp Remove(int key) => new(Kind.Remove, key);
-
-    public static HashSetOp Contains(int key) => new(Kind.Contains, key);
+    public static HashSetOp Contains(int key) => new(OpKind.Contains, key);
 
     // null for the two void calls, the membership result for Contains - so a
     // script runner can assert against one expected value per operation
@@ -90,20 +81,20 @@ public readonly record struct HashSetOp
     // calls Apply.
     internal bool? Apply(IMyHashSet set)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Add:
-                set.Add(_key);
+            case OpKind.Add:
+                set.Add(key);
                 return null;
-            case Kind.Remove:
-                set.Remove(_key);
+            case OpKind.Remove:
+                set.Remove(key);
                 return null;
             default:
-                return set.Contains(_key);
+                return set.Contains(key);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Add,
         Remove,

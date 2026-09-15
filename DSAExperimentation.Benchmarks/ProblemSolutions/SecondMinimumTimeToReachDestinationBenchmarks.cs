@@ -19,10 +19,10 @@ public class SecondMinimumTimeToReachDestinationBenchmarks
     private const int Time = 3;
     private const int Change = 5;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private IntersectionNetwork _network = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

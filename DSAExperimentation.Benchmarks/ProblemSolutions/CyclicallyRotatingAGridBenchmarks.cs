@@ -16,10 +16,10 @@ public class CyclicallyRotatingAGridBenchmarks
     // happens to fall out even.
     private const int UnreducedSteps = 1_000_003;
 
-    [Params(10, 40)]
-    public int Size;
+    private int[][] _template = [];
 
-    private int[][] _template = null!;
+    [Params(10, 40)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

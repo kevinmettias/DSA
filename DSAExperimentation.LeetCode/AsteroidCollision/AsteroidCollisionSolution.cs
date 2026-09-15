@@ -105,25 +105,49 @@ internal static class AsteroidCollisionSolution
 
     private static bool SurvivesCollisions(RepoStack stack, int asteroid)
     {
-        var current = asteroid;
         var alive = true;
 
-        while (alive && current < 0 && stack.TryPeek(out var top) && top > 0)
+        while (alive)
         {
-            if (top < -current)
+            var (isFacing, top) = IsFacingRightMover(asteroid, stack);
+
+            if (!isFacing)
             {
-                stack.TryPop(out _);
-                continue;
+                break;
             }
 
-            if (top == -current)
-            {
-                stack.TryPop(out _);
-            }
-
-            alive = false;
+            alive = AbsorbTopOfStack(stack, asteroid, top);
         }
 
         return alive;
+    }
+
+    // A left-moving asteroid is only in play while a right-moving one sits on top of
+    // the stack; the peek hands that top back to the loop. Nothing reads it when the
+    // answer is false, so it starts at zero.
+    private static (bool IsFacing, int Top) IsFacingRightMover(int current, RepoStack stack)
+    {
+        var top = 0;
+
+        return (current < 0 && stack.TryPeek(out top) && top > 0, top);
+    }
+
+    // The incoming asteroid meets the right-moving one on top of the stack: a smaller
+    // top is destroyed and the incoming asteroid keeps travelling, otherwise the
+    // incoming asteroid dies - taking an equal-sized top with it.
+    private static bool AbsorbTopOfStack(RepoStack stack, int asteroid, int top)
+    {
+        if (top < -asteroid)
+        {
+            stack.TryPop(out _);
+            return true;
+        }
+
+        if (top == -asteroid)
+        {
+            stack.TryPop(out _);
+        }
+
+        return false;
     }
 }

@@ -13,11 +13,11 @@ public class IncrementalEvenWeightedCycleQueriesBenchmarks
 {
     private const int Seed = 3887;
 
-    [Params(500, 5_000)]
-    public int EdgeCount;
-
     private int _nodeCount;
-    private int[][] _edges = null!;
+
+    private int[][] _edges = [];
+    [Params(500, 5_000)]
+    public int EdgeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -25,14 +25,6 @@ public class IncrementalEvenWeightedCycleQueriesBenchmarks
         _nodeCount = EdgeCount;
         _edges = BuildEdges(_nodeCount, EdgeCount, new Random(Seed));
     }
-
-    [Benchmark(Baseline = true)]
-    public int BruteForceBfs() =>
-        IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByBruteForceBfs(_nodeCount, _edges);
-
-    [Benchmark]
-    public int DisjointSetPrunedBfs() =>
-        IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByDisjointSetPrunedBfs(_nodeCount, _edges);
 
     // Random (u, v, w) triples with u < v (matching LC's own 0 <= ui < vi < n
     // constraint) and a random 0/1 weight - node ids drawn from the same
@@ -62,4 +54,12 @@ public class IncrementalEvenWeightedCycleQueriesBenchmarks
 
         return edges;
     }
+
+    [Benchmark(Baseline = true)]
+    public int BruteForceBfs() =>
+        IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByBruteForceBfs(_nodeCount, _edges);
+
+    [Benchmark]
+    public int DisjointSetPrunedBfs() =>
+        IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByDisjointSetPrunedBfs(_nodeCount, _edges);
 }

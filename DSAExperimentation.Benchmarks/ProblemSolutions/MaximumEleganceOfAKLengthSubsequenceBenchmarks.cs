@@ -15,11 +15,11 @@ public class MaximumEleganceOfAKLengthSubsequenceBenchmarks
     private const int CategoryPoolSize = 20;
     private const int Seed = 1;
 
-    [Params(500, 5_000)]
-    public int ItemCount;
+    private int[][] _items = [];
 
-    private int[][] _items = null!;
     private int _k;
+    [Params(500, 5_000)]
+    public int ItemCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

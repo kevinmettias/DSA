@@ -17,10 +17,10 @@ public class MakingALargeIslandBenchmarks
     private const int RandomSeed = 7; // LC problem number
     private const double LandProbability = 0.6;
 
-    [Params(20, 60)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(20, 60)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,7 +34,8 @@ public class MakingALargeIslandBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < LandProbability ? 1 : 0;
+                var isLand = random.NextDouble() < LandProbability;
+                _grid[r][c] = isLand ? 1 : 0;
             }
         }
     }

@@ -74,10 +74,15 @@ internal static class SortIntegersByThePowerValueSolution
 
         while (x != 1)
         {
-            x = x % CollatzDivisor == 0 ? x / CollatzDivisor : (CollatzMultiplier * x) + 1;
+            var dividesEvenly = x % CollatzDivisor == 0;
+            x = dividesEvenly ? DivideByCollatzDivisor(x) : TripleAndIncrement(x);
             power++;
         }
 
         return power;
     }
+
+    private static int DivideByCollatzDivisor(int x) => x / CollatzDivisor;
+
+    private static int TripleAndIncrement(int x) => (CollatzMultiplier * x) + 1;
 }

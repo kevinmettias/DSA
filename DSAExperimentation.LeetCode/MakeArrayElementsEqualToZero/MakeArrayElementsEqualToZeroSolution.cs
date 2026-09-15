@@ -63,6 +63,14 @@ internal static class MakeArrayElementsEqualToZeroSolution
     // exactly 1 apart (only the heavier side's direction empties both).
     public static int CountValidSelectionsByPrefixSumBalance(int[] nums)
     {
+        var total = SumAll(nums);
+
+        return CountSelections(nums, total);
+    }
+
+    // The array's total mass - the right-hand side of every balance check.
+    private static int SumAll(int[] nums)
+    {
         var total = 0;
 
         foreach (var value in nums)
@@ -70,6 +78,13 @@ internal static class MakeArrayElementsEqualToZeroSolution
             total += value;
         }
 
+        return total;
+    }
+
+    // Sweep left to right, tracking the mass already passed, and add up the
+    // directions from each zero that would leave both sides empty.
+    private static int CountSelections(int[] nums, int total)
+    {
         var count = 0;
         var left = 0;
 
@@ -81,18 +96,26 @@ internal static class MakeArrayElementsEqualToZeroSolution
                 continue;
             }
 
-            var right = total - left;
-
-            if (left == right)
-            {
-                count += 2;
-            }
-            else if (Math.Abs(left - right) == 1)
-            {
-                count++;
-            }
+            count += CountDirectionsFromZero(left, total - left);
         }
 
         return count;
+    }
+
+    // Equal sides empty under either direction; sides exactly 1 apart empty only
+    // under the heavier side's direction; anything else empties under neither.
+    private static int CountDirectionsFromZero(int left, int right)
+    {
+        if (left == right)
+        {
+            return 2;
+        }
+
+        if (Math.Abs(left - right) == 1)
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }

@@ -28,28 +28,13 @@ internal static class MaxAreaOfIslandSolution
             {
                 if (working[r][c] == 1)
                 {
-                    best = Math.Max(best, Flood(working, r, c, rows, cols));
+                    var area = Flood(working, r, c);
+                    best = Math.Max(best, area);
                 }
             }
         }
 
         return best;
-    }
-
-    private static int Flood(int[][] grid, int row, int col, int rows, int cols)
-    {
-        if (row < 0 || row >= rows || col < 0 || col >= cols || grid[row][col] != 1)
-        {
-            return 0;
-        }
-
-        grid[row][col] = 0;
-
-        return 1
-            + Flood(grid, row + 1, col, rows, cols)
-            + Flood(grid, row - 1, col, rows, cols)
-            + Flood(grid, row, col + 1, rows, cols)
-            + Flood(grid, row, col - 1, rows, cols);
     }
 
     // This repo's own DFS: DepthFirstSearch.Traverse walks one island's full land
@@ -68,23 +53,31 @@ internal static class MaxAreaOfIslandSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                if (working[r][c] != 1)
-                {
-                    continue;
-                }
-
-                var island = DepthFirstSearch.Traverse((r, c), p => LandNeighbors(working, p));
-
-                foreach (var (row, col) in island)
-                {
-                    working[row][col] = 0;
-                }
-
-                best = Math.Max(best, island.Count);
+                var area = IslandAreaAt(working, r, c);
+                best = Math.Max(best, area);
             }
         }
 
         return best;
+    }
+
+    // One island's area: walk its whole land component from (r, c) and zero it, so
+    // a cell that belongs to this island is not walked a second time.
+    private static int IslandAreaAt(int[][] working, int r, int c)
+    {
+        if (working[r][c] != 1)
+        {
+            return 0;
+        }
+
+        var island = DepthFirstSearch.Traverse((r, c), p => LandNeighbors(working, p));
+
+        foreach (var (row, col) in island)
+        {
+            working[row][col] = 0;
+        }
+
+        return island.Count;
     }
 
     private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) p)
@@ -105,12 +98,37 @@ internal static class MaxAreaOfIslandSolution
 
     private static bool IsLand((int Row, int Col) next, int rows, int cols, int[][] grid)
     {
-        if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+        if (!IsOnBoard(next, rows, cols))
         {
             return false;
         }
 
         return grid[next.Row][next.Col] == 1;
+    }
+
+    // Whether the cell lies on the board at all.
+    private static bool IsOnBoard((int Row, int Col) cell, int rows, int cols)
+        => cell.Row >= 0 && cell.Row < rows && cell.Col >= 0 && cell.Col < cols;
+
+    // The grid being flooded already knows how far it reaches, so the bounds are read
+    // back off it here rather than travelling down every recursive call.
+    private static int Flood(int[][] grid, int row, int col)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+
+        if (!IsOnBoard((row, col), rows, cols) || grid[row][col] != 1)
+        {
+            return 0;
+        }
+
+        grid[row][col] = 0;
+
+        return 1
+            + Flood(grid, row + 1, col)
+            + Flood(grid, row - 1, col)
+            + Flood(grid, row, col + 1)
+            + Flood(grid, row, col - 1);
     }
 
     private static int[][] CloneGrid(int[][] grid)

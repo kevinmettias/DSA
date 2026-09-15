@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RecoverBinarySearchTreeBenchmarks
 {
-    [Params(100, 5_000)]
-    public int Size;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(100, 5_000)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(Size);

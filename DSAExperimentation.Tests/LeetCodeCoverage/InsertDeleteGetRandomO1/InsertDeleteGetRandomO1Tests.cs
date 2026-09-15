@@ -86,38 +86,29 @@ public sealed class InsertDeleteGetRandomO1Tests
 // One call in a RandomizedSet script: which method to invoke and with what argument.
 // Pure dispatch, built via the named factories below so a script (like Examples above)
 // reads like the LeetCode call sequence it replays.
-public readonly record struct RandomizedSetOp
+public readonly record struct RandomizedSetOp(RandomizedSetOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static RandomizedSetOp Insert(int value) => new(OpKind.Insert, value);
 
-    private RandomizedSetOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static RandomizedSetOp Remove(int value) => new(OpKind.Remove, value);
 
-    public static RandomizedSetOp Insert(int value) => new(Kind.Insert, value);
+    public static RandomizedSetOp GetRandom() => new(OpKind.GetRandom, 0);
 
-    public static RandomizedSetOp Remove(int value) => new(Kind.Remove, value);
-
-    public static RandomizedSetOp GetRandom() => new(Kind.GetRandom, 0);
-
-    public static RandomizedSetOp Count() => new(Kind.Count, 0);
+    public static RandomizedSetOp Count() => new(OpKind.Count, 0);
 
     // Boxed uniformly so a script runner can assert against one expected value per
     // operation regardless of which method it dispatches to. Internal, not public:
     // IRandomizedSet is internal to InsertDeleteGetRandomO1Solution, and only this
     // same assembly's RunScript ever calls Apply.
-    internal object? Apply(IRandomizedSet set) => _kind switch
+    internal object? Apply(IRandomizedSet set) => kind switch
     {
-        Kind.Insert => set.Insert(_value),
-        Kind.Remove => set.Remove(_value),
-        Kind.GetRandom => set.GetRandom(),
+        OpKind.Insert => set.Insert(value),
+        OpKind.Remove => set.Remove(value),
+        OpKind.GetRandom => set.GetRandom(),
         _ => set.Count,
     };
 
-    private enum Kind
+    public enum OpKind
     {
         Insert,
         Remove,

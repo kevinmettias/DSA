@@ -24,11 +24,11 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
     private const int TargetRangeMultiplier = 2;
     private const int TargetSeed = 1;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
-    private int[] _targets = null!;
+
+    private int[] _targets = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

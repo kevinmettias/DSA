@@ -25,6 +25,33 @@ internal static class TallestBillboardSolution
     // The naive arm: the same skip/taller/shorter recurrence with no cache at all.
     public static int MaxHeightByUnmemoizedRecursion(int[] rods) => Solve(rods, 0, 0);
 
+    // The same recurrence, memoized on (index, diff) through Memoizer.
+    public static int MaxHeightByMemoizedDiff(int[] rods) =>
+        Memoizer.Memoize<(int Index, int Diff), int>((0, 0), new HeightsOverRods(rods));
+
+    // The recurrence, as a named type: the skip/taller/shorter search for the tallest
+    // level split reachable from one (index, diff) state. The rod list it reads arrives
+    // through the primary constructor and the memoized continuation through `rest`.
+    private sealed class HeightsOverRods(int[] rods) : IRecurrence<(int Index, int Diff), int>
+    {
+        public int Replay(
+            (int Index, int Diff) state, IRecurrence<(int Index, int Diff), int> rest)
+        {
+            if (state.Index == rods.Length)
+            {
+                return state.Diff == 0 ? 0 : Unreachable;
+            }
+
+            var rod = rods[state.Index];
+            var skip = rest.Replay((state.Index + 1, state.Diff), rest);
+            var addToTaller = rod + rest.Replay((state.Index + 1, state.Diff + rod), rest);
+            var addToShorter = rest.Replay((state.Index + 1, state.Diff - rod), rest);
+            var tallerOrShorter = Math.Max(addToTaller, addToShorter);
+
+            return Math.Max(skip, tallerOrShorter);
+        }
+    }
+
     private static int Solve(int[] rods, int index, int diff)
     {
         if (index == rods.Length)
@@ -39,27 +66,5 @@ internal static class TallestBillboardSolution
         var tallerOrShorter = Math.Max(addToTaller, addToShorter);
 
         return Math.Max(skip, tallerOrShorter);
-    }
-
-    // The same recurrence, memoized on (index, diff) through Memoizer.
-    public static int MaxHeightByMemoizedDiff(int[] rods)
-    {
-        return Memoizer.Memoize<(int Index, int Diff), int>((0, 0), SolveMemoized);
-
-        int SolveMemoized((int Index, int Diff) state, Func<(int Index, int Diff), int> solve)
-        {
-            if (state.Index == rods.Length)
-            {
-                return state.Diff == 0 ? 0 : Unreachable;
-            }
-
-            var rod = rods[state.Index];
-            var skip = solve((state.Index + 1, state.Diff));
-            var addToTaller = rod + solve((state.Index + 1, state.Diff + rod));
-            var addToShorter = solve((state.Index + 1, state.Diff - rod));
-            var tallerOrShorter = Math.Max(addToTaller, addToShorter);
-
-            return Math.Max(skip, tallerOrShorter);
-        }
     }
 }

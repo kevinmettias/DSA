@@ -31,26 +31,6 @@ internal static class CheckIfItIsAGoodArraySolution
         return gcd == 1;
     }
 
-    // The modulo form, short-circuiting the moment the running gcd reaches 1 -
-    // once it does, no later element can move it, so the remaining elements
-    // cannot change the answer.
-    public static bool IsGoodArrayByEuclideanGcd(int[] nums)
-    {
-        var gcd = nums[0];
-
-        foreach (var value in nums)
-        {
-            gcd = EuclideanGcd(gcd, value);
-
-            if (gcd == 1)
-            {
-                return true;
-            }
-        }
-
-        return gcd == 1;
-    }
-
     // Repeatedly subtract the smaller value from the larger until they are
     // equal. Correct, but O(max/min) per pair - a value that is a small multiple
     // of the running gcd forces one subtraction per multiple instead of one
@@ -70,6 +50,26 @@ internal static class CheckIfItIsAGoodArraySolution
         }
 
         return a;
+    }
+
+    // The modulo form, short-circuiting the moment the running gcd reaches 1 -
+    // once it does, no later element can move it, so the remaining elements
+    // cannot change the answer.
+    public static bool IsGoodArrayByEuclideanGcd(int[] nums)
+    {
+        var gcd = nums[0];
+
+        foreach (var value in nums)
+        {
+            gcd = EuclideanGcd(gcd, value);
+
+            if (gcd == 1)
+            {
+                return true;
+            }
+        }
+
+        return gcd == 1;
     }
 
     private static int EuclideanGcd(int a, int b) => b == 0 ? a : EuclideanGcd(b, a % b);

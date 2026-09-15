@@ -35,21 +35,40 @@ internal readonly struct AlternatingGridTopology
 
         foreach (var (deltaRow, deltaCol, matchesOddAction) in Moves)
         {
-            var row = node.Row + deltaRow;
-            var col = node.Col + deltaCol;
-
-            if (row < 0 || row >= rows || col < 0 || col >= cols)
-            {
-                continue;
-            }
-
-            var target = node with { Row = row, Col = col, NextActionIsOdd = flipped };
-            var followsParity = matchesOddAction == node.NextActionIsOdd;
-            var weight = target.EntranceCost + (followsParity ? 0 : stayPenalty);
-
-            edges.Add((weight, target));
+            AddMoveEdge(edges, node, (deltaRow, deltaCol, matchesOddAction), (rows, cols));
         }
 
         return new ListEdges<AlternatingGridNode, long>(edges);
     }
+
+    // The edge one move contributes, unless the move leaves the penalty grid on any of
+    // its four edges and so has no target cell to move to. Only whether the move's
+    // direction matches the current action's required set decides whether the source
+    // cell's penalty is charged again.
+    private static void AddMoveEdge(
+        List<(long Weight, AlternatingGridNode Target)> edges,
+        AlternatingGridNode node,
+        (int DeltaRow, int DeltaCol, bool MatchesOddAction) move,
+        (int Rows, int Cols) bounds)
+    {
+        var row = node.Row + move.DeltaRow;
+        var col = node.Col + move.DeltaCol;
+
+        if (IsOutsideGrid(row, col, bounds.Rows, bounds.Cols))
+        {
+            return;
+        }
+
+        var stayPenalty = node.Penalty[node.Row][node.Col];
+        var target = node with { Row = row, Col = col, NextActionIsOdd = !node.NextActionIsOdd };
+        var followsParity = move.MatchesOddAction == node.NextActionIsOdd;
+        var weight = target.EntranceCost + (followsParity ? 0 : stayPenalty);
+
+        edges.Add((weight, target));
+    }
+
+    // A move that leaves the penalty grid on any of its four edges has no target
+    // cell to move to.
+    private static bool IsOutsideGrid(int row, int col, int rows, int cols)
+        => row < 0 || row >= rows || col < 0 || col >= cols;
 }

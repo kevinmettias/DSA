@@ -13,10 +13,10 @@ public class DifferentWaysToAddParenthesesBenchmarks
 {
     private const string Operand = "1";
 
-    [Params(6, 10)]
-    public int OperandCount;
+    private string _expression = "";
 
-    private string _expression = null!;
+    [Params(6, 10)]
+    public int OperandCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -21,6 +21,13 @@ internal static class DiameterOfBinaryTreeSolution
     public static int DiameterByRecomputedHeightPerNode(BinaryTreeNode<int> root)
         => DiameterVia(root).Diameter;
 
+    // This repo's own bottom-up fold: DiameterAlgebra computes height and the best
+    // diameter-through-this-node together in a single TreeFold pass.
+    public static int DiameterByTreeMetricsFold(BinaryTreeNode<int> root)
+        => TreeMetrics.Diameter<
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
+            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+
     private static (int Height, int Diameter) DiameterVia(BinaryTreeNode<int>? node)
     {
         if (node is null)
@@ -28,25 +35,39 @@ internal static class DiameterOfBinaryTreeSolution
             return (0, 0);
         }
 
-        var leftHeight = Height(node.Left);
-        var rightHeight = Height(node.Right);
+        var childHeights = (Left: Height(node.Left), Right: Height(node.Right));
+        var childDiameters = ChildDiameters(node);
+
+        return CombineNodeMeasurements(childHeights, childDiameters);
+    }
+
+    // The two child diameters, each recomputed from scratch at every node visited -
+    // that repeat is exactly what makes this arm O(n^2) overall.
+    private static (int Left, int Right) ChildDiameters(BinaryTreeNode<int> node)
+    {
         var (_, leftDiameter) = DiameterVia(node.Left);
         var (_, rightDiameter) = DiameterVia(node.Right);
 
-        var diameterThroughNode = leftHeight + rightHeight;
-        var bestChildDiameter = Math.Max(leftDiameter, rightDiameter);
+        return (leftDiameter, rightDiameter);
+    }
+
+    // One node's measurement from its children's: the taller child carries the height,
+    // and the widest of the path through this node and the two child diameters is the
+    // best diameter seen at or below it.
+    private static (int Height, int Diameter) CombineNodeMeasurements(
+        (int Left, int Right) childHeights, (int Left, int Right) childDiameters)
+    {
+        var diameterThroughNode = childHeights.Left + childHeights.Right;
+        var bestChildDiameter = Math.Max(childDiameters.Left, childDiameters.Right);
         var diameter = Math.Max(diameterThroughNode, bestChildDiameter);
 
-        return (1 + Math.Max(leftHeight, rightHeight), diameter);
+        return (1 + Math.Max(childHeights.Left, childHeights.Right), diameter);
     }
 
     private static int Height(BinaryTreeNode<int>? node)
-        => node is null ? 0 : 1 + Math.Max(Height(node.Left), Height(node.Right));
+        => node is null ? 0 : NodeHeight(node);
 
-    // This repo's own bottom-up fold: DiameterAlgebra computes height and the best
-    // diameter-through-this-node together in a single TreeFold pass.
-    public static int DiameterByTreeMetricsFold(BinaryTreeNode<int> root)
-        => TreeMetrics.Diameter<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+    // The node's own level on top of its taller subtree.
+    private static int NodeHeight(BinaryTreeNode<int> node)
+        => 1 + Math.Max(Height(node.Left), Height(node.Right));
 }

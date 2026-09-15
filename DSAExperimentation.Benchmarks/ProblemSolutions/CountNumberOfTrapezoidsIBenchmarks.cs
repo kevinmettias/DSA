@@ -17,10 +17,10 @@ public class CountNumberOfTrapezoidsIBenchmarks
     private const int YBucketCount = 20;
     private const int CoordinateBound = 1000;
 
-    [Params(30, 80)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(30, 80)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

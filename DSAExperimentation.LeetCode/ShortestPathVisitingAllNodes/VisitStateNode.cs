@@ -9,11 +9,7 @@ namespace DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
 // This lives beside the solution rather than in Domain/ because the state it
 // models - "where I am, plus which nodes I have already touched" - is LC 847's
 // own question and answers nothing else (ARCHITECTURE.md 17.3).
-internal sealed class VisitStateNode(int node, int mask)
+internal sealed record VisitStateNode(int Node, int Mask)
 {
-    public int Node { get; } = node;
-
-    public int Mask { get; } = mask;
-
     public List<VisitStateNode> Neighbors { get; } = [];
 }

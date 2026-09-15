@@ -17,25 +17,7 @@ internal static class FindNumberOfWaysToReachTheKthStairSolution
     // operations. Every (Stair, Jump, CanStepDown) triple gets recomputed once
     // per distinct interleaving of up/down moves that reaches it - O(k) calls,
     // the baseline the memoized arm below has to beat.
-    public static int WaysByBruteRecursion(int k) => CountWays(1, 0, canStepDown: true, k);
-
-    private static int CountWays(long stair, int jump, bool canStepDown, int k)
-    {
-        if (stair > k + 1)
-        {
-            return 0;
-        }
-
-        var ways = stair == k ? 1 : 0;
-        ways += CountWays(stair + (1L << jump), jump + 1, canStepDown: true, k);
-
-        if (canStepDown && stair > 0)
-        {
-            ways += CountWays(stair - 1, jump, canStepDown: false, k);
-        }
-
-        return ways;
-    }
+    public static int WaysByBruteRecursion(int k) => CountWays(1, 0, DownStep.Available, k);
 
     // This repo's own Memoizer over the identical recurrence - the same
     // (Stair, Jump, CanStepDown) triple is reached by many distinct
@@ -43,30 +25,67 @@ internal static class FindNumberOfWaysToReachTheKthStairSolution
     // caching collapses those into one evaluation each, the same DP
     // composition IntegerReplacementTests uses.
     public static int WaysByMemoizedRecurrence(int k) =>
-        Memoizer.Memoize<StairState, int>(
-            new StairState(1, 0, true),
-            (state, ways) =>
+        Memoizer.Memoize<StairState, int>(new StairState(1, 0, true), new StairWalkTo(k));
+
+    /// <summary>
+    /// The recurrence, named: from a (stair, jump, can-step-down) position the count is
+    /// 1 when this is stair <paramref name="k"/>, plus the count after the up move, plus
+    /// the count after the single down move while it is still available - and 0 once the
+    /// stair has overshot k + 1, which is what bounds the depth.
+    /// </summary>
+    private sealed class StairWalkTo(int k) : IRecurrence<StairState, int>
+    {
+        /// <inheritdoc/>
+        public int Replay(StairState state, IRecurrence<StairState, int> rest)
+        {
+            if (state.Stair > k + 1)
             {
-                if (state.Stair > k + 1)
-                {
-                    return 0;
-                }
+                return 0;
+            }
 
-                var total = state.Stair == k ? 1 : 0;
-                total += ways(state with
-                {
-                    Stair = state.Stair + (1L << state.Jump),
-                    Jump = state.Jump + 1,
-                    CanStepDown = true,
-                });
+            var total = state.Stair == k ? 1 : 0;
+            total += rest.Replay(state with
+            {
+                Stair = state.Stair + (1L << state.Jump),
+                Jump = state.Jump + 1,
+                CanStepDown = true,
+            }, rest);
 
-                if (state.CanStepDown && state.Stair > 0)
-                {
-                    total += ways(state with { Stair = state.Stair - 1, CanStepDown = false });
-                }
+            if (state.CanStepDown && state.Stair > 0)
+            {
+                total += rest.Replay(state with { Stair = state.Stair - 1, CanStepDown = false }, rest);
+            }
 
-                return total;
-            });
+            return total;
+        }
+    }
+
+    private static int CountWays(long stair, int jump, DownStep downStep, int k)
+    {
+        if (stair > k + 1)
+        {
+            return 0;
+        }
+
+        var ways = stair == k ? 1 : 0;
+        ways += CountWays(stair + (1L << jump), jump + 1, DownStep.Available, k);
+
+        if (downStep == DownStep.Available && stair > 0)
+        {
+            ways += CountWays(stair - 1, jump, DownStep.Spent, k);
+        }
+
+        return ways;
+    }
+
+    // Whether Alice's down-one-stair operation is still open to her, or was just
+    // spent and may not be repeated: named where the rewritten `true`/`false` at
+    // the call sites said it only by position. An up move restores Available.
+    private enum DownStep
+    {
+        Available,
+        Spent,
+    }
 
     private readonly record struct StairState(long Stair, int Jump, bool CanStepDown);
 }

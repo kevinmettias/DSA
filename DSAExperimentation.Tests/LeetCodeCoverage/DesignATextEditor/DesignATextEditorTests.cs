@@ -87,26 +87,15 @@ public sealed class DesignATextEditorTests
 // One call in a TextEditor script: which operation to invoke, and with what text
 // or character count. Pure dispatch, built via the named factories below so a
 // script reads like the LeetCode call sequence it replays.
-public readonly record struct TextEditorOp
+public readonly record struct TextEditorOp(TextEditorOp.OpKind kind, string text, int count)
 {
-    private readonly Kind _kind;
-    private readonly string _text;
-    private readonly int _count;
+    public static TextEditorOp AddText(string text) => new(OpKind.AddText, text, 0);
 
-    private TextEditorOp(Kind kind, string text, int count)
-    {
-        _kind = kind;
-        _text = text;
-        _count = count;
-    }
+    public static TextEditorOp DeleteText(int k) => new(OpKind.DeleteText, string.Empty, k);
 
-    public static TextEditorOp AddText(string text) => new(Kind.AddText, text, 0);
+    public static TextEditorOp CursorLeft(int k) => new(OpKind.CursorLeft, string.Empty, k);
 
-    public static TextEditorOp DeleteText(int k) => new(Kind.DeleteText, string.Empty, k);
-
-    public static TextEditorOp CursorLeft(int k) => new(Kind.CursorLeft, string.Empty, k);
-
-    public static TextEditorOp CursorRight(int k) => new(Kind.CursorRight, string.Empty, k);
+    public static TextEditorOp CursorRight(int k) => new(OpKind.CursorRight, string.Empty, k);
 
     // null for AddText, matching LeetCode's own judge output for a void operation;
     // the deleted count for DeleteText and the reported window for the two cursor
@@ -114,21 +103,21 @@ public readonly record struct TextEditorOp
     // value per operation without forcing them onto a common shape.
     internal object? Apply(ITextEditor editor)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.AddText:
-                editor.AddText(_text);
+            case OpKind.AddText:
+                editor.AddText(text);
                 return null;
-            case Kind.DeleteText:
-                return editor.DeleteText(_count);
-            case Kind.CursorLeft:
-                return editor.CursorLeft(_count);
+            case OpKind.DeleteText:
+                return editor.DeleteText(count);
+            case OpKind.CursorLeft:
+                return editor.CursorLeft(count);
             default:
-                return editor.CursorRight(_count);
+                return editor.CursorRight(count);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         AddText,
         DeleteText,

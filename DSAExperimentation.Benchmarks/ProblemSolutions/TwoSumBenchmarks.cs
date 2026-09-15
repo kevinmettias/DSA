@@ -14,10 +14,10 @@ public class TwoSumBenchmarks
     private const int MaxValueExclusive = 1_000;
     private const int Seed = 1;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

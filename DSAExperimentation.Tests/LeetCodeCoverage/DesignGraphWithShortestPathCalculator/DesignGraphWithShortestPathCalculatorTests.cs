@@ -97,41 +97,28 @@ public sealed class DesignGraphWithShortestPathCalculatorTests
 // One call in an LC 2642 script: either an edge to add or a pair of nodes to
 // query. Pure dispatch, built via the named factories below so a script reads
 // like the LeetCode call sequence it replays.
-public readonly record struct ShortestPathGraphOp
+public readonly record struct ShortestPathGraphOp(ShortestPathGraphOp.OpKind kind, int[] edge, int node1, int node2)
 {
-    private readonly Kind _kind;
-    private readonly int[] _edge;
-    private readonly int _node1;
-    private readonly int _node2;
+    public static ShortestPathGraphOp AddEdge(int[] edge) => new(OpKind.AddEdge, edge, 0, 0);
 
-    private ShortestPathGraphOp(Kind kind, int[] edge, int node1, int node2)
-    {
-        _kind = kind;
-        _edge = edge;
-        _node1 = node1;
-        _node2 = node2;
-    }
-
-    public static ShortestPathGraphOp AddEdge(int[] edge) => new(Kind.AddEdge, edge, 0, 0);
-
-    public static ShortestPathGraphOp ShortestPath(int node1, int node2) => new(Kind.ShortestPath, [], node1, node2);
+    public static ShortestPathGraphOp ShortestPath(int node1, int node2) => new(OpKind.ShortestPath, [], node1, node2);
 
     // null for addEdge, matching LeetCode's own judge output for a void
     // operation; the query's answer otherwise - so a script runner can assert
     // against one expected value per operation uniformly.
     internal int? Apply(IShortestPathGraph graph)
     {
-        if (_kind == Kind.AddEdge)
+        if (kind == OpKind.AddEdge)
         {
-            graph.AddEdge(_edge);
+            graph.AddEdge(edge);
 
             return null;
         }
 
-        return graph.ShortestPathBetween(_node1, _node2);
+        return graph.ShortestPathBetween(node1, node2);
     }
 
-    private enum Kind
+    public enum OpKind
     {
         AddEdge,
         ShortestPath,

@@ -49,7 +49,8 @@ internal static class CouplesHoldingHandsSolution
     private static bool SwapPartnerIntoPlace(int[] row, int[] position, int seat)
     {
         var first = row[seat];
-        var partner = first % SeatsPerCouple == 0 ? first + 1 : first - 1;
+        var isFirstOfCouple = first % SeatsPerCouple == 0;
+        var partner = isFirstOfCouple ? NextSeatNumber(first) : PreviousSeatNumber(first);
 
         if (row[seat + 1] == partner)
         {
@@ -66,6 +67,13 @@ internal static class CouplesHoldingHandsSolution
 
         return true;
     }
+
+    // Couple k occupies the two seat numbers 2k and 2k+1, so a partner is always the
+    // neighbouring seat number: the one above the couple's first seat, the one below
+    // its second.
+    private static int NextSeatNumber(int seat) => seat + 1;
+
+    private static int PreviousSeatNumber(int seat) => seat - 1;
 
     // Union each seat pair by couple id and count distinct components with this
     // repo's own DisjointSet + Set<int> (NumberOfProvincesBenchmarks' exact shape).

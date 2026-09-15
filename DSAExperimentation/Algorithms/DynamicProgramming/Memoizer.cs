@@ -16,7 +16,7 @@ namespace DSAExperimentation.Algorithms.DynamicProgramming;
 // (§9.2/§12.1's discriminator). A DP recurrence is the same shape - "Operations plus
 // an open-runtime-object law, with no Representation axis at all," the mirror image
 // of DynamicArray (§12.2) - so Memoize needs no new Representation/Topology file
-// either.
+// either: what it needs is a name for that open bucket, which IRecurrence supplies.
 //
 // The cache is a plain BCL Dictionary<TState,TResult>, not this repo's own HashMap -
 // per §16.5's own test ("lifetime and ownership, not 'is this a TKey-to-int map'"),
@@ -26,20 +26,21 @@ namespace DSAExperimentation.Algorithms.DynamicProgramming;
 // TopologicalSort.inDegree already occupy - not KeyedDisjointSet's DataStructures/-
 // tier reusable wrapper.
 //
-// API shape: recurrence takes a second parameter, itself a Func<TState,TResult> -
-// the memoized recursive call-back, Y-combinator style - so callers write natural-
-// looking recursion (`(n, fib) => n <= 1 ? n : fib(n-1) + fib(n-2)`) instead of
-// manually routing every recursive branch through a cache object by hand (a silent,
-// easy-to-forget runtime footgun the alternative shape invites). One real ergonomic
-// cost: TResult appears only inside recurrence's own parameter type, so neither an
-// inline lambda nor a named local function's method group gives the compiler enough
-// to infer it from - TState infers fine from start, but nothing pins TResult down
-// until the method group itself is bound, which needs TResult already known, a
-// circularity C#'s inference does not attempt to break (CS0411 either way). Every
-// call site below states both type arguments explicitly
-// (`Memoizer.Memoize<TState, TResult>(start, Recurrence)`) - one annotation, and the
-// failure mode is a loud compile error, not (as the alternative shape below risks)
-// silent exponential blowup from a forgotten cache route-through.
+// API shape: the recurrence is a named type, IRecurrence<TState,TResult>, whose single
+// method is the whole of what a recurrence owes this engine - Replay(state, rest)
+// computes state's result and branches through `rest` for the sub-states it needs.
+// That names the recursion at the point of use (`rest.Replay(next, rest)`), and it
+// names the decision itself: a caller's recurrence is a type named for what it says,
+// typically a private nested class with the branches it recurses through as its body.
+// The memo run below is the recursion a recurrence is handed back - an IRecurrence
+// whose Replay reads and writes the cache, and which passes `this` rather than holding
+// a recursion in a field, so the recursion is the same object at every level and there
+// is no second place it could come from. A caller therefore never routes a branch
+// through the cache by hand: the only recursion a recurrence is ever given IS the memo
+// run, so forgetting to go through the memo is not a failure mode this shape has.
+// Inference is complete on both parameters - TState from start, TResult from the
+// recurrence instance's own instantiation - so a call site reads
+// `Memoize(start, new Ways())` with no annotation at all.
 //
 // TState : notnull, not : class - mirrors DepthFirstSearch's own TNode : notnull
 // reasoning (§12.3): DP states are naturally value types (an int, or a tuple like
@@ -61,36 +62,43 @@ internal static class Memoizer
 {
     public static TResult Memoize<TState, TResult>(
         TState start,
-        Func<TState, Func<TState, TResult>, TResult> recurrence)
+        IRecurrence<TState, TResult> recurrence)
         where TState : notnull
         => Memoize(start, recurrence, EqualityComparer<TState>.Default);
 
     public static TResult Memoize<TState, TResult>(
         TState start,
-        Func<TState, Func<TState, TResult>, TResult> recurrence,
+        IRecurrence<TState, TResult> recurrence,
         IEqualityComparer<TState> comparer)
         where TState : notnull
     {
-        // binding-scope: allow -- cache must be declared here, one block out from
-        // its only direct reads/writes inside ResultFor, not moved into ResultFor's own
-        // body: it has to be the SAME dictionary shared across every recursive call,
-        // which is the entire memoization mechanism. Declaring it inside ResultFor
-        // would silently replace it with a fresh, empty dictionary on every call,
-        // defeating memoization without any compiler or test failure to catch it.
         var cache = new Dictionary<TState, TResult>(comparer);
+        var run = new MemoRun<TState, TResult>(cache, recurrence);
 
-        TResult ResultFor(TState state)
+        return run.Replay(start, run);
+    }
+
+    // The recursion a recurrence is handed: it owns the cache, and its Replay passes
+    // `this` on to the next level, so the recursion is this object all the way down.
+    // That is also why `rest` goes unread here - a run is already the recursion, and
+    // taking it from the parameter instead would let a caller's wrapper redirect a
+    // branch past the memo.
+    private sealed class MemoRun<TState, TResult>(
+        Dictionary<TState, TResult> cache,
+        IRecurrence<TState, TResult> recurrence) : IRecurrence<TState, TResult>
+        where TState : notnull
+    {
+        public TResult Replay(TState state, IRecurrence<TState, TResult> rest)
         {
             if (cache.TryGetValue(state, out var cached))
             {
                 return cached;
             }
 
-            var result = recurrence(state, ResultFor);
-            cache[state] = result;
-            return result;
-        }
+            var computed = recurrence.Replay(state, this);
+            cache[state] = computed;
 
-        return ResultFor(start);
+            return computed;
+        }
     }
 }

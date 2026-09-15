@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.KthSmallestInLexicographicalOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,15 +19,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class KthSmallestInLexicographicalOrderBenchmarks
 {
-    private const int HalfDivisor = 2;
-
-    [Params(200_000, 2_000_000)]
-    public int N;
 
     private int _k;
 
+    [Params(200_000, 2_000_000)]
+    public int N { get; set; }
+
     [GlobalSetup]
-    public void Setup() => _k = N / HalfDivisor;
+    public void Setup() => _k = N / AlgorithmConstants.HalvingFactor;
 
     [Benchmark(Baseline = true)]
     public int GenerateAndSortStrings() =>

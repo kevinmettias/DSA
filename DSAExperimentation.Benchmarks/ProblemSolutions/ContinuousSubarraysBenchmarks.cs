@@ -16,10 +16,10 @@ public class ContinuousSubarraysBenchmarks
     private const int Seed = 1;
     private const int ValueUpperBound = 40;
 
-    [Params(500, 4_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(500, 4_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

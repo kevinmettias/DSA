@@ -15,10 +15,10 @@ public class MaximumSubarrayXORWithBoundedRangeBenchmarks
     private const int Low = 0;
     private const int High = 60_000;
 
-    [Params(500, 20_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(500, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

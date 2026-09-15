@@ -66,19 +66,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
 
         for (var c = 1; c <= length; c++)
         {
-            if (depthByPopcount[c] != targetDepth)
-            {
-                continue;
-            }
-
-            var count = countByPopcount[c];
-
-            if (c == 1 && targetDepth == 0)
-            {
-                count -= 1; // Exclude x = 1 itself - see the method comment above.
-            }
-
-            total += count;
+            total += CountAtPopcount(countByPopcount, depthByPopcount, c, targetDepth);
         }
 
         return total;
@@ -120,12 +108,7 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
             if (binary[i] == '1')
             {
                 var remainingBits = length - 1 - i;
-
-                for (var onesInSuffix = 0; onesInSuffix <= remainingBits; onesInSuffix++)
-                {
-                    counts[onesInPrefix + onesInSuffix] += pascal[remainingBits][onesInSuffix];
-                }
-
+                AddFreeSuffixCounts(pascal[remainingBits], onesInPrefix, counts);
                 onesInPrefix++;
             }
         }
@@ -152,5 +135,37 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
         }
 
         return pascal;
+    }
+
+    // One fixed 1-bit turned to 0: every way the remaining bits below it can be
+    // chosen, C(remainingBits, onesInSuffix), lands at baseIndex + onesInSuffix.
+    private static void AddFreeSuffixCounts(long[] row, int baseIndex, long[] counts)
+    {
+        for (var onesInSuffix = 0; onesInSuffix < row.Length; onesInSuffix++)
+        {
+            counts[baseIndex + onesInSuffix] += row[onesInSuffix];
+        }
+    }
+
+    // How many x <= n have exactly this popcount, given that this popcount's own
+    // depth is the target one - or 0 when it is not. The digit-DP count is
+    // reduced by one for x = 1 itself, the sole depth-0 value, whenever the
+    // popcount-1 bucket would otherwise sweep it in.
+    private static long CountAtPopcount(
+        long[] countByPopcount, int[] depthByPopcount, int popcount, int targetDepth)
+    {
+        if (depthByPopcount[popcount] != targetDepth)
+        {
+            return 0;
+        }
+
+        var count = countByPopcount[popcount];
+
+        if (popcount == 1 && targetDepth == 0)
+        {
+            count -= 1; // Exclude x = 1 itself - see the caller's comment.
+        }
+
+        return count;
     }
 }

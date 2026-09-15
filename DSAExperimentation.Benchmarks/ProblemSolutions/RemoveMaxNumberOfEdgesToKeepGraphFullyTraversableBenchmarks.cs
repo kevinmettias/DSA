@@ -18,10 +18,10 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
     private const int EdgeTypeUpperBoundExclusive = 4;
     private const int BothOwnersEdgeType = 3;
 
-    [Params(50, 300)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
+    [Params(50, 300)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

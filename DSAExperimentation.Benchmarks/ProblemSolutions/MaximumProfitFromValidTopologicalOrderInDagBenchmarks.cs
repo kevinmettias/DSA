@@ -17,12 +17,12 @@ public class MaximumProfitFromValidTopologicalOrderInDagBenchmarks
 {
     private const int Seed = 3530;
 
-    [Params(6, 8)]
-    public int N;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
-    private int[] _score = null!;
+    private int[] _score = [];
     private PrecedenceMasks _predecessors = null!;
+    [Params(6, 8)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -24,7 +24,7 @@ internal static class StringMatchingInAnArraySolution
         {
             for (var j = 0; j < words.Length; j++)
             {
-                if (j != i && ContainsNaive(words[j], words[i]))
+                if (j != i && ContainsNaive(new Haystack(words[j]), new Needle(words[i])))
                 {
                     contained.Add(words[i]);
                     break;
@@ -35,9 +35,9 @@ internal static class StringMatchingInAnArraySolution
         return contained;
     }
 
-    private static bool ContainsNaive(string text, string pattern)
+    private static bool ContainsNaive(Haystack text, Needle pattern)
     {
-        for (var start = 0; start + pattern.Length <= text.Length; start++)
+        for (var start = 0; start + pattern.Text.Length <= text.Text.Length; start++)
         {
             if (MatchesAt(text, pattern, start))
             {
@@ -48,11 +48,11 @@ internal static class StringMatchingInAnArraySolution
         return false;
     }
 
-    private static bool MatchesAt(string text, string pattern, int start)
+    private static bool MatchesAt(Haystack text, Needle pattern, int start)
     {
-        for (var offset = 0; offset < pattern.Length; offset++)
+        for (var offset = 0; offset < pattern.Text.Length; offset++)
         {
-            if (text[start + offset] != pattern[offset])
+            if (text.Text[start + offset] != pattern.Text[offset])
             {
                 return false;
             }
@@ -82,4 +82,13 @@ internal static class StringMatchingInAnArraySolution
 
         return contained;
     }
+
+    // The two ends of a containment test, named for the roles they play here rather than
+    // left as two adjacent `string` positions a caller could hand over the wrong way
+    // round with the compiler none the wiser. The text is what is searched; the needle
+    // is what is searched for - a one-directional relation, since the scan is bounded by
+    // the needle's length and indexes the text by the needle's offset.
+    private readonly record struct Haystack(string Text);
+
+    private readonly record struct Needle(string Text);
 }

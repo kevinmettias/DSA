@@ -34,7 +34,7 @@ internal static class PalindromicSubstringsSolution
     {
         var count = 0;
 
-        while (left >= 0 && right < s.Length && s[left] == s[right])
+        while (ExpandsFurther(s, left, right))
         {
             count++;
             left--;
@@ -43,6 +43,11 @@ internal static class PalindromicSubstringsSolution
 
         return count;
     }
+
+    // The expansion can continue: both indices are still inside the text, and the
+    // characters they point at match.
+    private static bool ExpandsFurther(string s, int left, int right)
+        => left >= 0 && right < s.Length && s[left] == s[right];
 
     public static int CountSubstringsByManacher(string s)
     {

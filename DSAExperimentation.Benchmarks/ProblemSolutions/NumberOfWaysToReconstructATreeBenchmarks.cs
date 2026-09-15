@@ -14,10 +14,10 @@ public class NumberOfWaysToReconstructATreeBenchmarks
 {
     private const int ChainCount = 5;
 
-    [Params(50, 2_000)]
-    public int NodeCount;
+    private int[][] _pairs = [];
 
-    private int[][] _pairs = null!;
+    [Params(50, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _pairs = ReconstructTreeWorkloads.BuildStarOfChainsPairs(NodeCount, ChainCount);

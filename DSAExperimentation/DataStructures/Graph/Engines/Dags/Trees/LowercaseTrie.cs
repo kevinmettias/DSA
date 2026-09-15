@@ -87,7 +87,7 @@ internal sealed class LowercaseTrie<TValue>
     {
         var index = ch - 'a';
 
-        if (index < 0 || index >= LowercaseTrieNode<TValue>.AlphabetSize)
+        if (index < 0 || index >= LowercaseAlphabet.Size)
         {
             throw new ArgumentOutOfRangeException(nameof(ch), ch, InvalidKeyCharacterMessage);
         }

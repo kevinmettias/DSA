@@ -29,7 +29,7 @@ internal static class LongestWordInDictionarySolution
                 continue;
             }
 
-            if (best is null || IsBetter(word, best))
+            if (best is null || IsBetter(new CandidateWord(word), new BestWord(best)))
             {
                 best = word;
             }
@@ -63,9 +63,6 @@ internal static class LongestWordInDictionarySolution
         return true;
     }
 
-    private static bool IsBetter(string candidate, string best) =>
-        candidate.Length > best.Length || (candidate.Length == best.Length && string.CompareOrdinal(candidate, best) < 0);
-
     // This repo's own LowercaseTrie<bool>: build one trie from the whole word list,
     // then walk it from the root descending only through nodes whose HasValue is
     // already true - a step is legal exactly when the prefix reached so far is
@@ -75,7 +72,7 @@ internal static class LongestWordInDictionarySolution
     {
         var trie = BuildTrie(words);
 
-        return FindLongestWord(trie.Root, EmptyPrefix, NoQualifyingWord);
+        return FindLongestWord(trie.Root, new CandidateWord(EmptyPrefix), new BestWord(NoQualifyingWord)).Text;
     }
 
     private static LowercaseTrie<bool> BuildTrie(string[] words)
@@ -90,11 +87,15 @@ internal static class LongestWordInDictionarySolution
         return trie;
     }
 
-    private static string FindLongestWord(LowercaseTrieNode<bool> node, string prefix, string best)
+    private static bool IsBetter(CandidateWord candidate, BestWord best) =>
+        candidate.Text.Length > best.Text.Length
+        || (candidate.Text.Length == best.Text.Length && string.CompareOrdinal(candidate.Text, best.Text) < 0);
+
+    private static BestWord FindLongestWord(LowercaseTrieNode<bool> node, CandidateWord prefix, BestWord best)
     {
         best = BetterOf(prefix, best);
 
-        for (var i = 0; i < LowercaseTrieNode<bool>.AlphabetSize; i++)
+        for (var i = 0; i < LowercaseAlphabet.Size; i++)
         {
             best = VisitChild(node, i, prefix, best);
         }
@@ -102,7 +103,8 @@ internal static class LongestWordInDictionarySolution
         return best;
     }
 
-    private static string VisitChild(LowercaseTrieNode<bool> node, int childIndex, string prefix, string best)
+    private static BestWord VisitChild(
+        LowercaseTrieNode<bool> node, int childIndex, CandidateWord prefix, BestWord best)
     {
         var child = node.Children[childIndex];
 
@@ -111,16 +113,24 @@ internal static class LongestWordInDictionarySolution
             return best;
         }
 
-        return FindLongestWord(child, prefix + (char)('a' + childIndex), best);
+        return FindLongestWord(child, new CandidateWord(prefix.Text + (char)('a' + childIndex)), best);
     }
 
-    private static string BetterOf(string prefix, string best)
+    private static BestWord BetterOf(CandidateWord prefix, BestWord best)
     {
-        if (prefix.Length == 0)
+        if (prefix.Text.Length == 0)
         {
             return best;
         }
 
-        return IsBetter(prefix, best) ? prefix : best;
+        return IsBetter(prefix, best) ? new BestWord(prefix.Text) : best;
     }
+
+    // The two things being weighed against each other at every step of both strategies: the
+    // word (or trie prefix) currently on offer, and the best complete word accepted so far.
+    // Named, rather than left as two interchangeable `string` positions a caller could hand
+    // over the wrong way round with the compiler none the wiser.
+    private readonly record struct CandidateWord(string Text);
+
+    private readonly record struct BestWord(string Text);
 }

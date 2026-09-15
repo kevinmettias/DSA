@@ -85,8 +85,8 @@ internal static class NumberOfLongestIncreasingSubsequenceSolution
         foreach (var num in nums)
         {
             var rank = BinarySearch.LowerBound<int, ArraySequence<int>>(ranks, num);
-            var best = rank == 0 ? (Length: 0, Count: 0) : tree.Query(0, rank - 1);
-            var candidate = best.Length == 0 ? (Length: 1, Count: 1) : (Length: best.Length + 1, best.Count);
+            var best = rank == 0 ? NoSubsequence() : tree.Query(0, rank - 1);
+            var candidate = best.Length == 0 ? NewSubsequence() : ExtendedSubsequence(best);
             var existing = tree.Query(rank, rank);
             var combined = LisAggregate.Combine(existing, candidate);
 
@@ -95,4 +95,17 @@ internal static class NumberOfLongestIncreasingSubsequenceSolution
 
         return tree.Query(0, sortedDistinct.Length - 1).Count;
     }
+
+    // The best-so-far aggregate when no smaller value has been seen yet: there is
+    // nothing to extend, so no length and no count.
+    private static (int Length, int Count) NoSubsequence() => (Length: 0, Count: 0);
+
+    // The aggregate for a value that starts a subsequence of its own: length one,
+    // reached one way.
+    private static (int Length, int Count) NewSubsequence() => (Length: 1, Count: 1);
+
+    // The aggregate for a value appended to the best-so-far subsequence: one
+    // longer, with every one of that best's subsequences still reaching it.
+    private static (int Length, int Count) ExtendedSubsequence((int Length, int Count) best) =>
+        (Length: best.Length + 1, best.Count);
 }

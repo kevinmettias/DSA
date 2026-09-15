@@ -19,8 +19,16 @@ internal static class FindFirstAndLastPositionOfElementInSortedArraySolution
         var first = Array.IndexOf(nums, target);
 
         return first < 0
-            ? [LeetCodeAnswer.None, LeetCodeAnswer.None]
-            : [first, Array.LastIndexOf(nums, target)];
+            ? AbsentRange()
+            : OccurrenceRangeFrom(nums, target, first);
+    }
+
+    // The target's full run of indices, from `first` through its last occurrence.
+    private static int[] OccurrenceRangeFrom(int[] nums, int target, int first)
+    {
+        var last = Array.LastIndexOf(nums, target);
+
+        return ClosedRange(first, last);
     }
 
     // This repo's own LowerBound/UpperBound already delimit exactly the run of indices
@@ -33,7 +41,13 @@ internal static class FindFirstAndLastPositionOfElementInSortedArraySolution
         var upper = BinarySearch.UpperBound(sequence, target);
 
         return lower == upper
-            ? [LeetCodeAnswer.None, LeetCodeAnswer.None]
-            : [lower, upper - 1];
+            ? AbsentRange()
+            : ClosedRange(lower, upper - 1);
     }
+
+    // The closed [first, last] index range a target's run occupies.
+    private static int[] ClosedRange(int first, int last) => [first, last];
+
+    // The [-1, -1] answer for a target the array does not contain.
+    private static int[] AbsentRange() => [LeetCodeAnswer.None, LeetCodeAnswer.None];
 }

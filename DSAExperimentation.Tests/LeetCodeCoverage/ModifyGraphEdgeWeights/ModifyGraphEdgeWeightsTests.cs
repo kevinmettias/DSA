@@ -38,7 +38,7 @@ public sealed class ModifyGraphEdgeWeightsTests
         Assert.Equal(
             expected,
             ModifyGraphEdgeWeightsSolution.ModifyEdgeWeightsByLinearWeightScan(
-                n, edges, source, destination, target));
+                n, edges, (Source: source, Destination: destination, Target: target)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -47,5 +47,5 @@ public sealed class ModifyGraphEdgeWeightsTests
         Assert.Equal(
             expected,
             ModifyGraphEdgeWeightsSolution.ModifyEdgeWeightsByHalfDistanceFormula(
-                n, edges, source, destination, target));
+                n, edges, (Source: source, Destination: destination, Target: target)));
 }

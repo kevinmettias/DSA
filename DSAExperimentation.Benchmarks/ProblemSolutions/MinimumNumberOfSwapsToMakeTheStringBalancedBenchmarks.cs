@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumNumberOfSwapsToMakeTheStringBalancedBenchmarks
 {
-    private const int TextHalfDivisor = 2; // _text is split into two equal-length halves
+    private const int TextHalfDivisor = 2; private string _text = "";
+
+    // _text is split into two equal-length halves
 
     [Params(200, 4_000)]
-    public int Length;
-
-    private string _text = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -73,29 +73,46 @@ internal static class DistributeElementsIntoTwoArraysIISolution
         var arr1 = new List<int> { nums[0] };
         var arr2 = new List<int> { nums[1] };
 
-        tree1.Add(BinarySearch.LowerBound(sequence, nums[0]), 1);
-        tree2.Add(BinarySearch.LowerBound(sequence, nums[1]), 1);
+        var firstRank = BinarySearch.LowerBound(sequence, nums[0]);
+        tree1.Add(firstRank, 1);
+        var secondRank = BinarySearch.LowerBound(sequence, nums[1]);
+        tree2.Add(secondRank, 1);
+
+        var first = (Values: arr1, Tree: tree1);
+        var second = (Values: arr2, Tree: tree2);
 
         for (var i = 2; i < nums.Length; i++)
         {
-            var value = nums[i];
-            var rank = BinarySearch.LowerBound(sequence, value);
-            var greater1 = arr1.Count - tree1.PrefixQuery(rank);
-            var greater2 = arr2.Count - tree2.PrefixQuery(rank);
-
-            if (BelongsToArr1(greater1, greater2, arr1.Count, arr2.Count))
-            {
-                arr1.Add(value);
-                tree1.Add(rank, 1);
-            }
-            else
-            {
-                arr2.Add(value);
-                tree2.Add(rank, 1);
-            }
+            PlaceByGreaterCount(sequence, nums[i], first, second);
         }
 
         return Concatenate(arr1, arr2);
+    }
+
+    // One element lands in whichever array currently holds more elements strictly
+    // greater than it, and that array's Fenwick tree records the rank it took.
+    // BelongsToArr1 breaks the remaining ties; the rank is the same
+    // coordinate-compressed lookup the two greater-counts are read at.
+    private static void PlaceByGreaterCount(
+        ArraySequence<int> sequence,
+        int value,
+        (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) first,
+        (List<int> Values, FenwickTree<int, SumOperation<int>> Tree) second)
+    {
+        var rank = BinarySearch.LowerBound(sequence, value);
+        var greater1 = first.Values.Count - first.Tree.PrefixQuery(rank);
+        var greater2 = second.Values.Count - second.Tree.PrefixQuery(rank);
+
+        if (BelongsToArr1(greater1, greater2, first.Values.Count, second.Values.Count))
+        {
+            first.Values.Add(value);
+            first.Tree.Add(rank, 1);
+        }
+        else
+        {
+            second.Values.Add(value);
+            second.Tree.Add(rank, 1);
+        }
     }
 
     // A strictly higher greater-count wins; a tie goes to whichever array has

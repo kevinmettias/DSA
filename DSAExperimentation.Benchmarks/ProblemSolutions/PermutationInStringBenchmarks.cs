@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PermutationInStringBenchmarks
 {
     private const string Pattern = "aeiou";
-    private const int RandomSeed = 567; // LC problem number
+    private const int RandomSeed = 567; private string _s2 = "";
+
+    // LC problem number
 
     [Params(2_000, 20_000)]
-    public int Length;
-
-    private string _s2 = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() =>
@@ -24,9 +24,11 @@ public class PermutationInStringBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool PerWindowFrequencyRebuild() =>
-        PermutationInStringSolution.CheckInclusionByPerWindowRebuild(Pattern, _s2);
+        PermutationInStringSolution.CheckInclusionByPerWindowRebuild(
+            new PermutationPattern(Pattern), new SearchedText(_s2));
 
     [Benchmark]
     public bool SlidingWindowFrequencyMap() =>
-        PermutationInStringSolution.CheckInclusionBySlidingWindow(Pattern, _s2);
+        PermutationInStringSolution.CheckInclusionBySlidingWindow(
+            new PermutationPattern(Pattern), new SearchedText(_s2));
 }

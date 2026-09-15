@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SerializeAndDeserializeBSTBenchmarks
 {
-    [Params(500, 20_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,16 +34,6 @@ public class SerializeAndDeserializeBSTBenchmarks
 
         _root = BuildManual(values);
     }
-
-    [Benchmark(Baseline = true)]
-    public int NullMarkerQueueRoundTrip() =>
-        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
-            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root)));
-
-    [Benchmark]
-    public int PreOrderValueOnlyRoundTrip() =>
-        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
-            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root)));
 
     private static BinaryTreeNode<int> BuildManual(int[] values)
     {
@@ -61,6 +51,7 @@ public class SerializeAndDeserializeBSTBenchmarks
     {
         var node = root;
 
+        // Stops when the walk reaches the null child slot the value belongs in, where the new node is linked and the method returns.
         while (true)
         {
             if (value < node.Value)
@@ -86,6 +77,19 @@ public class SerializeAndDeserializeBSTBenchmarks
         }
     }
 
+    [Benchmark(Baseline = true)]
+    public int NullMarkerQueueRoundTrip() =>
+        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
+            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root)));
+
+    [Benchmark]
+    public int PreOrderValueOnlyRoundTrip() =>
+        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
+            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root)));
+
     private static int CountNodes(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
+        node is null ? 0 : CountSubtreeNodes(node);
+
+    private static int CountSubtreeNodes(BinaryTreeNode<int> node) =>
+        1 + CountNodes(node.Left) + CountNodes(node.Right);
 }

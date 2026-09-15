@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrisonCellsAfterNDaysBenchmarks
 {
-    [Params(10_000, 1_000_000)]
-    public int Days;
+    private int[] _cells = [];
 
-    private int[] _cells = null!;
+    [Params(10_000, 1_000_000)]
+    public int Days { get; set; }
 
     [GlobalSetup]
     public void Setup() => _cells = [1, 0, 0, 1, 0, 0, 1, 0];

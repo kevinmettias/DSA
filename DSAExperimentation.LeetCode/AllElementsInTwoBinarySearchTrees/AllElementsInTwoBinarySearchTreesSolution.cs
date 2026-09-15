@@ -17,25 +17,23 @@ internal static class AllElementsInTwoBinarySearchTreesSolution
     // Array.Sort); only the trees it is handed are this repo's types.
     public static int[] GetAllElementsByCollectThenSort(BinaryTreeNode<int>? root1, BinaryTreeNode<int>? root2)
     {
+        var values = CollectBothTrees(root1, root2);
+        return ToSortedArray(values);
+    }
+
+    private static List<int> CollectBothTrees(BinaryTreeNode<int>? root1, BinaryTreeNode<int>? root2)
+    {
         var values = new List<int>();
         CollectAll(root1, values);
         CollectAll(root2, values);
+        return values;
+    }
 
+    private static int[] ToSortedArray(List<int> values)
+    {
         var result = values.ToArray();
         Array.Sort(result);
         return result;
-    }
-
-    private static void CollectAll(BinaryTreeNode<int>? node, List<int> values)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        values.Add(node.Value);
-        CollectAll(node.Left, values);
-        CollectAll(node.Right, values);
     }
 
     // This repo's own InOrderTraversal/IInOrderHooks composition - the same one
@@ -65,7 +63,8 @@ internal static class AllElementsInTwoBinarySearchTreesSolution
 
         while (i < first.Count && j < second.Count)
         {
-            result[k++] = first.Get(i) <= second.Get(j) ? first.Get(i++) : second.Get(j++);
+            var isFirstSmaller = first.Get(i) <= second.Get(j);
+            result[k++] = isFirstSmaller ? first.Get(i++) : second.Get(j++);
         }
 
         while (i < first.Count)
@@ -79,6 +78,18 @@ internal static class AllElementsInTwoBinarySearchTreesSolution
         }
 
         return result;
+    }
+
+    private static void CollectAll(BinaryTreeNode<int>? node, List<int> values)
+    {
+        if (node is null)
+        {
+            return;
+        }
+
+        values.Add(node.Value);
+        CollectAll(node.Left, values);
+        CollectAll(node.Right, values);
     }
 
     // Hooks are static, so the buffer being filled lives in AsyncLocal state

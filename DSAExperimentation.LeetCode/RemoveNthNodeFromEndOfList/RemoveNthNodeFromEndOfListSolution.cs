@@ -28,6 +28,20 @@ internal static class RemoveNthNodeFromEndOfListSolution
         return BuildList(remaining);
     }
 
+    private static SinglyLinkedListNode<int>? BuildList(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
     // The standard two-runner walk: advance fast n nodes ahead of slow, then step
     // both together until fast falls off the end - slow now sits just before the
     // node to remove. Dummy-headed so removing the true head needs no special case.
@@ -62,19 +76,5 @@ internal static class RemoveNthNodeFromEndOfListSolution
         }
 
         return values.ToArray();
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 }

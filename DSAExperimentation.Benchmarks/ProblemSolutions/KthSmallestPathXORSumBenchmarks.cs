@@ -19,16 +19,26 @@ public class KthSmallestPathXORSumBenchmarks
     private const int ValueUpperBoundExclusive = 100_000;
     private const int QueryCount = 200;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private RootedTreeNode[] _nodes = [];
 
-    private RootedTreeNode[] _nodes = null!;
-    private int[] _par = null!;
-    private int[] _vals = null!;
-    private int[][] _queries = null!;
+    private int[] _par = [];
+    private int[] _vals = [];
+    private int[][] _queries = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
+    {
+        var random = new Random(Seed);
+
+        BuildParentChain();
+        BuildNodesAndValues(random);
+        BuildQueries(random);
+    }
+
+    // A straight chain: every node's parent is the one before it.
+    private void BuildParentChain()
     {
         _par = new int[NodeCount];
         _par[0] = -1;
@@ -37,17 +47,21 @@ public class KthSmallestPathXORSumBenchmarks
         {
             _par[i] = i - 1;
         }
+    }
 
+    private void BuildNodesAndValues(Random random)
+    {
         _nodes = ParentArrayTree.Build(_par);
-
-        var random = new Random(Seed);
         _vals = new int[NodeCount];
 
         for (var i = 0; i < NodeCount; i++)
         {
             _vals[i] = random.Next(0, ValueUpperBoundExclusive);
         }
+    }
 
+    private void BuildQueries(Random random)
+    {
         _queries = new int[QueryCount][];
 
         for (var i = 0; i < QueryCount; i++)

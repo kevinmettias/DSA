@@ -14,11 +14,11 @@ public class FruitsIntoBasketsIIIBenchmarks
     private const int Seed = 3479;
     private const int MaxCapacityExclusive = 1_000_000_000;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _fruits = [];
 
-    private int[] _fruits = null!;
-    private int[] _baskets = null!;
+    private int[] _baskets = [];
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

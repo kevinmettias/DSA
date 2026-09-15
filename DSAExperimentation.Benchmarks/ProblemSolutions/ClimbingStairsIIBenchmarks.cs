@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ClimbingStairsIIBenchmarks
 {
     private const int RandomSeed = 3693; // LC problem number
-    private const int CostUpperBound = 10_000; // exclusive upper bound; LC 3693 allows costs up to 1e4
+    private const int CostUpperBound = 10_000; private int[] _costs = [];
+
+    // exclusive upper bound; LC 3693 allows costs up to 1e4
 
     [Params(15, 20)]
-    public int N;
-
-    private int[] _costs = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

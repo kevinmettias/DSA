@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.ConvertSortedArrayToBinarySearchTree;
@@ -13,7 +14,6 @@ namespace DSAExperimentation.LeetCode.ConvertSortedArrayToBinarySearchTree;
 // benchmark's [Benchmark] arms all constructed the tree exactly this way.
 internal static class ConvertSortedArrayToBinarySearchTreeSolution
 {
-    private const int MidpointDivisor = 2;
 
     public static BinaryTreeNode<int>? BuildByMidpointRecursion(int[] nums) =>
         BuildByMidpointRecursion(nums, 0, nums.Length - 1);
@@ -25,7 +25,7 @@ internal static class ConvertSortedArrayToBinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(nums[mid])
         {

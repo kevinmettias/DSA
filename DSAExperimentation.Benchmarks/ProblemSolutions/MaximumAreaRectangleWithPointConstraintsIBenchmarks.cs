@@ -15,13 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumAreaRectangleWithPointConstraintsIBenchmarks
 {
+    private int[][] _points = [];
+
+    private Set<(int X, int Y)> _corners = new();
     // Part I's own constraints keep n tiny - both arms are polynomial-in-n but the
     // quadruple scan is O(n^5), so sizes stay small enough for it to finish.
     [Params(4, 8)]
-    public int GridSide;
-
-    private int[][] _points = null!;
-    private Set<(int X, int Y)> _corners = null!;
+    public int GridSide { get; set; }
 
     [GlobalSetup]
     public void Setup()

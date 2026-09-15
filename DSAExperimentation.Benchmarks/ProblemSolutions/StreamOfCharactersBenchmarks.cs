@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.StreamOfCharacters.StreamOfCharactersSolution;
+using DSAExperimentation.LeetCode.StreamOfCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,19 +17,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StreamOfCharactersBenchmarks
 {
-    private static readonly string[] Words =
+    private const int RandomSeed = 1032;
+
+    // LC problem number
+    private const int AlphabetSize = 26; private static readonly string[] Words =
     [
         "characters", "algorithm", "benchmark", "primitive", "structure",
         "traversal", "reference", "composed", "sequence", "children",
     ];
 
-    private const int RandomSeed = 1032; // LC problem number
-    private const int AlphabetSize = 26;
+    private char[] _stream = [];
 
     [Params(200, 3_000)]
-    public int StreamLength;
-
-    private char[] _stream = null!;
+    public int StreamLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -39,14 +39,14 @@ public class StreamOfCharactersBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RescanEverySuffixAgainstHashSet() => CountMatches(new StreamCheckerBySuffixRescan(Words));
+    public int RescanEverySuffixAgainstHashSet() => CountMatches(new StreamOfCharactersSolution.StreamCheckerBySuffixRescan(Words));
 
     [Benchmark]
-    public int ReversedTrieBackwardWalk() => CountMatches(new StreamCheckerByReversedTrie(Words));
+    public int ReversedTrieBackwardWalk() => CountMatches(new StreamOfCharactersSolution.StreamCheckerByReversedTrie(Words));
 
     // Counts matches rather than discarding each Query result, so the JIT can't
     // eliminate the replay as dead code.
-    private int CountMatches(IStreamCheckerStrategy checker)
+    private int CountMatches(StreamOfCharactersSolution.IStreamCheckerStrategy checker)
     {
         var matches = 0;
 

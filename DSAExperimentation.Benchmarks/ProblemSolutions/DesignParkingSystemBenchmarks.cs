@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignParkingSystem.DesignParkingSystemSolution;
+using DSAExperimentation.LeetCode.DesignParkingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,10 +17,10 @@ public class DesignParkingSystemBenchmarks
     private const int CarTypeUpperBoundExclusive = 4;
     private const int RandomSeed = 1;
 
-    [Params(1_000, 50_000)]
-    public int Calls;
+    private int[] _requestedTypes = [];
 
-    private int[] _requestedTypes = null!;
+    [Params(1_000, 50_000)]
+    public int Calls { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,12 +31,12 @@ public class DesignParkingSystemBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ThreeFieldDispatch() => Replay(new ParkingSystemByThreeFields(Calls, Calls, Calls));
+    public int ThreeFieldDispatch() => Replay(new DesignParkingSystemSolution.ParkingSystemByThreeFields(Calls, Calls, Calls));
 
     [Benchmark]
-    public int HashMapDispatch() => Replay(new ParkingSystemByHashMap(Calls, Calls, Calls));
+    public int HashMapDispatch() => Replay(new DesignParkingSystemSolution.ParkingSystemByHashMap(Calls, Calls, Calls));
 
-    private int Replay(IParkingSystem system)
+    private int Replay(DesignParkingSystemSolution.IParkingSystem system)
     {
         var accepted = 0;
 

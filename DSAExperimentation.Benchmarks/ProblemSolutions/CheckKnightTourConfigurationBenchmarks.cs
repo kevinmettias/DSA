@@ -16,6 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckKnightTourConfigurationBenchmarks
 {
+    private const int SmallBoard = 5;
+
     private static readonly int[][] FiveByFiveTour =
     [
         [0, 19, 8, 13, 2],
@@ -36,12 +38,10 @@ public class CheckKnightTourConfigurationBenchmarks
         [22, 13, 20, 45, 6, 11, 8],
     ];
 
-    private const int SmallBoard = 5;
+    private int[][] _grid = [];
 
     [Params(SmallBoard, 7)]
-    public int N;
-
-    private int[][] _grid = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = N == SmallBoard ? FiveByFiveTour : SevenBySevenTour;

@@ -31,42 +31,6 @@ internal static class MatchsticksToSquareSolution
         return SearchByNaiveBacktracking(sorted, buckets, side, 0);
     }
 
-    private static bool SearchByNaiveBacktracking(int[] sorted, int[] buckets, int side, int index)
-    {
-        if (index == sorted.Length)
-        {
-            return true;
-        }
-
-        for (var bucket = 0; bucket < SquareSideCount; bucket++)
-        {
-            if (TryPlaceInBucket(sorted, buckets, side, bucket, index))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryPlaceInBucket(int[] sorted, int[] buckets, int side, int bucket, int index)
-    {
-        if (buckets[bucket] + sorted[index] > side)
-        {
-            return false;
-        }
-
-        buckets[bucket] += sorted[index];
-
-        if (SearchByNaiveBacktracking(sorted, buckets, side, index + 1))
-        {
-            return true;
-        }
-
-        buckets[bucket] -= sorted[index];
-        return false;
-    }
-
     // This repo's own Backtrack.TrySearch (the NQueens/SudokuSolver precedent),
     // closed over the same choose/explore/unchoose steps NaiveBacktracking writes
     // out by hand.
@@ -82,10 +46,56 @@ internal static class MatchsticksToSquareSolution
 
         return Backtrack.TrySearch<BucketState, int>(state, new BacktrackingSteps<BucketState, int>(
             IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, SquareSideCount).Where(s.CanPlace),
+            Candidates: s => s.Index == sorted.Length ? Array.Empty<int>() : AvailableBuckets(s),
             Choose: (s, bucket) => s.Place(bucket),
             Unchoose: (s, bucket) => s.Remove(bucket),
             OnSolution: _ => true));
+    }
+
+    // The buckets a matchstick may still go into: the ones it would not push past the
+    // side length. Read lazily, so each Unchoose is seen restoring room before the
+    // next candidate is asked for.
+    private static IEnumerable<int> AvailableBuckets(BucketState state) =>
+        Enumerable.Range(0, SquareSideCount).Where(state.CanPlace);
+
+    private static bool SearchByNaiveBacktracking(int[] sorted, int[] buckets, int side, int index)
+    {
+        if (index == sorted.Length)
+        {
+            return true;
+        }
+
+        for (var bucket = 0; bucket < SquareSideCount; bucket++)
+        {
+            if (TryPlaceInBucket(sorted, buckets, side, (bucket, index)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Placing a matchstick is one act - which bucket receives which matchstick - so
+    // the two coordinates travel as a single argument.
+    private static bool TryPlaceInBucket(int[] sorted, int[] buckets, int side, (int Bucket, int Matchstick) placement)
+    {
+        var (bucket, index) = placement;
+
+        if (buckets[bucket] + sorted[index] > side)
+        {
+            return false;
+        }
+
+        buckets[bucket] += sorted[index];
+
+        if (SearchByNaiveBacktracking(sorted, buckets, side, index + 1))
+        {
+            return true;
+        }
+
+        buckets[bucket] -= sorted[index];
+        return false;
     }
 
     private static bool TryComputeSide(int[] matchsticks, out int side)

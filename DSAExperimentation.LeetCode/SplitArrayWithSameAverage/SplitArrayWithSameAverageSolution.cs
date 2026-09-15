@@ -90,23 +90,31 @@ internal static class SplitArrayWithSameAverageSolution
         var targetSum = total * k / n;
 
         return Memoizer.Memoize<(int Index, int Count, int Sum), bool>(
-            (0, k, targetSum), (state, canReach) => CanReach(nums, state, canReach));
+            (0, k, targetSum), new SubsetSizeSearch(nums));
     }
 
-    private static bool CanReach(
-        int[] nums, (int Index, int Count, int Sum) state, Func<(int Index, int Count, int Sum), bool> canReach)
+    // The rule, named: a subset of the required size and sum exists when the element at
+    // hand is either taken (one fewer needed of both count and sum) or left alone. The
+    // elements are the whole of what the rule needs from its caller, so they are the
+    // constructor's only input.
+    private sealed class SubsetSizeSearch(int[] nums) : IRecurrence<(int Index, int Count, int Sum), bool>
     {
-        if (state.Count == 0)
+        public bool Replay(
+            (int Index, int Count, int Sum) state,
+            IRecurrence<(int Index, int Count, int Sum), bool> rest)
         {
-            return state.Sum == 0;
-        }
+            if (state.Count == 0)
+            {
+                return state.Sum == 0;
+            }
 
-        if (state.Index == nums.Length || state.Sum < 0)
-        {
-            return false;
-        }
+            if (state.Index == nums.Length || state.Sum < 0)
+            {
+                return false;
+            }
 
-        return canReach((state.Index + 1, state.Count, state.Sum))
-            || canReach((state.Index + 1, state.Count - 1, state.Sum - nums[state.Index]));
+            return rest.Replay((state.Index + 1, state.Count, state.Sum), rest)
+                || rest.Replay((state.Index + 1, state.Count - 1, state.Sum - nums[state.Index]), rest);
+        }
     }
 }

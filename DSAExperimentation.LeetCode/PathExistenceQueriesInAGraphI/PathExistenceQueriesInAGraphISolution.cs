@@ -60,6 +60,14 @@ internal static class PathExistenceQueriesInAGraphISolution
         var frontier = new Queue<int>();
         frontier.Enqueue(source);
 
+        return ReachesTarget(adjacency, frontier, visited, target);
+    }
+
+    // The BFS itself: every dequeued node's neighbours are checked against the target, and a
+    // neighbour not yet visited joins the frontier. A drained frontier means no path exists.
+    private static bool ReachesTarget(
+        List<int>[] adjacency, Queue<int> frontier, HashSet<int> visited, int target)
+    {
         while (frontier.Count > 0)
         {
             var node = frontier.Dequeue();
@@ -84,8 +92,11 @@ internal static class PathExistenceQueriesInAGraphISolution
     // Composed: ProximityGroups unions every adjacent pair once via
     // DataStructures.DisjointSet; every query after that is a single
     // IsConnected check.
-    public static bool[] PathExistenceQueriesByDisjointSet(int n, int[] nums, int maxDiff, int[][] queries) =>
-        PathExistenceQueriesByDisjointSet(ProximityGroups.Build(n, nums, maxDiff), queries);
+    public static bool[] PathExistenceQueriesByDisjointSet(int n, int[] nums, int maxDiff, int[][] queries)
+    {
+        var groups = ProximityGroups.Build(n, nums, maxDiff);
+        return PathExistenceQueriesByDisjointSet(groups, queries);
+    }
 
     public static bool[] PathExistenceQueriesByDisjointSet(DisjointSet groups, int[][] queries)
     {

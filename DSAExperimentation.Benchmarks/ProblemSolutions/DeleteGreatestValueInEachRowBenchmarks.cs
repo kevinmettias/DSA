@@ -18,10 +18,10 @@ public class DeleteGreatestValueInEachRowBenchmarks
     private const int ValueBound = 100_000;
     private const int Rows = 20;
 
-    private int[][] _grid = null!;
+    private int[][] _grid = [];
 
     [Params(50, 400)]
-    public int Columns;
+    public int Columns { get; set; }
 
     [GlobalSetup]
     public void Setup()

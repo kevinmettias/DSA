@@ -15,10 +15,10 @@ public class RangeSumOfBSTBenchmarks
     private const int High = 20;
     private const int RandomSeed = 938;
 
-    [Params(500, 20_000)]
-    public int Length;
-
     private BinaryTreeNode<int>? _root;
+
+    [Params(500, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

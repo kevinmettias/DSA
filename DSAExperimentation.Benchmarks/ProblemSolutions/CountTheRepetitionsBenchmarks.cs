@@ -16,14 +16,17 @@ public class CountTheRepetitionsBenchmarks
     private const string S2Value = "ba";
     private const int N2 = 1;
 
-    [Params(5_000, 100_000)]
-    public int N1;
+    private string _s1 = "";
 
-    private string _s1 = null!;
+    [Params(5_000, 100_000)]
+    public int N1 { get; set; }
 
     [GlobalSetup]
-    public void Setup() =>
-        _s1 = string.Concat(Enumerable.Repeat(S1BuildingBlock, S1BuildingBlockRepeatCount));
+    public void Setup()
+    {
+        var buildingBlocks = Enumerable.Repeat(S1BuildingBlock, S1BuildingBlockRepeatCount);
+        _s1 = string.Concat(buildingBlocks);
+    }
 
     [Benchmark(Baseline = true)]
     public int NaiveFullSimulation() =>

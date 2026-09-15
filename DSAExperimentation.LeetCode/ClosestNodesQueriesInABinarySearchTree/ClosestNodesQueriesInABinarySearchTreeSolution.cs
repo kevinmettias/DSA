@@ -36,27 +36,6 @@ internal static class ClosestNodesQueriesInABinarySearchTreeSolution
         return answer;
     }
 
-    private static void Scan(BinaryTreeNode<int>? node, int query, ref int floor, ref int ceiling)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        if (node.Value <= query && (floor == LeetCodeAnswer.None || node.Value > floor))
-        {
-            floor = node.Value;
-        }
-
-        if (node.Value >= query && (ceiling == LeetCodeAnswer.None || node.Value < ceiling))
-        {
-            ceiling = node.Value;
-        }
-
-        Scan(node.Left, query, ref floor, ref ceiling);
-        Scan(node.Right, query, ref floor, ref ceiling);
-    }
-
     // This repo's own InOrderTraversal/IInOrderHooks composition - the same one
     // AllElementsInTwoBinarySearchTreesSolution and KthSmallestElementInABSTSolution
     // use - collects every value into an already-ascending DynamicArray<int> once,
@@ -95,6 +74,37 @@ internal static class ClosestNodesQueriesInABinarySearchTreeSolution
         var ceiling = index < values.Count ? values.Get(index) : LeetCodeAnswer.None;
         return (floor, ceiling);
     }
+
+    private static void Scan(BinaryTreeNode<int>? node, int query, ref int floor, ref int ceiling)
+    {
+        if (node is null)
+        {
+            return;
+        }
+
+        if (ImprovesFloor(node.Value, query, floor))
+        {
+            floor = node.Value;
+        }
+
+        if (ImprovesCeiling(node.Value, query, ceiling))
+        {
+            ceiling = node.Value;
+        }
+
+        Scan(node.Left, query, ref floor, ref ceiling);
+        Scan(node.Right, query, ref floor, ref ceiling);
+    }
+
+    // A node improves the floor when it does not overshoot the query and either no
+    // floor has been seen yet or this value sits closer to the query from below.
+    private static bool ImprovesFloor(int value, int query, int floor) =>
+        value <= query && (floor == LeetCodeAnswer.None || value > floor);
+
+    // The mirror of the above on the other side: the best ceiling is the smallest node
+    // value still at or above the query.
+    private static bool ImprovesCeiling(int value, int query, int ceiling) =>
+        value >= query && (ceiling == LeetCodeAnswer.None || value < ceiling);
 
     // Hooks are static, so the buffer being filled lives in AsyncLocal state
     // alongside the walk - the same arrangement AllElementsInTwoBinarySearchTrees-

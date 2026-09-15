@@ -28,7 +28,7 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     }
 
     public static int MinMaxWeightByBinarySearchBfs(EdgeWeightGraph graph, int threshold) =>
-        BinarySearchWeight(graph.MaxWeight, candidate => IsFeasibleByBfs(graph, candidate));
+        BinarySearchWeight(graph.MaxWeight, new BfsFeasibility(graph));
 
     private static bool IsFeasibleByBfs(EdgeWeightGraph graph, int maxWeight)
     {
@@ -66,7 +66,7 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     }
 
     public static int MinMaxWeightByReduceGraphBinarySearch(EdgeWeightGraph graph, int threshold) =>
-        BinarySearchWeight(graph.MaxWeight, candidate => IsFeasibleByReduceGraph(graph, candidate));
+        BinarySearchWeight(graph.MaxWeight, new ReduceGraphFeasibility(graph));
 
     private static bool IsFeasibleByReduceGraph(EdgeWeightGraph graph, int maxWeight)
     {
@@ -81,15 +81,32 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
         return distances.Count == graph.NodeCount;
     }
 
+    // The one question the two strategies answer with different code: with only edges
+    // of weight <= `maxWeight` kept, can every node still reach node 0? The graph is
+    // settled before either strategy asks, so only the candidate weight varies from
+    // probe to probe.
+    private interface IWeightFeasibility
+    {
+        bool HoldsFor(int maxWeight);
+    }
+
     // Smallest feasible weight in [1, maxWeight], or LeetCodeAnswer.None if even
     // maxWeight (every edge kept) still can't reach every node.
-    private static int BinarySearchWeight(int maxWeight, Func<int, bool> isFeasible)
+    private static int BinarySearchWeight(int maxWeight, IWeightFeasibility isFeasible)
     {
-        if (!isFeasible(maxWeight))
+        if (!isFeasible.HoldsFor(maxWeight))
         {
             return LeetCodeAnswer.None;
         }
 
+        return SmallestFeasibleWeight(maxWeight, isFeasible);
+    }
+
+    // The search itself: the whole range is known feasible and a weight of 0 is
+    // known not to be (it keeps no edges at all), so the invariant narrows until only
+    // the smallest feasible weight is left.
+    private static int SmallestFeasibleWeight(int maxWeight, IWeightFeasibility isFeasible)
+    {
         var low = 1;
         var high = maxWeight;
 
@@ -97,7 +114,7 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
         {
             var mid = low + (high - low) / 2;
 
-            if (isFeasible(mid))
+            if (isFeasible.HoldsFor(mid))
             {
                 high = mid;
             }
@@ -108,5 +125,19 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
         }
 
         return low;
+    }
+
+    // The baseline arm's mechanism: a BCL Queue<int>/bool[] BFS over the graph's own
+    // reversed adjacency.
+    private sealed class BfsFeasibility(EdgeWeightGraph graph) : IWeightFeasibility
+    {
+        public bool HoldsFor(int maxWeight) => IsFeasibleByBfs(graph, maxWeight);
+    }
+
+    // The composed arm's mechanism: Reduce.Graph over EdgeWeightTopology - the
+    // reversed, weight-filtered adjacency this problem alone needs.
+    private sealed class ReduceGraphFeasibility(EdgeWeightGraph graph) : IWeightFeasibility
+    {
+        public bool HoldsFor(int maxWeight) => IsFeasibleByReduceGraph(graph, maxWeight);
     }
 }

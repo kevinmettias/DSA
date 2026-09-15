@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CountPrimesBenchmarks
 {
     [Params(2_000, 20_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int TrialDivision() => CountPrimesSolution.CountPrimesByTrialDivision(N);

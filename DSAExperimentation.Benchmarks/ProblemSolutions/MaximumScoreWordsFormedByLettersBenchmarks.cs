@@ -31,12 +31,12 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
     private const int MaxWordLengthExclusive = 5;
     private const int LetterBudgetDivisor = 2;
 
-    [Params(8, 14)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private char[] _letters = null!;
-    private int[] _score = null!;
+    private char[] _letters = [];
+    private int[] _score = [];
+    [Params(8, 14)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -73,6 +73,20 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
         return words;
     }
 
+    private static string GenerateWord(Random random, int[] totalUsage)
+    {
+        var length = random.Next(MinWordLength, MaxWordLengthExclusive);
+        var chars = new char[length];
+
+        for (var j = 0; j < length; j++)
+        {
+            chars[j] = Alphabet[random.Next(Alphabet.Length)];
+            totalUsage[chars[j] - 'a']++;
+        }
+
+        return new string(chars);
+    }
+
     private static char[] BuildLetterPool(int[] totalUsage)
     {
         var letters = new List<char>();
@@ -86,20 +100,6 @@ public class MaximumScoreWordsFormedByLettersBenchmarks
         }
 
         return letters.ToArray();
-    }
-
-    private static string GenerateWord(Random random, int[] totalUsage)
-    {
-        var length = random.Next(MinWordLength, MaxWordLengthExclusive);
-        var chars = new char[length];
-
-        for (var j = 0; j < length; j++)
-        {
-            chars[j] = Alphabet[random.Next(Alphabet.Length)];
-            totalUsage[chars[j] - 'a']++;
-        }
-
-        return new string(chars);
     }
 
     [Benchmark(Baseline = true)]

@@ -14,16 +14,6 @@ namespace DSAExperimentation.LeetCode.DecodeWaysII;
 // ordinary recursion.
 internal static class DecodeWaysIISolution
 {
-    private const long Mod = 1_000_000_007;
-    private const int PairLength = 2;
-    private const int SingleWildcardWays = 9;
-    private const int BothWildcardPairWays = 15;
-    private const int StarThenSmallDigitWays = 2;
-    private const int FirstIsOneStarWays = 9;
-    private const int FirstIsTwoStarWays = 6;
-    private const int DecimalBase = 10;
-    private const int MaxLetterCode = 26;
-
     // The textbook answer: a BCL long[] filled from the end, dp[i] = ways to
     // decode s[i..]. Deliberately written without this repo's primitives - it is
     // the arm the memoized strategy below has to justify itself against.
@@ -39,25 +29,62 @@ internal static class DecodeWaysIISolution
                 continue;
             }
 
-            dp[i] = SingleWays(s[i]) * dp[i + 1] % Mod;
+            dp[i] = SingleWays(s[i]) * dp[i + 1] % DecodeWaysIIRecurrence.Mod;
 
             if (i + 1 < s.Length)
             {
-                dp[i] = (dp[i] + (PairWays(s[i], s[i + 1]) * dp[i + PairLength])) % Mod;
+                dp[i] = (dp[i] + (PairWays(s[i], s[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % DecodeWaysIIRecurrence.Mod;
             }
         }
 
         return dp[0];
     }
 
+    private static long SingleWays(char c) => c == '*' ? DecodeWaysIIRecurrence.SingleWildcardWays : 1;
+
+    private static long PairWays(char first, char second)
+    {
+        if (first == '*' && second == '*')
+        {
+            return DecodeWaysIIRecurrence.BothWildcardPairWays;
+        }
+
+        if (first == '*')
+        {
+            return second <= '6' ? DecodeWaysIIRecurrence.StarThenSmallDigitWays : 1;
+        }
+
+        if (second == '*')
+        {
+            return SecondIsStarWays(first);
+        }
+
+        var value = ((first - '0') * DecodeWaysIIRecurrence.DecimalBase) + (second - '0');
+        return value is >= DecodeWaysIIRecurrence.DecimalBase and <= DecodeWaysIIRecurrence.MaxLetterCode ? 1 : 0;
+    }
+
+    // '*' in the second position completes a two-digit code only behind a leading
+    // '1' (11-19) or '2' (21-26); any other first digit leaves no code at all.
+    private static long SecondIsStarWays(char first) => first switch
+    {
+        '1' => DecodeWaysIIRecurrence.FirstIsOneStarWays,
+        '2' => DecodeWaysIIRecurrence.FirstIsTwoStarWays,
+        _ => 0,
+    };
+
     // This repo's own top-down engine: Memoizer.Memoize caches decode(i) the
     // first time each index is reached, so the recurrence reads as ordinary
     // recursion with no hand-rolled cache dictionary.
-    public static long NumDecodingsByMemoization(string s)
-    {
-        return Memoizer.Memoize<int, long>(0, DecodeFrom);
+    public static long NumDecodingsByMemoization(string s) =>
+        Memoizer.Memoize<int, long>(0, new WildcardWaysFromDecodedIndex(s));
 
-        long DecodeFrom(int index, Func<int, long> decode)
+    // The recurrence, as a named type: an index past the end is one way, a leading
+    // '0' is none, and otherwise every way of writing the single character here is
+    // carried forward from the next index, with every way of pairing it with the
+    // following one added from the index after that.
+    private sealed class WildcardWaysFromDecodedIndex(string s) : IRecurrence<int, long>
+    {
+        public long Replay(int index, IRecurrence<int, long> rest)
         {
             if (index == s.Length)
             {
@@ -69,37 +96,15 @@ internal static class DecodeWaysIISolution
                 return 0;
             }
 
-            var total = SingleWays(s[index]) * decode(index + 1) % Mod;
+            var total = SingleWays(s[index]) * rest.Replay(index + 1, rest) % DecodeWaysIIRecurrence.Mod;
 
             if (index + 1 < s.Length)
             {
-                total = (total + (PairWays(s[index], s[index + 1]) * decode(index + PairLength))) % Mod;
+                var paired = PairWays(s[index], s[index + 1]) * rest.Replay(index + DecodeWaysIIRecurrence.PairLength, rest);
+                total = (total + paired) % DecodeWaysIIRecurrence.Mod;
             }
 
             return total;
         }
-    }
-
-    private static long SingleWays(char c) => c == '*' ? SingleWildcardWays : 1;
-
-    private static long PairWays(char first, char second)
-    {
-        if (first == '*' && second == '*')
-        {
-            return BothWildcardPairWays;
-        }
-
-        if (first == '*')
-        {
-            return second <= '6' ? StarThenSmallDigitWays : 1;
-        }
-
-        if (second == '*')
-        {
-            return first == '1' ? FirstIsOneStarWays : first == '2' ? FirstIsTwoStarWays : 0;
-        }
-
-        var value = ((first - '0') * DecimalBase) + (second - '0');
-        return value is >= DecimalBase and <= MaxLetterCode ? 1 : 0;
     }
 }

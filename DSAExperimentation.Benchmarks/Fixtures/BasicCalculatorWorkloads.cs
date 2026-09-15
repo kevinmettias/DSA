@@ -28,7 +28,8 @@ internal static class BasicCalculatorWorkloads
 
         while (builder.Length < length)
         {
-            builder.Append(n % OperatorAlternationModulus == 1 ? PlusOpenParen : MinusOpenParen).Append(n).Append('+').Append(n + 1).Append(')');
+            var isPlusGroup = n % OperatorAlternationModulus == 1;
+            builder.Append(isPlusGroup ? PlusOpenParen : MinusOpenParen).Append(n).Append('+').Append(n + 1).Append(')');
             n += OperandStep;
         }
 

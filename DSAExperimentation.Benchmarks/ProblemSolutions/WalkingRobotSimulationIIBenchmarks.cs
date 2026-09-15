@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.WalkingRobotSimulationII.WalkingRobotSimulationIISolution;
+using DSAExperimentation.LeetCode.WalkingRobotSimulationII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -18,24 +18,21 @@ public class WalkingRobotSimulationIIBenchmarks
     private const int Height = 100_000;
     private const int MoveCount = 20;
 
-    [Params(1_000, 50_000)]
-    public int StepsPerMove;
+    private int[] _moves = [];
 
-    private int[] _moves = null!;
+    [Params(1_000, 50_000)]
+    public int StepsPerMove { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _moves = Enumerable.Repeat(StepsPerMove, MoveCount).ToArray();
-    }
+    public void Setup() => _moves = Enumerable.Repeat(StepsPerMove, MoveCount).ToArray();
 
     [Benchmark(Baseline = true)]
-    public (int X, int Y) StepSimulation() => Replay(new RobotByStepSimulation(Width, Height));
+    public (int X, int Y) StepSimulation() => Replay(new WalkingRobotSimulationIISolution.RobotByStepSimulation(Width, Height));
 
     [Benchmark]
-    public (int X, int Y) PerimeterFormula() => Replay(new RobotByPerimeterFormula(Width, Height));
+    public (int X, int Y) PerimeterFormula() => Replay(new WalkingRobotSimulationIISolution.RobotByPerimeterFormula(Width, Height));
 
-    private (int X, int Y) Replay(IRobot robot)
+    private (int X, int Y) Replay(WalkingRobotSimulationIISolution.IRobot robot)
     {
         foreach (var steps in _moves)
         {

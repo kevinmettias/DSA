@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.RemoveInvalidParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,15 +13,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RemoveInvalidParenthesesBenchmarks
 {
     // Splits Length in half to build the generated input's opener/closer counts.
-    private const int HalfDivisor = 2;
+
+    private string _input = "";
 
     [Params(14, 20)]
-    public int Length;
-
-    private string _input = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _input = new string('(', (Length / HalfDivisor) + 1) + new string(')', (Length / HalfDivisor) - 1);
+    public void Setup() => _input = new string('(', (Length / AlgorithmConstants.HalvingFactor) + 1) + new string(')', (Length / AlgorithmConstants.HalvingFactor) - 1);
 
     [Benchmark(Baseline = true)]
     public List<string> BruteForceAllSubsets() => RemoveInvalidParenthesesSolution.RemoveByBruteForceAllSubsets(_input);

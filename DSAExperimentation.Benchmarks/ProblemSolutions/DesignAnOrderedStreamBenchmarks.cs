@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignAnOrderedStream.DesignAnOrderedStreamSolution;
+using DSAExperimentation.LeetCode.DesignAnOrderedStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -19,11 +19,11 @@ public class DesignAnOrderedStreamBenchmarks
     // Fixed so both arms replay the identical arrival order every run.
     private const int ArrivalSeed = 1;
 
-    [Params(200, 5_000)]
-    public int Size;
+    private int[] _order = [];
 
-    private int[] _order = null!;
-    private string[] _values = null!;
+    private string[] _values = [];
+    [Params(200, 5_000)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,24 +35,6 @@ public class DesignAnOrderedStreamBenchmarks
         {
             _values[i] = $"v{i + 1}";
         }
-    }
-
-    [Benchmark(Baseline = true)]
-    public int ListBacked() => Replay(new OrderedStreamByListBacked(Size));
-
-    [Benchmark]
-    public int DynamicArrayBacked() => Replay(new OrderedStreamByDynamicArrayBacked(Size));
-
-    private int Replay(IOrderedStream stream)
-    {
-        var emitted = 0;
-
-        foreach (var id in _order)
-        {
-            emitted += stream.Insert(id, _values[id - 1]).Count;
-        }
-
-        return emitted;
     }
 
     private static int[] ShuffledIds(int size, int seed)
@@ -67,5 +49,23 @@ public class DesignAnOrderedStreamBenchmarks
         }
 
         return ids;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int ListBacked() => Replay(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(Size));
+
+    [Benchmark]
+    public int DynamicArrayBacked() => Replay(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(Size));
+
+    private int Replay(DesignAnOrderedStreamSolution.IOrderedStream stream)
+    {
+        var emitted = 0;
+
+        foreach (var id in _order)
+        {
+            emitted += stream.Insert(id, _values[id - 1]).Count;
+        }
+
+        return emitted;
     }
 }

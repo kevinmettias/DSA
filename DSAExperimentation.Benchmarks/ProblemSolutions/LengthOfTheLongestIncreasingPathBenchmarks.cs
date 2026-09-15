@@ -13,11 +13,11 @@ public class LengthOfTheLongestIncreasingPathBenchmarks
     private const int RandomSeed = 3288; // LeetCode problem number
     private const int CoordinateBound = 1_000_000;
 
-    [Params(200, 1_000)]
-    public int PointCount;
+    private int[][] _coordinates = [];
 
-    private int[][] _coordinates = null!;
     private int _k;
+    [Params(200, 1_000)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

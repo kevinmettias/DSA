@@ -12,48 +12,37 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PathSumIIBenchmarks
 {
-    private const int TargetPathSum = 22;
-
-    private const int RootValue = 5;
-    private const int LeftValue = 4;
-    private const int LeftLeftValue = 11;
-    private const int LeftLeftLeftValue = 7;
-    private const int LeftLeftRightValue = 2;
-    private const int RightValue = 8;
-    private const int RightLeftValue = 13;
-    private const int RightRightValue = 4;
-    private const int RightRightLeftValue = 5;
-    private const int RightRightRightValue = 1;
-
     private BinaryTreeNode<int> _root = null!;
 
     [GlobalSetup]
-    public void Setup() => _root = new BinaryTreeNode<int>(RootValue)
+    public void Setup() => _root = Tree();
+
+    private static BinaryTreeNode<int> Tree() => new(PathSumIIExampleTree.Root)
     {
-        Left = new BinaryTreeNode<int>(LeftValue)
+        Left = new(PathSumIIExampleTree.Left)
         {
-            Left = new BinaryTreeNode<int>(LeftLeftValue)
+            Left = new(PathSumIIExampleTree.LeftLeft)
             {
-                Left = new BinaryTreeNode<int>(LeftLeftLeftValue),
-                Right = new BinaryTreeNode<int>(LeftLeftRightValue)
+                Left = new(PathSumIIExampleTree.LeftLeftLeft),
+                Right = new(PathSumIIExampleTree.LeftLeftRight)
             }
         },
-        Right = new BinaryTreeNode<int>(RightValue)
+        Right = new(PathSumIIExampleTree.Right)
         {
-            Left = new BinaryTreeNode<int>(RightLeftValue),
-            Right = new BinaryTreeNode<int>(RightRightValue)
+            Left = new(PathSumIIExampleTree.RightLeft),
+            Right = new(PathSumIIExampleTree.RightRight)
             {
-                Left = new BinaryTreeNode<int>(RightRightLeftValue),
-                Right = new BinaryTreeNode<int>(RightRightRightValue)
+                Left = new(PathSumIIExampleTree.RightRightLeft),
+                Right = new(PathSumIIExampleTree.RightRightRight)
             }
         }
     };
 
     [Benchmark(Baseline = true)]
     public List<List<int>> RecursiveBacktrack() =>
-        PathSumIISolution.FindPathsByRecursiveBacktrack(_root, TargetPathSum);
+        PathSumIISolution.FindPathsByRecursiveBacktrack(_root, PathSumIIExampleTree.TargetSum);
 
     [Benchmark]
     public List<List<int>> AllRootToLeafPaths() =>
-        PathSumIISolution.FindPathsByAllRootToLeafPaths(_root, TargetPathSum);
+        PathSumIISolution.FindPathsByAllRootToLeafPaths(_root, PathSumIIExampleTree.TargetSum);
 }

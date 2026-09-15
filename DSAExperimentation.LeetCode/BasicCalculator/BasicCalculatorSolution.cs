@@ -98,23 +98,16 @@ internal static class BasicCalculatorSolution
 
     private static bool TryConsumeToken(string expression, ref int i, ref int result, ref int sign)
     {
-        var c = expression[i];
-
-        if (char.IsDigit(c))
+        if (TryConsumeValue(expression, ref i, ref result, ref sign))
         {
-            result += sign * ParseNumber(expression, ref i);
             return true;
         }
+
+        var c = expression[i];
 
         if (c == ')')
         {
             return false;
-        }
-
-        if (c == '(')
-        {
-            result += sign * ConsumeGroup(expression, ref i);
-            return true;
         }
 
         if (c != ' ')
@@ -123,6 +116,27 @@ internal static class BasicCalculatorSolution
         }
 
         i++;
+        return true;
+    }
+
+    // Digits and parenthesized groups are the two operands this grammar has, and
+    // both fold into the running result through the sign currently pending.
+    private static bool TryConsumeValue(string expression, ref int i, ref int result, ref int sign)
+    {
+        var c = expression[i];
+
+        if (char.IsDigit(c))
+        {
+            result += sign * ParseNumber(expression, ref i);
+            return true;
+        }
+
+        if (c != '(')
+        {
+            return false;
+        }
+
+        result += sign * ConsumeGroup(expression, ref i);
         return true;
     }
 

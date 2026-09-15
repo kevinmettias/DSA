@@ -17,10 +17,10 @@ public class FindMedianFromDataStreamBenchmarks
 
     private const int MaxStreamValue = 1_000_000;
 
-    [Params(100, 1_000)]
-    public int StreamLength;
+    private int[] _stream = [];
 
-    private int[] _stream = null!;
+    [Params(100, 1_000)]
+    public int StreamLength { get; set; }
 
     [GlobalSetup]
     public void Setup() => _stream = FindMedianFromDataStreamWorkloads.BuildStream(

@@ -16,8 +16,11 @@ internal static class MinimumCostToBuyApplesIISolution
     // Textbook: BCL Dictionary adjacency plus BCL's own PriorityQueue for
     // Dijkstra, run twice per source - the arm the repo's own ShortestPath engine
     // below has to justify itself against.
-    public static long[] MinCostsByBruteForceDijkstra(int n, int[] prices, int[][] roads) =>
-        MinCostsByBruteForceDijkstra(AppleNetwork.Build(n, prices, roads));
+    public static long[] MinCostsByBruteForceDijkstra(int n, int[] prices, int[][] roads)
+    {
+        var network = AppleNetwork.Build(n, prices, roads);
+        return MinCostsByBruteForceDijkstra(network);
+    }
 
     public static long[] MinCostsByBruteForceDijkstra(AppleNetwork network)
     {
@@ -34,8 +37,8 @@ internal static class MinimumCostToBuyApplesIISolution
 
     private static long MinCostFromByBruteForceDijkstra(AppleNetwork network, int source)
     {
-        var forward = DijkstraByBruteForce(network, source, useReturnEdges: false);
-        var backward = DijkstraByBruteForce(network, source, useReturnEdges: true);
+        var forward = DijkstraByBruteForce(network, source, EdgeSet.Forward);
+        var backward = DijkstraByBruteForce(network, source, EdgeSet.Return);
         var best = long.MaxValue;
 
         for (var j = 0; j < network.Nodes.Length; j++)
@@ -51,41 +54,48 @@ internal static class MinimumCostToBuyApplesIISolution
         return best;
     }
 
-    private static long[] DijkstraByBruteForce(AppleNetwork network, int source, bool useReturnEdges)
+    private static long[] DijkstraByBruteForce(AppleNetwork network, int source, EdgeSet edgeSet)
     {
         var n = network.Nodes.Length;
         var distances = new long[n];
         Array.Fill(distances, long.MaxValue);
         distances[source] = 0L;
 
-        var settled = new bool[n];
-        var queue = new PriorityQueue<int, long>();
-        queue.Enqueue(source, 0L);
+        var frontier = new DijkstraFrontier(edgeSet, distances, new bool[n], new PriorityQueue<int, long>());
+        frontier.Queue.Enqueue(source, 0L);
 
-        while (queue.TryDequeue(out var nodeId, out _))
+        while (frontier.Queue.TryDequeue(out var nodeId, out _))
         {
-            if (settled[nodeId])
-            {
-                continue;
-            }
-
-            settled[nodeId] = true;
-            var node = network.Nodes[nodeId];
-            var edges = useReturnEdges ? node.ReturnEdges : node.ForwardEdges;
-
-            foreach (var (weight, target) in edges)
-            {
-                var candidate = distances[nodeId] + weight;
-
-                if (candidate < distances[target.Id])
-                {
-                    distances[target.Id] = candidate;
-                    queue.Enqueue(target.Id, candidate);
-                }
-            }
+            SettleAndRelax(network, nodeId, frontier);
         }
 
         return distances;
+    }
+
+    // Settles one dequeued node and relaxes every edge out of it, queueing each
+    // neighbour the relaxation improved. A node that is already settled is a stale
+    // queue entry left behind by an earlier improvement, so it is skipped.
+    private static void SettleAndRelax(AppleNetwork network, int nodeId, DijkstraFrontier frontier)
+    {
+        if (frontier.Settled[nodeId])
+        {
+            return;
+        }
+
+        frontier.Settled[nodeId] = true;
+        var node = network.Nodes[nodeId];
+        var edges = frontier.Edges == EdgeSet.Return ? node.ReturnEdges : node.ForwardEdges;
+
+        foreach (var (weight, target) in edges)
+        {
+            var candidate = frontier.Distances[nodeId] + weight;
+
+            if (candidate < frontier.Distances[target.Id])
+            {
+                frontier.Distances[target.Id] = candidate;
+                frontier.Queue.Enqueue(target.Id, candidate);
+            }
+        }
     }
 
     // This repo's own Dijkstra (Algorithms.ShortestPaths.ShortestPath), run twice
@@ -93,8 +103,11 @@ internal static class MinimumCostToBuyApplesIISolution
     // baseline's hand-rolled BCL priority queue - the same swap
     // NetworkRecoveryPathwaysSolution's two arms make around RecoveryNode/
     // RecoveryTopology.
-    public static long[] MinCostsByReduceGraph(int n, int[] prices, int[][] roads) =>
-        MinCostsByReduceGraph(AppleNetwork.Build(n, prices, roads));
+    public static long[] MinCostsByReduceGraph(int n, int[] prices, int[][] roads)
+    {
+        var network = AppleNetwork.Build(n, prices, roads);
+        return MinCostsByReduceGraph(network);
+    }
 
     public static long[] MinCostsByReduceGraph(AppleNetwork network)
     {
@@ -133,5 +146,21 @@ internal static class MinimumCostToBuyApplesIISolution
         }
 
         return best;
+    }
+
+    // The baseline Dijkstra's own working state: which edge set the run relaxes (the
+    // plain-cost forward edges or the cost*tax return edges), the best distance known
+    // to each node so far, whether it has been settled, and the frontier of candidates.
+    private readonly record struct DijkstraFrontier(
+        EdgeSet Edges, long[] Distances, bool[] Settled, PriorityQueue<int, long> Queue);
+
+    // Which of AppleNetwork's two edge families a run relaxes: the plain-cost edges
+    // travelled empty to a shop, or the cost*tax edges travelled back carrying
+    // apples. Named where a rewritten `true`/`false` at the call site said it only
+    // by position.
+    private enum EdgeSet
+    {
+        Forward,
+        Return,
     }
 }

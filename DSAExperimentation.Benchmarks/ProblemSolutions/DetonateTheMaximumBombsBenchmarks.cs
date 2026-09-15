@@ -17,10 +17,10 @@ public class DetonateTheMaximumBombsBenchmarks
     private const int MaxRadius = 60;
     private const int RandomSeed = 2101;
 
-    [Params(50, 300)]
-    public int BombCount;
+    private int[][] _bombs = [];
 
-    private int[][] _bombs = null!;
+    [Params(50, 300)]
+    public int BombCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

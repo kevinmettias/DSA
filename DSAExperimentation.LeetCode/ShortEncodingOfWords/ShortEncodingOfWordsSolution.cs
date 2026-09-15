@@ -55,9 +55,7 @@ internal static class ShortEncodingOfWordsSolution
         {
             var candidate = distinctWords[other];
 
-            if (other != index &&
-                candidate.Length > word.Length &&
-                candidate.EndsWith(word, StringComparison.Ordinal))
+            if (IsProperSuffixOf(new SuffixCandidate(word), new ContainingWord(candidate), index, other))
             {
                 return true;
             }
@@ -65,6 +63,16 @@ internal static class ShortEncodingOfWordsSolution
 
         return false;
     }
+
+    // A word is a proper suffix of another when some different, longer word ends
+    // with it. The two sides are distinct roles - one is the tail being looked for
+    // and the other is the word that would have to end with it - so they are named
+    // rather than left as two `string` positions a caller could hand over swapped.
+    private static bool IsProperSuffixOf(
+        SuffixCandidate word, ContainingWord otherWord, int index, int otherIndex)
+        => otherIndex != index
+            && otherWord.Text.Length > word.Text.Length
+            && otherWord.Text.EndsWith(word.Text, StringComparison.Ordinal);
 
     // This repo's own Set<string>: every word starts as a survivor, then every one
     // of its proper suffixes is evicted the instant a longer word is found to
@@ -189,4 +197,10 @@ internal static class ShortEncodingOfWordsSolution
 
         return distinctWords;
     }
+
+    // The tail a word is being tested as, versus the word that would have to end with it: two
+    // one-directional roles that used to be two interchangeable `string` positions.
+    private readonly record struct SuffixCandidate(string Text);
+
+    private readonly record struct ContainingWord(string Text);
 }

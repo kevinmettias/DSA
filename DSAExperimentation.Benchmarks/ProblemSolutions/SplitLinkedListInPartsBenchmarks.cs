@@ -18,23 +18,13 @@ public class SplitLinkedListInPartsBenchmarks
 {
     private const int Parts = 7;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = Build(Enumerable.Range(0, Length).ToArray());
-
-    [Benchmark(Baseline = true)]
-    public int ArrayRebuild() =>
-        CountNonNullParts(SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Clone(_head), Parts));
-
-    [Benchmark]
-    public int InPlaceRewire() =>
-        CountNonNullParts(SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Clone(_head), Parts));
-
-    private static int CountNonNullParts(SinglyLinkedListNode<int>?[] parts) => parts.Count(p => p is not null);
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
@@ -49,6 +39,24 @@ public class SplitLinkedListInPartsBenchmarks
 
         return dummy.Next!;
     }
+
+    [Benchmark(Baseline = true)]
+    public int ArrayRebuild()
+    {
+        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Clone(_head), Parts);
+
+        return CountNonNullParts(parts);
+    }
+
+    [Benchmark]
+    public int InPlaceRewire()
+    {
+        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Clone(_head), Parts);
+
+        return CountNonNullParts(parts);
+    }
+
+    private static int CountNonNullParts(SinglyLinkedListNode<int>?[] parts) => parts.Count(p => p is not null);
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)
     {

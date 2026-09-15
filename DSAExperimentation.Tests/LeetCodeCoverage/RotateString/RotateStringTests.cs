@@ -28,11 +28,19 @@ public sealed class RotateStringTests
     [MemberData(nameof(Examples))]
     public void CanRotateByNaiveScan_LeetCodeExamples_ReturnsWhetherGoalIsARotation(
         string s, string goal, bool expected) =>
-        Assert.Equal(expected, RotateStringSolution.CanRotateByNaiveScan(s, goal));
+        Assert.Equal(
+            expected,
+            RotateStringSolution.CanRotateByNaiveScan(
+                new RotateStringSolution.RotationSource(s),
+                new RotateStringSolution.RotationGoal(goal)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanRotateByPrefixFunction_LeetCodeExamples_ReturnsWhetherGoalIsARotation(
         string s, string goal, bool expected) =>
-        Assert.Equal(expected, RotateStringSolution.CanRotateByPrefixFunction(s, goal));
+        Assert.Equal(
+            expected,
+            RotateStringSolution.CanRotateByPrefixFunction(
+                new RotateStringSolution.RotationSource(s),
+                new RotateStringSolution.RotationGoal(goal)));
 }

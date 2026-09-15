@@ -61,6 +61,32 @@ internal static class CountValidPathsInATreeSolution
         return total;
     }
 
+    // Sieve of Eratosthenes over a BCL array, for the baseline arm only.
+    private static bool[] SieveWithBclArray(int n)
+    {
+        var isPrime = new bool[n + 1];
+
+        for (var value = FirstPrime; value <= n; value++)
+        {
+            isPrime[value] = true;
+        }
+
+        for (var factor = FirstPrime; (long)factor * factor <= n; factor++)
+        {
+            if (!isPrime[factor])
+            {
+                continue;
+            }
+
+            for (var multiple = factor * factor; multiple <= n; multiple += factor)
+            {
+                isPrime[multiple] = false;
+            }
+        }
+
+        return isPrime;
+    }
+
     // A tree has exactly one path between any two nodes, so the BFS parent chain
     // from b back to a IS that path - no shortest-path argument is needed.
     private static int CountPrimesOnPath(int a, int b, List<int>[] adjacency, bool[] isPrime)
@@ -141,110 +167,6 @@ internal static class CountValidPathsInATreeSolution
         return total;
     }
 
-    // The three things a prime's arm sweep reads: which labels are prime, which
-    // blob each non-prime label fell into, and how large each blob is.
-    private readonly record struct PrimeBlobs(
-        DynamicArray<bool> IsPrime,
-        DisjointSet Components,
-        int[] BlobSize);
-
-    private static DisjointSet UnionNonPrimeEdges(int n, int[][] edges, DynamicArray<bool> isPrime)
-    {
-        // Ids are the labels themselves, so the forest carries one unused slot 0.
-        var components = new DisjointSet(n + 1);
-
-        foreach (var edge in edges)
-        {
-            if (!isPrime.Get(edge[0]) && !isPrime.Get(edge[1]))
-            {
-                components.Union(edge[0], edge[1]);
-            }
-        }
-
-        return components;
-    }
-
-    // Sweeps p's non-prime arms left to right, accumulating armsSoFar so each new
-    // arm pairs against every earlier one in O(1) instead of a full double loop.
-    private static long CountPairsThroughPrime(int prime, List<int>[] adjacency, PrimeBlobs blobs)
-    {
-        long total = 0;
-        long armsSoFar = 0;
-
-        foreach (var neighbor in adjacency[prime])
-        {
-            if (blobs.IsPrime.Get(neighbor))
-            {
-                continue;
-            }
-
-            var arm = blobs.BlobSize[blobs.Components.Find(neighbor)];
-            total += (armsSoFar * arm) + arm;
-            armsSoFar += arm;
-        }
-
-        return total;
-    }
-
-    private static int[] ComputeBlobSizes(int n, DynamicArray<bool> isPrime, DisjointSet components)
-    {
-        var blobSize = new int[n + 1];
-
-        for (var node = 1; node <= n; node++)
-        {
-            if (!isPrime.Get(node))
-            {
-                blobSize[components.Find(node)]++;
-            }
-        }
-
-        return blobSize;
-    }
-
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
-    {
-        var adjacency = new List<int>[n + 1];
-
-        for (var i = 0; i <= n; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
-
-    // Sieve of Eratosthenes over a BCL array, for the baseline arm only.
-    private static bool[] SieveWithBclArray(int n)
-    {
-        var isPrime = new bool[n + 1];
-
-        for (var value = FirstPrime; value <= n; value++)
-        {
-            isPrime[value] = true;
-        }
-
-        for (var factor = FirstPrime; (long)factor * factor <= n; factor++)
-        {
-            if (!isPrime[factor])
-            {
-                continue;
-            }
-
-            for (var multiple = factor * factor; multiple <= n; multiple += factor)
-            {
-                isPrime[multiple] = false;
-            }
-        }
-
-        return isPrime;
-    }
-
     // The same sieve over DynamicArray<bool>, the composite-tracking array Count
     // Primes (LC 204) already establishes for this repo - no dedicated sieve or
     // prime primitive exists.
@@ -272,4 +194,82 @@ internal static class CountValidPathsInATreeSolution
 
         return isPrime;
     }
+
+    private static DisjointSet UnionNonPrimeEdges(int n, int[][] edges, DynamicArray<bool> isPrime)
+    {
+        // Ids are the labels themselves, so the forest carries one unused slot 0.
+        var components = new DisjointSet(n + 1);
+
+        foreach (var edge in edges)
+        {
+            if (!isPrime.Get(edge[0]) && !isPrime.Get(edge[1]))
+            {
+                components.Union(edge[0], edge[1]);
+            }
+        }
+
+        return components;
+    }
+
+    private static int[] ComputeBlobSizes(int n, DynamicArray<bool> isPrime, DisjointSet components)
+    {
+        var blobSize = new int[n + 1];
+
+        for (var node = 1; node <= n; node++)
+        {
+            if (!isPrime.Get(node))
+            {
+                blobSize[components.Find(node)]++;
+            }
+        }
+
+        return blobSize;
+    }
+
+    // Sweeps p's non-prime arms left to right, accumulating armsSoFar so each new
+    // arm pairs against every earlier one in O(1) instead of a full double loop.
+    private static long CountPairsThroughPrime(int prime, List<int>[] adjacency, PrimeBlobs blobs)
+    {
+        long total = 0;
+        long armsSoFar = 0;
+
+        foreach (var neighbor in adjacency[prime])
+        {
+            if (blobs.IsPrime.Get(neighbor))
+            {
+                continue;
+            }
+
+            var arm = blobs.BlobSize[blobs.Components.Find(neighbor)];
+            total += (armsSoFar * arm) + arm;
+            armsSoFar += arm;
+        }
+
+        return total;
+    }
+
+    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    {
+        var adjacency = new List<int>[n + 1];
+
+        for (var i = 0; i <= n; i++)
+        {
+            adjacency[i] = [];
+        }
+
+        foreach (var edge in edges)
+        {
+            adjacency[edge[0]].Add(edge[1]);
+            adjacency[edge[1]].Add(edge[0]);
+        }
+
+        return adjacency;
+    }
+
+    // The three things a prime's arm sweep reads: which labels are prime, which
+    // blob each non-prime label fell into, and how large each blob is.
+    private readonly record struct PrimeBlobs(
+        DynamicArray<bool> IsPrime,
+        DisjointSet Components,
+        int[] BlobSize);
 }

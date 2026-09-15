@@ -39,7 +39,21 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
         var next = new long[RequiredLCount + 1, RequiredECount + 1, RequiredTCount + 1];
 
         for (var a = 0; a <= RequiredLCount; a++)
-        for (var b = 0; b <= RequiredECount; b++)
+        {
+            for (var b = 0; b <= RequiredECount; b++)
+            {
+                AdvanceRowOverT(dp, next, a, b);
+            }
+        }
+
+        return next;
+    }
+
+    // One (a, b) row of `dp` advanced across every capped 't' value: each state's
+    // ways move into the (a+1, b, c), (a, b+1, c), (a, b, c+1) and (a, b, c)
+    // destinations. Lifted out of Advance above, which is then only two loops deep.
+    private static void AdvanceRowOverT(long[,,] dp, long[,,] next, int a, int b)
+    {
         for (var c = 0; c <= RequiredTCount; c++)
         {
             var ways = dp[a, b, c];
@@ -49,17 +63,21 @@ internal static class NumberOfStringsWhichCanBeRearrangedToContainSubstringSolut
                 continue;
             }
 
-            Add(next, Math.Min(a + 1, RequiredLCount), b, c, ways);
-            Add(next, a, Math.Min(b + 1, RequiredECount), c, ways);
-            Add(next, a, b, Math.Min(c + 1, RequiredTCount), ways);
-            Add(next, a, b, c, ways * OtherLetterCount);
+            Add(next, (A: Math.Min(a + 1, RequiredLCount), B: b, C: c), ways);
+            Add(next, (A: a, B: Math.Min(b + 1, RequiredECount), C: c), ways);
+            Add(next, (A: a, B: b, C: Math.Min(c + 1, RequiredTCount)), ways);
+            Add(next, (A: a, B: b, C: c), ways * OtherLetterCount);
         }
-
-        return next;
     }
 
-    private static void Add(long[,,] dp, int a, int b, int c, long amount) =>
+    // (a, b, c) is one pointer into the 3-D table - the capped (l, e, t) progress
+    // toward the requirement - so the three coordinates travel as the one state they
+    // name rather than as three interchangeable ints.
+    private static void Add(long[,,] dp, (int A, int B, int C) state, long amount)
+    {
+        var (a, b, c) = state;
         dp[a, b, c] = (dp[a, b, c] + amount) % ModularArithmetic.Modulo;
+    }
 
     // Inclusion-exclusion over the 3 ways to fail: A = no 'l' at all, B = fewer
     // than 2 'e's, C = no 't' at all. |A|, |C| and every "no X" alphabet size drop

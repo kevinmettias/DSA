@@ -28,7 +28,10 @@ public sealed class LongestSubstringOfOneRepeatingCharacterTests
         string s, string queryCharacters, int[] queryIndices, int[] expected) =>
         Assert.Equal(
             expected,
-            LongestSubstringOfOneRepeatingCharacterSolution.LongestRepeatingByLinearRescan(s, queryCharacters, queryIndices));
+            LongestSubstringOfOneRepeatingCharacterSolution.LongestRepeatingByLinearRescan(
+                new LongestSubstringOfOneRepeatingCharacterSolution.BaseText(s),
+                new LongestSubstringOfOneRepeatingCharacterSolution.ReplacementCharacters(queryCharacters),
+                queryIndices));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -36,5 +39,8 @@ public sealed class LongestSubstringOfOneRepeatingCharacterTests
         string s, string queryCharacters, int[] queryIndices, int[] expected) =>
         Assert.Equal(
             expected,
-            LongestSubstringOfOneRepeatingCharacterSolution.LongestRepeatingBySegmentTree(s, queryCharacters, queryIndices));
+            LongestSubstringOfOneRepeatingCharacterSolution.LongestRepeatingBySegmentTree(
+                new LongestSubstringOfOneRepeatingCharacterSolution.BaseText(s),
+                new LongestSubstringOfOneRepeatingCharacterSolution.ReplacementCharacters(queryCharacters),
+                queryIndices));
 }

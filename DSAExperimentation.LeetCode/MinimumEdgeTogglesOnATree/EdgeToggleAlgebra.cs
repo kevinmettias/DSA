@@ -22,23 +22,26 @@ namespace DSAExperimentation.LeetCode.MinimumEdgeTogglesOnATree;
 internal readonly struct EdgeToggleAlgebra
     : IFoldAlgebra<RootedTreeNode, (bool NeedsParentToggle, List<int> ToggledEdges)>
 {
-    private static string _start = "";
-    private static string _target = "";
-    private static int[] _parentEdgeIndex = [];
+    // The three node-indexed lookups Prepare establishes once, before the fold begins.
+    // They are held in an AsyncLocal rather than in plain static fields because
+    // IFoldAlgebra is static-abstract: the algebra IS the type argument, so no instance
+    // of it exists to own per-call input, and a plain static would let two folds on
+    // different threads read each other's start/target/edge table. An AsyncLocal gives
+    // the input an owner - the calling flow - so each fold sees only its own.
+    private static readonly AsyncLocal<ToggleInputs> Inputs = new();
 
-    public static void Prepare(string start, string target, int[] parentEdgeIndex)
-    {
-        _start = start;
-        _target = target;
-        _parentEdgeIndex = parentEdgeIndex;
-    }
+    private readonly record struct ToggleInputs(string Start, string Target, int[] ParentEdgeIndex);
 
     public static (bool NeedsParentToggle, List<int> ToggledEdges) Empty => (false, []);
+
+    public static void Prepare(string start, string target, int[] parentEdgeIndex) =>
+        Inputs.Value = new ToggleInputs(start, target, parentEdgeIndex);
 
     public static (bool NeedsParentToggle, List<int> ToggledEdges) Combine(
         RootedTreeNode node, IReadOnlyList<(bool NeedsParentToggle, List<int> ToggledEdges)> children)
     {
-        var needsToggle = _start[node.Id] != _target[node.Id];
+        var inputs = Inputs.Value;
+        var needsToggle = inputs.Start[node.Id] != inputs.Target[node.Id];
         var toggled = new List<int>();
 
         for (var i = 0; i < children.Count; i++)
@@ -48,7 +51,7 @@ internal readonly struct EdgeToggleAlgebra
 
             if (childNeedsToggle)
             {
-                toggled.Add(_parentEdgeIndex[node.Children[i].Id]);
+                toggled.Add(inputs.ParentEdgeIndex[node.Children[i].Id]);
                 needsToggle = !needsToggle;
             }
         }

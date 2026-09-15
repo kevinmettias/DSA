@@ -13,10 +13,10 @@ public class PacificAtlanticWaterFlowBenchmarks
 {
     private const int MaxHeight = 1_000;
 
-    [Params(10, 25)]
-    public int Size;
+    private int[][] _heights = [];
 
-    private int[][] _heights = null!;
+    [Params(10, 25)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

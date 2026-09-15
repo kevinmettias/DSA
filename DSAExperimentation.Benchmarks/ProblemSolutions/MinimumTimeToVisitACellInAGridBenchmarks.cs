@@ -15,10 +15,10 @@ public class MinimumTimeToVisitACellInAGridBenchmarks
     private const int MaxWaitExclusive = 50;
     private const int Seed = 2577;
 
-    [Params(20, 60)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(20, 60)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

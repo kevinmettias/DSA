@@ -8,6 +8,10 @@ internal static class SubstringConversionWorkloads
 {
     private const int RuleCount = 60;
 
+    // The letters this fixture draws from, as an exclusive bound on the offset from
+    // 'a' - the same size the three random-string sites below are built over.
+    private const int AlphabetSize = 26;
+
     public static (string[] Original, string[] Changed, int[] Cost) BuildRules(int seed)
     {
         var random = new Random(seed);
@@ -26,6 +30,18 @@ internal static class SubstringConversionWorkloads
         return (original, changed, cost);
     }
 
+    private static string RandomString(Random random, int length)
+    {
+        var chars = new char[length];
+
+        for (var i = 0; i < length; i++)
+        {
+            chars[i] = (char)('a' + random.Next(AlphabetSize));
+        }
+
+        return new string(chars);
+    }
+
     public static (string Source, string Target) BuildStrings(int length, int seed)
     {
         var random = new Random(seed);
@@ -34,22 +50,10 @@ internal static class SubstringConversionWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            source[i] = (char)('a' + random.Next(26));
-            target[i] = (char)('a' + random.Next(26));
+            source[i] = (char)('a' + random.Next(AlphabetSize));
+            target[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
         return (new string(source), new string(target));
-    }
-
-    private static string RandomString(Random random, int length)
-    {
-        var chars = new char[length];
-
-        for (var i = 0; i < length; i++)
-        {
-            chars[i] = (char)('a' + random.Next(26));
-        }
-
-        return new string(chars);
     }
 }

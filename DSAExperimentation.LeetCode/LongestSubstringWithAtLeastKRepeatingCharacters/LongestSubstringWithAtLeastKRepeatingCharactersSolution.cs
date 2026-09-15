@@ -70,16 +70,14 @@ internal static class LongestSubstringWithAtLeastKRepeatingCharactersSolution
         }
 
         var counts = BuildFrequencyCounts(s, start, end);
-        var splitIndex = FindSplitIndex(s, start, end, k, counts);
+        var splitIndex = FindSplitIndex(s, (Start: start, End: end), k, counts);
 
         if (splitIndex is not { } index)
         {
             return end - start;
         }
 
-        var left = LongestInRange(s, start, index, k);
-        var right = LongestInRange(s, index + 1, end, k);
-        return Math.Max(left, right);
+        return BestOfHalves(s, index, (Start: start, End: end), k);
     }
 
     private static HashMap<char, int> BuildFrequencyCounts(string s, int start, int end)
@@ -95,9 +93,12 @@ internal static class LongestSubstringWithAtLeastKRepeatingCharactersSolution
         return counts;
     }
 
-    private static int? FindSplitIndex(string s, int start, int end, int k, HashMap<char, int> counts)
+    // The half-open range being split is one range: neither endpoint is ever passed
+    // without the other, and the counts were built for that same range.
+    private static int? FindSplitIndex(
+        string s, (int Start, int End) range, int k, HashMap<char, int> counts)
     {
-        for (var i = start; i < end; i++)
+        for (var i = range.Start; i < range.End; i++)
         {
             counts.TryGetValue(s[i], out var count);
 
@@ -108,5 +109,14 @@ internal static class LongestSubstringWithAtLeastKRepeatingCharactersSolution
         }
 
         return null;
+    }
+
+    // The two halves either side of the splitting character: it can never appear in
+    // a valid answer inside the range, so the answer is the larger of the two.
+    private static int BestOfHalves(string s, int splitIndex, (int Start, int End) range, int k)
+    {
+        var left = LongestInRange(s, range.Start, splitIndex, k);
+        var right = LongestInRange(s, splitIndex + 1, range.End, k);
+        return Math.Max(left, right);
     }
 }

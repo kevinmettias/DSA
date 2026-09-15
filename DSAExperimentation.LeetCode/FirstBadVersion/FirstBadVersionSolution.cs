@@ -46,6 +46,9 @@ internal static class FirstBadVersionSolution
     {
         public int Length => length;
 
-        public int Get(int index) => index + 1 >= firstBad ? 1 : 0;
+        public int Get(int index) => IsBadVersion(index) ? 1 : 0;
+
+        // index is the 0-based version-1, so version index + 1 is bad from firstBad on.
+        private bool IsBadVersion(int index) => index + 1 >= firstBad;
     }
 }

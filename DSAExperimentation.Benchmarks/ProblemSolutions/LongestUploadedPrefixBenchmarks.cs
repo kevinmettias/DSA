@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.LongestUploadedPrefix.LongestUploadedPrefixSolution;
+using DSAExperimentation.LeetCode.LongestUploadedPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -14,12 +14,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestUploadedPrefixBenchmarks
 {
-    private const int RandomSeed = 2424; // LC problem number
+    private const int RandomSeed = 2424; private int[] _uploadOrder = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int VideoCount;
-
-    private int[] _uploadOrder = null!;
+    public int VideoCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,12 +29,12 @@ public class LongestUploadedPrefixBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RescanArray() => Replay(new UploadedPrefixByRescanArray(VideoCount));
+    public int RescanArray() => Replay(new LongestUploadedPrefixSolution.UploadedPrefixByRescanArray(VideoCount));
 
     [Benchmark]
-    public int SetFrontierAdvance() => Replay(new UploadedPrefixBySetFrontier());
+    public int SetFrontierAdvance() => Replay(new LongestUploadedPrefixSolution.UploadedPrefixBySetFrontier());
 
-    private int Replay(IUploadedPrefix server)
+    private int Replay(LongestUploadedPrefixSolution.IUploadedPrefix server)
     {
         var longest = 0;
 

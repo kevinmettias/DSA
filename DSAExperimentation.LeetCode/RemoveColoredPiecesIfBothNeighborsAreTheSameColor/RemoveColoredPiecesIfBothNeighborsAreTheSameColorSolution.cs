@@ -34,6 +34,7 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
         var pieces = colors.ToList();
         var aliceTurn = true;
 
+        // Stops when the player to move has no removable piece: being stuck loses, so the other player is returned.
         while (true)
         {
             var moveIndex = FindRemovableIndex(pieces, aliceTurn ? AliceColor : BobColor);
@@ -53,7 +54,7 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
     {
         for (var i = 1; i < pieces.Count - 1; i++)
         {
-            if (pieces[i] == target && pieces[i - 1] == target && pieces[i + 1] == target)
+            if (IsRemovable(pieces, i, target))
             {
                 return i;
             }
@@ -62,14 +63,29 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
         return NoMove;
     }
 
+    // Only an interior piece of a run can be taken, and only while both of its
+    // neighbors still share its color.
+    private static bool IsRemovable(List<char> pieces, int i, char target)
+        => pieces[i] == target && pieces[i - 1] == target && pieces[i + 1] == target;
+
     // Group the string into maximal same-color runs with this repo's own
     // ContiguousGroupBuffer - the same primitive ContiguousGroupBufferTests
     // exercises directly - and add max(L - 2, 0) to that color's move budget as each
     // run closes. One O(n) pass, no simulation.
     public static bool WinnerOfGameByRunLengthCounting(string colors)
     {
-        var buffer = new ContiguousGroupBuffer<char, char>();
         var budgets = new Dictionary<char, int> { [AliceColor] = 0, [BobColor] = 0 };
+
+        AccumulateRunLengths(colors, budgets);
+
+        return budgets[AliceColor] > budgets[BobColor];
+    }
+
+    // The single grouping pass itself: the buffer is fed one piece at a time, and each
+    // run that closes is charged to its own color's budget.
+    private static void AccumulateRunLengths(string colors, Dictionary<char, int> budgets)
+    {
+        var buffer = new ContiguousGroupBuffer<char, char>();
 
         void Accumulate(IReadOnlyList<char> run, char color) =>
             budgets[color] += Math.Max(0, run.Count - RunEndpointCount);
@@ -80,7 +96,5 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
         }
 
         buffer.Flush(Accumulate);
-
-        return budgets[AliceColor] > budgets[BobColor];
     }
 }

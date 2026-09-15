@@ -51,25 +51,7 @@ internal static class CatAndMouseIISolution
     {
         var (context, start) = ParseGrid(grid, catJump, mouseJump);
 
-        return Memoizer.Memoize<GameState, bool>(
-            start, (state, mouseWins) => CanMouseWinWithMemo(state, mouseWins, context));
-    }
-
-    private static bool CanMouseWinWithMemo(GameState state, Func<GameState, bool> mouseWins, GameContext context)
-    {
-        if (Decided(state, context) is { } decided)
-        {
-            return decided;
-        }
-
-        if (state.Turn % PlayerCount == 0)
-        {
-            return ReachableCells(state.Mouse, new StepLimit(context.MouseJump, Blocker: null), context.Board)
-                .Any(next => mouseWins(state with { Mouse = next, Turn = state.Turn + 1 }));
-        }
-
-        return ReachableCells(state.Cat, new StepLimit(context.CatJump, state.Mouse), context.Board)
-            .All(next => mouseWins(state with { Cat = next, Turn = state.Turn + 1 }));
+        return Memoizer.Memoize<GameState, bool>(start, new CanMouseWinUnderPlay(context));
     }
 
     private static bool CanMouseWinWithoutMemo(GameState state, GameContext context)
@@ -234,4 +216,29 @@ internal static class CatAndMouseIISolution
     // How far a single reachability probe may travel, and the one cell (if any)
     // where a landing lands but a path traveling further stops.
     private readonly record struct StepLimit(int MaxSteps, (int Row, int Col)? Blocker);
+
+    // The recurrence, named: one position under optimal play, where Mouse moves on an
+    // even turn and wins on any winning successor while Cat moves on an odd turn and
+    // Mouse needs every successor to win. Everything that stays fixed across the whole
+    // game - board, food, turn budget, both jump distances - is the constructor's
+    // input, so the rule reads only the position that varies.
+    private sealed class CanMouseWinUnderPlay(GameContext context) : IRecurrence<GameState, bool>
+    {
+        public bool Replay(GameState state, IRecurrence<GameState, bool> rest)
+        {
+            if (Decided(state, context) is { } decided)
+            {
+                return decided;
+            }
+
+            if (state.Turn % PlayerCount == 0)
+            {
+                return ReachableCells(state.Mouse, new StepLimit(context.MouseJump, Blocker: null), context.Board)
+                    .Any(next => rest.Replay(state with { Mouse = next, Turn = state.Turn + 1 }, rest));
+            }
+
+            return ReachableCells(state.Cat, new StepLimit(context.CatJump, state.Mouse), context.Board)
+                .All(next => rest.Replay(state with { Cat = next, Turn = state.Turn + 1 }, rest));
+        }
+    }
 }

@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks
 {
+    private RestrictedPathGraph _graph = null!;
+
     // Kept modest (<=30), same reasoning as FibonacciBenchmarks: NaiveDfs's blowup
     // here really is O(golden-ratio^N).
     [Params(20, 30)]
-    public int N;
-
-    private RestrictedPathGraph _graph = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

@@ -72,8 +72,7 @@ internal static class RankTransformOfAMatrixSolution
 
         for (var r = 0; r < rows; r++)
         {
-            var row = r;
-            changed |= RelaxLine(cols, i => matrix[row][i], i => new RankCell(rank[row], i));
+            changed |= RelaxLine(cols, new MatrixRow(matrix, rank[r], r));
         }
 
         return changed;
@@ -85,51 +84,10 @@ internal static class RankTransformOfAMatrixSolution
 
         for (var c = 0; c < cols; c++)
         {
-            var col = c;
-            changed |= RelaxLine(rows, i => matrix[i][col], i => new RankCell(rank[i], col));
+            changed |= RelaxLine(rows, new MatrixColumn(matrix, rank, c));
         }
 
         return changed;
-    }
-
-    private static bool RelaxLine(int count, Func<int, int> valueAt, Func<int, RankCell> cellAt)
-    {
-        var changed = false;
-
-        for (var i = 0; i < count; i++)
-        {
-            for (var j = i + 1; j < count; j++)
-            {
-                changed |= RelaxPair(valueAt(i), valueAt(j), cellAt(i), cellAt(j));
-            }
-        }
-
-        return changed;
-    }
-
-    private static bool RelaxPair(int valueA, int valueB, RankCell cellA, RankCell cellB)
-    {
-        if (valueA < valueB && cellA.Rank >= cellB.Rank)
-        {
-            cellB.Rank = cellA.Rank + 1;
-            return true;
-        }
-
-        if (valueB < valueA && cellB.Rank >= cellA.Rank)
-        {
-            cellA.Rank = cellB.Rank + 1;
-            return true;
-        }
-
-        if (valueA == valueB && cellA.Rank != cellB.Rank)
-        {
-            var merged = Math.Max(cellA.Rank, cellB.Rank);
-            cellA.Rank = merged;
-            cellB.Rank = merged;
-            return true;
-        }
-
-        return false;
     }
 
     // Sort once, then settle each equal-value batch as a unit: within a batch a
@@ -246,11 +204,68 @@ internal static class RankTransformOfAMatrixSolution
         var (_, row, col) = cell;
         var root = components.Find(row);
         bestByRoot.TryGetValue(root, out var best);
-        var rank = best + 1;
 
+        WriteCellRank(grid, row, col, best + 1);
+    }
+
+    // Writes one cell's final rank through to every place the grid stores it, so a
+    // later cell in the same component reads the raised rank back out.
+    private static void WriteCellRank(RankingGrid grid, int row, int col, int rank)
+    {
         grid.Result[row][col] = rank;
         grid.RowRank[row] = rank;
         grid.ColRank[col] = rank;
+    }
+
+    // One row or one column of the rank grid, read the two ways RelaxLine needs it:
+    // the matrix value at an index, and the rank cell at that index. Which line is
+    // being relaxed is fixed for the whole pass, so the row-or-column choice is the
+    // only thing an implementation has to know.
+    private interface IRankLine
+    {
+        int ValueAt(int index);
+
+        RankCell CellAt(int index);
+    }
+
+    private static bool RelaxLine(int count, IRankLine line)
+    {
+        var changed = false;
+
+        for (var i = 0; i < count; i++)
+        {
+            for (var j = i + 1; j < count; j++)
+            {
+                changed |= RelaxPair(line.ValueAt(i), line.ValueAt(j), line.CellAt(i), line.CellAt(j));
+            }
+        }
+
+        return changed;
+    }
+
+    private static bool RelaxPair(int valueA, int valueB, RankCell cellA, RankCell cellB)
+    {
+        if (valueA < valueB && cellA.Rank >= cellB.Rank)
+        {
+            cellB.Rank = cellA.Rank + 1;
+            return true;
+        }
+
+        if (valueB < valueA && cellB.Rank >= cellA.Rank)
+        {
+            cellA.Rank = cellB.Rank + 1;
+            return true;
+        }
+
+        if (valueA == valueB && cellA.Rank != cellB.Rank)
+        {
+            var merged = Math.Max(cellA.Rank, cellB.Rank);
+            cellA.Rank = merged;
+            cellB.Rank = merged;
+            return true;
+        }
+
+        return false;
     }
 
     // A single relaxable cell, held as the row it lives in plus its column so
@@ -266,4 +281,23 @@ internal static class RankTransformOfAMatrixSolution
 
     private readonly record struct RankingGrid(
         (int Value, int Row, int Col)[] Cells, int Rows, int[][] Result, int[] RowRank, int[] ColRank);
+
+    // A row of the matrix as a relaxable line: the cell at index (row, index) reads its
+    // value straight out of the matrix and its rank through the row's own rank array.
+    private sealed class MatrixRow(int[][] matrix, int[] rank, int row) : IRankLine
+    {
+        public int ValueAt(int index) => matrix[row][index];
+
+        public RankCell CellAt(int index) => new(rank, index);
+    }
+
+    // The same read down a column: the value comes from (index, column) and the rank
+    // through the rank array of the row that index names, which is what the rank grid
+    // stores at that cell.
+    private sealed class MatrixColumn(int[][] matrix, int[][] rank, int column) : IRankLine
+    {
+        public int ValueAt(int index) => matrix[index][column];
+
+        public RankCell CellAt(int index) => new(rank[index], column);
+    }
 }

@@ -19,10 +19,10 @@ public class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesBenchmarks
     // Deterministic workload seed, kept at the value this benchmark has always used.
     private const int RandomSeed = 1;
 
-    [Params(8, 12)]
-    public int Length;
+    private string _value = "";
 
-    private string _value = null!;
+    [Params(8, 12)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

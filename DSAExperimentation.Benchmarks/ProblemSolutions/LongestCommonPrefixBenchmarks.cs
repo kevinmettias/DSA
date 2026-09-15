@@ -12,10 +12,10 @@ public class LongestCommonPrefixBenchmarks
 {
     private static readonly string[] DivergingSuffixes = ["a", "b", "c", "d"];
 
-    private string[] _values = null!;
+    private string[] _values = [];
 
     [Params(64, 512)]
-    public int PrefixLength;
+    public int PrefixLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

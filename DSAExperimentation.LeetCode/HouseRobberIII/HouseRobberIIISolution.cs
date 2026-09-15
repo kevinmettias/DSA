@@ -24,21 +24,6 @@ internal static class HouseRobberIIISolution
         return Math.Max(robbed, notRobbed);
     }
 
-    private static (int Robbed, int NotRobbed) Gain(BinaryTreeNode<int>? node)
-    {
-        if (node is null)
-        {
-            return (0, 0);
-        }
-
-        var left = Gain(node.Left);
-        var right = Gain(node.Right);
-
-        return (
-            node.Value + left.NotRobbed + right.NotRobbed,
-            Math.Max(left.Robbed, left.NotRobbed) + Math.Max(right.Robbed, right.NotRobbed));
-    }
-
     // This repo's own TreeFold engine closed over RobFoldAlgebra - the same
     // composition CountWaysToBuildRoomsInAnAntColony uses over its own algebra.
     public static int RobByTreeFoldAlgebra(BinaryTreeNode<int> root)
@@ -53,5 +38,20 @@ internal static class HouseRobberIIISolution
             (int Robbed, int NotRobbed)>(root);
 
         return Math.Max(robbed, notRobbed);
+    }
+
+    private static (int Robbed, int NotRobbed) Gain(BinaryTreeNode<int>? node)
+    {
+        if (node is null)
+        {
+            return (0, 0);
+        }
+
+        var left = Gain(node.Left);
+        var right = Gain(node.Right);
+
+        return (
+            node.Value + left.NotRobbed + right.NotRobbed,
+            Math.Max(left.Robbed, left.NotRobbed) + Math.Max(right.Robbed, right.NotRobbed));
     }
 }

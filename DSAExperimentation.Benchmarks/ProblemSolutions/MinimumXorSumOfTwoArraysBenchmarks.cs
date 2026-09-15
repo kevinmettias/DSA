@@ -16,11 +16,11 @@ public class MinimumXorSumOfTwoArraysBenchmarks
     private const int RandomSeed = 1879;
     private const int MaxValueBitWidth = 16;
 
-    [Params(4, 7)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    private int[] _nums2 = [];
+    [Params(4, 7)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

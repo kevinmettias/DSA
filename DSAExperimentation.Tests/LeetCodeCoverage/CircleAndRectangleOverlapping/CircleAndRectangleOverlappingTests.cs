@@ -25,7 +25,7 @@ public sealed class CircleAndRectangleOverlappingTests
         Assert.Equal(
             expected,
             CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
-                radius, xCenter, yCenter, x1, y1, x2, y2));
+                new Circle(radius, xCenter, yCenter), new Rectangle(x1, y1, x2, y2)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -34,5 +34,5 @@ public sealed class CircleAndRectangleOverlappingTests
         Assert.Equal(
             expected,
             CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
-                radius, xCenter, yCenter, x1, y1, x2, y2));
+                new Circle(radius, xCenter, yCenter), new Rectangle(x1, y1, x2, y2)));
 }

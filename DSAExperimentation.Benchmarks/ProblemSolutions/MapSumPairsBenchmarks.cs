@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.MapSumPairs.MapSumPairsSolution;
+using DSAExperimentation.LeetCode.MapSumPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -19,12 +19,12 @@ public class MapSumPairsBenchmarks
     private const int MaxValueExclusive = 100;
     private const int AlphabetSize = 26;
 
-    [Params(5_000, 20_000)]
-    public int KeyCount;
+    private string[] _keys = [];
 
-    private string[] _keys = null!;
-    private int[] _values = null!;
-    private string[] _prefixes = null!;
+    private int[] _values = [];
+    private string[] _prefixes = [];
+    [Params(5_000, 20_000)]
+    public int KeyCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,16 +35,19 @@ public class MapSumPairsBenchmarks
         _prefixes = _keys.Select(key => key[..PrefixLength]).ToArray();
     }
 
+    private static string RandomWord(Random random)
+        => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+
     [Benchmark(Baseline = true)]
-    public long DictionaryScan() => Replay(new MapSumByDictionaryScan());
+    public long DictionaryScan() => Replay(new MapSumPairsSolution.MapSumByDictionaryScan());
 
     [Benchmark]
-    public long TrieFoldSum() => Replay(new MapSumByTrieFold());
+    public long TrieFoldSum() => Replay(new MapSumPairsSolution.MapSumByTrieFold());
 
     // Counts the total of every query rather than discarding each Sum result, so
     // the JIT can't eliminate the replay as dead code - the same "return the real
     // answer, not a weaker proxy" shape DesignSpreadsheetBenchmarks follows.
-    private long Replay(IMapSumStrategy mapSum)
+    private long Replay(MapSumPairsSolution.IMapSumStrategy mapSum)
     {
         for (var i = 0; i < _keys.Length; i++)
         {
@@ -60,7 +63,4 @@ public class MapSumPairsBenchmarks
 
         return total;
     }
-
-    private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
 }

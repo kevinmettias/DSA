@@ -17,10 +17,10 @@ public class SumOfScoresOfBuiltStringsBenchmarks
     private const int RandomSeed = 2223; // LC problem number
     private const int AlphabetSize = 2;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

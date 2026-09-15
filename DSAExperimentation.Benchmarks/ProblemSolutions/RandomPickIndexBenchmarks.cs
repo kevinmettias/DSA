@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.RandomPickIndex.RandomPickIndexSolution;
+using DSAExperimentation.LeetCode.RandomPickIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -18,10 +18,10 @@ public class RandomPickIndexBenchmarks
     private const int PickCalls = 500;
     private const int ValueUpperBound = 50;
 
-    [Params(2_000, 50_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(2_000, 50_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,12 +31,12 @@ public class RandomPickIndexBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ReservoirSampling() => Replay(new RandomPickIndexByReservoirSampling(_nums));
+    public long ReservoirSampling() => Replay(new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(_nums));
 
     [Benchmark]
-    public long HashMapGrouping() => Replay(new RandomPickIndexByHashMapGrouping(_nums));
+    public long HashMapGrouping() => Replay(new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(_nums));
 
-    private static long Replay(IRandomPickIndex solution)
+    private static long Replay(RandomPickIndexSolution.IRandomPickIndex solution)
     {
         long total = 0;
 

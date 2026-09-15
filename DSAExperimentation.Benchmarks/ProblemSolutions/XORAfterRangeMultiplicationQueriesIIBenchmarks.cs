@@ -14,17 +14,14 @@ public class XORAfterRangeMultiplicationQueriesIIBenchmarks
     private const int Seed = 3655;
     private const int QueryCount = 2_000;
 
-    [Params(1_000, 10_000)]
-    public int NumCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(1_000, 10_000)]
+    public int NumCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        (_nums, _queries) = XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NumCount, QueryCount, seed: Seed);
-    }
+    public void Setup() => (_nums, _queries) = XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NumCount, QueryCount, seed: Seed);
 
     [Benchmark(Baseline = true)]
     public int StridedWalk() =>

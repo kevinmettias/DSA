@@ -20,10 +20,10 @@ public class AmbiguousCoordinatesBenchmarks
     // Every other digit is drawn from 0-9.
     private const int DigitRange = 10;
 
-    [Params(8, 16)]
-    public int Length;
+    private string _coordinates = "";
 
-    private string _coordinates = null!;
+    [Params(8, 16)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

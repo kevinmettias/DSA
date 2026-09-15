@@ -47,7 +47,7 @@ internal static class ConstructBinaryTreeFromPreorderAndPostorderTraversalSoluti
     // Tracks how far into preorder each walk has consumed, so every subtree's root
     // is read in preorder's own order: this root, then its whole left subtree, then
     // its whole right one. The two walks differ only in FindLeftRootPostIndex.
-    private struct ScanningWalk(int[] preorder, int[] postorder)
+    private sealed class ScanningWalk(int[] preorder, int[] postorder)
     {
         private readonly int[] _preorder = preorder;
         private readonly int[] _postorder = postorder;
@@ -73,7 +73,7 @@ internal static class ConstructBinaryTreeFromPreorderAndPostorderTraversalSoluti
             return node;
         }
 
-        private readonly int FindLeftRootPostIndex(int postLow, int postHigh)
+        private int FindLeftRootPostIndex(int postLow, int postHigh)
         {
             var leftRootValue = _preorder[_next];
 
@@ -89,7 +89,7 @@ internal static class ConstructBinaryTreeFromPreorderAndPostorderTraversalSoluti
         }
     }
 
-    private struct IndexedWalk(int[] preorder, HashMap<int, int> postIndexOf)
+    private sealed class IndexedWalk(int[] preorder, HashMap<int, int> postIndexOf)
     {
         private readonly int[] _preorder = preorder;
         private readonly HashMap<int, int> _postIndexOf = postIndexOf;

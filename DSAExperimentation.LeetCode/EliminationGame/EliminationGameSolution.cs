@@ -51,31 +51,43 @@ internal static class EliminationGameSolution
             current.Add(i);
         }
 
-        var leftToRight = true;
+        var direction = PassDirection.LeftToRight;
 
         while (current.Count > 1)
         {
-            (current, leftToRight) = RunPass(current, leftToRight);
+            (current, direction) = RunPass(current, direction);
         }
 
         return current[0];
     }
 
-    private static (List<int> Current, bool LeftToRight) RunPass(List<int> current, bool leftToRight)
+    private static (List<int> Current, PassDirection Direction) RunPass(List<int> current, PassDirection direction)
     {
-        if (!leftToRight)
+        if (direction == PassDirection.RightToLeft)
         {
             current = Reverse(current);
         }
 
         current = KeepOddPositions(current);
 
-        if (!leftToRight)
+        if (direction == PassDirection.RightToLeft)
         {
             current = Reverse(current);
         }
 
-        return (current, !leftToRight);
+        return (current, Opposite(direction));
+    }
+
+    private static List<int> Reverse(List<int> values)
+    {
+        var reversed = new List<int>();
+
+        for (var i = values.Count - 1; i >= 0; i--)
+        {
+            reversed.Add(values[i]);
+        }
+
+        return reversed;
     }
 
     private static List<int> KeepOddPositions(List<int> values)
@@ -90,15 +102,15 @@ internal static class EliminationGameSolution
         return kept;
     }
 
-    private static List<int> Reverse(List<int> values)
+    // The next pass starts from the end this one finished away from.
+    private static PassDirection Opposite(PassDirection direction) =>
+        direction == PassDirection.LeftToRight ? PassDirection.RightToLeft : PassDirection.LeftToRight;
+
+    // Which end a pass starts its "keep every other number" walk from - a state the call
+    // site names, where a bare `true` said it only by position.
+    private enum PassDirection
     {
-        var reversed = new List<int>();
-
-        for (var i = values.Count - 1; i >= 0; i--)
-        {
-            reversed.Add(values[i]);
-        }
-
-        return reversed;
+        LeftToRight,
+        RightToLeft,
     }
 }

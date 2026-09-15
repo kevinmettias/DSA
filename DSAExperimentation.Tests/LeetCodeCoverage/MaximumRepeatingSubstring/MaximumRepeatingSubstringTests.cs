@@ -23,11 +23,19 @@ public sealed class MaximumRepeatingSubstringTests
     [MemberData(nameof(Examples))]
     public void MaxRepeatingByStringContains_LeetCodeExamples_ReturnsMaximumRepeatCount(
         string sequence, string word, int expected) =>
-        Assert.Equal(expected, MaximumRepeatingSubstringSolution.MaxRepeatingByStringContains(sequence, word));
+        Assert.Equal(
+            expected,
+            MaximumRepeatingSubstringSolution.MaxRepeatingByStringContains(
+                new MaximumRepeatingSubstringSolution.Haystack(sequence),
+                new MaximumRepeatingSubstringSolution.RepeatedWord(word)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxRepeatingByPrefixFunctionSearch_LeetCodeExamples_ReturnsMaximumRepeatCount(
         string sequence, string word, int expected) =>
-        Assert.Equal(expected, MaximumRepeatingSubstringSolution.MaxRepeatingByPrefixFunctionSearch(sequence, word));
+        Assert.Equal(
+            expected,
+            MaximumRepeatingSubstringSolution.MaxRepeatingByPrefixFunctionSearch(
+                new MaximumRepeatingSubstringSolution.Haystack(sequence),
+                new MaximumRepeatingSubstringSolution.RepeatedWord(word)));
 }

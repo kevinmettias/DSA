@@ -15,10 +15,10 @@ public class CountWaysToChooseCoprimeIntegersFromRowsBenchmarks
     private const int RandomSeed = 3725; // LC problem number
     private const int MaxValueInclusive = 150;
 
-    [Params(5, 7)]
-    public int Size;
+    private int[][] _mat = [];
 
-    private int[][] _mat = null!;
+    [Params(5, 7)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

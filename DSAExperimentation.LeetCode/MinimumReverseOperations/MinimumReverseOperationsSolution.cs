@@ -25,36 +25,54 @@ internal static class MinimumReverseOperationsSolution
     public static int[] MinOperationsByBruteForceScan(int n, int p, int[] banned, int k)
     {
         var bannedSet = new HashSet<int>(banned);
-        var distances = new int[n];
-        Array.Fill(distances, LeetCodeAnswer.None);
-        distances[p] = 0;
 
-        var queue = new Queue<int>();
-        queue.Enqueue(p);
+        return ScanDistancesFrom(n, p, k, bannedSet);
+    }
 
-        while (queue.Count > 0)
+    // The scan itself: expand every position the frontier ever holds, testing each of
+    // the n candidate destinations individually - the O(n) per pop the composed arm
+    // below replaces with direct window arithmetic.
+    private static int[] ScanDistancesFrom(
+        int nodeCount, int start, int windowSize, HashSet<int> bannedSet)
+    {
+        var distances = DistancesFrom(start, nodeCount);
+        var frontier = new Queue<int>();
+        frontier.Enqueue(start);
+
+        while (frontier.Count > 0)
         {
-            var from = queue.Dequeue();
+            var from = frontier.Dequeue();
 
-            for (var to = 0; to < n; to++)
+            for (var to = 0; to < nodeCount; to++)
             {
-                if (distances[to] != LeetCodeAnswer.None || bannedSet.Contains(to))
-                {
-                    continue;
-                }
-
-                if (!IsReachableInOneReversal(from, to, n, k))
+                if (IsVisitedOrBanned(to, distances, bannedSet)
+                    || !IsReachableInOneReversal(from, to, nodeCount, windowSize))
                 {
                     continue;
                 }
 
                 distances[to] = distances[from] + 1;
-                queue.Enqueue(to);
+                frontier.Enqueue(to);
             }
         }
 
         return distances;
     }
+
+    // Every position still unreached, with `start` already sitting at distance 0.
+    private static int[] DistancesFrom(int start, int nodeCount)
+    {
+        var distances = new int[nodeCount];
+        Array.Fill(distances, LeetCodeAnswer.None);
+        distances[start] = 0;
+
+        return distances;
+    }
+
+    // Whether a candidate destination is already settled or simply off the board's
+    // allowed positions - either way there is nothing left to try there.
+    private static bool IsVisitedOrBanned(int to, int[] distances, HashSet<int> bannedSet) =>
+        distances[to] != LeetCodeAnswer.None || bannedSet.Contains(to);
 
     // A single reversal takes `from` to `to` exactly when the window that does it,
     // starting at L = (from + to - K + 1) / 2, is an integer position that both fits

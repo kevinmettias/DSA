@@ -17,10 +17,10 @@ public class StoneGameBenchmarks
     private const int RandomSeed = 877; // LC problem number
     private const int PileValueUpperBoundExclusive = 100;
 
-    [Params(22, 26)]
-    public int N;
+    private int[] _piles = [];
 
-    private int[] _piles = null!;
+    [Params(22, 26)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

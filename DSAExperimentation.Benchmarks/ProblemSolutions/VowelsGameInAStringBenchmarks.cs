@@ -14,10 +14,10 @@ public class VowelsGameInAStringBenchmarks
     private const int RandomSeed = 3227;
     private const string Alphabet = "aeioubcdfghjklmnpqrst";
 
-    [Params(8, 20)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(8, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

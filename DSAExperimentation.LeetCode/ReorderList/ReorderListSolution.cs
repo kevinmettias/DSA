@@ -20,6 +20,17 @@ internal static class ReorderListSolution
             return;
         }
 
+        var midpoint = FindMidpoint(head);
+        var second = Reverse(midpoint.Next);
+        midpoint.Next = null;
+
+        Merge(head, second);
+    }
+
+    // The node the slow cursor stops on: the last node of the first half, found by
+    // running a fast cursor at twice its speed.
+    private static SinglyLinkedListNode<int> FindMidpoint(SinglyLinkedListNode<int> head)
+    {
         var slow = head;
         var fast = head;
 
@@ -29,25 +40,7 @@ internal static class ReorderListSolution
             fast = fast.Next.Next;
         }
 
-        var second = Reverse(slow.Next);
-        slow.Next = null;
-
-        Merge(head, second);
-    }
-
-    private static void Merge(SinglyLinkedListNode<int> first, SinglyLinkedListNode<int>? second)
-    {
-        while (second is not null)
-        {
-            var nextFirst = first.Next;
-            var nextSecond = second.Next;
-
-            first.Next = second;
-            second.Next = nextFirst;
-
-            first = nextFirst!;
-            second = nextSecond;
-        }
+        return slow;
     }
 
     private static SinglyLinkedListNode<int>? Reverse(SinglyLinkedListNode<int>? head)
@@ -63,5 +56,20 @@ internal static class ReorderListSolution
         }
 
         return previous;
+    }
+
+    private static void Merge(SinglyLinkedListNode<int> first, SinglyLinkedListNode<int>? second)
+    {
+        while (second is not null)
+        {
+            var nextFirst = first.Next;
+            var nextSecond = second.Next;
+
+            first.Next = second;
+            second.Next = nextFirst;
+
+            first = nextFirst!;
+            second = nextSecond;
+        }
     }
 }

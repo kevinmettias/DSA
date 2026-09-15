@@ -15,13 +15,13 @@ public class FindASafeWalkThroughAGridBenchmarks
 {
     private const int Seed = 3286;
 
+    private int[][] _grid = [];
+
+    private Dictionary<(int Row, int Col), WeightedGridNode> _nodes = new();
     // LeetCode caps health at m + n; the maximum for both benchmarked sizes keeps
     // every run's answer meaningful rather than trivially false.
     [Params(10, 50)]
-    public int GridSize;
-
-    private int[][] _grid = null!;
-    private Dictionary<(int Row, int Col), WeightedGridNode> _nodes = null!;
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -37,5 +37,5 @@ public class FindASafeWalkThroughAGridBenchmarks
     [Benchmark]
     public bool WeightedGridDijkstra() =>
         FindASafeWalkThroughAGridSolution.IsSafeByWeightedGridDijkstra(
-            _nodes, GridSize, GridSize, _grid[0][0], health: 2 * GridSize);
+            _nodes, (GridSize, GridSize), _grid[0][0], health: 2 * GridSize);
 }

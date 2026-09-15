@@ -12,18 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LinkedListCycleBenchmarks
 {
-    [Params(200, 5_000)] public int Length;
-
     private SinglyLinkedListNode<int>? _head;
+
+    [Params(200, 5_000)] public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = BuildCyclicList(Length);
-
-    [Benchmark(Baseline = true)]
-    public bool VisitedSet() => LinkedListCycleSolution.HasCycleByVisitedSet(_head);
-
-    [Benchmark]
-    public bool FloydCycleDetection() => LinkedListCycleSolution.HasCycleByFloydCycleDetection(_head);
 
     private static SinglyLinkedListNode<int> BuildCyclicList(int length)
     {
@@ -39,4 +33,10 @@ public class LinkedListCycleBenchmarks
         tail.Next = head;
         return head;
     }
+
+    [Benchmark(Baseline = true)]
+    public bool VisitedSet() => LinkedListCycleSolution.HasCycleByVisitedSet(_head);
+
+    [Benchmark]
+    public bool FloydCycleDetection() => LinkedListCycleSolution.HasCycleByFloydCycleDetection(_head);
 }

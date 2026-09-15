@@ -19,9 +19,12 @@ internal static class CourseScheduleIVSolution
     // precomputation, written with a BCL Queue and a bool[] visited map
     // (ARCHITECTURE.md 17.5 - only the graph it is handed is a repo type).
     public static List<bool> CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
-        int numCourses, int[][] prerequisites, int[][] queries) =>
-        CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
-            CourseGraph.Build(numCourses, prerequisites), queries);
+        int numCourses, int[][] prerequisites, int[][] queries)
+    {
+        var graph = CourseGraph.Build(numCourses, prerequisites);
+
+        return CheckIfPrerequisiteByBreadthFirstSearchPerQuery(graph, queries);
+    }
 
     public static List<bool> CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
         CourseGraph graph, int[][] queries)
@@ -30,7 +33,8 @@ internal static class CourseScheduleIVSolution
 
         foreach (var query in queries)
         {
-            answers.Add(IsReachable(graph, query[0], query[1]));
+            var reachable = IsReachable(graph, query[0], query[1]);
+            answers.Add(reachable);
         }
 
         return answers;
@@ -91,8 +95,12 @@ internal static class CourseScheduleIVSolution
     // The bool result reports a negative cycle, which unit-weight prerequisite
     // edges make impossible here.
     public static List<bool> CheckIfPrerequisiteByFloydWarshall(
-        int numCourses, int[][] prerequisites, int[][] queries) =>
-        CheckIfPrerequisiteByFloydWarshall(CourseGraph.Build(numCourses, prerequisites), queries);
+        int numCourses, int[][] prerequisites, int[][] queries)
+    {
+        var graph = CourseGraph.Build(numCourses, prerequisites);
+
+        return CheckIfPrerequisiteByFloydWarshall(graph, queries);
+    }
 
     public static List<bool> CheckIfPrerequisiteByFloydWarshall(CourseGraph graph, int[][] queries)
     {

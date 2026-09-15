@@ -31,7 +31,7 @@ internal static class CountTheRepetitionsSolution
 
         for (var copy = 0; copy < n1; copy++)
         {
-            ScanOneS1Copy(s1, s2, ref s2Index, ref s2Count);
+            ScanOneS1Copy(new ScannedCopy(s1), new MatchedSubsequence(s2), ref s2Index, ref s2Count);
         }
 
         return s2Count / n2;
@@ -44,6 +44,18 @@ internal static class CountTheRepetitionsSolution
             return 0;
         }
 
+        var s2Count = CountS2Completions(s1, n1, s2);
+
+        return s2Count / n2;
+    }
+
+    // The cycle-detecting walk itself: s2Index only ever takes one of |s2|
+    // values, so repeating it is guaranteed within |s2| + 1 copies of s1
+    // (pigeonhole). Once the HashMap reports a position it has already recorded,
+    // the copies of s1 still outstanding are fast-forwarded by whole cycles
+    // rather than walked a character at a time.
+    private static int CountS2Completions(string s1, int n1, string s2)
+    {
         var seen = new HashMap<int, (int S1Count, int S2Count)>();
         var s2Index = 0;
         var s2Count = 0;
@@ -51,7 +63,7 @@ internal static class CountTheRepetitionsSolution
 
         while (s1Count < n1)
         {
-            ScanOneS1Copy(s1, s2, ref s2Index, ref s2Count);
+            ScanOneS1Copy(new ScannedCopy(s1), new MatchedSubsequence(s2), ref s2Index, ref s2Count);
             s1Count++;
 
             if (seen.TryGetValue(s2Index, out var prior))
@@ -64,29 +76,7 @@ internal static class CountTheRepetitionsSolution
             }
         }
 
-        return s2Count / n2;
-    }
-
-    // The scan step shared by both strategies: walk one copy of s1 forward through
-    // s2's remaining characters, advancing s2Index and counting each full pass
-    // through s2 as one completion.
-    private static void ScanOneS1Copy(string s1, string s2, ref int s2Index, ref int s2Count)
-    {
-        foreach (var c in s1)
-        {
-            if (c != s2[s2Index])
-            {
-                continue;
-            }
-
-            s2Index++;
-
-            if (s2Index == s2.Length)
-            {
-                s2Index = 0;
-                s2Count++;
-            }
-        }
+        return s2Count;
     }
 
     private static (int S1Count, int S2Count) FastForwardCycles(
@@ -98,4 +88,37 @@ internal static class CountTheRepetitionsSolution
 
         return (s1Count + (cycles * cycleS1Count), s2Count + (cycles * cycleS2Count));
     }
+
+    // The scan step shared by both strategies: walk one copy of s1 forward through
+    // s2's remaining characters, advancing s2Index and counting each full pass
+    // through s2 as one completion.
+    private static void ScanOneS1Copy(
+        ScannedCopy s1, MatchedSubsequence s2, ref int s2Index, ref int s2Count)
+    {
+        foreach (var c in s1.Text)
+        {
+            if (c != s2.Text[s2Index])
+            {
+                continue;
+            }
+
+            s2Index++;
+
+            if (s2Index == s2.Text.Length)
+            {
+                s2Index = 0;
+                s2Count++;
+            }
+        }
+    }
+
+    // The two ends of that scan, named for the roles they play here rather than left as
+    // two adjacent `string` positions a caller could hand over the wrong way round with
+    // the compiler none the wiser. `s1` is one copy of the container being walked; `s2`
+    // is the subsequence the walk is matching it against. The scan is one-directional -
+    // the copy is read once, the subsequence is indexed by a running position - so the
+    // two cannot honestly be exchanged.
+    private readonly record struct ScannedCopy(string Text);
+
+    private readonly record struct MatchedSubsequence(string Text);
 }

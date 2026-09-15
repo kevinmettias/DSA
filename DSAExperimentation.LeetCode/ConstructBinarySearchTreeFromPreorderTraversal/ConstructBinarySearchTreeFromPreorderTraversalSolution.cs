@@ -39,7 +39,7 @@ internal static class ConstructBinarySearchTreeFromPreorderTraversalSolution
 
     // The cursor into preorder is shared by every frame of the recursion, which is
     // what lets each subtree consume exactly the prefix that belongs to it - hence
-    // a class rather than AddBinarySolution.DigitWalk's struct.
+    // a reference type rather than a value copied independently into each frame.
     private sealed class BoundedWalk(int[] preorder)
     {
         private readonly int[] _preorder = preorder;

@@ -36,6 +36,18 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
         return WithoutCollisionFreeConfigurations(configurations);
     }
 
+    private static long NaivePower(long value, long exponent)
+    {
+        var result = 1L;
+
+        for (var i = 0L; i < exponent; i++)
+        {
+            result = result * value % ModularArithmetic.Modulo;
+        }
+
+        return result;
+    }
+
     // Halve the exponent each step instead of decrementing it, squaring the base to
     // compensate - Domain.Modular's own exponentiation-by-squaring loop, which
     // folds under the modulus at every multiplication so intermediate values never
@@ -52,16 +64,4 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
     private static int WithoutCollisionFreeConfigurations(long configurations) =>
         (int)((configurations - CollisionFreeConfigurations + ModularArithmetic.Modulo) %
             ModularArithmetic.Modulo);
-
-    private static long NaivePower(long value, long exponent)
-    {
-        var result = 1L;
-
-        for (var i = 0L; i < exponent; i++)
-        {
-            result = result * value % ModularArithmetic.Modulo;
-        }
-
-        return result;
-    }
 }

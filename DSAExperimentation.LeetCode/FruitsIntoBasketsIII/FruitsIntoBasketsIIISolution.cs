@@ -17,25 +17,29 @@ internal static class FruitsIntoBasketsIIISolution
 
         foreach (var quantity in fruits)
         {
-            var placed = false;
-
-            for (var j = 0; j < baskets.Length; j++)
-            {
-                if (!used[j] && baskets[j] >= quantity)
-                {
-                    used[j] = true;
-                    placed = true;
-                    break;
-                }
-            }
-
-            if (!placed)
+            if (!TryPlaceBruteForce(used, baskets, quantity))
             {
                 unplaced++;
             }
         }
 
         return unplaced;
+    }
+
+    // Places one fruit in the leftmost still-free basket that fits it, marking that
+    // basket used - and reports whether any such basket was left.
+    private static bool TryPlaceBruteForce(bool[] used, int[] baskets, int quantity)
+    {
+        for (var j = 0; j < baskets.Length; j++)
+        {
+            if (!used[j] && baskets[j] >= quantity)
+            {
+                used[j] = true;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // This repo's own SegmentTree<int, MaxOperation<int>> over basket capacity,
@@ -82,6 +86,14 @@ internal static class FruitsIntoBasketsIIISolution
             return null;
         }
 
+        return LeftmostSatisfyingIndex(baskets, capacity);
+    }
+
+    // Binary-searches the first index whose range max reaches `capacity`. The
+    // predicate is monotonic in the probe's midpoint - widening a range can only
+    // raise its max - so the search never has to look left again.
+    private static int LeftmostSatisfyingIndex(SegmentTree<int, MaxOperation<int>> baskets, int capacity)
+    {
         var low = 0;
         var high = baskets.Count - 1;
 

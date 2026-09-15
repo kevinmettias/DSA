@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.AvailableCapturesForRook;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,21 +12,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AvailableCapturesForRookBenchmarks
 {
-    private const int CenterDivisor = 2;
     private const int PawnSpawnProbabilityDenominator = 4;
 
-    [Params(50, 500)]
-    public int Size;
+    private char[][] _board = [];
 
-    private char[][] _board = null!;
     private RookSquare _rook;
+    [Params(50, 500)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
         _board = Enumerable.Range(0, Size).Select(_ => Enumerable.Repeat('.', Size).ToArray()).ToArray();
-        _rook = new RookSquare(Size / CenterDivisor, Size / CenterDivisor);
+        _rook = new RookSquare(Size / AlgorithmConstants.HalvingFactor, Size / AlgorithmConstants.HalvingFactor);
         _board[_rook.Row][_rook.Col] = 'R';
 
         for (var col = 0; col < Size; col++)

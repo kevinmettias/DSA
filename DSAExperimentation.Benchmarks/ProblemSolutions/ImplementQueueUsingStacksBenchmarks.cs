@@ -15,13 +15,68 @@ public class ImplementQueueUsingStacksBenchmarks
 {
     private const int Seed = 232;
 
-    [Params(200, 2_000)]
-    public int OperationCount;
+    private List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>> _script = new();
 
-    private List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>> _script = null!;
+    [Params(200, 2_000)]
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _script = BuildScript(OperationCount, new Random(Seed));
+
+    private static List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>> BuildScript(
+        int operationCount, Random random)
+    {
+        var script = new List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>>();
+        var pending = 0;
+
+        for (var i = 0; i < operationCount; i++)
+        {
+            pending = AppendNextOperation(script, pending, random, operationCount);
+        }
+
+        return script;
+    }
+
+    // One script entry, plus the pending-push count it leaves behind. roll == 0
+    // always pushes; rolls 1/2 pop or peek, but only once something has actually
+    // been pushed and not yet popped.
+    private static int AppendNextOperation(
+        List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>> script,
+        int pending, Random random, int operationCount)
+    {
+        var roll = pending > 0 ? random.Next(0, 3) : 0;
+        var nextPending = pending;
+
+        if (roll == 0)
+        {
+            AppendPush(script, random, operationCount);
+            nextPending++;
+        }
+        else if (roll == 1)
+        {
+            script.Add(queue => queue.Peek());
+        }
+        else
+        {
+            script.Add(queue => queue.Pop());
+            nextPending--;
+        }
+
+        return nextPending;
+    }
+
+    // A push entry carrying the value it pushes, so the replay exercises real
+    // values rather than one constant.
+    private static void AppendPush(
+        List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>> script, Random random, int operationCount)
+    {
+        var value = random.Next(0, operationCount + 1);
+        script.Add(queue =>
+        {
+            queue.Push(value);
+            return 0;
+        });
+    }
 
     [Benchmark(Baseline = true)]
     public int TwoStackTransfer()
@@ -35,41 +90,5 @@ public class ImplementQueueUsingStacksBenchmarks
         }
 
         return sum;
-    }
-
-    private static List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>> BuildScript(
-        int operationCount, Random random)
-    {
-        var script = new List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int>>();
-        var pending = 0;
-
-        for (var i = 0; i < operationCount; i++)
-        {
-            // roll == 0 always pushes; rolls 1/2 pop or peek, but only once
-            // something has actually been pushed and not yet popped.
-            var roll = pending > 0 ? random.Next(0, 3) : 0;
-
-            if (roll == 0)
-            {
-                var value = random.Next(0, operationCount + 1);
-                script.Add(queue =>
-                {
-                    queue.Push(value);
-                    return 0;
-                });
-                pending++;
-            }
-            else if (roll == 1)
-            {
-                script.Add(queue => queue.Peek());
-            }
-            else
-            {
-                script.Add(queue => queue.Pop());
-                pending--;
-            }
-        }
-
-        return script;
     }
 }

@@ -18,16 +18,13 @@ public class CopyListWithRandomPointerBenchmarks
     private const int Seed = 138;
     private const double NullRandomProbability = 0.2;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
-
     private RandomLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = BuildRandomList(NodeCount, Seed);
-
-    [Benchmark]
-    public object? HashMapMemo() => CopyListWithRandomPointerSolution.CopyByHashMapMemo(_head);
 
     private static RandomLinkedListNode<int> BuildRandomList(int count, int seed)
     {
@@ -46,9 +43,19 @@ public class CopyListWithRandomPointerBenchmarks
 
         foreach (var node in nodes)
         {
-            node.Random = random.NextDouble() < NullRandomProbability ? null : nodes[random.Next(count)];
+            var staysNull = random.NextDouble() < NullRandomProbability;
+
+            node.Random = staysNull ? null : RandomNode(nodes, random, count);
         }
 
         return nodes[0];
     }
+
+    private static RandomLinkedListNode<int> RandomNode(
+        RandomLinkedListNode<int>[] nodes,
+        Random random,
+        int count) => nodes[random.Next(count)];
+
+    [Benchmark]
+    public object? HashMapMemo() => CopyListWithRandomPointerSolution.CopyByHashMapMemo(_head);
 }

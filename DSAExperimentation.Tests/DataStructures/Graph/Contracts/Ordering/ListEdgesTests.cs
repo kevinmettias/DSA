@@ -9,16 +9,10 @@ public sealed class ListEdgesTests
         new([(3, new TestNode("A")), (7, new TestNode("B"))]);
 
     [Fact]
-    public void Count_ReportsTheBackingListsLength()
-    {
-        Assert.Equal(2, Edges().Count);
-    }
+    public void Count_ReportsTheBackingListsLength() => Assert.Equal(2, Edges().Count);
 
     [Fact]
-    public void Count_EmptyList_IsZero()
-    {
-        Assert.Equal(0, new ListEdges<TestNode, int>([]).Count);
-    }
+    public void Count_EmptyList_IsZero() => Assert.Equal(0, new ListEdges<TestNode, int>([]).Count);
 
     [Fact]
     public void Get_ReturnsEachEdgesDataAndTargetTogether()

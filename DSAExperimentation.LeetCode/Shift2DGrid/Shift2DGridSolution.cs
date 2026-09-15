@@ -36,6 +36,18 @@ internal static class Shift2DGridSolution
         return result;
     }
 
+    private static int[][] NewGrid(int rows, int cols)
+    {
+        var result = new int[rows][];
+
+        for (var r = 0; r < rows; r++)
+        {
+            result[r] = new int[cols];
+        }
+
+        return result;
+    }
+
     // This repo's own Deque<int>: flatten the grid into it in row-major order,
     // right-rotate it k mod (rows*cols) times - each step pops the last element and
     // pushes it to the front, which is exactly one shift - then drain it back out
@@ -89,18 +101,6 @@ internal static class Shift2DGridSolution
             {
                 deque.TryPopFront(out result[r][c]);
             }
-        }
-
-        return result;
-    }
-
-    private static int[][] NewGrid(int rows, int cols)
-    {
-        var result = new int[rows][];
-
-        for (var r = 0; r < rows; r++)
-        {
-            result[r] = new int[cols];
         }
 
         return result;

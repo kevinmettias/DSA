@@ -42,6 +42,13 @@ internal static class ContinuousSubarraySumSolution
         var firstIndexByRemainder = new HashMap<int, int>();
         firstIndexByRemainder.Set(0, -1);
 
+        return HasRepeatedRemainder(nums, k, firstIndexByRemainder);
+    }
+
+    // Walks the running-sum remainders against their first-occurrence index: a remainder
+    // seen before at `firstIndex` closes a subarray of at least MinimumSubarrayLength.
+    private static bool HasRepeatedRemainder(int[] nums, int k, HashMap<int, int> firstIndexByRemainder)
+    {
         var prefixSum = 0;
         for (var i = 0; i < nums.Length; i++)
         {

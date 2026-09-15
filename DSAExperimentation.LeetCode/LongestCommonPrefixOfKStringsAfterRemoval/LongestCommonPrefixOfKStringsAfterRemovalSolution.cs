@@ -44,6 +44,15 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
             return 0;
         }
 
+        var maxLength = LongestRemainingWordLength(words, excludeIndex);
+
+        return LongestQualifyingLength(words, excludeIndex, k, maxLength);
+    }
+
+    // The longest word the removal actually leaves behind: the excluded index
+    // contributes nothing, and that is what caps every candidate prefix length.
+    private static int LongestRemainingWordLength(string[] words, int excludeIndex)
+    {
         var maxLength = 0;
 
         for (var i = 0; i < words.Length; i++)
@@ -54,6 +63,14 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
             }
         }
 
+        return maxLength;
+    }
+
+    // The longest length still shared by k of the remaining words: every candidate
+    // length is scored against the same exclusion, and the longest one that clears k
+    // wins.
+    private static int LongestQualifyingLength(string[] words, int excludeIndex, int k, int maxLength)
+    {
         var best = 0;
 
         for (var length = 1; length <= maxLength; length++)
@@ -103,20 +120,51 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 
     public static int[] AnswerByReduceTrie(LowercaseTrie<int> trie, string[] words, int k)
     {
-        var counts = Reduce.Tree<
+        var counts = ReduceSubtreeWordCounts(trie);
+        var depths = ReduceNodeDepths(trie);
+        var summary = BuildQualificationSummary(counts, depths, words, k);
+
+        return AnswerEveryWord(trie, words, summary, k);
+    }
+
+    // Each node's own subtree word count, from this problem's SubtreeWordCountAlgebra.
+    private static Dictionary<LowercaseTrieNode<int>, int> ReduceSubtreeWordCounts(LowercaseTrie<int> trie) =>
+        Reduce.Tree<
             LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
             NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
             SparseArrayChildren<LowercaseTrieNode<int>>,
             DepthFirstReduceOrder<LowercaseTrieNode<int>>,
             SubtreeWordCountAlgebra, Dictionary<LowercaseTrieNode<int>, int>>(trie.Root);
 
-        var depths = Reduce.Tree<
+    // Each node's depth from the root, from the repo's existing DistanceMapReduceAlgebra.
+    private static Dictionary<LowercaseTrieNode<int>, int> ReduceNodeDepths(LowercaseTrie<int> trie) =>
+        Reduce.Tree<
             LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
             NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
             SparseArrayChildren<LowercaseTrieNode<int>>,
             DepthFirstReduceOrder<LowercaseTrieNode<int>>,
             DistanceMapReduceAlgebra<LowercaseTrieNode<int>>, Dictionary<LowercaseTrieNode<int>, int>>(trie.Root);
 
+    // The reduce pass folded down to the three facts AnswerFor needs, and stopped
+    // there: the per-node counts themselves (AnswerFor indexes them by node), how
+    // many depth-d nodes clear k at all, and the deepest depth that does.
+    private static QualificationSummary BuildQualificationSummary(
+        Dictionary<LowercaseTrieNode<int>, int> counts,
+        Dictionary<LowercaseTrieNode<int>, int> depths,
+        string[] words,
+        int k)
+    {
+        var maxLength = LongestWordLength(words);
+        var qualifyingNodeCount = CountQualifyingNodes(counts, depths, maxLength, k);
+        var deepestQualifyingDepth = FindDeepestQualifyingDepth(qualifyingNodeCount);
+
+        return new QualificationSummary(counts, qualifyingNodeCount, deepestQualifyingDepth);
+    }
+
+    // The longest word in the input, which caps how deep any prefix can reach. Written
+    // as a loop rather than words.Max() so an empty input stays at 0 instead of throwing.
+    private static int LongestWordLength(string[] words)
+    {
         var maxLength = 0;
 
         foreach (var word in words)
@@ -124,8 +172,17 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
             maxLength = Math.Max(maxLength, word.Length);
         }
 
-        // qualifyingNodeCount[d] = how many depth-d trie nodes have a prefix
-        // count >= k, BEFORE any removal.
+        return maxLength;
+    }
+
+    // qualifyingNodeCount[d] = how many depth-d trie nodes have a prefix
+    // count >= k, BEFORE any removal.
+    private static int[] CountQualifyingNodes(
+        Dictionary<LowercaseTrieNode<int>, int> counts,
+        Dictionary<LowercaseTrieNode<int>, int> depths,
+        int maxLength,
+        int k)
+    {
         var qualifyingNodeCount = new int[maxLength + 1];
 
         foreach (var (node, count) in counts)
@@ -136,26 +193,45 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
             }
         }
 
-        var deepestQualifyingDepth = -1;
+        return qualifyingNodeCount;
+    }
 
-        for (var depth = maxLength; depth >= 0; depth--)
+    // The deepest depth with at least one qualifying node, or -1 when none qualifies
+    // and only the empty prefix is left to answer with.
+    private static int FindDeepestQualifyingDepth(int[] qualifyingNodeCount)
+    {
+        for (var depth = qualifyingNodeCount.Length - 1; depth >= 0; depth--)
         {
             if (qualifyingNodeCount[depth] > 0)
             {
-                deepestQualifyingDepth = depth;
-                break;
+                return depth;
             }
         }
 
+        return -1;
+    }
+
+    // Every index answered in turn, each in O(word length), all from the one summary.
+    private static int[] AnswerEveryWord(
+        LowercaseTrie<int> trie, string[] words, QualificationSummary summary, int k)
+    {
         var answer = new int[words.Length];
 
         for (var i = 0; i < words.Length; i++)
         {
-            answer[i] = AnswerFor(words[i], trie, counts, qualifyingNodeCount, deepestQualifyingDepth, k);
+            answer[i] = AnswerFor(words[i], trie, summary, k);
         }
 
         return answer;
     }
+
+    // Everything AnswerFor reads off the reduce pass, built once before the per-word
+    // loop: each node's own subtree word count, how many depth-d nodes clear k at
+    // all, and the deepest depth that does.
+    private readonly record struct QualificationSummary(
+        Dictionary<LowercaseTrieNode<int>, int> Counts,
+        int[] QualifyingNodeCount,
+        int DeepestQualifyingDepth);
 
     // Depths beyond this word's own length are never on its trie path, so
     // removal can't touch them - the global deepest qualifying depth already
@@ -164,26 +240,21 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // deepestQualifyingDepth back toward the root, checking whether the one node
     // this word's removal can disqualify (its count dropping to exactly k - 1)
     // was the only thing keeping that depth qualified.
-    private static int AnswerFor(
-        string word,
-        LowercaseTrie<int> trie,
-        Dictionary<LowercaseTrieNode<int>, int> counts,
-        int[] qualifyingNodeCount,
-        int deepestQualifyingDepth,
-        int k)
+    private static int AnswerFor(string word, LowercaseTrie<int> trie, QualificationSummary summary, int k)
     {
-        if (deepestQualifyingDepth > word.Length)
+        if (summary.DeepestQualifyingDepth > word.Length)
         {
-            return deepestQualifyingDepth;
+            return summary.DeepestQualifyingDepth;
         }
 
         var path = WalkPath(trie, word);
 
-        for (var depth = deepestQualifyingDepth; depth >= 0; depth--)
+        for (var depth = summary.DeepestQualifyingDepth; depth >= 0; depth--)
         {
-            var dropped = counts[path[depth]] == k ? 1 : 0;
+            var prefixCount = summary.Counts[path[depth]];
+            var dropped = prefixCount == k ? 1 : 0;
 
-            if (qualifyingNodeCount[depth] - dropped > 0)
+            if (summary.QualifyingNodeCount[depth] - dropped > 0)
             {
                 return depth;
             }

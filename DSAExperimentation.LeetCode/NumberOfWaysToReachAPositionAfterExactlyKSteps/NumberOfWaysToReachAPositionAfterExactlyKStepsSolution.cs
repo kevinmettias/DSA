@@ -33,6 +33,40 @@ internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
         return (int)WaysWithoutCache(k, diff);
     }
 
+    // Same recurrence driven top-down through Memoizer, so each (steps, diff) state
+    // is solved once and shared by every step ordering that reaches it.
+    public static int NumberOfWaysByMemoizedRecursion(int startPos, int endPos, int k)
+    {
+        var diff = Math.Abs(endPos - startPos);
+
+        return (int)Memoizer.Memoize<(int Steps, int Diff), long>((k, diff), new WaysFromRemainingSteps());
+    }
+
+    // The recurrence itself, named: from a state, the two physical step choices lead
+    // to the two states below it, and the rule is their sum.
+    private sealed class WaysFromRemainingSteps : IRecurrence<(int Steps, int Diff), long>
+    {
+        public long Replay((int Steps, int Diff) state, IRecurrence<(int Steps, int Diff), long> rest)
+        {
+            var (steps, diff) = state;
+
+            if (diff > steps)
+            {
+                return 0;
+            }
+
+            if (steps == 0)
+            {
+                return diff == 0 ? 1 : 0;
+            }
+
+            var towardTarget = rest.Replay((steps - 1, Math.Abs(diff - 1)), rest);
+            var awayFromTarget = rest.Replay((steps - 1, diff + 1), rest);
+
+            return (towardTarget + awayFromTarget) % ModularArithmetic.Modulo;
+        }
+    }
+
     private static long WaysWithoutCache(int steps, int diff)
     {
         if (diff > steps)
@@ -47,35 +81,6 @@ internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
 
         var towardTarget = WaysWithoutCache(steps - 1, Math.Abs(diff - 1));
         var awayFromTarget = WaysWithoutCache(steps - 1, diff + 1);
-
-        return (towardTarget + awayFromTarget) % ModularArithmetic.Modulo;
-    }
-
-    // Same recurrence driven top-down through Memoizer, so each (steps, diff) state
-    // is solved once and shared by every step ordering that reaches it.
-    public static int NumberOfWaysByMemoizedRecursion(int startPos, int endPos, int k)
-    {
-        var diff = Math.Abs(endPos - startPos);
-
-        return (int)Memoizer.Memoize<(int Steps, int Diff), long>((k, diff), WaysFrom);
-    }
-
-    private static long WaysFrom((int Steps, int Diff) state, Func<(int Steps, int Diff), long> ways)
-    {
-        var (steps, diff) = state;
-
-        if (diff > steps)
-        {
-            return 0;
-        }
-
-        if (steps == 0)
-        {
-            return diff == 0 ? 1 : 0;
-        }
-
-        var towardTarget = ways((steps - 1, Math.Abs(diff - 1)));
-        var awayFromTarget = ways((steps - 1, diff + 1));
 
         return (towardTarget + awayFromTarget) % ModularArithmetic.Modulo;
     }

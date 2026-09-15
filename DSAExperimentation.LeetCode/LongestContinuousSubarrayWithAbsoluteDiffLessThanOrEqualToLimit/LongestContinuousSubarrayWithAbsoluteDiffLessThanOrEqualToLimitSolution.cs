@@ -62,19 +62,11 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
         return best;
     }
 
-    private sealed class MinMaxWindow
+    private sealed class MinMaxWindow(int[] nums, int limit)
     {
         private readonly RepoDeque _maxWindow = new();
         private readonly RepoDeque _minWindow = new();
-        private readonly int[] _nums;
-        private readonly int _limit;
         private int _left;
-
-        public MinMaxWindow(int[] nums, int limit)
-        {
-            _nums = nums;
-            _limit = limit;
-        }
 
         // Admits index right, restores the limit, and reports the resulting window's
         // length.
@@ -89,7 +81,7 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
 
         private void PushMax(int right)
         {
-            while (_maxWindow.TryPeekBack(out var maxBack) && _nums[maxBack] <= _nums[right])
+            while (_maxWindow.TryPeekBack(out var maxBack) && nums[maxBack] <= nums[right])
             {
                 _maxWindow.TryPopBack(out _);
             }
@@ -99,7 +91,7 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
 
         private void PushMin(int right)
         {
-            while (_minWindow.TryPeekBack(out var minBack) && _nums[minBack] >= _nums[right])
+            while (_minWindow.TryPeekBack(out var minBack) && nums[minBack] >= nums[right])
             {
                 _minWindow.TryPopBack(out _);
             }
@@ -109,13 +101,19 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
 
         private void ShrinkToLimit()
         {
-            while (_maxWindow.TryPeekFront(out var maxFront) && _minWindow.TryPeekFront(out var minFront)
-                && _nums[maxFront] - _nums[minFront] > _limit)
+            while (WindowSpreadExceedsLimit(_maxWindow, _minWindow, nums, limit))
             {
                 _left++;
                 DropStaleFronts();
             }
         }
+
+        // The window is over its limit while both deques still hold a front and the spread
+        // between those two fronts - largest value minus smallest - is past limit.
+        private static bool WindowSpreadExceedsLimit(
+            RepoDeque maxWindow, RepoDeque minWindow, int[] nums, int limit) =>
+            maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront) &&
+            nums[maxFront] - nums[minFront] > limit;
 
         // At most one index per deque can fall behind the left edge per step, since
         // the edge advances by one.

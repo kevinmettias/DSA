@@ -27,37 +27,10 @@ internal static class SerializeAndDeserializeBSTSolution
         return string.Join(TokenSeparator, tokens);
     }
 
-    private static void WriteWithNullMarkers(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
-        {
-            tokens.Add(NullMarker);
-            return;
-        }
-
-        tokens.Add(node.Value.ToString());
-        WriteWithNullMarkers(node.Left, tokens);
-        WriteWithNullMarkers(node.Right, tokens);
-    }
-
     public static BinaryTreeNode<int>? DeserializeByNullMarkerQueue(string data)
     {
         var tokens = new Queue<string>(data.Split(TokenSeparator));
         return ReadWithNullMarkers(tokens);
-    }
-
-    private static BinaryTreeNode<int>? ReadWithNullMarkers(Queue<string> tokens)
-    {
-        if (!tokens.TryDequeue(out var token) || token == NullMarker)
-        {
-            return null;
-        }
-
-        return new BinaryTreeNode<int>(int.Parse(token))
-        {
-            Left = ReadWithNullMarkers(tokens),
-            Right = ReadWithNullMarkers(tokens),
-        };
     }
 
     public static string SerializeByPreOrderValues(BinaryTreeNode<int>? root)
@@ -65,18 +38,6 @@ internal static class SerializeAndDeserializeBSTSolution
         var tokens = new List<string>();
         WriteValuesOnly(root, tokens);
         return string.Join(TokenSeparator, tokens);
-    }
-
-    private static void WriteValuesOnly(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        tokens.Add(node.Value.ToString());
-        WriteValuesOnly(node.Left, tokens);
-        WriteValuesOnly(node.Right, tokens);
     }
 
     public static BinaryTreeNode<int>? DeserializeByBstInsert(string data)
@@ -94,5 +55,44 @@ internal static class SerializeAndDeserializeBSTSolution
         }
 
         return tree.Root;
+    }
+
+    private static void WriteWithNullMarkers(BinaryTreeNode<int>? node, List<string> tokens)
+    {
+        if (node is null)
+        {
+            tokens.Add(NullMarker);
+            return;
+        }
+
+        tokens.Add(node.Value.ToString());
+        WriteWithNullMarkers(node.Left, tokens);
+        WriteWithNullMarkers(node.Right, tokens);
+    }
+
+    private static BinaryTreeNode<int>? ReadWithNullMarkers(Queue<string> tokens)
+    {
+        if (!tokens.TryDequeue(out var token) || token == NullMarker)
+        {
+            return null;
+        }
+
+        return new BinaryTreeNode<int>(int.Parse(token))
+        {
+            Left = ReadWithNullMarkers(tokens),
+            Right = ReadWithNullMarkers(tokens),
+        };
+    }
+
+    private static void WriteValuesOnly(BinaryTreeNode<int>? node, List<string> tokens)
+    {
+        if (node is null)
+        {
+            return;
+        }
+
+        tokens.Add(node.Value.ToString());
+        WriteValuesOnly(node.Left, tokens);
+        WriteValuesOnly(node.Right, tokens);
     }
 }

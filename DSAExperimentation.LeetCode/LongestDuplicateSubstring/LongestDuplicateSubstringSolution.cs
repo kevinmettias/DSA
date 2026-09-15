@@ -45,14 +45,20 @@ internal static class LongestDuplicateSubstringSolution
     {
         var length = 0;
 
-        while (first + length < s.Length && second + length < s.Length
-            && s[first + length] == s[second + length])
+        while (AgreeAtOffset(s, first, second, length))
         {
             length++;
         }
 
         return length;
     }
+
+    // Both suffixes still have a character at this offset, and those characters
+    // are the same one.
+    private static bool AgreeAtOffset(string s, int first, int second, int offset)
+        => first + offset < s.Length
+            && second + offset < s.Length
+            && s[first + offset] == s[second + offset];
 
     // Composed: the answer is the maximum entry of the suffix array's
     // longest-common-prefix array, and the substring it names starts at the suffix

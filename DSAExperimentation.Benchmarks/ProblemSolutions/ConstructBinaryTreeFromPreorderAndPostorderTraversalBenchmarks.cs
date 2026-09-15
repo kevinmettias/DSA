@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[] _preorder = [];
 
-    private int[] _preorder = null!;
-    private int[] _postorder = null!;
+    private int[] _postorder = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     // A left-skewed chain (every node's left child is its only child): preorder
     // walks root, root.Left, root.Left.Left, ... (descending values); postorder
@@ -38,15 +38,27 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearRescan() =>
-        Height(ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderScan(
-            _preorder, _postorder));
+    public int LinearRescan()
+    {
+        var root = ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderScan(
+            _preorder, _postorder);
+
+        return Height(root);
+    }
 
     [Benchmark]
-    public int HashMapIndexed() =>
-        Height(ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(
-            _preorder, _postorder));
+    public int HashMapIndexed()
+    {
+        var root = ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(
+            _preorder, _postorder);
+
+        return Height(root);
+    }
 
     private static int Height(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : 1 + Math.Max(Height(node.Left), Height(node.Right));
+        node is null ? 0 : NodeHeight(node);
+
+    // The node's own level on top of its taller subtree.
+    private static int NodeHeight(BinaryTreeNode<int> node) =>
+        1 + Math.Max(Height(node.Left), Height(node.Right));
 }

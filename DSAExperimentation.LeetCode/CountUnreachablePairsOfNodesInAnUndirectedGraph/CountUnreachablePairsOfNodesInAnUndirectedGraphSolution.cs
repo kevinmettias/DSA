@@ -94,6 +94,16 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
     // contribute exactly once, so no second pass over the nodes is needed.
     public static long CountPairsByDisjointSet(int n, int[][] edges)
     {
+        var components = UnionAll(n, edges);
+        var sizeByRoot = ComponentSizes(components, n);
+        var reachablePairs = SumPairsWithin(sizeByRoot);
+
+        return PairsWithin(n) - reachablePairs;
+    }
+
+    // Every edge unioned into one DisjointSet, whose roots are then the components.
+    private static DisjointSet UnionAll(int n, int[][] edges)
+    {
         var components = new DisjointSet(n);
 
         foreach (var edge in edges)
@@ -101,6 +111,12 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
             components.Union(edge[0], edge[1]);
         }
 
+        return components;
+    }
+
+    // Each component's size, keyed by its root - the tally the answer is summed from.
+    private static HashMap<int, long> ComponentSizes(DisjointSet components, int n)
+    {
         var sizeByRoot = new HashMap<int, long>();
 
         for (var node = 0; node < n; node++)
@@ -110,6 +126,12 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
             sizeByRoot.Set(root, size + 1);
         }
 
+        return sizeByRoot;
+    }
+
+    // The reachable pairs: C(size, 2) summed over every component exactly once.
+    private static long SumPairsWithin(HashMap<int, long> sizeByRoot)
+    {
         var reachablePairs = 0L;
 
         foreach (var size in sizeByRoot.Values)
@@ -117,7 +139,7 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
             reachablePairs += PairsWithin(size);
         }
 
-        return PairsWithin(n) - reachablePairs;
+        return reachablePairs;
     }
 
     // C(size, 2) - the unordered pairs available inside a group of this size. n can

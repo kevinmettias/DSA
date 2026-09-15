@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 
@@ -15,7 +16,6 @@ namespace DSAExperimentation.LeetCode.ConvertSortedListToBinarySearchTree;
 // for LC 108 once the list has been flattened.
 internal static class ConvertSortedListToBinarySearchTreeSolution
 {
-    private const int MidpointDivisor = 2;
 
     public static BinaryTreeNode<int>? BuildByMidpointRecursion(SinglyLinkedListNode<int>? head)
     {
@@ -36,7 +36,7 @@ internal static class ConvertSortedListToBinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

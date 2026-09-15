@@ -22,10 +22,10 @@ public class TheNumberOfGoodSubsetsBenchmarks
     private const int MinValue = 1;
     private const int ValueUpperBoundExclusive = 31;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private GoodSubsetCandidates _candidates = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

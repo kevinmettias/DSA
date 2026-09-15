@@ -71,54 +71,47 @@ public sealed class AllOneDataStructureTests
             Assert.Equal(expected[i], operations[i].Apply(allOne));
         }
     }
-}
 
-// One call in an AllOne script: which method to invoke and with what key. Pure dispatch,
-// built via the named factories below so a script (like Examples above) reads like the
-// LeetCode call sequence it replays. Inc/Dec return null (no comparable key); GetMax/GetMin
-// return the actual answer, including "" for an empty structure - the same null-means-
-// "no return value" convention LRUCacheOp.Apply uses for its own put/get split.
-public readonly record struct AllOneOp
-{
-    private readonly Kind _kind;
-    private readonly string _key;
-
-    private AllOneOp(Kind kind, string key)
+    // One call in an AllOne script: which method to invoke and with what key. Pure dispatch,
+    // built via the named factories below so a script (like Examples above) reads like the
+    // LeetCode call sequence it replays. Inc/Dec return null (no comparable key);
+    // GetMax/GetMin return the actual answer, including "" for an empty structure - the same
+    // null-means-"no return value" convention LRUCacheOp.Apply uses for its own put/get split.
+    // Nested because it is only ever used inside this test class and has no independent
+    // identity: it is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct AllOneOp(AllOneOp.OpKind kind, string key)
     {
-        _kind = kind;
-        _key = key;
-    }
+        public static AllOneOp Inc(string key) => new(OpKind.Inc, key);
 
-    public static AllOneOp Inc(string key) => new(Kind.Inc, key);
+        public static AllOneOp Dec(string key) => new(OpKind.Dec, key);
 
-    public static AllOneOp Dec(string key) => new(Kind.Dec, key);
+        public static AllOneOp GetMax() => new(OpKind.GetMax, "");
 
-    public static AllOneOp GetMax() => new(Kind.GetMax, "");
+        public static AllOneOp GetMin() => new(OpKind.GetMin, "");
 
-    public static AllOneOp GetMin() => new(Kind.GetMin, "");
-
-    internal string? Apply(AllOneDataStructureSolution.IAllOne allOne)
-    {
-        switch (_kind)
+        internal string? Apply(AllOneDataStructureSolution.IAllOne allOne)
         {
-            case Kind.Inc:
-                allOne.Inc(_key);
-                return null;
-            case Kind.Dec:
-                allOne.Dec(_key);
-                return null;
-            case Kind.GetMax:
-                return allOne.GetMaxKey();
-            default:
-                return allOne.GetMinKey();
+            switch (kind)
+            {
+                case OpKind.Inc:
+                    allOne.Inc(key);
+                    return null;
+                case OpKind.Dec:
+                    allOne.Dec(key);
+                    return null;
+                case OpKind.GetMax:
+                    return allOne.GetMaxKey();
+                default:
+                    return allOne.GetMinKey();
+            }
         }
-    }
 
-    private enum Kind
-    {
-        Inc,
-        Dec,
-        GetMax,
-        GetMin,
+        public enum OpKind
+        {
+            Inc,
+            Dec,
+            GetMax,
+            GetMin,
+        }
     }
 }

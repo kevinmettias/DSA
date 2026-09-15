@@ -24,10 +24,10 @@ public class FindAllPeopleWithSecretBenchmarks
     private const int ReachableChainTime = 1;
     private const int UnreachableChainTime = 2;
 
-    [Params(50, 400)]
-    public int ChainLength;
-
     private MeetingSchedule _schedule;
+
+    [Params(50, 400)]
+    public int ChainLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -45,9 +45,11 @@ public class FindAllPeopleWithSecretBenchmarks
         var unreachableChainStart = ChainLength + reachableChainStart;
 
         var meetings = new List<(int First, int Second, int Time)> { (0, FirstPerson, SeedMeetingTime) };
-        meetings.AddRange(BuildChain(FirstPerson, reachableChainStart, ChainLength, ReachableChainTime));
-        meetings.AddRange(
-            BuildChain(unreachableChainStart, unreachableChainStart + 1, ChainLength, UnreachableChainTime));
+        var reachableChain = BuildChain(FirstPerson, reachableChainStart, ChainLength, ReachableChainTime);
+        meetings.AddRange(reachableChain);
+        var unreachableChain = BuildChain(
+            unreachableChainStart, unreachableChainStart + 1, ChainLength, UnreachableChainTime);
+        meetings.AddRange(unreachableChain);
 
         _schedule = MeetingSchedule.Build(peopleCount, meetings.ToArray(), FirstPerson);
     }

@@ -19,7 +19,12 @@ internal static class LeetCodeProblemRegistry
     public static LeetCodeProblem Get(string titleSlug)
         => BySlug.Value.TryGetValue(titleSlug, out var problem)
             ? problem
-            : throw new KeyNotFoundException($"No registered LeetCode problem with slug '{titleSlug}'.");
+            : UnknownProblem(titleSlug);
+
+    // A slug that is not registered is a caller bug, so it fails loudly instead of
+    // answering null.
+    private static LeetCodeProblem UnknownProblem(string titleSlug)
+        => throw new ArgumentException($"No registered LeetCode problem with slug '{titleSlug}'.", nameof(titleSlug));
 
     // One row per (problem, strategy, case) - the unit the single test harness
     // asserts, so a failure names all three.

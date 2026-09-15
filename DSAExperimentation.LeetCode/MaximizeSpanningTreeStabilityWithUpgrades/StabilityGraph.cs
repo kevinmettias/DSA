@@ -7,21 +7,14 @@ namespace DSAExperimentation.LeetCode.MaximizeSpanningTreeStabilityWithUpgrades;
 // edges[i] = [u, v, s, must] into these two lists is exactly the kind of
 // per-problem input shaping the hoisted-overload rule (ARCHITECTURE.md 17.4)
 // charges to [GlobalSetup] instead of the search itself.
-internal sealed class StabilityGraph
+internal sealed class StabilityGraph(
+    int nodeCount, List<(int U, int V, int Strength)> mustEdges, List<(int U, int V, int Strength)> optionalEdges)
 {
-    private StabilityGraph(
-        int nodeCount, List<(int U, int V, int Strength)> mustEdges, List<(int U, int V, int Strength)> optionalEdges)
-    {
-        NodeCount = nodeCount;
-        MustEdges = mustEdges;
-        OptionalEdges = optionalEdges;
-    }
+    public int NodeCount { get; } = nodeCount;
 
-    public int NodeCount { get; }
+    public List<(int U, int V, int Strength)> MustEdges { get; } = mustEdges;
 
-    public List<(int U, int V, int Strength)> MustEdges { get; }
-
-    public List<(int U, int V, int Strength)> OptionalEdges { get; }
+    public List<(int U, int V, int Strength)> OptionalEdges { get; } = optionalEdges;
 
     public static StabilityGraph Build(int n, int[][] edges)
     {

@@ -12,11 +12,11 @@ public class PowerGridMaintenanceBenchmarks
     private const int Seed = 3607;
     private const int QueriesPerStation = 5;
 
-    [Params(200, 2_000)]
-    public int StationCount;
+    private int[][] _connections = [];
 
-    private int[][] _connections = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(200, 2_000)]
+    public int StationCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -111,36 +111,25 @@ public sealed class SequentiallyOrdinalRankTrackerTests
 // null (no comparable value); Get returns the actual answer - the same
 // null-means-no-return-value convention LRUCacheOp.Apply uses for its own put/get
 // split.
-public readonly record struct RankTrackerOp
+public readonly record struct RankTrackerOp(RankTrackerOp.OpKind kind, string name, int score)
 {
-    private readonly Kind _kind;
-    private readonly string _name;
-    private readonly int _score;
+    public static RankTrackerOp Add(string name, int score) => new(OpKind.Add, name, score);
 
-    private RankTrackerOp(Kind kind, string name, int score)
-    {
-        _kind = kind;
-        _name = name;
-        _score = score;
-    }
-
-    public static RankTrackerOp Add(string name, int score) => new(Kind.Add, name, score);
-
-    public static RankTrackerOp Get() => new(Kind.Get, "", 0);
+    public static RankTrackerOp Get() => new(OpKind.Get, "", 0);
 
     // Internal, not public: only this same assembly's test method ever calls Apply.
     internal string? Apply(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
     {
-        if (_kind == Kind.Add)
+        if (kind == OpKind.Add)
         {
-            tracker.Add(_name, _score);
+            tracker.Add(name, score);
             return null;
         }
 
         return tracker.Get();
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Add,
         Get,

@@ -28,6 +28,16 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
             return 0;
         }
 
+        var min = RangeMinimum(nums, left, right);
+        var operations = min == 0 ? 0 : 1;
+
+        return operations + CountSplitOperations(nums, min, left, right);
+    }
+
+    // The smallest value in nums[left..right] - the level the whole range shares,
+    // and therefore the one level this call's own operation may zero out.
+    private static int RangeMinimum(int[] nums, int left, int right)
+    {
         var min = nums[left];
 
         for (var i = left + 1; i <= right; i++)
@@ -35,12 +45,20 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
             min = Math.Min(min, nums[i]);
         }
 
-        var operations = min == 0 ? 0 : 1;
+        return min;
+    }
+
+    // The sub-problems one level creates: a recursive call on every maximal run of
+    // values that are NOT that level - the gaps between its consecutive occurrences,
+    // plus the runs before the first and after the last.
+    private static int CountSplitOperations(int[] nums, int level, int left, int right)
+    {
+        var operations = 0;
         var segmentStart = left;
 
         for (var i = left; i <= right; i++)
         {
-            if (nums[i] != min)
+            if (nums[i] != level)
             {
                 continue;
             }
@@ -49,8 +67,7 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
             segmentStart = i + 1;
         }
 
-        operations += MinOperationsByDivideAndConquer(nums, segmentStart, right);
-        return operations;
+        return operations + MinOperationsByDivideAndConquer(nums, segmentStart, right);
     }
 
     // One left-to-right pass over this repo's own Stack<int>, kept non-decreasing
@@ -73,7 +90,7 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
                 operations++;
             }
 
-            if (value != 0 && (!stack.TryPeek(out var newTop) || newTop != value))
+            if (NeedsPushing(stack, value))
             {
                 stack.Push(value);
             }
@@ -81,4 +98,10 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
 
         return operations + stack.Count;
     }
+
+    // A level is pushed only when it needs an operation of its own (it is nonzero) and
+    // differs from whatever already sits on top - an empty stack holds nothing to differ
+    // from.
+    private static bool NeedsPushing(ValueStack stack, int value) =>
+        value != 0 && (!stack.TryPeek(out var top) || top != value);
 }

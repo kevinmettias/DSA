@@ -16,10 +16,10 @@ public class MinCostToConnectAllPointsBenchmarks
 
     private const int CoordinateBound = 1_000;
 
-    [Params(50, 200)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(50, 200)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

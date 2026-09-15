@@ -17,12 +17,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveNodesFromLinkedListBenchmarks
 {
-    private const int RandomSeed = 2487; // LC problem number
+    private const int RandomSeed = 2487; private int[] _values = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -10,7 +10,10 @@ public sealed class HammingSearchTests
     {
         var allowed = new Set<string>(["hot", "dot", "dog", "cog"]);
 
-        Assert.Equal(4, HammingSearch.MutationDistance("hit", "cog", allowed, StandardAlphabets.LowercaseLatin));
+        Assert.Equal(
+            4,
+            HammingSearch.MutationDistance(
+                new MutationStart("hit"), new MutationTarget("cog"), allowed, StandardAlphabets.LowercaseLatin));
     }
 
     [Fact]
@@ -18,7 +21,10 @@ public sealed class HammingSearchTests
     {
         var allowed = new Set<string>(["aaa"]);
 
-        Assert.Equal(0, HammingSearch.MutationDistance("aaa", "aaa", allowed, StandardAlphabets.LowercaseLatin));
+        Assert.Equal(
+            0,
+            HammingSearch.MutationDistance(
+                new MutationStart("aaa"), new MutationTarget("aaa"), allowed, StandardAlphabets.LowercaseLatin));
     }
 
     [Fact]
@@ -28,7 +34,10 @@ public sealed class HammingSearchTests
         // when the dictionary omits it.
         var allowed = new Set<string>(["ab"]);
 
-        Assert.Equal(1, HammingSearch.MutationDistance("aa", "ab", allowed, StandardAlphabets.LowercaseLatin));
+        Assert.Equal(
+            1,
+            HammingSearch.MutationDistance(
+                new MutationStart("aa"), new MutationTarget("ab"), allowed, StandardAlphabets.LowercaseLatin));
     }
 
     [Fact]
@@ -36,7 +45,9 @@ public sealed class HammingSearchTests
     {
         var allowed = new Set<string>(["hot", "dot", "dog"]);
 
-        Assert.Null(HammingSearch.MutationDistance("hit", "cog", allowed, StandardAlphabets.LowercaseLatin));
+        Assert.Null(
+            HammingSearch.MutationDistance(
+                new MutationStart("hit"), new MutationTarget("cog"), allowed, StandardAlphabets.LowercaseLatin));
     }
 
     [Fact]
@@ -45,7 +56,9 @@ public sealed class HammingSearchTests
         // 'z' is unreachable over the DNA alphabet however permissive the set is.
         var allowed = new Set<string>(["z"]);
 
-        Assert.Null(HammingSearch.MutationDistance("A", "z", allowed, StandardAlphabets.Dna));
+        Assert.Null(
+            HammingSearch.MutationDistance(
+                new MutationStart("A"), new MutationTarget("z"), allowed, StandardAlphabets.Dna));
     }
 
     [Fact]
@@ -53,6 +66,9 @@ public sealed class HammingSearchTests
     {
         var allowed = new Set<string>(["ab", "bb", "bc", "ac"]);
 
-        Assert.Equal(2, HammingSearch.MutationDistance("aa", "bc", allowed, StandardAlphabets.LowercaseLatin));
+        Assert.Equal(
+            2,
+            HammingSearch.MutationDistance(
+                new MutationStart("aa"), new MutationTarget("bc"), allowed, StandardAlphabets.LowercaseLatin));
     }
 }

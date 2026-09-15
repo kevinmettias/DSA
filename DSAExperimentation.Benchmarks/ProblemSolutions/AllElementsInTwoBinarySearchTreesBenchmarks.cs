@@ -18,11 +18,11 @@ public class AllElementsInTwoBinarySearchTreesBenchmarks
     private const int RandomSeedTree1 = 1305; // LeetCode problem number
     private const int RandomSeedTree2 = 1306;
 
-    [Params(300, 5_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int>? _root1;
+
     private BinaryTreeNode<int>? _root2;
+    [Params(300, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,14 +30,6 @@ public class AllElementsInTwoBinarySearchTreesBenchmarks
         _root1 = BuildTree(seed: RandomSeedTree1);
         _root2 = BuildTree(seed: RandomSeedTree2);
     }
-
-    [Benchmark(Baseline = true)]
-    public int[] CollectAllThenSort() =>
-        AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByCollectThenSort(_root1, _root2);
-
-    [Benchmark]
-    public int[] InOrderTraversalMerge() =>
-        AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByInOrderMerge(_root1, _root2);
 
     private BinaryTreeNode<int>? BuildTree(int seed)
     {
@@ -58,4 +50,12 @@ public class AllElementsInTwoBinarySearchTreesBenchmarks
 
         return tree.Root;
     }
+
+    [Benchmark(Baseline = true)]
+    public int[] CollectAllThenSort() =>
+        AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByCollectThenSort(_root1, _root2);
+
+    [Benchmark]
+    public int[] InOrderTraversalMerge() =>
+        AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByInOrderMerge(_root1, _root2);
 }

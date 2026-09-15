@@ -15,10 +15,10 @@ public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenc
     private const int ValueUpperBound = 2_000;
     private const int RandomSeed = 1;
 
-    [Params(500, 4_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(500, 4_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

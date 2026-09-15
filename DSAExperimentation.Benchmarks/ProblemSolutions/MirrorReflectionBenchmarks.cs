@@ -12,10 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MirrorReflectionBenchmarks
 {
-    [Params(50_000, 500_000)]
-    public int P;
-
     private int Q => P - 1;
+
+    [Params(50_000, 500_000)]
+    public int P { get; set; }
 
     [Benchmark(Baseline = true)]
     public int SimulatedUnfolding() =>

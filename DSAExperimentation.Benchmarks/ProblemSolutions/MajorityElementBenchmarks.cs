@@ -16,10 +16,10 @@ public class MajorityElementBenchmarks
     private const int NoiseLowerBound = 1;
     private const int NoiseUpperBound = 1_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -28,11 +28,13 @@ public class MajorityElementBenchmarks
         var majorityCount = (Length / 2) + 1;
         var values = new List<int>(Length);
 
-        values.AddRange(Enumerable.Repeat(MajorityValue, majorityCount));
+        var majorityValues = Enumerable.Repeat(MajorityValue, majorityCount);
+        values.AddRange(majorityValues);
 
         for (var i = majorityCount; i < Length; i++)
         {
-            values.Add(random.Next(NoiseLowerBound, NoiseUpperBound));
+            var noise = random.Next(NoiseLowerBound, NoiseUpperBound);
+            values.Add(noise);
         }
 
         _nums = [.. values.OrderBy(_ => random.Next())];

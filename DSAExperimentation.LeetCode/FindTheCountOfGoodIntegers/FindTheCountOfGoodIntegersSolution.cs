@@ -28,25 +28,31 @@ internal static class FindTheCountOfGoodIntegersSolution
         var half = new char[HalfLength(n)];
         var signatures = new HashSet<string>();
 
-        EnumerateHalves(0, half, n, k, signatures);
+        EnumerateHalves((0, half), n, k, signatures);
 
         return CountGoodIntegers(signatures, n);
     }
 
-    private static void EnumerateHalves(int position, char[] half, int n, int k, HashSet<string> signatures)
+    // The half being built, carried as one value because a buffer and the count of
+    // slots it has filled only mean something together - the same "the half so far"
+    // PalindromeHalfState names for the composed arm below, spelled as the tuple the
+    // hand-rolled walk needs.
+    private static void EnumerateHalves(
+        (int Position, char[] Digits) half, int n, int k, HashSet<string> signatures)
     {
-        if (position == half.Length)
+        if (half.Position == half.Digits.Length)
         {
-            RecordIfKPalindromic(Mirror(half, n), k, signatures);
+            var candidate = Mirror(half.Digits, n);
+            RecordIfKPalindromic(candidate, k, signatures);
             return;
         }
 
-        var lowestDigit = position == 0 ? 1 : 0;
+        var lowestDigit = half.Position == 0 ? 1 : 0;
 
         for (var digit = lowestDigit; digit <= 9; digit++)
         {
-            half[position] = (char)('0' + digit);
-            EnumerateHalves(position + 1, half, n, k, signatures);
+            half.Digits[half.Position] = (char)('0' + digit);
+            EnumerateHalves((half.Position + 1, half.Digits), n, k, signatures);
         }
     }
 
@@ -58,13 +64,21 @@ internal static class FindTheCountOfGoodIntegersSolution
         Backtrack.Search<PalindromeHalfState, int>(
             state,
             isSolution: s => s.IsComplete,
-            candidates: s => s.IsComplete ? [] : s.Candidates(),
+            candidates: s => s.IsComplete ? NoCandidates() : s.Candidates(),
             choose: (s, digit) => s.Choose(digit),
             unchoose: (s, digit) => s.Unchoose(digit),
-            onSolution: s => RecordIfKPalindromic(Mirror(s.Digits, n), k, signatures));
+            onSolution: s =>
+            {
+                var candidate = Mirror(s.Digits, n);
+                RecordIfKPalindromic(candidate, k, signatures);
+            });
 
         return CountGoodIntegers(signatures, n);
     }
+
+    // A completed half has no digit left to place, so it offers the walk nothing to
+    // choose - the same ending isSolution already reports.
+    private static IEnumerable<int> NoCandidates() => [];
 
     private static void RecordIfKPalindromic(string full, int k, HashSet<string> signatures)
     {

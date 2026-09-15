@@ -35,6 +35,27 @@ internal static class FairDistributionOfCookiesSolution
         return best;
     }
 
+    // The same search expressed as Backtrack.Search's five steps over a Distribution
+    // that owns the buckets, the cursor and the incumbent best.
+    public static int DistributeCookiesByBacktrackSearch(int[] cookies, int k)
+    {
+        var sorted = SortDescending(cookies);
+        var state = new Distribution(sorted, k);
+
+        Backtrack.Search(
+            state,
+            isSolution: s => s.IsComplete,
+            candidates: s => s.IsComplete ? NoCandidates() : s.CandidateChildren(),
+            choose: (s, child) => s.Place(child),
+            unchoose: (s, child) => s.Remove(child),
+            onSolution: s => s.RecordIfBetter());
+
+        return state.Best;
+    }
+
+    // Every bag is placed, so the search has no children left to offer.
+    private static IEnumerable<int> NoCandidates() => [];
+
     private static void PlaceRemainingBags(int[] sorted, int[] buckets, int index, ref int best)
     {
         if (index == sorted.Length)
@@ -49,19 +70,27 @@ internal static class FairDistributionOfCookiesSolution
             return;
         }
 
+        TryEachBucket(sorted, buckets, index, ref best);
+    }
+
+    // Offer bag `index` to every bucket the two prunes still allow, recursing on the
+    // remaining bags and undoing each placement on the way back out. `sawEmpty` is the
+    // symmetry break carried across the scan: the still-empty buckets are
+    // interchangeable, so only the first of them is ever tried.
+    private static void TryEachBucket(int[] sorted, int[] buckets, int index, ref int best)
+    {
         var sawEmpty = false;
 
         for (var child = 0; child < buckets.Length; child++)
         {
-            if (buckets[child] == 0)
-            {
-                if (sawEmpty)
-                {
-                    continue;
-                }
+            var isEmpty = buckets[child] == 0;
 
-                sawEmpty = true;
+            if (isEmpty && sawEmpty)
+            {
+                continue;
             }
+
+            sawEmpty |= isEmpty;
 
             if (buckets[child] + sorted[index] >= best)
             {
@@ -72,24 +101,6 @@ internal static class FairDistributionOfCookiesSolution
             PlaceRemainingBags(sorted, buckets, index + 1, ref best);
             buckets[child] -= sorted[index];
         }
-    }
-
-    // The same search expressed as Backtrack.Search's five steps over a Distribution
-    // that owns the buckets, the cursor and the incumbent best.
-    public static int DistributeCookiesByBacktrackSearch(int[] cookies, int k)
-    {
-        var sorted = SortDescending(cookies);
-        var state = new Distribution(sorted, k);
-
-        Backtrack.Search(
-            state,
-            isSolution: s => s.IsComplete,
-            candidates: s => s.IsComplete ? [] : s.CandidateChildren(),
-            choose: (s, child) => s.Place(child),
-            unchoose: (s, child) => s.Remove(child),
-            onSolution: s => s.RecordIfBetter());
-
-        return state.Best;
     }
 
     // Largest bag first: the branch-and-bound cut only pays off once the big bags

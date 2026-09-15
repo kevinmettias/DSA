@@ -13,10 +13,10 @@ public class MaxPointsOnALineBenchmarks
     private const int RandomSeed = 149; // LC problem number
     private const int CoordinateRange = 1_000;
 
-    [Params(600, 1500)]
-    public int Length;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(600, 1500)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

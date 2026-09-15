@@ -13,7 +13,7 @@ public class FindTheNumberOfPossibleWaysForAnEventBenchmarks
     private const int MaxScore = 5;
 
     [Params(6, 10)]
-    public int Performers;
+    public int Performers { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForceEnumeration() =>

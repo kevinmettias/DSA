@@ -17,7 +17,7 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIBenchmarks
     private const int K = 2;
 
     [Params(10_000, 1_000_000)]
-    public long N;
+    public long N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForce() => NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByBruteForce(N, K);

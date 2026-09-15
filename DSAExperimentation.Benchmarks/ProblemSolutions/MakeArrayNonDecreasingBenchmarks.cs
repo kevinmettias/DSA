@@ -14,10 +14,10 @@ public class MakeArrayNonDecreasingBenchmarks
     private const int RandomSeed = 3523; // LeetCode problem number
     private const int ValueUpperBound = 1_000;
 
-    [Params(100, 1_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(100, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

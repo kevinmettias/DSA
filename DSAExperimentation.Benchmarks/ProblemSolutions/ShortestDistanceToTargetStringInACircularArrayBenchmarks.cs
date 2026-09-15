@@ -20,11 +20,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShortestDistanceToTargetStringInACircularArrayBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private string[] _words = [];
 
-    private string[] _words = null!;
     private CircularArrayGraph _graph;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,10 +36,10 @@ public class ShortestDistanceToTargetStringInACircularArrayBenchmarks
     [Benchmark(Baseline = true)]
     public int LinearScan() =>
         ShortestDistanceToTargetStringInACircularArraySolution.ClosestTargetByLinearScan(
-            _words, CircularArrayWorkloads.Target, CircularArrayWorkloads.StartIndex);
+            _words, CircularArrayScenario.Target, CircularArrayScenario.StartIndex);
 
     [Benchmark]
     public int ReduceGraphBfs() =>
         ShortestDistanceToTargetStringInACircularArraySolution.ClosestTargetByReduceGraph(
-            _graph, CircularArrayWorkloads.Target, CircularArrayWorkloads.StartIndex);
+            _graph, CircularArrayScenario.Target, CircularArrayScenario.StartIndex);
 }

@@ -15,12 +15,12 @@ public class LongestCommonSuffixQueriesBenchmarks
     private const int MaxWordLength = 10;
     private const string Alphabet = "ab";
 
-    [Params(30, 200)]
-    public int ContainerSize;
+    private string[] _wordsContainer = [];
 
-    private string[] _wordsContainer = null!;
-    private string[] _wordsQuery = null!;
-    private Trie<int> _trie = null!;
+    private string[] _wordsQuery = [];
+    private Trie<int> _trie = new();
+    [Params(30, 200)]
+    public int ContainerSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

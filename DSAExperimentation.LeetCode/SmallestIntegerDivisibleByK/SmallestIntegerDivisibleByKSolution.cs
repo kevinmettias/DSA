@@ -52,6 +52,11 @@ internal static class SmallestIntegerDivisibleByKSolution
             BreadthFirstReduceOrder<RemainderNode>,
             DistanceMapReduceAlgebra<RemainderNode>, Dictionary<RemainderNode, int>>(graph.Start);
 
-        return distances.TryGetValue(graph.Zero, out var distance) ? distance + 1 : LeetCodeAnswer.None;
+        return distances.TryGetValue(graph.Zero, out var distance)
+            ? RepunitLength(distance)
+            : LeetCodeAnswer.None;
     }
+
+    // The repunit's digit count: the map's distance plus the leading digit it counts from.
+    private static int RepunitLength(int distance) => distance + 1;
 }

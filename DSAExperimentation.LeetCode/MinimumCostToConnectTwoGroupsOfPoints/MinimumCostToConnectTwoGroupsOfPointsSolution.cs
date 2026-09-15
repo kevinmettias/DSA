@@ -55,29 +55,33 @@ internal static class MinimumCostToConnectTwoGroupsOfPointsSolution
         ConnectTwoGroupsByMemoizedBitmask(ConnectionCosts.Build(cost));
 
     public static int ConnectTwoGroupsByMemoizedBitmask(ConnectionCosts costs) =>
-        Memoizer.Memoize<(int Index, int Mask), int>(
-            (0, 0), (state, cheapestFor) => CheapestFor(state, cheapestFor, costs));
+        Memoizer.Memoize((0, 0), new CheapestCoverFrom(costs));
 
-    private static int CheapestFor(
-        (int Index, int Mask) state, Func<(int Index, int Mask), int> cheapestFor, ConnectionCosts costs)
+    // The recurrence, as a named type: with group-1 points 0..index already connected,
+    // the cheapest completion picks one group-2 point for this index and adds whatever
+    // connecting everything else from there costs.
+    private sealed class CheapestCoverFrom(ConnectionCosts costs) : IRecurrence<(int Index, int Mask), int>
     {
-        var (index, mask) = state;
-
-        if (index == costs.GroupOneSize)
+        public int Replay((int Index, int Mask) state, IRecurrence<(int Index, int Mask), int> rest)
         {
-            return UncoveredCost(mask, costs);
+            var (index, mask) = state;
+
+            if (index == costs.GroupOneSize)
+            {
+                return UncoveredCost(mask, costs);
+            }
+
+            var best = int.MaxValue;
+
+            for (var groupTwoPoint = 0; groupTwoPoint < costs.GroupTwoSize; groupTwoPoint++)
+            {
+                var candidate = costs.Cost(index, groupTwoPoint) +
+                    rest.Replay((index + 1, mask | (1 << groupTwoPoint)), rest);
+                best = Math.Min(best, candidate);
+            }
+
+            return best;
         }
-
-        var best = int.MaxValue;
-
-        for (var groupTwoPoint = 0; groupTwoPoint < costs.GroupTwoSize; groupTwoPoint++)
-        {
-            var candidate = costs.Cost(index, groupTwoPoint) +
-                cheapestFor((index + 1, mask | (1 << groupTwoPoint)));
-            best = Math.Min(best, candidate);
-        }
-
-        return best;
     }
 
     // The base case both arms share: every group-2 point no chosen edge covered still

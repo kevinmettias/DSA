@@ -15,10 +15,10 @@ public class CountTheNumberOfComputerUnlockingPermutationsBenchmarks
 {
     private const int ComplexitySeed = 3577;
 
-    [Params(7, 9)]
-    public int ComputerCount;
+    private int[] _complexity = [];
 
-    private int[] _complexity = null!;
+    [Params(7, 9)]
+    public int ComputerCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _complexity = ComputerUnlockingWorkloads.BuildSolvable(ComputerCount, ComplexitySeed);

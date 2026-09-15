@@ -6,17 +6,11 @@ namespace DSAExperimentation.LeetCode.FrequenciesOfShortestSupersequences;
 // so both strategies enumerate doubled-letter subsets in the same deterministic
 // order. This is the hoisted overload's prepared type (§17.4), the same role
 // LockGraph.Build(deadends) plays for OpenTheLock.
-internal sealed class LetterGraph
+internal sealed class LetterGraph(List<char> letters, List<(char From, char To)> edges)
 {
-    private LetterGraph(List<char> letters, List<(char From, char To)> edges)
-    {
-        Letters = letters;
-        Edges = edges;
-    }
+    public IReadOnlyList<char> Letters { get; } = letters;
 
-    public IReadOnlyList<char> Letters { get; }
-
-    public IReadOnlyList<(char From, char To)> Edges { get; }
+    public IReadOnlyList<(char From, char To)> Edges { get; } = edges;
 
     public static LetterGraph Build(IEnumerable<string> words)
     {

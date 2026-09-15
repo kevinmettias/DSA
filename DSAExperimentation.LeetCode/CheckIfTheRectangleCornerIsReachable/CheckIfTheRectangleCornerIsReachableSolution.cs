@@ -31,38 +31,50 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
             return false;
         }
 
+        var (touchesLeftOrTop, touchesBottomOrRight, adjacency) = BuildOverlapGraph(circles, xCorner, yCorner);
+
+        return !ReachesBottomOrRight(adjacency, touchesLeftOrTop, touchesBottomOrRight);
+    }
+
+    // The whole overlap/boundary picture the flood fill below walks: which circles touch
+    // each of the two boundary groups, and which circles overlap each other. Each pair is
+    // recorded on both of its circles, so the flood can travel the edge either way.
+    private static (bool[] TouchesLeftOrTop, bool[] TouchesBottomOrRight, List<int>[] Adjacency) BuildOverlapGraph(
+        int[][] circles, int xCorner, int yCorner)
+    {
         var count = circles.Length;
         var touchesLeftOrTop = new bool[count];
         var touchesBottomOrRight = new bool[count];
         var adjacency = new List<int>[count];
 
-        for (var i = 0; i < count; i++)
+        for (var index = 0; index < count; index++)
         {
-            adjacency[i] = [];
-            touchesLeftOrTop[i] = TouchesLeftOrTop(circles[i], xCorner, yCorner);
-            touchesBottomOrRight[i] = TouchesBottomOrRight(circles[i], xCorner, yCorner);
+            adjacency[index] = [];
+            touchesLeftOrTop[index] = TouchesLeftOrTop(circles[index], xCorner, yCorner);
+            touchesBottomOrRight[index] = TouchesBottomOrRight(circles[index], xCorner, yCorner);
 
-            for (var j = 0; j < i; j++)
+            for (var other = 0; other < index; other++)
             {
-                if (Overlaps(circles[i], circles[j]))
+                if (Overlaps(circles[index], circles[other]))
                 {
-                    adjacency[i].Add(j);
-                    adjacency[j].Add(i);
+                    adjacency[index].Add(other);
+                    adjacency[other].Add(index);
                 }
             }
         }
 
-        var visited = new bool[count];
-        var queue = new Queue<int>();
+        return (touchesLeftOrTop, touchesBottomOrRight, adjacency);
+    }
 
-        for (var i = 0; i < count; i++)
-        {
-            if (touchesLeftOrTop[i])
-            {
-                visited[i] = true;
-                queue.Enqueue(i);
-            }
-        }
+    // The flood fill itself, standing in for DisjointSet: every circle touching the
+    // left-or-top boundary seeds the wave, and the rectangle is cut in two as soon as the
+    // wave reaches a circle touching the bottom-or-right boundary.
+    private static bool ReachesBottomOrRight(
+        List<int>[] adjacency, bool[] touchesLeftOrTop, bool[] touchesBottomOrRight)
+    {
+        var visited = new bool[adjacency.Length];
+        var queue = new Queue<int>();
+        EnqueueLeftOrTopCircles(adjacency.Length, touchesLeftOrTop, visited, queue);
 
         while (queue.Count > 0)
         {
@@ -70,22 +82,39 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
 
             if (touchesBottomOrRight[circle])
             {
-                return false;
+                return true;
             }
 
-            foreach (var neighbor in adjacency[circle])
-            {
-                if (visited[neighbor])
-                {
-                    continue;
-                }
-
-                visited[neighbor] = true;
-                queue.Enqueue(neighbor);
-            }
+            EnqueueUnvisitedNeighbors(adjacency[circle], visited, queue);
         }
 
-        return true;
+        return false;
+    }
+
+    private static void EnqueueLeftOrTopCircles(int count, bool[] touchesLeftOrTop, bool[] visited, Queue<int> queue)
+    {
+        for (var index = 0; index < count; index++)
+        {
+            if (touchesLeftOrTop[index])
+            {
+                visited[index] = true;
+                queue.Enqueue(index);
+            }
+        }
+    }
+
+    private static void EnqueueUnvisitedNeighbors(List<int> neighbors, bool[] visited, Queue<int> queue)
+    {
+        foreach (var neighbor in neighbors)
+        {
+            if (visited[neighbor])
+            {
+                continue;
+            }
+
+            visited[neighbor] = true;
+            queue.Enqueue(neighbor);
+        }
     }
 
     // Composed: two extra ids beyond the circles - LeftOrTop and BottomOrRight - stand
@@ -99,33 +128,51 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
             return false;
         }
 
+        var (groups, leftOrTopId, bottomOrRightId) = BuildDisjointSet(circles, xCorner, yCorner);
+
+        return !groups.IsConnected(leftOrTopId, bottomOrRightId);
+    }
+
+    // Every overlap and every boundary touch, unioned in as it is found. The two extra ids
+    // past the circles are the boundary groups themselves, so the whole "is the rectangle
+    // cut in two" question is settled by one IsConnected between them.
+    private static (DisjointSet Groups, int LeftOrTopId, int BottomOrRightId) BuildDisjointSet(
+        int[][] circles, int xCorner, int yCorner)
+    {
         var count = circles.Length;
         var leftOrTopId = count;
         var bottomOrRightId = count + 1;
         var groups = new DisjointSet(count + 2);
 
-        for (var i = 0; i < count; i++)
+        for (var index = 0; index < count; index++)
         {
-            if (TouchesLeftOrTop(circles[i], xCorner, yCorner))
+            if (TouchesLeftOrTop(circles[index], xCorner, yCorner))
             {
-                groups.Union(i, leftOrTopId);
+                groups.Union(index, leftOrTopId);
             }
 
-            if (TouchesBottomOrRight(circles[i], xCorner, yCorner))
+            if (TouchesBottomOrRight(circles[index], xCorner, yCorner))
             {
-                groups.Union(i, bottomOrRightId);
+                groups.Union(index, bottomOrRightId);
             }
 
-            for (var j = i + 1; j < count; j++)
-            {
-                if (Overlaps(circles[i], circles[j]))
-                {
-                    groups.Union(i, j);
-                }
-            }
+            JoinOverlappingCircles(groups, circles, index);
         }
 
-        return !groups.IsConnected(leftOrTopId, bottomOrRightId);
+        return (groups, leftOrTopId, bottomOrRightId);
+    }
+
+    // Each overlap is unioned once, from the lower-indexed circle to the higher one, which
+    // is the same edge set BuildOverlapGraph records both ways for the flood fill.
+    private static void JoinOverlappingCircles(DisjointSet groups, int[][] circles, int index)
+    {
+        for (var other = index + 1; other < circles.Length; other++)
+        {
+            if (Overlaps(circles[index], circles[other]))
+            {
+                groups.Union(index, other);
+            }
+        }
     }
 
     private static bool AnyCircleCoversCorner(int xCorner, int yCorner, int[][] circles)
@@ -151,23 +198,40 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
 
     // The left edge (x=0, 0<=y<=yCorner) or the top edge (y=yCorner, 0<=x<=xCorner).
     private static bool TouchesLeftOrTop(int[] circle, int xCorner, int yCorner)
-        => TouchesSegment(circle, 0, 0, 0, yCorner) || TouchesSegment(circle, 0, yCorner, xCorner, yCorner);
+        => TouchesSegment(circle, (0, 0), (0, yCorner)) ||
+            TouchesSegment(circle, (0, yCorner), (xCorner, yCorner));
 
     // The bottom edge (y=0, 0<=x<=xCorner) or the right edge (x=xCorner, 0<=y<=yCorner).
     private static bool TouchesBottomOrRight(int[] circle, int xCorner, int yCorner)
-        => TouchesSegment(circle, 0, 0, xCorner, 0) || TouchesSegment(circle, xCorner, 0, xCorner, yCorner);
+        => TouchesSegment(circle, (0, 0), (xCorner, 0)) ||
+            TouchesSegment(circle, (xCorner, 0), (xCorner, yCorner));
 
     // Distance from the circle's center to the nearest point of an axis-aligned segment,
     // compared against the radius - the segment is always either purely vertical or
     // purely horizontal here, so clamping one coordinate onto the segment's fixed span
     // gives the closest point directly, with no general point-to-segment projection
     // needed.
-    private static bool TouchesSegment(int[] circle, int x1, int y1, int x2, int y2)
+    private static bool TouchesSegment(int[] circle, (int X, int Y) from, (int X, int Y) to)
     {
-        var closestX = x1 == x2 ? x1 : Math.Clamp(circle[0], Math.Min(x1, x2), Math.Max(x1, x2));
-        var closestY = y1 == y2 ? y1 : Math.Clamp(circle[1], Math.Min(y1, y2), Math.Max(y1, y2));
+        var closestX = ClampOntoSpan(circle[0], from.X, to.X);
+        var closestY = ClampOntoSpan(circle[1], from.Y, to.Y);
 
         return DistanceSquared(circle[0], circle[1], closestX, closestY) <= SquaredRadius(circle);
+    }
+
+    // A segment with a fixed span leaves the centre's coordinate alone when the two ends
+    // agree on it, and clamps it into the span otherwise - the Min/Max pair is the span's
+    // own low and high ends, so it stays inside the branch that needs it.
+    private static int ClampOntoSpan(int coordinate, int firstEnd, int secondEnd)
+    {
+        if (firstEnd == secondEnd)
+        {
+            return firstEnd;
+        }
+
+        var low = Math.Min(firstEnd, secondEnd);
+        var high = Math.Max(firstEnd, secondEnd);
+        return Math.Clamp(coordinate, low, high);
     }
 
     private static long SquaredRadius(int[] circle) => (long)circle[2] * circle[2];

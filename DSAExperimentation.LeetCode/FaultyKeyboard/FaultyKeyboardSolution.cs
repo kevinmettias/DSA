@@ -40,15 +40,15 @@ internal static class FaultyKeyboardSolution
     public static string FinalStringByDeque(string s)
     {
         var deque = new Deque<char>();
-        var appendToBack = true;
+        var order = ReadDirection.Forward;
 
         foreach (var c in s)
         {
             if (c == 'i')
             {
-                appendToBack = !appendToBack;
+                order = order == ReadDirection.Forward ? ReadDirection.Backward : ReadDirection.Forward;
             }
-            else if (appendToBack)
+            else if (order == ReadDirection.Forward)
             {
                 deque.PushBack(c);
             }
@@ -58,20 +58,20 @@ internal static class FaultyKeyboardSolution
             }
         }
 
-        return ReadOut(deque, appendToBack);
+        return ReadOut(deque, order);
     }
 
-    // appendToBack true means the deque's own front-to-back order already IS the
-    // final string (characters were only ever pushed to the back); false means
+    // ReadDirection.Forward means the deque's own front-to-back order already IS the
+    // final string (characters were only ever pushed to the back); Backward means
     // the deque holds it back-to-front, so popping from the back walks it out in
     // the correct order without ever physically reversing anything.
-    private static string ReadOut(Deque<char> deque, bool appendToBack)
+    private static string ReadOut(Deque<char> deque, ReadDirection order)
     {
         var result = new char[deque.Count];
 
         for (var i = 0; i < result.Length; i++)
         {
-            if (appendToBack)
+            if (order == ReadDirection.Forward)
             {
                 deque.TryPopFront(out result[i]);
             }
@@ -82,5 +82,17 @@ internal static class FaultyKeyboardSolution
         }
 
         return new string(result);
+    }
+
+    // Which way the deque reads back out is a state and not a flag: an 'i' flips it,
+    // and every other character is then appended at whichever end keeps that reading
+    // order - named so the call site says which one it wants rather than `true`.
+    private enum ReadDirection
+    {
+        // The deque's front-to-back order is the final string.
+        Forward,
+
+        // The deque holds the string back-to-front.
+        Backward,
     }
 }

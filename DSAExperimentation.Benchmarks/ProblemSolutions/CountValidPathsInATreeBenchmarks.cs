@@ -18,10 +18,10 @@ public class CountValidPathsInATreeBenchmarks
     // LC problem number, reused as the deterministic tree seed.
     private const int TreeSeed = 1;
 
-    [Params(50, 200)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
+    [Params(50, 200)]
+    public int NodeCount { get; set; }
 
     // A random recursive tree (parent[i] uniform in [1, i)), the same shape
     // MinimumHeightTreesBenchmarks/LongestPathWithDifferentAdjacentCharacters

@@ -46,7 +46,7 @@ internal static class LongestCommonSubpathSolution
     {
         var high = ShortestPathLength(paths);
 
-        return BinarySearchLongestSharedLength(high, length => IsSharedByNaiveKeys(paths, length));
+        return BinarySearchLongestSharedLength(high, new NaiveKeySharedLength(paths));
     }
 
     // This repo's own RollingHash turns "what does this window hash to" into an O(1)
@@ -59,12 +59,12 @@ internal static class LongestCommonSubpathSolution
         var encoded = EncodeAll(paths, codes);
         var high = ShortestPathLength(encoded);
 
-        return BinarySearchLongestSharedLength(high, length => IsSharedByWindowHashes(encoded, length));
+        return BinarySearchLongestSharedLength(high, new WindowHashSharedLength(encoded));
     }
 
     // Shared between both strategies, so the only thing they differ in is the
     // per-window key: the largest length every path still shares.
-    private static int BinarySearchLongestSharedLength(int maxLength, Func<int, bool> isShared)
+    private static int BinarySearchLongestSharedLength(int maxLength, ISharedLengthProbe probe)
     {
         var low = 0;
         var high = maxLength;
@@ -73,7 +73,7 @@ internal static class LongestCommonSubpathSolution
         {
             var mid = low + ((high - low + 1) / BinarySearchMidpointDivisor);
 
-            if (isShared(mid))
+            if (probe.IsShared(mid))
             {
                 low = mid;
             }
@@ -270,5 +270,25 @@ internal static class LongestCommonSubpathSolution
         }
 
         return shortest;
+    }
+
+    // "Is a run of this length present in every path" - the whole question the binary
+    // search asks. Both strategies answer it the same way over their own key space, so
+    // a type is where the question's contract belongs: a candidate length in, one
+    // answer out, with the paths it is asked about held by the probe that was built
+    // for them.
+    private interface ISharedLengthProbe
+    {
+        bool IsShared(int length);
+    }
+
+    private sealed class NaiveKeySharedLength(int[][] paths) : ISharedLengthProbe
+    {
+        public bool IsShared(int length) => IsSharedByNaiveKeys(paths, length);
+    }
+
+    private sealed class WindowHashSharedLength(char[][] encoded) : ISharedLengthProbe
+    {
+        public bool IsShared(int length) => IsSharedByWindowHashes(encoded, length);
     }
 }

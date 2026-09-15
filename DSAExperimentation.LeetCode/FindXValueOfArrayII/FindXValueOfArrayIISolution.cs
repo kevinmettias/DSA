@@ -22,26 +22,33 @@ internal static class FindXValueOfArrayIISolution
 
         for (var i = 0; i < queries.Length; i++)
         {
-            var (index, value, start, x) = (queries[i][0], queries[i][1], queries[i][2], queries[i][3]);
-            values[index] = value;
-
-            var product = 1 % k;
-            var count = 0;
-
-            for (var j = start; j < values.Length; j++)
-            {
-                product = product * (values[j] % k) % k;
-
-                if (product == x)
-                {
-                    count++;
-                }
-            }
-
-            results[i] = count;
+            results[i] = ApplyQuery(values, k, queries[i]);
         }
 
         return results;
+    }
+
+    // One query: write the updated value into the array, then count the prefixes of
+    // nums[start..] whose running product mod k lands on x.
+    private static int ApplyQuery(int[] values, int k, int[] query)
+    {
+        var (index, value, start, x) = (query[0], query[1], query[2], query[3]);
+        values[index] = value;
+
+        var product = 1 % k;
+        var count = 0;
+
+        for (var j = start; j < values.Length; j++)
+        {
+            product = product * (values[j] % k) % k;
+
+            if (product == x)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     // The composed strategy: k <= 5 is a closed set, so dispatch once onto the

@@ -14,10 +14,10 @@ public class ContainVirusBenchmarks
 
     private const double InfectionSeedProbability = 0.15;
 
-    [Params(10, 25)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(10, 25)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,7 +31,8 @@ public class ContainVirusBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < InfectionSeedProbability ? 1 : 0;
+                var isInfected = random.NextDouble() < InfectionSeedProbability;
+                _grid[r][c] = isInfected ? 1 : 0;
             }
         }
     }

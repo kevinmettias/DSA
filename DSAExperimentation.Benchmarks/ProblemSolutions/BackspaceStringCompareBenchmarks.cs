@@ -18,11 +18,11 @@ public class BackspaceStringCompareBenchmarks
     private const int BackspaceChanceDenominator = 5;
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _t = null!;
+    private string _t = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,12 +30,6 @@ public class BackspaceStringCompareBenchmarks
         _s = BuildKeystrokes(Length, seed: RandomSeed);
         _t = BuildKeystrokes(Length, seed: RandomSeed);
     }
-
-    [Benchmark(Baseline = true)]
-    public bool BclStack() => BackspaceStringCompareSolution.BackspaceCompareByBclStack(_s, _t);
-
-    [Benchmark]
-    public bool RepoStack() => BackspaceStringCompareSolution.BackspaceCompareByStackReplay(_s, _t);
 
     // ~20% backspaces so the stack genuinely grows and shrinks instead of only ever
     // growing - the same "reachable, real work" shaping LockWorkloads already
@@ -47,11 +41,20 @@ public class BackspaceStringCompareBenchmarks
 
         for (var i = 0; i < length; i++)
         {
-            characters[i] = random.Next(BackspaceChanceDenominator) == 0
+            var isBackspace = random.Next(BackspaceChanceDenominator) == 0;
+            characters[i] = isBackspace
                 ? '#'
-                : (char)('a' + random.Next(AlphabetSize));
+                : RandomLetter(random);
         }
 
         return new string(characters);
     }
+
+    private static char RandomLetter(Random random) => (char)('a' + random.Next(AlphabetSize));
+
+    [Benchmark(Baseline = true)]
+    public bool BclStack() => BackspaceStringCompareSolution.BackspaceCompareByBclStack(_s, _t);
+
+    [Benchmark]
+    public bool RepoStack() => BackspaceStringCompareSolution.BackspaceCompareByStackReplay(_s, _t);
 }

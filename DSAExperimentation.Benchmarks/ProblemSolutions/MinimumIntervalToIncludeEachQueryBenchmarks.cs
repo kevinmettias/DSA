@@ -24,11 +24,11 @@ public class MinimumIntervalToIncludeEachQueryBenchmarks
     // Interval lengths are drawn from [0, Count / this) so intervals stay shorter than the full space.
     private const int MaxIntervalLengthDivisor = 2;
 
-    [Params(200, 3_000)]
-    public int Count;
+    private int[][] _intervals = [];
 
-    private int[][] _intervals = null!;
-    private int[] _queries = null!;
+    private int[] _queries = [];
+    [Params(200, 3_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()

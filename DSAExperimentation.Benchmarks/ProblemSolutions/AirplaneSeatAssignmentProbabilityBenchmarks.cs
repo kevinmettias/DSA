@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class AirplaneSeatAssignmentProbabilityBenchmarks
 {
     [Params(100, 1_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public double MemoizedRecursion()

@@ -16,7 +16,7 @@ public class CountTheNumberOfIdealArraysBenchmarks
     private const int N = 4;
 
     [Params(200, 5_000)]
-    public int MaxValue;
+    public int MaxValue { get; set; }
 
     [Benchmark(Baseline = true)]
     public int TrialDivisionPerValue() =>

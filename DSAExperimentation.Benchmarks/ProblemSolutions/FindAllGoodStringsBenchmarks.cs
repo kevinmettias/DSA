@@ -13,12 +13,12 @@ public class FindAllGoodStringsBenchmarks
 {
     private const string EvilSubstring = "ab";
 
-    [Params(3, 4)]
-    public int Length;
+    private string _s1 = "";
 
-    private string _s1 = null!;
-    private string _s2 = null!;
-    private string _evil = null!;
+    private string _s2 = "";
+    private string _evil = "";
+    [Params(3, 4)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,9 +30,17 @@ public class FindAllGoodStringsBenchmarks
 
     [Benchmark(Baseline = true)]
     public int EnumerationScan() =>
-        FindAllGoodStringsSolution.CountGoodStringsByEnumeration(Length, _s1, _s2, _evil);
+        FindAllGoodStringsSolution.CountGoodStringsByEnumeration(
+            Length,
+            new FindAllGoodStringsSolution.LowerBound(_s1),
+            new FindAllGoodStringsSolution.UpperBound(_s2),
+            new FindAllGoodStringsSolution.ForbiddenSubstring(_evil));
 
     [Benchmark]
     public int AutomatonDigitDp() =>
-        FindAllGoodStringsSolution.CountGoodStringsByAutomatonDigitDp(Length, _s1, _s2, _evil);
+        FindAllGoodStringsSolution.CountGoodStringsByAutomatonDigitDp(
+            Length,
+            new FindAllGoodStringsSolution.LowerBound(_s1),
+            new FindAllGoodStringsSolution.UpperBound(_s2),
+            new FindAllGoodStringsSolution.ForbiddenSubstring(_evil));
 }

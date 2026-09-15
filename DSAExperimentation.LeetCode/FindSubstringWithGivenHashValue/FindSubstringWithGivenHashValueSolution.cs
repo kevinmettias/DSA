@@ -35,14 +35,17 @@ internal static class FindSubstringWithGivenHashValueSolution
     // accumulator and a running power term - since it is the arm the precomputed
     // strategy below has to justify itself against. Only the (power, modulo) pair
     // it is handed is a repo type.
+    // The thing being looked for is one hand: a window length and the hash that
+    // window must carry. Neither means anything without the other, so they are
+    // passed as the one query they describe.
     public static bool TryFindSubstringByWindowRehash(
-        string s, RollingHashLane lane, int k, long hashValue, out string substring)
+        string s, RollingHashLane lane, (int WindowLength, long HashValue) target, out string substring)
     {
-        for (var start = 0; start <= s.Length - k; start++)
+        for (var start = 0; start <= s.Length - target.WindowLength; start++)
         {
-            if (WindowHash(s, start, k, lane) == hashValue)
+            if (WindowHash(s, start, target.WindowLength, lane) == target.HashValue)
             {
-                substring = s.Substring(start, k);
+                substring = s.Substring(start, target.WindowLength);
                 return true;
             }
         }
@@ -85,23 +88,28 @@ internal static class FindSubstringWithGivenHashValueSolution
     // single modulus, not a probabilistic screen, so only the First component is
     // ever compared.
     public static bool TryFindSubstringByRollingHash(
-        string s, RollingHashLane lane, int k, long hashValue, out string substring) =>
-        TryFindSubstringByRollingHash(BuildReversedWindowHash(s, lane), s, k, hashValue, out substring);
+        string s, RollingHashLane lane, (int WindowLength, long HashValue) target, out string substring)
+    {
+        var reversedHash = BuildReversedWindowHash(s, lane);
+
+        return TryFindSubstringByRollingHash(reversedHash, s, target, out substring);
+    }
 
     // The hoisted overload: takes the prefix table already built, so a benchmark's
     // [GlobalSetup] can charge the O(n) construction to setup rather than to the
     // measured window sweep. reversedHash must be the table BuildReversedWindowHash
     // returns for this same s.
     public static bool TryFindSubstringByRollingHash(
-        RollingHash reversedHash, string s, int k, long hashValue, out string substring)
+        RollingHash reversedHash, string s, (int WindowLength, long HashValue) target, out string substring)
     {
         var n = s.Length;
 
-        for (var start = 0; start <= n - k; start++)
+        for (var start = 0; start <= n - target.WindowLength; start++)
         {
-            if (reversedHash.Hash(n - start - k, k).First == hashValue)
+            if (reversedHash.Hash(n - start - target.WindowLength, target.WindowLength).First
+                == target.HashValue)
             {
-                substring = s.Substring(start, k);
+                substring = s.Substring(start, target.WindowLength);
                 return true;
             }
         }

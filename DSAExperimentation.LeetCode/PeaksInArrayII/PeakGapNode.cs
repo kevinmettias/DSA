@@ -21,5 +21,8 @@ internal readonly record struct PeakGapNode(bool HasPeak, int MinPeak, int MaxPe
     // distance >= 2 apart" count the solution's own total-subarrays formula
     // uses at a query's [l, r] scale, reused here at the scale of one no-peak
     // gap between two peak boundaries (or a peak boundary and the query edge).
-    public static long PairsInGap(long gap) => gap < 2 ? 0 : gap * (gap - 1) / 2;
+    public static long PairsInGap(long gap) => gap < 2 ? 0 : ChooseTwo(gap);
+
+    // C(gap, 2): the unordered position pairs inside a run of `gap` positions.
+    private static long ChooseTwo(long gap) => gap * (gap - 1) / 2;
 }

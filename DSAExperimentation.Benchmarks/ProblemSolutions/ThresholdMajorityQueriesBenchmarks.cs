@@ -16,12 +16,12 @@ public class ThresholdMajorityQueriesBenchmarks
     // LC problem number, reused as the deterministic value/query seed.
     private const int WorkloadSeed = 3636;
 
-    [Params(500, 2000)]
-    public int ElementCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
     private ThresholdMajorityBlockIndex _index = null!;
+    [Params(500, 2000)]
+    public int ElementCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

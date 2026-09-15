@@ -36,26 +36,35 @@ internal static class BeautifulTowersISolution
 
         for (var peak = 0; peak < n; peak++)
         {
-            var sum = (long)maxHeights[peak];
+            var mountainSum = BestMountainPeakingAt(maxHeights, peak);
 
-            var cap = maxHeights[peak];
-            for (var j = peak - 1; j >= 0; j--)
-            {
-                cap = Math.Min(cap, maxHeights[j]);
-                sum += cap;
-            }
-
-            cap = maxHeights[peak];
-            for (var j = peak + 1; j < n; j++)
-            {
-                cap = Math.Min(cap, maxHeights[j]);
-                sum += cap;
-            }
-
-            best = Math.Max(best, sum);
+            best = Math.Max(best, mountainSum);
         }
 
         return best;
+    }
+
+    // The best total for the mountain whose peak is fixed at `peak`: walk left and
+    // right from it, clamping every tower to the smallest maxHeight seen so far.
+    private static long BestMountainPeakingAt(int[] maxHeights, int peak)
+    {
+        var sum = (long)maxHeights[peak];
+
+        var cap = maxHeights[peak];
+        for (var j = peak - 1; j >= 0; j--)
+        {
+            cap = Math.Min(cap, maxHeights[j]);
+            sum += cap;
+        }
+
+        cap = maxHeights[peak];
+        for (var j = peak + 1; j < maxHeights.Length; j++)
+        {
+            cap = Math.Min(cap, maxHeights[j]);
+            sum += cap;
+        }
+
+        return sum;
     }
 
     // Two sweeps and a join: the best mountain peaking at i is its non-decreasing
@@ -91,7 +100,7 @@ internal static class BeautifulTowersISolution
         var n = maxHeights.Length;
         var sums = new long[n];
         var stack = new MonotonicStack();
-        var start = step == Forward ? 0 : n - 1;
+        var start = step == Forward ? 0 : LastIndex(n);
         var boundary = step == Forward ? -1 : n;
 
         for (var i = start; i >= 0 && i < n; i += step)
@@ -102,7 +111,7 @@ internal static class BeautifulTowersISolution
             }
 
             var nearestShorter = stack.TryPeek(out var shorter) ? shorter : boundary;
-            var runSoFar = nearestShorter == boundary ? 0L : sums[nearestShorter];
+            var runSoFar = nearestShorter == boundary ? 0L : SumAt(sums, nearestShorter);
 
             sums[i] = runSoFar + ((long)maxHeights[i] * (i - nearestShorter) * step);
             stack.Push(i);
@@ -110,4 +119,8 @@ internal static class BeautifulTowersISolution
 
         return sums;
     }
+
+    private static int LastIndex(int n) => n - 1;
+
+    private static long SumAt(long[] sums, int index) => sums[index];
 }

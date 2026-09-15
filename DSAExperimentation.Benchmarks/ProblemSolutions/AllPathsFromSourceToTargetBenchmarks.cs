@@ -16,10 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AllPathsFromSourceToTargetBenchmarks
 {
-    [Params(10, 15)]
-    public int NodeCount;
+    private int[][] _graph = [];
 
-    private int[][] _graph = null!;
+    [Params(10, 15)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

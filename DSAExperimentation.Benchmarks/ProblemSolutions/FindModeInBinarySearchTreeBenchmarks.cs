@@ -16,16 +16,13 @@ public class FindModeInBinarySearchTreeBenchmarks
     // LeetCode problem number for Find Mode in Binary Search Tree.
     private const int RandomSeed = 501;
 
-    [Params(500, 20_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int>? _root;
 
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
+
     [GlobalSetup]
-    public void Setup()
-    {
-        _root = FindModeInBinarySearchTreeWorkloads.BuildTree(NodeCount, NodesPerDistinctValue, RandomSeed);
-    }
+    public void Setup() => _root = FindModeInBinarySearchTreeWorkloads.BuildTree(NodeCount, NodesPerDistinctValue, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public int[] HashMapFrequencyCount() =>

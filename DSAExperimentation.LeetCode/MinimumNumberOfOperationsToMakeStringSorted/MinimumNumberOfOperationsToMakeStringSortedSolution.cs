@@ -82,7 +82,7 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     private static RankState Place(RankState state, int smaller, int remainingOfLetter, long[] factorial)
     {
         var rank = smaller > 0
-            ? (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % ModularArithmetic.Modulo * state.InverseFactorialProduct)) % ModularArithmetic.Modulo
+            ? RankAfterSmallerLeadingLetters(state, smaller, factorial)
             : state.Rank;
 
         return new RankState(
@@ -90,6 +90,13 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
             state.InverseFactorialProduct * remainingOfLetter % ModularArithmetic.Modulo,
             state.Remaining - 1);
     }
+
+    // The ranks this position skips: every smaller leading letter could head the
+    // remaining suffix, each contributing (remaining-1)! over the current
+    // inverse-factorial product.
+    private static long RankAfterSmallerLeadingLetters(RankState state, int smaller, long[] factorial)
+        => (state.Rank + ((long)smaller * factorial[state.Remaining - 1] % ModularArithmetic.Modulo
+            * state.InverseFactorialProduct)) % ModularArithmetic.Modulo;
 
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTables(int length)
     {

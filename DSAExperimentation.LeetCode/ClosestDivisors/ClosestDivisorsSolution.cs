@@ -68,5 +68,8 @@ internal static class ClosestDivisorsSolution
     }
 
     private static (int First, int Second) TighterOf((int First, int Second) lower, (int First, int Second) upper) =>
-        upper.Second - upper.First < lower.Second - lower.First ? upper : lower;
+        IsTighter(upper, lower) ? upper : lower;
+
+    private static bool IsTighter((int First, int Second) candidate, (int First, int Second) reference) =>
+        candidate.Second - candidate.First < reference.Second - reference.First;
 }

@@ -27,47 +27,6 @@ internal static class ReverseLinkedListIISolution
         return BuildList(values);
     }
 
-    // The standard walk: a dummy node ahead of the list lets position 1 be
-    // handled the same as any other position. Once positioned at the node just
-    // before the sub-range, each subsequent node is unlinked and reinserted
-    // immediately after that fixed point - "head insertion" - so the sub-range
-    // ends up reversed after right - left splices, with no extra storage.
-    public static SinglyLinkedListNode<int>? ReverseBetweenByHeadInsertion(
-        SinglyLinkedListNode<int>? head, int left, int right)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
-        var before = dummy;
-
-        for (var i = 1; i < left; i++)
-        {
-            before = before.Next!;
-        }
-
-        var current = before.Next;
-
-        for (var i = 0; i < right - left; i++)
-        {
-            var moved = current!.Next!;
-            current.Next = moved.Next;
-            moved.Next = before.Next;
-            before.Next = moved;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
-
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
@@ -80,5 +39,61 @@ internal static class ReverseLinkedListIISolution
         }
 
         return dummy.Next;
+    }
+
+    // The standard walk: a dummy node ahead of the list lets position 1 be
+    // handled the same as any other position. Once positioned at the node just
+    // before the sub-range, each subsequent node is unlinked and reinserted
+    // immediately after that fixed point - "head insertion" - so the sub-range
+    // ends up reversed after right - left splices, with no extra storage.
+    public static SinglyLinkedListNode<int>? ReverseBetweenByHeadInsertion(
+        SinglyLinkedListNode<int>? head, int left, int right)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
+
+        ReverseSubRange(dummy, left, right);
+
+        return dummy.Next;
+    }
+
+    // Unlink each node of the sub-range and reinsert it immediately after the fixed
+    // point just before the range, so right - left splices reverse it in place.
+    private static void ReverseSubRange(SinglyLinkedListNode<int> dummy, int left, int right)
+    {
+        var before = AdvanceTo(dummy, left);
+        var current = before.Next;
+
+        for (var i = 0; i < right - left; i++)
+        {
+            var moved = current!.Next!;
+            current.Next = moved.Next;
+            moved.Next = before.Next;
+            before.Next = moved;
+        }
+    }
+
+    // The node just before the 1-indexed position `left`, counted from the dummy head.
+    private static SinglyLinkedListNode<int> AdvanceTo(SinglyLinkedListNode<int> dummy, int left)
+    {
+        var before = dummy;
+
+        for (var i = 1; i < left; i++)
+        {
+            before = before.Next!;
+        }
+
+        return before;
+    }
+
+    private static int[] ToArray(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
     }
 }

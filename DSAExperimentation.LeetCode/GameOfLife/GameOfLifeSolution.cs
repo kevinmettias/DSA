@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.Set;
+﻿using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.GameOfLife;
 
@@ -33,14 +33,38 @@ internal static class GameOfLifeSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                var liveNeighbors = CountLiveNeighborsFromSnapshot(snapshot, rows, cols, r, c);
-                board[r][c] =
-                    liveNeighbors == BirthNeighborCount
-                    || (liveNeighbors == SurvivalNeighborCount && snapshot[r][c] == 1)
-                        ? 1
-                        : 0;
+                var liveNeighbors = CountLiveNeighborsFromSnapshot(snapshot, (r, c));
+                board[r][c] = IsAliveNextGeneration(liveNeighbors, snapshot[r][c]) ? 1 : 0;
             }
         }
+    }
+
+    // The snapshot is the whole board, so its own dimensions already say how far a
+    // cell's neighbourhood reaches; only the cell being counted has to be handed over.
+    private static int CountLiveNeighborsFromSnapshot(int[][] snapshot, (int Row, int Col) cell)
+    {
+        var count = 0;
+
+        for (var dr = -1; dr <= 1; dr++)
+        {
+            for (var dc = -1; dc <= 1; dc++)
+            {
+                if (dr == 0 && dc == 0)
+                {
+                    continue;
+                }
+
+                var r = cell.Row + dr;
+                var c = cell.Col + dc;
+
+                if (IsInside(r, c, snapshot.Length, snapshot[0].Length) && snapshot[r][c] == 1)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     // This repo's own Set<int> snapshots which cells were live in the ORIGINAL board
@@ -57,12 +81,9 @@ internal static class GameOfLifeSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                var liveNeighbors = CountLiveNeighborsFromSet(originallyLive, rows, cols, r, c);
-                board[r][c] =
-                    liveNeighbors == BirthNeighborCount
-                    || (liveNeighbors == SurvivalNeighborCount && originallyLive.Has(r * cols + c))
-                        ? 1
-                        : 0;
+                var liveNeighbors = CountLiveNeighborsFromSet(originallyLive, rows, cols, (r, c));
+                var wasLive = originallyLive.Has(r * cols + c) ? 1 : 0;
+                board[r][c] = IsAliveNextGeneration(liveNeighbors, wasLive) ? 1 : 0;
             }
         }
     }
@@ -85,7 +106,10 @@ internal static class GameOfLifeSolution
         return originallyLive;
     }
 
-    private static int CountLiveNeighborsFromSnapshot(int[][] snapshot, int rows, int cols, int row, int col)
+    // This snapshot is a Set of encoded cells, so it cannot say how wide the board is
+    // and the two bounds stay; the cell they locate travels as the one thing they say.
+    private static int CountLiveNeighborsFromSet(
+        Set<int> originallyLive, int rows, int cols, (int Row, int Col) cell)
     {
         var count = 0;
 
@@ -98,10 +122,10 @@ internal static class GameOfLifeSolution
                     continue;
                 }
 
-                var r = row + dr;
-                var c = col + dc;
+                var r = cell.Row + dr;
+                var c = cell.Col + dc;
 
-                if (r >= 0 && r < rows && c >= 0 && c < cols && snapshot[r][c] == 1)
+                if (IsInside(r, c, rows, cols) && originallyLive.Has(r * cols + c))
                 {
                     count++;
                 }
@@ -111,31 +135,18 @@ internal static class GameOfLifeSolution
         return count;
     }
 
-    private static int CountLiveNeighborsFromSet(Set<int> originallyLive, int rows, int cols, int row, int col)
-    {
-        var count = 0;
+    // Conway's two rules are the definition of a cell's next state, so they get a name and
+    // the loop body reads as "write the next state" instead of applying && before || in
+    // its head. The current state is an int rather than a bool because it is the board's
+    // own 0/1, which keeps the second strategy's Set membership from needing a conversion
+    // at a call site whose meaning would then move into the argument's position.
+    private static bool IsAliveNextGeneration(int liveNeighbors, int currentState)
+        => liveNeighbors == BirthNeighborCount
+           || (liveNeighbors == SurvivalNeighborCount && currentState == 1);
 
-        for (var dr = -1; dr <= 1; dr++)
-        {
-            for (var dc = -1; dc <= 1; dc++)
-            {
-                if (dr == 0 && dc == 0)
-                {
-                    continue;
-                }
-
-                var r = row + dr;
-                var c = col + dc;
-
-                if (r >= 0 && r < rows && c >= 0 && c < cols && originallyLive.Has(r * cols + c))
-                {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
+    // Both coordinates within the board is one idea, and it was written out twice.
+    private static bool IsInside(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
 
     private static int[][] Clone(int[][] matrix)
         => matrix.Select(row => (int[])row.Clone()).ToArray();

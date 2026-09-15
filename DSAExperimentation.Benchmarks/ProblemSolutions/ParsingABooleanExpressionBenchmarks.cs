@@ -24,10 +24,10 @@ public class ParsingABooleanExpressionBenchmarks
     // LC problem number is not used here; the seed only has to be deterministic.
     private const int RandomSeed = 1;
 
-    [Params(8, 12)]
-    public int Depth;
+    private string _expression = "";
 
-    private string _expression = null!;
+    [Params(8, 12)]
+    public int Depth { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -50,7 +50,7 @@ public class ParsingABooleanExpressionBenchmarks
     {
         if (depth == 0 || random.Next(LeafChance) == 0)
         {
-            return random.Next(TokenChoiceCount) == 0 ? TrueToken : FalseToken;
+            return IsTrueToken(random) ? TrueToken : FalseToken;
         }
 
         return random.Next(OperatorChoiceCount) switch
@@ -60,4 +60,8 @@ public class ParsingABooleanExpressionBenchmarks
             _ => $"|({Generate(random, depth - 1)},{Generate(random, depth - 1)})",
         };
     }
+
+    // One draw, taken only when the leaf branch is reached, in the same step order
+    // the generated expression is seeded from.
+    private static bool IsTrueToken(Random random) => random.Next(TokenChoiceCount) == 0;
 }

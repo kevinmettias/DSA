@@ -42,6 +42,29 @@ internal static class CompleteBinaryTreeInserterSolution
         public int Insert(int value)
         {
             var node = new BinaryTreeNode<int>(value);
+            var parent = FindFirstOpenParent();
+
+            if (parent is null)
+            {
+                return Root.Value;
+            }
+
+            if (parent.Left is null)
+            {
+                parent.Left = node;
+                return parent.Value;
+            }
+
+            parent.Right = node;
+            return parent.Value;
+        }
+
+        // A level-order walk for the first node with a free child slot - Left is
+        // preferred over Right - or null once the walk falls off the leaves. The
+        // walk only reads the tree, so finding the parent and attaching to it can
+        // be separate steps.
+        private BinaryTreeNode<int>? FindFirstOpenParent()
+        {
             var queue = new Queue<BinaryTreeNode<int>>();
             queue.Enqueue(Root);
 
@@ -49,23 +72,16 @@ internal static class CompleteBinaryTreeInserterSolution
             {
                 var current = queue.Dequeue();
 
-                if (current.Left is null)
+                if (current.Left is null || current.Right is null)
                 {
-                    current.Left = node;
-                    return current.Value;
-                }
-
-                if (current.Right is null)
-                {
-                    current.Right = node;
-                    return current.Value;
+                    return current;
                 }
 
                 queue.Enqueue(current.Left);
                 queue.Enqueue(current.Right);
             }
 
-            return Root.Value;
+            return null;
         }
     }
 
@@ -79,13 +95,13 @@ internal static class CompleteBinaryTreeInserterSolution
         {
             Root = root;
 
-            LevelHooks.Output.Value = [];
+            LevelHooks.BeginCapture();
             LevelGroupedBreadthFirstTraversal.Walk<
                 BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
                 NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
                 LevelHooks>(root);
 
-            foreach (var level in LevelHooks.Output.Value!)
+            foreach (var level in LevelHooks.CapturedLevels)
             {
                 foreach (var node in level)
                 {
@@ -124,19 +140,19 @@ internal static class CompleteBinaryTreeInserterSolution
     // pass can scan them in level order for open child slots.
     private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
     {
-        public static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
+        // Static because ILevelGroupedHooks is static-abstract - the walk takes the hook as a
+        // type argument and reaches it through the type, so no LevelHooks instance exists that
+        // could own this buffer - and AsyncLocal is what keeps it safe: the list belongs to the
+        // flow that started the Walk, so a seeding pass on another thread reads its own. Private,
+        // with BeginCapture/CapturedLevels the only way in and out: the buffer exists for this
+        // one seeding pass's start-and-read pair, so nothing outside the hook needs to name it.
+        private static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
+
+        public static List<List<BinaryTreeNode<int>>> CapturedLevels => Output.Value!;
+
+        public static void BeginCapture() => Output.Value = [];
 
         public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
             Output.Value!.Add(level.ToList());
     }
-}
-
-// The Insert/Root contract every strategy above implements. Bespoke to this problem:
-// no other LeetCode entry shares this shape, so it stays here rather than in
-// DataStructures/.
-internal interface ICompleteBinaryTreeInserter
-{
-    BinaryTreeNode<int> Root { get; }
-
-    int Insert(int value);
 }

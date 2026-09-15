@@ -14,10 +14,10 @@ public class PalindromePairsBenchmarks
     private const int WordLengthBound = 9;
     private const int AlphabetSize = 3;
 
-    [Params(80, 400)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(80, 400)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -25,7 +25,7 @@ internal static class TaskSchedulerIISolution
             var mustWait = TryFindPreviousDay(tasks, dayOfIndex, index, out var previousDay) &&
                 currentDay - previousDay <= space;
 
-            currentDay = mustWait ? previousDay + space + 1 : currentDay + 1;
+            currentDay = mustWait ? DayAfterCooldown(previousDay, space) : NextDay(currentDay);
             dayOfIndex[index] = currentDay;
         }
 
@@ -46,6 +46,12 @@ internal static class TaskSchedulerIISolution
         previousDay = 0;
         return false;
     }
+
+    // The task's previous run was `space` days too recent, so it can only go one
+    // day after the cooldown it must clear.
+    private static long DayAfterCooldown(long previousDay, int space) => previousDay + space + 1;
+
+    private static long NextDay(long currentDay) => currentDay + 1;
 
     // This repo's own HashMap<int,long> keyed by task type: one forward pass, one
     // lookup and one write per task, so the cooldown check is O(1) average instead of

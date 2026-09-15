@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode;
-using static DSAExperimentation.LeetCode.DesignRideSharingSystem.DesignRideSharingSystemSolution;
+using DSAExperimentation.LeetCode.DesignRideSharingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,10 +17,10 @@ public class DesignRideSharingSystemBenchmarks
 {
     private const int Seed = 3829;
 
-    [Params(500, 5_000)]
-    public int RiderCount;
+    private List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>> _script = new();
 
-    private List<Func<IRideSharingStrategy, int[]?>> _script = null!;
+    [Params(500, 5_000)]
+    public int RiderCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,58 +29,12 @@ public class DesignRideSharingSystemBenchmarks
         _script = BuildScript(RiderCount, random);
     }
 
-    [Benchmark(Baseline = true)]
-    public long LinearScanQueue() => Replay(new RideSharingSystemByLinearScanQueue());
-
-    [Benchmark]
-    public long LazyDeletionQueue() => Replay(new RideSharingSystemByLazyDeletionQueue());
-
-    // Sums every returned [driverId, riderId] pair (treating a void call's null,
-    // and a failed match's [-1, -1], as 0) rather than discarding it, so the JIT
-    // can't eliminate the replay as dead code - the same "return the real answer,
-    // not a weaker proxy" shape DesignAuctionSystemBenchmarks already follows.
-    private long Replay(IRideSharingStrategy strategy)
+    private static List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>> BuildScript(int riderCount, Random random)
     {
-        var idSum = 0L;
+        var script = new List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>>();
 
-        foreach (var op in _script)
-        {
-            if (op(strategy) is [var driverId, var riderId] && driverId != LeetCodeAnswer.None)
-            {
-                idSum += driverId + riderId;
-            }
-        }
-
-        return idSum;
-    }
-
-    // Every rider/driver id below comes from `foreach (var id in Enumerable.Range(...))`
-    // rather than a hand-rolled `for`, deliberately: a `for` loop's declared
-    // variable is one shared slot for the whole loop, so a closure capturing it
-    // directly would see only its final value once the loop finished -
-    // `foreach`'s iteration variable is a fresh binding per element instead, the
-    // one this method actually needs.
-    private static List<Func<IRideSharingStrategy, int[]?>> BuildScript(int riderCount, Random random)
-    {
-        var script = new List<Func<IRideSharingStrategy, int[]?>>();
-
-        foreach (var riderId in Enumerable.Range(0, riderCount))
-        {
-            script.Add(strategy =>
-            {
-                strategy.AddRider(riderId);
-                return null;
-            });
-        }
-
-        foreach (var driverId in Enumerable.Range(riderCount, riderCount))
-        {
-            script.Add(strategy =>
-            {
-                strategy.AddDriver(driverId);
-                return null;
-            });
-        }
+        AppendIdOperations(script, 0, riderCount, new AddRiderOperation());
+        AppendIdOperations(script, riderCount, riderCount, new AddDriverOperation());
 
         AppendCancelledRiders(script, riderCount, random);
         AppendMatchRounds(script, riderCount);
@@ -88,10 +42,54 @@ public class DesignRideSharingSystemBenchmarks
         return script;
     }
 
+    // The one thing the two seeding passes below do differently: which single-id call
+    // they make. Both the receiver and the id are named here, and the contract a bare
+    // `Action<IRideSharingStrategy, int>` had nowhere to state - the id is a rider or
+    // driver id, and the call is a seed, never a match - has somewhere to be written
+    // down. Stateless, so a fresh instance costs nothing meaningful at setup time.
+    private interface IRideOperation
+    {
+        void Apply(DesignRideSharingSystemSolution.IRideSharingStrategy strategy, int id);
+    }
+
+    // Appends one seeded call per id in `[firstId, firstId + count)`. Every id comes
+    // from `foreach (var id in Enumerable.Range(...))` rather than a hand-rolled
+    // `for`, deliberately: a `for` loop's declared variable is one shared slot for
+    // the whole loop, so the closure below capturing it directly would see only its
+    // final value once the loop finished - `foreach`'s iteration variable is a fresh
+    // binding per element instead, the one this script actually needs.
+    private static void AppendIdOperations(
+        List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>> script,
+        int firstId,
+        int count,
+        IRideOperation operation)
+    {
+        foreach (var id in Enumerable.Range(firstId, count))
+        {
+            script.Add(strategy =>
+            {
+                operation.Apply(strategy, id);
+                return null;
+            });
+        }
+    }
+
+    private sealed class AddRiderOperation : IRideOperation
+    {
+        public void Apply(DesignRideSharingSystemSolution.IRideSharingStrategy strategy, int id) =>
+            strategy.AddRider(id);
+    }
+
+    private sealed class AddDriverOperation : IRideOperation
+    {
+        public void Apply(DesignRideSharingSystemSolution.IRideSharingStrategy strategy, int id) =>
+            strategy.AddDriver(id);
+    }
+
     // A tenth of the seeded riders, chosen at random, get cancelled before any
     // match call runs - guaranteed still pending, since seeding only ever adds.
     private static void AppendCancelledRiders(
-        List<Func<IRideSharingStrategy, int[]?>> script, int riderCount, Random random)
+        List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>> script, int riderCount, Random random)
     {
         var cancelCount = Math.Max(1, riderCount / 10);
 
@@ -106,7 +104,35 @@ public class DesignRideSharingSystemBenchmarks
         }
     }
 
-    private static void AppendMatchRounds(List<Func<IRideSharingStrategy, int[]?>> script, int riderCount) =>
-        script.AddRange(Enumerable.Repeat<Func<IRideSharingStrategy, int[]?>>(
-            static strategy => strategy.MatchDriverWithRider(), riderCount));
+    private static void AppendMatchRounds(List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>> script, int riderCount)
+    {
+        var rounds = Enumerable.Repeat<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>>(
+            static strategy => strategy.MatchDriverWithRider(), riderCount);
+        script.AddRange(rounds);
+    }
+
+    [Benchmark(Baseline = true)]
+    public long LinearScanQueue() => Replay(new DesignRideSharingSystemSolution.RideSharingSystemByLinearScanQueue());
+
+    [Benchmark]
+    public long LazyDeletionQueue() => Replay(new DesignRideSharingSystemSolution.RideSharingSystemByLazyDeletionQueue());
+
+    // Sums every returned [driverId, riderId] pair (treating a void call's null,
+    // and a failed match's [-1, -1], as 0) rather than discarding it, so the JIT
+    // can't eliminate the replay as dead code - the same "return the real answer,
+    // not a weaker proxy" shape DesignAuctionSystemBenchmarks already follows.
+    private long Replay(DesignRideSharingSystemSolution.IRideSharingStrategy strategy)
+    {
+        var idSum = 0L;
+
+        foreach (var op in _script)
+        {
+            if (op(strategy) is [var driverId, var riderId] && driverId != LeetCodeAnswer.None)
+            {
+                idSum += driverId + riderId;
+            }
+        }
+
+        return idSum;
+    }
 }

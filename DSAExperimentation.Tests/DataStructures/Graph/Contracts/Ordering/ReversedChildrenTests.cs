@@ -9,10 +9,7 @@ public sealed class ReversedChildrenTests
         new(new ListChildren<TestNode>([.. names.Select(n => new TestNode(n))]));
 
     [Fact]
-    public void Count_MatchesTheWrappedChildren()
-    {
-        Assert.Equal(3, Wrap("A", "B", "C").Count);
-    }
+    public void Count_MatchesTheWrappedChildren() => Assert.Equal(3, Wrap("A", "B", "C").Count);
 
     [Fact]
     public void Get_ReturnsTheWrappedChildrenBackToFront()
@@ -23,10 +20,7 @@ public sealed class ReversedChildrenTests
     }
 
     [Fact]
-    public void Get_SingleChild_IsUnchanged()
-    {
-        Assert.Equal("A", Wrap("A").Get(0).Name);
-    }
+    public void Get_SingleChild_IsUnchanged() => Assert.Equal("A", Wrap("A").Get(0).Name);
 
     [Fact]
     public void Get_AppliedTwice_RestoresTheOriginalOrder()
@@ -38,8 +32,5 @@ public sealed class ReversedChildrenTests
     }
 
     [Fact]
-    public void Count_EmptyInner_IsZero()
-    {
-        Assert.Equal(0, Wrap().Count);
-    }
+    public void Count_EmptyInner_IsZero() => Assert.Equal(0, Wrap().Count);
 }

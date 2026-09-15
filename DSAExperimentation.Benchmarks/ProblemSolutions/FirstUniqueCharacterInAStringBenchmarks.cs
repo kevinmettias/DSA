@@ -14,10 +14,10 @@ public class FirstUniqueCharacterInAStringBenchmarks
 {
     private const int AlphabetSize = 26;
 
-    [Params(500, 5_000)]
-    public int Length;
-
     private string _value = string.Empty;
+
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

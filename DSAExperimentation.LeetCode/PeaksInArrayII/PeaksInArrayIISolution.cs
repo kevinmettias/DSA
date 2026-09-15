@@ -33,7 +33,8 @@ internal static class PeaksInArrayIISolution
         {
             if (query[0] == 1)
             {
-                answer.Add(CountPeakSubarraysInRange(working, query[1], query[2]));
+                var rangeCount = CountPeakSubarraysInRange(working, query[1], query[2]);
+                answer.Add(rangeCount);
             }
             else
             {
@@ -89,21 +90,39 @@ internal static class PeaksInArrayIISolution
     public static List<long> CountPeakSubarraysBySegmentTree(int[] nums, int[][] queries)
     {
         var working = (int[])nums.Clone();
+        var tree = BuildPeakTree(working);
+
+        return RunQueries(working, tree, queries);
+    }
+
+    // The tree both phases answer against: one leaf per index, each carrying whether that
+    // index is a peak, over which the merge operation accumulates the gap structure.
+    private static SegmentTree<PeakGapNode, PeakGapMergeOperation> BuildPeakTree(int[] working)
+    {
         var leaves = new PeakGapNode[working.Length];
 
         for (var i = 0; i < working.Length; i++)
         {
-            leaves[i] = PeakGapNode.Leaf(IsPeak(working, i), i);
+            var peak = IsPeak(working, i);
+            leaves[i] = PeakGapNode.Leaf(peak, i);
         }
 
-        var tree = new SegmentTree<PeakGapNode, PeakGapMergeOperation>(leaves);
+        return new SegmentTree<PeakGapNode, PeakGapMergeOperation>(leaves);
+    }
+
+    // Replays the queries in order against one already-built tree: a type-1 query's count
+    // is collected, a type-2 update is applied. The answers come back in query order.
+    private static List<long> RunQueries(
+        int[] working, SegmentTree<PeakGapNode, PeakGapMergeOperation> tree, int[][] queries)
+    {
         var answer = new List<long>();
 
         foreach (var query in queries)
         {
             if (query[0] == 1)
             {
-                answer.Add(CountPeakSubarrays(tree, query[1], query[2]));
+                var rangeCount = CountPeakSubarrays(tree, query[1], query[2]);
+                answer.Add(rangeCount);
             }
             else
             {
@@ -127,13 +146,16 @@ internal static class PeaksInArrayIISolution
         var interior = tree.Query(left + 1, right - 1);
 
         var noPeakSubarrays = interior.HasPeak
-            ? interior.InteriorGapPairs
-                + PeakGapNode.PairsInGap(interior.MinPeak - left)
-                + PeakGapNode.PairsInGap(right - interior.MaxPeak)
+            ? PeakFreeSubarrays(interior, left, right)
             : totalSubarrays;
 
         return totalSubarrays - noPeakSubarrays;
     }
+
+    private static long PeakFreeSubarrays(PeakGapNode interior, int left, int right) =>
+        interior.InteriorGapPairs
+            + PeakGapNode.PairsInGap(interior.MinPeak - left)
+            + PeakGapNode.PairsInGap(right - interior.MaxPeak);
 
     private static void ApplyUpdate(int[] working, SegmentTree<PeakGapNode, PeakGapMergeOperation> tree, int index, int value)
     {
@@ -141,7 +163,9 @@ internal static class PeaksInArrayIISolution
 
         foreach (var position in AffectedPositions(index, working.Length))
         {
-            tree.Update(position, PeakGapNode.Leaf(IsPeak(working, position), position));
+            var peak = IsPeak(working, position);
+            var leaf = PeakGapNode.Leaf(peak, position);
+            tree.Update(position, leaf);
         }
     }
 

@@ -29,25 +29,10 @@ internal static class NumberOfEnclavesSolution
 
         foreach (var (row, col) in BorderCells(rows, cols))
         {
-            Flood(working, row, col, rows, cols);
+            Flood(working, row, col);
         }
 
         return CountLand(working);
-    }
-
-    private static void Flood(int[][] grid, int row, int col, int rows, int cols)
-    {
-        if (row < 0 || row >= rows || col < 0 || col >= cols || grid[row][col] != Land)
-        {
-            return;
-        }
-
-        grid[row][col] = Water;
-
-        Flood(grid, row + 1, col, rows, cols);
-        Flood(grid, row - 1, col, rows, cols);
-        Flood(grid, row, col + 1, rows, cols);
-        Flood(grid, row, col - 1, rows, cols);
     }
 
     // This repo's own DFS: DepthFirstSearch.Traverse walks one border-connected
@@ -101,12 +86,31 @@ internal static class NumberOfEnclavesSolution
 
     private static bool IsLand((int Row, int Col) next, int rows, int cols, int[][] grid)
     {
-        if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+        if (IsOutsideGrid(next.Row, next.Col, rows, cols))
         {
             return false;
         }
 
         return grid[next.Row][next.Col] == Land;
+    }
+
+    // Off the grid on any of its four edges - there is no land to step onto.
+    private static bool IsOutsideGrid(int row, int col, int rows, int cols)
+        => row < 0 || row >= rows || col < 0 || col >= cols;
+
+    private static void Flood(int[][] grid, int row, int col)
+    {
+        if (IsOutsideGrid(row, col, grid.Length, grid[0].Length) || grid[row][col] != Land)
+        {
+            return;
+        }
+
+        grid[row][col] = Water;
+
+        Flood(grid, row + 1, col);
+        Flood(grid, row - 1, col);
+        Flood(grid, row, col + 1);
+        Flood(grid, row, col - 1);
     }
 
     private static IEnumerable<(int Row, int Col)> BorderCells(int rows, int cols)
@@ -115,13 +119,17 @@ internal static class NumberOfEnclavesSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                if (r == 0 || r == rows - 1 || c == 0 || c == cols - 1)
+                if (IsOnBorder(r, c, rows, cols))
                 {
                     yield return (r, c);
                 }
             }
         }
     }
+
+    // A cell sitting on any of the grid's four edges.
+    private static bool IsOnBorder(int row, int col, int rows, int cols)
+        => row == 0 || row == rows - 1 || col == 0 || col == cols - 1;
 
     private static int CountLand(int[][] grid)
     {

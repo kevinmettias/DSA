@@ -21,26 +21,35 @@ namespace DSAExperimentation.LeetCode.MaximumSumOfSubsequenceWithNonAdjacentElem
 // for arbitrary x; it is simply never asked to be one here.
 internal readonly struct NonAdjacentMergeOperation : ICombineOperation<NonAdjacentSumNode>
 {
-    public static NonAdjacentSumNode Identity => new(0, NonAdjacentSumNode.NegativeInfinity, NonAdjacentSumNode.NegativeInfinity, NonAdjacentSumNode.NegativeInfinity);
+    public static NonAdjacentSumNode Identity => new(
+        0,
+        NonAdjacentSumBound.NegativeInfinity,
+        NonAdjacentSumBound.NegativeInfinity,
+        NonAdjacentSumBound.NegativeInfinity);
 
     public static NonAdjacentSumNode Combine(NonAdjacentSumNode left, NonAdjacentSumNode right)
     {
-        var neither = Math.Max(
-            left.Neither + Math.Max(right.Neither, right.LeftOnly),
-            left.RightOnly + right.Neither);
+        var neither = BestForBoundary(
+            left.Neither, left.RightOnly, right.Neither, right.LeftOnly);
 
-        var leftOnly = Math.Max(
-            left.LeftOnly + Math.Max(right.Neither, right.LeftOnly),
-            left.Both + right.Neither);
+        var leftOnly = BestForBoundary(
+            left.LeftOnly, left.Both, right.Neither, right.LeftOnly);
 
-        var rightOnly = Math.Max(
-            left.Neither + Math.Max(right.RightOnly, right.Both),
-            left.RightOnly + right.RightOnly);
+        var rightOnly = BestForBoundary(
+            left.Neither, left.RightOnly, right.RightOnly, right.Both);
 
-        var both = Math.Max(
-            left.LeftOnly + Math.Max(right.RightOnly, right.Both),
-            left.Both + right.RightOnly);
+        var both = BestForBoundary(
+            left.LeftOnly, left.Both, right.RightOnly, right.Both);
 
         return new NonAdjacentSumNode(neither, leftOnly, rightOnly, both);
     }
+
+    // One row of the merge's boundary table. The row already fixes whether each
+    // segment's own outer element is picked, so each side contributes the two of
+    // its totals that agree with it: the one whose join-adjacent element is left
+    // unpicked (`...Open`) and the one where that element is picked (`...Taken`).
+    // The two halves of the join are adjacent, so they can never both be picked -
+    // hence a taken left join end leaves only the right segment's open total.
+    private static long BestForBoundary(long leftOpen, long leftTaken, long rightOpen, long rightTaken) =>
+        Math.Max(leftOpen + Math.Max(rightOpen, rightTaken), leftTaken + rightOpen);
 }

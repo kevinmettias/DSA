@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class OnlineStockSpanBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _prices = Enumerable.Range(1, Length).ToArray();

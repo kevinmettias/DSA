@@ -9,12 +9,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountOfSmallerNumbersAfterSelfBenchmarks
 {
-    private const int RandomSeed = 315; // LeetCode problem number
+    private const int RandomSeed = 315; private int[] _nums = [];
+
+    // LeetCode problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = CountOfSmallerNumbersAfterSelfWorkloads.BuildNums(Length, seed: RandomSeed);

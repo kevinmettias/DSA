@@ -16,10 +16,10 @@ public class CountNumberOfBalancedPermutationsBenchmarks
     private const int Seed = 3343; // LC problem number
     private const string Digits = "01234";
 
-    [Params(6, 9)]
-    public int Length;
+    private string _num = "";
 
-    private string _num = null!;
+    [Params(6, 9)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

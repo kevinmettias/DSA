@@ -11,11 +11,11 @@ public class InsertIntervalBenchmarks
     private const int IntervalSpacing = 3;
     private const int NewIntervalEndMultiplier = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private (int Start, int End)[] _intervals = [];
 
-    private (int Start, int End)[] _intervals = null!;
     private (int Start, int End) _newInterval;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

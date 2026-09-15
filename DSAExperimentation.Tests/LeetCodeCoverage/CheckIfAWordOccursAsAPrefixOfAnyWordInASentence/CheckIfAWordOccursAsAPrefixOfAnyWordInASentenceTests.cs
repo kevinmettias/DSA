@@ -27,7 +27,8 @@ public sealed class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
         Assert.Equal(
             expected,
             CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByStartsWithScan(
-                sentence, searchWord));
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SentenceText(sentence),
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(searchWord)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -36,5 +37,6 @@ public sealed class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
         Assert.Equal(
             expected,
             CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByTriePerWord(
-                sentence, searchWord));
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SentenceText(sentence),
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(searchWord)));
 }

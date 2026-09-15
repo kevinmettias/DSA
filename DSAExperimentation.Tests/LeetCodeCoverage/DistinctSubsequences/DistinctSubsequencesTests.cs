@@ -19,5 +19,9 @@ public sealed class DistinctSubsequencesTests
     [MemberData(nameof(Examples))]
     public void NumDistinctByMemoizedRecursion_LeetCodeExamples_ReturnsCount(
         string source, string target, int expected) =>
-        Assert.Equal(expected, DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(source, target));
+        Assert.Equal(
+            expected,
+            DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(
+                new SourceText(source),
+                new TargetPattern(target)));
 }

@@ -46,8 +46,8 @@ internal static class MaximumSubarrayMinProductSolution
     public static int MaxSumMinProductByMonotonicStack(int[] nums)
     {
         var prefixSums = BuildPrefixSums(nums);
-        var leftBound = NearestSmallerBounds(nums, forward: true);
-        var rightBound = NearestSmallerBounds(nums, forward: false);
+        var leftBound = NearestSmallerBounds(nums, direction: ScanDirection.Forward);
+        var rightBound = NearestSmallerBounds(nums, direction: ScanDirection.Backward);
 
         var best = 0L;
 
@@ -79,14 +79,14 @@ internal static class MaximumSubarrayMinProductSolution
     // INCLUSIVE start (0 when nothing blocks); scanning backward yields the EXCLUSIVE
     // right bound (nums.Length when nothing blocks). Both feed the prefix-sum
     // subtraction above directly.
-    private static int[] NearestSmallerBounds(int[] nums, bool forward)
+    private static int[] NearestSmallerBounds(int[] nums, ScanDirection direction)
     {
         var bounds = new int[nums.Length];
         var pending = new RepoIndexStack();
-        var start = forward ? 0 : nums.Length - 1;
-        var step = forward ? 1 : -1;
-        var fallback = forward ? 0 : nums.Length;
-        var offset = forward ? 1 : 0;
+        var start = direction == ScanDirection.Forward ? 0 : LastIndex(nums);
+        var step = direction == ScanDirection.Forward ? 1 : -1;
+        var fallback = direction == ScanDirection.Forward ? 0 : nums.Length;
+        var offset = direction == ScanDirection.Forward ? 1 : 0;
 
         for (var count = 0; count < nums.Length; count++)
         {
@@ -97,12 +97,27 @@ internal static class MaximumSubarrayMinProductSolution
                 pending.TryPop(out _);
             }
 
-            bounds[i] = pending.TryPeek(out var neighbor) ? neighbor + offset : fallback;
+            bounds[i] = pending.TryPeek(out var neighbor) ? AdjustedBound(neighbor, offset) : fallback;
             pending.Push(i);
         }
 
         return bounds;
     }
 
+    private static int LastIndex(int[] nums) => nums.Length - 1;
+
+    // The bound the blocking neighbour implies: one past it when scanning forward,
+    // the neighbour itself when scanning backward.
+    private static int AdjustedBound(int neighbor, int offset) => neighbor + offset;
+
     private static int ReportedAnswer(long best) => (int)(best % ModularArithmetic.Modulo);
+
+    // Which way NearestSmallerBounds walks the array: forward to find each element's
+    // inclusive left bound, backward to find its exclusive right bound - a state the
+    // call site names, where a bare `true` said it only by position.
+    private enum ScanDirection
+    {
+        Forward,
+        Backward,
+    }
 }

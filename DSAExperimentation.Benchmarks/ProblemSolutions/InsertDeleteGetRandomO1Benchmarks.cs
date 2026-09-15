@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1.InsertDeleteGetRandomO1Solution;
+using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class InsertDeleteGetRandomO1Benchmarks
 {
-    [Params(200, 20_000)]
-    public int Count;
+    private int[] _insertOrder = [];
 
-    private int[] _insertOrder = null!;
-    private int[] _removalOrder = null!;
+    private int[] _removalOrder = [];
+    [Params(200, 20_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,12 +30,12 @@ public class InsertDeleteGetRandomO1Benchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListScan() => Replay(new RandomizedSetByListScan());
+    public int ListScan() => Replay(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan());
 
     [Benchmark]
-    public int HashMapSwapRemove() => Replay(new RandomizedSetByHashMapSwapRemove());
+    public int HashMapSwapRemove() => Replay(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove());
 
-    private int Replay(IRandomizedSet set)
+    private int Replay(InsertDeleteGetRandomO1Solution.IRandomizedSet set)
     {
         foreach (var value in _insertOrder)
         {

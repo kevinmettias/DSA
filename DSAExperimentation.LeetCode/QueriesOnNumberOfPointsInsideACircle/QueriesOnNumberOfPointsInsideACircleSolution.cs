@@ -31,6 +31,21 @@ internal static class QueriesOnNumberOfPointsInsideACircleSolution
         return results;
     }
 
+    private static int CountEveryPoint(int[] query, int[][] points)
+    {
+        var count = 0;
+
+        foreach (var point in points)
+        {
+            if (Covers(query, point))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     // Sort the points by x once, then let BinarySearch.LowerBound/UpperBound over an
     // ArraySequence<int> of the sorted x-coordinates (this repo's own O(1)-Get
     // IRandomAccessSequence<Element> witness) clip each query down to the half-open
@@ -50,21 +65,6 @@ internal static class QueriesOnNumberOfPointsInsideACircleSolution
         }
 
         return results;
-    }
-
-    private static int CountEveryPoint(int[] query, int[][] points)
-    {
-        var count = 0;
-
-        foreach (var point in points)
-        {
-            if (Covers(query, point))
-            {
-                count++;
-            }
-        }
-
-        return count;
     }
 
     private static int CountWithinXBand(int[] query, int[][] sortedPoints, ArraySequence<int> sequence)

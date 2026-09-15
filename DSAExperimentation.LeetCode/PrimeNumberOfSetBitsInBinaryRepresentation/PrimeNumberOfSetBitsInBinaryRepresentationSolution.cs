@@ -33,37 +33,6 @@ internal static class PrimeNumberOfSetBitsInBinaryRepresentationSolution
         return count;
     }
 
-    // Every reachable popcount is looked up in this repo's own Set<int>
-    // (HashMap<Element,bool>-backed), built once, instead of re-deriving
-    // primality per value.
-    public static int CountPrimeSetBitsByPrecomputedSet(int left, int right)
-    {
-        var count = 0;
-
-        for (var value = left; value <= right; value++)
-        {
-            if (PrimeBitCounts.Has(CountSetBits(value)))
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    private static int CountSetBits(int value)
-    {
-        var bits = 0;
-
-        while (value != 0)
-        {
-            value &= value - 1;
-            bits++;
-        }
-
-        return bits;
-    }
-
     private static bool IsPrime(int value)
     {
         if (value < SmallestPrime)
@@ -82,6 +51,24 @@ internal static class PrimeNumberOfSetBitsInBinaryRepresentationSolution
         return true;
     }
 
+    // Every reachable popcount is looked up in this repo's own Set<int>
+    // (HashMap<Element,bool>-backed), built once, instead of re-deriving
+    // primality per value.
+    public static int CountPrimeSetBitsByPrecomputedSet(int left, int right)
+    {
+        var count = 0;
+
+        for (var value = left; value <= right; value++)
+        {
+            if (PrimeBitCounts.Has(CountSetBits(value)))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     private static Set<int> BuildPrimeBitCounts()
     {
         var primes = new Set<int>();
@@ -92,5 +79,18 @@ internal static class PrimeNumberOfSetBitsInBinaryRepresentationSolution
         }
 
         return primes;
+    }
+
+    private static int CountSetBits(int value)
+    {
+        var bits = 0;
+
+        while (value != 0)
+        {
+            value &= value - 1;
+            bits++;
+        }
+
+        return bits;
     }
 }

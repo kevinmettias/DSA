@@ -25,6 +25,16 @@ internal static class PowerStateWorkloads
             edges.Add([from, i, random.Next(1, WeightUpperBound)]);
         }
 
+        AddExtraForwardEdges(random, edges, nodeCount);
+
+        return ([.. edges], BuildCost(nodeCount, random));
+    }
+
+    // Drawn after the spanning edges above and before BuildCost's costs, so the
+    // seeded sequence is consumed in exactly the order the graph and its costs
+    // depend on.
+    private static void AddExtraForwardEdges(Random random, List<int[]> edges, int nodeCount)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < ExtraEdgesPerNode; e++)
@@ -37,8 +47,6 @@ internal static class PowerStateWorkloads
                 }
             }
         }
-
-        return ([.. edges], BuildCost(nodeCount, random));
     }
 
     private static int[] BuildCost(int nodeCount, Random random)

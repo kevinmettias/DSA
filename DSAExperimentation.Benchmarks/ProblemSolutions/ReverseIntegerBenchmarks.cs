@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ReverseIntegerBenchmarks
 {
     [Params(123456789, 1534236469)]
-    public int Value;
+    public int Value { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Arithmetic() => ReverseIntegerSolution.ReverseByArithmetic(Value);

@@ -60,23 +60,12 @@ public sealed class DesignEventManagerTests
 // One call in an EventManager script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct EventManagerOp
+public readonly record struct EventManagerOp(EventManagerOp.OpKind kind, int eventId, int newPriority)
 {
-    private readonly Kind _kind;
-    private readonly int _eventId;
-    private readonly int _newPriority;
-
-    private EventManagerOp(Kind kind, int eventId, int newPriority)
-    {
-        _kind = kind;
-        _eventId = eventId;
-        _newPriority = newPriority;
-    }
-
     public static EventManagerOp UpdatePriority(int eventId, int newPriority) =>
-        new(Kind.UpdatePriority, eventId, newPriority);
+        new(OpKind.UpdatePriority, eventId, newPriority);
 
-    public static EventManagerOp PollHighest() => new(Kind.PollHighest, 0, 0);
+    public static EventManagerOp PollHighest() => new(OpKind.PollHighest, 0, 0);
 
     // null for UpdatePriority (void), the polled eventId for PollHighest - so a
     // script runner can assert against one expected value per operation
@@ -85,16 +74,16 @@ public readonly record struct EventManagerOp
     // calls Apply.
     internal int? Apply(IEventManagerStrategy strategy)
     {
-        if (_kind == Kind.UpdatePriority)
+        if (kind == OpKind.UpdatePriority)
         {
-            strategy.UpdatePriority(_eventId, _newPriority);
+            strategy.UpdatePriority(eventId, newPriority);
             return null;
         }
 
         return strategy.PollHighest();
     }
 
-    private enum Kind
+    public enum OpKind
     {
         UpdatePriority,
         PollHighest,

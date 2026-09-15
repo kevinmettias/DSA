@@ -12,9 +12,9 @@ namespace DSAExperimentation.LeetCode.PossibleBipartition;
 // them stays BCL, as a baseline's internals must (#17.5).
 internal sealed class DislikeAdjacency
 {
-    private DislikeAdjacency(int[][] neighbors) => Neighbors = neighbors;
-
     public int[][] Neighbors { get; }
+
+    private DislikeAdjacency(int[][] neighbors) => Neighbors = neighbors;
 
     public static DislikeAdjacency Build(int n, int[][] dislikes)
     {

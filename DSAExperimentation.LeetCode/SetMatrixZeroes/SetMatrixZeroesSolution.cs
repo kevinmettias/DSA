@@ -31,6 +31,9 @@ internal static class SetMatrixZeroesSolution
         }
     }
 
+    private static int[][] CloneMatrix(int[][] source) =>
+        source.Select(row => (int[])row.Clone()).ToArray();
+
     private static void ZeroRowAndColumn(int[][] matrix, int row, int col)
     {
         for (var c = 0; c < matrix[0].Length; c++)
@@ -44,12 +47,16 @@ internal static class SetMatrixZeroesSolution
         }
     }
 
-    private static int[][] CloneMatrix(int[][] source) =>
-        source.Select(row => (int[])row.Clone()).ToArray();
-
     // Track only the zero rows and zero columns in this repo's own Set<int> -
     // O(rows+cols) extra space instead of a full second matrix.
     public static void SetZeroesByRowColumnSets(int[][] matrix)
+    {
+        var (zeroRows, zeroCols) = CollectZeroRowsAndColumns(matrix);
+
+        ApplyZeroRowsAndColumns(matrix, zeroRows, zeroCols);
+    }
+
+    private static (Set<int> Rows, Set<int> Columns) CollectZeroRowsAndColumns(int[][] matrix)
     {
         var zeroRows = new Set<int>();
         var zeroCols = new Set<int>();
@@ -66,6 +73,13 @@ internal static class SetMatrixZeroesSolution
             }
         }
 
+        return (zeroRows, zeroCols);
+    }
+
+    // Reads the collected rows and columns before writing anything, so a cell
+    // zeroed on this pass is never mistaken for an original zero.
+    private static void ApplyZeroRowsAndColumns(int[][] matrix, Set<int> zeroRows, Set<int> zeroCols)
+    {
         for (var r = 0; r < matrix.Length; r++)
         {
             for (var c = 0; c < matrix[0].Length; c++)

@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximizeNumberOfNiceDivisorsBenchmarks
 {
     [Params(40, 50)]
-    public int PrimeFactors;
+    public int PrimeFactors { get; set; }
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursion() =>

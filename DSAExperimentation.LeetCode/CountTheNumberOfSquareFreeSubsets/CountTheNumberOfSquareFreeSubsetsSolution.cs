@@ -72,26 +72,12 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
     // multiplier (2^ones), since 1 never changes squarefree-ness either way.
     public static long CountByBitmaskMemo(int[] nums)
     {
-        var frequency = new int[MaxValue + 1];
-
-        foreach (var num in nums)
-        {
-            frequency[num]++;
-        }
-
-        var squareFreeValues = new List<int>();
-
-        for (var value = 2; value <= MaxValue; value++)
-        {
-            if (frequency[value] > 0 && PrimeMask[value] >= 0)
-            {
-                squareFreeValues.Add(value);
-            }
-        }
+        var frequency = TallyFrequencies(nums);
+        var squareFreeValues = SquareFreeValuesIn(frequency);
 
         var totalWithEmpty = Memoizer.Memoize<(int Index, int Mask), long>(
             (0, 0),
-            (state, recurse) => CountFrom(state.Index, state.Mask, squareFreeValues, frequency, recurse));
+            new SubsetsFromRemainingValues(squareFreeValues, frequency));
 
         var multiplier = ModularArithmetic.Power(2, frequency[1]);
         var withOnes = totalWithEmpty * multiplier % ModularArithmetic.Modulo;
@@ -99,25 +85,35 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
         return (withOnes - 1 + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
     }
 
-    private static long CountFrom(
-        int index, int mask, List<int> squareFreeValues, int[] frequency, Func<(int Index, int Mask), long> recurse)
+    // How many times each value in [0, MaxValue] occurs. Order inside a subset never
+    // matters for the product, so the occurrences collapse to a multiplicity here.
+    private static int[] TallyFrequencies(int[] nums)
     {
-        if (index == squareFreeValues.Count)
+        var frequency = new int[MaxValue + 1];
+
+        foreach (var num in nums)
         {
-            return 1L;
+            frequency[num]++;
         }
 
-        var skip = recurse((index + 1, mask));
-        var value = squareFreeValues[index];
-        var primeMask = PrimeMask[value];
+        return frequency;
+    }
 
-        if ((mask & primeMask) != 0)
+    // The distinct values above 1 that could join a square-free subset at all: present
+    // at least once, and not already carrying a squared prime factor of their own.
+    private static List<int> SquareFreeValuesIn(int[] frequency)
+    {
+        var values = new List<int>();
+
+        for (var value = 2; value <= MaxValue; value++)
         {
-            return skip;
+            if (frequency[value] > 0 && PrimeMask[value] >= 0)
+            {
+                values.Add(value);
+            }
         }
 
-        var take = frequency[value] * recurse((index + 1, mask | primeMask)) % ModularArithmetic.Modulo;
-        return (skip + take) % ModularArithmetic.Modulo;
+        return values;
     }
 
     private static int[] BuildPrimeMasks()
@@ -139,27 +135,81 @@ internal static class CountTheNumberOfSquareFreeSubsetsSolution
 
         for (var p = 0; p < Primes.Length && remaining > 1; p++)
         {
-            if (remaining % Primes[p] != 0)
-            {
-                continue;
-            }
+            var extracted = RemovePrimeFactor(remaining, mask, p);
 
-            var exponent = 0;
-
-            while (remaining % Primes[p] == 0)
-            {
-                remaining /= Primes[p];
-                exponent++;
-            }
-
-            if (exponent > 1)
+            if (!extracted.SquareFree)
             {
                 return -1;
             }
 
-            mask |= 1 << p;
+            (remaining, mask) = (extracted.Remaining, extracted.Mask);
         }
 
         return mask;
+    }
+
+    // One prime's share of the factorization of `remaining`: the mask gains that prime's
+    // bit when it divides the value exactly once, gains nothing when it does not divide
+    // it at all, and answers SquareFree: false when it divides it twice over - a squared
+    // prime factor, which no subset containing that value can ever be square-free with.
+    private static (int Remaining, int Mask, bool SquareFree) RemovePrimeFactor(
+        int remaining, int mask, int primeIndex)
+    {
+        var (reduced, exponent) = DivideOut(remaining, Primes[primeIndex]);
+
+        if (exponent == 0)
+        {
+            return (reduced, mask, true);
+        }
+
+        if (exponent == 1)
+        {
+            return (reduced, mask | (1 << primeIndex), true);
+        }
+
+        return (remaining, mask, false);
+    }
+
+    // How many times `prime` divides `value`, and what is left of `value` once every one
+    // of those factors has been divided out.
+    private static (int Reduced, int Exponent) DivideOut(int value, int prime)
+    {
+        var reduced = value;
+        var exponent = 0;
+
+        while (reduced % prime == 0)
+        {
+            reduced /= prime;
+            exponent++;
+        }
+
+        return (reduced, exponent);
+    }
+
+    // The recurrence, as a named type: values are walked in one fixed order, and each
+    // is either left out outright or taken - taking it only when its primes do not
+    // collide with the mask so far, and contributing one choice per occurrence.
+    private sealed class SubsetsFromRemainingValues(List<int> squareFreeValues, int[] frequency)
+        : IRecurrence<(int Index, int Mask), long>
+    {
+        public long Replay((int Index, int Mask) state, IRecurrence<(int Index, int Mask), long> rest)
+        {
+            if (state.Index == squareFreeValues.Count)
+            {
+                return 1L;
+            }
+
+            var skip = rest.Replay((state.Index + 1, state.Mask), rest);
+            var value = squareFreeValues[state.Index];
+            var primeMask = PrimeMask[value];
+
+            if ((state.Mask & primeMask) != 0)
+            {
+                return skip;
+            }
+
+            var take = frequency[value] * rest.Replay((state.Index + 1, state.Mask | primeMask), rest) % ModularArithmetic.Modulo;
+            return (skip + take) % ModularArithmetic.Modulo;
+        }
     }
 }

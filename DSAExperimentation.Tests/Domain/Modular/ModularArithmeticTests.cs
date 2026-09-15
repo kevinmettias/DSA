@@ -15,10 +15,7 @@ public sealed class ModularArithmeticTests
         Assert.Equal(expected, ModularArithmetic.Power(value, exponent));
 
     [Fact]
-    public void Power_ResultAlwaysStaysBelowTheModulus()
-    {
-        Assert.True(ModularArithmetic.Power(999_999_999, 12) < ModularArithmetic.Modulo);
-    }
+    public void Power_ResultAlwaysStaysBelowTheModulus() => Assert.True(ModularArithmetic.Power(999_999_999, 12) < ModularArithmetic.Modulo);
 
     [Fact]
     public void Power_LargeExponent_DoesNotOverflow()
@@ -28,12 +25,10 @@ public sealed class ModularArithmeticTests
     }
 
     [Fact]
-    public void Power_ReducesItsBaseModuloFirst()
-    {
+    public void Power_ReducesItsBaseModuloFirst() =>
         Assert.Equal(
             ModularArithmetic.Power(5, 7),
             ModularArithmetic.Power(5 + ModularArithmetic.Modulo, 7));
-    }
 
     [Theory]
     [InlineData(1)]
@@ -45,10 +40,7 @@ public sealed class ModularArithmeticTests
         Assert.Equal(1, value % ModularArithmetic.Modulo * ModularArithmetic.Inverse(value) % ModularArithmetic.Modulo);
 
     [Fact]
-    public void Inverse_OfOne_IsOne()
-    {
-        Assert.Equal(1, ModularArithmetic.Inverse(1));
-    }
+    public void Inverse_OfOne_IsOne() => Assert.Equal(1, ModularArithmetic.Inverse(1));
 
     [Fact]
     public void Inverse_DividesExactlyWhereOrdinaryDivisionWould()
@@ -60,8 +52,5 @@ public sealed class ModularArithmeticTests
     }
 
     [Fact]
-    public void Modulo_IsTheLeetCodePrime()
-    {
-        Assert.Equal(1_000_000_007, ModularArithmetic.Modulo);
-    }
+    public void Modulo_IsTheLeetCodePrime() => Assert.Equal(1_000_000_007, ModularArithmetic.Modulo);
 }

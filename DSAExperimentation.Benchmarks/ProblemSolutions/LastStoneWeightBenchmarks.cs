@@ -12,10 +12,10 @@ public class LastStoneWeightBenchmarks
     private const int RandomSeed = 1046; // LC problem number
     private const int MaxStoneWeightExclusive = 1_000;
 
-    [Params(200, 5_000)]
-    public int StoneCount;
+    private int[] _stones = [];
 
-    private int[] _stones = null!;
+    [Params(200, 5_000)]
+    public int StoneCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

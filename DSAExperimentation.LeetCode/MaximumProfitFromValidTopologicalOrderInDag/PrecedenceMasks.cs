@@ -6,9 +6,9 @@ namespace DSAExperimentation.LeetCode.MaximumProfitFromValidTopologicalOrderInDa
 // raw edge list.
 internal sealed class PrecedenceMasks
 {
-    private PrecedenceMasks(int[] masks) => Masks = masks;
-
     public int[] Masks { get; }
+
+    private PrecedenceMasks(int[] masks) => Masks = masks;
 
     public static PrecedenceMasks Build(int n, int[][] edges)
     {

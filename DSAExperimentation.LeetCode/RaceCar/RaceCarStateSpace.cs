@@ -10,13 +10,6 @@ namespace DSAExperimentation.LeetCode.RaceCar;
 // arm stay textbook: it needs the bound, not a materialized graph.
 internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpeedMagnitude)
 {
-    // Every run starts at the origin, already moving forward at speed 1.
-    public const int StartPosition = 0;
-    public const int StartSpeed = 1;
-
-    // An 'A' command doubles the current speed.
-    public const int SpeedDoublingFactor = 2;
-
     private const int PositionBoundMultiplier = 4;
     private const int PositionBoundPadding = 2;
 
@@ -25,6 +18,18 @@ internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpee
         var positionBound = (PositionBoundMultiplier * target) + PositionBoundPadding;
 
         return new RaceCarStateSpace(positionBound, SmallestPowerOfTwoAtLeast(positionBound));
+    }
+
+    private static int SmallestPowerOfTwoAtLeast(int bound)
+    {
+        var magnitude = RaceCarMotion.StartSpeed;
+
+        while (magnitude < bound)
+        {
+            magnitude *= RaceCarMotion.SpeedDoublingFactor;
+        }
+
+        return magnitude;
     }
 
     public bool Contains(int position, int speed) =>
@@ -36,24 +41,14 @@ internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpee
     {
         var speeds = new List<int>();
 
-        for (var magnitude = StartSpeed; magnitude <= MaxSpeedMagnitude; magnitude *= SpeedDoublingFactor)
+        for (var magnitude = RaceCarMotion.StartSpeed;
+            magnitude <= MaxSpeedMagnitude;
+            magnitude *= RaceCarMotion.SpeedDoublingFactor)
         {
             speeds.Add(magnitude);
             speeds.Add(-magnitude);
         }
 
         return speeds;
-    }
-
-    private static int SmallestPowerOfTwoAtLeast(int bound)
-    {
-        var magnitude = StartSpeed;
-
-        while (magnitude < bound)
-        {
-            magnitude *= SpeedDoublingFactor;
-        }
-
-        return magnitude;
     }
 }

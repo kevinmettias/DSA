@@ -39,25 +39,6 @@ internal static class LexicographicallyMaximumMEXArraySolution
         return [.. result];
     }
 
-    private static int MexOf(int[] nums, int from, int to)
-    {
-        var present = new HashSet<int>();
-
-        for (var i = from; i <= to; i++)
-        {
-            present.Add(nums[i]);
-        }
-
-        var mex = 0;
-
-        while (present.Contains(mex))
-        {
-            mex++;
-        }
-
-        return mex;
-    }
-
     private static int ShortestPrefixReaching(int[] nums, int start, int target)
     {
         for (var length = 1; ; length++)
@@ -106,6 +87,27 @@ internal static class LexicographicallyMaximumMEXArraySolution
     private static int[] BuildSuffixMex(int[] nums)
     {
         var n = nums.Length;
+        var frequency = CountValues(nums, n);
+
+        var mexPointer = AdvanceMex(frequency, 0);
+
+        var suffixMex = new int[n + 1];
+        suffixMex[0] = mexPointer;
+
+        for (var i = 0; i < n; i++)
+        {
+            mexPointer = RemoveValue(nums[i], frequency, mexPointer);
+
+            suffixMex[i + 1] = mexPointer;
+        }
+
+        return suffixMex;
+    }
+
+    // How many times each value in 1..n occurs. A value above n can never be the
+    // MEX of an n-element array, so it is not tracked at all.
+    private static int[] CountValues(int[] nums, int n)
+    {
         var frequency = new int[n + 1];
 
         foreach (var value in nums)
@@ -116,34 +118,44 @@ internal static class LexicographicallyMaximumMEXArraySolution
             }
         }
 
-        var mexPointer = 0;
+        return frequency;
+    }
+
+    // The smallest value at or above `from` that is not present - the MEX, once
+    // every value below it has been counted in.
+    private static int AdvanceMex(int[] frequency, int from)
+    {
+        var n = frequency.Length - 1;
+        var mexPointer = from;
 
         while (mexPointer <= n && frequency[mexPointer] > 0)
         {
             mexPointer++;
         }
 
-        var suffixMex = new int[n + 1];
-        suffixMex[0] = mexPointer;
+        return mexPointer;
+    }
 
-        for (var i = 0; i < n; i++)
+    // Takes one occurrence of `value` back out of the counts and reports the MEX
+    // that leaves: a removal at or above the current MEX cannot touch it, and one
+    // below can only lower it to exactly `value` itself.
+    private static int RemoveValue(int value, int[] frequency, int mexPointer)
+    {
+        var n = frequency.Length - 1;
+
+        if (value > n)
         {
-            var value = nums[i];
-
-            if (value <= n)
-            {
-                frequency[value]--;
-
-                if (frequency[value] == 0 && value < mexPointer)
-                {
-                    mexPointer = value;
-                }
-            }
-
-            suffixMex[i + 1] = mexPointer;
+            return mexPointer;
         }
 
-        return suffixMex;
+        frequency[value]--;
+
+        if (frequency[value] == 0 && value < mexPointer)
+        {
+            mexPointer = value;
+        }
+
+        return mexPointer;
     }
 
     // Consumes at least one element (a suffix whose own MEX is 0 still needs a
@@ -152,29 +164,50 @@ internal static class LexicographicallyMaximumMEXArraySolution
     // whole remaining suffix is consumed, since target IS that suffix's MEX.
     private static int GrowWindowToTarget(int[] nums, int start, int target, int[] windowFrequency)
     {
-        var n = nums.Length;
         var windowMexPointer = 0;
         var index = start;
 
         do
         {
-            var value = nums[index];
-
-            if (value <= n)
-            {
-                windowFrequency[value]++;
-            }
-
-            index++;
-
-            while (windowMexPointer <= n && windowFrequency[windowMexPointer] > 0)
-            {
-                windowMexPointer++;
-            }
+            (index, windowMexPointer) = AbsorbElement(nums, index, windowFrequency, windowMexPointer);
         }
         while (windowMexPointer < target);
 
-        for (var i = start; i < index; i++)
+        ClearWindow(nums, start, index, windowFrequency);
+
+        return index - start;
+    }
+
+    // Takes nums[index] into the window and reports the index just past it along
+    // with the window's own MEX pointer once that element has been counted.
+    private static (int Index, int WindowMexPointer) AbsorbElement(
+        int[] nums, int index, int[] windowFrequency, int windowMexPointer)
+    {
+        var n = nums.Length;
+        var value = nums[index];
+
+        if (value <= n)
+        {
+            windowFrequency[value]++;
+        }
+
+        var nextIndex = index + 1;
+
+        while (windowMexPointer <= n && windowFrequency[windowMexPointer] > 0)
+        {
+            windowMexPointer++;
+        }
+
+        return (nextIndex, windowMexPointer);
+    }
+
+    // The window's elements are consumed, so their counts go back to zero for the
+    // next window to reuse.
+    private static void ClearWindow(int[] nums, int start, int end, int[] windowFrequency)
+    {
+        var n = nums.Length;
+
+        for (var i = start; i < end; i++)
         {
             var value = nums[i];
 
@@ -183,7 +216,24 @@ internal static class LexicographicallyMaximumMEXArraySolution
                 windowFrequency[value] = 0;
             }
         }
+    }
 
-        return index - start;
+    private static int MexOf(int[] nums, int from, int to)
+    {
+        var present = new HashSet<int>();
+
+        for (var i = from; i <= to; i++)
+        {
+            present.Add(nums[i]);
+        }
+
+        var mex = 0;
+
+        while (present.Contains(mex))
+        {
+            mex++;
+        }
+
+        return mex;
     }
 }

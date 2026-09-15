@@ -21,11 +21,11 @@ public class MinimizeMaximumComponentCostBenchmarks
     private const int ExtraEdgesPerNode = 2;
     private const int ComponentTarget = 4;
 
-    [Params(100, 2000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
     private ComponentGraph _graph = null!;
+    [Params(100, 2000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

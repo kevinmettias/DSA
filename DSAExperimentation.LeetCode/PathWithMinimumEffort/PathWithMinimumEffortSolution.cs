@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.ShortestPaths;
 using DSAExperimentation.DataStructures.Heap;
 
@@ -22,9 +23,8 @@ namespace DSAExperimentation.LeetCode.PathWithMinimumEffort;
 // search the answer, re-scanning the whole grid with a fresh BFS per candidate.
 internal static class PathWithMinimumEffortSolution
 {
-    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
-    private const int MidpointDivisor = 2;
+    private static readonly (int Row, int Col)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // Deliberately written without this repo's primitives - a plain BCL
     // Queue<(int,int)> reachability scan per candidate effort is what you would
@@ -38,7 +38,7 @@ internal static class PathWithMinimumEffortSolution
 
         while (lo < hi)
         {
-            var mid = lo + ((hi - lo) / MidpointDivisor);
+            var mid = lo + ((hi - lo) / AlgorithmConstants.HalvingFactor);
 
             if (CanReachWithEffort(grid, mid))
             {
@@ -99,8 +99,8 @@ internal static class PathWithMinimumEffortSolution
             var nr = current.Row + dr;
             var nc = current.Col + dc;
 
-            if (!grid.Contains(nr, nc) || reach.Visited[nr, nc] ||
-                Math.Abs(grid.Heights[nr][nc] - grid.Heights[current.Row][current.Col]) > effort)
+            if (IsOffGridOrAlreadyReached(grid, reach, nr, nc)
+                || IsTooSteepToStepInto(grid, current, (nr, nc), effort))
             {
                 continue;
             }
@@ -109,6 +109,16 @@ internal static class PathWithMinimumEffortSolution
             reach.Queue.Enqueue((nr, nc));
         }
     }
+
+    // Off the grid is not a cell at all, and one already reached has nothing new to offer.
+    private static bool IsOffGridOrAlreadyReached(EffortGrid grid, ReachWalk reach, int row, int col) =>
+        !grid.Contains(row, col) || reach.Visited[row, col];
+
+    // The step is only worth taking while the height change it costs stays inside the
+    // effort the search is currently testing.
+    private static bool IsTooSteepToStepInto(
+        EffortGrid grid, (int Row, int Col) from, (int Row, int Col) to, int effort) =>
+        Math.Abs(grid.Heights[to.Row][to.Col] - grid.Heights[from.Row][from.Col]) > effort;
 
     // One minimax-Dijkstra pass: each frontier entry carries the bottleneck
     // effort of the route that reached it, and popping the globally cheapest
@@ -169,8 +179,7 @@ internal static class PathWithMinimumEffortSolution
     private static void RelaxNeighbor(
         EffortGrid grid, EffortWalk walk, SettledCell current, (int Row, int Col) direction)
     {
-        var nr = current.Row + direction.Row;
-        var nc = current.Col + direction.Col;
+        var (nr, nc) = NeighborOf(current, direction);
 
         if (!grid.Contains(nr, nc) || walk.Settled[nr, nc])
         {
@@ -186,6 +195,11 @@ internal static class PathWithMinimumEffortSolution
             walk.Frontier.Push(((nr, nc), candidate));
         }
     }
+
+    // The cell one step from `current` along `direction`, named before it is known to
+    // be on the grid at all.
+    private static (int Row, int Col) NeighborOf(SettledCell current, (int Row, int Col) direction) =>
+        (current.Row + direction.Row, current.Col + direction.Col);
 
     private readonly record struct EffortGrid(int[][] Heights, int Rows, int Cols)
     {

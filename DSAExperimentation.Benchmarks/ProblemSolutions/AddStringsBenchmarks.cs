@@ -13,11 +13,11 @@ public class AddStringsBenchmarks
 
     private const int DecimalBase = 10;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _a = "";
 
-    private string _a = null!;
-    private string _b = null!;
+    private string _b = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

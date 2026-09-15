@@ -14,7 +14,7 @@ public class AnglesOfATriangleBenchmarks
 {
     private const int Seed = 3899;
 
-    private int[] _sides = null!;
+    private int[] _sides = [];
 
     [GlobalSetup]
     public void Setup() => _sides = TriangleSideWorkloads.BuildValidTriangle(seed: Seed);

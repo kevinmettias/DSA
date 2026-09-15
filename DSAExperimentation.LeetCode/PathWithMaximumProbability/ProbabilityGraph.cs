@@ -14,17 +14,17 @@ namespace DSAExperimentation.LeetCode.PathWithMaximumProbability;
 // LeetCode-shaped ones.
 internal sealed class ProbabilityGraph
 {
-    private ProbabilityGraph(ProbabilityNode[] nodes, List<(double Probability, int To)>[] adjacency)
-    {
-        Nodes = nodes;
-        Adjacency = adjacency;
-    }
-
     public ProbabilityNode[] Nodes { get; }
 
     public List<(double Probability, int To)>[] Adjacency { get; }
 
     public int NodeCount => Nodes.Length;
+
+    private ProbabilityGraph(ProbabilityNode[] nodes, List<(double Probability, int To)>[] adjacency)
+    {
+        Nodes = nodes;
+        Adjacency = adjacency;
+    }
 
     public static ProbabilityGraph Build(int nodeCount, int[][] edges, double[] successProbabilities)
     {

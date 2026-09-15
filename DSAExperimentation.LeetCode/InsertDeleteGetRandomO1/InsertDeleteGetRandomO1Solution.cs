@@ -93,6 +93,16 @@ internal static class InsertDeleteGetRandomO1Solution
                 return false;
             }
 
+            MoveLastIntoSlot(index);
+            _indexByValue.TryRemove(value);
+            return true;
+        }
+
+        // The swap half of swap-remove: the last value takes the vacated slot,
+        // both its references agree on that, and only then is the tail dropped -
+        // so RemoveAt always runs on the LAST index, its O(1) path.
+        private void MoveLastIntoSlot(int index)
+        {
             var lastIndex = _values.Count - 1;
             var lastValue = _values.Get(lastIndex);
 
@@ -100,8 +110,6 @@ internal static class InsertDeleteGetRandomO1Solution
             _indexByValue.Set(lastValue, index);
 
             _values.RemoveAt(lastIndex);
-            _indexByValue.TryRemove(value);
-            return true;
         }
 
         public int GetRandom() => _values.Get(_random.Next(_values.Count));

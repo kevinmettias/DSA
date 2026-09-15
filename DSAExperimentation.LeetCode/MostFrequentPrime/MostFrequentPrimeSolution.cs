@@ -18,6 +18,12 @@ internal static class MostFrequentPrimeSolution
     // threshold - single- and some two-digit numbers never count, even if prime.
     private const int MinimumQualifyingValue = 10;
 
+    // The base of the numbers this problem builds: a straight-line path's digits are
+    // read as a decimal numeral, so the running value is shifted one place and the
+    // cell appended, and the "longest possible value" bound is the same base raised
+    // to the path length. One home for the radix instead of two places to change.
+    private const int DecimalRadix = 10;
+
     private static readonly (int RowDelta, int ColDelta)[] Directions =
     [
         (-1, 0), (1, 0), (0, -1), (0, 1),
@@ -76,19 +82,6 @@ internal static class MostFrequentPrimeSolution
         return MostFrequent(frequency);
     }
 
-    private static int MaxPossibleValue(int[][] mat)
-    {
-        var maxLength = Math.Max(mat.Length, mat[0].Length);
-        var bound = 1;
-
-        for (var i = 0; i < maxLength; i++)
-        {
-            bound *= 10;
-        }
-
-        return bound - 1;
-    }
-
     private static DynamicArray<bool> BuildSieve(int bound)
     {
         var isComposite = new DynamicArray<bool>();
@@ -114,11 +107,28 @@ internal static class MostFrequentPrimeSolution
         return isComposite;
     }
 
+    private static int MaxPossibleValue(int[][] mat)
+    {
+        var maxLength = Math.Max(mat.Length, mat[0].Length);
+        var bound = 1;
+
+        for (var i = 0; i < maxLength; i++)
+        {
+            bound *= DecimalRadix;
+        }
+
+        return bound - 1;
+    }
+
     // Every straight-line path of length >= 2 from every cell, in every
     // direction, yielded at each step it becomes a qualifying candidate.
     // Digits are 1-9 (LC's own constraint - no leading-zero cells exist), so
     // the running value only ever grows and crosses MinimumQualifyingValue
     // exactly once per path.
+    // Both coordinates have to land inside the grid for the walk to keep reading a digit.
+    private static bool IsInsideGrid(int row, int col, int rows, int cols) =>
+        row >= 0 && row < rows && col >= 0 && col < cols;
+
     private static IEnumerable<int> GenerateCandidateNumbers(int[][] mat)
     {
         var rows = mat.Length;
@@ -128,26 +138,48 @@ internal static class MostFrequentPrimeSolution
         {
             for (var col = 0; col < cols; col++)
             {
-                foreach (var (rowDelta, colDelta) in Directions)
+                foreach (var value in WalkAllDirectionsFrom(mat, row, col))
                 {
-                    var value = 0;
-                    var r = row;
-                    var c = col;
-
-                    while (r >= 0 && r < rows && c >= 0 && c < cols)
-                    {
-                        value = (value * 10) + mat[r][c];
-
-                        if (value > MinimumQualifyingValue)
-                        {
-                            yield return value;
-                        }
-
-                        r += rowDelta;
-                        c += colDelta;
-                    }
+                    yield return value;
                 }
             }
+        }
+    }
+
+    // Every direction's straight-line walk out of one cell, in the order the eight
+    // directions are listed.
+    private static IEnumerable<int> WalkAllDirectionsFrom(int[][] mat, int row, int col)
+    {
+        foreach (var direction in Directions)
+        {
+            foreach (var value in WalkOneDirection(mat, (row, col), direction))
+            {
+                yield return value;
+            }
+        }
+    }
+
+    // One straight-line walk: keep reading a digit while the cell stays on the grid,
+    // yielding the running number as soon as it passes MinimumQualifyingValue.
+    private static IEnumerable<int> WalkOneDirection(
+        int[][] mat, (int Row, int Col) origin, (int RowDelta, int ColDelta) direction)
+    {
+        var rows = mat.Length;
+        var cols = mat[0].Length;
+        var (row, col) = origin;
+        var value = 0;
+
+        while (IsInsideGrid(row, col, rows, cols))
+        {
+            value = (value * DecimalRadix) + mat[row][col];
+
+            if (value > MinimumQualifyingValue)
+            {
+                yield return value;
+            }
+
+            row += direction.RowDelta;
+            col += direction.ColDelta;
         }
     }
 
@@ -158,7 +190,7 @@ internal static class MostFrequentPrimeSolution
 
         foreach (var (value, count) in frequency)
         {
-            if (count > bestCount || (count == bestCount && value > best))
+            if (IsMoreFrequent(count, bestCount, value, best))
             {
                 best = value;
                 bestCount = count;
@@ -167,4 +199,9 @@ internal static class MostFrequentPrimeSolution
 
         return best;
     }
+
+    // A number takes the lead when it has been seen more often than the current best, or
+    // matches its count and is the larger number - LeetCode's own tie-break.
+    private static bool IsMoreFrequent(int count, int bestCount, int value, int best) =>
+        count > bestCount || (count == bestCount && value > best);
 }

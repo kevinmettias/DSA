@@ -12,10 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DistributeCandiesAmongChildrenIIBenchmarks
 {
-    [Params(200, 2_000)]
-    public int Limit;
-
     private int N => 4 * Limit;
+
+    [Params(200, 2_000)]
+    public int Limit { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForce() => DistributeCandiesAmongChildrenIISolution.CountWaysByBruteForce(N, Limit);

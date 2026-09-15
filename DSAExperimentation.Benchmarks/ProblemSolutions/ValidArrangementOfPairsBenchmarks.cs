@@ -14,10 +14,10 @@ public class ValidArrangementOfPairsBenchmarks
     private const int NodeCount = 64;
     private const int RandomSeed = 2097;
 
-    [Params(200, 2_000)]
-    public int PairCount;
+    private int[][] _pairs = [];
 
-    private int[][] _pairs = null!;
+    [Params(200, 2_000)]
+    public int PairCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

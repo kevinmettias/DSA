@@ -16,11 +16,11 @@ public class FindBuildingWhereAliceAndBobCanMeetBenchmarks
     private const int RandomSeed = 2940;
     private const int MaxHeightExclusive = 1_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _heights = [];
 
-    private int[] _heights = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

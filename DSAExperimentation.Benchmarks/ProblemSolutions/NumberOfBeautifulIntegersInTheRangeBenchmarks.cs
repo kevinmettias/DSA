@@ -15,10 +15,10 @@ public class NumberOfBeautifulIntegersInTheRangeBenchmarks
     private const int Low = 1;
     private const int K = 7;
 
-    [Params(100_000, 1_000_000)]
-    public int RangeSize;
-
     private int _high;
+
+    [Params(100_000, 1_000_000)]
+    public int RangeSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _high = Low + RangeSize;

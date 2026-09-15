@@ -15,10 +15,10 @@ public class MaximumNumberOfGroupsWithIncreasingLengthBenchmarks
     private const int RandomSeed = 2790; // LC problem number
     private const int UsageLimitUpperBoundExclusive = 1_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _usageLimits = [];
 
-    private int[] _usageLimits = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

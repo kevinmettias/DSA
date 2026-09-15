@@ -33,7 +33,10 @@ internal static class FindTheKthCharacterInStringGameISolution
         return word[k - 1];
     }
 
-    private static char NextChar(char c) => c == 'z' ? 'a' : (char)(c + 1);
+    private static char NextChar(char c) => c == 'z' ? 'a' : Shifted(c);
+
+    // The shift by one, before the wrap: 'a' -> 'b' through 'y' -> 'z'.
+    private static char Shifted(char c) => (char)(c + 1);
 
     // Every round is "append a +1-shifted copy of the whole word so far", so
     // reaching position p (0-indexed) by repeated halving visits exactly the

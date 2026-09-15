@@ -4,9 +4,9 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToVisitDisappearingNodes;
 // an O(1) lookup per node instead of re-scanning the raw edges array.
 internal sealed class TimedAdjacency
 {
-    private TimedAdjacency(List<(int Neighbor, int Weight)>[] neighbors) => Neighbors = neighbors;
-
     public List<(int Neighbor, int Weight)>[] Neighbors { get; }
+
+    private TimedAdjacency(List<(int Neighbor, int Weight)>[] neighbors) => Neighbors = neighbors;
 
     public static TimedAdjacency Build(int n, int[][] edges)
     {

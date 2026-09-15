@@ -104,7 +104,9 @@ internal static class DesignLinkedListSolution
     {
         private readonly List<int> _values = [];
 
-        public int Get(int index) => index < 0 || index >= _values.Count ? -1 : _values[index];
+        public int Get(int index) => index < 0 || index >= _values.Count ? -1 : ValueAt(index);
+
+        private int ValueAt(int index) => _values[index];
 
         public void AddAtHead(int value) => AddAtIndex(0, value);
 
@@ -117,7 +119,8 @@ internal static class DesignLinkedListSolution
                 return;
             }
 
-            _values.Insert(Math.Max(index, 0), value);
+            var insertIndex = Math.Max(index, 0);
+            _values.Insert(insertIndex, value);
         }
 
         public void DeleteAtIndex(int index)

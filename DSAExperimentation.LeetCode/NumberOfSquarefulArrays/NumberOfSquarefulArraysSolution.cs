@@ -27,6 +27,47 @@ internal static class NumberOfSquarefulArraysSolution
         return Permute(state, depth: 0);
     }
 
+    // This repo's Backtrack.Search drives the identical choose/explore/unchoose
+    // shape declaratively, with both the duplicate skip and the perfect-square
+    // adjacency folded into the candidate enumeration so illegal prefixes are never
+    // extended.
+    public static int NumSquarefulPermsByPrunedBacktracking(int[] nums)
+    {
+        var sorted = SortedCopy(nums);
+        var count = 0;
+        var state = new State(sorted.Length);
+
+        Backtrack.Search<State, int>(
+            state,
+            s => s.Values.Count == sorted.Length,
+            s => s.Values.Count == sorted.Length ? Array.Empty<int>() : NextCandidates(sorted, s),
+            (s, i) => { s.Used[i] = true; s.Values.Add(sorted[i]); },
+            (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
+            _ => count++);
+
+        return count;
+    }
+
+    private static IEnumerable<int> NextCandidates(int[] sorted, State s)
+    {
+        for (var i = 0; i < sorted.Length; i++)
+        {
+            if (IsNextCandidate(sorted, s, i))
+            {
+                yield return i;
+            }
+        }
+    }
+
+    // A position may extend the arrangement when its value is still free, survives
+    // PermutationsII's duplicate rule - a value equal to its predecessor is skipped
+    // unless that predecessor is already placed - and sums to a perfect square with
+    // the value already placed; the first placement has no neighbour to match.
+    private static bool IsNextCandidate(int[] sorted, State s, int i)
+        => !s.Used[i] &&
+            (i == 0 || sorted[i] != sorted[i - 1] || s.Used[i - 1]) &&
+            (s.Values.Count == 0 || IsPerfectSquare(sorted[i] + s.Values[^1]));
+
     private static int Permute(PermutationState state, int depth)
     {
         if (depth == state.Nums.Length)
@@ -49,7 +90,7 @@ internal static class NumberOfSquarefulArraysSolution
         var used = state.Used;
         var nums = state.Nums;
 
-        if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
+        if (CannotPlace(i, nums, used))
         {
             return 0;
         }
@@ -62,6 +103,12 @@ internal static class NumberOfSquarefulArraysSolution
         return count;
     }
 
+    // A value cannot be placed at this depth if its position is already taken, or if
+    // it repeats the value before it while that one is still free - the same
+    // duplicate rule the pruned strategy's candidate enumeration applies.
+    private static bool CannotPlace(int i, int[] nums, bool[] used)
+        => used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]);
+
     private static bool IsSquareful(int[] arrangement)
     {
         for (var i = 1; i < arrangement.Length; i++)
@@ -73,40 +120,6 @@ internal static class NumberOfSquarefulArraysSolution
         }
 
         return true;
-    }
-
-    // This repo's Backtrack.Search drives the identical choose/explore/unchoose
-    // shape declaratively, with both the duplicate skip and the perfect-square
-    // adjacency folded into the candidate enumeration so illegal prefixes are never
-    // extended.
-    public static int NumSquarefulPermsByPrunedBacktracking(int[] nums)
-    {
-        var sorted = SortedCopy(nums);
-        var count = 0;
-        var state = new State(sorted.Length);
-
-        Backtrack.Search<State, int>(
-            state,
-            s => s.Values.Count == sorted.Length,
-            s => s.Values.Count == sorted.Length ? [] : NextCandidates(sorted, s),
-            (s, i) => { s.Used[i] = true; s.Values.Add(sorted[i]); },
-            (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
-            _ => count++);
-
-        return count;
-    }
-
-    private static IEnumerable<int> NextCandidates(int[] sorted, State s)
-    {
-        for (var i = 0; i < sorted.Length; i++)
-        {
-            if (!s.Used[i] &&
-                (i == 0 || sorted[i] != sorted[i - 1] || s.Used[i - 1]) &&
-                (s.Values.Count == 0 || IsPerfectSquare(sorted[i] + s.Values[^1])))
-            {
-                yield return i;
-            }
-        }
     }
 
     private static bool IsPerfectSquare(int value)
@@ -122,19 +135,28 @@ internal static class NumberOfSquarefulArraysSolution
         return sorted;
     }
 
-    private sealed class State(int length)
+    private sealed record State
     {
-        public bool[] Used { get; } = new bool[length];
+        public bool[] Used { get; }
 
         public List<int> Values { get; } = [];
+
+        public State(int length) => Used = new bool[length];
     }
 
-    private sealed class PermutationState(int[] nums)
+    private sealed record PermutationState
     {
-        public int[] Nums { get; } = nums;
+        public int[] Nums { get; }
 
-        public bool[] Used { get; } = new bool[nums.Length];
+        public bool[] Used { get; }
 
-        public int[] Current { get; } = new int[nums.Length];
+        public int[] Current { get; }
+
+        public PermutationState(int[] nums)
+        {
+            Nums = nums;
+            Used = new bool[nums.Length];
+            Current = new int[nums.Length];
+        }
     }
 }

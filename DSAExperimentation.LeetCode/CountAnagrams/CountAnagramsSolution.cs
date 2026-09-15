@@ -30,6 +30,13 @@ internal static class CountAnagramsSolution
         return answer;
     }
 
+    private static long DistinctPermutationsByBruteForce(string word)
+    {
+        var distinct = new HashSet<string>();
+        Permute(word.ToCharArray(), 0, distinct);
+        return distinct.Count;
+    }
+
     // One O(maxWordLength) factorial/inverse-factorial table build (this repo's own
     // ModularArithmetic supplies the modulus and the Fermat's-little-theorem
     // inverse the table needs - the same shape
@@ -58,27 +65,25 @@ internal static class CountAnagramsSolution
         return answer;
     }
 
-    private static long DistinctPermutationsByBruteForce(string word)
+    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxLength)
     {
-        var distinct = new HashSet<string>();
-        Permute(word.ToCharArray(), 0, distinct);
-        return distinct.Count;
-    }
+        var factorial = new long[maxLength + 1];
+        var inverseFactorial = new long[maxLength + 1];
+        factorial[0] = 1;
 
-    private static void Permute(char[] chars, int start, HashSet<string> distinct)
-    {
-        if (start == chars.Length)
+        for (var i = 1; i <= maxLength; i++)
         {
-            distinct.Add(new string(chars));
-            return;
+            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
         }
 
-        for (var i = start; i < chars.Length; i++)
+        inverseFactorial[maxLength] = ModularArithmetic.Inverse(factorial[maxLength]);
+
+        for (var i = maxLength - 1; i >= 0; i--)
         {
-            (chars[start], chars[i]) = (chars[i], chars[start]);
-            Permute(chars, start + 1, distinct);
-            (chars[start], chars[i]) = (chars[i], chars[start]);
+            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
         }
+
+        return (factorial, inverseFactorial);
     }
 
     private static long DistinctPermutationsByModularFactorial(string word, long[] factorial, long[] inverseFactorial)
@@ -100,24 +105,19 @@ internal static class CountAnagramsSolution
         return result;
     }
 
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxLength)
+    private static void Permute(char[] chars, int start, HashSet<string> distinct)
     {
-        var factorial = new long[maxLength + 1];
-        var inverseFactorial = new long[maxLength + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxLength; i++)
+        if (start == chars.Length)
         {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
+            distinct.Add(new string(chars));
+            return;
         }
 
-        inverseFactorial[maxLength] = ModularArithmetic.Inverse(factorial[maxLength]);
-
-        for (var i = maxLength - 1; i >= 0; i--)
+        for (var i = start; i < chars.Length; i++)
         {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
+            (chars[start], chars[i]) = (chars[i], chars[start]);
+            Permute(chars, start + 1, distinct);
+            (chars[start], chars[i]) = (chars[i], chars[start]);
         }
-
-        return (factorial, inverseFactorial);
     }
 }

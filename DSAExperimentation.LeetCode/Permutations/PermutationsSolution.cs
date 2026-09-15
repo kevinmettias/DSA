@@ -24,30 +24,8 @@ internal static class PermutationsSolution
         var used = new bool[nums.Length];
         var path = new List<int>();
 
-        void Search()
-        {
-            if (path.Count == nums.Length)
-            {
-                results.Add([.. path]);
-                return;
-            }
+        Search(nums, used, path, results);
 
-            for (var i = 0; i < nums.Length; i++)
-            {
-                if (used[i])
-                {
-                    continue;
-                }
-
-                used[i] = true;
-                path.Add(nums[i]);
-                Search();
-                path.RemoveAt(path.Count - 1);
-                used[i] = false;
-            }
-        }
-
-        Search();
         return results;
     }
 
@@ -62,8 +40,8 @@ internal static class PermutationsSolution
             state,
             s => s.Values.Count == nums.Length,
             s => s.Values.Count == nums.Length
-                ? []
-                : Enumerable.Range(0, nums.Length).Where(i => !s.Used[i]),
+                ? Array.Empty<int>()
+                : UnusedIndices(s, nums),
             (s, i) => { s.Used[i] = true; s.Values.Add(nums[i]); },
             (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
             s => results.Add([.. s.Values]));
@@ -71,10 +49,41 @@ internal static class PermutationsSolution
         return results;
     }
 
-    private sealed class State(int length)
+    // The moves still open to a partial state, in index order.
+    private static IEnumerable<int> UnusedIndices(State s, int[] nums) =>
+        Enumerable.Range(0, nums.Length).Where(i => !s.Used[i]);
+
+    // The choose/explore/unchoose step: a full path is one permutation, otherwise
+    // every still-unused index is tried in turn and un-chosen again on the way back.
+    private static void Search(int[] nums, bool[] used, List<int> path, List<List<int>> results)
     {
-        public bool[] Used { get; } = new bool[length];
+        if (path.Count == nums.Length)
+        {
+            results.Add([.. path]);
+            return;
+        }
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if (used[i])
+            {
+                continue;
+            }
+
+            used[i] = true;
+            path.Add(nums[i]);
+            Search(nums, used, path, results);
+            path.RemoveAt(path.Count - 1);
+            used[i] = false;
+        }
+    }
+
+    private sealed record State
+    {
+        public bool[] Used { get; }
 
         public List<int> Values { get; } = [];
+
+        public State(int length) => Used = new bool[length];
     }
 }

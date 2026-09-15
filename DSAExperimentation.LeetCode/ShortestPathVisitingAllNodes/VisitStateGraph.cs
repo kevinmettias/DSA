@@ -15,15 +15,15 @@ namespace DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
 // never be ambiguous.
 internal sealed class VisitStateGraph
 {
+    public VisitStateNode[] StartNodes { get; }
+
+    public int FullMask { get; }
+
     private VisitStateGraph(VisitStateNode[] startNodes, int fullMask)
     {
         StartNodes = startNodes;
         FullMask = fullMask;
     }
-
-    public VisitStateNode[] StartNodes { get; }
-
-    public int FullMask { get; }
 
     public static VisitStateGraph Build(int[][] graph)
     {

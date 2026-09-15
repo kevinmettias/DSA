@@ -10,13 +10,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NextGreaterElementIBenchmarks
 {
-    private const int RandomSeed = 496; // LC problem number
+    private const int RandomSeed = 496; private int[] _nums1 = [];
+
+    private int[] _nums2 = [];
+    // LC problem number
 
     [Params(200, 2_500)]
-    public int Length;
-
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

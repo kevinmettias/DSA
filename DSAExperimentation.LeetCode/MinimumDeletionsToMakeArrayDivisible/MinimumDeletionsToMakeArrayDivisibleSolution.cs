@@ -41,6 +41,21 @@ internal static class MinimumDeletionsToMakeArrayDivisibleSolution
         return best;
     }
 
+    private static int CountSmaller(int[] nums, int candidate)
+    {
+        var count = 0;
+
+        foreach (var value in nums)
+        {
+            if (value < candidate)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     // Sort nums once with this repo's own MergeSort over ArrayIndexedSequence<int>, then walk
     // it for the first value that divides the gcd - every element before it has to go, and
     // nothing after it is cheaper. O(n log n) plus one scan.
@@ -59,21 +74,6 @@ internal static class MinimumDeletionsToMakeArrayDivisibleSolution
         }
 
         return LeetCodeAnswer.None;
-    }
-
-    private static int CountSmaller(int[] nums, int candidate)
-    {
-        var count = 0;
-
-        foreach (var value in nums)
-        {
-            if (value < candidate)
-            {
-                count++;
-            }
-        }
-
-        return count;
     }
 
     // An element divides every entry of numsDivide exactly when it divides their gcd, so the

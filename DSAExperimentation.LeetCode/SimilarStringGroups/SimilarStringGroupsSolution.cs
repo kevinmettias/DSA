@@ -132,9 +132,18 @@ internal static class SimilarStringGroupsSolution
         }
 
         return count == 1
-            ? state with { Count = count, First = index }
-            : state with { Count = count, Second = index };
+            ? WithFirstMismatch(state, count, index)
+            : WithSecondMismatch(state, count, index);
     }
+
+    // The pair's first mismatched position, which nothing needs to swap.
+    private static MismatchState WithFirstMismatch(MismatchState state, int count, int index) =>
+        state with { Count = count, First = index };
+
+    // The pair's second mismatched position - the one the first must swap with if
+    // the two words are to be similar.
+    private static MismatchState WithSecondMismatch(MismatchState state, int count, int index) =>
+        state with { Count = count, Second = index };
 
     private readonly record struct MismatchState(int Count, int First, int Second);
 }

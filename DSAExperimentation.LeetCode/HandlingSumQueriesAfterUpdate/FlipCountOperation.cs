@@ -33,5 +33,8 @@ internal readonly struct FlipCountOperation : IRangeUpdateOperation<int, bool>
 
     public static bool ComposeUpdate(bool outer, bool inner) => outer ^ inner;
 
-    public static int ApplyUpdate(int aggregate, bool update, int rangeLength) => update ? rangeLength - aggregate : aggregate;
+    public static int ApplyUpdate(int aggregate, bool update, int rangeLength) => update ? FlippedCount(aggregate, rangeLength) : aggregate;
+
+    // Flipping k bits of which `aggregate` are ones leaves rangeLength - aggregate ones.
+    private static int FlippedCount(int aggregate, int rangeLength) => rangeLength - aggregate;
 }

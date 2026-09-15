@@ -22,10 +22,10 @@ public class DoubleANumberRepresentedAsALinkedListBenchmarks
     private const int RandomSeed = 2816; // LC problem number
     private const int DecimalBase = 10;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int>? _head;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

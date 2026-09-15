@@ -16,11 +16,11 @@ public class ProcessRestrictedFriendRequestsBenchmarks
 
     private const int RestrictionDivisor = 20;
 
-    [Params(300, 3_000)]
-    public int NodeCount;
+    private int[][] _restrictions = [];
 
-    private int[][] _restrictions = null!;
-    private int[][] _requests = null!;
+    private int[][] _requests = [];
+    [Params(300, 3_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

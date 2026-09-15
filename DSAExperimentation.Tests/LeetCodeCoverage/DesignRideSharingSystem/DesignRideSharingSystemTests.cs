@@ -64,24 +64,15 @@ public sealed class DesignRideSharingSystemTests
 // One call in a RideSharingSystem script: which method to invoke and with what
 // argument. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct RideOp
+public readonly record struct RideOp(RideOp.OpKind kind, int id)
 {
-    private readonly Kind _kind;
-    private readonly int _id;
+    public static RideOp AddRider(int riderId) => new(OpKind.AddRider, riderId);
 
-    private RideOp(Kind kind, int id)
-    {
-        _kind = kind;
-        _id = id;
-    }
+    public static RideOp AddDriver(int driverId) => new(OpKind.AddDriver, driverId);
 
-    public static RideOp AddRider(int riderId) => new(Kind.AddRider, riderId);
+    public static RideOp CancelRider(int riderId) => new(OpKind.CancelRider, riderId);
 
-    public static RideOp AddDriver(int driverId) => new(Kind.AddDriver, driverId);
-
-    public static RideOp CancelRider(int riderId) => new(Kind.CancelRider, riderId);
-
-    public static RideOp Match() => new(Kind.Match, 0);
+    public static RideOp Match() => new(OpKind.Match, 0);
 
     // null for the three void calls, the returned [driverId, riderId] pair (or
     // [-1, -1]) for Match - so a script runner can assert against one expected
@@ -90,23 +81,23 @@ public readonly record struct RideOp
     // RunScript ever calls Apply.
     internal int[]? Apply(IRideSharingStrategy strategy)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.AddRider:
-                strategy.AddRider(_id);
+            case OpKind.AddRider:
+                strategy.AddRider(id);
                 return null;
-            case Kind.AddDriver:
-                strategy.AddDriver(_id);
+            case OpKind.AddDriver:
+                strategy.AddDriver(id);
                 return null;
-            case Kind.CancelRider:
-                strategy.CancelRider(_id);
+            case OpKind.CancelRider:
+                strategy.CancelRider(id);
                 return null;
             default:
                 return strategy.MatchDriverWithRider();
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         AddRider,
         AddDriver,

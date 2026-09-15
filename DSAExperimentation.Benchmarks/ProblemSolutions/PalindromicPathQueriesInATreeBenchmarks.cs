@@ -14,46 +14,64 @@ public class PalindromicPathQueriesInATreeBenchmarks
 {
     private const int RandomSeed = 3841;
     private const int QueryCount = 2_000;
-    private const int AlphabetSize = 4; // small alphabet so paths actually collide into palindromes sometimes
+    private const int AlphabetSize = 4; private int[] _parent = [];
+
+    private string _labels = "";
+    private int[][] _queries = [];
+    private RootedTreeNode[] _nodes = [];
+    // small alphabet so paths actually collide into palindromes sometimes
 
     [Params(500, 20_000)]
-    public int NodeCount;
-
-    private int[] _parent = null!;
-    private string _labels = null!;
-    private int[][] _queries = null!;
-    private RootedTreeNode[] _nodes = null!;
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
 
-        _parent = new int[NodeCount];
-        _parent[0] = -1;
+        _parent = BuildParentArray(random, NodeCount);
+        _labels = BuildLabels(random, NodeCount);
+        _queries = BuildQueries(random, QueryCount, NodeCount);
+        _nodes = ParentArrayTree.Build(_parent);
+    }
 
-        for (var i = 1; i < NodeCount; i++)
+    // The three generators draw from the one seeded Random in call order, so the
+    // parent, label and query streams stay exactly the streams Setup produced.
+    private static int[] BuildParentArray(Random random, int nodeCount)
+    {
+        var parent = new int[nodeCount];
+        parent[0] = -1;
+
+        for (var i = 1; i < nodeCount; i++)
         {
-            _parent[i] = random.Next(0, i);
+            parent[i] = random.Next(0, i);
         }
 
-        var letters = new char[NodeCount];
+        return parent;
+    }
 
-        for (var i = 0; i < NodeCount; i++)
+    private static string BuildLabels(Random random, int nodeCount)
+    {
+        var letters = new char[nodeCount];
+
+        for (var i = 0; i < nodeCount; i++)
         {
             letters[i] = (char)('a' + random.Next(0, AlphabetSize));
         }
 
-        _labels = new string(letters);
+        return new string(letters);
+    }
 
-        _queries = new int[QueryCount][];
+    private static int[][] BuildQueries(Random random, int queryCount, int nodeCount)
+    {
+        var queries = new int[queryCount][];
 
-        for (var i = 0; i < QueryCount; i++)
+        for (var i = 0; i < queryCount; i++)
         {
-            _queries[i] = [random.Next(0, NodeCount), random.Next(0, NodeCount)];
+            queries[i] = [random.Next(0, nodeCount), random.Next(0, nodeCount)];
         }
 
-        _nodes = ParentArrayTree.Build(_parent);
+        return queries;
     }
 
     [Benchmark(Baseline = true)]

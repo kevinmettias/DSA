@@ -15,21 +15,31 @@ internal static class NumberOfSubarraysWithANDValueOfKSolution
 
         for (var start = 0; start < nums.Length; start++)
         {
-            var andValue = nums[start];
+            count += CountFrom(nums, start, k);
+        }
+
+        return count;
+    }
+
+    // Every subarray that begins at `start`, AND-ed as it grows; each extension
+    // that lands on k counts.
+    private static long CountFrom(int[] nums, int start, int k)
+    {
+        var count = 0L;
+        var andValue = nums[start];
+
+        if (andValue == k)
+        {
+            count++;
+        }
+
+        for (var end = start + 1; end < nums.Length; end++)
+        {
+            andValue &= nums[end];
 
             if (andValue == k)
             {
                 count++;
-            }
-
-            for (var end = start + 1; end < nums.Length; end++)
-            {
-                andValue &= nums[end];
-
-                if (andValue == k)
-                {
-                    count++;
-                }
             }
         }
 

@@ -33,41 +33,6 @@ internal static class MergeInBetweenLinkedListsSolution
         return BuildList(merged);
     }
 
-    // The standard walk: step to the node just before index a and the node just
-    // after index b, hang list2 off the first, and hang the tail of the list back
-    // off list2's last node. Two pointer rewrites, no extra storage, and the cost
-    // is the walk to the window rather than the size of the list.
-    public static SinglyLinkedListNode<int> MergeInBetweenByPointerSplice(
-        SinglyLinkedListNode<int> list1, int a, int b, SinglyLinkedListNode<int> list2)
-    {
-        var before = list1;
-
-        for (var i = 0; i < a - 1; i++)
-        {
-            before = before.Next!;
-        }
-
-        var after = before;
-
-        for (var i = 0; i < b - a + WindowBoundaryOffset; i++)
-        {
-            after = after.Next!;
-        }
-
-        before.Next = list2;
-
-        var list2Tail = list2;
-
-        while (list2Tail.Next is not null)
-        {
-            list2Tail = list2Tail.Next;
-        }
-
-        list2Tail.Next = after;
-
-        return list1;
-    }
-
     private static List<int> ValuesOf(SinglyLinkedListNode<int>? head)
     {
         var values = new List<int>();
@@ -92,5 +57,46 @@ internal static class MergeInBetweenLinkedListsSolution
         }
 
         return dummy.Next!;
+    }
+
+    // The standard walk: step to the node just before index a and the node just
+    // after index b, hang list2 off the first, and hang the tail of the list back
+    // off list2's last node. Two pointer rewrites, no extra storage, and the cost
+    // is the walk to the window rather than the size of the list.
+    public static SinglyLinkedListNode<int> MergeInBetweenByPointerSplice(
+        SinglyLinkedListNode<int> list1, int a, int b, SinglyLinkedListNode<int> list2)
+    {
+        var before = Advance(list1, a - 1);
+        var after = Advance(before, b - a + WindowBoundaryOffset);
+
+        before.Next = list2;
+        TailOf(list2).Next = after;
+
+        return list1;
+    }
+
+    // The node `steps` links past `node`: what both cut points - the one just before
+    // index a and the one just past index b - are found with.
+    private static SinglyLinkedListNode<int> Advance(SinglyLinkedListNode<int> node, int steps)
+    {
+        for (var i = 0; i < steps; i++)
+        {
+            node = node.Next!;
+        }
+
+        return node;
+    }
+
+    // list2's own last node, which list1's surviving tail is reattached to.
+    private static SinglyLinkedListNode<int> TailOf(SinglyLinkedListNode<int> head)
+    {
+        var tail = head;
+
+        while (tail.Next is not null)
+        {
+            tail = tail.Next;
+        }
+
+        return tail;
     }
 }

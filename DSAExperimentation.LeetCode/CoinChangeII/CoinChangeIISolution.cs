@@ -42,11 +42,17 @@ internal static class CoinChangeIISolution
         return dp[amount];
     }
 
-    public static int CountCombinationsByMemoizedTopDown(int amount, int[] coins)
-    {
-        return Memoizer.Memoize<(int Index, int Remaining), int>((0, amount), WaysFor);
+    public static int CountCombinationsByMemoizedTopDown(int amount, int[] coins) =>
+        Memoizer.Memoize<(int Index, int Remaining), int>((0, amount), new WaysFor(coins));
 
-        int WaysFor((int Index, int Remaining) state, Func<(int Index, int Remaining), int> ways)
+    // The rule, named: a combination either skips the coin at the current index or
+    // uses it again at that same index, and walking the index forward-only is what
+    // counts each combination exactly once.
+    private sealed class WaysFor(int[] coins) : IRecurrence<(int Index, int Remaining), int>
+    {
+        public int Replay(
+            (int Index, int Remaining) state,
+            IRecurrence<(int Index, int Remaining), int> rest)
         {
             var (index, remaining) = state;
 
@@ -60,10 +66,10 @@ internal static class CoinChangeIISolution
                 return 0;
             }
 
-            var total = ways((index + 1, remaining));
+            var total = rest.Replay((index + 1, remaining), rest);
             if (coins[index] <= remaining)
             {
-                total += ways((index, remaining - coins[index]));
+                total += rest.Replay((index, remaining - coins[index]), rest);
             }
 
             return total;

@@ -19,11 +19,11 @@ public class QueriesOnNumberOfPointsInsideACircleBenchmarks
     private const int CoordinateBound = 50_000;
     private const int QueryRadiusBoundExclusive = 200;
 
-    [Params(1_000, 8_000)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(1_000, 8_000)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

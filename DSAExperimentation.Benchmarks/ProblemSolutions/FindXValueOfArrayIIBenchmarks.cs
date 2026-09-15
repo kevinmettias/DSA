@@ -16,11 +16,11 @@ public class FindXValueOfArrayIIBenchmarks
     private const int QueryCount = 200;
     private const int ValueUpperBound = 1_000_000_000;
 
-    [Params(1_000, 20_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(1_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

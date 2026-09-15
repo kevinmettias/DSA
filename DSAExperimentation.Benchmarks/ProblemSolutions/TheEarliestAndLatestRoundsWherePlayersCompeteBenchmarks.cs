@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.TheEarliestAndLatestRoundsWherePlayersCompete;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,15 +16,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TheEarliestAndLatestRoundsWherePlayersCompeteBenchmarks
 {
     private const int FirstPlayer = 2;
-    private const int HalvingFactor = 2;
-
-    [Params(10, 16)]
-    public int N;
 
     private int _secondPlayer;
 
+    [Params(10, 16)]
+    public int N { get; set; }
+
     [GlobalSetup]
-    public void Setup() => _secondPlayer = N / HalvingFactor;
+    public void Setup() => _secondPlayer = N / AlgorithmConstants.HalvingFactor;
 
     [Benchmark(Baseline = true)]
     public (int Earliest, int Latest) UnmemoizedRecursion() =>

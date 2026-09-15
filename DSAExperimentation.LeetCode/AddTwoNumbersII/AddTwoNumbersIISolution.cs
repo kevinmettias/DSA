@@ -64,7 +64,7 @@ internal static class AddTwoNumbersIISolution
         SinglyLinkedListNode<int>? head = null;
         var carry = 0;
 
-        while (firstDigits.Count > 0 || secondDigits.Count > 0 || carry != 0)
+        while (HasColumnLeft(firstDigits, secondDigits, carry))
         {
             var a = firstDigits.TryPop(out var firstDigit) ? firstDigit : 0;
             var b = secondDigits.TryPop(out var secondDigit) ? secondDigit : 0;
@@ -84,4 +84,9 @@ internal static class AddTwoNumbersIISolution
             stack.Push(node.Value);
         }
     }
+
+    // Another column of the sum is owed while either stack still holds a digit or
+    // the previous column left a carry behind.
+    private static bool HasColumnLeft(NumberStack firstDigits, NumberStack secondDigits, int carry)
+        => firstDigits.Count > 0 || secondDigits.Count > 0 || carry != 0;
 }

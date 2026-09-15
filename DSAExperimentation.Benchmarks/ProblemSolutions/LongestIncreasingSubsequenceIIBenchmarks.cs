@@ -14,10 +14,10 @@ public class LongestIncreasingSubsequenceIIBenchmarks
     private const int RandomSeed = 2407; // LC problem number
     private const int K = 5;
 
-    [Params(2_000, 6_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(2_000, 6_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

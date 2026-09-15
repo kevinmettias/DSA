@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.GenerateRandomPointInACircle.GenerateRandomPointInACircleSolution;
+using DSAExperimentation.LeetCode.GenerateRandomPointInACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -18,17 +18,17 @@ public class GenerateRandomPointInACircleBenchmarks
     private const double YCenter = -3.0;
 
     [Params(1_000, 100_000)]
-    public int Draws;
+    public int Draws { get; set; }
 
     [Benchmark(Baseline = true)]
     public double RejectionSampling() =>
-        Replay(new GenerateRandomPointInACircleByRejectionSampling(Radius, XCenter, YCenter));
+        Replay(new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByRejectionSampling(Radius, XCenter, YCenter));
 
     [Benchmark]
     public double ClosedFormPolar() =>
-        Replay(new GenerateRandomPointInACircleByClosedFormPolar(Radius, XCenter, YCenter));
+        Replay(new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(Radius, XCenter, YCenter));
 
-    private double Replay(IRandomPointGenerator generator)
+    private double Replay(GenerateRandomPointInACircleSolution.IRandomPointGenerator generator)
     {
         var sumX = 0.0;
 

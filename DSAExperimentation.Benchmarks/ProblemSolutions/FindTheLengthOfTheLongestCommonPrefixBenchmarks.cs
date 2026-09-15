@@ -14,12 +14,12 @@ public class FindTheLengthOfTheLongestCommonPrefixBenchmarks
     private const int MaxValueExclusive = 100_000_000;
     private const int Seed = 3043;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _arr1 = [];
 
-    private int[] _arr1 = null!;
-    private int[] _arr2 = null!;
-    private Trie<bool> _trie = null!;
+    private int[] _arr2 = [];
+    private Trie<bool> _trie = new();
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

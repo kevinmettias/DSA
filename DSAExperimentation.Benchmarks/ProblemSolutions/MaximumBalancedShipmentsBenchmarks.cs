@@ -14,10 +14,10 @@ public class MaximumBalancedShipmentsBenchmarks
     // LC problem number, reused as the deterministic weight seed.
     private const int WeightSeed = 3638;
 
-    [Params(200, 2000)]
-    public int ParcelCount;
+    private int[] _weight = [];
 
-    private int[] _weight = null!;
+    [Params(200, 2000)]
+    public int ParcelCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _weight = MaximumBalancedShipmentsWorkloads.BuildWeights(ParcelCount, seed: WeightSeed);

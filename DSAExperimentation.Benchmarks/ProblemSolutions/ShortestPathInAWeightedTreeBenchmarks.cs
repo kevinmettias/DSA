@@ -17,40 +17,57 @@ public class ShortestPathInAWeightedTreeBenchmarks
     private const int RandomSeed = 3515; // LeetCode problem number
     private const int MaxWeight = 10_000;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private int _n;
-    private int[][] _edges = null!;
-    private int[][] _queries = null!;
+
+    private int[][] _edges = [];
+    private int[][] _queries = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
         _n = NodeCount;
-        _edges = new int[_n - 1][];
+        _edges = BuildEdges(_n, random);
+        _queries = BuildQueries(_n, _edges, random);
+    }
 
-        for (var i = 1; i < _n; i++)
+    // Each node i > 0 attaches to a uniformly random earlier node, so node i + 1 is
+    // always parented to something in [1, i] that already exists.
+    private static int[][] BuildEdges(int nodeCount, Random random)
+    {
+        var edges = new int[nodeCount - 1][];
+
+        for (var i = 1; i < nodeCount; i++)
         {
             var parent = random.Next(0, i);
-            _edges[i - 1] = [parent + 1, i + 1, random.Next(1, MaxWeight + 1)];
+            edges[i - 1] = [parent + 1, i + 1, random.Next(1, MaxWeight + 1)];
         }
 
-        _queries = new int[_n][];
+        return edges;
+    }
 
-        for (var i = 0; i < _n; i++)
+    // A query is either a weight update on an edge the tree actually has, or the
+    // [2, x] distance query the BFS arm pays for in full.
+    private static int[][] BuildQueries(int nodeCount, int[][] edges, Random random)
+    {
+        var queries = new int[nodeCount][];
+
+        for (var i = 0; i < nodeCount; i++)
         {
-            if (_edges.Length > 0 && random.Next(2) == 0)
+            if (edges.Length > 0 && random.Next(2) == 0)
             {
-                var edge = _edges[random.Next(_edges.Length)];
-                _queries[i] = [1, edge[0], edge[1], random.Next(1, MaxWeight + 1)];
+                var edge = edges[random.Next(edges.Length)];
+                queries[i] = [1, edge[0], edge[1], random.Next(1, MaxWeight + 1)];
             }
             else
             {
-                _queries[i] = [2, random.Next(1, _n + 1)];
+                queries[i] = [2, random.Next(1, nodeCount + 1)];
             }
         }
+
+        return queries;
     }
 
     [Benchmark(Baseline = true)]

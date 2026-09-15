@@ -17,11 +17,11 @@ public class AlternatingGroupsIIIBenchmarks
     private const int Seed = 3245;
     private const int UpdateEveryNth = 5;
 
-    [Params(1_000, 5_000)]
-    public int Length;
+    private int[] _colors = [];
 
-    private int[] _colors = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(1_000, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,13 +33,21 @@ public class AlternatingGroupsIIIBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            queries[i] = i % UpdateEveryNth == 0
-                ? [2, random.Next(Length), random.Next(2)]
-                : [1, random.Next(3, Length)];
+            var isRepaint = i % UpdateEveryNth == 0;
+            queries[i] = isRepaint
+                ? RepaintQuery(random, Length)
+                : SizeQuery(random, Length);
         }
 
         _queries = queries;
     }
+
+    // Only one of these two runs per query, so whichever it is draws its indices
+    // and nothing else - the other must not touch `random`, or the workload's
+    // draw sequence stops matching the seed it was written against.
+    private static int[] RepaintQuery(Random random, int length) => [2, random.Next(length), random.Next(2)];
+
+    private static int[] SizeQuery(Random random, int length) => [1, random.Next(3, length)];
 
     [Benchmark(Baseline = true)]
     public IList<int> BruteForce() =>

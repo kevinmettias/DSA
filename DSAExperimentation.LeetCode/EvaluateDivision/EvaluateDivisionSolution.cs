@@ -18,11 +18,11 @@ internal static class EvaluateDivisionSolution
     // without this repo's primitives - it is the arm the composed strategy below has
     // to justify itself against.
     public static double EvaluateByDictionaryDfs(
-        IEnumerable<(string Dividend, string Divisor, double Value)> equations, string dividend, string divisor)
+        IEnumerable<(string Dividend, string Divisor, double Value)> equations, Dividend dividend, Divisor divisor)
     {
         var neighborsByNode = BuildDictionaryGraph(equations);
 
-        if (!neighborsByNode.ContainsKey(dividend) || !neighborsByNode.ContainsKey(divisor))
+        if (!neighborsByNode.ContainsKey(dividend.Name) || !neighborsByNode.ContainsKey(divisor.Name))
         {
             return NotFound;
         }
@@ -56,15 +56,15 @@ internal static class EvaluateDivisionSolution
     }
 
     private static double DictionaryDfs(
-        Dictionary<string, Dictionary<string, double>> neighborsByNode, string dividend, string divisor)
+        Dictionary<string, Dictionary<string, double>> neighborsByNode, Dividend dividend, Divisor divisor)
     {
-        var visited = new HashSet<string> { dividend };
+        var visited = new HashSet<string> { dividend.Name };
         var pending = new Stack<(string Node, double Product)>();
-        pending.Push((dividend, SelfDivision));
+        pending.Push((dividend.Name, SelfDivision));
 
         while (pending.TryPop(out var current))
         {
-            if (current.Node == divisor)
+            if (current.Node == divisor.Name)
             {
                 return current.Product;
             }
@@ -101,22 +101,22 @@ internal static class EvaluateDivisionSolution
     // carry a running product alongside each frontier node instead of just visiting
     // order).
     public static double EvaluateByHashMapStackDfs(
-        IEnumerable<(string Dividend, string Divisor, double Value)> equations, string dividend, string divisor)
+        IEnumerable<(string Dividend, string Divisor, double Value)> equations, Dividend dividend, Divisor divisor)
     {
         var neighborsByNode = BuildHashMapGraph(equations);
 
-        if (!neighborsByNode.HasKey(dividend) || !neighborsByNode.HasKey(divisor))
+        if (!neighborsByNode.HasKey(dividend.Name) || !neighborsByNode.HasKey(divisor.Name))
         {
             return NotFound;
         }
 
-        if (dividend == divisor)
+        if (dividend.Name == divisor.Name)
         {
             return SelfDivision;
         }
 
-        var frontier = CreateFrontier(dividend);
-        return Search(neighborsByNode, frontier, divisor);
+        var frontier = CreateFrontier(dividend.Name);
+        return Search(neighborsByNode, frontier, divisor.Name);
     }
 
     private static HashMap<string, HashMap<string, double>> BuildHashMapGraph(
@@ -144,6 +144,14 @@ internal static class EvaluateDivisionSolution
         return neighborsByNode;
     }
 
+    private static FrontierState CreateFrontier(string dividend)
+    {
+        var visited = new HashSet<string> { dividend };
+        var pending = new FrontierStack();
+        pending.Push((dividend, SelfDivision));
+        return new FrontierState(visited, pending);
+    }
+
     private static double Search(
         HashMap<string, HashMap<string, double>> neighborsByNode, FrontierState frontier, string divisor)
     {
@@ -158,14 +166,6 @@ internal static class EvaluateDivisionSolution
         }
 
         return NotFound;
-    }
-
-    private static FrontierState CreateFrontier(string dividend)
-    {
-        var visited = new HashSet<string> { dividend };
-        var pending = new FrontierStack();
-        pending.Push((dividend, SelfDivision));
-        return new FrontierState(visited, pending);
     }
 
     private static void ExpandNeighbors(
@@ -187,5 +187,15 @@ internal static class EvaluateDivisionSolution
         }
     }
 
-    private readonly record struct FrontierState(HashSet<string> Visited, FrontierStack Pending);
+    internal readonly record struct FrontierState(HashSet<string> Visited, FrontierStack Pending);
+
+    // LC 399's two query variables, named for the roles they play here rather than left
+    // as two adjacent `string` positions a caller could hand over the wrong way round
+    // with the compiler none the wiser. `dividend` is the variable the walk starts from
+    // and `divisor` the one it is trying to reach - and the cost of (a, b) is the
+    // reciprocal of the cost of (b, a), so a swap is a silently wrong value rather than
+    // a different question.
+    internal readonly record struct Dividend(string Name);
+
+    internal readonly record struct Divisor(string Name);
 }

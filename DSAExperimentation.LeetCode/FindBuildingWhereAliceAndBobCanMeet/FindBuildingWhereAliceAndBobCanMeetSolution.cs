@@ -31,6 +31,13 @@ internal static class FindBuildingWhereAliceAndBobCanMeetSolution
         var lo = Math.Min(a, b);
         var hi = Math.Max(a, b);
 
+        return MeetingIndexFrom(heights, lo, hi);
+    }
+
+    // One already-normalized query's own answer: lo when the pair is met, hi when a
+    // single hop reaches it, and otherwise the first later building that beats them both.
+    private static int MeetingIndexFrom(int[] heights, int lo, int hi)
+    {
         if (lo == hi)
         {
             return lo;
@@ -41,9 +48,16 @@ internal static class FindBuildingWhereAliceAndBobCanMeetSolution
             return hi;
         }
 
-        for (var j = hi + 1; j < heights.Length; j++)
+        return FirstBuildingTallerThan(heights, hi, lo);
+    }
+
+    // The forward scan: the first index after `afterIndex` whose height beats
+    // heights[floorIndex], or the sentinel when the array runs out first.
+    private static int FirstBuildingTallerThan(int[] heights, int afterIndex, int floorIndex)
+    {
+        for (var j = afterIndex + 1; j < heights.Length; j++)
         {
-            if (heights[j] > heights[lo])
+            if (heights[j] > heights[floorIndex])
             {
                 return j;
             }
@@ -89,33 +103,54 @@ internal static class FindBuildingWhereAliceAndBobCanMeetSolution
         int[] heights, int[][] queries)
     {
         var answers = new int[queries.Length];
-        var pendingByHi = new List<(int Threshold, int QueryIndex)>[heights.Length];
-
-        for (var i = 0; i < pendingByHi.Length; i++)
-        {
-            pendingByHi[i] = [];
-        }
+        var pendingByHi = PendingListsByHi(heights.Length);
 
         for (var q = 0; q < queries.Length; q++)
         {
             var lo = Math.Min(queries[q][0], queries[q][1]);
             var hi = Math.Max(queries[q][0], queries[q][1]);
+            var (answer, needsLaterBuilding) = ClassifyQuery(heights, lo, hi);
 
-            if (lo == hi)
+            answers[q] = answer;
+
+            if (needsLaterBuilding)
             {
-                answers[q] = lo;
-            }
-            else if (heights[lo] < heights[hi])
-            {
-                answers[q] = hi;
-            }
-            else
-            {
-                answers[q] = LeetCodeAnswer.None;
                 pendingByHi[hi].Add((heights[lo], q));
             }
         }
 
         return (answers, pendingByHi);
+    }
+
+    // One empty pending bucket per building, each holding the queries bucketed at that
+    // index - the sweep's queue of work still to do when it reaches that index.
+    private static List<(int Threshold, int QueryIndex)>[] PendingListsByHi(int buildingCount)
+    {
+        var pendingByHi = new List<(int Threshold, int QueryIndex)>[buildingCount];
+
+        for (var i = 0; i < buildingCount; i++)
+        {
+            pendingByHi[i] = [];
+        }
+
+        return pendingByHi;
+    }
+
+    // One query's own resolution: lo when the pair is already met, hi when a single hop
+    // reaches it, and the sentinel plus "bucket it at hi" when only a later building
+    // taller than heights[lo] can answer it.
+    private static (int Answer, bool NeedsLaterBuilding) ClassifyQuery(int[] heights, int lo, int hi)
+    {
+        if (lo == hi)
+        {
+            return (lo, false);
+        }
+
+        if (heights[lo] < heights[hi])
+        {
+            return (hi, false);
+        }
+
+        return (LeetCodeAnswer.None, true);
     }
 }

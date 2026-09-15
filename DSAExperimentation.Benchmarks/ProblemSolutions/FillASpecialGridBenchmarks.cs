@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FillASpecialGridBenchmarks
 {
     [Params(5, 9)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[][] RecursiveQuadrants() => FillASpecialGridSolution.SpecialGridByRecursiveQuadrants(N);

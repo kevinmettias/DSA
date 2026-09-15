@@ -20,10 +20,10 @@ public class MergeKSortedListsBenchmarks
 {
     private const int ValuesPerList = 64;
 
-    [Params(8, 64)]
-    public int ListCount;
+    private int[][] _values = [];
 
-    private int[][] _values = null!;
+    [Params(8, 64)]
+    public int ListCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>
@@ -39,8 +39,6 @@ public class MergeKSortedListsBenchmarks
     public object? MergeByHeap() =>
         MergeKSortedListsSolution.MergeListsByHeap(BuildLists());
 
-    private SinglyLinkedListNode<int>?[] BuildLists() => _values.Select(BuildList).ToArray();
-
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
@@ -53,4 +51,6 @@ public class MergeKSortedListsBenchmarks
 
         return dummy.Next;
     }
+
+    private SinglyLinkedListNode<int>?[] BuildLists() => _values.Select(BuildList).ToArray();
 }

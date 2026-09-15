@@ -18,10 +18,10 @@ public class MaximumStudentsTakingExamBenchmarks
 {
     private const int ColumnCount = 6;
 
-    [Params(3, 5)]
-    public int RowCount;
-
     private SeatMasks _seats = null!;
+
+    [Params(3, 5)]
+    public int RowCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _seats = new SeatMasks(new int[RowCount], (1 << ColumnCount) - 1);

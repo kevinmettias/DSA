@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.LeetCode.LastStoneWeightII;
 
@@ -13,7 +14,6 @@ namespace DSAExperimentation.LeetCode.LastStoneWeightII;
 // the recursion top-down.
 internal static class LastStoneWeightIISolution
 {
-    private const int HalfDivisor = 2;
     private const int PartitionDifferenceMultiplier = 2;
 
     // Baseline: the textbook bottom-up tabulation over a single rolling int[]
@@ -21,7 +21,7 @@ internal static class LastStoneWeightIISolution
     public static int MinWeightByTabulation(int[] stones)
     {
         var total = stones.Sum();
-        var half = total / HalfDivisor;
+        var half = total / AlgorithmConstants.HalvingFactor;
         var bestSumForCapacity = new int[half + 1];
 
         foreach (var stone in stones)
@@ -42,30 +42,37 @@ internal static class LastStoneWeightIISolution
     public static int MinWeightByMemoizer(int[] stones)
     {
         var total = stones.Sum();
-        var half = total / HalfDivisor;
+        var half = total / AlgorithmConstants.HalvingFactor;
 
         var closestToHalf = Memoizer.Memoize<(int Index, int Capacity), int>(
-            (0, half), (state, bestReachableSum) => BestReachableSum(state, bestReachableSum, stones));
+            (0, half), new BestReachableSum(stones));
 
         return total - PartitionDifferenceMultiplier * closestToHalf;
     }
 
-    private static int BestReachableSum(
-        (int Index, int Capacity) state, Func<(int Index, int Capacity), int> bestReachableSum, int[] stones)
+    // The take/skip rule, named: an exhausted stone list reaches no further sum, and
+    // otherwise each stone is either skipped or taken once it still fits the capacity.
+    private sealed class BestReachableSum(int[] stones) : IRecurrence<(int Index, int Capacity), int>
     {
-        if (state.Index == stones.Length)
+        /// <inheritdoc/>
+        public int Replay((int Index, int Capacity) state, IRecurrence<(int Index, int Capacity), int> rest)
         {
-            return 0;
+            if (state.Index == stones.Length)
+            {
+                return 0;
+            }
+
+            var skip = rest.Replay((state.Index + 1, state.Capacity), rest);
+
+            if (stones[state.Index] > state.Capacity)
+            {
+                return skip;
+            }
+
+            var take = stones[state.Index]
+                + rest.Replay((state.Index + 1, state.Capacity - stones[state.Index]), rest);
+
+            return Math.Max(skip, take);
         }
-
-        var skip = bestReachableSum((state.Index + 1, state.Capacity));
-
-        if (stones[state.Index] > state.Capacity)
-        {
-            return skip;
-        }
-
-        var take = stones[state.Index] + bestReachableSum((state.Index + 1, state.Capacity - stones[state.Index]));
-        return Math.Max(skip, take);
     }
 }

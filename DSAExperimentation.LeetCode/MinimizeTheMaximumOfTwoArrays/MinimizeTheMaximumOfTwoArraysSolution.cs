@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
@@ -26,8 +27,6 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
     // Maximums are 1-based while sequence indices are 0-based.
     private const int SmallestMaximum = 1;
 
-    private const int MidpointDivisor = 2;
-
     // 2 * (uniqueCnt1 + uniqueCnt2) is always feasible: the worst divisor, 2, still
     // leaves half the range eligible for both arrays together.
     private const int WorstCaseMaximumFactor = 2;
@@ -40,9 +39,9 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / MidpointDivisor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
-            if (IsFeasible(divisor1, divisor2, uniqueCnt1, uniqueCnt2, mid))
+            if (IsFeasible((divisor1, uniqueCnt1), (divisor2, uniqueCnt2), mid))
             {
                 high = mid;
             }
@@ -55,6 +54,29 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
         return (int)low;
     }
 
+    // One past the largest maximum either search ever has to consider, so the
+    // bisection and the sequence cover exactly the same candidate range.
+    private static long SmallestFeasibleUpperBound(int uniqueCnt1, int uniqueCnt2)
+        => ((long)WorstCaseMaximumFactor * (uniqueCnt1 + (long)uniqueCnt2)) + 1;
+
+    // The feasibility predicate, and the only thing either strategy asks about a
+    // candidate maximum: monotone in the maximum, which is what makes bisecting it
+    // valid.
+    private static bool IsFeasible(
+        (int Divisor, int UniqueCount) first, (int Divisor, int UniqueCount) second, long max)
+    {
+        var lcm = Lcm(first.Divisor, second.Divisor);
+        var eligible1 = max - (max / first.Divisor);
+        var eligible2 = max - (max / second.Divisor);
+        var eligibleEither = max - (max / lcm);
+
+        return eligible1 >= first.UniqueCount
+            && eligible2 >= second.UniqueCount
+            && eligibleEither >= first.UniqueCount + (long)second.UniqueCount;
+    }
+
+    private static long Lcm(int a, int b) => (long)a / Gcd(a, b) * b;
+
     // This repo's own BinarySearch.LowerBound over the feasibility sequence: the
     // candidate maximums are never materialized, each probe just recomputes the
     // inclusion-exclusion counts, and the leftmost feasible index maps back to its
@@ -65,28 +87,6 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
 
         return SmallestMaximum + BinarySearch.LowerBound<bool, FeasibleMaximumSequence>(sequence, true);
     }
-
-    // One past the largest maximum either search ever has to consider, so the
-    // bisection and the sequence cover exactly the same candidate range.
-    private static long SmallestFeasibleUpperBound(int uniqueCnt1, int uniqueCnt2)
-        => ((long)WorstCaseMaximumFactor * (uniqueCnt1 + (long)uniqueCnt2)) + 1;
-
-    // The feasibility predicate, and the only thing either strategy asks about a
-    // candidate maximum: monotone in the maximum, which is what makes bisecting it
-    // valid.
-    private static bool IsFeasible(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2, long max)
-    {
-        var lcm = Lcm(divisor1, divisor2);
-        var eligible1 = max - (max / divisor1);
-        var eligible2 = max - (max / divisor2);
-        var eligibleEither = max - (max / lcm);
-
-        return eligible1 >= uniqueCnt1
-            && eligible2 >= uniqueCnt2
-            && eligibleEither >= uniqueCnt1 + (long)uniqueCnt2;
-    }
-
-    private static long Lcm(int a, int b) => (long)a / Gcd(a, b) * b;
 
     private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
 
@@ -100,6 +100,6 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
         public int Length => (WorstCaseMaximumFactor * (uniqueCnt1 + uniqueCnt2)) + 1;
 
         public bool Get(int index)
-            => IsFeasible(divisor1, divisor2, uniqueCnt1, uniqueCnt2, SmallestMaximum + index);
+            => IsFeasible((divisor1, uniqueCnt1), (divisor2, uniqueCnt2), SmallestMaximum + index);
     }
 }

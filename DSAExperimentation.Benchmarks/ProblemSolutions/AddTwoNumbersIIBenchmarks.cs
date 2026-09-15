@@ -18,11 +18,11 @@ public class AddTwoNumbersIIBenchmarks
     private const int RandomSeed = 445; // LC problem number
     private const int DecimalBase = 10;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _first = null!;
+
     private SinglyLinkedListNode<int> _second = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,26 +30,6 @@ public class AddTwoNumbersIIBenchmarks
         var random = new Random(RandomSeed);
         _first = BuildRandomDigitList(random, Length);
         _second = BuildRandomDigitList(random, Length);
-    }
-
-    [Benchmark(Baseline = true)]
-    public int BigIntegerConvertAndBack() =>
-        CountDigits(AddTwoNumbersIISolution.AddByBigInteger(_first, _second));
-
-    [Benchmark]
-    public int TwoStacksDigitwiseAdd() =>
-        CountDigits(AddTwoNumbersIISolution.AddByTwoStacks(_first, _second));
-
-    private static int CountDigits(SinglyLinkedListNode<int>? head)
-    {
-        var count = 0;
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            count++;
-        }
-
-        return count;
     }
 
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
@@ -64,5 +44,33 @@ public class AddTwoNumbersIIBenchmarks
         }
 
         return head;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int BigIntegerConvertAndBack()
+    {
+        var sum = AddTwoNumbersIISolution.AddByBigInteger(_first, _second);
+
+        return CountDigits(sum);
+    }
+
+    [Benchmark]
+    public int TwoStacksDigitwiseAdd()
+    {
+        var sum = AddTwoNumbersIISolution.AddByTwoStacks(_first, _second);
+
+        return CountDigits(sum);
+    }
+
+    private static int CountDigits(SinglyLinkedListNode<int>? head)
+    {
+        var count = 0;
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            count++;
+        }
+
+        return count;
     }
 }

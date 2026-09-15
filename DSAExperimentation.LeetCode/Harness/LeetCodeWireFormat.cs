@@ -35,6 +35,39 @@ internal static class LeetCodeWireFormat
         return root;
     }
 
+    private static BinaryTreeNode<int>? TakeChild(
+        int?[] levelOrder, ref int index, Queue<BinaryTreeNode<int>> pending)
+    {
+        if (TakeNextValue(levelOrder, ref index) is not { } childValue)
+        {
+            return null;
+        }
+
+        return EnqueueChild(childValue, pending);
+    }
+
+    // The next array entry, or null once the array runs out. The index advances only
+    // when a value was there to read, so an absent child leaves it untouched.
+    private static int? TakeNextValue(int?[] levelOrder, ref int index)
+    {
+        if (index >= levelOrder.Length)
+        {
+            return null;
+        }
+
+        return levelOrder[index++];
+    }
+
+    // Materialize the child and queue it, so a later iteration takes its own children.
+    private static BinaryTreeNode<int>? EnqueueChild(
+        int childValue, Queue<BinaryTreeNode<int>> pending)
+    {
+        var child = new BinaryTreeNode<int>(childValue);
+        pending.Enqueue(child);
+
+        return child;
+    }
+
     public static SinglyLinkedListNode<int>? ToLinkedList(int[] values)
     {
         SinglyLinkedListNode<int>? head = null;
@@ -57,26 +90,5 @@ internal static class LeetCodeWireFormat
         }
 
         return [.. values];
-    }
-
-    private static BinaryTreeNode<int>? TakeChild(
-        int?[] levelOrder, ref int index, Queue<BinaryTreeNode<int>> pending)
-    {
-        if (index >= levelOrder.Length)
-        {
-            return null;
-        }
-
-        var value = levelOrder[index++];
-
-        if (value is not { } childValue)
-        {
-            return null;
-        }
-
-        var child = new BinaryTreeNode<int>(childValue);
-        pending.Enqueue(child);
-
-        return child;
     }
 }

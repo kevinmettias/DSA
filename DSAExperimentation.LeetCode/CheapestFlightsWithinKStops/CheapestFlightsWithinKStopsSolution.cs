@@ -19,21 +19,32 @@ internal static class CheapestFlightsWithinKStopsSolution
     // keeping the cheapest arrival at dst. Deliberately written without this
     // repo's primitives - only the adjacency container it is handed is a repo
     // type (ARCHITECTURE.md section 17.5).
-    public static int FindCheapestPriceByNaiveDfs(int n, int[][] flights, int src, int dst, int k) =>
-        FindCheapestPriceByNaiveDfs(FlightNetwork.Build(n, flights), src, dst, k);
+    public static int FindCheapestPriceByNaiveDfs(
+        int n, int[][] flights, (int Source, int Destination) endpoints, int k)
+    {
+        var network = FlightNetwork.Build(n, flights);
+
+        return FindCheapestPriceByNaiveDfs(network, endpoints.Source, endpoints.Destination, k);
+    }
 
     public static int FindCheapestPriceByNaiveDfs(FlightNetwork network, int src, int dst, int k)
     {
         var best = int.MaxValue;
 
         // "At most K stops" is "at most K+1 edges" - that is the DFS's depth budget.
-        Explore(new FlightSearch(network, dst), src, k + 1, costSoFar: 0, ref best);
+        Explore(new FlightSearch(network, dst), (City: src, EdgesLeft: k + 1, CostSoFar: 0), ref best);
 
         return best == int.MaxValue ? LeetCodeAnswer.None : best;
     }
 
-    private static void Explore(FlightSearch search, int city, int edgesLeft, int costSoFar, ref int best)
+    // One recursive step's position in the walk: the city it stands in, the edge
+    // budget it has left, and what the itinerary has cost so far - three values
+    // that only ever move together, one step to the next.
+    private static void Explore(
+        FlightSearch search, (int City, int EdgesLeft, int CostSoFar) walk, ref int best)
     {
+        var (city, edgesLeft, costSoFar) = walk;
+
         if (city == search.Destination && costSoFar < best)
         {
             best = costSoFar;
@@ -46,7 +57,10 @@ internal static class CheapestFlightsWithinKStopsSolution
 
         foreach (var (to, price) in search.Network.DeparturesFrom(city))
         {
-            Explore(search, to, edgesLeft - 1, costSoFar + price, ref best);
+            Explore(
+                search,
+                (City: to, EdgesLeft: edgesLeft - 1, CostSoFar: costSoFar + price),
+                ref best);
         }
     }
 
@@ -60,13 +74,19 @@ internal static class CheapestFlightsWithinKStopsSolution
     // is the cheapest arrival at dst in any layer, since finishing early is always
     // allowed.
     public static int FindCheapestPriceByDijkstraOverStopLayers(
-        int n, int[][] flights, int src, int dst, int k) =>
-        FindCheapestPriceByDijkstraOverStopLayers(FlightStateGraph.Build(n, flights, k), src, dst);
+        int n, int[][] flights, (int Source, int Destination) endpoints, int k)
+    {
+        var graph = FlightStateGraph.Build(n, flights, k);
+
+        return FindCheapestPriceByDijkstraOverStopLayers(graph, endpoints.Source, endpoints.Destination);
+    }
 
     public static int FindCheapestPriceByDijkstraOverStopLayers(FlightStateGraph graph, int src, int dst)
     {
+        var source = graph.At(src, 0);
+
         var distances = ShortestPath.Dijkstra<
-            FlightState, FlightStateTopology, ListEdges<FlightState, int>, int>(graph.At(src, 0));
+            FlightState, FlightStateTopology, ListEdges<FlightState, int>, int>(source);
 
         var best = CheapestArrival(distances, graph, dst);
 
@@ -80,7 +100,9 @@ internal static class CheapestFlightsWithinKStopsSolution
 
         for (var layer = 0; layer <= graph.MaxEdges; layer++)
         {
-            if (distances.TryGetValue(graph.At(dst, layer), out var price) && price < best)
+            var arrival = graph.At(dst, layer);
+
+            if (distances.TryGetValue(arrival, out var price) && price < best)
             {
                 best = price;
             }

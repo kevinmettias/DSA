@@ -36,7 +36,9 @@ public sealed class CheapestFlightsWithinKStopsTests
     public void FindCheapestPriceByNaiveDfs_LeetCodeExamples_ReturnsCheapestPriceWithinStopBound(
         int n, int[][] flights, int src, int dst, int k, int expected) =>
         Assert.Equal(
-            expected, CheapestFlightsWithinKStopsSolution.FindCheapestPriceByNaiveDfs(n, flights, src, dst, k));
+            expected,
+            CheapestFlightsWithinKStopsSolution.FindCheapestPriceByNaiveDfs(
+                n, flights, (Source: src, Destination: dst), k));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -44,5 +46,6 @@ public sealed class CheapestFlightsWithinKStopsTests
         int n, int[][] flights, int src, int dst, int k, int expected) =>
         Assert.Equal(
             expected,
-            CheapestFlightsWithinKStopsSolution.FindCheapestPriceByDijkstraOverStopLayers(n, flights, src, dst, k));
+            CheapestFlightsWithinKStopsSolution.FindCheapestPriceByDijkstraOverStopLayers(
+                n, flights, (Source: src, Destination: dst), k));
 }

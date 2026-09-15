@@ -27,13 +27,7 @@ internal static class Finding3DigitEvenNumbersSolution
     {
         var found = new List<int>();
 
-        ForEachCandidateNumber(digits, number =>
-        {
-            if (!found.Contains(number))
-            {
-                found.Add(number);
-            }
-        });
+        ForEachCandidateNumber(digits, new ListScanCollector(found));
 
         found.Sort();
         return found.ToArray();
@@ -45,16 +39,9 @@ internal static class Finding3DigitEvenNumbersSolution
     // ascending order, the sorting convention SortAnArray already establishes.
     public static int[] FindEvenNumbersBySetDedupe(int[] digits)
     {
-        var seen = new Set<int>();
         var found = new List<int>();
 
-        ForEachCandidateNumber(digits, number =>
-        {
-            if (seen.TryAdd(number))
-            {
-                found.Add(number);
-            }
-        });
+        ForEachCandidateNumber(digits, new SetDedupeCollector(found));
 
         var result = found.ToArray();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(result));
@@ -63,7 +50,7 @@ internal static class Finding3DigitEvenNumbersSolution
 
     // The position walk itself, shared by both strategies so the only thing they
     // differ in is the dedupe and the sort.
-    private static void ForEachCandidateNumber(int[] digits, Action<int> onCandidate)
+    private static void ForEachCandidateNumber(int[] digits, ICandidateCollector collector)
     {
         for (var hundreds = 0; hundreds < digits.Length; hundreds++)
         {
@@ -79,24 +66,70 @@ internal static class Finding3DigitEvenNumbersSolution
                     continue;
                 }
 
-                EmitCandidatesForPrefix(digits, new DigitPrefix(hundreds, tens), onCandidate);
+                EmitCandidatesForPrefix(digits, new DigitPrefix(hundreds, tens), collector);
             }
         }
     }
 
-    private static void EmitCandidatesForPrefix(int[] digits, DigitPrefix prefix, Action<int> onCandidate)
+    private static void EmitCandidatesForPrefix(
+        int[] digits, DigitPrefix prefix, ICandidateCollector collector)
     {
         for (var ones = 0; ones < digits.Length; ones++)
         {
-            if (ones == prefix.Hundreds || ones == prefix.Tens || digits[ones] % OddEvenDivisor != 0)
+            if (CannotBeOnesDigit(ones, prefix, digits))
             {
                 continue;
             }
 
             var number = (digits[prefix.Hundreds] * HundredsPlace) + (digits[prefix.Tens] * TensPlace) + digits[ones];
-            onCandidate(number);
+            collector.Collect(number);
         }
     }
 
+    // The ones position is free only when neither earlier position already claimed
+    // it, and its digit is even.
+    private static bool CannotBeOnesDigit(int ones, DigitPrefix prefix, int[] digits)
+        => ones == prefix.Hundreds || ones == prefix.Tens || digits[ones] % OddEvenDivisor != 0;
+
     private readonly record struct DigitPrefix(int Hundreds, int Tens);
+
+    // What the position walk does with each candidate it produces. Deduping is the
+    // whole of it, and it is the one thing the two strategies differ in, so it is a
+    // decision a caller states rather than a bare Action<int> whose only meaning was
+    // "some int" - the walk itself never knows or cares which dedupe it is feeding.
+    private interface ICandidateCollector
+    {
+        // Takes one 3-digit candidate, in the ascending position order the walk
+        // visits them in. Called once per distinct position triple, so the same
+        // number can arrive more than once.
+        void Collect(int number);
+    }
+
+    // The baseline's dedupe: a List<int>.Contains scan of everything found so far,
+    // repeated for every one of the O(n^3) candidates.
+    private sealed class ListScanCollector(List<int> found) : ICandidateCollector
+    {
+        public void Collect(int number)
+        {
+            if (!found.Contains(number))
+            {
+                found.Add(number);
+            }
+        }
+    }
+
+    // This repo's own Set<int> for an O(1) expected membership check, guarding the
+    // same growing result list the baseline scans linearly.
+    private sealed class SetDedupeCollector(List<int> found) : ICandidateCollector
+    {
+        private readonly Set<int> seen = new();
+
+        public void Collect(int number)
+        {
+            if (seen.TryAdd(number))
+            {
+                found.Add(number);
+            }
+        }
+    }
 }

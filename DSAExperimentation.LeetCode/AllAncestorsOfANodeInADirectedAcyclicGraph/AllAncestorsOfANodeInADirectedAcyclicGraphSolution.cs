@@ -21,8 +21,12 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
     // node as an ancestor of everything the walk reaches. Deliberately written
     // with a BCL Stack and HashSet and no ordering machinery - it is the arm the
     // composed strategy below has to justify itself against.
-    public static List<List<int>> GetAncestorsByPerNodeForwardWalk(int n, int[][] edges) =>
-        GetAncestorsByPerNodeForwardWalk(BuildNodes(n, edges));
+    public static List<List<int>> GetAncestorsByPerNodeForwardWalk(int n, int[][] edges)
+    {
+        var nodes = BuildNodes(n, edges);
+
+        return GetAncestorsByPerNodeForwardWalk(nodes);
+    }
 
     public static List<List<int>> GetAncestorsByPerNodeForwardWalk(List<AncestorNode> nodes)
     {
@@ -86,8 +90,12 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
     // rather than Set<Element>, because the answer has to be read back out and
     // HashMap exposes Keys while Set does not - which is also how Set itself is
     // built.
-    public static List<List<int>> GetAncestorsByTopologicalDpPass(int n, int[][] edges) =>
-        GetAncestorsByTopologicalDpPass(BuildNodes(n, edges));
+    public static List<List<int>> GetAncestorsByTopologicalDpPass(int n, int[][] edges)
+    {
+        var nodes = BuildNodes(n, edges);
+
+        return GetAncestorsByTopologicalDpPass(nodes);
+    }
 
     public static List<List<int>> GetAncestorsByTopologicalDpPass(List<AncestorNode> nodes)
     {

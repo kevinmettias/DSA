@@ -32,11 +32,11 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
 
     private const int MaxEdits = 2;
 
-    [Params(2_000, 6_000)]
-    public int DictionarySize;
+    private string[] _dictionary = [];
 
-    private string[] _dictionary = null!;
-    private string[] _queries = null!;
+    private string[] _queries = [];
+    [Params(2_000, 6_000)]
+    public int DictionarySize { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -45,14 +45,6 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
         _dictionary = Enumerable.Range(0, DictionarySize).Select(_ => RandomWord(random)).Distinct().ToArray();
         _queries = _dictionary.Select(word => WithinEditBudget(word, random)).ToArray();
     }
-
-    [Benchmark(Baseline = true)]
-    public string[] BruteForce() =>
-        WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(_queries, _dictionary);
-
-    [Benchmark]
-    public string[] TrieSearch() =>
-        WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(_queries, _dictionary);
 
     private static string RandomWord(Random random)
         => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
@@ -70,4 +62,12 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
 
         return new string(characters);
     }
+
+    [Benchmark(Baseline = true)]
+    public string[] BruteForce() =>
+        WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(_queries, _dictionary);
+
+    [Benchmark]
+    public string[] TrieSearch() =>
+        WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(_queries, _dictionary);
 }

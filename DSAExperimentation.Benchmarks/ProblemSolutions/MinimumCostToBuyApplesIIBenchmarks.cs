@@ -16,10 +16,10 @@ public class MinimumCostToBuyApplesIIBenchmarks
     private const int Seed = 3928; // LC problem number
     private const int ExtraRoadsPerShop = 2;
 
-    [Params(30, 120)]
-    public int ShopCount;
-
     private AppleNetwork _network = null!;
+
+    [Params(30, 120)]
+    public int ShopCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

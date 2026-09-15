@@ -26,11 +26,23 @@ public sealed class EvaluateDivisionTests
     [MemberData(nameof(Examples))]
     public void EvaluateByDictionaryDfs_LeetCodeExamples_ComputesProductOrReportsUnreachable(
         (string Dividend, string Divisor, double Value)[] equations, string dividend, string divisor, double expected) =>
-        Assert.Equal(expected, EvaluateDivisionSolution.EvaluateByDictionaryDfs(equations, dividend, divisor), 5);
+        Assert.Equal(
+            expected,
+            EvaluateDivisionSolution.EvaluateByDictionaryDfs(
+                equations,
+                new EvaluateDivisionSolution.Dividend(dividend),
+                new EvaluateDivisionSolution.Divisor(divisor)),
+            5);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void EvaluateByHashMapStackDfs_LeetCodeExamples_ComputesProductOrReportsUnreachable(
         (string Dividend, string Divisor, double Value)[] equations, string dividend, string divisor, double expected) =>
-        Assert.Equal(expected, EvaluateDivisionSolution.EvaluateByHashMapStackDfs(equations, dividend, divisor), 5);
+        Assert.Equal(
+            expected,
+            EvaluateDivisionSolution.EvaluateByHashMapStackDfs(
+                equations,
+                new EvaluateDivisionSolution.Dividend(dividend),
+                new EvaluateDivisionSolution.Divisor(divisor)),
+            5);
 }

@@ -112,28 +112,39 @@ internal static class SmallestPalindromicRearrangementIISolution
 
         for (var position = 0; position < halfLength; position++)
         {
-            for (var c = 0; c < AlphabetSize; c++)
-            {
-                if (halfCounts[c] == 0)
-                {
-                    continue;
-                }
-
-                halfCounts[c]--;
-                var completions = CountArrangementsCapped(halfCounts, remainingRank);
-
-                if (remainingRank <= completions)
-                {
-                    left[position] = (char)('a' + c);
-                    break;
-                }
-
-                remainingRank -= completions;
-                halfCounts[c]++;
-            }
+            remainingRank = PlaceRankedLetter(halfCounts, left, position, remainingRank);
         }
 
         return BuildPalindrome(new string(left), middle);
+    }
+
+    // The letter this position gets: the smallest letter left whose completions still
+    // cover the outstanding rank, placed into the half in place of the rank that
+    // letter's own completions consume - returning the rank left over for the next
+    // position, which is unchanged when the letter covers the whole of it.
+    private static long PlaceRankedLetter(int[] halfCounts, char[] left, int position, long remainingRank)
+    {
+        for (var c = 0; c < AlphabetSize; c++)
+        {
+            if (halfCounts[c] == 0)
+            {
+                continue;
+            }
+
+            halfCounts[c]--;
+            var completions = CountArrangementsCapped(halfCounts, remainingRank);
+
+            if (remainingRank <= completions)
+            {
+                left[position] = (char)('a' + c);
+                return remainingRank;
+            }
+
+            remainingRank -= completions;
+            halfCounts[c]++;
+        }
+
+        return remainingRank;
     }
 
     // Number of distinct arrangements of counts, saturating at cap+1 the moment the

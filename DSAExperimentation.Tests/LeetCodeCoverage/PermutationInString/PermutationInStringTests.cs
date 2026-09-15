@@ -21,11 +21,17 @@ public sealed class PermutationInStringTests
     [MemberData(nameof(Examples))]
     public void CheckInclusionByPerWindowRebuild_LeetCodeExamples_ReturnsWhetherPermutationExists(
         string s1, string s2, bool expected) =>
-        Assert.Equal(expected, PermutationInStringSolution.CheckInclusionByPerWindowRebuild(s1, s2));
+        Assert.Equal(
+            expected,
+            PermutationInStringSolution.CheckInclusionByPerWindowRebuild(
+                new PermutationPattern(s1), new SearchedText(s2)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckInclusionBySlidingWindow_LeetCodeExamples_ReturnsWhetherPermutationExists(
         string s1, string s2, bool expected) =>
-        Assert.Equal(expected, PermutationInStringSolution.CheckInclusionBySlidingWindow(s1, s2));
+        Assert.Equal(
+            expected,
+            PermutationInStringSolution.CheckInclusionBySlidingWindow(
+                new PermutationPattern(s1), new SearchedText(s2)));
 }

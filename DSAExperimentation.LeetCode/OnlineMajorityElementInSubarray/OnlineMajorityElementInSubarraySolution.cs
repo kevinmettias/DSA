@@ -107,19 +107,6 @@ internal static class OnlineMajorityElementInSubarraySolution
             return LeetCodeAnswer.None;
         }
 
-        private DynamicArray<int> PositionsOf(int value)
-        {
-            if (_positionsByValue.TryGetValue(value, out var existing))
-            {
-                return existing;
-            }
-
-            var positions = new DynamicArray<int>();
-            _positionsByValue.Set(value, positions);
-
-            return positions;
-        }
-
         private int CountInRange(int value, int left, int right)
         {
             if (!_positionsByValue.TryGetValue(value, out var positions))
@@ -132,6 +119,19 @@ internal static class OnlineMajorityElementInSubarraySolution
             var upper = BinarySearch.UpperBound<int, DynamicArraySequence<int>>(sequence, right);
 
             return upper - lower;
+        }
+
+        private DynamicArray<int> PositionsOf(int value)
+        {
+            if (_positionsByValue.TryGetValue(value, out var existing))
+            {
+                return existing;
+            }
+
+            var positions = new DynamicArray<int>();
+            _positionsByValue.Set(value, positions);
+
+            return positions;
         }
     }
 }

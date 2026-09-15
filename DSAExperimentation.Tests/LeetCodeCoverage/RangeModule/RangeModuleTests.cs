@@ -74,41 +74,30 @@ public sealed class RangeModuleTests
 // reads like the LeetCode call sequence it replays. Add/Remove return null (no
 // comparable value); Query returns the actual answer - the same null-means-"no return
 // value" convention AllOneOp.Apply uses for its own Inc/Dec split.
-public readonly record struct RangeModuleOp
+public readonly record struct RangeModuleOp(RangeModuleOp.OpKind kind, int left, int right)
 {
-    private readonly Kind _kind;
-    private readonly int _left;
-    private readonly int _right;
+    public static RangeModuleOp Add(int left, int right) => new(OpKind.Add, left, right);
 
-    private RangeModuleOp(Kind kind, int left, int right)
-    {
-        _kind = kind;
-        _left = left;
-        _right = right;
-    }
+    public static RangeModuleOp Query(int left, int right) => new(OpKind.Query, left, right);
 
-    public static RangeModuleOp Add(int left, int right) => new(Kind.Add, left, right);
-
-    public static RangeModuleOp Query(int left, int right) => new(Kind.Query, left, right);
-
-    public static RangeModuleOp Remove(int left, int right) => new(Kind.Remove, left, right);
+    public static RangeModuleOp Remove(int left, int right) => new(OpKind.Remove, left, right);
 
     internal bool? Apply(RangeModuleSolution.IRangeModule module)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Add:
-                module.AddRange(_left, _right);
+            case OpKind.Add:
+                module.AddRange(left, right);
                 return null;
-            case Kind.Query:
-                return module.QueryRange(_left, _right);
+            case OpKind.Query:
+                return module.QueryRange(left, right);
             default:
-                module.RemoveRange(_left, _right);
+                module.RemoveRange(left, right);
                 return null;
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Add,
         Query,

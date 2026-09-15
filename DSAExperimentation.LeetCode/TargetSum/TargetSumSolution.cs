@@ -17,6 +17,28 @@ internal static class TargetSumSolution
     // recursion is 2^N.
     public static int WaysByUnmemoizedRecursion(int[] nums, int target) => CountWays(nums, target, 0, 0);
 
+    public static int WaysByMemoizedRecursion(int[] nums, int target) =>
+        Memoizer.Memoize<(int Index, int Sum), int>((0, 0), new WaysOverSignChoices(nums, target));
+
+    // The recurrence, as a named type: the +/- sign search for one (index, runningSum)
+    // state. The nums array and target it reads arrive through the primary constructor
+    // and the memoized continuation through `rest`.
+    private sealed class WaysOverSignChoices(int[] nums, int target)
+        : IRecurrence<(int Index, int Sum), int>
+    {
+        public int Replay(
+            (int Index, int Sum) state, IRecurrence<(int Index, int Sum), int> rest)
+        {
+            if (state.Index == nums.Length)
+            {
+                return state.Sum == target ? 1 : 0;
+            }
+
+            return rest.Replay((state.Index + 1, state.Sum + nums[state.Index]), rest)
+                 + rest.Replay((state.Index + 1, state.Sum - nums[state.Index]), rest);
+        }
+    }
+
     private static int CountWays(int[] nums, int target, int index, int sum)
     {
         if (index == nums.Length)
@@ -26,21 +48,5 @@ internal static class TargetSumSolution
 
         return CountWays(nums, target, index + 1, sum + nums[index])
              + CountWays(nums, target, index + 1, sum - nums[index]);
-    }
-
-    public static int WaysByMemoizedRecursion(int[] nums, int target)
-    {
-        return Memoizer.Memoize<(int Index, int Sum), int>((0, 0), CountWaysMemoized);
-
-        int CountWaysMemoized((int Index, int Sum) state, Func<(int Index, int Sum), int> ways)
-        {
-            if (state.Index == nums.Length)
-            {
-                return state.Sum == target ? 1 : 0;
-            }
-
-            return ways((state.Index + 1, state.Sum + nums[state.Index]))
-                 + ways((state.Index + 1, state.Sum - nums[state.Index]));
-        }
     }
 }

@@ -91,43 +91,32 @@ public sealed class DesignBrowserHistoryTests
 // One call in a BrowserHistory script: which operation to invoke, and with what
 // url or step count. Pure dispatch, built via the named factories below so a
 // script reads like the LeetCode call sequence it replays.
-public readonly record struct BrowserHistoryOp
+public readonly record struct BrowserHistoryOp(BrowserHistoryOp.OpKind kind, string url, int steps)
 {
-    private readonly Kind _kind;
-    private readonly string _url;
-    private readonly int _steps;
+    public static BrowserHistoryOp Visit(string url) => new(OpKind.Visit, url, 0);
 
-    private BrowserHistoryOp(Kind kind, string url, int steps)
-    {
-        _kind = kind;
-        _url = url;
-        _steps = steps;
-    }
+    public static BrowserHistoryOp Back(int steps) => new(OpKind.Back, string.Empty, steps);
 
-    public static BrowserHistoryOp Visit(string url) => new(Kind.Visit, url, 0);
-
-    public static BrowserHistoryOp Back(int steps) => new(Kind.Back, string.Empty, steps);
-
-    public static BrowserHistoryOp Forward(int steps) => new(Kind.Forward, string.Empty, steps);
+    public static BrowserHistoryOp Forward(int steps) => new(OpKind.Forward, string.Empty, steps);
 
     // null for Visit, matching LeetCode's own judge output for a void operation;
     // the landed url for the two navigations - so a script runner can assert
     // against one expected value per operation uniformly.
     internal string? Apply(IBrowserHistory history)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Visit:
-                history.Visit(_url);
+            case OpKind.Visit:
+                history.Visit(url);
                 return null;
-            case Kind.Back:
-                return history.Back(_steps);
+            case OpKind.Back:
+                return history.Back(steps);
             default:
-                return history.Forward(_steps);
+                return history.Forward(steps);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Visit,
         Back,

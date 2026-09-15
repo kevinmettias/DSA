@@ -21,10 +21,10 @@ public class CountWaysToMakeArrayWithProductBenchmarks
     // Exclusive upper bound for the generated array length n in each query.
     private const int MaxArrayLength = 50;
 
-    [Params(200, 2_000)]
-    public int QueryCount;
+    private int[][] _queries = [];
 
-    private int[][] _queries = null!;
+    [Params(200, 2_000)]
+    public int QueryCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

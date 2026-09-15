@@ -14,10 +14,10 @@ public class PartitionStringBenchmarks
     private const int Seed = 3597;
     private const int AlphabetSize = 4;
 
-    [Params(1_000, 20_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(1_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

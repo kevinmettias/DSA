@@ -13,10 +13,10 @@ public class RankTransformOfAMatrixBenchmarks
 
     private const int ValueRange = 100_000;
 
-    [Params(8, 20)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(8, 20)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

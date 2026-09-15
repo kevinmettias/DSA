@@ -11,10 +11,10 @@ public class KthLargestBenchmarks
     private const int K = 10;
     private const int RandomSeed = 7;
 
-    [Params(1_000, 50_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(1_000, 50_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

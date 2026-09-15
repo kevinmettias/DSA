@@ -14,10 +14,10 @@ public class MinimumTimeToBreakLocksIBenchmarks
     private const int MaxStrengthExclusive = 1_000_000;
     private const int K = 3;
 
-    [Params(4, 8)]
-    public int LockCount;
+    private int[] _strength = [];
 
-    private int[] _strength = null!;
+    [Params(4, 8)]
+    public int LockCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

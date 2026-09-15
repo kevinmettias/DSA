@@ -25,43 +25,12 @@ internal static class UniqueThreeDigitEvenNumbersSolution
     public static int CountByIndexPermutationScan(int[] digits)
     {
         var used = new bool[digits.Length];
-        var chosen = new int[Length];
+        var chosen = new List<int>(Length);
         var distinct = new HashSet<int>();
 
-        void Search(int depth)
-        {
-            if (depth == Length)
-            {
-                RecordIfValid(chosen, distinct);
-                return;
-            }
+        Search(digits, used, chosen, distinct);
 
-            for (var i = 0; i < digits.Length; i++)
-            {
-                if (used[i])
-                {
-                    continue;
-                }
-
-                used[i] = true;
-                chosen[depth] = digits[i];
-                Search(depth + 1);
-                used[i] = false;
-            }
-        }
-
-        Search(0);
         return distinct.Count;
-    }
-
-    private static void RecordIfValid(int[] chosen, HashSet<int> distinct)
-    {
-        if (chosen[0] == 0 || chosen[2] % 2 != 0)
-        {
-            return;
-        }
-
-        distinct.Add((chosen[0] * 10 + chosen[1]) * 10 + chosen[2]);
     }
 
     // This repo's Backtrack.Search primitive drives the identical
@@ -78,8 +47,8 @@ internal static class UniqueThreeDigitEvenNumbersSolution
             state,
             s => s.Values.Count == Length,
             s => s.Values.Count == Length
-                ? []
-                : Enumerable.Range(0, digits.Length).Where(i => !s.Used[i]),
+                ? NoCandidates()
+                : UnusedPositions(s, digits.Length),
             (s, i) => { s.Used[i] = true; s.Values.Add(digits[i]); },
             (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
             s =>
@@ -93,10 +62,56 @@ internal static class UniqueThreeDigitEvenNumbersSolution
         return distinct.Count;
     }
 
-    private sealed class State(int length)
+    // No positions are left to choose once every slot has been filled.
+    private static IEnumerable<int> NoCandidates() => [];
+
+    // The digit positions still free to choose, in array order.
+    private static IEnumerable<int> UnusedPositions(State s, int digitCount) =>
+        Enumerable.Range(0, digitCount).Where(i => !s.Used[i]);
+
+    // The choose/explore/unchoose step: three chosen digits are one candidate number,
+    // otherwise every still-unused position is tried in turn and un-chosen on the way
+    // back. chosen.Count is the slot being filled, so no separate depth is needed.
+    private static void Search(int[] digits, bool[] used, List<int> chosen, HashSet<int> distinct)
     {
-        public bool[] Used { get; } = new bool[length];
+        if (chosen.Count == Length)
+        {
+            RecordIfValid(chosen, distinct);
+            return;
+        }
+
+        for (var i = 0; i < digits.Length; i++)
+        {
+            if (used[i])
+            {
+                continue;
+            }
+
+            used[i] = true;
+            chosen.Add(digits[i]);
+            Search(digits, used, chosen, distinct);
+            chosen.RemoveAt(chosen.Count - 1);
+            used[i] = false;
+        }
+    }
+
+    // Only numbers with a nonzero leading digit and an even last digit count.
+    private static void RecordIfValid(List<int> chosen, HashSet<int> distinct)
+    {
+        if (chosen[0] == 0 || chosen[2] % 2 != 0)
+        {
+            return;
+        }
+
+        distinct.Add((chosen[0] * 10 + chosen[1]) * 10 + chosen[2]);
+    }
+
+    private sealed record State
+    {
+        public bool[] Used { get; }
 
         public List<int> Values { get; } = [];
+
+        public State(int length) => Used = new bool[length];
     }
 }

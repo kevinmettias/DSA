@@ -16,11 +16,11 @@ public class LinkedListComponentsBenchmarks
 {
     private const int EvenModulus = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
-    private int[] _nums = null!;
+
+    private int[] _nums = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -28,12 +28,6 @@ public class LinkedListComponentsBenchmarks
         _head = Build(Enumerable.Range(0, Length).ToArray());
         _nums = Enumerable.Range(0, Length).Where(v => v % EvenModulus == 0).Reverse().ToArray();
     }
-
-    [Benchmark(Baseline = true)]
-    public int LinearScanPerNode() => LinkedListComponentsSolution.NumComponentsByLinearScan(_head, _nums);
-
-    [Benchmark]
-    public int SetMembership() => LinkedListComponentsSolution.NumComponentsBySetMembership(_head, _nums);
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
@@ -48,4 +42,10 @@ public class LinkedListComponentsBenchmarks
 
         return dummy.Next!;
     }
+
+    [Benchmark(Baseline = true)]
+    public int LinearScanPerNode() => LinkedListComponentsSolution.NumComponentsByLinearScan(_head, _nums);
+
+    [Benchmark]
+    public int SetMembership() => LinkedListComponentsSolution.NumComponentsBySetMembership(_head, _nums);
 }

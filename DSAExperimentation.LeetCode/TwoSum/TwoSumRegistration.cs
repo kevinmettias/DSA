@@ -15,12 +15,26 @@ internal sealed class TwoSumRegistration : ILeetCodeProblemRegistration
     private const int MaxValueExclusive = 1_000;
     private const int Seed = 1;
 
-    private delegate bool TwoSumAttempt(int[] nums, int target, out int first, out int second);
+    // The operation both arms implement. TwoSumSolution's Try pattern returns its
+    // answer through two out parameters, and "false" leaves both unset - a contract
+    // with somewhere to be written down here, and parameter names a caller reads at
+    // the declaration rather than at whatever lambda happened to be bound to it.
+    private interface ITwoSumAttempt
+    {
+        bool TryFindIndices(int[] nums, int target, out int first, out int second);
+    }
+
+    // TwoSumSolution exposes its arms as static methods, so each needs a one-method
+    // adapter to satisfy the interface. Both are stateless, so one instance each is
+    // shared: the strategy registered below runs inside the benchmark harness's timed
+    // region, and picking an arm must not allocate there.
+    private static readonly ITwoSumAttempt BruteForce = new BruteForceAttempt();
+    private static readonly ITwoSumAttempt HashMap = new HashMapAttempt();
 
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<(int[] Nums, int Target), int[]>("two-sum")
-            .Strategy("BruteForce", input => Indices(TwoSumSolution.TryFindIndicesByBruteForce, input))
-            .Strategy("HashMap", input => Indices(TwoSumSolution.TryFindIndicesByHashMap, input))
+            .Strategy("BruteForce", input => Indices(BruteForce, input))
+            .Strategy("HashMap", input => Indices(HashMap, input))
 
             // "You may return the answer in any order" - so the scraped example
             // output is one correct answer, not the only one.
@@ -38,6 +52,15 @@ internal sealed class TwoSumRegistration : ILeetCodeProblemRegistration
             .Workload("unreachable-target-5000", BuildDenseValues(5_000))
             .Build();
 
+    private static int[] Indices(ITwoSumAttempt attempt, (int[] Nums, int Target) input)
+        => attempt.TryFindIndices(input.Nums, input.Target, out var first, out var second)
+            ? IndexPair(first, second)
+            : NoIndexPair();
+
+    private static int[] IndexPair(int first, int second) => [first, second];
+
+    private static int[] NoIndexPair() => [];
+
     private static (int[] Nums, int Target) BuildDenseValues(int length)
     {
         var random = new Random(Seed);
@@ -45,6 +68,15 @@ internal sealed class TwoSumRegistration : ILeetCodeProblemRegistration
         return ([.. Enumerable.Range(0, length).Select(_ => random.Next(1, MaxValueExclusive))], UnreachableTarget);
     }
 
-    private static int[] Indices(TwoSumAttempt attempt, (int[] Nums, int Target) input)
-        => attempt(input.Nums, input.Target, out var first, out var second) ? [first, second] : [];
+    private sealed class BruteForceAttempt : ITwoSumAttempt
+    {
+        public bool TryFindIndices(int[] nums, int target, out int first, out int second) =>
+            TwoSumSolution.TryFindIndicesByBruteForce(nums, target, out first, out second);
+    }
+
+    private sealed class HashMapAttempt : ITwoSumAttempt
+    {
+        public bool TryFindIndices(int[] nums, int target, out int first, out int second) =>
+            TwoSumSolution.TryFindIndicesByHashMap(nums, target, out first, out second);
+    }
 }

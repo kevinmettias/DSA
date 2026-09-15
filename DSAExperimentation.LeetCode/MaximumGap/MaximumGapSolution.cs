@@ -20,6 +20,15 @@ internal static class MaximumGapSolution
             return 0;
         }
 
+        var sorted = SortBySelection(nums);
+
+        return MaxAdjacentGap(sorted);
+    }
+
+    // The textbook baseline's own sort: selection sort over a copy of nums, written
+    // without this repo's primitives.
+    private static int[] SortBySelection(int[] nums)
+    {
         var sorted = nums.ToArray();
 
         for (var i = 0; i < sorted.Length - 1; i++)
@@ -37,7 +46,7 @@ internal static class MaximumGapSolution
             (sorted[i], sorted[minIndex]) = (sorted[minIndex], sorted[i]);
         }
 
-        return MaxAdjacentGap(sorted);
+        return sorted;
     }
 
     // Sort a copy of nums with this repo's own MergeSort over

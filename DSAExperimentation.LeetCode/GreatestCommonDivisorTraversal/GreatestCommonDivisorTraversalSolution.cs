@@ -73,29 +73,6 @@ internal static class GreatestCommonDivisorTraversalSolution
         }
     }
 
-    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
-
-    private static int Find(int[] parent, int id)
-    {
-        while (parent[id] != id)
-        {
-            id = parent[id];
-        }
-
-        return id;
-    }
-
-    private static void Union(int[] parent, int first, int second)
-    {
-        var firstRoot = Find(parent, first);
-        var secondRoot = Find(parent, second);
-
-        if (firstRoot != secondRoot)
-        {
-            parent[firstRoot] = secondRoot;
-        }
-    }
-
     // This repo's DisjointSet, unioned by first-seen owner per prime factor so no two
     // values are ever compared directly.
     public static bool CanTraverseAllPairsByPrimeFactorUnion(int[] nums)
@@ -154,6 +131,29 @@ internal static class GreatestCommonDivisorTraversalSolution
         if (value > 1)
         {
             yield return value;
+        }
+    }
+
+    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
+
+    private static int Find(int[] parent, int id)
+    {
+        while (parent[id] != id)
+        {
+            id = parent[id];
+        }
+
+        return id;
+    }
+
+    private static void Union(int[] parent, int first, int second)
+    {
+        var firstRoot = Find(parent, first);
+        var secondRoot = Find(parent, second);
+
+        if (firstRoot != secondRoot)
+        {
+            parent[firstRoot] = secondRoot;
         }
     }
 }

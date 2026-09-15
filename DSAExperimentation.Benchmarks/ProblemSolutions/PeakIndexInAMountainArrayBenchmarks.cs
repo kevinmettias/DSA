@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.PeakIndexInAMountainArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,24 +11,27 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PeakIndexInAMountainArrayBenchmarks
 {
-    private const int MidpointDivisor = 2;
+
+    private int[] _mountain = [];
 
     [Params(200, 100_000)]
-    public int Length;
-
-    private int[] _mountain = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _mountain = new int[Length];
-        var peak = Length / MidpointDivisor;
+        var peak = Length / AlgorithmConstants.HalvingFactor;
 
         for (var i = 0; i < Length; i++)
         {
-            _mountain[i] = i <= peak ? i : Length - i;
+            _mountain[i] = i <= peak ? i : DescendingHeight(Length, i);
         }
     }
+
+    // The mountain's descending side: the height a distance past the peak mirrors
+    // the ascent's.
+    private static int DescendingHeight(int length, int index) => length - index;
 
     [Benchmark(Baseline = true)]
     public int LinearScan() => PeakIndexInAMountainArraySolution.PeakIndexByLinearScan(_mountain);

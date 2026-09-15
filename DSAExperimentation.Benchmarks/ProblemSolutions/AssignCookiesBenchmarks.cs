@@ -13,11 +13,11 @@ public class AssignCookiesBenchmarks
     private const int RandomSeed = 455; // LC problem number
     private const int RandomValueUpperBound = 1_000;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _greed = [];
 
-    private int[] _greed = null!;
-    private int[] _sizes = null!;
+    private int[] _sizes = [];
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

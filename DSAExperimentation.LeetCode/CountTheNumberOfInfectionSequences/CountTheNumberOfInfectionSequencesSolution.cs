@@ -36,45 +36,6 @@ internal static class CountTheNumberOfInfectionSequencesSolution
         return CountCompletions(infected);
     }
 
-    private static long CountCompletions(bool[] infected)
-    {
-        var frontier = FindFrontier(infected);
-
-        if (frontier.Count == 0)
-        {
-            return 1;
-        }
-
-        var total = 0L;
-
-        foreach (var candidate in frontier)
-        {
-            infected[candidate] = true;
-            total = (total + CountCompletions(infected)) % ModularArithmetic.Modulo;
-            infected[candidate] = false;
-        }
-
-        return total;
-    }
-
-    private static List<int> FindFrontier(bool[] infected)
-    {
-        var frontier = new List<int>();
-
-        for (var i = 0; i < infected.Length; i++)
-        {
-            if (!infected[i] && HasInfectedNeighbor(infected, i))
-            {
-                frontier.Add(i);
-            }
-        }
-
-        return frontier;
-    }
-
-    private static bool HasInfectedNeighbor(bool[] infected, int index) =>
-        (index > 0 && infected[index - 1]) || (index < infected.Length - 1 && infected[index + 1]);
-
     // One O(n) scan measures every run between (and around) the sick children,
     // then a single factorial/inverse-factorial table build - the same
     // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial shape -
@@ -140,4 +101,43 @@ internal static class CountTheNumberOfInfectionSequencesSolution
 
         return (factorial, inverseFactorial);
     }
+
+    private static long CountCompletions(bool[] infected)
+    {
+        var frontier = FindFrontier(infected);
+
+        if (frontier.Count == 0)
+        {
+            return 1;
+        }
+
+        var total = 0L;
+
+        foreach (var candidate in frontier)
+        {
+            infected[candidate] = true;
+            total = (total + CountCompletions(infected)) % ModularArithmetic.Modulo;
+            infected[candidate] = false;
+        }
+
+        return total;
+    }
+
+    private static List<int> FindFrontier(bool[] infected)
+    {
+        var frontier = new List<int>();
+
+        for (var i = 0; i < infected.Length; i++)
+        {
+            if (!infected[i] && HasInfectedNeighbor(infected, i))
+            {
+                frontier.Add(i);
+            }
+        }
+
+        return frontier;
+    }
+
+    private static bool HasInfectedNeighbor(bool[] infected, int index) =>
+        (index > 0 && infected[index - 1]) || (index < infected.Length - 1 && infected[index + 1]);
 }

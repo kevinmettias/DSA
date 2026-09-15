@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.Shift2DGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,14 +18,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class Shift2DGridBenchmarks
 {
     private const int MaxCellValueExclusive = 1_000;
-    private const int HalfDivisor = 2;
     private const int RandomSeed = 1;
 
-    [Params(20, 200)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
     private int _k;
+    [Params(20, 200)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -44,7 +44,7 @@ public class Shift2DGridBenchmarks
 
         // Deliberately not a multiple of the grid's cell count, so both strategies
         // do a genuine partial rotation rather than a degenerate no-op/full-cycle.
-        _k = (Size * Size / HalfDivisor) + 1;
+        _k = (Size * Size / AlgorithmConstants.HalvingFactor) + 1;
     }
 
     [Benchmark(Baseline = true)]

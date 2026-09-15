@@ -14,7 +14,7 @@ public sealed class LeetCodeProblemBuilderTests
     [Fact]
     public void RunCase_WhenTheStrategyProducesTheExpectedAnswer_Matches()
     {
-        var outcome = Doubling().RunCase("Correct", "two");
+        var outcome = Doubling().RunCase(new StrategyName("Correct"), new CaseName("two"));
 
         Assert.True(outcome.Matched);
     }
@@ -24,7 +24,7 @@ public sealed class LeetCodeProblemBuilderTests
     [Fact]
     public void RunCase_WhenTheStrategyProducesTheWrongAnswer_DoesNotMatch()
     {
-        var outcome = Doubling().RunCase("OffByOne", "two");
+        var outcome = Doubling().RunCase(new StrategyName("OffByOne"), new CaseName("two"));
 
         Assert.False(outcome.Matched);
         Assert.Equal("4", outcome.Expected);
@@ -34,15 +34,17 @@ public sealed class LeetCodeProblemBuilderTests
     [Fact]
     public void RunCase_RunsTheNamedStrategy_NotTheFirstOne()
     {
-        Assert.True(Doubling().RunCase("Correct", "three").Matched);
-        Assert.False(Doubling().RunCase("OffByOne", "three").Matched);
+        Assert.True(Doubling().RunCase(new StrategyName("Correct"), new CaseName("three")).Matched);
+        Assert.False(Doubling().RunCase(new StrategyName("OffByOne"), new CaseName("three")).Matched);
     }
 
     [Fact]
     public void RunCase_OnAnUnknownName_Throws()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => Doubling().RunCase("NoSuchStrategy", "two"));
-        Assert.Throws<ArgumentOutOfRangeException>(() => Doubling().RunCase("Correct", "no-such-case"));
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => Doubling().RunCase(new StrategyName("NoSuchStrategy"), new CaseName("two")));
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => Doubling().RunCase(new StrategyName("Correct"), new CaseName("no-such-case")));
     }
 
     [Fact]
@@ -86,10 +88,8 @@ public sealed class LeetCodeProblemBuilderTests
     }
 
     [Fact]
-    public void BindWorkload_ReturnsTheMeasuredCallOverThePreparedInput()
-    {
-        Assert.Equal(2_000, Doubling().BindWorkload("Correct", "big")());
-    }
+    public void BindWorkload_ReturnsTheMeasuredCallOverThePreparedInput() => Assert.Equal(
+        2_000, Doubling().BindWorkload(new StrategyName("Correct"), new WorkloadName("big")).Run());
 
     private static LeetCodeProblem Doubling()
         => LeetCodeProblem.For<int, int>(Slug)

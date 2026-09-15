@@ -79,7 +79,7 @@ internal static class MultiplyStringsSolution
         var j = b.Length - 1;
         var carry = 0;
 
-        while (i >= 0 || j >= 0 || carry > 0)
+        while (StillHasDigitsToAdd(i, j, carry))
         {
             var digitA = NextDigit(a, ref i);
             var digitB = NextDigit(b, ref j);
@@ -88,6 +88,11 @@ internal static class MultiplyStringsSolution
 
         return TrimLeadingZeros(PopAllIntoString(stack));
     }
+
+    // More to add while either operand still has an unread digit, or a carry is
+    // still waiting to be placed.
+    private static bool StillHasDigitsToAdd(int i, int j, int carry)
+        => i >= 0 || j >= 0 || carry > 0;
 
     private static int NextDigit(string s, ref int index)
     {
@@ -106,17 +111,6 @@ internal static class MultiplyStringsSolution
         return sum / DecimalBase;
     }
 
-    private static string PopAllIntoString(DecimalStack stack)
-    {
-        var chars = new List<char>();
-        while (stack.TryPop(out var digit))
-        {
-            chars.Add(digit);
-        }
-
-        return new string(chars.ToArray());
-    }
-
     private static string TrimLeadingZeros(string digits)
     {
         var start = 0;
@@ -126,5 +120,16 @@ internal static class MultiplyStringsSolution
         }
 
         return digits[start..];
+    }
+
+    private static string PopAllIntoString(DecimalStack stack)
+    {
+        var chars = new List<char>();
+        while (stack.TryPop(out var digit))
+        {
+            chars.Add(digit);
+        }
+
+        return new string(chars.ToArray());
     }
 }

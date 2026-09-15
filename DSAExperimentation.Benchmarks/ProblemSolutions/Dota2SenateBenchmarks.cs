@@ -14,10 +14,10 @@ public class Dota2SenateBenchmarks
     // Splits SenatorCount in half so the input is exactly one full block of each party.
     private const int PartySplitDivisor = 2;
 
-    [Params(500, 20_000)]
-    public int SenatorCount;
+    private string _senate = "";
 
-    private string _senate = null!;
+    [Params(500, 20_000)]
+    public int SenatorCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

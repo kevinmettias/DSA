@@ -16,10 +16,10 @@ public class FindMinimumInRotatedSortedArrayIIBenchmarks
     private const int DuplicateSpanDivisor = 8; // fraction of Length stamped with duplicate boundary values
     private const int MaxDuplicateSpan = 40; // upper bound on how many boundary elements are duplicated
 
-    private int[] _values = null!;
+    private int[] _values = [];
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

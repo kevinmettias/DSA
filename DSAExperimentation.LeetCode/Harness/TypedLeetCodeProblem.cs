@@ -30,13 +30,13 @@ internal sealed class TypedLeetCodeProblem<TInput, TOutput> : LeetCodeProblem
 
     public override IReadOnlyList<LeetCodeArm> WorkloadArms { get; }
 
-    public TypedLeetCodeProblem(
-        string titleSlug,
-        IReadOnlyList<(string Name, Func<TInput, TOutput> Run)> strategies,
-        IReadOnlyList<LeetCodeCase<TInput, TOutput>> cases,
-        IReadOnlyList<(string Name, TInput Input, IReadOnlyList<string> StrategyNames)> workloads,
-        Func<TOutput, TOutput, bool> answersMatch)
+    public TypedLeetCodeProblem(string titleSlug, LeetCodeRegistration<TInput, TOutput> registration)
     {
+        var strategies = registration.Strategies;
+        var cases = registration.Cases;
+        var workloads = registration.Workloads;
+        var answersMatch = registration.AnswersMatch;
+
         TitleSlug = titleSlug;
         _answersMatch = answersMatch;
         _strategies = strategies.ToDictionary(strategy => strategy.Name, strategy => strategy.Run);
@@ -44,21 +44,32 @@ internal sealed class TypedLeetCodeProblem<TInput, TOutput> : LeetCodeProblem
         _workloads = workloads.ToDictionary(workload => workload.Name, workload => workload.Input);
         StrategyNames = strategies.Select(strategy => strategy.Name).ToList();
         CaseNames = cases.Select(example => example.Name).ToList();
-        WorkloadArms =
+        WorkloadArms = BuildWorkloadArms(titleSlug, workloads, StrategyNames);
+    }
+
+    // The arms this problem is measured over: its workloads crossed with the strategies each
+    // one names. A workload that names none means "all of them", which is what StrategiesFor
+    // resolves. Lifted out of the constructor, which is left to wire the problem up.
+    private static IReadOnlyList<LeetCodeArm> BuildWorkloadArms(
+        string titleSlug,
+        IReadOnlyList<(string Name, TInput Input, IReadOnlyList<string> StrategyNames)> workloads,
+        IReadOnlyList<string> strategyNames)
+        =>
         [
             .. workloads.SelectMany(
-                workload => MeasuredStrategies(workload.StrategyNames).Select(
+                workload => StrategiesFor(workload.StrategyNames, strategyNames).Select(
                     strategy => new LeetCodeArm(titleSlug, strategy, workload.Name))),
         ];
 
-        IEnumerable<string> MeasuredStrategies(IReadOnlyList<string> requested)
-            => requested.Count == 0 ? StrategyNames : requested;
-    }
+    private static IReadOnlyList<string> StrategiesFor(
+        IReadOnlyList<string> requested, IReadOnlyList<string> fallback)
+        => requested.Count == 0 ? fallback : requested;
 
-    public override LeetCodeRunOutcome RunCase(string strategyName, string caseName)
+    public override LeetCodeRunOutcome RunCase(StrategyName strategyName, CaseName caseName)
     {
-        var strategy = Resolve(_strategies, strategyName, nameof(strategyName));
-        var example = Resolve(_cases, caseName, nameof(caseName));
+        var strategy = Resolve(
+            _strategies, new EntryName(strategyName.Text), new ParameterLabel(nameof(strategyName)));
+        var example = Resolve(_cases, new EntryName(caseName.Text), new ParameterLabel(nameof(caseName)));
 
         var actual = strategy(example.Input);
 
@@ -68,14 +79,6 @@ internal sealed class TypedLeetCodeProblem<TInput, TOutput> : LeetCodeProblem
             Expected = Render(example.Expected),
             Actual = Render(actual),
         };
-    }
-
-    public override Func<object?> BindWorkload(string strategyName, string workloadName)
-    {
-        var strategy = Resolve(_strategies, strategyName, nameof(strategyName));
-        var input = Resolve(_workloads, workloadName, nameof(workloadName));
-
-        return () => strategy(input);
     }
 
     // JSON rather than ToString(): every answer shape these problems produce is
@@ -96,9 +99,43 @@ internal sealed class TypedLeetCodeProblem<TInput, TOutput> : LeetCodeProblem
         }
     }
 
-    private TValue Resolve<TValue>(Dictionary<string, TValue> entries, string name, string parameterName)
-        => entries.TryGetValue(name, out var value)
-            ? value
-            : throw new ArgumentOutOfRangeException(
-                parameterName, name, $"'{TitleSlug}' has no entry named '{name}'.");
+    public override IBoundWorkload BindWorkload(StrategyName strategyName, WorkloadName workloadName)
+    {
+        var strategy = Resolve(
+            _strategies, new EntryName(strategyName.Text), new ParameterLabel(nameof(strategyName)));
+        var input = Resolve(
+            _workloads, new EntryName(workloadName.Text), new ParameterLabel(nameof(workloadName)));
+
+        return new BoundWorkload(strategy, input);
+    }
+
+    // The measured region as a collaborator rather than a closure: the two
+    // lookups above already happened, so Run() is one delegate invocation over an
+    // input built once, and a null answer means the strategy produced null rather
+    // than "nothing was bound".
+    private sealed class BoundWorkload(Func<TInput, TOutput> strategy, TInput input) : IBoundWorkload
+    {
+        public object? Run() => strategy(input);
+    }
+
+    private TValue Resolve<TValue>(Dictionary<string, TValue> entries, EntryName name, ParameterLabel parameterName)
+    {
+        if (entries.TryGetValue(name.Text, out var value))
+        {
+            return value;
+        }
+
+        throw new ArgumentOutOfRangeException(
+            parameterName.Text, name.Text, $"'{TitleSlug}' has no entry named '{name.Text}'.");
+    }
+
+    // The two roles a lookup here has, which the pair of `string`s it used to take did
+    // not name: the entry to look up among the registered strategies, cases or
+    // workloads, and the caller's own parameter name, which is what the thrown
+    // exception blames. They are not interchangeable - transposed, the lookup fails
+    // naming an entry nobody asked for and the message points at the wrong parameter -
+    // so each position gets the type that says which one it is.
+    private readonly record struct EntryName(string Text);
+
+    private readonly record struct ParameterLabel(string Text);
 }

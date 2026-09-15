@@ -67,18 +67,24 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
 
             foreach (var neighbor in neighbors[current])
             {
-                if (visited[neighbor])
-                {
-                    continue;
-                }
-
-                visited[neighbor] = true;
-                component.Add(neighbor);
-                queue.Enqueue(neighbor);
+                VisitNeighbor(neighbor, visited, component, queue);
             }
         }
 
         return MaximumComponentContribution(component, nums);
+    }
+
+    // Admits a neighbor to the component once, seeding it as the next node to expand.
+    private static void VisitNeighbor(int neighbor, bool[] visited, List<int> component, Queue<int> queue)
+    {
+        if (visited[neighbor])
+        {
+            return;
+        }
+
+        visited[neighbor] = true;
+        component.Add(neighbor);
+        queue.Enqueue(neighbor);
     }
 
     // This repo's own DisjointSet unions indices directly - swap endpoints are
@@ -87,7 +93,20 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
     // ShortestPath makes switching from a hand-rolled priority queue to Heap).
     public static long MaximumAlternatingSumByDisjointSet(int[] nums, int[][] swaps)
     {
-        var n = nums.Length;
+        var disjointSet = BuildComponents(nums.Length, swaps);
+        var componentsByRoot = GroupIndicesByRoot(disjointSet, nums.Length);
+        long total = 0;
+
+        foreach (var component in componentsByRoot.Values)
+        {
+            total += MaximumComponentContribution(component, nums);
+        }
+
+        return total;
+    }
+
+    private static DisjointSet BuildComponents(int n, int[][] swaps)
+    {
         var disjointSet = new DisjointSet(n);
 
         foreach (var swap in swaps)
@@ -95,6 +114,12 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
             disjointSet.Union(swap[0], swap[1]);
         }
 
+        return disjointSet;
+    }
+
+    // Every index listed under its component's root, in index order.
+    private static Dictionary<int, List<int>> GroupIndicesByRoot(DisjointSet disjointSet, int n)
+    {
         var componentsByRoot = new Dictionary<int, List<int>>();
 
         for (var i = 0; i < n; i++)
@@ -110,14 +135,7 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
             component.Add(i);
         }
 
-        long total = 0;
-
-        foreach (var component in componentsByRoot.Values)
-        {
-            total += MaximumComponentContribution(component, nums);
-        }
-
-        return total;
+        return componentsByRoot;
     }
 
     // Sort the group's values descending; the top evenSlotCount of them occupy the
@@ -132,9 +150,12 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
 
         for (var rank = 0; rank < values.Length; rank++)
         {
-            sum += rank < evenSlotCount ? values[rank] : -values[rank];
+            sum += rank < evenSlotCount ? ValueAt(values, rank) : -ValueAt(values, rank);
         }
 
         return sum;
     }
+
+    // The value at a rank in the component's descending-sorted values.
+    private static long ValueAt(long[] values, int rank) => values[rank];
 }

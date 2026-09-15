@@ -11,10 +11,10 @@ public class TrappingRainWaterIIBenchmarks
     private const int RandomSeed = 407; // LC 407: Trapping Rain Water II
     private const int MaxHeightMapValue = 50;
 
-    [Params(15, 40)]
-    public int Size;
+    private int[][] _heightMap = [];
 
-    private int[][] _heightMap = null!;
+    [Params(15, 40)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

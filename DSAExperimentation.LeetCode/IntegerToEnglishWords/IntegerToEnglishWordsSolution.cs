@@ -1,3 +1,4 @@
+using Vocabulary = DSAExperimentation.LeetCode.IntegerToEnglishWords.IntegerToEnglishWordsVocabulary;
 using WordStack = DSAExperimentation.DataStructures.Stack.Stack<string>;
 
 namespace DSAExperimentation.LeetCode.IntegerToEnglishWords;
@@ -15,29 +16,6 @@ namespace DSAExperimentation.LeetCode.IntegerToEnglishWords;
 // stack" composition AddBinarySolution uses for carry digits.
 internal static class IntegerToEnglishWordsSolution
 {
-    private const string ZeroWord = "Zero";
-    private const string HundredWord = "Hundred";
-    private const string WordSeparator = " ";
-    private const string EmptyWords = "";
-    private const int GroupSize = 1000;
-    private const int HundredsDivisor = 100;
-    private const int TensThreshold = 20;
-    private const int DigitBase = 10;
-
-    private static readonly string[] Below20 =
-    [
-        "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
-        "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
-        "Seventeen", "Eighteen", "Nineteen"
-    ];
-
-    private static readonly string[] Tens =
-    [
-        "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
-    ];
-
-    private static readonly string[] Scales = ["", "Thousand", "Million", "Billion"];
-
     // The naive baseline: prepend each group onto the accumulated result,
     // reallocating and copying the whole string every time. What you would
     // write without this repo - plain BCL strings, no stack.
@@ -45,16 +23,16 @@ internal static class IntegerToEnglishWordsSolution
     {
         if (num == 0)
         {
-            return ZeroWord;
+            return Vocabulary.ZeroWord;
         }
 
-        var result = EmptyWords;
+        var result = Vocabulary.EmptyWords;
         var scale = 0;
 
         while (num > 0)
         {
-            result = PrependGroup(result, num % GroupSize, scale);
-            num /= GroupSize;
+            result = PrependGroup(result, num % Vocabulary.GroupSize, scale);
+            num /= Vocabulary.GroupSize;
             scale++;
         }
 
@@ -69,9 +47,15 @@ internal static class IntegerToEnglishWordsSolution
         }
 
         var groupWords = GroupToWords(group);
-        var piece = Scales[scale].Length > 0 ? groupWords + WordSeparator + Scales[scale] : groupWords;
-        return result.Length > 0 ? piece + WordSeparator + result : piece;
+        var piece = Vocabulary.Scales[scale].Length > 0 ? GroupWithScale(groupWords, scale) : groupWords;
+        return result.Length > 0 ? PrependPiece(new GroupPiece(piece), new AccumulatedWords(result)) : piece;
     }
+
+    private static string GroupWithScale(string groupWords, int scale) =>
+        groupWords + Vocabulary.WordSeparator + Vocabulary.Scales[scale];
+
+    private static string PrependPiece(GroupPiece piece, AccumulatedWords result) =>
+        piece.Text + Vocabulary.WordSeparator + result.Text;
 
     // Push each group least-significant-first onto Stack<string>; popping
     // yields them most-significant first, so the whole answer is built with
@@ -80,7 +64,7 @@ internal static class IntegerToEnglishWordsSolution
     {
         if (num == 0)
         {
-            return ZeroWord;
+            return Vocabulary.ZeroWord;
         }
 
         var stack = new WordStack();
@@ -88,8 +72,8 @@ internal static class IntegerToEnglishWordsSolution
 
         while (num > 0)
         {
-            PushGroup(stack, num % GroupSize, scale);
-            num /= GroupSize;
+            PushGroup(stack, num % Vocabulary.GroupSize, scale);
+            num /= Vocabulary.GroupSize;
             scale++;
         }
 
@@ -99,7 +83,7 @@ internal static class IntegerToEnglishWordsSolution
             words.Add(word);
         }
 
-        return string.Join(WordSeparator, words);
+        return string.Join(Vocabulary.WordSeparator, words);
     }
 
     private static void PushGroup(WordStack stack, int group, int scale)
@@ -109,9 +93,9 @@ internal static class IntegerToEnglishWordsSolution
             return;
         }
 
-        if (Scales[scale].Length > 0)
+        if (Vocabulary.Scales[scale].Length > 0)
         {
-            stack.Push(Scales[scale]);
+            stack.Push(Vocabulary.Scales[scale]);
         }
 
         stack.Push(GroupToWords(group));
@@ -119,38 +103,47 @@ internal static class IntegerToEnglishWordsSolution
 
     private static string GroupToWords(int group)
     {
-        var hundreds = group / HundredsDivisor;
-        var remainder = group % HundredsDivisor;
+        var hundreds = group / Vocabulary.HundredsDivisor;
+        var remainder = group % Vocabulary.HundredsDivisor;
         var parts = new List<string>();
 
         AppendHundreds(parts, hundreds);
         AppendTensAndOnes(parts, remainder);
 
-        return string.Join(WordSeparator, parts);
+        return string.Join(Vocabulary.WordSeparator, parts);
     }
 
     private static void AppendHundreds(List<string> parts, int hundreds)
     {
         if (hundreds > 0)
         {
-            parts.Add(Below20[hundreds]);
-            parts.Add(HundredWord);
+            parts.Add(Vocabulary.Below20[hundreds]);
+            parts.Add(Vocabulary.HundredWord);
         }
     }
 
     private static void AppendTensAndOnes(List<string> parts, int remainder)
     {
-        if (remainder >= TensThreshold)
+        if (remainder >= Vocabulary.TensThreshold)
         {
-            parts.Add(Tens[remainder / DigitBase]);
-            if (remainder % DigitBase > 0)
+            parts.Add(Vocabulary.Tens[remainder / Vocabulary.DigitBase]);
+            if (remainder % Vocabulary.DigitBase > 0)
             {
-                parts.Add(Below20[remainder % DigitBase]);
+                parts.Add(Vocabulary.Below20[remainder % Vocabulary.DigitBase]);
             }
         }
         else if (remainder > 0)
         {
-            parts.Add(Below20[remainder]);
+            parts.Add(Vocabulary.Below20[remainder]);
         }
     }
+
+    // LC 273's two concatenation ends, named for the roles they play here rather than
+    // left as two adjacent `string` positions a caller could hand over the wrong way
+    // round with the compiler none the wiser. `piece` is the words of the group being
+    // prepended and `result` the answer accumulated so far - the concatenation is not
+    // commutative, so a swap silently reverses the sentence.
+    internal readonly record struct GroupPiece(string Text);
+
+    internal readonly record struct AccumulatedWords(string Text);
 }

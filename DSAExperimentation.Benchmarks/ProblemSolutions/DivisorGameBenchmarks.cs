@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DivisorGameBenchmarks
 {
     [Params(100, 1_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public bool MemoizedRecursion() => DivisorGameSolution.AliceWinsByMemoizedRecursion(N);

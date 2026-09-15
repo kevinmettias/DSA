@@ -11,15 +11,15 @@ namespace DSAExperimentation.LeetCode.MinimizeTheMaximumEdgeWeightOfGraph;
 internal readonly struct EdgeWeightChildren : IChildren<EdgeWeightNode>
 {
     private readonly EdgeWeightNode _node;
-    private readonly (int To, int Weight)[] _reachable;
+    private readonly ReadOnlyMemory<(int To, int Weight)> _reachable;
+
+    public int Count => _reachable.Length;
 
     public EdgeWeightChildren(EdgeWeightNode node)
     {
         _node = node;
-        _reachable = [.. node.Graph.NeighborsOf(node.Id).Where(edge => edge.Weight <= node.MaxWeight)];
+        _reachable = node.Graph.NeighborsOf(node.Id).Where(edge => edge.Weight <= node.MaxWeight).ToArray();
     }
 
-    public int Count => _reachable.Length;
-
-    public EdgeWeightNode Get(int index) => new(_reachable[index].To, _node.Graph, _node.MaxWeight);
+    public EdgeWeightNode Get(int index) => new(_reachable.Span[index].To, _node.Graph, _node.MaxWeight);
 }

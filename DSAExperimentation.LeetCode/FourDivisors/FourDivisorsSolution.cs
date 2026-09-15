@@ -112,9 +112,13 @@ internal static class FourDivisorsSolution
 
             var paired = num / divisor;
             Count += divisor == paired ? 1 : DistinctDivisorPairCount;
-            Sum += divisor == paired ? divisor : divisor + paired;
+            Sum += divisor == paired ? divisor : DivisorPairSum(divisor, paired);
 
             return Count <= TargetDivisorCount;
         }
+
+        // A non-square divisor arrives with its distinct partner, and both count toward
+        // the sum; a square divisor was already added alone.
+        private static int DivisorPairSum(int divisor, int paired) => divisor + paired;
     }
 }

@@ -19,7 +19,8 @@ internal static class SafeWalkGridWorkloads
 
             for (var col = 0; col < size; col++)
             {
-                grid[row][col] = random.Next(100) < UnsafeCellPercentChance ? 1 : 0;
+                var isUnsafe = random.Next(100) < UnsafeCellPercentChance;
+                grid[row][col] = isUnsafe ? 1 : 0;
             }
         }
 

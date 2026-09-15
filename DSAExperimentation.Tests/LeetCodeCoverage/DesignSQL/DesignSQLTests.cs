@@ -118,23 +118,8 @@ public sealed class DesignSQLTests
 // One call in an SQL script: which method to invoke and with what arguments. Pure
 // dispatch, built via the named factories below so a script (like Examples above)
 // reads like the LeetCode call sequence it replays.
-public readonly record struct SqlOp
+public readonly record struct SqlOp(SqlOp.SqlCall call, string name, string[] row, int rowId, int columnId)
 {
-    private readonly SqlCall _call;
-    private readonly string _name;
-    private readonly string[] _row;
-    private readonly int _rowId;
-    private readonly int _columnId;
-
-    private SqlOp(SqlCall call, string name, string[] row, int rowId, int columnId)
-    {
-        _call = call;
-        _name = name;
-        _row = row;
-        _rowId = rowId;
-        _columnId = columnId;
-    }
-
     public static SqlOp InsertRow(string name, string[] row)
         => new(SqlCall.Insert, name, row, rowId: 0, columnId: 0);
 
@@ -150,20 +135,20 @@ public readonly record struct SqlOp
     // this same assembly's RunScript ever calls Apply.
     internal string? Apply(ISqlStrategy strategy)
     {
-        switch (_call)
+        switch (call)
         {
             case SqlCall.Insert:
-                strategy.InsertRow(_name, _row);
+                strategy.InsertRow(name, row);
                 return null;
             case SqlCall.Delete:
-                strategy.DeleteRow(_name, _rowId);
+                strategy.DeleteRow(name, rowId);
                 return null;
             default:
-                return strategy.SelectCell(_name, _rowId, _columnId);
+                return strategy.SelectCell(name, rowId, columnId);
         }
     }
 
-    private enum SqlCall
+    public enum SqlCall
     {
         Insert,
         Delete,

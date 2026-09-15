@@ -20,12 +20,12 @@ public class MinimumWeightedSubgraphWithTheRequiredPathsBenchmarks
     private const int Src1 = 0;
     private const int Src2 = 1;
 
-    [Params(30, 150)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
     private RequiredPathsGraph _graph = null!;
     private int _dest;
+    [Params(30, 150)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,10 +38,13 @@ public class MinimumWeightedSubgraphWithTheRequiredPathsBenchmarks
     [Benchmark(Baseline = true)]
     public long PerNodePointToPointSearch() =>
         MinimumWeightedSubgraphWithTheRequiredPathsSolution.MinimumWeightByPerNodeSearch(
-            NodeCount, _edges, Src1, Src2, _dest);
+            NodeCount,
+            _edges,
+            new MinimumWeightedSubgraphWithTheRequiredPathsSolution.PathEndpoints(Src1, Src2, _dest));
 
     [Benchmark]
     public long ReverseGraphDijkstra() =>
         MinimumWeightedSubgraphWithTheRequiredPathsSolution.MinimumWeightByReverseGraphDijkstra(
-            _graph, Src1, Src2, _dest);
+            _graph,
+            new MinimumWeightedSubgraphWithTheRequiredPathsSolution.PathEndpoints(Src1, Src2, _dest));
 }

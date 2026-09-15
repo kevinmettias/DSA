@@ -17,10 +17,10 @@ public class MaximumMedianSumOfSubsequencesOfSizeThreeBenchmarks
     private const int Seed = 3627; // LC problem number
     private const int MaxValue = 1_000_000_000;
 
-    [Params(6, 12)]
-    public int N;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(6, 12)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

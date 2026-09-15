@@ -14,10 +14,10 @@ public class WordBreakIIBenchmarks
 
     private static readonly string[] Dictionary = [RepeatedWord];
 
-    [Params(600, 3000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(600, 3000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -94,15 +94,19 @@ internal static class ReachableNodesInSubdividedGraphSolution
         {
             var node = queue.Dequeue();
             reachable++;
-            EnqueueNeighborsWithinBudget(adjacency, distance, queue, node, maxMoves);
+            EnqueueNeighborsWithinBudget(adjacency, (distance, queue), node, maxMoves);
         }
 
         return reachable;
     }
 
+    // The BFS's own bookkeeping - how far each node is, and which nodes are still
+    // pending - is one piece of search state, created together and threaded together.
     private static void EnqueueNeighborsWithinBudget(
-        List<List<int>> adjacency, int[] distance, Queue<int> queue, int node, int maxMoves)
+        List<List<int>> adjacency, (int[] Distance, Queue<int> Pending) search, int node, int maxMoves)
     {
+        var (distance, queue) = search;
+
         foreach (var next in adjacency[node])
         {
             if (distance[next] != Unvisited)
@@ -124,8 +128,12 @@ internal static class ReachableNodesInSubdividedGraphSolution
     // edge's reachable subdivision nodes analytically - cost independent of how large
     // any single edge's subdivision count is. The same "search once, answer many
     // queries" composition FindEdgesInShortestPathsSolution uses for LC 3123.
-    public static int CountReachableNodesByDijkstra(int[][] edges, int maxMoves, int n) =>
-        CountReachableNodesByDijkstra(SubdividedGraph.Build(n, edges), maxMoves);
+    public static int CountReachableNodesByDijkstra(int[][] edges, int maxMoves, int n)
+    {
+        var graph = SubdividedGraph.Build(n, edges);
+
+        return CountReachableNodesByDijkstra(graph, maxMoves);
+    }
 
     public static int CountReachableNodesByDijkstra(SubdividedGraph graph, int maxMoves)
     {

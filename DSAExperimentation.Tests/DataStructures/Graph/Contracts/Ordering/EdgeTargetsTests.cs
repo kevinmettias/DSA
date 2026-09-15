@@ -9,10 +9,7 @@ public sealed class EdgeTargetsTests
         new(new ListEdges<TestNode, int>([(3, new TestNode("A")), (7, new TestNode("B"))]));
 
     [Fact]
-    public void Count_MatchesTheWrappedEdgeCount()
-    {
-        Assert.Equal(2, Targets().Count);
-    }
+    public void Count_MatchesTheWrappedEdgeCount() => Assert.Equal(2, Targets().Count);
 
     [Fact]
     public void Get_DropsTheEdgeDataAndKeepsTheTarget()

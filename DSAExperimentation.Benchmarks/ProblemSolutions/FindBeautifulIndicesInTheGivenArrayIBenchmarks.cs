@@ -15,12 +15,12 @@ public class FindBeautifulIndicesInTheGivenArrayIBenchmarks
 {
     private const int SearchWindow = 100;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _a = null!;
-    private string _b = null!;
+    private string _a = "";
+    private string _b = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,9 +33,17 @@ public class FindBeautifulIndicesInTheGivenArrayIBenchmarks
 
     [Benchmark(Baseline = true)]
     public int[] BruteForce() =>
-        FindBeautifulIndicesInTheGivenArrayISolution.FindBeautifulIndicesByBruteForce(_s, _a, _b, SearchWindow);
+        FindBeautifulIndicesInTheGivenArrayISolution.FindBeautifulIndicesByBruteForce(
+            new FindBeautifulIndicesInTheGivenArrayISolution.SearchedText(_s),
+            new FindBeautifulIndicesInTheGivenArrayISolution.AnchorPattern(_a),
+            new FindBeautifulIndicesInTheGivenArrayISolution.NearbyPattern(_b),
+            SearchWindow);
 
     [Benchmark]
     public int[] PrefixFunctionSearch() =>
-        FindBeautifulIndicesInTheGivenArrayISolution.FindBeautifulIndicesByPrefixFunctionSearch(_s, _a, _b, SearchWindow);
+        FindBeautifulIndicesInTheGivenArrayISolution.FindBeautifulIndicesByPrefixFunctionSearch(
+            new FindBeautifulIndicesInTheGivenArrayISolution.SearchedText(_s),
+            new FindBeautifulIndicesInTheGivenArrayISolution.AnchorPattern(_a),
+            new FindBeautifulIndicesInTheGivenArrayISolution.NearbyPattern(_b),
+            SearchWindow);
 }

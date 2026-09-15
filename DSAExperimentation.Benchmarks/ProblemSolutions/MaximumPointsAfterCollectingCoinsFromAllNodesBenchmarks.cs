@@ -19,11 +19,11 @@ public class MaximumPointsAfterCollectingCoinsFromAllNodesBenchmarks
     private const int MaxCoinsExclusive = 10_000;
     private const int K = 2;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
-    private int[] _coins = null!;
+    private int[] _coins = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

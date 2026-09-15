@@ -24,10 +24,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConstructQuadTreeBenchmarks
 {
-    [Params(16, 128)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(16, 128)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -37,7 +37,8 @@ public class ConstructQuadTreeBenchmarks
         for (var row = 0; row < Size; row++)
         {
             _grid[row] = new int[Size];
-            var value = row < Size / 2 ? 0 : 1;
+            var isTopHalf = row < Size / 2;
+            var value = isTopHalf ? 0 : 1;
 
             for (var col = 0; col < Size; col++)
             {

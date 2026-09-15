@@ -2,7 +2,7 @@ namespace DSAExperimentation.LeetCode.ImplementRand10UsingRand7;
 
 // LeetCode 470. Implement Rand10() Using Rand7(): given a black-box Rand7() that
 // returns a uniform 1..7 integer, build Rand10() returning a uniform 1..10 integer,
-// calling Rand7() only. Rand7 is injected as a delegate rather than owned
+// calling Rand7() only. Rand7 is injected as a collaborator rather than owned
 // internally (LinkedListRandomNodeSolution's convention) so a harness controls
 // seeding and call count instead of the strategy hiding its own randomness.
 //
@@ -20,16 +20,16 @@ internal static class ImplementRand10UsingRand7Solution
     private const int RejectionThreshold = 40;
     private const int Rand10Range = 10;
 
-    public static int Rand10ByNaiveModuloFold(Func<int> rand7) => 1 + (rand7() - 1) % Rand10Range;
+    public static int Rand10ByNaiveModuloFold(IRand7 rand7) => 1 + (rand7.Draw() - 1) % Rand10Range;
 
-    public static int Rand10ByRejectionSampling(Func<int> rand7)
+    public static int Rand10ByRejectionSampling(IRand7 rand7)
     {
         int index;
 
         do
         {
-            var row = rand7();
-            var col = rand7();
+            var row = rand7.Draw();
+            var col = rand7.Draw();
             index = ((row - 1) * Rand7RangeSize) + col;
         } while (index > RejectionThreshold);
 

@@ -29,7 +29,19 @@ internal static class MergeKSortedListsSolution
         }
 
         var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
+        var tail = SpliceHeapInOrder(heap, dummy);
+
+        tail.Next = null;
+        return dummy.Next;
+    }
+
+    // Drains the heap onto `output`, splicing each popped node onto the end and
+    // pushing that node's successor so the heap stays at most k entries deep.
+    // Returns the last node spliced on.
+    private static SinglyLinkedListNode<int> SpliceHeapInOrder(
+        Heap<SinglyLinkedListNode<int>, NodeOrder> heap, SinglyLinkedListNode<int> output)
+    {
+        var tail = output;
 
         while (heap.TryPop(out var node))
         {
@@ -42,8 +54,7 @@ internal static class MergeKSortedListsSolution
             tail = node;
         }
 
-        tail.Next = null;
-        return dummy.Next;
+        return tail;
     }
 
     // The textbook approach many first reach for: read every value out of every
@@ -52,6 +63,23 @@ internal static class MergeKSortedListsSolution
     // beyond the input/output list shape itself - it is the arm MergeListsByHeap
     // has to justify itself against.
     public static SinglyLinkedListNode<int>? MergeListsByFlattenSort(SinglyLinkedListNode<int>?[] lists)
+    {
+        var sorted = SortedValues(lists);
+
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in sorted)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
+    // Every value in every list, flattened into one ascending array.
+    private static int[] SortedValues(SinglyLinkedListNode<int>?[] lists)
     {
         var values = new List<int>();
 
@@ -66,16 +94,7 @@ internal static class MergeKSortedListsSolution
         var sorted = values.ToArray();
         Array.Sort(sorted);
 
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in sorted)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        return sorted;
     }
 
     private readonly struct NodeOrder : IHeapOrder<SinglyLinkedListNode<int>>

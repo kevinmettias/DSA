@@ -11,13 +11,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximizeAlternatingSumUsingSwapsBenchmarks
 {
     private const int RandomSeed = 3695; // LC problem number
-    private const int ValueUpperBound = 1_000_000_000; // exclusive upper bound; LC 3695 allows values up to 1e9
+    private const int ValueUpperBound = 1_000_000_000; private int[] _nums = [];
+
+    private int[][] _swaps = [];
+    // exclusive upper bound; LC 3695 allows values up to 1e9
 
     [Params(1_000, 10_000)]
-    public int N;
-
-    private int[] _nums = null!;
-    private int[][] _swaps = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

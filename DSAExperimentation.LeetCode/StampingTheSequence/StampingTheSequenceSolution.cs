@@ -21,38 +21,38 @@ internal static class StampingTheSequenceSolution
     // reversal pass is needed and the shifting cost is paid instead. Deliberately
     // written without this repo's primitives - it is the arm the stack below has to
     // justify itself against.
-    public static int[] MovesToStampByListPrepend(string stamp, string target)
+    public static int[] MovesToStampByListPrepend(StampPattern stamp, TargetText target)
     {
-        var windowCount = target.Length - stamp.Length + 1;
+        var windowCount = target.Text.Length - stamp.Text.Length + 1;
 
         if (windowCount <= 0)
         {
             return [];
         }
 
-        var canvas = new StampCanvas(target.ToCharArray(), stamp, new bool[windowCount]);
+        var canvas = new StampCanvas(target.Text.ToCharArray(), stamp.Text, new bool[windowCount]);
         var order = new List<int>();
         var turnedCount = ReverseStamp(canvas, order);
 
-        return turnedCount == target.Length ? order.ToArray() : [];
+        return turnedCount == target.Text.Length ? order.ToArray() : NoMoves();
     }
 
     // The same simulation, recording into Stack<int>: pushing in discovery order and
     // popping into the result array reverses it for free.
-    public static int[] MovesToStampByStackReverse(string stamp, string target)
+    public static int[] MovesToStampByStackReverse(StampPattern stamp, TargetText target)
     {
-        var windowCount = target.Length - stamp.Length + 1;
+        var windowCount = target.Text.Length - stamp.Text.Length + 1;
 
         if (windowCount <= 0)
         {
             return [];
         }
 
-        var canvas = new StampCanvas(target.ToCharArray(), stamp, new bool[windowCount]);
+        var canvas = new StampCanvas(target.Text.ToCharArray(), stamp.Text, new bool[windowCount]);
         var order = new RepoStampStack();
         var turnedCount = ReverseStamp(canvas, order);
 
-        return turnedCount == target.Length ? UnwindToForwardOrder(order) : [];
+        return turnedCount == target.Text.Length ? UnwindToForwardOrder(order) : NoMoves();
     }
 
     // The stack pops in reverse discovery order, which is exactly forward
@@ -146,7 +146,7 @@ internal static class StampingTheSequenceSolution
     // (otherwise this window is a no-op re-stamp of already-done work).
     private static bool TryStampWindow(StampCanvas canvas, int start, ref int turnedCount)
     {
-        if (!WindowMatchesStamp(canvas, start, out var hasLiveCharacter) || !hasLiveCharacter)
+        if (ProbeWindow(canvas, start) != WindowProbe.Stampable)
         {
             return false;
         }
@@ -163,11 +163,13 @@ internal static class StampingTheSequenceSolution
         return true;
     }
 
-    // A window "matches" if every already-visible character agrees with the stamp at
-    // that offset; hasLiveCharacter reports whether any character was still visible.
-    private static bool WindowMatchesStamp(StampCanvas canvas, int start, out bool hasLiveCharacter)
+    // Probing one window answers one question with three outcomes, and the caller
+    // needs all three told apart: a visible character can disagree with the stamp,
+    // every visible character can agree with nothing left to erase, or the window
+    // can be genuinely stampable. That is a verdict, not a bool plus a flag.
+    private static WindowProbe ProbeWindow(StampCanvas canvas, int start)
     {
-        hasLiveCharacter = false;
+        var hasLiveCharacter = false;
 
         for (var k = 0; k < canvas.Stamp.Length; k++)
         {
@@ -180,16 +182,36 @@ internal static class StampingTheSequenceSolution
 
             if (current != canvas.Stamp[k])
             {
-                return false;
+                return WindowProbe.ConflictingCharacter;
             }
 
             hasLiveCharacter = true;
         }
 
-        return true;
+        return hasLiveCharacter ? WindowProbe.Stampable : WindowProbe.AlreadyErased;
     }
+
+    // The empty move sequence a caller gets back when target cannot be stamped at all.
+    private static int[] NoMoves() => [];
 
     // The mutable state one reverse-simulation run scans over: the canvas being
     // erased to '?', the stamp it is matched against, and which windows are done.
     private readonly record struct StampCanvas(char[] Chars, string Stamp, bool[] Done);
+
+    // The three outcomes of probing one window. Only Stampable lets the caller turn
+    // characters to '?' and record the stamp; the other two are the ways it declines.
+    private enum WindowProbe
+    {
+        ConflictingCharacter,
+        AlreadyErased,
+        Stampable,
+    }
+
+    // The two sides of a stamping run, named for what each is in this problem rather
+    // than left as two adjacent `string` positions a caller could hand over the wrong
+    // way round with the compiler none the wiser: `stamp` is the pattern pressed onto
+    // the canvas, `target` the string the canvas has to end up spelling.
+    internal readonly record struct StampPattern(string Text);
+
+    internal readonly record struct TargetText(string Text);
 }

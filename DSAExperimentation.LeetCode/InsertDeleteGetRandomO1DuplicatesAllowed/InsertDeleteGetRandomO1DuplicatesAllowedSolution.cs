@@ -117,8 +117,6 @@ internal static class InsertDeleteGetRandomO1DuplicatesAllowedSolution
             return true;
         }
 
-        public int GetRandom() => _values.Get(_random.Next(_values.Count));
-
         private int PopOccurrence(int value, DoublyLinkedList<int> occurrences)
         {
             var removedNode = occurrences.PopBack();
@@ -154,5 +152,7 @@ internal static class InsertDeleteGetRandomO1DuplicatesAllowedSolution
             _nodeByPosition.TryRemove(fromPosition);
             _nodeByPosition.Set(toPosition, movedNode);
         }
+
+        public int GetRandom() => _values.Get(_random.Next(_values.Count));
     }
 }

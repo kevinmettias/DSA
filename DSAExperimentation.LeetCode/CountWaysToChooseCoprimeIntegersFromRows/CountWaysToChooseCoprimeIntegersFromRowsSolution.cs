@@ -17,25 +17,6 @@ internal static class CountWaysToChooseCoprimeIntegersFromRowsSolution
     // the row-by-row GCD-counting DP below has to beat.
     public static long CountWaysByBruteForce(int[][] mat) => CountFromRow(mat, rowIndex: 0, runningGcd: 0);
 
-    private static long CountFromRow(int[][] mat, int rowIndex, int runningGcd)
-    {
-        if (rowIndex == mat.Length)
-        {
-            return runningGcd == 1 ? 1 : 0;
-        }
-
-        var ways = 0L;
-
-        foreach (var value in mat[rowIndex])
-        {
-            ways += CountFromRow(mat, rowIndex + 1, Gcd(runningGcd, value));
-        }
-
-        return ways % ModularArithmetic.Modulo;
-    }
-
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
-
     // Composed: every GCD reachable after any prefix of rows is itself a divisor
     // of some mat[i][j] <= 150, so there are never more than 150 distinct "running
     // GCD so far" states to track - a Dictionary<int,long> from that GCD to the
@@ -75,4 +56,24 @@ internal static class CountWaysToChooseCoprimeIntegersFromRowsSolution
 
         return next;
     }
+
+    private static long CountFromRow(int[][] mat, int rowIndex, int runningGcd)
+    {
+        if (rowIndex == mat.Length)
+        {
+            return runningGcd == 1 ? 1 : 0;
+        }
+
+        var ways = 0L;
+
+        foreach (var value in mat[rowIndex])
+        {
+            var gcdSoFar = Gcd(runningGcd, value);
+            ways += CountFromRow(mat, rowIndex + 1, gcdSoFar);
+        }
+
+        return ways % ModularArithmetic.Modulo;
+    }
+
+    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
 }

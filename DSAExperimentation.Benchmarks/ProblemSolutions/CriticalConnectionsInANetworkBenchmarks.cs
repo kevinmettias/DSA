@@ -28,11 +28,11 @@ public class CriticalConnectionsInANetworkBenchmarks
     // TriangleSize nodes.
     private const int ThirdVertexOffset = TriangleSize - 1;
 
-    [Params(150, 3_000)]
-    public int NodeCount;
+    private int[][] _connections = [];
 
-    private int[][] _connections = null!;
     private ServerNetwork _network = null!;
+    [Params(150, 3_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

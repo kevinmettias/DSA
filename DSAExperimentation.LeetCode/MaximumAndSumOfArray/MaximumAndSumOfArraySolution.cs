@@ -30,6 +30,80 @@ internal static class MaximumAndSumOfArraySolution
     public static int MaximumAndSumByBruteForceRecursion(int[] nums, int numSlots) =>
         BestFromBruteForce(new SlotContext(nums, numSlots), FirstSlot, usedMask: 0);
 
+    // This repo's own Memoizer, keyed on the (Slot, UsedMask) tuple - the same
+    // 2D memo state MaximumStudentsTakingExamSolution's (Row, PrevMask) uses, with
+    // "row" renamed to "slot". Every reachable state is computed exactly once.
+    public static int MaximumAndSumByMemoizedBitmask(int[] nums, int numSlots)
+    {
+        var context = new SlotContext(nums, numSlots);
+
+        return Memoizer.Memoize<(int Slot, int UsedMask), int>(
+            (FirstSlot, 0), new BestSlotPlacement(context));
+    }
+
+    private static int BestFrom(
+        (int Slot, int UsedMask) state,
+        IRecurrence<(int Slot, int UsedMask), int> rest,
+        SlotContext context)
+    {
+        var (slot, usedMask) = state;
+
+        if (slot > context.NumSlots)
+        {
+            return 0;
+        }
+
+        var best = rest.Replay((slot + 1, usedMask), rest);
+        var frame = new SlotFrame(context, slot, usedMask);
+
+        for (var i = 0; i < context.Nums.Length; i++)
+        {
+            best = BestConsideringElement(frame, i, best, rest);
+        }
+
+        return best;
+    }
+
+    private static int BestConsideringElement(
+        SlotFrame frame, int i, int best, IRecurrence<(int Slot, int UsedMask), int> rest)
+    {
+        var bitI = 1 << i;
+
+        if ((frame.UsedMask & bitI) != 0)
+        {
+            return best;
+        }
+
+        var withOne = (frame.Slot & frame.Context.Nums[i])
+            + rest.Replay((frame.Slot + 1, frame.UsedMask | bitI), rest);
+        best = Math.Max(best, withOne);
+
+        return BestConsideringPair(frame, i, best, rest);
+    }
+
+    private static int BestConsideringPair(
+        SlotFrame frame, int i, int best, IRecurrence<(int Slot, int UsedMask), int> rest)
+    {
+        var nums = frame.Context.Nums;
+        var bitI = 1 << i;
+
+        for (var j = i + 1; j < nums.Length; j++)
+        {
+            var bitJ = 1 << j;
+
+            if ((frame.UsedMask & bitJ) != 0)
+            {
+                continue;
+            }
+
+            var withTwo = (frame.Slot & nums[i]) + (frame.Slot & nums[j])
+                + rest.Replay((frame.Slot + 1, frame.UsedMask | bitI | bitJ), rest);
+            best = Math.Max(best, withTwo);
+        }
+
+        return best;
+    }
+
     private static int BestFromBruteForce(SlotContext context, int slot, int usedMask)
     {
         if (slot > context.NumSlots)
@@ -87,77 +161,6 @@ internal static class MaximumAndSumOfArraySolution
         return best;
     }
 
-    // This repo's own Memoizer, keyed on the (Slot, UsedMask) tuple - the same
-    // 2D memo state MaximumStudentsTakingExamSolution's (Row, PrevMask) uses, with
-    // "row" renamed to "slot". Every reachable state is computed exactly once.
-    public static int MaximumAndSumByMemoizedBitmask(int[] nums, int numSlots)
-    {
-        var context = new SlotContext(nums, numSlots);
-
-        return Memoizer.Memoize<(int Slot, int UsedMask), int>(
-            (FirstSlot, 0), (state, bestFrom) => BestFrom(state, bestFrom, context));
-    }
-
-    private static int BestFrom(
-        (int Slot, int UsedMask) state, Func<(int Slot, int UsedMask), int> bestFrom, SlotContext context)
-    {
-        var (slot, usedMask) = state;
-
-        if (slot > context.NumSlots)
-        {
-            return 0;
-        }
-
-        var best = bestFrom((slot + 1, usedMask));
-        var frame = new SlotFrame(context, slot, usedMask);
-
-        for (var i = 0; i < context.Nums.Length; i++)
-        {
-            best = BestConsideringElement(frame, i, best, bestFrom);
-        }
-
-        return best;
-    }
-
-    private static int BestConsideringElement(
-        SlotFrame frame, int i, int best, Func<(int Slot, int UsedMask), int> bestFrom)
-    {
-        var bitI = 1 << i;
-
-        if ((frame.UsedMask & bitI) != 0)
-        {
-            return best;
-        }
-
-        var withOne = (frame.Slot & frame.Context.Nums[i]) + bestFrom((frame.Slot + 1, frame.UsedMask | bitI));
-        best = Math.Max(best, withOne);
-
-        return BestConsideringPair(frame, i, best, bestFrom);
-    }
-
-    private static int BestConsideringPair(
-        SlotFrame frame, int i, int best, Func<(int Slot, int UsedMask), int> bestFrom)
-    {
-        var nums = frame.Context.Nums;
-        var bitI = 1 << i;
-
-        for (var j = i + 1; j < nums.Length; j++)
-        {
-            var bitJ = 1 << j;
-
-            if ((frame.UsedMask & bitJ) != 0)
-            {
-                continue;
-            }
-
-            var withTwo = (frame.Slot & nums[i]) + (frame.Slot & nums[j])
-                + bestFrom((frame.Slot + 1, frame.UsedMask | bitI | bitJ));
-            best = Math.Max(best, withTwo);
-        }
-
-        return best;
-    }
-
     // The problem's fixed inputs, carried through the recursion as one value so the
     // helpers stay within this repo's parameter budget.
     private readonly record struct SlotContext(int[] Nums, int NumSlots);
@@ -165,4 +168,19 @@ internal static class MaximumAndSumOfArraySolution
     // One recursion frame: the fixed inputs plus the (slot, usedMask) state the
     // per-element and per-pair helpers branch from.
     private readonly record struct SlotFrame(SlotContext Context, int Slot, int UsedMask);
+
+    // The placement rule, named: from a (slot, usedMask) state the best total is whichever
+    // of leave-this-slot-empty, seat one unused element or seat two unused elements scores
+    // highest once the rule's own answer for the slot that choice advances to is counted.
+    // The problem's fixed inputs arrive once through the primary constructor; `rest` is the
+    // memo run's own handle on this rule, so a recursion is a call on a named type rather
+    // than on an anonymous call-back value.
+    private sealed class BestSlotPlacement(SlotContext context)
+        : IRecurrence<(int Slot, int UsedMask), int>
+    {
+        /// <inheritdoc/>
+        public int Replay(
+            (int Slot, int UsedMask) state, IRecurrence<(int Slot, int UsedMask), int> rest)
+            => BestFrom(state, rest, context);
+    }
 }

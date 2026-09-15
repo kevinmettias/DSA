@@ -16,10 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumProductOfTheLengthOfTwoPalindromicSubstringsBenchmarks
 {
-    [Params(30, 90)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(30, 90)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _text = new string('a', Length);

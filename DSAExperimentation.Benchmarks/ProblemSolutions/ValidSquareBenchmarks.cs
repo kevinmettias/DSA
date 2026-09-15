@@ -16,10 +16,10 @@ public class ValidSquareBenchmarks
     private const int CoordinateBound = 1_000;
     private const int MaxHalfSide = 500;
 
-    [Params(5_000, 100_000)]
-    public int BatchCount;
+    private int[][][] _batches = [];
 
-    private int[][][] _batches = null!;
+    [Params(5_000, 100_000)]
+    public int BatchCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,7 +29,8 @@ public class ValidSquareBenchmarks
 
         for (var i = 0; i < BatchCount; i++)
         {
-            _batches[i] = i % AlternationModulus == 0 ? RandomSquare(random) : RandomQuad(random);
+            var isSquareBatch = i % AlternationModulus == 0;
+            _batches[i] = isSquareBatch ? RandomSquare(random) : RandomQuad(random);
         }
     }
 

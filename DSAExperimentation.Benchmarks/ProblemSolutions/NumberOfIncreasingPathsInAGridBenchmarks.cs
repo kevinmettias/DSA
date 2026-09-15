@@ -16,10 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfIncreasingPathsInAGridBenchmarks
 {
-    [Params(6, 9)]
-    public int Size;
+    private int[,] _matrix = new int[0, 0];
 
-    private int[,] _matrix = null!;
+    [Params(6, 9)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

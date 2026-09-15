@@ -12,17 +12,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FlowerPlantingWithNoAdjacentBenchmarks
 {
-    [Params(500, 5_000)]
-    public int GardenCount;
+    private int[][] _paths = [];
 
-    private int[][] _paths = null!;
     private GardenNetwork _network = null!;
+    [Params(500, 5_000)]
+    public int GardenCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _paths = Enumerable
-            .Range(FlowerPlantingWithNoAdjacentSolution.FirstGarden, GardenCount - 1)
+            .Range(GardenNumbering.FirstGarden, GardenCount - 1)
             .Select(garden => new[] { garden, garden + 1 })
             .ToArray();
 

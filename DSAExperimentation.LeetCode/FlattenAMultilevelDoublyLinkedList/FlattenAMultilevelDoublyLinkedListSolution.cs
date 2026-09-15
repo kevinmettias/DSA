@@ -39,6 +39,19 @@ internal static class FlattenAMultilevelDoublyLinkedListSolution
         return true;
     }
 
+    private static Node? FindNodeWithChild(Node? head)
+    {
+        for (var node = head; node is not null; node = node.Next)
+        {
+            if (node.Child is not null)
+            {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
     private static Node AttachChildAsNext(Node splicePoint)
     {
         var childHead = splicePoint.Child!;
@@ -66,19 +79,6 @@ internal static class FlattenAMultilevelDoublyLinkedListSolution
         {
             after.Previous = tail;
         }
-    }
-
-    private static Node? FindNodeWithChild(Node? head)
-    {
-        for (var node = head; node is not null; node = node.Next)
-        {
-            if (node.Child is not null)
-            {
-                return node;
-            }
-        }
-
-        return null;
     }
 
     public static Node? FlattenByStack(Node? head)

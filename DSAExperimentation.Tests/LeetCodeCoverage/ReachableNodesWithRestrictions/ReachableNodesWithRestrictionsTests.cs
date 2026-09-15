@@ -21,20 +21,16 @@ public sealed class ReachableNodesWithRestrictionsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReachableNodesByDepthFirstFloodFill_Example_CountsNodesStillReachableFromZero(
-        int nodeCount, int[][] edges, int[] restricted, int expected)
-    {
+        int nodeCount, int[][] edges, int[] restricted, int expected) =>
         Assert.Equal(
             expected,
             ReachableNodesWithRestrictionsSolution.ReachableNodesByDepthFirstFloodFill(nodeCount, edges, restricted));
-    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReachableNodesByDisjointSet_Example_CountsNodesStillReachableFromZero(
-        int nodeCount, int[][] edges, int[] restricted, int expected)
-    {
+        int nodeCount, int[][] edges, int[] restricted, int expected) =>
         Assert.Equal(
             expected,
             ReachableNodesWithRestrictionsSolution.ReachableNodesByDisjointSet(nodeCount, edges, restricted));
-    }
 }

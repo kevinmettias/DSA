@@ -95,19 +95,6 @@ internal static class DesignGraphWithShortestPathCalculatorSolution
             return distances;
         }
 
-        private void RelaxNeighbors(int[] distances, int current)
-        {
-            foreach (var (weight, target) in _adjacency[current])
-            {
-                var candidate = distances[current] + weight;
-
-                if (candidate < distances[target])
-                {
-                    distances[target] = candidate;
-                }
-            }
-        }
-
         private static int ExtractMinUnsettled(int[] distances, bool[] settled)
         {
             var best = NoUnsettledNode;
@@ -126,6 +113,19 @@ internal static class DesignGraphWithShortestPathCalculatorSolution
             }
 
             return best;
+        }
+
+        private void RelaxNeighbors(int[] distances, int current)
+        {
+            foreach (var (weight, target) in _adjacency[current])
+            {
+                var candidate = distances[current] + weight;
+
+                if (candidate < distances[target])
+                {
+                    distances[target] = candidate;
+                }
+            }
         }
     }
 

@@ -15,10 +15,10 @@ public class StrangePrinterIIBenchmarks
 {
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int ColorCount;
+    private List<ColorNode> _colors = new();
 
-    private List<ColorNode> _colors = null!;
+    [Params(50, 1_000)]
+    public int ColorCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

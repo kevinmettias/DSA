@@ -10,13 +10,13 @@ public class SplitArrayLargestSumBenchmarks
 {
     private const int RandomSeed = 410; // LC problem number
     private const int MaxElementValue = 1_000; // exclusive upper bound passed to Random.Next
-    private const int KDivisor = 20; // number of splits k derived as a fraction of Length
+    private const int KDivisor = 20; private int[] _nums = [];
+
+    private int _k;
+    // number of splits k derived as a fraction of Length
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
-    private int _k;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

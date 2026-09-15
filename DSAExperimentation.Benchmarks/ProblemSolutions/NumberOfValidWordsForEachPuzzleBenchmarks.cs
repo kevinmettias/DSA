@@ -16,11 +16,11 @@ public class NumberOfValidWordsForEachPuzzleBenchmarks
     // LC problem number, reused as the deterministic workload seed.
     private const int WordSeed = 1178;
 
-    [Params(200, 4_000)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private string[] _puzzles = null!;
+    private string[] _puzzles = [];
+    [Params(200, 4_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

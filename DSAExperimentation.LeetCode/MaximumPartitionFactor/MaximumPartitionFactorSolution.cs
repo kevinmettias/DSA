@@ -21,7 +21,7 @@ namespace DSAExperimentation.LeetCode.MaximumPartitionFactor;
 // pair at all.
 internal static class MaximumPartitionFactorSolution
 {
-    public const int TrivialPairFactor = 0;
+    private const int TrivialPairFactor = 0;
 
     // The textbook answer: scan every distinct pairwise distance from largest to
     // smallest, rebuilding a plain BCL adjacency list and BFS-2-coloring it from
@@ -35,7 +35,7 @@ internal static class MaximumPartitionFactorSolution
             return TrivialPairFactor;
         }
 
-        foreach (var candidate in DistinctPairwiseDistances(points, descending: true))
+        foreach (var candidate in DistinctPairwiseDistances(points, DistanceOrder.Descending))
         {
             if (IsBipartiteAtThreshold(points, candidate))
             {
@@ -58,9 +58,16 @@ internal static class MaximumPartitionFactorSolution
             return TrivialPairFactor;
         }
 
-        var distances = DistinctPairwiseDistances(points, descending: false).ToArray();
+        var distances = DistinctPairwiseDistances(points, DistanceOrder.Ascending).ToArray();
         var nodes = points.Select(point => new PartitionNode(point[0], point[1])).ToList();
 
+        return LargestFeasibleDistance(nodes, distances);
+    }
+
+    // The binary search itself: the distances arrive sorted ascending, so the
+    // feasible ones form a prefix and the answer is its last element.
+    private static int LargestFeasibleDistance(List<PartitionNode> nodes, int[] distances)
+    {
         var low = 0;
         var high = distances.Length - 1;
         var best = TrivialPairFactor;
@@ -143,31 +150,56 @@ internal static class MaximumPartitionFactorSolution
 
         for (var start = 0; start < adjacency.Length; start++)
         {
-            if (color[start] != -1)
+            if (!TryColorComponent(adjacency, color, start))
             {
-                continue;
+                return false;
             }
+        }
 
-            color[start] = 0;
-            var frontier = new Queue<int>();
-            frontier.Enqueue(start);
+        return true;
+    }
 
-            while (frontier.Count > 0)
+    // Colors every point reachable from `start`, reporting false as soon as one of
+    // them is forced to take two colors at once. The caller's `continue` on an
+    // already-colored start is this helper's `true`.
+    private static bool TryColorComponent(List<int>[] adjacency, int[] color, int start)
+    {
+        if (color[start] != -1)
+        {
+            return true;
+        }
+
+        color[start] = 0;
+        var frontier = new Queue<int>();
+        frontier.Enqueue(start);
+
+        while (frontier.Count > 0)
+        {
+            if (!ColorNeighbors(adjacency, color, frontier))
             {
-                var node = frontier.Dequeue();
+                return false;
+            }
+        }
 
-                foreach (var neighbor in adjacency[node])
-                {
-                    if (color[neighbor] == -1)
-                    {
-                        color[neighbor] = 1 - color[node];
-                        frontier.Enqueue(neighbor);
-                    }
-                    else if (color[neighbor] == color[node])
-                    {
-                        return false;
-                    }
-                }
+        return true;
+    }
+
+    // One breadth-first step: paint the front node's neighbours that have no color
+    // yet, and report the conflict when one already shares the node's color.
+    private static bool ColorNeighbors(List<int>[] adjacency, int[] color, Queue<int> frontier)
+    {
+        var node = frontier.Dequeue();
+
+        foreach (var neighbor in adjacency[node])
+        {
+            if (color[neighbor] == -1)
+            {
+                color[neighbor] = 1 - color[node];
+                frontier.Enqueue(neighbor);
+            }
+            else if (color[neighbor] == color[node])
+            {
+                return false;
             }
         }
 
@@ -177,7 +209,7 @@ internal static class MaximumPartitionFactorSolution
     private static int ManhattanDistance(int x1, int y1, int x2, int y2) =>
         Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
 
-    private static IEnumerable<int> DistinctPairwiseDistances(int[][] points, bool descending)
+    private static IEnumerable<int> DistinctPairwiseDistances(int[][] points, DistanceOrder order)
     {
         var distances = new HashSet<int>();
 
@@ -185,10 +217,19 @@ internal static class MaximumPartitionFactorSolution
         {
             for (var j = i + 1; j < points.Length; j++)
             {
-                distances.Add(ManhattanDistance(points[i][0], points[i][1], points[j][0], points[j][1]));
+                var distance = ManhattanDistance(points[i][0], points[i][1], points[j][0], points[j][1]);
+                distances.Add(distance);
             }
         }
 
-        return descending ? distances.OrderDescending() : distances.Order();
+        return order == DistanceOrder.Descending ? distances.OrderDescending() : distances.Order();
+    }
+
+    // Which end of the sorted distinct distances a caller wants first. Named where
+    // a rewritten `true`/`false` at the call site said it only by position.
+    private enum DistanceOrder
+    {
+        Descending,
+        Ascending,
     }
 }

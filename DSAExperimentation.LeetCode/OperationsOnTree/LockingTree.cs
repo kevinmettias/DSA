@@ -22,13 +22,13 @@ internal abstract class LockingTree
     private readonly int[] _parent;
     private readonly int[] _lockedBy;
 
+    public int NodeCount => _parent.Length;
+
     protected LockingTree(int[] parent)
     {
         _parent = [.. parent];
         _lockedBy = new int[parent.Length];
     }
-
-    public int NodeCount => _parent.Length;
 
     // Locks num for user, unless somebody already holds it.
     public bool Lock(int num, int user)
@@ -80,16 +80,6 @@ internal abstract class LockingTree
         return true;
     }
 
-    // The locked nodes strictly beneath num, in ascending id order. The strategy
-    // axis of this problem.
-    public abstract int[] LockedDescendantsOf(int num);
-
-    protected bool IsLocked(int num) => _lockedBy[num] != NoUser;
-
-    // A negative entry marks the root, which is where every ancestor walk stops -
-    // the same parent-array encoding DataStructures' ParentArrayTree materializes.
-    protected int ParentOf(int num) => _parent[num];
-
     private bool HasLockedAncestor(int num)
     {
         for (var ancestor = ParentOf(num); ancestor >= 0; ancestor = ParentOf(ancestor))
@@ -102,4 +92,14 @@ internal abstract class LockingTree
 
         return false;
     }
+
+    // The locked nodes strictly beneath num, in ascending id order. The strategy
+    // axis of this problem.
+    public abstract int[] LockedDescendantsOf(int num);
+
+    protected bool IsLocked(int num) => _lockedBy[num] != NoUser;
+
+    // A negative entry marks the root, which is where every ancestor walk stops -
+    // the same parent-array encoding DataStructures' ParentArrayTree materializes.
+    protected int ParentOf(int num) => _parent[num];
 }

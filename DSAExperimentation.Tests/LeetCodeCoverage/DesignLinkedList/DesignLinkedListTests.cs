@@ -90,51 +90,40 @@ public sealed class DesignLinkedListTests
 // actual value (or -1 on LeetCode's own out-of-bounds convention); every mutator
 // returns null, the same null-means-"no return value" convention LRUCacheOp.Apply
 // uses for its own put/get split.
-public readonly record struct DesignLinkedListOp
+public readonly record struct DesignLinkedListOp(DesignLinkedListOp.OpKind kind, int index, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _index;
-    private readonly int _value;
+    public static DesignLinkedListOp Get(int index) => new(OpKind.Get, index, 0);
 
-    private DesignLinkedListOp(Kind kind, int index, int value)
-    {
-        _kind = kind;
-        _index = index;
-        _value = value;
-    }
+    public static DesignLinkedListOp AddAtHead(int value) => new(OpKind.AddAtHead, 0, value);
 
-    public static DesignLinkedListOp Get(int index) => new(Kind.Get, index, 0);
+    public static DesignLinkedListOp AddAtTail(int value) => new(OpKind.AddAtTail, 0, value);
 
-    public static DesignLinkedListOp AddAtHead(int value) => new(Kind.AddAtHead, 0, value);
+    public static DesignLinkedListOp AddAtIndex(int index, int value) => new(OpKind.AddAtIndex, index, value);
 
-    public static DesignLinkedListOp AddAtTail(int value) => new(Kind.AddAtTail, 0, value);
-
-    public static DesignLinkedListOp AddAtIndex(int index, int value) => new(Kind.AddAtIndex, index, value);
-
-    public static DesignLinkedListOp DeleteAtIndex(int index) => new(Kind.DeleteAtIndex, index, 0);
+    public static DesignLinkedListOp DeleteAtIndex(int index) => new(OpKind.DeleteAtIndex, index, 0);
 
     internal int? Apply(DesignLinkedListSolution.IMyLinkedList list)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Get:
-                return list.Get(_index);
-            case Kind.AddAtHead:
-                list.AddAtHead(_value);
+            case OpKind.Get:
+                return list.Get(index);
+            case OpKind.AddAtHead:
+                list.AddAtHead(value);
                 return null;
-            case Kind.AddAtTail:
-                list.AddAtTail(_value);
+            case OpKind.AddAtTail:
+                list.AddAtTail(value);
                 return null;
-            case Kind.AddAtIndex:
-                list.AddAtIndex(_index, _value);
+            case OpKind.AddAtIndex:
+                list.AddAtIndex(index, value);
                 return null;
             default:
-                list.DeleteAtIndex(_index);
+                list.DeleteAtIndex(index);
                 return null;
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Get,
         AddAtHead,

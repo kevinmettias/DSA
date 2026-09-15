@@ -26,10 +26,10 @@ internal static class ModifyGraphEdgeWeightsSolution
     // after every guess until the distance lands on target - O(target) Dijkstra
     // passes per edge, which is what the formula arm below has to beat.
     public static int[][] ModifyEdgeWeightsByLinearWeightScan(
-        int n, int[][] edges, int source, int destination, int target)
+        int n, int[][] edges, (int Source, int Destination, int Target) query)
     {
         var graph = AssignableEdgeGraph.Build(n, edges);
-        var search = new WeightSearch(graph, source, destination, target);
+        var search = new WeightSearch(graph, query.Source, query.Destination, query.Target);
 
         if (TrySettleAtFloor(search, out var settled))
         {
@@ -55,9 +55,9 @@ internal static class ModifyGraphEdgeWeightsSolution
     // which is what bounds the loop.
     private static bool ScanWeightUpwards(WeightSearch search, int edgeIndex)
     {
-        var stretched = AssignableEdgeGraph.FloorWeight;
+        var stretched = AssignableEdgeWeights.FloorWeight;
 
-        for (var weight = AssignableEdgeGraph.FloorWeight; weight <= search.Target; weight++)
+        for (var weight = AssignableEdgeWeights.FloorWeight; weight <= search.Target; weight++)
         {
             search.Graph.SetWeight(edgeIndex, weight);
 
@@ -82,16 +82,23 @@ internal static class ModifyGraphEdgeWeightsSolution
     // target has left over once the settled distance from source to one end and
     // from destination to the other end are both paid for.
     public static int[][] ModifyEdgeWeightsByHalfDistanceFormula(
-        int n, int[][] edges, int source, int destination, int target)
+        int n, int[][] edges, (int Source, int Destination, int Target) query)
     {
         var graph = AssignableEdgeGraph.Build(n, edges);
-        var search = new WeightSearch(graph, source, destination, target);
+        var search = new WeightSearch(graph, query.Source, query.Destination, query.Target);
 
         if (TrySettleAtFloor(search, out var settled))
         {
             return settled;
         }
 
+        return StretchAssignableEdges(graph, search);
+    }
+
+    // The frame both arms share: stretch the -1 edges one at a time until one lands the
+    // distance on target, or report no assignment when the last one is spent.
+    private static int[][] StretchAssignableEdges(AssignableEdgeGraph graph, WeightSearch search)
+    {
         for (var index = 0; index < graph.EdgeCount; index++)
         {
             if (!graph.IsAssignable(index))
@@ -99,35 +106,74 @@ internal static class ModifyGraphEdgeWeightsSolution
                 continue;
             }
 
-            var weight = HalfDistanceWeight(search, index);
-            graph.SetWeight(index, weight);
+            var (found, answer) = StretchOneEdge(graph, search, index);
 
-            if (TryDistanceToDestination(search, out var distance) && distance == target)
+            if (found)
             {
-                return graph.Weights();
+                return answer;
             }
         }
 
         return [];
     }
 
-    // Both half-distances come from the graph as it stands, so an edge an earlier
-    // iteration already stretched is priced in rather than re-derived.
+    // One -1 edge's stretch: price it by the formula, write the weight, and report the
+    // graph as the answer when that lands the distance exactly on target. An edge that
+    // does not land there reports nothing and the scan moves on to the next one.
+    private static (bool Found, int[][] Answer) StretchOneEdge(
+        AssignableEdgeGraph graph, WeightSearch search, int index)
+    {
+        var weight = HalfDistanceWeight(search, index);
+        graph.SetWeight(index, weight);
+
+        if (!TryDistanceToDestination(search, out var distance) || distance != search.Target)
+        {
+            return (false, []);
+        }
+
+        return (true, graph.Weights());
+    }
+
+    // Two steps rather than one body: read the two settled half-distances the edge in
+    // hand is priced from, then turn them into a weight. The read is two Dijkstra
+    // passes and the arithmetic is what makes their sum mean something, so each keeps
+    // its own name and a reader meets them one at a time.
     private static int HalfDistanceWeight(WeightSearch search, int edgeIndex)
+    {
+        if (!TrySettledHalfDistances(search, edgeIndex, out var head, out var tail))
+        {
+            return AssignableEdgeWeights.FloorWeight;
+        }
+
+        return WeightLeftForEdge(search, head, tail);
+    }
+
+    // Both half-distances come from the graph as it stands, so an edge an earlier
+    // iteration already stretched is priced in rather than re-derived. An end that no
+    // path has reached yet fails the whole read instead of standing in as zero:
+    // pricing an unreachable end as 0 would let the formula invent a weight the graph
+    // cannot actually support. Both lookups run even when the first finds nothing -
+    // they are pure reads, and a half-distance only means anything as one of a pair.
+    private static bool TrySettledHalfDistances(WeightSearch search, int edgeIndex, out int head, out int tail)
     {
         var (from, to) = search.Graph.Endpoints(edgeIndex);
         var fromSource = Distances(search.Graph, search.Source);
         var fromDestination = Distances(search.Graph, search.Destination);
         var headNode = search.Graph.Node(from);
         var tailNode = search.Graph.Node(to);
+        var headSettled = fromSource.TryGetValue(headNode, out head);
+        var tailSettled = fromDestination.TryGetValue(tailNode, out tail);
 
-        if (!fromSource.TryGetValue(headNode, out var head) || !fromDestination.TryGetValue(tailNode, out var tail))
-        {
-            return AssignableEdgeGraph.FloorWeight;
-        }
+        return headSettled && tailSettled;
+    }
 
+    // Whatever target has left over once both halves are paid for, and never below the
+    // floor every -1 edge is bound to: a distance already at or above target cannot be
+    // brought down by a weight no edge is allowed to take.
+    private static int WeightLeftForEdge(WeightSearch search, int head, int tail)
+    {
         var candidate = search.Target - head - tail;
-        return candidate >= AssignableEdgeGraph.FloorWeight ? candidate : AssignableEdgeGraph.FloorWeight;
+        return candidate >= AssignableEdgeWeights.FloorWeight ? candidate : AssignableEdgeWeights.FloorWeight;
     }
 
     // With every -1 edge still at its floor the distance is as short as any legal

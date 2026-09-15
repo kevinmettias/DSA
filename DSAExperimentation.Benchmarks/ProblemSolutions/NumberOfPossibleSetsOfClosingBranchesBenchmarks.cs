@@ -23,11 +23,11 @@ public class NumberOfPossibleSetsOfClosingBranchesBenchmarks
     private const int MaxDistance = 20;
     private const int MaxEdgeWeight = 15;
 
-    [Params(1, 3)]
-    public int ExtraEdgesPerNode;
+    private long[,] _baseDistances = new long[0, 0];
 
-    private long[,] _baseDistances = null!;
     private BranchNetwork _network = null!;
+    [Params(1, 3)]
+    public int ExtraEdgesPerNode { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,14 +36,6 @@ public class NumberOfPossibleSetsOfClosingBranchesBenchmarks
         _baseDistances = NumberOfPossibleSetsOfClosingBranchesSolution.BuildDistanceMatrix(BranchCount, roads);
         _network = BranchNetwork.Build(BranchCount, roads);
     }
-
-    [Benchmark(Baseline = true)]
-    public long BruteForceFloydWarshall() =>
-        NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByBruteForceFloydWarshall(_baseDistances, MaxDistance);
-
-    [Benchmark]
-    public long AllPairsShortestPaths() =>
-        NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByAllPairsShortestPaths(_network, MaxDistance);
 
     // Every branch i > 0 gets a "back edge" to some earlier branch (guaranteeing
     // connectivity, the same shape Fixtures.RandomWeightedGraphs uses), plus extra
@@ -73,4 +65,12 @@ public class NumberOfPossibleSetsOfClosingBranchesBenchmarks
 
         return [.. roads];
     }
+
+    [Benchmark(Baseline = true)]
+    public long BruteForceFloydWarshall() =>
+        NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByBruteForceFloydWarshall(_baseDistances, MaxDistance);
+
+    [Benchmark]
+    public long AllPairsShortestPaths() =>
+        NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByAllPairsShortestPaths(_network, MaxDistance);
 }

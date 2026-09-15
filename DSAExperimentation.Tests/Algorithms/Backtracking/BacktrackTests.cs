@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.Algorithms.Backtracking;
 
 public sealed partial class BacktrackTests
 {
-    private sealed class SubsetsState
+    private sealed record SubsetsState
     {
         public List<int> ChosenIndices { get; } = [];
     }
@@ -21,7 +21,7 @@ public sealed partial class BacktrackTests
         public int Depth { get; set; }
     }
 
-    private sealed class PathState
+    private sealed record PathState
     {
         public List<string> Path { get; } = ["A"];
     }

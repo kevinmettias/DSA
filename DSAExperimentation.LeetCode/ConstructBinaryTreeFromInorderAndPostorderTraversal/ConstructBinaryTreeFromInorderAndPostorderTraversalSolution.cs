@@ -29,7 +29,7 @@ internal static class ConstructBinaryTreeFromInorderAndPostorderTraversalSolutio
     // Tracks how far into postorder the walk has consumed, read back-to-front so
     // each subtree's root is read in postorder's own reverse order: this subtree's
     // root, then its whole right subtree, then its whole left one.
-    private struct PostorderWalk(int[] postorder, HashMap<int, int> inorderIndex)
+    private sealed class PostorderWalk(int[] postorder, HashMap<int, int> inorderIndex)
     {
         private readonly int[] _postorder = postorder;
         private readonly HashMap<int, int> _inorderIndex = inorderIndex;

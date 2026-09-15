@@ -11,13 +11,13 @@ public class TargetSumBenchmarks
 {
     private const int RandomSeed = 494; // LC problem number
     private const int RandomValueUpperBoundExclusive = 10;
-    private const int SignFlipMultiplier = 2; // flips nums[0] from + to - in the target sum
+    private const int SignFlipMultiplier = 2; private int[] _nums = [];
+
+    private int _target;
+    // flips nums[0] from + to - in the target sum
 
     [Params(18, 22)]
-    public int N;
-
-    private int[] _nums = null!;
-    private int _target;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

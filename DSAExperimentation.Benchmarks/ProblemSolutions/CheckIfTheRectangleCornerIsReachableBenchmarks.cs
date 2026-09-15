@@ -11,19 +11,19 @@ public class CheckIfTheRectangleCornerIsReachableBenchmarks
 {
     private const int Seed = 3235;
 
-    [Params(50, 400)]
-    public int CircleCount;
+    private int[][] _circles = [];
 
-    private int[][] _circles = null!;
+    [Params(50, 400)]
+    public int CircleCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _circles = RectangleCornerWorkloads.BuildCircles(CircleCount, Seed);
 
     [Benchmark(Baseline = true)]
     public bool BoundaryFloodFill() => CheckIfTheRectangleCornerIsReachableSolution.IsReachableByBoundaryFloodFill(
-        RectangleCornerWorkloads.XCorner, RectangleCornerWorkloads.YCorner, _circles);
+        RectangleCornerScenario.XCorner, RectangleCornerScenario.YCorner, _circles);
 
     [Benchmark]
     public bool DisjointSet() => CheckIfTheRectangleCornerIsReachableSolution.IsReachableByDisjointSet(
-        RectangleCornerWorkloads.XCorner, RectangleCornerWorkloads.YCorner, _circles);
+        RectangleCornerScenario.XCorner, RectangleCornerScenario.YCorner, _circles);
 }

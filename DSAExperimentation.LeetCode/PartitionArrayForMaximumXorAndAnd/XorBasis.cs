@@ -7,15 +7,16 @@ namespace DSAExperimentation.LeetCode.PartitionArrayForMaximumXorAndAnd;
 // DataStructures/ primitive.
 //
 // nums[i] <= 1e9 < 2^30, so 30 pivot slots cover every bit this problem can set.
-internal struct XorBasis
+//
+// A reference type, not a value type: Insert mutates the pivot array in place, so a
+// copy of a value-typed basis would be a shallow one sharing that same array - two
+// bases that look independent and are secretly the same. A mutable basis has an
+// identity, and this declaration is where that is said.
+internal sealed class XorBasis
 {
     private const int BitWidth = 30;
 
     private readonly long[] _pivots = new long[BitWidth];
-
-    public XorBasis()
-    {
-    }
 
     // Standard reduction: walk value's bits high to low, either claiming an empty
     // pivot slot or folding value through the pivot already there. A value that
@@ -45,7 +46,15 @@ internal struct XorBasis
     // {pivot & mask} - re-inserting the masked pivots rebuilds a proper basis for
     // that span, and the textbook greedy (take a pivot whenever it grows the
     // running result, high bit first) then finds its maximum.
-    public readonly long MaxMaskedXor(long mask)
+    public long MaxMaskedXor(long mask)
+    {
+        var masked = MaskedBasis(mask);
+
+        return HighestGreedy(masked);
+    }
+
+    // A proper basis for the span of {pivot & mask}, rebuilt from the masked pivots.
+    private XorBasis MaskedBasis(long mask)
     {
         var masked = new XorBasis();
 
@@ -57,13 +66,20 @@ internal struct XorBasis
             }
         }
 
+        return masked;
+    }
+
+    // The textbook greedy over a basis: walk the pivots high bit first and take each
+    // one that grows the running result.
+    private static long HighestGreedy(XorBasis basis)
+    {
         var best = 0L;
 
         for (var bit = BitWidth - 1; bit >= 0; bit--)
         {
-            var candidate = best ^ masked._pivots[bit];
+            var candidate = best ^ basis._pivots[bit];
 
-            if (masked._pivots[bit] != 0 && candidate > best)
+            if (basis._pivots[bit] != 0 && candidate > best)
             {
                 best = candidate;
             }

@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class BoatsToSavePeopleBenchmarks
 {
     private const int Limit = 300;
-    private const int RandomSeed = 881; // LC problem number
+    private const int RandomSeed = 881; private int[] _people = [];
+
+    // LC problem number
 
     [Params(200, 3_000)]
-    public int Length;
-
-    private int[] _people = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

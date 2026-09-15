@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SwimInRisingWaterBenchmarks
 {
-    private const int RandomSeed = 778; // LC 778: Swim in Rising Water
+    private const int RandomSeed = 778; private int[][] _grid = [];
+
+    // LC 778: Swim in Rising Water
 
     [Params(15, 40)]
-    public int Size;
-
-    private int[][] _grid = null!;
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

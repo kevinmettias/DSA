@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LongestDuplicateSubstringBenchmarks
 {
     private const int AlphabetSize = 4;
-    private const int RandomSeed = 1044; // LC problem number
+    private const int RandomSeed = 1044; private string _text = "";
+
+    // LC problem number
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private string _text = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

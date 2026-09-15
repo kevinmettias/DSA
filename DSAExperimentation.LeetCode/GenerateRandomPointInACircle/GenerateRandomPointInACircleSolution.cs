@@ -27,19 +27,9 @@ internal static class GenerateRandomPointInACircleSolution
     // are discarded. Deliberately written without this repo's primitives, the
     // arm the closed-form single-draw strategy below has to justify itself
     // against.
-    internal sealed class GenerateRandomPointInACircleByRejectionSampling : IRandomPointGenerator
+    internal sealed class GenerateRandomPointInACircleByRejectionSampling(double radius, double xCenter, double yCenter) : IRandomPointGenerator
     {
-        private readonly double _radius;
-        private readonly double _xCenter;
-        private readonly double _yCenter;
         private readonly Random _random = new();
-
-        public GenerateRandomPointInACircleByRejectionSampling(double radius, double xCenter, double yCenter)
-        {
-            _radius = radius;
-            _xCenter = xCenter;
-            _yCenter = yCenter;
-        }
 
         public double[] RandPoint()
         {
@@ -47,12 +37,12 @@ internal static class GenerateRandomPointInACircleSolution
 
             do
             {
-                x = (_random.NextDouble() * 2.0 * _radius) - _radius;
-                y = (_random.NextDouble() * 2.0 * _radius) - _radius;
+                x = (_random.NextDouble() * 2.0 * radius) - radius;
+                y = (_random.NextDouble() * 2.0 * radius) - radius;
             }
-            while ((x * x) + (y * y) > _radius * _radius);
+            while ((x * x) + (y * y) > radius * radius);
 
-            return [_xCenter + x, _yCenter + y];
+            return [xCenter + x, yCenter + y];
         }
     }
 
@@ -60,26 +50,16 @@ internal static class GenerateRandomPointInACircleSolution
     // circle on the first try - r = radius * sqrt(u) is what keeps the sample
     // uniform by AREA instead of clustering near the center, theta = u * 2*PI
     // picks the direction. No rejection loop, no wasted draws.
-    internal sealed class GenerateRandomPointInACircleByClosedFormPolar : IRandomPointGenerator
+    internal sealed class GenerateRandomPointInACircleByClosedFormPolar(double radius, double xCenter, double yCenter) : IRandomPointGenerator
     {
-        private readonly double _radius;
-        private readonly double _xCenter;
-        private readonly double _yCenter;
         private readonly Random _random = new();
-
-        public GenerateRandomPointInACircleByClosedFormPolar(double radius, double xCenter, double yCenter)
-        {
-            _radius = radius;
-            _xCenter = xCenter;
-            _yCenter = yCenter;
-        }
 
         public double[] RandPoint()
         {
-            var r = _radius * Math.Sqrt(_random.NextDouble());
+            var r = radius * Math.Sqrt(_random.NextDouble());
             var angle = _random.NextDouble() * 2.0 * Math.PI;
 
-            return [_xCenter + (r * Math.Cos(angle)), _yCenter + (r * Math.Sin(angle))];
+            return [xCenter + (r * Math.Cos(angle)), yCenter + (r * Math.Sin(angle))];
         }
     }
 }

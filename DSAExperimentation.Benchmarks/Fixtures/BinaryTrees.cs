@@ -1,11 +1,10 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 internal static class BinaryTrees
 {
-    private const int BranchingFactor = 2;
-
     // A complete, perfectly balanced tree - the easy case for both fold strategies,
     // recursion depth stays O(log n).
     public static BinaryTreeNode<int> Balanced(int nodeCount)
@@ -19,14 +18,16 @@ internal static class BinaryTrees
 
         for (var i = 0; i < nodeCount; i++)
         {
-            var left = BranchingFactor * i + 1;
+            var left = AlgorithmConstants.BranchingFactor * i + 1;
             var right = left + 1;
-            nodes[i].Left = left < nodeCount ? nodes[left] : null;
-            nodes[i].Right = right < nodeCount ? nodes[right] : null;
+            nodes[i].Left = left < nodeCount ? NodeAt(nodes, left) : null;
+            nodes[i].Right = right < nodeCount ? NodeAt(nodes, right) : null;
         }
 
         return nodes[0];
     }
+
+    private static BinaryTreeNode<int> NodeAt(BinaryTreeNode<int>[] nodes, int index) => nodes[index];
 
     // A degenerate, right-only chain - the case IterativeFoldEvaluation exists for
     // (RecursiveFoldEvaluation's call stack grows with nodeCount here, not log(nodeCount)).

@@ -23,15 +23,14 @@ internal static class ParallelCoursesIISolution
 {
     // The textbook answer: the same recurrence with no memoization at all, so a
     // state reachable by many different semester orders is re-solved once per
-    // order. Deliberately BCL-only - it is the arm the memoized strategy below
-    // has to justify itself against.
+    // order. It is the arm the memoized strategy below has to justify itself
+    // against.
     public static int MinNumberOfSemestersByBruteForceRecursion(int n, int[][] relations, int k)
     {
         var courses = BuildCourseLoad(n, relations, k);
+        var semesters = new SemestersFrom(courses);
 
-        return SemestersFrom(0);
-
-        int SemestersFrom(int completedMask) => BestSemesters(courses, completedMask, SemestersFrom);
+        return semesters.Replay(0, semesters);
     }
 
     // This repo's own Memoizer, keyed on the completed-course bitmask - the same
@@ -41,9 +40,7 @@ internal static class ParallelCoursesIISolution
     {
         var courses = BuildCourseLoad(n, relations, k);
 
-        return Memoizer.Memoize<int, int>(
-            0,
-            (completedMask, semestersFrom) => BestSemesters(courses, completedMask, semestersFrom));
+        return Memoizer.Memoize<int, int>(0, new SemestersFrom(courses));
     }
 
     // The immutable part of the problem (the prerequisite masks, the all-courses-taken
@@ -64,48 +61,54 @@ internal static class ParallelCoursesIISolution
         return new CourseLoad(prerequisiteMasks, (1 << n) - 1, k);
     }
 
-    // One step of the recurrence, shared by both strategies so the only thing they
-    // differ in is how semestersFrom resolves a recursive call.
-    private static int BestSemesters(CourseLoad courses, int completedMask, Func<int, int> semestersFrom)
+    // One step of the recurrence, named and used by both strategies, so the only
+    // thing they differ in is whether the recursion it receives resolves a call
+    // through a cache or straight back into the rule.
+    private sealed class SemestersFrom(CourseLoad courses) : IRecurrence<int, int>
     {
-        if (completedMask == courses.FullMask)
+        public int Replay(int completedMask, IRecurrence<int, int> rest)
         {
-            return 0;
-        }
-
-        var ready = ReadyMask(courses, completedMask);
-        var best = int.MaxValue;
-
-        for (var subset = ready; subset > 0; subset = (subset - 1) & ready)
-        {
-            if (BitOperations.PopCount((uint)subset) > courses.MaxPerSemester)
+            if (completedMask == courses.FullMask)
             {
-                continue;
+                return 0;
             }
 
-            var remaining = semestersFrom(completedMask | subset);
-            best = Math.Min(best, remaining);
-        }
+            var ready = ReadyMask(courses, completedMask);
+            var best = int.MaxValue;
 
-        return 1 + best;
-    }
-
-    // Every course not yet taken whose prerequisites are all already completed.
-    private static int ReadyMask(CourseLoad courses, int completedMask)
-    {
-        var ready = 0;
-
-        for (var course = 0; course < courses.PrerequisiteMasks.Length; course++)
-        {
-            var bit = 1 << course;
-            var prerequisites = courses.PrerequisiteMasks[course];
-
-            if ((completedMask & bit) == 0 && (prerequisites & completedMask) == prerequisites)
+            for (var subset = ready; subset > 0; subset = (subset - 1) & ready)
             {
-                ready |= bit;
+                if (BitOperations.PopCount((uint)subset) > courses.MaxPerSemester)
+                {
+                    continue;
+                }
+
+                var remaining = rest.Replay(completedMask | subset, rest);
+                best = Math.Min(best, remaining);
             }
+
+            return 1 + best;
         }
 
-        return ready;
+        // Every course not yet taken whose prerequisites are all already completed.
+        // It reads this recurrence's own setup, so it is stated where that setup is.
+        private static int ReadyMask(CourseLoad courses, int completedMask)
+        {
+            var ready = 0;
+
+            for (var course = 0; course < courses.PrerequisiteMasks.Length; course++)
+            {
+                var bit = 1 << course;
+                var prerequisites = courses.PrerequisiteMasks[course];
+
+                if ((completedMask & bit) == 0 && (prerequisites & completedMask) == prerequisites)
+                {
+                    ready |= bit;
+                }
+            }
+
+            return ready;
+        }
     }
+
 }

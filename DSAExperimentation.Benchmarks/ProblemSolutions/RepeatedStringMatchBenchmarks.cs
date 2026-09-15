@@ -12,11 +12,11 @@ public class RepeatedStringMatchBenchmarks
 {
     private const int APatternFillerLength = 9;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _a = "";
 
-    private string _a = null!;
-    private string _b = null!;
+    private string _b = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -26,8 +26,14 @@ public class RepeatedStringMatchBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int StringContains() => RepeatedStringMatchSolution.MinRepeatsByStringContains(_a, _b);
+    public int StringContains() =>
+        RepeatedStringMatchSolution.MinRepeatsByStringContains(
+            new RepeatedStringMatchSolution.RepeatedUnit(_a),
+            new RepeatedStringMatchSolution.TargetPattern(_b));
 
     [Benchmark]
-    public int PrefixFunctionSearchContains() => RepeatedStringMatchSolution.MinRepeatsByPrefixFunctionSearch(_a, _b);
+    public int PrefixFunctionSearchContains() =>
+        RepeatedStringMatchSolution.MinRepeatsByPrefixFunctionSearch(
+            new RepeatedStringMatchSolution.RepeatedUnit(_a),
+            new RepeatedStringMatchSolution.TargetPattern(_b));
 }

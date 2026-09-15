@@ -15,10 +15,10 @@ internal sealed class CompatibilityScoreMatrix
 {
     private readonly int[][] _scores;
 
-    private CompatibilityScoreMatrix(int[][] scores) => _scores = scores;
-
     // Square by construction: LC 1947 pairs every student with exactly one mentor.
     public int GroupSize => _scores.Length;
+
+    private CompatibilityScoreMatrix(int[][] scores) => _scores = scores;
 
     public int Score(int student, int mentor) => _scores[student][mentor];
 

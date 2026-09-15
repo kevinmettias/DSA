@@ -29,6 +29,14 @@ internal static class DigitOperationsToMakeTwoIntegersEqualSolution
         var queue = new PriorityQueue<int, int>();
         queue.Enqueue(n, n);
 
+        return CostByMutationQueue(m, best, queue);
+    }
+
+    // The search itself: settle the nearest unsettled value, then relax its digit
+    // mutations. A stale queue entry - one whose recorded cost has since been beaten -
+    // is dropped rather than re-expanded.
+    private static int CostByMutationQueue(int m, Dictionary<int, int> best, PriorityQueue<int, int> queue)
+    {
         while (queue.TryDequeue(out var current, out var cost))
         {
             if (current == m)
@@ -84,6 +92,10 @@ internal static class DigitOperationsToMakeTwoIntegersEqualSolution
         var distances = ShortestPath
             .Dijkstra<DigitStepNode, DigitStepTopology, ListEdges<DigitStepNode, int>, int>(startNode);
 
-        return distances.TryGetValue(targetNode, out var distance) ? n + distance : LeetCodeAnswer.None;
+        return distances.TryGetValue(targetNode, out var distance) ? CostIncludingSource(n, distance) : LeetCodeAnswer.None;
     }
+
+    // The source node's own value is never charged by Dijkstra's Distances[source] = Zero
+    // convention, so the reported cost is its value plus the distance the search found.
+    private static int CostIncludingSource(int source, int distance) => source + distance;
 }

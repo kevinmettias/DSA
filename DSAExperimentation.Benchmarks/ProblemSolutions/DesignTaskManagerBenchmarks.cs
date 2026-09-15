@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignTaskManager.DesignTaskManagerSolution;
+using DSAExperimentation.LeetCode.DesignTaskManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -16,11 +16,11 @@ public class DesignTaskManagerBenchmarks
     private const int Seed = 3408;
     private const int PriorityUpperBound = 1_000_000_000;
 
-    [Params(200, 2_000)]
-    public int InitialTaskCount;
+    private (int UserId, int TaskId, int Priority)[] _initialTasks = [];
 
-    private (int UserId, int TaskId, int Priority)[] _initialTasks = null!;
-    private List<Func<ITaskManagerStrategy, int?>> _script = null!;
+    private List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>> _script = new();
+    [Params(200, 2_000)]
+    public int InitialTaskCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,40 +30,28 @@ public class DesignTaskManagerBenchmarks
         _script = BuildScript(InitialTaskCount, random);
     }
 
-    [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new TaskManagerByLinearScan(_initialTasks));
-
-    [Benchmark]
-    public long LazyDeletionHeap() => Replay(new TaskManagerByLazyDeletionHeap(_initialTasks));
-
-    // Sums every executed userId rather than discarding it, so the JIT can't
-    // eliminate the replay as dead code - the same "return the real answer, not a
-    // weaker proxy" shape OpenTheLockBenchmarks/TwoSumBenchmarks already follow.
-    private long Replay(ITaskManagerStrategy strategy)
-    {
-        var executedUserIdSum = 0L;
-
-        foreach (var op in _script)
-        {
-            executedUserIdSum += op(strategy) ?? 0;
-        }
-
-        return executedUserIdSum;
-    }
-
     private static (int UserId, int TaskId, int Priority)[] BuildInitialTasks(int count, Random random)
         => Enumerable.Range(0, count)
             .Select(taskId => (UserId: random.Next(0, count), TaskId: taskId, Priority: random.Next(0, PriorityUpperBound)))
             .ToArray();
 
-    private static List<Func<ITaskManagerStrategy, int?>> BuildScript(int initialTaskCount, Random random)
+    private static List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>> BuildScript(int initialTaskCount, Random random)
     {
-        var script = new List<Func<ITaskManagerStrategy, int?>>();
+        var script = new List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>>();
         var removeCount = initialTaskCount / 10;
         var editCount = initialTaskCount / 10;
 
-        // Removed/edited first, before the round loop below ever adds or executes
-        // anything - these taskIds are guaranteed still live.
+        AppendRemovals(script, removeCount);
+        AppendEdits(script, removeCount, editCount, random);
+        AppendGrowthRounds(script, initialTaskCount, random);
+
+        return script;
+    }
+
+    // Removed first, before the growth rounds below ever add or execute anything -
+    // every taskId in this range is guaranteed still live.
+    private static void AppendRemovals(List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>> script, int removeCount)
+    {
         foreach (var taskId in Enumerable.Range(0, removeCount))
         {
             script.Add(strategy =>
@@ -72,8 +60,14 @@ public class DesignTaskManagerBenchmarks
                 return null;
             });
         }
+    }
 
-        foreach (var taskId in Enumerable.Range(removeCount, editCount))
+    // Edited next, for the same reason: this range starts where the removals stopped,
+    // so it is still untouched by anything the round loop later appends.
+    private static void AppendEdits(
+        List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>> script, int editStart, int editCount, Random random)
+    {
+        foreach (var taskId in Enumerable.Range(editStart, editCount))
         {
             var newPriority = random.Next(0, PriorityUpperBound);
             script.Add(strategy =>
@@ -82,15 +76,12 @@ public class DesignTaskManagerBenchmarks
                 return null;
             });
         }
-
-        AppendGrowthRounds(script, initialTaskCount, random);
-        return script;
     }
 
     // Two fresh Add calls per ExecTop: the live task count only grows round over
     // round, so every ExecTop always has something to execute regardless of which
     // priorities the random draws produced.
-    private static void AppendGrowthRounds(List<Func<ITaskManagerStrategy, int?>> script, int roundCount, Random random)
+    private static void AppendGrowthRounds(List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>> script, int roundCount, Random random)
     {
         var nextTaskId = roundCount;
 
@@ -102,7 +93,7 @@ public class DesignTaskManagerBenchmarks
         }
     }
 
-    private static void AppendAdd(List<Func<ITaskManagerStrategy, int?>> script, Random random, int userIdUpperBound, int taskId)
+    private static void AppendAdd(List<Func<DesignTaskManagerSolution.ITaskManagerStrategy, int?>> script, Random random, int userIdUpperBound, int taskId)
     {
         var userId = random.Next(0, userIdUpperBound);
         var priority = random.Next(0, PriorityUpperBound);
@@ -111,5 +102,26 @@ public class DesignTaskManagerBenchmarks
             strategy.Add(userId, taskId, priority);
             return null;
         });
+    }
+
+    [Benchmark(Baseline = true)]
+    public long LinearScan() => Replay(new DesignTaskManagerSolution.TaskManagerByLinearScan(_initialTasks));
+
+    [Benchmark]
+    public long LazyDeletionHeap() => Replay(new DesignTaskManagerSolution.TaskManagerByLazyDeletionHeap(_initialTasks));
+
+    // Sums every executed userId rather than discarding it, so the JIT can't
+    // eliminate the replay as dead code - the same "return the real answer, not a
+    // weaker proxy" shape OpenTheLockBenchmarks/TwoSumBenchmarks already follow.
+    private long Replay(DesignTaskManagerSolution.ITaskManagerStrategy strategy)
+    {
+        var executedUserIdSum = 0L;
+
+        foreach (var op in _script)
+        {
+            executedUserIdSum += op(strategy) ?? 0;
+        }
+
+        return executedUserIdSum;
     }
 }

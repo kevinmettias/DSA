@@ -31,7 +31,7 @@ internal static class CountServersThatCommunicateSolution
         {
             for (var c = 0; c < grid[0].Length; c++)
             {
-                if (grid[r][c] == Server && (HasCompanionInRow(grid, r) || HasCompanionInColumn(grid, c)))
+                if (CommunicatesByRescan(grid, r, c))
                 {
                     communicating++;
                 }
@@ -40,6 +40,11 @@ internal static class CountServersThatCommunicateSolution
 
         return communicating;
     }
+
+    // A square announces a communicating server only when it is one and a second
+    // server turns up on its row or on its column.
+    private static bool CommunicatesByRescan(int[][] grid, int row, int col) =>
+        grid[row][col] == Server && (HasCompanionInRow(grid, row) || HasCompanionInColumn(grid, col));
 
     private static bool HasCompanionInRow(int[][] grid, int row)
     {
@@ -108,6 +113,12 @@ internal static class CountServersThatCommunicateSolution
         return counts;
     }
 
+    private static void Increment(HashMap<int, int> counts, int key)
+    {
+        counts.TryGetValue(key, out var current);
+        counts.Set(key, current + 1);
+    }
+
     private static bool Communicates(int[][] grid, int row, int col, ServerCounts counts)
     {
         if (grid[row][col] != Server)
@@ -119,12 +130,6 @@ internal static class CountServersThatCommunicateSolution
         counts.ColCounts.TryGetValue(col, out var colCount);
 
         return rowCount > CompanionThreshold || colCount > CompanionThreshold;
-    }
-
-    private static void Increment(HashMap<int, int> counts, int key)
-    {
-        counts.TryGetValue(key, out var current);
-        counts.Set(key, current + 1);
     }
 
     private readonly record struct ServerCounts(HashMap<int, int> RowCounts, HashMap<int, int> ColCounts);

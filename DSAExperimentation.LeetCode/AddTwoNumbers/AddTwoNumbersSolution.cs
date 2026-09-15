@@ -23,7 +23,7 @@ internal static class AddTwoNumbersSolution
         var tail = dummy;
         var carry = 0;
 
-        while (first is not null || second is not null || carry != 0)
+        while (HasMoreDigitsToAdd(first, second, carry))
         {
             var digitSum = carry + (first?.Value ?? 0) + (second?.Value ?? 0);
             carry = digitSum / DecimalBase;
@@ -37,6 +37,12 @@ internal static class AddTwoNumbersSolution
 
         return dummy.Next;
     }
+
+    // There is another result digit to emit while either operand still has one
+    // left to consume, or the carry from the last column survives.
+    private static bool HasMoreDigitsToAdd(
+        SinglyLinkedListNode<int>? first, SinglyLinkedListNode<int>? second, int carry)
+        => first is not null || second is not null || carry != 0;
 
     // The textbook answer many first reach for: convert each digit list to a
     // BigInteger and back. Each `* 10` grows the running total's limb count by

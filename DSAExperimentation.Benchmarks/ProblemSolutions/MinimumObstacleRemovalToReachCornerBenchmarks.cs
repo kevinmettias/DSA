@@ -13,13 +13,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumObstacleRemovalToReachCornerBenchmarks
 {
-    private const int RandomSeed = 2290; // LC problem number
+    private const int RandomSeed = 2290; private int[][] _grid = [];
+
+    private Dictionary<(int Row, int Col), WeightedGridNode> _nodes = new();
+    // LC problem number
 
     [Params(15, 60)]
-    public int Size;
-
-    private int[][] _grid = null!;
-    private Dictionary<(int Row, int Col), WeightedGridNode> _nodes = null!;
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

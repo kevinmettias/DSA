@@ -16,10 +16,10 @@ public class MinimumCostToConnectTwoGroupsOfPointsBenchmarks
     private const int RandomSeed = 1595; // LC problem number
     private const int CostExclusiveBound = 100;
 
-    [Params(4, 7)]
-    public int GroupSize;
-
     private ConnectionCosts _costs = null!;
+
+    [Params(4, 7)]
+    public int GroupSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

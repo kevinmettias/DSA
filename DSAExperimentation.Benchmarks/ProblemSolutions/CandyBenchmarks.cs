@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CandyBenchmarks
 {
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _ratings = [];
 
-    private int[] _ratings = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _ratings = Enumerable.Range(0, Length).Select(i => Length - i).ToArray();

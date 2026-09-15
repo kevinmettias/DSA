@@ -25,13 +25,13 @@ public class FindSubstringWithGivenHashValueBenchmarks
     private const int RandomSeed = 2156; // LC problem number
     private const int AlphabetSize = 26;
 
-    [Params(500, 20_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
     private RollingHash _reversedHash = null!;
-
     private static RollingHashLane Lane => new(Power, Modulo);
+
+    [Params(500, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -51,10 +51,10 @@ public class FindSubstringWithGivenHashValueBenchmarks
     [Benchmark(Baseline = true)]
     public bool BruteForce() =>
         FindSubstringWithGivenHashValueSolution.TryFindSubstringByWindowRehash(
-            _text, Lane, K, UnreachableHashValue, out _);
+            _text, Lane, (WindowLength: K, HashValue: UnreachableHashValue), out _);
 
     [Benchmark]
     public bool RollingHashWindowed() =>
         FindSubstringWithGivenHashValueSolution.TryFindSubstringByRollingHash(
-            _reversedHash, _text, K, UnreachableHashValue, out _);
+            _reversedHash, _text, (WindowLength: K, HashValue: UnreachableHashValue), out _);
 }

@@ -17,24 +17,26 @@ public class ShortestMatchingSubstringBenchmarks
     private const int TextSeed = 3455;
     private const string Pattern = "ab*cd*ef";
 
-    [Params(500, 5000)]
-    public int TextLength;
+    private string _text = "";
 
-    private string _text = null!;
-    private MatchPattern _pattern;
-    private PatternOccurrences _occurrences;
+    private ShortestMatchingSubstringSolution.MatchPattern _pattern;
+    private ShortestMatchingSubstringSolution.PatternOccurrences _occurrences;
+    [Params(500, 5000)]
+    public int TextLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _text = ShortestMatchingSubstringWorkloads.BuildText(TextLength, seed: TextSeed);
-        _pattern = MatchPattern.Parse(Pattern);
-        _occurrences = PatternOccurrences.Build(_text, _pattern);
+        _pattern = ShortestMatchingSubstringSolution.MatchPattern.Parse(Pattern);
+        _occurrences = ShortestMatchingSubstringSolution.PatternOccurrences.Build(_text, _pattern);
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForceIndexOf() =>
-        ShortestMatchingSubstringSolution.ShortestLengthByBruteForceIndexOf(_text, _pattern);
+        ShortestMatchingSubstringSolution.ShortestLengthByBruteForceIndexOf(
+            new ShortestMatchingSubstringSolution.SourceText(_text),
+            _pattern);
 
     [Benchmark]
     public int KmpBinarySearch() =>

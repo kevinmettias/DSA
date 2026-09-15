@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NimGameBenchmarks
 {
     [Params(20, 1_000)]
-    public int Stones;
+    public int Stones { get; set; }
 
     [Benchmark(Baseline = true)]
     public bool MemoizedRecursion() => NimGameSolution.CanWinByMemoizedRecursion(Stones);

@@ -47,21 +47,28 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
         while (pending.TryPop(out var cell))
         {
             total += grid[cell.Row][cell.Col];
-
-            foreach (var (deltaRow, deltaCol) in Orthogonal)
-            {
-                var nextRow = cell.Row + deltaRow;
-                var nextCol = cell.Col + deltaCol;
-
-                if (IsUnvisitedLand(grid, visited, nextRow, nextCol))
-                {
-                    visited[nextRow, nextCol] = true;
-                    pending.Push((nextRow, nextCol));
-                }
-            }
+            PushUnvisitedNeighbors(grid, visited, pending, cell);
         }
 
         return total;
+    }
+
+    // Claim every orthogonal land neighbor of `cell` that no island has claimed yet,
+    // so the flood fill reaches it in its own time.
+    private static void PushUnvisitedNeighbors(
+        int[][] grid, bool[,] visited, Stack<(int Row, int Col)> pending, (int Row, int Col) cell)
+    {
+        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        {
+            var nextRow = cell.Row + deltaRow;
+            var nextCol = cell.Col + deltaCol;
+
+            if (IsUnvisitedLand(grid, visited, nextRow, nextCol))
+            {
+                visited[nextRow, nextCol] = true;
+                pending.Push((nextRow, nextCol));
+            }
+        }
     }
 
     private static bool IsUnvisitedLand(int[][] grid, bool[,] visited, int row, int col)
@@ -93,10 +100,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
                     continue;
                 }
 
-                var island = DepthFirstSearch.Traverse<(int Row, int Col)>((row, col), cell => LandNeighbors(grid, cell));
-                visited.UnionWith(island);
-
-                if (island.Sum(cell => (long)grid[cell.Row][cell.Col]) % k == 0)
+                if (IsDivisibleIsland(grid, visited, (row, col), k))
                 {
                     islands++;
                 }
@@ -106,6 +110,17 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
         return islands;
     }
 
+    // The island at `start`: every land cell the traversal engine reaches from it,
+    // claimed in one go, and whether the island's total value divides by k.
+    private static bool IsDivisibleIsland(
+        int[][] grid, HashSet<(int Row, int Col)> visited, (int Row, int Col) start, int k)
+    {
+        var island = DepthFirstSearch.Traverse<(int Row, int Col)>(start, cell => LandNeighbors(grid, cell));
+        visited.UnionWith(island);
+
+        return island.Sum(cell => (long)grid[cell.Row][cell.Col]) % k == 0;
+    }
+
     private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)
     {
         foreach (var (deltaRow, deltaCol) in Orthogonal)
@@ -113,10 +128,15 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
             var row = cell.Row + deltaRow;
             var col = cell.Col + deltaCol;
 
-            if (row >= 0 && row < grid.Length && col >= 0 && col < grid[row].Length && grid[row][col] > 0)
+            if (IsLandOnBoard(grid, row, col))
             {
                 yield return (row, col);
             }
         }
     }
+
+    // A cell of the island worth walking to: on the grid, and positive land rather
+    // than a zero or negative gap.
+    private static bool IsLandOnBoard(int[][] grid, int row, int col)
+        => row >= 0 && row < grid.Length && col >= 0 && col < grid[row].Length && grid[row][col] > 0;
 }

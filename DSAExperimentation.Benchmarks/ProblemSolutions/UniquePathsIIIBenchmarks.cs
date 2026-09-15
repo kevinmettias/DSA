@@ -16,7 +16,7 @@ public class UniquePathsIIIBenchmarks
 {
     private const int EndCellMarker = 2;
 
-    private int[][] _grid = null!;
+    private int[][] _grid = [];
 
     [GlobalSetup]
     public void Setup() => _grid = [[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, EndCellMarker]];

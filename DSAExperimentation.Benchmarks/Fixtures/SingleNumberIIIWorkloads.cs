@@ -26,9 +26,15 @@ internal static class SingleNumberIIIWorkloads
         var values = new List<int>(pairs.Length * ElementsPerPair + SingletonCount);
         values.AddRange(pairs);
         values.AddRange(pairs);
-        values.Add(-1);
-        values.Add(SecondSingletonValue);
+        AppendSingletonValues(values);
 
         return values.OrderBy(_ => random.Next()).ToArray();
+    }
+
+    // The two values that appear exactly once: one fixed, one at the far negative end.
+    private static void AppendSingletonValues(List<int> values)
+    {
+        values.Add(-1);
+        values.Add(SecondSingletonValue);
     }
 }

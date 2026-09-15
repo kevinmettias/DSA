@@ -17,12 +17,12 @@ public class ShortestPathWithAtMostKConsecutiveIdenticalCharactersBenchmarks
     private const int Seed = 3970;
     private const int K = 5;
 
-    [Params(100, 500)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
-    private string _labels = null!;
+    private string _labels = "";
     private ConsecutiveRunGraph _graph = null!;
+    [Params(100, 500)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

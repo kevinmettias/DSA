@@ -20,11 +20,11 @@ public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
 
     private const int MaxQueryOffset = 5;
 
-    [Params(500, 20_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int>? _root;
-    private int[] _queries = null!;
+
+    private int[] _queries = [];
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

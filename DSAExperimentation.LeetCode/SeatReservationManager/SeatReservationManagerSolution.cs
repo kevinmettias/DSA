@@ -68,7 +68,10 @@ internal static class SeatReservationManagerSolution
         private readonly Heap<int, MinHeapOrder<int>> _released = new();
         private int _nextFreshSeat = 1;
 
-        public int Reserve() => _released.TryPop(out var seat) ? seat : _nextFreshSeat++;
+        public int Reserve() => _released.TryPop(out var seat) ? seat : MintNextSeat();
+
+        // The frontier answers with the next never-issued seat number and steps on.
+        private int MintNextSeat() => _nextFreshSeat++;
 
         public void Unreserve(int seatNumber) => _released.Push(seatNumber);
     }

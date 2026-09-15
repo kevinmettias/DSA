@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignAuthenticationManager.DesignAuthenticationManagerSolution;
+using DSAExperimentation.LeetCode.DesignAuthenticationManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -19,11 +19,11 @@ public class DesignAuthenticationManagerBenchmarks
     private const int TimeToLive = 100;
     private const int AlternatingModulus = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string[] _tokenIds = [];
 
-    private string[] _tokenIds = null!;
-    private string[] _renewProbeIds = null!;
+    private string[] _renewProbeIds = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,22 +35,26 @@ public class DesignAuthenticationManagerBenchmarks
         // lookup-then-overwrite and a failed renew's full failed-lookup path run on
         // every probe.
         _renewProbeIds = Enumerable.Range(0, Length)
-            .Select(i => i % AlternatingModulus == 0 ? _tokenIds[i] : $"missing-{i}")
+            .Select(i => IsEvenIndex(i) ? TokenIdAt(i) : $"missing-{i}")
             .ToArray();
     }
 
+    private static bool IsEvenIndex(int index) => index % AlternatingModulus == 0;
+
+    private string TokenIdAt(int index) => _tokenIds[index];
+
     [Benchmark(Baseline = true)]
-    public int LinearScanList() => Replay(new AuthenticationManagerByLinearScanList(TimeToLive));
+    public int LinearScanList() => Replay(new DesignAuthenticationManagerSolution.AuthenticationManagerByLinearScanList(TimeToLive));
 
     [Benchmark]
-    public int RepoHashMap() => Replay(new AuthenticationManagerByHashMap(TimeToLive));
+    public int RepoHashMap() => Replay(new DesignAuthenticationManagerSolution.AuthenticationManagerByHashMap(TimeToLive));
 
     // Token i is generated at time i, so it expires at i + TimeToLive; every renew
     // and the final count then happen at time Length, so only the most recently
     // generated tokens are still alive - a hit on an older one pays for the whole
     // lookup and then declines to renew, which is exactly the path that never
     // short-circuits.
-    private int Replay(IAuthenticationManager manager)
+    private int Replay(DesignAuthenticationManagerSolution.IAuthenticationManager manager)
     {
         for (var i = 0; i < _tokenIds.Length; i++)
         {

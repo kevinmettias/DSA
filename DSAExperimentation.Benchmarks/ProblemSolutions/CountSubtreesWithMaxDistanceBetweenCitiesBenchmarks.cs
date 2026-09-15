@@ -14,10 +14,10 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
     // LC problem number, reused as the deterministic tree seed.
     private const int RandomSeed = 1617;
 
-    [Params(10, 14)]
-    public int N;
+    private List<int>[] _adjacency = [];
 
-    private List<int>[] _adjacency = null!;
+    [Params(10, 14)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

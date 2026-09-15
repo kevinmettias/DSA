@@ -20,10 +20,10 @@ public class TheKthFactorOfNBenchmarks
     private const int RandomSeed = 1492; // LC problem number
     private const int ValueUpperBoundExclusive = 1_000;
 
-    [Params(1_000, 10_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(1_000, 10_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

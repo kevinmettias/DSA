@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.OrderlyQueue;
 internal static class OrderlyQueueSolution
 {
     // k == 1 is the rotation-only case; any larger k reaches every permutation.
-    public const int RotationOnly = 1;
+    private const int RotationOnly = 1;
 
     // The textbook answer: materialize each of the n rotations and keep the
     // smallest, O(n) rotations x O(n) comparison each. Deliberately written with
@@ -35,7 +35,9 @@ internal static class OrderlyQueueSolution
 
         for (var start = 1; start < s.Length; start++)
         {
-            var rotation = string.Concat(s.AsSpan(start), s.AsSpan(0, start));
+            var head = s.AsSpan(start);
+            var tail = s.AsSpan(0, start);
+            var rotation = string.Concat(head, tail);
 
             if (string.CompareOrdinal(rotation, best) < 0)
             {

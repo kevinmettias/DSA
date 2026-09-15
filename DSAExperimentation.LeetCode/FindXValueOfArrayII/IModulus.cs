@@ -11,28 +11,3 @@ internal interface IModulus
 {
     static abstract int Value { get; }
 }
-
-internal readonly struct Modulus1 : IModulus
-{
-    public static int Value => 1;
-}
-
-internal readonly struct Modulus2 : IModulus
-{
-    public static int Value => 2;
-}
-
-internal readonly struct Modulus3 : IModulus
-{
-    public static int Value => 3;
-}
-
-internal readonly struct Modulus4 : IModulus
-{
-    public static int Value => 4;
-}
-
-internal readonly struct Modulus5 : IModulus
-{
-    public static int Value => 5;
-}

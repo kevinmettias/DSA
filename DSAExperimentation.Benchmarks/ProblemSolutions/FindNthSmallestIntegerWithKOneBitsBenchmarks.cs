@@ -14,7 +14,7 @@ public class FindNthSmallestIntegerWithKOneBitsBenchmarks
     private const int K = 4;
 
     [Params(200, 2000)]
-    public long N;
+    public long N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long PopCountScan() => FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByPopCountScan(N, K);

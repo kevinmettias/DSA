@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfVisiblePeopleInAQueueBenchmarks
 {
-    private const int RandomSeed = 1944; // LC problem number
+    private const int RandomSeed = 1944; private int[] _heights = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _heights = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

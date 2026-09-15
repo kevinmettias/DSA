@@ -30,7 +30,8 @@ internal static class OddEvenLinkedListSolution
 
         for (var node = head; node is not null; node = node.Next)
         {
-            (index % ParityDivisor == 0 ? odds : evens).Add(node.Value);
+            var isOddIndex = index % ParityDivisor == 0;
+            (isOddIndex ? odds : evens).Add(node.Value);
             index++;
         }
 

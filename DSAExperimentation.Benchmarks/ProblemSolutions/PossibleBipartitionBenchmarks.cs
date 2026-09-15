@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.PossibleBipartition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,20 +23,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PossibleBipartitionBenchmarks
 {
-    private const int HalfDivisor = 2;
     private const int CrossPairsPerPerson = 2;
 
-    [Params(200, 5_000)]
-    public int PersonCount;
-
     private DislikeAdjacency _adjacency = null!;
+
     private DislikeGraph _graph = null!;
+    [Params(200, 5_000)]
+    public int PersonCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
-        var half = PersonCount / HalfDivisor;
+        var half = PersonCount / AlgorithmConstants.HalvingFactor;
         var dislikes = new List<int[]>();
 
         AddConnectivityPairs(dislikes, random, half);
@@ -67,11 +67,15 @@ public class PossibleBipartitionBenchmarks
             for (var e = 0; e < CrossPairsPerPerson; e++)
             {
                 var inA = i < half;
-                var target = inA ? half + random.Next(PersonCount - half) : random.Next(half);
+                var target = inA ? RandomBSidePerson(random, half) : random.Next(half);
                 dislikes.Add([i + 1, target + 1]);
             }
         }
     }
+
+    // A random person on the B side, shifted up past the A side's own people.
+    private int RandomBSidePerson(Random random, int half) =>
+        half + random.Next(PersonCount - half);
 
     [Benchmark(Baseline = true)]
     public bool ArrayAdjacencyIterativeDfs() =>

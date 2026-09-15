@@ -11,15 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumSumOfMNonOverlappingSubarraysIIBenchmarks
 {
-    private const int Seed = 3957; // LC problem number
+    private const int Seed = 3957; private int[] _nums = [];
 
-    [Params(200, 2_000)]
-    public int Length;
-
-    private int[] _nums = null!;
     private int _m;
     private int _l;
     private int _r;
+    // LC problem number
+
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -13,11 +13,11 @@ public class RectangleOverlapBenchmarks
 {
     private const int OffsetDivisor = 2;
 
-    [Params(60, 400)]
-    public int Side;
-
     private int[] _rec1 = [];
+
     private int[] _rec2 = [];
+    [Params(60, 400)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()

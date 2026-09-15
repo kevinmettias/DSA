@@ -23,13 +23,13 @@ public class CheapestFlightsWithinKStopsBenchmarks
     // point from the back-edge chain's root.
     private const int Source = 0;
 
-    [Params(15, 40)]
-    public int CityCount;
-
     private int _dst;
+
     private int _stops;
     private FlightNetwork _network = null!;
     private FlightStateGraph _graph = null!;
+    [Params(15, 40)]
+    public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

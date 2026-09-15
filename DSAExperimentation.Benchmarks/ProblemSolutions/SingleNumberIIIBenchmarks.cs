@@ -12,10 +12,10 @@ public class SingleNumberIIIBenchmarks
     // LC problem number, reused as the deterministic value seed.
     private const int Seed = 260;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = SingleNumberIIIWorkloads.BuildValues(Length, seed: Seed);

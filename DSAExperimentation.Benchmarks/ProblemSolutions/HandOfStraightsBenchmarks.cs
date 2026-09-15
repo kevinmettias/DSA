@@ -20,28 +20,34 @@ public class HandOfStraightsBenchmarks
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int HandSeed = 846;
 
-    [Params(500, 20_000)]
-    public int HandCount;
+    private int[] _hand = [];
 
-    private int[] _hand = null!;
+    [Params(500, 20_000)]
+    public int HandCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _hand = BuildStraightableHand(HandCount, GroupSize, seed: HandSeed);
 
-    [Benchmark(Baseline = true)]
-    public bool DictionaryThenArraySort() =>
-        HandOfStraightsSolution.IsNStraightHandByBclDictionary(_hand, GroupSize);
-
-    [Benchmark]
-    public bool HashMapThenMergeSort() =>
-        HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(_hand, GroupSize);
-
-    // groupCount whole runs of groupSize consecutive values, each run starting at a
-    // random, widely-spaced multiple of groupSize (so runs never overlap), then
-    // shuffled - guarantees the hand always straightens.
+    // The hand is shuffled with a seeded RNG; BuildConsecutiveRuns lays down the runs it
+    // shuffles, and the draw sequence below is what pins every benchmark's input.
     private static int[] BuildStraightableHand(int handCount, int groupSize, int seed)
     {
         var random = new Random(seed);
+        var hand = BuildConsecutiveRuns(handCount, groupSize);
+
+        for (var i = hand.Length - 1; i > 0; i--)
+        {
+            var j = random.Next(i + 1);
+            (hand[i], hand[j]) = (hand[j], hand[i]);
+        }
+
+        return hand;
+    }
+
+    // groupCount whole runs of groupSize consecutive values, each run starting at a
+    // widely-spaced multiple of groupSize so runs never overlap.
+    private static int[] BuildConsecutiveRuns(int handCount, int groupSize)
+    {
         var groupCount = handCount / groupSize;
         var hand = new int[groupCount * groupSize];
         var index = 0;
@@ -56,12 +62,14 @@ public class HandOfStraightsBenchmarks
             }
         }
 
-        for (var i = hand.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (hand[i], hand[j]) = (hand[j], hand[i]);
-        }
-
         return hand;
     }
+
+    [Benchmark(Baseline = true)]
+    public bool DictionaryThenArraySort() =>
+        HandOfStraightsSolution.IsNStraightHandByBclDictionary(_hand, GroupSize);
+
+    [Benchmark]
+    public bool HashMapThenMergeSort() =>
+        HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(_hand, GroupSize);
 }

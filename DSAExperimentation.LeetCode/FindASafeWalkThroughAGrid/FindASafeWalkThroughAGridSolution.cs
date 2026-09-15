@@ -33,6 +33,17 @@ internal static class FindASafeWalkThroughAGridSolution
         var rows = grid.Length;
         var cols = grid[0].Length;
         var total = rows * cols;
+        var damage = ArrayScanDijkstra(grid, rows, cols);
+
+        var targetDamage = damage[total - 1];
+        return targetDamage != int.MaxValue && health - targetDamage >= 1;
+    }
+
+    // The search itself: settle the nearest reachable cell `total` times over, so
+    // that every cell's cheapest damage is final, and hand back the damage array.
+    private static int[] ArrayScanDijkstra(int[][] grid, int rows, int cols)
+    {
+        var total = rows * cols;
         var damage = new int[total];
 
         Array.Fill(damage, int.MaxValue);
@@ -49,11 +60,10 @@ internal static class FindASafeWalkThroughAGridSolution
             }
 
             settled[current] = true;
-            RelaxArrayNeighbors(current, rows, cols, grid, damage);
+            RelaxArrayNeighbors(current, (rows, cols), grid, damage);
         }
 
-        var targetDamage = damage[total - 1];
-        return targetDamage != int.MaxValue && health - targetDamage >= 1;
+        return damage;
     }
 
     private static int NextUnsettledMinimum(int[] damage, bool[] settled)
@@ -62,7 +72,7 @@ internal static class FindASafeWalkThroughAGridSolution
 
         for (var i = 0; i < damage.Length; i++)
         {
-            if (!settled[i] && damage[i] != int.MaxValue && (current == -1 || damage[i] < damage[current]))
+            if (IsBetterCandidate(i, damage, settled, current))
             {
                 current = i;
             }
@@ -71,22 +81,33 @@ internal static class FindASafeWalkThroughAGridSolution
         return current;
     }
 
-    private static void RelaxArrayNeighbors(int current, int rows, int cols, int[][] grid, int[] damage)
+    // The next vertex to settle is the nearest cell that is still unsettled, still
+    // reachable, and closer than whatever the scan is holding.
+    private static bool IsBetterCandidate(int index, int[] damage, bool[] settled, int current)
+        => !settled[index] && damage[index] != int.MaxValue && (current == -1 || damage[index] < damage[current]);
+
+    // Off the grid on any of its four edges - the step has no cell to land on.
+    private static bool IsOutside(int row, int col, int rows, int cols)
+        => row < 0 || row >= rows || col < 0 || col >= cols;
+
+    // `current` is a flat index, so the grid's shape is what turns it back into a cell -
+    // the two bounds travel as that one shape rather than as two loose ints beside the grid.
+    private static void RelaxArrayNeighbors(int current, (int Rows, int Cols) size, int[][] grid, int[] damage)
     {
-        var row = current / cols;
-        var col = current % cols;
+        var row = current / size.Cols;
+        var col = current % size.Cols;
 
         foreach (var (deltaRow, deltaCol) in Orthogonal)
         {
             var nextRow = row + deltaRow;
             var nextCol = col + deltaCol;
 
-            if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
+            if (IsOutside(nextRow, nextCol, size.Rows, size.Cols))
             {
                 continue;
             }
 
-            var next = (nextRow * cols) + nextCol;
+            var next = (nextRow * size.Cols) + nextCol;
             var candidate = damage[current] + grid[nextRow][nextCol];
 
             if (candidate < damage[next])
@@ -105,14 +126,16 @@ internal static class FindASafeWalkThroughAGridSolution
         var cols = grid[0].Length;
         var nodes = BuildCellCostGraph(grid, rows, cols);
 
-        return IsSafeByWeightedGridDijkstra(nodes, rows, cols, grid[0][0], health);
+        return IsSafeByWeightedGridDijkstra(nodes, (rows, cols), grid[0][0], health);
     }
 
+    // The prepared graph and the grid size it was built for travel together: the size is
+    // what addresses the destination cell in `nodes`, not an independent value.
     public static bool IsSafeByWeightedGridDijkstra(
-        Dictionary<(int Row, int Col), WeightedGridNode> nodes, int rows, int cols, int startCost, int health)
+        Dictionary<(int Row, int Col), WeightedGridNode> nodes, (int Rows, int Cols) size, int startCost, int health)
     {
         var source = nodes[(0, 0)];
-        var target = nodes[(rows - 1, cols - 1)];
+        var target = nodes[(size.Rows - 1, size.Cols - 1)];
 
         var distances = ShortestPath.Dijkstra<
             WeightedGridNode, WeightedGridTopology, ListEdges<WeightedGridNode, int>, int>(source);
@@ -122,10 +145,15 @@ internal static class FindASafeWalkThroughAGridSolution
             return false;
         }
 
-        // Dijkstra's own distances never include the source's cost, since every
-        // edge weight it sums is charged to entering the DESTINATION - so the
-        // source cell's own damage (already paid just by starting there) is
-        // added back in here.
+        return SurvivesDamage(startCost, pathDamage, health);
+    }
+
+    // Dijkstra's own distances never include the source's cost, since every edge
+    // weight it sums is charged to entering the DESTINATION - so the source cell's
+    // own damage (already paid just by starting there) is added back in before the
+    // health left over is checked.
+    private static bool SurvivesDamage(int startCost, int pathDamage, int health)
+    {
         var totalDamage = startCost + pathDamage;
         return health - totalDamage >= 1;
     }
@@ -135,6 +163,15 @@ internal static class FindASafeWalkThroughAGridSolution
     // is that cell's own grid value, so a benchmark's [GlobalSetup] can charge
     // graph construction to setup rather than the measured Dijkstra call.
     public static Dictionary<(int Row, int Col), WeightedGridNode> BuildCellCostGraph(int[][] grid, int rows, int cols)
+    {
+        var nodes = CreateGridNodes(rows, cols);
+        WireCellCosts(nodes, grid);
+
+        return nodes;
+    }
+
+    // Every cell of the grid as a node, carrying no edges yet.
+    private static Dictionary<(int Row, int Col), WeightedGridNode> CreateGridNodes(int rows, int cols)
     {
         var nodes = new Dictionary<(int Row, int Col), WeightedGridNode>();
 
@@ -146,6 +183,13 @@ internal static class FindASafeWalkThroughAGridSolution
             }
         }
 
+        return nodes;
+    }
+
+    // One 4-directional edge per neighbour, weighted by the DESTINATION cell's own
+    // cost.
+    private static void WireCellCosts(Dictionary<(int Row, int Col), WeightedGridNode> nodes, int[][] grid)
+    {
         foreach (var ((row, col), node) in nodes)
         {
             foreach (var (deltaRow, deltaCol) in Orthogonal)
@@ -159,7 +203,5 @@ internal static class FindASafeWalkThroughAGridSolution
                 }
             }
         }
-
-        return nodes;
     }
 }

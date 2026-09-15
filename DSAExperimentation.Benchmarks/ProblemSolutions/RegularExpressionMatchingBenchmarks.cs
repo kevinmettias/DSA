@@ -13,11 +13,11 @@ public class RegularExpressionMatchingBenchmarks
     private const string RepeatedPatternUnit = "a*";
     private const string TrailingChar = "b";
 
-    private string _text = null!;
-    private string _pattern = null!;
+    private string _text = "";
+    private string _pattern = "";
 
     [Params(8, 14)]
-    public int Repetitions;
+    public int Repetitions { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -28,8 +28,14 @@ public class RegularExpressionMatchingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool Recursive() => RegularExpressionMatchingSolution.IsMatchByRecursion(_text, _pattern);
+    public bool Recursive() =>
+        RegularExpressionMatchingSolution.IsMatchByRecursion(
+            new RegularExpressionMatchingSolution.SubjectText(_text),
+            new RegularExpressionMatchingSolution.RegexPattern(_pattern));
 
     [Benchmark]
-    public bool Memoized() => RegularExpressionMatchingSolution.IsMatchByMemoization(_text, _pattern);
+    public bool Memoized() =>
+        RegularExpressionMatchingSolution.IsMatchByMemoization(
+            new RegularExpressionMatchingSolution.SubjectText(_text),
+            new RegularExpressionMatchingSolution.RegexPattern(_pattern));
 }

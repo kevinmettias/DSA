@@ -17,7 +17,7 @@ public class NumberOfWaysToRearrangeSticksWithKSticksVisibleBenchmarks
     private const int VisibleCount = 3;
 
     [Params(8, 9)]
-    public int StickCount;
+    public int StickCount { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForcePermutations() =>

@@ -12,19 +12,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DetectSquaresBenchmarks
 {
-    [Params(5, 10)]
-    public int GridDimension;
+    private (int X, int Y)[] _points = [];
 
-    private (int X, int Y)[] _points = null!;
+    [Params(5, 10)]
+    public int GridDimension { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _points = (
-            from x in Enumerable.Range(0, GridDimension)
-            from y in Enumerable.Range(0, GridDimension)
-            select (x, y)).ToArray();
-    }
+    public void Setup() =>
+        _points = Enumerable.Range(0, GridDimension)
+            .SelectMany(x => Enumerable.Range(0, GridDimension), (x, y) => (x, y))
+            .ToArray();
 
     [Benchmark(Baseline = true)]
     public long ListBased() => Replay(DetectSquaresSolution.CreateByPointListScan());

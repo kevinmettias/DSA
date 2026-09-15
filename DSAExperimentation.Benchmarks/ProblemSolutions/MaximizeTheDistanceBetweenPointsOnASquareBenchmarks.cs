@@ -16,13 +16,22 @@ public class MaximizeTheDistanceBetweenPointsOnASquareBenchmarks
     private const int K = 10;
     private const int RandomSeed = 3464;
 
-    [Params(50, 500)]
-    public int PointCount;
-
     private ArraySequence<long> _positions;
+
+    [Params(50, 500)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
+    {
+        var offsets = BuildOffsets();
+
+        _positions = ToSortedPositions(offsets);
+    }
+
+    // PointCount distinct offsets along the square's 4 * Side perimeter walk, drawn
+    // from a fixed seed so every run benchmarks the same boundary points.
+    private HashSet<long> BuildOffsets()
     {
         var random = new Random(RandomSeed);
         var offsets = new HashSet<long>();
@@ -32,9 +41,13 @@ public class MaximizeTheDistanceBetweenPointsOnASquareBenchmarks
             offsets.Add(random.NextInt64(4L * Side));
         }
 
-        var points = offsets.Select(ToPoint).ToArray();
-        _positions = MaximizeTheDistanceBetweenPointsOnASquareSolution.ToSortedPerimeterPositions(Side, points);
+        return offsets;
     }
+
+    private static ArraySequence<long> ToSortedPositions(HashSet<long> offsets) =>
+        MaximizeTheDistanceBetweenPointsOnASquareSolution.ToSortedPerimeterPositions(
+            Side,
+            offsets.Select(ToPoint).ToArray());
 
     [Benchmark(Baseline = true)]
     public int LinearScan() =>

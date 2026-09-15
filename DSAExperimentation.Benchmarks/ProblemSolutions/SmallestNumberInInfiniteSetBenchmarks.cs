@@ -21,10 +21,10 @@ public class SmallestNumberInInfiniteSetBenchmarks
     private const int RandomSeed = 2336; // LC problem number
     private const int AddBackOneInEvery = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private (int Type, int Num)[] _ops = [];
 
-    private (int Type, int Num)[] _ops = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

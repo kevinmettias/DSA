@@ -16,10 +16,10 @@ public class FindTheMinimumCostArrayPermutationBenchmarks
 {
     private const int Seed = 3149;
 
-    [Params(6, 8)]
-    public int N;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(6, 8)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -26,8 +26,6 @@ internal static class GreatestCommonDivisorOfStringsSolution
         return str1[..length];
     }
 
-    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
-
     // This repo's own PrefixFunctionSearch: the failure function's last entry gives
     // str1+str2's shortest period directly, and a common divisor exists exactly when
     // that period evenly divides both original lengths - the same repeating-period
@@ -50,4 +48,6 @@ internal static class GreatestCommonDivisorOfStringsSolution
 
         return str1[..Gcd(str1.Length, str2.Length)];
     }
+
+    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
 }

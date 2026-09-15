@@ -17,11 +17,11 @@ public class CountSubIslandsBenchmarks
     private const double Grid1LandProbability = 0.7;
     private const double Grid2LandProbability = 0.55;
 
-    [Params(30, 120)]
-    public int Side;
+    private int[][] _grid1 = [];
 
-    private int[][] _grid1 = null!;
-    private int[][] _grid2 = null!;
+    private int[][] _grid2 = [];
+    [Params(30, 120)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -37,8 +37,11 @@ public class CountSubIslandsBenchmarks
 
             for (var col = 0; col < Side; col++)
             {
-                _grid1[row][col] = random.NextDouble() < Grid1LandProbability ? 1 : 0;
-                _grid2[row][col] = random.NextDouble() < Grid2LandProbability ? 1 : 0;
+                var grid1IsLand = random.NextDouble() < Grid1LandProbability;
+                var grid2IsLand = random.NextDouble() < Grid2LandProbability;
+
+                _grid1[row][col] = grid1IsLand ? 1 : 0;
+                _grid2[row][col] = grid2IsLand ? 1 : 0;
             }
         }
     }

@@ -20,6 +20,15 @@ internal static class EdgeWeightGraphWorkloads
             edges.Add([i, parent, random.Next(1, EdgeWeightUpperBound)]);
         }
 
+        AddExtraEdges(random, edges, nodeCount, extraEdgesPerNode);
+
+        return [.. edges];
+    }
+
+    // Drawn after the spanning edges above, so the two loops together consume the
+    // seeded random sequence in exactly the order the graph's shape depends on.
+    private static void AddExtraEdges(Random random, List<int[]> edges, int nodeCount, int extraEdgesPerNode)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < extraEdgesPerNode; e++)
@@ -32,7 +41,5 @@ internal static class EdgeWeightGraphWorkloads
                 }
             }
         }
-
-        return [.. edges];
     }
 }

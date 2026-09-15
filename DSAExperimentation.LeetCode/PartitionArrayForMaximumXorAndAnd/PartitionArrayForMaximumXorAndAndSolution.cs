@@ -15,22 +15,7 @@ internal static class PartitionArrayForMaximumXorAndAndSolution
     // empty set is 0". Correct for every n this problem allows (<= 19), just
     // exponential - the arm the subset-basis strategy below has to beat.
     public static long MaxPartitionValueByBruteForce(int[] nums) =>
-        AssignFrom(nums, index: 0, xorA: 0, andB: 0, hasB: false, xorC: 0);
-
-    private static long AssignFrom(int[] nums, int index, long xorA, long andB, bool hasB, long xorC)
-    {
-        if (index == nums.Length)
-        {
-            return xorA + (hasB ? andB : 0) + xorC;
-        }
-
-        var value = nums[index];
-        var toA = AssignFrom(nums, index + 1, xorA ^ value, andB, hasB, xorC);
-        var toB = AssignFrom(nums, index + 1, xorA, hasB ? andB & value : value, true, xorC);
-        var toC = AssignFrom(nums, index + 1, xorA, andB, hasB, xorC ^ value);
-
-        return Math.Max(toA, Math.Max(toB, toC));
-    }
+        AssignFrom(nums, (Index: 0, XorA: 0, AndB: null, XorC: 0));
 
     // Enumerate only which elements go to B (2^n masks) - AND(B) folds directly
     // from the mask. For whatever's left (T = the complement), every reachable
@@ -48,29 +33,67 @@ internal static class PartitionArrayForMaximumXorAndAndSolution
 
         for (var mask = 0; mask < (1 << n); mask++)
         {
-            var andB = 0L;
-            var hasB = false;
-            var xorT = 0L;
-            var basis = new XorBasis();
-
-            for (var i = 0; i < n; i++)
-            {
-                if ((mask & (1 << i)) != 0)
-                {
-                    andB = hasB ? andB & nums[i] : nums[i];
-                    hasB = true;
-                }
-                else
-                {
-                    xorT ^= nums[i];
-                    basis.Insert(nums[i]);
-                }
-            }
-
-            var splitValue = xorT + (2 * basis.MaxMaskedXor(~xorT));
-            best = Math.Max(best, (hasB ? andB : 0) + splitValue);
+            var splitValue = BestSplitValueForMask(mask, nums);
+            best = Math.Max(best, splitValue);
         }
 
         return best;
     }
+
+    // One mask's whole fold: AND(B) and XOR(T) accumulated over the elements the mask
+    // sends to B and to T respectively, T's XOR-subset span collected as a basis, and
+    // the resulting best XOR(A) + XOR(C) split added on top of AND(B) (nothing when B
+    // is empty, since AND of the empty set is 0).
+    private static long BestSplitValueForMask(int mask, int[] nums)
+    {
+        var andB = 0L;
+        var hasB = false;
+        var xorT = 0L;
+        var basis = new XorBasis();
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if ((mask & (1 << i)) != 0)
+            {
+                andB = hasB ? AndWithValue(andB, nums[i]) : ElementAt(nums, i);
+                hasB = true;
+            }
+            else
+            {
+                xorT ^= nums[i];
+                basis.Insert(nums[i]);
+            }
+        }
+
+        var splitValue = xorT + (2 * basis.MaxMaskedXor(~xorT));
+
+        return (hasB ? andB : 0) + splitValue;
+    }
+
+    private static int ElementAt(int[] values, int index) => values[index];
+
+    // The fold carries B's accumulated AND as a `long?` rather than as an AND beside a
+    // "has B an element yet" flag: AND of an empty set is 0, not the all-ones identity,
+    // so "no B element yet" is exactly what a missing value means for it.
+    private static long AssignFrom(int[] nums, (int Index, long XorA, long? AndB, long XorC) state)
+    {
+        if (state.Index == nums.Length)
+        {
+            return state.XorA + (state.AndB ?? 0) + state.XorC;
+        }
+
+        var value = nums[state.Index];
+        var next = state.Index + 1;
+        var andBWithValue = state.AndB is null ? value : AndWithValue(state.AndB.Value, value);
+
+        var toA = AssignFrom(nums, (next, state.XorA ^ value, state.AndB, state.XorC));
+        var toB = AssignFrom(nums, (next, state.XorA, andBWithValue, state.XorC));
+        var toC = AssignFrom(nums, (next, state.XorA, state.AndB, state.XorC ^ value));
+
+        var bestOfBOrC = Math.Max(toB, toC);
+        return Math.Max(toA, bestOfBOrC);
+    }
+
+    // B's running AND narrowed by one more element of nums.
+    private static long AndWithValue(long accumulatedAnd, int value) => accumulatedAnd & value;
 }

@@ -36,6 +36,13 @@ internal static class RepeatedDNASequencesSolution
             return [];
         }
 
+        return CollectFirstOccurrences(sequence, repeated);
+    }
+
+    // The second pass: walk the string again, reporting each repeated window the first
+    // time it is met, so the result keeps first-occurrence order and holds no duplicates.
+    private static List<string> CollectFirstOccurrences(string sequence, Set<string> repeated)
+    {
         var added = new Set<string>();
         var result = new List<string>();
 

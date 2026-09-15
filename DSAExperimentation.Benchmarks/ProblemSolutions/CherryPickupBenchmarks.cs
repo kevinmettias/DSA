@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CherryPickupBenchmarks
 {
-    [Params(4, 6)]
-    public int Size;
+    private int[,] _grid = new int[0, 0];
 
-    private int[,] _grid = null!;
+    [Params(4, 6)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

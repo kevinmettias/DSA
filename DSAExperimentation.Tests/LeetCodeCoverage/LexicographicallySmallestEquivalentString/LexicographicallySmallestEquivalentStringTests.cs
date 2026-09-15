@@ -24,7 +24,10 @@ public sealed class LexicographicallySmallestEquivalentStringTests
         string s1, string s2, string baseStr, string expected) =>
         Assert.Equal(
             expected,
-            LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByAdjacencyListBfs(s1, s2, baseStr));
+            LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByAdjacencyListBfs(
+                s1,
+                s2,
+                new LexicographicallySmallestEquivalentStringSolution.BaseText(baseStr)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -32,5 +35,8 @@ public sealed class LexicographicallySmallestEquivalentStringTests
         string s1, string s2, string baseStr, string expected) =>
         Assert.Equal(
             expected,
-            LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByDisjointSet(s1, s2, baseStr));
+            LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByDisjointSet(
+                s1,
+                s2,
+                new LexicographicallySmallestEquivalentStringSolution.BaseText(baseStr)));
 }

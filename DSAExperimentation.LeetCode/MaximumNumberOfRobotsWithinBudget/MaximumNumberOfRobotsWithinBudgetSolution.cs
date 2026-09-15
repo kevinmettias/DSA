@@ -57,32 +57,40 @@ internal static class MaximumNumberOfRobotsWithinBudgetSolution
 
     public static int MaximumRobotsByMonotonicDeque(int[] chargeTimes, int[] runningCosts, long budget)
     {
-        var maxWindow = new RepoDeque();
+        var window = new BudgetWindow(chargeTimes, runningCosts, budget, new RepoDeque(), 0, 0);
         var best = 0;
-        long runningCostSum = 0;
-        var left = 0;
 
-        for (var right = 0; right < chargeTimes.Length; right++)
+        for (var right = 0; right < window.ChargeTimes.Length; right++)
         {
-            PushMaxCandidate(chargeTimes, maxWindow, right);
-            runningCostSum += runningCosts[right];
-
-            while (maxWindow.TryPeekFront(out var maxIndex)
-                && chargeTimes[maxIndex] + ((long)(right - left + 1) * runningCostSum) > budget)
-            {
-                if (maxIndex == left)
-                {
-                    maxWindow.TryPopFront(out _);
-                }
-
-                runningCostSum -= runningCosts[left];
-                left++;
-            }
-
-            best = Math.Max(best, right - left + 1);
+            window = ExtendWindow(window, right);
+            best = Math.Max(best, right - window.Left + 1);
         }
 
         return best;
+    }
+
+    // Absorbs the robot at `right`, then advances the window's left edge until its
+    // cost - the max charge time in it plus its length times its summed running cost
+    // - fits the budget again, dropping each departing index's cost as it goes.
+    private static BudgetWindow ExtendWindow(BudgetWindow window, int right)
+    {
+        PushMaxCandidate(window.ChargeTimes, window.MaxCandidates, right);
+        var runningCostSum = window.RunningCostSum + window.RunningCosts[right];
+        var left = window.Left;
+
+        while (window.MaxCandidates.TryPeekFront(out var maxIndex)
+            && window.ChargeTimes[maxIndex] + ((long)(right - left + 1) * runningCostSum) > window.Budget)
+        {
+            if (maxIndex == left)
+            {
+                window.MaxCandidates.TryPopFront(out _);
+            }
+
+            runningCostSum -= window.RunningCosts[left];
+            left++;
+        }
+
+        return window with { RunningCostSum = runningCostSum, Left = left };
     }
 
     // Evict every trailing index whose chargeTime this one dominates, so the deque
@@ -96,4 +104,15 @@ internal static class MaximumNumberOfRobotsWithinBudgetSolution
 
         maxWindow.PushBack(right);
     }
+
+    // The monotonic-deque sweep's whole running state: the problem's own fixed inputs
+    // plus the current window's deque of candidate charge-time indices, its summed
+    // running cost and its left edge.
+    private readonly record struct BudgetWindow(
+        int[] ChargeTimes,
+        int[] RunningCosts,
+        long Budget,
+        RepoDeque MaxCandidates,
+        long RunningCostSum,
+        int Left);
 }

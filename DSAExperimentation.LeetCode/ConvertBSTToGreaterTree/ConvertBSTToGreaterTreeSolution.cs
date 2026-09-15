@@ -49,10 +49,24 @@ internal static class ConvertBSTToGreaterTreeSolution
     // two passes since InOrderTraversal cannot walk in reverse.
     public static BinaryTreeNode<int>? ConvertByInOrderHooks(BinaryTreeNode<int>? root)
     {
+        var ascending = CollectAscendingValues(root);
+        var suffixSums = BuildSuffixSums(ascending);
+
+        return ApplySuffixSums(root, suffixSums);
+    }
+
+    // Pass 1: the ascending InOrderTraversal collects every node value in sorted order.
+    private static List<int> CollectAscendingValues(BinaryTreeNode<int>? root)
+    {
         State.Values.Value = [];
         InOrderTraversal.Walk<int, CollectHooks>(root);
-        var ascending = State.Values.Value!;
 
+        return State.Values.Value!;
+    }
+
+    // Turns the ascending values into, for each rank, the sum of every value at or above it.
+    private static int[] BuildSuffixSums(List<int> ascending)
+    {
         var suffixSums = new int[ascending.Count];
         var runningSum = 0;
 
@@ -62,6 +76,12 @@ internal static class ConvertBSTToGreaterTreeSolution
             suffixSums[i] = runningSum;
         }
 
+        return suffixSums;
+    }
+
+    // Pass 2: the same ascending walk reassigns each node by rank from the precomputed sums.
+    private static BinaryTreeNode<int>? ApplySuffixSums(BinaryTreeNode<int>? root, int[] suffixSums)
+    {
         State.Index.Value = 0;
         State.GreaterSums.Value = suffixSums;
         InOrderTraversal.Walk<int, AssignHooks>(root);

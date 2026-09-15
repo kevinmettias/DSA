@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.LeetCode.PrimePalindrome;
@@ -21,7 +22,6 @@ internal static class PrimePalindromeSolution
     private const int SmallestPrime = 2;
     private const int OddDivisorStep = 2;
     private const long FirstOddDivisor = 3L;
-    private const int HalfLengthDivisor = 2;
     private const int MirrorStartOffset = 2;
 
     // Every prime palindrome below 12. No even-length palindrome other than 11 is
@@ -34,6 +34,7 @@ internal static class PrimePalindromeSolution
     {
         var candidate = (long)n;
 
+        // Stops at the first candidate that is both a palindrome and a prime.
         while (true)
         {
             if (IsPalindromeNumber(candidate) && IsPrime(candidate))
@@ -43,65 +44,6 @@ internal static class PrimePalindromeSolution
 
             candidate++;
         }
-    }
-
-    // Enumerate palindromes rather than integers, mirroring each candidate's first
-    // half back onto itself in a DynamicArray<int>.
-    public static long SmallestPrimePalindromeByPalindromeGeneration(int n)
-    {
-        foreach (var smallPrime in SmallPrimePalindromes)
-        {
-            if (n <= smallPrime)
-            {
-                return smallPrime;
-            }
-        }
-
-        return GeneratePrimePalindrome(n);
-    }
-
-    private static long GeneratePrimePalindrome(int n)
-    {
-        var exponent = n.ToString().Length / HalfLengthDivisor;
-        var half = (int)Math.Pow(DecimalBase, exponent);
-
-        while (true)
-        {
-            var candidate = BuildOddLengthPalindrome(half);
-
-            if (candidate >= n && IsPrime(candidate))
-            {
-                return candidate;
-            }
-
-            half++;
-        }
-    }
-
-    private static long BuildOddLengthPalindrome(int half)
-    {
-        var digits = new DynamicArray<int>();
-        var remaining = half;
-
-        while (remaining > 0)
-        {
-            digits.Insert(0, remaining % DecimalBase);
-            remaining /= DecimalBase;
-        }
-
-        for (var i = digits.Count - MirrorStartOffset; i >= 0; i--)
-        {
-            digits.Add(digits.Get(i));
-        }
-
-        var value = 0L;
-
-        for (var i = 0; i < digits.Count; i++)
-        {
-            value = value * DecimalBase + digits.Get(i);
-        }
-
-        return value;
     }
 
     private static bool IsPalindromeNumber(long value)
@@ -122,6 +64,83 @@ internal static class PrimePalindromeSolution
         }
 
         return true;
+    }
+
+    // Enumerate palindromes rather than integers, mirroring each candidate's first
+    // half back onto itself in a DynamicArray<int>.
+    public static long SmallestPrimePalindromeByPalindromeGeneration(int n)
+    {
+        foreach (var smallPrime in SmallPrimePalindromes)
+        {
+            if (n <= smallPrime)
+            {
+                return smallPrime;
+            }
+        }
+
+        return GeneratePrimePalindrome(n);
+    }
+
+    private static long GeneratePrimePalindrome(int n)
+    {
+        var exponent = n.ToString().Length / AlgorithmConstants.HalvingFactor;
+        var half = (int)Math.Pow(DecimalBase, exponent);
+
+        // Stops at the first built palindrome >= n that is prime; half only ever grows.
+        while (true)
+        {
+            var candidate = BuildOddLengthPalindrome(half);
+
+            if (candidate >= n && IsPrime(candidate))
+            {
+                return candidate;
+            }
+
+            half++;
+        }
+    }
+
+    private static long BuildOddLengthPalindrome(int half)
+    {
+        var digits = new DynamicArray<int>();
+        AppendHalfDigits(digits, half);
+        MirrorDigits(digits);
+
+        return ToDecimalValue(digits);
+    }
+
+    // The half's decimal digits, most significant first.
+    private static void AppendHalfDigits(DynamicArray<int> digits, int half)
+    {
+        var remaining = half;
+
+        while (remaining > 0)
+        {
+            digits.Insert(0, remaining % DecimalBase);
+            remaining /= DecimalBase;
+        }
+    }
+
+    // Everything but the centre digit, read back onto the end of the array so the
+    // digits read the same in both directions.
+    private static void MirrorDigits(DynamicArray<int> digits)
+    {
+        for (var i = digits.Count - MirrorStartOffset; i >= 0; i--)
+        {
+            digits.Add(digits.Get(i));
+        }
+    }
+
+    private static long ToDecimalValue(DynamicArray<int> digits)
+    {
+        var value = 0L;
+
+        for (var i = 0; i < digits.Count; i++)
+        {
+            value = value * DecimalBase + digits.Get(i);
+        }
+
+        return value;
     }
 
     private static bool IsPrime(long value)

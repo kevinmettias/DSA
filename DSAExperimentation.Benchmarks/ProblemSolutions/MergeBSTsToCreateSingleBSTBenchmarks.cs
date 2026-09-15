@@ -22,10 +22,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MergeBSTsToCreateSingleBSTBenchmarks
 {
-    [Params(50, 500)]
-    public int TreeCount;
+    private List<BinaryTreeNode<int>> _template = new();
 
-    private List<BinaryTreeNode<int>> _template = null!;
+    [Params(50, 500)]
+    public int TreeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _template = MergeBinarySearchTreeWorkloads.BuildChain(TreeCount);

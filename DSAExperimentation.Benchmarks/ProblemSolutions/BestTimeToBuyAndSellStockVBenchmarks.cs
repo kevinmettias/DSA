@@ -17,10 +17,10 @@ public class BestTimeToBuyAndSellStockVBenchmarks
     private const int MaxValueExclusive = 1_000;
     private const int K = 3;
 
-    [Params(10, 14)]
-    public int Length;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
+    [Params(10, 14)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

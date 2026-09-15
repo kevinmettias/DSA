@@ -10,7 +10,7 @@ public class WordSearchBenchmarks
 {
     private const string TargetWord = "ABCCED";
 
-    private char[][] _board = null!;
+    private char[][] _board = [];
 
     [GlobalSetup]
     public void Setup() => _board = [['A', 'B', 'C', 'E'], ['S', 'F', 'C', 'S'], ['A', 'D', 'E', 'E']];

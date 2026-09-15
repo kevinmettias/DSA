@@ -41,7 +41,8 @@ internal static class ScoreOfParenthesesSolution
 
             for (var j = 0; j < i; j++)
             {
-                depth += s[j] == '(' ? 1 : -1;
+                var isOpeningParen = s[j] == '(';
+                depth += isOpeningParen ? 1 : -1;
             }
 
             total += EmptyPairScore << depth;

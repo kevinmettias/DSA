@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class IntegerToEnglishWordsBenchmarks
 {
     [Params(123, 2_147_483_647)]
-    public int Number;
+    public int Number { get; set; }
 
     [Benchmark(Baseline = true)]
     public string StringPrepend() => IntegerToEnglishWordsSolution.NumberToWordsByStringPrepend(Number);

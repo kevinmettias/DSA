@@ -14,11 +14,11 @@ public class SelectCellsInGridWithMaximumScoreBenchmarks
 {
     private const int Seed = 3276;
 
-    [Params(4, 7)]
-    public int GridSize;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
-    private Dictionary<int, List<int>> _rowsByValue = null!;
+    private Dictionary<int, List<int>> _rowsByValue = new();
+    [Params(4, 7)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

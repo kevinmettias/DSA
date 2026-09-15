@@ -38,30 +38,6 @@ internal static class ShoppingOffersSolution
         return best;
     }
 
-    public static int MinCostByMemoizedDfs(int[] price, int[][] special, int[] needs)
-    {
-        return Memoizer.Memoize<string, int>(Encode(needs), BestPrice);
-
-        int BestPrice(string key, Func<string, int> bestPrice)
-        {
-            var remaining = Decode(key);
-            var best = DirectCost(price, remaining);
-
-            foreach (var offer in special)
-            {
-                if (!Applies(remaining, offer))
-                {
-                    continue;
-                }
-
-                var afterOffer = Reduce(remaining, offer);
-                best = Math.Min(best, offer[^1] + bestPrice(Encode(afterOffer)));
-            }
-
-            return best;
-        }
-    }
-
     // Shared by both strategies: buying every remaining item at full price, with
     // no offer applied, is always a valid (if not always cheapest) answer.
     private static int DirectCost(int[] price, int[] remaining)
@@ -97,6 +73,35 @@ internal static class ShoppingOffersSolution
         }
 
         return next;
+    }
+
+    public static int MinCostByMemoizedDfs(int[] price, int[][] special, int[] needs) =>
+        Memoizer.Memoize<string, int>(Encode(needs), new OfferApplicationOrder(price, special));
+
+    // The rule, named: from a remaining-needs vector, buy everything left at full price
+    // or apply one applicable offer and pay for whatever it leaves behind. The price list
+    // and the offers are the whole of what the rule needs from its caller, so they are
+    // the constructor's only inputs.
+    private sealed class OfferApplicationOrder(int[] price, int[][] special) : IRecurrence<string, int>
+    {
+        public int Replay(string state, IRecurrence<string, int> rest)
+        {
+            var remaining = Decode(state);
+            var best = DirectCost(price, remaining);
+
+            foreach (var offer in special)
+            {
+                if (!Applies(remaining, offer))
+                {
+                    continue;
+                }
+
+                var afterOffer = Reduce(remaining, offer);
+                best = Math.Min(best, offer[^1] + rest.Replay(Encode(afterOffer), rest));
+            }
+
+            return best;
+        }
     }
 
     private static string Encode(int[] needs) => string.Join(',', needs);

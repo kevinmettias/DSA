@@ -28,16 +28,32 @@ internal static class PropertiesGraphSolution
             parent[i] = i;
         }
 
-        var rows = new HashSet<int>[n];
+        var rows = BuildHashSets(properties);
 
-        for (var i = 0; i < n; i++)
+        UnionIntersectingRows(rows, k, parent);
+
+        return CountRoots(parent);
+    }
+
+    // One BCL HashSet per row, seeded from that row's own values.
+    private static HashSet<int>[] BuildHashSets(int[][] properties)
+    {
+        var rows = new HashSet<int>[properties.Length];
+
+        for (var i = 0; i < properties.Length; i++)
         {
             rows[i] = [.. properties[i]];
         }
 
-        for (var i = 0; i < n; i++)
+        return rows;
+    }
+
+    // Unions every pair of rows whose distinct-value intersection reaches k.
+    private static void UnionIntersectingRows(HashSet<int>[] rows, int k, int[] parent)
+    {
+        for (var i = 0; i < rows.Length; i++)
         {
-            for (var j = i + 1; j < n; j++)
+            for (var j = i + 1; j < rows.Length; j++)
             {
                 if (IntersectCount(rows[i], rows[j]) >= k)
                 {
@@ -45,12 +61,18 @@ internal static class PropertiesGraphSolution
                 }
             }
         }
+    }
 
+    // The answer: how many distinct components the forest holds, i.e. how many
+    // distinct roots it has.
+    private static int CountRoots(int[] parent)
+    {
         var roots = new HashSet<int>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < parent.Length; i++)
         {
-            roots.Add(Find(parent, i));
+            var root = Find(parent, i);
+            roots.Add(root);
         }
 
         return roots.Count;
@@ -108,15 +130,29 @@ internal static class PropertiesGraphSolution
         var rowSets = new Set<int>[n];
         var distinctRows = new int[n][];
 
-        for (var i = 0; i < n; i++)
+        BuildRowSets(properties, rowSets, distinctRows);
+
+        UnionIntersectingRows(distinctRows, rowSets, k, forest);
+
+        return CountRoots(forest);
+    }
+
+    // One repo Set per row for membership, plus the same row's distinct values as a
+    // plain array (Set has no enumerator to walk).
+    private static void BuildRowSets(int[][] properties, Set<int>[] rowSets, int[][] distinctRows)
+    {
+        for (var i = 0; i < properties.Length; i++)
         {
             rowSets[i] = new Set<int>(properties[i]);
             distinctRows[i] = Distinct(properties[i]);
         }
+    }
 
-        for (var i = 0; i < n; i++)
+    private static void UnionIntersectingRows(int[][] distinctRows, Set<int>[] rowSets, int k, DisjointSet forest)
+    {
+        for (var i = 0; i < distinctRows.Length; i++)
         {
-            for (var j = i + 1; j < n; j++)
+            for (var j = i + 1; j < distinctRows.Length; j++)
             {
                 if (IntersectCount(distinctRows[i], rowSets[j]) >= k)
                 {
@@ -124,12 +160,16 @@ internal static class PropertiesGraphSolution
                 }
             }
         }
+    }
 
+    private static int CountRoots(DisjointSet forest)
+    {
         var roots = new HashSet<int>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < forest.Count; i++)
         {
-            roots.Add(forest.Find(i));
+            var root = forest.Find(i);
+            roots.Add(root);
         }
 
         return roots.Count;

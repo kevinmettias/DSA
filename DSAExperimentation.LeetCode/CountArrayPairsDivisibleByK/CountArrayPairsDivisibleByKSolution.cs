@@ -77,11 +77,22 @@ internal static class CountArrayPairsDivisibleByKSolution
             groups.Counts.TryGetValue(groups.Keys[i], out var countI);
             groups.Counts.TryGetValue(groups.Keys[j], out var countJ);
 
-            pairs += i == j ? (long)countI * (countI - 1) / DistinctPairDivisor : (long)countI * countJ;
+            pairs += i == j
+                ? CountPairsWithinOneGroup(countI)
+                : CountPairsBetweenGroups(countI, countJ);
         }
 
         return pairs;
     }
+
+    // The unordered pairs a group of `count` equal-divisor values forms with itself.
+    private static long CountPairsWithinOneGroup(int count) =>
+        (long)count * (count - 1) / DistinctPairDivisor;
+
+    // The pairs between two distinct groups, every one of which is divisible by the
+    // shared divisor.
+    private static long CountPairsBetweenGroups(int leftCount, int rightCount) =>
+        (long)leftCount * rightCount;
 
     // The buckets plus the divisor they were computed against, carried together so the
     // pairing walk takes one argument rather than three interchangeable ones.

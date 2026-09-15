@@ -15,12 +15,12 @@ public class TimeBasedKeyValueStoreBenchmarks
     private const int TimestampStep = 2;
     private const string Key = "foo";
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private TimeBasedKeyValueStoreSolution.ITimeMap _linearFloorScan = null!;
+
     private TimeBasedKeyValueStoreSolution.ITimeMap _binarySearchFloor = null!;
     private int _queryTimestamp;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,12 +29,6 @@ public class TimeBasedKeyValueStoreBenchmarks
         _binarySearchFloor = Seed(TimeBasedKeyValueStoreSolution.CreateByBinarySearchFloor());
         _queryTimestamp = (Length * TimestampStep) + 1;
     }
-
-    [Benchmark(Baseline = true)]
-    public string LinearFloorScan() => _linearFloorScan.Get(Key, _queryTimestamp);
-
-    [Benchmark]
-    public string BinarySearchFloor() => _binarySearchFloor.Get(Key, _queryTimestamp);
 
     private TimeBasedKeyValueStoreSolution.ITimeMap Seed(TimeBasedKeyValueStoreSolution.ITimeMap store)
     {
@@ -45,4 +39,10 @@ public class TimeBasedKeyValueStoreBenchmarks
 
         return store;
     }
+
+    [Benchmark(Baseline = true)]
+    public string LinearFloorScan() => _linearFloorScan.Get(Key, _queryTimestamp);
+
+    [Benchmark]
+    public string BinarySearchFloor() => _binarySearchFloor.Get(Key, _queryTimestamp);
 }

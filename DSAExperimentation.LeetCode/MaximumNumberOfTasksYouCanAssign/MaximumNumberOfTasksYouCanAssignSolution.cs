@@ -25,8 +25,12 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
     // works, with a BCL LinkedList<int> standing in for the double-ended pool of
     // currently-assignable workers. Deliberately without this repo's primitives - it
     // is the arm the composed strategy below has to justify itself against.
-    public static int MaxTaskAssignmentByLinearScan(int[] tasks, int[] workers, int pills, int strength) =>
-        MaxTaskAssignmentByLinearScan(SortedTaskAssignment.From(tasks, workers, pills, strength));
+    public static int MaxTaskAssignmentByLinearScan(int[] tasks, int[] workers, int pills, int strength)
+    {
+        var assignment = SortedTaskAssignment.From(tasks, workers, pills, strength);
+
+        return MaxTaskAssignmentByLinearScan(assignment);
+    }
 
     public static int MaxTaskAssignmentByLinearScan(SortedTaskAssignment assignment)
     {
@@ -44,8 +48,12 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
     // This repo's own BinarySearch.LowerBound over the infeasibility sequence: the
     // candidate counts are never materialized, each probe just reruns the greedy
     // check, and the leftmost infeasible k sits one past the answer.
-    public static int MaxTaskAssignmentBySequenceLowerBound(int[] tasks, int[] workers, int pills, int strength) =>
-        MaxTaskAssignmentBySequenceLowerBound(SortedTaskAssignment.From(tasks, workers, pills, strength));
+    public static int MaxTaskAssignmentBySequenceLowerBound(int[] tasks, int[] workers, int pills, int strength)
+    {
+        var assignment = SortedTaskAssignment.From(tasks, workers, pills, strength);
+
+        return MaxTaskAssignmentBySequenceLowerBound(assignment);
+    }
 
     public static int MaxTaskAssignmentBySequenceLowerBound(SortedTaskAssignment assignment)
     {
@@ -147,15 +155,7 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
                 return true;
             }
 
-            if (_remainingPills == 0)
-            {
-                return false;
-            }
-
-            _available.TryPopFront(out _);
-            _remainingPills--;
-
-            return true;
+            return TryTakeWeakestWithPill();
         }
 
         private void Admit(int task)
@@ -167,6 +167,21 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
                 _unadmitted--;
                 _available.PushFront(workers[_offset + _unadmitted]);
             }
+        }
+
+        // The task outruns every unaided worker, so it can only be taken by spending a
+        // pill on the weakest worker still in the pool.
+        private bool TryTakeWeakestWithPill()
+        {
+            if (_remainingPills == 0)
+            {
+                return false;
+            }
+
+            _available.TryPopFront(out _);
+            _remainingPills--;
+
+            return true;
         }
     }
 
@@ -196,15 +211,7 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
                 return true;
             }
 
-            if (_remainingPills == 0)
-            {
-                return false;
-            }
-
-            _available.RemoveFirst();
-            _remainingPills--;
-
-            return true;
+            return TryTakeWeakestWithPill();
         }
 
         private void Admit(int task)
@@ -216,6 +223,21 @@ internal static class MaximumNumberOfTasksYouCanAssignSolution
                 _unadmitted--;
                 _available.AddFirst(workers[_offset + _unadmitted]);
             }
+        }
+
+        // The task outruns every unaided worker, so it can only be taken by spending a
+        // pill on the weakest worker still in the pool.
+        private bool TryTakeWeakestWithPill()
+        {
+            if (_remainingPills == 0)
+            {
+                return false;
+            }
+
+            _available.RemoveFirst();
+            _remainingPills--;
+
+            return true;
         }
     }
 }

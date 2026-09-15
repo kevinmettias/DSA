@@ -13,12 +13,12 @@ public class ZigzagGridTraversalWithSkipBenchmarks
 {
     private const int Seed = 3417;
 
+    private int[][] _grid = [];
+
     // LeetCode caps both dimensions at 50; a square grid at that bound and a
     // smaller one keep both strategies exercising a real snake traversal.
     [Params(10, 50)]
-    public int GridSize;
-
-    private int[][] _grid = null!;
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = ZigzagGridWorkloads.BuildGrid(GridSize, GridSize, Seed);

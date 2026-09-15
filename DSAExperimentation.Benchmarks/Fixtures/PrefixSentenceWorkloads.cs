@@ -5,11 +5,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // the sentence is and which seed generates it.
 internal static class PrefixSentenceWorkloads
 {
-    // Longer than any generated word and outside the generated alphabet's runs, so
-    // no word ever starts with it and every strategy is forced through the whole
-    // sentence instead of stopping at an early match.
-    public const string UnmatchedSearchWord = "zzzunmatched";
-
     private const char WordSeparator = ' ';
     private const char FirstLetter = 'a';
     private const int AlphabetSize = 26;

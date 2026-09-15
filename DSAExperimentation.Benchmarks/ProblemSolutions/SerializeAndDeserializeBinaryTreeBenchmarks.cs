@@ -14,10 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SerializeAndDeserializeBinaryTreeBenchmarks
 {
-    [Params(2_000, 8_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(2_000, 8_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
@@ -33,5 +33,8 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
             SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(_root)));
 
     private static int CountNodes(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
+        node is null ? 0 : NodesInSubtree(node);
+
+    private static int NodesInSubtree(BinaryTreeNode<int> node) =>
+        1 + CountNodes(node.Left) + CountNodes(node.Right);
 }

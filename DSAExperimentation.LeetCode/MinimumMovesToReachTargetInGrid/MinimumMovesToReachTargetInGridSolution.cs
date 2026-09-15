@@ -27,32 +27,40 @@ internal static class MinimumMovesToReachTargetInGridSolution
 
         while (queue.Count > 0)
         {
-            var (x, y, moves) = queue.Dequeue();
+            var node = queue.Dequeue();
 
-            if (x == tx && y == ty)
+            if (node.X == tx && node.Y == ty)
             {
-                return moves;
+                return node.Moves;
             }
 
-            if (x == 0 && y == 0)
+            if (node.X == 0 && node.Y == 0)
             {
                 continue;
             }
 
-            var m = Math.Max(x, y);
-
-            if (x + m <= tx && y <= ty)
-            {
-                queue.Enqueue((x + m, y, moves + 1));
-            }
-
-            if (x <= tx && y + m <= ty)
-            {
-                queue.Enqueue((x, y + m, moves + 1));
-            }
+            EnqueueMoves(queue, node, tx, ty);
         }
 
         return LeetCodeAnswer.None;
+    }
+
+    // Queues both moves available from `node`, skipping any that would overshoot the
+    // target - a coordinate only ever grows, so an overshoot can never recover.
+    private static void EnqueueMoves(
+        Queue<(long X, long Y, int Moves)> queue, (long X, long Y, int Moves) node, int tx, int ty)
+    {
+        var m = Math.Max(node.X, node.Y);
+
+        if (node.X + m <= tx && node.Y <= ty)
+        {
+            queue.Enqueue((node.X + m, node.Y, node.Moves + 1));
+        }
+
+        if (node.X <= tx && node.Y + m <= ty)
+        {
+            queue.Enqueue((node.X, node.Y + m, node.Moves + 1));
+        }
     }
 
     // Backward reduction: undo the forced last move one step at a time. Each step
@@ -67,29 +75,7 @@ internal static class MinimumMovesToReachTargetInGridSolution
 
         while (targetX != x || targetY != y)
         {
-            if (targetX == targetY)
-            {
-                if (x == 0)
-                {
-                    targetX = 0;
-                }
-                else if (y == 0)
-                {
-                    targetY = 0;
-                }
-                else
-                {
-                    return LeetCodeAnswer.None;
-                }
-            }
-            else if (targetX > targetY)
-            {
-                if (!TryReduceLarger(ref targetX, targetY))
-                {
-                    return LeetCodeAnswer.None;
-                }
-            }
-            else if (!TryReduceLarger(ref targetY, targetX))
+            if (!TryStepBack(x, y, ref targetX, ref targetY))
             {
                 return LeetCodeAnswer.None;
             }
@@ -98,6 +84,40 @@ internal static class MinimumMovesToReachTargetInGridSolution
         }
 
         return moves;
+    }
+
+    // Undoes the single forced last move, reporting false once the walk reaches a state
+    // no move could have produced.
+    private static bool TryStepBack(long x, long y, ref long targetX, ref long targetY)
+    {
+        if (targetX == targetY)
+        {
+            if (x == 0)
+            {
+                targetX = 0;
+            }
+            else if (y == 0)
+            {
+                targetY = 0;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (targetX > targetY)
+        {
+            if (!TryReduceLarger(ref targetX, targetY))
+            {
+                return false;
+            }
+        }
+        else if (!TryReduceLarger(ref targetY, targetX))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     // Undoes whichever move most recently grew `larger` past `smaller`: halve it

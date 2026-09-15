@@ -20,10 +20,10 @@ public class ShoppingOffersBenchmarks
         [1, 0, 1, Price[0] + Price[2] - 1],
     ];
 
-    [Params(4, 7)]
-    public int NeedsPerItem;
+    private int[] _needs = [];
 
-    private int[] _needs = null!;
+    [Params(4, 7)]
+    public int NeedsPerItem { get; set; }
 
     [GlobalSetup]
     public void Setup() => _needs = [NeedsPerItem, NeedsPerItem, NeedsPerItem];

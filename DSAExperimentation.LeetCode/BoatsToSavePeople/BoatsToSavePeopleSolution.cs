@@ -16,6 +16,11 @@ namespace DSAExperimentation.LeetCode.BoatsToSavePeople;
 // greedy rule becomes one O(n) two-pointer pass.
 internal static class BoatsToSavePeopleSolution
 {
+    // The problem's own cap, and the reason the greedy rule is optimal: a boat holds
+    // at most two people, so seating the heaviest beside the lightest who still fits
+    // is never worse than sending the heaviest alone.
+    private const int PeoplePerBoat = 2;
+
     // Deliberately written without this repo's primitives - the baseline the sorted
     // two-pointer pass below has to justify itself against.
     public static int NumRescueBoatsByRepeatedScan(int[] people, int limit)
@@ -48,7 +53,7 @@ internal static class BoatsToSavePeopleSolution
         }
 
         used[lightestIndex] = true;
-        return 2;
+        return PeoplePerBoat;
     }
 
     private static int FindHeaviestUnused(int[] weights, bool[] used)
@@ -57,7 +62,7 @@ internal static class BoatsToSavePeopleSolution
 
         for (var i = 0; i < weights.Length; i++)
         {
-            if (!used[i] && (heaviestIndex < 0 || weights[i] > weights[heaviestIndex]))
+            if (IsHeaviestCandidate(weights, used, i, heaviestIndex))
             {
                 heaviestIndex = i;
             }
@@ -66,6 +71,11 @@ internal static class BoatsToSavePeopleSolution
         return heaviestIndex;
     }
 
+    // Still unseated, and heavier than the heaviest candidate found so far - nobody
+    // beats an empty seat.
+    private static bool IsHeaviestCandidate(int[] weights, bool[] used, int index, int bestIndex)
+        => !used[index] && (bestIndex < 0 || weights[index] > weights[bestIndex]);
+
     private static int FindLightestUnusedFitting(
         int[] weights, bool[] used, int limit, int heaviestIndex)
     {
@@ -73,8 +83,8 @@ internal static class BoatsToSavePeopleSolution
 
         for (var i = 0; i < weights.Length; i++)
         {
-            if (!used[i] && weights[i] + weights[heaviestIndex] <= limit
-                && (lightestIndex < 0 || weights[i] < weights[lightestIndex]))
+            if (IsLightestCandidate(weights, used, i, lightestIndex)
+                && FitsBesideHeaviest(weights, i, heaviestIndex, limit))
             {
                 lightestIndex = i;
             }
@@ -82,6 +92,15 @@ internal static class BoatsToSavePeopleSolution
 
         return lightestIndex;
     }
+
+    // Still unseated, and lighter than the lightest candidate found so far - nobody
+    // beats an empty seat.
+    private static bool IsLightestCandidate(int[] weights, bool[] used, int index, int bestIndex)
+        => !used[index] && (bestIndex < 0 || weights[index] < weights[bestIndex]);
+
+    // Light enough to ride in the same boat as its heaviest passenger.
+    private static bool FitsBesideHeaviest(int[] weights, int index, int heaviestIndex, int limit)
+        => weights[index] + weights[heaviestIndex] <= limit;
 
     public static int NumRescueBoatsBySortThenTwoPointer(int[] people, int limit)
     {

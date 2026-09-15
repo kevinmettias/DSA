@@ -22,52 +22,6 @@ internal static class MaximumMedianSumOfSubsequencesOfSizeThreeSolution
         return BestMedianSum(nums, used, nums.Length);
     }
 
-    private static long BestMedianSum(int[] nums, bool[] used, int remainingCount)
-    {
-        if (remainingCount == 0)
-        {
-            return 0;
-        }
-
-        var best = long.MinValue;
-
-        for (var a = 0; a < nums.Length; a++)
-        {
-            if (used[a])
-            {
-                continue;
-            }
-
-            for (var b = a + 1; b < nums.Length; b++)
-            {
-                if (used[b])
-                {
-                    continue;
-                }
-
-                for (var c = b + 1; c < nums.Length; c++)
-                {
-                    if (used[c])
-                    {
-                        continue;
-                    }
-
-                    used[a] = used[b] = used[c] = true;
-                    var candidate = MedianOfThree(nums[a], nums[b], nums[c]) +
-                        BestMedianSum(nums, used, remainingCount - 3);
-                    used[a] = used[b] = used[c] = false;
-
-                    best = Math.Max(best, candidate);
-                }
-            }
-        }
-
-        return best;
-    }
-
-    private static int MedianOfThree(int x, int y, int z) =>
-        x + y + z - Math.Max(x, Math.Max(y, z)) - Math.Min(x, Math.Min(y, z));
-
     // Sorted ascending, the largest third of the array holds every eventual
     // median: pairing each of those with its two largest still-unclaimed
     // neighbors below it (one to its immediate left, the smallest of the
@@ -91,5 +45,81 @@ internal static class MaximumMedianSumOfSubsequencesOfSizeThreeSolution
         }
 
         return sum;
+    }
+
+    private static long BestMedianSum(int[] nums, bool[] used, int remainingCount)
+    {
+        if (remainingCount == 0)
+        {
+            return 0;
+        }
+
+        var best = long.MinValue;
+
+        for (var a = 0; a < nums.Length; a++)
+        {
+            if (used[a])
+            {
+                continue;
+            }
+
+            best = BestMedianSumWithFirst((nums, used), a, remainingCount, best);
+        }
+
+        return best;
+    }
+
+    // The `b` level of the enumeration, for one already-chosen first element: every unused
+    // second element after `first` is tried, and the best total seen is carried in and out.
+    private static long BestMedianSumWithFirst(
+        (int[] Nums, bool[] Used) board, int first, int remainingCount, long best)
+    {
+        var (nums, used) = board;
+
+        for (var b = first + 1; b < nums.Length; b++)
+        {
+            if (used[b])
+            {
+                continue;
+            }
+
+            for (var c = b + 1; c < nums.Length; c++)
+            {
+                if (used[c])
+                {
+                    continue;
+                }
+
+                best = BestMedianSumIncluding(board, (first, b, c), remainingCount, best);
+            }
+        }
+
+        return best;
+    }
+
+    // The `c` level: one completed triple is claimed, scored by its median plus whatever the
+    // rest of the array still yields, and released again, so the next triple sees the array
+    // exactly as this one found it. `best` is the best total seen so far.
+    private static long BestMedianSumIncluding(
+        (int[] Nums, bool[] Used) board, (int First, int Second, int Third) triple, int remainingCount, long best)
+    {
+        var (nums, used) = board;
+        var (a, b, c) = triple;
+        used[a] = used[b] = used[c] = true;
+        var candidate = MedianOfThree(nums[a], nums[b], nums[c]) + BestMedianSum(nums, used, remainingCount - 3);
+        used[a] = used[b] = used[c] = false;
+
+        return Math.Max(best, candidate);
+    }
+
+    private static int MedianOfThree(int x, int y, int z)
+    {
+        var total = x + y + z;
+        var high = Math.Max(y, z);
+        var largest = Math.Max(x, high);
+        var low = Math.Min(y, z);
+        var smallest = Math.Min(x, low);
+
+        return total - largest - smallest;
     }
 }

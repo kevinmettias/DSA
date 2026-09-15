@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignHashSet.DesignHashSetSolution;
+using DSAExperimentation.LeetCode.DesignHashSet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -14,13 +14,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DesignHashSetBenchmarks
 {
-    private const int RandomSeed = 705; // LC problem number
+    private const int RandomSeed = 705; private int[] _addOrder = [];
+
+    private int[] _containsOrder = [];
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Count;
-
-    private int[] _addOrder = null!;
-    private int[] _containsOrder = null!;
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,12 +32,12 @@ public class DesignHashSetBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListScan() => Replay(new MyHashSetByListScan());
+    public int ListScan() => Replay(new DesignHashSetSolution.MyHashSetByListScan());
 
     [Benchmark]
-    public int SetBacked() => Replay(new MyHashSetBySetBacked());
+    public int SetBacked() => Replay(new DesignHashSetSolution.MyHashSetBySetBacked());
 
-    private int Replay(IMyHashSet set)
+    private int Replay(DesignHashSetSolution.IMyHashSet set)
     {
         foreach (var value in _addOrder)
         {

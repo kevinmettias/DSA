@@ -43,12 +43,15 @@ internal static class NumberOfSetsOfKNonOverlappingLineSegmentsSolution
             {
                 table[row, col] = col == 0 || col == row
                     ? 1
-                    : (table[row - 1, col - 1] + table[row - 1, col]) % ModularArithmetic.Modulo;
+                    : PascalEntry(table, row, col);
             }
         }
 
         return (int)table[rows, target];
     }
+
+    private static long PascalEntry(long[,] table, int row, int col) =>
+        (table[row - 1, col - 1] + table[row - 1, col]) % ModularArithmetic.Modulo;
 
     // The same identity driven top-down through this repo's Memoizer, so each
     // binomial state is solved once and shared by every recursive call reaching it.
@@ -56,22 +59,29 @@ internal static class NumberOfSetsOfKNonOverlappingLineSegmentsSolution
         (int)Choose(n + k - PointOffset, SegmentEndpointCount * k);
 
     private static long Choose(int n, int k) =>
-        Memoizer.Memoize<(int N, int K), long>((n, k), ChooseRecurrence);
+        Memoizer.Memoize<(int N, int K), long>((n, k), new PascalCoefficient());
 
-    private static long ChooseRecurrence((int N, int K) state, Func<(int, int), long> choose)
+    // The recurrence, as a named type: Pascal's identity, C(n, k) = C(n-1, k-1) +
+    // C(n-1, k), seeded at the edges of the triangle and zero wherever k falls past n -
+    // the guard the plain split would recurse past forever.
+    private sealed class PascalCoefficient : IRecurrence<(int N, int K), long>
     {
-        var (n, k) = state;
-
-        if (k == 0 || k == n)
+        public long Replay((int N, int K) state, IRecurrence<(int N, int K), long> rest)
         {
-            return 1;
-        }
+            var (n, k) = state;
 
-        if (k > n)
-        {
-            return 0;
-        }
+            if (k == 0 || k == n)
+            {
+                return 1;
+            }
 
-        return (choose((n - 1, k - 1)) + choose((n - 1, k))) % ModularArithmetic.Modulo;
+            if (k > n)
+            {
+                return 0;
+            }
+
+            return (rest.Replay((n - 1, k - 1), rest) + rest.Replay((n - 1, k), rest))
+                % ModularArithmetic.Modulo;
+        }
     }
 }

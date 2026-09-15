@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
-using static DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator.DesignGraphWithShortestPathCalculatorSolution;
+using DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -22,38 +22,20 @@ public class DesignGraphWithShortestPathCalculatorBenchmarks
     private const int RandomSeed = 2642; // LC problem number
     private const int QueryCount = 200;
 
-    [Params(50, 200)]
-    public int NodeCount;
+    private DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra _arrayGraph = null!;
 
-    private ShortestPathGraphByArrayDijkstra _arrayGraph = null!;
-    private ShortestPathGraphByHeapDijkstra _heapGraph = null!;
-    private (int Node1, int Node2)[] _queries = null!;
+    private DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra _heapGraph = null!;
+    private (int Node1, int Node2)[] _queries = [];
+    [Params(50, 200)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var edges = RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, RandomSeed);
-        _arrayGraph = new ShortestPathGraphByArrayDijkstra(NodeCount, edges);
-        _heapGraph = new ShortestPathGraphByHeapDijkstra(NodeCount, edges);
+        _arrayGraph = new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra(NodeCount, edges);
+        _heapGraph = new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra(NodeCount, edges);
         _queries = BuildQueries(NodeCount, QueryCount, RandomSeed);
-    }
-
-    [Benchmark(Baseline = true)]
-    public long ArrayDijkstra() => TotalShortestPath(_arrayGraph);
-
-    [Benchmark]
-    public long HeapDijkstra() => TotalShortestPath(_heapGraph);
-
-    private long TotalShortestPath(IShortestPathGraph graph)
-    {
-        var total = 0L;
-
-        foreach (var (node1, node2) in _queries)
-        {
-            total += graph.ShortestPathBetween(node1, node2);
-        }
-
-        return total;
     }
 
     private static (int Node1, int Node2)[] BuildQueries(int nodeCount, int queryCount, int seed)
@@ -67,5 +49,23 @@ public class DesignGraphWithShortestPathCalculatorBenchmarks
         }
 
         return queries;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long ArrayDijkstra() => TotalShortestPath(_arrayGraph);
+
+    [Benchmark]
+    public long HeapDijkstra() => TotalShortestPath(_heapGraph);
+
+    private long TotalShortestPath(DesignGraphWithShortestPathCalculatorSolution.IShortestPathGraph graph)
+    {
+        var total = 0L;
+
+        foreach (var (node1, node2) in _queries)
+        {
+            total += graph.ShortestPathBetween(node1, node2);
+        }
+
+        return total;
     }
 }

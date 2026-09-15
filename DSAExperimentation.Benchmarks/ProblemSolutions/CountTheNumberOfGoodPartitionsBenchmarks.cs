@@ -17,10 +17,10 @@ public class CountTheNumberOfGoodPartitionsBenchmarks
     private const int RandomSeed = 2963; // LC problem number
     private const int AlphabetSize = 4;
 
-    [Params(16, 20)]
-    public int ArrayLength;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(16, 20)]
+    public int ArrayLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

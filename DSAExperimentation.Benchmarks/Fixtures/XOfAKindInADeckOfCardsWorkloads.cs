@@ -9,6 +9,16 @@ internal static class XOfAKindInADeckOfCardsWorkloads
     public static int[] BuildPartitionableDeck(int deckSize, int groupSize, int seed)
     {
         var random = new Random(seed);
+        var deck = BuildGroupedDeck(deckSize, groupSize);
+
+        Shuffle(deck, random);
+
+        return deck;
+    }
+
+    // groupSize consecutive copies of each of the deckSize / groupSize distinct values.
+    private static int[] BuildGroupedDeck(int deckSize, int groupSize)
+    {
         var distinctValues = deckSize / groupSize;
         var deck = new int[distinctValues * groupSize];
         var index = 0;
@@ -21,12 +31,15 @@ internal static class XOfAKindInADeckOfCardsWorkloads
             }
         }
 
+        return deck;
+    }
+
+    private static void Shuffle(int[] deck, Random random)
+    {
         for (var i = deck.Length - 1; i > 0; i--)
         {
             var j = random.Next(i + 1);
             (deck[i], deck[j]) = (deck[j], deck[i]);
         }
-
-        return deck;
     }
 }

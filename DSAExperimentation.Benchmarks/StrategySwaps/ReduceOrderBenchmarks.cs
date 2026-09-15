@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 [MemoryDiagnoser]
 public class ReduceOrderBenchmarks
 {
-    [Params(10_000, 200_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(10_000, 200_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);

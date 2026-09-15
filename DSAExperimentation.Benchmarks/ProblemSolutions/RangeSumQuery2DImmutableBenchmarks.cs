@@ -21,11 +21,11 @@ public class RangeSumQuery2DImmutableBenchmarks
 
     private const int CellValueRange = 1_000;
 
-    [Params(20, 200)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
-    private (int Row1, int Col1, int Row2, int Col2)[] _queries = null!;
+    private (int Row1, int Col1, int Row2, int Col2)[] _queries = [];
+    [Params(20, 200)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

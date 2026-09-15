@@ -14,10 +14,10 @@ public class MinimumNumberOfCoinsForFruitsBenchmarks
     private const int MaxPriceExclusive = 1_000;
     private const int Seed = 2944;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

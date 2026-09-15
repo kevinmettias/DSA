@@ -15,10 +15,10 @@ public class CountSubmatricesWithAllOnesBenchmarks
 
     private const int RandomSeed = 1;
 
-    [Params(50, 300)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(50, 300)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

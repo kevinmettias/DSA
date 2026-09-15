@@ -57,24 +57,15 @@ public sealed class ImplementQueueUsingStacksTests
 // One call in a MyQueue script: which operation to invoke and with what
 // argument. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct QueueOp
+public readonly record struct QueueOp(QueueOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static QueueOp Push(int value) => new(OpKind.Push, value);
 
-    private QueueOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static QueueOp Pop() => new(OpKind.Pop, 0);
 
-    public static QueueOp Push(int value) => new(Kind.Push, value);
+    public static QueueOp Peek() => new(OpKind.Peek, 0);
 
-    public static QueueOp Pop() => new(Kind.Pop, 0);
-
-    public static QueueOp Peek() => new(Kind.Peek, 0);
-
-    public static QueueOp Empty() => new(Kind.Empty, 0);
+    public static QueueOp Empty() => new(OpKind.Empty, 0);
 
     // null for push, the returned value for pop/peek/empty (boxed as its own
     // type - int or bool - so the harness can assert without forcing every
@@ -82,21 +73,21 @@ public readonly record struct QueueOp
     // same assembly's test method ever calls Apply.
     internal object? Apply(ImplementQueueUsingStacksSolution.TwoStackQueue queue)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Push:
-                queue.Push(_value);
+            case OpKind.Push:
+                queue.Push(value);
                 return null;
-            case Kind.Pop:
+            case OpKind.Pop:
                 return queue.Pop();
-            case Kind.Peek:
+            case OpKind.Peek:
                 return queue.Peek();
             default:
                 return queue.Empty();
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Push,
         Pop,

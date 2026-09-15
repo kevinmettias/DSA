@@ -19,12 +19,12 @@ public class CalculateAmountPaidInTaxesBenchmarks
     private const int UpperStep = 10;
     private const int PercentCycle = 50;
 
-    [Params(200, 5_000)]
-    public int BracketCount;
+    private int[][] _brackets = [];
 
-    private int[][] _brackets = null!;
     private ArraySequence<(int Upper, int Percent)> _bracketSequence;
     private int _income;
+    [Params(200, 5_000)]
+    public int BracketCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

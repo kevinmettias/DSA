@@ -20,10 +20,10 @@ public class ParallelCoursesIIIBenchmarks
 
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int NodeCount;
+    private List<CourseTimeNode> _nodes = new();
 
-    private List<CourseTimeNode> _nodes = null!;
+    [Params(50, 1_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

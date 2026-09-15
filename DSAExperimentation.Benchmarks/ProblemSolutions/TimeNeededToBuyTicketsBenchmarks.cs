@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,20 +16,19 @@ public class TimeNeededToBuyTicketsBenchmarks
     private const int RandomSeed = 2073; // LC problem number
     private const int MinTickets = 500;
     private const int MaxTicketsExclusive = 1_000;
-    private const int MidpointDivisor = 2;
 
-    [Params(50, 300)]
-    public int Length;
+    private int[] _tickets = [];
 
-    private int[] _tickets = null!;
     private int _k;
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
         _tickets = Enumerable.Range(0, Length).Select(_ => random.Next(MinTickets, MaxTicketsExclusive)).ToArray();
-        _k = Length / MidpointDivisor;
+        _k = Length / AlgorithmConstants.HalvingFactor;
     }
 
     [Benchmark(Baseline = true)]

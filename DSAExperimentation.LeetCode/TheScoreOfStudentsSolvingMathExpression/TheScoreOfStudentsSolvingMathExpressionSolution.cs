@@ -47,9 +47,8 @@ internal static class TheScoreOfStudentsSolvingMathExpressionSolution
         var (numbers, ops) = Parse(expression);
         var correct = EvaluateWithPrecedence(numbers, ops);
         var achieved = AchievedValues(numbers, ops, 0, numbers.Length - 1);
-        var achievable = new HashSet<long>(achieved);
 
-        return TotalScore(answers, correct, achievable.Contains);
+        return TotalScore(answers, correct, new AchievableSetInHashSet(achieved));
     }
 
     // The same recurrence driven through this repo's own Memoizer, keyed on the
@@ -61,49 +60,54 @@ internal static class TheScoreOfStudentsSolvingMathExpressionSolution
         var correct = EvaluateWithPrecedence(numbers, ops);
         var achievable = AchievableValues(numbers, ops);
 
-        return TotalScore(answers, correct, achievable.HasKey);
+        return TotalScore(answers, correct, new AchievableSetInHashMap(achievable));
     }
 
     private static HashMap<long, bool> AchievableValues(int[] numbers, char[] ops)
         => Memoizer.Memoize<(int Left, int Right), HashMap<long, bool>>(
             (0, numbers.Length - 1),
-            (range, solve) => AchievableValuesForRange(numbers, ops, range, solve));
+            new ValuesOverIntervals(numbers, ops));
 
-    private static HashMap<long, bool> AchievableValuesForRange(
-        int[] numbers,
-        char[] ops,
-        (int Left, int Right) range,
-        Func<(int Left, int Right), HashMap<long, bool>> solve)
+    // The recurrence, as a named type: the achievable-value set for one (Left, Right)
+    // interval. The two token streams it reads arrive through the primary constructor
+    // and the memoized continuation through `rest`.
+    private sealed class ValuesOverIntervals(int[] numbers, char[] ops)
+        : IRecurrence<(int Left, int Right), HashMap<long, bool>>
     {
-        var (left, right) = range;
-
-        if (left == right)
+        public HashMap<long, bool> Replay(
+            (int Left, int Right) range,
+            IRecurrence<(int Left, int Right), HashMap<long, bool>> rest)
         {
-            return SingleValue(numbers[left]);
+            var (left, right) = range;
+
+            if (left == right)
+            {
+                return SingleValue(numbers[left]);
+            }
+
+            return ValuesOverSplits(left, right, rest);
         }
 
-        return AchievableValuesOverSplits(ops, left, right, solve);
+        private HashMap<long, bool> ValuesOverSplits(
+            int left, int right, IRecurrence<(int Left, int Right), HashMap<long, bool>> rest)
+        {
+            var values = new HashMap<long, bool>();
+
+            for (var split = left; split < right; split++)
+            {
+                var leftValues = rest.Replay((left, split), rest);
+                var rightValues = rest.Replay((split + 1, right), rest);
+                SetCombinations(ops[split], leftValues, rightValues, values);
+            }
+
+            return values;
+        }
     }
 
     private static HashMap<long, bool> SingleValue(long value)
     {
         var values = new HashMap<long, bool>();
         values.Set(value, true);
-
-        return values;
-    }
-
-    private static HashMap<long, bool> AchievableValuesOverSplits(
-        char[] ops, int left, int right, Func<(int Left, int Right), HashMap<long, bool>> solve)
-    {
-        var values = new HashMap<long, bool>();
-
-        for (var split = left; split < right; split++)
-        {
-            var leftValues = solve((left, split));
-            var rightValues = solve((split + 1, right));
-            SetCombinations(ops[split], leftValues, rightValues, values);
-        }
 
         return values;
     }
@@ -212,25 +216,53 @@ internal static class TheScoreOfStudentsSolvingMathExpressionSolution
         _ => left * right,
     };
 
-    private static int TotalScore(int[] answers, int correct, Func<long, bool> isAchievable)
+    private static int TotalScore(int[] answers, int correct, IAchievableSet achievable)
     {
         var total = 0;
 
         foreach (var answer in answers)
         {
-            total += ScoreFor(answer, correct, isAchievable);
+            total += ScoreFor(answer, correct, achievable);
         }
 
         return total;
     }
 
-    private static int ScoreFor(int answer, int correct, Func<long, bool> isAchievable)
+    private static int ScoreFor(int answer, int correct, IAchievableSet achievable)
     {
         if (answer == correct)
         {
             return CorrectAnswerScore;
         }
 
-        return isAchievable(answer) ? AchievableAnswerScore : WrongAnswerScore;
+        return achievable.Contains(answer) ? AchievableAnswerScore : WrongAnswerScore;
+    }
+
+    // The decided question every non-correct answer is graded against: can some full
+    // parenthesization of the expression produce this value? The two strategies differ
+    // only in what backs the set - the unmemoized arm dedupes its collected values into
+    // a BCL HashSet<long>, the memoized arm already holds a HashMap<long,bool> keyed by
+    // interval - and grading never has to know which, only that the question is
+    // membership.
+    private interface IAchievableSet
+    {
+        // Whether some full parenthesization of the expression produces `value`.
+        bool Contains(long value);
+    }
+
+    // The baseline's set: the values the unmemoized recursion collected, deduped into
+    // a BCL HashSet<long>.
+    private sealed class AchievableSetInHashSet(List<long> achieved) : IAchievableSet
+    {
+        private readonly HashSet<long> _values = new(achieved);
+
+        public bool Contains(long value) => _values.Contains(value);
+    }
+
+    // This repo's own HashMap<long,bool>, whose Keys the memoized arm unions over each
+    // interval's splits - the same container it already walks to combine the children.
+    private sealed class AchievableSetInHashMap(HashMap<long, bool> achieved) : IAchievableSet
+    {
+        public bool Contains(long value) => achieved.HasKey(value);
     }
 }

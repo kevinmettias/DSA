@@ -11,10 +11,10 @@ public class ReversePairsBenchmarks
     private const int RandomSeed = 493; // LC problem number
     private const int ValueBound = 10_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

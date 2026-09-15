@@ -7,15 +7,15 @@ namespace DSAExperimentation.LeetCode.MinimumCostToBuyApplesII;
 // network; only how each one searches it differs.
 internal sealed class AppleNetwork
 {
+    public AppleNode[] Nodes { get; }
+
+    public int[] Prices { get; }
+
     private AppleNetwork(AppleNode[] nodes, int[] prices)
     {
         Nodes = nodes;
         Prices = prices;
     }
-
-    public AppleNode[] Nodes { get; }
-
-    public int[] Prices { get; }
 
     public static AppleNetwork Build(int n, int[] prices, int[][] roads)
     {

@@ -19,10 +19,10 @@ public class MinimumNumberOfWorkSessionsToFinishTheTasksBenchmarks
     private const int SessionTime = 2;
     private const int TaskDuration = 1;
 
-    [Params(6, 9)]
-    public int TaskCount;
-
     private FeasibleSessionMasks _sessions = null!;
+
+    [Params(6, 9)]
+    public int TaskCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -14,11 +14,11 @@ public class NumberOfValidMoveCombinationsOnChessboardBenchmarks
     private static readonly string[] AllPieceTypes = ["rook", "queen", "bishop", "rook"];
     private static readonly int[][] AllPositions = [[1, 1], [8, 8], [1, 8], [8, 1]];
 
-    [Params(2, 4)]
-    public int PieceCount;
+    private string[] _pieceTypes = [];
 
-    private string[] _pieceTypes = null!;
-    private int[][] _positions = null!;
+    private int[][] _positions = [];
+    [Params(2, 4)]
+    public int PieceCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

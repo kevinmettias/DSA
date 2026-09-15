@@ -10,7 +10,7 @@ public sealed class LowercaseTrieTopologyTests
         // The node always allocates 26 slots; only occupied ones are children.
         var node = new LowercaseTrieNode<int>();
 
-        Assert.Equal(LowercaseTrieNode<int>.AlphabetSize, node.Children.Length);
+        Assert.Equal(LowercaseAlphabet.Size, node.Children.Length);
         Assert.Equal(0, LowercaseTrieTopology<int>.GetChildren(node).Count);
     }
 

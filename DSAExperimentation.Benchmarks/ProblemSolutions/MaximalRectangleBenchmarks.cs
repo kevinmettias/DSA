@@ -12,10 +12,10 @@ public class MaximalRectangleBenchmarks
 {
     private const int CellValueUpperBound = 2;
 
-    [Params(50, 300)]
-    public int Size;
+    private char[][] _matrix = [];
 
-    private char[][] _matrix = null!;
+    [Params(50, 300)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -23,9 +23,11 @@ public class MaximalRectangleBenchmarks
         var random = new Random(1);
         _matrix = Enumerable.Range(0, Size)
             .Select(_ => Enumerable.Range(0, Size)
-                .Select(_ => random.Next(0, CellValueUpperBound) == 0 ? '0' : '1').ToArray())
+                .Select(_ => IsCellZero(random) ? '0' : '1').ToArray())
             .ToArray();
     }
+
+    private static bool IsCellZero(Random random) => random.Next(0, CellValueUpperBound) == 0;
 
     [Benchmark(Baseline = true)]
     public int RowPairScan() => MaximalRectangleSolution.MaximalRectangleAreaByRowPairScan(_matrix);

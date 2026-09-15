@@ -5,20 +5,13 @@ namespace DSAExperimentation.LeetCode.LongestPalindromicPathInGraph;
 // bitmask-memo strategy below can compute "unused neighbors of u" as a single
 // AND/NOT instead of scanning an adjacency list. Problem-local: nothing else in
 // the catalogue needs a bitmask-adjacency graph yet.
-internal sealed class LabeledGraph
+internal sealed class LabeledGraph(int nodeCount, string label, int[] neighborMask)
 {
-    public int NodeCount { get; }
+    public int NodeCount { get; } = nodeCount;
 
-    public string Label { get; }
+    public string Label { get; } = label;
 
-    public int[] NeighborMask { get; }
-
-    private LabeledGraph(int nodeCount, string label, int[] neighborMask)
-    {
-        NodeCount = nodeCount;
-        Label = label;
-        NeighborMask = neighborMask;
-    }
+    public int[] NeighborMask { get; } = neighborMask;
 
     public static LabeledGraph Build(int n, int[][] edges, string label)
     {

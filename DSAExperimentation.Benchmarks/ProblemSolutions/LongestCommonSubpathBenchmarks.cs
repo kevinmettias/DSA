@@ -17,12 +17,12 @@ public class LongestCommonSubpathBenchmarks
 {
     private const int PathCount = 3;
     private const int AlphabetSize = 5;
-    private const int RandomSeed = 1923; // LC 1923 problem number
+    private const int RandomSeed = 1923; private int[][] _paths = [];
+
+    // LC 1923 problem number
 
     [Params(100, 500)]
-    public int PathLength;
-
-    private int[][] _paths = null!;
+    public int PathLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

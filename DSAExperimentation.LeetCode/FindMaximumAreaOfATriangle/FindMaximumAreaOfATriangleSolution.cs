@@ -30,19 +30,28 @@ internal static class FindMaximumAreaOfATriangleSolution
             {
                 for (var k = j + 1; k < coords.Length; k++)
                 {
-                    if (!HasAxisParallelSide(coords[i], coords[j], coords[k]))
-                    {
-                        continue;
-                    }
-
-                    var doubledArea = DoubledArea(coords[i], coords[j], coords[k]);
-
-                    if (doubledArea > 0 && doubledArea > best)
-                    {
-                        best = doubledArea;
-                    }
+                    best = BestOfTriple(best, coords[i], coords[j], coords[k]);
                 }
             }
+        }
+
+        return best;
+    }
+
+    // The running best after considering one triple: a triple with no axis-parallel
+    // side, or one that encloses no area at all, leaves the answer where it was.
+    private static long BestOfTriple(long best, int[] a, int[] b, int[] c)
+    {
+        if (!HasAxisParallelSide(a, b, c))
+        {
+            return best;
+        }
+
+        var doubledArea = DoubledArea(a, b, c);
+
+        if (doubledArea > 0 && doubledArea > best)
+        {
+            return doubledArea;
         }
 
         return best;
@@ -66,68 +75,91 @@ internal static class FindMaximumAreaOfATriangleSolution
     // triple is ever materialized.
     public static long MaxAreaBySpreadHashMap(int[][] coords)
     {
-        var rowSpans = new HashMap<int, (int MinX, int MaxX)>();
-        var columnSpans = new HashMap<int, (int MinY, int MaxY)>();
-        var minX = int.MaxValue;
-        var maxX = int.MinValue;
-        var minY = int.MaxValue;
-        var maxY = int.MinValue;
+        var rowSpans = new HashMap<int, AxisSpan>();
+        var columnSpans = new HashMap<int, AxisSpan>();
+        var bounds = (MinX: int.MaxValue, MaxX: int.MinValue, MinY: int.MaxValue, MaxY: int.MinValue);
 
         foreach (var point in coords)
         {
-            var (x, y) = (point[0], point[1]);
-            minX = Math.Min(minX, x);
-            maxX = Math.Max(maxX, x);
-            minY = Math.Min(minY, y);
-            maxY = Math.Max(maxY, y);
-
-            rowSpans.Set(y, rowSpans.TryGetValue(y, out var row)
-                ? (Math.Min(row.MinX, x), Math.Max(row.MaxX, x))
-                : (x, x));
-
-            columnSpans.Set(x, columnSpans.TryGetValue(x, out var column)
-                ? (Math.Min(column.MinY, y), Math.Max(column.MaxY, y))
-                : (y, y));
+            bounds = AbsorbPoint(point, rowSpans, columnSpans, bounds);
         }
 
         long best = LeetCodeAnswer.None;
+        best = BestAlongAxis(rowSpans, (bounds.MinY, bounds.MaxY), best);
+        best = BestAlongAxis(columnSpans, (bounds.MinX, bounds.MaxX), best);
 
-        foreach (var y in rowSpans.Keys)
+        return best;
+    }
+
+    // Fold one point into the spans and the global bounding box, returning the box -
+    // the per-point step of the single pass above.
+    private static (int MinX, int MaxX, int MinY, int MaxY) AbsorbPoint(
+        int[] point,
+        HashMap<int, AxisSpan> rowSpans,
+        HashMap<int, AxisSpan> columnSpans,
+        (int MinX, int MaxX, int MinY, int MaxY) bounds)
+    {
+        var (x, y) = (point[0], point[1]);
+
+        rowSpans.Set(y, rowSpans.TryGetValue(y, out var row)
+            ? WidenedSpan(row, x)
+            : SinglePointSpan(x));
+
+        columnSpans.Set(x, columnSpans.TryGetValue(x, out var column)
+            ? WidenedSpan(column, y)
+            : SinglePointSpan(y));
+
+        return ExpandBounds(bounds, x, y);
+    }
+
+    private static AxisSpan WidenedSpan(AxisSpan span, int value) =>
+        new(Math.Min(span.Min, value), Math.Max(span.Max, value));
+
+    private static AxisSpan SinglePointSpan(int value) => new(value, value);
+
+    // The bounding box grown to include one more point.
+    private static (int MinX, int MaxX, int MinY, int MaxY) ExpandBounds(
+        (int MinX, int MaxX, int MinY, int MaxY) bounds, int x, int y) =>
+        (
+            Math.Min(bounds.MinX, x),
+            Math.Max(bounds.MaxX, x),
+            Math.Min(bounds.MinY, y),
+            Math.Max(bounds.MaxY, y));
+
+    // The best triangle over one axis of spans, folding each candidate base into the
+    // answer. A base is a line whose span is non-empty; its height is the farthest
+    // point from that line, measured against the bounding box on the other axis.
+    private static long BestAlongAxis(
+        HashMap<int, AxisSpan> spans, (int Near, int Far) reachBounds, long best)
+    {
+        foreach (var line in spans.Keys)
         {
-            rowSpans.TryGetValue(y, out var row);
-            var width = row.MaxX - row.MinX;
+            spans.TryGetValue(line, out var span);
+            var reach = Math.Max(line - reachBounds.Near, reachBounds.Far - line);
 
-            if (width == 0)
-            {
-                continue;
-            }
-
-            var reach = Math.Max(y - minY, maxY - y);
-            var candidate = (long)width * reach;
-
-            if (candidate > 0 && candidate > best)
-            {
-                best = candidate;
-            }
+            best = BestOfSpan(best, reach, span);
         }
 
-        foreach (var x in columnSpans.Keys)
+        return best;
+    }
+
+    // The running best after considering one span as a candidate base: a span of no
+    // width is not a base, and a candidate that encloses no area or does not beat the
+    // answer leaves it alone.
+    private static long BestOfSpan(long best, long reach, AxisSpan span)
+    {
+        var extent = span.Max - span.Min;
+
+        if (extent == 0)
         {
-            columnSpans.TryGetValue(x, out var column);
-            var height = column.MaxY - column.MinY;
+            return best;
+        }
 
-            if (height == 0)
-            {
-                continue;
-            }
+        var candidate = extent * reach;
 
-            var reach = Math.Max(x - minX, maxX - x);
-            var candidate = (long)height * reach;
-
-            if (candidate > 0 && candidate > best)
-            {
-                best = candidate;
-            }
+        if (candidate > 0 && candidate > best)
+        {
+            return candidate;
         }
 
         return best;

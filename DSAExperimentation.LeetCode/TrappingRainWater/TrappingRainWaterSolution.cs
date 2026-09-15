@@ -79,9 +79,12 @@ internal static class TrappingRainWaterSolution
             return null;
         }
 
-        var width = i - left - 1;
-        var boundedHeight = Math.Min(height[left], height[i]) - height[top];
-
-        return width * boundedHeight;
+        return BoundedWaterAbove(height, top, left, i);
     }
+
+    // The water a popped bar holds: its floor is the bar itself, its left wall the
+    // stack top left behind by the pop, its right wall the current bar - so
+    // min(leftWall, rightWall) - floor, times the gap width between the walls.
+    private static int BoundedWaterAbove(int[] height, int bar, int leftWall, int rightWall) =>
+        (rightWall - leftWall - 1) * (Math.Min(height[leftWall], height[rightWall]) - height[bar]);
 }

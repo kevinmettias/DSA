@@ -11,7 +11,7 @@ public class CoinChangeBenchmarks
     private static readonly int[] Coins = [1, 5, 10, 25];
 
     [Params(200, 2_000)]
-    public int Amount;
+    public int Amount { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Tabulation() => CoinChangeSolution.FewestCoinsByTabulation(Coins, Amount);

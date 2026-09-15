@@ -24,6 +24,7 @@ internal static class MinimumOperationsToMakeArrayEqualToTargetSolution
         var current = (int[])nums.Clone();
         var operations = 0L;
 
+        // Stops once no position still disagrees with target: FindFirstMismatch returns -1 and the operation count is returned.
         while (true)
         {
             var start = FindFirstMismatch(current, target);
@@ -33,19 +34,7 @@ internal static class MinimumOperationsToMakeArrayEqualToTargetSolution
                 return operations;
             }
 
-            var direction = Math.Sign(target[start] - current[start]);
-            var end = start;
-
-            while (end + 1 < current.Length && Math.Sign(target[end + 1] - current[end + 1]) == direction)
-            {
-                end++;
-            }
-
-            for (var i = start; i <= end; i++)
-            {
-                current[i] += direction;
-            }
-
+            ApplyWidestRun(current, target, start);
             operations++;
         }
     }
@@ -61,6 +50,31 @@ internal static class MinimumOperationsToMakeArrayEqualToTargetSolution
         }
 
         return -1;
+    }
+
+    // One unit of one operation: from `start`, the widest contiguous run that all needs
+    // the same direction of nudge, every element of it shifted by that one unit.
+    private static void ApplyWidestRun(int[] current, int[] target, int start)
+    {
+        var direction = Math.Sign(target[start] - current[start]);
+        var end = FindRunEnd(current, target, start, direction);
+
+        for (var i = start; i <= end; i++)
+        {
+            current[i] += direction;
+        }
+    }
+
+    private static int FindRunEnd(int[] current, int[] target, int start, int direction)
+    {
+        var end = start;
+
+        while (end + 1 < current.Length && Math.Sign(target[end + 1] - current[end + 1]) == direction)
+        {
+            end++;
+        }
+
+        return end;
     }
 
     // A subarray operation changes diff[l] and diff[r+1] by one unit each, in opposite

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class GenerateParenthesesBenchmarks
 {
     [Params(5, 8)]
-    public int Pairs;
+    public int Pairs { get; set; }
 
     [Benchmark(Baseline = true)]
     public List<string> RecursiveSpecialized() => GenerateParenthesesSolution.GenerateByRecursiveSpecialized(Pairs);

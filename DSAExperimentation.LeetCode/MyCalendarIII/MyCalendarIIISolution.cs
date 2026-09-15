@@ -47,6 +47,19 @@ internal static class MyCalendarIIISolution
             AddDelta(start, 1);
             AddDelta(end, -1);
 
+            return MaxOverlapAcrossDeltas();
+        }
+
+        private void AddDelta(int point, int amount)
+        {
+            var current = _delta.TryGetValue(point, out var existing) ? existing : 0;
+            _delta.Set(point, current + amount);
+        }
+
+        // Folds every recorded +1/-1 into a prefix sum over the booking points in
+        // ascending order; the running sum's high-water mark is the answer.
+        private int MaxOverlapAcrossDeltas()
+        {
             var keys = _delta.Keys.ToArray();
             MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(keys));
 
@@ -61,12 +74,6 @@ internal static class MyCalendarIIISolution
             }
 
             return maxOverlap;
-        }
-
-        private void AddDelta(int point, int amount)
-        {
-            var current = _delta.TryGetValue(point, out var existing) ? existing : 0;
-            _delta.Set(point, current + amount);
         }
     }
 

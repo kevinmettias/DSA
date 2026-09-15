@@ -6,10 +6,7 @@ namespace DSAExperimentation.Tests.Algorithms.Reducing;
 public sealed class DistanceMapReduceAlgebraTests
 {
     [Fact]
-    public void Seed_StartsAsAnEmptyMap()
-    {
-        Assert.Empty(DistanceMapReduceAlgebra<TestNode>.Seed);
-    }
+    public void Seed_StartsAsAnEmptyMap() => Assert.Empty(DistanceMapReduceAlgebra<TestNode>.Seed);
 
     [Fact]
     public void Seed_IsAFreshMapPerCallSoTwoWalksCannotShareState()

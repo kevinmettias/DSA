@@ -19,11 +19,11 @@ public class SubarrayWithElementsGreaterThanVaryingThresholdBenchmarks
     // LC problem number, reused as the deterministic value seed.
     private const int ValueSeed = 2334;
 
-    [Params(500, 3_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _threshold;
+    [Params(500, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

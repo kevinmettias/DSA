@@ -14,10 +14,10 @@ public class PathWithMinimumEffortBenchmarks
 
     private const int HeightUpperBoundExclusive = 1_000_000;
 
-    [Params(15, 40)]
-    public int Size;
+    private int[][] _heights = [];
 
-    private int[][] _heights = null!;
+    [Params(15, 40)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

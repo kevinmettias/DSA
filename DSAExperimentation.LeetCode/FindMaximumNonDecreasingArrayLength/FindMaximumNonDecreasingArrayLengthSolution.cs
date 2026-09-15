@@ -34,30 +34,44 @@ internal static class FindMaximumNonDecreasingArrayLengthSolution
 
         for (var i = 1; i <= n; i++)
         {
-            var bestDp = -1;
-            var bestLast = 0L;
-
-            for (var j = 0; j < i; j++)
-            {
-                var candidateLast = prefix[i] - prefix[j];
-                if (candidateLast < last[j])
-                {
-                    continue;
-                }
-
-                if (dp[j] + 1 > bestDp || (dp[j] + 1 == bestDp && candidateLast < bestLast))
-                {
-                    bestDp = dp[j] + 1;
-                    bestLast = candidateLast;
-                }
-            }
-
-            dp[i] = bestDp;
-            last[i] = bestLast;
+            (dp[i], last[i]) = BestPredecessorOf(i, prefix, dp, last);
         }
 
         return dp[n];
     }
+
+    // The predecessor cut point i extends best: the one whose block sum
+    // prefix[i] - prefix[j] reaches last[j], ranked by block count and then by the
+    // smaller block sum. Nothing qualifying leaves the -1 that says "no partition
+    // of this prefix exists".
+    private static (int BestBlocks, long BestLast) BestPredecessorOf(int i, long[] prefix, int[] dp, long[] last)
+    {
+        var bestBlocks = -1;
+        var bestLast = 0L;
+
+        for (var j = 0; j < i; j++)
+        {
+            var candidateLast = prefix[i] - prefix[j];
+
+            if (candidateLast < last[j])
+            {
+                continue;
+            }
+
+            if (IsBetterPredecessor(dp[j] + 1, candidateLast, bestBlocks, bestLast))
+            {
+                bestBlocks = dp[j] + 1;
+                bestLast = candidateLast;
+            }
+        }
+
+        return (bestBlocks, bestLast);
+    }
+
+    // A predecessor of equal standing is worth keeping: it is dropped only when the
+    // new cut already offers at least as many blocks and no larger a last-block sum.
+    private static bool IsBetterPredecessor(int candidateBlocks, long candidateLast, int bestBlocks, long bestLast)
+        => candidateBlocks > bestBlocks || (candidateBlocks == bestBlocks && candidateLast < bestLast);
 
     // Same recurrence, but the best predecessor is found by keeping only the
     // Pareto-optimal cut points seen so far - a candidate j is dropped the moment
@@ -81,28 +95,58 @@ internal static class FindMaximumNonDecreasingArrayLengthSolution
 
         for (var i = 1; i <= n; i++)
         {
-            var keys = new DynamicArraySequence<long>(stackKeys);
-            var position = BinarySearch.UpperBound<long, DynamicArraySequence<long>>(keys, prefix[i]) - 1;
-            var j = stackCuts.Get(position);
-
-            dp[i] = dp[j] + 1;
-            last[i] = prefix[i] - prefix[j];
-            var key = prefix[i] + last[i];
-
-            while (stackCuts.Count > 0 &&
-                   dp[stackCuts.Get(stackCuts.Count - 1)] <= dp[i] &&
-                   stackKeys.Get(stackKeys.Count - 1) >= key)
-            {
-                stackCuts.RemoveAt(stackCuts.Count - 1);
-                stackKeys.RemoveAt(stackKeys.Count - 1);
-            }
-
-            stackCuts.Add(i);
-            stackKeys.Add(key);
+            var key = ApplyBestPredecessor(i, (stackCuts, stackKeys), (prefix, dp, last));
+            PushCut(i, key, (stackCuts, stackKeys), dp);
         }
 
         return dp[n];
     }
+
+    // The rightmost surviving key that prefix[i] still reaches is exactly the best
+    // predecessor, because dp is non-decreasing and the surviving keys strictly
+    // increase along the stack, so one UpperBound lookup replaces the whole scan.
+    // Record what that predecessor extends the partition to, and return the key
+    // this cut point contributes to the stack.
+    private static long ApplyBestPredecessor(
+        int i,
+        (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack,
+        (long[] Prefix, int[] Dp, long[] Last) tables)
+    {
+        var keys = new DynamicArraySequence<long>(stack.Keys);
+        var position = BinarySearch.UpperBound<long, DynamicArraySequence<long>>(keys, tables.Prefix[i]) - 1;
+        var j = stack.Cuts.Get(position);
+
+        tables.Dp[i] = tables.Dp[j] + 1;
+        tables.Last[i] = tables.Prefix[i] - tables.Prefix[j];
+
+        return tables.Prefix[i] + tables.Last[i];
+    }
+
+    // Stack the new cut point, first dropping every surviving cut it dominates.
+    private static void PushCut(
+        int i, long key, (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack, int[] dp)
+    {
+        while (IsDominatedByNewCut(stack, dp, i, key))
+        {
+            stack.Cuts.RemoveAt(stack.Cuts.Count - 1);
+            stack.Keys.RemoveAt(stack.Keys.Count - 1);
+        }
+
+        stack.Cuts.Add(i);
+        stack.Keys.Add(key);
+    }
+
+    // The cut point on top of the Pareto stack is dominated once the new one matches
+    // or beats it on both counts - no more blocks than dp[i], and a key at least as
+    // large - at which point it can never be the best predecessor again.
+    private static bool IsDominatedByNewCut(
+        (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack,
+        int[] dp,
+        int i,
+        long key)
+        => stack.Cuts.Count > 0
+            && dp[stack.Cuts.Get(stack.Cuts.Count - 1)] <= dp[i]
+            && stack.Keys.Get(stack.Keys.Count - 1) >= key;
 
     private static long[] BuildPrefixSums(int[] nums)
     {

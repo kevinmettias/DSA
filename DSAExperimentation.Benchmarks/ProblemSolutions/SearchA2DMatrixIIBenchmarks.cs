@@ -19,10 +19,10 @@ public class SearchA2DMatrixIIBenchmarks
 {
     private const int Target = -1;
 
-    [Params(50, 300)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(50, 300)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

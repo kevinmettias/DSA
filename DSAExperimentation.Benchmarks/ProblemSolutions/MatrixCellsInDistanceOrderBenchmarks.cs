@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.LeetCode.MatrixCellsInDistanceOrder;
 
@@ -14,19 +15,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MatrixCellsInDistanceOrderBenchmarks
 {
-    private const int MidpointDivisor = 2;
-
-    [Params(20, 80)]
-    public int Size;
 
     private Grid _grid = null!;
+
     private int _center;
+    [Params(20, 80)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _grid = MatrixCellsInDistanceOrderSolution.BuildOpenGrid(Size, Size);
-        _center = Size / MidpointDivisor;
+        _center = Size / AlgorithmConstants.HalvingFactor;
     }
 
     [Benchmark(Baseline = true)]

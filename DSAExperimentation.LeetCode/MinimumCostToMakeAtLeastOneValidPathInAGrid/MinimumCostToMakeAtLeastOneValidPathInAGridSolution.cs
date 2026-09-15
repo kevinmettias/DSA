@@ -51,6 +51,31 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
         return distances[rows - 1, cols - 1]!.Value;
     }
 
+    private static (int Row, int Col) FindUnsettledMinimum(int?[,] distances, bool[,] settled)
+    {
+        var best = int.MaxValue;
+        var result = (-1, -1);
+
+        for (var row = 0; row < distances.GetLength(0); row++)
+        {
+            for (var col = 0; col < distances.GetLength(1); col++)
+            {
+                if (!settled[row, col] && IsCloserThanBest(distances[row, col], best))
+                {
+                    best = distances[row, col]!.Value;
+                    result = (row, col);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // A cell is only worth settling later if it has been reached at all, and then by
+    // a shorter path than the best the scan has found so far.
+    private static bool IsCloserThanBest(int? distance, int best)
+        => distance is int candidate && candidate < best;
+
     private static bool SettleAndRelax(int[][] grid, (int Row, int Col) cell, int?[,] distances, bool[,] settled)
     {
         settled[cell.Row, cell.Col] = true;
@@ -84,36 +109,27 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
         }
     }
 
-    private static (int Row, int Col) FindUnsettledMinimum(int?[,] distances, bool[,] settled)
-    {
-        var best = int.MaxValue;
-        var result = (-1, -1);
-
-        for (var row = 0; row < distances.GetLength(0); row++)
-        {
-            for (var col = 0; col < distances.GetLength(1); col++)
-            {
-                if (!settled[row, col] && distances[row, col] is int distance && distance < best)
-                {
-                    best = distance;
-                    result = (row, col);
-                }
-            }
-        }
-
-        return result;
-    }
-
     // This repo's own frontier: Heap<Element,TOrder> ordered by ByPriorityOrder, so
     // the next cell to settle is a pop rather than a scan of the whole table.
     public static int MinCostByHeapDijkstra(int[][] grid)
     {
-        var rows = grid.Length;
-        var cols = grid[0].Length;
         var distances = new Dictionary<(int Row, int Col), int> { [(0, 0)] = 0 };
-        var settled = new HashSet<(int Row, int Col)>();
         var frontier = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
         frontier.Push(((0, 0), 0));
+
+        return SettleUntilTarget(grid, distances, frontier);
+    }
+
+    // Pops cells in nondecreasing distance order until the far corner comes off the
+    // frontier - its priority is then final - or the frontier runs dry, in which
+    // case the corner's table entry is the answer.
+    private static int SettleUntilTarget(
+        int[][] grid, Dictionary<(int Row, int Col), int> distances,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> frontier)
+    {
+        var settled = new HashSet<(int Row, int Col)>();
+        var rows = grid.Length;
+        var cols = grid[0].Length;
 
         while (frontier.TryPop(out var entry))
         {
@@ -168,7 +184,12 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
     // Following the source cell's own arrow is free; any other direction costs one
     // override.
     private static int CrossingCost(int[][] grid, (int Row, int Col) cell, int direction)
-        => grid[cell.Row][cell.Col] == direction + 1 ? 0 : 1;
+        => FollowsArrow(grid, cell, direction) ? 0 : 1;
+
+    // A cell's arrow names a direction counting from 1, so the cell follows this step
+    // exactly when its own value is this direction's index.
+    private static bool FollowsArrow(int[][] grid, (int Row, int Col) cell, int direction)
+        => grid[cell.Row][cell.Col] == direction + 1;
 
     private static bool IsInside(int[][] grid, (int Row, int Col) cell)
         => cell.Row >= 0 && cell.Row < grid.Length && cell.Col >= 0 && cell.Col < grid[0].Length;

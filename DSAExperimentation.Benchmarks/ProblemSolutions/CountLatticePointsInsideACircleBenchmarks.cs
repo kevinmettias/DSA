@@ -17,10 +17,10 @@ public class CountLatticePointsInsideACircleBenchmarks
     private const int CoordinateBound = 150;
     private const int MaxRadiusExclusive = 6;
 
-    [Params(50, 300)]
-    public int CircleCount;
+    private int[][] _circles = [];
 
-    private int[][] _circles = null!;
+    [Params(50, 300)]
+    public int CircleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

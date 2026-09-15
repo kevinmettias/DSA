@@ -16,26 +16,19 @@ namespace DSAExperimentation.LeetCode.MaximizeGridHappiness;
 // shape §17.4 calls for: a benchmark builds it once in [GlobalSetup] and hands it to
 // the measured method, and since it is not an IEnumerable it can never be confused
 // with the (m, n) overload.
-internal sealed class GridLayout
+internal sealed class GridLayout(int columnCount, int totalCells, int oldestDigitScale)
 {
     // One digit per occupancy state: empty, introvert, extrovert.
     private const int MaskBase = 3;
 
-    private GridLayout(int columnCount, int totalCells, int oldestDigitScale)
-    {
-        ColumnCount = columnCount;
-        TotalCells = totalCells;
-        OldestDigitScale = oldestDigitScale;
-    }
-
     // The grid's width, which is also the width of the sliding profile window.
-    public int ColumnCount { get; }
+    public int ColumnCount { get; } = columnCount;
 
     // Every cell is visited once, in row-major order, so this is where a walk ends.
-    public int TotalCells { get; }
+    public int TotalCells { get; } = totalCells;
 
     // The place value of the profile's oldest digit: 3^(ColumnCount - 1).
-    public int OldestDigitScale { get; }
+    public int OldestDigitScale { get; } = oldestDigitScale;
 
     public static GridLayout Build(int rows, int columns)
     {
@@ -57,8 +50,12 @@ internal sealed class GridLayout
         var row = pos / ColumnCount;
         var col = pos % ColumnCount;
 
-        return (row > 0 ? mask / OldestDigitScale : 0, col > 0 ? mask % MaskBase : 0);
+        return (row > 0 ? CellAbove(mask) : 0, col > 0 ? CellToLeft(mask) : 0);
     }
+
+    private int CellAbove(int mask) => mask / OldestDigitScale;
+
+    private int CellToLeft(int mask) => mask % MaskBase;
 
     // Slides the window forward one cell: drop the oldest digit, append the type
     // just placed.

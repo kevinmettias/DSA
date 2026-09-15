@@ -90,14 +90,8 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
 
     private void UpdateRange(SegmentRange range, int left, int right, TUpdate update)
     {
-        if (right < range.Start || range.End < left)
+        if (TryResolveAtNode(range, left, right, update))
         {
-            return;
-        }
-
-        if (left <= range.Start && range.End <= right)
-        {
-            ApplyToNode(range, update);
             return;
         }
 
@@ -108,8 +102,34 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
         UpdateRange(leftChild, left, right, update);
         UpdateRange(rightChild, left, right, update);
 
+        RecombineFromChildren(range, leftChild, rightChild);
+    }
+
+    // Rebuilds a node's own aggregate out of its two children - the step that makes a node's
+    // value valid again once both of its children have finished absorbing the update.
+    private void RecombineFromChildren(SegmentRange range, SegmentRange leftChild, SegmentRange rightChild)
+    {
         var combined = TOperation.Combine(_values.Get(leftChild.Node), _values.Get(rightChild.Node));
         _values.Set(range.Node, combined);
+    }
+
+    // Settles the range at this node without descending when it can: a range disjoint from the
+    // node needs nothing, and one that covers the node entirely is applied here outright. Anything
+    // else has to reach the children, which is the caller's recursion.
+    private bool TryResolveAtNode(SegmentRange range, int left, int right, TUpdate update)
+    {
+        if (right < range.Start || range.End < left)
+        {
+            return true;
+        }
+
+        if (left <= range.Start && range.End <= right)
+        {
+            ApplyToNode(range, update);
+            return true;
+        }
+
+        return false;
     }
 
     private Element Query(SegmentRange range, int left, int right)
@@ -145,12 +165,17 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
             return;
         }
 
+        ApplyToBothChildren(range, pending);
+
+        _pending.Set(range.Node, TOperation.NoUpdate);
+    }
+
+    private void ApplyToBothChildren(SegmentRange range, TUpdate pending)
+    {
         var (left, right) = range.Split();
 
         ApplyToNode(left, pending);
         ApplyToNode(right, pending);
-
-        _pending.Set(range.Node, TOperation.NoUpdate);
     }
 
     private void ApplyToNode(SegmentRange range, TUpdate update)

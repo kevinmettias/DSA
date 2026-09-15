@@ -111,44 +111,35 @@ public sealed class FancySequenceTests
 // null (no value to compare); getIndex returns the actual answer, including -1 for
 // an index that was never appended - the same null-means-"no return value"
 // convention AllOneOp.Apply uses for its own inc/dec split.
-public readonly record struct FancyOp
+public readonly record struct FancyOp(FancyOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static FancyOp Append(int val) => new(OpKind.Append, val);
 
-    private FancyOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static FancyOp AddAll(int inc) => new(OpKind.AddAll, inc);
 
-    public static FancyOp Append(int val) => new(Kind.Append, val);
+    public static FancyOp MultAll(int m) => new(OpKind.MultAll, m);
 
-    public static FancyOp AddAll(int inc) => new(Kind.AddAll, inc);
-
-    public static FancyOp MultAll(int m) => new(Kind.MultAll, m);
-
-    public static FancyOp GetIndex(int idx) => new(Kind.GetIndex, idx);
+    public static FancyOp GetIndex(int idx) => new(OpKind.GetIndex, idx);
 
     internal int? Apply(FancySequenceSolution.IFancySequence fancy)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Append:
-                fancy.Append(_value);
+            case OpKind.Append:
+                fancy.Append(value);
                 return null;
-            case Kind.AddAll:
-                fancy.AddAll(_value);
+            case OpKind.AddAll:
+                fancy.AddAll(value);
                 return null;
-            case Kind.MultAll:
-                fancy.MultAll(_value);
+            case OpKind.MultAll:
+                fancy.MultAll(value);
                 return null;
             default:
-                return fancy.GetIndex(_value);
+                return fancy.GetIndex(value);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Append,
         AddAll,

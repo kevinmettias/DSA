@@ -16,11 +16,11 @@ public class CountTheNumberOfCompleteComponentsBenchmarks
 {
     private const int CliqueSize = 25;
 
+    private int[][] _edges = [];
+
     // NodeCount / CliqueSize disjoint cliques, each already complete.
     [Params(250, 2_500)]
-    public int NodeCount;
-
-    private int[][] _edges = null!;
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

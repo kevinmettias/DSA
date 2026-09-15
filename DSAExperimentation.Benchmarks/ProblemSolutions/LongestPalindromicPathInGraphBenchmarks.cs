@@ -17,10 +17,10 @@ public class LongestPalindromicPathInGraphBenchmarks
     private const int GraphSeed = 3615;
     private const int ExtraEdgesPerNode = 1;
 
-    [Params(8, 12)]
-    public int NodeCount;
-
     private LabeledGraph _graph = null!;
+
+    [Params(8, 12)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

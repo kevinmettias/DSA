@@ -26,7 +26,8 @@ internal static class JumpGameVSolution
 
         for (var start = 0; start < arr.Length; start++)
         {
-            best = Math.Max(best, LongestPathFrom(arr, d, start, memo));
+            var longestFromStart = LongestPathFrom(arr, d, start, memo);
+            best = Math.Max(best, longestFromStart);
         }
 
         return best;

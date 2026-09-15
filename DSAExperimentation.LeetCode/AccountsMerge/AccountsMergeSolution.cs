@@ -28,7 +28,7 @@ internal static class AccountsMergeSolution
         var parent = BuildIdentityParent(accounts.Length);
         UnionSharedEmailPairs(parent, accounts);
 
-        return BuildMergedAccounts(accounts, id => Find(parent, id));
+        return BuildMergedAccounts(accounts, new RootByParentWalk(parent));
     }
 
     private static int[] BuildIdentityParent(int size)
@@ -73,35 +73,35 @@ internal static class AccountsMergeSolution
         return false;
     }
 
-    private static int Find(int[] parent, int id)
+    // The question the pairwise arm's merge phase asks about the parent array
+    // BuildIdentityParent wrote: which account index is the canonical root of the
+    // group this account merged into. The answer is pure and idempotent - the root of
+    // a root is itself - and is defined for every index in 0..accounts.Length-1,
+    // including one that merged with nothing, whose root is its own index.
+    private interface IAccountRootLookup
     {
-        while (parent[id] != id)
-        {
-            id = parent[id];
-        }
-
-        return id;
+        int FindRoot(int accountIndex);
     }
 
-    private static void Union(int[] parent, int first, int second)
+    // The pairwise arm's answer: walk the parent array to its root, one hop at a
+    // time, over the identity array BuildIdentityParent wrote.
+    private sealed class RootByParentWalk : IAccountRootLookup
     {
-        var firstRoot = Find(parent, first);
-        var secondRoot = Find(parent, second);
+        private readonly int[] parent;
 
-        if (firstRoot != secondRoot)
-        {
-            parent[firstRoot] = secondRoot;
-        }
+        public RootByParentWalk(int[] parent) => this.parent = parent;
+
+        public int FindRoot(int accountIndex) => Find(parent, accountIndex);
     }
 
-    private static List<string[]> BuildMergedAccounts(string[][] accounts, Func<int, int> findRoot)
+    private static List<string[]> BuildMergedAccounts(string[][] accounts, IAccountRootLookup roots)
     {
         var emailsByRoot = new Dictionary<int, HashSet<string>>();
         var nameByRoot = new Dictionary<int, string>();
 
         for (var i = 0; i < accounts.Length; i++)
         {
-            var root = findRoot(i);
+            var root = roots.FindRoot(i);
 
             if (!emailsByRoot.TryGetValue(root, out var emails))
             {
@@ -116,20 +116,37 @@ internal static class AccountsMergeSolution
             }
         }
 
+        return MaterializeMergedAccounts(emailsByRoot, nameByRoot);
+    }
+
+    // One merged row per root, in dictionary order: its owner's name followed by
+    // every distinct email that root collected.
+    private static List<string[]> MaterializeMergedAccounts(
+        Dictionary<int, HashSet<string>> emailsByRoot, Dictionary<int, string> nameByRoot)
+    {
         var merged = new List<string[]>();
 
         foreach (var (root, emails) in emailsByRoot)
         {
-            var sortedEmails = emails.ToArray();
-            Array.Sort(sortedEmails, StringComparer.Ordinal);
-
-            var account = new string[sortedEmails.Length + 1];
-            account[0] = nameByRoot[root];
-            Array.Copy(sortedEmails, 0, account, 1, sortedEmails.Length);
+            var account = BuildAccountRow(root, nameByRoot[root], emails);
             merged.Add(account);
         }
 
         return merged;
+    }
+
+    // One merged row: the owner's name, then every distinct email its root
+    // collected, sorted ordinal.
+    private static string[] BuildAccountRow(int root, string name, HashSet<string> emails)
+    {
+        var sortedEmails = emails.ToArray();
+        Array.Sort(sortedEmails, StringComparer.Ordinal);
+
+        var account = new string[sortedEmails.Length + 1];
+        account[0] = name;
+        Array.Copy(sortedEmails, 0, account, 1, sortedEmails.Length);
+
+        return account;
     }
 
     // This repo's own DisjointSet, unioned by first-seen email owner (tracked via
@@ -147,7 +164,8 @@ internal static class AccountsMergeSolution
 
         foreach (var root in emailsByRoot.Keys)
         {
-            merged.Add(BuildMergedAccount(root, emailsByRoot, accounts));
+            var account = BuildMergedAccount(root, emailsByRoot, accounts);
+            merged.Add(account);
         }
 
         return merged;
@@ -211,5 +229,26 @@ internal static class AccountsMergeSolution
         account[0] = accounts[root][0];
         Array.Copy(sortedEmails, 0, account, 1, sortedEmails.Length);
         return account;
+    }
+
+    private static int Find(int[] parent, int id)
+    {
+        while (parent[id] != id)
+        {
+            id = parent[id];
+        }
+
+        return id;
+    }
+
+    private static void Union(int[] parent, int first, int second)
+    {
+        var firstRoot = Find(parent, first);
+        var secondRoot = Find(parent, second);
+
+        if (firstRoot != secondRoot)
+        {
+            parent[firstRoot] = secondRoot;
+        }
     }
 }

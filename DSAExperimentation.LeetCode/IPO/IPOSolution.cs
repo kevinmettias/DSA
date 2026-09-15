@@ -46,7 +46,7 @@ internal static class IPOSolution
 
         for (var i = 0; i < profits.Length; i++)
         {
-            if (!used[i] && capitals[i] <= capital && (bestIndex == -1 || profits[i] > profits[bestIndex]))
+            if (CanBeStarted(used, capitals, i, capital) && IsMoreProfitable(profits, i, bestIndex))
             {
                 bestIndex = i;
             }
@@ -54,6 +54,15 @@ internal static class IPOSolution
 
         return bestIndex;
     }
+
+    // A project this round can still start: not already taken, and affordable with
+    // the capital in hand.
+    private static bool CanBeStarted(bool[] used, int[] capitals, int index, int capital)
+        => !used[index] && capitals[index] <= capital;
+
+    // The most profitable candidate found so far - no project beats none yet.
+    private static bool IsMoreProfitable(int[] profits, int index, int bestIndex)
+        => bestIndex == -1 || profits[index] > profits[bestIndex];
 
     // This repo's own two-heap greedy: a min-heap by required capital feeding a
     // max-heap of unlocked profits.

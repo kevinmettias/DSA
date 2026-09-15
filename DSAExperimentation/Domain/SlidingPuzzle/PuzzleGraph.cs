@@ -50,6 +50,13 @@ internal sealed class PuzzleGraph
         return nodesByState;
     }
 
+    private static List<string> GenerateAllPermutations()
+    {
+        var results = new List<string>();
+        Permute(['0', '1', '2', '3', '4', '5'], 0, results);
+        return results;
+    }
+
     private static void WireEdges(HashMap<string, PuzzleNode> nodesByState)
     {
         foreach (var state in nodesByState.Keys)
@@ -80,11 +87,11 @@ internal sealed class PuzzleGraph
         }
     }
 
-    private static List<string> GenerateAllPermutations()
+    private static string Swap(string state, int i, int j)
     {
-        var results = new List<string>();
-        Permute(['0', '1', '2', '3', '4', '5'], 0, results);
-        return results;
+        var chars = state.ToCharArray();
+        (chars[i], chars[j]) = (chars[j], chars[i]);
+        return new string(chars);
     }
 
     private static void Permute(char[] chars, int start, List<string> results)
@@ -101,12 +108,5 @@ internal sealed class PuzzleGraph
             Permute(chars, start + 1, results);
             (chars[start], chars[i]) = (chars[i], chars[start]);
         }
-    }
-
-    private static string Swap(string state, int i, int j)
-    {
-        var chars = state.ToCharArray();
-        (chars[i], chars[j]) = (chars[j], chars[i]);
-        return new string(chars);
     }
 }

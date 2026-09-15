@@ -57,27 +57,37 @@ internal static class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumSol
 
         foreach (var value in nums)
         {
-            while (stack.TryPeek(out var smaller) && smaller.Value < value)
-            {
-                stack.TryPop(out _);
-            }
-
-            long runCount;
-
-            if (stack.TryPeek(out var run) && run.Value == value)
-            {
-                stack.TryPop(out _);
-                runCount = run.Count + 1;
-            }
-            else
-            {
-                runCount = 1;
-            }
-
-            stack.Push((value, runCount));
-            count += runCount;
+            count = FoldRun(count, stack, value);
         }
 
         return count;
+    }
+
+    // Folds one more element into the run stack and returns the updated total:
+    // pop every run the incoming value dominates, extend the top run when it
+    // equals the value, otherwise start a fresh run of one. Every occurrence in
+    // the extended run pairs with the current index as a new valid subarray.
+    private static long FoldRun(long count, ValueRunStack stack, int value)
+    {
+        while (stack.TryPeek(out var smaller) && smaller.Value < value)
+        {
+            stack.TryPop(out _);
+        }
+
+        long runCount;
+
+        if (stack.TryPeek(out var run) && run.Value == value)
+        {
+            stack.TryPop(out _);
+            runCount = run.Count + 1;
+        }
+        else
+        {
+            runCount = 1;
+        }
+
+        stack.Push((value, runCount));
+
+        return count + runCount;
     }
 }

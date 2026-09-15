@@ -16,10 +16,10 @@ public class CountingWordsWithAGivenPrefixBenchmarks
     private const int MinWordLength = 3;
     private const int MaxWordLengthExclusive = 8;
 
-    [Params(200, 5_000)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(200, 5_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

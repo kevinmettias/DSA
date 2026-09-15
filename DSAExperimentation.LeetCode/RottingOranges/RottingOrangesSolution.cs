@@ -15,11 +15,11 @@ namespace DSAExperimentation.LeetCode.RottingOranges;
 // for LC 542, tracking minutes-to-rot instead of distance-to-nearest-zero.
 internal static class RottingOrangesSolution
 {
-    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     // The problem's own cell encoding: 0 empty, 1 fresh, 2 rotten.
     private const int FreshOrangeState = 1;
+
     private const int RottenOrangeState = 2;
+    private static readonly (int DRow, int DCol)[] Directions = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
     // The naive baseline: a freshly allocated visited grid and BCL Queue per fresh
     // orange, re-walked outward until it reaches a rotten one. Deliberately written
@@ -114,8 +114,7 @@ internal static class RottingOrangesSolution
         SingleSourceBfsState state,
         out int rottenMinutes)
     {
-        var nextRow = current.Row + direction.DRow;
-        var nextCol = current.Col + direction.DCol;
+        var (nextRow, nextCol) = NeighborCell(current, direction);
         rottenMinutes = LeetCodeAnswer.None;
 
         if (IsOutOfBounds(state.Grid, nextRow, nextCol) || state.Visited[nextRow, nextCol])
@@ -123,27 +122,38 @@ internal static class RottingOrangesSolution
             return false;
         }
 
-        if (state.Grid[nextRow][nextCol] == RottenOrangeState)
+        return TryConsumeNeighbor(state, (nextRow, nextCol), current, out rottenMinutes);
+    }
+
+    // The cell one step from current along direction.
+    private static (int Row, int Col) NeighborCell(
+        (int Row, int Col, int Minutes) current, (int DRow, int DCol) direction)
+        => (current.Row + direction.DRow, current.Col + direction.DCol);
+
+    // Consumes one on-grid, unvisited neighbor of the dequeued cell: a rotten one ends
+    // the search with the distance to it, a fresh one joins the frontier at the next
+    // minute, and anything else is left alone.
+    private static bool TryConsumeNeighbor(
+        SingleSourceBfsState state,
+        (int Row, int Col) cell,
+        (int Row, int Col, int Minutes) current,
+        out int rottenMinutes)
+    {
+        if (state.Grid[cell.Row][cell.Col] == RottenOrangeState)
         {
             rottenMinutes = current.Minutes + 1;
             return true;
         }
 
-        if (state.Grid[nextRow][nextCol] == FreshOrangeState)
+        if (state.Grid[cell.Row][cell.Col] == FreshOrangeState)
         {
-            state.Visited[nextRow, nextCol] = true;
-            state.Queue.Enqueue((nextRow, nextCol, current.Minutes + 1));
+            state.Visited[cell.Row, cell.Col] = true;
+            state.Queue.Enqueue((cell.Row, cell.Col, current.Minutes + 1));
         }
 
+        rottenMinutes = LeetCodeAnswer.None;
         return false;
     }
-
-    // The grid, visited map and frontier queue a single-source BFS expands into -
-    // bundled so TryVisitNeighbor stays within the parameter-count limit.
-    private readonly record struct SingleSourceBfsState(
-        int[][] Grid,
-        bool[,] Visited,
-        System.Collections.Generic.Queue<(int Row, int Col, int Minutes)> Queue);
 
     // This repo's own multi-source BFS: seed the frontier with every already-rotten
     // orange at minute 0 simultaneously, using Queue<TElement> as the FIFO frontier,
@@ -166,34 +176,31 @@ internal static class RottingOrangesSolution
         var visited = new bool[grid.Length, grid[0].Length];
         var frontier = new RepoQueue();
         var progress = new BfsProgress();
+        var rotGrid = new RotGrid(grid, visited, minutesToRot, frontier);
 
-        ScanGridForSeeds(grid, minutesToRot, visited, frontier, ref progress);
+        ScanGridForSeeds(rotGrid, ref progress);
 
-        return (new RotGrid(grid, visited, minutesToRot, frontier), progress);
+        return (rotGrid, progress);
     }
 
     // Allocates each row of minutesToRot, then enqueues every already-rotten cell as
     // a minute-0 BFS seed and counts the fresh ones. The self-contained scan step of
-    // the initialization above.
-    private static void ScanGridForSeeds(
-        int[][] grid,
-        int[][] minutesToRot,
-        bool[,] visited,
-        RepoQueue frontier,
-        ref BfsProgress progress)
+    // the initialization above - it takes the very RotGrid it is filling, which is
+    // exactly the four structures the scan threads, so they travel as one value.
+    private static void ScanGridForSeeds(RotGrid grid, ref BfsProgress progress)
     {
-        for (var row = 0; row < grid.Length; row++)
+        for (var row = 0; row < grid.Grid.Length; row++)
         {
-            minutesToRot[row] = new int[grid[row].Length];
+            grid.MinutesToRot[row] = new int[grid.Grid[row].Length];
 
-            for (var col = 0; col < grid[row].Length; col++)
+            for (var col = 0; col < grid.Grid[row].Length; col++)
             {
-                if (grid[row][col] == RottenOrangeState)
+                if (grid.Grid[row][col] == RottenOrangeState)
                 {
-                    frontier.Enqueue((row, col));
-                    visited[row, col] = true;
+                    grid.Frontier.Enqueue((row, col));
+                    grid.Visited[row, col] = true;
                 }
-                else if (grid[row][col] == FreshOrangeState)
+                else if (grid.Grid[row][col] == FreshOrangeState)
                 {
                     progress.FreshCount++;
                 }
@@ -220,8 +227,7 @@ internal static class RottingOrangesSolution
             var nextRow = cell.Row + dRow;
             var nextCol = cell.Col + dCol;
 
-            if (IsOutOfBounds(grid.Grid, nextRow, nextCol) || grid.Visited[nextRow, nextCol]
-                || grid.Grid[nextRow][nextCol] != FreshOrangeState)
+            if (IsOutOfBounds(grid.Grid, nextRow, nextCol) || IsUnvisitedFreshOrange(grid, nextRow, nextCol))
             {
                 continue;
             }
@@ -234,8 +240,20 @@ internal static class RottingOrangesSolution
         }
     }
 
+    // A neighbor this sweep has not reached yet that still has a fresh orange on it -
+    // the only cells the multi-source BFS expands into.
+    private static bool IsUnvisitedFreshOrange(RotGrid grid, int row, int col)
+        => !grid.Visited[row, col] && grid.Grid[row][col] == FreshOrangeState;
+
     private static bool IsOutOfBounds(int[][] grid, int row, int col) =>
         row < 0 || row >= grid.Length || col < 0 || col >= grid[row].Length;
+
+    // The grid, visited map and frontier queue a single-source BFS expands into -
+    // bundled so TryVisitNeighbor stays within the parameter-count limit.
+    private readonly record struct SingleSourceBfsState(
+        int[][] Grid,
+        bool[,] Visited,
+        System.Collections.Generic.Queue<(int Row, int Col, int Minutes)> Queue);
 
     // The read-only grid plus the three shared, in-place-mutated structures the
     // multi-source BFS expands into - bundled so ExpandRottenCell stays within the
@@ -247,9 +265,9 @@ internal static class RottingOrangesSolution
         RepoQueue Frontier);
 
     // The two running totals ExpandRottenCell updates on every reachable neighbor.
-    private struct BfsProgress
+    private sealed class BfsProgress
     {
-        public int FreshCount;
-        public int MinutesElapsed;
+        public int FreshCount { get; set; }
+        public int MinutesElapsed { get; set; }
     }
 }

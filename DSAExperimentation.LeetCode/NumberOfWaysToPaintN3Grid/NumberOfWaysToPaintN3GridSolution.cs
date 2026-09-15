@@ -55,23 +55,30 @@ internal static class NumberOfWaysToPaintN3GridSolution
     // reads as ordinary recursion with no hand-rolled cache dictionary.
     public static long NumOfWaysByMemoizedRecurrence(int n)
     {
-        var (same, different) = Memoizer.Memoize<int, (long Same, long Different)>(n, Ways);
+        var (same, different) = Memoizer.Memoize<int, (long Same, long Different)>(n, new RowPatternCounts());
         return (same + different) % ModularArithmetic.Modulo;
     }
 
-    private static (long Same, long Different) Ways(int row, Func<int, (long Same, long Different)> ways)
+    // The recurrence, as a named type: the row-pattern counts one row on are the previous
+    // row's pair, each weighted by what the shape it paints may be followed by - seeded at
+    // the first row, where all six patterns of each shape paint without conflict.
+    private sealed class RowPatternCounts : IRecurrence<int, (long Same, long Different)>
     {
-        if (row == FirstRow)
+        public (long Same, long Different) Replay(
+            int row, IRecurrence<int, (long Same, long Different)> rest)
         {
-            return (FirstRowPatternCount, FirstRowPatternCount);
+            if (row == FirstRow)
+            {
+                return (FirstRowPatternCount, FirstRowPatternCount);
+            }
+
+            var (prevSame, prevDifferent) = rest.Replay(row - 1, rest);
+
+            return (
+                ((SameFollowerWeight * prevSame) + (DifferentFollowerWeight * prevDifferent))
+                    % ModularArithmetic.Modulo,
+                ((DifferentFollowerWeight * prevSame) + (DifferentFollowerWeight * prevDifferent))
+                    % ModularArithmetic.Modulo);
         }
-
-        var (prevSame, prevDifferent) = ways(row - 1);
-
-        return (
-            ((SameFollowerWeight * prevSame) + (DifferentFollowerWeight * prevDifferent))
-                % ModularArithmetic.Modulo,
-            ((DifferentFollowerWeight * prevSame) + (DifferentFollowerWeight * prevDifferent))
-                % ModularArithmetic.Modulo);
     }
 }

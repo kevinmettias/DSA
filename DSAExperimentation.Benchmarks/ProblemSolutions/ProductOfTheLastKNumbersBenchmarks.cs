@@ -17,11 +17,11 @@ public class ProductOfTheLastKNumbersBenchmarks
     // Fixed so every run measures the same stream of factors.
     private const int FactorSeed = 1;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private ProductOfTheLastKNumbersSolution.IProductOfNumbers _rawStreamReplay = null!;
+
     private ProductOfTheLastKNumbersSolution.IProductOfNumbers _prefixProductDivision = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,12 +36,6 @@ public class ProductOfTheLastKNumbersBenchmarks
             Seed(ProductOfTheLastKNumbersSolution.CreateByPrefixProductDivision(), values);
     }
 
-    [Benchmark(Baseline = true)]
-    public int ReplayLastKFromRawStream() => _rawStreamReplay.GetProduct(Length);
-
-    [Benchmark]
-    public int PrefixProductDivision() => _prefixProductDivision.GetProduct(Length);
-
     private static ProductOfTheLastKNumbersSolution.IProductOfNumbers Seed(
         ProductOfTheLastKNumbersSolution.IProductOfNumbers numbers, int[] values)
     {
@@ -52,4 +46,10 @@ public class ProductOfTheLastKNumbersBenchmarks
 
         return numbers;
     }
+
+    [Benchmark(Baseline = true)]
+    public int ReplayLastKFromRawStream() => _rawStreamReplay.GetProduct(Length);
+
+    [Benchmark]
+    public int PrefixProductDivision() => _prefixProductDivision.GetProduct(Length);
 }

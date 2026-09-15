@@ -18,12 +18,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestHappyPrefixBenchmarks
 {
-    private const string MismatchSuffix = "b"; // forces every candidate length's comparison to fail only on the last character
+    private const string MismatchSuffix = "b"; private string _value = "";
+
+    // forces every candidate length's comparison to fail only on the last character
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private string _value = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _value = new string('a', Length - 1) + MismatchSuffix;

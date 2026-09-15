@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindTheNthValueAfterKSecondsBenchmarks
 {
     [Params(50, 300)]
-    public int Size;
+    public int Size { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForce() => FindTheNthValueAfterKSecondsSolution.ValueAfterKSecondsByBruteForce(Size, Size);

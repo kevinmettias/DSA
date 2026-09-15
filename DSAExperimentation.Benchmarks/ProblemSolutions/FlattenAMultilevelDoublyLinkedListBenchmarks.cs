@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FlattenAMultilevelDoublyLinkedListBenchmarks
 {
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForceRescanFromHead() =>

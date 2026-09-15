@@ -17,10 +17,10 @@ public class FindMinimumTimeToFinishAllJobsBenchmarks
     private const int RandomSeed = 5;
     private const int MaxJobDuration = 50;
 
-    [Params(8, 10)]
-    public int JobCount;
+    private int[] _jobs = [];
 
-    private int[] _jobs = null!;
+    [Params(8, 10)]
+    public int JobCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -60,7 +60,7 @@ internal static class SortingTheSentenceSolution
 
         for (var index = 0; index < words.Length; index++)
         {
-            if (!placed[index] && (lowest < 0 || PositionOf(words[index]) < PositionOf(words[lowest])))
+            if (IsLowerUnplacedWord(words, placed, index, lowest))
             {
                 lowest = index;
             }
@@ -68,6 +68,12 @@ internal static class SortingTheSentenceSolution
 
         return lowest;
     }
+
+    // A word takes over as the lowest still-unplaced one when it is unplaced and
+    // is either the first one seen or sits at a smaller position than the lowest
+    // found so far.
+    private static bool IsLowerUnplacedWord(string[] words, bool[] placed, int index, int lowest)
+        => !placed[index] && (lowest < 0 || PositionOf(words[index]) < PositionOf(words[lowest]));
 
     private static int PositionOf(string word) => int.Parse(word.AsSpan(DigitsStart(word)));
 

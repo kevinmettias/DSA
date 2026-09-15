@@ -15,11 +15,11 @@ public class BricksFallingWhenHitBenchmarks
     // LC problem number, reused as the deterministic wall seed.
     private const int RandomSeed = 803;
 
-    [Params(20, 60)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
-    private int[][] _hits = null!;
+    private int[][] _hits = [];
+    [Params(20, 60)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumCutsToDivideACircleBenchmarks
 {
     [Params(101, 100_001)]
-    public int Slices;
+    public int Slices { get; set; }
 
     [Benchmark(Baseline = true)]
     public int SimulateOneCutAtATime() =>

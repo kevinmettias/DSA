@@ -31,13 +31,15 @@ internal static class LongestValidParenthesesSolution
 
             if (open >= 0 && value[open] == '(')
             {
-                dp[i] = dp[i - 1] + MatchedPairLength + (open > 0 ? dp[open - 1] : 0);
+                dp[i] = dp[i - 1] + MatchedPairLength + (open > 0 ? RunLengthBefore(dp, open) : 0);
                 best = Math.Max(best, dp[i]);
             }
         }
 
         return best;
     }
+
+    private static int RunLengthBefore(int[] dp, int open) => dp[open - 1];
 
     // A stack of unmatched indices, seeded with -1 so the first valid run's
     // length is measured from a real boundary. Popping on ')' either finds the
@@ -57,17 +59,25 @@ internal static class LongestValidParenthesesSolution
                 continue;
             }
 
-            stack.TryPop(out _);
-
-            if (stack.TryPeek(out var start))
-            {
-                best = Math.Max(best, i - start);
-            }
-            else
-            {
-                stack.Push(i);
-            }
+            best = BestAfterClose(stack, i, best);
         }
+
+        return best;
+    }
+
+    // One ')' of the scan: its matching '(' comes off the stack, so the new top
+    // marks where the run it just closed began - or, if nothing is left to mark
+    // one, this index becomes the boundary the next run is measured from.
+    private static int BestAfterClose(IndexStack stack, int index, int best)
+    {
+        stack.TryPop(out _);
+
+        if (stack.TryPeek(out var start))
+        {
+            return Math.Max(best, index - start);
+        }
+
+        stack.Push(index);
 
         return best;
     }

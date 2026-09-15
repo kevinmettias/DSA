@@ -18,10 +18,10 @@ public class MinimumNumberOfKConsecutiveBitFlipsBenchmarks
     // Fixed so every run measures the same bit pattern.
     private const int BitSeed = 1;
 
-    [Params(3_000, 30_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(3_000, 30_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

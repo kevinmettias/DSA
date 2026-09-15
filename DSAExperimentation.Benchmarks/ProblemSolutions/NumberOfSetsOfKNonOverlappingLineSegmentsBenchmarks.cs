@@ -12,10 +12,10 @@ public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
 {
     private const int PointsToKDivisor = 4;
 
-    [Params(50, 500)]
-    public int Points;
-
     private int _k;
+
+    [Params(50, 500)]
+    public int Points { get; set; }
 
     [GlobalSetup]
     public void Setup() => _k = Points / PointsToKDivisor;

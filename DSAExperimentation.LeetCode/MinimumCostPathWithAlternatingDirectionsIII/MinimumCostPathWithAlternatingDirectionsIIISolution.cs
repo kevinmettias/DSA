@@ -46,59 +46,65 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
                 continue; // A stale entry from an earlier, since-improved relaxation.
             }
 
-            RelaxBcl(state, distance, penalty, distances, frontier);
+            RelaxBcl(state, distance, penalty, (distances, frontier));
         }
 
         return StartEntranceCost + BestArrival(distances, m, n);
     }
 
+    // One settled state's two kinds of relaxation: staying put, which always costs
+    // the cell's own penalty, then every move that is legal from here. The two
+    // collections Dijkstra is driven by travel together so neither step has to be
+    // handed five separate arguments.
     private static void RelaxBcl(
         (int Row, int Col, bool NextActionIsOdd) state,
         long distance,
         int[][] penalty,
-        Dictionary<(int Row, int Col, bool NextActionIsOdd), long> distances,
-        PriorityQueue<(int Row, int Col, bool NextActionIsOdd), long> frontier)
+        (Dictionary<(int Row, int Col, bool NextActionIsOdd), long> Distances,
+            PriorityQueue<(int Row, int Col, bool NextActionIsOdd), long> Frontier) search)
     {
         var (row, col, nextActionIsOdd) = state;
+        var stayPenalty = penalty[row][col];
+
+        Relax((row, col, !nextActionIsOdd), distance + stayPenalty, search.Distances, search.Frontier);
+        RelaxNeighborCells((row, col, nextActionIsOdd, stayPenalty), distance, penalty, search);
+    }
+
+    // Every move out of one settled state, each paying its destination's entrance cost
+    // plus the source cell's own penalty when the move runs against the parity the
+    // state is waiting for.
+    private static void RelaxNeighborCells(
+        (int Row, int Col, bool NextActionIsOdd, int StayPenalty) source,
+        long distance,
+        int[][] penalty,
+        (Dictionary<(int Row, int Col, bool NextActionIsOdd), long> Distances,
+            PriorityQueue<(int Row, int Col, bool NextActionIsOdd), long> Frontier) search)
+    {
         var rows = penalty.Length;
         var cols = penalty[0].Length;
-        var stayPenalty = penalty[row][col];
-        var flipped = !nextActionIsOdd;
-
-        Relax((row, col, flipped), distance + stayPenalty, distances, frontier);
+        var flipped = !source.NextActionIsOdd;
 
         foreach (var (deltaRow, deltaCol, matchesOddAction) in Moves)
         {
-            var nextRow = row + deltaRow;
-            var nextCol = col + deltaCol;
+            var nextRow = source.Row + deltaRow;
+            var nextCol = source.Col + deltaCol;
 
-            if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols)
+            if (!IsOnGrid(nextRow, nextCol, rows, cols))
             {
                 continue;
             }
 
-            var followsParity = matchesOddAction == nextActionIsOdd;
+            var followsParity = matchesOddAction == source.NextActionIsOdd;
             var entrance = (long)(nextRow + 1) * (nextCol + 1);
-            var cost = entrance + (followsParity ? 0 : stayPenalty);
+            var cost = entrance + (followsParity ? 0 : source.StayPenalty);
 
-            Relax((nextRow, nextCol, flipped), distance + cost, distances, frontier);
+            Relax((nextRow, nextCol, flipped), distance + cost, search.Distances, search.Frontier);
         }
     }
 
-    private static void Relax(
-        (int Row, int Col, bool NextActionIsOdd) state,
-        long candidate,
-        Dictionary<(int Row, int Col, bool NextActionIsOdd), long> distances,
-        PriorityQueue<(int Row, int Col, bool NextActionIsOdd), long> frontier)
-    {
-        if (distances.TryGetValue(state, out var known) && candidate >= known)
-        {
-            return;
-        }
-
-        distances[state] = candidate;
-        frontier.Enqueue(state, candidate);
-    }
+    // Whether the cell lies on the grid at all.
+    private static bool IsOnGrid(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
 
     private static long BestArrival(
         Dictionary<(int Row, int Col, bool NextActionIsOdd), long> distances, int m, int n)
@@ -122,5 +128,23 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
             source with { Row = m - 1, Col = n - 1, NextActionIsOdd = false }, long.MaxValue);
 
         return StartEntranceCost + Math.Min(viaOdd, viaEven);
+    }
+
+    // Relax one state to `candidate` when that beats what is already known for it, and
+    // queue it for its own turn. Reached from the waiting step and from every move, so
+    // it sits after the two helpers that call it.
+    private static void Relax(
+        (int Row, int Col, bool NextActionIsOdd) state,
+        long candidate,
+        Dictionary<(int Row, int Col, bool NextActionIsOdd), long> distances,
+        PriorityQueue<(int Row, int Col, bool NextActionIsOdd), long> frontier)
+    {
+        if (distances.TryGetValue(state, out var known) && candidate >= known)
+        {
+            return;
+        }
+
+        distances[state] = candidate;
+        frontier.Enqueue(state, candidate);
     }
 }

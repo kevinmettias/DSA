@@ -24,11 +24,11 @@ public class SearchSuggestionsSystemBenchmarks
     private const int CatalogSeed = 1;
     private static readonly char[] Alphabet = ['a', 'b', 'c', 'd'];
 
-    [Params(50, 400)]
-    public int WordLength;
+    private string[] _products = [];
 
-    private string[] _products = null!;
-    private string _searchWord = null!;
+    private string _searchWord = "";
+    [Params(50, 400)]
+    public int WordLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

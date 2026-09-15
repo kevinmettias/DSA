@@ -42,37 +42,6 @@ internal static class MinimumCostTreeFromLeafValuesSolution
         return (int)total;
     }
 
-    private static long MinCost(int[] arr, int left, int right)
-    {
-        if (left == right)
-        {
-            return 0;
-        }
-
-        var best = long.MaxValue;
-
-        for (var split = left; split < right; split++)
-        {
-            var cost = MinCost(arr, left, split) + MinCost(arr, split + 1, right)
-                + ((long)MaxIn(arr, left, split) * MaxIn(arr, split + 1, right));
-            best = Math.Min(best, cost);
-        }
-
-        return best;
-    }
-
-    private static int MaxIn(int[] arr, int left, int right)
-    {
-        var max = arr[left];
-
-        for (var i = left + 1; i <= right; i++)
-        {
-            max = Math.Max(max, arr[i]);
-        }
-
-        return max;
-    }
-
     // Every leaf the newcomer dominates is merged away now, against whichever of
     // its two neighbours is smaller.
     private static long MergeSmallerNeighbors(RepoIntStack stack, int[] arr)
@@ -108,5 +77,36 @@ internal static class MinimumCostTreeFromLeafValuesSolution
         }
 
         return total;
+    }
+
+    private static long MinCost(int[] arr, int left, int right)
+    {
+        if (left == right)
+        {
+            return 0;
+        }
+
+        var best = long.MaxValue;
+
+        for (var split = left; split < right; split++)
+        {
+            var cost = MinCost(arr, left, split) + MinCost(arr, split + 1, right)
+                + ((long)MaxIn(arr, left, split) * MaxIn(arr, split + 1, right));
+            best = Math.Min(best, cost);
+        }
+
+        return best;
+    }
+
+    private static int MaxIn(int[] arr, int left, int right)
+    {
+        var max = arr[left];
+
+        for (var i = left + 1; i <= right; i++)
+        {
+            max = Math.Max(max, arr[i]);
+        }
+
+        return max;
     }
 }

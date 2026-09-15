@@ -31,7 +31,7 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         foreach (var value in nums)
         {
             var bad = CountConflicts(nums, value);
-            var cost = value == 1 ? bad : bad - 1;
+            var cost = value == 1 ? bad : ConflictsExcludingOwnSeat(bad);
             best = Math.Max(best, value - cost);
         }
 
@@ -59,8 +59,6 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         return bad;
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
-
     // Composed: bad(v) = n - coprimeCount(v), and coprimeCount(v) is answered
     // by inclusion-exclusion over v's own distinct prime factors against a
     // precomputed divisor-multiple sieve - "how many array elements are
@@ -79,7 +77,7 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         foreach (var value in nums)
         {
             var bad = n - CoprimeCount(value, smallestPrimeFactor, divisorCount);
-            var cost = value == 1 ? bad : bad - 1;
+            var cost = value == 1 ? bad : ConflictsExcludingOwnSeat(bad);
             best = Math.Max(best, value - cost);
         }
 
@@ -153,21 +151,7 @@ internal static class MaximumScoreWithCoPrimeElementSolution
 
         for (var mask = 0; mask < subsetCount; mask++)
         {
-            var product = 1;
-            var bitCount = 0;
-
-            for (var bit = 0; bit < primes.Count; bit++)
-            {
-                if ((mask & (1 << bit)) == 0)
-                {
-                    continue;
-                }
-
-                product *= primes[bit];
-                bitCount++;
-            }
-
-            total += bitCount % 2 == 0 ? divisorCount[product] : -divisorCount[product];
+            total += SignedSubsetCount(mask, primes, divisorCount);
         }
 
         return total;
@@ -190,4 +174,42 @@ internal static class MaximumScoreWithCoPrimeElementSolution
 
         return primes;
     }
+
+    // One subset of v's distinct primes: the product its bits select, and the
+    // inclusion-exclusion sign the subset's size gives it - adding that product's
+    // multiple count when the subset is even-sized, subtracting it when odd.
+    private static int SignedSubsetCount(int mask, List<int> primes, int[] divisorCount)
+    {
+        var product = 1;
+        var bitCount = 0;
+
+        for (var bit = 0; bit < primes.Count; bit++)
+        {
+            if ((mask & (1 << bit)) == 0)
+            {
+                continue;
+            }
+
+            product *= primes[bit];
+            bitCount++;
+        }
+
+        var subsetSizeIsEven = bitCount % 2 == 0;
+
+        return subsetSizeIsEven
+            ? DivisibleElementCount(divisorCount, product)
+            : -DivisibleElementCount(divisorCount, product);
+    }
+
+    // divisorCount[d] already holds "how many elements of nums are divisible by
+    // d", so this arm reads as the answer for one inclusion-exclusion subset
+    // rather than as a lookup into the sieve it came from.
+    private static int DivisibleElementCount(int[] divisorCount, int product) => divisorCount[product];
+
+    // bad(v) counts v's own seat as a conflict whenever v > 1, because
+    // gcd(v, v) = v; case (a) leaves that seat unchanged, so its self-conflict
+    // is excluded from the cost rather than paid for.
+    private static int ConflictsExcludingOwnSeat(int conflicts) => conflicts - 1;
+
+    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
 }

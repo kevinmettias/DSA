@@ -28,6 +28,17 @@ internal static class CloneGraphSolution
         return CopyByDictionary(node, new Dictionary<Node, Node>());
     }
 
+    // The same DFS composed over this repo's own HashMap as the memo.
+    public static Node? CloneByHashMapDfs(Node? node)
+    {
+        if (node is null)
+        {
+            return null;
+        }
+
+        return CopyByHashMap(node, new HashMap<Node, Node>());
+    }
+
     private static Node CopyByDictionary(Node node, Dictionary<Node, Node> clones)
     {
         if (clones.TryGetValue(node, out var existing))
@@ -40,21 +51,11 @@ internal static class CloneGraphSolution
 
         foreach (var neighbor in node.Neighbors)
         {
-            clone.Neighbors.Add(CopyByDictionary(neighbor, clones));
+            var neighborClone = CopyByDictionary(neighbor, clones);
+            clone.Neighbors.Add(neighborClone);
         }
 
         return clone;
-    }
-
-    // The same DFS composed over this repo's own HashMap as the memo.
-    public static Node? CloneByHashMapDfs(Node? node)
-    {
-        if (node is null)
-        {
-            return null;
-        }
-
-        return CopyByHashMap(node, new HashMap<Node, Node>());
     }
 
     private static Node CopyByHashMap(Node node, HashMap<Node, Node> clones)
@@ -69,7 +70,8 @@ internal static class CloneGraphSolution
 
         foreach (var neighbor in node.Neighbors)
         {
-            clone.Neighbors.Add(CopyByHashMap(neighbor, clones));
+            var neighborClone = CopyByHashMap(neighbor, clones);
+            clone.Neighbors.Add(neighborClone);
         }
 
         return clone;

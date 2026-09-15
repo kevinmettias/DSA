@@ -25,11 +25,11 @@ public class MinimumNumberOfVisitedCellsInAGridBenchmarks
     // LC problem number, reused as the deterministic jump-value seed.
     private const int GridSeed = 2617;
 
-    [Params(20, 80)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
     private JumpGrid _jumpGrid = null!;
+    [Params(20, 80)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()

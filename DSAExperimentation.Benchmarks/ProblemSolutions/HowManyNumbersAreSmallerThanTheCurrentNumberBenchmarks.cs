@@ -16,10 +16,10 @@ public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
     private const int RandomSeed = 1365; // LC problem number
     private const int ValueExclusiveBound = 100_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

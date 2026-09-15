@@ -16,14 +16,14 @@ public class MaximizeActiveSectionWithTradeIIBenchmarks
 {
     private const int Seed = 3501;
     private const int MaxQueryCount = 200;
-    private const int ZeroOutOfFiveWeight = 2; // biases toward more zero-runs, so trades have something to work with
+    private const int ZeroOutOfFiveWeight = 2; private string _s = "";
+
+    private int[][] _queries = [];
+    private ActiveSectionTradeIndex _index = null!;
+    // biases toward more zero-runs, so trades have something to work with
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private string _s = null!;
-    private int[][] _queries = null!;
-    private ActiveSectionTradeIndex _index = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,20 +34,14 @@ public class MaximizeActiveSectionWithTradeIIBenchmarks
         _index = new ActiveSectionTradeIndex(_s);
     }
 
-    [Benchmark(Baseline = true)]
-    public int[] RunScan() => MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRunScan(_s, _queries);
-
-    [Benchmark]
-    public int[] RangeMaxIndex() =>
-        MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRangeMaxIndex(_index, _queries);
-
     private static string BuildBinaryString(int length, Random random)
     {
         var chars = new char[length];
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = random.Next(5) < ZeroOutOfFiveWeight ? '0' : '1';
+            var isZero = random.Next(5) < ZeroOutOfFiveWeight;
+            chars[i] = isZero ? '0' : '1';
         }
 
         return new string(chars);
@@ -67,4 +61,11 @@ public class MaximizeActiveSectionWithTradeIIBenchmarks
 
         return queries;
     }
+
+    [Benchmark(Baseline = true)]
+    public int[] RunScan() => MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRunScan(_s, _queries);
+
+    [Benchmark]
+    public int[] RangeMaxIndex() =>
+        MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRangeMaxIndex(_index, _queries);
 }

@@ -16,11 +16,11 @@ public class MinimumNumberOfValidStringsToFormTargetIBenchmarks
     private const int WordLength = 50;
     private const string Alphabet = "abcd";
 
-    [Params(500, 2_000)]
-    public int TargetLength;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private string _target = null!;
+    private string _target = "";
+    [Params(500, 2_000)]
+    public int TargetLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

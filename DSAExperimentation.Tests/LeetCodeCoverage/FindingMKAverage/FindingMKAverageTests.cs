@@ -118,29 +118,20 @@ public sealed class FindingMKAverageTests
 // answer to compare); calculateMKAverage returns the actual answer, including -1 for
 // a window that has not filled - the same null-means-"no return value" convention
 // AllOneOp.Apply uses.
-public readonly record struct MKAverageOp
+public readonly record struct MKAverageOp(int value, bool isCalculate)
 {
-    private readonly int _value;
-    private readonly bool _isCalculate;
-
-    private MKAverageOp(int value, bool isCalculate)
-    {
-        _value = value;
-        _isCalculate = isCalculate;
-    }
-
     public static MKAverageOp AddElement(int num) => new(num, false);
 
     public static MKAverageOp Calculate() => new(0, true);
 
     internal int? Apply(FindingMKAverageSolution.IMKAverage mkAverage)
     {
-        if (_isCalculate)
+        if (isCalculate)
         {
             return mkAverage.CalculateMKAverage();
         }
 
-        mkAverage.AddElement(_value);
+        mkAverage.AddElement(value);
         return null;
     }
 }

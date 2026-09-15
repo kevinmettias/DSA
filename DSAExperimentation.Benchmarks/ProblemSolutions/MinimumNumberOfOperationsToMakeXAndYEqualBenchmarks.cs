@@ -15,7 +15,7 @@ public class MinimumNumberOfOperationsToMakeXAndYEqualBenchmarks
     private const int Y = 1;
 
     [Params(997, 9_973)]
-    public int X;
+    public int X { get; set; }
 
     [Benchmark(Baseline = true)]
     public int MutationQueueBfs() =>

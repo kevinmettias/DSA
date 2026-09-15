@@ -76,6 +76,10 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
     {
         private readonly bool[] _unlocked;
 
+        public int[] Complexity { get; }
+
+        public int UnlockedCount { get; private set; }
+
         public UnlockState(int[] complexity)
         {
             Complexity = complexity;
@@ -83,10 +87,6 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
             _unlocked[0] = true;
             UnlockedCount = 1;
         }
-
-        public int[] Complexity { get; }
-
-        public int UnlockedCount { get; private set; }
 
         public bool IsUnlocked(int i) => _unlocked[i];
 

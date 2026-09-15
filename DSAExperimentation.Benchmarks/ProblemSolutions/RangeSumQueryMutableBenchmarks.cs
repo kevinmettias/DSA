@@ -17,11 +17,11 @@ public class RangeSumQueryMutableBenchmarks
     private const int ValueBound = 1_000;
     private const int OperationTypeCount = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _initial = [];
 
-    private int[] _initial = null!;
-    private (bool IsUpdate, int A, int B)[] _operations = null!;
+    private (bool IsUpdate, int A, int B)[] _operations = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

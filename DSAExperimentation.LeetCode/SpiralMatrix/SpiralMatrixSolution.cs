@@ -31,17 +31,21 @@ internal static class SpiralMatrixSolution
 
         for (var i = 0; i < rows * cols; i++)
         {
-            (row, col, direction) = StepClockwise(matrix, row, col, direction, visited, result);
+            (row, col, direction) = StepClockwise(matrix, (row, col, direction), visited, result);
         }
 
         return result;
     }
 
+    // One clockwise step of the walk: where it stands and which way it faces is the
+    // whole of its state, both going in and coming back out, so it travels as one
+    // argument rather than three.
     private static (int Row, int Col, int Direction) StepClockwise(
-        int[][] matrix, int row, int col, int direction, bool[,] visited, List<int> result)
+        int[][] matrix, (int Row, int Col, int Direction) walk, bool[,] visited, List<int> result)
     {
         var rows = matrix.Length;
         var cols = matrix[0].Length;
+        var (row, col, direction) = walk;
 
         visited[row, col] = true;
         result.Add(matrix[row][col]);
@@ -50,7 +54,7 @@ internal static class SpiralMatrixSolution
         var nextRow = row + dRow;
         var nextCol = col + dCol;
 
-        if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols || visited[nextRow, nextCol])
+        if (!IsOnGrid(nextRow, nextCol, rows, cols) || visited[nextRow, nextCol])
         {
             direction = (direction + 1) % Directions.Length;
             (dRow, dCol) = Directions[direction];
@@ -60,6 +64,10 @@ internal static class SpiralMatrixSolution
 
         return (nextRow, nextCol, direction);
     }
+
+    // Whether the cell lies on the matrix at all.
+    private static bool IsOnGrid(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
 
     // Four boundary pointers shrink inward after each ring is fully walked -
     // no visited-cell tracking needed.
@@ -73,41 +81,55 @@ internal static class SpiralMatrixSolution
 
         while (top <= bottom && left <= right)
         {
-            for (var c = left; c <= right; c++)
-            {
-                result.Add(matrix[top][c]);
-            }
-
-            top++;
-
-            for (var r = top; r <= bottom; r++)
-            {
-                result.Add(matrix[r][right]);
-            }
-
-            right--;
-
-            if (top <= bottom)
-            {
-                for (var c = right; c >= left; c--)
-                {
-                    result.Add(matrix[bottom][c]);
-                }
-
-                bottom--;
-            }
-
-            if (left <= right)
-            {
-                for (var r = bottom; r >= top; r--)
-                {
-                    result.Add(matrix[r][left]);
-                }
-
-                left++;
-            }
+            (top, bottom, left, right) = WalkRing(matrix, result, (top, bottom, left, right));
         }
 
         return result;
+    }
+
+    // Walks the ring the four pointers currently bound - top edge, then right edge,
+    // then the bottom edge and left edge only while the shrunk pointers still bound
+    // them - and hands back the pointers shrunk to the ring inward of it.
+    private static (int Top, int Bottom, int Left, int Right) WalkRing(
+        int[][] matrix, List<int> result, (int Top, int Bottom, int Left, int Right) bounds)
+    {
+        var (top, bottom, left, right) = bounds;
+
+        WalkEdge(matrix, result, (top, left, 0, 1, right - left + 1));
+        top++;
+
+        WalkEdge(matrix, result, (top, right, 1, 0, bottom - top + 1));
+        right--;
+
+        if (top <= bottom)
+        {
+            WalkEdge(matrix, result, (bottom, right, 0, -1, right - left + 1));
+            bottom--;
+        }
+
+        if (left <= right)
+        {
+            WalkEdge(matrix, result, (bottom, left, -1, 0, bottom - top + 1));
+            left++;
+        }
+
+        return (top, bottom, left, right);
+    }
+
+    // Appends one ring edge: `Count` cells starting at (Row, Col), each one reached
+    // by stepping (DeltaRow, DeltaCol). The four edges differ only in those three,
+    // so a non-positive Count walks nothing, exactly as the empty loop did.
+    private static void WalkEdge(
+        int[][] matrix, List<int> result, (int Row, int Col, int DeltaRow, int DeltaCol, int Count) edge)
+    {
+        var row = edge.Row;
+        var col = edge.Col;
+
+        for (var step = 0; step < edge.Count; step++)
+        {
+            result.Add(matrix[row][col]);
+            row += edge.DeltaRow;
+            col += edge.DeltaCol;
+        }
     }
 }

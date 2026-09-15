@@ -18,10 +18,10 @@ public class TheNumberOfBeautifulSubsetsBenchmarks
     private const int MaxValueExclusive = 50;
     private const int K = 3;
 
-    [Params(12, 16)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(12, 16)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

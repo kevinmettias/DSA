@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignAuctionSystem.DesignAuctionSystemSolution;
+using DSAExperimentation.LeetCode.DesignAuctionSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -21,10 +21,10 @@ public class DesignAuctionSystemBenchmarks
     private const int ItemPoolSize = 50;
     private const int BidAmountUpperBound = 1_000_000_000;
 
-    [Params(200, 2_000)]
-    public int InitialBidCount;
+    private List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> _script = new();
 
-    private List<Func<IAuctionSystemStrategy, int?>> _script = null!;
+    [Params(200, 2_000)]
+    public int InitialBidCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,43 +33,14 @@ public class DesignAuctionSystemBenchmarks
         _script = BuildScript(InitialBidCount, random);
     }
 
-    [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new AuctionSystemByLinearScan());
-
-    [Benchmark]
-    public long LazyDeletionHeap() => Replay(new AuctionSystemByLazyDeletionHeap());
-
-    // Sums every returned userId (treating a void call's null as 0) rather than
-    // discarding it, so the JIT can't eliminate the replay as dead code - the same
-    // "return the real answer, not a weaker proxy" shape DesignTaskManagerBenchmarks
-    // already follows.
-    private long Replay(IAuctionSystemStrategy strategy)
+    private static List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> BuildScript(int bidCount, Random random)
     {
-        var highestBidderSum = 0L;
-
-        foreach (var op in _script)
-        {
-            highestBidderSum += op(strategy) ?? 0;
-        }
-
-        return highestBidderSum;
-    }
-
-    private static List<Func<IAuctionSystemStrategy, int?>> BuildScript(int bidCount, Random random)
-    {
-        var script = new List<Func<IAuctionSystemStrategy, int?>>();
+        var script = new List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>>();
         var seededBids = new (int UserId, int ItemId)[bidCount];
 
         for (var userId = 0; userId < bidCount; userId++)
         {
-            var itemId = userId % ItemPoolSize;
-            var amount = random.Next(1, BidAmountUpperBound);
-            seededBids[userId] = (userId, itemId);
-            script.Add(strategy =>
-            {
-                strategy.AddBid(userId, itemId, amount);
-                return null;
-            });
+            SeedBid(script, seededBids, userId, random);
         }
 
         var removeCount = bidCount / 10;
@@ -77,6 +48,38 @@ public class DesignAuctionSystemBenchmarks
 
         // Removed/updated first, before the round loop below ever queries anything
         // - these (userId, itemId) pairs are guaranteed still live.
+        AppendRemovals(script, seededBids, removeCount);
+        AppendUpdates(script, seededBids, (removeCount, updateCount), random);
+        AppendGrowthRounds(script, bidCount, random);
+
+        return script;
+    }
+
+    // One seeded addBid call, remembering its (userId, itemId) pair so a later
+    // removal or update can safely reference it.
+    private static void SeedBid(
+        List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script,
+        (int UserId, int ItemId)[] seededBids,
+        int userId,
+        Random random)
+    {
+        var itemId = userId % ItemPoolSize;
+        var amount = random.Next(1, BidAmountUpperBound);
+        seededBids[userId] = (userId, itemId);
+        script.Add(strategy =>
+        {
+            strategy.AddBid(userId, itemId, amount);
+            return null;
+        });
+    }
+
+    // The removals: the first removeCount seeded pairs, which nothing the script has
+    // run so far has touched.
+    private static void AppendRemovals(
+        List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script,
+        (int UserId, int ItemId)[] seededBids,
+        int removeCount)
+    {
         for (var i = 0; i < removeCount; i++)
         {
             var (userId, itemId) = seededBids[i];
@@ -86,8 +89,17 @@ public class DesignAuctionSystemBenchmarks
                 return null;
             });
         }
+    }
 
-        for (var i = removeCount; i < removeCount + updateCount; i++)
+    // The updates: the next seeded pairs in the same order, each given a fresh amount
+    // so a live bid changes rather than merely being rewritten.
+    private static void AppendUpdates(
+        List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script,
+        (int UserId, int ItemId)[] seededBids,
+        (int First, int Count) range,
+        Random random)
+    {
+        for (var i = range.First; i < range.First + range.Count; i++)
         {
             var (userId, itemId) = seededBids[i];
             var newAmount = random.Next(1, BidAmountUpperBound);
@@ -97,15 +109,12 @@ public class DesignAuctionSystemBenchmarks
                 return null;
             });
         }
-
-        AppendGrowthRounds(script, bidCount, random);
-        return script;
     }
 
     // Two fresh AddBid calls per query, each from a userId never seeded or used
     // before: the live bid count only grows round over round, so every query
     // always has at least one bidder to find regardless of which item it lands on.
-    private static void AppendGrowthRounds(List<Func<IAuctionSystemStrategy, int?>> script, int bidCount, Random random)
+    private static void AppendGrowthRounds(List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script, int bidCount, Random random)
     {
         var nextUserId = bidCount;
 
@@ -118,7 +127,7 @@ public class DesignAuctionSystemBenchmarks
         }
     }
 
-    private static void AppendAddBid(List<Func<IAuctionSystemStrategy, int?>> script, Random random, int userId)
+    private static void AppendAddBid(List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script, Random random, int userId)
     {
         var itemId = random.Next(0, ItemPoolSize);
         var amount = random.Next(1, BidAmountUpperBound);
@@ -127,5 +136,27 @@ public class DesignAuctionSystemBenchmarks
             strategy.AddBid(userId, itemId, amount);
             return null;
         });
+    }
+
+    [Benchmark(Baseline = true)]
+    public long LinearScan() => Replay(new DesignAuctionSystemSolution.AuctionSystemByLinearScan());
+
+    [Benchmark]
+    public long LazyDeletionHeap() => Replay(new DesignAuctionSystemSolution.AuctionSystemByLazyDeletionHeap());
+
+    // Sums every returned userId (treating a void call's null as 0) rather than
+    // discarding it, so the JIT can't eliminate the replay as dead code - the same
+    // "return the real answer, not a weaker proxy" shape DesignTaskManagerBenchmarks
+    // already follows.
+    private long Replay(DesignAuctionSystemSolution.IAuctionSystemStrategy strategy)
+    {
+        var highestBidderSum = 0L;
+
+        foreach (var op in _script)
+        {
+            highestBidderSum += op(strategy) ?? 0;
+        }
+
+        return highestBidderSum;
     }
 }

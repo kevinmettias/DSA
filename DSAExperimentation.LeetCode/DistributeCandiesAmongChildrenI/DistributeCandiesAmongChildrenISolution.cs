@@ -49,5 +49,9 @@ internal static class DistributeCandiesAmongChildrenISolution
     // Nonnegative integer solutions to a+b+c=total, ignoring any upper bound: the
     // classic C(total+2, 2) stars-and-bars count.
     private static long SolutionsIgnoringLimit(int total) =>
-        total < 0 ? 0 : (long)(total + 2) * (total + 1) / 2;
+        total < 0 ? 0 : StarsAndBarsCount(total);
+
+    // C(total + 2, 2): the stars-and-bars count for three nonnegative parts summing to
+    // total, which the caller's negative-total guard keeps out of the negative.
+    private static long StarsAndBarsCount(int total) => (long)(total + 2) * (total + 1) / 2;
 }

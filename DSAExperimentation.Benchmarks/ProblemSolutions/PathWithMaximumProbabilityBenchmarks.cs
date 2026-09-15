@@ -20,11 +20,11 @@ public class PathWithMaximumProbabilityBenchmarks
     private const int RandomSeed = 1514; // LC problem number
     private const int ExtraEdgesPerNode = 2;
 
-    [Params(10, 14)]
-    public int NodeCount;
-
     private ProbabilityGraph _graph = null!;
+
     private int _target;
+    [Params(10, 14)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

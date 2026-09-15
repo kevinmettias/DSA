@@ -61,29 +61,38 @@ internal static class FindTheLargestAreaOfSquareInsideTwoRectanglesSolution
 
         for (var p = 0; p < order.Length; p++)
         {
-            var i = order[p];
-
-            for (var q = p + 1; q < order.Length; q++)
-            {
-                var j = order[q];
-                var widthBound = topRight[i][0] - bottomLeft[j][0];
-
-                if (widthBound <= bestSide)
-                {
-                    break;
-                }
-
-                var width = Math.Min(topRight[i][0], topRight[j][0]) - bottomLeft[j][0];
-                var height = Math.Min(topRight[i][1], topRight[j][1]) - Math.Max(bottomLeft[i][1], bottomLeft[j][1]);
-                var side = Math.Min(width, height);
-
-                if (side > bestSide)
-                {
-                    bestSide = side;
-                }
-            }
+            bestSide = BestSideFromLaterRectangles((bottomLeft, topRight), order, p, bestSide);
         }
 
         return (long)bestSide * bestSide;
+    }
+
+    // One fixed pivot rectangle, scanned against every later rectangle in sorted order.
+    // Because max(a_i, a_j) is a_j there, overlapWidth is at most topRight[i][0] - a_j,
+    // which only shrinks as q advances - so once that bound can no longer beat the best
+    // square found so far, neither can any later q and the scan stops early.
+    private static int BestSideFromLaterRectangles(
+        (int[][] BottomLeft, int[][] TopRight) rectangles, int[] order, int pivot, int bestSide)
+    {
+        var (bottomLeft, topRight) = rectangles;
+
+        for (var q = pivot + 1; q < order.Length; q++)
+        {
+            var j = order[q];
+            var widthBound = topRight[pivot][0] - bottomLeft[j][0];
+
+            if (widthBound <= bestSide)
+            {
+                break;
+            }
+
+            var width = Math.Min(topRight[pivot][0], topRight[j][0]) - bottomLeft[j][0];
+            var height = Math.Min(topRight[pivot][1], topRight[j][1]) - Math.Max(bottomLeft[pivot][1], bottomLeft[j][1]);
+            var side = Math.Min(width, height);
+
+            bestSide = Math.Max(bestSide, side);
+        }
+
+        return bestSide;
     }
 }

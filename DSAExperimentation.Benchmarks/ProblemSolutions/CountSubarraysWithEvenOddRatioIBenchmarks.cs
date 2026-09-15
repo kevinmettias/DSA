@@ -14,10 +14,10 @@ public class CountSubarraysWithEvenOddRatioIBenchmarks
     private const int MaxValueExclusive = 1_000;
     private const int Seed = 4011;
 
-    [Params(200, 1_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

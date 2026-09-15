@@ -16,10 +16,10 @@ public class AllAncestorsOfANodeInADirectedAcyclicGraphBenchmarks
 {
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int NodeCount;
+    private List<AncestorNode> _nodes = new();
 
-    private List<AncestorNode> _nodes = null!;
+    [Params(50, 1_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

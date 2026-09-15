@@ -20,7 +20,7 @@ internal static class DesignSQLSolution
     // one reports is unspecified by the problem. Both strategies agree on the empty
     // string so a harness can hold them to one observable behaviour rather than to
     // one arm's scan returning "" while the other's keyed lookup dereferences null.
-    public const string NoCell = "";
+    private const string NoCell = "";
 
     // The shared surface both strategies implement, so a harness can replay one
     // call script against either without restating it.
@@ -135,7 +135,10 @@ internal static class DesignSQLSolution
             public void Delete(int rowId) => _rows.TryRemove(rowId);
 
             public string Select(int rowId, int columnId)
-                => _rows.TryGetValue(rowId, out var row) ? row[columnId - 1] : NoCell;
+                => _rows.TryGetValue(rowId, out var row) ? CellAt(row, columnId) : NoCell;
+
+            // Column ids are 1-based; the stored row is a 0-based array.
+            private static string CellAt(string[] row, int columnId) => row[columnId - 1];
         }
     }
 }

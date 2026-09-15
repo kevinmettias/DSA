@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.LeetCode.SuperEggDrop;
 
@@ -10,12 +11,11 @@ namespace DSAExperimentation.LeetCode.SuperEggDrop;
 //
 // They differ only in how the next trial floor is chosen: an exhaustive scan of
 // every candidate floor - O(eggs * floors^2) - or a binary search for the floor
-// where the two branches cross, since WorstCaseMoves(trial) is monotonic in trial
+// where the two branches cross, since WorstCaseOverTrials(trial) is monotonic in trial
 // (raising the trial floor can only help the "breaks" branch and hurt the
 // "survives" one) - O(eggs * floors * log(floors)).
 internal static class SuperEggDropSolution
 {
-    private const int MidpointDivisor = 2;
 
     // The textbook answer: the same minimax recurrence, every candidate trial floor
     // scanned, cached in a plain BCL dictionary. Deliberately written without this
@@ -23,6 +23,70 @@ internal static class SuperEggDropSolution
     // justify itself against.
     public static int MinMovesByLinearScan(int eggs, int floors) =>
         LinearScanMoves(eggs, floors, new Dictionary<(int Eggs, int Floors), int>());
+
+    // This repo's own Memoizer<TState,TResult> supplies the (eggs, floors) cache -
+    // the same 2-tuple-state shape GuessNumberHigherOrLowerII already uses for its
+    // own minimax DP - and each state bisects for its trial floor instead of
+    // scanning every one of them.
+    public static int MinMovesByBinarySearch(int eggs, int floors) =>
+        Memoizer.Memoize<(int Eggs, int Floors), int>((eggs, floors), new WorstCaseOverTrials());
+
+    // The recurrence, as a named type: the minimax worst-case move count for one
+    // (eggs, floors) state, with the memoized continuation arriving as `rest` rather
+    // than as an anonymous delegate.
+    private sealed class WorstCaseOverTrials : IRecurrence<(int Eggs, int Floors), int>
+    {
+        public int Replay(
+            (int Eggs, int Floors) state, IRecurrence<(int Eggs, int Floors), int> rest)
+        {
+            var (eggs, floors) = state;
+
+            if (floors == 0)
+            {
+                return 0;
+            }
+
+            if (eggs == 1)
+            {
+                return floors;
+            }
+
+            var range = new TrialRange(1, floors);
+            var best = int.MaxValue;
+
+            while (range.Low <= range.High)
+            {
+                (range, best) = NarrowTrialRange(range, best, state, rest);
+            }
+
+            return best;
+        }
+    }
+
+    // One bisection probe: score the window's midpoint as the next drop floor, then
+    // narrow toward whichever side - breaks vs. survives - currently costs more.
+    private static (TrialRange Range, int Best) NarrowTrialRange(
+        TrialRange range,
+        int best,
+        (int Eggs, int Floors) state,
+        IRecurrence<(int Eggs, int Floors), int> rest)
+    {
+        var (eggs, floors) = state;
+        var trial = (range.Low + range.High) / AlgorithmConstants.HalvingFactor;
+        var breaks = rest.Replay((eggs - 1, trial - 1), rest);
+        var survives = rest.Replay((eggs, floors - trial), rest);
+        best = Math.Min(best, 1 + Math.Max(breaks, survives));
+
+        return breaks < survives
+            ? WindowAboveTrial(range, best, trial)
+            : WindowBelowTrial(range, best, trial);
+    }
+
+    private static (TrialRange Range, int Best) WindowAboveTrial(TrialRange range, int best, int trial) =>
+        (range with { Low = trial + 1 }, best);
+
+    private static (TrialRange Range, int Best) WindowBelowTrial(TrialRange range, int best, int trial) =>
+        (range with { High = trial - 1 }, best);
 
     private static int LinearScanMoves(int eggs, int floors, Dictionary<(int Eggs, int Floors), int> cache)
     {
@@ -41,6 +105,16 @@ internal static class SuperEggDropSolution
             return cached;
         }
 
+        var best = BestTrialFloorScan(eggs, floors, cache);
+
+        cache[(eggs, floors)] = best;
+        return best;
+    }
+
+    // The exhaustive arm's one step: score every candidate trial floor and keep the
+    // cheapest worst case.
+    private static int BestTrialFloorScan(int eggs, int floors, Dictionary<(int Eggs, int Floors), int> cache)
+    {
         var best = int.MaxValue;
 
         for (var trial = 1; trial <= floors; trial++)
@@ -50,59 +124,10 @@ internal static class SuperEggDropSolution
             best = Math.Min(best, 1 + Math.Max(breaks, survives));
         }
 
-        cache[(eggs, floors)] = best;
         return best;
     }
 
-    // This repo's own Memoizer<TState,TResult> supplies the (eggs, floors) cache -
-    // the same 2-tuple-state shape GuessNumberHigherOrLowerII already uses for its
-    // own minimax DP - and each state bisects for its trial floor instead of
-    // scanning every one of them.
-    public static int MinMovesByBinarySearch(int eggs, int floors) =>
-        Memoizer.Memoize<(int Eggs, int Floors), int>((eggs, floors), WorstCaseMoves);
-
-    private static int WorstCaseMoves((int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-
-        if (floors == 0)
-        {
-            return 0;
-        }
-
-        if (eggs == 1)
-        {
-            return floors;
-        }
-
-        var range = new TrialRange(1, floors);
-        var best = int.MaxValue;
-
-        while (range.Low <= range.High)
-        {
-            (range, best) = NarrowTrialRange(range, best, state, movesFor);
-        }
-
-        return best;
-    }
-
-    // One bisection probe: score the window's midpoint as the next drop floor, then
-    // narrow toward whichever side - breaks vs. survives - currently costs more.
-    private static (TrialRange Range, int Best) NarrowTrialRange(
-        TrialRange range, int best, (int Eggs, int Floors) state, Func<(int Eggs, int Floors), int> movesFor)
-    {
-        var (eggs, floors) = state;
-        var trial = (range.Low + range.High) / MidpointDivisor;
-        var breaks = movesFor((eggs - 1, trial - 1));
-        var survives = movesFor((eggs, floors - trial));
-        best = Math.Min(best, 1 + Math.Max(breaks, survives));
-
-        return breaks < survives
-            ? (range with { Low = trial + 1 }, best)
-            : (range with { High = trial - 1 }, best);
-    }
-
-    // The [low, high] trial-floor window WorstCaseMoves bisects each step - bundled
+    // The [low, high] trial-floor window WorstCaseOverTrials bisects each step - bundled
     // so NarrowTrialRange stays within the 4 value-parameter limit.
     private readonly record struct TrialRange(int Low, int High);
 }

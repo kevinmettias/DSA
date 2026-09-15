@@ -11,10 +11,10 @@ public class GuessNumberHigherOrLowerBenchmarks
 {
     private const double PickFraction = 0.7;
 
-    [Params(1_000, 1_000_000)]
-    public int NumberCount;
-
     private int _pick;
+
+    [Params(1_000, 1_000_000)]
+    public int NumberCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _pick = (int)(NumberCount * PickFraction);

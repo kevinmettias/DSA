@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LastRemainingIntegerAfterAlternatingDeletionOperationsBenchmarks
 {
     [Params(10_000, 1_000_000)]
-    public long N;
+    public long N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long ListSimulation() =>

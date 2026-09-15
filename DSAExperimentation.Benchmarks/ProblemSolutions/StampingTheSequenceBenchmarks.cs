@@ -18,10 +18,10 @@ public class StampingTheSequenceBenchmarks
 {
     private const string Stamp = "abcd";
 
-    [Params(200, 20_000)]
-    public int Repeats;
-
     private string _target = string.Empty;
+
+    [Params(200, 20_000)]
+    public int Repeats { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,8 +31,12 @@ public class StampingTheSequenceBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] ListPrepend() => StampingTheSequenceSolution.MovesToStampByListPrepend(Stamp, _target);
+    public int[] ListPrepend() => StampingTheSequenceSolution.MovesToStampByListPrepend(
+        new StampingTheSequenceSolution.StampPattern(Stamp),
+        new StampingTheSequenceSolution.TargetText(_target));
 
     [Benchmark]
-    public int[] StackAndReverse() => StampingTheSequenceSolution.MovesToStampByStackReverse(Stamp, _target);
+    public int[] StackAndReverse() => StampingTheSequenceSolution.MovesToStampByStackReverse(
+        new StampingTheSequenceSolution.StampPattern(Stamp),
+        new StampingTheSequenceSolution.TargetText(_target));
 }

@@ -28,7 +28,8 @@ internal static class SearchSuggestionsSystemSolution
         foreach (var character in searchWord)
         {
             prefix += character;
-            result.Add(SmallestThreeMatches(products, prefix));
+            var matches = SmallestThreeMatches(products, prefix);
+            result.Add(matches);
         }
 
         return result;
@@ -90,7 +91,8 @@ internal static class SearchSuggestionsSystemSolution
         foreach (var character in searchWord)
         {
             prefix += character;
-            result.Add(MatchesFromLowerBound(sorted, sequence, prefix));
+            var matches = MatchesFromLowerBound(sorted, sequence, prefix);
+            result.Add(matches);
         }
 
         return result;

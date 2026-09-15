@@ -32,34 +32,47 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
             state,
             isSolution: s => s.Chosen.Count == m,
             candidates: s => s.Chosen.Count == m ? Array.Empty<int>() : Enumerable.Range(0, nums.Length),
-            choose: (s, index) =>
-            {
-                s.Chosen.Add(index);
-                s.Sum += 1L << index;
-            },
-            unchoose: (s, index) =>
-            {
-                s.Chosen.RemoveAt(s.Chosen.Count - 1);
-                s.Sum -= 1L << index;
-            },
-            onSolution: s =>
-            {
-                if (BitOperations.PopCount((ulong)s.Sum) != k)
-                {
-                    return;
-                }
-
-                var product = 1L;
-
-                foreach (var index in s.Chosen)
-                {
-                    product = product * nums[index] % ModularArithmetic.Modulo;
-                }
-
-                total = (total + product) % ModularArithmetic.Modulo;
-            });
+            choose: AddChoice,
+            unchoose: RemoveChoice,
+            onSolution: s => total = (total + MatchingProduct(s, k, nums)) % ModularArithmetic.Modulo);
 
         return (int)total;
+    }
+
+    // What one completed sequence contributes: the product of the values it chose,
+    // or zero when its binary value does not have exactly k set bits. A non-matching
+    // sequence contributes zero, which leaves the running total unchanged - the same
+    // outcome as the guard that used to skip it.
+    private static long MatchingProduct(SequenceState state, int k, int[] nums)
+    {
+        if (BitOperations.PopCount((ulong)state.Sum) != k)
+        {
+            return 0;
+        }
+
+        var product = 1L;
+
+        foreach (var index in state.Chosen)
+        {
+            product = product * nums[index] % ModularArithmetic.Modulo;
+        }
+
+        return product;
+    }
+
+    // The search's own choose/unchoose pair: adding the index at the end of the
+    // sequence contributes 2^index to the running binary value, so undoing it
+    // subtracts exactly what it added.
+    private static void AddChoice(SequenceState state, int index)
+    {
+        state.Chosen.Add(index);
+        state.Sum += 1L << index;
+    }
+
+    private static void RemoveChoice(SequenceState state, int index)
+    {
+        state.Chosen.RemoveAt(state.Chosen.Count - 1);
+        state.Sum -= 1L << index;
     }
 
     private sealed class SequenceState
@@ -82,45 +95,16 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     // uses for LC 1916, but this problem's own since no other solution shares it.
     public static int SumOfProductsByCarryDigitDp(int m, int k, int[] nums)
     {
-        var n = nums.Length;
-        var maxBit = n + CarryDrainSteps(m);
+        var maxBit = nums.Length + CarryDrainSteps(m);
         var factorial = BuildFactorial(m);
-        var inverseFactorial = BuildInverseFactorial(factorial);
+        var digits = (
+            Nums: nums,
+            Factorial: factorial,
+            InverseFactorial: BuildInverseFactorial(factorial),
+            MaxBit: maxBit);
 
-        long Recurrence((int Bit, int Remaining, int Need, int Carry) state, Func<(int, int, int, int), long> recurse)
-        {
-            var (bit, remaining, need, carry) = state;
+        var total = Memoizer.Memoize<(int, int, int, int), long>((0, m, k, 0), new CarryDigitSweep(digits));
 
-            if (bit == maxBit)
-            {
-                return remaining == 0 && carry == 0 && need == 0 ? 1 : 0;
-            }
-
-            var maxCount = bit < n ? remaining : 0;
-            var result = 0L;
-
-            for (var count = 0; count <= maxCount; count++)
-            {
-                var total = carry + count;
-                var nextNeed = need - (total & 1);
-
-                if (nextNeed < 0)
-                {
-                    continue;
-                }
-
-                var ways = Choose(factorial, inverseFactorial, remaining, count);
-                var valuePower = bit < n ? ModularArithmetic.Power(nums[bit], count) : 1;
-                var weight = ways * valuePower % ModularArithmetic.Modulo;
-                var sub = recurse((bit + 1, remaining - count, nextNeed, total >> 1));
-
-                result = (result + weight * sub) % ModularArithmetic.Modulo;
-            }
-
-            return result;
-        }
-
-        var total = Memoizer.Memoize<(int, int, int, int), long>((0, m, k, 0), Recurrence);
         return (int)total;
     }
 
@@ -163,6 +147,70 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
         }
 
         return inverseFactorial;
+    }
+
+    // Past the last bit position the sweep only succeeded if every slot was placed,
+    // every set bit asked for was produced, and nothing was left to carry.
+    private static bool IsExactSolution(int remaining, int need, int carry)
+        => remaining == 0 && carry == 0 && need == 0;
+
+    /// <summary>
+    /// The recurrence, named: one DP step at bit position <c>Bit</c>, handing
+    /// <c>Remaining</c> slots to that position's nums entry and letting the carry absorb
+    /// what overflows into the next position - and, past the last position, succeeding
+    /// only when every slot was placed, every set bit produced, and nothing left to carry.
+    /// </summary>
+    private sealed class CarryDigitSweep(
+        (int[] Nums, long[] Factorial, long[] InverseFactorial, int MaxBit) digits)
+        : IRecurrence<(int Bit, int Remaining, int Need, int Carry), long>
+    {
+        /// <inheritdoc/>
+        public long Replay(
+            (int Bit, int Remaining, int Need, int Carry) state,
+            IRecurrence<(int Bit, int Remaining, int Need, int Carry), long> rest)
+        {
+            var (bit, remaining, need, carry) = state;
+
+            if (bit == digits.MaxBit)
+            {
+                return IsExactSolution(remaining, need, carry) ? 1 : 0;
+            }
+
+            var maxCount = bit < digits.Nums.Length ? remaining : 0;
+            var result = 0L;
+
+            for (var count = 0; count <= maxCount; count++)
+            {
+                result = (result + CountTerm(state, count, rest)) % ModularArithmetic.Modulo;
+            }
+
+            return result;
+        }
+
+        // What placing `count` further slots at nums[bit] is worth: the multinomial
+        // weight of that split times nums[bit]^count, times the sub-count below - or
+        // nothing at all when the carry would push the set-bit count past k.
+        private long CountTerm(
+            (int Bit, int Remaining, int Need, int Carry) state,
+            int count,
+            IRecurrence<(int Bit, int Remaining, int Need, int Carry), long> rest)
+        {
+            var (bit, remaining, need, carry) = state;
+            var total = carry + count;
+            var nextNeed = need - (total & 1);
+
+            if (nextNeed < 0)
+            {
+                return 0;
+            }
+
+            var ways = Choose(digits.Factorial, digits.InverseFactorial, remaining, count);
+            var valuePower = bit < digits.Nums.Length ? ModularArithmetic.Power(digits.Nums[bit], count) : 1;
+            var weight = ways * valuePower % ModularArithmetic.Modulo;
+            var sub = rest.Replay((bit + 1, remaining - count, nextNeed, total >> 1), rest);
+
+            return weight * sub % ModularArithmetic.Modulo;
+        }
     }
 
     private static long Choose(long[] factorial, long[] inverseFactorial, int n, int r) =>

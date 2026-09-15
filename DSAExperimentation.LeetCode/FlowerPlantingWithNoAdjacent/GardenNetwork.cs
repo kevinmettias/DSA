@@ -9,11 +9,11 @@ namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 // LeetCode-shaped one (ARCHITECTURE.md #17.4).
 internal sealed class GardenNetwork
 {
-    private GardenNetwork(IReadOnlyList<GardenNode> gardens) => Gardens = gardens;
-
     // Gardens in LeetCode's own 1..n order, so slot i holds garden i + 1 and the
     // answer array's layout falls out of the walk order.
     public IReadOnlyList<GardenNode> Gardens { get; }
+
+    private GardenNetwork(IReadOnlyList<GardenNode> gardens) => Gardens = gardens;
 
     public static GardenNetwork Build(int n, int[][] paths)
     {
@@ -21,7 +21,7 @@ internal sealed class GardenNetwork
         // slot 0 is a placeholder that carries no edges and is not returned.
         var byId = new GardenNode[n + 1];
 
-        for (var id = FlowerPlantingWithNoAdjacentSolution.FirstGarden; id <= n; id++)
+        for (var id = GardenNumbering.FirstGarden; id <= n; id++)
         {
             byId[id] = new GardenNode(id);
         }
@@ -32,6 +32,6 @@ internal sealed class GardenNetwork
             byId[path[1]].ConnectedGardens.Add(byId[path[0]]);
         }
 
-        return new GardenNetwork(byId[FlowerPlantingWithNoAdjacentSolution.FirstGarden..]);
+        return new GardenNetwork(byId[GardenNumbering.FirstGarden..]);
     }
 }

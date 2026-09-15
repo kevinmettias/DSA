@@ -18,7 +18,7 @@ public class ExpressionAddOperatorsBenchmarks
     private const int UnreachableTarget = int.MinValue;
 
     [Params("1234567", "123456789")]
-    public string Num = "";
+    public string Num { get; set; } = "";
 
     [Benchmark(Baseline = true)]
     public int RecursiveBacktrack() =>

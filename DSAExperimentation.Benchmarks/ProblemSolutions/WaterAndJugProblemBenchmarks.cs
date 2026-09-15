@@ -17,12 +17,12 @@ public class WaterAndJugProblemBenchmarks
 {
     private const int JugYCapacityDivisor = 2;
 
-    [Params(40, 300)]
-    public int Capacity;
-
     private int _jugX;
+
     private int _jugY;
     private int _target;
+    [Params(40, 300)]
+    public int Capacity { get; set; }
 
     [GlobalSetup]
     public void Setup()

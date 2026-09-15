@@ -18,10 +18,10 @@ public class FindGreatestCommonDivisorOfArrayBenchmarks
     private const int RandomSeed = 1979;
     private const int MaxValueExclusive = 2_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

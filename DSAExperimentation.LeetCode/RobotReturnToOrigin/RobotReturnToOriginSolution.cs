@@ -37,12 +37,27 @@ internal static class RobotReturnToOriginSolution
 
     public static bool JudgeCircleByHashMapLookup(string moves)
     {
+        var deltas = BuildDeltaTable();
+        var (x, y) = NetDisplacement(moves, deltas);
+
+        return x == 0 && y == 0;
+    }
+
+    // The move-to-displacement table this arm is named for: the four legal moves
+    // resolved by one hash lookup per move instead of the switch above.
+    private static HashMap<char, (int Dx, int Dy)> BuildDeltaTable()
+    {
         var deltas = new HashMap<char, (int Dx, int Dy)>();
         deltas.Set('U', (0, 1));
         deltas.Set('D', (0, -1));
         deltas.Set('L', (-1, 0));
         deltas.Set('R', (1, 0));
 
+        return deltas;
+    }
+
+    private static (int X, int Y) NetDisplacement(string moves, HashMap<char, (int Dx, int Dy)> deltas)
+    {
         var x = 0;
         var y = 0;
 
@@ -55,6 +70,6 @@ internal static class RobotReturnToOriginSolution
             }
         }
 
-        return x == 0 && y == 0;
+        return (x, y);
     }
 }

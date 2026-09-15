@@ -20,19 +20,25 @@ public class WalkingRobotSimulationBenchmarks
     private const int ObstacleCoordinateBound = 5_000;
     private const int WorkloadSeed = 1;
 
-    [Params(50, 2_000)]
-    public int ObstacleCount;
+    private int[] _commands = [];
 
-    private int[] _commands = null!;
-    private int[][] _obstacles = null!;
-    private Set<(int X, int Y)> _blocked = null!;
+    private int[][] _obstacles = [];
+    private Set<(int X, int Y)> _blocked = new();
+    [Params(50, 2_000)]
+    public int ObstacleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(WorkloadSeed);
 
-        _commands = Enumerable.Range(0, CommandCount)
+        _commands = BuildCommands(random);
+        _obstacles = BuildObstacles(random, ObstacleCount);
+        _blocked = BuildBlockedSet(_obstacles);
+    }
+
+    private static int[] BuildCommands(Random random) =>
+        Enumerable.Range(0, CommandCount)
             .Select(_ => random.Next(0, CommandKindBound) switch
             {
                 0 => TurnLeftCommand,
@@ -41,7 +47,8 @@ public class WalkingRobotSimulationBenchmarks
             })
             .ToArray();
 
-        _obstacles = Enumerable.Range(0, ObstacleCount)
+    private static int[][] BuildObstacles(Random random, int obstacleCount) =>
+        Enumerable.Range(0, obstacleCount)
             .Select(_ => new[]
             {
                 random.Next(-ObstacleCoordinateBound, ObstacleCoordinateBound),
@@ -49,12 +56,16 @@ public class WalkingRobotSimulationBenchmarks
             })
             .ToArray();
 
-        _blocked = new Set<(int X, int Y)>();
+    private static Set<(int X, int Y)> BuildBlockedSet(int[][] obstacles)
+    {
+        var blocked = new Set<(int X, int Y)>();
 
-        foreach (var obstacle in _obstacles)
+        foreach (var obstacle in obstacles)
         {
-            _blocked.TryAdd((obstacle[0], obstacle[1]));
+            blocked.TryAdd((obstacle[0], obstacle[1]));
         }
+
+        return blocked;
     }
 
     [Benchmark(Baseline = true)]

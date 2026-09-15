@@ -14,10 +14,10 @@ public class CountSequencesToKBenchmarks
     private const int Seed = 3850;
     private const long Target = 1;
 
-    [Params(8, 12)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(8, 12)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

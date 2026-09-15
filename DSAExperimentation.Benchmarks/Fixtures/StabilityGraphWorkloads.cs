@@ -16,12 +16,27 @@ internal static class StabilityGraphWorkloads
         var random = new Random(seed);
         var edges = new List<int[]>();
 
+        AddSpanningTreeEdges(edges, random, nodeCount);
+        AddOptionalEdges(edges, random, nodeCount);
+
+        return ([.. edges], nodeCount / UpgradeBudgetDivisor);
+    }
+
+    // One must-marked edge per node past the first, each hanging off an earlier node,
+    // so the marked edges form a spanning tree and can never close a cycle.
+    private static void AddSpanningTreeEdges(List<int[]> edges, Random random, int nodeCount)
+    {
         for (var node = 1; node < nodeCount; node++)
         {
             var parent = random.Next(node);
             edges.Add([parent, node, random.Next(1, StrengthCeilingExclusive), 1]);
         }
+    }
 
+    // The optional edges the algorithm gets to choose among, skipping the self-loops
+    // a random target can produce.
+    private static void AddOptionalEdges(List<int[]> edges, Random random, int nodeCount)
+    {
         for (var node = 0; node < nodeCount; node++)
         {
             for (var extra = 0; extra < ExtraOptionalEdgesPerNode; extra++)
@@ -34,7 +49,5 @@ internal static class StabilityGraphWorkloads
                 }
             }
         }
-
-        return ([.. edges], nodeCount / UpgradeBudgetDivisor);
     }
 }

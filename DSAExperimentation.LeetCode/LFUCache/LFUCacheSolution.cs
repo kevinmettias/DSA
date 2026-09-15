@@ -74,8 +74,7 @@ internal static class LFUCacheSolution
 
             foreach (var (candidateKey, entry) in _entries)
             {
-                if (entry.Frequency < minFrequency ||
-                    (entry.Frequency == minFrequency && entry.Tick < oldestTick))
+                if (BeatsTheEvictionLeader(entry, minFrequency, oldestTick))
                 {
                     evictKey = candidateKey;
                     minFrequency = entry.Frequency;
@@ -85,5 +84,12 @@ internal static class LFUCacheSolution
 
             _entries.Remove(evictKey);
         }
+
+        // A candidate takes over the scan when it is used less often than the
+        // leader so far, or equally often but not as recently.
+        private static bool BeatsTheEvictionLeader(
+            (int Value, int Frequency, long Tick) entry, int minFrequency, long oldestTick)
+            => entry.Frequency < minFrequency ||
+                (entry.Frequency == minFrequency && entry.Tick < oldestTick);
     }
 }

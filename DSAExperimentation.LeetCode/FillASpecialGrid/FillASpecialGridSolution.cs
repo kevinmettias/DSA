@@ -17,6 +17,12 @@ namespace DSAExperimentation.LeetCode.FillASpecialGrid;
 // here to reuse one for.
 internal static class FillASpecialGridSolution
 {
+    // (rowBit, colBit) at each level names one of the four quadrants; QuadrantDigit
+    // maps it to that quadrant's base-4 digit (top-right=0, bottom-right=1,
+    // bottom-left=2, top-left=3) - the same order FillQuadrants offers blocks in,
+    // just read directly off the bits instead of recursing.
+    private static readonly int[] QuadrantDigit = [3, 0, 2, 1];
+
     public static int[][] SpecialGridByRecursiveQuadrants(int n)
     {
         var size = 1 << n;
@@ -27,34 +33,9 @@ internal static class FillASpecialGridSolution
             grid[row] = new int[size];
         }
 
-        FillQuadrants(grid, row: 0, col: 0, size, start: 0);
+        FillQuadrants(grid, origin: (Row: 0, Col: 0), size, start: 0);
         return grid;
     }
-
-    // Top-right gets the lowest block of values, then bottom-right, bottom-left,
-    // top-left - the order the problem's own ordering constraint spells out.
-    private static void FillQuadrants(int[][] grid, int row, int col, int size, int start)
-    {
-        if (size == 1)
-        {
-            grid[row][col] = start;
-            return;
-        }
-
-        var half = size / 2;
-        var quadrantCount = half * half;
-
-        FillQuadrants(grid, row, col + half, half, start);
-        FillQuadrants(grid, row + half, col + half, half, start + quadrantCount);
-        FillQuadrants(grid, row + half, col, half, start + (2 * quadrantCount));
-        FillQuadrants(grid, row, col, half, start + (3 * quadrantCount));
-    }
-
-    // (rowBit, colBit) at each level names one of the four quadrants; QuadrantDigit
-    // maps it to that quadrant's base-4 digit (top-right=0, bottom-right=1,
-    // bottom-left=2, top-left=3) - the same order FillQuadrants offers blocks in,
-    // just read directly off the bits instead of recursing.
-    private static readonly int[] QuadrantDigit = [3, 0, 2, 1];
 
     public static int[][] SpecialGridByBitQuadrantDigits(int n)
     {
@@ -86,5 +67,34 @@ internal static class FillASpecialGridSolution
         }
 
         return value;
+    }
+
+    // Top-right gets the lowest block of values, then bottom-right, bottom-left,
+    // top-left - the order the problem's own ordering constraint spells out. The
+    // quadrant's top-left corner and its side length are what place it in the grid, so
+    // the corner travels as one cell.
+    private static void FillQuadrants(int[][] grid, (int Row, int Col) origin, int size, int start)
+    {
+        if (size == 1)
+        {
+            grid[origin.Row][origin.Col] = start;
+            return;
+        }
+
+        FillFourQuadrants(grid, origin, size, start);
+    }
+
+    // The four-way step: offer each quadrant the next block of values, whose size is
+    // that quadrant's own area.
+    private static void FillFourQuadrants(int[][] grid, (int Row, int Col) origin, int size, int start)
+    {
+        var half = size / 2;
+        var quadrantCount = half * half;
+        var (row, col) = origin;
+
+        FillQuadrants(grid, (row, col + half), half, start);
+        FillQuadrants(grid, (row + half, col + half), half, start + quadrantCount);
+        FillQuadrants(grid, (row + half, col), half, start + (2 * quadrantCount));
+        FillQuadrants(grid, (row, col), half, start + (3 * quadrantCount));
     }
 }

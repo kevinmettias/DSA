@@ -18,10 +18,10 @@ public class MaximumCompatibilityScoreSumBenchmarks
     // LC problem number, reused as the deterministic answer-sheet seed.
     private const int RandomSeed = 1947;
 
-    [Params(4, 7)]
-    public int GroupSize;
-
     private CompatibilityScoreMatrix _scores = null!;
+
+    [Params(4, 7)]
+    public int GroupSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

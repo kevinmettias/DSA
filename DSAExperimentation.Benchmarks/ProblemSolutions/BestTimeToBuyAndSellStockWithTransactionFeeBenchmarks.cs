@@ -15,10 +15,10 @@ public class BestTimeToBuyAndSellStockWithTransactionFeeBenchmarks
     private const int Fee = 2;
     private const int MaxPrice = 100;
 
-    [Params(20, 28)]
-    public int Length;
+    private int[] _prices = [];
 
-    private int[] _prices = null!;
+    [Params(20, 28)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

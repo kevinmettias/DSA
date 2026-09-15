@@ -15,12 +15,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CycleLengthQueriesInATreeBenchmarks
 {
     private const int RandomSeed = 2509; // LC problem number
-    private const int TreeLevels = 20; // ids range over [1, 2^20 - 1]
+    private const int TreeLevels = 20; private int[][] _queries = [];
+
+    // ids range over [1, 2^20 - 1]
 
     [Params(1_000, 20_000)]
-    public int QueriesCount;
-
-    private int[][] _queries = null!;
+    public int QueriesCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

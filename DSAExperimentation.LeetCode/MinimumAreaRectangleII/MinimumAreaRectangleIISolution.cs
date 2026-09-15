@@ -40,7 +40,8 @@ internal static class MinimumAreaRectangleIISolution
             {
                 for (var c = b + 1; c < points.Length; c++)
                 {
-                    minArea = Math.Min(minArea, BestAreaForTriple(points, a, b, c));
+                    var areaForTriple = BestAreaForTriple(points, a, b, c);
+                    minArea = Math.Min(minArea, areaForTriple);
                 }
             }
         }
@@ -56,17 +57,18 @@ internal static class MinimumAreaRectangleIISolution
 
         for (var d = c + 1; d < points.Length; d++)
         {
-            minArea = Smaller(minArea, RectangleArea(points, new DiagonalCandidate(a, c, b, d))); // diagonals (a,b), (c,d)
-            minArea = Smaller(minArea, RectangleArea(points, new DiagonalCandidate(a, b, c, d))); // diagonals (a,c), (b,d)
-            minArea = Smaller(minArea, RectangleArea(points, new DiagonalCandidate(a, b, d, c))); // diagonals (a,d), (b,c)
+            var areaWithDiagonalsAbCd = RectangleArea(points, new DiagonalCandidate(a, c, b, d)); // diagonals (a,b), (c,d)
+            minArea = Smaller(minArea, areaWithDiagonalsAbCd);
+
+            var areaWithDiagonalsAcBd = RectangleArea(points, new DiagonalCandidate(a, b, c, d)); // diagonals (a,c), (b,d)
+            minArea = Smaller(minArea, areaWithDiagonalsAcBd);
+
+            var areaWithDiagonalsAdBc = RectangleArea(points, new DiagonalCandidate(a, b, d, c)); // diagonals (a,d), (b,c)
+            minArea = Smaller(minArea, areaWithDiagonalsAdBc);
         }
 
         return minArea;
     }
-
-    // Diagonal candidates are (First, Third) and (Second, Fourth) - a rectangle iff
-    // the two share a midpoint and a length.
-    private readonly record struct DiagonalCandidate(int First, int Second, int Third, int Fourth);
 
     private static double? RectangleArea(int[][] points, DiagonalCandidate candidate)
     {
@@ -90,10 +92,11 @@ internal static class MinimumAreaRectangleIISolution
         return Distance(cornerOne, cornerTwo) * Distance(cornerOne, cornerFour);
     }
 
-    private static (int X, int Y) Point(int[][] points, int index) => (points[index][0], points[index][1]);
-
-    private static double Smaller(double minArea, double? candidate) =>
-        candidate is null ? minArea : Math.Min(minArea, candidate.Value);
+    private static double Distance((int X, int Y) a, (int X, int Y) b)
+    {
+        var lengthSquared = LengthSquared(a, b);
+        return Math.Sqrt(lengthSquared);
+    }
 
     public static double MinAreaFreeRectByDiagonalGrouping(int[][] points)
     {
@@ -106,12 +109,30 @@ internal static class MinimumAreaRectangleIISolution
 
             for (var j = i + 1; j < points.Length; j++)
             {
-                minArea = Smaller(minArea, index.ConsiderPair(pointI, Point(points, j)));
+                var pointJ = Point(points, j);
+                var area = index.ConsiderPair(pointI, pointJ);
+                minArea = Smaller(minArea, area);
             }
         }
 
         return minArea == double.MaxValue ? NoRectangle : minArea;
     }
+
+    private static (int X, int Y) Point(int[][] points, int index) => (points[index][0], points[index][1]);
+
+    private static double Smaller(double minArea, double? candidate) =>
+        candidate is null ? minArea : Math.Min(minArea, candidate.Value);
+
+    private static int LengthSquared((int X, int Y) a, (int X, int Y) b)
+    {
+        var dx = a.X - b.X;
+        var dy = a.Y - b.Y;
+        return (dx * dx) + (dy * dy);
+    }
+
+    // Diagonal candidates are (First, Third) and (Second, Fourth) - a rectangle iff
+    // the two share a midpoint and a length.
+    private readonly record struct DiagonalCandidate(int First, int Second, int Third, int Fourth);
 
     // Every point pair seen so far, bucketed by the key that makes two pairs a
     // rectangle's diagonals: twice the midpoint, plus the squared length.
@@ -121,6 +142,17 @@ internal static class MinimumAreaRectangleIISolution
 
         public double? ConsiderPair((int X, int Y) pointI, (int X, int Y) pointJ)
         {
+            var matchingDiagonals = BucketFor(pointI, pointJ);
+            var best = BestAreaAgainst(pointI, matchingDiagonals);
+            matchingDiagonals.Add((pointI, pointJ));
+            return best;
+        }
+
+        // The pairs already keyed to this pair's derived key, or a fresh empty bucket
+        // registered under that key so a later pair can collide with it.
+        private List<((int X, int Y) First, (int X, int Y) Second)> BucketFor(
+            (int X, int Y) pointI, (int X, int Y) pointJ)
+        {
             var key = (pointI.X + pointJ.X, pointI.Y + pointJ.Y, LengthSquared(pointI, pointJ));
 
             if (!_diagonalsByKey.TryGetValue(key, out var matchingDiagonals))
@@ -129,9 +161,7 @@ internal static class MinimumAreaRectangleIISolution
                 _diagonalsByKey.Set(key, matchingDiagonals);
             }
 
-            var best = BestAreaAgainst(pointI, matchingDiagonals);
-            matchingDiagonals.Add((pointI, pointJ));
-            return best;
+            return matchingDiagonals;
         }
 
         // pointI and each stored pair's endpoints are adjacent corners of one
@@ -151,13 +181,4 @@ internal static class MinimumAreaRectangleIISolution
             return best;
         }
     }
-
-    private static int LengthSquared((int X, int Y) a, (int X, int Y) b)
-    {
-        var dx = a.X - b.X;
-        var dy = a.Y - b.Y;
-        return (dx * dx) + (dy * dy);
-    }
-
-    private static double Distance((int X, int Y) a, (int X, int Y) b) => Math.Sqrt(LengthSquared(a, b));
 }

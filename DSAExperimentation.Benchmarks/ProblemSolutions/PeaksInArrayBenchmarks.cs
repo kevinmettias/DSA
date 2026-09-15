@@ -14,11 +14,11 @@ public class PeaksInArrayBenchmarks
     // LC problem number, used as the deterministic seed for value generation.
     private const int RandomSeed = 3187;
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[] _nums = [];
+    private int[][] _queries = [];
 
     [Params(200, 2_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,11 +29,19 @@ public class PeaksInArrayBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            _queries[i] = i % 2 == 0
-                ? [1, 0, Length - 1]
-                : [2, random.Next(Length), random.Next(1, Length)];
+            var isRangeQuery = i % 2 == 0;
+            _queries[i] = isRangeQuery
+                ? WholeRangeCountQuery()
+                : RandomPointUpdateQuery(random);
         }
     }
+
+    // A type-1 query: count the peaks across the whole array.
+    private int[] WholeRangeCountQuery() => [1, 0, Length - 1];
+
+    // A type-2 query: overwrite a random index with a different random value.
+    private int[] RandomPointUpdateQuery(Random random) =>
+        [2, random.Next(Length), random.Next(1, Length)];
 
     [Benchmark(Baseline = true)]
     public List<int> BruteForce() => PeaksInArraySolution.CountPeaksByBruteForce(_nums, _queries);

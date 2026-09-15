@@ -24,11 +24,11 @@ public class RelativeSortArrayBenchmarks
     private const int OutOfReferenceRangeMin = 100_000;
     private const int OutOfReferenceRangeMax = 200_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _arr1 = [];
 
-    private int[] _arr1 = null!;
-    private int[] _arr2 = null!;
+    private int[] _arr2 = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,11 +36,15 @@ public class RelativeSortArrayBenchmarks
         var random = new Random(RandomSeed);
         _arr2 = Enumerable.Range(0, ReferenceLength).Select(i => i * Arr2ValueStep).ToArray();
         _arr1 = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(0, CoinFlipBound) == 0
-                ? _arr2[random.Next(_arr2.Length)]
+            .Select(_ => IsFromReference(random)
+                ? ReferenceValue(random)
                 : random.Next(OutOfReferenceRangeMin, OutOfReferenceRangeMax))
             .ToArray();
     }
+
+    private static bool IsFromReference(Random random) => random.Next(0, CoinFlipBound) == 0;
+
+    private int ReferenceValue(Random random) => _arr2[random.Next(_arr2.Length)];
 
     [Benchmark(Baseline = true)]
     public int[] LinearScanComparerSort() =>

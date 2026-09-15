@@ -20,27 +20,45 @@ public class MajorityElementIIBenchmarks
     private const int NoiseLowerBound = 1;
     private const int NoiseUpperBound = 1_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(Seed);
+        var values = BuildMajoritySeededValues();
+        _nums = FillNoiseAndShuffle(values, Length);
+    }
+
+    // The seeded run of each majority value: a little over a third of Length apiece.
+    private List<int> BuildMajoritySeededValues()
+    {
         var majorityCount = (Length / 3) + 1;
         var values = new List<int>(Length);
 
-        values.AddRange(Enumerable.Repeat(FirstMajorityValue, majorityCount));
-        values.AddRange(Enumerable.Repeat(SecondMajorityValue, majorityCount));
+        var firstMajority = Enumerable.Repeat(FirstMajorityValue, majorityCount);
+        var secondMajority = Enumerable.Repeat(SecondMajorityValue, majorityCount);
+        values.AddRange(firstMajority);
+        values.AddRange(secondMajority);
 
-        for (var i = values.Count; i < Length; i++)
+        return values;
+    }
+
+    // The remaining slots as random noise, then the whole list shuffled with draws
+    // taken from the same seeded sequence the workload is pinned to.
+    private static int[] FillNoiseAndShuffle(List<int> values, int length)
+    {
+        var random = new Random(Seed);
+
+        for (var i = values.Count; i < length; i++)
         {
-            values.Add(random.Next(NoiseLowerBound, NoiseUpperBound));
+            var noise = random.Next(NoiseLowerBound, NoiseUpperBound);
+            values.Add(noise);
         }
 
-        _nums = [.. values.OrderBy(_ => random.Next())];
+        return [.. values.OrderBy(_ => random.Next())];
     }
 
     [Benchmark]

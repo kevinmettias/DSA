@@ -30,7 +30,50 @@ internal static class StoneGameIIISolution
     // repo's primitives - it is the arm the memoized strategy has to justify itself
     // against.
     public static string WinnerByUnmemoizedRecursion(int[] stoneValue)
-        => DetermineWinner(Best(stoneValue, 0));
+    {
+        var difference = Best(stoneValue, 0);
+        return DetermineWinner(difference);
+    }
+
+    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
+    // index the recurrence branches on, collapsing the exponential recursion to one
+    // evaluation per reachable index.
+    public static string WinnerByMemoizedRecursion(int[] stoneValue)
+    {
+        var difference = Memoizer.Memoize<int, int>(
+            0,
+            new PrefixPickOrder(stoneValue));
+
+        return DetermineWinner(difference);
+    }
+
+    // The rule, named: the player to move from an index takes a prefix of 1, 2, or 3
+    // stones, scoring that prefix minus whatever the opponent can then force from the
+    // state it leaves - the best of the three. The stones are the whole of what the rule
+    // needs from its caller, so they are the constructor's only input.
+    private sealed class PrefixPickOrder(int[] stoneValue) : IRecurrence<int, int>
+    {
+        public int Replay(int index, IRecurrence<int, int> rest)
+        {
+            var stoneCount = stoneValue.Length;
+
+            if (index >= stoneCount)
+            {
+                return 0;
+            }
+
+            var result = int.MinValue;
+            var takenSum = 0;
+
+            for (var take = 1; take <= MaxTakePerTurn && index + take <= stoneCount; take++)
+            {
+                takenSum += stoneValue[index + take - 1];
+                result = Math.Max(result, takenSum - rest.Replay(index + take, rest));
+            }
+
+            return result;
+        }
+    }
 
     private static int Best(int[] stoneValue, int index)
     {
@@ -48,36 +91,6 @@ internal static class StoneGameIIISolution
         {
             takenSum += stoneValue[index + take - 1];
             result = Math.Max(result, takenSum - Best(stoneValue, index + take));
-        }
-
-        return result;
-    }
-
-    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
-    // index the recurrence branches on, collapsing the exponential recursion to one
-    // evaluation per reachable index.
-    public static string WinnerByMemoizedRecursion(int[] stoneValue)
-        => DetermineWinner(
-            Memoizer.Memoize<int, int>(
-                0,
-                (index, bestFrom) => BestMemoized(stoneValue, index, bestFrom)));
-
-    private static int BestMemoized(int[] stoneValue, int index, Func<int, int> bestFrom)
-    {
-        var stoneCount = stoneValue.Length;
-
-        if (index >= stoneCount)
-        {
-            return 0;
-        }
-
-        var result = int.MinValue;
-        var takenSum = 0;
-
-        for (var take = 1; take <= MaxTakePerTurn && index + take <= stoneCount; take++)
-        {
-            takenSum += stoneValue[index + take - 1];
-            result = Math.Max(result, takenSum - bestFrom(index + take));
         }
 
         return result;

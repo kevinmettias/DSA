@@ -11,16 +11,10 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
 public sealed class LeetCodeWireFormatTests
 {
     [Fact]
-    public void ToBinaryTree_OnAnEmptyArray_ReturnsNull()
-    {
-        Assert.Null(LeetCodeWireFormat.ToBinaryTree([]));
-    }
+    public void ToBinaryTree_OnAnEmptyArray_ReturnsNull() => Assert.Null(LeetCodeWireFormat.ToBinaryTree([]));
 
     [Fact]
-    public void ToBinaryTree_OnANullRoot_ReturnsNull()
-    {
-        Assert.Null(LeetCodeWireFormat.ToBinaryTree([null]));
-    }
+    public void ToBinaryTree_OnANullRoot_ReturnsNull() => Assert.Null(LeetCodeWireFormat.ToBinaryTree([null]));
 
     [Fact]
     public void ToBinaryTree_OnLeetCodesOwnExample_PlacesEveryNode()
@@ -50,10 +44,7 @@ public sealed class LeetCodeWireFormatTests
     }
 
     [Fact]
-    public void ToLinkedList_ThenBack_RoundTripsTheValuesInOrder()
-    {
-        Assert.Equal([1, 2, 4], LeetCodeWireFormat.FromLinkedList(LeetCodeWireFormat.ToLinkedList([1, 2, 4])));
-    }
+    public void ToLinkedList_ThenBack_RoundTripsTheValuesInOrder() => Assert.Equal([1, 2, 4], LeetCodeWireFormat.FromLinkedList(LeetCodeWireFormat.ToLinkedList([1, 2, 4])));
 
     [Fact]
     public void ToLinkedList_OnAnEmptyArray_ReturnsNull()

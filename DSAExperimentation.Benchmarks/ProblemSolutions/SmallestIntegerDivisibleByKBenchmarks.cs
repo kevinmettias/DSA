@@ -14,10 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SmallestIntegerDivisibleByKBenchmarks
 {
-    [Params(201, 5_001)]
-    public int K;
-
     private RemainderGraph _graph = null!;
+
+    [Params(201, 5_001)]
+    public int K { get; set; }
 
     [GlobalSetup]
     public void Setup() => _graph = RemainderGraph.Build(K);

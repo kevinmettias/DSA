@@ -65,39 +65,52 @@ internal static class MaximumProfitFromValidTopologicalOrderInDagSolution
     // achievable by optimally placing every node NOT in mask" - so every mask
     // reachable from more than one ordering is solved once, not once per
     // ordering that reaches it.
-    public static long MaxProfitByBitmaskMemoization(int n, int[][] edges, int[] score) =>
-        MaxProfitByBitmaskMemoization(PrecedenceMasks.Build(n, edges), score);
+    public static long MaxProfitByBitmaskMemoization(int n, int[][] edges, int[] score)
+    {
+        var predecessors = PrecedenceMasks.Build(n, edges);
+        return MaxProfitByBitmaskMemoization(predecessors, score);
+    }
 
     public static long MaxProfitByBitmaskMemoization(PrecedenceMasks predecessors, int[] score)
-        => Memoizer.Memoize<int, long>(0, (mask, remainingProfit) => Recurrence(mask, remainingProfit, predecessors.Masks, score));
-
-    private static long Recurrence(int mask, Func<int, long> remainingProfit, int[] predecessorMasks, int[] score)
-    {
-        var placed = BitOperations.PopCount((uint)mask);
-
-        if (placed == score.Length)
-        {
-            return 0;
-        }
-
-        var best = long.MinValue;
-
-        for (var v = 0; v < score.Length; v++)
-        {
-            if (!CanPlace(mask, v, predecessorMasks))
-            {
-                continue;
-            }
-
-            var profit = ((long)score[v] * (placed + 1)) + remainingProfit(mask | (1 << v));
-            best = Math.Max(best, profit);
-        }
-
-        return best;
-    }
+        => Memoizer.Memoize<int, long>(0, new ProfitFromMask(predecessors.Masks, score));
 
     // v is placeable once every node its predecessorMasks bit names is already
     // in mask: not yet placed itself, and no required predecessor missing.
     private static bool CanPlace(int mask, int v, int[] predecessorMasks)
         => (mask & (1 << v)) == 0 && (predecessorMasks[v] & ~mask) == 0;
+
+    // The placement rule, named: the profit still achievable by optimally placing every
+    // node the mask does not yet hold is the best over every placeable node of its score
+    // times the position that node would take, plus what the rule reports for the mask that
+    // placement leaves behind. The precedence masks and scores are fixed for the whole
+    // search and arrive once through the primary constructor; `rest` is the memo run's own
+    // handle on this rule.
+    private sealed class ProfitFromMask(int[] predecessorMasks, int[] score) : IRecurrence<int, long>
+    {
+        /// <inheritdoc/>
+        public long Replay(int mask, IRecurrence<int, long> rest)
+        {
+            var placed = BitOperations.PopCount((uint)mask);
+
+            if (placed == score.Length)
+            {
+                return 0;
+            }
+
+            var best = long.MinValue;
+
+            for (var v = 0; v < score.Length; v++)
+            {
+                if (!CanPlace(mask, v, predecessorMasks))
+                {
+                    continue;
+                }
+
+                var profit = ((long)score[v] * (placed + 1)) + rest.Replay(mask | (1 << v), rest);
+                best = Math.Max(best, profit);
+            }
+
+            return best;
+        }
+    }
 }

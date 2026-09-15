@@ -16,10 +16,10 @@ public class DetectCyclesIn2DGridBenchmarks
 
     private static readonly char[] Letters = ['a', 'b', 'c'];
 
-    [Params(30, 150)]
-    public int GridSize;
+    private char[][] _grid = [];
 
-    private char[][] _grid = null!;
+    [Params(30, 150)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

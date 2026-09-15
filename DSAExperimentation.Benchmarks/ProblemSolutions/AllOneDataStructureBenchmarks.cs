@@ -22,10 +22,10 @@ public class AllOneDataStructureBenchmarks
     private const int GetMaxKeyOpType = 2;
     private const int GetMinKeyOpType = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private (int Type, string Key)[] _ops = [];
 
-    private (int Type, string Key)[] _ops = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -42,8 +42,10 @@ public class AllOneDataStructureBenchmarks
         for (var round = 0; round < Length; round++)
         {
             ops.Add((IncOpType, keys[random.Next(keys.Length)]));
-            ops.Add((GetMaxKeyOpType, ""));
-            ops.Add((GetMinKeyOpType, ""));
+            // Get* take no key argument; string.Empty is the absence, said once, rather
+            // than the same two quote marks typed into both tuples.
+            ops.Add((GetMaxKeyOpType, string.Empty));
+            ops.Add((GetMinKeyOpType, string.Empty));
         }
 
         _ops = [.. ops];

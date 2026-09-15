@@ -74,22 +74,11 @@ public sealed class LFUCacheTests
 // One call in an LFUCache script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct LFUCacheOp
+public readonly record struct LFUCacheOp(LFUCacheOp.OpKind kind, int key, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _key;
-    private readonly int _value;
+    public static LFUCacheOp Get(int key) => new(OpKind.Get, key, 0);
 
-    private LFUCacheOp(Kind kind, int key, int value)
-    {
-        _kind = kind;
-        _key = key;
-        _value = value;
-    }
-
-    public static LFUCacheOp Get(int key) => new(Kind.Get, key, 0);
-
-    public static LFUCacheOp Put(int key, int value) => new(Kind.Put, key, value);
+    public static LFUCacheOp Put(int key, int value) => new(OpKind.Put, key, value);
 
     // null for put, the returned value for get (LeetCode's own -1-on-miss
     // convention, since ICache<TKey,TValue>.TryGetValue's out value is only
@@ -98,16 +87,16 @@ public readonly record struct LFUCacheOp
     // public: only this same assembly's test method ever calls Apply.
     internal int? Apply(ICache<int, int> cache)
     {
-        if (_kind == Kind.Put)
+        if (kind == OpKind.Put)
         {
-            cache.Set(_key, _value);
+            cache.Set(key, value);
             return null;
         }
 
-        return cache.TryGetValue(_key, out var value) ? value : -1;
+        return cache.TryGetValue(key, out var cachedValue) ? cachedValue : -1;
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Get,
         Put,

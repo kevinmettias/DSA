@@ -13,10 +13,10 @@ public class RemoveBoxesBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(16, 24)]
-    public int BoxCount;
+    private int[] _boxes = [];
 
-    private int[] _boxes = null!;
+    [Params(16, 24)]
+    public int BoxCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _boxes = RemoveBoxesWorkloads.BuildBoxes(BoxCount, seed: RandomSeed);

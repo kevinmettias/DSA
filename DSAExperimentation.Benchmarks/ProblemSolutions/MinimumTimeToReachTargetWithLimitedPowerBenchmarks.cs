@@ -17,12 +17,12 @@ public class MinimumTimeToReachTargetWithLimitedPowerBenchmarks
     private const int Seed = 3977;
     private const int Power = 30;
 
-    [Params(100, 500)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
-    private int[] _cost = null!;
+    private int[] _cost = [];
     private PowerStateGraph _graph = null!;
+    [Params(100, 500)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,7 +34,7 @@ public class MinimumTimeToReachTargetWithLimitedPowerBenchmarks
     [Benchmark(Baseline = true)]
     public long[] BclPriorityQueue() =>
         MinimumTimeToReachTargetWithLimitedPowerSolution.MinTimeMaxPowerByBclPriorityQueue(
-            NodeCount, _edges, Power, _cost, source: 0, target: NodeCount - 1);
+            (NodeCount, _edges, Power, _cost), source: 0, target: NodeCount - 1);
 
     [Benchmark]
     public long[] ReduceGraph() =>

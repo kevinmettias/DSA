@@ -29,6 +29,18 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
         var frontier = new PriorityQueue<(int Row, int Col, int Parity), int>();
         frontier.Enqueue((0, 0, 0), 0);
 
+        return DrainFrontierByBclPriorityQueue((moveTime, rows, cols), distances, settled, frontier);
+    }
+
+    // The relaxation itself, over the BCL frontier and the tables its caller seeded:
+    // pop the cheapest unsettled state, answer with its time when it is the last room,
+    // and otherwise offer every neighbour the arrival time this move reaches it at.
+    private static int DrainFrontierByBclPriorityQueue(
+        (int[][] MoveTime, int Rows, int Cols) grid,
+        Dictionary<(int Row, int Col, int Parity), int> distances,
+        HashSet<(int Row, int Col, int Parity)> settled,
+        PriorityQueue<(int Row, int Col, int Parity), int> frontier)
+    {
         while (frontier.TryDequeue(out var node, out var priority))
         {
             if (!settled.Add(node))
@@ -36,14 +48,14 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
                 continue;
             }
 
-            if (node.Row == rows - 1 && node.Col == cols - 1)
+            if (node.Row == grid.Rows - 1 && node.Col == grid.Cols - 1)
             {
                 return priority;
             }
 
-            foreach (var neighbor in Neighbors(node, rows, cols))
+            foreach (var neighbor in Neighbors(node, grid.Rows, grid.Cols))
             {
-                var arrival = ArrivalTime(priority, moveTime[neighbor.Row][neighbor.Col], node.Parity);
+                var arrival = ArrivalTime(priority, grid.MoveTime[neighbor.Row][neighbor.Col], node.Parity);
 
                 if (!distances.TryGetValue(neighbor, out var known) || arrival < known)
                 {
@@ -53,7 +65,7 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
             }
         }
 
-        return Unreachable(rows, cols);
+        return Unreachable(grid.Rows, grid.Cols);
     }
 
     // Composed: identical algorithm, fronted by Collections.Heap<Element,TOrder>
@@ -70,6 +82,17 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
             ByPriorityOrder<(int Row, int Col, int Parity), int>>();
         frontier.Push(((0, 0, 0), 0));
 
+        return DrainFrontierByHeap((moveTime, rows, cols), distances, settled, frontier);
+    }
+
+    // The same relaxation over this repo's Heap instead, whose pop hands the node and
+    // its priority back as one entry rather than through two out parameters.
+    private static int DrainFrontierByHeap(
+        (int[][] MoveTime, int Rows, int Cols) grid,
+        Dictionary<(int Row, int Col, int Parity), int> distances,
+        HashSet<(int Row, int Col, int Parity)> settled,
+        Heap<((int Row, int Col, int Parity) Node, int Priority), ByPriorityOrder<(int Row, int Col, int Parity), int>> frontier)
+    {
         while (frontier.TryPop(out var entry))
         {
             if (!settled.Add(entry.Node))
@@ -77,14 +100,14 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
                 continue;
             }
 
-            if (entry.Node.Row == rows - 1 && entry.Node.Col == cols - 1)
+            if (entry.Node.Row == grid.Rows - 1 && entry.Node.Col == grid.Cols - 1)
             {
                 return entry.Priority;
             }
 
-            foreach (var neighbor in Neighbors(entry.Node, rows, cols))
+            foreach (var neighbor in Neighbors(entry.Node, grid.Rows, grid.Cols))
             {
-                var arrival = ArrivalTime(entry.Priority, moveTime[neighbor.Row][neighbor.Col], entry.Node.Parity);
+                var arrival = ArrivalTime(entry.Priority, grid.MoveTime[neighbor.Row][neighbor.Col], entry.Node.Parity);
 
                 if (!distances.TryGetValue(neighbor, out var known) || arrival < known)
                 {
@@ -94,7 +117,7 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
             }
         }
 
-        return Unreachable(rows, cols);
+        return Unreachable(grid.Rows, grid.Cols);
     }
 
     private static IEnumerable<(int Row, int Col, int Parity)> Neighbors(
@@ -104,12 +127,16 @@ internal static class FindMinimumTimeToReachLastRoomIISolution
         {
             var (nextRow, nextCol) = (node.Row + dRow, node.Col + dCol);
 
-            if (nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols)
+            if (IsInsideGrid(nextRow, nextCol, rows, cols))
             {
                 yield return (nextRow, nextCol, 1 - node.Parity);
             }
         }
     }
+
+    // Whether the neighbor stays on the board.
+    private static bool IsInsideGrid(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
 
     // Arrival time when leaving `currentTime` for a room requiring `requiredTime`:
     // wait for the room to open if necessary, then pay the alternating move cost -

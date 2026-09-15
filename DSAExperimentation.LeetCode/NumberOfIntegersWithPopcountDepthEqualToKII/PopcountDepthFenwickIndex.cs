@@ -9,34 +9,18 @@ namespace DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI
 // value at this depth" - so a [1, l, r, k] query is one Query(l, r) on the
 // k-th tree, and a [2, idx, val] update touches at most two trees (Add(-1) on
 // the old depth, Add(+1) on the new one) instead of anything being rescanned.
-// This answers LC 3624 alone - the depth bound baked into MaxTrackedDepth
+// This answers LC 3624 alone - the depth bound baked into PopcountDepthBounds.MaxTrackedDepth
 // comes from this problem's own constraint, not a general property of
 // popcount-depth - which is why it lives beside the solution rather than in
 // Domain.
-internal sealed class PopcountDepthFenwickIndex
+internal sealed class PopcountDepthFenwickIndex(
+    FenwickTree<int, SumOperation<int>>[] treesByDepth, int[] depthByIndex)
 {
-    // LC guarantees 0 <= k <= 5 for every query, and it is also a provable
-    // upper bound on any depth the real data can reach: nums[i] <= 10^15 fits
-    // in 50 bits, so popcount(nums[i]) <= 50, and the popcount chain from any
-    // value <= 50 reaches 1 in at most 4 further steps - depth 5 is never
-    // exceeded, so index [0, MaxTrackedDepth] covers every depth a value
-    // within the problem's own bounds can ever have.
-    public const int MaxTrackedDepth = 5;
-
-    private readonly FenwickTree<int, SumOperation<int>>[] _treesByDepth;
-    private readonly int[] _depthByIndex;
-
-    private PopcountDepthFenwickIndex(FenwickTree<int, SumOperation<int>>[] treesByDepth, int[] depthByIndex)
-    {
-        _treesByDepth = treesByDepth;
-        _depthByIndex = depthByIndex;
-    }
-
     public static PopcountDepthFenwickIndex Build(long[] nums)
     {
-        var treesByDepth = new FenwickTree<int, SumOperation<int>>[MaxTrackedDepth + 1];
+        var treesByDepth = new FenwickTree<int, SumOperation<int>>[PopcountDepthBounds.MaxTrackedDepth + 1];
 
-        for (var depth = 0; depth <= MaxTrackedDepth; depth++)
+        for (var depth = 0; depth <= PopcountDepthBounds.MaxTrackedDepth; depth++)
         {
             treesByDepth[depth] = new FenwickTree<int, SumOperation<int>>(nums.Length);
         }
@@ -52,21 +36,21 @@ internal sealed class PopcountDepthFenwickIndex
         return new PopcountDepthFenwickIndex(treesByDepth, depthByIndex);
     }
 
-    public int Count(int left, int right, int depth) => _treesByDepth[depth].Query(left, right);
+    public int Count(int left, int right, int depth) => treesByDepth[depth].Query(left, right);
 
     public void Update(int index, long value)
     {
         var newDepth = Depth(value);
-        var oldDepth = _depthByIndex[index];
+        var oldDepth = depthByIndex[index];
 
         if (newDepth == oldDepth)
         {
             return;
         }
 
-        _treesByDepth[oldDepth].Add(index, -1);
-        _treesByDepth[newDepth].Add(index, 1);
-        _depthByIndex[index] = newDepth;
+        treesByDepth[oldDepth].Add(index, -1);
+        treesByDepth[newDepth].Add(index, 1);
+        depthByIndex[index] = newDepth;
     }
 
     private static int Depth(long x)

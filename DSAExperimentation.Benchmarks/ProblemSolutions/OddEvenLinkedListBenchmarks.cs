@@ -11,13 +11,27 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class OddEvenLinkedListBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = Build(Enumerable.Range(0, Length).ToArray());
+
+    private static SinglyLinkedListNode<int> Build(int[] values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next!;
+    }
 
     [Benchmark(Baseline = true)]
     public int TwoListRebuild() => Count(OddEvenLinkedListSolution.GroupOddEvenByTwoListRebuild(Clone(_head)));
@@ -35,20 +49,6 @@ public class OddEvenLinkedListBenchmarks
         }
 
         return count;
-    }
-
-    private static SinglyLinkedListNode<int> Build(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next!;
     }
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)

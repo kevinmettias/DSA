@@ -12,18 +12,13 @@ public sealed class ZipFoldAlgebraTests
         ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Combine(Node, children);
 
     [Fact]
-    public void Empty_PairsTheTwoAlgebrasOwnEmptyValues()
-    {
+    public void Empty_PairsTheTwoAlgebrasOwnEmptyValues() =>
         Assert.Equal(
             (SizeAlgebra<TestNode>.Empty, HeightAlgebra<TestNode>.Empty),
             ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Empty);
-    }
 
     [Fact]
-    public void Combine_Leaf_RunsBothAlgebrasIndependently()
-    {
-        Assert.Equal((1, 1), Combine([]));
-    }
+    public void Combine_Leaf_RunsBothAlgebrasIndependently() => Assert.Equal((1, 1), Combine([]));
 
     [Fact]
     public void Combine_SplitsTheChildPairsBackIntoTwoIndependentLists()
@@ -45,8 +40,5 @@ public sealed class ZipFoldAlgebraTests
     }
 
     [Fact]
-    public void Enter_ForwardsToBothAlgebrasWithoutThrowing()
-    {
-        ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Enter(Node, 0);
-    }
+    public void Enter_ForwardsToBothAlgebrasWithoutThrowing() => ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Enter(Node, 0);
 }

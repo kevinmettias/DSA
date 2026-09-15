@@ -15,10 +15,10 @@ public class SlidingWindowMaximumBenchmarks
     private const int WindowSize = 50;
     private const int ValueBound = 1_000_000;
 
-    [Params(2_000, 20_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(2_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

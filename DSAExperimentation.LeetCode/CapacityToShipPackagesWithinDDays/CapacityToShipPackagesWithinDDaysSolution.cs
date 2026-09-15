@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
@@ -18,7 +19,6 @@ namespace DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
 // "capacity"/"days" are that problem's "limit"/"k" under a different name.
 internal static class CapacityToShipPackagesWithinDDaysSolution
 {
-    private const int MidpointDivisor = 2;
 
     // The textbook answer: a hand-written bisection over the capacity range, BCL-only.
     public static int ShipWithinDaysByManualBisection(int[] weights, int days)
@@ -28,7 +28,7 @@ internal static class CapacityToShipPackagesWithinDDaysSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / MidpointDivisor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
             if (CanShipWithinDays(weights, days, mid))
             {

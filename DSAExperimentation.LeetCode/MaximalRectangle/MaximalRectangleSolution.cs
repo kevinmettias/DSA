@@ -64,7 +64,8 @@ internal static class MaximalRectangleSolution
 
         for (var c = 0; c < cols; c++)
         {
-            run = columnAllOnes[c] ? run + 1 : 0;
+            var columnIsAllOnes = columnAllOnes[c];
+            run = columnIsAllOnes ? Incremented(run) : 0;
             maxArea = Math.Max(maxArea, run * height);
         }
 
@@ -88,7 +89,8 @@ internal static class MaximalRectangleSolution
         {
             for (var col = 0; col < row.Length; col++)
             {
-                heights[col] = row[col] == '1' ? heights[col] + 1 : 0;
+                var cellIsOne = row[col] == '1';
+                heights[col] = cellIsOne ? Incremented(heights[col]) : 0;
             }
 
             maxArea = Math.Max(maxArea, LargestRectangleArea(heights));
@@ -104,13 +106,13 @@ internal static class MaximalRectangleSolution
 
         for (var i = 0; i <= heights.Length; i++)
         {
-            var currentHeight = i == heights.Length ? 0 : heights[i];
+            var currentHeight = i == heights.Length ? 0 : HeightAt(heights, i);
 
             while (indices.TryPeek(out var top) && heights[top] >= currentHeight)
             {
                 indices.TryPop(out _);
                 var height = heights[top];
-                var width = indices.TryPeek(out var left) ? i - left - 1 : i;
+                var width = indices.TryPeek(out var left) ? WidthBetween(left, i) : i;
                 maxArea = Math.Max(maxArea, height * width);
             }
 
@@ -119,4 +121,14 @@ internal static class MaximalRectangleSolution
 
         return maxArea;
     }
+
+    private static int HeightAt(int[] heights, int index) => heights[index];
+
+    // The number of columns strictly between the two bounded indices, which is
+    // the rectangle's width once a left boundary has been found.
+    private static int WidthBetween(int left, int right) => right - left - 1;
+
+    // The running run of set columns (or histogram height), extended by the
+    // current column: the consequence of a still-set test in either strategy.
+    private static int Incremented(int value) => value + 1;
 }

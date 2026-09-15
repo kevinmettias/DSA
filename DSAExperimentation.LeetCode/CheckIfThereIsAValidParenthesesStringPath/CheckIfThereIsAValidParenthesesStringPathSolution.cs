@@ -26,6 +26,17 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
     public static bool HasValidPathByUnmemoizedRecursion(char[,] grid) =>
         HasValidPathFrom(0, 0, 0, Board.Over(grid));
 
+    // The same recurrence handed to Memoizer, whose own memo run routes every
+    // recursive branch through one shared cache keyed by the (Row, Col, Balance)
+    // state - the tuple's structural equality is exactly the identity the recurrence
+    // needs, so the default comparer is correct as-is.
+    public static bool HasValidPathByMemoizedRecursion(char[,] grid)
+    {
+        var board = Board.Over(grid);
+
+        return Memoizer.Memoize<(int Row, int Col, int Balance), bool>((0, 0, 0), new WalkDownOrRight(board));
+    }
+
     private static bool HasValidPathFrom(int row, int col, int balance, Board board)
     {
         var (isTerminal, terminalValue, newBalance) = board.Enter(row, col, balance);
@@ -37,37 +48,6 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
 
         var canGoDown = row + 1 < board.Rows && HasValidPathFrom(row + 1, col, newBalance, board);
         var canGoRight = col + 1 < board.Cols && HasValidPathFrom(row, col + 1, newBalance, board);
-        return canGoDown || canGoRight;
-    }
-
-    // The same recurrence handed to Memoizer, whose call-back parameter routes every
-    // recursive branch through one shared cache keyed by the (Row, Col, Balance)
-    // state - the tuple's structural equality is exactly the identity the recurrence
-    // needs, so the default comparer is correct as-is.
-    public static bool HasValidPathByMemoizedRecursion(char[,] grid)
-    {
-        var board = Board.Over(grid);
-
-        return Memoizer.Memoize<(int Row, int Col, int Balance), bool>(
-            (0, 0, 0),
-            (state, hasValidPath) => HasValidPathFrom(state, hasValidPath, board));
-    }
-
-    private static bool HasValidPathFrom(
-        (int Row, int Col, int Balance) state,
-        Func<(int Row, int Col, int Balance), bool> hasValidPath,
-        Board board)
-    {
-        var (row, col, balance) = state;
-        var (isTerminal, terminalValue, newBalance) = board.Enter(row, col, balance);
-
-        if (isTerminal)
-        {
-            return terminalValue;
-        }
-
-        var canGoDown = row + 1 < board.Rows && hasValidPath((row + 1, col, newBalance));
-        var canGoRight = col + 1 < board.Cols && hasValidPath((row, col + 1, newBalance));
         return canGoDown || canGoRight;
     }
 
@@ -83,7 +63,8 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
 
         public (bool IsTerminal, bool TerminalValue, int NewBalance) Enter(int row, int col, int balance)
         {
-            var newBalance = balance + (Grid[row, col] == Open ? 1 : -1);
+            var isOpen = Grid[row, col] == Open;
+            var newBalance = balance + (isOpen ? 1 : -1);
 
             if (newBalance < 0)
             {
@@ -96,6 +77,30 @@ internal static class CheckIfThereIsAValidParenthesesStringPathSolution
             }
 
             return (false, false, newBalance);
+        }
+    }
+
+    // The recurrence, named: one cell of the walk, where entering it either ends the
+    // branch (balance went negative, or the destination was reached) or leaves the
+    // balance to carry down and right. The board is the whole of what the rule needs
+    // from its caller, so it is the constructor's only input.
+    private sealed class WalkDownOrRight(Board board) : IRecurrence<(int Row, int Col, int Balance), bool>
+    {
+        public bool Replay(
+            (int Row, int Col, int Balance) state,
+            IRecurrence<(int Row, int Col, int Balance), bool> rest)
+        {
+            var (row, col, balance) = state;
+            var (isTerminal, terminalValue, newBalance) = board.Enter(row, col, balance);
+
+            if (isTerminal)
+            {
+                return terminalValue;
+            }
+
+            var canGoDown = row + 1 < board.Rows && rest.Replay((row + 1, col, newBalance), rest);
+            var canGoRight = col + 1 < board.Cols && rest.Replay((row, col + 1, newBalance), rest);
+            return canGoDown || canGoRight;
         }
     }
 }

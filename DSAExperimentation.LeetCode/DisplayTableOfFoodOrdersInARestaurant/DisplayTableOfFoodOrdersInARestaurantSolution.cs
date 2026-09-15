@@ -59,19 +59,19 @@ internal static class DisplayTableOfFoodOrdersInARestaurantSolution
 
         foreach (var food in foods)
         {
-            row.Add(CountOrdersForCell(orders, tableText, food).ToString());
+            row.Add(CountOrdersForCell(orders, new TableLabel(tableText), new FoodName(food)).ToString());
         }
 
         return row;
     }
 
-    private static int CountOrdersForCell(string[][] orders, string tableText, string food)
+    private static int CountOrdersForCell(string[][] orders, TableLabel tableLabel, FoodName food)
     {
         var count = 0;
 
         foreach (var order in orders)
         {
-            if (order[TableFieldIndex] == tableText && order[FoodFieldIndex] == food)
+            if (order[TableFieldIndex] == tableLabel.Text && order[FoodFieldIndex] == food.Text)
             {
                 count++;
             }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.KokoEatingBananas;
@@ -17,7 +18,6 @@ internal static class KokoEatingBananasSolution
 {
     // Speeds are 1-based while sequence indices are 0-based.
     private const int SlowestSpeed = 1;
-    private const int MidpointDivisor = 2;
 
     // The textbook answer: a hand-written bisection over the speed range, BCL-only.
     public static int MinEatingSpeedByManualBisection(int[] piles, int h)
@@ -27,7 +27,7 @@ internal static class KokoEatingBananasSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / MidpointDivisor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
             if (ClearsEveryPile(piles, mid, h))
             {

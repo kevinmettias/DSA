@@ -36,6 +36,20 @@ internal static class VowelsGameInAStringSolution
         return AliceToMoveWins(s, aliceMemo, bobMemo);
     }
 
+    // The derived closed form: Alice wins iff s has at least one vowel.
+    public static bool DoesAliceWinByVowelExistence(string s)
+    {
+        foreach (var c in s)
+        {
+            if (VowelSet.Has(c))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Alice needs a substring with an odd vowel count; she wins if any such
     // removal leaves Bob facing a state where he cannot win.
     private static bool AliceToMoveWins(
@@ -46,7 +60,7 @@ internal static class VowelsGameInAStringSolution
             return cached;
         }
 
-        var wins = HasWinningRemoval(s, requireOddVowels: true, rest => !BobToMoveWins(rest, aliceMemo, bobMemo));
+        var wins = HasWinningRemoval(s, VowelParity.Odd, (aliceMemo, bobMemo));
         aliceMemo[s] = wins;
         return wins;
     }
@@ -61,7 +75,7 @@ internal static class VowelsGameInAStringSolution
             return cached;
         }
 
-        var wins = HasWinningRemoval(s, requireOddVowels: false, rest => !AliceToMoveWins(rest, aliceMemo, bobMemo));
+        var wins = HasWinningRemoval(s, VowelParity.Even, (aliceMemo, bobMemo));
         bobMemo[s] = wins;
         return wins;
     }
@@ -69,46 +83,80 @@ internal static class VowelsGameInAStringSolution
     // Tries every substring [start, end] in order, checking each one's vowel
     // count against the mover's required parity, and stops at the first
     // removal that makes the opponent lose.
-    private static bool HasWinningRemoval(string s, bool requireOddVowels, Func<string, bool> opponentLoses)
+    private static bool HasWinningRemoval(
+        string s,
+        VowelParity requiredParity,
+        (Dictionary<string, bool> AliceMemo, Dictionary<string, bool> BobMemo) memos)
     {
         for (var start = 0; start < s.Length; start++)
         {
-            var vowels = 0;
-
-            for (var end = start; end < s.Length; end++)
-            {
-                if (Vowels.Contains(s[end]))
-                {
-                    vowels++;
-                }
-
-                if (vowels % 2 == 1 != requireOddVowels)
-                {
-                    continue;
-                }
-
-                var rest = s.Remove(start, end - start + 1);
-                if (opponentLoses(rest))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    // The derived closed form: Alice wins iff s has at least one vowel.
-    public static bool DoesAliceWinByVowelExistence(string s)
-    {
-        foreach (var c in s)
-        {
-            if (VowelSet.Has(c))
+            if (HasWinningRemovalFrom(s, start, requiredParity, memos))
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    // Grows the removal's right end from `start`, counting the vowels it takes in,
+    // and reports whether any prefix with this start has the required parity and
+    // leaves the opponent losing.
+    private static bool HasWinningRemovalFrom(
+        string s,
+        int start,
+        VowelParity requiredParity,
+        (Dictionary<string, bool> AliceMemo, Dictionary<string, bool> BobMemo) memos)
+    {
+        var vowels = 0;
+
+        for (var end = start; end < s.Length; end++)
+        {
+            if (Vowels.Contains(s[end]))
+            {
+                vowels++;
+            }
+
+            if (!HasVowelParity(vowels, requiredParity))
+            {
+                continue;
+            }
+
+            var rest = s.Remove(start, end - start + 1);
+            if (OpponentLoses(rest, requiredParity, memos))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // The question a removal asks of the position it leaves behind: does whoever
+    // moves next lose from here? This mover's own parity fixes which of the two
+    // turn functions answers it, since only the other role can be next to move.
+    private static bool OpponentLoses(
+        string remaining,
+        VowelParity movedParity,
+        (Dictionary<string, bool> AliceMemo, Dictionary<string, bool> BobMemo) memos)
+    {
+        if (movedParity == VowelParity.Odd)
+        {
+            return !BobToMoveWins(remaining, memos.AliceMemo, memos.BobMemo);
+        }
+
+        return !AliceToMoveWins(remaining, memos.AliceMemo, memos.BobMemo);
+    }
+
+    // A removal is legal only when its vowel count has the parity its mover needs.
+    private static bool HasVowelParity(int vowels, VowelParity requiredParity) =>
+        (vowels % 2 == 1) == (requiredParity == VowelParity.Odd);
+
+    // Which vowel-count parity a legal removal must have: Alice needs an odd one,
+    // Bob an even one (zero included).
+    private enum VowelParity
+    {
+        Even,
+        Odd,
     }
 }

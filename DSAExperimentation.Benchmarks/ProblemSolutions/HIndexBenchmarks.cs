@@ -11,10 +11,10 @@ public class HIndexBenchmarks
     private const int RandomSeed = 274; // LC problem number
     private const int CitationCountExclusiveBound = 1_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _citations = [];
 
-    private int[] _citations = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

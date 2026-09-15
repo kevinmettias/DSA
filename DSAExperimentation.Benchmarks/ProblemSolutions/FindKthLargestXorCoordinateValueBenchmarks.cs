@@ -15,10 +15,10 @@ public class FindKthLargestXorCoordinateValueBenchmarks
     private const int RandomSeed = 1738; // LC problem number
     private const int MaxCoordinateValueExclusive = 1_000_000;
 
-    [Params(50, 300)]
-    public int Side;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(50, 300)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()

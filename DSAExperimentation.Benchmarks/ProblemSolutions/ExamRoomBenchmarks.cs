@@ -17,10 +17,10 @@ public class ExamRoomBenchmarks
     // tightest constraint by construction.
     private const int RoomCapacityPadding = 1_000;
 
-    [Params(200, 2_000)]
-    public int Length;
-
     private int _seatCount;
+
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _seatCount = Length + RoomCapacityPadding;

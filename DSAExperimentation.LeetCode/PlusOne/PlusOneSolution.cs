@@ -44,6 +44,23 @@ internal static class PlusOneSolution
     public static int[] IncrementByDigitStack(int[] digits)
     {
         var stack = new DigitStack();
+        PushCarryAdjustedDigits(digits, stack);
+
+        var result = new List<int>();
+
+        while (stack.TryPop(out var digit))
+        {
+            result.Add(digit);
+        }
+
+        return result.ToArray();
+    }
+
+    // Least-significant digit first, adding one and carrying left; whatever carry is
+    // still unabsorbed past the most-significant digit is pushed as the new leading
+    // digit. Popping the stack therefore yields the number most-significant first.
+    private static void PushCarryAdjustedDigits(int[] digits, DigitStack stack)
+    {
         var carry = 1;
 
         for (var i = digits.Length - 1; i >= 0; i--)
@@ -57,14 +74,5 @@ internal static class PlusOneSolution
         {
             stack.Push(carry);
         }
-
-        var result = new List<int>();
-
-        while (stack.TryPop(out var digit))
-        {
-            result.Add(digit);
-        }
-
-        return result.ToArray();
     }
 }

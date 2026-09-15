@@ -66,20 +66,27 @@ internal static class CountAlmostEqualPairsIISolution
             {
                 var afterOneSwap = Swapped(a, i1, j1);
 
-                if (afterOneSwap == b)
+                if (afterOneSwap == b || IsOneSwapFrom(afterOneSwap, b))
                 {
                     return true;
                 }
+            }
+        }
 
-                for (var i2 = 0; i2 < width; i2++)
+        return false;
+    }
+
+    // True when a single further swap anywhere in `value` reaches `target` - the
+    // second of the two swaps the budget allows.
+    private static bool IsOneSwapFrom(string value, string target)
+    {
+        for (var i = 0; i < value.Length; i++)
+        {
+            for (var j = i + 1; j < value.Length; j++)
+            {
+                if (Swapped(value, i, j) == target)
                 {
-                    for (var j2 = i2 + 1; j2 < width; j2++)
-                    {
-                        if (Swapped(afterOneSwap, i2, j2) == b)
-                        {
-                            return true;
-                        }
-                    }
+                    return true;
                 }
             }
         }

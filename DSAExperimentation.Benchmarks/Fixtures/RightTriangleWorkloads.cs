@@ -18,7 +18,8 @@ internal static class RightTriangleWorkloads
 
             for (var col = 0; col < size; col++)
             {
-                grid[row][col] = random.NextDouble() < OneDensity ? 1 : 0;
+                var isOne = random.NextDouble() < OneDensity;
+                grid[row][col] = isOne ? 1 : 0;
             }
         }
 

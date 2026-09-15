@@ -66,10 +66,7 @@ public sealed class FenwickArrayTests
     }
 
     [Fact]
-    public void Get_UnsetIndex_ReturnsTheDefaultElement()
-    {
-        Assert.Equal(0, new FenwickArray<int>(4).Get(2));
-    }
+    public void Get_UnsetIndex_ReturnsTheDefaultElement() => Assert.Equal(0, new FenwickArray<int>(4).Get(2));
 
     [Fact]
     public void Get_AfterSet_ReturnsThatIndexAndNotItsNeighbours()
@@ -83,8 +80,5 @@ public sealed class FenwickArrayTests
     }
 
     [Fact]
-    public void Get_IndexZero_IsTheUnusedOneBasedPadSlot()
-    {
-        Assert.Equal(0, new FenwickArray<int>(4).Get(0));
-    }
+    public void Get_IndexZero_IsTheUnusedOneBasedPadSlot() => Assert.Equal(0, new FenwickArray<int>(4).Get(0));
 }

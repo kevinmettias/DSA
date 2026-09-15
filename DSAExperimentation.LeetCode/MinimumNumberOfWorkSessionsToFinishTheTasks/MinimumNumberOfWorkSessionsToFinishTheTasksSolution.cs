@@ -26,8 +26,12 @@ internal static class MinimumNumberOfWorkSessionsToFinishTheTasksSolution
     // BCL-only inside (§17.5) - it is the arm the memoized strategy below has to
     // justify itself against, and until this migration it lived only in the
     // benchmark, where nothing ever asserted it.
-    public static int MinSessionsByUnmemoizedRecursion(int[] tasks, int sessionTime) =>
-        MinSessionsByUnmemoizedRecursion(FeasibleSessionMasks.Build(tasks, sessionTime));
+    public static int MinSessionsByUnmemoizedRecursion(int[] tasks, int sessionTime)
+    {
+        var sessions = FeasibleSessionMasks.Build(tasks, sessionTime);
+
+        return MinSessionsByUnmemoizedRecursion(sessions);
+    }
 
     public static int MinSessionsByUnmemoizedRecursion(FeasibleSessionMasks sessions) =>
         SessionsFor(sessions, sessions.FullMask);
@@ -55,26 +59,45 @@ internal static class MinimumNumberOfWorkSessionsToFinishTheTasksSolution
     // This repo's own Memoizer, keyed on the remaining-task bitmask - the same shape
     // ParallelCoursesII and SmallestSufficientTeam use, an int bitmask as the memo
     // state rather than a bare counter.
-    public static int MinSessionsByMemoizedBitmaskDp(int[] tasks, int sessionTime) =>
-        MinSessionsByMemoizedBitmaskDp(FeasibleSessionMasks.Build(tasks, sessionTime));
+    public static int MinSessionsByMemoizedBitmaskDp(int[] tasks, int sessionTime)
+    {
+        var sessions = FeasibleSessionMasks.Build(tasks, sessionTime);
+
+        return MinSessionsByMemoizedBitmaskDp(sessions);
+    }
 
     public static int MinSessionsByMemoizedBitmaskDp(FeasibleSessionMasks sessions) =>
-        Memoizer.Memoize<int, int>(sessions.FullMask, (remaining, sessionsFor) =>
-            remaining == 0 ? 0 : 1 + BestOverFeasibleSubsets(sessions, remaining, sessionsFor));
+        Memoizer.Memoize(sessions.FullMask, new SessionsFromRemainingTasks(sessions));
 
-    private static int BestOverFeasibleSubsets(
-        FeasibleSessionMasks sessions, int remaining, Func<int, int> sessionsFor)
+    // The recurrence, as a named type: nothing left to schedule costs no sessions, and
+    // otherwise one session is spent on whichever feasible subset finishes the fewest
+    // further sessions over what it leaves behind.
+    private sealed class SessionsFromRemainingTasks(FeasibleSessionMasks sessions) : IRecurrence<int, int>
     {
-        var best = int.MaxValue;
-
-        for (var sub = remaining; sub > 0; sub = (sub - 1) & remaining)
+        public int Replay(int remaining, IRecurrence<int, int> rest)
         {
-            if (sessions.FitsInOneSession(sub))
+            if (remaining == 0)
             {
-                best = Math.Min(best, sessionsFor(remaining ^ sub));
+                return 0;
             }
+
+            return 1 + BestOverFeasibleSubsets(rest, remaining);
         }
 
-        return best;
+        private int BestOverFeasibleSubsets(IRecurrence<int, int> rest, int remaining)
+        {
+            var best = int.MaxValue;
+
+            for (var sub = remaining; sub > 0; sub = (sub - 1) & remaining)
+            {
+                if (sessions.FitsInOneSession(sub))
+                {
+                    var sessionsAfter = rest.Replay(remaining ^ sub, rest);
+                    best = Math.Min(best, sessionsAfter);
+                }
+            }
+
+            return best;
+        }
     }
 }

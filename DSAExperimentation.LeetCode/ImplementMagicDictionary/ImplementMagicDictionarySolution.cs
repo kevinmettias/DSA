@@ -42,20 +42,21 @@ internal static class ImplementMagicDictionarySolution
 
         public void BuildDict(IEnumerable<string> dictionary) => _dictionary = dictionary.ToArray();
 
-        public bool Search(string searchWord) => _dictionary.Any(word => IsOneCharacterAway(word, searchWord));
+        public bool Search(string searchWord) =>
+            _dictionary.Any(word => IsOneCharacterAway(new DictionaryWord(word), new SearchWord(searchWord)));
 
-        private static bool IsOneCharacterAway(string word, string searchWord)
+        private static bool IsOneCharacterAway(DictionaryWord word, SearchWord searchWord)
         {
-            if (word.Length != searchWord.Length)
+            if (word.Text.Length != searchWord.Text.Length)
             {
                 return false;
             }
 
             var differences = 0;
 
-            for (var i = 0; i < word.Length && differences <= 1; i++)
+            for (var i = 0; i < word.Text.Length && differences <= 1; i++)
             {
-                if (word[i] != searchWord[i])
+                if (word.Text[i] != searchWord.Text[i])
                 {
                     differences++;
                 }
@@ -63,6 +64,14 @@ internal static class ImplementMagicDictionarySolution
 
             return differences == 1;
         }
+
+        // The two ends of a Hamming comparison, named for the roles they play here rather
+        // than left as two adjacent `string` positions a caller could hand over the wrong
+        // way round with the compiler none the wiser. `word` is the dictionary entry the
+        // scan is walking; `searchWord` is the one being looked for.
+        private readonly record struct DictionaryWord(string Text);
+
+        private readonly record struct SearchWord(string Text);
     }
 
     private sealed class TrieSearchMagicDictionary : IMagicDictionary
@@ -77,23 +86,26 @@ internal static class ImplementMagicDictionarySolution
             }
         }
 
-        public bool Search(string searchWord) => Search(_trie.Root, searchWord, 0, usedSubstitution: false);
+        public bool Search(string searchWord) => Search(_trie.Root, searchWord, 0, SubstitutionBudget.Available);
 
-        private static bool Search(LowercaseTrieNode<bool> node, string searchWord, int index, bool usedSubstitution)
+        private static bool Search(
+            LowercaseTrieNode<bool> node, string searchWord, int index, SubstitutionBudget budget)
         {
             if (index == searchWord.Length)
             {
-                return usedSubstitution && node.HasValue;
+                return budget == SubstitutionBudget.Spent && node.HasValue;
             }
 
             var target = searchWord[index] - 'a';
 
-            for (var candidate = 0; candidate < LowercaseTrieNode<bool>.AlphabetSize; candidate++)
+            for (var candidate = 0; candidate < LowercaseAlphabet.Size; candidate++)
             {
                 var next = node.Children[candidate];
 
                 if (next is not null
-                    && TryDescend(next, searchWord, new SearchState(index, usedSubstitution), candidate == target))
+                    && TryDescend(next, searchWord, new SearchState(index, budget), candidate == target
+                        ? LetterMatch.Exact
+                        : LetterMatch.Substituted))
                 {
                     return true;
                 }
@@ -102,17 +114,35 @@ internal static class ImplementMagicDictionarySolution
             return false;
         }
 
-        private readonly record struct SearchState(int Index, bool UsedSubstitution);
+        private readonly record struct SearchState(int Index, SubstitutionBudget Budget);
 
         private static bool TryDescend(
-            LowercaseTrieNode<bool> next, string searchWord, SearchState state, bool isExactMatch)
+            LowercaseTrieNode<bool> next, string searchWord, SearchState state, LetterMatch match)
         {
-            if (isExactMatch)
+            if (match == LetterMatch.Exact)
             {
-                return Search(next, searchWord, state.Index + 1, state.UsedSubstitution);
+                return Search(next, searchWord, state.Index + 1, state.Budget);
             }
 
-            return !state.UsedSubstitution && Search(next, searchWord, state.Index + 1, usedSubstitution: true);
+            return state.Budget == SubstitutionBudget.Available
+                && Search(next, searchWord, state.Index + 1, SubstitutionBudget.Spent);
+        }
+
+        // Whether the one substitution a search is allowed to spend has been spent yet:
+        // a state the call site names, where a bare `true` said it only by position.
+        private enum SubstitutionBudget
+        {
+            Available,
+            Spent,
+        }
+
+        // Whether this candidate letter is the search word's own letter at this position,
+        // or the one substitution being spent on it - named where a rewritten true/false
+        // at the call site said it only by position.
+        private enum LetterMatch
+        {
+            Exact,
+            Substituted,
         }
     }
 }

@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // exponential.
 internal static class RestrictedPathWorkloads
 {
+    private const int TwoStepOffset = 2;
+
     // The chain spans stepCount weight-1 edges, so it has one more node than steps.
     public static int NodeCount(int stepCount) => stepCount + 1;
-
-    private const int TwoStepOffset = 2;
 
     public static int[][] BuildTwoStepEdges(int stepCount)
     {

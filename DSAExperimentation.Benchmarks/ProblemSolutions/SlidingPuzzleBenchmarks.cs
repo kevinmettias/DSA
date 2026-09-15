@@ -14,10 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SlidingPuzzleBenchmarks
 {
-    [Params("123405", "412503")]
-    public string StartState = null!;
-
     private PuzzleGraph _graph = null!;
+
+    [Params("123405", "412503")]
+    public string StartState { get; set; } = null!;
 
     [GlobalSetup]
     public void Setup() => _graph = PuzzleGraph.Build();

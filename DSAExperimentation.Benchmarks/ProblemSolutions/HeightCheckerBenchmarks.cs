@@ -14,10 +14,10 @@ public class HeightCheckerBenchmarks
     // Exclusive upper bound for the random height range: heights are 1..100.
     private const int HeightUpperBoundExclusive = 101;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _heights = [];
 
-    private int[] _heights = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

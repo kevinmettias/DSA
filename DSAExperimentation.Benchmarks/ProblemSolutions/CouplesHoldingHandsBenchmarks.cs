@@ -12,10 +12,10 @@ public class CouplesHoldingHandsBenchmarks
     private const int RandomSeed = 765; // LC problem number
     private const int SeatsPerCouple = 2;
 
-    [Params(200, 5_000)]
-    public int CoupleCount;
+    private int[] _row = [];
 
-    private int[] _row = null!;
+    [Params(200, 5_000)]
+    public int CoupleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

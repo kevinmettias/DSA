@@ -25,6 +25,46 @@ internal static class PalindromePartitioningIIISolution
 
     public static int MinChangesByNaiveRecursion(string s, int k) => MinChangesFrom(s, 0, k);
 
+    public static int MinChangesByMemoizedRecurrence(string s, int k)
+        => Memoizer.Memoize<(int Position, int PartitionsLeft), int>(
+            (0, k),
+            new CheapestSplit(s));
+
+    // The recurrence itself, named: every candidate next piece is priced by what it
+    // costs to repair plus the cheapest split of what is left behind it.
+    private sealed class CheapestSplit(string s) : IRecurrence<(int Position, int PartitionsLeft), int>
+    {
+        public int Replay(
+            (int Position, int PartitionsLeft) state, IRecurrence<(int Position, int PartitionsLeft), int> rest)
+        {
+            var (position, partitionsLeft) = state;
+
+            if (partitionsLeft == 0)
+            {
+                return position == s.Length ? 0 : Unreachable;
+            }
+
+            if (position == s.Length)
+            {
+                return Unreachable;
+            }
+
+            var best = Unreachable;
+            var lastEnd = s.Length - (partitionsLeft - 1);
+
+            for (var end = position + 1; end <= lastEnd; end++)
+            {
+                var candidate = PieceChanges(s, position, end) + rest.Replay((end, partitionsLeft - 1), rest);
+                best = Math.Min(best, candidate);
+            }
+
+            return best;
+        }
+    }
+
+    // What this candidate piece - s[position..end] - costs to turn into a palindrome.
+    private static int PieceChanges(string s, int position, int end) => ChangesToPalindrome(s, position, end - 1);
+
     private static int MinChangesFrom(string s, int position, int partitionsLeft)
     {
         if (partitionsLeft == 0)
@@ -44,41 +84,6 @@ internal static class PalindromePartitioningIIISolution
         {
             var candidate = ChangesToPalindrome(s, position, end - 1) +
                 MinChangesFrom(s, end, partitionsLeft - 1);
-            best = Math.Min(best, candidate);
-        }
-
-        return best;
-    }
-
-    public static int MinChangesByMemoizedRecurrence(string s, int k)
-        => Memoizer.Memoize<(int Position, int PartitionsLeft), int>(
-            (0, k),
-            (state, changesFrom) => BestSplit(s, state, changesFrom));
-
-    private static int BestSplit(
-        string s,
-        (int Position, int PartitionsLeft) state,
-        Func<(int Position, int PartitionsLeft), int> changesFrom)
-    {
-        var (position, partitionsLeft) = state;
-
-        if (partitionsLeft == 0)
-        {
-            return position == s.Length ? 0 : Unreachable;
-        }
-
-        if (position == s.Length)
-        {
-            return Unreachable;
-        }
-
-        var best = Unreachable;
-        var lastEnd = s.Length - (partitionsLeft - 1);
-
-        for (var end = position + 1; end <= lastEnd; end++)
-        {
-            var candidate = ChangesToPalindrome(s, position, end - 1) +
-                changesFrom((end, partitionsLeft - 1));
             best = Math.Min(best, candidate);
         }
 

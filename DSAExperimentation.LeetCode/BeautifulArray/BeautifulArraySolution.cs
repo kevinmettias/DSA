@@ -36,6 +36,16 @@ internal static class BeautifulArraySolution
         return search.Values;
     }
 
+    // Top-down divide and conquer: if Build(m) is beautiful over 1..m, then mapping
+    // it through 2x - 1 gives a beautiful arrangement of the odds and through 2x a
+    // beautiful arrangement of the evens, and concatenating odds before evens stays
+    // beautiful - a[i] + a[j] with one odd and one even is odd, so it can never be
+    // 2 * a[k], and any triple within one half is the recursive property. This
+    // repo's own HashMap<int, int[]> memoizes the O(log n) distinct subproblem
+    // sizes the two recursive calls keep revisiting.
+    public static int[] ConstructByMemoizedDivideAndConquer(int n) =>
+        Build(n, new HashMap<int, int[]>());
+
     private static bool Extend(int position, PrefixSearch search)
     {
         if (position == search.Length)
@@ -45,28 +55,40 @@ internal static class BeautifulArraySolution
 
         for (var candidate = SmallestValue; candidate <= search.Length; candidate++)
         {
-            if (search.Used[candidate])
-            {
-                continue;
-            }
-
-            search.Values[position] = candidate;
-
-            if (!IsValidPrefix(search.Values, position))
-            {
-                continue;
-            }
-
-            search.Used[candidate] = true;
-
-            if (Extend(position + 1, search))
+            if (TryPlaceCandidate(position, candidate, search))
             {
                 return true;
             }
-
-            search.Used[candidate] = false;
         }
 
+        return false;
+    }
+
+    // One candidate at one position: skip it when it is spent or breaks the prefix,
+    // otherwise place it and recurse. True means the search below completed, so the
+    // caller stops too; false means try the next candidate.
+    private static bool TryPlaceCandidate(int position, int candidate, PrefixSearch search)
+    {
+        if (search.Used[candidate])
+        {
+            return false;
+        }
+
+        search.Values[position] = candidate;
+
+        if (!IsValidPrefix(search.Values, position))
+        {
+            return false;
+        }
+
+        search.Used[candidate] = true;
+
+        if (Extend(position + 1, search))
+        {
+            return true;
+        }
+
+        search.Used[candidate] = false;
         return false;
     }
 
@@ -87,16 +109,6 @@ internal static class BeautifulArraySolution
 
         return true;
     }
-
-    // Top-down divide and conquer: if Build(m) is beautiful over 1..m, then mapping
-    // it through 2x - 1 gives a beautiful arrangement of the odds and through 2x a
-    // beautiful arrangement of the evens, and concatenating odds before evens stays
-    // beautiful - a[i] + a[j] with one odd and one even is odd, so it can never be
-    // 2 * a[k], and any triple within one half is the recursive property. This
-    // repo's own HashMap<int, int[]> memoizes the O(log n) distinct subproblem
-    // sizes the two recursive calls keep revisiting.
-    public static int[] ConstructByMemoizedDivideAndConquer(int n) =>
-        Build(n, new HashMap<int, int[]>());
 
     private static int[] Build(int n, HashMap<int, int[]> memo)
     {

@@ -65,17 +65,6 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
         return (int)(combinations * 2 % ModularArithmetic.Modulo);
     }
 
-    private static long Combination(int total, int choose, long[] factorial, long[] inverseFactorial)
-    {
-        if (choose < 0 || choose > total)
-        {
-            return 0;
-        }
-
-        return factorial[total] * inverseFactorial[choose] % ModularArithmetic.Modulo *
-            inverseFactorial[total - choose] % ModularArithmetic.Modulo;
-    }
-
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
     {
         var factorial = new long[maxSize + 1];
@@ -95,5 +84,16 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
         }
 
         return (factorial, inverseFactorial);
+    }
+
+    private static long Combination(int total, int choose, long[] factorial, long[] inverseFactorial)
+    {
+        if (choose < 0 || choose > total)
+        {
+            return 0;
+        }
+
+        return factorial[total] * inverseFactorial[choose] % ModularArithmetic.Modulo *
+            inverseFactorial[total - choose] % ModularArithmetic.Modulo;
     }
 }

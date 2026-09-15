@@ -10,13 +10,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PowerOfThreeBenchmarks
 {
-    [Params(1162261467, 1162261466)] // 3^19 (a true power of three) vs. one less (not)
-    public int Value;
-
     private ArraySequence<int> _powersOfThree;
 
+    [Params(1162261467, 1162261466)] // 3^19 (a true power of three) vs. one less (not)
+    public int Value { get; set; }
+
     [GlobalSetup]
-    public void Setup() => _powersOfThree = new ArraySequence<int>(PowerOfThreeSolution.PowersOfThree);
+    public void Setup() => _powersOfThree = new ArraySequence<int>(PowersOfThreeTable.Powers);
 
     [Benchmark(Baseline = true)]
     public bool DivisionLoop() => PowerOfThreeSolution.IsPowerOfThreeByDivisionLoop(Value);

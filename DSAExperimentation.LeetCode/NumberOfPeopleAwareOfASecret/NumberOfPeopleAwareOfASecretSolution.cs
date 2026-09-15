@@ -33,22 +33,7 @@ internal static class NumberOfPeopleAwareOfASecretSolution
 
         for (var day = FirstDay + 1; day <= n; day++)
         {
-            var low = Math.Max(FirstDay, day - forget + 1);
-            var high = day - delay;
-
-            if (high < low)
-            {
-                continue;
-            }
-
-            var sum = 0L;
-
-            for (var source = low; source <= high; source++)
-            {
-                sum += dp[source - 1];
-            }
-
-            dp[day - 1] = sum % ModularArithmetic.Modulo;
+            dp[day - 1] = NewcomersOnDay(dp, day, delay, forget);
         }
 
         var finalLow = Math.Max(FirstDay, n - forget + 1);
@@ -60,6 +45,30 @@ internal static class NumberOfPeopleAwareOfASecretSolution
         }
 
         return total % ModularArithmetic.Modulo;
+    }
+
+    // The newcomers on one day: the dp values of every earlier day whose people are still
+    // actively sharing then - from delay days after they learned up to forget - 1 days
+    // after. A window with no active sharers contributes nothing, and dp already holds 0
+    // for that day.
+    private static long NewcomersOnDay(long[] dp, int day, int delay, int forget)
+    {
+        var low = Math.Max(FirstDay, day - forget + 1);
+        var high = day - delay;
+
+        if (high < low)
+        {
+            return 0;
+        }
+
+        var sum = 0L;
+
+        for (var source = low; source <= high; source++)
+        {
+            sum += dp[source - 1];
+        }
+
+        return sum % ModularArithmetic.Modulo;
     }
 
     // The same recurrence against FenwickTree<long, SumOperation<long>>, which is

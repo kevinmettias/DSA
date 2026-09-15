@@ -34,46 +34,22 @@ internal static class UniquePathsIIISolution
         return Search(grid, start, visited: 1, total);
     }
 
-    private static int Search(int[][] grid, (int Row, int Col) cell, int visited, int total)
+    private static int CountNonObstacleCells(int[][] grid)
     {
-        if (grid[cell.Row][cell.Col] == EndCellMarker)
+        var total = 0;
+
+        for (var row = 0; row < grid.Length; row++)
         {
-            return visited == total ? 1 : 0;
-        }
-
-        var original = MarkVisited(grid, cell);
-        var count = ExploreNeighbors(grid, cell, visited, total);
-        RestoreCell(grid, cell, original);
-
-        return count;
-    }
-
-    private static int MarkVisited(int[][] grid, (int Row, int Col) cell)
-    {
-        var original = grid[cell.Row][cell.Col];
-        grid[cell.Row][cell.Col] = ObstacleMarker;
-        return original;
-    }
-
-    private static void RestoreCell(int[][] grid, (int Row, int Col) cell, int original) =>
-        grid[cell.Row][cell.Col] = original;
-
-    private static int ExploreNeighbors(int[][] grid, (int Row, int Col) cell, int visited, int total)
-    {
-        var count = 0;
-
-        foreach (var (dRow, dCol) in Directions)
-        {
-            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
-
-            if (next.Row >= 0 && next.Row < grid.Length && next.Col >= 0 && next.Col < grid[0].Length
-                && grid[next.Row][next.Col] != ObstacleMarker)
+            for (var col = 0; col < grid[0].Length; col++)
             {
-                count += Search(grid, next, visited + 1, total);
+                if (grid[row][col] != ObstacleMarker)
+                {
+                    total++;
+                }
             }
         }
 
-        return count;
+        return total;
     }
 
     // This repo's own choose/explore/unchoose engine: State carries the visited grid,
@@ -91,7 +67,7 @@ internal static class UniquePathsIIISolution
         Backtrack.Search<State, (int Row, int Col)>(
             state,
             isSolution: s => grid[s.Row][s.Col] == EndCellMarker && s.Visited == s.Total,
-            candidates: s => grid[s.Row][s.Col] == EndCellMarker ? [] : s.Candidates(),
+            candidates: s => IsAtEndCell(grid, s) ? NoMoves() : s.Candidates(),
             choose: (s, next) => s.Choose(next),
             unchoose: (s, next) => s.Unchoose(next),
             onSolution: _ => count++);
@@ -99,34 +75,95 @@ internal static class UniquePathsIIISolution
         return count;
     }
 
+    // The walk is standing on the end square, so no move may be offered from here:
+    // stepping onto "2" ends the walk whether or not it covered everything.
+    private static bool IsAtEndCell(int[][] grid, State state) => grid[state.Row][state.Col] == EndCellMarker;
+
+    // The candidate moves such a state still offers: none, which is how the engine
+    // learns the walk is over rather than merely stuck.
+    private static IEnumerable<(int Row, int Col)> NoMoves() => [];
+
+    // A square the engine's walk may still step on: open ground it has not covered yet.
+    private static bool IsOpenAndUnvisited(int[][] grid, bool[,] visited, int row, int col) =>
+        grid[row][col] != ObstacleMarker && !visited[row, col];
+
+    // The visited grid the walk starts from: sized to the board, with the walk's own
+    // starting square already covered, since a walk covers where it stands.
+    private static bool[,] StartVisitedGrid(int[][] grid, int startRow, int startCol)
+    {
+        var visited = new bool[grid.Length, grid[0].Length];
+        visited[startRow, startCol] = true;
+        return visited;
+    }
+
+    private static int Search(int[][] grid, (int Row, int Col) cell, int visited, int total)
+    {
+        if (grid[cell.Row][cell.Col] == EndCellMarker)
+        {
+            return visited == total ? 1 : 0;
+        }
+
+        return ExploreWithCellMarked(grid, cell, visited, total);
+    }
+
+    // The middle phase of one walk step: the current square is marked visited for
+    // exactly as long as its neighbors are explored, and restored on the way out, so
+    // the grid is mutated across the recursion and left as the walk found it.
+    private static int ExploreWithCellMarked(int[][] grid, (int Row, int Col) cell, int visited, int total)
+    {
+        var original = MarkVisited(grid, cell);
+        var count = ExploreNeighbors(grid, cell, visited, total);
+        RestoreCell(grid, cell, original);
+
+        return count;
+    }
+
+    private static int MarkVisited(int[][] grid, (int Row, int Col) cell)
+    {
+        var original = grid[cell.Row][cell.Col];
+        grid[cell.Row][cell.Col] = ObstacleMarker;
+        return original;
+    }
+
+    private static void RestoreCell(int[][] grid, (int Row, int Col) cell, int original) =>
+        grid[cell.Row][cell.Col] = original;
+
+    // Both coordinates in range is one idea, and both arms write it out per direction.
+    private static bool IsInsideGrid(int row, int col, int rows, int cols) =>
+        row >= 0 && row < rows && col >= 0 && col < cols;
+
+    private static int ExploreNeighbors(int[][] grid, (int Row, int Col) cell, int visited, int total)
+    {
+        var count = 0;
+
+        foreach (var (dRow, dCol) in Directions)
+        {
+            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
+
+            if (IsInsideGrid(next.Row, next.Col, grid.Length, grid[0].Length)
+                && grid[next.Row][next.Col] != ObstacleMarker)
+            {
+                count += Search(grid, next, visited + 1, total);
+            }
+        }
+
+        return count;
+    }
+
     private static (int Row, int Col) FindValue(int[][] grid, int value)
     {
         for (var row = 0; row < grid.Length; row++)
-        for (var col = 0; col < grid[0].Length; col++)
         {
-            if (grid[row][col] == value)
+            for (var col = 0; col < grid[0].Length; col++)
             {
-                return (row, col);
+                if (grid[row][col] == value)
+                {
+                    return (row, col);
+                }
             }
         }
 
         throw new InvalidOperationException($"Grid has no cell with value {value}.");
-    }
-
-    private static int CountNonObstacleCells(int[][] grid)
-    {
-        var total = 0;
-
-        for (var row = 0; row < grid.Length; row++)
-        for (var col = 0; col < grid[0].Length; col++)
-        {
-            if (grid[row][col] != ObstacleMarker)
-            {
-                total++;
-            }
-        }
-
-        return total;
     }
 
     // The walk's mutable state, meaningless outside LC 980's covering-walk rule, so
@@ -137,21 +174,20 @@ internal static class UniquePathsIIISolution
         private readonly bool[,] _visited;
         private readonly Stack<(int Row, int Col)> _path = new();
 
-        public State(int[][] grid, int startRow, int startCol)
-        {
-            _grid = grid;
-            _visited = new bool[grid.Length, grid[0].Length];
-            Row = startRow;
-            Col = startCol;
-            _visited[startRow, startCol] = true;
-            Visited = 1;
-            Total = CountNonObstacleCells(grid);
-        }
-
         public int Row { get; private set; }
+
         public int Col { get; private set; }
         public int Visited { get; private set; }
         public int Total { get; }
+        public State(int[][] grid, int startRow, int startCol)
+        {
+            _grid = grid;
+            _visited = StartVisitedGrid(grid, startRow, startCol);
+            Row = startRow;
+            Col = startCol;
+            Visited = 1;
+            Total = CountNonObstacleCells(grid);
+        }
 
         public IEnumerable<(int Row, int Col)> Candidates()
         {
@@ -160,8 +196,8 @@ internal static class UniquePathsIIISolution
                 var row = Row + dRow;
                 var col = Col + dCol;
 
-                if (row >= 0 && row < _grid.Length && col >= 0 && col < _grid[0].Length
-                    && _grid[row][col] != ObstacleMarker && !_visited[row, col])
+                if (IsInsideGrid(row, col, _grid.Length, _grid[0].Length)
+                    && IsOpenAndUnvisited(_grid, _visited, row, col))
                 {
                     yield return (row, col);
                 }

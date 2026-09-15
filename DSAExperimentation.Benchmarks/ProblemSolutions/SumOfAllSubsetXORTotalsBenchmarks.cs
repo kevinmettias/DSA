@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SumOfAllSubsetXORTotalsBenchmarks
 {
     private const int RandomSeed = 1863; // LC problem number
-    private const int MaxValueBitWidth = 20; // random values are drawn from [1, 2^20)
+    private const int MaxValueBitWidth = 20; private int[] _values = [];
+
+    // random values are drawn from [1, 2^20)
 
     [Params(10, 18)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

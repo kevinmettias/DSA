@@ -18,10 +18,10 @@ public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
     private const string AlternatingBitUnit = "10";
     private const int AlternatingBitUnitLength = 2;
 
-    [Params(100, 1_000)]
-    public int Length;
+    private string _binary = "";
 
-    private string _binary = null!;
+    [Params(100, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

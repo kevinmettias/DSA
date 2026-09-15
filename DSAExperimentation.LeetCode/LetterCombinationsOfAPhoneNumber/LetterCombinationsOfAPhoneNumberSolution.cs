@@ -37,20 +37,27 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
 
         foreach (var digit in digits)
         {
-            var next = new List<string>();
-
-            foreach (var prefix in results)
-            {
-                foreach (var letter in LettersFor(digit))
-                {
-                    next.Add(prefix + letter);
-                }
-            }
-
-            results = next;
+            results = ExpandWithDigit(results, digit);
         }
 
         return results;
+    }
+
+    // One round of the product: every letter of this digit appended to every
+    // prefix built so far, in phone-keypad order.
+    private static List<string> ExpandWithDigit(List<string> prefixes, char digit)
+    {
+        var next = new List<string>();
+
+        foreach (var prefix in prefixes)
+        {
+            foreach (var letter in LettersFor(digit))
+            {
+                next.Add(prefix + letter);
+            }
+        }
+
+        return next;
     }
 
     // This repo's own Backtrack.Search: each digit position is a decision level,
@@ -63,13 +70,18 @@ internal static class LetterCombinationsOfAPhoneNumberSolution
             return [];
         }
 
+        return SearchCombinations(digits);
+    }
+
+    private static List<string> SearchCombinations(string digits)
+    {
         var results = new List<string>();
         var state = new CombinationState();
 
         Backtrack.Search<CombinationState, char>(
             state,
             isSolution: s => s.Index == digits.Length,
-            candidates: s => s.Index == digits.Length ? [] : LettersFor(digits[s.Index]),
+            candidates: s => s.Index == digits.Length ? Array.Empty<char>() : LettersFor(digits[s.Index]),
             choose: (s, letter) =>
             {
                 s.Chosen.Add(letter);

@@ -43,13 +43,13 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
     }
 
     public static long SumByMonotonicStackContribution(int[] nums, int k) =>
-        ExtremeSum(nums, k, isMax: true) + ExtremeSum(nums, k, isMax: false);
+        ExtremeSum(nums, k, Extreme.Maximum) + ExtremeSum(nums, k, Extreme.Minimum);
 
-    private static long ExtremeSum(int[] nums, int k, bool isMax)
+    private static long ExtremeSum(int[] nums, int k, Extreme extreme)
     {
         var n = nums.Length;
-        var left = PreviousDominantIndex(nums, isMax);
-        var right = NextDominantIndex(nums, isMax);
+        var left = PreviousDominantIndex(nums, extreme);
+        var right = NextDominantIndex(nums, extreme);
         var total = 0L;
 
         for (var i = 0; i < n; i++)
@@ -62,11 +62,11 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
     }
 
     // Index of the nearest strictly-dominant element to the left (nums[left] >
-    // nums[i] for max, nums[left] < nums[i] for min), or -1. This repo's own
-    // Stack<int> holds candidate indices in the classic monotonic order, each
-    // popped the moment it can no longer be any later element's nearest
-    // dominant neighbor.
-    private static int[] PreviousDominantIndex(int[] nums, bool isMax)
+    // nums[i] for Extreme.Maximum, nums[left] < nums[i] for Extreme.Minimum), or
+    // -1. This repo's own Stack<int> holds candidate indices in the classic
+    // monotonic order, each popped the moment it can no longer be any later
+    // element's nearest dominant neighbor.
+    private static int[] PreviousDominantIndex(int[] nums, Extreme extreme)
     {
         var n = nums.Length;
         var boundary = new int[n];
@@ -74,7 +74,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
         for (var i = 0; i < n; i++)
         {
-            while (stack.TryPeek(out var top) && !Dominates(nums[top], nums[i], isMax, strict: true))
+            while (stack.TryPeek(out var top) && !Dominates(nums[top], nums[i], extreme, DominanceRule.Strict))
             {
                 stack.TryPop(out _);
             }
@@ -87,10 +87,10 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
     }
 
     // Index of the nearest non-strictly-dominant element to the right, or n.
-    // Non-strict here (paired with strict on the left) is what gives every
-    // duplicate value exactly one owning index instead of over- or
-    // under-counting it.
-    private static int[] NextDominantIndex(int[] nums, bool isMax)
+    // DominanceRule.Inclusive here (paired with DominanceRule.Strict on the left)
+    // is what gives every duplicate value exactly one owning index instead of
+    // over- or under-counting it.
+    private static int[] NextDominantIndex(int[] nums, Extreme extreme)
     {
         var n = nums.Length;
         var boundary = new int[n];
@@ -98,7 +98,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
         for (var i = n - 1; i >= 0; i--)
         {
-            while (stack.TryPeek(out var top) && !Dominates(nums[top], nums[i], isMax, strict: false))
+            while (stack.TryPeek(out var top) && !Dominates(nums[top], nums[i], extreme, DominanceRule.Inclusive))
             {
                 stack.TryPop(out _);
             }
@@ -109,10 +109,6 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
         return boundary;
     }
-
-    private static bool Dominates(int candidate, int value, bool isMax, bool strict) => isMax
-        ? (strict ? candidate > value : candidate >= value)
-        : (strict ? candidate < value : candidate <= value);
 
     // Subarrays [s, e] with left <= s <= i <= e <= right and e-s+1 <= k, counted
     // directly: for each start s the valid ends run from i up to
@@ -143,5 +139,35 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
         }
 
         return total;
+    }
+
+    // The nearest-dominant test as a decision table: Extreme names which side of
+    // the value counts as beyond it, and DominanceRule says whether landing level
+    // with it counts too - only the left boundary is DominanceRule.Strict, which
+    // is what gives every duplicate value exactly one owning index.
+    private static bool Dominates(int candidate, int value, Extreme extreme, DominanceRule rule) =>
+        (extreme, rule) switch
+    {
+        (Extreme.Maximum, DominanceRule.Strict) => candidate > value,
+        (Extreme.Maximum, DominanceRule.Inclusive) => candidate >= value,
+        (Extreme.Minimum, DominanceRule.Strict) => candidate < value,
+        _ => candidate <= value,
+    };
+
+    // Which of a subarray's two extremes a pass over the array is attributing:
+    // the largest element or the smallest.
+    private enum Extreme
+    {
+        Maximum,
+        Minimum,
+    }
+
+    // Whether an element level with the candidate counts as dominated by it, or
+    // only one strictly beyond it does. Named where a rewritten `true`/`false` at
+    // the call site said it only by position.
+    private enum DominanceRule
+    {
+        Strict,
+        Inclusive,
     }
 }

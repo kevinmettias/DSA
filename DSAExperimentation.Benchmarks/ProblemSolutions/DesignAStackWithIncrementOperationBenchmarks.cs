@@ -25,10 +25,10 @@ public class DesignAStackWithIncrementOperationBenchmarks
 
     private const int MaxPushedValueExclusive = 1_000;
 
-    [Params(200, 2_000)]
-    public int PushCount;
+    private int[] _pushedValues = [];
 
-    private int[] _pushedValues = null!;
+    [Params(200, 2_000)]
+    public int PushCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

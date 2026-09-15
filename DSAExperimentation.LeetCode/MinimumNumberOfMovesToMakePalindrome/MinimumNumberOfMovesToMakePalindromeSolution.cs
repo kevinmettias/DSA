@@ -48,7 +48,7 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
             k--;
         }
 
-        return k == i ? NudgeMiddleCharacter(chars, i, j, moves) : WalkMatchInward(chars, k, i, j, moves);
+        return k == i ? NudgeMiddleCharacter(chars, i, j, moves) : WalkMatchInward(chars, k, (i, j), moves);
     }
 
     // No match for chars[i] anywhere in (i, j]: it is the lone middle character of
@@ -63,13 +63,14 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
         return (i, j, moves + 1);
     }
 
-    private static (int I, int J, int Moves) WalkMatchInward(List<char> chars, int k, int i, int j, int moves)
+    private static (int I, int J, int Moves) WalkMatchInward(
+        List<char> chars, int k, (int I, int J) outer, int moves)
     {
         var match = chars[k];
         chars.RemoveAt(k);
-        chars.Insert(j, match);
+        chars.Insert(outer.J, match);
 
-        return (i + 1, j - 1, moves + (j - k));
+        return (outer.I + 1, outer.J - 1, moves + (outer.J - k));
     }
 
     // The same greedy walk over IIndexedSequence's doubled O(1) Get/Set contract -
@@ -105,7 +106,7 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
             k--;
         }
 
-        return k == i ? NudgeMiddleCharacter(sequence, i, j, moves) : WalkMatchInward(sequence, k, i, j, moves);
+        return k == i ? NudgeMiddleCharacter(sequence, i, j, moves) : WalkMatchInward(sequence, k, (i, j), moves);
     }
 
     private static (int I, int J, int Moves) NudgeMiddleCharacter(
@@ -117,16 +118,16 @@ internal static class MinimumNumberOfMovesToMakePalindromeSolution
     }
 
     private static (int I, int J, int Moves) WalkMatchInward(
-        ArrayIndexedSequence<char> sequence, int k, int i, int j, int moves)
+        ArrayIndexedSequence<char> sequence, int k, (int I, int J) outer, int moves)
     {
-        while (k < j)
+        while (k < outer.J)
         {
             Swap(sequence, k, k + 1);
             moves++;
             k++;
         }
 
-        return (i + 1, j - 1, moves);
+        return (outer.I + 1, outer.J - 1, moves);
     }
 
     private static void Swap(ArrayIndexedSequence<char> sequence, int first, int second)

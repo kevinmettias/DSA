@@ -7,12 +7,8 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // 427 Construct Quad Tree and LC 558 Logical Or of Two Binary Grids Represented as
 // Quad Trees), so it belongs beside its arity siblings rather than pinned to either
 // problem.
-internal sealed class QuadTreeNode(bool val, bool isLeaf)
+internal sealed record QuadTreeNode(bool Val, bool IsLeaf)
 {
-    public bool Val { get; } = val;
-
-    public bool IsLeaf { get; } = isLeaf;
-
     public QuadTreeNode? TopLeft { get; init; }
 
     public QuadTreeNode? TopRight { get; init; }

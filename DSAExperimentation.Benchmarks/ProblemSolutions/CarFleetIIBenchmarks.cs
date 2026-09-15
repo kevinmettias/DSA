@@ -17,10 +17,10 @@ public class CarFleetIIBenchmarks
     // Gap between adjacent cars' starting positions in the generated fleet.
     private const int PositionSpacing = 10;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[][] _cars = [];
 
-    private int[][] _cars = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

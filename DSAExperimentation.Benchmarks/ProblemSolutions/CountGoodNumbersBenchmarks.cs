@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CountGoodNumbersBenchmarks
 {
     [Params(1_000, 1_000_000)]
-    public long N;
+    public long N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int RepeatedMultiplication() =>

@@ -15,13 +15,13 @@ public class NumberOfWaysToArriveAtDestinationBenchmarks
     // matching travel time of 2.
     private const int TwoStepOffset = 2;
 
+    private WaysGraph _graph = null!;
+
     // Kept modest (<=30), same reasoning as
     // NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks: NaiveDfs's blowup here
     // really is O(golden-ratio^N).
     [Params(20, 30)]
-    public int N;
-
-    private WaysGraph _graph = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup() => _graph = WaysGraph.Build(NodeCount(N), BuildTwoStepRoads(N));

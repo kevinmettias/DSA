@@ -15,24 +15,28 @@ internal static class FruitsIntoBasketsIISolution
 
         foreach (var quantity in fruits)
         {
-            var placed = false;
-
-            for (var j = 0; j < baskets.Length; j++)
-            {
-                if (!used[j] && baskets[j] >= quantity)
-                {
-                    used[j] = true;
-                    placed = true;
-                    break;
-                }
-            }
-
-            if (!placed)
+            if (!TryPlaceFruit(baskets, used, quantity))
             {
                 unplaced++;
             }
         }
 
         return unplaced;
+    }
+
+    // Takes the leftmost still-empty basket whose capacity can hold this fruit
+    // type, reporting whether one was actually left.
+    private static bool TryPlaceFruit(int[] baskets, bool[] used, int quantity)
+    {
+        for (var j = 0; j < baskets.Length; j++)
+        {
+            if (!used[j] && baskets[j] >= quantity)
+            {
+                used[j] = true;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

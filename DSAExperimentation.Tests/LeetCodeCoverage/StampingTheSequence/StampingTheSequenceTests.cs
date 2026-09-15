@@ -29,7 +29,9 @@ public sealed class StampingTheSequenceTests
     public void MovesToStampByListPrepend_LeetCodeExamples_ProducesTargetWhenReplayed(
         string stamp, string target, int expectedMoveCount)
     {
-        var moves = StampingTheSequenceSolution.MovesToStampByListPrepend(stamp, target);
+        var moves = StampingTheSequenceSolution.MovesToStampByListPrepend(
+            new StampingTheSequenceSolution.StampPattern(stamp),
+            new StampingTheSequenceSolution.TargetText(target));
 
         AssertMovesReplayOntoTarget(stamp, target, expectedMoveCount, moves);
     }
@@ -39,7 +41,9 @@ public sealed class StampingTheSequenceTests
     public void MovesToStampByStackReverse_LeetCodeExamples_ProducesTargetWhenReplayed(
         string stamp, string target, int expectedMoveCount)
     {
-        var moves = StampingTheSequenceSolution.MovesToStampByStackReverse(stamp, target);
+        var moves = StampingTheSequenceSolution.MovesToStampByStackReverse(
+            new StampingTheSequenceSolution.StampPattern(stamp),
+            new StampingTheSequenceSolution.TargetText(target));
 
         AssertMovesReplayOntoTarget(stamp, target, expectedMoveCount, moves);
     }

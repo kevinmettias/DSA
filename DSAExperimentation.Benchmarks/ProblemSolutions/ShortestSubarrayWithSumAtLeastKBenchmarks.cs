@@ -16,10 +16,10 @@ public class ShortestSubarrayWithSumAtLeastKBenchmarks
     private const int ValueLowerBound = -5;
     private const int ValueUpperBoundExclusive = 11;
 
-    [Params(400, 3_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(400, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

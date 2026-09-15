@@ -18,12 +18,12 @@ public class DeleteNodesFromLinkedListPresentInArrayBenchmarks
     private const int RandomSeed = 3217;
     private const int DeletedValueFraction = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _headValues = null!;
-    private Set<int> _numsSet = null!;
+    private int[] _headValues = [];
+    private Set<int> _numsSet = new();
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

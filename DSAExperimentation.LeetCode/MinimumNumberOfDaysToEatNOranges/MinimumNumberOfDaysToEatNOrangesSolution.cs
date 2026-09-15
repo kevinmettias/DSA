@@ -25,21 +25,43 @@ internal static class MinimumNumberOfDaysToEatNOrangesSolution
     // recurrence below has to justify itself against.
     public static int MinDaysByUnmemoizedRecursion(int n) => Eat(n);
 
-    private static int Eat(int n)
-        => n <= 1
-            ? n
-            : 1 + Math.Min(
-                (n % EatOneAtATimeThenHalveDivisor) + Eat(n / EatOneAtATimeThenHalveDivisor),
-                (n % EatOneAtATimeThenThirdDivisor) + Eat(n / EatOneAtATimeThenThirdDivisor));
-
     // This repo's own Memoizer-driven DP recurrence (same IntegerReplacementSolution/
     // FibonacciNumberSolution composition) over the identical recurrence above -
     // caching collapses that reconverging call tree down to the handful of distinct
     // states a chain of halvings and thirdings can actually reach.
-    public static int MinDaysByMemoizedRecurrence(int n)
-        => Memoizer.Memoize<int, int>(n, (value, days) => value <= 1
-            ? value
-            : 1 + Math.Min(
-                (value % EatOneAtATimeThenHalveDivisor) + days(value / EatOneAtATimeThenHalveDivisor),
-                (value % EatOneAtATimeThenThirdDivisor) + days(value / EatOneAtATimeThenThirdDivisor)));
+    public static int MinDaysByMemoizedRecurrence(int n) => Memoizer.Memoize(n, new DaysFromOrangeCount());
+
+    // The recurrence, as a named type: with at most one orange left there is nothing
+    // to choose, and otherwise the day's work is eating n%2 (or n%3) of them one at a
+    // time and then halving (or thirding) the rest, whichever of the two is cheaper.
+    private sealed class DaysFromOrangeCount : IRecurrence<int, int>
+    {
+        public int Replay(int n, IRecurrence<int, int> rest)
+        {
+            if (n <= 1)
+            {
+                return n;
+            }
+
+            var halvingDays = (n % EatOneAtATimeThenHalveDivisor)
+                + rest.Replay(n / EatOneAtATimeThenHalveDivisor, rest);
+            var thirdingDays = (n % EatOneAtATimeThenThirdDivisor)
+                + rest.Replay(n / EatOneAtATimeThenThirdDivisor, rest);
+
+            return 1 + Math.Min(halvingDays, thirdingDays);
+        }
+    }
+
+    private static int Eat(int n)
+        => n <= 1
+            ? n
+            : EatAfterHalvingOrThirding(n);
+
+    // Eat the remainder one orange at a time, then spend a single day halving or
+    // thirding what is left - taking whichever of the two branches costs fewer days
+    // in total. The memoized arm runs the same step as a named recurrence, with
+    // Memoizer's cache behind it instead of Eat.
+    private static int EatAfterHalvingOrThirding(int n) => 1 + Math.Min(
+        (n % EatOneAtATimeThenHalveDivisor) + Eat(n / EatOneAtATimeThenHalveDivisor),
+        (n % EatOneAtATimeThenThirdDivisor) + Eat(n / EatOneAtATimeThenThirdDivisor));
 }

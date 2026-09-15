@@ -24,10 +24,10 @@ public class MaximumProductOfWordLengthsBenchmarks
     // 'a'-'m' and 'n'-'z' are each 13 letters wide (half of the 26-letter alphabet).
     private const int AlphabetHalfSize = 13;
 
-    [Params(100, 800)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(100, 800)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,7 +38,8 @@ public class MaximumProductOfWordLengthsBenchmarks
 
     private static string NextRandomWord(Random random, int index)
     {
-        var alphabetStart = index % AlphabetHalfDivisor == 0 ? 'a' : 'n';
+        var isFirstAlphabetHalf = index % AlphabetHalfDivisor == 0;
+        var alphabetStart = isFirstAlphabetHalf ? 'a' : 'n';
         var length = random.Next(MinWordLength, MaxWordLengthExclusive);
         return RandomWord(random, alphabetStart, length);
     }

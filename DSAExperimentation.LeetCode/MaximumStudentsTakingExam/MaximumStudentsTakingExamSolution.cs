@@ -56,11 +56,12 @@ internal static class MaximumStudentsTakingExamSolution
         MaxStudentsByMemoizedBitmask(SeatMasks.Build(seats));
 
     public static int MaxStudentsByMemoizedBitmask(SeatMasks seats) =>
-        Memoizer.Memoize<(int Row, int PrevMask), int>(
-            (0, 0), (state, bestFrom) => BestFrom(seats, state, bestFrom));
+        Memoizer.Memoize<(int Row, int PrevMask), int>((0, 0), new BestSeatingFrom(seats));
 
     private static int BestFrom(
-        SeatMasks seats, (int Row, int PrevMask) state, Func<(int Row, int PrevMask), int> bestFrom)
+        SeatMasks seats,
+        (int Row, int PrevMask) state,
+        IRecurrence<(int Row, int PrevMask), int> rest)
     {
         var (row, prevMask) = state;
 
@@ -78,7 +79,7 @@ internal static class MaximumStudentsTakingExamSolution
                 continue;
             }
 
-            best = Math.Max(best, PopCount(mask) + bestFrom((row + 1, mask)));
+            best = Math.Max(best, PopCount(mask) + rest.Replay((row + 1, mask), rest));
         }
 
         return best;
@@ -103,5 +104,17 @@ internal static class MaximumStudentsTakingExamSolution
         }
 
         return count;
+    }
+
+    // The seating rule, named: from a (row, previous row's mask) state the best total is
+    // the highest over every legal mask for this row of that row's student count plus what
+    // the rule reports for the row it leaves behind. The seat layout is fixed for the whole
+    // walk and arrives once through the primary constructor; `rest` is the memo run's own
+    // handle on this rule, so the recursion is a call on a named type.
+    private sealed class BestSeatingFrom(SeatMasks seats) : IRecurrence<(int Row, int PrevMask), int>
+    {
+        /// <inheritdoc/>
+        public int Replay((int Row, int PrevMask) state, IRecurrence<(int Row, int PrevMask), int> rest)
+            => BestFrom(seats, state, rest);
     }
 }

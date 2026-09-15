@@ -33,36 +33,56 @@ internal static class RemoveInvalidParenthesesSolution
 
         for (var mask = 0; mask < totalMasks; mask++)
         {
-            var chars = new List<char>();
-
-            for (var i = 0; i < s.Length; i++)
-            {
-                if ((mask & (1 << i)) != 0)
-                {
-                    chars.Add(s[i]);
-                }
-            }
-
-            if (chars.Count < maxLength || !IsValidSubset(chars))
-            {
-                continue;
-            }
-
-            if (chars.Count > maxLength)
-            {
-                maxLength = chars.Count;
-                results.Clear();
-            }
-
-            var candidate = new string(chars.ToArray());
-
-            if (!results.Contains(candidate))
-            {
-                results.Add(candidate);
-            }
+            maxLength = ConsiderSubset(s, mask, maxLength, results);
         }
 
         return results;
+    }
+
+    // Keeps the results list in step with the longest valid subset seen so far:
+    // a longer one replaces everything collected at a shorter length, an equal
+    // one is added only if this exact string is not already in there. Returns the
+    // - possibly raised - best length, which is the only state the caller keeps.
+    private static int ConsiderSubset(string s, int mask, int maxLength, List<string> results)
+    {
+        var chars = BuildSubset(s, mask);
+
+        if (chars.Count < maxLength || !IsValidSubset(chars))
+        {
+            return maxLength;
+        }
+
+        if (chars.Count > maxLength)
+        {
+            results.Clear();
+            maxLength = chars.Count;
+        }
+
+        var candidate = new string(chars.ToArray());
+
+        if (!results.Contains(candidate))
+        {
+            results.Add(candidate);
+        }
+
+        return maxLength;
+    }
+
+    // The subset mask selects only the bits that stand for a kept character, so
+    // the kept characters come out in their original order.
+    private static List<char> BuildSubset(string s, int mask)
+    {
+        var chars = new List<char>();
+
+        for (var i = 0; i < s.Length; i++)
+        {
+            if ((mask & (1 << i)) != 0)
+            {
+                chars.Add(s[i]);
+            }
+        }
+
+        return chars;
     }
 
     private static bool IsValidSubset(List<char> chars)

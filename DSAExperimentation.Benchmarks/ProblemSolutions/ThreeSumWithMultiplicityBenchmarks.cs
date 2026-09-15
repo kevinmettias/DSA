@@ -13,12 +13,12 @@ public class ThreeSumWithMultiplicityBenchmarks
 {
     private const int Target = 150;
     private const int RandomSeed = 923; // LC 923
-    private const int ValueUpperBoundExclusive = 101; // values drawn from [0, 100] per LC 923's constraint
+    private const int ValueUpperBoundExclusive = 101; private int[] _values = [];
+
+    // values drawn from [0, 100] per LC 923's constraint
 
     [Params(80, 300)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

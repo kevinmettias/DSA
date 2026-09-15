@@ -73,11 +73,14 @@ internal static class ConcatenatedWordsSolution
     public static List<string> FindAllByTriePrunedMemo(string[] words, Trie<bool> trie) =>
         words.Where(word => CanFormFromOtherWordsByTriePrunedMemo(word, trie)).ToList();
 
-    private static bool CanFormFromOtherWordsByTriePrunedMemo(string word, Trie<bool> trie)
-    {
-        return Memoizer.Memoize<int, bool>(0, From);
+    private static bool CanFormFromOtherWordsByTriePrunedMemo(string word, Trie<bool> trie) =>
+        Memoizer.Memoize<int, bool>(0, new FromWord(word, trie));
 
-        bool From(int start, Func<int, bool> can)
+    // The rule, named: a piece of a word is dictionary-known and the rest of the word
+    // after it is itself a piece, all the way to the end.
+    private sealed class FromWord(string word, Trie<bool> trie) : IRecurrence<int, bool>
+    {
+        public bool Replay(int start, IRecurrence<int, bool> rest)
         {
             if (start == word.Length)
             {
@@ -85,15 +88,15 @@ internal static class ConcatenatedWordsSolution
             }
 
             var lookup = new WordLookup(trie, word);
-            return TryFindPieceMatch(lookup, start, can);
+            return TryFindPieceMatch(lookup, start, rest);
         }
     }
 
-    private static bool TryFindPieceMatch(WordLookup lookup, int start, Func<int, bool> can)
+    private static bool TryFindPieceMatch(WordLookup lookup, int start, IRecurrence<int, bool> rest)
     {
         for (var end = start + 1; end <= lookup.Word.Length; end++)
         {
-            var outcome = EvaluatePiece(lookup, start, end, can);
+            var outcome = EvaluatePiece(lookup, start, end, rest);
 
             if (outcome == PieceOutcome.StopSearching)
             {
@@ -109,7 +112,8 @@ internal static class ConcatenatedWordsSolution
         return false;
     }
 
-    private static PieceOutcome EvaluatePiece(WordLookup lookup, int start, int end, Func<int, bool> can)
+    private static PieceOutcome EvaluatePiece(
+        WordLookup lookup, int start, int end, IRecurrence<int, bool> rest)
     {
         if (start == 0 && end == lookup.Word.Length)
         {
@@ -124,7 +128,9 @@ internal static class ConcatenatedWordsSolution
             return PieceOutcome.StopSearching;
         }
 
-        return lookup.Trie.HasKey(piece) && can(end) ? PieceOutcome.Found : PieceOutcome.Continue;
+        return lookup.Trie.HasKey(piece) && rest.Replay(end, rest)
+            ? PieceOutcome.Found
+            : PieceOutcome.Continue;
     }
 
     private enum PieceOutcome

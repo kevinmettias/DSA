@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CountingBitsBenchmarks
 {
     [Params(2_000, 40_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[] PerNumberLoop() => CountingBitsSolution.CountBitsByPerNumberLoop(N);

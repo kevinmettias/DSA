@@ -23,11 +23,15 @@ public sealed class WildcardMatchingTests
     [MemberData(nameof(Examples))]
     public void IsMatchByGreedyTwoPointer_LeetCodeExamples_ReturnsExpected(
         string text, string pattern, bool expected) =>
-        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByGreedyTwoPointer(text, pattern));
+        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByGreedyTwoPointer(
+            new WildcardMatchingSolution.MatchedText(text),
+            new WildcardMatchingSolution.WildcardPattern(pattern)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsMatchByMemoizedDp_LeetCodeExamples_ReturnsExpected(
         string text, string pattern, bool expected) =>
-        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByMemoizedDp(text, pattern));
+        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByMemoizedDp(
+            new WildcardMatchingSolution.MatchedText(text),
+            new WildcardMatchingSolution.WildcardPattern(pattern)));
 }

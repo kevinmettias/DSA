@@ -48,7 +48,8 @@ internal static class ValidArrangementOfPairsSolution
         }
 
         var route = new List<int>();
-        VisitWithList(FindImbalancedSourceInDictionary(pairs, outMinusIn), adjacency, route);
+        var start = FindImbalancedSourceInDictionary(pairs, outMinusIn);
+        VisitWithList(start, adjacency, route);
         route.Reverse();
 
         return BuildArrangement(route);
@@ -86,21 +87,6 @@ internal static class ValidArrangementOfPairsSolution
         return pairs[0][From];
     }
 
-    private static void VisitWithList(int node, Dictionary<int, List<int>> adjacency, List<int> route)
-    {
-        if (adjacency.TryGetValue(node, out var destinations))
-        {
-            while (destinations.Count > 0)
-            {
-                var next = destinations[^1];
-                destinations.RemoveAt(destinations.Count - 1);
-                VisitWithList(next, adjacency, route);
-            }
-        }
-
-        route.Add(node);
-    }
-
     // The same Hierholzer walk over this repo's own containers: HashMap for the
     // adjacency and the degree balances, Stack for each node's unconsumed
     // destinations, whose TryPop is exactly the "take one edge and never look at it
@@ -116,7 +102,8 @@ internal static class ValidArrangementOfPairsSolution
         }
 
         var route = new List<int>();
-        VisitWithStack(FindImbalancedSourceInHashMap(pairs, outMinusIn), adjacency, route);
+        var start = FindImbalancedSourceInHashMap(pairs, outMinusIn);
+        VisitWithStack(start, adjacency, route);
         route.Reverse();
 
         return BuildArrangement(route);
@@ -152,6 +139,21 @@ internal static class ValidArrangementOfPairsSolution
         }
 
         return pairs[0][From];
+    }
+
+    private static void VisitWithList(int node, Dictionary<int, List<int>> adjacency, List<int> route)
+    {
+        if (adjacency.TryGetValue(node, out var destinations))
+        {
+            while (destinations.Count > 0)
+            {
+                var next = destinations[^1];
+                destinations.RemoveAt(destinations.Count - 1);
+                VisitWithList(next, adjacency, route);
+            }
+        }
+
+        route.Add(node);
     }
 
     private static void VisitWithStack(int node, HashMap<int, PairStack> adjacency, List<int> route)

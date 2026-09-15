@@ -22,6 +22,13 @@ internal static class MergeIntervalsSolution
             return sorted;
         }
 
+        return MergeSorted(sorted);
+    }
+
+    // The linear merge pass over an already start-sorted list: each interval either
+    // extends the interval last emitted or opens a fresh one after it.
+    private static List<(int Start, int End)> MergeSorted(List<(int Start, int End)> sorted)
+    {
         var merged = new List<(int Start, int End)> { sorted[0] };
 
         for (var i = 1; i < sorted.Count; i++)

@@ -28,14 +28,20 @@ internal static class MaximumNestingDepthOfTwoValidParenthesesStringsSolution
 
             for (var j = 0; j < i; j++)
             {
-                depthBefore += seq[j] == '(' ? 1 : -1;
+                depthBefore += IsOpener(seq[j]) ? 1 : -1;
             }
 
-            groups[i] = seq[i] == '(' ? (depthBefore + 1) % GroupCount : depthBefore % GroupCount;
+            groups[i] = IsOpener(seq[i]) ? GroupOfDepth(depthBefore + 1) : GroupOfDepth(depthBefore);
         }
 
         return groups;
     }
+
+    private static bool IsOpener(char character) => character == '(';
+
+    // The group a character sitting at that nesting depth joins: groups are
+    // handed out by depth parity.
+    private static int GroupOfDepth(int depth) => depth % GroupCount;
 
     // The composed answer: this repo's Stack<char> holds the currently-open
     // brackets, so its Count is the running depth and one left-to-right pass

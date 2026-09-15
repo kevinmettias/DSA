@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountValidSequencesBenchmarks
 {
-    [Params(1_000, 500_000)]
-    public int N;
-
     private int _k;
+
     private FactorialTable _table = null!;
+    [Params(1_000, 500_000)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

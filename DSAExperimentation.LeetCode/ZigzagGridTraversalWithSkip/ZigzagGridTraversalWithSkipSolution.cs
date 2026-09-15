@@ -18,7 +18,7 @@ internal static class ZigzagGridTraversalWithSkipSolution
     public static int[] TraverseByIndexFormula(int[][] grid)
     {
         var result = new List<int>();
-        var keep = true;
+        var outcome = CellOutcome.Keep;
 
         for (var row = 0; row < grid.Length; row++)
         {
@@ -27,13 +27,17 @@ internal static class ZigzagGridTraversalWithSkipSolution
 
             for (var i = 0; i < cols; i++)
             {
-                var col = leftToRight ? i : cols - 1 - i;
-                keep = Collect(result, keep, grid[row][col]);
+                var col = leftToRight ? i : MirroredColumn(cols, i);
+                outcome = Collect(result, outcome, grid[row][col]);
             }
         }
 
         return [.. result];
     }
+
+    // A right-to-left row visits the columns in reverse: position i reads column
+    // cols - 1 - i.
+    private static int MirroredColumn(int cols, int i) => cols - 1 - i;
 
     // Composed: every even row is read straight off the array; every odd row is
     // pushed onto this repo's own Stack<int> and popped - the same "push forward,
@@ -42,29 +46,30 @@ internal static class ZigzagGridTraversalWithSkipSolution
     public static int[] TraverseByRowStack(int[][] grid)
     {
         var result = new List<int>();
-        var keep = true;
+        var outcome = CellOutcome.Keep;
 
         for (var row = 0; row < grid.Length; row++)
         {
-            keep = row % 2 == 0
-                ? CollectForward(grid[row], result, keep)
-                : CollectReversed(grid[row], result, keep);
+            var leftToRight = row % 2 == 0;
+            outcome = leftToRight
+                ? CollectForward(grid[row], result, outcome)
+                : CollectReversed(grid[row], result, outcome);
         }
 
         return [.. result];
     }
 
-    private static bool CollectForward(int[] cells, List<int> result, bool keep)
+    private static CellOutcome CollectForward(int[] cells, List<int> result, CellOutcome outcome)
     {
         foreach (var cell in cells)
         {
-            keep = Collect(result, keep, cell);
+            outcome = Collect(result, outcome, cell);
         }
 
-        return keep;
+        return outcome;
     }
 
-    private static bool CollectReversed(int[] cells, List<int> result, bool keep)
+    private static CellOutcome CollectReversed(int[] cells, List<int> result, CellOutcome outcome)
     {
         var reversed = new RowStack();
 
@@ -75,19 +80,28 @@ internal static class ZigzagGridTraversalWithSkipSolution
 
         while (reversed.TryPop(out var cell))
         {
-            keep = Collect(result, keep, cell);
+            outcome = Collect(result, outcome, cell);
         }
 
-        return keep;
+        return outcome;
     }
 
-    private static bool Collect(List<int> result, bool keep, int value)
+    private static CellOutcome Collect(List<int> result, CellOutcome outcome, int value)
     {
-        if (keep)
+        if (outcome == CellOutcome.Keep)
         {
             result.Add(value);
         }
 
-        return !keep;
+        return outcome == CellOutcome.Keep ? CellOutcome.Skip : CellOutcome.Keep;
+    }
+
+    // Whether the cell being visited survives the skip: the flattening keeps
+    // every other value of the boustrophedon order, starting with the first, so
+    // the state alternates once per cell and never resets at a row boundary.
+    private enum CellOutcome
+    {
+        Keep,
+        Skip,
     }
 }

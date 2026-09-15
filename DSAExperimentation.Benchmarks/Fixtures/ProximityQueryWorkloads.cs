@@ -19,12 +19,16 @@ internal static class ProximityQueryWorkloads
         for (var i = 0; i < n; i++)
         {
             nums[i] = value;
-            var gap = random.Next(4) == 0 ? MaxDiff + LargeGapExtra : random.Next(SmallGapExclusive);
+            var isLargeJump = random.Next(4) == 0;
+            var gap = isLargeJump ? ChainBreakingGap() : random.Next(SmallGapExclusive);
             value += gap;
         }
 
         return (nums, MaxDiff);
     }
+
+    // The jump that ends a component: maxDiff plus enough extra to clear it outright.
+    private static int ChainBreakingGap() => MaxDiff + LargeGapExtra;
 
     public static int[][] BuildQueries(int n, int queryCount, int seed)
     {

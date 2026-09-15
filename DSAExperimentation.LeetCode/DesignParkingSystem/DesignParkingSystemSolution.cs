@@ -31,32 +31,21 @@ internal static class DesignParkingSystemSolution
 
     // The textbook baseline this composition has to justify itself against: one field
     // per car type and an if/else dispatch, deliberately without any container at all.
-    internal sealed class ParkingSystemByThreeFields : IParkingSystem
+    internal sealed class ParkingSystemByThreeFields(int big, int medium, int small) : IParkingSystem
     {
-        private int _big;
-        private int _medium;
-        private int _small;
-
-        public ParkingSystemByThreeFields(int big, int medium, int small)
-        {
-            _big = big;
-            _medium = medium;
-            _small = small;
-        }
-
         public bool AddCar(int carType)
         {
             if (carType == BigCarType)
             {
-                return TryTakeSlot(ref _big);
+                return TryTakeSlot(ref big);
             }
 
             if (carType == MediumCarType)
             {
-                return TryTakeSlot(ref _medium);
+                return TryTakeSlot(ref medium);
             }
 
-            return TryTakeSlot(ref _small);
+            return TryTakeSlot(ref small);
         }
 
         private static bool TryTakeSlot(ref int remaining)

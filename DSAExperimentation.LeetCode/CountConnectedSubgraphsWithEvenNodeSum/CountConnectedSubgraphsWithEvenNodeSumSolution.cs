@@ -92,7 +92,15 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
     private static bool IsConnectedByDisjointSet(int mask, int n, int[][] edges)
     {
         var forest = new DisjointSet(n);
+        UnionMaskEdges(forest, mask, edges);
 
+        return AllSetBitsShareRoot(forest, mask, n);
+    }
+
+    // Only edges with both endpoints inside the mask may be unioned - an edge
+    // leaving the induced subgraph would tie it to a node the mask excludes.
+    private static void UnionMaskEdges(DisjointSet forest, int mask, int[][] edges)
+    {
         foreach (var edge in edges)
         {
             if (((mask >> edge[0]) & 1) == 1 && ((mask >> edge[1]) & 1) == 1)
@@ -100,7 +108,10 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
                 forest.Union(edge[0], edge[1]);
             }
         }
+    }
 
+    private static bool AllSetBitsShareRoot(DisjointSet forest, int mask, int n)
+    {
         var root = -1;
 
         for (var i = 0; i < n; i++)

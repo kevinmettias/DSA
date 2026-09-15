@@ -21,11 +21,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MergeSimilarItemsBenchmarks
 {
-    [Params(200, 1_000)]
-    public int Length;
+    private int[][] _items1 = [];
 
-    private int[][] _items1 = null!;
-    private int[][] _items2 = null!;
+    private int[][] _items2 = [];
+    [Params(200, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

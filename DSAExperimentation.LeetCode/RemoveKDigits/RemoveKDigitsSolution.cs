@@ -52,16 +52,14 @@ internal static class RemoveKDigitsSolution
         var remaining = PopGreaterDigits(stack, num, k);
         PopRemainingBudget(stack, remaining);
 
-        var digits = PopAllIntoArray(stack);
-
-        return TrimLeadingZeros(new string(digits));
+        return ReadSurvivingNumber(stack);
     }
 
     private static int PopGreaterDigits(DigitStack stack, string num, int k)
     {
         foreach (var digit in num)
         {
-            while (k > 0 && stack.TryPeek(out var top) && top > digit)
+            while (ShouldDropStackTop(stack, digit, k))
             {
                 stack.TryPop(out _);
                 k--;
@@ -73,12 +71,27 @@ internal static class RemoveKDigitsSolution
         return k;
     }
 
+    // The digit on top is dropped while removals are still available and it is strictly
+    // greater than the one arriving - giving it up leaves the smaller number behind.
+    private static bool ShouldDropStackTop(DigitStack stack, char digit, int k) =>
+        k > 0 && stack.TryPeek(out var top) && top > digit;
+
     private static void PopRemainingBudget(DigitStack stack, int k)
     {
         while (k > 0 && stack.TryPop(out _))
         {
             k--;
         }
+    }
+
+    // The digits still on the stack, read back top-first so they come out in the order
+    // they were pushed, spelled as the number left once the leading zeros a shortened
+    // result can expose are dropped.
+    private static string ReadSurvivingNumber(DigitStack stack)
+    {
+        var digits = PopAllIntoArray(stack);
+
+        return TrimLeadingZeros(new string(digits));
     }
 
     private static char[] PopAllIntoArray(DigitStack stack)

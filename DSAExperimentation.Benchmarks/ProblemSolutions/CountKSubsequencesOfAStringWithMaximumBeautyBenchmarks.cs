@@ -16,11 +16,11 @@ public class CountKSubsequencesOfAStringWithMaximumBeautyBenchmarks
     private const int AlphabetPoolSize = 5;
     private const int Seed = 2842;
 
-    [Params(5_000, 50_000)]
-    public int Length;
-
     private string _s = string.Empty;
+
     private int _k;
+    [Params(5_000, 50_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

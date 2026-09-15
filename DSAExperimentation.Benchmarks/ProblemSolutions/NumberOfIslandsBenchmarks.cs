@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfIslandsBenchmarks
 {
-    private const int Seed = 200; // LC problem number
+    private const int Seed = 200; private char[][] _grid = [];
+
+    // LC problem number
 
     [Params(50, 500)]
-    public int GridSize;
-
-    private char[][] _grid = null!;
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = NumberOfIslandsWorkloads.BuildGrid(GridSize, GridSize, Seed);

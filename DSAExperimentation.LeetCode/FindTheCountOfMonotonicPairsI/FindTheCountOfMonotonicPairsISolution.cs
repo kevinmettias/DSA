@@ -32,26 +32,33 @@ internal static class FindTheCountOfMonotonicPairsISolution
 
         for (var i = 1; i < nums.Length; i++)
         {
-            var delta = Math.Max(0, nums[i] - nums[i - 1]);
-            var currentRow = new long[maxValue + 1];
-
-            for (var j = 0; j <= nums[i]; j++)
-            {
-                var limit = Math.Min(j - delta, nums[i - 1]);
-                var sum = 0L;
-
-                for (var previousValue = 0; previousValue <= limit; previousValue++)
-                {
-                    sum += previousRow[previousValue];
-                }
-
-                currentRow[j] = sum % ModularArithmetic.Modulo;
-            }
-
-            previousRow = currentRow;
+            previousRow = SumRowByRescan(previousRow, nums, i, maxValue);
         }
 
         return Total(previousRow);
+    }
+
+    // One brute-force DP row: row i is the sum of row i-1 restricted to arr1[i] == j,
+    // which here means re-summing every previousValue that clears this row's delta.
+    private static long[] SumRowByRescan(long[] previousRow, int[] nums, int index, int maxValue)
+    {
+        var delta = Math.Max(0, nums[index] - nums[index - 1]);
+        var currentRow = new long[maxValue + 1];
+
+        for (var j = 0; j <= nums[index]; j++)
+        {
+            var limit = Math.Min(j - delta, nums[index - 1]);
+            var sum = 0L;
+
+            for (var previousValue = 0; previousValue <= limit; previousValue++)
+            {
+                sum += previousRow[previousValue];
+            }
+
+            currentRow[j] = sum % ModularArithmetic.Modulo;
+        }
+
+        return currentRow;
     }
 
     // The same recurrence, but each row is built from a running prefix sum of the
@@ -71,20 +78,27 @@ internal static class FindTheCountOfMonotonicPairsISolution
 
         for (var i = 1; i < nums.Length; i++)
         {
-            var delta = Math.Max(0, nums[i] - nums[i - 1]);
-            var prefix = PrefixSums(previousRow, nums[i - 1]);
-            var currentRow = new long[maxValue + 1];
-
-            for (var j = 0; j <= nums[i]; j++)
-            {
-                var limit = j - delta;
-                currentRow[j] = limit < 0 ? 0 : prefix[Math.Min(limit, nums[i - 1])];
-            }
-
-            previousRow = currentRow;
+            previousRow = SumRowByPrefix(previousRow, nums, i, maxValue);
         }
 
         return Total(previousRow);
+    }
+
+    // One prefix-sum DP row: the same recurrence as SumRowByRescan, but built from one
+    // running prefix sum of row i-1 so each currentRow[j] is a single lookup.
+    private static long[] SumRowByPrefix(long[] previousRow, int[] nums, int index, int maxValue)
+    {
+        var delta = Math.Max(0, nums[index] - nums[index - 1]);
+        var prefix = PrefixSums(previousRow, nums[index - 1]);
+        var currentRow = new long[maxValue + 1];
+
+        for (var j = 0; j <= nums[index]; j++)
+        {
+            var limit = j - delta;
+            currentRow[j] = limit < 0 ? 0 : PrefixSumUpTo(prefix, limit, nums[index - 1]);
+        }
+
+        return currentRow;
     }
 
     private static long[] PrefixSums(long[] row, int upperInclusive)
@@ -100,6 +114,11 @@ internal static class FindTheCountOfMonotonicPairsISolution
 
         return prefix;
     }
+
+    // The running sum is only built up to nums[i - 1], so a limit that overshoots that
+    // bound reads the last entry rather than running off the end of the prefix array.
+    private static long PrefixSumUpTo(long[] prefix, int limit, int upperInclusive) =>
+        prefix[Math.Min(limit, upperInclusive)];
 
     private static long Total(long[] lastRow)
     {

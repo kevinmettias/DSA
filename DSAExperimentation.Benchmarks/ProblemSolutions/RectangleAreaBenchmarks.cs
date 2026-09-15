@@ -12,31 +12,26 @@ public class RectangleAreaBenchmarks
 {
     private const int OffsetDivisor = 2;
 
-    [Params(60, 400)]
-    public int Side;
+    private Rectangle _a;
 
-    private int _ax1, _ay1, _ax2, _ay2;
-    private int _bx1, _by1, _bx2, _by2;
+    private Rectangle _b;
+    [Params(60, 400)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _ax1 = 0;
-        _ay1 = 0;
-        _ax2 = Side;
-        _ay2 = Side;
+        _a = new Rectangle(0, 0, Side, Side);
 
-        _bx1 = Side / OffsetDivisor;
-        _by1 = Side / OffsetDivisor;
-        _bx2 = _bx1 + Side;
-        _by2 = _by1 + Side;
+        var offset = Side / OffsetDivisor;
+        _b = new Rectangle(offset, offset, offset + Side, offset + Side);
     }
 
     [Benchmark(Baseline = true)]
     public long UnitGridCoverageCount() =>
-        RectangleAreaSolution.TotalAreaByUnitGridCoverageCount(_ax1, _ay1, _ax2, _ay2, _bx1, _by1, _bx2, _by2);
+        RectangleAreaSolution.TotalAreaByUnitGridCoverageCount(_a, _b);
 
     [Benchmark]
     public long ClosedFormOverlapArithmetic() =>
-        RectangleAreaSolution.TotalAreaByClosedFormOverlap(_ax1, _ay1, _ax2, _ay2, _bx1, _by1, _bx2, _by2);
+        RectangleAreaSolution.TotalAreaByClosedFormOverlap(_a, _b);
 }

@@ -17,11 +17,11 @@ public class AddTwoNumbersBenchmarks
     private const int RandomSeed = 11;
     private const int DecimalBase = 10;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _first = null!;
+
     private SinglyLinkedListNode<int> _second = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,21 +30,6 @@ public class AddTwoNumbersBenchmarks
         _first = BuildRandomDigitList(random, Length);
         _second = BuildRandomDigitList(random, Length);
     }
-
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
-    // Returning the built list itself as object still forces both strategies
-    // through their full construction and keeps BenchmarkDotNet from treating the
-    // call as dead code, which is the point: measuring a length or count instead
-    // would be the same weaker-than-the-real-answer shortcut this migration
-    // removes everywhere else.
-    [Benchmark(Baseline = true)]
-    public object? BigIntegerConvertAndBack() =>
-        AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(_first, _second);
-
-    [Benchmark]
-    public object? DigitwiseListWalk() =>
-        AddTwoNumbersSolution.AddByDigitwiseListWalk(_first, _second);
 
     // Digit values only need to be in [0, 10) to exercise both strategies' carry
     // handling under load - LC 2's "no leading zero" constraint is a correctness
@@ -62,4 +47,19 @@ public class AddTwoNumbersBenchmarks
 
         return head;
     }
+
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
+    // Returning the built list itself as object still forces both strategies
+    // through their full construction and keeps BenchmarkDotNet from treating the
+    // call as dead code, which is the point: measuring a length or count instead
+    // would be the same weaker-than-the-real-answer shortcut this migration
+    // removes everywhere else.
+    [Benchmark(Baseline = true)]
+    public object? BigIntegerConvertAndBack() =>
+        AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(_first, _second);
+
+    [Benchmark]
+    public object? DigitwiseListWalk() =>
+        AddTwoNumbersSolution.AddByDigitwiseListWalk(_first, _second);
 }

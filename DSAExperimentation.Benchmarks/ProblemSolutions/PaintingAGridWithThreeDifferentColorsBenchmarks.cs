@@ -15,7 +15,7 @@ public class PaintingAGridWithThreeDifferentColorsBenchmarks
     private const int Rows = 3;
 
     [Params(3, 4)]
-    public int Columns;
+    public int Columns { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForceFullGrid() =>

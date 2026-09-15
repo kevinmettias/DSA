@@ -28,11 +28,11 @@ public class MostCommonWordBenchmarks
     // Number of distinct words banned from counting.
     private const int BannedWordCount = 5;
 
-    [Params(1_000, 20_000)]
-    public int Length;
+    private DynamicArray<string> _words = new();
 
-    private DynamicArray<string> _words = null!;
-    private string[] _banned = null!;
+    private string[] _banned = [];
+    [Params(1_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -50,10 +50,10 @@ public class MostCommonWordBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string MostCommonByDictionaryScan() =>
+    public string ByDictionaryScan() =>
         MostCommonWordSolution.MostCommonByDictionaryScan(_words, _banned);
 
     [Benchmark]
-    public string MostCommonByHashMapTally() =>
+    public string ByHashMapTally() =>
         MostCommonWordSolution.MostCommonByHashMapTally(_words, _banned);
 }

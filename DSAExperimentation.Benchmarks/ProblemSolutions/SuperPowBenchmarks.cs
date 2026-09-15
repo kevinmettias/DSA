@@ -12,10 +12,10 @@ public class SuperPowBenchmarks
 {
     private const int Base = 7;
 
-    [Params(10_000, 1_000_000)]
-    public int Exponent;
+    private int[] _digits = [];
 
-    private int[] _digits = null!;
+    [Params(10_000, 1_000_000)]
+    public int Exponent { get; set; }
 
     [GlobalSetup]
     public void Setup() => _digits = Exponent.ToString().Select(c => c - '0').ToArray();

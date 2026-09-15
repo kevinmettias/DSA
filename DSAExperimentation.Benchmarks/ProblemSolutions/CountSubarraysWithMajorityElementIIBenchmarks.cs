@@ -17,10 +17,10 @@ public class CountSubarraysWithMajorityElementIIBenchmarks
     private const int AlphabetSize = 5;
     private const int Target = 1;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

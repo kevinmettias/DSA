@@ -24,33 +24,7 @@ internal static class BestTimeToBuyAndSellStockVSolution
     // Unmemoized recursion over the exact same state machine the composed
     // strategy below runs through Memoizer - up to 3 branches per day,
     // genuinely exponential, the arm the memoized strategy has to beat.
-    public static long MaxProfitByBruteForce(int[] prices, int k) => ProfitFrom(0, 0, Flat, prices, k);
-
-    private static long ProfitFrom(int day, int used, int position, int[] prices, int k)
-    {
-        if (day == prices.Length)
-        {
-            return position == Flat ? 0 : Unreachable;
-        }
-
-        var best = ProfitFrom(day + 1, used, position, prices, k);
-
-        if (position == Flat && used < k)
-        {
-            best = Math.Max(best, -prices[day] + ProfitFrom(day + 1, used + 1, Holding, prices, k));
-            best = Math.Max(best, prices[day] + ProfitFrom(day + 1, used + 1, ShortSold, prices, k));
-        }
-        else if (position == Holding)
-        {
-            best = Math.Max(best, prices[day] + ProfitFrom(day + 1, used, Flat, prices, k));
-        }
-        else if (position == ShortSold)
-        {
-            best = Math.Max(best, -prices[day] + ProfitFrom(day + 1, used, Flat, prices, k));
-        }
-
-        return best;
-    }
+    public static long MaxProfitByBruteForce(int[] prices, int k) => ProfitFrom((0, 0, Flat), prices, k);
 
     // Same recurrence, run through Algorithms.DynamicProgramming.Memoizer so
     // each of the at-most 3 * n * (k+1) distinct (day, used, position) states
@@ -58,33 +32,81 @@ internal static class BestTimeToBuyAndSellStockVSolution
     public static long MaxProfitByTransactionMemoization(int[] prices, int k) =>
         Memoizer.Memoize<(int Day, int Used, int Position), long>(
             (0, 0, Flat),
-            (state, recurse) => ProfitFrom(state.Day, state.Used, state.Position, prices, k, recurse));
+            new ProfitDayByDay(prices, k));
 
-    private static long ProfitFrom(
-        int day, int used, int position, int[] prices, int k,
-        Func<(int Day, int Used, int Position), long> recurse)
+    private static long ProfitFrom((int Day, int Used, int Position) state, int[] prices, int k)
     {
-        if (day == prices.Length)
+        if (state.Day == prices.Length)
         {
-            return position == Flat ? 0 : Unreachable;
+            return state.Position == Flat ? 0 : Unreachable;
         }
 
-        var best = recurse((day + 1, used, position));
+        return BestAfterToday(state, prices, k);
+    }
 
-        if (position == Flat && used < k)
+    // One day of the state machine, from a day that still has prices left: doing
+    // nothing costs nothing and moves to the next day unchanged, and whatever the
+    // open position allows is then tried against that.
+    private static long BestAfterToday(
+        (int Day, int Used, int Position) state, int[] prices, int transactionBudget)
+    {
+        var best = ProfitFrom((state.Day + 1, state.Used, state.Position), prices, transactionBudget);
+
+        if (state.Position == Flat && state.Used < transactionBudget)
         {
-            best = Math.Max(best, -prices[day] + recurse((day + 1, used + 1, Holding)));
-            best = Math.Max(best, prices[day] + recurse((day + 1, used + 1, ShortSold)));
+            best = Math.Max(
+                best, -prices[state.Day] + ProfitFrom((state.Day + 1, state.Used + 1, Holding), prices, transactionBudget));
+            best = Math.Max(
+                best, prices[state.Day] + ProfitFrom((state.Day + 1, state.Used + 1, ShortSold), prices, transactionBudget));
         }
-        else if (position == Holding)
+        else if (state.Position == Holding)
         {
-            best = Math.Max(best, prices[day] + recurse((day + 1, used, Flat)));
+            best = Math.Max(
+                best, prices[state.Day] + ProfitFrom((state.Day + 1, state.Used, Flat), prices, transactionBudget));
         }
-        else if (position == ShortSold)
+        else if (state.Position == ShortSold)
         {
-            best = Math.Max(best, -prices[day] + recurse((day + 1, used, Flat)));
+            best = Math.Max(
+                best, -prices[state.Day] + ProfitFrom((state.Day + 1, state.Used, Flat), prices, transactionBudget));
         }
 
         return best;
+    }
+
+    // The recurrence, named: one day of the state machine, from a day that still has
+    // prices left - doing nothing costs nothing and moves to the next day unchanged,
+    // and whatever the open position allows is then tried against that. The day's
+    // prices and the transaction budget are the whole of what the rule needs from its
+    // caller, so they are the constructor's inputs.
+    private sealed class ProfitDayByDay(int[] prices, int k)
+        : IRecurrence<(int Day, int Used, int Position), long>
+    {
+        public long Replay(
+            (int Day, int Used, int Position) state,
+            IRecurrence<(int Day, int Used, int Position), long> rest)
+        {
+            if (state.Day == prices.Length)
+            {
+                return state.Position == Flat ? 0 : Unreachable;
+            }
+
+            var best = rest.Replay((state.Day + 1, state.Used, state.Position), rest);
+
+            if (state.Position == Flat && state.Used < k)
+            {
+                best = Math.Max(best, -prices[state.Day] + rest.Replay((state.Day + 1, state.Used + 1, Holding), rest));
+                best = Math.Max(best, prices[state.Day] + rest.Replay((state.Day + 1, state.Used + 1, ShortSold), rest));
+            }
+            else if (state.Position == Holding)
+            {
+                best = Math.Max(best, prices[state.Day] + rest.Replay((state.Day + 1, state.Used, Flat), rest));
+            }
+            else if (state.Position == ShortSold)
+            {
+                best = Math.Max(best, -prices[state.Day] + rest.Replay((state.Day + 1, state.Used, Flat), rest));
+            }
+
+            return best;
+        }
     }
 }

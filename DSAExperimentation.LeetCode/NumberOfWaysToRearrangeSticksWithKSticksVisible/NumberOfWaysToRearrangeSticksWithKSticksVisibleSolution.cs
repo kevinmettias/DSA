@@ -43,29 +43,34 @@ internal static class NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
     // so the stickCount*visibleCount distinct states are each solved once instead of
     // once per path that reaches them.
     public static int RearrangeSticksByMemoizedStirling(int stickCount, int visibleCount)
-        => (int)Memoizer.Memoize<(int Sticks, int Visible), long>((stickCount, visibleCount), Ways);
+        => (int)Memoizer.Memoize<(int Sticks, int Visible), long>((stickCount, visibleCount), new StirlingWays());
 
-    // One step of the Stirling recurrence. No sticks left is an arrangement exactly
-    // when no visible sticks are still owed; sticks left with none owed cannot
-    // happen, since the tallest remaining stick is always visible from somewhere.
-    private static long Ways((int Sticks, int Visible) state, Func<(int Sticks, int Visible), long> ways)
+    // One step of the Stirling recurrence, named. No sticks left is an arrangement
+    // exactly when no visible sticks are still owed; sticks left with none owed
+    // cannot happen, since the tallest remaining stick is always visible from
+    // somewhere.
+    private sealed class StirlingWays : IRecurrence<(int Sticks, int Visible), long>
     {
-        var (sticks, visible) = state;
-
-        if (sticks == 0)
+        public long Replay((int Sticks, int Visible) state, IRecurrence<(int Sticks, int Visible), long> rest)
         {
-            return visible == 0 ? 1 : 0;
+            var (sticks, visible) = state;
+
+            if (sticks == 0)
+            {
+                return visible == 0 ? 1 : 0;
+            }
+
+            if (visible == 0)
+            {
+                return 0;
+            }
+
+            var placeAsNewVisible = rest.Replay((sticks - 1, visible - 1), rest);
+            var hideAfterExistingStick =
+                (sticks - 1) * rest.Replay((sticks - 1, visible), rest) % ModularArithmetic.Modulo;
+
+            return (placeAsNewVisible + hideAfterExistingStick) % ModularArithmetic.Modulo;
         }
-
-        if (visible == 0)
-        {
-            return 0;
-        }
-
-        var placeAsNewVisible = ways((sticks - 1, visible - 1));
-        var hideAfterExistingStick = (sticks - 1) * ways((sticks - 1, visible)) % ModularArithmetic.Modulo;
-
-        return (placeAsNewVisible + hideAfterExistingStick) % ModularArithmetic.Modulo;
     }
 
     private static void CountArrangements(int[] sticks, int index, int visibleCount, ref long arrangements)

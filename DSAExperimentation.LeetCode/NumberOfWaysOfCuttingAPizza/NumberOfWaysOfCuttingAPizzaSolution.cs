@@ -34,11 +34,12 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
     public static int CountWaysByUnmemoizedRecursion(string[] pizza, int k) =>
         CountWaysByUnmemoizedRecursion(new AppleGrid(pizza), k);
 
-    public static int CountWaysByUnmemoizedRecursion(AppleGrid apples, int k) =>
-        WaysFromUnmemoized(apples, (0, 0, k - 1));
+    public static int CountWaysByUnmemoizedRecursion(AppleGrid apples, int k)
+    {
+        var ways = new PizzaCutWays(apples);
 
-    private static int WaysFromUnmemoized(AppleGrid apples, (int Row, int Col, int RemainingCuts) state) =>
-        WaysFrom(apples, state, next => WaysFromUnmemoized(apples, next));
+        return ways.Replay((0, 0, k - 1), ways);
+    }
 
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
     // (Row, Col, RemainingCuts) triple - collapsing the exponential walk above to
@@ -49,14 +50,27 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
     public static int CountWaysByMemoizedRecursion(AppleGrid apples, int k) =>
         Memoizer.Memoize<(int Row, int Col, int RemainingCuts), int>(
             (0, 0, k - 1),
-            (state, waysFrom) => WaysFrom(apples, state, waysFrom));
+            new PizzaCutWays(apples));
+
+    // The recurrence, as a named type. It forwards whatever recursion it is handed
+    // straight into the shared body below, so the whole difference between the two
+    // strategies is what plays that part: the memo run, which holds the cache, or this
+    // same type naming itself, which holds nothing.
+    private sealed class PizzaCutWays(AppleGrid apples)
+        : IRecurrence<(int Row, int Col, int RemainingCuts), int>
+    {
+        public int Replay(
+            (int Row, int Col, int RemainingCuts) state,
+            IRecurrence<(int Row, int Col, int RemainingCuts), int> rest) =>
+            WaysFrom(apples, state, rest);
+    }
 
     // The recurrence itself, shared by both strategies so that the only thing they
     // differ in is how the recursive call reaches back in.
     private static int WaysFrom(
         AppleGrid apples,
         (int Row, int Col, int RemainingCuts) state,
-        Func<(int Row, int Col, int RemainingCuts), int> waysFrom)
+        IRecurrence<(int Row, int Col, int RemainingCuts), int> rest)
     {
         var (row, col, remainingCuts) = state;
 
@@ -70,19 +84,34 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
             return WholeRemainderIsOnePiece;
         }
 
-        var horizontalWays = SumCutsAlongAxis(
-            apples.ApplesFrom(row, col),
-            (row + 1, apples.Rows),
-            nextRow => apples.ApplesFrom(nextRow, col),
-            nextRow => waysFrom((nextRow, col, remainingCuts - 1)));
-
-        var verticalWays = SumCutsAlongAxis(
-            apples.ApplesFrom(row, col),
-            (col + 1, apples.Cols),
-            nextCol => apples.ApplesFrom(row, nextCol),
-            nextCol => waysFrom((row, nextCol, remainingCuts - 1)));
+        var (horizontalWays, verticalWays) = SumCutsAlongBothAxes(apples, state, rest);
 
         return (int)((horizontalWays + verticalWays) % ModularArithmetic.Modulo);
+    }
+
+    // Both axes of the recurrence: a cut may run below the current row or right of
+    // the current column, and the two totals add up to the ways at this state.
+    private static (long Horizontal, long Vertical) SumCutsAlongBothAxes(
+        AppleGrid apples,
+        (int Row, int Col, int RemainingCuts) state,
+        IRecurrence<(int Row, int Col, int RemainingCuts), int> rest)
+    {
+        var (row, col, remainingCuts) = state;
+        var applesRemaining = apples.ApplesFrom(row, col);
+
+        var horizontalWays = SumCutsAlongAxis(
+            applesRemaining,
+            (row + 1, apples.Rows),
+            new RowCutAxis(apples, col, remainingCuts - 1),
+            rest);
+
+        var verticalWays = SumCutsAlongAxis(
+            applesRemaining,
+            (col + 1, apples.Cols),
+            new ColumnCutAxis(apples, row, remainingCuts - 1),
+            rest);
+
+        return (horizontalWays, verticalWays);
     }
 
     // One axis of cut positions: a cut at `next` is legal only when the piece it
@@ -90,19 +119,53 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
     private static long SumCutsAlongAxis(
         int applesRemaining,
         (int Start, int Bound) range,
-        Func<int, int> applesFrom,
-        Func<int, int> waysAt)
+        IPizzaCutAxis axis,
+        IRecurrence<(int Row, int Col, int RemainingCuts), int> rest)
     {
         var total = 0L;
 
         for (var next = range.Start; next < range.Bound; next++)
         {
-            if (applesRemaining - applesFrom(next) > 0)
+            if (applesRemaining - axis.ApplesFrom(next) > 0)
             {
-                total = (total + waysAt(next)) % ModularArithmetic.Modulo;
+                total = (total + rest.Replay(axis.NextState(next), rest))
+                    % ModularArithmetic.Modulo;
             }
         }
 
         return total;
+    }
+
+    // One axis of the remaining pizza, with the other coordinate held fixed: the apples
+    // each strip still holds, and the state a cut at a position leaves. Which of the two
+    // axes is being measured is the whole of what the implementations differ in, so the
+    // type says which one and its methods say what comes back.
+    private interface IPizzaCutAxis
+    {
+        // Apples still in the strip that starts at `position` and runs to the far
+        // edge, along this instance's own axis.
+        int ApplesFrom(int position);
+
+        // The state a cut at `position` leaves: the coordinate this axis moves takes the
+        // cut's own position, and the cut it took is one fewer still owed.
+        (int Row, int Col, int RemainingCuts) NextState(int position);
+    }
+
+    // A fixed column read down the rows, for the horizontal-cut axis.
+    private sealed class RowCutAxis(AppleGrid apples, int col, int cutsAfterThisOne) : IPizzaCutAxis
+    {
+        public int ApplesFrom(int position) => apples.ApplesFrom(position, col);
+
+        public (int Row, int Col, int RemainingCuts) NextState(int position) =>
+            (position, col, cutsAfterThisOne);
+    }
+
+    // A fixed row read across the columns, for the vertical-cut axis.
+    private sealed class ColumnCutAxis(AppleGrid apples, int row, int cutsAfterThisOne) : IPizzaCutAxis
+    {
+        public int ApplesFrom(int position) => apples.ApplesFrom(row, position);
+
+        public (int Row, int Col, int RemainingCuts) NextState(int position) =>
+            (row, position, cutsAfterThisOne);
     }
 }

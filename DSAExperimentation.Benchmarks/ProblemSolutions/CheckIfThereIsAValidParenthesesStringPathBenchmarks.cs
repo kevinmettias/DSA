@@ -16,10 +16,10 @@ public class CheckIfThereIsAValidParenthesesStringPathBenchmarks
 {
     private const char Open = '(';
 
-    [Params(8, 12)]
-    public int Size;
+    private char[,] _grid = new char[0, 0];
 
-    private char[,] _grid = null!;
+    [Params(8, 12)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

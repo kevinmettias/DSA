@@ -30,36 +30,52 @@ internal static class HouseRobberVSolution
 
         for (var i = 1; i < nums.Length; i++)
         {
-            var priorBest = colors[i] == colors[i - 1] ? PriorBest(dp, i) : dp[i - 1];
+            var sameColor = colors[i] == colors[i - 1];
+            var priorBest = sameColor ? PriorBest(dp, i) : BestUpTo(dp, i - 1);
             dp[i] = Math.Max(dp[i - 1], nums[i] + priorBest);
         }
 
         return dp[^1];
     }
 
-    private static long PriorBest(long[] dp, int i) => i >= 2 ? dp[i - 2] : 0;
+    private static long PriorBest(long[] dp, int i) => i >= 2 ? BestUpTo(dp, i - 2) : 0;
 
     // This repo's own top-down engine: Memoizer.Memoize caches best(i) the first
     // time each index is reached, so the recurrence reads as ordinary recursion
     // with no hand-rolled cache dictionary.
     public static long MaxAmountByMemoization(int[] nums, int[] colors)
     {
-        return Memoizer.Memoize<int, long>(nums.Length - 1, BestThrough);
+        var recurrence = new BestAmountThroughHouse(nums, colors);
 
-        long BestThrough(int i, Func<int, long> best)
+        return Memoizer.Memoize<int, long>(nums.Length - 1, recurrence);
+    }
+
+    // best(j) of the recurrence: the best amount robbing among houses 0..j.
+    private static long BestUpTo(long[] dp, int house) => dp[house];
+
+    // The recurrence above, named: best(i) is the better of skipping house i and
+    // robbing it, the latter fed by whichever predecessor the two colors allow.
+    private sealed class BestAmountThroughHouse(int[] nums, int[] colors) : IRecurrence<int, long>
+    {
+        /// <inheritdoc/>
+        public long Replay(int state, IRecurrence<int, long> rest)
         {
-            if (i < 0)
+            if (state < 0)
             {
                 return 0;
             }
 
-            if (i == 0)
+            if (state == 0)
             {
                 return nums[0];
             }
 
-            var priorBest = colors[i] == colors[i - 1] ? best(i - 2) : best(i - 1);
-            return Math.Max(best(i - 1), nums[i] + priorBest);
+            var sameColor = colors[state] == colors[state - 1];
+            var priorBest = sameColor ? rest.Replay(state - 2, rest) : rest.Replay(state - 1, rest);
+            var skip = rest.Replay(state - 1, rest);
+            var take = nums[state] + priorBest;
+
+            return Math.Max(skip, take);
         }
     }
 }

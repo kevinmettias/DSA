@@ -14,10 +14,10 @@ public class LargestTriangleAreaBenchmarks
     private const int RandomSeed = 812;
     private const int CoordinateUpperBound = 1_000;
 
-    [Params(60, 300)]
-    public int Length;
+    private (int X, int Y)[] _points = [];
 
-    private (int X, int Y)[] _points = null!;
+    [Params(60, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -19,11 +19,11 @@ public sealed class ZumaGameTests
     [MemberData(nameof(Examples))]
     public void FindMinStepByBruteForceDfs_LeetCodeExamples_ReturnsMinimumBallsNeededOrNegativeOne(
         string board, string hand, int expected) =>
-        Assert.Equal(expected, ZumaGameSolution.FindMinStepByBruteForceDfs(board, hand));
+        Assert.Equal(expected, ZumaGameSolution.FindMinStepByBruteForceDfs(new BallBoard(board), new BallHand(hand)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMinStepByQueueBfsDedup_LeetCodeExamples_ReturnsMinimumBallsNeededOrNegativeOne(
         string board, string hand, int expected) =>
-        Assert.Equal(expected, ZumaGameSolution.FindMinStepByQueueBfsDedup(board, hand));
+        Assert.Equal(expected, ZumaGameSolution.FindMinStepByQueueBfsDedup(new BallBoard(board), new BallHand(hand)));
 }

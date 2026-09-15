@@ -17,11 +17,11 @@ public class MinimizeTheMaximumOfTwoArraysBenchmarks
     private const int Divisor1 = 2;
     private const int Divisor2 = 3;
 
-    [Params(1_000, 1_000_000)]
-    public int UniqueCountScale;
-
     private int _uniqueCnt1;
+
     private int _uniqueCnt2;
+    [Params(1_000, 1_000_000)]
+    public int UniqueCountScale { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -28,7 +28,10 @@ internal static class CarFleetSolution
     // without this repo's primitives - it is the arm the composed solution below has
     // to justify itself against.
     public static int CountFleetsByRecomputeMaxEachCar(int target, int[] position, int[] speed)
-        => CountFleetsByRecomputeMaxEachCar(ArrivalTimesByPositionDescending(target, position, speed));
+    {
+        var arrivalTimes = ArrivalTimesByPositionDescending(target, position, speed);
+        return CountFleetsByRecomputeMaxEachCar(arrivalTimes);
+    }
 
     public static int CountFleetsByRecomputeMaxEachCar(DynamicArray<double> arrivalTimesByPositionDescending)
     {
@@ -64,7 +67,10 @@ internal static class CarFleetSolution
     // and is never pushed, a strictly slower car starts a new one. The final stack
     // height is the fleet count, in one O(n) pass with no pop ever needed.
     public static int CountFleetsByMonotonicStackSweep(int target, int[] position, int[] speed)
-        => CountFleetsByMonotonicStackSweep(ArrivalTimesByPositionDescending(target, position, speed));
+    {
+        var arrivalTimes = ArrivalTimesByPositionDescending(target, position, speed);
+        return CountFleetsByMonotonicStackSweep(arrivalTimes);
+    }
 
     public static int CountFleetsByMonotonicStackSweep(DynamicArray<double> arrivalTimesByPositionDescending)
     {

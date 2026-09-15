@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindTheWinningPlayerInCoinGameBenchmarks
 {
     [Params(1, 100)]
-    public int X;
+    public int X { get; set; }
 
     [Params(4, 100)]
-    public int Y;
+    public int Y { get; set; }
 
     [Benchmark(Baseline = true)]
     public string Simulation() => FindTheWinningPlayerInCoinGameSolution.WinningPlayerBySimulation(X, Y);

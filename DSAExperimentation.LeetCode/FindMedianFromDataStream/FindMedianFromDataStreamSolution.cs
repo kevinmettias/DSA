@@ -37,10 +37,17 @@ internal static class FindMedianFromDataStreamSolution
             Array.Sort(sorted);
 
             var mid = sorted.Length / MedianSplit;
-            return sorted.Length % MedianSplit == 0
-                ? (sorted[mid - 1] + sorted[mid]) / MedianAverageDivisor
-                : sorted[mid];
+            var hasEvenLength = sorted.Length % MedianSplit == 0;
+
+            return hasEvenLength
+                ? AverageOfTwoMiddleValues(sorted, mid)
+                : MiddleValue(sorted, mid);
         }
+
+        private static double AverageOfTwoMiddleValues(int[] sorted, int mid) =>
+            (sorted[mid - 1] + sorted[mid]) / MedianAverageDivisor;
+
+        private static double MiddleValue(int[] sorted, int mid) => sorted[mid];
     }
 
     private sealed class TwoHeapMedianFinder : IMedianFinder
@@ -64,11 +71,6 @@ internal static class FindMedianFromDataStreamSolution
             Rebalance();
         }
 
-        public double FindMedian() =>
-            _lowerHalf.Count > _upperHalf.Count
-                ? PeekLower()
-                : (PeekLower() + PeekUpper()) / MedianAverageDivisor;
-
         private void Rebalance()
         {
             if (_lowerHalf.Count > _upperHalf.Count + 1)
@@ -83,26 +85,23 @@ internal static class FindMedianFromDataStreamSolution
             }
         }
 
-        private int PeekLower()
-        {
-            _lowerHalf.TryPeek(out var value);
-            return value;
-        }
+        public double FindMedian() =>
+            _lowerHalf.Count > _upperHalf.Count
+                ? PeekLower()
+                : AverageOfHalves();
+
+        private double AverageOfHalves() => (PeekLower() + PeekUpper()) / MedianAverageDivisor;
 
         private int PeekUpper()
         {
             _upperHalf.TryPeek(out var value);
             return value;
         }
+
+        private int PeekLower()
+        {
+            _lowerHalf.TryPeek(out var value);
+            return value;
+        }
     }
-}
-
-// The AddNum/FindMedian contract every strategy above implements. Bespoke to this
-// problem: no other LeetCode entry shares this shape, so it stays here rather than
-// in DataStructures/.
-internal interface IMedianFinder
-{
-    void AddNum(int num);
-
-    double FindMedian();
 }

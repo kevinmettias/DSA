@@ -42,8 +42,7 @@ internal static class CountNumberOfTeamsSolution
 
         for (var k = j + 1; k < rating.Length; k++)
         {
-            if ((rating[i] < rating[j] && rating[j] < rating[k]) ||
-                (rating[i] > rating[j] && rating[j] > rating[k]))
+            if (FormsRankOrderedTeam(rating[i], rating[j], rating[k]))
             {
                 teams++;
             }
@@ -51,6 +50,11 @@ internal static class CountNumberOfTeamsSolution
 
         return teams;
     }
+
+    // The three ratings run strictly one way - all rising or all falling - which is what
+    // makes i, j, k a team.
+    private static bool FormsRankOrderedTeam(int first, int middle, int last) =>
+        (first < middle && middle < last) || (first > middle && middle > last);
 
     // Each of the four counts comes from a coordinate-compressed sweep: rank a
     // rating via BinarySearch.LowerBound/UpperBound over the sorted distinct
@@ -70,8 +74,8 @@ internal static class CountNumberOfTeamsSolution
         var sortedDistinct = rating.Distinct().OrderBy(value => value).ToArray();
         var sequence = new ArraySequence<int>(sortedDistinct);
 
-        var (leftLess, leftGreater) = SweepCounts(rating, sequence, sortedDistinct.Length, forward: true);
-        var (rightLess, rightGreater) = SweepCounts(rating, sequence, sortedDistinct.Length, forward: false);
+        var (leftLess, leftGreater) = SweepCounts(rating, sequence, sortedDistinct.Length, SweepDirection.Forward);
+        var (rightLess, rightGreater) = SweepCounts(rating, sequence, sortedDistinct.Length, SweepDirection.Backward);
 
         var teams = 0;
         for (var j = 0; j < n; j++)
@@ -82,12 +86,12 @@ internal static class CountNumberOfTeamsSolution
         return teams;
     }
 
-    // One directional sweep shared by both passes: forward builds
+    // One directional sweep shared by both passes: SweepDirection.Forward builds
     // leftLess/leftGreater (how many earlier soldiers rank below/above j),
-    // forward:false walks right-to-left over the same indices to build
+    // SweepDirection.Backward walks right-to-left over the same indices to build
     // rightLess/rightGreater instead.
     private static (int[] Less, int[] Greater) SweepCounts(
-        int[] rating, ArraySequence<int> sequence, int distinctCount, bool forward)
+        int[] rating, ArraySequence<int> sequence, int distinctCount, SweepDirection direction)
     {
         var n = rating.Length;
         var less = new int[n];
@@ -97,7 +101,7 @@ internal static class CountNumberOfTeamsSolution
 
         for (var step = 0; step < n; step++)
         {
-            var j = forward ? step : n - 1 - step;
+            var j = direction == SweepDirection.Forward ? step : IndexFromEnd(step, n);
             var lower = BinarySearch.LowerBound(sequence, rating[j]);
             var upper = BinarySearch.UpperBound(sequence, rating[j]);
 
@@ -110,5 +114,18 @@ internal static class CountNumberOfTeamsSolution
         }
 
         return (less, greater);
+    }
+
+    // The index one step back from the end of the ratings, so a Backward pass covers
+    // the same positions as a Forward one, in the opposite order.
+    private static int IndexFromEnd(int step, int length) => length - 1 - step;
+
+    // Which way one SweepCounts pass walks the ratings: Forward visits index 0 first
+    // and so counts the soldiers ranked before j, Backward visits the last index first
+    // and counts the ones ranked after it.
+    private enum SweepDirection
+    {
+        Forward,
+        Backward,
     }
 }

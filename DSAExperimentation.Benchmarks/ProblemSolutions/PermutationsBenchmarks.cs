@@ -8,10 +8,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PermutationsBenchmarks
 {
-    [Params(6, 8)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(6, 8)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();

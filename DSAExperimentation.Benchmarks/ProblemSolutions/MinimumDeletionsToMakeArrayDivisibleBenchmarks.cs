@@ -23,11 +23,11 @@ public class MinimumDeletionsToMakeArrayDivisibleBenchmarks
     private static readonly int[] DivisorsOfBaseDivisor =
         [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 30, 36, 40, 45, 48, 60, 72, 80, 90, 120, 144, 180, 240, 360, 720];
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _numsDivide = null!;
+    private int[] _numsDivide = [];
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

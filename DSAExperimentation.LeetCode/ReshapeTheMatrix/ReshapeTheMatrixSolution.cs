@@ -40,17 +40,26 @@ internal static class ReshapeTheMatrixSolution
         }
 
         var reshaped = Enumerable.Range(0, r).Select(_ => new int[c]).ToArray();
+        CopyWithCursorWalk(reshaped, mat, cols, c);
+
+        return reshaped;
+    }
+
+    // Copies mat's cells across in row-major order, advancing a destination cursor
+    // that wraps to the next destination row only when one fills up.
+    private static void CopyWithCursorWalk(int[][] reshaped, int[][] mat, int cols, int destCols)
+    {
         var destRow = 0;
         var destCol = 0;
 
-        for (var row = 0; row < rows; row++)
+        for (var row = 0; row < mat.Length; row++)
         {
             for (var col = 0; col < cols; col++)
             {
                 reshaped[destRow][destCol] = mat[row][col];
                 destCol++;
 
-                if (destCol != c)
+                if (destCol != destCols)
                 {
                     continue;
                 }
@@ -59,7 +68,5 @@ internal static class ReshapeTheMatrixSolution
                 destRow++;
             }
         }
-
-        return reshaped;
     }
 }

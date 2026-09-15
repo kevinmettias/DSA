@@ -16,12 +16,12 @@ public class MaximumTotalSubarrayValueIIBenchmarks
     private const int Seed = 3691;
     private const int K = 2_000;
 
-    [Params(100, 500)]
-    public int Size;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private SegmentTree<int, MaxOperation<int>> _maxTree = null!;
     private SegmentTree<int, MinOperation<int>> _minTree = null!;
+    [Params(100, 500)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 // section 17.3), and it is deliberately not an IEnumerable: it is the parameter type
 // of the prepared-input overloads (section 17.4), so it must never be bindable by the
 // int[]-shaped overloads the LeetCode-shaped calls go through.
-internal sealed class GoodSubsetCandidates
+internal sealed class GoodSubsetCandidates((int Mask, int Weight)[] candidates, int onesCount)
 {
     private const int MinCandidateValue = 2;
     private const int MaxCandidateValue = 30;
@@ -24,21 +24,15 @@ internal sealed class GoodSubsetCandidates
 
     private static readonly int[] PrimesUpToMaxCandidate = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
 
-    private readonly (int Mask, int Weight)[] _candidates;
-
-    private GoodSubsetCandidates((int Mask, int Weight)[] candidates, int onesCount)
-    {
-        _candidates = candidates;
-        OnesCount = onesCount;
-    }
-
     // Fixed by the problem's own constraints, not by the input's length: every
     // squarefree value in [2, 30] is listed, with weight 0 when nums never holds it.
-    public int Count => _candidates.Length;
+    public int Count => candidates.Length;
 
-    public int OnesCount { get; }
+    // Read by name from both strategies' doubling step, so it stays a property over
+    // the primary constructor's own value.
+    public int OnesCount => onesCount;
 
-    public (int Mask, int Weight) At(int index) => _candidates[index];
+    public (int Mask, int Weight) At(int index) => candidates[index];
 
     public static GoodSubsetCandidates Build(int[] nums)
     {
@@ -76,24 +70,37 @@ internal sealed class GoodSubsetCandidates
 
         for (var i = 0; i < PrimesUpToMaxCandidate.Length; i++)
         {
-            var prime = PrimesUpToMaxCandidate[i];
-
-            if (value % prime != 0)
+            if (!TryAbsorbPrime(ref value, ref mask, i))
             {
-                continue;
-            }
-
-            value /= prime;
-
-            if (value % prime == 0)
-            {
-                mask = 0;
                 return false;
             }
-
-            mask |= 1 << i;
         }
 
+        return true;
+    }
+
+    // Absorbs PrimesUpToMaxCandidate[primeIndex] into the running mask: a prime that
+    // does not divide value sets no bit, and one that still divides the remainder
+    // after being divided out once reports false, which is what disqualifies the
+    // value as non-squarefree.
+    private static bool TryAbsorbPrime(ref int value, ref int mask, int primeIndex)
+    {
+        var prime = PrimesUpToMaxCandidate[primeIndex];
+
+        if (value % prime != 0)
+        {
+            return true;
+        }
+
+        value /= prime;
+
+        if (value % prime == 0)
+        {
+            mask = 0;
+            return false;
+        }
+
+        mask |= 1 << primeIndex;
         return true;
     }
 }

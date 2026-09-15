@@ -45,24 +45,6 @@ internal static class DetonateTheMaximumBombsSolution
         return maxDetonated;
     }
 
-    private static void VisitManual(int[][] bombs, int index, bool[] visited)
-    {
-        if (visited[index])
-        {
-            return;
-        }
-
-        visited[index] = true;
-
-        for (var j = 0; j < bombs.Length; j++)
-        {
-            if (!visited[j] && IsWithinBlastRadius(bombs, index, j))
-            {
-                VisitManual(bombs, j, visited);
-            }
-        }
-    }
-
     private static int CountVisited(bool[] visited)
     {
         var count = 0;
@@ -101,6 +83,24 @@ internal static class DetonateTheMaximumBombsSolution
             if (j != index && IsWithinBlastRadius(bombs, index, j))
             {
                 yield return j;
+            }
+        }
+    }
+
+    private static void VisitManual(int[][] bombs, int index, bool[] visited)
+    {
+        if (visited[index])
+        {
+            return;
+        }
+
+        visited[index] = true;
+
+        for (var j = 0; j < bombs.Length; j++)
+        {
+            if (!visited[j] && IsWithinBlastRadius(bombs, index, j))
+            {
+                VisitManual(bombs, j, visited);
             }
         }
     }

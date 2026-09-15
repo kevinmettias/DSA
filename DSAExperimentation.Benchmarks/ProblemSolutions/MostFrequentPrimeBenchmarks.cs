@@ -14,10 +14,10 @@ public class MostFrequentPrimeBenchmarks
 {
     private const int GridSeed = 3044;
 
-    [Params(2, 4, 6)]
-    public int GridSize;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(2, 4, 6)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = DigitGridWorkloads.BuildGrid(GridSize, seed: GridSeed);

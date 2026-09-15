@@ -14,9 +14,6 @@ namespace DSAExperimentation.LeetCode.RLEIterator;
 // DataStructures/.
 internal static class RLEIteratorSolution
 {
-    // Two ints per run pair in LeetCode's flat encoding array.
-    public const int ValuesPerRun = 2;
-
     // The textbook baseline: eagerly decompress the whole encoding into a flat
     // int[] and walk it with an index cursor - O(total element count) time and
     // memory up front, which on LeetCode's own constraints (individual run counts
@@ -56,7 +53,7 @@ internal static class RLEIteratorSolution
         {
             var totalCount = 0;
 
-            for (var i = 0; i < encoding.Length; i += ValuesPerRun)
+            for (var i = 0; i < encoding.Length; i += RunEncoding.ValuesPerRun)
             {
                 totalCount += encoding[i];
             }
@@ -64,7 +61,7 @@ internal static class RLEIteratorSolution
             var values = new int[totalCount];
             var index = 0;
 
-            for (var i = 0; i < encoding.Length; i += ValuesPerRun)
+            for (var i = 0; i < encoding.Length; i += RunEncoding.ValuesPerRun)
             {
                 for (var repeat = 0; repeat < encoding[i]; repeat++)
                 {
@@ -84,7 +81,7 @@ internal static class RLEIteratorSolution
 
         public RunLengthQueueRleIterator(int[] encoding)
         {
-            for (var i = 0; i < encoding.Length; i += ValuesPerRun)
+            for (var i = 0; i < encoding.Length; i += RunEncoding.ValuesPerRun)
             {
                 _runs.Enqueue((encoding[i], encoding[i + 1]));
             }
@@ -113,12 +110,4 @@ internal static class RLEIteratorSolution
             return _value;
         }
     }
-}
-
-// The next(n) contract every strategy above implements. Bespoke to this problem:
-// no other LeetCode entry shares this shape, so it stays here rather than in
-// DataStructures/.
-internal interface IRleIterator
-{
-    int Next(int n);
 }

@@ -17,10 +17,10 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
     private const int RandomSeed = 1687; // LC problem number
     private const int SyntheticValueExclusiveUpperBound = 6;
 
-    [Params(2_000, 20_000)]
-    public int Length;
-
     private BoxDeliverySchedule _schedule = null!;
+
+    [Params(2_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

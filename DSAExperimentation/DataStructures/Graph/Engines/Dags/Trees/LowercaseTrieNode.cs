@@ -10,9 +10,7 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // LowercaseTrieTopology.cs.
 internal sealed class LowercaseTrieNode<TValue>
 {
-    public const int AlphabetSize = 26;
-
-    public LowercaseTrieNode<TValue>?[] Children { get; } = new LowercaseTrieNode<TValue>[AlphabetSize];
+    public LowercaseTrieNode<TValue>?[] Children { get; } = new LowercaseTrieNode<TValue>[LowercaseAlphabet.Size];
 
     public bool HasValue { get; set; }
 

@@ -15,16 +15,13 @@ public class MinimumNumberOfMovesToMakePalindromeBenchmarks
     // Small alphabet so mismatches - and therefore real swap work - are frequent.
     private const int AlphabetSize = 4;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private string _value = "";
 
-    private string _value = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _value = BuildPalindromeReadyString(Length, RandomSeed);
-    }
+    public void Setup() => _value = BuildPalindromeReadyString(Length, RandomSeed);
 
     // A random string guaranteed rearrangeable into a palindrome (every character
     // count is even, plus at most one odd leftover) - built by mirroring random

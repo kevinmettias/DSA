@@ -25,22 +25,39 @@ internal static class WaterAndJugProblemSolution
 
         while (pending.TryPop(out var state))
         {
-            if (!visited.Add(state))
-            {
-                continue;
-            }
-
-            if (state.X + state.Y == target)
+            if (Expand(visited, pending, state, (jugX, jugY, target)))
             {
                 return true;
             }
+        }
 
-            foreach (var next in Successors(state, jugX, jugY))
+        return false;
+    }
+
+    // One state expanded: a state already seen is skipped, one whose two jugs sum to
+    // the target ends the search, and otherwise every successor not yet seen is
+    // queued behind it.
+    private static bool Expand(
+        HashSet<(int X, int Y)> visited,
+        Stack<(int X, int Y)> pending,
+        (int X, int Y) state,
+        (int JugX, int JugY, int Target) problem)
+    {
+        if (!visited.Add(state))
+        {
+            return false;
+        }
+
+        if (state.X + state.Y == problem.Target)
+        {
+            return true;
+        }
+
+        foreach (var next in Successors(state, problem.JugX, problem.JugY))
+        {
+            if (!visited.Contains(next))
             {
-                if (!visited.Contains(next))
-                {
-                    pending.Push(next);
-                }
+                pending.Push(next);
             }
         }
 

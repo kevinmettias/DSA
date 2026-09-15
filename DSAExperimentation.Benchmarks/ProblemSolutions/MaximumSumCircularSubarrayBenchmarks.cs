@@ -12,10 +12,10 @@ public class MaximumSumCircularSubarrayBenchmarks
     private const int RandomSeed = 918; // LC problem number
     private const int ValueMagnitude = 50;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

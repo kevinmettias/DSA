@@ -26,26 +26,7 @@ internal static class CanIWinSolution
             return false;
         }
 
-        return CanWinFrom(0, desiredTotal);
-
-        bool CanWinFrom(int usedMask, int remainingTotal)
-        {
-            for (var i = 1; i <= maxChoosableInteger; i++)
-            {
-                var bit = 1 << (i - 1);
-                if ((usedMask & bit) != 0)
-                {
-                    continue;
-                }
-
-                if (i >= remainingTotal || !CanWinFrom(usedMask | bit, remainingTotal - i))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        return CanWinFrom(0, desiredTotal, maxChoosableInteger);
     }
 
     // This repo's own Memoizer, keyed on the used-numbers bitmask - the same shape
@@ -66,25 +47,7 @@ internal static class CanIWinSolution
             return false;
         }
 
-        return Memoizer.Memoize<int, bool>(0, (usedMask, canWin) =>
-        {
-            for (var i = 1; i <= maxChoosableInteger; i++)
-            {
-                var bit = 1 << (i - 1);
-                if ((usedMask & bit) != 0)
-                {
-                    continue;
-                }
-
-                var remaining = desiredTotal - SumChosen(usedMask | bit, maxChoosableInteger);
-                if (remaining <= 0 || !canWin(usedMask | bit))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        });
+        return Memoizer.Memoize<int, bool>(0, new CanWinByPicking(maxChoosableInteger, desiredTotal));
     }
 
     private static int SumChosen(int mask, int maxChoosableInteger)
@@ -99,5 +62,55 @@ internal static class CanIWinSolution
         }
 
         return sum;
+    }
+
+    // The recursion itself: the state is which numbers are spent and how much of the
+    // target is left, and picking i wins either by reaching the target outright or by
+    // leaving the opponent a state that loses.
+    private static bool CanWinFrom(int usedMask, int remainingTotal, int maxChoosableInteger)
+    {
+        for (var i = 1; i <= maxChoosableInteger; i++)
+        {
+            var bit = 1 << (i - 1);
+            if ((usedMask & bit) != 0)
+            {
+                continue;
+            }
+
+            if (i >= remainingTotal || !CanWinFrom(usedMask | bit, remainingTotal - i, maxChoosableInteger))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // The recurrence, named: one state of the game, where every unpicked number is
+    // tried and picking one wins as soon as it reaches the target outright or hands the
+    // opponent a state this same rule reports as lost. The board's size and the target
+    // are the whole of what the rule needs from its caller, so they are the
+    // constructor's inputs.
+    private sealed class CanWinByPicking(int maxChoosableInteger, int desiredTotal) : IRecurrence<int, bool>
+    {
+        public bool Replay(int usedMask, IRecurrence<int, bool> rest)
+        {
+            for (var i = 1; i <= maxChoosableInteger; i++)
+            {
+                var bit = 1 << (i - 1);
+                if ((usedMask & bit) != 0)
+                {
+                    continue;
+                }
+
+                var remaining = desiredTotal - SumChosen(usedMask | bit, maxChoosableInteger);
+                if (remaining <= 0 || !rest.Replay(usedMask | bit, rest))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

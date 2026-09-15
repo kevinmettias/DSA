@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.DeleteNodeInABST;
 
@@ -13,13 +14,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DeleteNodeInABSTBenchmarks
 {
-    private const int MidpointDivisor = 2;
 
-    [Params(500, 20_000)]
-    public int NodeCount;
+    private int[] _insertionOrder = [];
 
-    private int[] _insertionOrder = null!;
     private int _target;
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,7 +34,7 @@ public class DeleteNodeInABSTBenchmarks
         }
 
         _insertionOrder = values;
-        _target = NodeCount / MidpointDivisor;
+        _target = NodeCount / AlgorithmConstants.HalvingFactor;
     }
 
     [Benchmark(Baseline = true)]

@@ -15,10 +15,10 @@ public class LongestChunkedPalindromeDecompositionBenchmarks
 {
     private const int CodePointBase = 1000;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -31,6 +31,27 @@ internal static class MinimumIntervalToIncludeEachQuerySolution
         return answer;
     }
 
+    // The offline sweep: answer the queries in increasing order so an interval is
+    // admitted once, when it opens, and discarded once, when its right endpoint falls
+    // behind the sweep. This repo's own Heap<Element,TOrder> in MinHeapOrder over
+    // (Size, Right) keeps the smallest live interval at the root, so each query is a
+    // peek - O((n + q) log n) overall. Results are written back through the original
+    // query index, so the caller still gets them in LeetCode's order.
+    public static int[] MinIntervalsByHeapSweep(int[][] intervals, int[] queries)
+    {
+        var sortedIntervals = intervals.OrderBy(interval => interval[LeftEndpoint]).ToArray();
+        var queryOrder = Enumerable.Range(0, queries.Length).OrderBy(index => queries[index]).ToArray();
+        var sweep = new IntervalSweep(sortedIntervals);
+        var answer = new int[queries.Length];
+
+        foreach (var queryIndex in queryOrder)
+        {
+            answer[queryIndex] = sweep.SmallestCoveringSize(queries[queryIndex]);
+        }
+
+        return answer;
+    }
+
     private static int SmallestCoveringSize(int[][] intervals, int query)
     {
         var best = LeetCodeAnswer.None;
@@ -51,27 +72,6 @@ internal static class MinimumIntervalToIncludeEachQuerySolution
         }
 
         return best;
-    }
-
-    // The offline sweep: answer the queries in increasing order so an interval is
-    // admitted once, when it opens, and discarded once, when its right endpoint falls
-    // behind the sweep. This repo's own Heap<Element,TOrder> in MinHeapOrder over
-    // (Size, Right) keeps the smallest live interval at the root, so each query is a
-    // peek - O((n + q) log n) overall. Results are written back through the original
-    // query index, so the caller still gets them in LeetCode's order.
-    public static int[] MinIntervalsByHeapSweep(int[][] intervals, int[] queries)
-    {
-        var sortedIntervals = intervals.OrderBy(interval => interval[LeftEndpoint]).ToArray();
-        var queryOrder = Enumerable.Range(0, queries.Length).OrderBy(index => queries[index]).ToArray();
-        var sweep = new IntervalSweep(sortedIntervals);
-        var answer = new int[queries.Length];
-
-        foreach (var queryIndex in queryOrder)
-        {
-            answer[queryIndex] = sweep.SmallestCoveringSize(queries[queryIndex]);
-        }
-
-        return answer;
     }
 
     // The sweep's position over the left-sorted intervals, plus the min-heap of the

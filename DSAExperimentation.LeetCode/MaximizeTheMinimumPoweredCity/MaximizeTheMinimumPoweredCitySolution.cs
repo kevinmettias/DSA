@@ -39,8 +39,11 @@ internal static class MaximizeTheMinimumPoweredCitySolution
     // first one that works, with a BCL long[] difference array carrying the running
     // power as the sweep walks right. Deliberately without this repo's primitives - it
     // is the arm the composed strategy below has to justify itself against.
-    public static long MaxPowerByDescendingLinearScan(int[] stations, int r, int k) =>
-        MaxPowerByDescendingLinearScan(PoweredCityPlan.From(stations, r, k));
+    public static long MaxPowerByDescendingLinearScan(int[] stations, int r, int k)
+    {
+        var plan = PoweredCityPlan.From(stations, r, k);
+        return MaxPowerByDescendingLinearScan(plan);
+    }
 
     public static long MaxPowerByDescendingLinearScan(PoweredCityPlan plan)
     {
@@ -58,8 +61,11 @@ internal static class MaximizeTheMinimumPoweredCitySolution
     // This repo's own BinarySearch.LowerBound over the infeasibility sequence: the
     // candidate targets are never materialized, each probe just reruns the greedy
     // sweep, and the leftmost infeasible target sits one past the answer.
-    public static long MaxPowerBySequenceLowerBound(int[] stations, int r, int k) =>
-        MaxPowerBySequenceLowerBound(PoweredCityPlan.From(stations, r, k));
+    public static long MaxPowerBySequenceLowerBound(int[] stations, int r, int k)
+    {
+        var plan = PoweredCityPlan.From(stations, r, k);
+        return MaxPowerBySequenceLowerBound(plan);
+    }
 
     public static long MaxPowerBySequenceLowerBound(PoweredCityPlan plan)
     {
@@ -74,39 +80,70 @@ internal static class MaximizeTheMinimumPoweredCitySolution
     // exactly the point read RangeFenwickTree's own doc comment prescribes.
     private static bool FeasibleByRangeFenwickTree(PoweredCityPlan plan, long target)
     {
+        var tree = BuildCoverageTree(plan);
+        var n = plan.Stations.Length;
+        var remaining = (long)plan.ExtraStations;
+
+        for (var i = 0; i < n; i++)
+        {
+            (var feasible, remaining) = TopUpCity((plan, i), target, remaining, tree);
+
+            if (!feasible)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // The tree the sweep reads: every existing station's coverage posted as one RangeAdd
+    // over the window it reaches, so Query(i, i) is city i's starting power.
+    private static RepoRangeFenwickTree BuildCoverageTree(PoweredCityPlan plan)
+    {
         var stations = plan.Stations;
         var n = stations.Length;
         var tree = new RepoRangeFenwickTree(n);
 
         for (var i = 0; i < n; i++)
         {
-            tree.RangeAdd(Math.Max(0, i - plan.Range), Math.Min(n - 1, i + plan.Range), stations[i]);
+            var left = Math.Max(0, i - plan.Range);
+            var right = Math.Min(n - 1, i + plan.Range);
+            tree.RangeAdd(left, right, stations[i]);
         }
 
-        var remaining = (long)plan.ExtraStations;
+        return tree;
+    }
 
-        for (var i = 0; i < n; i++)
+    // One city of the sweep. A city already at `target` is a no-op that hands the budget
+    // straight back; a city short of it has the shortfall built as far right as still
+    // covers that city - the placement that helps the most cities still ahead - and charged
+    // to the budget. `feasible` is false when the budget cannot cover the shortfall.
+    private static (bool Feasible, long Remaining) TopUpCity(
+        (PoweredCityPlan Plan, int Index) city, long target, long remaining, RepoRangeFenwickTree tree)
+    {
+        var plan = city.Plan;
+        var index = city.Index;
+        var current = tree.Query(index, index);
+
+        if (current >= target)
         {
-            var current = tree.Query(i, i);
-
-            if (current >= target)
-            {
-                continue;
-            }
-
-            var need = target - current;
-
-            if (need > remaining)
-            {
-                return false;
-            }
-
-            remaining -= need;
-            var pos = Math.Min(n - 1, i + plan.Range);
-            tree.RangeAdd(Math.Max(0, pos - plan.Range), Math.Min(n - 1, pos + plan.Range), need);
+            return (true, remaining);
         }
 
-        return true;
+        var need = target - current;
+
+        if (need > remaining)
+        {
+            return (false, remaining);
+        }
+
+        var pos = Math.Min(plan.Stations.Length - 1, index + plan.Range);
+        var left = Math.Max(0, pos - plan.Range);
+        var right = Math.Min(plan.Stations.Length - 1, pos + plan.Range);
+        tree.RangeAdd(left, right, need);
+
+        return (true, remaining - need);
     }
 
     // The baseline's sweep, deciding the identical question over a BCL long[]
@@ -115,6 +152,30 @@ internal static class MaximizeTheMinimumPoweredCitySolution
     // topped up, so a single left-to-right running total is enough: add the shortfall
     // now and post its removal one past where the new stations stop reaching.
     private static bool FeasibleByDifferenceArray(PoweredCityPlan plan, long target)
+    {
+        var deltas = BuildCoverageDeltas(plan);
+        var n = plan.Stations.Length;
+        var remaining = (long)plan.ExtraStations;
+        var current = 0L;
+
+        for (var i = 0; i < n; i++)
+        {
+            (var feasible, current, remaining) = TopUpCityByDifferenceArray(plan, deltas, (target, current, remaining), i);
+
+            if (!feasible)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // The baseline's coverage structure: a BCL long[] difference array, where the running
+    // total of `deltas` up to city i is that city's power. Each station's coverage opens at
+    // or before the city it is read for, so adding it now and posting its removal one past
+    // where it stops reaching is enough to keep a single left-to-right total exact.
+    private static long[] BuildCoverageDeltas(PoweredCityPlan plan)
     {
         var stations = plan.Stations;
         var n = stations.Length;
@@ -126,32 +187,36 @@ internal static class MaximizeTheMinimumPoweredCitySolution
             deltas[Math.Min(n - 1, i + plan.Range) + 1] -= stations[i];
         }
 
-        var remaining = (long)plan.ExtraStations;
-        var current = 0L;
+        return deltas;
+    }
 
-        for (var i = 0; i < n; i++)
+    // One city of the baseline sweep: fold the difference array's next step into the running
+    // total, then apply the same top-up rule as the tree sweep - charge the shortfall to the
+    // budget and post its removal one past where the new stations stop reaching. A city
+    // already at `target` is a no-op; `feasible` is false once the budget cannot cover it.
+    private static (bool Feasible, long Current, long Remaining) TopUpCityByDifferenceArray(
+        PoweredCityPlan plan, long[] deltas, (long Target, long Current, long Remaining) sweep, int index)
+    {
+        var (target, current, remaining) = sweep;
+        current += deltas[index];
+
+        if (current >= target)
         {
-            current += deltas[i];
-
-            if (current >= target)
-            {
-                continue;
-            }
-
-            var need = target - current;
-
-            if (need > remaining)
-            {
-                return false;
-            }
-
-            remaining -= need;
-            current = target;
-            var pos = Math.Min(n - 1, i + plan.Range);
-            deltas[Math.Min(n - 1, pos + plan.Range) + 1] -= need;
+            return (true, current, remaining);
         }
 
-        return true;
+        var need = target - current;
+
+        if (need > remaining)
+        {
+            return (false, current, remaining);
+        }
+
+        remaining -= need;
+        var pos = Math.Min(plan.Stations.Length - 1, index + plan.Range);
+        deltas[Math.Min(plan.Stations.Length - 1, pos + plan.Range) + 1] -= need;
+
+        return (true, target, remaining);
     }
 
     // Get(index) is "target = index cannot be reached by every city" - false up to the

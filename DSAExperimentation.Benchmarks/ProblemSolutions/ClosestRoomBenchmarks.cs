@@ -18,11 +18,11 @@ public class ClosestRoomBenchmarks
     // LC problem number, used as the deterministic random seed.
     private const int RandomSeed = 1847;
 
-    [Params(50, 400)]
-    public int RoomCount;
+    private int[][] _rooms = [];
 
-    private int[][] _rooms = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(50, 400)]
+    public int RoomCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

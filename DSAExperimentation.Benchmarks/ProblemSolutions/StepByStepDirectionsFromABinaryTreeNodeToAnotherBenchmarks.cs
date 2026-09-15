@@ -15,12 +15,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StepByStepDirectionsFromABinaryTreeNodeToAnotherBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
     private BinaryTreeNode<int> _start = null!;
     private BinaryTreeNode<int> _dest = null!;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

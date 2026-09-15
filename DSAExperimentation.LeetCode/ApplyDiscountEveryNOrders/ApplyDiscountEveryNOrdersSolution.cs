@@ -41,7 +41,11 @@ internal static class ApplyDiscountEveryNOrdersSolution
 
     // The cadence half of the problem, shared by both strategies so the only thing
     // they differ in is the price lookup: count customers, and discount every n-th.
-    private struct DiscountCadence(int n, int discount)
+    // A class, not a struct: the cashier holds one long-lived cadence whose customer
+    // count advances in place, so it has an identity. As a struct the count would
+    // advance on a copy - the same trap check-mutable-struct warns about - and a
+    // `readonly` field of it would freeze the cadence at the first bill.
+    private sealed class DiscountCadence(int n, int discount)
     {
         private readonly int _n = n;
         private readonly int _discount = discount;
@@ -51,14 +55,20 @@ internal static class ApplyDiscountEveryNOrdersSolution
         {
             _customerCount++;
 
-            return _customerCount % _n == 0 ? total - (total * _discount / PercentScale) : total;
+            var isDiscountDue = _customerCount % _n == 0;
+
+            return isDiscountDue ? DiscountedBill(total) : total;
         }
+
+        // The discounted bill: the discount percentage of the whole total taken off,
+        // in the integer-percentage form LeetCode states the discount in.
+        private double DiscountedBill(double total) => total - (total * _discount / PercentScale);
     }
 
     private sealed class HashMapLookupCashier : ICashier
     {
         private readonly HashMap<int, int> _priceByProduct = new();
-        private DiscountCadence _cadence;
+        private readonly DiscountCadence _cadence;
 
         public HashMapLookupCashier(int n, int discount, int[] products, int[] prices)
         {
@@ -90,7 +100,7 @@ internal static class ApplyDiscountEveryNOrdersSolution
     {
         private readonly int[] _products = products;
         private readonly int[] _prices = prices;
-        private DiscountCadence _cadence = new(n, discount);
+        private readonly DiscountCadence _cadence = new(n, discount);
 
         public double GetBill(int[] product, int[] amount)
         {

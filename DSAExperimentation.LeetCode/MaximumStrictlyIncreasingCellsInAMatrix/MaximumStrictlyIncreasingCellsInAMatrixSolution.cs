@@ -30,46 +30,13 @@ internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                best = Math.Max(best, ComputeBest(scan, r, c));
+                var cellBest = ComputeBest(scan, r, c);
+                best = Math.Max(best, cellBest);
             }
         }
 
         return best;
     }
-
-    // A dp value is always at least 1, so 0 doubles as "not computed yet" and the
-    // memo needs no separate occupancy map.
-    private static int ComputeBest(RowColumnScan scan, int row, int col)
-    {
-        if (scan.Memo[row, col] != 0)
-        {
-            return scan.Memo[row, col];
-        }
-
-        var mat = scan.Matrix;
-        var best = 1;
-
-        for (var c = 0; c < mat[0].Length; c++)
-        {
-            if (mat[row][c] < mat[row][col])
-            {
-                best = Math.Max(best, 1 + ComputeBest(scan, row, c));
-            }
-        }
-
-        for (var r = 0; r < mat.Length; r++)
-        {
-            if (mat[r][col] < mat[row][col])
-            {
-                best = Math.Max(best, 1 + ComputeBest(scan, r, col));
-            }
-        }
-
-        scan.Memo[row, col] = best;
-        return best;
-    }
-
-    private readonly record struct RowColumnScan(int[][] Matrix, int[,] Memo);
 
     // Composed: sort every cell by value once with this repo's own MergeSort over an
     // ArrayIndexedSequence (the same convention AccountsMerge and RankTransformOfAMatrix
@@ -131,6 +98,18 @@ internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
     // the whole batch's results back in. Returns the index where the next batch starts.
     private static int ProcessBatch((int Value, int Row, int Col)[] cells, int index, int[] rowBest, int[] colBest)
     {
+        var end = FindBatchEnd(cells, index);
+        var batch = cells.AsSpan(index, end - index);
+
+        ApplyBatch(batch, rowBest, colBest);
+
+        return end;
+    }
+
+    // The first index past `index` holding a different value, so [index, result) is
+    // exactly the batch of equal-value cells.
+    private static int FindBatchEnd((int Value, int Row, int Col)[] cells, int index)
+    {
         var end = index;
 
         while (end < cells.Length && cells[end].Value == cells[index].Value)
@@ -138,21 +117,80 @@ internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
             end++;
         }
 
-        var dp = new int[end - index];
-
-        for (var i = index; i < end; i++)
-        {
-            var (_, row, col) = cells[i];
-            dp[i - index] = 1 + Math.Max(rowBest[row], colBest[col]);
-        }
-
-        for (var i = index; i < end; i++)
-        {
-            var (_, row, col) = cells[i];
-            rowBest[row] = Math.Max(rowBest[row], dp[i - index]);
-            colBest[col] = Math.Max(colBest[col], dp[i - index]);
-        }
-
         return end;
     }
+
+    // One batch's worth of dp: each cell takes 1 + the best path already ending in its
+    // row or column, ALL computed from rowBest/colBest as they stood before the batch,
+    // and only folded back in once the whole batch has been read.
+    private static void ApplyBatch(
+        ReadOnlySpan<(int Value, int Row, int Col)> batch, int[] rowBest, int[] colBest)
+    {
+        var dp = new int[batch.Length];
+
+        for (var i = 0; i < batch.Length; i++)
+        {
+            var (_, row, col) = batch[i];
+            dp[i] = 1 + Math.Max(rowBest[row], colBest[col]);
+        }
+
+        for (var i = 0; i < batch.Length; i++)
+        {
+            var (_, row, col) = batch[i];
+            rowBest[row] = Math.Max(rowBest[row], dp[i]);
+            colBest[col] = Math.Max(colBest[col], dp[i]);
+        }
+    }
+
+    // A dp value is always at least 1, so 0 doubles as "not computed yet" and the
+    // memo needs no separate occupancy map.
+    private static int ComputeBest(RowColumnScan scan, int row, int col)
+    {
+        if (scan.Memo[row, col] != 0)
+        {
+            return scan.Memo[row, col];
+        }
+
+        var best = 1;
+
+        best = BestAlongRow(scan, row, col, best);
+        best = BestAlongColumn(scan, row, col, best);
+
+        scan.Memo[row, col] = best;
+        return best;
+    }
+
+    // Extends the running best with every strictly smaller cell in this cell's own row.
+    private static int BestAlongRow(RowColumnScan scan, int row, int col, int best)
+    {
+        var mat = scan.Matrix;
+
+        for (var c = 0; c < mat[0].Length; c++)
+        {
+            if (mat[row][c] < mat[row][col])
+            {
+                best = Math.Max(best, 1 + ComputeBest(scan, row, c));
+            }
+        }
+
+        return best;
+    }
+
+    // Extends the running best with every strictly smaller cell in this cell's own column.
+    private static int BestAlongColumn(RowColumnScan scan, int row, int col, int best)
+    {
+        var mat = scan.Matrix;
+
+        for (var r = 0; r < mat.Length; r++)
+        {
+            if (mat[r][col] < mat[row][col])
+            {
+                best = Math.Max(best, 1 + ComputeBest(scan, r, col));
+            }
+        }
+
+        return best;
+    }
+
+    private readonly record struct RowColumnScan(int[][] Matrix, int[,] Memo);
 }

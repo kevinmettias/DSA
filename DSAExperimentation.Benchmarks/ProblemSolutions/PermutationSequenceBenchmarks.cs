@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PermutationSequenceBenchmarks
 {
-    [Params(6, 8)]
-    public int N;
-
     private int _k;
+
+    [Params(6, 8)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -15,10 +15,10 @@ public class CountTheNumberOfSquareFreeSubsetsBenchmarks
     private const int MaxValueExclusive = 31;
     private const int Seed = 2572;
 
-    [Params(15, 20)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(15, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

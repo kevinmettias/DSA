@@ -15,10 +15,10 @@ public class ShortestSubarrayToBeRemovedToMakeArraySortedBenchmarks
     private const int RandomSeed = 1574;
     private const int MaxElementValue = 1_000;
 
-    [Params(80, 300)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
+    [Params(80, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

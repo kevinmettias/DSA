@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignATextEditor.DesignATextEditorSolution;
+using DSAExperimentation.LeetCode.DesignATextEditor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -22,15 +22,15 @@ public class DesignATextEditorBenchmarks
     private static readonly string Chunk = new('x', ChunkLength);
 
     [Params(200, 2_000)]
-    public int OperationCount;
+    public int OperationCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public string ListBacked() => Replay(new TextEditorByListBacked());
+    public string ListBacked() => Replay(new DesignATextEditorSolution.TextEditorByListBacked());
 
     [Benchmark]
-    public string StackBacked() => Replay(new TextEditorByStackBacked());
+    public string StackBacked() => Replay(new DesignATextEditorSolution.TextEditorByStackBacked());
 
-    private string Replay(ITextEditor editor)
+    private string Replay(DesignATextEditorSolution.ITextEditor editor)
     {
         var reported = string.Empty;
 

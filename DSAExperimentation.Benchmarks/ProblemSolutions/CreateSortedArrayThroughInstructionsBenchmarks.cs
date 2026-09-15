@@ -17,10 +17,10 @@ public class CreateSortedArrayThroughInstructionsBenchmarks
 
     private const int MaxGeneratedValueExclusive = 1_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _instructions = [];
 
-    private int[] _instructions = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

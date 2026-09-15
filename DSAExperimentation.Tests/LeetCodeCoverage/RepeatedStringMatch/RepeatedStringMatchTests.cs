@@ -19,11 +19,19 @@ public sealed class RepeatedStringMatchTests
     [MemberData(nameof(Examples))]
     public void MinRepeatsByStringContains_LeetCodeExamples_ReturnsMinimumRepeatCount(
         string a, string b, int expected) =>
-        Assert.Equal(expected, RepeatedStringMatchSolution.MinRepeatsByStringContains(a, b));
+        Assert.Equal(
+            expected,
+            RepeatedStringMatchSolution.MinRepeatsByStringContains(
+                new RepeatedStringMatchSolution.RepeatedUnit(a),
+                new RepeatedStringMatchSolution.TargetPattern(b)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinRepeatsByPrefixFunctionSearch_LeetCodeExamples_ReturnsMinimumRepeatCount(
         string a, string b, int expected) =>
-        Assert.Equal(expected, RepeatedStringMatchSolution.MinRepeatsByPrefixFunctionSearch(a, b));
+        Assert.Equal(
+            expected,
+            RepeatedStringMatchSolution.MinRepeatsByPrefixFunctionSearch(
+                new RepeatedStringMatchSolution.RepeatedUnit(a),
+                new RepeatedStringMatchSolution.TargetPattern(b)));
 }

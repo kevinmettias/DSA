@@ -21,40 +21,7 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
     // repo's BinarySearchTree, the arm the ceiling-scan strategy below has to
     // justify itself against.
     public static int MaxSumSubmatrixByBruteForceWindowScan(int[][] matrix, int k) =>
-        ScanColumnPairs(matrix, rowSums => BestWindowBruteForce(rowSums, k));
-
-    // This repo's own BinarySearchTree<int> holding every prefix sum seen so far,
-    // answering each "smallest prefix sum >= (current - k)" query in O(log rows)
-    // instead of an O(rows) scan.
-    public static int MaxSumSubmatrixByBstCeilingScan(int[][] matrix, int k) =>
-        ScanColumnPairs(matrix, rowSums => BestWindowBstCeiling(rowSums, k));
-
-    // Shared column-pair/row-window scan shape both strategies ride: only how a
-    // single row-sum window's best value is computed (brute force vs. BST ceiling
-    // lookup) differs between them.
-    private static int ScanColumnPairs(int[][] matrix, Func<int[], int> bestWindow)
-    {
-        var rows = matrix.Length;
-        var cols = matrix[0].Length;
-        var best = int.MinValue;
-
-        for (var left = 0; left < cols; left++)
-        {
-            var rowSums = new int[rows];
-
-            for (var right = left; right < cols; right++)
-            {
-                for (var r = 0; r < rows; r++)
-                {
-                    rowSums[r] += matrix[r][right];
-                }
-
-                best = Math.Max(best, bestWindow(rowSums));
-            }
-        }
-
-        return best;
-    }
+        ScanColumnPairs(matrix, new BruteForceWindowBestSum(k));
 
     private static int BestWindowBruteForce(int[] rowSums, int k)
     {
@@ -77,6 +44,12 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
 
         return best;
     }
+
+    // This repo's own BinarySearchTree<int> holding every prefix sum seen so far,
+    // answering each "smallest prefix sum >= (current - k)" query in O(log rows)
+    // instead of an O(rows) scan.
+    public static int MaxSumSubmatrixByBstCeilingScan(int[][] matrix, int k) =>
+        ScanColumnPairs(matrix, new BstCeilingWindowBestSum(k));
 
     private static int BestWindowBstCeiling(int[] rowSums, int k)
     {
@@ -127,5 +100,51 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
         }
 
         return found;
+    }
+
+    // Shared column-pair/row-window scan shape both strategies ride: only how a
+    // single row-sum window's best value is computed (brute force vs. BST ceiling
+    // lookup) differs between them.
+    private static int ScanColumnPairs(int[][] matrix, IWindowBestSum bestWindow)
+    {
+        var rows = matrix.Length;
+        var cols = matrix[0].Length;
+        var best = int.MinValue;
+
+        for (var left = 0; left < cols; left++)
+        {
+            var rowSums = new int[rows];
+
+            for (var right = left; right < cols; right++)
+            {
+                for (var r = 0; r < rows; r++)
+                {
+                    rowSums[r] += matrix[r][right];
+                }
+
+                best = Math.Max(best, bestWindow.BestFor(rowSums));
+            }
+        }
+
+        return best;
+    }
+
+    // What the shared column-pair scan asks of a strategy: given one compressed
+    // row-sum array, find its best contiguous window summing to no more than k. k is
+    // part of the answer's definition, so it is held by the chooser built for it
+    // rather than passed alongside the array on every one of the scan's calls.
+    private interface IWindowBestSum
+    {
+        int BestFor(int[] rowSums);
+    }
+
+    private sealed class BruteForceWindowBestSum(int k) : IWindowBestSum
+    {
+        public int BestFor(int[] rowSums) => BestWindowBruteForce(rowSums, k);
+    }
+
+    private sealed class BstCeilingWindowBestSum(int k) : IWindowBestSum
+    {
+        public int BestFor(int[] rowSums) => BestWindowBstCeiling(rowSums, k);
     }
 }

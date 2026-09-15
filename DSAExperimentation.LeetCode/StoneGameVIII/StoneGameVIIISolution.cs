@@ -63,23 +63,29 @@ internal static class StoneGameVIIISolution
         MaxScoreDifferenceByMemoizedRecursion(BuildPrefixSums(stones));
 
     public static long MaxScoreDifferenceByMemoizedRecursion(ArraySequence<long> prefix) =>
-        Memoizer.Memoize<int, long>(
-            FirstBoundary, (boundary, best) => BestMemoized(prefix, boundary, best));
+        Memoizer.Memoize<int, long>(FirstBoundary, new ScoreDifferencesFromBoundary(prefix));
 
-    private static long BestMemoized(ArraySequence<long> prefix, int boundary, Func<int, long> best)
+    // The recurrence, as a named type: the best score difference reachable from one
+    // boundary, with the prefix-sum table arriving through the primary constructor and
+    // the memoized continuation through `rest`.
+    private sealed class ScoreDifferencesFromBoundary(ArraySequence<long> prefix)
+        : IRecurrence<int, long>
     {
-        if (boundary == prefix.Length - 1)
+        public long Replay(int state, IRecurrence<int, long> rest)
         {
-            return prefix.Get(boundary);
+            if (state == prefix.Length - 1)
+            {
+                return prefix.Get(state);
+            }
+
+            // The same two asks the un-memoized arm makes, so the two arms compare
+            // like for like - the difference being that here the second one is a cache
+            // hit rather than another descent.
+            var takeHere = prefix.Get(state) - rest.Replay(state + 1, rest);
+            var deferToLater = rest.Replay(state + 1, rest);
+
+            return Math.Max(deferToLater, takeHere);
         }
-
-        // The same two asks the un-memoized arm makes, so the two arms compare
-        // like for like - the difference being that here the second one is a cache
-        // hit rather than another descent.
-        var takeHere = prefix.Get(boundary) - best(boundary + 1);
-        var deferToLater = best(boundary + 1);
-
-        return Math.Max(deferToLater, takeHere);
     }
 
     // prefix[i] is the value of the single stone the board collapses to when a move

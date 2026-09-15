@@ -64,7 +64,8 @@ internal static class NumberOfValidWordsForEachPuzzleSolution
 
         foreach (var puzzle in puzzles)
         {
-            result.Add(SumSubmaskCounts(wordCountsByMask, LetterMask(puzzle), FirstLetterBit(puzzle)));
+            var validCount = SumSubmaskCounts(wordCountsByMask, LetterMask(puzzle), FirstLetterBit(puzzle));
+            result.Add(validCount);
         }
 
         return result;
@@ -77,6 +78,7 @@ internal static class NumberOfValidWordsForEachPuzzleSolution
         var total = 0;
         var submask = puzzleMask;
 
+        // Stops when the descending submask walk reaches 0: that last submask is counted, then the total is returned.
         while (true)
         {
             if ((submask & firstLetterBit) != 0 && wordCountsByMask.TryGetValue(submask, out var wordCount))

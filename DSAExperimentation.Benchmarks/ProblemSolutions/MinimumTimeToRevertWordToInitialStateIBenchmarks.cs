@@ -20,10 +20,10 @@ public class MinimumTimeToRevertWordToInitialStateIBenchmarks
     private const int K = 1;
     private const int AlphabetSize = 2;
 
-    [Params(10, 50)]
-    public int WordLength;
+    private string _word = "";
 
-    private string _word = null!;
+    [Params(10, 50)]
+    public int WordLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

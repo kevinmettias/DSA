@@ -10,20 +10,23 @@ public class ZeroOneMatrixBenchmarks
 {
     private const int ZeroCellProbabilityDenominator = 5;
 
-    [Params(10, 25)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(10, 25)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
         _matrix = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, ZeroCellProbabilityDenominator) == 0 ? 0 : 1).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => IsZeroCell(random) ? 0 : 1).ToArray())
             .ToArray();
         _matrix[0][0] = 0;
     }
+
+    // A cell is a zero with 1-in-N odds.
+    private static bool IsZeroCell(Random random) => random.Next(0, ZeroCellProbabilityDenominator) == 0;
 
     [Benchmark(Baseline = true)]
     public int[][] PerCellBfs() => ZeroOneMatrixSolution.UpdateMatrixByPerCellBfs(_matrix);

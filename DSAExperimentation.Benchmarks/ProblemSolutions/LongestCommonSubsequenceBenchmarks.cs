@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestCommonSubsequenceBenchmarks
 {
-    [Params(60, 300)]
-    public int Length;
+    private string _first = "";
 
-    private string _first = null!;
-    private string _second = null!;
+    private string _second = "";
+    [Params(60, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

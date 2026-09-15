@@ -85,8 +85,8 @@ internal static class CountSubmatricesWithAllOnesSolution
             }
 
             dp[j] = indices.TryPeek(out var previousSmaller)
-                ? dp[previousSmaller] + ((j - previousSmaller) * heights[j])
-                : (j + 1) * heights[j];
+                ? RowTotalWithPreviousSmaller(dp, heights, previousSmaller, j)
+                : RowTotalWithoutPreviousSmaller(heights, j);
 
             indices.Push(j);
             rowTotal += dp[j];
@@ -95,13 +95,26 @@ internal static class CountSubmatricesWithAllOnesSolution
         return rowTotal;
     }
 
+    // With a previous smaller height in reach, this column's own dp entry already counts
+    // every subarray that stops at that height, and the (j - previousSmaller) columns since
+    // all extend by heights[j] - so the total is that entry plus those extensions.
+    private static int RowTotalWithPreviousSmaller(int[] dp, int[] heights, int previousSmaller, int j) =>
+        dp[previousSmaller] + ((j - previousSmaller) * heights[j]);
+
+    // With nothing smaller before it, every one of the j + 1 subarrays ending here is
+    // bottomed at heights[j], the row's minimum so far.
+    private static int RowTotalWithoutPreviousSmaller(int[] heights, int j) => (j + 1) * heights[j];
+
     // The histogram both strategies read: a column's height grows while the column holds a
     // one and resets to zero the moment it does not.
     private static void UpdateHeights(int[] heights, int[] row)
     {
         for (var col = 0; col < heights.Length; col++)
         {
-            heights[col] = row[col] == One ? heights[col] + 1 : 0;
+            var holdsOne = row[col] == One;
+            heights[col] = holdsOne ? ContinuedRun(heights[col]) : 0;
         }
     }
+
+    private static int ContinuedRun(int run) => run + 1;
 }

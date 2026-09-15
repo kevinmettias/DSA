@@ -32,29 +32,22 @@ public sealed class LeetCodeAnswersTests
     }
 
     [Fact]
-    public void RowSetEqual_WhenRowsAreReordered_Accepts()
-    {
+    public void RowSetEqual_WhenRowsAreReordered_Accepts() =>
         Assert.True(LeetCodeAnswers.RowSetEqual<int>(
             [[3, 3], [-2, 4]],
             [[-2, 4], [3, 3]]));
-    }
 
     // The trap K Closest Points to Origin exists in the pilot to catch: the rows
     // are a set, but a row is a point, and reordering WITHIN a row is a different
     // point entirely.
     [Fact]
-    public void RowSetEqual_WhenAPointsOwnCoordinatesAreSwapped_Rejects()
-    {
+    public void RowSetEqual_WhenAPointsOwnCoordinatesAreSwapped_Rejects() =>
         Assert.False(LeetCodeAnswers.RowSetEqual<int>(
             [[3, -3]],
             [[-3, 3]]));
-    }
 
     [Fact]
-    public void RowSetEqual_WhenRowCountsDiffer_Rejects()
-    {
-        Assert.False(LeetCodeAnswers.RowSetEqual<int>([[1, 1]], [[1, 1], [2, 2]]));
-    }
+    public void RowSetEqual_WhenRowCountsDiffer_Rejects() => Assert.False(LeetCodeAnswers.RowSetEqual<int>([[1, 1]], [[1, 1], [2, 2]]));
 
     [Fact]
     public void SequenceOfSequencesEqual_WhenRowsAreReordered_Rejects()

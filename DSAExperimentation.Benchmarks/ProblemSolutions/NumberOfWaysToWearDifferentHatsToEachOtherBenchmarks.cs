@@ -18,10 +18,10 @@ public class NumberOfWaysToWearDifferentHatsToEachOtherBenchmarks
     // LC problem number, reused as the deterministic preference seed.
     private const int RandomSeed = 1434;
 
-    [Params(5, 7)]
-    public int PeopleCount;
-
     private HatPreferences _preferences = null!;
+
+    [Params(5, 7)]
+    public int PeopleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

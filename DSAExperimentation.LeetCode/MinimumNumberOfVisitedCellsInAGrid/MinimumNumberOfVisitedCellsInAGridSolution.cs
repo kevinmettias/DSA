@@ -25,6 +25,26 @@ internal static class MinimumNumberOfVisitedCellsInAGridSolution
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
+        var distances = CreateUnvisitedDistanceGrid(rows, cols);
+
+        var queue = new Queue<(int Row, int Col)>();
+        queue.Enqueue((0, 0));
+
+        while (queue.Count > 0)
+        {
+            var cell = queue.Dequeue();
+            RelaxJumpsFrom(grid, distances, queue, cell);
+        }
+
+        var target = distances[rows - 1, cols - 1];
+
+        return target == LeetCodeAnswer.None ? LeetCodeAnswer.None : CellsVisitedFor(target);
+    }
+
+    // "Not yet reached" is the answer sentinel itself, so a freshly allocated grid is
+    // already the unvisited state; only the start cell has to be seeded.
+    private static int[,] CreateUnvisitedDistanceGrid(int rows, int cols)
+    {
         var distances = new int[rows, cols];
 
         for (var row = 0; row < rows; row++)
@@ -37,36 +57,42 @@ internal static class MinimumNumberOfVisitedCellsInAGridSolution
 
         distances[0, 0] = 0;
 
-        var queue = new Queue<(int Row, int Col)>();
-        queue.Enqueue((0, 0));
+        return distances;
+    }
 
-        while (queue.Count > 0)
+    // The whole rest of the popped cell's row is scanned, then its whole column, each
+    // relaxing only the cells the stored value reaches and has not reached yet.
+    private static void RelaxJumpsFrom(
+        int[][] grid, int[,] distances, Queue<(int Row, int Col)> queue, (int Row, int Col) cell)
+    {
+        var rows = grid.Length;
+        var cols = grid[0].Length;
+        var (row, col) = cell;
+        var jump = grid[row][col];
+
+        for (var nextCol = 0; nextCol < cols; nextCol++)
         {
-            var (row, col) = queue.Dequeue();
-            var jump = grid[row][col];
-
-            for (var nextCol = 0; nextCol < cols; nextCol++)
+            if (IsUnvisitedJumpTarget(nextCol, col, jump, distances[row, nextCol]))
             {
-                if (nextCol > col && nextCol <= col + jump && distances[row, nextCol] == LeetCodeAnswer.None)
-                {
-                    distances[row, nextCol] = distances[row, col] + 1;
-                    queue.Enqueue((row, nextCol));
-                }
-            }
-
-            for (var nextRow = 0; nextRow < rows; nextRow++)
-            {
-                if (nextRow > row && nextRow <= row + jump && distances[nextRow, col] == LeetCodeAnswer.None)
-                {
-                    distances[nextRow, col] = distances[row, col] + 1;
-                    queue.Enqueue((nextRow, col));
-                }
+                distances[row, nextCol] = distances[row, col] + 1;
+                queue.Enqueue((row, nextCol));
             }
         }
 
-        var target = distances[rows - 1, cols - 1];
-        return target == LeetCodeAnswer.None ? LeetCodeAnswer.None : target + 1;
+        for (var nextRow = 0; nextRow < rows; nextRow++)
+        {
+            if (IsUnvisitedJumpTarget(nextRow, row, jump, distances[nextRow, col]))
+            {
+                distances[nextRow, col] = distances[row, col] + 1;
+                queue.Enqueue((nextRow, col));
+            }
+        }
     }
+
+    // A cell is worth a jump when it lies ahead along the line, no further than the
+    // stored value allows, and the walk has not reached it yet.
+    private static bool IsUnvisitedJumpTarget(int index, int from, int jump, int distance)
+        => index > from && index <= from + jump && distance == LeetCodeAnswer.None;
 
     public static int MinVisitedCellsByReduceGraph(int[][] grid)
         => MinVisitedCellsByReduceGraph(new JumpGrid(grid));
@@ -89,6 +115,10 @@ internal static class MinimumNumberOfVisitedCellsInAGridSolution
             BreadthFirstReduceOrder<JumpGridNode>,
             DistanceMapReduceAlgebra<JumpGridNode>, Dictionary<JumpGridNode, int>>(source);
 
-        return distanceByNode.TryGetValue(target, out var distance) ? distance + 1 : LeetCodeAnswer.None;
+        return distanceByNode.TryGetValue(target, out var distance) ? CellsVisitedFor(distance) : LeetCodeAnswer.None;
     }
+
+    // LeetCode counts the cells walked through, not the edges between them, so every
+    // strategy here answers its search distance plus the starting cell.
+    private static int CellsVisitedFor(int edgeDistance) => edgeDistance + 1;
 }

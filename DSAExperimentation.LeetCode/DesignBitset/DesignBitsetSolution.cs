@@ -87,7 +87,8 @@ internal static class DesignBitsetSolution
 
             for (var i = 0; i < _bits.Length; i++)
             {
-                chars[i] = _bits[i] ? '1' : '0';
+                var bitIsSet = _bits[i];
+                chars[i] = bitIsSet ? '1' : '0';
             }
 
             return new string(chars);
@@ -142,7 +143,8 @@ internal static class DesignBitsetSolution
 
             for (var i = 0; i < _size; i++)
             {
-                chars[i] = Visible(i) == 1 ? '1' : '0';
+                var bitIsVisible = Visible(i) == 1;
+                chars[i] = bitIsVisible ? '1' : '0';
             }
 
             return new string(chars);
@@ -155,11 +157,15 @@ internal static class DesignBitsetSolution
                 return;
             }
 
-            var targetRaw = _flipped ? 1 - targetVisible : targetVisible;
+            var targetRaw = _flipped ? ComplementBit(targetVisible) : targetVisible;
             _bits.Set(idx, targetRaw);
             _onesCount += targetVisible == 1 ? 1 : -1;
         }
 
         private int Visible(int idx) => _bits.Get(idx) ^ (_flipped ? 1 : 0);
+
+        // The raw bit stored when the buffer is read through the flipped flag:
+        // the complement of the value the caller wants to see.
+        private static int ComplementBit(int visible) => 1 - visible;
     }
 }

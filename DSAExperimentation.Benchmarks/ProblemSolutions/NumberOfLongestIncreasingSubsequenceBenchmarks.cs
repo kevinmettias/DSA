@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfLongestIncreasingSubsequenceBenchmarks
 {
-    private const int RandomSeed = 673; // LC 673
+    private const int RandomSeed = 673; private int[] _values = [];
+
+    // LC 673
 
     [Params(3_000, 8_000)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

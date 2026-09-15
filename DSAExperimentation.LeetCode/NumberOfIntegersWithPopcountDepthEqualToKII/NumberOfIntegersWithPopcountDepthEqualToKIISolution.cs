@@ -31,21 +31,30 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKIISolution
             else
             {
                 var (left, right, depth) = ((int)query[1], (int)query[2], (int)query[3]);
-                var count = 0;
-
-                for (var j = left; j <= right; j++)
-                {
-                    if (Depth(current[j]) == depth)
-                    {
-                        count++;
-                    }
-                }
-
+                var count = CountWithDepth(current, left, right, depth);
                 results.Add(count);
             }
         }
 
         return [.. results];
+    }
+
+    // One range rescan: the values in [left, right] whose popcount depth is the queried
+    // one. Named so the query loop above reads as dispatch and this reads as the scan the
+    // Fenwick-bucket strategy exists to replace.
+    private static int CountWithDepth(long[] values, int left, int right, int depth)
+    {
+        var count = 0;
+
+        for (var j = left; j <= right; j++)
+        {
+            if (Depth(values[j]) == depth)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private static int Depth(long x)
@@ -88,7 +97,8 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKIISolution
             else
             {
                 var (left, right, depth) = ((int)query[1], (int)query[2], (int)query[3]);
-                results.Add(index.Count(left, right, depth));
+                var count = index.Count(left, right, depth);
+                results.Add(count);
             }
         }
 

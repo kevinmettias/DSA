@@ -21,11 +21,11 @@ public class StringTransformationBenchmarks
     // match instead of the degenerate zero-match case.
     private const int HalfwayDivisor = 2;
 
-    private string _source = null!;
-    private string _target = null!;
+    private string _source = "";
+    private string _target = "";
 
     [Params(200, 2_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

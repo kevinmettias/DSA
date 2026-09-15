@@ -19,10 +19,10 @@ public class LongestWordInDictionaryBenchmarks
     private const int FreshChainChance = 4;
     private const string EmptyPrefix = "";
 
-    [Params(50, 500)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(50, 500)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,15 +33,20 @@ public class LongestWordInDictionaryBenchmarks
 
         while (words.Count < WordCount)
         {
-            current = current.Length == 0 || random.Next(FreshChainChance) == 0
+            var startsFreshChain = current.Length == 0 || random.Next(FreshChainChance) == 0;
+
+            current = startsFreshChain
                 ? ((char)('a' + random.Next(AlphabetSize))).ToString()
-                : current + (char)('a' + random.Next(AlphabetSize));
+                : AppendedRandomLetter(current, random);
 
             words.Add(current);
         }
 
         _words = words.ToArray();
     }
+
+    private static string AppendedRandomLetter(string current, Random random)
+        => current + (char)('a' + random.Next(AlphabetSize));
 
     [Benchmark(Baseline = true)]
     public string DictionaryScanPerPrefix() =>

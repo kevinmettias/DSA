@@ -19,7 +19,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SoupServingsBenchmarks
 {
     [Params(600, 850)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public double UnmemoizedRecursion() => SoupServingsSolution.ProbabilityByUnmemoizedRecursion(N);

@@ -16,10 +16,10 @@ public class TwoSumIVInputIsABSTBenchmarks
     private const int Target = -1;
     private const int RandomSeed = 653;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private BinarySearchTree<int> _tree = new();
 
-    private BinarySearchTree<int> _tree = null!;
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -15,10 +15,10 @@ public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
     private const int TableCount = 30;
     private const int FoodCount = 15;
 
-    [Params(200, 2_000)]
-    public int OrderCount;
+    private string[][] _orders = [];
 
-    private string[][] _orders = null!;
+    [Params(200, 2_000)]
+    public int OrderCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

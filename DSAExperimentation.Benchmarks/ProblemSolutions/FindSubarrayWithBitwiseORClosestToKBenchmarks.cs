@@ -14,10 +14,10 @@ public class FindSubarrayWithBitwiseORClosestToKBenchmarks
     // LC problem number, used as the deterministic seed for value generation.
     private const int RandomSeed = 3171;
 
-    private int[] _nums = null!;
+    private int[] _nums = [];
 
     [Params(80, 500)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

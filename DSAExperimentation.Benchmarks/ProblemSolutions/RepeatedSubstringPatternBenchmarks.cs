@@ -12,10 +12,10 @@ public class RepeatedSubstringPatternBenchmarks
 {
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

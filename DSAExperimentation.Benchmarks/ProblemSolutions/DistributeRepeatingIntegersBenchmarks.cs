@@ -23,11 +23,11 @@ public class DistributeRepeatingIntegersBenchmarks
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 1655;
 
-    [Params(3, 5)]
-    public int ValueCount;
+    private int[] _orders = [];
 
-    private int[] _orders = null!;
-    private DynamicArray<int> _stock = null!;
+    private DynamicArray<int> _stock = new();
+    [Params(3, 5)]
+    public int ValueCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

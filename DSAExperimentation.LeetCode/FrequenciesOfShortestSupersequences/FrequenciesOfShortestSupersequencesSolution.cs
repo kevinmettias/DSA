@@ -24,7 +24,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
     {
         var adjacency = BuildAdjacencyIndices(graph);
 
-        return SmallestDoubledSubsets(graph, mask => !HasCycleSkipping(adjacency, mask));
+        return SmallestDoubledSubsets(graph, new DfsSkipSetValidity(adjacency));
     }
 
     private static List<int>[] BuildAdjacencyIndices(LetterGraph graph)
@@ -58,43 +58,41 @@ internal static class FrequenciesOfShortestSupersequencesSolution
     {
         var state = new int[adjacency.Length];
 
-        bool Visit(int node)
-        {
-            if (state[node] == 1)
-            {
-                return true;
-            }
-
-            if (state[node] == 2)
-            {
-                return false;
-            }
-
-            state[node] = 1;
-
-            if ((doubledMask & (1 << node)) == 0)
-            {
-                foreach (var next in adjacency[node])
-                {
-                    if ((doubledMask & (1 << next)) == 0 && Visit(next))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            state[node] = 2;
-            return false;
-        }
-
         for (var node = 0; node < adjacency.Length; node++)
         {
-            if (Visit(node))
+            if (Visit(adjacency, node, state, doubledMask))
             {
                 return true;
             }
         }
 
+        return false;
+    }
+
+    // One step of the three-color DFS: a node already ON the current path closes a
+    // cycle, a node already finished cannot, and an unvisited one descends into its
+    // non-doubled neighbors before being marked done.
+    private static bool Visit(List<int>[] adjacency, int node, int[] state, int doubledMask)
+    {
+        if (state[node] != 0)
+        {
+            return state[node] == 1;
+        }
+
+        state[node] = 1;
+
+        if ((doubledMask & (1 << node)) == 0)
+        {
+            foreach (var next in adjacency[node])
+            {
+                if ((doubledMask & (1 << next)) == 0 && Visit(adjacency, next, state, doubledMask))
+                {
+                    return true;
+                }
+            }
+        }
+
+        state[node] = 2;
         return false;
     }
 
@@ -108,9 +106,21 @@ internal static class FrequenciesOfShortestSupersequencesSolution
         SupersequenceFrequenciesByTopologicalSort(LetterGraph.Build(words));
 
     public static int[][] SupersequenceFrequenciesByTopologicalSort(LetterGraph graph) =>
-        SmallestDoubledSubsets(graph, mask => IsAcyclicExcluding(graph, mask));
+        SmallestDoubledSubsets(graph, new TopologicalSortValidity(graph));
 
     private static bool IsAcyclicExcluding(LetterGraph graph, int doubledMask)
+    {
+        var nodesByLetter = BuildInducedLetterGraph(graph, doubledMask);
+
+        return TopologicalSort.TrySort<
+            LetterNode, LetterTopology, ListChildren<LetterNode>,
+            NaturalChildOrder<LetterNode, ListChildren<LetterNode>>, ListChildren<LetterNode>>(
+            nodesByLetter.Values, out _);
+    }
+
+    // The subgraph left once every doubled letter is deleted: its nodes are the
+    // undoubled letters, and an edge survives only when both of its endpoints did.
+    private static Dictionary<char, LetterNode> BuildInducedLetterGraph(LetterGraph graph, int doubledMask)
     {
         var nodesByLetter = new Dictionary<char, LetterNode>();
 
@@ -132,10 +142,17 @@ internal static class FrequenciesOfShortestSupersequencesSolution
             }
         }
 
-        return TopologicalSort.TrySort<
-            LetterNode, LetterTopology, ListChildren<LetterNode>,
-            NaturalChildOrder<LetterNode, ListChildren<LetterNode>>, ListChildren<LetterNode>>(
-            nodesByLetter.Values, out _);
+        return nodesByLetter;
+    }
+
+    // The one question the two strategies answer differently: does doubling this
+    // subset of letters leave the precedence graph acyclic? The subset is named by
+    // the mask that selects it, and the contract a bare `Func<int, bool>` had
+    // nowhere to state - bit i is letter i of graph.Letters, a set bit means that
+    // letter has to appear twice - has somewhere to be written down.
+    private interface IDoubledSubsetValidity
+    {
+        bool IsValid(int doubledMask);
     }
 
     // Shared search driver: grows the doubled-subset size from 0 until at least one
@@ -143,13 +160,13 @@ internal static class FrequenciesOfShortestSupersequencesSolution
     // (minimum) size as one frequency vector each - pure bookkeeping shared by both
     // strategies, the same role Domain.Locks.LockGraph.WheelTurnNeighbors plays for
     // OpenTheLock's two arms.
-    private static int[][] SmallestDoubledSubsets(LetterGraph graph, Func<int, bool> isValidDoubledSubset)
+    private static int[][] SmallestDoubledSubsets(LetterGraph graph, IDoubledSubsetValidity isValidDoubledSubset)
     {
         var n = graph.Letters.Count;
 
         for (var size = 0; size <= n; size++)
         {
-            var validMasks = MasksOfPopcount(n, size).Where(isValidDoubledSubset).ToArray();
+            var validMasks = MasksOfPopcount(n, size).Where(isValidDoubledSubset.IsValid).ToArray();
 
             if (validMasks.Length > 0)
             {
@@ -158,6 +175,18 @@ internal static class FrequenciesOfShortestSupersequencesSolution
         }
 
         return [];
+    }
+
+    // The textbook arm's answer: three-color DFS over the plain adjacency lists.
+    private sealed class DfsSkipSetValidity(List<int>[] adjacency) : IDoubledSubsetValidity
+    {
+        public bool IsValid(int doubledMask) => !HasCycleSkipping(adjacency, doubledMask);
+    }
+
+    // The composed arm's answer: one call into this repo's own topological sort.
+    private sealed class TopologicalSortValidity(LetterGraph graph) : IDoubledSubsetValidity
+    {
+        public bool IsValid(int doubledMask) => IsAcyclicExcluding(graph, doubledMask);
     }
 
     private static IEnumerable<int> MasksOfPopcount(int bitCount, int popcount)
@@ -190,7 +219,8 @@ internal static class FrequenciesOfShortestSupersequencesSolution
 
         for (var i = 0; i < letters.Count; i++)
         {
-            frequency[letters[i] - 'a'] = (doubledMask & (1 << i)) != 0 ? 2 : 1;
+            var isDoubled = (doubledMask & (1 << i)) != 0;
+            frequency[letters[i] - 'a'] = isDoubled ? 2 : 1;
         }
 
         return frequency;

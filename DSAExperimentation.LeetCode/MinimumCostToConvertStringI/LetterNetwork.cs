@@ -8,10 +8,10 @@ namespace DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 // AllPairsShortestPaths already takes the cheaper one on relax.
 internal sealed class LetterNetwork
 {
-    private LetterNetwork(LetterNode[] nodes) => Nodes = nodes;
-
     // Index i is the node for letter 'a' + i.
     public LetterNode[] Nodes { get; }
+
+    private LetterNetwork(LetterNode[] nodes) => Nodes = nodes;
 
     public static LetterNetwork Build(char[] original, char[] changed, int[] cost)
     {

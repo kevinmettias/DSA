@@ -13,10 +13,10 @@ public class CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks
 {
     private const int AlphabetSize = 2;
 
-    [Params(10, 18)]
-    public int ArrayLength;
-
     private int _matchCount;
+
+    [Params(10, 18)]
+    public int ArrayLength { get; set; }
 
     [GlobalSetup]
     public void Setup() => _matchCount = (ArrayLength - 1) / 2;

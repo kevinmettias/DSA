@@ -20,7 +20,8 @@ internal static class EqualityEquationWorkloads
         {
             var first = (char)('a' + random.Next(AlphabetSize));
             var second = (char)('a' + random.Next(AlphabetSize));
-            var op = random.Next(InequalityProbabilityDenominator) == 0 ? NotEqualsOperator : EqualsOperator;
+            var isInequality = random.Next(InequalityProbabilityDenominator) == 0;
+            var op = isInequality ? NotEqualsOperator : EqualsOperator;
             equations[i] = $"{first}{op}{second}";
         }
 

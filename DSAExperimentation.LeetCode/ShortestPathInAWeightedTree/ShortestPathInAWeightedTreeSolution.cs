@@ -31,6 +31,16 @@ internal static class ShortestPathInAWeightedTreeSolution
 
         var weight = new Dictionary<(int From, int To), int>();
 
+        AddUndirectedEdges(adjacency, weight, edges);
+
+        return [.. AnswerQueriesByBfs(n, adjacency, weight, queries)];
+    }
+
+    // Both endpoints must learn the edge: the map stores it under (u, v) and its
+    // reverse so a lookup from either end finds the same weight.
+    private static void AddUndirectedEdges(
+        List<int>[] adjacency, Dictionary<(int From, int To), int> weight, int[][] edges)
+    {
         foreach (var edge in edges)
         {
             var (u, v, w) = (edge[0] - 1, edge[1] - 1, edge[2]);
@@ -39,7 +49,13 @@ internal static class ShortestPathInAWeightedTreeSolution
             weight[(u, v)] = w;
             weight[(v, u)] = w;
         }
+    }
 
+    // A type-1 query mutates the weight map in place, so the answers are produced
+    // in one pass: every later query sees the updates of the earlier ones.
+    private static List<int> AnswerQueriesByBfs(
+        int n, List<int>[] adjacency, Dictionary<(int From, int To), int> weight, int[][] queries)
+    {
         var answers = new List<int>();
 
         foreach (var query in queries)
@@ -52,11 +68,12 @@ internal static class ShortestPathInAWeightedTreeSolution
             }
             else
             {
-                answers.Add(DistanceFromRootByBfs(n, adjacency, weight, query[1] - 1));
+                var distance = DistanceFromRootByBfs(n, adjacency, weight, query[1] - 1);
+                answers.Add(distance);
             }
         }
 
-        return [.. answers];
+        return answers;
     }
 
     private static int DistanceFromRootByBfs(
@@ -66,6 +83,16 @@ internal static class ShortestPathInAWeightedTreeSolution
         Array.Fill(distance, -1);
         distance[0] = 0;
 
+        PropagateDistances(adjacency, weight, distance);
+
+        return distance[target];
+    }
+
+    // A BFS from the root: the first time a node is reached is along a shortest
+    // path, so its distance is already final and it is never relaxed again.
+    private static void PropagateDistances(
+        List<int>[] adjacency, Dictionary<(int From, int To), int> weight, int[] distance)
+    {
         var queue = new Queue<int>();
         queue.Enqueue(0);
 
@@ -84,8 +111,6 @@ internal static class ShortestPathInAWeightedTreeSolution
                 queue.Enqueue(next);
             }
         }
-
-        return distance[target];
     }
 
     // Composed: edges[] becomes a parent array via a BFS over this repo's own
@@ -107,46 +132,49 @@ internal static class ShortestPathInAWeightedTreeSolution
     // and a [2, x] query is one point query at TimeIn[x]. O((n + q) log n).
     public static int[] ShortestPathQueriesByEulerFenwick(int n, int[][] edges, int[][] queries)
     {
+        var state = BuildEulerSweepState(n, edges);
+
+        return [.. AnswerQueriesByEulerSweep(state, queries)];
+    }
+
+    // The Euler-tour sweep's whole working set, built once from edges[] and then
+    // walked by the query loop: parent pointers and subtree ranges name which
+    // edge a node hangs from, CurrentWeight is what was last posted for it, and
+    // Fenwick is the range-add / point-query structure those weights live in.
+    private static (
+        int[] Parent,
+        int[] TimeIn,
+        int[] TimeOut,
+        int[] CurrentWeight,
+        RangeFenwickTree<long, ScaledSumOperation<long>> Fenwick) BuildEulerSweepState(int n, int[][] edges)
+    {
         var (parent, parentWeight) = BuildParentArrays(n, edges);
         var nodes = ParentArrayTree.Build(parent);
         var (timeIn, timeOut) = BuildEulerTour(nodes[0], parent, n);
+        var (currentWeight, fenwick) = PostInitialEdgeWeights(n, parentWeight, timeIn, timeOut);
 
-        var fenwick = new RangeFenwickTree<long, ScaledSumOperation<long>>(n);
-        var currentWeight = new int[n];
-
-        for (var id = 1; id < n; id++)
-        {
-            currentWeight[id] = parentWeight[id];
-            fenwick.RangeAdd(timeIn[id], timeOut[id], parentWeight[id]);
-        }
-
-        var answers = new List<int>();
-
-        foreach (var query in queries)
-        {
-            if (query[0] == 1)
-            {
-                var (u, v, w) = (query[1] - 1, query[2] - 1, query[3]);
-                var child = parent[u] == v ? u : v;
-                var delta = w - currentWeight[child];
-
-                fenwick.RangeAdd(timeIn[child], timeOut[child], delta);
-                currentWeight[child] = w;
-            }
-            else
-            {
-                var x = query[1] - 1;
-                answers.Add((int)fenwick.Query(timeIn[x], timeIn[x]));
-            }
-        }
-
-        return [.. answers];
+        return (parent, timeIn, timeOut, currentWeight, fenwick);
     }
 
     // edges[] is undirected, so a BFS from the root turns it into the
     // parent-points-at-child encoding ParentArrayTree.Build expects, carrying
     // each child's edge weight alongside its parent pointer.
     private static (int[] Parent, int[] ParentWeight) BuildParentArrays(int n, int[][] edges)
+    {
+        var adjacency = BuildWeightedAdjacency(n, edges);
+
+        var parent = new int[n];
+        var parentWeight = new int[n];
+        Array.Fill(parent, NoParentAssignedYet);
+        parent[0] = -1;
+
+        AssignParentsByBfs(adjacency, parent, parentWeight);
+
+        return (parent, parentWeight);
+    }
+
+    // An edge is undirected, so each endpoint records the other with the weight.
+    private static List<(int To, int Weight)>[] BuildWeightedAdjacency(int n, int[][] edges)
     {
         var adjacency = new List<(int To, int Weight)>[n];
 
@@ -162,11 +190,15 @@ internal static class ShortestPathInAWeightedTreeSolution
             adjacency[v].Add((u, w));
         }
 
-        var parent = new int[n];
-        var parentWeight = new int[n];
-        Array.Fill(parent, NoParentAssignedYet);
-        parent[0] = -1;
+        return adjacency;
+    }
 
+    // A BFS from the root gives every node its parent and the weight of the edge
+    // between them; NoParentAssignedYet marks "not reached yet", so the -1 the
+    // caller seeded on the root is what stops the walk from turning back into it.
+    private static void AssignParentsByBfs(
+        List<(int To, int Weight)>[] adjacency, int[] parent, int[] parentWeight)
+    {
         var queue = new RepoQueue();
         queue.Enqueue(0);
 
@@ -184,17 +216,23 @@ internal static class ShortestPathInAWeightedTreeSolution
                 queue.Enqueue(next);
             }
         }
+    }
 
-        return (parent, parentWeight);
+    private static (int[] TimeIn, int[] TimeOut) BuildEulerTour(RootedTreeNode root, int[] parent, int n)
+    {
+        var (timeIn, visitOrder) = TraversePreOrder(root, n);
+        var timeOut = ComputeSubtreeEnds(parent, n, timeIn, visitOrder);
+
+        return (timeIn, timeOut);
     }
 
     // An iterative pre-order walk of root's RootedTreeNode.Children (repo Stack,
     // not recursion - LC's own worst case is a straight-line chain of up to 1e5
-    // nodes, deep enough to risk overflowing the call stack). Subtree size is
-    // then read off in one reverse pass over that same pre-order: every node's
-    // entire subtree already precedes it there, so accumulating each node's size
-    // into its parent's needs no second traversal.
-    private static (int[] TimeIn, int[] TimeOut) BuildEulerTour(RootedTreeNode root, int[] parent, int n)
+    // nodes, deep enough to risk overflowing the call stack). Because a stack
+    // based pre-order never starts a sibling subtree before finishing the
+    // current one, [TimeIn[v], TimeOut[v]] is exactly the contiguous range of
+    // every node in v's subtree.
+    private static (int[] TimeIn, int[] VisitOrder) TraversePreOrder(RootedTreeNode root, int n)
     {
         var timeIn = new int[n];
         var visitOrder = new int[n];
@@ -214,6 +252,14 @@ internal static class ShortestPathInAWeightedTreeSolution
             }
         }
 
+        return (timeIn, visitOrder);
+    }
+
+    // Subtree size is read off in one reverse pass over that same pre-order:
+    // every node's entire subtree already precedes it there, so accumulating
+    // each node's size into its parent's needs no second traversal.
+    private static int[] ComputeSubtreeEnds(int[] parent, int n, int[] timeIn, int[] visitOrder)
+    {
         var size = new int[n];
         Array.Fill(size, 1);
 
@@ -230,6 +276,53 @@ internal static class ShortestPathInAWeightedTreeSolution
             timeOut[id] = timeIn[id] + size[id] - 1;
         }
 
-        return (timeIn, timeOut);
+        return timeOut;
+    }
+
+    // Every edge's weight is posted once as a range-add over the child's subtree:
+    // that is what makes an update a delta over the same range and a [2, x] query
+    // a single point read. CurrentWeight records what was posted, so an update
+    // can post only the difference.
+    private static (int[] CurrentWeight, RangeFenwickTree<long, ScaledSumOperation<long>> Fenwick)
+        PostInitialEdgeWeights(int n, int[] parentWeight, int[] timeIn, int[] timeOut)
+    {
+        var fenwick = new RangeFenwickTree<long, ScaledSumOperation<long>>(n);
+        var currentWeight = new int[n];
+
+        for (var id = 1; id < n; id++)
+        {
+            currentWeight[id] = parentWeight[id];
+            fenwick.RangeAdd(timeIn[id], timeOut[id], parentWeight[id]);
+        }
+
+        return (currentWeight, fenwick);
+    }
+
+    private static List<int> AnswerQueriesByEulerSweep(
+        (int[] Parent, int[] TimeIn, int[] TimeOut, int[] CurrentWeight,
+            RangeFenwickTree<long, ScaledSumOperation<long>> Fenwick) state, int[][] queries)
+    {
+        var answers = new List<int>();
+
+        foreach (var query in queries)
+        {
+            if (query[0] == 1)
+            {
+                var (u, v, w) = (query[1] - 1, query[2] - 1, query[3]);
+                var uIsChild = state.Parent[u] == v;
+                var child = uIsChild ? u : v;
+                var delta = w - state.CurrentWeight[child];
+
+                state.Fenwick.RangeAdd(state.TimeIn[child], state.TimeOut[child], delta);
+                state.CurrentWeight[child] = w;
+            }
+            else
+            {
+                var x = query[1] - 1;
+                answers.Add((int)state.Fenwick.Query(state.TimeIn[x], state.TimeIn[x]));
+            }
+        }
+
+        return answers;
     }
 }

@@ -42,22 +42,30 @@ internal static class ErectTheFenceSolution
         {
             for (var j = 0; j < points.Length; j++)
             {
-                if (i == j)
-                {
-                    continue;
-                }
-
-                var a = points[i];
-                var b = points[j];
-
-                if (IsHullLine(points, a, b))
-                {
-                    AddSegmentPoints(fence, points, a, b);
-                }
+                AddHullLinePoints(fence, points, i, j);
             }
         }
 
         return fence.ToList();
+    }
+
+    // The ordered pair (i, j) is a candidate hull edge exactly when every other
+    // point lies on one side of the line through it (or on the line itself).
+    private static void AddHullLinePoints(
+        HashSet<(int X, int Y)> fence, (int X, int Y)[] points, int i, int j)
+    {
+        if (i == j)
+        {
+            return;
+        }
+
+        var a = points[i];
+        var b = points[j];
+
+        if (IsHullLine(points, a, b))
+        {
+            AddSegmentPoints(fence, points, a, b);
+        }
     }
 
     private static bool IsHullLine((int X, int Y)[] points, (int X, int Y) a, (int X, int Y) b)

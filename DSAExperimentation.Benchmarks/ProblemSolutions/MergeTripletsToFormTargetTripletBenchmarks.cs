@@ -19,10 +19,10 @@ public class MergeTripletsToFormTargetTripletBenchmarks
 
     private static readonly int[] Target = [1_000, 1_000, 1_000];
 
-    [Params(12, 18)]
-    public int TripletCount;
+    private int[][] _triplets = [];
 
-    private int[][] _triplets = null!;
+    [Params(12, 18)]
+    public int TripletCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

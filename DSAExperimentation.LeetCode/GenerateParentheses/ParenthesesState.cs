@@ -7,13 +7,13 @@ namespace DSAExperimentation.LeetCode.GenerateParentheses;
 // Domain/ (ARCHITECTURE.md 17.3).
 internal sealed class ParenthesesState(int pairs)
 {
-    public int TargetLength => pairs * 2;
-
-    public List<char> Buffer { get; } = [];
-
     private int Opened { get; set; }
 
     private int Closed { get; set; }
+
+    public int TargetLength => pairs * 2;
+
+    public List<char> Buffer { get; } = [];
 
     public IEnumerable<char> Candidates()
     {

@@ -20,16 +20,20 @@ public class RemoveLinkedListElementsBenchmarks
     private const int NonTargetValue = 1;
     private const int MatchRunLength = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() =>
         _values = Enumerable.Range(0, Length)
-            .Select(i => i % MatchRunLength == 0 ? TargetValue : NonTargetValue)
+            .Select(i => IsTargetValue(i) ? TargetValue : NonTargetValue)
             .ToArray();
+
+    // Every run of TargetValue is MatchRunLength long, so the value at an index is
+    // the target when the index starts a run.
+    private static bool IsTargetValue(int i) => i % MatchRunLength == 0;
 
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>

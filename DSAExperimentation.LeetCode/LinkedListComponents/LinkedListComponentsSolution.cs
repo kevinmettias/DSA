@@ -18,7 +18,7 @@ internal static class LinkedListComponentsSolution
     // solution below has to justify itself against.
     public static int NumComponentsByLinearScan(SinglyLinkedListNode<int>? head, int[] nums)
     {
-        var runs = default(ComponentRuns);
+        var runs = new ComponentRuns();
 
         for (var node = head; node is not null; node = node.Next)
         {
@@ -34,7 +34,7 @@ internal static class LinkedListComponentsSolution
     public static int NumComponentsBySetMembership(SinglyLinkedListNode<int>? head, int[] nums)
     {
         var present = new Set<int>(nums);
-        var runs = default(ComponentRuns);
+        var runs = new ComponentRuns();
 
         for (var node = head; node is not null; node = node.Next)
         {
@@ -47,7 +47,7 @@ internal static class LinkedListComponentsSolution
     // Counts maximal runs of present values in walk order: a run opens on the first
     // present node after a gap (or at the head) and stays open until a node whose
     // value is absent closes it.
-    private struct ComponentRuns
+    private sealed class ComponentRuns
     {
         private bool _inRun;
 

@@ -92,22 +92,13 @@ public sealed class DesignSkiplistTests
 // One call in a Skiplist script: which method to invoke and with what value. Pure
 // dispatch, built via the named factories below so a script (like Examples above)
 // reads like the LeetCode call sequence it replays.
-public readonly record struct SkiplistOp
+public readonly record struct SkiplistOp(SkiplistOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static SkiplistOp Add(int num) => new(OpKind.Add, num);
 
-    private SkiplistOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static SkiplistOp Search(int target) => new(OpKind.Search, target);
 
-    public static SkiplistOp Add(int num) => new(Kind.Add, num);
-
-    public static SkiplistOp Search(int target) => new(Kind.Search, target);
-
-    public static SkiplistOp Erase(int num) => new(Kind.Erase, num);
+    public static SkiplistOp Erase(int num) => new(OpKind.Erase, num);
 
     // null for the void Add, the reported bool for Search and Erase - so a script
     // runner can assert against one expected value per operation uniformly.
@@ -115,19 +106,19 @@ public readonly record struct SkiplistOp
     // only this same assembly's RunScript ever calls Apply.
     internal bool? Apply(ISkiplist skiplist)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Add:
-                skiplist.Add(_value);
+            case OpKind.Add:
+                skiplist.Add(value);
                 return null;
-            case Kind.Search:
-                return skiplist.Search(_value);
+            case OpKind.Search:
+                return skiplist.Search(value);
             default:
-                return skiplist.Erase(_value);
+                return skiplist.Erase(value);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Add,
         Search,

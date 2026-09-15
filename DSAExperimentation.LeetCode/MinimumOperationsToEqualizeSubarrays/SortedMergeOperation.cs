@@ -18,11 +18,13 @@ internal readonly struct SortedMergeOperation : ICombineOperation<int[]>
         var merged = new int[left.Length + right.Length];
         var i = 0;
         var j = 0;
+        int TakeNextLeft() => left[i++];
+        int TakeNextRight() => right[j++];
 
         for (var next = 0; next < merged.Length; next++)
         {
             var takeLeft = i < left.Length && (j >= right.Length || left[i] <= right[j]);
-            merged[next] = takeLeft ? left[i++] : right[j++];
+            merged[next] = takeLeft ? TakeNextLeft() : TakeNextRight();
         }
 
         return merged;

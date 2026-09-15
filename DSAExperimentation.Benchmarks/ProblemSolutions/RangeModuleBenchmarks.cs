@@ -20,12 +20,12 @@ public class RangeModuleBenchmarks
     private const int Stride = 4;
     private const int RandomSeed = 17;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private RangeModuleSolution.IRangeModule _linearScan = null!;
+
     private RangeModuleSolution.IRangeModule _intervalSetBinarySearch = null!;
-    private (int Left, int Right)[] _queries = null!;
+    private (int Left, int Right)[] _queries = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

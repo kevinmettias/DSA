@@ -29,18 +29,18 @@ internal static class ThreeSumClosestSolution
         {
             for (var j = i + 1; j < nums.Length - 1; j++)
             {
-                best = ClosestSumForPair(nums, target, i, j, best);
+                best = ClosestSumForPair(nums, target, (i, j), best);
             }
         }
 
         return best;
     }
 
-    private static int ClosestSumForPair(int[] nums, int target, int i, int j, int best)
+    private static int ClosestSumForPair(int[] nums, int target, (int I, int J) pair, int best)
     {
-        for (var k = j + 1; k < nums.Length; k++)
+        for (var k = pair.J + 1; k < nums.Length; k++)
         {
-            var sum = nums[i] + nums[j] + nums[k];
+            var sum = nums[pair.I] + nums[pair.J] + nums[k];
 
             if (Math.Abs(target - sum) < Math.Abs(target - best))
             {
@@ -97,8 +97,18 @@ internal static class ThreeSumClosestSolution
     }
 
     private static int UpdateBest(int target, int best, int sum)
-        => Math.Abs(target - sum) < Math.Abs(target - best) ? sum : best;
+        => IsNearerToTarget(target, sum, best) ? sum : best;
+
+    // Whether this triplet's sum gets closer to the target than the best so far.
+    private static bool IsNearerToTarget(int target, int sum, int best)
+        => Math.Abs(target - sum) < Math.Abs(target - best);
 
     private static (int Left, int Right) AdvancePointers(int target, int sum, int left, int right)
-        => sum < target ? (left + 1, right) : (left, right - 1);
+        => sum < target ? WithLargerLeft(left, right) : WithSmallerRight(left, right);
+
+    // A sum below the target can only be raised by taking a larger left value.
+    private static (int Left, int Right) WithLargerLeft(int left, int right) => (left + 1, right);
+
+    // A sum above the target can only be lowered by taking a smaller right value.
+    private static (int Left, int Right) WithSmallerRight(int left, int right) => (left, right - 1);
 }

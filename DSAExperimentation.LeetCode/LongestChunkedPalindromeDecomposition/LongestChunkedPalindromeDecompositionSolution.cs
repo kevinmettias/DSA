@@ -41,33 +41,6 @@ internal static class LongestChunkedPalindromeDecompositionSolution
         return state.Count + (state.MatchStart <= state.J ? 1 : 0);
     }
 
-    // The textbook answer: grow `left` and `right` by string concatenation and
-    // compare them with ==. Deliberately written without this repo's primitives -
-    // it is the arm the composed strategy above has to justify itself against.
-    public static int LongestDecompositionByStringConcatenation(string text)
-    {
-        var state = new ConcatenationState(string.Empty, string.Empty, Count: 0, I: 0, J: text.Length - 1);
-
-        while (state.I < state.J)
-        {
-            state = AdvanceConcatenationStep(text, state);
-        }
-
-        return state.Count + (state.Left.Length > 0 || state.I == state.J ? 1 : 0);
-    }
-
-    // The two-pointer walk's loop-carried state: the pending unmatched chunk's
-    // start, the inward-crawling left/right pointers, and the chunk count so far.
-    private readonly record struct DecompositionState(int MatchStart, int I, int J, int Count);
-
-    // Left/right start of a candidate chunk pair, plus how long that candidate
-    // chunk currently is - the unit ChunksMatch screens then verifies for equality.
-    private readonly record struct ChunkPair(int LeftStart, int RightStart, int Length);
-
-    // The same walk carrying its pending chunks as materialized strings instead of
-    // as indices into text.
-    private readonly record struct ConcatenationState(string Left, string Right, int Count, int I, int J);
-
     // Grows the pending chunk by one character on each side; once the growing
     // left/right chunks match, pairs them off and starts a fresh pending chunk.
     private static DecompositionState AdvanceHashStep(string text, RollingHash hash, DecompositionState state)
@@ -97,6 +70,21 @@ internal static class LongestChunkedPalindromeDecompositionSolution
         return leftChunk.SequenceEqual(rightChunk);
     }
 
+    // The textbook answer: grow `left` and `right` by string concatenation and
+    // compare them with ==. Deliberately written without this repo's primitives -
+    // it is the arm the composed strategy above has to justify itself against.
+    public static int LongestDecompositionByStringConcatenation(string text)
+    {
+        var state = new ConcatenationState(string.Empty, string.Empty, Count: 0, I: 0, J: text.Length - 1);
+
+        while (state.I < state.J)
+        {
+            state = AdvanceConcatenationStep(text, state);
+        }
+
+        return state.Count + (state.Left.Length > 0 || state.I == state.J ? 1 : 0);
+    }
+
     private static ConcatenationState AdvanceConcatenationStep(string text, ConcatenationState state)
     {
         var left = state.Left + text[state.I];
@@ -112,4 +100,16 @@ internal static class LongestChunkedPalindromeDecompositionSolution
 
         return state with { Left = left, Right = right, Count = count, I = state.I + 1, J = state.J - 1 };
     }
+
+    // The two-pointer walk's loop-carried state: the pending unmatched chunk's
+    // start, the inward-crawling left/right pointers, and the chunk count so far.
+    private readonly record struct DecompositionState(int MatchStart, int I, int J, int Count);
+
+    // Left/right start of a candidate chunk pair, plus how long that candidate
+    // chunk currently is - the unit ChunksMatch screens then verifies for equality.
+    private readonly record struct ChunkPair(int LeftStart, int RightStart, int Length);
+
+    // The same walk carrying its pending chunks as materialized strings instead of
+    // as indices into text.
+    private readonly record struct ConcatenationState(string Left, string Right, int Count, int I, int J);
 }

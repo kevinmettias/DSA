@@ -33,11 +33,7 @@ internal static class InverseCoinChangeSolution
             if (target == ways[v] + 1)
             {
                 denominations.Add(v);
-
-                for (var i = v; i <= n; i++)
-                {
-                    ways[i] += ways[i - v];
-                }
+                ApplyDenomination(ways, v, n);
             }
             else if (target != ways[v])
             {
@@ -48,13 +44,24 @@ internal static class InverseCoinChangeSolution
         return denominations.ToArray();
     }
 
+    // LC 518's own unbounded-combinations step - "for i = v..n: ways[i] += ways[i - v]"
+    // - applied once for a newly confirmed denomination.
+    private static void ApplyDenomination(int[] ways, int v, int n)
+    {
+        for (var i = v; i <= n; i++)
+        {
+            ways[i] += ways[i - v];
+        }
+    }
+
     // This repo's own Memoizer: rather than mutate a running tabulation
     // array, re-derives "ways to make v using only the denominations
     // confirmed so far" fresh from LC 518's own recursive formula each time -
     // ways(amount, coinIndex) = skip coins[coinIndex] entirely, or use it at
-    // least once - Memoizer's Y-combinator recurrence shape
-    // (MinimumTimeToBreakLocksI's FindMinimumTimeByBitmaskMemo composes it
-    // the same way over a different state).
+    // least once - with Memoizer caching the formula's overlapping
+    // (remaining, coinIndex) states (MinimumTimeToBreakLocksI's
+    // FindMinimumTimeByBitmaskMemo composes it the same way over a different
+    // state).
     public static int[] FindDenominationsByMemoizedRecurrence(int[] numWays)
     {
         var n = numWays.Length;
@@ -78,26 +85,39 @@ internal static class InverseCoinChangeSolution
         return denominations.ToArray();
     }
 
-    private static int WaysToMake(int amount, List<int> coins) =>
-        Memoizer.Memoize<(int Remaining, int CoinIndex), int>(
-            (amount, coins.Count - 1),
-            (state, waysFor) =>
+    private static int WaysToMake(int amount, List<int> coins)
+    {
+        var recurrence = new WaysUsingConfirmedCoins(coins);
+
+        return Memoizer.Memoize<(int Remaining, int CoinIndex), int>((amount, coins.Count - 1), recurrence);
+    }
+
+    // The recurrence, named: an amount is made either by skipping the coin at
+    // coinIndex entirely or by using that coin at least once, and an empty amount is
+    // the one way that always works.
+    private sealed class WaysUsingConfirmedCoins(List<int> coins)
+        : IRecurrence<(int Remaining, int CoinIndex), int>
+    {
+        /// <inheritdoc/>
+        public int Replay((int Remaining, int CoinIndex) state, IRecurrence<(int Remaining, int CoinIndex), int> rest)
+        {
+            var (remaining, coinIndex) = state;
+
+            if (remaining == 0)
             {
-                var (remaining, coinIndex) = state;
+                return 1;
+            }
 
-                if (remaining == 0)
-                {
-                    return 1;
-                }
+            if (coinIndex < 0)
+            {
+                return 0;
+            }
 
-                if (coinIndex < 0)
-                {
-                    return 0;
-                }
+            var skip = rest.Replay((remaining, coinIndex - 1), rest);
+            var canUseCoin = remaining >= coins[coinIndex];
+            var use = canUseCoin ? rest.Replay((remaining - coins[coinIndex], coinIndex), rest) : 0;
 
-                var skip = waysFor((remaining, coinIndex - 1));
-                var use = remaining >= coins[coinIndex] ? waysFor((remaining - coins[coinIndex], coinIndex)) : 0;
-
-                return skip + use;
-            });
+            return skip + use;
+        }
+    }
 }

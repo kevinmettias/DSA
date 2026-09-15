@@ -18,11 +18,11 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     private const int RectangleXStep = 10;
     private const int MaxRectangleDimension = 5;
 
-    [Params(50, 2_000)]
-    public int RectangleCount;
+    private int[][] _rects = [];
 
-    private int[][] _rects = null!;
-    private int[] _prefixAreas = null!;
+    private int[] _prefixAreas = [];
+    [Params(50, 2_000)]
+    public int RectangleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

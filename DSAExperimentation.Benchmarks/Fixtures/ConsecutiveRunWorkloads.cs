@@ -18,12 +18,27 @@ internal static class ConsecutiveRunWorkloads
         var random = new Random(seed);
         var edges = new List<int[]>();
 
+        AppendChainedEdges(edges, nodeCount, random);
+        AppendExtraEdges(edges, nodeCount, random);
+
+        return ([.. edges], BuildLabels(nodeCount, random));
+    }
+
+    // The backbone: every node i past the first gets one edge from a uniformly chosen
+    // earlier node, which is what makes the graph forward-only and node n-1 reachable.
+    private static void AppendChainedEdges(List<int[]> edges, int nodeCount, Random random)
+    {
         for (var i = 1; i < nodeCount; i++)
         {
             var from = random.Next(i);
             edges.Add([from, i, random.Next(1, WeightUpperBound)]);
         }
+    }
 
+    // The extras: a handful of additional forward draws per node, kept only when they
+    // point at a later node, so short cuts exist without ever introducing a back edge.
+    private static void AppendExtraEdges(List<int[]> edges, int nodeCount, Random random)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < ExtraEdgesPerNode; e++)
@@ -36,8 +51,6 @@ internal static class ConsecutiveRunWorkloads
                 }
             }
         }
-
-        return ([.. edges], BuildLabels(nodeCount, random));
     }
 
     private static string BuildLabels(int nodeCount, Random random)

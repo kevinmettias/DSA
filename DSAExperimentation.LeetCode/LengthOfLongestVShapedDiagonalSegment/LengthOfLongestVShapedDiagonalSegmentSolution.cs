@@ -24,17 +24,6 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         (-1, -1),
     ];
 
-    // The value that must follow `value` for the alternation to continue. 1 only
-    // ever appears as a segment's own first cell (nothing transitions to it), which
-    // both strategies below rely on rather than re-check.
-    private static int NextExpected(int value) => value switch
-    {
-        1 => 2,
-        2 => 0,
-        0 => 2,
-        _ => -1,
-    };
-
     public static int LongestLengthByBruteForceWalk(int[][] grid)
     {
         var rows = grid.Length;
@@ -52,7 +41,8 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
 
                 for (var direction = 0; direction < Directions.Length; direction++)
                 {
-                    best = Math.Max(best, WalkArm(grid, rows, cols, row, col, direction));
+                    var armBest = WalkArm(grid, (row, col), direction);
+                    best = Math.Max(best, armBest);
                 }
             }
         }
@@ -64,20 +54,19 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
     // it, re-simulates a second forward walk after a clockwise turn - the textbook
     // way to explore "at most one turn" that shares no work between candidate turn
     // points, unlike LongestLengthByDirectionalDp's shared tables.
-    private static int WalkArm(int[][] grid, int rows, int cols, int startRow, int startCol, int direction)
+    private static int WalkArm(int[][] grid, (int Row, int Col) start, int direction)
     {
         var (dRow, dCol) = Directions[direction];
         var best = 0;
         var length = 0;
-        var row = startRow;
-        var col = startCol;
-        var value = grid[startRow][startCol];
+        var (row, col) = start;
+        var value = grid[row][col];
 
-        while (InBounds(row, col, rows, cols) && grid[row][col] == value)
+        while (InBounds(grid, row, col) && grid[row][col] == value)
         {
             length++;
             best = Math.Max(best, length);
-            best = Math.Max(best, length + WalkTurn(grid, rows, cols, row, col, direction, value));
+            best = Math.Max(best, length + WalkTurn(grid, (row, col), direction));
 
             value = NextExpected(value);
             row += dRow;
@@ -87,16 +76,17 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         return best;
     }
 
-    private static int WalkTurn(int[][] grid, int rows, int cols, int turnRow, int turnCol, int direction, int turnValue)
+    // WalkArm only ever turns at a cell it has just matched, so the turn's own start
+    // value is that cell's value - read here rather than passed back in.
+    private static int WalkTurn(int[][] grid, (int Row, int Col) turnCell, int direction)
     {
-        var turnDirection = (direction + 1) % Directions.Length;
-        var (dRow, dCol) = Directions[turnDirection];
-        var row = turnRow + dRow;
-        var col = turnCol + dCol;
-        var expected = NextExpected(turnValue);
+        var (dRow, dCol) = TurnedStep(direction);
+        var row = turnCell.Row + dRow;
+        var col = turnCell.Col + dCol;
+        var expected = NextExpected(grid[turnCell.Row][turnCell.Col]);
         var length = 0;
 
-        while (InBounds(row, col, rows, cols) && grid[row][col] == expected)
+        while (InBounds(grid, row, col) && grid[row][col] == expected)
         {
             length++;
             expected = NextExpected(expected);
@@ -107,8 +97,15 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         return length;
     }
 
-    private static bool InBounds(int row, int col, int rows, int cols) =>
-        row >= 0 && row < rows && col >= 0 && col < cols;
+    // The step a walk advances by after turning clockwise from `direction`: the turn
+    // is simply the next direction in the clockwise table, and its own row/column
+    // steps are what the turned walk follows.
+    private static (int DRow, int DCol) TurnedStep(int direction)
+    {
+        var turnDirection = (direction + 1) % Directions.Length;
+
+        return Directions[turnDirection];
+    }
 
     // The efficient composition: two O(rows*cols*4) tables built with plain nested
     // loops instead of WalkArm/WalkTurn's repeated re-simulation.
@@ -133,69 +130,87 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
 
         for (var direction = 0; direction < Directions.Length; direction++)
         {
-            FillArmLength(grid, rows, cols, direction, armLength);
-            FillForwardLength(grid, rows, cols, direction, forwardLength);
+            FillArmLength(grid, direction, armLength);
+            FillForwardLength(grid, direction, forwardLength);
         }
 
-        return Combine(grid, rows, cols, armLength, forwardLength);
+        return Combine(grid, armLength, forwardLength);
     }
 
-    private static void FillArmLength(int[][] grid, int rows, int cols, int direction, int[,,] armLength)
+    private static void FillArmLength(int[][] grid, int direction, int[,,] armLength)
     {
+        var rows = grid.Length;
+        var cols = rows == 0 ? 0 : grid[0].Length;
         var (dRow, dCol) = Directions[direction];
 
-        foreach (var row in RowScan(rows, ascending: dRow == 1))
+        foreach (var row in RowScan(rows, dRow == 1 ? RowOrder.Ascending : RowOrder.Descending))
         {
             for (var col = 0; col < cols; col++)
             {
-                armLength[row, col, direction] = ComputeArmLength(grid, rows, cols, row, col, direction, dRow, dCol, armLength);
+                armLength[row, col, direction] = ComputeArmLength(grid, (row, col), direction, armLength);
             }
         }
     }
 
-    private static int ComputeArmLength(
-        int[][] grid, int rows, int cols, int row, int col, int direction, int dRow, int dCol, int[,,] armLength)
+    private static int ComputeArmLength(int[][] grid, (int Row, int Col) cell, int direction, int[,,] armLength)
     {
+        var (row, col) = cell;
+
         if (grid[row][col] == 1)
         {
             return 1;
         }
 
+        var (dRow, dCol) = Directions[direction];
         var predecessorRow = row - dRow;
         var predecessorCol = col - dCol;
 
-        if (!InBounds(predecessorRow, predecessorCol, rows, cols))
+        if (!InBounds(grid, predecessorRow, predecessorCol))
         {
             return 0;
         }
 
         var predecessorLength = armLength[predecessorRow, predecessorCol, direction];
 
-        return predecessorLength > 0 && grid[row][col] == NextExpected(grid[predecessorRow][predecessorCol])
-            ? predecessorLength + 1
+        return IsArmContinuation(grid, (row, col), (predecessorRow, predecessorCol), predecessorLength)
+            ? ContinuedArmLength(predecessorLength)
             : 0;
     }
 
-    private static void FillForwardLength(int[][] grid, int rows, int cols, int direction, int[,,] forwardLength)
+    // Whether this cell continues the alternating arm arriving at its predecessor: the
+    // predecessor holds an arm at all, and this cell holds the value that arm expects
+    // next.
+    private static bool IsArmContinuation(
+        int[][] grid, (int Row, int Col) cell, (int Row, int Col) predecessor, int predecessorLength)
+        => predecessorLength > 0 && grid[cell.Row][cell.Col] == NextExpected(grid[predecessor.Row][predecessor.Col]);
+
+    // The arm reaching this cell runs one cell longer than the arm reaching its
+    // predecessor.
+    private static int ContinuedArmLength(int predecessorLength) => predecessorLength + 1;
+
+    private static void FillForwardLength(int[][] grid, int direction, int[,,] forwardLength)
     {
+        var rows = grid.Length;
+        var cols = rows == 0 ? 0 : grid[0].Length;
         var (dRow, dCol) = Directions[direction];
 
-        foreach (var row in RowScan(rows, ascending: dRow == -1))
+        foreach (var row in RowScan(rows, dRow == -1 ? RowOrder.Ascending : RowOrder.Descending))
         {
             for (var col = 0; col < cols; col++)
             {
-                forwardLength[row, col, direction] = ComputeForwardLength(grid, rows, cols, row, col, direction, dRow, dCol, forwardLength);
+                forwardLength[row, col, direction] = ComputeForwardLength(grid, (row, col), direction, forwardLength);
             }
         }
     }
 
-    private static int ComputeForwardLength(
-        int[][] grid, int rows, int cols, int row, int col, int direction, int dRow, int dCol, int[,,] forwardLength)
+    private static int ComputeForwardLength(int[][] grid, (int Row, int Col) cell, int direction, int[,,] forwardLength)
     {
+        var (row, col) = cell;
+        var (dRow, dCol) = Directions[direction];
         var successorRow = row + dRow;
         var successorCol = col + dCol;
 
-        if (!InBounds(successorRow, successorCol, rows, cols) ||
+        if (!InBounds(grid, successorRow, successorCol) ||
             grid[successorRow][successorCol] != NextExpected(grid[row][col]))
         {
             return 1;
@@ -204,9 +219,86 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         return 1 + forwardLength[successorRow, successorCol, direction];
     }
 
-    private static IEnumerable<int> RowScan(int rows, bool ascending)
+    private static int Combine(int[][] grid, int[,,] armLength, int[,,] forwardLength)
     {
-        if (ascending)
+        var rows = grid.Length;
+        var cols = rows == 0 ? 0 : grid[0].Length;
+        var lengths = (Arm: armLength, Forward: forwardLength);
+        var best = 0;
+
+        for (var row = 0; row < rows; row++)
+        {
+            for (var col = 0; col < cols; col++)
+            {
+                for (var direction = 0; direction < Directions.Length; direction++)
+                {
+                    var candidate = BestThroughCell(grid, (row, col), direction, lengths);
+                    best = Math.Max(best, candidate);
+                }
+            }
+        }
+
+        return best;
+    }
+
+    // The best segment through the arm that ENDS at `cell` along `direction`: the arm
+    // alone, or - when the cell its clockwise turn lands on continues the alternation
+    // - the arm extended by that forward run. A cell no arm reaches contributes
+    // nothing, which is what the zero-length arm already reports.
+    private static int BestThroughCell(
+        int[][] grid,
+        (int Row, int Col) cell,
+        int direction,
+        (int[,,] Arm, int[,,] Forward) lengths)
+    {
+        var arm = lengths.Arm[cell.Row, cell.Col, direction];
+
+        if (arm == 0)
+        {
+            return 0;
+        }
+
+        var turnDirection = (direction + 1) % Directions.Length;
+        var (dRow, dCol) = Directions[turnDirection];
+        var nextRow = cell.Row + dRow;
+        var nextCol = cell.Col + dCol;
+
+        if (InBounds(grid, nextRow, nextCol) &&
+            grid[nextRow][nextCol] == NextExpected(grid[cell.Row][cell.Col]))
+        {
+            return arm + lengths.Forward[nextRow, nextCol, turnDirection];
+        }
+
+        return arm;
+    }
+
+    // The value that must follow `value` for the alternation to continue. 1 only
+    // ever appears as a segment's own first cell (nothing transitions to it), which
+    // both strategies below rely on rather than re-check.
+    private static int NextExpected(int value) => value switch
+    {
+        1 => 2,
+        2 => 0,
+        0 => 2,
+        _ => -1,
+    };
+
+    // The row bound is tested first, so grid[0] is only reached once the grid is
+    // known to have at least one row.
+    private static bool InBounds(int[][] grid, int row, int col) =>
+        row >= 0 && row < grid.Length && col >= 0 && col < grid[0].Length;
+
+    // Which way FillArmLength and FillForwardLength sweep the rows is a state, not a
+    // flag - the two orders are named so the call site says which one it wants.
+    private enum RowOrder
+    {
+        Ascending,
+        Descending,
+    }
+
+    private static IEnumerable<int> RowScan(int rows, RowOrder order)
+    {
+        if (order == RowOrder.Ascending)
         {
             for (var row = 0; row < rows; row++)
             {
@@ -220,41 +312,5 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
                 yield return row;
             }
         }
-    }
-
-    private static int Combine(int[][] grid, int rows, int cols, int[,,] armLength, int[,,] forwardLength)
-    {
-        var best = 0;
-
-        for (var row = 0; row < rows; row++)
-        {
-            for (var col = 0; col < cols; col++)
-            {
-                for (var direction = 0; direction < Directions.Length; direction++)
-                {
-                    var arm = armLength[row, col, direction];
-
-                    if (arm == 0)
-                    {
-                        continue;
-                    }
-
-                    best = Math.Max(best, arm);
-
-                    var turnDirection = (direction + 1) % Directions.Length;
-                    var (dRow, dCol) = Directions[turnDirection];
-                    var nextRow = row + dRow;
-                    var nextCol = col + dCol;
-
-                    if (InBounds(nextRow, nextCol, rows, cols) &&
-                        grid[nextRow][nextCol] == NextExpected(grid[row][col]))
-                    {
-                        best = Math.Max(best, arm + forwardLength[nextRow, nextCol, turnDirection]);
-                    }
-                }
-            }
-        }
-
-        return best;
     }
 }

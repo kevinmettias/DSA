@@ -16,7 +16,9 @@ internal static class AnglesOfATriangleSolution
     // The textbook answer: every angle from its own Acos of the law of cosines.
     public static double[] InternalAnglesByLawOfCosines(int[] sides)
     {
-        if (!IsValidTriangle(sides, out var a, out var b, out var c))
+        var (isValid, a, b, c) = IsValidTriangle(sides);
+
+        if (!isValid)
         {
             return [];
         }
@@ -33,26 +35,32 @@ internal static class AnglesOfATriangleSolution
     // transcendental call.
     public static double[] InternalAnglesByAngleSum(int[] sides)
     {
-        if (!IsValidTriangle(sides, out var a, out var b, out var c))
+        var (isValid, a, b, c) = IsValidTriangle(sides);
+
+        if (!isValid)
         {
             return [];
         }
 
-        var angleA = AngleOpposite(a, b, c);
-        var angleB = AngleOpposite(b, a, c);
+        var (angleA, angleB) = TwoAnglesByLawOfCosines(a, b, c);
         var angleC = 180.0 - angleA - angleB;
 
         return Sort(angleA, angleB, angleC);
     }
 
-    private static bool IsValidTriangle(int[] sides, out double a, out double b, out double c)
+    // The two angles this arm still spends a transcendental call on; the third
+    // is what the angle sum saves it.
+    private static (double AngleA, double AngleB) TwoAnglesByLawOfCosines(double a, double b, double c) =>
+        (AngleOpposite(a, b, c), AngleOpposite(b, a, c));
+
+    private static (bool IsValid, double A, double B, double C) IsValidTriangle(int[] sides)
     {
-        (a, b, c) = (sides[0], sides[1], sides[2]);
+        var (a, b, c) = (sides[0], sides[1], sides[2]);
 
         var sorted = new[] { a, b, c };
         Array.Sort(sorted);
 
-        return sorted[0] + sorted[1] > sorted[2];
+        return (sorted[0] + sorted[1] > sorted[2], a, b, c);
     }
 
     // Law of cosines: the angle opposite "opposite", given the two sides

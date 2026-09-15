@@ -31,69 +31,55 @@ internal static class CreateGridWithExactlyKPathsISolution
     private static readonly (int Row, int Col)[] DoubleChainFreeCells =
         [(0, 0), (0, 1), (1, 0), (1, 1), (1, 2), (2, 1), (2, 2)];
 
+    // What decides how many monotone (right/down) paths a fully open rows x columns
+    // rectangle has - the only question the search below asks of a candidate, and one
+    // the two arms answer by different means (simulating the rectangle, or evaluating
+    // the closed form). The interface is where the two state that they must agree: the
+    // search compares the answer against k, so a factor-of-two disagreement between
+    // them would silently change which grid gets built.
+    private interface IRectanglePathCount
+    {
+        int CountPathsAcross(int rows, int columns);
+    }
+
+    // One shared instance per arm: neither holds state, and both are invoked from
+    // inside the benchmark harness's timed region, so an allocation per call there
+    // would be charged to the measurement.
+    private static readonly IRectanglePathCount PathCountBySimulation = new SimulatedPathCount();
+    private static readonly IRectanglePathCount PathCountByClosedForm = new ClosedFormPathCount();
+
     // The straightforward arm: a rectangle's path count computed the way most
     // people would reach for first, C(n, r) via Pascal's-triangle-style DP over
     // the candidate rectangle itself rather than a combinatorial identity.
-    public static string[] CreateGridByPathCountDp(int m, int n, int k) => TryBuild(m, n, k, DpPathCount);
+    public static string[] CreateGridByPathCountDp(int m, int n, int k) => TryBuild(m, n, k, PathCountBySimulation);
 
     // The composed arm: the same search, but a rectangle's path count comes from
     // the closed-form binomial coefficient instead of simulating the rectangle.
-    public static string[] CreateGridByBinomialFormula(int m, int n, int k) => TryBuild(m, n, k, BinomialPathCount);
+    public static string[] CreateGridByBinomialFormula(int m, int n, int k) => TryBuild(m, n, k, PathCountByClosedForm);
 
-    private static string[] TryBuild(int m, int n, int k, Func<int, int, int> rectanglePathCount)
+    private static string[] TryBuild(int m, int n, int k, IRectanglePathCount rectanglePathCount)
     {
         for (var a = 1; a <= m; a++)
         {
             for (var b = 1; b <= n; b++)
             {
-                if (rectanglePathCount(a, b) == k)
+                if (rectanglePathCount.CountPathsAcross(a, b) == k)
                 {
                     return BuildRectangleGrid(m, n, a, b);
                 }
             }
         }
 
-        return k == 4 && m >= DoubleChainSide && n >= DoubleChainSide
+        return NeedsDoubleChain(m, n, k)
             ? BuildDoubleChainGrid(m, n)
-            : [];
+            : Array.Empty<string>();
     }
 
-    // Unique-paths DP over a fully open a x b rectangle: dp[j] is the path count
-    // to column j of the current row, updated in place row by row.
-    private static int DpPathCount(int a, int b)
-    {
-        var dp = new int[b];
-        Array.Fill(dp, 1);
-
-        for (var i = 1; i < a; i++)
-        {
-            for (var j = 1; j < b; j++)
-            {
-                dp[j] += dp[j - 1];
-            }
-        }
-
-        return dp[b - 1];
-    }
-
-    // C(a + b - 2, a - 1), the number of monotone paths across a fully open a x b
-    // rectangle: choose which a - 1 of the a + b - 2 moves are "down". Computed
-    // incrementally (multiply then divide at each step) so every partial result
-    // stays an exact integer - values here never exceed C(18, 9), nowhere near
-    // overflowing a long.
-    private static int BinomialPathCount(int a, int b)
-    {
-        var totalMoves = a + b - 2;
-        var downMoves = a - 1;
-        var result = 1L;
-
-        for (var i = 1; i <= downMoves; i++)
-        {
-            result = result * (totalMoves - downMoves + i) / i;
-        }
-
-        return (int)result;
-    }
+    // The one k no a x b rectangle reaches when both sides are shorter than the
+    // double chain's own 3x3 footprint - two chained 2x2 rectangles are what it
+    // takes there.
+    private static bool NeedsDoubleChain(int m, int n, int k)
+        => k == 4 && m >= DoubleChainSide && n >= DoubleChainSide;
 
     private static string[] BuildRectangleGrid(int m, int n, int a, int b)
     {
@@ -160,4 +146,47 @@ internal static class CreateGridWithExactlyKPathsISolution
     }
 
     private static string[] ToRows(char[][] grid) => [.. grid.Select(row => new string(row))];
+
+    // Unique-paths DP over a fully open rows x columns rectangle: dp[j] is the path
+    // count to column j of the current row, updated in place row by row.
+    private sealed class SimulatedPathCount : IRectanglePathCount
+    {
+        public int CountPathsAcross(int rows, int columns)
+        {
+            var dp = new int[columns];
+            Array.Fill(dp, 1);
+
+            for (var i = 1; i < rows; i++)
+            {
+                for (var j = 1; j < columns; j++)
+                {
+                    dp[j] += dp[j - 1];
+                }
+            }
+
+            return dp[columns - 1];
+        }
+    }
+
+    // C(rows + columns - 2, rows - 1), the number of monotone paths across a fully
+    // open rectangle: choose which rows - 1 of the rows + columns - 2 moves are
+    // "down". Computed incrementally (multiply then divide at each step) so every
+    // partial result stays an exact integer - values here never exceed C(18, 9),
+    // nowhere near overflowing a long.
+    private sealed class ClosedFormPathCount : IRectanglePathCount
+    {
+        public int CountPathsAcross(int rows, int columns)
+        {
+            var totalMoves = rows + columns - 2;
+            var downMoves = rows - 1;
+            var result = 1L;
+
+            for (var i = 1; i <= downMoves; i++)
+            {
+                result = result * (totalMoves - downMoves + i) / i;
+            }
+
+            return (int)result;
+        }
+    }
 }

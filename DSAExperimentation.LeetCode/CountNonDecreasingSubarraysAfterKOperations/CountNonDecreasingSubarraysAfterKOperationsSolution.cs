@@ -70,21 +70,37 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
 
         for (var left = nums.Length - 1; left >= 0; left--)
         {
-            var value = (long)nums[left];
-            sumOfValues += value;
-            sumOfRunningMax += MergeIntoFront(window, value);
-
-            while (sumOfRunningMax - sumOfValues > k)
-            {
-                sumOfRunningMax -= ShrinkBack(window);
-                sumOfValues -= nums[right];
-                right--;
-            }
+            (sumOfRunningMax, sumOfValues, right) =
+                ExtendLeft(window, nums, k, (left, right, sumOfRunningMax, sumOfValues));
 
             count += right - left + 1;
         }
 
         return count;
+    }
+
+    // Absorb nums[left] as the window's new leftmost element, then peel elements off
+    // the back until the window's cost is back within k. Returns the advanced sums
+    // and the window's new right end.
+    private static (long SumOfRunningMax, long SumOfValues, int Right) ExtendLeft(
+        Deque<(long Value, long Count)> window,
+        int[] nums,
+        long k,
+        (int Left, int Right, long SumOfRunningMax, long SumOfValues) frame)
+    {
+        var value = (long)nums[frame.Left];
+        var sumOfValues = frame.SumOfValues + value;
+        var sumOfRunningMax = frame.SumOfRunningMax + MergeIntoFront(window, value);
+        var right = frame.Right;
+
+        while (sumOfRunningMax - sumOfValues > k)
+        {
+            sumOfRunningMax -= ShrinkBack(window);
+            sumOfValues -= nums[right];
+            right--;
+        }
+
+        return (sumOfRunningMax, sumOfValues, right);
     }
 
     // Pops every front plateau strictly smaller than the new leftmost value (they

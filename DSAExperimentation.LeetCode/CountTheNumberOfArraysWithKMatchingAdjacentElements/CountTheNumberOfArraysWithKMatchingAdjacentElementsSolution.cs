@@ -24,31 +24,7 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
     public static long CountGoodArraysByBruteForce(int n, int m, int k)
     {
         var arr = new int[n];
-        return CountFrom(arr, 0, 0, n, m, k);
-    }
-
-    private static long CountFrom(int[] arr, int index, int matches, int n, int m, int k)
-    {
-        if (matches > k)
-        {
-            return 0;
-        }
-
-        if (index == n)
-        {
-            return matches == k ? 1 : 0;
-        }
-
-        var total = 0L;
-
-        for (var value = 1; value <= m; value++)
-        {
-            arr[index] = value;
-            var nextMatches = index > 0 && arr[index - 1] == value ? matches + 1 : matches;
-            total += CountFrom(arr, index + 1, nextMatches, n, m, k);
-        }
-
-        return total % ModularArithmetic.Modulo;
+        return CountFrom(arr, (Index: 0, Matches: 0), m, k);
     }
 
     // Composed: one binomial coefficient (which n-1 gaps are equal) times one
@@ -62,16 +38,6 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
         var waysToFillDifferentGaps = ModularArithmetic.Power(m - 1, n - 1 - k);
 
         return waysToChooseEqualGaps * m % ModularArithmetic.Modulo * waysToFillDifferentGaps % ModularArithmetic.Modulo;
-    }
-
-    private static long BinomialCoefficient(int n, int r, long[] factorial, long[] inverseFactorial)
-    {
-        if (r < 0 || r > n)
-        {
-            return 0;
-        }
-
-        return factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo * inverseFactorial[n - r] % ModularArithmetic.Modulo;
     }
 
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
@@ -93,5 +59,57 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
         }
 
         return (factorial, inverseFactorial);
+    }
+
+    private static long BinomialCoefficient(int n, int r, long[] factorial, long[] inverseFactorial)
+    {
+        if (r < 0 || r > n)
+        {
+            return 0;
+        }
+
+        return factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo * inverseFactorial[n - r] % ModularArithmetic.Modulo;
+    }
+
+    // The walk's own state: which position of the array it is deciding, and how many
+    // equal adjacent gaps the filled prefix already has. The array's length is n, so
+    // the walk reads n off the array it is filling rather than being told again.
+    private static long CountFrom(int[] arr, (int Index, int Matches) state, int m, int k)
+    {
+        var (index, matches) = state;
+
+        if (matches > k)
+        {
+            return 0;
+        }
+
+        if (index == arr.Length)
+        {
+            return matches == k ? 1 : 0;
+        }
+
+        var total = 0L;
+
+        for (var value = 1; value <= m; value++)
+        {
+            arr[index] = value;
+            var nextMatches = MatchesAfterPlacing(arr, index, value, matches);
+            total += CountFrom(arr, (Index: index + 1, Matches: nextMatches), m, k);
+        }
+
+        return total % ModularArithmetic.Modulo;
+    }
+
+    // How many equal adjacent gaps the filled prefix has once `value` sits at `index`:
+    // one more than before when it repeats the cell to its left, and unchanged
+    // otherwise - including at index 0, where there is no cell to its left.
+    private static int MatchesAfterPlacing(int[] arr, int index, int value, int matches)
+    {
+        if (index > 0 && arr[index - 1] == value)
+        {
+            return matches + 1;
+        }
+
+        return matches;
     }
 }

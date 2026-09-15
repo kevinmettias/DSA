@@ -11,11 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RotateStringBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _goal = null!;
+    private string _goal = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -25,8 +25,14 @@ public class RotateStringBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveSubstringScan() => RotateStringSolution.CanRotateByNaiveScan(_s, _goal);
+    public bool NaiveSubstringScan() =>
+        RotateStringSolution.CanRotateByNaiveScan(
+            new RotateStringSolution.RotationSource(_s),
+            new RotateStringSolution.RotationGoal(_goal));
 
     [Benchmark]
-    public bool KmpSearch() => RotateStringSolution.CanRotateByPrefixFunction(_s, _goal);
+    public bool KmpSearch() =>
+        RotateStringSolution.CanRotateByPrefixFunction(
+            new RotateStringSolution.RotationSource(_s),
+            new RotateStringSolution.RotationGoal(_goal));
 }

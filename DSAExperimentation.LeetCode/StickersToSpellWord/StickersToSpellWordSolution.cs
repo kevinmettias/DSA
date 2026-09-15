@@ -17,14 +17,17 @@ internal static class StickersToSpellWordSolution
     // path from scratch even when two paths land on the identical remaining-letters
     // state. Deliberately hand-rolled without this repo's Memoizer - it is the arm
     // MinStickersByMemoizedRecursion is measured against.
-    public static int MinStickersByNaiveRecursion(string[] stickers, string target) =>
-        MinStickersByNaiveRecursion(PreparedStickers.Build(stickers, target));
+    public static int MinStickersByNaiveRecursion(string[] stickers, string target)
+    {
+        var prepared = PreparedStickers.Build(stickers, target);
+        return MinStickersByNaiveRecursion(prepared);
+    }
 
     public static int MinStickersByNaiveRecursion(PreparedStickers input)
     {
-        int NaiveMinFor(string state) => Solve(state, input.StickerCounts, NaiveMinFor);
+        var order = new StickerCoverOrder(input.StickerCounts);
+        var result = order.Replay(input.SortedTarget, order);
 
-        var result = Solve(input.SortedTarget, input.StickerCounts, NaiveMinFor);
         return result == int.MaxValue ? LeetCodeAnswer.None : result;
     }
 
@@ -33,49 +36,65 @@ internal static class StickersToSpellWordSolution
     // shorter state, since any sticker that is tried consumes at least one copy of
     // the state's own first character - the well-founded precondition Memoizer's
     // own doc comment requires.
-    public static int MinStickersByMemoizedRecursion(string[] stickers, string target) =>
-        MinStickersByMemoizedRecursion(PreparedStickers.Build(stickers, target));
+    public static int MinStickersByMemoizedRecursion(string[] stickers, string target)
+    {
+        var prepared = PreparedStickers.Build(stickers, target);
+        return MinStickersByMemoizedRecursion(prepared);
+    }
 
     public static int MinStickersByMemoizedRecursion(PreparedStickers input)
     {
         var result = Memoizer.Memoize<string, int>(
             input.SortedTarget,
-            (state, minFor) => Solve(state, input.StickerCounts, minFor));
+            new StickerCoverOrder(input.StickerCounts));
 
         return result == int.MaxValue ? LeetCodeAnswer.None : result;
     }
 
-    private static int Solve(string state, int[][] stickerCounts, Func<string, int> minFor)
+    // The rule, named: a state is solved by whichever sticker to apply first leaves the
+    // fewest stickers for the rest - one for the sticker itself plus whatever the state
+    // it leaves behind costs - or stays unsolvable when no sticker covers the state's
+    // first remaining letter. The same named rule answers both strategies: the memoized
+    // arm hands it the cache-backed recursion, and the naive arm replays it straight back
+    // into itself with no cache in between. The sticker letter counts are the whole of
+    // what the rule needs from its caller, so they are the constructor's only input.
+    private sealed class StickerCoverOrder(int[][] stickerCounts) : IRecurrence<string, int>
     {
-        if (state.Length == 0)
+        public int Replay(string state, IRecurrence<string, int> rest)
         {
-            return 0;
-        }
-
-        return BestOverStickers(state, stickerCounts, minFor);
-    }
-
-    private static int BestOverStickers(string state, int[][] stickerCounts, Func<string, int> minFor)
-    {
-        var best = int.MaxValue;
-
-        foreach (var counts in stickerCounts)
-        {
-            if (counts[state[0] - 'a'] == 0)
+            if (state.Length == 0)
             {
-                continue;
+                return 0;
             }
 
-            var nextState = ApplySticker(state, counts);
-            var sub = minFor(nextState);
-
-            if (sub != int.MaxValue)
-            {
-                best = Math.Min(best, sub + 1);
-            }
+            return BestOverStickers(state, rest);
         }
 
-        return best;
+        // Which sticker to apply first is the whole of the choice: any sticker covering
+        // the state's first remaining letter is a candidate, and each one costs itself
+        // plus whatever the letters it leaves behind cost.
+        private int BestOverStickers(string state, IRecurrence<string, int> rest)
+        {
+            var best = int.MaxValue;
+
+            foreach (var counts in stickerCounts)
+            {
+                if (counts[state[0] - 'a'] == 0)
+                {
+                    continue;
+                }
+
+                var nextState = ApplySticker(state, counts);
+                var sub = rest.Replay(nextState, rest);
+
+                if (sub != int.MaxValue)
+                {
+                    best = Math.Min(best, sub + 1);
+                }
+            }
+
+            return best;
+        }
     }
 
     // Consumes as many of `state`'s letters as `counts` provides for each letter,

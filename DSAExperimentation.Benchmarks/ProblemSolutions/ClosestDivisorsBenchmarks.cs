@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ClosestDivisorsBenchmarks
 {
     [Params(1_000, 100_000)]
-    public int Num;
+    public int Num { get; set; }
 
     [Benchmark(Baseline = true)]
     public (int First, int Second) BruteForce() => ClosestDivisorsSolution.ClosestPairByDivisorScan(Num);

@@ -15,10 +15,10 @@ public class SearchInRotatedSortedArrayBenchmarks
     // sorted range's own boundary and both strategies do genuine search work.
     private const int TargetOffsetFromLength = 2;
 
-    private int[] _values = null!;
+    private int[] _values = [];
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

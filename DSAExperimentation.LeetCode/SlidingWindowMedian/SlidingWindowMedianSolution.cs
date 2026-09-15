@@ -31,11 +31,18 @@ internal static class SlidingWindowMedianSolution
     private static double MedianOfSorted(int[] sortedWindow, int k)
     {
         var mid = k / MedianAverageDivisor;
+        var isEvenSize = k % MedianAverageDivisor == 0;
 
-        return k % MedianAverageDivisor == 0
-            ? (sortedWindow[mid - 1] + sortedWindow[mid]) / (double)MedianAverageDivisor
-            : sortedWindow[mid];
+        return isEvenSize
+            ? Mean(sortedWindow[mid - 1], sortedWindow[mid])
+            : MiddleElement(sortedWindow, mid);
     }
+
+    // The mean of two middle values, which is the median of an even-sized window.
+    private static double Mean(int left, int right) => (left + right) / (double)MedianAverageDivisor;
+
+    // The median of an odd-sized window: its single middle element.
+    private static int MiddleElement(int[] sortedWindow, int mid) => sortedWindow[mid];
 
     // The classic two-heap approach - FindMedianFromDataStreamSolution's own
     // MaxHeapOrder<int>/MinHeapOrder<int> pair of this repo's Heap<T,TOrder>,
@@ -112,9 +119,15 @@ internal static class SlidingWindowMedianSolution
             Rebalance();
         }
 
+        private void MarkDelayed(int value)
+        {
+            _delayed.TryGetValue(value, out var count);
+            _delayed.Set(value, count + 1);
+        }
+
         public double Median()
             => _lowerSize == _upperSize
-                ? (PeekLower() + PeekUpper()) / (double)MedianAverageDivisor
+                ? Mean(PeekLower(), PeekUpper())
                 : PeekLower();
 
         private void Rebalance()
@@ -158,12 +171,6 @@ internal static class SlidingWindowMedianSolution
         }
 
         private bool IsDelayed(int value) => _delayed.TryGetValue(value, out var count) && count > 0;
-
-        private void MarkDelayed(int value)
-        {
-            _delayed.TryGetValue(value, out var count);
-            _delayed.Set(value, count + 1);
-        }
 
         private void ClearOneDelayed(int value)
         {

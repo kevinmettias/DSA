@@ -26,10 +26,10 @@ public class CatAndMouseIIBenchmarks
     // Cat starts halfway along the corridor.
     private const int CorridorMidpointDivisor = 2;
 
-    [Params(4, 6)]
-    public int CorridorLength;
+    private string[] _grid = [];
 
-    private string[] _grid = null!;
+    [Params(4, 6)]
+    public int CorridorLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

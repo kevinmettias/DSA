@@ -32,17 +32,6 @@ internal static class RotateImageSolution
         }
     }
 
-    private static void Transpose(int[][] matrix)
-    {
-        for (var r = 0; r < matrix.Length; r++)
-        {
-            for (var c = r + 1; c < matrix.Length; c++)
-            {
-                (matrix[r][c], matrix[c][r]) = (matrix[c][r], matrix[r][c]);
-            }
-        }
-    }
-
     private static void ReverseWithStack(int[] row)
     {
         var pushed = new StackOfInt();
@@ -55,6 +44,17 @@ internal static class RotateImageSolution
         for (var i = 0; i < row.Length; i++)
         {
             pushed.TryPop(out row[i]);
+        }
+    }
+
+    private static void Transpose(int[][] matrix)
+    {
+        for (var r = 0; r < matrix.Length; r++)
+        {
+            for (var c = r + 1; c < matrix.Length; c++)
+            {
+                (matrix[r][c], matrix[c][r]) = (matrix[c][r], matrix[r][c]);
+            }
         }
     }
 }

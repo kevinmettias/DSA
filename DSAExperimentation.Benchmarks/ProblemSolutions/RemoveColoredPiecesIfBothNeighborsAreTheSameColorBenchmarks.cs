@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RemoveColoredPiecesIfBothNeighborsAreTheSameColorBenchmarks
 {
-    private const int ColorGroupCount = 2; // two color runs: Alice's then Bob's
+    private const int ColorGroupCount = 2; private string _colors = "";
+
+    // two color runs: Alice's then Bob's
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private string _colors = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

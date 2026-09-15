@@ -14,10 +14,19 @@ namespace DSAExperimentation.LeetCode.CountNoZeroPairsThatSumToN;
 // state" shape Memoizer already serves for ClimbingStairsII and MinCostClimbingStairs.
 internal static class CountNoZeroPairsThatSumToNSolution
 {
-    private static readonly int[] NoZeroDigits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    private static readonly int[] ForcedZeroDigit = [0];
-    private static readonly bool[] AliveOrTerminated = [true, false];
-    private static readonly bool[] TerminatedOnly = [false];
+    // A digit paired with whether the number it belongs to keeps going afterwards: a
+    // live number may place any no-zero digit and then either continue or end right
+    // there, while a terminated one may only place its padding zero and stays
+    // terminated. Digit-major, which is the order the nested loops these replace
+    // visited, so the memoized recurrence sees the same states in the same order.
+    private static readonly (int Digit, bool NextAlive)[] NoZeroPlacements =
+    [
+        (1, true), (1, false), (2, true), (2, false), (3, true), (3, false),
+        (4, true), (4, false), (5, true), (5, false), (6, true), (6, false),
+        (7, true), (7, false), (8, true), (8, false), (9, true), (9, false),
+    ];
+
+    private static readonly (int Digit, bool NextAlive)[] PaddingPlacements = [(0, false)];
 
     // The textbook answer: check every split by trial division on digits, no repo
     // primitive - deliberately written this way, the arm the composed strategy
@@ -60,7 +69,7 @@ internal static class CountNoZeroPairsThatSumToNSolution
         var digits = DigitsWithCarryGuard(n);
 
         return Memoizer.Memoize<(int Position, int Carry, bool AliveA, bool AliveB), long>(
-            (0, 0, true, true), (state, countFrom) => CountFromState(state, digits, countFrom));
+            (0, 0, true, true), new CountFromState(digits));
     }
 
     private static int[] DigitsWithCarryGuard(long n)
@@ -77,42 +86,66 @@ internal static class CountNoZeroPairsThatSumToNSolution
         return [.. digits];
     }
 
-    private static long CountFromState(
-        (int Position, int Carry, bool AliveA, bool AliveB) state,
-        int[] digits,
-        Func<(int Position, int Carry, bool AliveA, bool AliveB), long> countFrom)
+    // The digit rule, named: each column pairs every placement the two numbers can
+    // still make and keeps the sums matching that column, so the state is the
+    // position, the carry into it, and whether each number is still going.
+    private sealed class CountFromState(int[] digits)
+        : IRecurrence<(int Position, int Carry, bool AliveA, bool AliveB), long>
     {
-        var (position, carry, aliveA, aliveB) = state;
-
-        if (position == digits.Length)
+        public long Replay(
+            (int Position, int Carry, bool AliveA, bool AliveB) state,
+            IRecurrence<(int Position, int Carry, bool AliveA, bool AliveB), long> rest)
         {
-            return carry == 0 && !aliveA && !aliveB ? 1L : 0L;
+            if (state.Position == digits.Length)
+            {
+                return TerminalCount(state);
+            }
+
+            return PlacementCount(state, rest);
         }
 
-        var required = digits[position];
-        long total = 0;
-
-        foreach (var digitA in aliveA ? NoZeroDigits : ForcedZeroDigit)
+        // Past the last column there is nothing left to place, so a state is either a
+        // complete pair or it is not.
+        private static long TerminalCount(
+            (int Position, int Carry, bool AliveA, bool AliveB) state)
         {
-            foreach (var nextAliveA in aliveA ? AliveOrTerminated : TerminatedOnly)
+            if (IsCompletePairWithoutCarry(state))
             {
-                foreach (var digitB in aliveB ? NoZeroDigits : ForcedZeroDigit)
+                return 1L;
+            }
+
+            return 0L;
+        }
+
+        // Every digit pair the two numbers can still place, kept when the column's sum
+        // matches the digit already sitting at this position.
+        private long PlacementCount(
+            (int Position, int Carry, bool AliveA, bool AliveB) state,
+            IRecurrence<(int Position, int Carry, bool AliveA, bool AliveB), long> rest)
+        {
+            long total = 0;
+
+            foreach (var (digitA, nextAliveA) in state.AliveA ? NoZeroPlacements : PaddingPlacements)
+            {
+                foreach (var (digitB, nextAliveB) in state.AliveB ? NoZeroPlacements : PaddingPlacements)
                 {
-                    foreach (var nextAliveB in aliveB ? AliveOrTerminated : TerminatedOnly)
+                    var sum = digitA + digitB + state.Carry;
+
+                    if (sum % 10 == digits[state.Position])
                     {
-                        var sum = digitA + digitB + carry;
-
-                        if (sum % 10 != required)
-                        {
-                            continue;
-                        }
-
-                        total += countFrom((position + 1, sum >= 10 ? 1 : 0, nextAliveA, nextAliveB));
+                        var next = (state.Position + 1, sum >= 10 ? 1 : 0, nextAliveA, nextAliveB);
+                        total += rest.Replay(next, rest);
                     }
                 }
             }
-        }
 
-        return total;
+            return total;
+        }
     }
+
+    // The split is a genuine no-zero pair only once both numbers have run out of digits
+    // and the last column left no carry to absorb.
+    private static bool IsCompletePairWithoutCarry(
+        (int Position, int Carry, bool AliveA, bool AliveB) state) =>
+        state.Carry == 0 && !state.AliveA && !state.AliveB;
 }

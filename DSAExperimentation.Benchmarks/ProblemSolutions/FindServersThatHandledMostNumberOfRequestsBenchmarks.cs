@@ -17,11 +17,11 @@ public class FindServersThatHandledMostNumberOfRequestsBenchmarks
     private const int MaxLoadMultiplier = 3;
     private const int RandomSeed = 1;
 
-    [Params(50, 400)]
-    public int ServerCount;
+    private int[] _arrival = [];
 
-    private int[] _arrival = null!;
-    private int[] _load = null!;
+    private int[] _load = [];
+    [Params(50, 400)]
+    public int ServerCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
